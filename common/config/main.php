@@ -14,6 +14,26 @@ $config = [
       'rules' => [
       ],
     ],
+    'sphinx' => [
+      'class' => 'yii\sphinx\Connection',
+      'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+      'username' => '',
+      'password' => '',
+    ],
+    'assetManager' => [
+      'bundles' => [
+        'yii\bootstrap\BootstrapAsset' => false,
+        'yii\validators\ValidationAsset' => false,
+        'yii\web\YiiAsset' => false,
+        'yii\widgets\ActiveFormAsset' => false,
+        'yii\bootstrap\BootstrapPluginAsset' => false,
+        'yii\web\JqueryAsset' => false,
+        //'yii\authclient\widgets\AuthChoiceAsset' => false, //authchoice.js
+        //'yii\authclient\widgets\AuthChoiceStyleAsset' => false, //authchoice.css
+      ],
+      'linkAssets' => true,
+      'appendTimestamp' => true,
+    ],
     'view' => [
       'class' => 'yii\web\View',
       'defaultExtension' => 'twig',
@@ -50,6 +70,7 @@ $config = [
         ],
       ],
     ],
+    'db' => require __DIR__.'/db.php'
   ],
 ];
 
@@ -66,6 +87,11 @@ if (YII_DEBUG) {
     'generators' => [
 
     ],
+  ];
+  //Add kint
+  $config['bootstrap'][] = 'kint';
+  $config['modules']['kint'] = [
+    'class' => 'digitv\kint\Module',
   ];
 }
 

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a1118d1f8a32d3838aa3d68a4f13a10b",
-    "content-hash": "cd1475fb3a42260cd81c58733f084ee4",
+    "hash": "afb0009e1fab23a029f32a50c4048e7b",
+    "content-hash": "c27fdeae474b3bd9c08cb3ccc64e776b",
     "packages": [
         {
             "name": "aayaresko/yii2-extended-gii",
@@ -350,6 +350,59 @@
             "time": "2017-07-16 21:13:23"
         },
         {
+            "name": "digitv/kint",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digitv/kint.git",
+                "reference": "83d283cf355ffab0c73c7193f1f6d522af5e9a43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digitv/kint/zipball/83d283cf355ffab0c73c7193f1f6d522af5e9a43",
+                "reference": "83d283cf355ffab0c73c7193f1f6d522af5e9a43",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "yiisoft/yii2-codeception": "~2.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "digitv\\kint\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Digit",
+                    "email": "digit.vova@gmail.com"
+                }
+            ],
+            "description": "Add kint support",
+            "keywords": [
+                "debug",
+                "kint",
+                "yii2"
+            ],
+            "time": "2017-07-31 06:46:26"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.9.3",
             "source": {
@@ -395,64 +448,6 @@
                 "html"
             ],
             "time": "2017-06-03 02:28:16"
-        },
-        {
-            "name": "kint-php/kint",
-            "version": "2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kint-php/kint.git",
-                "reference": "1a1104729f10277b06d7db742d3c98d1881d4d7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kint-php/kint/zipball/1a1104729f10277b06d7db742d3c98d1881d4d7e",
-                "reference": "1a1104729f10277b06d7db742d3c98d1881d4d7e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.1.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpunit/phpunit": "^4.0",
-                "symfony/finder": "^2.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "init.php"
-                ],
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rokas Šleinius",
-                    "homepage": "https://github.com/raveren"
-                },
-                {
-                    "name": "Jonathan Vollebregt",
-                    "homepage": "https://github.com/jnvsor"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/kint-php/kint/graphs/contributors"
-                }
-            ],
-            "description": "Kint - debugging tool for PHP developers",
-            "homepage": "https://kint-php.github.io/kint/",
-            "keywords": [
-                "debug",
-                "kint",
-                "php"
-            ],
-            "time": "2017-07-03 20:08:05"
         },
         {
             "name": "phpspec/php-diff",
@@ -810,6 +805,56 @@
                 "yii2"
             ],
             "time": "2016-12-20 13:26:02"
+        },
+        {
+            "name": "yiisoft/yii2-sphinx",
+            "version": "2.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-sphinx.git",
+                "reference": "5d57ff9920622cd78c67fbf1e50498c13cb52887"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-sphinx/zipball/5d57ff9920622cd78c67fbf1e50498c13cb52887",
+                "reference": "5d57ff9920622cd78c67fbf1e50498c13cb52887",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "ext-pdo_mysql": "*",
+                "yiisoft/yii2": "~2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\sphinx\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "Sphinx full text search engine extension for the Yii framework",
+            "keywords": [
+                "active-record",
+                "fulltext",
+                "search",
+                "sphinx",
+                "yii2"
+            ],
+            "time": "2017-05-15 11:44:42"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -3473,7 +3518,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "digitv/kint": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

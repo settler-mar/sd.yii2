@@ -1,3 +1,6 @@
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""><![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang=""><![endif]-->
@@ -33,7 +36,7 @@
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
 
-    <title>{{title}}</title>
+    <title>{{ html.encode(this.title) }}</title>
 
     {% if description %}
         <meta name="description" content="{{description}}">
@@ -73,8 +76,12 @@
     {% for scriptH in exclusionJSheader %}
         <script src="{{scriptH}}" {% if scriptH starts with 'http' %} async="async" {% endif %}></script>
     {% endfor %}
+
+    {{ html.csrfMetaTags | raw }}
+    {{   void(this.head) }}
 </head>
 <body id="top">
+{{   void(this.beginBody()) }}
 <!--[if lt IE 9]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -269,6 +276,9 @@
     <script src="{{scriptF}}" {% if scriptF starts with 'http' %} async="async" {% endif %}></script>
 {% endfor %}
 
+
+{{   void(this.endBody()) }}
+
 <!-- BEGIN JIVOSITE CODE {literal} -->
 <script type='text/javascript'>
     (function(){ var widget_id = 'T4v9gAfJoK';var d=document;var w=window;function l(){
@@ -304,3 +314,4 @@
 <!-- /Yandex.Metrika counter -->
 </body>
 </html>
+{{   void(this.endPage()) }}
