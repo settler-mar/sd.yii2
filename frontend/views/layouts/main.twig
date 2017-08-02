@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang=""><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang=""><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="ru"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-90471086-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+          document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '239595223199647'); // Insert your pixel ID here.
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=239595223199647&ev=PageView&noscript=1"
+        /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+    <title>{{title}}</title>
+
+    {% if description %}
+        <meta name="description" content="{{description}}">
+    {% endif %}
+
+    {% if keywords %}
+        <meta name="keywords" content="{{keywords}}">
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="p:domain_verify" content="3f340faa8b74002055515f2100c43e90"/>
+
+    <meta property="og:image" content="{{images_path}}templates/woman_600.png"/>
+
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    {% if pagination_tags.prev_page != null %}
+        <link rel="prev" href="{{site_url}}{{pagination_tags.prev_page}}">
+    {% endif %}
+    {% if pagination_tags.next_page != null %}
+        <link rel="next" href="{{site_url}}{{pagination_tags.next_page}}">
+    {% endif %}
+
+    {% for style in exclusionCSSheader %}
+        <link rel="stylesheet" href="{{style}}">
+    {% endfor %}
+
+    {% for css_link in minifyCSS %}
+        <link rel="stylesheet" href="{{css_link}}">
+    {% endfor %}
+
+    {% for scriptH in exclusionJSheader %}
+        <script src="{{scriptH}}" {% if scriptH starts with 'http' %} async="async" {% endif %}></script>
+    {% endfor %}
+</head>
+<body id="top">
+<!--[if lt IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<section class="navigation">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="/"><img src="{{images_path}}templates/secretdiscounter-logo.png" width="170" alt="secretdiscounter logo"></a>
+            </div>
+            <div class="header-nav">
+                <nav>
+                    <ul class="member-actions mobile-member-actions">
+                        {% if user_id %}
+                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{balance.current}} <span class="fa fa-rub"></span></a></li>
+                            <li><a href="/account" rel="nofollow" class="account"><i class="fa fa-user" aria-hidden="true"></i> Мой аккаунт</a></li>
+                        {% else %}
+                            <li><a href="#login" rel="nofollow" class="login ignore-hash"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Войти</a></li>
+                            <li class="registration-wrapper"><a href="#registration" rel="nofollow" class="registration btn-white btn-small ignore-hash">Зарегистрироваться</a></li>
+                            <li class="registration-mobile"><a href="#registration" rel="nofollow" class="registration ignore-hash"><i class="fa fa-address-card" aria-hidden="true"></i> Зарегистрироваться</a></li>
+                        {% endif %}
+                        <a class="dobrohead mobile" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>Делаем добро</span></a>
+                    </ul>
+
+
+                    <ul class="primary-nav">
+
+                        <li class="stores">
+                            {{ get_menu_item({'href': '/stores', 'title': 'Магазины'})|raw }}
+                            <form action="/search" class="form-mobile" name="search" method="get">
+                                <input type="text" name="query" id="search" value="" placeholder="Поиск магазинов">
+                                <span class="fa fa-search"></span>
+                            </form>
+                            {% if categories_tree %}
+                                <div class="submenu">
+                                    <span class="fa fa-caret-up"></span>
+                                    <div class="tree">
+                                        {{categories_tree|raw}}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </li>
+                        <li class="coupons-l">{{ get_menu_item({'href': '/coupons', 'title': 'Купоны'})|raw }}</li>
+                        <li class="promo-l">{{ get_menu_item({'href': '/promo', 'title': 'Акции'})|raw }}</li>
+                        <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>Делаем добро</span></a>
+                        <li class="search">
+                            <form action="/search" class="form-search-dp" name="search" method="get">
+                                <input type="text" name="query" id="search" value="" placeholder="Поиск">
+                                <span class="fa fa-search"></span>
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="member-actions mdes">
+                        {% if user_id %}
+                            <li><a href="/account" rel="nofollow" class="account">Мой аккаунт</a></li>
+                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{balance.current}} <span class="fa fa-rub"></span></a></li>
+                        {% else %}
+                            <li><a href="#login" rel="nofollow" class="login ignore-hash">Войти</a></li>
+                            <li class="registration-wrapper"><a href="#registration" rel="nofollow" class="registration btn-white btn-small ignore-hash">Зарегистрироваться</a></li>
+                            <li class="registration-mobile"><a href="#registration" rel="nofollow" class="registration ignore-hash">Зарегистрироваться</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="navicon">
+                <a class="nav-toggle" rel="nofollow" href="#"><span></span></a>
+            </div>
+        </div>
+    </header>
+</section>
+
+{{ content|raw }}
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="footer-links">
+                    <ul class="footer-group">
+                        <li>{{ get_menu_item({'href': '/howitworks', 'title': 'Как это работает'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/faq', 'title': 'Часто задаваемые вопросы'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/affiliate-system', 'title': 'Приведи друга'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/loyalty', 'title': 'Накопительная скидка'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/recommendations', 'title': 'Советы по совершению покупок'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/reviews', 'title': 'Отзывы о нас'})|raw }}</li>
+                        <li>{{ get_menu_item({'href': '/dobro', 'title': 'Делаем добро'})|raw }}</li>
+                        <li><a href="https://blog.secretdiscounter.ru">Наш блог</a></li>
+                        <li><a href="https://forum.secretdiscounter.ru">Форум</a></li>
+                        <li><a href="https://gdeposylka.secretdiscounter.ru">Отследить посылку</a></li>
+                    </ul>
+                    <p class="withdraw-title">Накопленный кэшбэк Вы можете вывести любым удобным для Вас спобом:</p>
+                    <ul class="withdraw-logo">
+                        <li><img src="{{images_path}}templates/visamini.jpg" alt="visa"></li>
+                        <li><img src="{{images_path}}templates/mcmini.jpg" alt="mastercard"></li>
+                        <li><img src="{{images_path}}templates/webmoneymini.jpg" alt="webmoney"></li>
+                        <li><img src="{{images_path}}templates/paypalmini.jpg" alt="paypal"></li>
+                        <li><img src="{{images_path}}templates/yandexmini.jpg" alt="yandexmoney"></li>
+                        <li><img src="{{images_path}}templates/qiwimini.jpg" alt="qiwi"></li>
+                        <li><img src="{{images_path}}templates/mobilemini.jpg" alt="mobile"></li>
+                    </ul>
+                    <div class="footer-contacts mobile-footer-contacts">
+                        <p class="title">Контакты (24/7)</p>
+                        <p class="description">
+                            Звоните, и мы научим вас экономить на покупках<br>
+                            <span>
+    ‎<strong>8 (800) 707 66 09</strong>
+    (звонки по России бесплатные)<br>
+    ‎<strong>+7 (495) 150 66 09</strong> (Пн-Пт, 10:00 – 22:00 по Москве)
+    <br>
+    ‎<strong>+44 (20) 38 07 02 08</strong> (главный офис в Лондоне)
+    </span>
+                        </p>
+                    </div>
+                    <p class="pre-social-block for-mobile">А в наших группах Вас всегда ждут конкурсы, призы и подарки:</p>
+                    <div class="social-block-share for-mobile">
+                        <a href="https://www.facebook.com/secretdiscounter.ru/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        <a href="https://vk.com/secretdiscounter_ru" target="_blank"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                        <a href="https://ok.ru/group/54392356274401" target="_blank"><i class="fa fa-odnoklassniki" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/secretdiscounter.ru/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.youtube.com/channel/UCMF1uzBGkK7BaEvAZ5XZCGg" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                        <a href="https://twitter.com/secretdiscounte" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://plus.google.com/u/0/communities/117885185630720076043" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                        <a href="https://telegram.me/SecretDiscounter" target="_blank"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+                    </div>
+                    <p class="footer-pre-logo">
+                        <a href="/about"><img src="{{images_path}}templates/footer-logo.png" class="footer-logo">
+                            Secret Discounter Ltd. Зарегистрирована в Англии под №10201982.<span class="hpemob"><br></span>
+                            © Secret Discounter Ltd., 2016–2017. Все права защищены</a>
+                    </p>
+                </div>
+            </div>
+            <div class="auxiliary-panel">
+                {% if footer_categories|length > 0 %}
+                    <ul class="footer-group">
+                        {% for category in footer_categories %}
+                            <li><a href="/stores/category:{{category.uid}}">{{category.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <p>Рассказать о SecretDiscounter друзьям в соцсетях:</p>
+                <!--
+    <div class="ya-share2"
+    data-services="vkontakte,facebook,odnoklassniki,twitter,gplus"
+    data-counter
+    data-title="{{title}}"
+    data-description="{{description}}"
+    data-image="https://secretdiscounter.ru{{images_path}}templates/woman_600.png"
+    data-lang="ru"></div> -->
+
+                <div
+                  class="share42init accauntSoc accauntSoc_32"
+                  data-socials="0,1,2,3,4,5,6"
+                  data-icon-type="css"
+                ></div>
+                <script type="text/javascript" src="/js/share42.js"></script>
+                <div class="footer-contacts">
+                    <p class="title">Контакты (24/7)</p>
+                    <p class="description">
+                        Звоните, и мы научим вас экономить на покупках<br>
+                        <span>
+                            ‎<strong>8 (800) 707 66 09</strong>
+                            (звонки по России бесплатные)<br>
+                            ‎<strong>+7 (495) 150 66 09</strong> (Пн-Пт, 10:00 – 22:00 по Москве)
+                            <br>
+                            ‎<strong>+44 (20) 38 07 02 08</strong> (главный офис в Лондоне)
+                        </span>
+                    </p>
+                </div>
+                <p class="pre-social-block">А в наших группах Вас всегда ждут<br>конкурсы, призы и подарки:</p>
+                <div class="social-block-share">
+                    <a href="https://www.facebook.com/secretdiscounter.ru/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="https://vk.com/secretdiscounter_ru" target="_blank"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                    <a href="https://ok.ru/group/54392356274401" target="_blank"><i class="fa fa-odnoklassniki" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/secretdiscounter.ru/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://www.youtube.com/channel/UCMF1uzBGkK7BaEvAZ5XZCGg" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/secretdiscounte" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://plus.google.com/u/0/communities/117885185630720076043" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                    <a href="https://telegram.me/SecretDiscounter" target="_blank"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% include 'parts/popups/popup-login.twig' %}
+{% include 'parts/popups/popup-recovery.twig' %}
+
+{% for script in minifyJS %}
+    <script src="{{script}}"></script>
+{% endfor %}
+
+{% for scriptF in exclusionJSfooter %}
+    <script src="{{scriptF}}" {% if scriptF starts with 'http' %} async="async" {% endif %}></script>
+{% endfor %}
+
+<!-- BEGIN JIVOSITE CODE {literal} -->
+<script type='text/javascript'>
+    (function(){ var widget_id = 'T4v9gAfJoK';var d=document;var w=window;function l(){
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+<!-- {/literal} END JIVOSITE CODE -->
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter42229559 = new Ya.Metrika({
+                    id:42229559,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+        var n = d.getElementsByTagName("script")[0],
+          s = d.createElement("script"),
+          f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/42229559" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

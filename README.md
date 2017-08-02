@@ -17,7 +17,7 @@ console
     migrations/          contains database migrations
     models/              contains console-specific model classes
     runtime/             contains files generated during runtime
-backend
+backend                  партнерский сайт????
     assets/              contains application assets such as JavaScript and CSS
     config/              contains backend configurations
     controllers/         contains Web controller classes
@@ -26,7 +26,7 @@ backend
     tests/               contains tests for backend application    
     views/               contains view files for the Web application
     web/                 contains the entry script and Web resources
-frontend
+frontend                 Основной сайт
     assets/              contains application assets such as JavaScript and CSS
     config/              contains frontend configurations
     controllers/         contains Web controller classes
@@ -38,6 +38,8 @@ frontend
     widgets/             contains frontend widgets
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
+helpers/                 вспомогательные библиотеки
+  twig/                  библиотеки для twig
 ```
 
 Папка ```backend``` предназначена для партнеров.

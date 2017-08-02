@@ -1,0 +1,26 @@
+<div class="popup-givefeedback popup-template">
+    <div class="feedback popup-content">
+        <h3>############</h3>
+        <p class="tagline"><b>Внимание:</b> в отзывах запрещается использовать нецензурные и оскорбительные <br>выражения, 
+        а также указывать ссылки на внешние интернет-ресурсы.</p>
+        <form class="feedback-form" action="/" method="POST" role="form">
+            <div class="form-input-group">
+                <i class="fa fa-info"></i><input name="title" type="text" placeholder="Заголовок" maxlenght="250" required>
+            </div>
+            <textarea name="review" placeholder="Текст отзыва" required></textarea>
+            <div class="rating">
+                <span class="title">Рейтинг:</span>
+                <span class="fa-wrapper">
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span> 
+                    <span class="fa fa-star"></span>
+                </span>
+            </div>
+            <input type="hidden" name="rating" value="5">
+            <input type="hidden" name="type" value="#######">
+            <button type="submit" class="btn-fill">Оставить отзыв</button>
+        </form>
+    </div>
+</div>

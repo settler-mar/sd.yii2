@@ -1,5 +1,6 @@
 <?php
-define("ENV_DEV" , true);
+$twigFunction=require (dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
+$twigFunction['translate']='\Yii::t';
 
 $config = [
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -15,6 +16,7 @@ $config = [
     ],
     'view' => [
       'class' => 'yii\web\View',
+      'defaultExtension' => 'twig',
       'renderers' => [
         'twig' => [
           'class' => 'yii\twig\ViewRenderer',
@@ -27,12 +29,10 @@ $config = [
             'auto_reload' => true,
           ],
           'globals' => [
-              'html' => '\yii\helpers\Html',
-              'url' => 'yii\helpers\Url'
+            'html' => '\yii\helpers\Html',
+            'url' => 'yii\helpers\Url',
           ],
-          'functions' => [
-            'translate' => '\Yii::t',
-          ],
+          'functions' => $twigFunction,
           'uses' => ['yii\bootstrap'],
           'extensions' => YII_DEBUG?[
             '\Twig_Extension_Debug',
