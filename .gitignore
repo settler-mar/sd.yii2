@@ -35,3 +35,5 @@ phpunit.phar
 /.vagrant
 /common/config/params-local.php
 /common/config/main-local.php
+/common/config/start_param.php
+/composer.lock

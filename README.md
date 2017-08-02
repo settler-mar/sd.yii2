@@ -39,6 +39,11 @@ frontend
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
 ```
+
+Папка ```backend``` предназначена для партнеров.
+
+Папка ```frontend``` предназначена для обычных поситителей.
+
 ### Устаноновка
 
 1. git clone https://github.com/settler-mar/sd.yii2.git

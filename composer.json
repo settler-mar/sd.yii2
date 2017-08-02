@@ -20,7 +20,7 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kint-php/kint": "^2.1",
         "yiisoft/yii2-twig": "~2.0.0",
-        "esquire900/yii2-giiant-twig": "^0.1.0"
+        "aayaresko/yii2-extended-gii": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

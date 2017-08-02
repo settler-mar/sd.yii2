@@ -1,4 +1,6 @@
 <?php
+define("ENV_DEV" , true);
+
 $config = [
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
@@ -18,22 +20,29 @@ $config = [
           'class' => 'yii\twig\ViewRenderer',
           'cachePath' => '@runtime/Twig/cache',
           // Array of twig options:
-          'options' => [
+          'options' => YII_DEBUG?[
+            'debug' => true,
+            'auto_reload' => true,
+          ]:[
             'auto_reload' => true,
           ],
           'globals' => [
               'html' => '\yii\helpers\Html',
-              'arhelp'=>'\yii\helpers\ArrayHelper',
-              'url'=>'yii\helpers\Url'
+              'url' => 'yii\helpers\Url'
+          ],
+          'functions' => [
+            'translate' => '\Yii::t',
           ],
           'uses' => ['yii\bootstrap'],
-          'extensions' => [
+          'extensions' => YII_DEBUG?[
+            '\Twig_Extension_Debug',
+            ]:[
             ]
         ],
       ],
     ],
     'log' => [
-      'traceLevel' => YII_DEBUG ? 3 : 0,
+      'traceLevel' => YII_LOG_LEVEL,
       'targets' => [
         [
           'class' => 'yii\log\FileTarget',
@@ -44,7 +53,7 @@ $config = [
   ],
 ];
 
-if (YII_ENV_DEV) {
+if (YII_DEBUG) {
   // configuration adjustments for 'dev' environment
   $config['bootstrap'][] = 'debug';
   $config['modules']['debug'] = [
@@ -52,15 +61,10 @@ if (YII_ENV_DEV) {
   ];
   $config['bootstrap'][] = 'gii';
   $config['modules']['gii'] = [
-    'class' => 'yii\gii\Module',
+    'class' => 'aayaresko\gii\Module',
     'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
     'generators' => [
-      'twigcrud' => [
-        'class' => 'esquire900\yii2-giiant-twig\crud\Generator', // generator class
-        'templates' => [
-          'twigCrud' => '@esquire900/yii2-giiant-twig/crud/default',
-        ]
-      ]
+
     ],
   ];
 }
