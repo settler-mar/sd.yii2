@@ -1,0 +1,109 @@
+$(function() {
+    $('input[name=d_from], input[name=d_to]').datepicker({
+        dateFormat: "yyyy-mm-dd"
+    });
+
+    $('form[name=categories-edit-stores] input[type=checkbox]').click(function() {
+    	var self = $(this),
+    		categoriesForm = $('form[name=categories-edit-stores]');
+
+    	if(self.is(":checked") && self.attr("data-parent-id") != "0") {
+    		categoriesForm.find('input[data-uid='+ self.attr("data-parent-id") +']').prop("checked", false).prop("checked", true);
+    	} else if(!self.is(":checked") && self.attr("data-parent-id") != "0") {
+    		var parentUncheked = true;
+
+    		categoriesForm.find('input[data-parent-id='+ self.attr("data-parent-id") +']').each(function() {
+    			if($(this).is(":checked")) {
+    				parentUncheked = false;
+    			}
+    		});
+
+    		if(parentUncheked) {
+    			categoriesForm.find('input[data-uid='+ self.attr("data-parent-id") +']').prop("checked", false);
+    		}
+    	}
+    });
+
+	$(".select2-users").select2({
+		ajax: {
+			url: "/admin/users/list",
+			type: 'post',
+			dataType: 'json',
+			delay: 250,
+			data: function (params) {
+				return {
+					email: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		placeholder: "Выберите пользователя",
+		minimumInputLength: 1
+	});
+
+	$( ".input-datepicker" ).datepicker({
+		dateFormat: "yyyy-mm-dd"
+	});
+
+	$('#charity-checkbox-0').click( function () {
+		var checked = this.checked;
+		Array.from(document.getElementsByClassName("charity-checkbox")).forEach(
+			function(element) {
+				element.checked = checked;
+			}
+		);
+	});
+	
+	$('.charity-action').click(function(e) {
+		e.preventDefault();
+		var status = $(this).data('value');
+		var ids = [];
+		Array.from(document.getElementsByClassName("charity-checkbox")).forEach(
+			function(element) {
+				if (element.checked) {
+					ids.push($(element).data('id'));
+				}
+			}
+		);
+		if (ids.length > 0) {
+			$.ajax({
+				url: '/admin/charity/status',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					status: status,
+					ids: ids
+				}
+			}).success(function(data) {
+				if (data.status == true) {
+					ids.forEach(function (item) {
+						var row = document.getElementById('charity-row-' + item);
+						//row.removeAttribute('class');
+						row.className = 'status_bg_' + status;
+					});
+				} else {
+					console.log(data);
+				}
+			}).fail(function(data){
+				console.log('error', data);
+			});
+		} else {
+			alert('Необходимо выбрать элементы!')
+		}
+	});
+	
+
+});
+
+/*$(function() {
+	$('.ch_tree input').on('change',function(){
+		$this=$(this)
+		input=$this.parent().parent().find('input');
+		input.prop('checked',$this.prop('checked'))
+	})
+});*/

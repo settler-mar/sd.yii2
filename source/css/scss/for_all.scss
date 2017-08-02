@@ -1,0 +1,343 @@
+.accordion{
+  margin-bottom: 3px;
+
+  + p{
+    padding-top: 7px;
+  }
+  .accordion-content{
+    color: #000;
+    //max-height: 0;
+    display: none;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .accordion-control{
+    a {
+      color: #e6ae03 !important;
+      font-size: 14px;
+    }
+
+    text-align: right;
+    .icon{
+      margin-left: 3px;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      color: #e6ae03;
+      font-size: 14px;
+    }
+    .angle-down .icon:before {
+      content: "\f107";
+    }
+    .angle-up .icon:before {
+      content: "\f106";
+    }
+  }
+
+  .accordion-title {
+    text-align: left;
+    background: #E4C84B;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1e2527;
+    border-radius: 3px;
+    max-width: 750px;
+
+    &:before{
+      content:"\f067";
+      width: 20px;
+      display: inline-block;
+      text-align: center;
+      margin-left: 3px;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+    }
+
+    +.accordion-content{
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #D2D6DE;
+      border-top: 0;
+      border-radius: 0 0 3px 3px;
+      max-width: 750px;
+    }
+  }
+
+  .angle-down:before{
+    content: "Подробнее";
+    color: #e6ae03;
+  }
+  .angle-up{
+    display: none;
+    &:before{
+      content: "Скрыть";
+      color: #e6ae03;
+    }
+  }
+  &.open{
+    .accordion-title {
+      border-radius: 3px 3px 0 0;
+
+      &:before{
+        content:"\f068";
+      }
+    }
+    .angle-down{
+      display: none;
+    }
+    .angle-up{
+      display: inline-block;
+    }
+  }
+}
+
+.soc-icon{
+  height: 48px;
+  width: 48px;
+  margin: 2px;
+  background-image:url(/images/socialicons48.png) ;
+  display: inline-block;
+}
+.accauntSoc_32 .soc-icon{
+  height: 32px;
+  width: 32px;
+  margin: 2px;
+  background-image:url(/images/socialicons32.png) ;
+  display: inline-block;
+}
+
+.icon-vk{
+  background-position: -19px -75px;
+}
+.icon-twi{
+  background-position: -70px -21px;
+}
+.icon-fb{
+  background-position: -170px -21px;
+}
+.icon-odkl{
+  background-position: -222px -75px;
+}
+.icon-odkl{
+  background-position: -222px -75px;
+}
+.icon-gplus{
+  background-position: -19px -21px;
+}
+.accauntSoc_32 {
+  .icon-vk {
+    background-position: -12px -50px;
+  }
+  .icon-twi {
+    background-position: -47px -14px;
+  }
+  .icon-fb {
+    background-position: -114px -14px;
+  }
+  .icon-odkl {
+    background-position: -148px -50px;
+  }
+  .icon-odkl {
+    background-position: -148px -50px;
+  }
+  .icon-gplus {
+    background-position: -14px -14px;
+  }
+  .icon-mail {
+    background-position: -46px -50px;
+  }
+  .icon-journal {
+    background-position: -115px -50px;
+  }
+}
+
+#share42{
+  white-space: nowrap
+}
+
+table .status_0 {
+  color: #FF9800;
+}
+table .status_2 {
+  color: #8BC34A;
+}
+table .status_1 {
+  color: #F44336;
+}
+
+table .status_bg_0 {
+  background: rgba(255, 152, 0, 0.22)!important;
+}
+table .status_bg_2 {
+  background: rgba(139, 195, 74, 0.23)!important;
+}
+table .status_bg_1 {
+  background: rgba(244, 67, 54, 0.22)!important;
+}
+
+
+/*Уведомления*/
+.notification_box{
+  display: flex;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 0vh;
+  width: 100vw;
+  z-index: 99;
+
+  animation-name: notification_box_hide;
+  animation-delay: .15s;
+  animation-duration: .15s;
+  animation-fill-mode: both;
+  opacity: 0;
+
+  .notify_box{
+    margin: auto;
+    background: #fff;
+    transform: translate3d(0,-90px,0) rotate3d(0,1,0,90deg);
+    transition: all 0.15s linear;
+    transition-delay: 0s;
+
+    .notify_title{
+      padding: 10px;
+      background: #333;
+      color:#fff;
+      position: relative;
+
+      .notify_close{
+        position: absolute;
+        transition: all 0.5s;
+        cursor: pointer;
+        right: 0;
+        top:0;
+        padding: 10px;
+
+        &:before{
+          content: "X";
+        }
+
+        &:hover{
+          transform: rotate3d(0,0,1,540deg);
+        }
+      }
+    }
+
+    .notify_content{
+      padding: 15px 10px;
+    }
+
+    .notify_control{
+      border-top: 1px solid #333;
+      text-align: center;
+
+      div{
+        margin: 10px;
+        display: inline-block;
+        padding: 5px 20px;
+        border: 1px solid;
+        cursor: pointer;
+
+        &:hover{
+          color:#999;
+        }
+      }
+    }
+
+    &.notify_white{
+      border-radius: 3px;
+      overflow: hidden;
+
+      .notify_title{
+        background: #fff;
+        color:#888;
+
+        .notify_close {
+          padding: 3px 8px;
+
+          &:before {
+            content: "×";
+          }
+        }
+      }
+
+      .notify_control{
+        border-top: none;
+
+        div{
+          background-color: #e6ae03;
+          border-radius: 3px;
+          font-size: 13px;
+          font-weight: 700;
+          color:#0f181a;
+          border: none;
+          padding: 10px 20px;
+          margin-bottom: 20px;
+
+          &:hover{
+            background-color: #ffc503;
+            color: #000000;
+          }
+        }
+      }
+    }
+  }
+}
+.notification_data{
+  display:none;
+}
+
+.show_notifi{
+  overflow: hidden;
+  .notification_box{
+    //box-shadow: #999 0px 0px 5vmax 50vmin inset;
+    animation-name: notification_box_show;
+    animation-delay: 0.0s;
+  }
+
+  .notify_box{
+    transform: translate3d(0,0px,0) rotate3d(0,1,0,0deg);
+    transition-delay: 0.2s;
+  }
+}
+
+@keyframes notification_box_show {
+  0%{
+    height: 0vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 0vmin inset;
+  }
+  1%{
+    opacity: 1;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 0vmin inset;
+  }
+
+  100%{
+    opacity: 1;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 50vmin inset;
+  }
+}
+
+@keyframes notification_box_hide {
+  0%{
+    opacity: 1;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 50vmin inset;
+  }
+
+  99%{
+    opacity: 0;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 0vmin inset;
+  }
+
+  100%{
+    opacity: 0;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 0vmin inset;
+    height: 0vh;
+  }
+}
