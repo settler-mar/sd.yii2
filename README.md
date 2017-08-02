@@ -45,3 +45,9 @@ environments/            contains environment-based overrides
 2. Настраиваем доступ к базе данных common/config/main-local.php
 3. Устанавливаем библиотеки composer install
 4. Выполняем миграции yii migrate
+
+### Известные баги
+
+## Проект не запускается из за bower
+
+Нужно переименовать ```vendor/bower-asset``` в ```vendor/bower```
