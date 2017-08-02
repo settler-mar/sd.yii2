@@ -37,3 +37,5 @@ phpunit.phar
 /common/config/main-local.php
 /common/config/start_param.php
 /composer.lock
+
+/node_modules
