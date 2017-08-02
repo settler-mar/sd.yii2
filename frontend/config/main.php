@@ -37,7 +37,14 @@ return [
       'errorAction' => 'site/error',
     ],
     'view'=>[
-
+      'class' => 'frontend\controllers\SdView',
+      'renderers' => [
+        'twig' => [
+          'globals' => [
+            'AppAsset'=>'frontend\assets\AppAsset'
+          ]
+        ]
+      ]
     ]
     /*
     'urlManager' => [
