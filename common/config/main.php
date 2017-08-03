@@ -72,6 +72,7 @@ $config = [
     ],
     'db' => require __DIR__.'/db.php'
   ],
+
 ];
 
 if (YII_DEBUG) {
@@ -84,8 +85,13 @@ if (YII_DEBUG) {
   $config['modules']['gii'] = [
     'class' => 'aayaresko\gii\Module',
     'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
-    'generators' => [
-
+    'generators' => [ // здесь
+      /*'crud' => [ // название генератора
+        'class' => 'yii\gii\generators\crud\Generator', // класс генератора
+        'templates' => [ // настройки сторонних шаблонов
+          'myCrud' => '@app/myTemplatesGii/crud/admin', // имя_шаблона => путь_к_шаблону
+        ]
+      ]*/
     ],
   ];
   //Add kint

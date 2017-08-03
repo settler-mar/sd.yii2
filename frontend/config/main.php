@@ -16,6 +16,14 @@ return [
       'csrfParam' => '_csrf-frontend',
     ],
     'user' => [
+      'identityClass' => 'app\modules\user\models\User',
+      'enableAutoLogin' => true,
+      //'loginUrl' => ['/'],
+      'on afterLogin' => function($event) {
+        frontend\modules\users\models\Users::afterLogin($event->identity->id);
+      }
+    ],
+    'user' => [
       'identityClass' => 'common\models\User',
       'enableAutoLogin' => true,
       'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
@@ -54,6 +62,11 @@ return [
       ],
     ],
     */
+  ],
+  'modules' => [
+    'users' => [
+      'class' => 'app\modules\users\Module',
+    ],
   ],
   'params' => $params,
 ];

@@ -1,0 +1,78 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="users-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'uid')|raw }}
+
+    {{ form.field(model, 'email')|raw }}
+
+    {{ form.field(model, 'name')|raw }}
+
+    {{ form.field(model, 'password')|raw }}
+
+    {{ form.field(model, 'salt')|raw }}
+
+    {# form.field(model, 'birthday')|raw #}
+
+    {# form.field(model, 'sex')|raw #}
+
+    {# form.field(model, 'photo')|raw #}
+
+    {# form.field(model, 'notice_email')|raw #}
+
+    {# form.field(model, 'notice_account')|raw #}
+
+    {# form.field(model, 'referrer_id')|raw #}
+
+    {# form.field(model, 'last_ip')|raw #}
+
+    {# form.field(model, 'last_login')|raw #}
+
+    {# form.field(model, 'registration_source')|raw #}
+
+    {# form.field(model, 'added')|raw #}
+
+    {# form.field(model, 'loyalty_status')|raw #}
+
+    {# form.field(model, 'is_active')|raw #}
+
+    {# form.field(model, 'is_admin')|raw #}
+
+    {# form.field(model, 'bonus_status')|raw #}
+
+    {# form.field(model, 'reg_ip')|raw #}
+
+    {# form.field(model, 'ref_total')|raw #}
+
+    {# form.field(model, 'sum_pending')|raw #}
+
+    {# form.field(model, 'cnt_pending')|raw #}
+
+    {# form.field(model, 'sum_confirmed')|raw #}
+
+    {# form.field(model, 'cnt_confirmed')|raw #}
+
+    {# form.field(model, 'sum_from_ref_pending')|raw #}
+
+    {# form.field(model, 'sum_from_ref_confirmed')|raw #}
+
+    {# form.field(model, 'sum_to_friend_pending')|raw #}
+
+    {# form.field(model, 'sum_to_friend_confirmed')|raw #}
+
+    {# form.field(model, 'sum_foundation')|raw #}
+
+    {# form.field(model, 'sum_withdraw')|raw #}
+
+    {# form.field(model, 'sum_bonus')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

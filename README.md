@@ -6,6 +6,7 @@ SD Yii2 Advanced Project
 1. [Основной сайт (secretdiscounter.ru)](https://secretdiscounter.ru)
 2. [Партнерский сайт (sd.secretdiscounter.ru)](https://sd.secretdiscounter.ru)
 
+
 ## DIRECTORY STRUCTURE
 
 

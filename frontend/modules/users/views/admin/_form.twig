@@ -1,0 +1,71 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="users-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'password').passwordInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'salt').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'birthday').textInput()|raw }}
+
+        {{ form.field(model, 'sex').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'photo').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'notice_email').textInput()|raw }}
+
+        {{ form.field(model, 'notice_account').textInput()|raw }}
+
+        {{ form.field(model, 'referrer_id').textInput()|raw }}
+
+        {{ form.field(model, 'last_ip').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'last_login').textInput()|raw }}
+
+        {{ form.field(model, 'registration_source').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'added').textInput()|raw }}
+
+        {{ form.field(model, 'loyalty_status').textInput()|raw }}
+
+        {{ form.field(model, 'is_active').textInput()|raw }}
+
+        {{ form.field(model, 'is_admin').textInput()|raw }}
+
+        {{ form.field(model, 'bonus_status').textInput()|raw }}
+
+        {{ form.field(model, 'reg_ip').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'ref_total').textInput()|raw }}
+
+        {{ form.field(model, 'sum_pending').textInput()|raw }}
+
+        {{ form.field(model, 'cnt_pending').textInput()|raw }}
+
+        {{ form.field(model, 'sum_confirmed').textInput()|raw }}
+
+        {{ form.field(model, 'cnt_confirmed').textInput()|raw }}
+
+        {{ form.field(model, 'sum_from_ref_pending').textInput()|raw }}
+
+        {{ form.field(model, 'sum_from_ref_confirmed').textInput()|raw }}
+
+        {{ form.field(model, 'sum_to_friend_pending').textInput()|raw }}
+
+        {{ form.field(model, 'sum_to_friend_confirmed').textInput()|raw }}
+
+        {{ form.field(model, 'sum_foundation').textInput()|raw }}
+
+        {{ form.field(model, 'sum_withdraw').textInput()|raw }}
+
+        {{ form.field(model, 'sum_bonus').textInput()|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
