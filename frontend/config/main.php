@@ -53,15 +53,21 @@ return [
           ]
         ]
       ]
-    ]
-    /*
+    ],
     'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
       'rules' => [
+        /*'users/<action>'=>'404',
+        'users/<action>/<action>'=>'404',
+        'users/<action>/<action>/<action>'=>'404',*/
+
+        '<action:(login)>' => 'user/user/<action>',
+
+        [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
+          'class' => 'frontend\components\SdUrlRule',
+        ],
+
       ],
     ],
-    */
   ],
   'modules' => [
     'users' => [

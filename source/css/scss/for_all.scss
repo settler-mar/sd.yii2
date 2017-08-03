@@ -201,6 +201,8 @@ table .status_bg_1 {
     transform: translate3d(0,-90px,0) rotate3d(0,1,0,90deg);
     transition: all 0.15s linear;
     transition-delay: 0s;
+    min-width: 200px;
+    min-height: 70px;
 
     .notify_title{
       padding: 10px;
@@ -288,6 +290,12 @@ table .status_bg_1 {
 }
 .notification_data{
   display:none;
+}
+
+.notify_box.loading{
+  .notify_content{
+    background: url(/images/preloader.gif) no-repeat 50% 50%;
+  }
 }
 
 .show_notifi{

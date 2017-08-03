@@ -9,8 +9,10 @@ $config = [
         'class' => 'yii\caching\FileCache',
     ],
     'urlManager' => [
+      'class' => 'yii\web\UrlManager',
       'enablePrettyUrl' => true,
       'showScriptName' => false,
+      'enableStrictParsing' => true,
       'rules' => [
       ],
     ],

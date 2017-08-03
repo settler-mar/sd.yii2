@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\users\models;
+namespace app\modules\users\models;
 
 use Yii;
 
@@ -131,9 +131,10 @@ class Users extends \yii\db\ActiveRecord
     ], ['id' => $id])->execute();
   }
 
-  public function beforeSave()
+
+  public function beforeSave($insert)
   {
-    if (!parent::beforeSave()) {
+    if (!parent::beforeSave($insert)) {
       return false;
     }
 
