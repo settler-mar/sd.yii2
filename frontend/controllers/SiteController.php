@@ -12,6 +12,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\modules\stores\models\Stores;
 
 /**
  * Site controller
@@ -72,7 +73,19 @@ class SiteController extends Controller
    */
   public function actionIndex()
   {
-    return $this->render('index', ['time' => time()]);
+    $stores = Stores::find()
+        ->orderBy('visit DESC')
+        ->limit(12)
+        ->all();
+    $totalStores = Stores::activeCount();
+
+
+    return $this->render('index', [
+        'time' => time(),
+        'stores' => $stores,
+        'total_all_stores' => $totalStores,
+
+    ]);
   }
 
   /**

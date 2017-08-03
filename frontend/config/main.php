@@ -73,6 +73,9 @@ return [
     'users' => [
       'class' => 'app\modules\users\Module',
     ],
+    'stores' => [
+        'class' => 'frontend\modules\stores\Module',
+    ],
   ],
   'params' => $params,
 ];
