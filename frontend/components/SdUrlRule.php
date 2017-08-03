@@ -17,24 +17,64 @@ class SdUrlRule implements UrlRuleInterface
   {
     //http://blog.neattutorials.com/yii2-routing-urlmanager/
     $pathInfo = $request->getPathInfo();
+    if ($pathInfo == "") {
+      return ["site/index", []];
+    }
 
     $params = [];
     $parameters = explode('/', $pathInfo);
-    $route=[];
+    $route = [];
 
-    if (count($parameters)>1) {
-      $route[]= $parameters[1];
-      $route[]= $parameters[0];
-      if(isset($parameters[2])){
-        $route[]= $parameters[2];
+    //редиректим actions от основного контроллера
+    if ($parameters[0] == 'index') {
+      Yii::$app->getResponse()->redirect('/', 301);
+      return ['', []];
+    }
+    if ($parameters[0] == 'site') {
+      if ($parameters[1] == 'index') {
+        $parameters[1] = '';
       }
-      return [implode('/',$route), []];
-    }else{
-      return true;
+      Yii::$app->getResponse()->redirect('/' . $parameters[1], 301);
+      return ['', []];
+    }
+
+    //проверяем последний параметр на page
+    if(strpos($parameters[count($parameters)-1], 'page-')!==false){
+      $params['page']=substr($parameters[count($parameters)-1],5);
+      unset ($parameters[count($parameters)-1]);
+      if($params['page']==1){
+        Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
+        return ['', []];
+      }
+    }
+
+    //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
+    if(
+      array_key_exists($parameters[0], \Yii::$app->modules)
+    ){
+      array_unshift($parameters,'default');
+    };
+
+
+    if (count($parameters) > 1) {
+      $route[] = $parameters[1];
+      $route[] = $parameters[0];
+      if (isset($parameters[2])) {
+        if($parameters[2]=='index'){
+          unset($parameters[2]);
+          Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
+          return ['', []];
+        }
+        $route[] = $parameters[2];
+      }
+      return [implode('/', $route), $params];
     }
 
 
+    return [implode('/', $parameters), $params];
   }
+
+
   /**
    * Creates a URL according to the given route and parameters.
    * @param \yii\web\UrlManager $manager the URL manager
@@ -44,6 +84,26 @@ class SdUrlRule implements UrlRuleInterface
    */
   public function createUrl($manager, $route, $params)
   {
-     return false;
+
+    $route=explode('/',$route);
+    $route=[$route[1],$route[0]];
+
+    if(isset($params['page'])){
+      if($params['page']!=1) {
+        $route[] = 'page-' . $params['page'];
+      }
+      unset($params['page']);
+    }
+
+    if($route[0]=='default'){
+      unset($route[0]);
+    }
+
+    $url= implode('/',$route);
+
+    if(count($params)>0){
+      $url.='?'.http_build_query($params);
+    }
+    return $url;
   }
 }
