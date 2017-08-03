@@ -220,7 +220,7 @@
                     <ul class="slides">
                         {% for review in top_reviews %}
                         <li>
-                            <div class="avatar" style="background-image: url({{review.photo|replace({ 'http:':'https:'}) }});"></div>
+                            <div class="avatar" style="background-image: url({{review.user.photo|replace({ 'http:':'https:'}) }});"></div>
                             <h2>{{review.text}}</h2>
                             <div class="rating">
                                 {% for i in range(1, review.rating) %}
@@ -234,7 +234,7 @@
                                     {% endfor %}
                                 {% endif %}         
                             </div>
-                            <p class="author">{{review.name}}</p>
+                            <p class="author">{{review.user.name}}</p>
                         </li>
                         {% endfor %}
                     </ul>

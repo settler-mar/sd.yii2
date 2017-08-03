@@ -13,6 +13,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
 
 /**
  * Site controller
@@ -79,11 +80,13 @@ class SiteController extends Controller
         ->all();
     $totalStores = Stores::activeCount();
 
+    $reviews = Reviews::top();
 
     return $this->render('index', [
         'time' => time(),
         'stores' => $stores,
         'total_all_stores' => $totalStores,
+        'top_reviews' => $reviews,
 
     ]);
   }

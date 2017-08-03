@@ -76,6 +76,9 @@ return [
     'stores' => [
         'class' => 'frontend\modules\stores\Module',
     ],
+    'reviews' => [
+      'class' => 'frontend\modules\reviews\Module',
+    ],
   ],
   'params' => $params,
 ];
