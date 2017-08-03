@@ -423,8 +423,8 @@ $(function() {
             events: function() {
                 var self = this,
                       popups = {
-                            'a[href=#login]' : $("#top").find('.popup-login').html(),
-                            'a[href=#registration]' : $("#top").find('.popup-login').html(),
+                            //'a[href=#login]' : $("#top").find('.popup-login').html(),
+                            //'a[href=#registration]' : $("#top").find('.popup-login').html(),
                             'a[href=#givefeedback]' :  $("#top").find('.popup-givefeedback').html(),
                             'a[href=#reviewstore]' :  $("#top").find('.popup-givefeedback').html(),
                             'a[href=#cert]' :  $("#top").find('.popup-cert').html(),

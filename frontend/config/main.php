@@ -16,6 +16,14 @@ return [
       'csrfParam' => '_csrf-frontend',
     ],
     'user' => [
+      'identityClass' => 'app\modules\user\models\User',
+      'enableAutoLogin' => true,
+      //'loginUrl' => ['/'],
+      'on afterLogin' => function($event) {
+        frontend\modules\users\models\Users::afterLogin($event->identity->id);
+      }
+    ],
+    'user' => [
       'identityClass' => 'common\models\User',
       'enableAutoLogin' => true,
       'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
@@ -45,15 +53,26 @@ return [
           ]
         ]
       ]
-    ]
-    /*
+    ],
     'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
       'rules' => [
+        /*'users/<action>'=>'404',
+        'users/<action>/<action>'=>'404',
+        'users/<action>/<action>/<action>'=>'404',*/
+
+        '<action:(login)>' => 'user/user/<action>',
+
+        [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
+          'class' => 'frontend\components\SdUrlRule',
+        ],
+
       ],
     ],
-    */
+  ],
+  'modules' => [
+    'users' => [
+      'class' => 'app\modules\users\Module',
+    ],
   ],
   'params' => $params,
 ];

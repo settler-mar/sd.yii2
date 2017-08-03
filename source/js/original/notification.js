@@ -60,9 +60,12 @@ var notification = (function() {
     box_html+=data.question;
     box_html+='</div>';
 
-    box_html+='<div class="notify_control">';
-    box_html+='<div class="notify_btn_yes">'+data.buttonYes+'</div>';
-    box_html+='</div>';
+    if(data.buttonYes||data.buttonNo) {
+      box_html += '<div class="notify_control">';
+      if (data.buttonYes)box_html += '<div class="notify_btn_yes">' + data.buttonYes + '</div>';
+      if (data.buttonNo)box_html += '<div class="notify_btn_no">' + data.buttonNo + '</div>';
+      box_html += '</div>';
+    };
 
     box_html+='</div>';
     notification_box.html(box_html);
@@ -89,10 +92,12 @@ var notification = (function() {
     box_html+=data.question;
     box_html+='</div>';
 
-    box_html+='<div class="notify_control">';
-    box_html+='<div class="notify_btn_yes">'+data.buttonYes+'</div>';
-    box_html+='<div class="notify_btn_no">'+data.buttonNo+'</div>';
-    box_html+='</div>';
+    if(data.buttonYes||data.buttonNo) {
+      box_html += '<div class="notify_control">';
+      if (data.buttonYes)box_html += '<div class="notify_btn_yes">' + data.buttonYes + '</div>';
+      if (data.buttonNo)box_html += '<div class="notify_btn_no">' + data.buttonNo + '</div>';
+      box_html += '</div>';
+    }
 
     box_html+='</div>';
     notification_box.html(box_html);
@@ -126,4 +131,20 @@ $('[ref=popup]').on('click',function (e){
 
   data.question=el.html();
   notification.alert(data);
+});
+
+$('a[href=#login],a[href=#registration]').on('click',function(e){
+  e.preventDefault();
+  href=this.href.split('#');
+  href=href[href.length-1];
+
+  data={
+    buttonYes:false,
+    notyfy_class:"notify_white loading",
+    question:''
+  };
+  notification.alert(data);
+  $.get('/'+href,function(data){
+
+  })
 });
