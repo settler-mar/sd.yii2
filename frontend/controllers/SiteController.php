@@ -87,7 +87,6 @@ class SiteController extends Controller
         'stores' => $stores,
         'total_all_stores' => $totalStores,
         'top_reviews' => $reviews,
-
     ]);
   }
 
