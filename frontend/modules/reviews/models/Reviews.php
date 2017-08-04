@@ -69,14 +69,16 @@ class Reviews extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array
      */
     public static function top()
     {
-        return self::find()
-            ->select(['cw_users_reviews.*', 'cw_users.name', 'cw_users.photo'])
-            ->innerJoinWith('user')
-            ->where(['cw_users_reviews.is_active' => 1, 'is_top' => 1, 'cw_users.is_active' => 1])
-            ->all();
+        $query=new \Yii\db\Query();
+
+        $query->addSelect(['r.*', 'u.name', 'u.photo'])
+            ->from([self::tableName().' r'])
+            ->innerJoin(Users::tableName().' u', 'r.user_id = u.uid')
+            ->where(['r.is_active' => 1, 'is_top' => 1, 'u.is_active' => 1]);
+        return $query->all();
     }
 }
