@@ -1,0 +1,26 @@
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current metadata">
+        <div class="row">
+            {% if metadata %}
+            <div class="col-md-12">
+                <form method="post" action="/admin/metadata/edit/{{metadata.uid}}">
+                <p class="title first">Основная информация</p>
+                <p><span>UID:</span> {{metadata.uid}}</p>
+                <p><span>Страница:</span> <br><input type="text" name="page" value="{{metadata.page}}"></p>  
+                <p><span>Title:</span> <br><input type="text" name="title" value="{{metadata.title}}"></p> 
+                <p><span>Description:</span> <br> <textarea name="description">{{metadata.description}}</textarea></p>   
+                <p><span>Keywords:</span> <br><input type="text" name="keywords" value="{{metadata.keywords}}"></p> 
+                <p><span>H1:</span> <br><input type="text" name="h1" value="{{metadata.h1}}"></p>
+                <p><span>Content:</span> <br><textarea name="content" class="visual_editor">{{metadata.content}}</textarea></p>
+                <input type="hidden" name="uid" value="{{metadata.uid}}">
+                <button type="submit">Изменить</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <div class="not-found">Метаданные не найдены.</div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
