@@ -60,9 +60,9 @@ return [
         'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login)>' => 'user/user/<action>',
+        '<action:(login)>' => 'users/default/<action>',
 
-        [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
+        [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
         ],
 

@@ -48,6 +48,18 @@ class SdUrlRule implements UrlRuleInterface
       }
     }
 
+    //проверяем последний параметр на store
+    if(strpos($parameters[count($parameters)-1], 'store:')!==false){
+      $params['store']=substr($parameters[count($parameters)-1],6);
+      unset ($parameters[count($parameters)-1]);
+    }
+
+    //проверяем последний параметр на category
+    if(strpos($parameters[count($parameters)-1], 'category:')!==false){
+      $params['category']=substr($parameters[count($parameters)-1],9);
+      unset ($parameters[count($parameters)-1]);
+    }
+
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
     if(
       array_key_exists($parameters[0], \Yii::$app->modules)
@@ -93,6 +105,16 @@ class SdUrlRule implements UrlRuleInterface
         $route[] = 'page-' . $params['page'];
       }
       unset($params['page']);
+    }
+
+    if(isset($params['store'])){
+      $route[] = 'store:' . $params['store'];
+      unset($params['store']);
+    }
+
+    if(isset($params['category'])){
+      $route[] = 'category:' . $params['category'];
+      unset($params['category']);
     }
 
     if($route[0]=='default'){

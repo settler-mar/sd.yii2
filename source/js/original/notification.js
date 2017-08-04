@@ -133,7 +133,7 @@ $('[ref=popup]').on('click',function (e){
   notification.alert(data);
 });
 
-$('a[href=#login],a[href=#registration]').on('click',function(e){
+$('body').on('click','a[href=#login],a[href=#registration]',function(e){
   e.preventDefault();
   href=this.href.split('#');
   href=href[href.length-1];
@@ -145,6 +145,7 @@ $('a[href=#login],a[href=#registration]').on('click',function(e){
   };
   notification.alert(data);
   $.get('/'+href,function(data){
-
+    $('.notify_box').removeClass('loading');
+    $('.notify_box .notify_content').html(data);
   })
 });

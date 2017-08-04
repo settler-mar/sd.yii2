@@ -2,7 +2,9 @@
 
 namespace app\modules\users\controllers;
 
+use \Yii;
 use yii\web\Controller;
+use app\modules\users\models\LoginForm;
 
 class DefaultController extends Controller
 {
@@ -26,6 +28,7 @@ class DefaultController extends Controller
     }
     return $this->render('login', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
+      'isAjax'=>true
     ]);
   }
 

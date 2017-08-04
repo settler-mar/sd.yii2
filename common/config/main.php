@@ -53,6 +53,7 @@ $config = [
           'globals' => [
             'html' => '\yii\helpers\Html',
             'url' => 'yii\helpers\Url',
+            'ActiveForm'=>'yii\bootstrap\ActiveForm',
           ],
           'functions' => $twigFunction,
           'uses' => ['yii\bootstrap'],

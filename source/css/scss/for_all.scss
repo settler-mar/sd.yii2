@@ -195,6 +195,10 @@ table .status_bg_1 {
   animation-fill-mode: both;
   opacity: 0;
 
+  .form-group{
+    margin-bottom: 0;
+  }
+
   .notify_box{
     margin: auto;
     background: #fff;

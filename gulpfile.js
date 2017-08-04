@@ -61,10 +61,10 @@ gulp.task('cssnotemp',  function() {
 });
 
 gulp.task('jscommon', compileJs([
-        paths.source.js+'/external/jquery-1.11.2.min.js',
+        //paths.source.js+'/external/jquery-1.11.2.min.js',
         paths.source.js+'/external/retina.js',
         paths.source.js+'/external/jquery.fancybox.pack.js',
-        paths.source.js+'/external/bootstrap.min.js',
+        //paths.source.js+'/external/bootstrap.min.js',
         paths.source.js+'/external/scripts.js',
         paths.source.js+'/external/jquery.flexslider-min.js',
         paths.source.js+'/external/classie.js',
@@ -83,7 +83,7 @@ gulp.task('jscommon', compileJs([
 );
 
 gulp.task('jsaccount', compileJs([
-        paths.source.js+'/external/account/jquery-2.1.4.js',
+        //paths.source.js+'/external/account/jquery-2.1.4.js',
         paths.source.js+'/external/account/jquery.menu-aim.js',
         paths.source.js+'/external/account/circles.min.js',
         paths.source.js+'/external/account/datepicker.js',
@@ -99,7 +99,7 @@ gulp.task('jsaccount', compileJs([
 );
 
 gulp.task('jsadmin', compileJs([
-    paths.source.js+'/external/account/jquery-2.1.4.js',
+    //paths.source.js+'/external/account/jquery-2.1.4.js',
     paths.source.js+'/external/account/jquery.menu-aim.js',
     paths.source.js+'/external/account/circles.min.js',
     paths.source.js+'/external/account/datepicker.js',
