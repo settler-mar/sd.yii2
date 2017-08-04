@@ -74,10 +74,7 @@ class SiteController extends Controller
    */
   public function actionIndex()
   {
-    $stores = Stores::find()
-        ->orderBy('visit DESC')
-        ->limit(12)
-        ->all();
+    $stores = Stores::top12();
     $totalStores = Stores::activeCount();
 
     $reviews = Reviews::top();

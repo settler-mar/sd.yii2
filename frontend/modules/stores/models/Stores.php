@@ -79,12 +79,34 @@ class Stores extends \yii\db\ActiveRecord
             'percent' => 'Percent',
         ];
     }
-    
+
+    /**
+     * @return mixed
+     */
     public static function activeCount()
     {
-        return self::find()
-            ->where(['not in', 'is_active', [-1]])
-            ->count();
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('total_all_stores', function () {
+            return self::find()
+                ->where(['not in', 'is_active', [-1]])
+                ->count();
+        });
+        return $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function top12()
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('top_12_stores', function () {
+            return self::find()
+                ->orderBy('visit DESC')
+                ->limit(12)
+                ->all();
+        });
+        return $data;
     }
     
 }

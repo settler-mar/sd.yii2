@@ -6,7 +6,9 @@ $config = [
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
     'cache' => [
-        'class' => 'yii\caching\FileCache',
+        //'class' => 'yii\caching\FileCache',
+        'class'=>'yii\caching\DummyCache',
+        'defaultDuration' => 86400,
     ],
     'urlManager' => [
       'class' => 'yii\web\UrlManager',
