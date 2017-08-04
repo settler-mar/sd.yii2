@@ -3,6 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use Yii;
+use frontend\modules\category_stores\models\CategoryStores;
 
 /**
  * This is the model class for table "cw_stores".
@@ -78,6 +79,16 @@ class Stores extends \yii\db\ActiveRecord
             'active_cpa' => 'Active Cpa',
             'percent' => 'Percent',
         ];
+    }
+
+    /**
+     * категории магазина
+     * @return $this
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
+            ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
     }
 
     /**

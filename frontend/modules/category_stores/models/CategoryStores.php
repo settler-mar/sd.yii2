@@ -57,6 +57,16 @@ class CategoryStores extends \yii\db\ActiveRecord
     }
 
     /**
+     * магазины категории
+     * @return $this
+     */
+    public function getStores()
+    {
+        return $this->hasMany(Stores::className(), ['uid' => 'store_id'])
+            ->viaTable('cw_stores_to_categories', ['category_id' => 'uid']);
+    }
+
+    /**
      * @return mixed
      */
     public static function activeList()
