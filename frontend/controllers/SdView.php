@@ -18,9 +18,9 @@ class SdView extends View
     if (!parent::beforeRender($viewFile, $params)){
       return false;
     };
-      
-    if (is_callable([Yii::$app->controller, 'globals'])) {
-        Yii::$app->controller->globals();
+
+    if (method_exists(Yii::$app->controller, 'globals')) {
+         Yii::$app->controller->globals();
     }
 
     /*
