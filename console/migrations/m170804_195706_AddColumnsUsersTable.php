@@ -6,18 +6,18 @@ class m170804_195706_AddColumnsUsersTable extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('cw_users', 'action_id', $this->smallInteger(). ' DEFAULT 0');
-        $this->addColumn('cw_users', 'contact_name', $this->string());
-        $this->addColumn('cw_users', 'contact_phone', $this->string());
-        $this->addColumn('cw_users', 'contact_email', $this->string());
+        $this->addColumn('cw_stores', 'action_id', $this->smallInteger(). ' DEFAULT 0');
+        $this->addColumn('cw_stores', 'contact_name', $this->string());
+        $this->addColumn('cw_stores', 'contact_phone', $this->string());
+        $this->addColumn('cw_stores', 'contact_email', $this->string());
     }
 
     public function safeDown()
     {
-        $this->dropColumn('cw_users', 'action_id');
-        $this->dropColumn('cw_users', 'contact_name');
-        $this->dropColumn('cw_users', 'contact_phone');
-        $this->dropColumn('cw_users', 'contact_email');
+        $this->dropColumn('cw_stores', 'action_id');
+        $this->dropColumn('cw_stores', 'contact_name');
+        $this->dropColumn('cw_stores', 'contact_phone');
+        $this->dropColumn('cw_stores', 'contact_email');
     }
 
     /*

@@ -44,9 +44,9 @@ class Stores extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'visit', 'hold_time'], 'required'],
-            [['alias', 'description', 'conditions', 'short_description'], 'string'],
+            [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
             [['added'], 'safe'],
-            [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent'], 'integer'],
+            [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
             [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
             [['currency'], 'string', 'max' => 3],
             [['displayed_cashback'], 'string', 'max' => 30],
@@ -78,6 +78,10 @@ class Stores extends \yii\db\ActiveRecord
             'local_name' => 'Local Name',
             'active_cpa' => 'Active Cpa',
             'percent' => 'Percent',
+            'action_id' => 'Action ID',
+            'contact_name' => 'Contact Name',
+            'contact_phone' => 'Contact Phone',
+            'contact_email' => 'Contact Email',
         ];
     }
 
