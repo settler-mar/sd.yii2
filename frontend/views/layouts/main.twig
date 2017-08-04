@@ -116,11 +116,11 @@
                                 <input type="text" name="query" id="search" value="" placeholder="Поиск магазинов">
                                 <span class="fa fa-search"></span>
                             </form>
-                            {% if categories_tree %}
+                            {% if app.controller.categories_tree %}
                                 <div class="submenu">
                                     <span class="fa fa-caret-up"></span>
                                     <div class="tree">
-                                        {{categories_tree|raw}}
+                                        {{app.controller.categories_tree|raw}}
                                     </div>
                                 </div>
                             {% endif %}

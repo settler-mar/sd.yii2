@@ -18,7 +18,7 @@ use frontend\modules\reviews\models\Reviews;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends SdController
 {
   /**
    * @inheritdoc
