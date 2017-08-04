@@ -13,8 +13,10 @@ class SdController extends Controller
 {
     public $categories_tree;
     
-    public function globals()
+    public function __construct($id, $module, $config = [])
     {
+        parent::__construct($id, $module, $config = []);
+
         $this->categories_tree = CategoryStores::tree();
     }
 

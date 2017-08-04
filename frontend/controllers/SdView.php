@@ -19,10 +19,6 @@ class SdView extends View
       return false;
     };
 
-    if (method_exists(Yii::$app->controller, 'globals')) {
-         Yii::$app->controller->globals();
-    }
-
     /*
     $url=Url::current();
     $script_version=Yii::$app->params['scriptVersion'];

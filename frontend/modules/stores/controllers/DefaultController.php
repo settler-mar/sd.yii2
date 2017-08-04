@@ -2,9 +2,10 @@
 
 namespace frontend\modules\stores\controllers;
 
-use yii\web\Controller;
+//use yii\web\Controller;
+use frontend\controllers\SdController;
 
-class DefaultController extends Controller
+class DefaultController extends SdController
 {
     public function actionIndex()
     {

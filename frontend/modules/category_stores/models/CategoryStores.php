@@ -4,7 +4,7 @@ namespace frontend\modules\category_stores\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
-use Yii\db\Query;
+
 
 /**
  * This is the model class for table "cw_categories_stores".
@@ -73,16 +73,17 @@ class CategoryStores extends \yii\db\ActiveRecord
     {
         $cache = Yii::$app->cache;
         $data = $cache->getOrSet('categories_stores', function () {
-            $query=new Query();
-            $query->addSelect(['ccs.*', 'count(cstc.category_id) as count'])
-                ->from([self::tableName().' ccs'])
+            $categories = self::find()
+                ->select(['ccs.*', 'count(cstc.category_id) as count'])
+                ->from([self::tableName(). ' ccs'])
                 ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
                 ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
                 ->where(['cws.is_active' => 1, 'ccs.is_active' => 1])
                 ->groupBy(['ccs.name'])
-                ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC']);
-
-            return $query->all();
+                ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC'])
+                ->asArray()
+                ->all();
+            return $categories;
         });
         return $data;
     }
