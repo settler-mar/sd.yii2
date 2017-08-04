@@ -6,7 +6,6 @@ use Yii;
 
 /**
  * This is the model class for table "cw_users".
- *
  * @property integer $uid
  * @property string $email
  * @property string $name
@@ -58,9 +57,9 @@ class Users extends \yii\db\ActiveRecord
     return [
       [['email', 'name', '!password', 'salt', 'birthday', 'sex', 'referrer_id', 'last_ip', 'last_login', 'added'], 'required'],
       [['birthday', 'last_login', 'added'], 'safe'],
-      [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
+      [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed', 'action_id'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
-      [['email', 'name', '!password', 'salt', 'registration_source'], 'string', 'max' => 255],
+      [['email', 'name', '!password', 'salt', 'registration_source', 'contact_name', 'contact_phone', 'contact_email'], 'string', 'max' => 255],
       [['sex'], 'string', 'max' => 1],
       [['last_ip'], 'string', 'max' => 100],
       [['reg_ip'], 'string', 'max' => 20],
@@ -111,6 +110,10 @@ class Users extends \yii\db\ActiveRecord
       'sum_foundation' => 'Sum Foundation',
       'sum_withdraw' => 'Sum Withdraw',
       'sum_bonus' => 'Sum Bonus',
+      'action_id' => 'Action ID',
+      'contact_name' => 'Contact Name',
+      'contact_phone' => 'Contact Phone',
+      'contact_email' => 'Contact Email',
     ];
   }
 
