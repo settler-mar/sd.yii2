@@ -73,6 +73,9 @@ return [
     'users' => [
       'class' => 'app\modules\users\Module',
     ],
+    'meta' => [
+      'class' => 'app\modules\meta\Module',
+    ],
   ],
   'params' => $params,
 ];
