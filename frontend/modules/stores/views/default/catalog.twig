@@ -1,0 +1,126 @@
+{% include 'parts/slider.twig' %}
+
+<section class="breadcrumbs catalog shops breadcrumbs-black">
+    <div class="container">
+            <div class="row">
+            <div class="col-md-12">
+                <div class="navigate">
+                    {{breadcrumbs|raw}}
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+
+<!--краткая информация категории-->
+{% if current_category.short_description %}
+    <section class="store-information short-description">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">{{current_category.name}}</h3>
+                </div>
+                <div class="col-md-12 short-description__description less">
+                    <div class="description">
+                        {{current_category.short_description|raw}}
+                    </div>
+                </div>
+                <div >
+                    <div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
+                    <div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+
+<!--поле контент из метатегов только для категории-->
+{% if content and current_category and page == 1 %}
+<section class="store-information short-description">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 short-description__description">
+                <div class="description">
+                    {{content|raw}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="divide shops section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+              <span class="cathead">Категории</span>
+            </div>
+            <div class="col-sm-12 col-md-8">
+                <div class="category-title-wrapper">
+                    <h1 class="page_title">
+                        {% if h1 %}
+                            <!--h1 из базы-->
+                            {{h1|raw}}
+                        {% else %}
+                            <!--если нет, то -->
+                            {% if current_category.name != '' %}
+                                {{current_category.name}}: магазины с кэшбэком
+                            {% else %}
+                            Лучшие магазины с кэшбэком
+                                {% endif %}
+                            <span>({{total_v}})</span>
+                        {% endif%}
+                    </h1>
+                    <ul class="sort-menu">
+                      <li class="title">Сортировать по:</li>
+                        {% for sortLink in sortlinks%}
+                            <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="sort-menu-mobile">
+                        {% for sortLink in sortlinks%}
+                        <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <p class="view-items">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</p>
+                </div>
+                {% include 'parts/dropdown-limit-catalog.twig' %}
+
+            </div>
+            <div class="col-md-4">
+                {% if categories_tree %}
+                <div class="left-categories">
+                    <div class="tree-cat">
+                    {{categories_tree|raw}}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8 shops-list">
+                {% if stores|length > 0 %}
+                    {% for store in stores %}
+                        <div class="col-sm-3 col-md-3">
+                            {% include 'parts/shop.html' %}
+                        </div>
+                    {% endfor %}
+
+                    {% if current_category.down_description %}
+                        <div class="col-md-12 down-description">
+                            {{current_category.down_description|raw}}
+                        </div>
+                    {% endif %}
+                    <div class="col-md-12 shops-pagination">
+                        {% include 'parts/pagination.html' %}
+                    </div>
+                {% else %}
+                    Ничего не найдено.
+                {% endif %}
+                {% if content and page==1%}
+                    <div class="col-md-12" style="margin-top: -20px;">
+                        {{ content | raw}}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
