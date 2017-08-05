@@ -74,7 +74,7 @@ class CategoryStores extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $data = $cache->getOrSet('categories_stores', function () {
             $categories = self::find()
-                ->select(['ccs.*', 'count(cstc.category_id) as count'])
+                ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'count(cstc.category_id) as count'])
                 ->from([self::tableName(). ' ccs'])
                 ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
                 ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
