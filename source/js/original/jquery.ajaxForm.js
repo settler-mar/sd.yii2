@@ -4,13 +4,31 @@ function ajaxForm(els) {
     error_class: '.has-error',
   };
 
+  function onPost(post){
+    var data=this;
+    form=data.form;
+    wrap=data.wrap;
+    if(post.render){
+      post.notyfy_class="notify_white";
+      notification.alert(post);
+    }else{
+      wrap.removeClass('loading');
+      wrap.html(post.html);
+      ajaxForm(wrap);
+    }
+  }
+
   function onSubmit(e){
     e.preventDefault();
     var data=this;
     form=data.form;
+    wrap=data.wrap;
 
-    form.yiiActiveForm('validate');
-    isValid=(form.find(data.param.error_class).length==0)
+    if(form.yiiActiveForm){
+      form.yiiActiveForm('validate');
+    };
+
+    isValid=(form.find(data.param.error_class).length==0);
 
     if(!isValid){
       return false;
@@ -26,19 +44,10 @@ function ajaxForm(els) {
     if(!form.serializeObject)addSRO();
 
     post=form.serializeObject();
-    $('.notify_box').addClass('loading');
-    $('.notify_box .notify_content').html('');
+    form.addClass('loading');
+    form.html('');
 
-    $.post(data.url,post,function(data){
-      if(data.render){
-        data.notyfy_class="notify_white";
-        notification.alert(data);
-      }else{
-        $('.notify_box').removeClass('loading');
-        $('.notify_box .notify_content').html(data.html);
-        ajaxForm($('.notify_box .ajax_form'));
-      }
-    },'json');
+    $.post(data.url,post,onPost.bind(data),'json');
 
     return false;
   }
@@ -48,10 +57,12 @@ function ajaxForm(els) {
     .removeAttr('required');
 
   for(var i=0;i<els.length;i++){
-    form=els.eq(i);
+    wrap=els.eq(i);
+    form=wrap.find('form');
     data={
       form:form,
-      param:defaults
+      param:defaults,
+      wrap:wrap
     };
     data.url=form.attr('action') || location.href;
     data.method= form.attr('method') || 'post';

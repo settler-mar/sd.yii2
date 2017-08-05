@@ -32,7 +32,7 @@ class Users extends ActiveRecord implements IdentityInterface
   public function behaviors()
   {
     return [
-      TimestampBehavior::className(),
+
     ];
   }
 
@@ -42,7 +42,7 @@ class Users extends ActiveRecord implements IdentityInterface
   public function rules()
   {
     return [
-      [['email', 'name', '!password', 'salt', 'birthday', 'sex', 'referrer_id', 'last_ip', 'last_login', 'added'], 'required'],
+      [['email', 'name',  'added'], 'required'],
       [['birthday', 'last_login', 'added'], 'safe'],
       [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
@@ -126,18 +126,26 @@ class Users extends ActiveRecord implements IdentityInterface
   }
 
 
-  public function beforeSave($insert)
+  public function beforeValidate()
   {
-    if (!parent::beforeSave($insert)) {
+    if (!parent::beforeValidate()) {
       return false;
     }
 
     if ($this->isNewRecord) {
+      if(!$this->name ||strlen($this->name)<1){
+        $this->name=explode('@',$this->email);
+        $this->name=$this->name[0];
+      }
+
       $this->reg_ip = $_SERVER["REMOTE_ADDR"];
-      $this->reg_ip = $_SERVER["added"];
+      $this->referrer_id =  Yii::$app->session->get('referrer_id');
+      $this->added = date('Y-m-d H:i:s');
     }
     return true;
+
   }
+
 
   /**
    * @param bool $insert
@@ -303,7 +311,7 @@ class Users extends ActiveRecord implements IdentityInterface
    */
   public function setPassword($password)
   {
-    $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    $this->password = Yii::$app->security->generatePasswordHash($password);
   }
 
   /**

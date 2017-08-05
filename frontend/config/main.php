@@ -16,7 +16,7 @@ return [
       'csrfParam' => '_csrf-frontend',
     ],
     'user' => [
-      'identityClass' => 'app\modules\user\models\User',
+      'identityClass' => 'app\modules\users\models\Users',
       'enableAutoLogin' => true,
       //'loginUrl' => ['/'],
       'identityCookie' => [
@@ -59,7 +59,7 @@ return [
         'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout)>' => 'users/default/<action>',
+        '<action:(login|logout|registration|ulogin)>' => 'users/default/<action>',
 
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',

@@ -364,3 +364,11 @@ table .status_bg_1 {
     text-align: center;
   }
 }
+
+
+form.loading{
+  background: url(/images/preloader.gif) no-repeat 50% 50%;
+  min-height: 60px;
+  min-width: 60px;
+}
+

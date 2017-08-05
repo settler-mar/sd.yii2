@@ -12,7 +12,7 @@ $('body').on('click','a[href=#login],a[href=#registration],#password-recovery',f
   $.get('/'+href,function(data){
     $('.notify_box').removeClass('loading');
     $('.notify_box .notify_content').html(data.html);
-    ajaxForm($('.notify_box .ajax_form'));
+    ajaxForm($('.notify_box .notify_content'));
   },'json')
 });
 

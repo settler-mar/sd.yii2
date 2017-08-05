@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use app\modules\users\models\RegistrationForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -79,11 +80,13 @@ class SiteController extends SdController
 
     $reviews = Reviews::top();
 
+    $reg_form=new RegistrationForm();
+
     return $this->render('index', [
         'time' => time(),
         'stores' => $stores,
         'total_all_stores' => $totalStores,
-        'top_reviews' => $reviews,
+        'top_reviews' => $reviews
     ]);
   }
 

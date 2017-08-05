@@ -5,10 +5,15 @@ namespace app\modules\users\controllers;
 use \Yii;
 use yii\web\Controller;
 use app\modules\users\models\LoginForm;
+use app\modules\users\models\RegistrationForm;
 
 class DefaultController extends Controller
 {
 
+  public function beforeAction($action) {
+    $this->enableCsrfValidation = ($action->id !== "ulogin");
+    return parent::beforeAction($action);
+  }
   /**
    * Login action.
    *
@@ -22,7 +27,7 @@ class DefaultController extends Controller
 
     $request=Yii::$app->request;
     if(!$request->isAjax){
-      return false;
+      return $this->goHome();
     }
 
     $model = new LoginForm();
@@ -30,7 +35,7 @@ class DefaultController extends Controller
     if($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
 
-        $data['html']='<script>location.href="/account"</script>';
+        $data['html']='Успешная авторизация.<script>location.href="/account"</script>';
         return json_encode($data);
       }
     }
@@ -54,6 +59,16 @@ class DefaultController extends Controller
     return $this->goHome();
   }
 
+  public function actionUlogin(){
+    $s = file_get_contents('http://ulogin.ru/token.php?token=' . $_POST['token'] . '&host=' . $_SERVER['HTTP_HOST']);
+    $user = json_decode($s, true);
+    ddd($user);
+    //$user['network'] - соц. сеть, через которую авторизовался пользователь
+    //$user['identity'] - уникальная строка определяющая конкретного пользователя соц. сети
+    //$user['first_name'] - имя пользователя
+    //$user['last_name'] - фамилия пользователя
+
+  }
   /**
    * Creates a new User model.
    * If creation is successful, the browser will be redirected to the 'view' page.
@@ -61,21 +76,42 @@ class DefaultController extends Controller
    */
   public function actionRegistration()
   {
-    $model = new RegistrationForm();
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      //обработка поступивших данных
-      Yii::$app
-        ->getSession()
-        ->setFlash(
-          'signup-success',
-          'Link to the registration confirmation sent to the Email.'
-        );
-      //return $this->redirect(['view', 'id' => 'user']);
+    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+      return $this->goHome();
     }
-    //выводим стндартную форму
-    return $this->render('registration.jade', [
-      'model' => $model,
-    ]);
+
+    $request=Yii::$app->request;
+    if(!$request->isAjax){
+      return $this->goHome();
+    }
+
+    $model = new RegistrationForm();
+
+    if($request->isPost) {
+      if ($model->load($request->post()) && $model->signup()) {   // уже логинимся или только что зашли?
+
+        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="/account/?new=1"</script>';
+        return json_encode($data);
+      }
+    }
+
+    $isIndex=$request->get('index');
+    if($isIndex){
+      $data['html']= $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+        'model' => $model
+      ]);
+      if($isIndex==1){
+        return $data['html'];
+      }else{
+        return json_encode($data);
+      }
+    }else {
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+        'model' => $model,
+        'isAjax' => true
+      ]);
+      return json_encode($data);
+    }
   }
   /**
    * Сброс пароля

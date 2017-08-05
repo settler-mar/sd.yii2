@@ -6,6 +6,7 @@ return  [
       '/js/jquery-1.11.2.min.js',
       '/js/scripts{{script_version}}.js',
       '/js/external/jquery.mCustomScrollbar.concat.min.js',
+      '//ulogin.ru/js/ulogin.js',
     ],
     'css'=>[
          '/css/external/import.fonts.css',
