@@ -78,7 +78,9 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/external/jquery.autocomplete.js',
         paths.source.js+'/original/main.js',
         paths.source.js+'/original/notification.js',
-        paths.source.js+'/original/for_all.js'
+        paths.source.js+'/original/for_all.js',
+        paths.source.js+'/original/jquery.ajaxForm.js',
+        paths.source.js+'/original/my.js'
     ], '')
 );
 
@@ -138,7 +140,7 @@ function compileCss (source, dest) {
 }
 
 function compileJs(sources, dest) {
-    console.log(module + paths.app.js + dest);
+    //console.log(paths.app.js + dest);
     gulp.src(sources)
       .pipe(sourcemap.init())
       .pipe(plugins.concat('scripts.js'))
@@ -167,18 +169,18 @@ gulp.task('server',['css','js'], function() {
 
 gulp.task('clear', function(){
    var files = [
-       paths.frontend + paths.app.css+'/account/styles*.css',
-       paths.backend + paths.app.css+'/styles*.css',
-       paths.frontend + paths.app.css+'/notemp/styles*.css',
-       paths.frontend + paths.app.css+'/styles*.css',
-       paths.frontend + paths.app.js+'/account/script*.js',
-       paths.backend + paths.app.js+'/script*.js',
-       paths.frontend + paths.app.js+'/script*.js'
+       paths.app.css+'/account/styles*.css',
+       paths.app.css+'/styles*.css',
+       paths.app.css+'/notemp/styles*.css',
+       paths.app.css+'/admin/styles*.css',
+       paths.app.js+'/account/script*.js',
+       paths.app.js+'/script*.js',
+       paths.app.js+'/admin/script*.js'
    ];
     files.forEach(function(file){
         console.log(file);
-        gulp.src(file, { read: false }) // much faster
-            .pipe(rimraf({force: true}));
+        gulp.src(file, { read: true }) // much faster
+            .pipe(rimraf({force: false}));
     });
 });
 

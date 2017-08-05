@@ -3,6 +3,7 @@ $twigFunction=require (dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.ph
 $twigFunction['translate']='\Yii::t';
 
 $config = [
+  'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
     'cache' => [
@@ -26,12 +27,12 @@ $config = [
     ],
     'assetManager' => [
       'bundles' => [
-        'yii\bootstrap\BootstrapAsset' => false,
-        'yii\validators\ValidationAsset' => false,
-        'yii\web\YiiAsset' => false,
-        'yii\widgets\ActiveFormAsset' => false,
-        'yii\bootstrap\BootstrapPluginAsset' => false,
-        'yii\web\JqueryAsset' => false,
+        //'yii\bootstrap\BootstrapAsset' => true,
+        //'yii\validators\ValidationAsset' => false,
+        //'yii\web\YiiAsset' => false,
+        //'yii\widgets\ActiveFormAsset' => false,
+        //'yii\bootstrap\BootstrapPluginAsset' => false,
+        //'yii\web\JqueryAsset' => false,
         //'yii\authclient\widgets\AuthChoiceAsset' => false, //authchoice.js
         //'yii\authclient\widgets\AuthChoiceStyleAsset' => false, //authchoice.css
       ],

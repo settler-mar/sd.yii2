@@ -19,14 +19,13 @@ return [
       'identityClass' => 'app\modules\user\models\User',
       'enableAutoLogin' => true,
       //'loginUrl' => ['/'],
+      'identityCookie' => [
+        'name' => '_identity-frontend',
+        'httpOnly' => true
+      ],
       'on afterLogin' => function($event) {
-        frontend\modules\users\models\Users::afterLogin($event->identity->id);
+        app\modules\users\models\Users::afterLogin($event->identity->id);
       }
-    ],
-    'user' => [
-      'identityClass' => 'common\models\User',
-      'enableAutoLogin' => true,
-      'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
     ],
     'session' => [
       // this is the name of the session cookie used for login on the frontend
@@ -60,7 +59,7 @@ return [
         'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login)>' => 'users/default/<action>',
+        '<action:(login|logout)>' => 'users/default/<action>',
 
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',

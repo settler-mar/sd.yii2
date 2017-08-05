@@ -4,7 +4,6 @@ namespace frontend\assets;
 
 use yii\web\AssetBundle;
 use Yii;
-use yii\web\View;
 use yii\helpers\Url;
 
 /**

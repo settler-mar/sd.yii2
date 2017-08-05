@@ -19,17 +19,28 @@ class DefaultController extends Controller
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
       return $this->goHome();
     }
-    $model = new LoginForm();
-    if ($model->load(Yii::$app->request->post()) && $model->login()) {   // уже логинимся или только что зашли?
-      $user = User::findByUsername($model->username);
-      //return var_dump($user);
-      Yii::$app->user->login($user);
-      return $this->redirect(['index']);   // успешно залогинилтсь с помощью имени и пароля
+
+    $request=Yii::$app->request;
+    if(!$request->isAjax){
+      return false;
     }
-    return $this->render('login', [      // рисуем форму для ввода имени и пароля
+
+    $model = new LoginForm();
+
+    if($request->isPost) {
+      if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
+
+        $data['html']='<script>location.href="/account"</script>';
+        return json_encode($data);
+      }
+    }
+
+    $data['html']= $this->renderAjax('login', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
       'isAjax'=>true
     ]);
+
+    return json_encode($data);
   }
 
   /**

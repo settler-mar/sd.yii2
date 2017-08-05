@@ -352,7 +352,7 @@ $(function() {
                         afterOpen: function() {
                             var activeElement = $("#top a.popup_active").attr("href"),
                                   settings = {
-                                        '#login' : {
+                                        /*'#login' : {
                                             'h3' : 'Вход на сайт',
                                             'button' : 'Войти в личный кабинет',
                                             'input[type=password]' : 'Введите ваш пароль',
@@ -369,7 +369,7 @@ $(function() {
                                             '.sign-up-tagline' : 'Регистрация полностью бесплатна и займёт у Вас несколько секунд',
                                             '.terms' : 'Регистрируясь, я соглашаюсь с <a href="/terms">Правилами</a>',
                                             'input[name=type]' : 'registration'
-                                        },
+                                        },*/
                                         '#givefeedback' : {
                                             'h3' : 'Отзыв о сайте',
                                             'input[name=type]' : 'feedback'
@@ -428,14 +428,14 @@ $(function() {
                             'a[href=#givefeedback]' :  $("#top").find('.popup-givefeedback').html(),
                             'a[href=#reviewstore]' :  $("#top").find('.popup-givefeedback').html(),
                             'a[href=#cert]' :  $("#top").find('.popup-cert').html(),
-                            'a[href=#password-recovery]' : $("#top").find('.popup-recovery').html()
+                            //'a[href=#password-recovery]' : $("#top").find('.popup-recovery').html()
                       }
 
-                this.registration(popups);
+                //this.registration(popups);
 
-                $(document).on("click", "#top a[href=#password-recovery]", function() {
+                /*$(document).on("click", "#top a[href=#password-recovery]", function() {
                     $("#top .popup-sign-up").closest(".popup").next(".popup_close").click();
-                });
+                });*/
 
                 $(document).on("mouseover", "#top .popup .feedback.popup-content .rating .fa-wrapper .fa", function(e) {
                       self.starNomination($(this).index() + 1);
@@ -447,15 +447,15 @@ $(function() {
                       $("#top .popup .feedback.popup-content input[name=rating]").val($(this).index() + 1);
                 });
 
-                ajax.control.sendFormData("#top .signup-form", "/authorization", "Auth Ajax Error", function(data) {
+                /*ajax.control.sendFormData("#top .signup-form", "/authorization", "Auth Ajax Error", function(data) {
                     if(data.type == 'registration') {
                         location.href = urlPrefix + "/account" + data.param;
                     } else {
                         location.href = urlPrefix + "/account";
                     }
-                });
+                });*/
 
-                ajax.control.sendFormData("#top .recovery-form", "/password-recovery/instructions", "Password Recovery Instructions Ajax Error", function() {
+                /*ajax.control.sendFormData("#top .recovery-form", "/password-recovery/instructions", "Password Recovery Instructions Ajax Error", function() {
                     $("#top .recovery").closest(".popup").next(".popup_close").click();
 
                     var passNotySuccess = noty({
@@ -472,7 +472,7 @@ $(function() {
                         layout: 'topRight',
                         timeout: 7000
                     });                    
-                });
+                });*/
             }
         }
     }
@@ -673,11 +673,11 @@ $(window).load(function(){
         setHeight: 250
     });
 
-    $('[data-toggle="tooltip"]').tooltip({
+    /*$('[data-toggle="tooltip"]').tooltip({
         delay: {
             show: 500, hide: 2000
         }
-    });
+    });*/
 });
 
 
