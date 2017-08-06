@@ -15,6 +15,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
+use frontend\components\SdController;
 
 /**
  * Site controller

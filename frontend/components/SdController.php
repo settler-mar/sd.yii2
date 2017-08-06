@@ -1,5 +1,5 @@
 <?php
-namespace frontend\controllers;
+namespace frontend\components;
 
 use Yii;
 use yii\web\Controller;
@@ -7,7 +7,9 @@ use yii\web\Controller;
 use frontend\modules\category_stores\models\CategoryStores;
 
 /**
- * Site controller
+ * как родительский для контроллеров, где нужно выводить девево Категории Магазинов
+ * Class SdController
+ * @package frontend\controllers
  */
 class SdController extends Controller
 {
