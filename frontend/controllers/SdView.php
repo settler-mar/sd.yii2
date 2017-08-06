@@ -15,6 +15,7 @@ class SdView extends View
 
   public function beforeRender($viewFile, $params)
   {
+    ddd(Yii::$app->request->pathInfo);
     if (!parent::beforeRender($viewFile, $params)){
       return false;
     };
