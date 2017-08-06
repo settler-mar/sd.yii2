@@ -16,17 +16,16 @@ return [
       'csrfParam' => '_csrf-frontend',
     ],
     'user' => [
-      'identityClass' => 'app\modules\user\models\User',
+      'identityClass' => 'app\modules\users\models\Users',
       'enableAutoLogin' => true,
       //'loginUrl' => ['/'],
+      'identityCookie' => [
+        'name' => '_identity-frontend',
+        'httpOnly' => true
+      ],
       'on afterLogin' => function($event) {
-        frontend\modules\users\models\Users::afterLogin($event->identity->id);
+        app\modules\users\models\Users::afterLogin($event->identity->id);
       }
-    ],
-    'user' => [
-      'identityClass' => 'common\models\User',
-      'enableAutoLogin' => true,
-      'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
     ],
     'session' => [
       // this is the name of the session cookie used for login on the frontend
@@ -60,9 +59,9 @@ return [
         'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login)>' => 'user/user/<action>',
+        '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
 
-        [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
+        [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
         ],
 
@@ -73,8 +72,19 @@ return [
     'users' => [
       'class' => 'app\modules\users\Module',
     ],
+<<<<<<< HEAD
     'meta' => [
       'class' => 'app\modules\meta\Module',
+=======
+    'stores' => [
+        'class' => 'frontend\modules\stores\Module',
+    ],
+    'reviews' => [
+      'class' => 'frontend\modules\reviews\Module',
+    ],
+    'category_strores' => [
+      'class' => 'frontend\modules\category_stores\Module',
+>>>>>>> master
     ],
   ],
   'params' => $params,

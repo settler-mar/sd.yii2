@@ -1,4 +1,11 @@
 <?php
+$currencyIcon = [
+  'RUB' => '<span class="fa fa-rub"></span>',
+  'EUR' => '<span class="fa fa-eur"></span>',
+  'USD' =>'<span class="fa fa-dollar"></span>',
+  'UAH' => '<span class="uah">&#8372;</span>',
+  'KZT' => '<span class="uah">&#8376;</span>',
+];
 
 $functionsList=[
   //вывод одного элемента меню врутри <li> ... </li>
@@ -44,7 +51,7 @@ $functionsList=[
       return '<i class="red fa fa-heart"></i>';
     } elseif (strpos($cashback, '%') === false) {
       return $cashback . ' ' .
-      (isset($this->currencyIcon[$currency]) ? $this->currencyIcon[$currency] : $currency);
+      (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
     } else {
       return $cashback;
     }

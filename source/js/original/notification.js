@@ -28,17 +28,19 @@ var notification = (function() {
     $('body').append("<div class='notification_box'></div>");
     notification_box=$('.notification_box');
 
-    notification_box.on('click',closeModal);
     notification_box.on('click','.notify_control',closeModal);
     notification_box.on('click','.notify_close',closeModal);
-    notification_box.on('click','.notify_box',function(e){
-      e.preventDefault();
-      return false;
-    })
+    notification_box.on('click',closeModalFon);
   }
 
   function closeModal(){
     $('body').removeClass('show_notifi');
+  }
+  function closeModalFon(e){
+    var target = e.target || e.srcElement;
+    if(target.className=="notification_box"){
+      closeModal();
+    }
   }
 
   function alert(data){
@@ -131,20 +133,4 @@ $('[ref=popup]').on('click',function (e){
 
   data.question=el.html();
   notification.alert(data);
-});
-
-$('a[href=#login],a[href=#registration]').on('click',function(e){
-  e.preventDefault();
-  href=this.href.split('#');
-  href=href[href.length-1];
-
-  data={
-    buttonYes:false,
-    notyfy_class:"notify_white loading",
-    question:''
-  };
-  notification.alert(data);
-  $.get('/'+href,function(data){
-
-  })
 });

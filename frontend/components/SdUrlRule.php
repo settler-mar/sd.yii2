@@ -3,6 +3,7 @@ namespace frontend\components;
 
 use Yii;
 use yii\web\UrlRuleInterface;
+use app\modules\users\models\Users;
 
 class SdUrlRule implements UrlRuleInterface
 {
@@ -16,26 +17,38 @@ class SdUrlRule implements UrlRuleInterface
   public function parseRequest($manager, $request)
   {
     //http://blog.neattutorials.com/yii2-routing-urlmanager/
-    $pathInfo = $request->getPathInfo();
-    if ($pathInfo == "") {
-      return ["site/index", []];
+
+    $params = $request->get();
+
+    //проверка реф ссылки
+    if(isset($params['r'])){
+      $user=Users::find()->where(['uid'=>$params['r']])->one();
+      if($user){
+        Yii::$app->session->set('referrer_id',$user->uid);
+      };
+      Yii::$app->getResponse()->redirect('/', 301);
+      return ['', $params];
     }
 
-    $params = [];
+    $pathInfo = $request->getPathInfo();
+    if ($pathInfo == "") {
+      return ["site/index", $params];
+    }
+
     $parameters = explode('/', $pathInfo);
     $route = [];
 
     //редиректим actions от основного контроллера
     if ($parameters[0] == 'index') {
       Yii::$app->getResponse()->redirect('/', 301);
-      return ['', []];
+      return ['', $params];
     }
     if ($parameters[0] == 'site') {
       if ($parameters[1] == 'index') {
         $parameters[1] = '';
       }
       Yii::$app->getResponse()->redirect('/' . $parameters[1], 301);
-      return ['', []];
+      return ['', $params];
     }
 
     //проверяем последний параметр на page
@@ -44,7 +57,7 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters)-1]);
       if($params['page']==1){
         Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
-        return ['', []];
+        return ['', $params];
       }
     }
 
@@ -67,7 +80,6 @@ class SdUrlRule implements UrlRuleInterface
       array_unshift($parameters,'default');
     };
 
-
     if (count($parameters) > 1) {
       $route[] = $parameters[1];
       $route[] = $parameters[0];
@@ -75,13 +87,12 @@ class SdUrlRule implements UrlRuleInterface
         if($parameters[2]=='index'){
           unset($parameters[2]);
           Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
-          return ['', []];
+          return ['', $params];
         }
         $route[] = $parameters[2];
       }
       return [implode('/', $route), $params];
     }
-
 
     return [implode('/', $parameters), $params];
   }
@@ -98,6 +109,9 @@ class SdUrlRule implements UrlRuleInterface
   {
 
     $route=explode('/',$route);
+    if(count($route)<2){
+      return false;
+    }
     $route=[$route[1],$route[0]];
 
     if(isset($params['page'])){

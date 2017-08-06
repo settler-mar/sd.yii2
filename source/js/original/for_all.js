@@ -47,3 +47,16 @@ objects = function (a,b) {
     }).on('load',img_load_finish.bind(data))
   }
 })();
+
+(function() {
+  els=$('.ajax_load');
+  for(i=0;i<els.length;i++){
+    el=els.eq(i);
+    url=el.attr('res');
+    $.get(url,function (data) {
+      $this=$(this);
+      $this.html(data);
+      ajaxForm($this);
+    }.bind(el))
+  }
+})();

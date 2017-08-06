@@ -69,14 +69,21 @@ class Reviews extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array
      */
     public static function top()
     {
-        return self::find()
-            ->select(['cw_users_reviews.*', 'cw_users.name', 'cw_users.photo'])
-            ->innerJoinWith('user')
-            ->where(['cw_users_reviews.is_active' => 1, 'is_top' => 1, 'cw_users.is_active' => 1])
-            ->all();
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('reviews_top', function () {
+            $reviews = Reviews::find()
+                ->from(Reviews::tableName().' r')
+                ->select(['r.*', 'u.name', 'u.photo'])
+                ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
+                ->where(['r.is_active' => 1, 'is_top' => 1, 'u.is_active' => 1])
+                ->asArray()
+                ->all();
+            return $reviews;
+        });
+        return $data;
     }
 }

@@ -1,0 +1,90 @@
+function ajaxForm(els) {
+  var fileApi = window.File && window.FileReader && window.FileList && window.Blob ? true : false;
+  var defaults = {
+    error_class: '.has-error',
+  };
+
+  function onPost(post){
+    var data=this;
+    form=data.form;
+    wrap=data.wrap;
+    if(post.render){
+      post.notyfy_class="notify_white";
+      notification.alert(post);
+    }else{
+      wrap.removeClass('loading');
+      wrap.html(post.html);
+      ajaxForm(wrap);
+    }
+  }
+
+  function onSubmit(e){
+    e.preventDefault();
+    var data=this;
+    form=data.form;
+    wrap=data.wrap;
+
+    if(form.yiiActiveForm){
+      form.yiiActiveForm('validate');
+    };
+
+    isValid=(form.find(data.param.error_class).length==0);
+
+    if(!isValid){
+      return false;
+    }else{
+      required=form.find('input.required');
+      for(i=0;i<required.length;i++){
+        if(required.eq(i).val().length<1){
+          return false
+        }
+      }
+    }
+
+    if(!form.serializeObject)addSRO();
+
+    var post=form.serializeObject();
+    form.addClass('loading');
+    form.html('');
+
+    $.post(data.url,post,onPost.bind(data),'json');
+
+    return false;
+  }
+
+  els.find('[required]')
+    .addClass('required')
+    .removeAttr('required');
+
+  for(var i=0;i<els.length;i++){
+    wrap=els.eq(i);
+    form=wrap.find('form');
+    data={
+      form:form,
+      param:defaults,
+      wrap:wrap
+    };
+    data.url=form.attr('action') || location.href;
+    data.method= form.attr('method') || 'post';
+    form.on('submit', onSubmit.bind(data));
+  }
+}
+
+function addSRO(){
+  $.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+      if (o[this.name]) {
+        if (!o[this.name].push) {
+          o[this.name] = [o[this.name]];
+        }
+        o[this.name].push(this.value || '');
+      } else {
+        o[this.name] = this.value || '';
+      }
+    });
+    return o;
+  };
+};
+addSRO();

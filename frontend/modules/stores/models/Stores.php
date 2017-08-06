@@ -3,6 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use Yii;
+use frontend\modules\category_stores\models\CategoryStores;
 
 /**
  * This is the model class for table "cw_stores".
@@ -43,9 +44,9 @@ class Stores extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'visit', 'hold_time'], 'required'],
-            [['alias', 'description', 'conditions', 'short_description'], 'string'],
+            [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
             [['added'], 'safe'],
-            [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent'], 'integer'],
+            [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
             [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
             [['currency'], 'string', 'max' => 3],
             [['displayed_cashback'], 'string', 'max' => 30],
@@ -77,14 +78,50 @@ class Stores extends \yii\db\ActiveRecord
             'local_name' => 'Local Name',
             'active_cpa' => 'Active Cpa',
             'percent' => 'Percent',
+            'action_id' => 'Action ID',
+            'contact_name' => 'Contact Name',
+            'contact_phone' => 'Contact Phone',
+            'contact_email' => 'Contact Email',
         ];
     }
-    
+
+    /**
+     * категории магазина
+     * @return $this
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
+            ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
+    }
+
+    /**
+     * @return mixed
+     */
     public static function activeCount()
     {
-        return self::find()
-            ->where(['not in', 'is_active', [-1]])
-            ->count();
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('total_all_stores', function () {
+            return self::find()
+                ->where(['not in', 'is_active', [-1]])
+                ->count();
+        });
+        return $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function top12()
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('top_12_stores', function () {
+            return self::find()
+                ->orderBy('visit DESC')
+                ->limit(12)
+                ->all();
+        });
+        return $data;
     }
     
 }

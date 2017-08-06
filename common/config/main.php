@@ -3,11 +3,9 @@ $twigFunction=require (dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.ph
 $twigFunction['translate']='\Yii::t';
 
 $config = [
+  'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
-    'cache' => [
-        'class' => 'yii\caching\FileCache',
-    ],
     'urlManager' => [
       'class' => 'yii\web\UrlManager',
       'enablePrettyUrl' => true,
@@ -15,6 +13,11 @@ $config = [
       'enableStrictParsing' => true,
       'rules' => [
       ],
+    ],
+    'mailer'=>[
+      'viewPath' => '@common/mail',
+      'htmlLayout' => 'layouts/html',
+      'textLayout' => 'layouts/text',
     ],
     'sphinx' => [
       'class' => 'yii\sphinx\Connection',
@@ -24,12 +27,12 @@ $config = [
     ],
     'assetManager' => [
       'bundles' => [
-        'yii\bootstrap\BootstrapAsset' => false,
-        'yii\validators\ValidationAsset' => false,
-        'yii\web\YiiAsset' => false,
-        'yii\widgets\ActiveFormAsset' => false,
-        'yii\bootstrap\BootstrapPluginAsset' => false,
-        'yii\web\JqueryAsset' => false,
+        //'yii\bootstrap\BootstrapAsset' => true,
+        //'yii\validators\ValidationAsset' => false,
+        //'yii\web\YiiAsset' => false,
+        //'yii\widgets\ActiveFormAsset' => false,
+        //'yii\bootstrap\BootstrapPluginAsset' => false,
+        //'yii\web\JqueryAsset' => false,
         //'yii\authclient\widgets\AuthChoiceAsset' => false, //authchoice.js
         //'yii\authclient\widgets\AuthChoiceStyleAsset' => false, //authchoice.css
       ],
@@ -53,6 +56,7 @@ $config = [
           'globals' => [
             'html' => '\yii\helpers\Html',
             'url' => 'yii\helpers\Url',
+            'ActiveForm'=>'yii\bootstrap\ActiveForm',
           ],
           'functions' => $twigFunction,
           'uses' => ['yii\bootstrap'],
