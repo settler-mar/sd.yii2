@@ -72,10 +72,6 @@ return [
     'users' => [
       'class' => 'app\modules\users\Module',
     ],
-<<<<<<< HEAD
-    'meta' => [
-      'class' => 'app\modules\meta\Module',
-=======
     'stores' => [
         'class' => 'frontend\modules\stores\Module',
     ],
@@ -84,7 +80,6 @@ return [
     ],
     'category_strores' => [
       'class' => 'frontend\modules\category_stores\Module',
->>>>>>> master
     ],
   ],
   'params' => $params,
