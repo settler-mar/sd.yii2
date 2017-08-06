@@ -109,6 +109,9 @@ class SdUrlRule implements UrlRuleInterface
   {
 
     $route=explode('/',$route);
+    if(count($route)<2){
+      return false;
+    }
     $route=[$route[1],$route[0]];
 
     if(isset($params['page'])){

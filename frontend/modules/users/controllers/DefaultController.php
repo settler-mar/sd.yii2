@@ -2,6 +2,7 @@
 
 namespace app\modules\users\controllers;
 
+use app\modules\users\models\Users;
 use \Yii;
 use yii\web\Controller;
 use app\modules\users\models\LoginForm;
@@ -60,13 +61,47 @@ class DefaultController extends Controller
   }
 
   public function actionUlogin(){
-    $s = file_get_contents('http://ulogin.ru/token.php?token=' . $_POST['token'] . '&host=' . $_SERVER['HTTP_HOST']);
-    $user = json_decode($s, true);
-    ddd($user);
-    //$user['network'] - соц. сеть, через которую авторизовался пользователь
-    //$user['identity'] - уникальная строка определяющая конкретного пользователя соц. сети
-    //$user['first_name'] - имя пользователя
-    //$user['last_name'] - фамилия пользователя
+    $token=Yii::$app->request->post('token');
+    if (!$token) {
+      return $this->goHome();
+    };
+
+    $s = file_get_contents('http://ulogin.ru/token.php?token=' . $token . '&host=' . $_SERVER['HTTP_HOST']);
+    $data = json_decode($s, true);
+
+    if (isset($data['error']) && $data['error'] != '') {
+      return $this->goHome();
+    }
+
+    $data["photo_big"] = str_replace("http:", "https:", $data["photo_big"]);
+
+    $user= Users::findByEmail($data['email']);
+    $user_photo = str_replace('http:', '', $data["photo_big"]);
+    $user_photo=str_replace('https:', '', $user_photo);
+
+    if($user){
+      Yii::$app->user->login($user, 3600 * 24 * 30);
+      if(strripos($user->photo,'//')){
+        $user->photo = $user_photo;
+        $user->save();
+      }
+      return $this->redirect(['/account']);
+    }else{
+      $user=new Users;
+      $user->photo = $user_photo;
+      $user->email = $data['email'];
+      $user->name = $data["first_name"] . " " . $data["last_name"];
+      $user->sex = $data["sex"] == 1 ? "f" : ($data["sex"] == 2 ? "m" : "");
+      $user->registration_source = $data["identity"];
+      $user->birthday = $data['bdate'] != '' ? date('Y-m-d', strtotime($data['bdate'])) : '';
+      $user->setPassword(substr(md5(uniqid()), 0, 15));
+      if($user->save()){
+        Yii::$app->user->login($user, 3600 * 24 * 30);
+      };
+
+      return $this->redirect(['/account?new=1']);
+    }
+
 
   }
   /**
