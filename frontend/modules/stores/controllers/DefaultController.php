@@ -6,14 +6,17 @@ namespace frontend\modules\stores\controllers;
 //use frontend\controllers\SdController;
 use Yii;
 use frontend\components\SdController;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\category_stores\models\CategoryStores;
 
 class DefaultController extends SdController
 {
     public function actionIndex()
     {
-      d(Yii::$app->request->get());
+        $stores = new Stores();
+        $storesData = $stores->getStores();
 
-        return $this->render('catalog');
+        return $this->render('catalog', $storesData);
     }
 }
 

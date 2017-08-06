@@ -60,11 +60,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    {% if pagination_tags.prev_page != null %}
-        <link rel="prev" href="{{site_url}}{{pagination_tags.prev_page}}">
+    {% if app.controller.pagination_tags.prev_page != null %}
+        <link rel="prev" href="{{site_url}}{{app.controller.pagination_tags.prev_page}}">
     {% endif %}
-    {% if pagination_tags.next_page != null %}
-        <link rel="next" href="{{site_url}}{{pagination_tags.next_page}}">
+    {% if app.controller.pagination_tags.next_page != null %}
+        <link rel="next" href="{{site_url}}{{app.controller.pagination_tags.next_page}}">
     {% endif %}
 
     {% for style in exclusionCSSheader %}
