@@ -2,6 +2,7 @@
 
 namespace app\modules\users\controllers;
 
+use app\modules\users\models\ResetPasswordForm;
 use app\modules\users\models\Users;
 use \Yii;
 use yii\web\Controller;
@@ -154,21 +155,31 @@ class DefaultController extends Controller
    */
   public function actionResetpassword()
   {
-    // Уже авторизированных отправляем на домашнюю страницу
-    if (!\Yii::$app->user->isGuest) {
+    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
       return $this->goHome();
     }
+
+    $request=Yii::$app->request;
+    if(!$request->isAjax){
+      return $this->goHome();
+    }
+
     //Восстановление пароля
-    $forget = new PasswordResetForm();
-    if ($forget->load(Yii::$app->request->post()) && $forget->validate()) {
-      if ($forget->sendEmail()) { // Отправлено подтверждение по Email
-        Yii::$app->getSession()->setFlash('reset-success', 'Link to the activation of a new password sent to the Email.');
-      }
-      return $this->goHome();
+    $forget = new ResetPasswordForm();
+
+    if ($forget->load(Yii::$app->request->post()) && $forget->sendEmail()) {
+      $data['question'] = $this->renderAjax('resetpassword_sendmail_ok.twig');
+      $data['render']='true';
+      $data['buttonYes']='Продолжить';
+      return json_encode($data);
     }
-    return $this->render('resetpaessword', [
-      'forget' => $forget
+
+
+    $data['html'] = $this->renderAjax('resetpassword', [      // рисуем форму для ввода имени и пароля
+      'model' => $forget,
+      'isAjax' => true
     ]);
+    return json_encode($data);
   }
 
   /**
@@ -180,14 +191,14 @@ class DefaultController extends Controller
    */
   public function actionReset($token, $password){
     try {
-      $model = new ResetPassword($token, $password);
+      $model = new ResetPasswordForm($token, $password);
     } catch (InvalidParamException $e) {
       throw new BadRequestHttpException($e->getMessage());
     }
     if ($user_id = $model->resetPassword()) {
       // Авторизируемся при успешном сбросе пароля
-      Yii::$app->user->login(User::findIdentity($user_id));
+      Yii::$app->user->login(Users::findIdentity($user_id));
     }
-    return $this->redirect(['/']);
+    return $this->redirect(['/account']);
   }
 }

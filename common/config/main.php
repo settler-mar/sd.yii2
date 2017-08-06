@@ -6,11 +6,6 @@ $config = [
   'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
-    'cache' => [
-        //'class' => 'yii\caching\FileCache',
-        'class'=>'yii\caching\DummyCache',
-        'defaultDuration' => 86400,
-    ],
     'urlManager' => [
       'class' => 'yii\web\UrlManager',
       'enablePrettyUrl' => true,
@@ -18,6 +13,11 @@ $config = [
       'enableStrictParsing' => true,
       'rules' => [
       ],
+    ],
+    'mailer'=>[
+      'viewPath' => '@common/mail',
+      'htmlLayout' => 'layouts/html',
+      'textLayout' => 'layouts/text',
     ],
     'sphinx' => [
       'class' => 'yii\sphinx\Connection',

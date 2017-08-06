@@ -15,6 +15,7 @@ use yii\web\IdentityInterface;
 class Users extends ActiveRecord implements IdentityInterface
 {
 
+  public $new_password;
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
@@ -311,6 +312,7 @@ class Users extends ActiveRecord implements IdentityInterface
    */
   public function setPassword($password)
   {
+    $this->new_password=$password;
     $this->password = Yii::$app->security->generatePasswordHash($password);
   }
 

@@ -59,7 +59,7 @@ return [
         'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|ulogin)>' => 'users/default/<action>',
+        '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
 
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',

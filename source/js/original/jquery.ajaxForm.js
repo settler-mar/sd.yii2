@@ -43,7 +43,7 @@ function ajaxForm(els) {
 
     if(!form.serializeObject)addSRO();
 
-    post=form.serializeObject();
+    var post=form.serializeObject();
     form.addClass('loading');
     form.html('');
 
