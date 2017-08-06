@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use app\modules\users\models\RegistrationForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -12,11 +13,13 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends SdController
 {
   /**
    * @inheritdoc
@@ -72,7 +75,19 @@ class SiteController extends Controller
    */
   public function actionIndex()
   {
-    return $this->render('index', ['time' => time()]);
+    $stores = Stores::top12();
+    $totalStores = Stores::activeCount();
+
+    $reviews = Reviews::top();
+
+    $reg_form=new RegistrationForm();
+
+    return $this->render('index', [
+        'time' => time(),
+        'stores' => $stores,
+        'total_all_stores' => $totalStores,
+        'top_reviews' => $reviews
+    ]);
   }
 
   /**

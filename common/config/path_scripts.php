@@ -3,8 +3,10 @@ return  [
   'default'=>[
     'layout'=>'main.twig',
     'js'=>[
+      '/js/jquery-1.11.2.min.js',
       '/js/scripts{{script_version}}.js',
       '/js/external/jquery.mCustomScrollbar.concat.min.js',
+      '//ulogin.ru/js/ulogin.js',
     ],
     'css'=>[
          '/css/external/import.fonts.css',
@@ -18,6 +20,7 @@ return  [
   'account'=>[
       'layout'=>'account.twig',
       'js'=>[
+        '/js/jquery-2.1.4.js',
         '/js/account/scripts{{script_version}}.js',
         '/js/external/jquery.mCustomScrollbar.concat.min.js',
         '/js/external/account/modernizr.js'
@@ -34,16 +37,17 @@ return  [
   'admin'=>[
       'layout'=>'admin.twig',
       'js'=>[
-            '/js/admin/scripts{{script_version}}.js',
-            '/js/external/jquery.mCustomScrollbar.concat.min.js',
-            '/js/external/account/modernizr.js'
-          ],
-          'css'=>[
-            '/css/external/import.fonts.css',
-            'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
-            'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-            '/css/admin/styles{{script_version}}.css',
-          ]
+        '/js/jquery-2.1.4.js',
+        '/js/admin/scripts{{script_version}}.js',
+        '/js/external/jquery.mCustomScrollbar.concat.min.js',
+        '/js/external/account/modernizr.js'
+      ],
+      'css'=>[
+        '/css/external/import.fonts.css',
+        'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+        '/css/admin/styles{{script_version}}.css',
+      ]
 
   ]
 ];

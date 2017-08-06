@@ -138,7 +138,7 @@
         <div class="row des-stores">
             {% for store in stores %}
             <div class="col-sm-3 col-md-2">
-            {% include 'parts/shop.html' %}
+            {% include 'parts/shop.twig' %}
             </div>
             {% endfor %}
         </div>
@@ -148,7 +148,7 @@
                     {% for store in stores %}
                     <li>
                         <div class="col-sm-12 col-md-12">
-                        {% include 'parts/shop.html' %}
+                        {% include 'parts/shop.twig' %}
                         </div>
                     </li>
                     {% endfor %}
@@ -259,23 +259,11 @@
 </section>
 {% endif %}
 {% if not user_id %}
-<section id="registation-footer" class="sign-up section-padding text-center" style="margin-top: -50px;">
+<section id="registation-footer" class="sign-up section-padding text-center" style="margin-top: 0px;">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>Начните экономить уже сегодня!</h3>
-                <p class="sign-up-tagline">Регистрация полностью бесплатна и займёт у Вас несколько секунд</p>
-                <form class="signup-form" action="/" method="post" role="form">
-                    <div class="form-input-group">
-                        <i class="fa fa-envelope"></i><input name="email" type="email" placeholder="Введите ваш email" required>
-                    </div>
-                    <div class="form-input-group">
-                        <i class="fa fa-lock"></i><input name="password" type="password" placeholder="Придумайте пароль" required>
-                    </div>
-                    <input type="hidden" name="type" value="registration">
-                    <button type="submit" class="btn-fill sign-up-btn">Присоединиться и начать экономить</button>
-                </form>
-                <p class="terms">Регистрируясь, я соглашаюсь с <a href="/terms">Правилами сайта</a></p>
+            <div class="col-md-8 col-md-offset-2 ajax_load" res="/registration?index=1">
+
             </div>
         </div>
     </div>
