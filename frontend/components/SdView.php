@@ -91,17 +91,22 @@ class SdView extends View
       $page='account/affiliate';
     };
     if ($page == '') $page = 'index';
-    $mdata = false;
 
-    if ($mdata === false) {
       //вначале из базы
-      $mdata = Meta::find()
-        ->select(['title', 'description', 'keywords', 'h1', 'content'])
-        ->where(['page' => $page])
-        ->asArray()->all();
-      //ddd($mdata);
-      if (count($mdata) > 0) {
-        $mdata = $mdata[0];
+      $cache = Yii::$app->cache;
+
+      $page_meta = $cache->getOrSet('page_meta', function ($page) {
+        $meta = Meta::find()
+          ->select(['title', 'description', 'keywords', 'h1', 'content'])
+          ->where(['page' => $page])
+          ->asArray()->all();
+        return $meta;
+      });
+
+      ddd($page_meta);
+
+      if (count($page_meta) > 0) {
+        $page_meta = $page_meta[0];
       } else {
         //прямого совпадения нет ищем по плейсхолдерам
         $mdataArray = Meta::find()
@@ -115,7 +120,7 @@ class SdView extends View
           $match = '/^' . str_replace('/', '\/', $noalias[0]) . '.*' .
             str_replace('/', '\/', (!empty($noalias[1]) ? $noalias[1] : '')) . '$/';
           if (preg_match($match, $page)) {
-            $mdata = [
+            $page_meta = [
               'title' => $mdataItem->title,
               'description' => $mdataItem->description,
               'keywords' => $mdataItem->keywords,
@@ -140,8 +145,7 @@ class SdView extends View
         //  \Cwcashback\Settings::call()->getSettings('cachetime', 'month')
      //   );
      // }
-    }
-    return $mdata;
+    return $page_meta;
   }
 
 }
