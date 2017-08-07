@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\users\controllers;
+namespace frontend\modules\users\controllers;
 
 use Yii;
 use app\modules\users\models\Users;
@@ -25,6 +25,22 @@ class AdminController extends Controller
             ],
         ];
     }
+  function beforeAction($action) {
+    $rule=[
+      $action->controller->id,
+      ucfirst(strtolower($action->controller->module->id)),
+      ucfirst(strtolower($action->id)),
+    ];
+    $rule=implode('',$rule);
+
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can($rule)) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $this->layout='@app/views/layouts/admin.twig';
+    return true;
+  }
 
     /**
      * Lists all Users models.

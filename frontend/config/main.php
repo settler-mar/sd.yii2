@@ -6,7 +6,7 @@ $params = array_merge(
   require(__DIR__ . '/params-local.php')
 );
 
-return [
+$config= [
   'id' => 'app-frontend',
   'basePath' => dirname(__DIR__),
   'bootstrap' => ['log'],
@@ -15,30 +15,29 @@ return [
     'request' => [
       'csrfParam' => '_csrf-frontend',
     ],
-    'user' => [
-      'identityClass' => 'app\modules\users\models\Users',
-      'enableAutoLogin' => true,
-      //'loginUrl' => ['/'],
-      'identityCookie' => [
-        'name' => '_identity-frontend',
-        'httpOnly' => true
-      ],
-      'on afterLogin' => function($event) {
-        app\modules\users\models\Users::afterLogin($event->identity->id);
-      }
-    ],
     'session' => [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
     ],
     'log' => [
-      'traceLevel' => YII_DEBUG ? 3 : 0,
+      'traceLevel' => YII_LOG_LAVEL ? YII_LOG_LAVEL : 0,
       'targets' => [
         [
           'class' => 'yii\log\FileTarget',
           'levels' => ['error', 'warning'],
         ],
       ],
+    ],
+    'user' => [
+      'identityClass' => 'frontend\modules\users\models\Users',
+      'enableAutoLogin' => true,
+      'identityCookie' => [
+        'name' => '_identity-frontend',
+        'httpOnly' => true
+      ],
+      'on afterLogin' => function($event) {
+        frontend\modules\users\models\Users::afterLogin($event->identity->id);
+      }
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
@@ -60,6 +59,10 @@ return [
         'users/<action>/<action>/<action>'=>'404',*/
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
+        'account' => 'users/account/index',
+
+        'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
+        'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
 
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
@@ -69,8 +72,8 @@ return [
     ],
   ],
   'modules' => [
-    'users' => [
-      'class' => 'app\modules\users\Module',
+    'users'=> [
+      'class' => 'frontend\modules\users\Module',
     ],
     'stores' => [
         'class' => 'frontend\modules\stores\Module',
@@ -81,6 +84,21 @@ return [
     'category_strores' => [
       'class' => 'frontend\modules\category_stores\Module',
     ],
+    'permit' => [
+      'class' => 'developeruz\db_rbac\Yii2DbRbac',
+      'params' => [
+        'userClass' => 'frontend\modules\users\models\Users',
+        'accessRoles' => ['admin']
+      ]
+    ],
+
   ],
   'params' => $params,
 ];
+
+
+if (YII_DEBUG) {
+  // configuration adjustments for 'dev' environment
+  unset($config['modules']['permit']['params']['accessRoles']);
+}
+return $config;

@@ -79,7 +79,7 @@ class CategoryStores extends \yii\db\ActiveRecord
                 ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
                 ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
                 ->where(['cws.is_active' => 1, 'ccs.is_active' => 1])
-                ->groupBy(['ccs.name'])
+                ->groupBy(['ccs.name','ccs.parent_id','ccs.uid'])
                 ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC'])
                 ->asArray()
                 ->all();

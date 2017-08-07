@@ -1,18 +1,18 @@
 <?php
 
-namespace app\modules\users\models;
+namespace frontend\modules\users\models;
 
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
+use developeruz\db_rbac\interfaces\UserRbacInterface;
 
 /**
  * This is the model class for table "cw_users".
  */
-class Users extends ActiveRecord implements IdentityInterface
+class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 {
 
   public $new_password;
@@ -27,6 +27,10 @@ class Users extends ActiveRecord implements IdentityInterface
     return 'cw_users';
   }
 
+  public function getUserName()
+  {
+    return $this->name;
+  }
   /**
    * @inheritdoc
    */
@@ -339,5 +343,4 @@ class Users extends ActiveRecord implements IdentityInterface
   {
     $this->password_reset_token = null;
   }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\users\controllers;
+namespace frontend\modules\users\controllers;
 
 use app\modules\users\models\ResetPasswordForm;
 use app\modules\users\models\Users;
