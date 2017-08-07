@@ -86,7 +86,7 @@ class SiteController extends SdController
         'time' => time(),
         'stores' => $stores,
         'total_all_stores' => $totalStores,
-        'top_reviews' => $reviews
+        'top_reviews' => $reviews,
     ]);
   }
 

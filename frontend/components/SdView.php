@@ -56,6 +56,9 @@ class SdView extends View
     d($this);
     d($viewFile);
     d($params);*/
+    //ddd($this->metaTags);
+    $this->metaTags['q'] = '<h1>Meta</h1>';
+   // $this->params['qqq'] = 222;
     return true;
   }
 }
