@@ -43,7 +43,7 @@ $config= [
       'errorAction' => 'site/error',
     ],
     'view'=>[
-      'class' => 'frontend\controllers\SdView',
+      'class' => 'frontend\components\SdView',
       'renderers' => [
         'twig' => [
           'globals' => [
@@ -92,7 +92,9 @@ $config= [
         'accessRoles' => ['admin']
       ]
     ],
-
+    'constants' => [
+      'class' => 'app\modules\constants\Module',
+    ],
   ],
   'params' => $params,
 ];

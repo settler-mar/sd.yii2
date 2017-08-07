@@ -1,0 +1,43 @@
+
+
+<div class="content-wrapper">
+    <section class="account-padding view-list">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="add-item"><a href="/admin/metadata/add">Добавить метаданные</a></p>
+            {% if metadata|length > 0 %}
+                <table class="table table-metadata">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Страница</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Keywords</th>
+                            <th>H1</th>
+                            <th width="10%">Content</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for meta in metadata %}
+                        <tr>
+                            <td>{{meta.uid}}</td>
+                            <td>{{meta.page}}</td>
+                            <td>{{meta.title}}</td>
+                            <td>{{meta.description}}</td>
+                            <td>{{meta.keywords}}</td>
+                            <td>{{meta.h1}}</td>
+                            <td class="table-cell-ellipsis">{{meta.content}}</td>
+                            <td><a href="/admin/metadata/edit/{{meta.uid}}">Редактировать</a> &bull; <a class="delete" href="/admin/metadata/delete/{{meta.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="not-found">На данный момент метаданных нет.</div>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+</div>

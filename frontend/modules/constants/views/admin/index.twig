@@ -1,0 +1,7 @@
+
+{% for model in models %}
+<li>
+    {{ model.name }}
+    <p><a href="admin/constants/update?id={{ model.uid }}">Редактировать</a></p>
+</li>
+{% endfor %}
