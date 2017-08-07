@@ -37,7 +37,7 @@ class DefaultController extends Controller
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'models' => $dataProvider->getModels(),
         ]);
     }
 

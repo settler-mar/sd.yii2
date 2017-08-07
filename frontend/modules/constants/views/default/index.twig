@@ -1,39 +1,4 @@
-<?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-
-/* @var $this yii\web\View */
-/* @var $searchModel app\modules\constants\models\ConstantsSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Constants';
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="constants-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Constants', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'uid',
-            'name',
-            'title',
-            'text:ntext',
-            'ftype',
-            // 'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-</div>
+{% for model in models %}
+<li>{{ model.uid }}</li>
+{% endfor %}
