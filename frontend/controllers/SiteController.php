@@ -80,14 +80,25 @@ class SiteController extends SdController
 
     $reviews = Reviews::top();
 
-    $reg_form=new RegistrationForm();
+    $reg_form = new RegistrationForm();
 
     return $this->render('index', [
-        'time' => time(),
-        'stores' => $stores,
-        'total_all_stores' => $totalStores,
-        'top_reviews' => $reviews
+      'time' => time(),
+      'stores' => $stores,
+      'total_all_stores' => $totalStores,
+      'top_reviews' => $reviews
     ]);
+  }
+
+
+  public function actionAdmin(){
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('adminIndex')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $this->layout='@app/views/layouts/admin.twig';
+    return $this->render('admin');
   }
 
   /**

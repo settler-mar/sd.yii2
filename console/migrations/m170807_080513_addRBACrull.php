@@ -16,12 +16,17 @@ class m170807_080513_addRBACrull extends Migration
       $permit->description = 'Список пользователей. Просмотр.';
       Yii::$app->authManager->add($permit);
 
+      $permit2 = Yii::$app->authManager->createPermission('adminIndex');
+      $permit2->description = 'Стартовая админки. Просмотр.';
+      Yii::$app->authManager->add($permit2);
+
 
       //$role = Yii::$app->authManager->getRole('admin'); //ищим роль
       //$permit = Yii::$app->authManager->getPermission('adminUserIndex'); //ищим привелегию
 
       //Связываем роль и привелегию
       Yii::$app->authManager->addChild($role, $permit);
+      Yii::$app->authManager->addChild($role, $permit2);
 
 
       //Назначаем роль пользователю

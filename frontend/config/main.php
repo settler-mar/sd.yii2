@@ -60,6 +60,7 @@ $config= [
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/index',
+        'admin' => 'site/admin',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
