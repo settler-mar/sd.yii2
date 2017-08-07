@@ -1,1 +1,228 @@
-{{ content|raw }}
+<!DOCTYPE html>
+<html lang="ru" class="no-js" >
+<head>
+    <title>{{title}}</title>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-90471086-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+                document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '239595223199647'); // Insert your pixel ID here.
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=239595223199647&ev=PageView&noscript=1"
+        /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+    <meta property="og:image" content="https://secretdiscounter.ru{{images_path}}templates/woman_600.png" />
+    <meta property="og:title" content="{{ _constant('affiliate_share_title')}}" />
+    <meta property="og:type"  content="website" />
+    <meta property="og:description"   content="{{ _constant('affiliate_share_description')}}" />
+    <meta property="og:headline" content="Top 10 Most Challenging Hikes in North America" />
+
+
+
+
+
+    {% if description %}
+        <meta name="description" content="{{description}}">
+    {% endif %}
+
+    {% if keywords %}
+        <meta name="keywords" content="{{keywords}}">
+    {% endif %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="{{images_path}}templates/woman_600.png"/>
+
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    {% if pagination_tags.prev_page is not null %}
+        <link rel="prev" href="{{site_url}}{{pagination_tags.prev_page}}">
+    {% endif %}
+    {% if pagination_tags.next_page is not null %}
+        <link rel="next" href="{{site_url}}{{pagination_tags.next_page}}">
+    {% endif %}
+
+
+    {% for style in exclusionCSSheader %}
+        <link rel="stylesheet" href="{{style}}">
+    {% endfor %}
+    <link rel="stylesheet" href="{{minifyCSS}}">
+
+    {% for scriptH in exclusionJSheader %}
+        <script src="{{scriptH}}"></script>
+    {% endfor %}
+</head>
+<body id="top">
+<header class="cd-main-header">
+    <a href="/" class="cd-logo"><img src="{{images_path}}templates/secretdiscounter-logo.png" alt="secretdiscounter logo"></a>
+    <div class="cd-search is-hidden">
+        <form action="/search" name="account-search" method="get">
+            <input type="search" id="search" name="query" value="" placeholder="Найти магазин">
+        </form>
+    </div>
+    <div class="sub-menu">
+        <ul>
+            <li class="link-head-stores"><a href="/stores"><span>Магазины</span></a></li>
+            <li><a href="/coupons">Купоны</a></li>
+            <li><a href="/promo">Акции</a></li>
+        </ul>
+    </div>
+    <a href="#0" class="cd-nav-trigger"><span></span></a>
+    <nav class="cd-nav">
+        <ul class="cd-top-nav">
+            <li class="has-children account">
+                <a href="/logout" class="acclogout" onclick="location.href = '/logout'">
+                    {% if setting.photo %}
+                        <img src="{{setting.photo}}" alt="photo_{{setting.email}}">
+                    {% else %}
+                        {% if setting.sex == 'm' or setting.sex == '' %}
+                            <span data-icon="&#xe040;" class="icon no-avatar"></span>
+                        {% elseif setting.sex == 'f' %}
+                            <span data-icon="&#xe041;" class="icon no-avatar"></span>
+                        {% endif %}
+                    {% endif %}
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    Выход
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>Добрые дела</span></a>
+</header>
+<main class="cd-main-content">
+    <nav class="cd-side-nav">
+        <ul class="first">
+            <li class="top-information">
+                <div class="logo">
+                    {% if setting.photo %}
+                        <img src="{{setting.photo}}" alt="photo_{{setting.email}}">
+                    {% else %}
+                        {% if setting.sex == 'm' or setting.sex == '' %}
+                            <span data-icon="&#xe040;" class="icon no-avatar"></span>
+                        {% elseif setting.sex == 'f' %}
+                            <span data-icon="&#xe041;" class="icon no-avatar"></span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="info-text">
+                    Текущий баланс:
+                    <span>{{balance.current}} <span class="fa fa-rub"></span></span>
+                </div>
+            </li>
+            <li class="dobro-account"><a href="/dobro">Делаем добро</a></li>
+            <li class="cd-label">Личный кабинет</li>
+            <li class="overview users">
+                <a href="/account">Главная</a>
+            </li>
+            <li class="has-children bookmarks">
+                <a href="/account/payments">История</a>
+                <ul>
+                    <li><a href="/account/payments">История заказов</a></li>
+                    <li><a href="/account/bonuses">История бонусов</a></li>
+                    <li><a href="/account/transitions">История посещений</a></li>
+                    <li><a href="/account/withdraw-history">История вывода денег</a></li>
+                    <li><a href="/account/charity">История добрых дел</a></li>
+                </ul>
+            </li>
+            <li class="notifications">
+                <a href="/account/notification">Уведомления
+                    {% if noty_novi_count %}
+                        <span class="count">{{noty_novi_count}}</span>
+                    {% endif %}
+                </a>
+                <!--<ul> -->
+                <!--<li><a href="/account/notification">Все уведомления</a></li> -->
+                <!--<li><a href="/account/notification?type=2">Начисление кэшбэка</a></li> -->
+                <!--                    <li><a href="/account/notification?type=1">Новости сайта</a></li> -->
+                <!--</ul> -->
+            </li>
+        </ul>
+        <ul>
+            <li class="cd-label">Дополнительно</li>
+            <li class="help-icon fasicon has-children">
+                <a href="/account/support">Помощь</a>
+                <ul>
+                    <li><a href="/account/support">Служба поддержки</a></li>
+                    <li><a href="/howitworks">Как это работает</a></li>
+                    <li><a href="/faq">F.A.Q.</a></li>
+                    <li><a href="/loyalty">Накопительная система</a></li>
+                    <li><a href="/recommendations">Советы по совершению покупок</a></li>
+                    <li><a href="/reviews">Отзывы</a></li>
+                </ul>
+            </li>
+            <li class="favorite-icon fasicon">
+                <a href="/account/favorites">Избранные магазины</a>
+            </li>
+            <li class="affiliate-icon fasicon">
+                <a href="/account/affiliate">Приведи друга</a>
+            </li>
+            <li class="settings-icon fasicon">
+                <a href="/account/settings">Настройка аккаунта</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="cd-label">Операции</li>
+            <li class="action-btn"><a href="/account/withdraw">Вывод денег</a></li>
+        </ul>
+        <div>
+            <a href="/account/affiliate" class="affiliate_block"></a>
+        </div>
+    </nav>
+    {{ content|raw }}
+</main>
+<script src="{{minifyJS}}"></script>
+{% for scriptF in exclusionJSfooter %}
+    <script src="{{scriptF}}"></script>
+{% endfor %}
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter42229559 = new Ya.Metrika({
+                    id:42229559,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/42229559" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

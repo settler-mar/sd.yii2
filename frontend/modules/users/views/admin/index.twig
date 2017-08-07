@@ -1,4 +1,4 @@
-{{ use('/yii/grid/GridView') }}
+{{ use('/yii/widgets/LinkPager') }}
 {% set title = 'Users' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
@@ -6,56 +6,207 @@
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
-{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="users-index">
-    <h1>{{ html.encode(this.title) }}</h1>
-    {# include('_search.twig', {'model': searchModel}) #}
-    <p>
-        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Users' }}</a>
-    </p>
-    {{ grid_view_widget({
-            'dataProvider': dataProvider,
-            'filterModel': searchModel,
-                'columns': [
-                {'class': '\\yii\\grid\\SerialColumn'},
 
-                'uid',
-                'email:email',
-                'name',
-                'password',
-                'salt',
 
-                {'class': '\\yii\\grid\\ActionColumn'},
-            ],
-        })
-    }}
-{#
-'birthday',
-'sex',
-'photo',
-'notice_email:email',
-'notice_account',
-'referrer_id',
-'last_ip',
-'last_login',
-'registration_source',
-'added',
-'loyalty_status',
-'is_active',
-'is_admin',
-'bonus_status',
-'reg_ip',
-'ref_total',
-'sum_pending',
-'cnt_pending',
-'sum_confirmed',
-'cnt_confirmed',
-'sum_from_ref_pending',
-'sum_from_ref_confirmed',
-'sum_to_friend_pending',
-'sum_to_friend_confirmed',
-'sum_foundation',
-'sum_withdraw',
-'sum_bonus'
-#}
+<div class="content-wrapper">
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1 style="padding: 0;">{{ html.encode(this.title) }}</h1>
+        {# include('_search.twig', {'model': searchModel}) #}
+        <p>
+          <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Users' }}</a>
+        </p>
+      </div>
+      <div class="col-md-12">
+        {% if users|length > 0 %}
+          <table class="table table-users">
+            <thead>
+            <tr>
+              <th>Профиль</th>
+              <th>Баланс</th>
+              <th>Привелегии</th>
+              <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+                <tr>
+                  <td>
+                    <div class="sum_information long_value">
+                      <div class="line">
+                        <div class="name">ID</div>
+                        <div class="value">{{user.uid}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Email</div>
+                        <div class="value">
+                          <a href="/admin/users/view/{{user.uid}}">{{ _hyphen_email(user.email) | raw}}</a>
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Регистр.</div>
+                        <div class="value">{{user.registration_source_href | raw}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name name-none"></div>
+                        <div class="value">{{user.added}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Визит</div>
+                        <div class="value">{{user.last_login}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">IP-авториз.</div>
+                        <div class="value">{{user.last_ip | raw}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">IP-рег.</div>
+                        <div class="value">{{user.reg_ip | raw}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Привел</div>
+                        <div class="value">{{user.drive | raw}}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="sum_information">
+                      <b>Кэшбэк</b>
+                      <div class="line">
+                        <div class="name">confirmed</div>
+                        <div class="value">
+                          {{user.cnt_confirmed}}
+                        </div>
+                        <div class="value">
+                          {{user.sum_confirmed}} р
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name">pending</div>
+                        <div class="value">
+                          {{user.cnt_pending}}
+                        </div>
+                        <div class="value">
+                          {{user.sum_pending}} р
+                        </div>
+                      </div>
+                      <b>За рефералов</b>
+                      <div class="line">
+                        <div class="name">confirmed</div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.sum_from_ref_confirmed}} р
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name">pending</div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.sum_from_ref_pending}} р
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name"><b>Бонусы</b></div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.sum_bonus}} р
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name"><b>Благотворительность</b></div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.sum_foundation}} р
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name"><b>Выплачено</b></div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.sum_withdraw}} р
+                        </div>
+                      </div>
+                      <div class="line sum">
+                        <div class="name"><b>Баланс</b></div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.currentBalance}}
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name"><b>В ожидании</b></div>
+                        <div class="value">
+                        </div>
+                        <div class="value">
+                          {{user.pending}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="sum_information">
+                      <div class="line">
+                        <div class="name">Кэшбэк</div>
+                        <div class="value">
+                          {{user.loyalty_status_data.display_name}}
+                          ({{user.loyalty_status_data.bonus}}%)
+                          {% if user.loyalty_status_data.is_vip==1 %}
+                            <br>VIP клиент
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="line">
+                        <div class="name">За рефералов</div>
+                        <div class="value">
+                          {{user.bonus_status_data.display_name}}
+                          ({{user.bonus_status_data.bonus}}%)
+                          {% if user.bonus_status_data.is_webmaster==1 %}
+                            <br>для веб мастеров
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="line">
+                        <div class="name">Рефералов</div>
+                        <div class="value">{{user.ref_total}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Активен</div>
+                        <div class="value">{{user.is_active}}</div>
+                      </div>
+                      <div class="line">
+                        <div class="name">Админ</div>
+                        <div class="value">{{user.is_admin}}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="/admin/users/edit/{{user.uid}}">Редактировать</a>
+                    <br>
+                    <a href="/admin/users/login/{{user.uid}}">Login</a>
+                    <br>
+                    <a class="delete" href="/admin/users/delete/{{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {{ LinkPager_widget({ 'pagination': pages }) }}
+
+        {% else %}
+            <div class="col-md-12">
+              <div class="not-found">На данный момент таких пользователей нет.</div>
+            </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
 </div>
