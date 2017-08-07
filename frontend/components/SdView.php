@@ -66,14 +66,15 @@ class SdView extends View
     $arr = $this->getPageMetadata();
     //ddd($this->params);
     //$this->metaTags = $this->getPageMetadata();
-    $this->metaTags[] = '<meta name="description" content="'.$arr['description'].'">';
-    $this->metaTags[] = '<meta name="keywords" content="'.$arr['keywords'].'">';
-    $this->title = $arr['title'];
+    if (isset($arr['description'])) $this->metaTags[] = '<meta name="description" content="'.$arr['description'].'">';
+    if (isset($arr['keywords'])) $this->metaTags[] = '<meta name="keywords" content="'.$arr['keywords'].'">';
+    if (isset($arr['title'])) $this->title = $arr['title'];
+    if (isset($arr['content'])) $this->contentBD = $arr['content'];
+    if (isset($arr['h1'])) $this->h1 = $arr['h1'];
 
     //Yii::$app->view->params['contentFromBD'] = $arr['content'];
     //$this->params['h1TagFromBD'] = $arr['h1'];
-    $this->contentBD = $arr['content'];
-    $this->h1 = $arr['h1'];
+
     return true;
   }
 
