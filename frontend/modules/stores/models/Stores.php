@@ -7,6 +7,7 @@ use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\stores\models\PromoStores;
 use frontend\components\Help;
 use frontend\components\Pagination;
+use frontend\components\Pagination2;
 
 
 /**
@@ -189,12 +190,6 @@ class Stores extends \yii\db\ActiveRecord
 
         $order = !empty($this->sortvars[$sort]['order']) ? $this->sortvars[$sort]['order'] : $order;
 
-
-        $paginationSettings["numPage"] = $page;
-        $paginationSettings["numOutput"] = $limit;
-        $pagination = new Pagination('frontend\modules\stores\models\Stores', $paginationSettings);
-
-
         $result['current_category'] = null;
         if ($category) {
             //магазины категории
@@ -203,23 +198,22 @@ class Stores extends \yii\db\ActiveRecord
                 //todo на отработку отсутствующей страницы
             }
             $searchParams['category'] = $category;
-            $paginationData = $pagination->getData(
-                'pagination_catalog_stores_category_' . $category,
-                [],
+            $pagination = new Pagination(
                 "SELECT COUNT(cws.uid) as count FROM cw_stores as cws 
-            
                                         LEFT JOIN cw_stores_to_categories as cstc
                                         ON cws.uid = cstc.store_id
-                                        WHERE cws.is_active in (0, 1)  AND cstc.category_id = " . intval($category)
+                                        WHERE cws.is_active in (0, 1)  AND cstc.category_id = " . intval($category),
+                $limit,
+                $page
             );
             $method = 'getCategoryStores';
             $seachParams['category'] = $category;
         } else {
             //все магазины
-            $paginationData = $pagination->getData(
-                'pagination_catalog_stores',
-                [],
-                'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)'
+            $pagination = new Pagination(
+                'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)',
+                $limit,
+                $page
             );
             $method = 'actives';
         }
@@ -232,9 +226,8 @@ class Stores extends \yii\db\ActiveRecord
 
         $cacheName = "catalog_stores_" . $postFixCache;
 
-        $offset = isset($paginationData["start"]) ? $paginationData["start"] : 0;
         $searchParams['limit'] = $limit;
-        $searchParams['offset'] = $offset;
+        $searchParams['offset'] = $pagination->offset();
         $searchParams['sort'] = $sort;
         $searchParams['order'] = $order;
 
@@ -244,9 +237,9 @@ class Stores extends \yii\db\ActiveRecord
             return $this->$method($searchParams);
         });
 
-        $result["total_v"] = $paginationData["count"];
+        $result["total_v"] = $pagination->count();
         $result["show_stores"] = count($result['stores']);
-        $result["offset_stores"] = $offset;
+        $result["offset_stores"] = $pagination->offset();
         $result["total_all_stores"] = self::activeCount();
 
         //параметры пагинации
@@ -259,9 +252,9 @@ class Stores extends \yii\db\ActiveRecord
         $paginateParamQuery = http_build_query($paginateParams);
         $paginationPageName = $pageName . ($paginateParamQuery == '' ? '' : '?' . $paginateParamQuery);
 
-        if (isset($pagination) && isset($paginationData) && $paginationData["total"] > 1) {
-            $result["pagination"] = $pagination->getPaginationSeo($paginationPageName);
-            \Yii::$app->controller->makePaginationTags($paginationPageName, $paginationData["total"], $page);
+        if (isset($pagination) && $pagination->pages() > 1) {
+            $result["pagination"] = $pagination->getPagination($paginationPageName);
+            \Yii::$app->controller->makePaginationTags($paginationPageName, $pagination->pages(), $page);
         }
 
         $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
