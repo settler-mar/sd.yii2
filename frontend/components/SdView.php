@@ -63,45 +63,38 @@ class SdView extends View
       $page='account/affiliate';
     };
     if ($page == '') $page = 'index';
-
       //вначале из базы
-      $cache = Yii::$app->cache;
-
-      $page_meta = $cache->getOrSet('page_meta', function ($page) {
+    /*  $page_meta = Meta::getDb()->cache(function ($db) {
         $meta = Meta::find()
           ->select(['title', 'description', 'keywords', 'h1', 'content'])
-          ->where(['page' => $page])
+          ->where(['page' => 'index'])
           ->asArray()->all();
         return $meta;
-      });
+      }); */
+    $page_meta = Meta::find()
+        ->select(['title', 'description', 'keywords', 'h1', 'content'])
+        ->where(['page' => $page])
+        ->asArray()->all();
 
-      ddd($page_meta);
+
+   // ddd($page_meta);
 
       if (count($page_meta) > 0) {
         $page_meta = $page_meta[0];
       } else {
+        $arr = explode('/',$page);
+        $page = $arr[0].'/'.$arr[1];
         //прямого совпадения нет ищем по плейсхолдерам
         $mdataArray = Meta::find()
-          ->select('*')
+          ->select(['title', 'description', 'keywords', 'h1', 'content'])
        //   ->select('LENGTH(`page`)', 'l')
-          ->where(['like','page','%*%'])
+          ->where(['like','page', $page.'%',false])
           ->OrderBy(['page'=>SORT_ASC])
+          ->asArray()
           ->all();
-        foreach ($mdataArray as $mdataItem) {
-          $noalias = explode('*', $mdataItem->page);
-          $match = '/^' . str_replace('/', '\/', $noalias[0]) . '.*' .
-            str_replace('/', '\/', (!empty($noalias[1]) ? $noalias[1] : '')) . '$/';
-          if (preg_match($match, $page)) {
-            $page_meta = [
-              'title' => $mdataItem->title,
-              'description' => $mdataItem->description,
-              'keywords' => $mdataItem->keywords,
-              'h1' => $mdataItem->h1,
-              'content' => $mdataItem->content,
-            ];
-            break;
-          }
-        }
+        //ddd($mdataArray);
+        $page_meta = $mdataArray[0];
+
        // if (!$mdata) {
           //если нет, то из настроек
       //    $mdata = \Cwcashback\Settings::call()->getSettings('metadata', $page);
