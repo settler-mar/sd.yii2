@@ -343,4 +343,41 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     $this->password_reset_token = null;
   }
+
+
+  public function getBalabce(){
+    $confirmed_sum=
+      floatval($this->sum_confirmed)+
+      floatval($this->sum_from_ref_confirmed);
+    $pending_sum=
+      floatval($this->sum_pending)+
+      floatval($this->sum_from_ref_pending);
+    $sum_bonus=
+      floatval($this->sum_bonus);
+
+    $bl=[
+      'total'=>$confirmed_sum +$sum_bonus,
+      'pending'=>$pending_sum,
+      'charity'=>$this->sum_foundation,
+      'withdraw'=>$this->sum_withdraw,
+    ];
+
+    $bl['current']=$bl['total']-$bl['charity']-$bl['withdraw'];
+
+    $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
+      $this->sum_foundation - $this->sum_withdraw;
+    if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
+      $bl['max_fundation']=0;
+    }else if ($balance<0){
+      $bl['max_fundation']=0;
+    }else{
+      $bl['max_fundation']=$balance;
+    }
+
+    foreach ($bl as $k=>&$v){
+      $v=number_format($v, 2, ".", "");
+    }
+
+    return $bl;
+  }
 }
