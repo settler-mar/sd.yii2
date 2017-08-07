@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DefaultController implements the CRUD actions for Constants model.
+ * AdminController implements the CRUD actions for Constants model.
  */
 class AdminController extends Controller
 {
@@ -20,7 +20,7 @@ class AdminController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -32,12 +32,22 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        if (isset($_GET['id'])) {
+          $model = $this->findModel($_GET['id']);
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['admin/constants']);
+          } else {
+            return $this->render('update.twig', [
+              'model' => $model,
+            ]);
+          }
+        }
         $searchModel = new ConstantsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
-            'models' => $dataProvider->getModels(),
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -48,27 +58,9 @@ class AdminController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view.twig', [
             'model' => $this->findModel($id),
         ]);
-    }
-
-    /**
-     * Creates a new Constants model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Constants();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**
@@ -84,7 +76,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->uid]);
         } else {
-            return $this->render('update', [
+            return $this->render('update.twig', [
                 'model' => $model,
             ]);
         }

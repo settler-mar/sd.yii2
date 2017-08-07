@@ -1,31 +1,19 @@
-<?php
-
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model app\modules\constants\models\Constants */
-/* @var $form yii\widgets\ActiveForm */
-?>
-
+{{ use('/yii/widgets/ActiveForm') }}
 <div class="constants-form">
+    {% set form = active_form_begin() %}
 
-    <?php $form = ActiveForm::begin(); ?>
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-    <?= form.field(model, 'name').textInput({'maxlength':true}) ?>
+        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
 
-    <?= form.field(model, 'title').textInput({'maxlength':true}) ?>
+        {{ form.field(model, 'text').textarea({'rows':6})|raw }}
 
-    <?= form.field(model, 'text').textarea({'rows':6}) ?>
+        {{ form.field(model, 'ftype').textInput({'maxlength':true})|raw }}
 
-    <?= form.field(model, 'ftype').textInput({'maxlength':true}) ?>
-
-    <?= form.field(model, 'updated_at').textInput() ?>
+        {{ form.field(model, 'updated_at').textInput()|raw }}
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
-
-    <?php ActiveForm::end(); ?>
-
+    {{ active_form_end() }}
 </div>
