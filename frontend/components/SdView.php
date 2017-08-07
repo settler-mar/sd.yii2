@@ -1,5 +1,5 @@
 <?php
-namespace frontend\controllers;
+namespace frontend\components;
 
 use Yii;
 use yii\web\View;
@@ -15,7 +15,7 @@ class SdView extends View
 
   public function beforeRender($viewFile, $params)
   {
-    ddd(Yii::$app->request->pathInfo);
+   // ddd(Yii::$app->request->pathInfo);
     if (!parent::beforeRender($viewFile, $params)){
       return false;
     };

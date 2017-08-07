@@ -44,7 +44,7 @@ return [
       'errorAction' => 'site/error',
     ],
     'view'=>[
-      'class' => 'frontend\controllers\SdView',
+      'class' => 'frontend\components\SdView',
       'renderers' => [
         'twig' => [
           'globals' => [

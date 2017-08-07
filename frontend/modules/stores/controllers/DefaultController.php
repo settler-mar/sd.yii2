@@ -10,8 +10,8 @@ class DefaultController extends SdController
 {
     public function actionIndex()
     {
-      d(Yii::$app->request->get());
-      ddd(\Yii::$app->request->get());
+     // d(Yii::$app->request->get());
+     // ddd(\Yii::$app->request->get());
         return $this->render('index');
     }
 }
