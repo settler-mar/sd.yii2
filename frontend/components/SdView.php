@@ -4,6 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\View;
 use yii\helpers\Url;
+use app\modules\meta\models\Meta;
 
 class SdView extends View
 {
@@ -56,9 +57,86 @@ class SdView extends View
     d($this);
     d($viewFile);
     d($params);*/
-    //ddd($this->metaTags);
-    $this->metaTags['q'] = '<h1>Meta</h1>';
-   // $this->params['qqq'] = 222;
+    //ddd(explode('?', $_SERVER['REQUEST_URI'])[0]);
+   // ddd($this->getPageMetadata());
+
+    $arr = $this->getPageMetadata();
+    //$this->metaTags = $this->getPageMetadata();
+    $this->metaTags[] = '<meta name="description" content="'.$arr['description'].'">';
+    $this->metaTags[] = '<meta name="keywords" content="'.$arr['keywords'].'">';
+    $this->title = $arr['title'];
+
+    Yii::$app->params['contentFromBD'] = $arr['content'];
+    Yii::$app->params['h1TagFromBD'] = $arr['h1'];
+    Yii::$app->view->params['qwer'] = '12345';
     return true;
   }
+
+  /**
+   * получение метаданных
+   */
+  private function getPageMetadata()
+  {
+    $page = Yii::$app->request->pathInfo;
+    $cacheType = "metadata";
+    $cacheName = "metadata_" . $page;
+
+    if($page=='affiliate-system'){
+      $page='account/affiliate';
+    };
+    if ($page == '') $page = 'index';
+    $mdata = false;
+
+    if ($mdata === false) {
+      //вначале из базы
+      $mdata = Meta::find()
+        ->select(['title', 'description', 'keywords', 'h1', 'content'])
+        ->where(['page' => $page])
+        ->asArray()->all();
+      //ddd($mdata);
+      if (count($mdata) > 0) {
+        $mdata = $mdata[0];
+      } else {
+        //прямого совпадения нет ищем по плейсхолдерам
+        $mdataArray = Meta::find()
+          ->select('*')
+       //   ->select('LENGTH(`page`)', 'l')
+          ->where(['like','page','%*%'])
+          ->OrderBy(['page'=>SORT_ASC])
+          ->all();
+        foreach ($mdataArray as $mdataItem) {
+          $noalias = explode('*', $mdataItem->page);
+          $match = '/^' . str_replace('/', '\/', $noalias[0]) . '.*' .
+            str_replace('/', '\/', (!empty($noalias[1]) ? $noalias[1] : '')) . '$/';
+          if (preg_match($match, $page)) {
+            $mdata = [
+              'title' => $mdataItem->title,
+              'description' => $mdataItem->description,
+              'keywords' => $mdataItem->keywords,
+              'h1' => $mdataItem->h1,
+              'content' => $mdataItem->content,
+            ];
+            break;
+          }
+        }
+       // if (!$mdata) {
+          //если нет, то из настроек
+      //    $mdata = \Cwcashback\Settings::call()->getSettings('metadata', $page);
+       // }
+      }
+
+    //  if (\Cwcashback\Settings::call()->getSettings('env', 'cache')) {
+      //  \Cwcashback\Memcache::addData(
+        //  $cacheType,
+          //$cacheName,
+    //      $mdata,
+      //    false,
+        //  \Cwcashback\Settings::call()->getSettings('cachetime', 'month')
+     //   );
+     // }
+    }
+    return $mdata;
+    ddd($mdata);
+  }
+
 }
