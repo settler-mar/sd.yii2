@@ -4,6 +4,7 @@ namespace frontend\modules\stores\models;
 
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\PromoStores;
 use frontend\components\Help;
 use frontend\components\Pagination;
 
@@ -109,6 +110,14 @@ class Stores extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
             ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
+    }
+    /**
+     * promo stores
+     * @return $this
+     */
+    public function getPromoStores()
+    {
+        return $this->hasMany(PromoStores::className(), ['store_id' => 'uid']);
     }
 
     /**
@@ -256,6 +265,7 @@ class Stores extends \yii\db\ActiveRecord
 
         return $result;
     }
+
 
     /**
      * @return mixed
