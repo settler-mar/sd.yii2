@@ -23,7 +23,6 @@ class SdView extends View
 
   public function beforeRender($viewFile, $params)
   {
-   // ddd(Yii::$app->request->pathInfo);
     if (!parent::beforeRender($viewFile, $params)){
       return false;
     };
@@ -36,16 +35,11 @@ class SdView extends View
     }
 
     $arr = $this->getPageMetadata();
-    //ddd($this->params);
-    //$this->metaTags = $this->getPageMetadata();
     if (isset($arr['description'])) $this->metaTags[] = '<meta name="description" content="'.$arr['description'].'">';
     if (isset($arr['keywords'])) $this->metaTags[] = '<meta name="keywords" content="'.$arr['keywords'].'">';
     if (isset($arr['title'])) $this->title = $arr['title'];
     if (isset($arr['content'])) $this->contentBD = $arr['content'];
     if (isset($arr['h1'])) $this->h1 = $arr['h1'];
-
-    //Yii::$app->view->params['contentFromBD'] = $arr['content'];
-    //$this->params['h1TagFromBD'] = $arr['h1'];
 
     return true;
   }
@@ -56,28 +50,17 @@ class SdView extends View
   private function getPageMetadata()
   {
     $page = Yii::$app->request->pathInfo;
-    $cacheType = "metadata";
-    $cacheName = "metadata_" . $page;
 
     if($page=='affiliate-system'){
       $page='account/affiliate';
     };
     if ($page == '') $page = 'index';
-      //вначале из базы
-    /*  $page_meta = Meta::getDb()->cache(function ($db) {
-        $meta = Meta::find()
-          ->select(['title', 'description', 'keywords', 'h1', 'content'])
-          ->where(['page' => 'index'])
-          ->asArray()->all();
-        return $meta;
-      }); */
+
     $page_meta = Meta::find()
         ->select(['title', 'description', 'keywords', 'h1', 'content'])
         ->where(['page' => $page])
-        ->asArray()->all();
-
-
-   // ddd($page_meta);
+        ->asArray()
+        ->all();
 
       if (count($page_meta) > 0) {
         $page_meta = $page_meta[0];
@@ -87,29 +70,12 @@ class SdView extends View
         //прямого совпадения нет ищем по плейсхолдерам
         $mdataArray = Meta::find()
           ->select(['title', 'description', 'keywords', 'h1', 'content'])
-       //   ->select('LENGTH(`page`)', 'l')
           ->where(['like','page', $page.'%',false])
           ->OrderBy(['page'=>SORT_ASC])
           ->asArray()
           ->all();
-        //ddd($mdataArray);
-        $page_meta = $mdataArray[0];
-
-       // if (!$mdata) {
-          //если нет, то из настроек
-      //    $mdata = \Cwcashback\Settings::call()->getSettings('metadata', $page);
-       // }
-      }
-
-    //  if (\Cwcashback\Settings::call()->getSettings('env', 'cache')) {
-      //  \Cwcashback\Memcache::addData(
-        //  $cacheType,
-          //$cacheName,
-    //      $mdata,
-      //    false,
-        //  \Cwcashback\Settings::call()->getSettings('cachetime', 'month')
-     //   );
-     // }
+          $page_meta = $mdataArray[0];
+        }
     return $page_meta;
   }
 
