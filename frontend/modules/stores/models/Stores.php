@@ -217,7 +217,7 @@ class Stores extends \yii\db\ActiveRecord
         } else {
             //все магазины
             $paginationData = $pagination->getData(
-                'pagination_catalog_stores' . $category,
+                'pagination_catalog_stores',
                 [],
                 'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)'
             );
