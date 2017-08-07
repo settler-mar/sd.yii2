@@ -25,6 +25,7 @@ class AdminController extends Controller
             ],
         ];
     }
+
   function beforeAction($action) {
     $rule=[
       $action->controller->id,
