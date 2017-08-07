@@ -81,6 +81,9 @@ return [
     'category_strores' => [
       'class' => 'frontend\modules\category_stores\Module',
     ],
+    'constants' => [
+      'class' => 'app\modules\constants\Module',
+    ],
   ],
   'params' => $params,
 ];
