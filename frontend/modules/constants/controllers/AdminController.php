@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * DefaultController implements the CRUD actions for Constants model.
  */
-class DefaultController extends Controller
+class AdminController extends Controller
 {
     public function behaviors()
     {
