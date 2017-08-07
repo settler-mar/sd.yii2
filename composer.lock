@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "80f424f7e994216a85eddd6357b503a8",
+    "content-hash": "40303873d276c515f047962f146d896b",
     "packages": [
         {
             "name": "aayaresko/yii2-extended-gii",
@@ -349,6 +349,47 @@
             "time": "2017-07-16T21:13:23+00:00"
         },
         {
+            "name": "developeruz/yii2-db-rbac",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/developeruz/yii2-db-rbac.git",
+                "reference": "0cd8031d56d487a28b967d0af236a82577c0ea51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/developeruz/yii2-db-rbac/zipball/0cd8031d56d487a28b967d0af236a82577c0ea51",
+                "reference": "0cd8031d56d487a28b967d0af236a82577c0ea51",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "developeruz\\db_rbac\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Elvira Sheina",
+                    "email": "elleuz@gmail.com",
+                    "homepage": "http://developer.uz"
+                }
+            ],
+            "description": "Dynamic control of access rights in YII2",
+            "keywords": [
+                "rbac",
+                "yii"
+            ],
+            "time": "2017-03-05T11:58:10+00:00"
+        },
+        {
             "name": "digitv/kint",
             "version": "dev-master",
             "source": {
@@ -485,54 +526,6 @@
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
             "time": "2016-04-07T12:29:16+00:00"
-        },
-        {
-            "name": "rmrevin/yii2-ulogin",
-            "version": "1.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rmrevin/yii2-ulogin.git",
-                "reference": "eb41ab8b5e6a0df1f8ec8f20d2bed9c8db44a7f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rmrevin/yii2-ulogin/zipball/eb41ab8b5e6a0df1f8ec8f20d2bed9c8db44a7f1",
-                "reference": "eb41ab8b5e6a0df1f8ec8f20d2bed9c8db44a7f1",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "2.0.*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "rmrevin\\yii\\ulogin\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "uLogin",
-                    "homepage": "https://ulogin.ru/",
-                    "role": "OAuth provider"
-                },
-                {
-                    "name": "Revin Roman",
-                    "email": "xgismox@gmail.com",
-                    "homepage": "http://phptime.ru/"
-                }
-            ],
-            "description": "Extension for yii2 ulogin integration",
-            "keywords": [
-                "authorization",
-                "oauth",
-                "ulogin",
-                "yii2"
-            ],
-            "time": "2015-11-16T12:25:29+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
