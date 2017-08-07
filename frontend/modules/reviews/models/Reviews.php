@@ -3,7 +3,7 @@
 namespace frontend\modules\reviews\models;
 
 use Yii;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\Users;
 
 /**
  * This is the model class for table "cw_users_reviews".
