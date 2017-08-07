@@ -84,8 +84,6 @@ class PromoStores extends \yii\db\ActiveRecord
             $result = null;
 
             foreach ($queryResult as $value) {
-                //$promoCashback = "";
-
                 if (stripos($value["displayed_cashback"], "до") !== false) {
                     $parts = explode(" ", $value["displayed_cashback"]);
                     $cash = $parts[1];
@@ -110,8 +108,6 @@ class PromoStores extends \yii\db\ActiveRecord
             return $result;
         });
 
-        //$this->contentData["promo_stores"] = $promoStores;
-        d($promoStores);
         return $promoStores;
     }
 }

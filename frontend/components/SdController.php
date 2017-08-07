@@ -29,9 +29,8 @@ class SdController extends Controller
      * @param $total
      * @param $page
      */
-    public function makePaginationTags($total, $page)
+    public function makePaginationTags($pageName, $total, $page)
     {
-        $pageName = \Yii::$app->request->pathInfo;
         $this->pagination_tags = [
             'prev_page' => $page > 1 ? Help::makePageUrl($pageName, $page - 1) : null,
             'next_page' => $page < $total ? Help::makePageUrl($pageName, $page + 1) : null,

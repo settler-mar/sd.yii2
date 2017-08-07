@@ -35,16 +35,19 @@ class Stores extends \yii\db\ActiveRecord
 {
 
     /**
+     * @var string
+     */
+    private $defaultSort = 'name';
+    /**
      * Possible sorting options with titles and default value
      * @var array
      */
     private $sortvars = [
-        //todo ввести поле order для направления сортировки и переделать массив
-        ["field" => "visit", "title" => "Популярности", "title_mobile" => "По популярности", "default" => 0],
-        ["field" => "name", "title" => "Алфавиту", "title_mobile" => "По алфавиту", "default" => 1, 'order' => 'ASC'],
-        ["field" => "added", "title" => "Новизне", "title_mobile" => "По новизне", "default" => 0],
-        ["field" => "cashback_percent", "title" => "%", "title_mobile" => "По % кэшбэка", "default" => 0],
-        ["field" => "cashback_summ", "title" => "$", "title_mobile" => "По $ кэшбэка", "default" => 0],
+        'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
+        'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
+        'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
+        'cashback_percent' => ["title" => "%", "title_mobile" => "По % кэшбэка"],
+        'cashback_summ' => ["title" => "$", "title_mobile" => "По $ кэшбэка"],
     ];
     /**
      * @inheritdoc
@@ -176,25 +179,16 @@ class Stores extends \yii\db\ActiveRecord
             }
         }
 
-        $defaultSort = 'name';
+        $defaultSort = $this->defaultSort;//'name';
         $order = 'DESC';
-        foreach ($this->sortvars as $sortvar) {
-            if (!empty($sortvar['default'])) {
-                $defaultSort = $sortvar['field'];
-                break;
-            }
-        }
-        foreach ($this->sortvars as $sortvar) {
-            if ($sortvar['field'] == $isort) {
-                $sort = $isort;
-                $order = !empty($sortvar['order']) ? $sortvar['order'] : $order;
-                break;
-            }
-        }
+
+        $sort = isset($this->sortvars[$isort]) ? $isort : $defaultSort;
 
         $page = (isset($ipage) && !in_array($ipage, ["", 0]) ? Help::shieldingData($ipage) : 1);
         $limit = (isset($ilimit) && !in_array($ilimit, ["", 0]) ? Help::shieldingData($ilimit) : $defaultLimit);
-        $sort = isset($sort) ? $sort : $defaultSort;
+
+        $order = !empty($this->sortvars[$sort]['order']) ? $this->sortvars[$sort]['order'] : $order;
+
 
         $paginationSettings["numPage"] = $page;
         $paginationSettings["numOutput"] = $limit;
@@ -255,13 +249,23 @@ class Stores extends \yii\db\ActiveRecord
         $result["offset_stores"] = $offset;
         $result["total_all_stores"] = self::activeCount();
 
+        //параметры пагинации
+        //для дефолтных значений параметров не включаем в строку - проходим по значениям
+        $paginateParams = [
+            'limit' => $defaultLimit == $limit ? null : $limit,
+            'sort' => $defaultSort == $sort ? null : $sort,
+        ];
+
+        $paginateParamQuery = http_build_query($paginateParams);
+        $paginationPageName = $pageName . ($paginateParamQuery == '' ? '' : '?' . $paginateParamQuery);
+
         if (isset($pagination) && isset($paginationData) && $paginationData["total"] > 1) {
-            $result["pagination"] = $pagination->getPaginationSeo($pageName);
-            \Yii::$app->controller->makePaginationTags($paginationData["total"], $page);
+            $result["pagination"] = $pagination->getPaginationSeo($paginationPageName);
+            \Yii::$app->controller->makePaginationTags($paginationPageName, $paginationData["total"], $page);
         }
 
-        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $sort, $limit, $page);
-        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $sort, $limit);
+        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
+        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit);
 
         return $result;
     }
@@ -272,8 +276,8 @@ class Stores extends \yii\db\ActiveRecord
      */
     protected function actives($options)
     {
+
         return self::find()
-            //->from(self::tableName().' s')
             ->select([
                 '*',
                 "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)".
