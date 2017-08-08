@@ -4,10 +4,8 @@ namespace frontend\modules\stores\models;
 
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
-use frontend\modules\stores\models\PromoStores;
-use frontend\components\Help;
 use frontend\components\Pagination;
-use frontend\components\Pagination2;
+
 
 
 /**
@@ -164,29 +162,23 @@ class Stores extends \yii\db\ActiveRecord
     public function getStores()
     {
         $request = Yii::$app->request;
-        $ipage = Help::shieldingData($request->get('page'));
-        $ilimit = Help::shieldingData($request->get('limit'));
-        $isort = Help::shieldingData($request->get('sort'));
-        $category = Help::shieldingData($request->get('category'));
+        $ipage = $request->get('page');
+        $ilimit = $request->get('limit');
+        $isort = $request->get('sort');
+        $category = $request->get('category');
         $pageName = $request->pathInfo;
         
         $result = [];//возвращаем её
 
-        $defaultLimit = 50;
-        foreach (Help::$limitVars as $limitVar) {
-            if (!empty($limitVar['default'])) {
-                $defaultLimit = $limitVar['limit'];
-                break;
-            }
-        }
+        $defaultLimit = Yii::$app->controller->defaultLimit;
 
         $defaultSort = $this->defaultSort;//'name';
         $order = 'DESC';
 
         $sort = isset($this->sortvars[$isort]) ? $isort : $defaultSort;
 
-        $page = (isset($ipage) && !in_array($ipage, ["", 0]) ? Help::shieldingData($ipage) : 1);
-        $limit = (isset($ilimit) && !in_array($ilimit, ["", 0]) ? Help::shieldingData($ilimit) : $defaultLimit);
+        $page = (isset($ipage) && !in_array($ipage, ["", 0]) ? $ipage : 1);
+        $limit = (isset($ilimit) && !in_array($ilimit, ["", 0]) ? $ilimit : $defaultLimit);
 
         $order = !empty($this->sortvars[$sort]['order']) ? $this->sortvars[$sort]['order'] : $order;
 
@@ -222,9 +214,7 @@ class Stores extends \yii\db\ActiveRecord
         $result["limit"] = $limit;
         $result["sort"] = $sort;
 
-        $postFixCache = md5($pageName);
-
-        $cacheName = "catalog_stores_" . $postFixCache;
+        $cacheName = "catalog_stores_" . md5($pageName);
 
         $searchParams['limit'] = $limit;
         $searchParams['offset'] = $pagination->offset();
@@ -247,18 +237,18 @@ class Stores extends \yii\db\ActiveRecord
         $paginateParams = [
             'limit' => $defaultLimit == $limit ? null : $limit,
             'sort' => $defaultSort == $sort ? null : $sort,
+            
         ];
 
-        $paginateParamQuery = http_build_query($paginateParams);
-        $paginationPageName = $pageName . ($paginateParamQuery == '' ? '' : '?' . $paginateParamQuery);
-
         if (isset($pagination) && $pagination->pages() > 1) {
-            $result["pagination"] = $pagination->getPagination($paginationPageName);
-            \Yii::$app->controller->makePaginationTags($paginationPageName, $pagination->pages(), $page);
+            $result["pagination"] = $pagination->getPagination($pageName, $paginateParams);
+            \Yii::$app->controller->makePaginationTags($pageName, $pagination->pages(), $page, $paginateParams);
         }
 
-        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
-        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit);
+        $result['sortlinks'] = \Yii::$app->controller
+            ->getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
+        $result['limitlinks'] = \Yii::$app->controller
+            ->getLimitLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit);
 
         return $result;
     }
