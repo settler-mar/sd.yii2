@@ -29,7 +29,6 @@ class DefaultController extends SdController
         };
         $stores = new Stores();
         $storesData = $stores->getStores();
-        $storesData['promo_stores'] = PromoStores::getPromoStores();
 
         return $this->render('catalog', $storesData);
     }
