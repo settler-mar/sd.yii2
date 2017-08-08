@@ -55,7 +55,7 @@ class AdminController extends Controller
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
-      'models' => $dataProvider->getModels(),
+      'dataProvider' => $dataProvider,
     ]);
   }
 
