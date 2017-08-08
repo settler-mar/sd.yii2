@@ -187,7 +187,8 @@ class Stores extends \yii\db\ActiveRecord
             //магазины категории
             $result['current_category'] = CategoryStores::find()->where(['uid' => $category])->one();
             if ($result['current_category'] != null) {
-                //todo на отработку отсутствующей страницы
+                //todo на отработку отсутствующей страницы пока на 404
+                throw new \yii\web\NotFoundHttpException;
             }
             $searchParams['category'] = $category;
             $pagination = new Pagination(
