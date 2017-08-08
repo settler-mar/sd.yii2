@@ -5,10 +5,13 @@
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+        {% if model.ftype=='textarea' %}
+            {{ form.field(model, 'text').textarea({'rows':6})|raw }}
+        {% else  %}
+            {{ form.field(model, 'text').textarea({'rows':6, 'class':'visual_editor'})|raw }}
+        {% endif %}
 
-        {{ form.field(model, 'text').textarea({'rows':6})|raw }}
-
-        {{ form.field(model, 'ftype').textInput({'maxlength':true})|raw }}
+        {{ form.field(model, 'ftype').dropDownList({'textarea':'textarea','reachtext':'reachtext'})|raw }}
 
         {{ form.field(model, 'updated_at').textInput()|raw }}
 
