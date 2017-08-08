@@ -3,43 +3,26 @@
 namespace frontend\components;
 
 use frontend\components\Help;
+use yii\data\Pagination as YiiPagination;
+use yii\helpers\Url;
 
 class Pagination
 {
 
-    private $model;
-
-    private $options = [];
+    private $pagination;
 
     /**
      * Pagination constructor.
      * @param $model
      * @param array $options
+     * query
+     * 
      */
-    public function __construct($model, $options = [])
+    public function __construct($query, $limit, $page = 0)
     {
-        $this->model = $model;
-
-        $this->options = array_map(function ($v) {
-            return Help::shieldingData($v);
-        }, $options);
- }
-
-    /**
-     * Obtaining data for pagination
-     * @param string $cacheType
-     * @param string $cacheName
-     * @param array $tableWhere
-     * @param string $whereMethod
-     * @return array
-     */
-    //public function getData($cacheType, $cacheName, $tableWhere = [], $whereMethod = "where", $query = "")
-    public function getData($cacheName, $conditions, $query = "")
-    {
+        $cacheName = 'paginate_query_' . md5($query). '_' . $page . '_' . $limit;
         $cache = \Yii::$app->cache;
-        $count = $cache->getOrSet($cacheName, function () use ($conditions, $query) {
-            $model = new $this->model;
-
+        $total = $cache->getOrSet($cacheName, function () use ($query) {
             if ($query != "") {
                 $connection = \Yii::$app->getDb();
                 $command = $connection->createCommand($query);
@@ -48,43 +31,49 @@ class Pagination
 
                 $c = isset($result['count']) ? $result['count'] : 0;
             } else {
-                $c = $model->find()->where($conditions)->count();
+                $c = 0;
             }
             return intval($c);
         });
-
-        $total = intval(($count - 1) / $this->options["numOutput"]) + 1;
-        $page = intval($this->options["numPage"]);
-        $this->options["total"] = $total;
-
-        if (empty($page) || $page < 0) {
-            $page = 1;
-        }
-        if ($page > $total) {
-            $page = $total;
-        }
-
-        $start = $page == 0 ? 0 : $page * $this->options["numOutput"] - $this->options["numOutput"];
-
-        return ["start" => $start, "total" => $total, "count" => $count];
+        $this->pagination = new YiiPagination([
+            'totalCount' => $total,
+            'page' => $page-1,
+            'pageSize' => $limit,
+        ]);
     }
+
+    public function count()
+    {
+        return $this->pagination->totalCount;
+    }
+
+    public function offset()
+    {
+        return $this->pagination->offset;
+    }
+    public function pages()
+    {
+        return $this->pagination->pageCount;
+    }
+
 
     /**
      * Getting ready pagination
      * @param string $pageName
      * @return string
      */
-    public function getPaginationSeo($pageName)
+    public function getPagination($pageName)
     {
         $displayCount = 5;//сколько кнопок отоображается в центре
-        $page = intval($this->options["numPage"]);
-        $total = intval($this->options["total"]);
+        $page = $this->pagination->page+1;
+        $total = $this->pagination->pageCount;
+
 
         //$pageName = $pageName.$delimiter;
 
         //предыдущая
         $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
-            ' data-original-title="Предыдущая" href="' . Help::makePageUrl($pageName, $page - 1) . '">' .
+            ' data-original-title="Предыдущая" href="' . Help::makePageUrl($pageName, $page) . '">' .
             '<span class="fa fa fa-caret-left"></span></a></li>' : '';
 
         //первая

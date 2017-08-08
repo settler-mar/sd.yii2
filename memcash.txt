@@ -1,0 +1,8 @@
+total_all_stores - общее количество активных магазинов (активные - включая временно заблокированные)
+top_12_stores - топ 12 магизинов по популярности
+pagination_catalog_stores - запрос для данных пагинации для всех магазинов
+pagination_catalog_stores_category_<category> - запрос для данных пагинации для  магазинов категории category
+catalog_stores_<хеш от url> - основной запрос для /stores
+reviews_top - топ reviews
+catalog_promo_stores - PromoStores
+categories_stores - Список категорий

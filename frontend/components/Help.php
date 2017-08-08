@@ -43,7 +43,7 @@ class Help
      * @param integer $page
      * @return array
      */
-    public static function getSortLinks($pageName, $sortNames, $sort, $limit, $page = 1)
+    public static function getSortLinks($pageName, $sortNames, $defaultSortName, $sort, $limit, $page = 1)
     {
         $page = ($page == 1 ? '' : '/page-'.$page);
         //$pageName = str_replace('/{{page}}', $page, $pageName);
@@ -55,19 +55,19 @@ class Help
                 $params['limit'] = null;
             }
         }
-        foreach ($sortNames as $sortName) {
-            if (!empty($sortName['default'])) {
+        foreach ($sortNames as $key => $sortName) {
+            if ($key == $defaultSortName) {
                 // способ сортировки  по умолчанию
                 $params['sort'] = null;
             } else {
-                $params['sort'] = $sortName['field'];
+                $params['sort'] = $key;
             }
             $paramQuery = http_build_query($params);
             $result[] = [
                 'link' => $pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
-                'active' => $sort == $sortName['field'] ? 1 : 0,
+                'active' => $sort == $key ? 1 : 0,
             ];
         }
         return $result;
@@ -80,15 +80,15 @@ class Help
      * @param integer $page
      * @return array
      */
-    public static function getLimitLinks($pageName, $sortNames, $sort, $limit)
+    public static function getLimitLinks($pageName, $sortNames, $defaultSortName, $sort, $limit)
     {
         //при изменении лимита - на первую страницу
         $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
         $result = [];
         $params['sort'] = $sort =='' ? null : $sort;
-        foreach ($sortNames as $sortVar) {
+        foreach ($sortNames as $key => $sortVar) {
             //если сортировка по умолчанию, исключить
-            if ($sortVar['field'] == $sort && !empty($sortVar['default'])) {
+            if ($key == $sort && $key == $defaultSortName) {
                 $params['sort'] = null;
             }
         }
@@ -120,6 +120,10 @@ class Help
         $page = $page == 1 ? '' : '/page-' . $page;
         if (preg_match($pattern, $url)) {
             return preg_replace('/\/page-[0-9]*/', $page, $url);
+        }
+        $pos = strpos($url, '?');
+        if ($pos) {
+            return substr_replace($url, $page, $pos, 0);
         }
         return $url . $page;
     }

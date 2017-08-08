@@ -4,8 +4,10 @@ namespace frontend\modules\stores\models;
 
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\PromoStores;
 use frontend\components\Help;
 use frontend\components\Pagination;
+use frontend\components\Pagination2;
 
 
 /**
@@ -34,16 +36,19 @@ class Stores extends \yii\db\ActiveRecord
 {
 
     /**
+     * @var string
+     */
+    private $defaultSort = 'name';
+    /**
      * Possible sorting options with titles and default value
      * @var array
      */
     private $sortvars = [
-        //todo ввести поле order для направления сортировки и переделать массив
-        ["field" => "visit", "title" => "Популярности", "title_mobile" => "По популярности", "default" => 0],
-        ["field" => "name", "title" => "Алфавиту", "title_mobile" => "По алфавиту", "default" => 1, 'order' => 'ASC'],
-        ["field" => "added", "title" => "Новизне", "title_mobile" => "По новизне", "default" => 0],
-        ["field" => "cashback_percent", "title" => "%", "title_mobile" => "По % кэшбэка", "default" => 0],
-        ["field" => "cashback_summ", "title" => "$", "title_mobile" => "По $ кэшбэка", "default" => 0],
+        'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
+        'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
+        'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
+        'cashback_percent' => ["title" => "%", "title_mobile" => "По % кэшбэка"],
+        'cashback_summ' => ["title" => "$", "title_mobile" => "По $ кэшбэка"],
     ];
     /**
      * @inheritdoc
@@ -110,6 +115,14 @@ class Stores extends \yii\db\ActiveRecord
         return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
             ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
     }
+    /**
+     * promo stores
+     * @return $this
+     */
+    public function getPromoStores()
+    {
+        return $this->hasMany(PromoStores::className(), ['store_id' => 'uid']);
+    }
 
     /**
      * @return mixed
@@ -167,30 +180,15 @@ class Stores extends \yii\db\ActiveRecord
             }
         }
 
-        $defaultSort = 'name';
+        $defaultSort = $this->defaultSort;//'name';
         $order = 'DESC';
-        foreach ($this->sortvars as $sortvar) {
-            if (!empty($sortvar['default'])) {
-                $defaultSort = $sortvar['field'];
-                break;
-            }
-        }
-        foreach ($this->sortvars as $sortvar) {
-            if ($sortvar['field'] == $isort) {
-                $sort = $isort;
-                $order = !empty($sortvar['order']) ? $sortvar['order'] : $order;
-                break;
-            }
-        }
+
+        $sort = isset($this->sortvars[$isort]) ? $isort : $defaultSort;
 
         $page = (isset($ipage) && !in_array($ipage, ["", 0]) ? Help::shieldingData($ipage) : 1);
         $limit = (isset($ilimit) && !in_array($ilimit, ["", 0]) ? Help::shieldingData($ilimit) : $defaultLimit);
-        $sort = isset($sort) ? $sort : $defaultSort;
 
-        $paginationSettings["numPage"] = $page;
-        $paginationSettings["numOutput"] = $limit;
-        $pagination = new Pagination('frontend\modules\stores\models\Stores', $paginationSettings);
-
+        $order = !empty($this->sortvars[$sort]['order']) ? $this->sortvars[$sort]['order'] : $order;
 
         $result['current_category'] = null;
         if ($category) {
@@ -200,23 +198,22 @@ class Stores extends \yii\db\ActiveRecord
                 //todo на отработку отсутствующей страницы
             }
             $searchParams['category'] = $category;
-            $paginationData = $pagination->getData(
-                'pagination_catalog_stores_category_' . $category,
-                [],
+            $pagination = new Pagination(
                 "SELECT COUNT(cws.uid) as count FROM cw_stores as cws 
-            
                                         LEFT JOIN cw_stores_to_categories as cstc
                                         ON cws.uid = cstc.store_id
-                                        WHERE cws.is_active in (0, 1)  AND cstc.category_id = " . intval($category)
+                                        WHERE cws.is_active in (0, 1)  AND cstc.category_id = " . intval($category),
+                $limit,
+                $page
             );
             $method = 'getCategoryStores';
             $seachParams['category'] = $category;
         } else {
             //все магазины
-            $paginationData = $pagination->getData(
-                'pagination_catalog_stores' . $category,
-                [],
-                'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)'
+            $pagination = new Pagination(
+                'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)',
+                $limit,
+                $page
             );
             $method = 'actives';
         }
@@ -229,9 +226,8 @@ class Stores extends \yii\db\ActiveRecord
 
         $cacheName = "catalog_stores_" . $postFixCache;
 
-        $offset = isset($paginationData["start"]) ? $paginationData["start"] : 0;
         $searchParams['limit'] = $limit;
-        $searchParams['offset'] = $offset;
+        $searchParams['offset'] = $pagination->offset();
         $searchParams['sort'] = $sort;
         $searchParams['order'] = $order;
 
@@ -241,29 +237,40 @@ class Stores extends \yii\db\ActiveRecord
             return $this->$method($searchParams);
         });
 
-        $result["total_v"] = $paginationData["count"];
+        $result["total_v"] = $pagination->count();
         $result["show_stores"] = count($result['stores']);
-        $result["offset_stores"] = $offset;
+        $result["offset_stores"] = $pagination->offset();
         $result["total_all_stores"] = self::activeCount();
 
-        if (isset($pagination) && isset($paginationData) && $paginationData["total"] > 1) {
-            $result["pagination"] = $pagination->getPaginationSeo($pageName);
-            \Yii::$app->controller->makePaginationTags($paginationData["total"], $page);
+        //параметры пагинации
+        //для дефолтных значений параметров не включаем в строку - проходим по значениям
+        $paginateParams = [
+            'limit' => $defaultLimit == $limit ? null : $limit,
+            'sort' => $defaultSort == $sort ? null : $sort,
+        ];
+
+        $paginateParamQuery = http_build_query($paginateParams);
+        $paginationPageName = $pageName . ($paginateParamQuery == '' ? '' : '?' . $paginateParamQuery);
+
+        if (isset($pagination) && $pagination->pages() > 1) {
+            $result["pagination"] = $pagination->getPagination($paginationPageName);
+            \Yii::$app->controller->makePaginationTags($paginationPageName, $pagination->pages(), $page);
         }
 
-        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $sort, $limit, $page);
-        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $sort, $limit);
+        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
+        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit);
 
         return $result;
     }
+
 
     /**
      * @return mixed
      */
     protected function actives($options)
     {
+
         return self::find()
-            //->from(self::tableName().' s')
             ->select([
                 '*',
                 "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)".
