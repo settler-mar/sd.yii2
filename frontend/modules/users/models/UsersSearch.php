@@ -5,7 +5,7 @@ namespace frontend\modules\users\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\Users;
 
 /**
  * UsersSearch represents the model behind the search form about `frontend\modules\users\models\Users`.

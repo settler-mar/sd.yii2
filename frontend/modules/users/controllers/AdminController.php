@@ -3,11 +3,12 @@
 namespace frontend\modules\users\controllers;
 
 use Yii;
-use app\modules\users\models\Users;
-use app\modules\users\models\UsersSearch;
+use frontend\modules\users\models\Users;
+use frontend\modules\users\models\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\Pagination;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -25,6 +26,7 @@ class AdminController extends Controller
             ],
         ];
     }
+
   function beforeAction($action) {
     $rule=[
       $action->controller->id,
@@ -48,13 +50,17 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UsersSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+      $query = Users::find();
+      $countQuery = clone $query;
+      $pages = new Pagination(['totalCount' => $countQuery->count()]);
+      $models = $query->offset($pages->offset)
+        ->limit($pages->limit)
+        ->all();
 
-        return $this->render('index.twig', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+      return $this->render('index', [
+        'users' => $models,
+        'pages' => $pages,
+      ]);
     }
 
     /**

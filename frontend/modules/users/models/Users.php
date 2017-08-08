@@ -19,6 +19,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
+  private $balans;
   /**
    * @inheritdoc
    */
@@ -346,38 +347,79 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
 
   public function getBalabce(){
-    $confirmed_sum=
-      floatval($this->sum_confirmed)+
-      floatval($this->sum_from_ref_confirmed);
-    $pending_sum=
-      floatval($this->sum_pending)+
-      floatval($this->sum_from_ref_pending);
-    $sum_bonus=
-      floatval($this->sum_bonus);
+    if(!$this->balans) {
+      $confirmed_sum =
+        floatval($this->sum_confirmed) +
+        floatval($this->sum_from_ref_confirmed);
+      $pending_sum =
+        floatval($this->sum_pending) +
+        floatval($this->sum_from_ref_pending);
+      $sum_bonus =
+        floatval($this->sum_bonus);
 
-    $bl=[
-      'total'=>$confirmed_sum +$sum_bonus,
-      'pending'=>$pending_sum,
-      'charity'=>$this->sum_foundation,
-      'withdraw'=>$this->sum_withdraw,
-    ];
+      $bl = [
+        'total' => $confirmed_sum + $sum_bonus,
+        'pending' => $pending_sum,
+        'charity' => $this->sum_foundation,
+        'withdraw' => $this->sum_withdraw,
+      ];
 
-    $bl['current']=$bl['total']-$bl['charity']-$bl['withdraw'];
+      $bl['current'] = $bl['total'] - $bl['charity'] - $bl['withdraw'];
 
-    $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
-      $this->sum_foundation - $this->sum_withdraw;
-    if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
-      $bl['max_fundation']=0;
-    }else if ($balance<0){
-      $bl['max_fundation']=0;
+      $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
+        $this->sum_foundation - $this->sum_withdraw;
+      if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
+        $bl['max_fundation'] = 0;
+      } else if ($balance < 0) {
+        $bl['max_fundation'] = 0;
+      } else {
+        $bl['max_fundation'] = $balance;
+      }
+
+      foreach ($bl as $k => &$v) {
+        $v = number_format($v, 2, ".", "");
+      }
+      $this->balans = $bl;
+    }
+    return $this->balans;
+  }
+
+  public function getRegistration_source_href(){ //ссылка на источник регистрации
+    $value=$this->registration_source;
+    if($value!='default' && $value!=''){
+      $value='<a href="'.$value.'" target=_blank>';
+      $social_name=explode('//',$this->registration_source);
+      $social_name=explode('/',$social_name[1]);
+      $social_name=str_replace('www.','',$social_name[0]);
+      $value.=$social_name.'</a>';
     }else{
-      $bl['max_fundation']=$balance;
+      $value="форма";
     }
+    return $value;
+  }
 
-    foreach ($bl as $k=>&$v){
-      $v=number_format($v, 2, ".", "");
-    }
+  public function getDrive(){//email и ссылка на того кто привел
 
-    return $bl;
+    return 1;
+  }
+
+  public function getLoyalty_status_data(){
+
+    return 1;
+  }
+
+  public function getBonus_status_data(){
+
+    return 1;
+  }
+
+  public function getCurrentBalance(){
+    $bl=$this->getBalabce();
+    return $bl['current'];
+  }
+
+  public function getPending(){
+    $bl=$this->getBalabce();
+    return $bl['pending'];
   }
 }
