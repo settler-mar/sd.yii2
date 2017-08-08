@@ -51,7 +51,6 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-
       $query = Users::find();
       $countQuery = clone $query;
       $pages = new Pagination(['totalCount' => $countQuery->count()]);

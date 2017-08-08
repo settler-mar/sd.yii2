@@ -402,7 +402,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     if($this->referrer_id<1){
       return '';
     }
-    $user=Users::find($this->referrer_id)->one();
+    $user=Users::find()
+      ->where(['uid'=>$this->referrer_id])->one();
     return $user->email;
   }
 

@@ -203,10 +203,6 @@ $functionsList=[
   '_hyphen_email'=>function($s){
     $s=explode("@",$s);
     $s=implode('@<wbr>',$s);
-
-    $s=explode(")",$s);
-    $s=implode(')<wbr>',$s);
-
     return $s;
   },
   '_nf'=>function($s,$k=2){

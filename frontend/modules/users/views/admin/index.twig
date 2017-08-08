@@ -81,7 +81,7 @@
                         <div class="value">
                           {% if  user.referrer_id>0 %}
                            <a href="/admin/users?uid={{ user.referrer_id }}">
-                             {{ _hyphen_email(user.drive) | raw}} ({{ user.referrer_id }})
+                             {{ _hyphen_email(user.drive) | raw}} <wbr>({{ user.referrer_id }})
                            </a>
                           {% else %}
                             {{ _hyphen_email(user.drive) | raw}}
@@ -205,11 +205,11 @@
                     </div>
                   </td>
                   <td>
-                    <a href="/admin/users/edit/{{user.uid}}">Редактировать</a>
+                    <a href="/admin/users/edit?id={{user.uid}}">Редактировать</a>
                     <br>
-                    <a href="/admin/users/login/{{user.uid}}">Login</a>
+                    <a href="/admin/users/login?id={{user.uid}}">Login</a>
                     <br>
-                    <a class="delete" href="/admin/users/delete/{{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
+                    <a class="delete" href="/admin/users/delete?id={{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
                   </td>
                 </tr>
               {% endfor %}
