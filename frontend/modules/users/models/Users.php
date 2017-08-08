@@ -399,8 +399,11 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getDrive(){//email и ссылка на того кто привел
-
-    return 1;
+    if($this->referrer_id<1){
+      return '';
+    }
+    $user=Users::find($this->referrer_id)->one();
+    return $user->email;
   }
 
   public function getLoyalty_status_data(){
@@ -411,6 +414,26 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function getBonus_status_data(){
 
     return 1;
+  }
+
+  public function getLast_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->last_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->last_ip])
+        ->orWhere(['reg_ip'=>$this->last_ip])
+        ->count();
+      return $count;
+    });
+  }
+
+  public function getReg_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->reg_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->reg_ip])
+        ->orWhere(['reg_ip'=>$this->reg_ip])
+        ->count();
+      return $count;
+    });
   }
 
   public function getCurrentBalance(){

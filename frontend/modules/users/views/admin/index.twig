@@ -57,16 +57,36 @@
                         <div class="value">{{user.last_login}}</div>
                       </div>
                       <div class="line">
-                        <div class="name">IP-авториз.</div>
-                        <div class="value">{{user.last_ip | raw}}</div>
+                        <div class="name">IP-авториз</div>
+                        <div class="value">
+                          {% if(user.last_ip_count>1) %}
+                            <a href="/admin/users?ip={{ user.last_ip }}">{{ user.last_ip }} ({{ user.last_ip_count }})</a>
+                          {% else %}
+                            {{ user.last_ip }} ({{ user.last_ip_count }})
+                          {% endif %}
+                        </div>
                       </div>
                       <div class="line">
                         <div class="name">IP-рег.</div>
-                        <div class="value">{{user.reg_ip | raw}}</div>
+                        <div class="value">
+                          {% if(user.reg_ip_count>1) %}
+                            <a href="/admin/users?ip={{ user.reg_ip }}">{{ user.reg_ip }} ({{ user.reg_ip_count }})</a>
+                          {% else %}
+                            {{ user.reg_ip }} ({{ user.reg_ip_count }})
+                          {% endif %}
+                        </div>
                       </div>
                       <div class="line">
                         <div class="name">Привел</div>
-                        <div class="value">{{user.drive | raw}}</div>
+                        <div class="value">
+                          {% if  user.referrer_id>0 %}
+                           <a href="/admin/users?uid={{ user.referrer_id }}">
+                             {{ _hyphen_email(user.drive) | raw}} ({{ user.referrer_id }})
+                           </a>
+                          {% else %}
+                            {{ _hyphen_email(user.drive) | raw}}
+                          {% endif %}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -76,19 +96,19 @@
                       <div class="line">
                         <div class="name">confirmed</div>
                         <div class="value">
-                          {{user.cnt_confirmed}}
+                          {{ _nf(user.cnt_confirmed,0)}}
                         </div>
                         <div class="value">
-                          {{user.sum_confirmed}} р
+                          {{ _nf(user.sum_confirmed) }} р
                         </div>
                       </div>
                       <div class="line">
                         <div class="name">pending</div>
                         <div class="value">
-                          {{user.cnt_pending}}
+                          {{ _nf(user.cnt_pending,0) }}
                         </div>
                         <div class="value">
-                          {{user.sum_pending}} р
+                          {{ _nf(user.sum_pending) }} р
                         </div>
                       </div>
                       <b>За рефералов</b>
@@ -97,7 +117,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_from_ref_confirmed}} р
+                          {{ _nf(user.sum_from_ref_confirmed) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -105,7 +125,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_from_ref_pending}} р
+                          {{ _nf(user.sum_from_ref_pending) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -113,15 +133,15 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_bonus}} р
+                          {{ _nf(user.sum_bonus) }} р
                         </div>
                       </div>
                       <div class="line">
-                        <div class="name"><b>Благотворительность</b></div>
+                        <div class="name"><b>Благотворит.</b></div>
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_foundation}} р
+                          {{ _nf(user.sum_foundation) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -129,7 +149,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_withdraw}} р
+                          {{ _nf(user.sum_withdraw) }} р
                         </div>
                       </div>
                       <div class="line sum">
@@ -137,7 +157,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.currentBalance}}
+                          {{ _nf(user.currentBalance) }}
                         </div>
                       </div>
                       <div class="line">
@@ -145,7 +165,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.pending}}
+                          {{ _nf(user.pending) }}
                         </div>
                       </div>
                     </div>
@@ -176,15 +196,11 @@
 
                       <div class="line">
                         <div class="name">Рефералов</div>
-                        <div class="value">{{user.ref_total}}</div>
+                        <div class="value">{{ _nf(user.ref_total,0) }}</div>
                       </div>
                       <div class="line">
                         <div class="name">Активен</div>
-                        <div class="value">{{user.is_active}}</div>
-                      </div>
-                      <div class="line">
-                        <div class="name">Админ</div>
-                        <div class="value">{{user.is_admin}}</div>
+                        <div class="value">{{ _if(user.is_active==1,'ДА','НЕТ') }}</div>
                       </div>
                     </div>
                   </td>

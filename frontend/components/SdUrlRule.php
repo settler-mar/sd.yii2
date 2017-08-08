@@ -116,13 +116,8 @@ class SdUrlRule implements UrlRuleInterface
     if($route[0]=='permit'){
       return false;
     }
-    if($route[1]=='rbac'){
-      return false;
-    }
 
     $route=[$route[1],$route[0]];
-
-
     if(isset($params['page'])){
       if($params['page']!=1) {
         $route[] = 'page-' . $params['page'];

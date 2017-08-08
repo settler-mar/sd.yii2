@@ -208,6 +208,16 @@ $functionsList=[
     $s=implode(')<wbr>',$s);
 
     return $s;
+  },
+  '_nf'=>function($s,$k=2){
+    return number_format($s,$k,'.','&nbsp;');
+  },
+  '_if'=>function($is,$then=false,$else=false){
+    if($is){
+      return ($then?$then:'');
+    }else{
+      return ($else?$else:'');
+    }
   }
 ];
 

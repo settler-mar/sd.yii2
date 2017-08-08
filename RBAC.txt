@@ -1,4 +1,0 @@
-accountUserIndex - стартоваая акаунта
-
-adminUserIndex - список пользователей
-adminUserEdit - добавление пользователя
