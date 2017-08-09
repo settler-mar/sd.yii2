@@ -7,11 +7,12 @@
 
     <div class="form-group">
         <a href="/admin/users/create" class="btn btn-success">{{ 'Create Users' }}</a>
-        <input type="text" placeholder="Поиск по User ID" name="user_id" value="">
-        <input type="text" placeholder="Поиск по Ref ID" name="ref_id" value="">
-        <input type="text" placeholder="Поиск по email" name="email" value="">
-        <input type="submit" value="Search" class="btn btn-primary">
-        <input type="reset" value="Reset" class="btn btn-default">
+        <input type="text" placeholder="Поиск по User ID" name="user_id" value="{{ get.user_id }}">
+        <input type="text" placeholder="Поиск по IP" name="ip" value="{{ get.ip }}">
+        <input type="text" placeholder="Поиск по Ref ID" name="ref_id" value="{{ get.ref_id }}">
+        <input type="text" placeholder="Поиск по email" name="email" value="{{ get.email }}">
+        <input type="submit" value="Поиск" class="btn btn-primary">
+        <a href="/admin/users" class="btn btn-default">Сброс</a>
     </div>
     {{ active_form_end() }}
 </div>

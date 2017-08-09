@@ -52,7 +52,27 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+
+    $get=Yii::$app->request->get();
     $query = Users::find();
+
+    $w=[];
+    if(isset($get['user_id']) && strlen($get['user_id'])>0){
+      $query->andWhere(['uid'=>((int)$get['user_id'])]);
+    }
+
+    if(isset($get['ip']) && strlen($get['ip'])>0){
+      $query->andWhere(['or','last_ip=\''.$get['ip'].'\'','reg_ip=\''.$get['ip'].'\'']);
+    }
+
+    if(isset($get['ref_id']) && strlen($get['ref_id'])>0){
+      $query->andWhere(['referrer_id'=>((int)$get['ref_id'])]);
+    }
+
+    if(isset($get['email']) && strlen($get['email'])>0){
+      $query->andWhere(['like','email',$get['email']]);
+    }
+
     $countQuery = clone $query;
     $pages = new Pagination(['totalCount' => $countQuery->count()]);
     $models = $query->offset($pages->offset)
@@ -63,6 +83,7 @@ class AdminController extends Controller
     return $this->render('index', [
       'users' => $models,
       'pages' => $pages,
+      'get'=>$get
     ]);
   }
 
