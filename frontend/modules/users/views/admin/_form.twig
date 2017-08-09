@@ -1,71 +1,102 @@
 {{ use('/yii/widgets/ActiveForm') }}
-<div class="users-form">
-    {% set form = active_form_begin() %}
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>{{ html.encode(this.title) }}</h3>
+            </div>
+            {% set form = active_form_begin({
+                'options' : {
+                    'enctype' : 'multipart/form-data',
+                },
+            }) %}
 
-        {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+            <div class="col-md-6">
+                {% if(not(model.isNewRecord)) %}
+                    {{ form.field(model, 'uid').textInput({'disabled':true})|raw }}
+                {% endif %}
 
-        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'password').passwordInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'salt').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'new_password').passwordInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'birthday').textInput()|raw }}
 
-        {{ form.field(model, 'sex').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'birthday').textInput()|raw }}
 
-        {{ form.field(model, 'photo').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'sex').dropDownList({
+                    '' : 'Не опреднлен',
+                    'f' : 'Женжина',
+                    'm' : 'Мужчина'
+                })|raw }}
 
-        {{ form.field(model, 'notice_email').textInput()|raw }}
+                {{ form.field(model, 'new_photo').fileInput()|raw }}
+                <img for="Users[new_photo]" style="max-height: 150px;" src="{{ _if(
+                    model.photo,
+                    model.photo,
+                    '/images/templates/avatar-'~_if(model.sex=='f','female','male')~'.jpg'
+                    ) | raw }}">
 
-        {{ form.field(model, 'notice_account').textInput()|raw }}
+                {{ form.field(model, 'notice_email').dropDownList({
+                    '0' : 'Отключенно',
+                    '1' : 'Включенно',
+                })|raw }}
 
-        {{ form.field(model, 'referrer_id').textInput()|raw }}
+                {{ form.field(model, 'referrer_id').textInput()|raw }}
 
-        {{ form.field(model, 'last_ip').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'is_active').dropDownList({
+                    '0' : 'Отключен',
+                    '1' : 'Активен',
+                })|raw }}
 
-        {{ form.field(model, 'last_login').textInput()|raw }}
+                {{ form.field(model, 'registration_source').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'registration_source').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'added').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'added').textInput()|raw }}
+                {{ form.field(model, 'loyalty_status').dropDownList(loyalty_status_list)|raw }}
 
-        {{ form.field(model, 'loyalty_status').textInput()|raw }}
+                {{ form.field(model, 'bonus_status').dropDownList(bonus_status_list)|raw }}
 
-        {{ form.field(model, 'is_active').textInput()|raw }}
+            </div>
+            {% if(not(model.isNewRecord)) %}
+                <div class="col-md-6">
 
-        {{ form.field(model, 'is_admin').textInput()|raw }}
+                    {{ form.field(model, 'last_ip').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'bonus_status').textInput()|raw }}
+                    {{ form.field(model, 'reg_ip').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'reg_ip').textInput({'maxlength':true})|raw }}
+                    {{ form.field(model, 'last_login').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'ref_total').textInput()|raw }}
 
-        {{ form.field(model, 'sum_pending').textInput()|raw }}
+                    {{ form.field(model, 'ref_total').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'cnt_pending').textInput()|raw }}
+                    {{ form.field(model, 'sum_pending').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_confirmed').textInput()|raw }}
+                    {{ form.field(model, 'cnt_pending').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'cnt_confirmed').textInput()|raw }}
+                    {{ form.field(model, 'sum_confirmed').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_from_ref_pending').textInput()|raw }}
+                    {{ form.field(model, 'cnt_confirmed').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_from_ref_confirmed').textInput()|raw }}
+                    {{ form.field(model, 'sum_from_ref_pending').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_to_friend_pending').textInput()|raw }}
+                    {{ form.field(model, 'sum_from_ref_confirmed').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_to_friend_confirmed').textInput()|raw }}
+                    {{ form.field(model, 'sum_foundation').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_foundation').textInput()|raw }}
+                    {{ form.field(model, 'sum_withdraw').textInput({'disabled':true})|raw }}
 
-        {{ form.field(model, 'sum_withdraw').textInput()|raw }}
-
-        {{ form.field(model, 'sum_bonus').textInput()|raw }}
-
-    <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-    </div>
-    {{ active_form_end() }}
+                    {{ form.field(model, 'sum_bonus').textInput({'disabled':true})|raw }}
+                </div>
+            {% endif %}
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Сохранить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    <a href="/admin/users" class="btn btn-lin">К списку пользователей</a>
+                </div>
+            </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
 </div>

@@ -37,7 +37,7 @@ return  [
   'admin'=>[
       'layout'=>'admin.twig',
       'js'=>[
-        '/js/jquery-2.1.4.js',
+        //'/js/jquery-2.1.4.js',
         '/js/admin/scripts{{script_version}}.js',
         '/js/external/jquery.mCustomScrollbar.concat.min.js',
         '/js/external/account/modernizr.js'
