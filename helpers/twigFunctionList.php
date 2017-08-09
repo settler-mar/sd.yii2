@@ -119,11 +119,10 @@ $functionsList=[
   '_no_br'=> function ($content) {
     return str_replace('<br>', '', $content);
   },
-  /*//функция отдать константу по имени
+  //функция отдать константу по имени
   '_constant'=> function ($name) {
-    $constant = new \Cwcashback\Handling\Constants;
-    return $constant->get($name);
-  },*/
+    return Yii::$app->cache->get($name);
+  },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback'=> function ($cashback, $currency) {
     return $cashback . ((strpos($cashback, '%') === false) ? ' ' . $currency : '');
