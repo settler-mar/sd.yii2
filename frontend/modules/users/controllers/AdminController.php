@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\Pagination;
+use yii\helpers\Url;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -55,6 +56,7 @@ class AdminController extends Controller
       $pages = new Pagination(['totalCount' => $countQuery->count()]);
       $models = $query->offset($pages->offset)
         ->limit($pages->limit)
+        ->orderBy('uid DESC')
         ->all();
 
       return $this->render('index', [

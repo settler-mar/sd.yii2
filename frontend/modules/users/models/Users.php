@@ -399,18 +399,50 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getDrive(){//email и ссылка на того кто привел
-
-    return 1;
+    if($this->referrer_id<1){
+      return '';
+    }
+    $user=Users::find()
+      ->where(['uid'=>$this->referrer_id])->one();
+    return $user->email;
   }
 
   public function getLoyalty_status_data(){
-
-    return 1;
+    $ls=$this->loyalty_status;
+    $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
+    if(!isset($loyalty_status_list[$ls])){
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls];
   }
 
   public function getBonus_status_data(){
+    $bs=$this->loyalty_status;
+    $Bonus_status_list=Yii::$app->params['dictionary']['bonus_status'];
+    if(!isset($Bonus_status_list[$bs])){
+      return 'Ошибка';
+    }
+    return $Bonus_status_list[$bs];
+  }
 
-    return 1;
+  public function getLast_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->last_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->last_ip])
+        ->orWhere(['reg_ip'=>$this->last_ip])
+        ->count();
+      return $count;
+    });
+  }
+
+  public function getReg_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->reg_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->reg_ip])
+        ->orWhere(['reg_ip'=>$this->reg_ip])
+        ->count();
+      return $count;
+    });
   }
 
   public function getCurrentBalance(){

@@ -5,3 +5,4 @@ atalog_stores_<хеш от url> - основной запрос для /stores
 reviews_top - топ reviews
 catalog_promo_stores - PromoStores
 categories_stores - Список категорий
+ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
