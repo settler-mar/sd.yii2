@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/LinkPager') }}
-{% set title = 'Users' %}
+{% set title = 'Пользователи' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -13,10 +13,17 @@
     <div class="row">
       <div class="col-md-12">
         <h1 style="padding: 0;">{{ html.encode(this.title) }}</h1>
+        {# include('_search.twig', {
+          'model': searchModel,
+        })
+        #}
         {# include('_search.twig', {'model': searchModel}) #}
+        {# this.render('_search.twig', {'model' : searchModel}) | raw #}
+        <!--
         <p>
           <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Users' }}</a>
         </p>
+        -->
       </div>
       <div class="col-md-12">
         {% if users|length > 0 %}
@@ -205,11 +212,12 @@
                     </div>
                   </td>
                   <td>
-                    <a href="/admin/users/edit?id={{user.uid}}">Редактировать</a>
+                    <a href="/admin/users/update?id={{user.uid}}">Редактировать</a>
                     <br>
-                    <a href="/admin/users/login?id={{user.uid}}">Login</a>
+                    <!--<a href="/admin/users/login?id={{user.uid}}">Login</a>
                     <br>
                     <a class="delete" href="/admin/users/delete?id={{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
+                    -->
                   </td>
                 </tr>
               {% endfor %}

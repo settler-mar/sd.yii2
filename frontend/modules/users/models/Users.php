@@ -408,13 +408,21 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getLoyalty_status_data(){
-
-    return 1;
+    $ls=$this->loyalty_status;
+    $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
+    if(!isset($loyalty_status_list[$ls])){
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls];
   }
 
   public function getBonus_status_data(){
-
-    return 1;
+    $bs=$this->loyalty_status;
+    $Bonus_status_list=Yii::$app->params['dictionary']['bonus_status'];
+    if(!isset($Bonus_status_list[$bs])){
+      return 'Ошибка';
+    }
+    return $Bonus_status_list[$bs];
   }
 
   public function getLast_ip_count(){
