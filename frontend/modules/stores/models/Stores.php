@@ -4,10 +4,8 @@ namespace frontend\modules\stores\models;
 
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
-use frontend\modules\stores\models\PromoStores;
-use frontend\components\Help;
-use frontend\components\Pagination;
-use frontend\components\Pagination2;
+
+
 
 
 /**
@@ -38,12 +36,12 @@ class Stores extends \yii\db\ActiveRecord
     /**
      * @var string
      */
-    private $defaultSort = 'name';
+    public static $defaultSort = 'name';
     /**
      * Possible sorting options with titles and default value
      * @var array
      */
-    private $sortvars = [
+    public static $sortvars = [
         'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
         'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
         'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
@@ -151,170 +149,6 @@ class Stores extends \yii\db\ActiveRecord
                 ->all();
         });
         return $data;
-    }
-
-
-
-    /**
-     * Receive stores list
-     * @param  string $additional
-     * @param  string $pageName
-     * @param  array $params
-     */
-    public function getStores()
-    {
-        $request = Yii::$app->request;
-        $ipage = Help::shieldingData($request->get('page'));
-        $ilimit = Help::shieldingData($request->get('limit'));
-        $isort = Help::shieldingData($request->get('sort'));
-        $category = Help::shieldingData($request->get('category'));
-        $pageName = $request->pathInfo;
-        
-        $result = [];//возвращаем её
-
-        $defaultLimit = 50;
-        foreach (Help::$limitVars as $limitVar) {
-            if (!empty($limitVar['default'])) {
-                $defaultLimit = $limitVar['limit'];
-                break;
-            }
-        }
-
-        $defaultSort = $this->defaultSort;//'name';
-        $order = 'DESC';
-
-        $sort = isset($this->sortvars[$isort]) ? $isort : $defaultSort;
-
-        $page = (isset($ipage) && !in_array($ipage, ["", 0]) ? Help::shieldingData($ipage) : 1);
-        $limit = (isset($ilimit) && !in_array($ilimit, ["", 0]) ? Help::shieldingData($ilimit) : $defaultLimit);
-
-        $order = !empty($this->sortvars[$sort]['order']) ? $this->sortvars[$sort]['order'] : $order;
-
-        $result['current_category'] = null;
-        if ($category) {
-            //магазины категории
-            $result['current_category'] = CategoryStores::find()->where(['uid' => $category])->one();
-            if ($result['current_category'] != null) {
-                //todo на отработку отсутствующей страницы
-            }
-            $searchParams['category'] = $category;
-            $pagination = new Pagination(
-                "SELECT COUNT(cws.uid) as count FROM cw_stores as cws 
-                                        LEFT JOIN cw_stores_to_categories as cstc
-                                        ON cws.uid = cstc.store_id
-                                        WHERE cws.is_active in (0, 1)  AND cstc.category_id = " . intval($category),
-                $limit,
-                $page
-            );
-            $method = 'getCategoryStores';
-            $seachParams['category'] = $category;
-        } else {
-            //все магазины
-            $pagination = new Pagination(
-                'SELECT COUNT(uid) AS count FROM cw_stores WHERE is_active in (0, 1)',
-                $limit,
-                $page
-            );
-            $method = 'actives';
-        }
-
-        $result["page"] = $page;
-        $result["limit"] = $limit;
-        $result["sort"] = $sort;
-
-        $postFixCache = md5($pageName);
-
-        $cacheName = "catalog_stores_" . $postFixCache;
-
-        $searchParams['limit'] = $limit;
-        $searchParams['offset'] = $pagination->offset();
-        $searchParams['sort'] = $sort;
-        $searchParams['order'] = $order;
-
-        $cache = \Yii::$app->cache;
-
-        $result['stores'] = $cache->getOrSet($cacheName, function () use ($method, $searchParams) {
-            return $this->$method($searchParams);
-        });
-
-        $result["total_v"] = $pagination->count();
-        $result["show_stores"] = count($result['stores']);
-        $result["offset_stores"] = $pagination->offset();
-        $result["total_all_stores"] = self::activeCount();
-
-        //параметры пагинации
-        //для дефолтных значений параметров не включаем в строку - проходим по значениям
-        $paginateParams = [
-            'limit' => $defaultLimit == $limit ? null : $limit,
-            'sort' => $defaultSort == $sort ? null : $sort,
-        ];
-
-        $paginateParamQuery = http_build_query($paginateParams);
-        $paginationPageName = $pageName . ($paginateParamQuery == '' ? '' : '?' . $paginateParamQuery);
-
-        if (isset($pagination) && $pagination->pages() > 1) {
-            $result["pagination"] = $pagination->getPagination($paginationPageName);
-            \Yii::$app->controller->makePaginationTags($paginationPageName, $pagination->pages(), $page);
-        }
-
-        $result['sortlinks'] = Help::getSortLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit, $page);
-        $result['limitlinks'] = Help::getLimitLinks($pageName, $this->sortvars, $defaultSort, $sort, $limit);
-
-        return $result;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    protected function actives($options)
-    {
-
-        return self::find()
-            ->select([
-                '*',
-                "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)".
-                " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-                "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
-                " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
-            ])
-            ->where(['not in', 'is_active', [-1]])
-            ->orderBy($options["sort"].' '.$options["order"])
-            ->limit($options["limit"])
-            ->offset($options["offset"])
-            ->asArray()
-            ->all();
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getCategoryStores($options)
-    {
-
-        $result =  self::find()
-            ->from(self::tableName() . ' cws')
-            ->select([
-                'cws.*',
-                'cstc.category_id',
-                "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)".
-                " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-                "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
-                " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
-            ])
-            ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
-            ->where([
-                'cstc.category_id' => $options['category'],
-                'is_active' => [0, 1]
-            ])
-            ->orderBy($options["sort"].' '.$options["order"])
-            ->limit($options["limit"])
-            ->offset($options["offset"])
-            ->asArray()
-            ->all();
-        return $result;
     }
 
     

@@ -2,7 +2,7 @@
 
 namespace frontend\components;
 
-use frontend\components\Help;
+use yii;
 use yii\data\Pagination as YiiPagination;
 use yii\helpers\Url;
 
@@ -11,6 +11,15 @@ class Pagination
 
     private $pagination;
 
+    private $activeRecord;
+
+    private $options = [];
+        //'page' =>
+        //'limit' =>
+        //'asArray' => true
+
+    private $cacheName;
+
     /**
      * Pagination constructor.
      * @param $model
@@ -18,29 +27,39 @@ class Pagination
      * query
      * 
      */
-    public function __construct($query, $limit, $page = 0)
+    public function __construct($activeRecord, $cacheName, $options = [])
     {
-        $cacheName = 'paginate_query_' . md5($query). '_' . $page . '_' . $limit;
+        $this->activeRecord = $activeRecord;
+        $this->options = $options;
+        $this->cacheName = $cacheName;
+
         $cache = \Yii::$app->cache;
-        $total = $cache->getOrSet($cacheName, function () use ($query) {
-            if ($query != "") {
-                $connection = \Yii::$app->getDb();
-                $command = $connection->createCommand($query);
-
-                $result = $command->queryOne();
-
-                $c = isset($result['count']) ? $result['count'] : 0;
-            } else {
-                $c = 0;
-            }
-            return intval($c);
+        $count = $cache->getOrSet($cacheName . '_count', function () {
+            return $this->activeRecord->count();
         });
+
         $this->pagination = new YiiPagination([
-            'totalCount' => $total,
-            'page' => $page-1,
-            'pageSize' => $limit,
+            'totalCount' => $count,
+            'page' => $options['page'] - 1,
+            'pageSize' => $options['limit'],
         ]);
     }
+
+    public function data()
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet($this->cacheName, function () {
+            $data =  $this->activeRecord
+                ->limit($this->options['limit'])
+                ->offset($this->pagination->offset);
+            if (!empty($this->options['asArray'])) {
+                $data = $data->asArray();
+            }
+            return $data->all();
+        });
+        return $data;
+    }
+
 
     public function count()
     {
@@ -62,33 +81,39 @@ class Pagination
      * @param string $pageName
      * @return string
      */
-    public function getPagination($pageName)
+    public function getPagination($pageName, $params)
     {
         $displayCount = 5;//сколько кнопок отоображается в центре
         $page = $this->pagination->page+1;
         $total = $this->pagination->pageCount;
-
-
-        //$pageName = $pageName.$delimiter;
+        $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        $params['page'] = null;
+        $pageName = array_merge([$pageName], $params);
+        //d($pageName, array_merge($params, ['page' => 5]), Url::toRoute(array_merge($params, ['page' => 5]))) ;
 
         //предыдущая
         $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
-            ' data-original-title="Предыдущая" href="' . Help::makePageUrl($pageName, $page) . '">' .
+            ' data-original-title="Предыдущая" href="' .
+            Url::toRoute(array_merge($pageName, ['page' => $page -1])) . '">' .
             '<span class="fa fa fa-caret-left"></span></a></li>' : '';
 
         //первая
         $first = $page >= $displayCount && $total > $displayCount ?
             '<li class="first"><a data-toggle="tooltip" data-placement="top"' .
-            ' data-original-title="Первая" href="' . Help::makePageUrl($pageName, 1) . '">1' .
+            ' data-original-title="Первая" href="' .
+            Url::toRoute(array_merge($pageName, ['page' => 1])) . '">1' .
             '</a></li>' : '';
         //последняя
         $last = $total - $page >= $displayCount ? '<li class="last"><a data-toggle="tooltip" data-placement="top"' .
-            ' data-original-title="Последняя" href="' . Help::makePageUrl($pageName, $total) . '">' . $total .
+            ' data-original-title="Последняя" href="' .
+            Url::toRoute(array_merge($pageName, ['page' => $total])) . '">' . $total .
             '</a></li>' : '';
 
         //следующая
         $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
-            ' data-original-title="Следующая" href="' . Help::makePageUrl($pageName, $page + 1) . '">' .
+            ' data-original-title="Следующая" href="' .
+            Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
             '<span class="fa fa fa-caret-right"></span></a>' : '';
 
         $pages = ($page >= $displayCount && $total > $displayCount ? '...' : '');
@@ -101,7 +126,8 @@ class Pagination
 
         for ($i = $pageStart; $i <= $pageEnd; $i++) {
             $pages .= ($i == $page ? '<li class="active">' . $i . '</li>' :
-                '<li><a href="' . Help::makePageUrl($pageName, $i) . '">' . $i . '</a></li>');
+                '<li><a href="' .
+                Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
         };
 
         $pages .= ($total - $page <= $displayCount - 1 ? '' : '...');

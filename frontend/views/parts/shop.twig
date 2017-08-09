@@ -1,6 +1,6 @@
 <div class="shop">
-    {% if promo_stores[store.uid] %}
-    <span class="promo-label x2"></span>
+    {% if store.action_id == 1 %}
+        <span class="promo-label x2"></span>
     {% endif %}
     <div class="logo">
         <a href="/stores/{{store.route}}"><img src="images/logos/{{store.logo}}" alt="{{store.name}}"></a>
@@ -15,15 +15,15 @@
         {% endif %}
     </div>
     <div class="shop-bottom">
-        <a class="cashback-link {% if promo_stores[store.uid] %}old-cashback{% endif %}" href="/stores/{{store.route}}">
+        <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.route}}">
 
             Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
 
         </a>
-        {% if promo_stores[store.uid] %}
+        {% if store.action_id == 1 %}
         <a class="cashback-link" href="/stores/{{store.route}}">
 
-            Кэшбэк <b>{{ _shop_cashback(promo_stores[store.uid].promo_cashback, store.currency)|raw }}</b>
+            Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
 
         </a>
         {% endif %}
