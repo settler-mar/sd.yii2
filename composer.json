@@ -22,7 +22,8 @@
         "aayaresko/yii2-extended-gii": "^2.0",
         "yiisoft/yii2-sphinx": "^2.0",
         "digitv/kint": "1.x-dev",
-        "developeruz/yii2-db-rbac": "*"
+        "developeruz/yii2-db-rbac": "*",
+        "jbzoo/image": "^3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

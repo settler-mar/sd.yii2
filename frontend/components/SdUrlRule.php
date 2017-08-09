@@ -20,7 +20,6 @@ class SdUrlRule implements UrlRuleInterface
 
     $params = $request->get();
 
-    //ddd($params);
     //проверка реф ссылки
     if(isset($params['r'])){
       $user=Users::find()->where(['uid'=>$params['r']])->one();
@@ -92,6 +91,7 @@ class SdUrlRule implements UrlRuleInterface
         }
         $route[] = $parameters[2];
       }
+
       return [implode('/', $route), $params];
     }
 
