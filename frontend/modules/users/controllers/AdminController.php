@@ -80,10 +80,27 @@ class AdminController extends Controller
       ->orderBy('uid DESC')
       ->all();
 
+    $totQuery = clone $query;
+    $totQuery=$totQuery
+      ->select([
+        'count(*) as total',
+        'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0 OR ref_total>4)>0,1,0)) as active',
+        'SUM(sum_confirmed) as sum_confirmed',
+        'SUM(cnt_confirmed) as cnt_confirmed',
+        'SUM(sum_from_ref_pending) as sum_from_ref_pending',
+        'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
+        'SUM(sum_foundation) as sum_foundation',
+        'SUM(sum_withdraw) as sum_withdraw',
+        'SUM(sum_bonus) as sum_bonus',
+      ])
+      ->asArray()
+      ->one();
+
     return $this->render('index', [
       'users' => $models,
       'pages' => $pages,
-      'get'=>$get
+      'get'=>$get,
+      'users_total'=>$totQuery,
     ]);
   }
 

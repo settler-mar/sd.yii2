@@ -13,7 +13,73 @@
     <div class="row">
       <div class="col-md-12">
         <h1 style="padding: 0;">{{ html.encode(this.title) }}</h1>
+      </div>
+      <div class="col-md-6">
+        <div class="sum_information">
+          <div class="line">
+            <div class="name">Кол-во пользователей</div>
+            <div class="value">
+              <span>всего</span>
+              {{ _nf(users_total.total,0)  | raw}}
+            </div>
+            <div class="value">
+              <span>активных</span>
+              {{ _nf(users_total.active,0) | raw}}
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Кэшбек(confirmed)</div>
+            <div class="value">
+              {{ users_total.cnt_confirmed }}
+            </div>
+            <div class="value">
+              {{ _nf(users_total.sum_confirmed) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Кэшбек(pending)</div>
+            <div class="value">
+              {{ _nf(users_total.cnt_pending,0) | raw }}
+            </div>
+            <div class="value">
+              {{ _nf(users_total.sum_pending) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Ref(pending)</div>
+            <div class="value">
+              {{ _nf(users_total.sum_from_ref_pending) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Ref(confirmed)</div>
+            <div class="value">
+              {{ _nf(users_total.sum_from_ref_confirmed) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Выплаченно</div>
+            <div class="value">
+              {{ _nf(users_total.sum_withdraw) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Пожертвовано</div>
+            <div class="value">
+              {{ _nf(users_total.sum_foundation) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Бонусов</div>
+            <div class="value">
+              {{ _nf(users_total.sum_bonus) | raw }} р
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
         {{  include('_search.twig') }}
+      </div>
 
       </div>
       <div class="col-md-12">
@@ -205,10 +271,9 @@
                   <td>
                     <a href="/admin/users/update?id={{user.uid}}">Редактировать</a>
                     <br>
-                    <!--<a href="/admin/users/login?id={{user.uid}}">Login</a>
+                    <a href="/admin/users/login?id={{user.uid}}">Login</a>
                     <br>
                     <a class="delete" href="/admin/users/delete?id={{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
-                    -->
                   </td>
                 </tr>
               {% endfor %}
