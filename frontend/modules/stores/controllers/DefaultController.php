@@ -2,12 +2,9 @@
 
 namespace frontend\modules\stores\controllers;
 
-//use yii\web\Controller;
-//use frontend\components\SdController;
 use yii;
 use frontend\components\SdController;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\PromoStores;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
 
@@ -39,14 +36,14 @@ class DefaultController extends SdController
 
 
         $storesData = [];
-        //$stores = new Stores();
-        //$storesData = $stores->getStores();
         if (!empty($category)) {
             //категория
             $storesData['current_category'] = CategoryStores::find()->where(['uid' => $category])->one();
             if ($storesData['current_category'] == null) {
-                //todo на отработку отсутствующей страницы пока на 404
                 throw new \yii\web\NotFoundHttpException;
+            }
+            if ($storesData['current_category']->is_active == 0) {
+                return $this->redirect('/stores', 301);
             }
             $dataBaseData = Stores::find()
                 ->from(Stores::tableName() . ' cws')
@@ -70,7 +67,6 @@ class DefaultController extends SdController
                 'catalog_stores_category' . '_' .$category . '_' . $limit. '_' . $sort,
                 ['limit' => $limit, 'page' => $page, 'asArray' => 1]
             );
-            $storesData['stores'] = $pagination->data();
         } else {
             //нет категории /stores
             $dataBaseData = Stores::find()
@@ -89,9 +85,8 @@ class DefaultController extends SdController
                 'catalog_stores_' . $limit. '_' . $sort,
                 ['limit' => $limit, 'page' => $page, 'asArray' => 1]
             );
-            $storesData['stores'] = $pagination->data();
         }
-
+        $storesData['stores'] = $pagination->data();
         $storesData["total_v"] = $pagination->count();
         $storesData["show_stores"] = count($storesData['stores']);
         $storesData["offset_stores"] = $pagination->offset();
@@ -115,5 +110,6 @@ class DefaultController extends SdController
 
         return $this->render('catalog', $storesData);
     }
+
 }
 
