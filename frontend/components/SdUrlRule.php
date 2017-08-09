@@ -73,6 +73,13 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters)-1]);
     }
 
+    //проверяем что б это не был прямой заход в default
+    if($parameters[0]=='default'){
+      unset ($parameters[0]);
+      Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
+      return ['', $params];
+    }
+
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
     if(
       array_key_exists($parameters[0], \Yii::$app->modules)
@@ -101,7 +108,6 @@ class SdUrlRule implements UrlRuleInterface
         }
         $route[] = $parameters[2];
       }
-
       return [implode('/', $route), $params];
     }
 
@@ -153,8 +159,9 @@ class SdUrlRule implements UrlRuleInterface
 
     $url= implode('/',$route);
 
-    if(count($params)>0){
-      $url.='?'.http_build_query($params);
+    $params=http_build_query($params);
+    if(strlen($params)>1){
+      $url.='?'.$params;
     }
     return $url;
   }
