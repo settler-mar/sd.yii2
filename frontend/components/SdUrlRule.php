@@ -3,7 +3,7 @@ namespace frontend\components;
 
 use Yii;
 use yii\web\UrlRuleInterface;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\Users;
 
 class SdUrlRule implements UrlRuleInterface
 {
@@ -83,6 +83,16 @@ class SdUrlRule implements UrlRuleInterface
     if (count($parameters) > 1) {
       $route[] = $parameters[1];
       $route[] = $parameters[0];
+
+      if(
+        $parameters[0]=='admin' AND
+        Yii::$app->session->get('admin_id')!==null &&
+        Yii::$app->session->get('admin_id')!=Yii::$app->user->id
+      ){
+        $user=Users::findOne(['uid'=>(int)Yii::$app->session->get('admin_id')]);
+        Yii::$app->user->login($user);
+      }
+
       if (isset($parameters[2])) {
         if($parameters[2]=='index'){
           unset($parameters[2]);

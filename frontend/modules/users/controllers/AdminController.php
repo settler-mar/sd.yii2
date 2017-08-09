@@ -109,11 +109,12 @@ class AdminController extends Controller
    * @param integer $id
    * @return mixed
    */
-  public function actionView($id)
+  public function actionLogin($id)
   {
-    return $this->render('view.twig', [
-      'model' => $this->findModel($id),
-    ]);
+    Yii::$app->session->set('admin_id',Yii::$app->user->id);
+    $user=Users::findOne(['uid'=>$id]);
+    Yii::$app->user->login($user);
+    return $this->redirect('/account');
   }
 
   /**
