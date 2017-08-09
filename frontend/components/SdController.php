@@ -70,12 +70,13 @@ class SdController extends Controller
      * @param int $page
      * @return array
      */
-    public function getSortLinks($pageName, $sortNames, $defaultSortName, $sort, $limit, $page = 1)
+    public function getSortLinks($pageName, $sortNames, $defaultSortName, $params)
     {
-        $page = ($page == 1 ? '' : '/page-'.$page);
-        //$pageName = str_replace('/{{page}}', $page, $pageName);
+        $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
         $result = [];
-        $params['limit'] = empty($limit) ? null : ($limit == $this->defaultLimit ? '' : $limit);
+        $params['limit'] = $params['limit'] == $this->defaultLimit ? null : $params['limit'];
+        $currentSort = $params['sort'];
 
         foreach ($sortNames as $key => $sortName) {
             if ($key == $defaultSortName) {
@@ -84,12 +85,11 @@ class SdController extends Controller
             } else {
                 $params['sort'] = $key;
             }
-            $paramQuery = http_build_query($params);
             $result[] = [
-                'link' => $pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
+                'link' => Url::toRoute(array_merge([$pageName], $params)),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
-                'active' => $sort == $key ? 1 : 0,
+                'active' => $params['sort'] == $currentSort ? 1 : 0,
             ];
         }
         return $result;
@@ -102,36 +102,24 @@ class SdController extends Controller
      * @param integer $page
      * @return array
      */
-    public function getLimitLinks($pageName, $sortNames, $defaultSortName, $sort, $limit)
+    public function getLimitLinks($pageName, $defaultSortName, $params)
     {
-        //при изменении лимита - на первую страницу
+
         $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        //при изменении лимита - на первую страницу
+        $params['page'] = null;
+        $currentLimit = $params['limit'];
         $result = [];
-        $params['sort'] = empty($sort) ? null : $sort;
-        foreach ($sortNames as $key => $sortVar) {
-            //если сортировка по умолчанию, исключить
-            if ($key == $sort && $key == $defaultSortName) {
-                $params['sort'] = null;
-            }
-        }
+        $params['sort'] = ($params['sort'] == $defaultSortName) ? null : $params['sort'];
         foreach ($this->limitVars as $limitVar) {
-            if (!empty($limitVar['default'])) {
-                // способ сортировки  по умолчанию
-                $params['limit'] = null;
-            } else {
-                $params['limit'] =  $limitVar['limit'];
-            }
             $params['limit'] = $limitVar == $this->defaultLimit ? null : $limitVar;
-            $paramQuery = http_build_query($params);
             $result[] = [
-                'link' => $pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
+                'link' => Url::toRoute(array_merge([$pageName], $params)),//$pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
                 'title' => ' '.$limitVar,
-                'active' => $limit == $limitVar ? 1 : 0,
+                'active' => $currentLimit == $limitVar ? 1 : 0,
             ];
         }
         return $result;
     }
-
-
-
 }

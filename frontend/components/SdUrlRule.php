@@ -119,12 +119,6 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     $route=[$route[1],$route[0]];
-    if(isset($params['page'])){
-      if($params['page']!=1) {
-        $route[] = 'page-' . $params['page'];
-      }
-      unset($params['page']);
-    }
 
     if(isset($params['store'])){
       $route[] = 'store:' . $params['store'];
@@ -134,6 +128,13 @@ class SdUrlRule implements UrlRuleInterface
     if(isset($params['category'])){
       $route[] = 'category:' . $params['category'];
       unset($params['category']);
+    }
+    
+    if(isset($params['page'])){
+      if($params['page']!=1) {
+        $route[] = 'page-' . $params['page'];
+      }
+      unset($params['page']);
     }
 
     if($route[0]=='default'){
