@@ -1,5 +1,5 @@
 <?php
-use app\modules\meta\models\Meta;
+use app\modules\constants\models\Constants;
 $currencyIcon = [
   'RUB' => '<span class="fa fa-rub"></span>',
   'EUR' => '<span class="fa fa-eur"></span>',
@@ -122,19 +122,14 @@ $functionsList=[
   },
   //функция отдать константу по имени
   '_constant'=> function ($name) {
-    Yii::$app->cache->getOrSet($name, function() use($name){
-      $arr = explode('_',$name);
-      $type = $arr[count($arr)-1];
-      unset($arr[count($arr)-1]);
-      $meta_name = implode('/',$arr);
-      $meta = Meta::find()->where(['page'=> $meta_name])->one();
+    return Yii::$app->cache->getOrSet($name, function() use($name){
+      $meta = Constants::find()->where(['name'=> $name])->select(['text'])->one();
       if ($meta){
-        return $meta[$type];
+        return $meta['text'];
       }else{
         return false;
       }
     });
-    return Yii::$app->cache->get($name);
   },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback'=> function ($cashback, $currency) {
