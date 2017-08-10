@@ -1,7 +1,40 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Constants' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="constants-index">
+    <h1>{{ html.encode(this.title) }}</h1>
+    {# include('_search.twig', {'model': searchModel}) #}
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ grid_view_widget({
+                            'dataProvider': dataProvider,
+                            'filterModel': searchModel,
+                                'columns': [
+                                'uid',
+                                'name',
+                                'title',
+                                'text:ntext',
+                                'ftype',
+                                {'class': '\\yii\\grid\\ActionColumn',
+                                    'template' : '{update}',
 
-{% for model in models %}
-<li>
-    {{ model.name }}
-    <p><a href="admin/constants/update?id={{ model.uid }}">Редактировать</a></p>
-</li>
-{% endfor %}
+                                },
+                            ],
+                        })
+                    }}
+                {#
+                'updated_at'
+                #}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

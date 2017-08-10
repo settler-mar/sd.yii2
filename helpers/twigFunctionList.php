@@ -1,4 +1,5 @@
 <?php
+use app\modules\meta\models\Meta;
 $currencyIcon = [
   'RUB' => '<span class="fa fa-rub"></span>',
   'EUR' => '<span class="fa fa-eur"></span>',
@@ -119,11 +120,22 @@ $functionsList=[
   '_no_br'=> function ($content) {
     return str_replace('<br>', '', $content);
   },
-  /*//функция отдать константу по имени
+  //функция отдать константу по имени
   '_constant'=> function ($name) {
-    $constant = new \Cwcashback\Handling\Constants;
-    return $constant->get($name);
-  },*/
+    Yii::$app->cache->getOrSet($name, function() use($name){
+      $arr = explode('_',$name);
+      $type = $arr[count($arr)-1];
+      unset($arr[count($arr)-1]);
+      $meta_name = implode('/',$arr);
+      $meta = Meta::find()->where(['page'=> $meta_name])->one();
+      if ($meta){
+        return $meta[$type];
+      }else{
+        return false;
+      }
+    });
+    return Yii::$app->cache->get($name);
+  },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback'=> function ($cashback, $currency) {
     return $cashback . ((strpos($cashback, '%') === false) ? ' ' . $currency : '');

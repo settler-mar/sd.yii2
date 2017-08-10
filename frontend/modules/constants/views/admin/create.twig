@@ -1,21 +1,16 @@
-<?php
-
-use yii\helpers\Html;
-
-
-/* @var $this yii\web\View */
-/* @var $model app\modules\constants\models\Constants */
-
-$this->title = 'Create Constants';
-$this->params['breadcrumbs'][] = ['label' => 'Constants', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-?>
+{% set title = 'Create Constants' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Constants', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="constants-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <h1>{{ html.encode(this.title) }}</h1>
+    {{ include('_form.twig', {
+            'model': model,
+        })
+    }}
 </div>

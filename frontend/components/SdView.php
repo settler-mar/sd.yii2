@@ -23,7 +23,6 @@ class SdView extends View
 
   public function beforeRender($viewFile, $params)
   {
-   // ddd(Yii::$app->request->pathInfo);
     if (!parent::beforeRender($viewFile, $params)){
       return false;
     };
@@ -36,16 +35,11 @@ class SdView extends View
     }
 
     $arr = $this->getPageMetadata();
-    //ddd($this->params);
-    //$this->metaTags = $this->getPageMetadata();
     if (isset($arr['description'])) $this->metaTags[] = '<meta name="description" content="'.$arr['description'].'">';
     if (isset($arr['keywords'])) $this->metaTags[] = '<meta name="keywords" content="'.$arr['keywords'].'">';
     if (isset($arr['title'])) $this->title = $arr['title'];
     if (isset($arr['content'])) $this->contentBD = $arr['content'];
     if (isset($arr['h1'])) $this->h1 = $arr['h1'];
-
-    //Yii::$app->view->params['contentFromBD'] = $arr['content'];
-    //$this->params['h1TagFromBD'] = $arr['h1'];
 
     return true;
   }
@@ -56,64 +50,33 @@ class SdView extends View
   private function getPageMetadata()
   {
     $page = Yii::$app->request->pathInfo;
-    $cacheType = "metadata";
-    $cacheName = "metadata_" . $page;
 
     if($page=='affiliate-system'){
       $page='account/affiliate';
     };
     if ($page == '') $page = 'index';
-    $mdata = false;
 
-    if ($mdata === false) {
-      //вначале из базы
-      $mdata = Meta::find()
+    $page_meta = Meta::find()
         ->select(['title', 'description', 'keywords', 'h1', 'content'])
         ->where(['page' => $page])
-        ->asArray()->all();
-      //ddd($mdata);
-      if (count($mdata) > 0) {
-        $mdata = $mdata[0];
+        ->asArray()
+        ->all();
+
+      if (count($page_meta) > 0) {
+        $page_meta = $page_meta[0];
       } else {
+        $arr = explode('/',$page);
+        $page = $arr[0].'/'.$arr[1];
         //прямого совпадения нет ищем по плейсхолдерам
         $mdataArray = Meta::find()
-          ->select('*')
-       //   ->select('LENGTH(`page`)', 'l')
-          ->where(['like','page','%*%'])
+          ->select(['title', 'description', 'keywords', 'h1', 'content'])
+          ->where(['like','page', $page.'%',false])
           ->OrderBy(['page'=>SORT_ASC])
+          ->asArray()
           ->all();
-        foreach ($mdataArray as $mdataItem) {
-          $noalias = explode('*', $mdataItem->page);
-          $match = '/^' . str_replace('/', '\/', $noalias[0]) . '.*' .
-            str_replace('/', '\/', (!empty($noalias[1]) ? $noalias[1] : '')) . '$/';
-          if (preg_match($match, $page)) {
-            $mdata = [
-              'title' => $mdataItem->title,
-              'description' => $mdataItem->description,
-              'keywords' => $mdataItem->keywords,
-              'h1' => $mdataItem->h1,
-              'content' => $mdataItem->content,
-            ];
-            break;
-          }
+          $page_meta = $mdataArray[0];
         }
-       // if (!$mdata) {
-          //если нет, то из настроек
-      //    $mdata = \Cwcashback\Settings::call()->getSettings('metadata', $page);
-       // }
-      }
-
-    //  if (\Cwcashback\Settings::call()->getSettings('env', 'cache')) {
-      //  \Cwcashback\Memcache::addData(
-        //  $cacheType,
-          //$cacheName,
-    //      $mdata,
-      //    false,
-        //  \Cwcashback\Settings::call()->getSettings('cachetime', 'month')
-     //   );
-     // }
-    }
-    return $mdata;
+    return $page_meta;
   }
 
 }

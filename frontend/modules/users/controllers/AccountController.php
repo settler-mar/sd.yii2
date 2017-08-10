@@ -17,8 +17,8 @@ class AccountController extends Controller
 
   function beforeAction($action) {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
+     // throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      //return false;
     }
 
     $this->layout='@app/views/layouts/account.twig';
@@ -32,7 +32,6 @@ class AccountController extends Controller
      */
     public function actionIndex()
     {
-
         return $this->render('index.twig');
     }
 
