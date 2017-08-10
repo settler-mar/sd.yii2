@@ -5,6 +5,7 @@ namespace frontend\modules\stores\models;
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\coupons\models\Coupons;
+use frontend\modules\reviews\models\Reviews;
 
 
 
@@ -132,6 +133,22 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpaLink()
+    {
+        return $this->hasOne(SpaLink::className(), ['id' => 'active_cpa']);
+    }
+
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getReviews()
+//    {
+//        return $this->hasMany(Reviews::className(), ['store_id' => 'uid']);
+//    }
+
+    /**
      * @return mixed
      */
     public static function activeCount()
@@ -160,5 +177,22 @@ class Stores extends \yii\db\ActiveRecord
         return $data;
     }
 
-    
+    /**
+     * @param $route
+     * @return mixed
+     */
+    public static function byRoute($route)
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('store_by_route_' . $route, function () use ($route) {
+            return self::find()
+                ->where(['route' => $route])
+                ->one();
+        });
+        return $data;
+    }
+
+
+
+  
 }

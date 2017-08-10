@@ -5,6 +5,8 @@ namespace frontend\modules\stores\controllers;
 use yii;
 use frontend\components\SdController;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
+use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
 
@@ -134,10 +136,49 @@ class DefaultController extends SdController
     /**
      * @param $id
      * @return string
+     * @throws yii\web\NotFoundHttpException
      */
     private function actionStore($id)
     {
-        return $this->render('store');
+        $validator = new \yii\validators\StringValidator();
+        if (!$validator->validate($id)) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+        $store = Stores::byRoute($id);
+        if (!$store) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+        $contentData["current_store"] = $store;
+        $contentData["current_store.description"] = htmlspecialchars_decode($store->description);
+
+        $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
+
+        $cache = \Yii::$app->cache;
+        $coupons = $cache->getOrSet('store_coupons_store_'.$id, function () use ($store) {
+            return Coupons::find()
+                ->from(Coupons::tableName(). ' cwc')
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback'])
+                ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => [0, 1], 'cws.uid' => $store->uid])
+                ->orderBy(Coupons::$defaultSort)
+                ->asArray()
+                ->all();
+        });
+        $contentData["store_coupons"] = $coupons;
+
+//
+//        $this->contentData["store_rating"] = $this->getStoreRating($reviewsContentData["reviews"]);
+
+//        $additionalStores = $this->getAdditionalStores($route, $store->uid);
+//        $this->contentData["additional_stores"] = $additionalStores['additional_stores'];
+//        $this->contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
+
+        //d($contentData);
+
+
+
+        return $this->render('shop', $contentData);
     }
 
 }

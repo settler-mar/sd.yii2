@@ -1,10 +1,12 @@
 total_all_stores - общее количество активных магазинов (активные - включая временно заблокированные)
 top_12_stores - топ 12 магизинов по популярности
 reviews_top - топ reviews
+reviews_by_store_<storeId> = rewiews для магазина
 catalog_promo_stores - PromoStores
 categories_stores - Список категорий
 catalog_stores_<page>_<limit>_<sort>_<order> - магазины
 catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории
+store_by_route_<route> - магазин по route
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
 categories_coupons - Cписок категорий купонов
 stores_coupon - Список магазинов с купонами
@@ -12,3 +14,4 @@ total_all_coupons - Количество активных купонов
 coupons_store_<category>_<page>_<limit>_<sort>_<order> - купоны магазина
 coupons_store_<category>_<page>_<limit>_<sort>_<order> - купоны магазина
 coupons_category_<category>_<page>_<limit>_<sort>_<order> - купоны категории
+store_coupons_store_<store_id> - купоны для магазина
