@@ -1,2 +1,169 @@
-{{ title }}
-<p>gdfgfdfgfd</p>
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{ _nf(this.balance.current) }} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{ _nf(this.balance.pending) }} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{ _nf(this.balance.charity) }}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                    <div class="history hpayments"><a href="/account/payments">Посмотреть историю заказов</a></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                {% for key,status in statuses_marafon %}
+                    <div class="col-sm-12 col-md-3 circles">
+                        <div class="type">{{status.display_name}} Status <span>+{{status.bonus}}%</span></div>
+                        {% if status.bonus <= this_tarif.bonus %}
+                            <div class="trophy {{status.code}}">
+                                <span data-icon="&#xe023;"></span>
+                                {{ key }} = {{ t_satus_id }}
+                                {% if key==t_satus_id %}
+                                    <p>Текущий статус</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="circle" id="{{status.code}}"></div>
+                            <div class="amount">
+                                {{status.min_sum}} <span class="fa fa-rub"></span>
+                                <span class="desc">
+                                    {{status.description | raw}}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if false %}
+                <div class="col-md-12">
+                    <div class="col-sm-12 col-md-3 circles">
+                        <div class="type">Bronze Status <span>+10%</span></div>
+                        {% if balance.total > 500 %}
+                            <div class="trophy bronze">
+                                <span data-icon="&#xe023;"></span>
+                                {% if balance.total > 500 and balance.total < 3000 %}
+                                    <p>Текущий статус</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="circle" id="bronze"></div>
+                            <div class="amount">
+                                500 <span class="fa fa-rub"></span>
+                                <span class="desc">
+                                накопленного кэшбэка требуется для получения статуса <b>Bronze</b> - и ваш кэшбэк с каждого заказа станет <b>на 10% больше</b></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-12 col-md-3 circles">
+                        <div class="type">Silver Status <span>+15%</span></div>
+                        {% if balance.total >= 3000 %}
+                            <div class="trophy silver">
+                                <span data-icon="&#xe023;"></span>
+                                {% if balance.total >= 3000 and balance.total < 7000 %}
+                                    <p>Текущий статус</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="circle" id="silver"></div>
+                            <div class="amount">
+                                3000 <span class="fa fa-rub"></span>
+                                <span class="desc">накопленного кэшбэка требуется для получения статуса <b>Silver</b> - и ваш кэшбэк с каждого заказа станет <b>на 15% больше</b></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-12 col-md-3 circles">
+                        <div class="type">Gold Status <span>+20%</span></div>
+                        {% if balance.total >= 7000 %}
+                            <div class="trophy gold">
+                                <span data-icon="&#xe023;"></span>
+                                {% if balance.total >= 7000 and balance.total < 10000 %}
+                                    <p>Текущий статус</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="circle" id="gold"></div>
+                            <div class="amount">
+                                7000 <span class="fa fa-rub"></span>
+                                <span class="desc">накопленного кэшбэка требуется для получения статуса <b>Gold</b> - и ваш кэшбэк с каждого заказа станет <b>на 20% больше</b></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-12 col-md-3 circles">
+                        <div class="type">Platinum Status <span>+30%</span></div>
+                        {% if balance.total >= 10000 %}
+                            <div class="trophy platinum">
+                                <span data-icon="&#xe023;"></span>
+                                <p>Текущий статус</p>
+                            </div>
+                        {% else %}
+                            <div class="circle" id="platinum"></div>
+                            <div class="amount">
+                                10000 <span class="fa fa-rub"></span>
+                                <span class="desc">накопленного кэшбэка требуется для получения статуса <b>Platinum</b> - и ваш кэшбэк с каждого заказа станет <b>на 30% больше</b>
+                            </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if desire %}
+                <div class="col-md-12">
+                    <div class="cashbonus">
+                        Для получения статуса <b>{{desire}}</b> осталось заработать <span>{{left}} <span class="fa fa-rub"></span></span>
+                    </div>
+                </div>
+            {% endif %}
+            {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
+                <div class="col-md-12">
+                    <div class="uniq-status">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        Для вашего аккаунта установлен <strong>персональный уровень лояльности</strong>. <br> Это означает, что после каждой покупки ваш кэшбэк будет увеличен на <strong>{{this_tarif.bonus}}%</strong>.
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if this_tarif.is_vip==1  %}
+                <div class="col-md-12">
+                    <div class="cashbonus vip">
+                        Вы почётный <strong>VIP</strong> клиент кэшбэк сервиса SecretDiscounter.<br> Если у Вас возник какой-либо вопрос связанный с работой нашего сайта, <br>обратитесь к нам напрямую написав на наш официальный skype - <strong>secretdiscounter.official</strong>.
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+</div>
+<div id="uinfo" data-balance="{{balance.total}}" data-status="{{setting.loyalty_status}}"></div>
+{% if newuser and newuser == '1' %}
+    <!-- Google Code for &#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1080; Conversion Page -->
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var google_conversion_id = 850118529;
+        var google_conversion_language = "en";
+        var google_conversion_format = "3";
+        var google_conversion_color = "ffffff";
+        var google_conversion_label = "qJEeCJa2r3IQgY-vlQM";
+        var google_remarketing_only = false;
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+        <div style="display:inline;">
+            <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/850118529/?label=qJEeCJa2r3IQgY-vlQM&amp;guid=ON&amp;script=0"/>
+        </div>
+    </noscript>
+
+
+    <script type="text/javascript" src="https://egrozaw.info/7jq8jtjfxga3kh51qvb?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/834nqjz3i8q3qe8fcr2?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/7utc33i3ore4rvtkea7?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/531g9lu5uze3of7bark?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/9bh1vntqjh66h1s23i9?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/6us9lg4gh0a6b4opxky?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/78n50jks6564tuuog91?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/5p7nc5rhdlm6myve9fr?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/55t85fbtst64nxrcabn?action_script=1&type=script"></script>
+    <script type="text/javascript" src="https://egrozaw.info/88o7i6yfdwa5lha97wk?action_script=1&type=script"></script>
+{% endif %}

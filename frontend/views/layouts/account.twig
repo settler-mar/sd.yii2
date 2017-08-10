@@ -1,7 +1,10 @@
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
 <!DOCTYPE html>
 <html lang="ru" class="no-js" >
 <head>
     <title>{{title}}</title>
+    <base href="/">
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -64,19 +67,24 @@
         <link rel="next" href="{{site_url}}{{pagination_tags.next_page}}">
     {% endif %}
 
-
     {% for style in exclusionCSSheader %}
         <link rel="stylesheet" href="{{style}}">
     {% endfor %}
-    <link rel="stylesheet" href="{{minifyCSS}}">
+
+    {% for css_link in minifyCSS %}
+        <link rel="stylesheet" href="{{css_link}}">
+    {% endfor %}
 
     {% for scriptH in exclusionJSheader %}
         <script src="{{scriptH}}"></script>
     {% endfor %}
+    {{ html.csrfMetaTags | raw }}
+    {{   void(this.head) }}
 </head>
 <body id="top">
+{{   void(this.beginBody()) }}
 <header class="cd-main-header">
-    <a href="/" class="cd-logo"><img src="{{images_path}}templates/secretdiscounter-logo.png" alt="secretdiscounter logo"></a>
+    <a href="/" class="cd-logo"><img src="/images/templates/secretdiscounter-logo.png" alt="secretdiscounter logo"></a>
     <div class="cd-search is-hidden">
         <form action="/search" name="account-search" method="get">
             <input type="search" id="search" name="query" value="" placeholder="Найти магазин">
@@ -192,7 +200,9 @@
     </nav>
     {{ content|raw }}
 </main>
-<script src="{{minifyJS}}"></script>
+{% for script in minifyJS %}
+    <script src="{{script}}"></script>
+{% endfor %}
 {% for scriptF in exclusionJSfooter %}
     <script src="{{scriptF}}"></script>
 {% endfor %}
@@ -224,5 +234,7 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/42229559" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+{{   void(this.endBody()) }}
 </body>
 </html>
+{{   void(this.endPage()) }}

@@ -1,37 +1,26 @@
-<?php
-
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model app\modules\constants\models\ConstantsSearch */
-/* @var $form yii\widgets\ActiveForm */
-?>
-
+{{ use('/yii/widgets/ActiveForm') }}
 <div class="constants-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+    {{ form.field(model, 'uid')|raw }}
 
-    <?= form.field(model, 'uid') ?>
+    {{ form.field(model, 'name')|raw }}
 
-    <?= form.field(model, 'name') ?>
+    {{ form.field(model, 'title')|raw }}
 
-    <?= form.field(model, 'title') ?>
+    {{ form.field(model, 'text')|raw }}
 
-    <?= form.field(model, 'text') ?>
+    {{ form.field(model, 'ftype')|raw }}
 
-    <?= form.field(model, 'ftype') ?>
-
-    <?php // echo form.field(model, 'updated_at') ?>
+    {# form.field(model, 'updated_at')|raw #}
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
     </div>
-
-    <?php ActiveForm::end(); ?>
-
+    {{ active_form_end() }}
 </div>

@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DefaultController implements the CRUD actions for Constants model.
+ * AdminController implements the CRUD actions for Constants model.
  */
 class AdminController extends Controller
 {
@@ -50,77 +50,23 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (isset(Yii::$app->request->get()['id'])){
+      $model = $this->findModel(Yii::$app->request->get()['id']);
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['admin/constants']);
+      }
+      return $this->render('update', [
+        'model' => $model,
+      ]);
+    }
     $searchModel = new ConstantsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
-      'models' => $dataProvider->getModels(),
+      'dataProvider' => $dataProvider,
     ]);
   }
-
-  /**
-   * Displays a single Constants model.
-   * @param integer $id
-   * @return mixed
-   */
-  public function actionView($id)
-  {
-    return $this->render('view', [
-      'model' => $this->findModel($id),
-    ]);
-  }
-
-  /**
-   * Creates a new Constants model.
-   * If creation is successful, the browser will be redirected to the 'view' page.
-   * @return mixed
-   */
-  public function actionCreate()
-  {
-    $model = new Constants();
-
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->uid]);
-    } else {
-      return $this->render('create', [
-        'model' => $model,
-      ]);
-    }
-  }
-
-  /**
-   * Updates an existing Constants model.
-   * If update is successful, the browser will be redirected to the 'view' page.
-   * @param integer $id
-   * @return mixed
-   */
-  public function actionUpdate($id)
-  {
-    $model = $this->findModel($id);
-
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->uid]);
-    } else {
-      return $this->render('update', [
-        'model' => $model,
-      ]);
-    }
-  }
-
-  /**
-   * Deletes an existing Constants model.
-   * If deletion is successful, the browser will be redirected to the 'index' page.
-   * @param integer $id
-   * @return mixed
-   */
-  public function actionDelete($id)
-  {
-    $this->findModel($id)->delete();
-
-    return $this->redirect(['index']);
-  }
-
   /**
    * Finds the Constants model based on its primary key value.
    * If the model is not found, a 404 HTTP exception will be thrown.

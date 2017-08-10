@@ -5,6 +5,8 @@ $params = array_merge(
   require(__DIR__ . '/params.php'),
   require(__DIR__ . '/params-local.php')
 );
+$params['meta']=require (__DIR__.'/meta.php');
+
 
 $config= [
   'id' => 'app-frontend',
@@ -60,6 +62,7 @@ $config= [
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/index',
+        'account/settings' => 'users/account/settings',
         'admin' => 'site/admin',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
