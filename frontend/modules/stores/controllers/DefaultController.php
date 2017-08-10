@@ -82,11 +82,7 @@ class DefaultController extends SdController
                     'is_active' => [0, 1],
                 ])
                  ->orderBy($sort .' '.$order);
-            $pagination = new Pagination(
-                $dataBaseData,
-                'catalog_stores_category' . '_' .$category . '_' . $limit. '_' . $sort,
-                ['limit' => $limit, 'page' => $page, 'asArray' => 1]
-            );
+            $cacheName = 'catalog_stores_category' . '_' .$category .'_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
         } else {
             //нет категории /stores
             $dataBaseData = Stores::find()
@@ -98,19 +94,23 @@ class DefaultController extends SdController
                     " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
 
                 ])
-                ->where(['not in', 'is_active', [-1]])
+                ->where(['is_active' => [0, 1]])
                 ->orderBy($sort .' '.$order);
-            $pagination = new Pagination(
-                $dataBaseData,
-                'catalog_stores_' . $limit. '_' . $sort,
-                ['limit' => $limit, 'page' => $page, 'asArray' => 1]
-            );
+            $cacheName = 'catalog_stores_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
         }
+        $pagination = new Pagination(
+            $dataBaseData,
+            $cacheName,
+            ['limit' => $limit, 'page' => $page, 'asArray' => 1]
+        );
+
         $storesData['stores'] = $pagination->data();
         $storesData["total_v"] = $pagination->count();
         $storesData["show_stores"] = count($storesData['stores']);
         $storesData["offset_stores"] = $pagination->offset();
         $storesData["total_all_stores"] = Stores::activeCount();
+        $storesData["page"] = empty($page) ? 1 : $page;
+        $storesData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
 
         $paginateParams = [
             'category' => $category,

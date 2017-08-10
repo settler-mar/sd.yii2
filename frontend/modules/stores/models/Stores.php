@@ -139,7 +139,7 @@ class Stores extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $data = $cache->getOrSet('total_all_stores', function () {
             return self::find()
-                ->where(['not in', 'is_active', [-1]])
+                ->where(['is_active' => [0, 1]])
                 ->count();
         });
         return $data;
