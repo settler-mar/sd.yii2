@@ -3,6 +3,8 @@
 namespace frontend\modules\coupons\models;
 
 use Yii;
+use frontend\modules\stores\models\Stores;
+
 
 /**
  * This is the model class for table "cw_categories_coupons".
@@ -53,4 +55,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         return $this->hasMany(Coupons::className(), ['coupon_id' => 'coupon_id'])
             ->viaTable('cw_coupons_to_categories', ['category_id' => 'uid']);
     }
+
+
+
 }

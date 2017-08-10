@@ -1,0 +1,183 @@
+{% include 'parts/slider.twig' %}
+<section class="catalog shops section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Лучшие скидки, купоны и промокоды от магазинов из <a href="/stores">нашего каталога</a></h3>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <ul class="sort-menu">
+                    <li class="title">Сортировать по:</li>
+                    {% for sortLink in sortlinks%}
+                        <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
+                    {% endfor %}
+                </ul>
+                <ul class="sort-menu-mobile">
+                    {% for sortLink in sortlinks%}
+                    <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% include 'parts/dropdown.twig' %}
+        </div>
+    </div>
+</section>
+<section class="categories section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+              {% set category_name = "" %}
+                {% set store_name = "" %}
+                <ul data-mcs-theme="dark">
+                    <li {% if not category_id and not affiliate_id %} class="active" {% endif %}><a href="/coupons">Все купоны <span>({{total_all_coupons}})</span></a></li>
+                    {% if coupons_categories|length > 0 %}
+                        {% for coupon_category in coupons_categories %}
+                        <li {% if category_id == coupon_category.uid %} {% set category_name = coupon_category.name %} class="active" {% endif %}><a href="/coupons/category:{{coupon_category.uid}}">{{coupon_category.name}} <span>({{coupon_category.count}})</span></a></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <div class="search-store-coupons">
+                    <input type="text" name="s-coupons" value="" placeholder="Найти магазин"><span class="fa fa-search"></span>
+                </div>
+                {% if stores_coupons|length > 0 %}
+                <ul class="coupons-stores" data-mcs-theme="dark">
+                    {% for store in stores_coupons %}
+                    <li {% if affiliate_id == store.uid %} {% set store_name = store.name %} class="active" {% endif %}><a href="/coupons/store:{{store.uid}}">{{store.name}} <span>({{store.count}})</span></a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>  
+</section>
+<section class="divide shops catalog-coupons section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h1 class="coupons-h1" totalv="{{total_v}}">
+                    {% if h1%}
+                        {{ h1|raw }}
+                    {% else %}
+                        {% if category_name == '' and store_name == '' %}
+                            Все купоны
+                        {% else %}
+                            {% if category_name != '' %}
+                                {{category_name}}
+                            {% endif %}
+                            {% if store_name != '' %}
+                               {{store_name}}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </h1>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <p class="view-items">Показано {% if total_v > 0 %}{{offset_coupons + 1}}{% else %}0{% endif %}-{{offset_coupons + show_coupons}} из {{total_v}}</p>
+            </div>
+        </div>
+        {% if content and page==1 %}
+            <div class="row">
+                <div class="col-md-12 ">
+                        {{ content|raw }}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row coupons-list">
+            {% if coupons|length > 0 %}
+                {% for coupon in coupons %}
+                <div class="col-sm-12 col-md-6 coupons-item">
+                    <div class="coupons">
+                        {% include 'parts/coupon.twig' %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12">
+                    Ничего не найдено.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% include 'parts/pagination.twig' %}
+{% if current_category.short_description and page==1%}
+<section style="margin-top: -10px;margin-bottom: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ">
+                {{ current_category.short_description|raw }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if is_root and page==1%}
+<section style="margin-top: -10px;margin-bottom: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ">
+                <h4 class="p1" style="text-align: left;">
+                    <strong>
+                        Если вы любите шоппинг в Интернете и желаете при этом экономить,
+                        то купоны или промокоды – ваш правильный выбор
+                    </strong>
+                </h4>
+                <p>
+                    Если вы часто покупаете в интернет-магазинах, то вы, скорее всего, знакомы с промокодами, вставив которые в соответствующее поле на сайте при оформлении покупки, можно получить дополнительную скидку, бесплатную доставку до двери, подарок или другое преимущество.
+                </p>
+
+                <div class="accordion">
+                    <div class="accordion-content">
+                        <p>
+                            Для начала разберемся, что такое промокод, в чем его отличие от купона и где взять эти самые купоны и промокоды.
+                            Промокод – это буквенно-цифровой код, введя который в дополнение к покупке, вы получите определенный бонус. Нередко промокод позволяет получить даже 70% скидку, не говоря о том, что качество товара будет <b>тем же</b>, в независимости от того, купили вы вещь с купоном или без.
+                        </p>
+                        <p>
+                            <strong>В чем отличие промокода от купона<br></strong>
+                            По сути, это одно и то же. Купон является чуть устаревшим понятием и, в основном, относится к товарам и услугам в оффлайне. Бывает, что за купоны и сами просят деньги, в то время как промокоды бесплатны.
+                        </p>
+                        <p>
+                            <strong>Для чего это интернет-магазинам<br></strong>
+                            Бесплатные скидки в виде промокодов или купонов стимулируют покупателей брать больше. Давно не секрет, что когда человек видит скидку в 70% или даже 90%, он хватает всё, нередко без разбора, нужна ему эта вещь в данный момент или нет. Поэтому купоны на скидку интернет-магазины генерируют в первую очередь для того, чтобы намного легче продать не пользующийся особым спросом товар, или качественный товар, но у которого подходят сроки годности. Возможен и вариант, когда до наступления осени нужно распродать сезонную летнюю коллекцию. В этом случае и пригодятся промокоды. Никто не станет распродавать вещи из новой коллекции с промокодами. Если только небольшими :)) В любом случае скидка с промокодом поможет вам купить понравившийся товар дешевле.
+                        </p>
+                        <p>
+                            <strong>Различия в типах промокодов<br></strong>
+                            Есть промокоды, требующие ввода цифро-буквенного кода на сайте магазина, а есть нет. Во втором случае вы сразу попадаете на страницу магазина с конкретной акцией, например, распродажей сапог определенной модели или марки, и весь товар на данной странице уже имеет сниженную, акционную цену. При более пристальном рассмотрении прокомоды/купоны подразделяются еще на:
+                        </p>
+                        <ul>
+                            <li>промокоды на скидку</li>
+                            <li>промокоды на бесплатную доставку </li>
+                            <li>промокоды на подарок к заказу (могут подарить сумку к ноутбуку при покупке оного)</li>
+                        </ul>
+                        <p>
+                            Также промокод может быть многократным (один и тот же код действует весь сезон) или одноразовым (один покупатель – один код).
+                        </p>
+                        <p>
+                            <strong>Какие купоны есть у нас<br></strong>
+                            У нас вы всегда можете найти актуальные, работающие интернет-купоны на скидку 2017 года,  купоны на отдых, детские купоны,  купоны отелей, купоны на путешествия и многое другое. Есть ли у нас купоны для оффлайн-магазинов? Сейчас на сайте нашего кэшбэк-сервиса представлены только купоны на покупку в интернет-магазинах, но вскоре появятся и бесплатные купоны в рестораны, в магазины, в салоны красоты и пр. Как? Уже с осени на сайте SecretDiscounter появится раздел «Оффлайн-кэшбэк», где вы сможете взять купоны в магазины, расположенные в вашем городе. В первую очередь будут охвачены столицы: Москва, Киев, Минск, Астана, но не за горами и другие регионы и даже страны. Мы стараемся для вас!
+                        </p>
+                        <p>
+                            <strong>Как получить купон <br></strong>
+                            Сделать это достаточно легко: на нашем сайте вы можете взять его как прямо на странице соответствующего магазина, так и в разделе «Купоны», где представлено более 4.5 тысяч купонов в 22 товарных категориях.
+                        </p>
+                        <p>
+                            <strong>Как использовать купон<br></strong>
+                            Обратите внимание, что на нашем сайте каждый скидочный купон и промокод может как иметь код купона, так и обходиться без него – вы сразу попадете на страницу магазина, где обещанный вам товар уже со сниженными ценами. Также не забывайте, что купон действует ограниченное время, поэтому успейте купить. На нашем сайте находятся только действующие купоны – все истекшие автоматически удаляются.
+                        </p>
+                        <p>
+                            <strong>Бесплатны ли наши купоны<br></strong>
+                            В отличие от многих сайтов купонов (таких как Промокод.ру,  Kupikupon.ru, Biglion.ru, Boombate.com, в Беларуси Slivki.by и других), предлагающих вам <b>купить</b> купон, мы предоставляем все промокоды/купоны <b>бесплатно</b>. Не забывайте также, что в дополнение к купонам вы можете получить на нашем сайте и кэшбэк деньгами. Только 10% самых активных покупателей в СНГ знают про эту волшебную связку <b>«купон + кэшбэк = двойная выгода»</b>.
+                        </p>
+                        <p>
+                            Используйте SecretDiscounter, и все действующие промокоды 2017 года и другие бесплатные купоны на скидку достанутся вам. Просто, удобно и в одном месте!
+                        </p>
+                    </div>
+                    <div class="accordion-control"><a class="angle-down" href="#"><em class="icon">&nbsp;</em></a><a class="angle-up" href="#"><em class="icon">&nbsp;</em></a></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

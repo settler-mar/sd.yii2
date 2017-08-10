@@ -4,7 +4,7 @@ namespace frontend\modules\coupons\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\coupons\models\CategoriesCoupons;
+
 
 /**
  * This is the model class for table "cw_coupons".
@@ -32,6 +32,20 @@ class Coupons extends \yii\db\ActiveRecord
     {
         return 'cw_coupons';
     }
+
+    /**
+     * @var string
+     */
+    public static $defaultSort = 'date_end';
+    /**
+     * Possible sorting options with titles and default value
+     * @var array
+     */
+    public static $sortvars = [
+        'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
+        'date_start' => ["title" => "Новизне", "title_mobile" => "По новизне"],
+        'date_end' => ["title" => "Сроку действия", "title_mobile" => "По сроку действия", 'sort' => 'ASC'],
+    ];
 
     /**
      * @inheritdoc
@@ -87,5 +101,58 @@ class Coupons extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CategoriesCoupons::className(), ['uid' => 'category_id'])
             ->viaTable('cw_coupons_to_categories', ['coupon_id' => 'coupon_id']);
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getActiveCategoriesCoupons()
+    {
+        $cache = Yii::$app->cache;
+        $categories =  $cache->getOrSet('categories_coupons', function () {
+            return CategoriesCoupons::find()
+                ->from(CategoriesCoupons::tableName(). ' ccc')
+                ->select(['ccc.name', 'ccc.uid', 'count(cct.coupon_id) as count'])
+                ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
+                ->innerJoin(self::tableName().' cwc', 'cct.coupon_id = cwc.coupon_id')
+                ->innerJoin(Stores::tableName(). ' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => 1])
+                ->groupBy('cct.category_id')
+                ->asArray()
+                ->all();
+        });
+        return $categories;
+    }
+    /**
+     * @return mixed
+     */
+    public static function getActiveStoresCoupons()
+    {
+        $cache = Yii::$app->cache;
+        $categories =  $cache->getOrSet('stores_coupons', function () {
+            return self::find()
+                ->from(self::tableName(). ' cwc')
+                ->select(['cws.name', 'cws.uid', 'count(cwc.uid) as count'])
+                ->innerJoin(Stores::tableName().' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => 1])
+                ->groupBy('cwc.store_id')
+                ->orderBy('cws.name ASC')
+                ->asArray()
+                ->all();
+        });
+        return $categories;
+    }
+    
+    public static function activeCount()
+    {
+        $cache = Yii::$app->cache;
+        $count =  $cache->getOrSet('total_all_coupons', function () {
+            return self::find()
+                ->from(self::tableName(). ' cwc')
+                ->innerJoin(Stores::tableName().' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => 1])
+                ->count();
+        });
+        return $count;
     }
 }

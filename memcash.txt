@@ -6,3 +6,9 @@ reviews_top - топ reviews
 catalog_promo_stores - PromoStores
 categories_stores - Список категорий
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
+categories_coupons - Cписок категорий купонов
+stores_coupon - Список магазинов с купонами
+total_all_coupons - Количество активных купонов
+coupons_<page>_<limit>_<sort>_<order> - купоны
+coupons_store_<category>_<page>_<limit>_<sort>_<order> - купоны магазина
+coupons_category_<category>_<page>_<limit>_<sort>_<order> - купоны категории
