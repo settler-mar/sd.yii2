@@ -4,6 +4,7 @@ namespace frontend\modules\stores\models;
 
 use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\coupons\models\Coupons;
 
 
 
@@ -120,6 +121,14 @@ class Stores extends \yii\db\ActiveRecord
     public function getPromoStores()
     {
         return $this->hasMany(PromoStores::className(), ['store_id' => 'uid']);
+    }
+    /**
+     * coupons
+     * @return $this
+     */
+    public function getCoupons()
+    {
+        return $this->hasMany(Coupons::className(), ['store_id' => 'uid']);
     }
 
     /**

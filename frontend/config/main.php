@@ -95,6 +95,9 @@ $config= [
     'constants' => [
       'class' => 'app\modules\constants\Module',
     ],
+    'coupons' => [
+      'class' => 'frontend\modules\coupons\Module',
+    ],
   ],
   'params' => $params,
 ];
