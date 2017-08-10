@@ -5,6 +5,8 @@ $params = array_merge(
   require(__DIR__ . '/params.php'),
   require(__DIR__ . '/params-local.php')
 );
+$params['meta']=require (__DIR__.'/meta.php');
+
 
 $config= [
   'id' => 'app-frontend',

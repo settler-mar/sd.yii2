@@ -2,12 +2,12 @@
 
 namespace frontend\modules\users\controllers;
 
-use app\modules\users\models\ResetPasswordForm;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\ResetPasswordForm;
+use frontend\modules\users\models\Users;
 use \Yii;
 use yii\web\Controller;
-use app\modules\users\models\LoginForm;
-use app\modules\users\models\RegistrationForm;
+use frontend\modules\users\models\LoginForm;
+use frontend\modules\users\models\RegistrationForm;
 
 class DefaultController extends Controller
 {
