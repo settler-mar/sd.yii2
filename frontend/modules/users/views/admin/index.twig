@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/LinkPager') }}
-{% set title = 'Users' %}
+{% set title = 'Пользователи' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -13,10 +13,74 @@
     <div class="row">
       <div class="col-md-12">
         <h1 style="padding: 0;">{{ html.encode(this.title) }}</h1>
-        {# include('_search.twig', {'model': searchModel}) #}
-        <p>
-          <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Users' }}</a>
-        </p>
+      </div>
+      <div class="col-md-6">
+        <div class="sum_information">
+          <div class="line">
+            <div class="name">Кол-во пользователей</div>
+            <div class="value">
+              <span>всего</span>
+              {{ _nf(users_total.total,0)  | raw}}
+            </div>
+            <div class="value">
+              <span>активных</span>
+              {{ _nf(users_total.active,0) | raw}}
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Кэшбек(confirmed)</div>
+            <div class="value">
+              {{ users_total.cnt_confirmed }}
+            </div>
+            <div class="value">
+              {{ _nf(users_total.sum_confirmed) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Кэшбек(pending)</div>
+            <div class="value">
+              {{ _nf(users_total.cnt_pending,0) | raw }}
+            </div>
+            <div class="value">
+              {{ _nf(users_total.sum_pending) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Ref(pending)</div>
+            <div class="value">
+              {{ _nf(users_total.sum_from_ref_pending) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Ref(confirmed)</div>
+            <div class="value">
+              {{ _nf(users_total.sum_from_ref_confirmed) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Выплаченно</div>
+            <div class="value">
+              {{ _nf(users_total.sum_withdraw) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Пожертвовано</div>
+            <div class="value">
+              {{ _nf(users_total.sum_foundation) | raw }} р
+            </div>
+          </div>
+          <div class="line">
+            <div class="name">Бонусов</div>
+            <div class="value">
+              {{ _nf(users_total.sum_bonus) | raw }} р
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        {{  include('_search.twig') }}
+      </div>
+
       </div>
       <div class="col-md-12">
         {% if users|length > 0 %}
@@ -57,16 +121,36 @@
                         <div class="value">{{user.last_login}}</div>
                       </div>
                       <div class="line">
-                        <div class="name">IP-авториз.</div>
-                        <div class="value">{{user.last_ip | raw}}</div>
+                        <div class="name">IP-авториз</div>
+                        <div class="value">
+                          {% if(user.last_ip_count>1) %}
+                            <a href="/admin/users?ip={{ user.last_ip }}">{{ user.last_ip }} ({{ user.last_ip_count }})</a>
+                          {% else %}
+                            {{ user.last_ip }} ({{ user.last_ip_count }})
+                          {% endif %}
+                        </div>
                       </div>
                       <div class="line">
                         <div class="name">IP-рег.</div>
-                        <div class="value">{{user.reg_ip | raw}}</div>
+                        <div class="value">
+                          {% if(user.reg_ip_count>1) %}
+                            <a href="/admin/users?ip={{ user.reg_ip }}">{{ user.reg_ip }} ({{ user.reg_ip_count }})</a>
+                          {% else %}
+                            {{ user.reg_ip }} ({{ user.reg_ip_count }})
+                          {% endif %}
+                        </div>
                       </div>
                       <div class="line">
                         <div class="name">Привел</div>
-                        <div class="value">{{user.drive | raw}}</div>
+                        <div class="value">
+                          {% if  user.referrer_id>0 %}
+                           <a href="/admin/users?uid={{ user.referrer_id }}">
+                             {{ _hyphen_email(user.drive) | raw}} <wbr>({{ user.referrer_id }})
+                           </a>
+                          {% else %}
+                            {{ _hyphen_email(user.drive) | raw}}
+                          {% endif %}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -76,19 +160,19 @@
                       <div class="line">
                         <div class="name">confirmed</div>
                         <div class="value">
-                          {{user.cnt_confirmed}}
+                          {{ _nf(user.cnt_confirmed,0)}}
                         </div>
                         <div class="value">
-                          {{user.sum_confirmed}} р
+                          {{ _nf(user.sum_confirmed) }} р
                         </div>
                       </div>
                       <div class="line">
                         <div class="name">pending</div>
                         <div class="value">
-                          {{user.cnt_pending}}
+                          {{ _nf(user.cnt_pending,0) }}
                         </div>
                         <div class="value">
-                          {{user.sum_pending}} р
+                          {{ _nf(user.sum_pending) }} р
                         </div>
                       </div>
                       <b>За рефералов</b>
@@ -97,7 +181,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_from_ref_confirmed}} р
+                          {{ _nf(user.sum_from_ref_confirmed) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -105,7 +189,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_from_ref_pending}} р
+                          {{ _nf(user.sum_from_ref_pending) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -113,15 +197,15 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_bonus}} р
+                          {{ _nf(user.sum_bonus) }} р
                         </div>
                       </div>
                       <div class="line">
-                        <div class="name"><b>Благотворительность</b></div>
+                        <div class="name"><b>Благотворит.</b></div>
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_foundation}} р
+                          {{ _nf(user.sum_foundation) }} р
                         </div>
                       </div>
                       <div class="line">
@@ -129,7 +213,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.sum_withdraw}} р
+                          {{ _nf(user.sum_withdraw) }} р
                         </div>
                       </div>
                       <div class="line sum">
@@ -137,7 +221,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.currentBalance}}
+                          {{ _nf(user.currentBalance) }}
                         </div>
                       </div>
                       <div class="line">
@@ -145,7 +229,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{user.pending}}
+                          {{ _nf(user.pending) }}
                         </div>
                       </div>
                     </div>
@@ -176,24 +260,20 @@
 
                       <div class="line">
                         <div class="name">Рефералов</div>
-                        <div class="value">{{user.ref_total}}</div>
+                        <div class="value">{{ _nf(user.ref_total,0) }}</div>
                       </div>
                       <div class="line">
                         <div class="name">Активен</div>
-                        <div class="value">{{user.is_active}}</div>
-                      </div>
-                      <div class="line">
-                        <div class="name">Админ</div>
-                        <div class="value">{{user.is_admin}}</div>
+                        <div class="value">{{ _if(user.is_active==1,'ДА','НЕТ') }}</div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <a href="/admin/users/edit/{{user.uid}}">Редактировать</a>
+                    <a href="/admin/users/update?id={{user.uid}}">Редактировать</a>
                     <br>
-                    <a href="/admin/users/login/{{user.uid}}">Login</a>
-                    <br>
-                    <a class="delete" href="/admin/users/delete/{{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>
+                    <a href="/admin/users/login?id={{user.uid}}">Login</a>
+                    <!--<br>
+                    <a class="delete" href="/admin/users/delete?id={{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>-->
                   </td>
                 </tr>
               {% endfor %}

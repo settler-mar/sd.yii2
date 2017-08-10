@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use developeruz\db_rbac\interfaces\UserRbacInterface;
+use JBZoo\Image\Image;
 
 /**
  * This is the model class for table "cw_users".
@@ -16,6 +17,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 {
 
   public $new_password;
+  public $new_photo;
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
@@ -38,7 +40,6 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function behaviors()
   {
     return [
-
     ];
   }
 
@@ -49,6 +50,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     return [
       [['email', 'name',  'added'], 'required'],
+      [['email'], 'email'],
+      ['new_password', 'trim'],
+      [['new_password'], 'string', 'max' => 60],
+      [['new_password'], 'string', 'min' => 6],
       [['birthday', 'last_login', 'added'], 'safe'],
       [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
@@ -56,8 +61,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       [['sex'], 'string', 'max' => 1],
       [['last_ip'], 'string', 'max' => 100],
       [['reg_ip'], 'string', 'max' => 20],
-      ['!photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
-      [['photo'], 'image',
+      ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+      [['new_photo'], 'image',
         'minHeight' => 500,
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
@@ -79,38 +84,40 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function attributeLabels()
   {
     return [
-      'uid' => 'Uid',
-      'email' => 'Email',
-      'name' => 'Name',
-      'password' => 'Password',
+      'uid' => 'id',
+      'email' => 'email',
+      'name' => 'Имя',
+      'password' => 'Пароль',
+      'new_password' => 'Новый пароль',
       'salt' => 'Salt',
-      'birthday' => 'Birthday',
-      'sex' => 'Sex',
-      'photo' => 'Photo',
-      'notice_email' => 'Notice Email',
-      'notice_account' => 'Notice Account',
+      'birthday' => 'День рождения',
+      'sex' => 'Пол',
+      'photo' => 'Фото',
+      'new_photo' => 'Фото',
+      'notice_email' => 'Уведомление на почту',
+      'notice_account' => 'Внутренние уведомления',
       'referrer_id' => 'Referrer ID',
-      'last_ip' => 'Last Ip',
-      'last_login' => 'Last Login',
-      'registration_source' => 'Registration Source',
-      'added' => 'Added',
-      'loyalty_status' => 'Loyalty Status',
-      'is_active' => 'Is Active',
+      'last_ip' => 'Ip последнего входа',
+      'last_login' => 'Дата последнего входа',
+      'registration_source' => 'Источник регистрации',
+      'added' => 'Дата регистрации',
+      'loyalty_status' => 'Статус лояльности',
+      'is_active' => 'Активен',
       'is_admin' => 'Is Admin',
-      'bonus_status' => 'Bonus Status',
-      'reg_ip' => 'Reg Ip',
-      'ref_total' => 'Ref Total',
-      'sum_pending' => 'Sum Pending',
-      'cnt_pending' => 'Cnt Pending',
-      'sum_confirmed' => 'Sum Confirmed',
-      'cnt_confirmed' => 'Cnt Confirmed',
-      'sum_from_ref_pending' => 'Sum From Ref Pending',
-      'sum_from_ref_confirmed' => 'Sum From Ref Confirmed',
+      'bonus_status' => 'Бонусы за рефералов',
+      'reg_ip' => 'Ip регистрации',
+      'ref_total' => 'Всего рефералов',
+      'sum_pending' => 'Ожидаемое вознаграждени',
+      'cnt_pending' => 'Количество ожиаемого вознаграждения',
+      'sum_confirmed' => 'Подтвержденная сумма',
+      'cnt_confirmed' => 'Количество подтввержденной суммы',
+      'sum_from_ref_pending' => 'Ожидаенмое вознаграждение от рефералов',
+      'sum_from_ref_confirmed' => 'Подтвержденое вознаграждение от рефералов',
       'sum_to_friend_pending' => 'Sum To Friend Pending',
       'sum_to_friend_confirmed' => 'Sum To Friend Confirmed',
-      'sum_foundation' => 'Sum Foundation',
-      'sum_withdraw' => 'Sum Withdraw',
-      'sum_bonus' => 'Sum Bonus',
+      'sum_foundation' => 'Сумма пожертвований',
+      'sum_withdraw' => 'Выплаченная сумма',
+      'sum_bonus' => 'Бонусы',
     ];
   }
 
@@ -125,10 +132,16 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
    */
   public static function afterLogin($id)
   {
-    self::getDb()->createCommand()->update(self::tableName(), [
-      'last_ip' => $_SERVER["REMOTE_ADDR"],
-      'last_login' => date('Y-m-d H:i:s'),
-    ], ['uid' => $id])->execute();
+    if(
+      !Yii::$app->session->get('admin_id') ||
+      Yii::$app->session->get('admin_id')!=Yii::$app->user->id
+    ){
+      self::getDb()->createCommand()->update(self::tableName(), [
+        'last_ip' => $_SERVER["REMOTE_ADDR"],
+        'last_login' => date('Y-m-d H:i:s'),
+      ], ['uid' => $id])->execute();
+    }
+
   }
 
 
@@ -147,6 +160,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $this->reg_ip = $_SERVER["REMOTE_ADDR"];
       $this->referrer_id =  Yii::$app->session->get('referrer_id');
       $this->added = date('Y-m-d H:i:s');
+    }
+
+    if($this->new_password){
+      $this->setPassword($this->new_password);
     }
     return true;
 
@@ -170,25 +187,25 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
    */
   public function saveImage()
   {
-    $photo = \yii\web\UploadedFile::getInstance($this, 'photo');
+    $photo = \yii\web\UploadedFile::getInstance($this, 'new_photo');
     if ($photo) {
       $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
       $oldImage = $this->photo;
-      $name = time() . '-' . $this->uid; // Название файла
+      $name = time(); // Название файла
       $exch = explode('.', $photo->name);
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
       $this->photo = $path . $name;   // Путь файла и название
-      if (!file_exists($path)) {
-        mkdir($path, 0777, true);   // Создаем директорию при отсутствии
+      $bp=Yii::$app->getBasePath().'/web';
+      if (!file_exists($bp.$path)) {
+        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
       }
       $img = (new Image($photo->tempName));
-
       $img
         ->fitToWidth(500)
-        ->saveAs($this->photo);
+        ->saveAs($bp.$this->photo);
       if ($img) {
-        $this->removeImage($oldImage);   // удаляем старое изображение
+        $this->removeImage($bp.$oldImage);   // удаляем старое изображение
         $this::getDb()
           ->createCommand()
           ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
@@ -204,7 +221,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     if ($img) {
       // Если файл существует
-      if (file_exists($img)) {
+      if (is_readable($img) && is_file($img)) {
+       // ddd($img);
         unlink($img);
       }
     }
@@ -399,18 +417,50 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getDrive(){//email и ссылка на того кто привел
-
-    return 1;
+    if($this->referrer_id<1){
+      return '';
+    }
+    $user=Users::find()
+      ->where(['uid'=>$this->referrer_id])->one();
+    return $user->email;
   }
 
   public function getLoyalty_status_data(){
-
-    return 1;
+    $ls=$this->loyalty_status;
+    $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
+    if(!isset($loyalty_status_list[$ls])){
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls];
   }
 
   public function getBonus_status_data(){
+    $bs=$this->loyalty_status;
+    $Bonus_status_list=Yii::$app->params['dictionary']['bonus_status'];
+    if(!isset($Bonus_status_list[$bs])){
+      return 'Ошибка';
+    }
+    return $Bonus_status_list[$bs];
+  }
 
-    return 1;
+  public function getLast_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->last_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->last_ip])
+        ->orWhere(['reg_ip'=>$this->last_ip])
+        ->count();
+      return $count;
+    });
+  }
+
+  public function getReg_ip_count(){
+    return Yii::$app->cache->getOrSet('ip_count_'.$this->reg_ip, function () {
+      $count=Users::find()
+        ->orWhere(['last_ip'=>$this->reg_ip])
+        ->orWhere(['reg_ip'=>$this->reg_ip])
+        ->count();
+      return $count;
+    });
   }
 
   public function getCurrentBalance(){

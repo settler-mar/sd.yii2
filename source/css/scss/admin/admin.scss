@@ -623,6 +623,8 @@ td{
     }
 }
 .sum_information{
+    font-size: 14px;
+
     .line{
         display: block;
         white-space: nowrap;
@@ -663,7 +665,7 @@ table.table-users{
     .sum_information {
         &.long_value {
             .value {
-                width: 160px;
+                width: 180px;
                 text-align: left;
             }
         }

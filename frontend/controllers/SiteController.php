@@ -8,13 +8,10 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
+use frontend\modules\users\models\Users;
 
 /**
  * Site controller
@@ -92,6 +89,14 @@ class SiteController extends SdController
 
 
   public function actionAdmin(){
+    if(
+      Yii::$app->session->get('admin_id')!==null &&
+      Yii::$app->session->get('admin_id')!=Yii::$app->user->id
+    ){
+      $user=Users::findOne(['uid'=>(int)Yii::$app->session->get('admin_id')]);
+      Yii::$app->user->login($user);
+    }
+
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('adminIndex')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;

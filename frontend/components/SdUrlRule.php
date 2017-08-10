@@ -3,7 +3,7 @@ namespace frontend\components;
 
 use Yii;
 use yii\web\UrlRuleInterface;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\Users;
 
 class SdUrlRule implements UrlRuleInterface
 {
@@ -73,6 +73,13 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters)-1]);
     }
 
+    //проверяем что б это не был прямой заход в default
+    if($parameters[0]=='default'){
+      unset ($parameters[0]);
+      Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
+      return ['', $params];
+    }
+
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
     if(
       array_key_exists($parameters[0], \Yii::$app->modules)
@@ -83,6 +90,16 @@ class SdUrlRule implements UrlRuleInterface
     if (count($parameters) > 1) {
       $route[] = $parameters[1];
       $route[] = $parameters[0];
+
+      if(
+        $parameters[0]=='admin' AND
+        Yii::$app->session->get('admin_id')!==null &&
+        Yii::$app->session->get('admin_id')!=Yii::$app->user->id
+      ){
+        $user=Users::findOne(['uid'=>(int)Yii::$app->session->get('admin_id')]);
+        Yii::$app->user->login($user);
+      }
+
       if (isset($parameters[2])) {
         if($parameters[2]=='index'){
           unset($parameters[2]);
@@ -116,19 +133,8 @@ class SdUrlRule implements UrlRuleInterface
     if($route[0]=='permit'){
       return false;
     }
-    if($route[1]=='rbac'){
-      return false;
-    }
 
     $route=[$route[1],$route[0]];
-
-
-    if(isset($params['page'])){
-      if($params['page']!=1) {
-        $route[] = 'page-' . $params['page'];
-      }
-      unset($params['page']);
-    }
 
     if(isset($params['store'])){
       $route[] = 'store:' . $params['store'];
@@ -139,6 +145,13 @@ class SdUrlRule implements UrlRuleInterface
       $route[] = 'category:' . $params['category'];
       unset($params['category']);
     }
+    
+    if(isset($params['page'])){
+      if($params['page']!=1) {
+        $route[] = 'page-' . $params['page'];
+      }
+      unset($params['page']);
+    }
 
     if($route[0]=='default'){
       unset($route[0]);
@@ -146,8 +159,9 @@ class SdUrlRule implements UrlRuleInterface
 
     $url= implode('/',$route);
 
-    if(count($params)>0){
-      $url.='?'.http_build_query($params);
+    $params=http_build_query($params);
+    if(strlen($params)>1){
+      $url.='?'.$params;
     }
     return $url;
   }
