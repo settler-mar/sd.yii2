@@ -51,6 +51,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     return [
       [['email', 'name',  'added'], 'required'],
       [['email'], 'email'],
+      [['email'], 'unique','message' => 'Данныей email принадлежит другому пользователю.'],
       ['new_password', 'trim'],
       [['new_password'], 'string', 'max' => 60],
       [['new_password'], 'string', 'min' => 6],

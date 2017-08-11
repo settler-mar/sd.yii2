@@ -20,7 +20,7 @@ return  [
   'account'=>[
       'layout'=>'account.twig',
       'js'=>[
-        '/js/jquery-2.1.4.js',
+        //'/js/jquery-2.1.4.js',
         '/js/account/scripts{{script_version}}.js',
         '/js/external/jquery.mCustomScrollbar.concat.min.js',
         '/js/external/account/modernizr.js'
