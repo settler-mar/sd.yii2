@@ -67,6 +67,10 @@ class DefaultController extends SdController
             if ($storesData['current_category']->is_active == 0) {
                 return $this->redirect('/stores', 301);
             }
+
+            //чтобы виджет мог получить current_category_id в main.twig
+            \Yii::$app->controller->current_category_id = $category;
+
             $dataBaseData = Stores::find()
                 ->from(Stores::tableName() . ' cws')
                 ->select([

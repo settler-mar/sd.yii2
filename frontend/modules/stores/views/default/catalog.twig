@@ -88,10 +88,12 @@
 
             </div>
             <div class="col-md-4">
-                {% if app.controller.categories_tree %}
+                {{ use('frontend/components/CategoryMenu') }}
+                {% set category_tree = category_menu_widget() %}
+                {% if category_tree %}
                 <div class="left-categories">
                     <div class="tree-cat">
-                    {{app.controller.categories_tree|raw}}
+                    {{category_tree|raw}}
                     </div>
                 </div>
                 {% endif %}

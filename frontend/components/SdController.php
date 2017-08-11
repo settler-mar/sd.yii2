@@ -17,14 +17,15 @@ use frontend\modules\category_stores\models\CategoryStores;
 class SdController extends Controller
 {
     /**
-     * @var null|string
-     */
-    public $categories_tree;
-
-    /**
      * @var
      */
     public $pagination_tags;
+
+    /**
+     * для виджета дерево категорий - текущая категория
+     * @var
+     */
+    public $current_category_id;
 
     /**
      * Possible limit options with default value
@@ -35,19 +36,6 @@ class SdController extends Controller
      * @var int
      */
     public $defaultLimit = 50;
-
-    /**
-     * SdController constructor.
-     * @param string $id
-     * @param \yii\base\Module $module
-     * @param array $config
-     */
-    public function __construct($id, $module, $config = [])
-    {
-        parent::__construct($id, $module, $config = []);
-
-        $this->categories_tree = CategoryStores::tree();
-    }
 
     /**
      * @param $total
