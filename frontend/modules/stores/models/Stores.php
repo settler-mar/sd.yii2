@@ -183,5 +183,18 @@ class Stores extends \yii\db\ActiveRecord
         });
         return $data;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function byId($id)
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
+            return self::findOne($id);
+        });
+        return $data;
+    }
   
 }

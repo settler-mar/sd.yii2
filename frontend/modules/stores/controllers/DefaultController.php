@@ -170,6 +170,33 @@ class DefaultController extends SdController
         $contentData["additional_stores"] = $additionalStores['additional_stores'];
         $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
+
+//      todo
+//        require_once  __DIR__.'/../../../../cron/rate.conversion.php';
+//
+//        $this->contentData["curs"]=array(
+//            array(
+//                'code'=>"RUB",
+//                'value'=>1
+//            ),
+//            array(
+//                'code'=>"USD",
+//                'value'=>\Conversion::getRUB(1, "USD")
+//            ),
+//            array(
+//                'code'=>"EUR",
+//                'value'=>\Conversion::getRUB(1, "EUR")
+//            ),
+//            array(
+//                'code'=>"UAH",
+//                'value'=>\Conversion::getRUB(1, "UAH")
+//            ),
+//            array(
+//                'code'=>"KZT",
+//                'value'=>\Conversion::getRUB(1, "KZT")
+//            ),
+//        );
+
         return $this->render('shop', $contentData);
     }
 

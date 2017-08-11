@@ -56,6 +56,20 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             ->viaTable('cw_coupons_to_categories', ['category_id' => 'uid']);
     }
 
+    /**
+     * то же что findOne но закешировано
+     * @param $categoryId
+     * @return mixed
+     */
+    public static function byId($categoryId)
+    {
+        $cache = \Yii::$app->cache;
+        $category = $cache->getOrSet('categories_coupons_byid_' . $categoryId, function () use ($categoryId) {
+            return self::findOne($categoryId);
+        });
+        return $category;
+    }
+
 
 
 }

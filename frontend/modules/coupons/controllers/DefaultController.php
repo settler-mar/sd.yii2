@@ -46,7 +46,7 @@ class DefaultController extends SdController
         $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
 
         if (!empty($category)) {
-            $cat = CategoriesCoupons::findOne($category);
+            $cat = CategoriesCoupons::byId($category);
             if (!$cat) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -55,14 +55,12 @@ class DefaultController extends SdController
             $contentData['current_category'] = $cat;
             $databaseObj = Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
-                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
-                    'cws.currency as store_currency', 'cws.displayed_cashback'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
                 ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
                 ->orderBy($sort.' '.$order);
         } elseif (!empty($store)) {
-            $shop = Stores::findOne($store);
+            $shop = Stores::byId($store);
             if (!$shop) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -73,8 +71,6 @@ class DefaultController extends SdController
             $contentData['affiliate_id'] = $store;
             $databaseObj = Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
-                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
-                    'cws.currency as store_currency', 'cws.displayed_cashback'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $store])
                 ->orderBy($sort.' '.$order);
@@ -82,13 +78,11 @@ class DefaultController extends SdController
             $cacheName = 'coupons_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
             $databaseObj = Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
-                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
-                    'cws.currency as store_currency', 'cws.displayed_cashback'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1]])
                 ->orderBy($sort.' '.$order);
         }
-        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort, 'asArray' => 1]);
+        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort]);
 
         $contentData["coupons"] = $pagination->data();
         $contentData["total_v"] = $pagination->count();

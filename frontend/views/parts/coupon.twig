@@ -1,55 +1,55 @@
 <div class="current-coupon" data-uid="{{coupon.uid}}">
     <div class="expiry col-sm-12">срок действия купона истёк<br><span data-icon="&#xe05c;" class="icon"></span></div>
     <div class="col-sm-12 col-md-4 logo">
-        {% if promo_stores[coupon.store_id] %}
+        {% if coupon.store.action_id == 1 %}
         <span class="promo-label x2"></span>
         {% endif %}
-        <a href="/stores/{{coupon.store_route}}"><img src="{{store_images_path}}{{coupon.image}}" alt="{{coupon.store_name}}"></a>
+        <a href="/stores/{{coupon.store.route}}"><img src="/images/logos/{{coupon.image}}" alt="{{coupon.store.name}}"></a>
         <p class="time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></p>
     </div>
     <div class="col-sm-12 col-md-8 text">
         <p class="name">{{coupon.name}} 
-        <span {% if promo_stores[coupon.store_id] %} class="old" {% endif %}>+ кэшбэк 
-        {% if coupon.displayed_cashback ends with '%' %}
-        {{coupon.displayed_cashback}}
+        <span {% if coupon.store.action_id == 1 %} class="old" {% endif %}>+ кэшбэк
+        {% if coupon.store.displayed_cashback ends with '%' %}
+        {{coupon.store.displayed_cashback}}
         {% else %}
-        {{coupon.displayed_cashback}}
-            {% if coupon.store_currency == 'RUB' %}
+        {{coupon.store.displayed_cashback}}
+            {% if coupon.store.currency == 'RUB' %}
             <span class="fa fa-rub"></span>
             {% endif %}
-            {% if coupon.store_currency == 'EUR' %}
+            {% if coupon.store.currency == 'EUR' %}
             <span class="fa fa-eur"></span>
             {% endif %}
-            {% if coupon.store_currency == 'USD' %}
+            {% if coupon.store.currency == 'USD' %}
             <span class="fa fa-dollar"></span>
             {% endif %}
-            {% if coupon.store_currency == 'UAH' %}
+            {% if coupon.store.currency == 'UAH' %}
             <span class="uah">&#8372;</span>
             {% endif %}
-            {% if coupon.store_currency == 'KZT' %}
+            {% if coupon.store.currency == 'KZT' %}
             <span class="uah">&#8376;</span>
             {% endif %}
         {% endif %}
         </span>
-        {% if promo_stores[coupon.store_id] %}
+        {% if coupon.store.action_id == 1 %}
         <span>&nbsp;+ кэшбэк 
         {% if promo_stores[coupon.store_id].promo_cashback ends with '%' %}
         {{promo_stores[coupon.store_id].promo_cashback}}
         {% else %}
         {{promo_stores[coupon.store_id].promo_cashback}}
-            {% if coupon.store_currency == 'RUB' %}
+            {% if coupon.store.currency == 'RUB' %}
             <span class="fa fa-rub"></span>
             {% endif %}
-            {% if coupon.store_currency == 'EUR' %}
+            {% if coupon.store.currency == 'EUR' %}
             <span class="fa fa-eur"></span>
             {% endif %}
-            {% if coupon.store_currency == 'USD' %}
+            {% if coupon.store.currency == 'USD' %}
             <span class="fa fa-dollar"></span>
             {% endif %}
-            {% if coupon.store_currency == 'UAH' %}
+            {% if coupon.store.currency == 'UAH' %}
             <span class="uah">&#8372;</span>
             {% endif %}
-            {% if coupon.store_currency == 'KZT' %}
+            {% if coupon.store.currency == 'KZT' %}
             <span class="uah">&#8376;</span>
             {% endif %}
         {% endif %}
@@ -63,7 +63,7 @@
         </p>
         {% endif %}
         {% if not store_coupons %}
-        <p class="links"><a href="/coupons/store:{{coupon.store_id}}"><span class="fa fa-tags"></span> Показать все купоны <span>{{coupon.store_name}} </span></a></p>
+        <p class="links"><a href="/coupons/store:{{coupon.store_id}}"><span class="fa fa-tags"></span> Показать все купоны <span>{{coupon.store.name}} </span></a></p>
         {% else %}
         <br>
         {% endif %}
