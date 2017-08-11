@@ -146,7 +146,7 @@ $(function() {
                     $("#top form[name=user-password]")[0].reset();
                 });
 
-                $('#top input[name=date]').datepicker({
+                $('#top input[ref=date]').datepicker({
                     dateFormat: "yyyy-mm-dd"
                 });
             }   

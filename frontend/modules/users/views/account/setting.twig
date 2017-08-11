@@ -1,0 +1,100 @@
+{{ use('/yii/bootstrap/ActiveForm') }}
+
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{this.balance.current}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{this.balance.pending}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{this.balance.charity}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                    <div class="idsystem">Ваш ID в системе: <span>{{this.user_id}}</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="settings account-padding">
+        <div class="row">
+            {% set form = active_form_begin({
+                'id':'user_setting',
+                'layout' : 'horizontal',
+                'fieldConfig':{
+                    'horizontalCssClasses':{
+                        'wrapper':'form-input-group',
+                    }
+                },
+                'options' : {
+                    'enctype' : 'multipart/form-data',
+                    'role' : 'form'
+                },
+            }) %}
+                <div class="col-md-6">
+                    <h3>Настройка аккаунта</h3>
+
+                    {{ form.field(model, 'name',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-user"></i>{input}\n{endWrapper}\n{error}'
+                    }).textInput({'placeholder':'Имя на сайте'}) | raw }}
+
+                    {{ form.field(model, 'email',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+                    }).textInput({'placeholder':'Email адрес','required':true}) | raw }}
+
+                    {{ form.field(model, 'birthday',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+                    }).textInput({'placeholder':'Дата рождения','required':true,'ref':'date'}) | raw }}
+
+
+                        <div class="cr-group">
+                            <span class="title">Пол:</span>
+                            <input type="radio" class="radio" id="radio-1" name="UserSetting[sex]" value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
+                            <label for="radio-1"><i class="fa fa-male"></i> Мужской</label>
+                            <input type="radio" class="radio" id="radio-2" name="UserSetting[sex]" value="f" {% if this.user.sex == 'f' %} checked {% endif %}>
+                            <label for="radio-2"><i class="fa fa-female"></i> Женский</label>
+                        </div>
+                        <div class="cr-group topm">
+                            <span class="title">Аватар:</span>
+                            <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
+                            model.photo,
+                            model.photo,
+                            '/images/templates/avatar-'~_if(model.sex=='f','female','male')~'.jpg'
+                            ) | raw }}">
+                            <p>
+                                <strong>Ваше фото обновится только после того, <br>как вы нажмете на кнопку "Сохранить настройки"</strong></p>
+                            <div class="upload">
+                                <span class="btn">Загрузить изображение<br><span>максимальный размер 2 МБ</span></span>
+                                <input name="UserSetting[new_photo]" type="file">
+                            </div>
+                        </div>
+                        <div class="cr-group chkbox topm">
+                            <span class="title">Настройка уведомлений:</span>
+                            <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]" value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
+                            <label class="first" for="checkbox-1">Получать уведомления на почту</label>
+                        </div>
+                        <button type="submit" class="btn-fill btn-form">Сохранить настройки</button>
+                </div>
+                <div class="col-md-6">
+                    <h3>Изменение пароля</h3>
+
+                    {{ form.field(model, 'old_password',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-unlock"></i>{input}\n{endWrapper}\n{error}'
+                    }).passwordInput({'placeholder':'Старый пароль'}) | raw }}
+
+                    {{ form.field(model, 'new_password',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+                    }).passwordInput({'placeholder':'Новый пароль'}) | raw }}
+
+                    {{ form.field(model, 'r_new_password',{
+                        'template' :
+                        '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+                    }).passwordInput({'placeholder':'Повторите новый пароль'}) | raw }}
+
+                </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>
