@@ -15,3 +15,7 @@ coupons_store_<category>_<page>_<limit>_<sort>_<order> - купоны магаз
 coupons_store_<category>_<page>_<limit>_<sort>_<order> - купоны магазина
 coupons_category_<category>_<page>_<limit>_<sort>_<order> - купоны категории
 store_coupons_store_<store_id> - купоны для магазина
+additional_stores_except_<store_id> - дополнительные магазины для магазина, кроме самого
+additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - дополнительные магазины для магазина принадлежащие категориям, кроме самого магазина
+store_category_byid_<category_id> - категория магазина по id
+reviews_store_rating_<store_id> - средний рейтинг магазина по id

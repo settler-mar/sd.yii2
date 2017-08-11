@@ -140,14 +140,6 @@ class Stores extends \yii\db\ActiveRecord
         return $this->hasOne(SpaLink::className(), ['id' => 'active_cpa']);
     }
 
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getReviews()
-//    {
-//        return $this->hasMany(Reviews::className(), ['store_id' => 'uid']);
-//    }
-
     /**
      * @return mixed
      */
@@ -191,8 +183,5 @@ class Stores extends \yii\db\ActiveRecord
         });
         return $data;
     }
-
-
-
   
 }

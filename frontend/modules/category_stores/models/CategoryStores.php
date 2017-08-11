@@ -110,6 +110,18 @@ class CategoryStores extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param $id
+     * @return mixed
+     */
+    public static function byId($id)
+    {
+        $cache = \Yii::$app->cache;
+        return $cache->getOrSet('store_category_byid_'.$id, function () use ($id) {
+            return self::findOne($id);
+        });
+    }
+
+    /**
      * @param $cats
      * @param int $parent_id
      * @param null $currentCategory

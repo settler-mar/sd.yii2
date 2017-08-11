@@ -60,7 +60,7 @@ class DefaultController extends SdController
         $storesData = [];
         if (!empty($category)) {
             //категория
-            $storesData['current_category'] = CategoryStores::find()->where(['uid' => $category])->one();
+            $storesData['current_category'] = CategoryStores::byId($category);
             if ($storesData['current_category'] == null) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -76,7 +76,6 @@ class DefaultController extends SdController
                     " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
                     "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
                     " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
                 ])
                 ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
                 ->where([
@@ -94,7 +93,6 @@ class DefaultController extends SdController
                     " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
                     "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
                     " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
                 ])
                 ->where(['is_active' => [0, 1]])
                 ->orderBy($sort .' '.$order);
@@ -152,6 +150,7 @@ class DefaultController extends SdController
         $contentData["current_store.description"] = htmlspecialchars_decode($store->description);
 
         $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
+        $contentData["store_rating"] = Reviews::storeRating($store->uid);
 
         $cache = \Yii::$app->cache;
         $coupons = $cache->getOrSet('store_coupons_store_'.$id, function () use ($store) {
@@ -167,18 +166,77 @@ class DefaultController extends SdController
         });
         $contentData["store_coupons"] = $coupons;
 
-//
-//        $this->contentData["store_rating"] = $this->getStoreRating($reviewsContentData["reviews"]);
-
-//        $additionalStores = $this->getAdditionalStores($route, $store->uid);
-//        $this->contentData["additional_stores"] = $additionalStores['additional_stores'];
-//        $this->contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
-
-        //d($contentData);
-
-
+        $additionalStores = $this->getAdditionals($store);
+        $contentData["additional_stores"] = $additionalStores['additional_stores'];
+        $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
         return $this->render('shop', $contentData);
+    }
+
+    /**
+     * Get a list of additional stores
+     * @param string $route
+     * @return array
+     */
+    private function getAdditionals($store)
+    {
+        //вычисляем, не пришёл ли пользователь из категории
+        $referrer = \Yii::$app->request->referrer;
+        $category = [];
+        if ($referrer && strpos($referrer, '/stores/')) {
+            $categoryRoute = explode('/', $referrer);
+            foreach ($categoryRoute as $route) {
+                if (preg_match('/category\:[0-9]*$/', $route)) {
+                    $category[0] = substr($route, 9);
+                    break;
+                }
+            }
+        }
+        //если не из категории в качестве категорий берём категории товара
+        if (empty($category)) {
+            $categories = $store->categories;
+            foreach ($categories as $cat) {
+                if ($cat->is_active == 1) {
+                    $category[] = $cat->uid;
+                }
+            }
+        }
+        $cache = Yii::$app->cache;
+        if (!count($category)) {
+            //если нет категорий (гипотетически)
+            $additional_stores = $cache->getOrSet('additional_stores_except_'.$store->uid, function () use ($store) {
+                return Stores::find()
+                    ->where(['is_active' => [0, 1]])
+                    ->andWhere(['<>', 'uid', $store->uid])
+                    ->orderBy('RAND()')
+                    ->limit(6)
+                    ->asArray()
+                    ->all();
+            });
+        } else {
+           //категория есть или одна или много
+            $additional_stores = $cache->getOrSet(
+                'additional_stores_by_categories_' . implode('_', $category) . '_except_' . $store->uid,
+                function () use ($category, $store
+                ) {
+                    return Stores::find()
+                        ->from(Stores::tableName() . ' cws')
+                        ->select(['cws.*'])
+                        ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
+                        ->where(['cws.is_active' => [0, 1], 'cwstc.category_id' => $category])
+                        ->andWhere(['<>', 'cws.uid', $store->uid])
+                        ->orderBy('RAND()')
+                        ->limit(6)
+                        ->asArray()
+                        ->all();
+                }
+            );
+            $additional_stores_category = CategoryStores::byId($category[0]);
+        };
+        return [
+            'additional_stores' => $additional_stores,
+            'additional_stores_category' => empty($additional_stores_category) ? null : $additional_stores_category,
+        ];
     }
 
 }
