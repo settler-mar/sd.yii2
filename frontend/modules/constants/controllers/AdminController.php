@@ -50,15 +50,6 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
-    if (isset(Yii::$app->request->get()['id'])){
-      $model = $this->findModel(Yii::$app->request->get()['id']);
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['admin/constants']);
-      }
-      return $this->render('update', [
-        'model' => $model,
-      ]);
-    }
     $searchModel = new ConstantsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -67,6 +58,20 @@ class AdminController extends Controller
       'dataProvider' => $dataProvider,
     ]);
   }
+
+  public function actionUpdate()
+  {
+    if (isset(Yii::$app->request->get()['id'])){
+      $model = $this->findModel(Yii::$app->request->get()['id']);
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['index']);
+      }
+      return $this->render('update', [
+        'model' => $model,
+      ]);
+    }
+  }
+
   /**
    * Finds the Constants model based on its primary key value.
    * If the model is not found, a 404 HTTP exception will be thrown.

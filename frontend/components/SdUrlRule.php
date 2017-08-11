@@ -134,7 +134,10 @@ class SdUrlRule implements UrlRuleInterface
       return false;
     }
 
-    $route=[$route[1],$route[0]];
+    $tmp = $route[0];
+    $route[0] = $route[1];
+    $route[1] = $tmp;
+    //$route=[$route[1],$route[0]];
 
     if(isset($params['store'])){
       $route[] = 'store:' . $params['store'];
