@@ -1,0 +1,60 @@
+{{ use('/yii/widgets/ActiveForm') }}
+
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="stores-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'alias').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'logo').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'conditions').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'added').textInput()|raw }}
+
+                        {{ form.field(model, 'visit').textInput()|raw }}
+
+                        {{ form.field(model, 'hold_time').textInput()|raw }}
+
+                        {{ form.field(model, 'is_active').textInput()|raw }}
+
+                        {{ form.field(model, 'short_description').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'local_name').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'active_cpa').textInput()|raw }}
+
+                        {{ form.field(model, 'percent').textInput()|raw }}
+
+                        {{ form.field(model, 'action_id').textInput()|raw }}
+
+                        {{ form.field(model, 'contact_name').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'contact_phone').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'contact_email').textInput({'maxlength':true})|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

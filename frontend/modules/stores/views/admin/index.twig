@@ -1,0 +1,61 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Stores' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="stores-index">
+    <h1>{{ html.encode(this.title) }}</h1>
+    {# include('_search.twig', {'model': searchModel}) #}
+    <p>
+        <a href="/admin/stores/create" class="btn btn-success">{{ 'Create Stores' }}</a>
+    </p>
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ grid_view_widget({
+                            'dataProvider': dataProvider,
+                            'filterModel': searchModel,
+                                'columns': [
+                                {'class': '\\yii\\grid\\SerialColumn'},
+
+                                'uid',
+                                'name',
+                                'route',
+                                'alias:ntext',
+                                'url:url',
+
+                                {'class': '\\yii\\grid\\ActionColumn',
+                                    'template' : '{update} {delete}',
+                                },
+                            ],
+                        })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
+{#
+'logo',
+'description:ntext',
+'currency',
+'displayed_cashback',
+'conditions:ntext',
+'added',
+'visit',
+'hold_time:datetime',
+'is_active',
+'short_description:ntext',
+'local_name',
+'active_cpa',
+'percent',
+'action_id',
+'contact_name',
+'contact_phone',
+'contact_email:email'
+#}
+</div>
