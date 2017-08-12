@@ -45,6 +45,13 @@ $config = [
       'linkAssets' => true,
       'appendTimestamp' => true,
     ],
+    'TwigString'=>[
+      'class'=>'common\components\TwigString',
+      'params'=>[
+        'cachePath' => '@runtime/Twig/cache',
+        'functions' => $twigFunction,
+      ],
+    ],
     'view' => [
       'class' => 'yii\web\View',
       'defaultExtension' => 'twig',

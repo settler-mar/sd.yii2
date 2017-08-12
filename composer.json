@@ -23,6 +23,7 @@
         "yiisoft/yii2-sphinx": "^2.0",
         "digitv/kint": "1.x-dev",
         "developeruz/yii2-db-rbac": "*",
+        "twig/twig": "~1.0",
         "jbzoo/image": "^3.0"
     },
     "require-dev": {

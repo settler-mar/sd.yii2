@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0aa9dccef15932c2c2635d299bcd315f",
-    "content-hash": "949b7ca68bcad35157605bf939b7526e",
+    "hash": "c87f3cbbc90c90bbb2ac334562afe86b",
+    "content-hash": "01dc46b898c259bc9c77b57ab18fe537",
     "packages": [
         {
             "name": "aayaresko/yii2-extended-gii",
@@ -1327,16 +1327,16 @@
         },
         {
             "name": "codeception/base",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/base.git",
-                "reference": "c146cf4888f5789d9dbd35d6204e2aa7aa2e94e9"
+                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/base/zipball/c146cf4888f5789d9dbd35d6204e2aa7aa2e94e9",
-                "reference": "c146cf4888f5789d9dbd35d6204e2aa7aa2e94e9",
+                "url": "https://api.github.com/repos/Codeception/base/zipball/eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
+                "reference": "eb3274a5dddeef8d8ca64b0414c0bf3c75bc9be9",
                 "shasum": ""
             },
             "require": {
@@ -1416,7 +1416,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-07-10 20:30:59"
+            "time": "2017-08-10 20:41:08"
         },
         {
             "name": "codeception/verify",
