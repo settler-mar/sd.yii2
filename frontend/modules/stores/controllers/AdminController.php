@@ -8,6 +8,7 @@ use frontend\modules\stores\models\StoresSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * AdminController implements the CRUD actions for Stores model.
@@ -68,6 +69,7 @@ class AdminController extends Controller
       else {
         return $this->render('update', [
             'store' => $model,
+            'model' => $model,
           ]);
         }
     }
