@@ -61,7 +61,7 @@ class AdminController extends Controller
     public function actionUpdate($id)
     {
       $model = $this->findModel($id);
-      if ($model->load(Yii::$app->request->post('3456'))){   // data from request
+      if ($model->load(Yii::$app->request->post())){   // data from request
         $model->save();
         return $this->redirect(['index']);
       }
