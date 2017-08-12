@@ -58,17 +58,18 @@ class AdminController extends Controller
         }
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
-      if (isset(Yii::$app->request->get()['id'])){
-        $model = $this->findModel(Yii::$app->request->get()['id']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          return $this->redirect(['index']);
-        }
-        return $this->render('update', [
-          'model' => $model,
-        ]);
+      $model = $this->findModel($id);
+      if ($model->load(Yii::$app->request->post('3456'))){   // data from request
+        $model->save();
+        return $this->redirect(['index']);
       }
+      else {
+        return $this->render('update', [
+            'store' => $model,
+          ]);
+        }
     }
 
     /**
@@ -82,6 +83,10 @@ class AdminController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAjaxInsert(){
+      return true;
     }
 
     /**
