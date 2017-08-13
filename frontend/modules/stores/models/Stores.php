@@ -37,7 +37,7 @@ class Stores extends \yii\db\ActiveRecord
   public $string;
   public $filename;
   public $logoTmp;
-  public $qqq;
+  public $logoImage;
 
     /**
      * @var string
@@ -168,7 +168,7 @@ class Stores extends \yii\db\ActiveRecord
 
   public function beforeSave($insert){
     $this->string = substr(uniqid('img'),0,12);
-    $this->logoTmp = UploadedFile::getInstance($this, 'qqq');
+    $this->logoTmp = UploadedFile::getInstance($this, 'logoImage');
     if ($this->logoTmp!=null) {
 
       FileHelper::createDirectory('images/logo/');

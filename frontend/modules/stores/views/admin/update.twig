@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="edit_blk">
                                     <p><span>Logo:</span> <img src=" {{model.logo}} "> </p>
-                                    {{ form.field(model, 'qqq').fileInput()|raw }}
+                                    {{ form.field(model, 'logoImage').fileInput()|raw }}
                                     <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}</p>
                                     <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}</p>
                                     <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true})|raw }}</p>
