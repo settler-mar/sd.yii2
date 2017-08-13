@@ -91,7 +91,7 @@ class DefaultController extends SdController
                 ->where(['cws.is_active' => [0, 1]])
                 ->orderBy($sort.' '.$order);
         }
-        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort, 'asArray' => true]);
+        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
         $contentData["coupons"] = $pagination->data();
         $contentData["total_v"] = $pagination->count();
