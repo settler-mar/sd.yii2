@@ -89,6 +89,11 @@ $config = [
         ],
       ],
     ],
+    'conversion' => [
+        'class' => 'common\components\Conversion',
+        'cache_duration' => 7200,
+        'options' => ["USD", "EUR", "UAH", "KZT"]
+     ]
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[

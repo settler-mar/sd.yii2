@@ -9,7 +9,6 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
-use common\components\Conversion;
 
 class DefaultController extends SdController
 {
@@ -175,7 +174,7 @@ class DefaultController extends SdController
         $contentData["additional_stores"] = $additionalStores['additional_stores'];
         $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
-        $contentData["curs"] = Conversion::options();
+        $contentData["curs"] = Yii::$app->conversion->options();
 
         return $this->render('shop', $contentData);
     }
