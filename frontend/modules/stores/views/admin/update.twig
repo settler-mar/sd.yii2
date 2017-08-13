@@ -30,7 +30,8 @@
                                     <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true})|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
-                                    <p><span>Logo:</span> <img src="/images/logos/{{store.logo}}">{{ form.field(model, 'logo').fileInput()|raw }} </p>
+                                    <p><span>Logo:</span> <img src=" {{model.logo}} "> </p>
+                                    {{ form.field(model, 'qqq').fileInput()|raw }}
                                     <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}</p>
                                     <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}</p>
                                     <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true})|raw }}</p>
@@ -49,7 +50,7 @@
                             <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true})|raw }}</p>
                             <input type="hidden" name="type" value="update_main_information">
                             <div class="form-group">
-                                <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                                <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
                             </div>
                             {{ active_form_end() }}
 
