@@ -55,6 +55,9 @@ class DefaultController extends SdController
             $contentData['current_category'] = $cat;
             $databaseObj = Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
                 ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
@@ -70,6 +73,9 @@ class DefaultController extends SdController
             $cacheName = 'coupons_store_'.$store.'_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
             $contentData['affiliate_id'] = $store;
             $databaseObj = Coupons::find()
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $store])
@@ -77,12 +83,15 @@ class DefaultController extends SdController
         } else {
             $cacheName = 'coupons_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
             $databaseObj = Coupons::find()
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1]])
                 ->orderBy($sort.' '.$order);
         }
-        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort]);
+        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort, 'asArray' => true]);
 
         $contentData["coupons"] = $pagination->data();
         $contentData["total_v"] = $pagination->count();
