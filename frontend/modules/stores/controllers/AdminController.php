@@ -82,7 +82,11 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $store = $this->findModel($id);
+          if ($store){
+            $store->removeImage(Yii::$app->getBasePath().'\web'.$store->logo);
+            $store->delete();
+          }
 
         return $this->redirect(['index']);
     }
