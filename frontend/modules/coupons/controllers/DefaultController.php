@@ -38,7 +38,7 @@ class DefaultController extends SdController
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
-        $sort = (!empty($sort)) ? $sort : Stores::$defaultSort;
+        $sort = (!empty($sort)) ? $sort : Coupons::$defaultSort;
         $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
         $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
 

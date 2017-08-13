@@ -74,7 +74,7 @@ class SdController extends Controller
                 $params['sort'] = $key;
             }
             $result[] = [
-                'link' => Url::toRoute(array_merge([$pageName], $params)),
+                'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
                 'active' => $params['sort'] == $currentSort ? 1 : 0,
@@ -103,7 +103,7 @@ class SdController extends Controller
         foreach ($this->limitVars as $limitVar) {
             $params['limit'] = $limitVar == $this->defaultLimit ? null : $limitVar;
             $result[] = [
-                'link' => Url::toRoute(array_merge([$pageName], $params)),//$pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
+                'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'title' => ' '.$limitVar,
                 'active' => $currentLimit == $limitVar ? 1 : 0,
             ];

@@ -64,56 +64,14 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="cashback {% if promo_stores[current_store.uid] %}old{% endif %}">
+                <div class="cashback {% if current_store.action_id == 1 %}old{% endif %}">
                     Кэшбэк
-                    {% if current_store.displayed_cashback ends with '%' %}
-                    <span>{{current_store.displayed_cashback}}</span>
-                    {% else %}
-                    <span>
-                    {{current_store.displayed_cashback}}
-                    {% if current_store.currency == 'RUB' %}
-                    <span class="fa fa-rub"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'EUR' %}
-                    <span class="fa fa-eur"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'USD' %}
-                    <span class="fa fa-dollar"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'UAH' %}
-                    <span class="uah">&#8372;</span>
-                    {% endif %}
-                    {% if current_store.currency == 'KZT' %}
-                    <span class="uah">&#8376;</span>
-                    {% endif %}
-                    </span>
-                    {% endif %}                
+                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
                 </div>
-                {% if promo_stores[current_store.uid] %}
+                {% if current_store.action_id == 1 %}
                 <div class="cashback promo">
                     Кэшбэк
-                    {% if promo_stores[current_store.uid].promo_cashback ends with '%' %}
-                    <span>{{promo_stores[current_store.uid].promo_cashback}}</span>
-                    {% else %}
-                    <span>
-                    {{promo_stores[current_store.uid].promo_cashback}}
-                    {% if current_store.currency == 'RUB' %}
-                    <span class="fa fa-rub"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'EUR' %}
-                    <span class="fa fa-eur"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'USD' %}
-                    <span class="fa fa-dollar"></span>
-                    {% endif %}
-                    {% if current_store.currency == 'UAH' %}
-                    <span class="uah">&#8372;</span>
-                    {% endif %}
-                    {% if current_store.currency == 'KZT' %}
-                    <span class="uah">&#8376;</span>
-                    {% endif %}
-                    </span>
-                    {% endif %}                
+                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
                 </div>
                 {% endif %}
                 {% if current_store.conditions != '' or current_store.is_active==0 %}
