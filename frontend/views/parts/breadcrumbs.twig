@@ -1,11 +1,16 @@
+{{ use('yii\\widgets\\Breadcrumbs') }}
 <section class="breadcrumbs triangle-background">
     <div class="container">
-    {% if breadcrumbs %}
+    {% if app.controller.params['breadcrumbs'] != null %}
         <div class="row">
             <div class="col-md-12">
                 <div class="navigate">
-                    {{breadcrumbs|raw}}
-                </div>.
+                    <div class="breadcrumbs"><span xmlns:v="https://rdf.data-vocabulary.org/#">
+                        {{ breadcrumbs_widget({
+                            'links': app.controller.params['breadcrumbs'],
+                        }) }}
+                    </span></div>
+                </div>
             </div>
         </div>
     {% endif %}

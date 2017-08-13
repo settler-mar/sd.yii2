@@ -37,6 +37,8 @@ class SdController extends Controller
      */
     public $defaultLimit = 50;
 
+    public $params;
+
     /**
      * @param $total
      * @param $page

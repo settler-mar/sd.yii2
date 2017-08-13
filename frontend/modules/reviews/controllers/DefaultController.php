@@ -36,7 +36,10 @@ class DefaultController extends SdController
             $this->makePaginationTags($request->pathInfo, $pagination->pages(), $page, []);
         }
 
-        //todo нужен копмонет для хлебных крошеык
+        $this->params['breadcrumbs'][] = ['label' => 'Отзывы о сайте', 'url' => '/reviews'];
+        if ($page > 1) {
+            $this->params['breadcrumbs'][] = 'Страница ' . $page;
+        }
 
         return $this->render('index', $contentData);
     }
