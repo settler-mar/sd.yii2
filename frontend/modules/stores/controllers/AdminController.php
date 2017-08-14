@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\db\ActiveRecord;
+use app\modules\stores\models\StoresToCategories;
+use app\modules\stores\models\Cpa;
+use app\modules\stores\models\CpaLink;
 
 /**
  * AdminController implements the CRUD actions for Stores model.
@@ -68,37 +71,21 @@ class AdminController extends Controller
         return $this->redirect(['index']);
       }
       else {
-        $cpa_list = Yii::$app->db->createCommand('SELECT * FROM cw_cpa')->queryAll();
-        $categories = Yii::$app->db->createCommand('SELECT * FROM cw_categories_stores')->queryAll();
-         // ddd($cpa);
-      /*  $tariffs = ActiveRecord::forTable("cw_cpa")
-          ->tableAlias("cwspa")
-          ->select(['cwspa.name', 'cwsl.*'])
-          ->join("cw_cpa_link", "cwspa.id = cwsl.spa_id", "cwsl")
-          ->where("cwsl.stores_id", $store['uid'])
-          ->findArray();
-        foreach ($tariffs as &$spa) {
-          $spa['actions'] = \ORM::forTable("cw_stores_actions")
-            ->tableAlias("cwsa")
-            ->where("spa_link_id", $spa['id'])
-            ->findArray();
-          foreach ($spa['actions'] as &$action) {
-            $action['tariffs'] = \ORM::forTable("cw_actions_tariffs")
-              ->where("id_action", $action['uid'])
-              ->findArray();
-            foreach ($action['tariffs'] as &$tariff) {
-              $tariff['rates'] = \ORM::forTable("cw_tariffs_rates")
-                ->where("id_tariff", $tariff['uid'])
-                ->findArray();
-            }
-          }
-        }*/
-
+        $cpa_list = Cpa::find()->all();
+        $categories = StoresToCategories::find()->select('category_id')->where(['store_id'=> $model->uid])->all();
+        //$cwsl = \ORM::forTable("cw_cpa_link")
+        $tariffs = Cpa::find()
+          ->leftJoin('cw_cpa_link', '`cw_cpa_link`.`spa_id` = `cw_cpa`.`id`')
+          ->where(['stores_id'=> $model['uid']])
+            //->getCpaLink()
+          ->all();
+ddd($tariffs[0]->getCpaLink());
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
-          'cpa_list' => $cpa_list,
-          'categories' => $categories,
+            'cpa_list' => $cpa_list,
+            'categories' => $categories,
+            'tariffs' => $tariffs,
           ]);
         }
     }
