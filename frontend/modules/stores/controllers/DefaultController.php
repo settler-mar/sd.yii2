@@ -56,11 +56,16 @@ class DefaultController extends SdController
         $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
         $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
 
-
+        $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
         $storesData = [];
         if (!empty($category)) {
             //категория
             $storesData['current_category'] = CategoryStores::byId($category);
+            $this->params['breadcrumbs'][] = [
+                'label' => $storesData['current_category']->name,
+                'url' => '/stores/category:' . $storesData['current_category']->uid,
+            ];
+
             if ($storesData['current_category'] == null) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -101,6 +106,9 @@ class DefaultController extends SdController
                 ->where(['is_active' => [0, 1]])
                 ->orderBy($sort .' '.$order);
             $cacheName = 'catalog_stores_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
+        }
+        if ($page > 1) {
+            $this->params['breadcrumbs'][] = 'Страница ' . $page;
         }
         $pagination = new Pagination(
             $dataBaseData,

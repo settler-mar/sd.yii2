@@ -1,16 +1,23 @@
 {% include 'parts/slider.twig' %}
-
+{{ use('yii\\widgets\\Breadcrumbs') }}
+{% if app.controller.params['breadcrumbs'] != null %}
 <section class="breadcrumbs catalog shops breadcrumbs-black">
     <div class="container">
             <div class="row">
             <div class="col-md-12">
                 <div class="navigate">
-                    {{breadcrumbs|raw}}
+                    {#{{breadcrumbs|raw}}#}
+                    <div class="breadcrumbs"><span xmlns:v="https://rdf.data-vocabulary.org/#">
+                        {{ breadcrumbs_widget({
+                            'links': app.controller.params['breadcrumbs'],
+                        }) }}
+                    </span></div>
                 </div>
             </div>
         </div>
         </div>
 </section>
+{% endif %}
 
 <!--краткая информация категории-->
 {% if current_category.short_description %}
