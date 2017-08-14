@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\db\ActiveRecord;
 
 /**
  * AdminController implements the CRUD actions for Stores model.
@@ -67,9 +68,37 @@ class AdminController extends Controller
         return $this->redirect(['index']);
       }
       else {
+        $cpa_list = Yii::$app->db->createCommand('SELECT * FROM cw_cpa')->queryAll();
+        $categories = Yii::$app->db->createCommand('SELECT * FROM cw_categories_stores')->queryAll();
+         // ddd($cpa);
+      /*  $tariffs = ActiveRecord::forTable("cw_cpa")
+          ->tableAlias("cwspa")
+          ->select(['cwspa.name', 'cwsl.*'])
+          ->join("cw_cpa_link", "cwspa.id = cwsl.spa_id", "cwsl")
+          ->where("cwsl.stores_id", $store['uid'])
+          ->findArray();
+        foreach ($tariffs as &$spa) {
+          $spa['actions'] = \ORM::forTable("cw_stores_actions")
+            ->tableAlias("cwsa")
+            ->where("spa_link_id", $spa['id'])
+            ->findArray();
+          foreach ($spa['actions'] as &$action) {
+            $action['tariffs'] = \ORM::forTable("cw_actions_tariffs")
+              ->where("id_action", $action['uid'])
+              ->findArray();
+            foreach ($action['tariffs'] as &$tariff) {
+              $tariff['rates'] = \ORM::forTable("cw_tariffs_rates")
+                ->where("id_tariff", $tariff['uid'])
+                ->findArray();
+            }
+          }
+        }*/
+
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
+          'cpa_list' => $cpa_list,
+          'categories' => $categories,
           ]);
         }
     }
