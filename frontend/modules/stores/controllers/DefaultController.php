@@ -110,6 +110,10 @@ class DefaultController extends SdController
         if ($page > 1) {
             $this->params['breadcrumbs'][] = 'Страница ' . $page;
         }
+        if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+            $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+        }
+
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
