@@ -64,6 +64,15 @@ $config= [
         'account' => 'users/account/index',
         'account/settings' => 'users/account/settings',
         'admin' => 'site/admin',
+        'faq' => 'site/faq',
+        'howitworks' => 'site/howitworks',
+        'terms' => 'site/terms',
+        'promo' => 'site/promo',
+        'affiliate-system' => 'site/affiliate',
+        'loyalty' => 'site/loyalty',
+        'recommendations' => 'site/recommendations',
+        'about' => 'site/about',
+        'account-blocked' => 'site/accountblocked',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
@@ -103,6 +112,9 @@ $config= [
     ],
     'slider' => [
       'class' => 'frontend\modules\slider\Module',
+    ],
+    'dobro' => [
+      'class' => 'frontend\modules\dobro\Module',
     ],
   ],
   'params' => $params,

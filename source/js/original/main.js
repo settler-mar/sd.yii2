@@ -431,7 +431,7 @@ $(function() {
                             //'a[href=#password-recovery]' : $("#top").find('.popup-recovery').html()
                       }
 
-                //this.registration(popups);
+                this.registration(popups);
 
                 /*$(document).on("click", "#top a[href=#password-recovery]", function() {
                     $("#top .popup-sign-up").closest(".popup").next(".popup_close").click();
