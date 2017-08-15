@@ -181,7 +181,6 @@ class SiteController extends SdController
   {
     $this->params['breadcrumbs'][] = 'О нас';
     return $this->render('about');
-    //todo скрипт всполывашки сертификата не работает
   }
   /**
    * /account-blocked
