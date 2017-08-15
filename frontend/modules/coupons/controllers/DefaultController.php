@@ -7,6 +7,7 @@ use frontend\components\SdController;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 
 /**
@@ -116,6 +117,8 @@ class DefaultController extends SdController
             $this->getSortLinks($request->pathInfo, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
         $contentData['limitlinks'] =
             $this->getLimitLinks($request->pathInfo, Coupons::$defaultSort, $paginateParams);
+
+        $contentData['slider'] = Slider::get();
 
         return $this->render('index', $contentData);
     }

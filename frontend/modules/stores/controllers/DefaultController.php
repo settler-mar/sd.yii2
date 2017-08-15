@@ -9,6 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
+use frontend\modules\slider\models\Slider;
 
 class DefaultController extends SdController
 {
@@ -143,6 +144,8 @@ class DefaultController extends SdController
             $this->getSortLinks($request->pathInfo, Stores::$sortvars, Stores::$defaultSort, $paginateParams);
         $storesData['limitlinks'] =
             $this->getLimitLinks($request->pathInfo, Stores::$defaultSort, $paginateParams);
+        
+        $storesData['slider'] = Slider::get();
 
         return $this->render('catalog', $storesData);
     }

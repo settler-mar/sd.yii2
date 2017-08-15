@@ -2,15 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                {% if promo_stores|length > 0 %}
+                {% if slider|length > 0 %}
                 <div class="flexslider">
                     <ul class="slides">
-                     {% for promo_store in promo_stores %}
+                     {% for promo_store in slider %}
                       {% if promo_store.show_as == 'text' %}
                       <li>
                         <div class="action">
                             <div class="logo">
-                                <a href="/stores/{{promo_store.route}}"><img src="{{store_images_path}}{{promo_store.logo}}" alt="{{promo_store.name}}"></a>
+                                <a href="/stores/{{promo_store.route}}"><img src="/images/logos/{{promo_store.logo}}" alt="{{promo_store.name}}"></a>
                             </div>
                             <div class="phrase">
                                 <h2>{{promo_store.title|raw}}</h2>
@@ -20,7 +20,7 @@
                       </li>
                       {% endif %}
                       {% if promo_store.show_as == 'image' %}
-                      <li class="image-slider" style="background:url({{images_path}}/slides/{{promo_store.image}}) center center no-repeat;background-size:cover;position:relative;">
+                      <li class="image-slider" style="background:url(/images/slides/{{promo_store.image}}) center center no-repeat;background-size:cover;position:relative;">
                         <a href="/stores/{{promo_store.route}}" style="position: absolute;left: 0;top:0;height: 100%;width:100%;"></a>
                       </li>
                       {% endif %}
