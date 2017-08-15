@@ -50,4 +50,14 @@ class StoresActions extends \yii\db\ActiveRecord
             'spa_link_id' => 'Spa Link ID',
         ];
     }
+
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'spa_link_id']);
+  }
+
+  public function getTariffs()
+  {
+    return $this->hasMany(ActionsTariffs::className(), ['id_action' => 'uid']);
+  }
 }

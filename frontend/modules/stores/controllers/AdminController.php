@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
+use app\modules\stores\models\CategoriesStores;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
@@ -72,14 +73,22 @@ class AdminController extends Controller
       }
       else {
         $cpa_list = Cpa::find()->all();
-        $categories = StoresToCategories::find()->select('category_id')->where(['store_id'=> $model->uid])->all();
+        $categories = CategoriesStores::find()->where(['parent_id'=> $model->uid])->all();
         //$cwsl = \ORM::forTable("cw_cpa_link")
-        $tariffs = Cpa::find()
-          ->leftJoin('cw_cpa_link', '`cw_cpa_link`.`spa_id` = `cw_cpa`.`id`')
-          ->where(['stores_id'=> $model['uid']])
-            //->getCpaLink()
-          ->all();
-ddd($tariffs[0]->getCpaLink());
+       /* $tariffs = Cpa::find()
+          ->joinWith([
+            'cpaLink' => function ($query) use($model) {
+              $query->onCondition(['stores_id' => $model->uid]);
+            },
+          ])
+          ->joinWith('storesActions')->all();*/
+       $tariffs = Cpa::find() -> with([
+         'cpaLink' => function($query)use($model){
+          $query->andWhere(['stores_id' => $model->uid]);
+         },
+         'actions.tariffs.rates'])
+         ->all();
+
         return $this->render('update', [
             'store' => $model,
             'model' => $model,

@@ -1,0 +1,41 @@
+<div class="to_remove">
+  <input type="checkbox" id="tariff_{{tariff.uid}}" class="acordion_ch">
+  <label for="tariff_{{tariff.uid}}">
+    {{tariff.name}} ({{tariff.rates | length}})
+  </label>
+  <span class="ajax_remove" uid="{{tariff.uid}}" url="/admin/stores/ajax_remove/tariff">Удалить</span>
+  <div class="acordion_content">
+
+    <div class="edit_wrapper ajax_save" uid="{{tariff.uid}}" save_url="/admin/stores/ajax_save/tariff">
+      <div class="edit_blk">
+        <p><span>Tariff ID:</span> <br><input type="text" name="id_tariff" value="{{tariff.id_tariff}}"></p>
+      </div>
+      <div class="edit_blk">
+        <p><span>Tariff name:</span> <br><input type="text" name="name" value="{{tariff.name}}"></p>
+      </div>
+    </div>
+
+    <h4>
+      Cтавки
+      <span class="add_button add_shop_element" mode="rate" parent="{{tariff.uid}}">Добавить ставку</span>
+    </h4>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Доп. ID</th>
+        <th>Price</th>
+        <th>Нам отдают</th>
+        <th>Мы отдаем клиенту</th>
+        <th>Действителен от</th>
+        <th>В процентах</th>
+        <th>Автообновление</th>
+        <th>Действие</th>
+      </tr>
+      {% if tariff.rates|length > 0 %}
+        {% for rate in tariff.rates %}
+          {% include 'admin/store/rates.html' %}
+        {% endfor %}
+      {% endif %}
+    </table>
+  </div>
+</div>

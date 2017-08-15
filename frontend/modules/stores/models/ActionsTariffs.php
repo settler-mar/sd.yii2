@@ -48,4 +48,9 @@ class ActionsTariffs extends \yii\db\ActiveRecord
             'id_action_out' => 'Id Action Out',
         ];
     }
+
+  public function getRates()
+  {
+    return $this->hasMany(TariffsRates::className(), ['uid' => 'id_tariff']);
+  }
 }

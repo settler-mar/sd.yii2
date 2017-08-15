@@ -1,0 +1,6 @@
+<li class="tab_butt_{{tariff.id}}">
+  <input type="radio" value="{{tariff.id}}" name="active_cpa" {% if tariff.id==store.active_cpa %}checked{% endif %}>
+  <label for="option_tab_{{tariff.id}}">
+    {{tariff.name}}
+  </label>
+</li>

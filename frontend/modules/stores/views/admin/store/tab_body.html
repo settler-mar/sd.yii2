@@ -1,0 +1,24 @@
+<div class="cpa_box tab_{{tariff.id}} to_remove" rm_class=".tab_butt_{{tariff.id}}">
+  <h4>
+    Настройки CPA
+    <span class="ajax_remove" uid="{{tariff.id}}" url="/admin/stores/ajax_remove/cpa">
+      Удалить
+    </span>
+  </h4>
+  <div class="edit_wrapper ajax_save" uid="{{tariff.id}}" save_url="/admin/stores/ajax_save/cpa">
+    <div class="edit_blk">
+      <p><span>Affiliate ID:</span> <br><input type="text" name="affiliate_id" value="{{tariff.cpaLink.affiliate_id}}"></p>
+    </div>
+    <div class="edit_blk">
+      <p><span>Affiliate LINK:</span> <br><input type="text" name="affiliate_link" value="{{tariff.cpaLink.affiliate_link}}"></p>
+    </div>
+  </div>
+
+  <h4>
+    События
+    <span class="add_button add_shop_element" mode="action" parent="{{tariff.id}}">Добавить событие</span>
+  </h4>
+  {% for action in tariff.actions %}
+    {% include 'store/actions.html' %}
+  {% endfor %}
+</div>

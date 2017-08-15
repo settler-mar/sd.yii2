@@ -1,0 +1,19 @@
+<input
+    type="radio"
+    class="controls_option"
+    value="{{tariff.id}}"
+    {% if tariff.id==store.active_cpa %}checked{% endif %}
+    id="option_tab_{{tariff.id}}"
+    name="tabs_open"
+>
+<style>
+  #option_tab_{{tariff.id}}:checked ~ ul .tab_butt_{{tariff.id}}{
+    background:#fbcf4a;
+  }
+  #option_tab_{{tariff.id}}:checked ~ .content_tab .tab_{{tariff.id}}{
+    display: block;
+  }
+  #option_tab_{{tariff.id}}:checked {
+     color: #000;
+   }
+</style>

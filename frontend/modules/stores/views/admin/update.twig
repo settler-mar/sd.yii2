@@ -59,13 +59,13 @@
                         <div class="tarif_select_blk">
                             {% if tariffs|length > 0 %}
                                 {% for tariff in tariffs %}
-                                    {% include 'admin/store/tab_head_suf.html' %}
+                                    {% include 'store/tab_head_suf.html' %}
                                 {% endfor %}
                             {% endif %}
                             <ul class="tab_control ajax_save" uid="{{store.uid}}" save_url="/admin/stores/ajax_save/active_cpa">
                                 {% if tariffs|length > 0 %}
                                     {% for tariff in tariffs %}
-                                        {% include 'admin/store/tab_head_but.html' %}
+                                        {% include 'store/tab_head_but.html' %}
                                     {% endfor %}
                                 {% endif %}
                                 <li class="add_button">
@@ -80,7 +80,7 @@
                             <div class="content_tab">
                                 {% if tariffs|length > 0 %}
                                     {% for tariff in tariffs %}
-                                        {% include 'admin/store/tab_body.html' %}
+                                        {% include 'store/tab_body.html' %}
                                     {% endfor %}
                                 {% endif %}
                             </div>
