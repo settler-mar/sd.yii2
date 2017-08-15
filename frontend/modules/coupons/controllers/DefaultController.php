@@ -7,6 +7,7 @@ use frontend\components\SdController;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 
 /**
@@ -38,7 +39,7 @@ class DefaultController extends SdController
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
-        $sort = (!empty($sort)) ? $sort : Stores::$defaultSort;
+        $sort = (!empty($sort)) ? $sort : Coupons::$defaultSort;
         $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
         $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
 
@@ -55,6 +56,9 @@ class DefaultController extends SdController
             $contentData['current_category'] = $cat;
             $databaseObj = Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
                 ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
@@ -70,6 +74,9 @@ class DefaultController extends SdController
             $cacheName = 'coupons_store_'.$store.'_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
             $contentData['affiliate_id'] = $store;
             $databaseObj = Coupons::find()
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $store])
@@ -77,12 +84,15 @@ class DefaultController extends SdController
         } else {
             $cacheName = 'coupons_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
             $databaseObj = Coupons::find()
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                    'cws.action_id as store_action_id'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1]])
                 ->orderBy($sort.' '.$order);
         }
-        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'sort' => $sort]);
+        $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
         $contentData["coupons"] = $pagination->data();
         $contentData["total_v"] = $pagination->count();
@@ -107,6 +117,8 @@ class DefaultController extends SdController
             $this->getSortLinks($request->pathInfo, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
         $contentData['limitlinks'] =
             $this->getLimitLinks($request->pathInfo, Coupons::$defaultSort, $paginateParams);
+
+        $contentData['slider'] = Slider::get();
 
         return $this->render('index', $contentData);
     }

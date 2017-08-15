@@ -9,6 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
+use frontend\modules\slider\models\Slider;
 
 class DefaultController extends SdController
 {
@@ -56,11 +57,16 @@ class DefaultController extends SdController
         $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
         $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
 
-
+        $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
         $storesData = [];
         if (!empty($category)) {
             //категория
             $storesData['current_category'] = CategoryStores::byId($category);
+            $this->params['breadcrumbs'][] = [
+                'label' => $storesData['current_category']->name,
+                'url' => '/stores/category:' . $storesData['current_category']->uid,
+            ];
+
             if ($storesData['current_category'] == null) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -102,6 +108,13 @@ class DefaultController extends SdController
                 ->orderBy($sort .' '.$order);
             $cacheName = 'catalog_stores_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
         }
+        if ($page > 1) {
+            $this->params['breadcrumbs'][] = 'Страница ' . $page;
+        }
+        if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+            $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+        }
+
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
@@ -131,6 +144,8 @@ class DefaultController extends SdController
             $this->getSortLinks($request->pathInfo, Stores::$sortvars, Stores::$defaultSort, $paginateParams);
         $storesData['limitlinks'] =
             $this->getLimitLinks($request->pathInfo, Stores::$defaultSort, $paginateParams);
+        
+        $storesData['slider'] = Slider::get();
 
         return $this->render('catalog', $storesData);
     }
@@ -174,32 +189,7 @@ class DefaultController extends SdController
         $contentData["additional_stores"] = $additionalStores['additional_stores'];
         $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
-
-//      todo
-//        require_once  __DIR__.'/../../../../cron/rate.conversion.php';
-//
-//        $this->contentData["curs"]=array(
-//            array(
-//                'code'=>"RUB",
-//                'value'=>1
-//            ),
-//            array(
-//                'code'=>"USD",
-//                'value'=>\Conversion::getRUB(1, "USD")
-//            ),
-//            array(
-//                'code'=>"EUR",
-//                'value'=>\Conversion::getRUB(1, "EUR")
-//            ),
-//            array(
-//                'code'=>"UAH",
-//                'value'=>\Conversion::getRUB(1, "UAH")
-//            ),
-//            array(
-//                'code'=>"KZT",
-//                'value'=>\Conversion::getRUB(1, "KZT")
-//            ),
-//        );
+        $contentData["curs"] = Yii::$app->conversion->options();
 
         return $this->render('shop', $contentData);
     }

@@ -101,6 +101,9 @@ $config= [
     'coupons' => [
       'class' => 'frontend\modules\coupons\Module',
     ],
+    'slider' => [
+      'class' => 'frontend\modules\slider\Module',
+    ],
   ],
   'params' => $params,
 ];

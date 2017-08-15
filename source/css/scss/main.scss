@@ -106,10 +106,60 @@ $images: "/images";
         &.active {
           font-weight: bold;
         }
+
       }
     }
   }
 }
+.breadcrumbs-sd {
+  color: #fff;
+  font-weight: 500;
+  font-size: 13px;
+
+  li {
+    display: inline-block;
+    list-style-type: none;
+    &:not(:first-child):before {
+      font-family: FontAwesome;
+      content: "\f101";
+      margin-right: 3px;
+      color: #fff;
+    }
+    &:last-child {
+      color: #FFC107;
+      font-weight: bold;
+      a {
+        font-weight: bold;
+        color: #FFC107;
+      }
+    }
+    a {
+      color: #fff;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &.catalog {
+    color: #0f181a;
+    li {
+      &:not(:first-child):before {
+        color: #0f181a;
+      }
+      &:last-child {
+        color: #FFC107;
+        a {
+          color: #FFC107;
+        }
+      }
+        a {
+        color: #0f181a;
+      }
+    }
+  }
+}
+
+
 
 /* Subnavigation
 ------------------------------------*/

@@ -132,11 +132,12 @@ $functionsList=[
     });
   },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
-  '_cashback'=> function ($cashback, $currency) {
-    return $cashback . ((strpos($cashback, '%') === false) ? ' ' . $currency : '');
+  '_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
+    return $cashback . ((strpos($cashback, '%') === false) ? ' ' .
+        (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency) : '');
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
-  '_shop_cashback'=> function ($cashback, $currency) {
+  '_shop_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
     $value = preg_replace("/[^0-9]/", '', $cashback);
     if (intval($value) == 0) {
       return '<i class="red fa fa-heart"></i>';

@@ -2,6 +2,7 @@ total_all_stores - общее количество активных магази
 top_12_stores - топ 12 магизинов по популярности
 reviews_top - топ reviews
 reviews_by_store_<storeId> = rewiews для магазина
+reviews_<page> = для страницы reviews
 catalog_promo_stores - PromoStores
 categories_stores - Список категорий
 category_tree_<parent_id>_<currentCategory> - дерево категорий для меню для родительской категории и текущей категории
@@ -22,3 +23,4 @@ additional_stores_except_<store_id> - дополнительные магази�
 additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - дополнительные магазины для магазина принадлежащие категориям, кроме самого магазина
 store_category_byid_<category_id> - категория магазина по id
 reviews_store_rating_<store_id> - средний рейтинг магазина по id
+conversion_cources - курсы валют
