@@ -104,6 +104,9 @@ $config= [
     'slider' => [
       'class' => 'frontend\modules\slider\Module',
     ],
+    'dobro' => [
+      'class' => 'frontend\modules\dobro\Module',
+    ],
   ],
   'params' => $params,
 ];
