@@ -9,6 +9,9 @@ $config = [
   'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
+    'cache'=>[
+      'keyPrefix' => 'sd', // уникальный префикс ключей кэша
+    ],
     'urlManager' => [
       'class' => 'yii\web\UrlManager',
       'enablePrettyUrl' => true,
