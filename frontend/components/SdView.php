@@ -117,7 +117,10 @@ class SdView extends View
     //Проставление переменных только когда рендорится слой layout
     if(
       strpos($viewFile,'layout')>0 &&
-      !strpos($viewFile,'admin')
+      (
+        strpos($viewFile,'main.twig') ||
+        strpos($viewFile,'account.twig')
+      )
     ) {
       $output=Yii::$app->TwigString->render(
         $output,
