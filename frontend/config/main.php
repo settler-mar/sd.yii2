@@ -116,6 +116,10 @@ $config= [
     'dobro' => [
       'class' => 'frontend\modules\dobro\Module',
     ],
+    'payments' => [
+      'class' => 'frontend\modules\payments\Module',
+    ],
+
   ],
   'params' => $params,
 ];
