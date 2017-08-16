@@ -24,7 +24,9 @@
         "digitv/kint": "1.x-dev",
         "developeruz/yii2-db-rbac": "*",
         "twig/twig": "~1.0",
-        "jbzoo/image": "^3.0"
+        "jbzoo/image": "^3.0",
+        "hirak/prestissimo": "^0.3.7",
+        "admitad/api": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
