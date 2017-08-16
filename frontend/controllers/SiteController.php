@@ -181,6 +181,7 @@ class SiteController extends SdController
   {
     $this->params['breadcrumbs'][] = 'О нас';
     return $this->render('about');
+    //todo сделать просмотр сертификата с помощью photoswipe
   }
   /**
    * /account-blocked
