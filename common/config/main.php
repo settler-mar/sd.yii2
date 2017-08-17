@@ -89,6 +89,7 @@ $config = [
         [
           'class' => 'yii\log\FileTarget',
           'levels' => ['error', 'warning'],
+          'logFile' => 'log/'.date('Y/m/d').'.log'
         ],
       ],
     ],
