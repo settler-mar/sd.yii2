@@ -58,7 +58,7 @@ class DefaultController extends SdController
                 ->from(Coupons::tableName(). ' cwc')
                 ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
                     'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-                    'cws.action_id as store_action_id'])
+                    'cws.action_id as store_action_id', 'cws.logo as store_image'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
                 ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
@@ -76,7 +76,7 @@ class DefaultController extends SdController
             $databaseObj = Coupons::find()
                 ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
                     'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-                    'cws.action_id as store_action_id'])
+                    'cws.action_id as store_action_id', 'cws.logo as store_image'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $store])
@@ -86,7 +86,7 @@ class DefaultController extends SdController
             $databaseObj = Coupons::find()
                 ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
                     'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-                    'cws.action_id as store_action_id'])
+                    'cws.action_id as store_action_id', 'cws.logo as store_image'])
                 ->from(Coupons::tableName(). ' cwc')
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1]])
