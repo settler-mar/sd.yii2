@@ -46,4 +46,4 @@ phpunit.phar
 /frontend/web/images/account/avatars
 
 
-/log/
+log/

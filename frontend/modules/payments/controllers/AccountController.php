@@ -9,9 +9,18 @@ use frontend\modules\stores\models\SpaLink;
 use frontend\components\Pagination;
 
 
+/**
+ * Class AccountController
+ * @package frontend\modules\payments\controllers
+ */
 class AccountController extends \yii\web\Controller
 {
-    function beforeAction($action)
+    /**
+     * @param yii\base\Action $action
+     * @return bool
+     * @throws yii\web\ForbiddenHttpException
+     */
+    public function beforeAction($action)
     {
         if (Yii::$app->user->isGuest) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
@@ -21,6 +30,10 @@ class AccountController extends \yii\web\Controller
         return true;
     }
 
+    /**
+     * @return string
+     * @throws yii\web\NotFoundHttpException
+     */
     public function actionIndex()
     {
         $request = Yii::$app->request;
@@ -35,7 +48,8 @@ class AccountController extends \yii\web\Controller
         $dataBase = Payments::find()
             ->from(Payments::tableName().' cwp')
             ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active'])
-            ->innerJoin(SpaLink::tableName(). ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.spa_id = cwsl.spa_id')
+            ->innerJoin(SpaLink::tableName().
+                ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.spa_id = cwsl.spa_id')
             ->innerJoin(Stores::tableName(). ' cws', "cwsl.stores_id = cws.uid")
             ->where(['cwp.user_id' => \Yii::$app->user->id])
             ->orderBy('cwp.action_id DESC');
@@ -50,7 +64,7 @@ class AccountController extends \yii\web\Controller
         }
         $data['payments'] = $payments;
         if ($pagination->pages() > 1) {
-            $data["pagination"] = $pagination->getPagination($request->pathInfo, []);
+            $data["pagination"] = $pagination->getPagination('payments/account', []);
         }
 
         return $this->render('index', $data);
