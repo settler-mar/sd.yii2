@@ -4300,6 +4300,7 @@ $('[ref=popup]').on('click',function (e){
 $(function() {
 
   function update(data){
+console.log(data);
     $this=$(this);
     mode=$this.attr('mode');
 
@@ -4347,10 +4348,11 @@ $(function() {
     $this=$(this);
     post={
       code:$this.attr('code'),
-      parent:$this.attr('parent')
+      parent:$this.attr('parent'),
+      type:$this.attr('mode'),
     };
     updateElement=update.bind($this);
-    $.post("/admin/stores/ajax_insert/"+$this.attr('mode'),post,updateElement).fail(function() {
+    $.post("/admin/stores/ajax_insert/",post,updateElement).fail(function() {
       alert( "Ошибка добавления" );
     })
   })

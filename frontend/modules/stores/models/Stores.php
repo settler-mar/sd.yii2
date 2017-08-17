@@ -9,9 +9,6 @@ use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
 
-
-
-
 /**
  * This is the model class for table "cw_stores".
  *

@@ -124,7 +124,6 @@ class SdUrlRule implements UrlRuleInterface
    */
   public function createUrl($manager, $route, $params)
   {
-
     $route=explode('/',$route);
     if(count($route)<2){
       return false;
