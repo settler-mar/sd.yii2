@@ -14,14 +14,17 @@ class Admitad{
   public function init($scope){
     $this->config=Yii::$app->params['admitad'];
 
-    $api = new Api();
-    $this->authorizeData = $api->authorizeClient(
-      $this->config['clientId'],
-      $this->config['clientSecret'],
-      $scope
-    )->getArrayResult();
+    $this->admitad =  Yii::$app->cache->getOrSet('admitad_'.$scope,function() use ($scope){
+      $api = new Api();
+      $this->authorizeData = $api->authorizeClient(
+        $this->config['clientId'],
+        $this->config['clientSecret'],
+        $scope
+      )->getArrayResult();
 
-    $this->admitad = new Api($this->authorizeData ['access_token']);
+      return new Api($this->authorizeData ['access_token']);
+    });
+
   }
 
   public function test(){
@@ -29,7 +32,7 @@ class Admitad{
     return $this->authorizeData ;
   }
 
-  public function getCupons($options=array()){
+  public function getCoupons($options=array()){
     $this->init('coupons_for_website');
 
     $websiteId=$this->config['websiteId'];
