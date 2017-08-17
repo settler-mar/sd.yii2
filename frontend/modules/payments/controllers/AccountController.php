@@ -40,25 +40,18 @@ class AccountController extends \yii\web\Controller
             ->where(['cwp.user_id' => \Yii::$app->user->id])
             ->orderBy('cwp.action_id DESC');
 
-
         $cacheName = 'account_payments_' . \Yii::$app->user->id;
-        $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 2, 'asArray' => true]);
+        $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
-        $data['payments'] = $pagination->data();
-
+        $payments = $pagination->data();
+        $payStatus = \Yii::$app->params['dictionary']['pay_status'];
+        foreach ($payments as $key => &$payment) {
+            $payment['status_title'] = $payStatus[$payment['status']];
+        }
+        $data['payments'] = $payments;
         if ($pagination->pages() > 1) {
             $data["pagination"] = $pagination->getPagination($request->pathInfo, []);
         }
-
-//
-//        $notification_type = \Cwcashback\Settings::call()->getDictionary('notification_type');
-//        $pay_status = \Cwcashback\Settings::call()->getDictionary('pay_status');
-//        if (count($payments)) {
-//            foreach ($payments as $key => &$payment) {
-//                $payment['status_title'] = $pay_status[$payment['status']];
-//                $payment["action_date"] = \Cwcashback\Help::formattingDate($payment["action_date"]);
-//            }
-//        }
 
         return $this->render('index', $data);
     }

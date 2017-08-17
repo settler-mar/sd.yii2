@@ -46,7 +46,7 @@
                             {{payment.name}}
                             {% endif %}
                             </td>
-                            <td>{{payment.action_date}}</td>
+                            <td>{{ _date(payment.action_date)}}</td>
                             <td class="cashback status_{{payment.status}}">{{payment.cashback}} <span class="fa fa-rub"></span></td>
                             <td class="status status_{{payment.status}}">
                             {% if payment.status == '0' %}

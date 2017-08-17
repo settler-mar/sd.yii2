@@ -7,6 +7,14 @@ $currencyIcon = [
   'UAH' => '<span class="uah">&#8372;</span>',
   'KZT' => '<span class="uah">&#8376;</span>',
 ];
+$month = [
+    '00' => '',
+    '01' => 'января', '02' => 'февраля', '03' => 'марта',
+    '04' => 'апреля', '05' => 'мая', '06' => 'июня',
+    '07' => 'июля', '08' => 'августа', '09' => 'сентября',
+    '10' => 'октября', '11' => 'ноября', '12' => 'декабря'
+];
+
 function _hyphen_words_wbr(array &$m){
   return _hyphen_words($m,true);
 }
@@ -222,7 +230,14 @@ $functionsList=[
     }else{
       return ($else?$else:'');
     }
-  }
+  },
+  '_date'=>function ($date) use ($month) {
+    $d = explode(" ", $date)[0];
+    $m = explode("-", $d);
+    $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
+    return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
+  },
+
 ];
 
 return $functionsList;
