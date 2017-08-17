@@ -119,6 +119,12 @@ $config= [
     'payments' => [
       'class' => 'frontend\modules\payments\Module',
     ],
+    'bonuses' => [
+      'class' => 'frontend\modules\bonuses\Module',
+    ],
+    'notification' => [
+      'class' => 'frontend\modules\notification\Module',
+    ],
 
   ],
   'params' => $params,

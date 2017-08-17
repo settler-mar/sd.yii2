@@ -24,3 +24,6 @@ additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - допол
 store_category_byid_<category_id> - категория магазина по id
 reviews_store_rating_<store_id> - средний рейтинг магазина по id
 conversion_cources - курсы валют
+account_payments_<user_id>_<page>  - account/payments
+account_bonuses_<user_id>_<page>  - account/bonuses
+
