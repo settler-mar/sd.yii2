@@ -128,6 +128,9 @@ $config= [
     'transitions' => [
       'class' => 'frontend\modules\transitions\Module',
     ],
+    'withdraw-history' => [
+      'class' => 'frontend\modules\withdraw_history\Module',
+    ],
   ],
   'params' => $params,
 ];
