@@ -1,0 +1,46 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>История переходов в магазины</h3>
+            </div>
+
+            {% if visit_history|length > 0 %}
+            <div class="col-md-12">
+                <table class="table table-transition">
+                    <thead>
+                        <tr>
+                            <th>Дата перехода</th>
+                            <th>Магазин</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visit in visit_history %}
+                        <tr>
+                            <td>{{_date(visit.visit_date)}}</td>
+                            <td class="store"><a href="/stores/{{visit.route}}">{{visit.name}}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <div class="not-found">На данный момент Вы ни разу не переходили в интернет-магазины через наш сервис.</div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% include '/parts/pagination.twig' %}
+</div>

@@ -125,7 +125,9 @@ $config= [
     'notification' => [
       'class' => 'frontend\modules\notification\Module',
     ],
-
+    'transitions' => [
+      'class' => 'frontend\modules\transitions\Module',
+    ],
   ],
   'params' => $params,
 ];
