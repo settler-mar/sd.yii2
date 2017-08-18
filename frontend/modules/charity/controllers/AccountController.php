@@ -1,19 +1,18 @@
 <?php
 
-namespace frontend\modules\withdraw_history\controllers;
+namespace frontend\modules\charity\controllers;
 
 use yii;
-use frontend\modules\withdraw_history\models\UsersWithdraw;
-use frontend\modules\withdraw_history\models\WithdrawProcess;
+use frontend\modules\charity\models\Charity;
+use frontend\modules\funds\models\Foundations;
 use frontend\components\Pagination;
 
 /**
  * Class AccountController
- * @package frontend\modules\withdraw_history\controllers
+ * @package frontend\modules\charity\controllers
  */
 class AccountController extends \yii\web\Controller
 {
-
     /**
      * @param yii\base\Action $action
      * @return bool
@@ -43,20 +42,20 @@ class AccountController extends \yii\web\Controller
             throw new \yii\web\NotFoundHttpException;
         };
 
-        $dataBase = UsersWithdraw::find()
-            ->from(UsersWithdraw::tableName().' cwuw')
-            ->select(['cwuw.*', 'cwwp.name'])
-            ->innerJoin(WithdrawProcess::tableName(). ' cwwp', 'cwwp.uid = cwuw.process_id')
-            ->where(['cwuw.user_id' => \Yii::$app->user->id])
-            ->orderBy('cwuw.request_date DESC');
+        $dataBase = Charity::find()
+            ->from(Charity::tableName().' cwch')
+            ->select(['cwch.*', 'cwf.title'])
+            ->innerJoin(Foundations::tableName(). ' cwf', 'cwch.foundation_id = cwf.uid')
+            ->where(['cwch.user_id' => \Yii::$app->user->id])
+            ->orderBy('cwch.added DESC');
 
-        $cacheName = 'account_withdraw_history_' . \Yii::$app->user->id . '_' . $page;
+        $cacheName = 'account_charity_' . \Yii::$app->user->id . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
-        $data['withdraw'] = $pagination->data();
+        $data['charity'] = $pagination->data();
 
         if ($pagination->pages() > 1) {
-            $data["pagination"] = $pagination->getPagination('withdraw-history/account', []);
+            $data["pagination"] = $pagination->getPagination('charity/account', []);
         }
 
         return $this->render('index', $data);

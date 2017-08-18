@@ -131,6 +131,12 @@ $config= [
     'withdraw-history' => [
       'class' => 'frontend\modules\withdraw_history\Module',
     ],
+    'charity' => [
+      'class' => 'frontend\modules\charity\Module',
+    ],
+    'funds' => [
+      'class' => 'frontend\modules\funds\Module',
+    ],
   ],
   'params' => $params,
 ];

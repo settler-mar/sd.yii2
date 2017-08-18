@@ -1,0 +1,62 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}}  <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>История добрых дел</h3>
+                <p>
+                    Ниже представлена информация обо всех пожертвованиях, которые Вы сделали.
+                </p>
+            </div>
+            {% if charity|length > 0 %}
+            <div class="col-md-12">
+                <table class="table table-charity">
+                    <thead>
+                        <tr>
+                            <th>Тип пожертвования</th>
+                            <th>Дата</th>
+                            <th class="sum">Сумма</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for chty in charity %}
+                        <tr {% if chty.is_listed==1 %}class="status_bg_{{chty.is_listed}}"{% endif %}>
+                            <td>
+                                {% if chty.foundation_id == '9' %}
+                                {{chty.note}}
+                                {% else %}
+                                Пожертвование в {{chty.title}}
+                                {% endif %}
+                            </td>
+                            <td>{{_date(chty.added)}}</td>
+                            <td class="cashback">{{chty.amount}} <span class="fa fa-rub"></span></td>
+                            <td>
+                                {% if chty.is_listed==1 %}
+                                    Отказано администратором
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <div class="not-found">На данный момент Вы не делали никаких пожертвований.</div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% include '/parts/pagination.twig' %}
+</div>
