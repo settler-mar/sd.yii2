@@ -170,7 +170,7 @@ class PaymentsController extends Controller
                 ]
               )
               ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-              ->setTo($this->email)
+              ->setTo($user->email)
               ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
               ->send();
           }
@@ -230,10 +230,6 @@ class PaymentsController extends Controller
 
           if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
-          }
-
-          if ($user->referrer_id > 0 && !in_array($user->referrer_id, $users)) {
-            $users[] = $user->referrer_id;
           }
         }
       }
