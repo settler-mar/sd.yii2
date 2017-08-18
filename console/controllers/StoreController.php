@@ -11,9 +11,23 @@ class StoreController extends Controller
 
   public function actionIndex(){
     $admitad = new Admitad();
-    Yii::$app->balanceCalc->todo('58220,8,61777,4', 'cash');
-ddd(2);
+    $params = [
+      'limit' => 500,
+      'offset' => 0,
+      'connection_status' => 'active',
+    ];
 
-    ddd($admitad->getStore());
+    $stores=$admitad->getStore($params);
+    while ($stores) {
+      d($stores['_meta']);
+
+
+      $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
+      if ($params['offset'] < $stores['_meta']['count']) {
+        $stores = $admitad->getStore($params);
+      } else {
+        break;
+      }
+    }
   }
 }

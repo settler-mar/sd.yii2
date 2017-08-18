@@ -53,9 +53,9 @@ class Admitad{
   }
 
   public function getStore($options=array()){ // не работает
-    ddd(2);
-    $this->init('websites');
-    $data=$this->admitad->get("/statistics/actions/", $options)->getArrayResult();
+    $this->init('advcampaigns_for_website');
+    $websiteId=$this->config['websiteId'];
+    $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
   }
 }
