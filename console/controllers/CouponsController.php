@@ -11,7 +11,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\SpaLink;
 
-class CuponsController extends Controller
+class CouponsController extends Controller
 {
 
   private $stores=[];

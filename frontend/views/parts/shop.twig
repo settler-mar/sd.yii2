@@ -9,7 +9,7 @@
     %}>{{store.name}}</a></div>
     <div class="gotostore">
         {% if user_id %}
-        <a href="/goto/store:{{store.uid}}" target="_blank" class="btn btn-fill">Сразу к покупкам</a>
+        <a href="/goto/store:{{store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-fill">Сразу к покупкам</a>
         {% else %}
         <a href="#registration" class="btn btn-fill">Сразу к покупкам</a>
         {% endif %}

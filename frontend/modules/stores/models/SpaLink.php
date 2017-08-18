@@ -49,4 +49,13 @@ class SpaLink extends \yii\db\ActiveRecord
             'affiliate_link' => 'Affiliate Link',
         ];
     }
+
+  /**
+   * магазин купона
+   * @return \yii\db\ActiveQuery
+   */
+  public function getStore()
+  {
+    return Stores::findOne(['uid' => $this->stores_id]);
+  }
 }

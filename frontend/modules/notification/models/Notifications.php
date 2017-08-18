@@ -62,4 +62,17 @@ class Notifications extends \yii\db\ActiveRecord
             'twig_template' => 'Twig Template',
         ];
     }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
+    }
+
+    if ($this->isNewRecord) {
+      $this->added = date('Y-m-d H:i:s');
+    }
+
+    return true;
+  }
 }

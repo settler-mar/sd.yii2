@@ -97,7 +97,10 @@ $config = [
         'class' => 'common\components\Conversion',
         'cache_duration' => 7200,
         'options' => ["USD", "EUR", "UAH", "KZT"]
-     ]
+     ],
+    'balanceCalc' => [
+        'class' => 'common\components\BalanceCalc',
+     ],
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[

@@ -53,7 +53,7 @@
                 <div class="goto" id="goto">
                     {% if user_id %}
                         {% if current_store.is_active==1 %}
-                            <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                            <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
                         {% else %}
                              <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
                         {% endif %}
