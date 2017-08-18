@@ -33,7 +33,7 @@ class CpaLink extends \yii\db\ActiveRecord
             [['spa_id', 'stores_id', 'affiliate_id', 'affiliate_link'], 'required'],
             [['spa_id', 'stores_id', 'affiliate_id'], 'integer'],
             [['affiliate_link'], 'string', 'max' => 255],
-            [['spa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['spa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
+           // [['spa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['spa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
         ];
     }
 

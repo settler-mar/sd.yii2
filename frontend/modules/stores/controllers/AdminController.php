@@ -179,7 +179,7 @@ class AdminController extends Controller
         $m = new CpaLink();
         $m->spa_id = (int)$post['code'];
         $m->stores_id = (int)$post['parent'];
-        if($m->save()){
+        if($m->save(false)){
           $cpa = Cpa::findOne((int)$post['code']);
           $data=array(
             'tariff'=>array(

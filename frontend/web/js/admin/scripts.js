@@ -4300,7 +4300,6 @@ $('[ref=popup]').on('click',function (e){
 $(function() {
 
   function update(data){
-console.log(data);
     $this=$(this);
     mode=$this.attr('mode');
 
