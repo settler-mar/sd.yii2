@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 use console\models\Admitad;
-use frontend\modules\notifications\models\Notifications;
+use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\SpaLink;
 use frontend\modules\users\models\Users;

@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\notifications\models;
+namespace frontend\modules\notification\models;
 
 use Yii;
 
