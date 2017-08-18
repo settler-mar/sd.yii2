@@ -84,8 +84,8 @@ class BalanceCalc extends Component
     if($userList!=false){
       $sql.=' WHERE u1.uid in ('.implode(',',$userList).')';
     }
-    $connection->createCommand($sql)->queryAll();
-    d($sql);
+    $connection->createCommand($sql)->execute();
+    //d($sql);
     if($type==false || in_array('cash',$type)){
       $sql="UPDATE cw_users u1
         
@@ -104,7 +104,7 @@ class BalanceCalc extends Component
       if($userList!=false){
         $sql.=' WHERE uid in (SELECT `referrer_id` FROM cw_users WHERE `uid` in ('.implode(',',$userList).'))';
       }
-      $connection->createCommand($sql)->queryAll();
+      $connection->createCommand($sql)->execute();
       //d($sql);
     }
   }
