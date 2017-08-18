@@ -56,7 +56,6 @@ class PaymentsController extends Controller
    */
   public function actionIndex()
   {
-
     $admitad=new Admitad();
     $days=isset(Yii::$app->params['pays_update_period'])?Yii::$app->params['pays_update_period']:3;
     $params=[
@@ -246,6 +245,6 @@ class PaymentsController extends Controller
     }
 
     //делаем пересчет бланса пользователей
-    //Yii::$app->
+    Yii::$app->balanceCalc->todo($users,'cash');
   }
 }
