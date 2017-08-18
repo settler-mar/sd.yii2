@@ -29,3 +29,4 @@ account_bonuses_<user_id>_<page>  - account/bonuses
 account_transitions_<user_id>_<page>  - account/transitions
 account_withdraw_history_<user_id>_<page> - account/withdraw-history
 account_charity_<user_id>_<page> - account/charity
+account_notifications_<type_id>_<user_id>_<page> - account/notification
