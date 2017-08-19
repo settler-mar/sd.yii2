@@ -5,8 +5,11 @@ namespace frontend\modules\stores\controllers;
 use yii;
 use frontend\components\SdController;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
+use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
+use frontend\modules\slider\models\Slider;
 
 class DefaultController extends SdController
 {
@@ -54,17 +57,26 @@ class DefaultController extends SdController
         $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
         $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
 
-
+        $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
         $storesData = [];
         if (!empty($category)) {
             //категория
-            $storesData['current_category'] = CategoryStores::find()->where(['uid' => $category])->one();
+            $storesData['current_category'] = CategoryStores::byId($category);
+            $this->params['breadcrumbs'][] = [
+                'label' => $storesData['current_category']->name,
+                'url' => '/stores/category:' . $storesData['current_category']->uid,
+            ];
+
             if ($storesData['current_category'] == null) {
                 throw new \yii\web\NotFoundHttpException;
             }
             if ($storesData['current_category']->is_active == 0) {
                 return $this->redirect('/stores', 301);
             }
+
+            //чтобы виджет мог получить current_category_id в main.twig
+            \Yii::$app->controller->current_category_id = $category;
+
             $dataBaseData = Stores::find()
                 ->from(Stores::tableName() . ' cws')
                 ->select([
@@ -74,7 +86,6 @@ class DefaultController extends SdController
                     " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
                     "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
                     " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
                 ])
                 ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
                 ->where([
@@ -82,11 +93,7 @@ class DefaultController extends SdController
                     'is_active' => [0, 1],
                 ])
                  ->orderBy($sort .' '.$order);
-            $pagination = new Pagination(
-                $dataBaseData,
-                'catalog_stores_category' . '_' .$category . '_' . $limit. '_' . $sort,
-                ['limit' => $limit, 'page' => $page, 'asArray' => 1]
-            );
+            $cacheName = 'catalog_stores_category' . '_' .$category .'_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
         } else {
             //нет категории /stores
             $dataBaseData = Stores::find()
@@ -96,21 +103,31 @@ class DefaultController extends SdController
                     " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
                     "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)".
                     " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-
                 ])
-                ->where(['not in', 'is_active', [-1]])
+                ->where(['is_active' => [0, 1]])
                 ->orderBy($sort .' '.$order);
-            $pagination = new Pagination(
-                $dataBaseData,
-                'catalog_stores_' . $limit. '_' . $sort,
-                ['limit' => $limit, 'page' => $page, 'asArray' => 1]
-            );
+            $cacheName = 'catalog_stores_'.$page.'_'.$limit.'_'.$sort.'_'.$order;
         }
+        if ($page > 1) {
+            $this->params['breadcrumbs'][] = 'Страница ' . $page;
+        }
+        if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+            $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+        }
+
+        $pagination = new Pagination(
+            $dataBaseData,
+            $cacheName,
+            ['limit' => $limit, 'page' => $page, 'asArray' => 1]
+        );
+
         $storesData['stores'] = $pagination->data();
         $storesData["total_v"] = $pagination->count();
         $storesData["show_stores"] = count($storesData['stores']);
         $storesData["offset_stores"] = $pagination->offset();
         $storesData["total_all_stores"] = Stores::activeCount();
+        $storesData["page"] = empty($page) ? 1 : $page;
+        $storesData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
 
         $paginateParams = [
             'category' => $category,
@@ -127,6 +144,8 @@ class DefaultController extends SdController
             $this->getSortLinks($request->pathInfo, Stores::$sortvars, Stores::$defaultSort, $paginateParams);
         $storesData['limitlinks'] =
             $this->getLimitLinks($request->pathInfo, Stores::$defaultSort, $paginateParams);
+        
+        $storesData['slider'] = Slider::get();
 
         return $this->render('catalog', $storesData);
     }
@@ -134,10 +153,111 @@ class DefaultController extends SdController
     /**
      * @param $id
      * @return string
+     * @throws yii\web\NotFoundHttpException
      */
     private function actionStore($id)
     {
-        return $this->render('store');
+        $validator = new \yii\validators\StringValidator();
+        if (!$validator->validate($id)) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+        $store = Stores::byRoute($id);
+        if (!$store) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+        $contentData["current_store"] = $store;
+        $contentData["current_store.description"] = htmlspecialchars_decode($store->description);
+
+        $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
+        $contentData["store_rating"] = Reviews::storeRating($store->uid);
+
+        $cache = \Yii::$app->cache;
+        $coupons = $cache->getOrSet('store_coupons_store_'.$id, function () use ($store) {
+            return Coupons::find()
+                ->from(Coupons::tableName(). ' cwc')
+                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                    'cws.currency as store_currency', 'cws.displayed_cashback'])
+                ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => [0, 1], 'cws.uid' => $store->uid])
+                ->orderBy(Coupons::$defaultSort)
+                ->asArray()
+                ->all();
+        });
+        $contentData["store_coupons"] = $coupons;
+
+        $additionalStores = $this->getAdditionals($store);
+        $contentData["additional_stores"] = $additionalStores['additional_stores'];
+        $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
+
+        $contentData["curs"] = Yii::$app->conversion->options();
+
+        return $this->render('shop', $contentData);
+    }
+
+    /**
+     * Get a list of additional stores
+     * @param string $route
+     * @return array
+     */
+    private function getAdditionals($store)
+    {
+        //вычисляем, не пришёл ли пользователь из категории
+        $referrer = \Yii::$app->request->referrer;
+        $category = [];
+        if ($referrer && strpos($referrer, '/stores/')) {
+            $categoryRoute = explode('/', $referrer);
+            foreach ($categoryRoute as $route) {
+                if (preg_match('/category\:[0-9]*$/', $route)) {
+                    $category[0] = substr($route, 9);
+                    break;
+                }
+            }
+        }
+        //если не из категории в качестве категорий берём категории товара
+        if (empty($category)) {
+            $categories = $store->categories;
+            foreach ($categories as $cat) {
+                if ($cat->is_active == 1) {
+                    $category[] = $cat->uid;
+                }
+            }
+        }
+        $cache = Yii::$app->cache;
+        if (!count($category)) {
+            //если нет категорий (гипотетически)
+            $additional_stores = $cache->getOrSet('additional_stores_except_'.$store->uid, function () use ($store) {
+                return Stores::find()
+                    ->where(['is_active' => [0, 1]])
+                    ->andWhere(['<>', 'uid', $store->uid])
+                    ->orderBy('RAND()')
+                    ->limit(6)
+                    ->asArray()
+                    ->all();
+            });
+        } else {
+           //категория есть или одна или много
+            $additional_stores = $cache->getOrSet(
+                'additional_stores_by_categories_' . implode('_', $category) . '_except_' . $store->uid,
+                function () use ($category, $store
+                ) {
+                    return Stores::find()
+                        ->from(Stores::tableName() . ' cws')
+                        ->select(['cws.*'])
+                        ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
+                        ->where(['cws.is_active' => [0, 1], 'cwstc.category_id' => $category])
+                        ->andWhere(['<>', 'cws.uid', $store->uid])
+                        ->orderBy('RAND()')
+                        ->limit(6)
+                        ->asArray()
+                        ->all();
+                }
+            );
+            $additional_stores_category = CategoryStores::byId($category[0]);
+        };
+        return [
+            'additional_stores' => $additional_stores,
+            'additional_stores_category' => empty($additional_stores_category) ? null : $additional_stores_category,
+        ];
     }
 
 }

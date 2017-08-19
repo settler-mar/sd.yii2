@@ -7,6 +7,14 @@ $currencyIcon = [
   'UAH' => '<span class="uah">&#8372;</span>',
   'KZT' => '<span class="uah">&#8376;</span>',
 ];
+$month = [
+    '00' => '',
+    '01' => 'января', '02' => 'февраля', '03' => 'марта',
+    '04' => 'апреля', '05' => 'мая', '06' => 'июня',
+    '07' => 'июля', '08' => 'августа', '09' => 'сентября',
+    '10' => 'октября', '11' => 'ноября', '12' => 'декабря'
+];
+
 function _hyphen_words_wbr(array &$m){
   return _hyphen_words($m,true);
 }
@@ -132,11 +140,12 @@ $functionsList=[
     });
   },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
-  '_cashback'=> function ($cashback, $currency) {
-    return $cashback . ((strpos($cashback, '%') === false) ? ' ' . $currency : '');
+  '_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
+    return $cashback . ((strpos($cashback, '%') === false) ? ' ' .
+        (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency) : '');
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
-  '_shop_cashback'=> function ($cashback, $currency) {
+  '_shop_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
     $value = preg_replace("/[^0-9]/", '', $cashback);
     if (intval($value) == 0) {
       return '<i class="red fa fa-heart"></i>';
@@ -221,7 +230,14 @@ $functionsList=[
     }else{
       return ($else?$else:'');
     }
-  }
+  },
+  '_date'=>function ($date) use ($month) {
+    $d = explode(" ", $date)[0];
+    $m = explode("-", $d);
+    $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
+    return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
+  },
+
 ];
 
 return $functionsList;

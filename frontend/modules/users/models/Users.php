@@ -467,7 +467,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getBonus_status_data(){
-    $bs=$this->loyalty_status;
+    $bs=$this->bonus_status;
     $Bonus_status_list=Yii::$app->params['dictionary']['bonus_status'];
     if(!isset($Bonus_status_list[$bs])){
       return 'Ошибка';

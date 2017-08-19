@@ -1,0 +1,35 @@
+{% include 'parts/breadcrumbs.twig' %}
+<section class="reviews section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Отзывы о нашем сервисе</h3>
+            </div>
+            {% if reviews|length > 0 %}
+                {% for review in reviews %}
+                <div class="col-sm-12 col-md-6">
+                    <div class="comments">
+                        {% include 'parts/comment.twig' %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12">
+                    На данный момент отзывы о нашем сервисе отсутствуют. Будь первым!
+                </div>
+            {% endif %}
+            <div class="col-md-12">
+                <div class="give-feedback">
+                    {% if user_id %}
+                    <a href="#givefeedback" class="btn btn-ghost btn-accent btn-large ignore-hash">Оставить отзыв</a>
+                    {% else %}
+                    Для того, чтобы иметь возможность оставлять отзывы, Вам нужно 
+                    <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>. 
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'parts/popups/popup-givefeedback.twig' %}
+{% include 'parts/pagination.twig' %}

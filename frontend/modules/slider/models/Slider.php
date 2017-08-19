@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\stores\models;
+namespace frontend\modules\slider\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
@@ -21,14 +21,14 @@ use frontend\modules\stores\models\Stores;
  * @property integer $is_showed
  * @property integer $store_id
  */
-class PromoStores extends \yii\db\ActiveRecord
+class Slider extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'cw_promo_stores';
+        return 'cw_slider';
     }
 
     /**
@@ -70,12 +70,12 @@ class PromoStores extends \yii\db\ActiveRecord
      * Getting a list of
      * store promotions
      */
-    public static function getPromoStores()
+    public static function get()
     {
-        $promoStores = Yii::$app->cache->getOrSet('catalog_promo_stores', function () {
+        $promoStores = Yii::$app->cache->getOrSet('slider', function () {
             $queryResult = self::find()
                 ->from(self::tableName(). " cwps")
-                ->select(["cws.*", "cwps.description"])
+                ->select(["*", "cwps.description as promo_desc"])
                 ->innerJoin(Stores::tableName(). ' cws', "cwps.store_id = cws.uid")
                 ->where(["cws.is_active" => [0, 1], "cwps.is_showed" => 1])
                 ->asArray()

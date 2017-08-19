@@ -4,7 +4,7 @@ namespace frontend\modules\users\models;
 
 use Yii;
 use yii\base\Model;
-use app\modules\users\models\Users;
+use frontend\modules\users\models\Users;
 
 class RegistrationForm extends Model
 {
@@ -20,7 +20,7 @@ class RegistrationForm extends Model
       ['email', 'trim'],
       [['email', 'password'], 'required'],
       [['email'], 'email'],
-      ['email', 'unique', 'targetClass' => 'app\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
+      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
 
       ['password', 'trim'],
       [['password'], 'string', 'max' => 60],

@@ -88,8 +88,9 @@ class Pagination
         $total = $this->pagination->pageCount;
         $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
         $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
         $params['page'] = null;
-        $pageName = array_merge([$pageName], $params);
+        $pageName = array_merge(['/' . $pageName], $params);
         //d($pageName, array_merge($params, ['page' => 5]), Url::toRoute(array_merge($params, ['page' => 5]))) ;
 
         //предыдущая

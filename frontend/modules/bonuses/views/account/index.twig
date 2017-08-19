@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+  <section class="account-home">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="balance">
+          <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
+          <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}}  <span class="fa fa-rub"></span></span></div>
+          <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="account-padding">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>История бонусов</h3>
+        <p>
+          Ниже представлена информация обо всех бонусах, которые были зачислены на Ваш аккаунт.
+        </p>
+      </div>
+      {% if bonuses|length > 0 %}
+      <div class="col-md-12">
+        <table class="table table-bonuses">
+          <thead>
+            <tr>
+              <th>Тип</th>
+              <th>Описание</th>
+              <th>Дата</th>
+              <th>Сумма</th>
+              <th style="width: 140px;">Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bonus in bonuses %}
+            <tr>
+              <td>
+                {{bonus.title}}
+              </td>
+              <td>
+                {{bonus.text | raw}}
+              </td>
+              <td>{{_date(bonus.added)}}</td>
+              <td class="cashback {{bonus.status}}">
+                {{bonus.amount}}
+                <span class="fa fa-rub"></span>
+              </td>
+              <td class="status status_{{bonus.status}}">
+                {% if bonus.status == '0' %}
+                  <span class="fa fa-clock-o"></span> В ожидании
+                {% endif %}
+                {% if bonus.status == '2' %}
+                  <span class="fa fa-check"></span> Подтверждён
+                {% endif %}
+                {% if bonus.status == '1' %}
+                  <span class="fa fa-times"></span> Отклонён
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="col-md-12">
+        <div class="not-found">На данный момент Вам не было начислено никаких бонусов.</div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  {% include '/parts/pagination.twig' %}
+</div>

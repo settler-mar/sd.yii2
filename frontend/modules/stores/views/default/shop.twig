@@ -1,0 +1,296 @@
+<section class="view-store triangle-background">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="shop-name {% if current_store.name|length < 14 %} big {% endif %}">{{current_store.name}}</div>
+                <div class="hold-name">
+                    Кэшбэк станет активным для вывода через
+                    <span>{{current_store.hold_time}} дней
+                        <a href="#" class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
+                           title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше.">
+                            <i data-tooltip=""
+                               class="fa fa-question-circle-o" aria-hidden="true">
+                            </i>
+                        </a>
+                    </span>
+                    <span class="avg">(среднее время обработки)</span>
+                </div>
+                <div class="" ></div>
+            </div>
+            <div class="col-md-4">
+                <div class="favorite">
+                    {% if user_id %}
+                        {% if current_store.uid in fav_ids %}
+                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить из избранного">
+                            <span class="fa fa-star"></span>
+                        </a>
+                        {% else %}
+                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить в избранное">
+                            <span class="fa fa-star-o muted"></span>
+                        </a>
+                        {% endif %}
+                    {% else %}
+                    <a class="favorite-link ignore-hash" href="#registration" data-toggle="tooltip" data-placement="top" data-original-title="Добавить в избранное">
+                        <span class="fa fa-star-o muted"></span>
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="logo">
+                    <img src="/images/logos/{{current_store.logo}}" alt="{{current_store.name}}">
+                </div>
+                <div class="rating">
+                    {% for i in range(1, store_rating) %}
+                    <span class="fa fa-star"></span>
+                    {% endfor %}
+
+                    {% set estar =  5 - store_rating %}
+                    {% if estar != 0 %}
+                        {% for i in range(1, estar) %}
+                        <span class="fa fa-star-o"></span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="goto" id="goto">
+                    {% if user_id %}
+                        {% if current_store.is_active==1 %}
+                            <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                        {% else %}
+                             <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                    {% endif %}
+                    <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cashback {% if current_store.action_id == 1 %}old{% endif %}">
+                    Кэшбэк
+                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                </div>
+                {% if current_store.action_id == 1 %}
+                <div class="cashback promo">
+                    Кэшбэк
+                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                </div>
+                {% endif %}
+                {% if current_store.conditions != '' or current_store.is_active==0 %}
+                <div class="additional-information">
+                    <span>Дополнительная информация:</span>
+                    <div class="additional-information__content">
+                        {% if current_store.is_active==0 %}
+                            {{ _constant('shop_not_info')|raw}}
+                        {% endif %}
+                        {{ _no_br(current_store.conditions)|raw}}
+                    </div>
+                    <div >
+                        <div class="additional-information__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
+                        <div class="additional-information__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+  <div class="row">
+    <h1 class="store-h1">
+        {% if h1%}
+            {{ h1|raw }}
+        {% else %}
+            Кэшбэк с покупок на {{current_store.name}}
+        {% endif %}
+    </h1>
+      <div class="store-recommendation-link">
+        <p><input id="store-recommendation-link-checkbox" class="checkbox-blue" type="checkbox" checked> <label class="checkbox-blue__label" for="store-recommendation-link-checkbox">Я ознакомлен и согласен с <a href="/recommendations">Правилами покупок с кэшбэком</a></label></p>
+
+      </div>
+  </div>
+</div>
+
+{% if current_store.short_description or content %}
+<section class="store-information short-description">
+    <div class="container">
+        <div class="row">
+            {% if current_store.short_description %}
+                <div class="col-md-12">
+                    <h3 class="text-center">Информация о {{current_store.name}}</h3>
+                </div>
+                <div class="col-md-12 short-description__description less">
+                    <div class="description">
+                        {{ current_store.short_description|raw }}
+                    </div>
+                </div>
+                <div >
+                    <div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
+                    <div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
+                </div>
+            {% else %}
+                <div class="col-md-12 short-description__description">
+                    <div class="description">
+                        {{ content|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if current_store.is_active==0 %}
+<section class="store-information store-not-active">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 store-not-active__content">
+                <div class="description">
+                    {{ _constant('shop_not_active_description')|raw}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+{% include 'parts/calc_cashback.twig' %}
+
+{% if current_store.is_active==1 %}
+    <section class="store-2line">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="coupons">
+                        <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
+                        {% if store_coupons|length > 0 %}
+                        <div class="c-wrapper coupons-list" data-mcs-theme="dark">
+                            {% for coupon in store_coupons %}
+                            <div class="col-sm-12 col-md-6 coupons-item">
+                            {% include 'parts/coupon.twig' %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <div class="comments">
+                        <h3>Отзывы о магазине {{current_store.name}}</h3>
+                        {% if store_reviews|length > 0 %}
+                        <div class="cm-wrapper" data-mcs-theme="dark">
+                            {% for review in store_reviews %}
+                            <div class="col-sm-12 col-md-6">
+                            {% include 'parts/comment.twig' %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="comments-handler">
+                        {% if store_reviews|length == 0 %}
+                        <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
+                        {% endif %}
+                        {% if user_id %}
+                        <a href="#reviewstore" class="btn btn-ghost btn-accent btn-large ignore-hash">Оставить отзыв</a>
+                        {% else %}
+                        <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+                        <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+<section class="store-intro shops">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% if additional_stores_category %}
+                    <h3>Популярные магазины из раздела
+                        <a href="/stores/category:{{additional_stores_category.uid}}">
+                            {{ additional_stores_category.name }} с кэшбэком
+                        </a>
+                    </h3>
+                {% else %}
+                    <h3>Популярные магазины из <a href="/stores">нашего каталога</a></h3>
+                {% endif %}
+            </div>
+            {% for store in additional_stores %}
+            <div class="col-sm-3 col-md-2">
+            {% include 'parts/shop.twig' %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% include 'parts/tracker.twig' %}
+
+{% if current_store.description %}
+<section class="store-information">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Информация о кэшбэк в {{current_store.name}}</h3>
+            </div>
+            <div class="col-md-12">
+                <div class="description">
+                {{current_store.description|raw}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+<section class="store-intro intro section-padding" id="howgetcashback">
+    <div class="container">
+        <div class="row">
+            <h3>Как получить кэшбэк?</h3>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe00c;" class="icon"></span>
+                </div>
+                <div class="intro-content {% if user_id %}through{% endif %}">
+                    <h5>Регистрируйтесь на сайте</h5>
+                    <p>Пройдите {% if not user_id %}<a href="#registration" class="ignore-hash">простую регистрацию</a>{% else %} простую регистрацию {% endif %} в кэшбэк-сервисе SecretDiscounter.</p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe027;" class="icon"></span>
+                </div>
+                <div class="intro-content">
+                    <h5>Перейдите в магазин</h5>
+                    <p>Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a> и сделайте заказ на сайте.</p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe016;" class="icon"></span>
+                </div>
+                <div class="intro-content last">
+                    <h5>Получите деньги</h5>
+                    <p>Кэшбэк за заказ автоматически зачислится на 
+                    {% if user_id %}
+                    <a href="/account">Ваш счёт</a> 
+                    {% else %}
+                    Ваш счёт
+                    {% endif %}
+                    в SecretDiscounter.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
+{% include 'parts/popups/popup-givefeedback.twig' %}
+
+
+{% if current_store.is_active==0 %}
+<div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
+    {{ _constant('shop_not_active_message')|raw}}
+</div>
+{% endif %}}

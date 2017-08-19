@@ -9,6 +9,9 @@ $config = [
   'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
+    'cache'=>[
+      'keyPrefix' => 'sd', // уникальный префикс ключей кэша
+    ],
     'urlManager' => [
       'class' => 'yii\web\UrlManager',
       'enablePrettyUrl' => true,
@@ -45,6 +48,13 @@ $config = [
       'linkAssets' => true,
       'appendTimestamp' => true,
     ],
+    'TwigString'=>[
+      'class'=>'common\components\TwigString',
+      'params'=>[
+        'cachePath' => '@runtime/Twig/cache',
+        'functions' => $twigFunction,
+      ],
+    ],
     'view' => [
       'class' => 'yii\web\View',
       'defaultExtension' => 'twig',
@@ -79,9 +89,18 @@ $config = [
         [
           'class' => 'yii\log\FileTarget',
           'levels' => ['error', 'warning'],
+          'logFile' => 'log/'.date('Y/m/d').'.log'
         ],
       ],
     ],
+    'conversion' => [
+        'class' => 'common\components\Conversion',
+        'cache_duration' => 7200,
+        'options' => ["USD", "EUR", "UAH", "KZT"]
+     ],
+    'balanceCalc' => [
+        'class' => 'common\components\BalanceCalc',
+     ],
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[

@@ -86,4 +86,47 @@ class Reviews extends \yii\db\ActiveRecord
         });
         return $data;
     }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+
+    public static function byStoreId($storeId)
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('reviews_by_store_'.$storeId, function () use ($storeId) {
+            $reviews = Reviews::find()
+                ->from(Reviews::tableName().' r')
+                ->select(['r.*', 'u.name', 'u.photo'])
+                ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
+                ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
+                ->asArray()
+                ->all();
+            return $reviews;
+        });
+        return $data;
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public static function storeRating($storeId)
+    {
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('reviews_store_rating_'.$storeId, function () use ($storeId) {
+            $data = Reviews::find()
+                ->from(Reviews::tableName().' r')
+                ->select(['avg(r.rating) as avgrating'])
+                ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
+                ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
+                ->asArray()
+                ->one();
+            $rating = intval($data['avgrating']);
+
+            return $rating;
+        });
+        return $data;
+    }
 }

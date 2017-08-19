@@ -17,14 +17,15 @@ use frontend\modules\category_stores\models\CategoryStores;
 class SdController extends Controller
 {
     /**
-     * @var null|string
-     */
-    public $categories_tree;
-
-    /**
      * @var
      */
     public $pagination_tags;
+
+    /**
+     * для виджета дерево категорий - текущая категория
+     * @var
+     */
+    public $current_category_id;
 
     /**
      * Possible limit options with default value
@@ -36,18 +37,7 @@ class SdController extends Controller
      */
     public $defaultLimit = 50;
 
-    /**
-     * SdController constructor.
-     * @param string $id
-     * @param \yii\base\Module $module
-     * @param array $config
-     */
-    public function __construct($id, $module, $config = [])
-    {
-        parent::__construct($id, $module, $config = []);
-
-        $this->categories_tree = CategoryStores::tree();
-    }
+    public $params;
 
     /**
      * @param $total
@@ -55,9 +45,15 @@ class SdController extends Controller
      */
     public function makePaginationTags($pageName, $total, $page, $params = [])
     {
+        $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
+        $params = array_merge(['/' . $pageName], $params);
+        $page  = $page < 2 ? 1 : $page;
         $this->pagination_tags = [
-            'prev_page' => $page > 1 ? Url::toRoute(array_merge([$pageName, 'page' => $page - 1], $params)): null,
-            'next_page' => $page < $total ? Url::toRoute(array_merge([$pageName, 'page' => $page + 1], $params)): null,
+            'prev_page' => $page > 1 ? Url::toRoute(array_merge($params, ['page' => $page - 1])): null,
+            'next_page' =>
+                $page < $total ? Url::toRoute(array_merge($params, ['page' => $page + 1])): null,
         ];
     }
 
@@ -74,6 +70,7 @@ class SdController extends Controller
     {
         $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
         $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
         $result = [];
         $params['limit'] = $params['limit'] == $this->defaultLimit ? null : $params['limit'];
         $currentSort = $params['sort'];
@@ -86,7 +83,7 @@ class SdController extends Controller
                 $params['sort'] = $key;
             }
             $result[] = [
-                'link' => Url::toRoute(array_merge([$pageName], $params)),
+                'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
                 'active' => $params['sort'] == $currentSort ? 1 : 0,
@@ -107,6 +104,7 @@ class SdController extends Controller
 
         $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
         $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
+        $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
         //при изменении лимита - на первую страницу
         $params['page'] = null;
         $currentLimit = $params['limit'];
@@ -115,7 +113,7 @@ class SdController extends Controller
         foreach ($this->limitVars as $limitVar) {
             $params['limit'] = $limitVar == $this->defaultLimit ? null : $limitVar;
             $result[] = [
-                'link' => Url::toRoute(array_merge([$pageName], $params)),//$pageName . ($paramQuery == '' ? '' : '?'.$paramQuery),
+                'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'title' => ' '.$limitVar,
                 'active' => $currentLimit == $limitVar ? 1 : 0,
             ];

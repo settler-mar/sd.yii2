@@ -1,5 +1,4 @@
 # yii console commands
-yii
 yii_test
 yii_test.bat
 
@@ -47,3 +46,4 @@ phpunit.phar
 /frontend/web/images/account/avatars
 
 
+log/

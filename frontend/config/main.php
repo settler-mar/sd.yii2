@@ -64,6 +64,15 @@ $config= [
         'account' => 'users/account/index',
         'account/settings' => 'users/account/settings',
         'admin' => 'site/admin',
+        'faq' => 'site/faq',
+        'howitworks' => 'site/howitworks',
+        'terms' => 'site/terms',
+        'promo' => 'site/promo',
+        'affiliate-system' => 'site/affiliate',
+        'loyalty' => 'site/loyalty',
+        'recommendations' => 'site/recommendations',
+        'about' => 'site/about',
+        'account-blocked' => 'site/accountblocked',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
@@ -96,10 +105,37 @@ $config= [
       ]
     ],
     'constants' => [
-      'class' => 'app\modules\constants\Module',
+      'class' => 'frontend\modules\constants\Module',
     ],
     'coupons' => [
       'class' => 'frontend\modules\coupons\Module',
+    ],
+    'slider' => [
+      'class' => 'frontend\modules\slider\Module',
+    ],
+    'dobro' => [
+      'class' => 'frontend\modules\dobro\Module',
+    ],
+    'payments' => [
+      'class' => 'frontend\modules\payments\Module',
+    ],
+    'bonuses' => [
+      'class' => 'frontend\modules\bonuses\Module',
+    ],
+    'notification' => [
+      'class' => 'frontend\modules\notification\Module',
+    ],
+    'transitions' => [
+      'class' => 'frontend\modules\transitions\Module',
+    ],
+    'withdraw-history' => [
+      'class' => 'frontend\modules\withdraw_history\Module',
+    ],
+    'charity' => [
+      'class' => 'frontend\modules\charity\Module',
+    ],
+    'funds' => [
+      'class' => 'frontend\modules\funds\Module',
     ],
   ],
   'params' => $params,

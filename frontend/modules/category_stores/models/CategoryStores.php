@@ -78,7 +78,7 @@ class CategoryStores extends \yii\db\ActiveRecord
                 ->from([self::tableName(). ' ccs'])
                 ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
                 ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
-                ->where(['cws.is_active' => 1, 'ccs.is_active' => 1])
+                ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
                 ->groupBy(['ccs.name','ccs.parent_id','ccs.uid'])
                 ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC'])
                 ->asArray()
@@ -95,18 +95,37 @@ class CategoryStores extends \yii\db\ActiveRecord
      */
     public static function tree($parent_id = 0, $currentCategory = null)
     {
-        $categories = self::activeList();
-        $c=[];
-        if (count($categories) > 0) {
-            foreach ($categories as $category) {
-                $c[$category['parent_id']][$category['uid']] = $category;
+        $cache = Yii::$app->cache;
+        $tree = $cache->getOrSet(
+            'category_tree_'.$parent_id.'_'.$currentCategory,
+            function () use ($parent_id, $currentCategory) {
+                $categories = self::activeList();
+                $c=[];
+                if (count($categories) > 0) {
+                    foreach ($categories as $category) {
+                        $c[$category['parent_id']][$category['uid']] = $category;
+                    }
+    
+                    $cats = $c;
+                } else {
+                    $cats = [];
+                }
+                return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
             }
+        );
+        return $tree;
+    }
 
-            $cats = $c;
-        } else {
-            $cats = [];
-        }
-        return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function byId($id)
+    {
+        $cache = \Yii::$app->cache;
+        return $cache->getOrSet('store_category_byid_'.$id, function () use ($id) {
+            return self::findOne($id);
+        });
     }
 
     /**
@@ -115,7 +134,7 @@ class CategoryStores extends \yii\db\ActiveRecord
      * @param null $currentCategory
      * @return null|string
      */
-    private static function buildCategoriesTree($cats, $parent_id = 0, $currentCategory = null)
+    private static function buildCategoriesTree($cats, $parent_id = 0, $currentCategoryId = null)
     {
         if (is_array($cats) and isset($cats[$parent_id])) {
             $tree = "";
@@ -125,19 +144,18 @@ class CategoryStores extends \yii\db\ActiveRecord
             $tree .= "<ul data-mcs-theme=\"dark\">";
 
             foreach ($cats[$parent_id] as $cat) {
-
                 $c = $parent_id == 0 ? "class='title'" : "";
                 $catURL = "/stores/category:" . $cat['uid'];
 
                 $tree .= "<li>";
-                if ($currentCategory != null && $cat['uid'] == $currentCategory->uid) {
+                if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId) {
                     $class = 'class="active' . ($parent_id == 0 ? ' title' : '').'"';
                     $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
                     $tree .=  '<span ' . $class . '">' . $cat['name'] . "</span> <span ".$classCount.">(" . $cat['count'] . ")</span>";
                 } else {
                     $tree .=  "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " <span>(" . $cat['count'] . ")</span></a>";
                 }
-                $tree .= self::buildCategoriesTree($cats, $cat['uid'], $currentCategory);
+                $tree .= self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId);
                 $tree .= "</li>";
             }
             $tree .= "</ul>";

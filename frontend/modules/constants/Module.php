@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\constants;
+namespace frontend\modules\constants;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'app\modules\constants\controllers';
+    public $controllerNamespace = 'frontend\modules\constants\controllers';
 
     public function init()
     {

@@ -3,6 +3,8 @@
 namespace frontend\modules\coupons\models;
 
 use Yii;
+use frontend\modules\stores\models\Stores;
+
 
 /**
  * This is the model class for table "cw_categories_coupons".
@@ -53,4 +55,21 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         return $this->hasMany(Coupons::className(), ['coupon_id' => 'coupon_id'])
             ->viaTable('cw_coupons_to_categories', ['category_id' => 'uid']);
     }
+
+    /**
+     * то же что findOne но закешировано
+     * @param $categoryId
+     * @return mixed
+     */
+    public static function byId($categoryId)
+    {
+        $cache = \Yii::$app->cache;
+        $category = $cache->getOrSet('categories_coupons_byid_' . $categoryId, function () use ($categoryId) {
+            return self::findOne($categoryId);
+        });
+        return $category;
+    }
+
+
+
 }

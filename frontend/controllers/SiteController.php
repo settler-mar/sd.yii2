@@ -12,6 +12,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
+use yii\helpers\Url;
 
 /**
  * Site controller
@@ -107,12 +108,100 @@ class SiteController extends SdController
   }
 
   /**
-   * Displays homepage.
+   * /faq
+   * @return string
+   */
+  public function actionFaq()
+  {
+    $this->params['breadcrumbs'][] = 'FAQ';
+    return $this->render('faq');
+  }
+  /**
+   * /howitworks
+   * @return string
+   */
+  public function actionHowitworks()
+  {
+    $this->params['breadcrumbs'][] = 'Как это работает';
+    return $this->render('howitworks');
+  }
+  /**
+   * /terms
+   * @return string
+   */
+  public function actionTerms()
+  {
+    $this->params['breadcrumbs'][] = 'Правила сайта';
+    return $this->render('terms');
+  }
+  /**
+   * /promo
+   * @return string
+   */
+  public function actionPromo()
+  {
+    $this->params['breadcrumbs'][] = 'Акции';
+    return $this->render('promo');
+  }
+  /**
+   * /affiliate
+   * @return string
+   */
+  public function actionAffiliate()
+  {
+    if (!Yii::$app->user->isGuest) {
+      Yii::$app->response->redirect(Url::to('/account/affiliate'));
+    };
+    $this->params['breadcrumbs'][] = 'Партнёрская программа';
+    return $this->render('affiliate');
+  }
+  /**
+   * /loyalty
+   * @return string
+   */
+  public function actionLoyalty()
+  {
+    $this->params['breadcrumbs'][] = 'Накопительная система';
+    return $this->render('loyalty');
+  }
+  /**
+   * /recommendations
+   * @return string
+   */
+  public function actionRecommendations()
+  {
+    $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
+    return $this->render('recommendations');
+  }
+  /**
+   * /about
+   * @return string
+   */
+  public function actionAbout()
+  {
+    $this->params['breadcrumbs'][] = 'О нас';
+    return $this->render('about');
+    //todo сделать просмотр сертификата с помощью photoswipe
+  }
+  /**
+   * /account-blocked
+   * @return string
+   */
+  public function actionAccountblocked()
+  {
+    $this->params['breadcrumbs'][] = 'Аккаунт заблокирован';
+    return $this->render('user-blocked');
+  }
+  /**
+   * Displays 404 error.
    *
    * @return mixed
    */
   public function action404()
   {
+    $this->params['breadcrumbs'][] = '404';
     return $this->render('404');
   }
+
+
 }

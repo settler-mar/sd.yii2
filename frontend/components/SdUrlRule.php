@@ -126,7 +126,7 @@ class SdUrlRule implements UrlRuleInterface
   {
     $route=explode('/',$route);
     if(count($route)<2){
-      return false;
+     // return false;
     }
 
     if($route[0]=='permit'){
