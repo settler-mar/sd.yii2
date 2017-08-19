@@ -1,3 +1,4 @@
+{{ use('/yii/widgets/ActiveForm') }}
 {% set title = 'Update Stores: ' ~ model.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
@@ -14,7 +15,8 @@
             <div class="row">
                 {% if store %}
                     <div class="col-md-12">
-                        <form enctype="multipart/form-data" method="post" action="/admin/stores/update?id={{store.uid}}">
+                        <div class="stores-form">
+                            {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
                             <p class="title first">Основная информация</p>
                             <div class="edit_wrapper">
                                 <div class="edit_blk">
@@ -22,49 +24,48 @@
                                     <p><span>Добавлен:</span> {{store.added}}</p>
                                     <p><span>Посещений:</span> {{store.visit}}</p>
                                     <p><span>Картчка магазина:</span> <a href="/stores/{{store.route}}" target="_blank">перейти</a></p>
-                                    <p><span>Название:</span> <br><input type="text" name="name" value="{{store.name}}"></p>
-                                    <p><span>Название по русски:</span> <br><input type="text" name="local_name" value="{{store.local_name}}"></p>
-                                    <p><span>Route:</span> <br><input type="text" name="route" value="{{store.route}}"></p>
-                                    <p><span>URL:</span> <br><input type="text" name="url" value="{{store.url}}"></p>
+                                    <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true})|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
-                                    <p><span>Logo:</span> <img src="/images/logos/{{store.logo}}"> <br> <input name="logo" type="file"></p>
-                                    <p><span>Валюта:</span> <br><input type="text" name="currency" value="{{store.currency}}"></p>
-                                    <p><span>Отображаемый cashback:</span> <br><input type="text" name="displayed_cashback" value="{{store.displayed_cashback}}"></p>
-                                    <p><span>Отображаемое время холда (дней):</span> <br><input type="text" name="hold_time" value="{{store.hold_time}}"></p>
-                                    <p><span>Процент отдаваемый от нашей выгоды:</span> <br><input type="text" name="percent" value="{{store.percent}}"></p>
+                                    <p><span>Logo:</span> <img src=" {{model.logo}} "> </p>
+                                    {{ form.field(model, 'logoImage').fileInput()|raw }}
+                                    <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true})|raw }}</p>
                                     <p><span>Магазин активен:</span><br>
-                                        <select name="is_active">
-                                            <option value="-1" {% if store.is_active == -1 %} selected {% endif %}>Заблокирован пользователем</option>
-                                            <option value="0" {% if store.is_active == 0 %} selected {% endif %}>Временно не активен</option>
-                                            <option value="1" {% if store.is_active == 1 %} selected {% endif %}>Активен</option>
-                                        </select>
+                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Заблокирован пользователем','0' : 'Временно не активен','1' : 'Активен'})|raw }}
                                     </p>
                                 </div>
                             </div>
-                            <p><span>Alias:</span> <br><textarea  name="alias" >{{store.alias}}</textarea></p>
+                            <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true})|raw }}</p>
                             <p><span>Краткое описание  (Информация о  ...):</span> <br> <textarea name="short_description" class="visual_editor">{{store.short_description}}</textarea></p>
                             <p>
                                 <span>Описание  (Информация о кэшбэк в ...):</span>
-                                <br> <textarea name="description" class="visual_editor">{{store.description}}</textarea>
+                                <br> {{ form.field(model, 'description').textarea({'maxlength':true})|raw }}</textarea>
                             </p>
-                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> <textarea name="conditions" class="visual_editor">{{store.conditions}}</textarea></p>
+                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true})|raw }}</p>
                             <input type="hidden" name="type" value="update_main_information">
-                            <button type="submit">Сохранить</button>
-                        </form>
+                            <div class="form-group">
+                                <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
+                            </div>
+                            {{ active_form_end() }}
 
                         <p class="title">Тарифы</p>
 
                         <div class="tarif_select_blk">
                             {% if tariffs|length > 0 %}
                                 {% for tariff in tariffs %}
-                                    {% include 'admin/store/tab_head_suf.html' %}
+                                    {% include 'store/tab_head_suf.html' %}
                                 {% endfor %}
                             {% endif %}
                             <ul class="tab_control ajax_save" uid="{{store.uid}}" save_url="/admin/stores/ajax_save/active_cpa">
                                 {% if tariffs|length > 0 %}
                                     {% for tariff in tariffs %}
-                                        {% include 'admin/store/tab_head_but.html' %}
+                                        {% include 'store/tab_head_but.html' %}
                                     {% endfor %}
                                 {% endif %}
                                 <li class="add_button">
@@ -79,7 +80,7 @@
                             <div class="content_tab">
                                 {% if tariffs|length > 0 %}
                                     {% for tariff in tariffs %}
-                                        {% include 'admin/store/tab_body.html' %}
+                                        {% include 'store/tab_body.html' %}
                                     {% endfor %}
                                 {% endif %}
                             </div>

@@ -47,7 +47,6 @@ class SdView extends View
     if (isset($arr['title'])) $this->title = $arr['title'];
     if (isset($arr['content'])) $this->contentBD = $arr['content'];
     if (isset($arr['h1'])) $this->h1 = $arr['h1'];
-
     return true;
   }
 

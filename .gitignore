@@ -42,7 +42,7 @@ phpunit.phar
 
 /common/config/db.php
 
-/frontend/web/images/logos
+/frontend/web/images/logo
 /frontend/web/images/account/avatars
 
 

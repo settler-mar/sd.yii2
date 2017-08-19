@@ -32,7 +32,7 @@ class CpaLink extends \yii\db\ActiveRecord
             [['cpa_id', 'stores_id', 'affiliate_id', 'affiliate_link'], 'required'],
             [['cpa_id', 'stores_id', 'affiliate_id'], 'integer'],
             [['affiliate_link'], 'string', 'max' => 255],
-            [['cpa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['cpa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
+            //[['cpa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['cpa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
         ];
     }
 
@@ -43,7 +43,7 @@ class CpaLink extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'cpa_id' => 'Spa ID',
+            'cpa_id' => 'Cpa ID',
             'stores_id' => 'Stores ID',
             'affiliate_id' => 'Affiliate ID',
             'affiliate_link' => 'Affiliate Link',
@@ -57,5 +57,10 @@ class CpaLink extends \yii\db\ActiveRecord
   public function getStore()
   {
     return Stores::findOne(['uid' => $this->stores_id]);
+  }
+
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'spa_id']);
   }
 }

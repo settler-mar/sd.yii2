@@ -6,9 +6,9 @@ use Yii;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
-
-
-
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
+use JBZoo\Image\Image;
 
 /**
  * This is the model class for table "cw_stores".
@@ -34,6 +34,10 @@ use frontend\modules\reviews\models\Reviews;
  */
 class Stores extends \yii\db\ActiveRecord
 {
+  public $string;
+  public $filename;
+  public $logoTmp;
+  public $logoImage;
 
   /**
    * @var string
@@ -73,6 +77,12 @@ class Stores extends \yii\db\ActiveRecord
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique'],
+      ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+      [['logoImage'], 'image',
+        'minHeight' => 500,
+        'maxSize' => 2 * 1024 * 1024,
+        'skipOnEmpty' => true
+      ],
     ];
   }
 
@@ -259,5 +269,68 @@ class Stores extends \yii\db\ActiveRecord
     $str = preg_replace('~[^-a-z0-9_]+~u', '-', $str);
     $str = trim($str, "-");
     return $str;
+  }
+  /**
+   * @param bool $insert
+   * @param array $changedAttributes
+   * Сохраняем изображения после сохранения
+   * данных пользователя
+   */
+  public function afterSave($insert, $changedAttributes)
+  {
+    $this->saveImage();
+  }
+
+  /**
+   * Сохранение изображения (аватара)
+   * пользвоателя
+   */
+  public function saveImage()
+  {
+    $photo = \yii\web\UploadedFile::getInstance($this, 'logoImage');
+    if ($photo) {
+      $path = $this->getStorePath();// Путь для сохранения
+      $oldImage = $this->logo;
+      $name = time(); // Название файла
+      $exch = explode('.', $photo->name);
+      $exch = $exch[count($exch) - 1];
+      $name .= '.' . $exch;
+      $this->logo = $path . $name;   // Путь файла и название
+      $bp=Yii::$app->getBasePath().'\web';
+      if (!file_exists($bp.$path)) {
+        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
+      }
+      $img = (new Image($photo->tempName));
+      $img
+        ->fitToWidth(500)
+        ->saveAs($bp.$this->logo);
+      if ($img) {
+        $this->removeImage($bp.$oldImage);   // удаляем старое изображение
+        $this::getDb()
+          ->createCommand()
+          ->update($this->tableName(), ['logo' => $this->logo], ['uid' => $this->uid])
+          ->execute();
+      }
+    }
+  }
+
+  /**
+   * Удаляем изображение при его наличии
+   */
+  public function removeImage($img)
+  {
+    if ($img) {
+      // Если файл существует
+      if (is_readable($img) && is_file($img)) {
+        // ddd($img);
+        unlink($img);
+      }
+    }
+  }
+
+  public function getStorePath()
+  {
+    $path = '/images/logo/';
+    return $path;
   }
 }
