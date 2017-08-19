@@ -40,6 +40,7 @@ class AdminController extends Controller
     {
         $searchModel = new StoresSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -177,14 +178,14 @@ class AdminController extends Controller
       }
       if($type=='cpa'){
         $m = new CpaLink();
-        $m->spa_id = (int)$post['code'];
+        $m->cpa_id = (int)$post['code'];
         $m->stores_id = (int)$post['parent'];
         if($m->save(false)){
           $cpa = Cpa::findOne((int)$post['code']);
           $data=array(
             'tariff'=>array(
               'id'=>$m->id,
-              'spa_id'=>$m->spa_id,
+              'cpa_id'=>$m->cpa_id,
               'stores_id'=>$m->stores_id,
               'name'=>$cpa->name,
             )
@@ -200,9 +201,12 @@ class AdminController extends Controller
       http_response_code(404);
       exit;
     }
-  public function actionAjaxSave($type,$post)
+  public function actionAjax_save($type=0)
   {
-    return true;
+
+    $post = Yii::$app->request->post();
+    //return implode(' + ',$post);
+    $type = $post['name'];
     if($type=='rate'){
       return $this->AjaxSaveRate($post);
     }
@@ -237,7 +241,145 @@ class AdminController extends Controller
         }
     }
 
+  public function AjaxSaveRate($post){
+    $sql="UPDATE `cw_tariffs_rates` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
+    \ORM::raw_execute($sql);
+    echo $sql;
+    http_response_code(200);
+    exit;
+  }
+  public function AjaxSaveCpa($post){
+    $sql="UPDATE `cw_cpa_link` SET `".$post['name']."` = '".$post['value']."' WHERE `id` = ".$post['id'];
+    \ORM::raw_execute($sql);
+    echo $sql;
+    http_response_code(200);
+    exit;
+  }
+  public function AjaxSaveAction($post){
+    $sql="UPDATE `cw_stores_actions` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
+    \ORM::raw_execute($sql);
+    echo $sql;
+    http_response_code(200);
+    exit;
+  }
+  public function AjaxSaveTariff($post){
+    $sql="UPDATE `cw_actions_tariffs` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
+    \ORM::raw_execute($sql);
+    echo $sql;
+    http_response_code(200);
+    exit;
+  }
 
+  public function AjaxSaveActiveCpa($post){
+    $store = Stores::findOne($post['id']);
+    $store->active_cpa = $post['value'];
+    return $store->save();
+  }
+
+  public function AjaxRemove($type,$post){
+    $todo=false;
+    $post['id']=array($post['id']);
+    if($type=='store'){
+      $todo=true;
+      $store_id=$post['id'];
+      $payment= \ORM::forTable("cw_payments")
+        ->tableAlias("cwp")
+        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
+        ->whereIn("cwsl.stores_id", $store_id)
+        ->findArray();
+      if(count($payment)>0){
+        http_response_code(404);
+        exit;
+      }
+      $cwsl = \ORM::forTable("cw_cpa_link")
+        ->select('id')
+        ->whereIn("stores_id", $store_id)
+        ->findArray();
+      if(count($cwsl)>0){
+        $type='cpa';
+        $post["id"]=[];
+        foreach ($cwsl as $item){
+          $post["id"][]=$item['id'];
+        }
+      }
+      $this->Delete($store_id[0]);
+    }
+    if($type=='cpa'){
+      $todo=true;
+      $cpa_id=$post['id'];
+      $payment= \ORM::forTable("cw_payments")
+        ->tableAlias("cwp")
+        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
+        ->whereIn("cwsl.id", $cpa_id)
+        ->findArray();
+      if(count($payment)>0){
+        http_response_code(404);
+        exit;
+      }
+      $cwsl = \ORM::forTable("cw_stores_actions")
+        ->select('uid')
+        ->whereIn("cpa_link_id", $cpa_id)
+        ->findArray();
+      if(count($cwsl)>0){
+        $type='action';
+        $post["id"]=[];
+        foreach ($cwsl as $item){
+          $post["id"][]=$item['uid'];
+        }
+      }
+      \ORM::forTable("cw_cpa_link")
+        ->whereIn("id", $cpa_id)
+        ->delete_many();
+    }
+    if($type=='action'){
+      $todo=true;
+      $action_id=$post['id'];
+      $tariffs = \ORM::forTable("cw_actions_tariffs")
+        ->select('uid')
+        ->whereIn("id_action", $action_id)
+        ->findArray();
+      if(count($tariffs)>0){
+        $type='tariff';
+        $post["id"]=[];
+        foreach ($tariffs as $item){
+          $post["id"][]=$item['uid'];
+        }
+      }
+      \ORM::forTable("cw_stores_actions")
+        ->whereIn("uid", $action_id)
+        ->delete_many();
+    }
+    if($type=='tariff'){
+      $todo=true;
+      $tariff_id=$post['id'];
+      $rates = \ORM::forTable("cw_tariffs_rates")
+        ->select('uid')
+        ->whereIn("id_tariff", $tariff_id)
+        ->findArray();
+      if(count($rates)>0){
+        $type='rate';
+        $post["id"]=[];
+        foreach ($rates as $item){
+          $post["id"][]=$item['uid'];
+        }
+      }
+      \ORM::forTable("cw_actions_tariffs")
+        ->whereIn("uid", $tariff_id)
+        ->delete_many();
+    }
+    if($type=='rate'){
+      $todo=true;
+      \ORM::forTable("cw_tariffs_rates")
+        ->whereIn("uid", $post["id"])
+        ->delete_many();
+    }
+    if($todo){
+      http_response_code(200);
+      exit;
+    }
+    http_response_code(404);
+    exit;
+  }
 
   function beforeAction($action)
   {

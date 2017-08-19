@@ -4004,12 +4004,15 @@ function closeCustomRoxy(img){
         };
 
         options.this.parent().addClass('ajaxInSaving');
-        $.post(options.url,post,function(){
+          console.log(options);
+        $.post(options.url,post,function(data){
+          console.log(data);
           var options=this;
           options.this.parent().removeClass('ajaxInSaving');
           options.this.parent().addClass('ajaxSavingOk');
           setTimeout(clearClass.bind(options),3000)
         }.bind(options)).fail(function(){
+          console.log(777);
           var options=this;
           options.this.parent().removeClass('ajaxInSaving');
           options.this.parent().addClass('ajaxSavingFailed');

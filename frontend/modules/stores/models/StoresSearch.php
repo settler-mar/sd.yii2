@@ -23,7 +23,13 @@ class StoresSearch extends Stores
         ];
     }
 
-    /**
+  public function beforeValidate() // необходимо переопределить Stores функцию
+  {
+    return true;
+  }
+
+
+  /**
      * @inheritdoc
      */
     public function scenarios()
@@ -83,7 +89,6 @@ class StoresSearch extends Stores
             ->andFilterWhere(['like', 'contact_name', $this->contact_name])
             ->andFilterWhere(['like', 'contact_phone', $this->contact_phone])
             ->andFilterWhere(['like', 'contact_email', $this->contact_email]);
-
         return $dataProvider;
     }
 }
