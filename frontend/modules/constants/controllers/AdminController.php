@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\constants\controllers;
+namespace frontend\modules\constants\controllers;
 
 use Yii;
-use app\modules\constants\models\Constants;
-use app\modules\constants\models\ConstantsSearch;
+use frontend\modules\constants\models\Constants;
+use frontend\modules\constants\models\ConstantsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

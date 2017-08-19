@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\stores\models;
+namespace frontend\modules\stores\models;
 
 use Yii;
-use app\modules\stores\models\CpaLink;
-use app\modules\stores\models\StoresActions;
+use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\StoresActions;
 
 /**
  * This is the model class for table "cw_cpa".
@@ -52,6 +52,6 @@ class Cpa extends \yii\db\ActiveRecord
 
     public function getActions()
     {
-      return $this->hasMany(StoresActions::className(), ['spa_link_id' => 'id']);
+      return $this->hasMany(StoresActions::className(), ['cpa_link_id' => 'id']);
     }
 }

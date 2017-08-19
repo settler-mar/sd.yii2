@@ -1,14 +1,14 @@
 <?php
 
-namespace app\modules\constants\models;
+namespace frontend\modules\constants\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\constants\models\Constants;
+use frontend\modules\constants\models\Constants;
 
 /**
- * ConstantsSearch represents the model behind the search form about `app\modules\constants\models\Constants`.
+ * ConstantsSearch represents the model behind the search form about `frontend\modules\constants\models\Constants`.
  */
 class ConstantsSearch extends Constants
 {

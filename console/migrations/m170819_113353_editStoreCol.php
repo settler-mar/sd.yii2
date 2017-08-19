@@ -13,6 +13,7 @@ class m170819_113353_editStoreCol extends Migration
       $this->alterColumn('cw_stores','visit',$this->integer()->null()->defaultValue(0));
 
       $this->renameColumn('cw_cpa_link','spa_id','cpa_id');
+      $this->renameColumn('cw_cpa_link','spa_link_id','cpa_link_id');
 
       $this->dropColumn('cw_users', 'salt');
     }

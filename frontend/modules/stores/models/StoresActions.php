@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\stores\models;
+namespace frontend\modules\stores\models;
 
 use Yii;
 
@@ -12,7 +12,7 @@ use Yii;
  * @property string $name
  * @property integer $hold_time
  * @property integer $type
- * @property integer $spa_link_id
+ * @property integer $cpa_link_id
  */
 class StoresActions extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,7 @@ class StoresActions extends \yii\db\ActiveRecord
     {
         return [
             [['action_id', 'name', 'hold_time'], 'required'],
-            [['action_id', 'hold_time', 'type', 'spa_link_id'], 'integer'],
+            [['action_id', 'hold_time', 'type', 'cpa_link_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -47,13 +47,13 @@ class StoresActions extends \yii\db\ActiveRecord
             'name' => 'Name',
             'hold_time' => 'Hold Time',
             'type' => 'Type',
-            'spa_link_id' => 'Spa Link ID',
+            'cpa_link_id' => 'Spa Link ID',
         ];
     }
 
   public function getCpa()
   {
-    return $this->hasOne(Cpa::className(), ['id' => 'spa_link_id']);
+    return $this->hasOne(Cpa::className(), ['id' => 'cpa_link_id']);
   }
 
   public function getTariffs()

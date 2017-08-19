@@ -2,7 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
-use app\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\CategoriesStores;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
@@ -11,9 +11,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\db\ActiveRecord;
-use app\modules\stores\models\StoresToCategories;
-use app\modules\stores\models\Cpa;
-use app\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\StoresToCategories;
+use frontend\modules\stores\models\Cpa;
+use frontend\modules\stores\models\CpaLink;
 
 /**
  * AdminController implements the CRUD actions for Stores model.
@@ -159,14 +159,14 @@ class AdminController extends Controller
       }
       if($type=='action'){
         $m = \ORM::for_table('cw_stores_actions')->create();
-        $m->spa_link_id = (int)$post['parent'];
+        $m->cpa_link_id = (int)$post['parent'];
         $m->name = "Новое событие";
         if($m->save()){
           $data=array(
             'action'=>array(
               'uid'=>$m->uid,
               'name'=>$m->name,
-              'spa_link_id'=>$m->spa_link_id,
+              'cpa_link_id'=>$m->cpa_link_id,
               'type'=>0,
             ),
             "action_types" => \Cwcashback\Settings::call()->getDictionary('action_type')

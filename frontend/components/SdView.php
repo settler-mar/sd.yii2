@@ -4,7 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\View;
 use yii\helpers\Url;
-use app\modules\meta\models\Meta;
+use frontend\modules\meta\models\Meta;
 use yii\twig\ViewRenderer;
 
 

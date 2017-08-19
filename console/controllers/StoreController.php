@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use frontend\modules\stores\models\StoresActions;
 use console\models\Admitad;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
@@ -142,7 +143,7 @@ class StoreController extends Controller
           $is_new_action = $is_new;
           //если магазин был в базе то проверяем есть у него данное событие
           if (!$is_new) {
-            $action_r = Acti;
+            $action_r = StoresActions::findOne(['cpa_i']);
             $action_r->execute([$cpa_id, $action->id]);
           }
 
