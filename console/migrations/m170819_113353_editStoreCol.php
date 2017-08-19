@@ -11,6 +11,10 @@ class m170819_113353_editStoreCol extends Migration
       $this->alterColumn('cw_stores','displayed_cashback',$this->string(30)->null());
       $this->alterColumn('cw_stores','conditions',$this->text()->null());
       $this->alterColumn('cw_stores','visit',$this->integer()->null()->defaultValue(0));
+
+      $this->renameColumn('cw_cpa_link','spa_id','cpa_id');
+
+      $this->dropColumn('cw_users', 'salt');
     }
 
     public function safeDown()

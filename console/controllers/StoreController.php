@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 use console\models\Admitad;
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
 use Yii;
@@ -27,19 +27,24 @@ class StoreController extends Controller
         $affiliate_id = $store['id'];
         $affiliate_list[]=$affiliate_id;
 
-        $db_store=SpaLink::findOne(['spa_id'=>1,'affiliate_id'=>$affiliate_id]);
+        $cpa_link=CpaLink::findOne(['cpa_id'=>1,'affiliate_id'=>$affiliate_id]);
 
         $logo = explode("/", $store['image']);
         $logo = 'cw_' . $logo[count($logo) - 1];
 
-        if($db_store){
+        $cpa_id=false;
+
+        if($cpa_link){
           //если CPA link нашли то проверяем ссылку и при необходимости обновляем ее
-          if($db_store->affiliate_link!=$store['gotolink']){
-            $db_store->affiliate_link=$store['gotolink'];
-            $db_store->save();
+          if($cpa_link->affiliate_link!=$store['gotolink']){
+            $cpa_link->affiliate_link=$store['gotolink'];
+            $cpa_link->save();
           }
+
+          $cpa_id=$cpa_link->id;
+
           //переходим от ссылки СПА на магазин
-          $db_store=$db_store->store;
+          $db_store=$cpa_link->store;
           if($db_store && $db_store->logo==$logo){
             $test_logo=true;
           }else {
@@ -104,6 +109,45 @@ class StoreController extends Controller
         }
 
         $store_id=$db_store->uid;
+
+        //если нет в базе CPA ЛИНК то создаем ее
+        if($cpa_id==false){
+          $cpa_link = new CpaLink();
+          $cpa_link->cpa_id = 1;
+          $cpa_link->stores_id = $store_id;
+          $cpa_link->affiliate_id = $affiliate_id;
+          $cpa_link->affiliate_link = $store['gotolink'];
+          if(!$cpa_link->save())continue;
+
+          $cpa_id=$cpa_link->id;
+          $is_new=true;
+        }else{
+          //проверяем свяль CPA линк и магазина
+          if($cpa_link->stores_id!=$store_id){
+            $cpa_link->stores_id=$store_id;
+            $cpa_link->save();
+          }
+          $is_new=false;
+        }
+
+        //если СPA не выбранна то выставляем текущую
+        if((int)$db_store->active_cpa==0) {
+          $db_store->active_cpa = $cpa_id;
+          $db_store->save();
+        }
+
+        $p_cback = [];
+        $v_cback = [];
+        foreach ($store['actions_detail'] AS $action) {
+          $is_new_action = $is_new;
+          //если магазин был в базе то проверяем есть у него данное событие
+          if (!$is_new) {
+            $action_r = Acti;
+            $action_r->execute([$cpa_id, $action->id]);
+          }
+
+          ddd($action);
+        }
         d($store);
         ddd($db_store);
       }

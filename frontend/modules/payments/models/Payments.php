@@ -2,7 +2,7 @@
 
 namespace frontend\modules\payments\models;
 
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use Yii;
 
@@ -22,7 +22,7 @@ use Yii;
  * @property string $action_date
  * @property string $status_updated
  * @property string $closing_date
- * @property integer $spa_id
+ * @property integer $cpa_id
  * @property integer $additional_id
  * @property integer $ref_bonus_id
  * @property double $ref_bonus
@@ -47,7 +47,7 @@ class Payments extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'spa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
+      [['is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
       [['action_id', 'affiliate_id', 'user_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required'],
       [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
       [['click_date', 'action_date', 'status_updated', 'closing_date'], 'safe'],
@@ -74,7 +74,7 @@ class Payments extends \yii\db\ActiveRecord
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
       'closing_date' => 'Closing Date',
-      'spa_id' => 'Spa ID',
+      'cpa_id' => 'Spa ID',
       'additional_id' => 'Additional ID',
       'ref_bonus_id' => 'Ref Bonus ID',
       'ref_bonus' => 'Ref Bonus',
@@ -92,7 +92,7 @@ class Payments extends \yii\db\ActiveRecord
    */
   public function getStore()
   {
-    $cpa=SpaLink::findOne(['spa_id'=>1,'affiliate_id'=>$this->affiliate_id]);
+    $cpa=CpaLink::findOne(['cpa_id'=>1,'affiliate_id'=>$this->affiliate_id]);
     return $cpa->store;
   }
 }

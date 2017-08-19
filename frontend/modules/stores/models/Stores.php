@@ -151,9 +151,9 @@ class Stores extends \yii\db\ActiveRecord
   /**
    * @return \yii\db\ActiveQuery
    */
-  public function getSpaLink()
+  public function getCpaLink()
   {
-    return $this->hasOne(SpaLink::className(), ['id' => 'active_cpa']);
+    return $this->hasOne(CpaLink::className(), ['id' => 'active_cpa']);
   }
 
   /**

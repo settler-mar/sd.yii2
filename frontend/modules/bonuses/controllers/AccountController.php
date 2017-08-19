@@ -4,7 +4,7 @@ namespace frontend\modules\bonuses\controllers;
 
 use yii;
 use frontend\modules\payments\models\Payments;
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
 
@@ -62,8 +62,8 @@ class AccountController extends \yii\web\Controller
                     ->select(['cwp.action_id as action_id', 'cwp.order_price as order_price', 'cwp.user_id as ref_id',
                         'cwp.order_id as order_id', 'cws.name as shop_name', 'cws.route as shop_route',
                         'cws.currency as shop_currency'])
-                    ->innerJoin(SpaLink::tableName() .
-                        ' cwl', 'cwp.affiliate_id = cwl.affiliate_id AND cwp.spa_id=cwl.spa_id')
+                    ->innerJoin(CpaLink::tableName() .
+                        ' cwl', 'cwp.affiliate_id = cwl.affiliate_id AND cwp.cpa_id=cwl.cpa_id')
                     ->innerJoin(Stores::tableName(). ' cws', "cwl.stores_id=cws.uid")
                     ->where(['cwp.uid' => $bonus['payment_id']])
                     ->asArray()

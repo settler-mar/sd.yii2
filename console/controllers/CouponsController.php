@@ -9,7 +9,7 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 
 class CouponsController extends Controller
 {
@@ -21,7 +21,7 @@ class CouponsController extends Controller
    */
   private function getStore($adm_id){
     if(!isset($this->stores[$adm_id])){
-      $store=SpaLink::findOne(['spa_id'=>1,'affiliate_id'=>$adm_id]);
+      $store=CpaLink::findOne(['cpa_id'=>1,'affiliate_id'=>$adm_id]);
       if($store){
         $this->stores[$adm_id]=$store->stores_id;
       }else{
