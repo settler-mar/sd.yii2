@@ -61,6 +61,6 @@ class CpaLink extends \yii\db\ActiveRecord
 
   public function getCpa()
   {
-    return $this->hasOne(Cpa::className(), ['id' => 'spa_id']);
+    return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
   }
 }

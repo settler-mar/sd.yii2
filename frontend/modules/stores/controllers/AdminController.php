@@ -40,6 +40,7 @@ class AdminController extends Controller
     {
         $searchModel = new StoresSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -177,14 +178,14 @@ class AdminController extends Controller
       }
       if($type=='cpa'){
         $m = new CpaLink();
-        $m->spa_id = (int)$post['code'];
+        $m->cpa_id = (int)$post['code'];
         $m->stores_id = (int)$post['parent'];
         if($m->save(false)){
           $cpa = Cpa::findOne((int)$post['code']);
           $data=array(
             'tariff'=>array(
               'id'=>$m->id,
-              'spa_id'=>$m->spa_id,
+              'cpa_id'=>$m->cpa_id,
               'stores_id'=>$m->stores_id,
               'name'=>$cpa->name,
             )
@@ -283,7 +284,7 @@ class AdminController extends Controller
       $store_id=$post['id'];
       $payment= \ORM::forTable("cw_payments")
         ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.spa_id = cwsl.spa_id','cwsl')
+        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
         ->whereIn("cwsl.stores_id", $store_id)
         ->findArray();
       if(count($payment)>0){
@@ -308,7 +309,7 @@ class AdminController extends Controller
       $cpa_id=$post['id'];
       $payment= \ORM::forTable("cw_payments")
         ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.spa_id = cwsl.spa_id','cwsl')
+        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
         ->whereIn("cwsl.id", $cpa_id)
         ->findArray();
       if(count($payment)>0){
@@ -317,7 +318,7 @@ class AdminController extends Controller
       }
       $cwsl = \ORM::forTable("cw_stores_actions")
         ->select('uid')
-        ->whereIn("spa_link_id", $cpa_id)
+        ->whereIn("cpa_link_id", $cpa_id)
         ->findArray();
       if(count($cwsl)>0){
         $type='action';
