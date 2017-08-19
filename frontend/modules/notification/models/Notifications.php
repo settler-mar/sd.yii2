@@ -75,4 +75,16 @@ class Notifications extends \yii\db\ActiveRecord
 
     return true;
   }
+
+    /**
+     * отметить оповещения с uid из массива $ids для пользователя как прочитанные
+     * @param $userId
+     * @param $ids array uid
+     */
+    public static function doRead($userId, $ids)
+    {
+        $where = ['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0, 'uid' => $ids];
+
+        self::updateAll(['is_viewed' => 1], $where);
+    }
 }

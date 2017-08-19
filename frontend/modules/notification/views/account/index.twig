@@ -1,0 +1,39 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}}  <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="notification account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Уведомления</h3>
+                <p>
+                    На данной странице будут отображаться все уведомления, которые так или иначе связаны с Вашим аккаунтом и сайтом в целом.
+                </p>
+            </div>
+            {% if notifications|length > 0 %}
+            <div class="col-md-12">
+                {% for notification in notifications %}
+                <div class="current-notification cashback news_{{notification.name}}">
+                    <div class="date">{{_date(notification.added)}}</div>
+                    <h5>{{notification.title}}</h5>
+                    <p>{{notification.text|raw}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <div class="not-found">На данный момент никаких уведомлений нет.</div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% include '/parts/pagination.twig' %}
+</div>

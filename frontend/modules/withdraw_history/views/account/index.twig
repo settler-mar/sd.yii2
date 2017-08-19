@@ -1,0 +1,61 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>История запросов на вывод денег</h3>
+            </div>
+            {% if withdraw|length > 0 %}
+            <div class="col-md-12">
+                <table class="table table-wh">
+                    <thead>
+                        <tr>
+                            <th>Дата запроса</th>
+                            <th>Способ</th>
+                            <th>Счёт/Номер/Email</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for w in withdraw %}
+                        <tr>
+                            <td>{{_date(w.request_date)}}</td>
+                            <td>{{w.name}}</td>
+                            <td>{{w.bill}}</td>
+                            <td class="cashback {{w.status}}">{{w.amount}} <span class="fa fa-rub"></span></td>
+                            <td class="status {{w.status}}">
+                            {% if w.status == 1 %}
+                            <span class="fa fa-clock-o"></span> В ожидании
+                            {% endif %}
+                            {% if w.status == 2 %}
+                            <span class="fa fa-check"></span> Подтверждён
+                            {% endif %}         
+                            {% if w.status == 0 %}
+                            <span class="fa fa-times"></span> Отклонён
+                            {% endif %}     
+                            </td>
+                        </tr>                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <div class="not-found">На данный момент Вы ни разу не делали запрос на вывод денежных средств.</div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% include '/parts/pagination.twig' %}
+</div>
