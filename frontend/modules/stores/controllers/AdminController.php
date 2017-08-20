@@ -347,28 +347,28 @@ class AdminController extends Controller
     if($type=='action'){
       $todo=true;
       $action_id=$post['id'];
-      $tariffs = \ORM::forTable("cw_actions_tariffs")
+      $actionsTariffs = ActionsTariffs::find()
         ->select('uid')
-        ->whereIn("id_action", $action_id)
-        ->findArray();
-      if(count($tariffs)>0){
+        ->where(['id_action' => $action_id])
+        ->asArray()
+        ->all();
+      if(count($actionsTariffs)>0){
         $type='tariff';
         $post["id"]=[];
-        foreach ($tariffs as $item){
+        foreach ($actionsTariffs as $item){
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_stores_actions")
-        ->whereIn("uid", $action_id)
-        ->delete_many();
+      StoresActions::deleteAll(['uid' => $action_id]);
     }
     if($type=='tariff'){
       $todo=true;
       $tariff_id=$post['id'];
-      $rates = \ORM::forTable("cw_tariffs_rates")
+      $rates = TariffsRates::find()
         ->select('uid')
-        ->whereIn("id_tariff", $tariff_id)
-        ->findArray();
+        ->where(['id_tariff' => $tariff_id])
+        ->asArray()
+        ->all();
       if(count($rates)>0){
         $type='rate';
         $post["id"]=[];
@@ -376,15 +376,11 @@ class AdminController extends Controller
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_actions_tariffs")
-        ->whereIn("uid", $tariff_id)
-        ->delete_many();
+      ActionsTariffs::deleteAll(['uid' => $tariff_id]);
     }
     if($type=='rate'){
       $todo=true;
-      \ORM::forTable("cw_tariffs_rates")
-        ->whereIn("uid", $post["id"])
-        ->delete_many();
+      TariffsRates::deleteAll(['uid' => $post["id"]]);
     }
     if($todo){
       http_response_code(200);
