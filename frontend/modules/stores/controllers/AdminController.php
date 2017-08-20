@@ -3,6 +3,7 @@
 namespace frontend\modules\stores\controllers;
 
 use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\StoresActions;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
@@ -159,18 +160,20 @@ class AdminController extends Controller
         }
       }
       if($type=='action'){
-        $m = \ORM::for_table('cw_stores_actions')->create();
-        $m->cpa_link_id = (int)$post['parent'];
-        $m->name = "Новое событие";
-        if($m->save()){
+        $storeAction = new StoresActions();
+        $storeAction->cpa_link_id = (int)$post['parent'];
+        $storeAction->name = "Новое событие";
+        $storeAction->action_id = 0;
+        $storeAction->hold_time = 0;
+        if($storeAction->save()){
           $data=array(
             'action'=>array(
-              'uid'=>$m->uid,
-              'name'=>$m->name,
-              'cpa_link_id'=>$m->cpa_link_id,
+              'uid'=>$storeAction->uid,
+              'name'=>$storeAction->name,
+              'cpa_link_id'=>$storeAction->cpa_link_id,
               'type'=>0,
             ),
-            "action_types" => \Cwcashback\Settings::call()->getDictionary('action_type')
+            "action_types" => Yii::$app->params['dictionary']['action_type']
           );
           echo $twig->render('actions.html', $data);
           exit;
