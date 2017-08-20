@@ -137,6 +137,9 @@ $config= [
     'funds' => [
       'class' => 'frontend\modules\funds\Module',
     ],
+    'support' => [
+      'class' => 'frontend\modules\support\Module',
+    ],
   ],
   'params' => $params,
 ];
