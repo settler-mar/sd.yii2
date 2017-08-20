@@ -21,7 +21,7 @@ class Admitad{
         $this->config['clientSecret'],
         $scope
       )->getArrayResult();
-
+      //ddd($this->authorizeData);
       return new Api($this->authorizeData ['access_token']);
     });
 
@@ -46,9 +46,16 @@ class Admitad{
     return $data;
   }
 
-  public function getPayments($options=array()){ // не работает
+  public function getPayments($options=array()){
     $this->init('statistics');
     $data=$this->admitad->get("/statistics/actions/", $options)->getArrayResult();
+    return $data;
+  }
+
+  public function getStore($options=array()){ // не работает
+    $this->init('advcampaigns_for_website');
+    $websiteId=$this->config['websiteId'];
+    $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
   }
 }

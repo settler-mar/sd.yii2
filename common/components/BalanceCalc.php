@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use frontend\modules\users\models\Users;
 use yii;
 use yii\base\Component;
 
@@ -12,7 +13,6 @@ use yii\base\Component;
 class BalanceCalc extends Component
 {
   public function todo($userList=false,$type=false){
-    $connection = Yii::$app->getDb();
 
     if(!is_array($userList) && $userList!=false){
       $userList=explode(',',$userList);
@@ -84,7 +84,7 @@ class BalanceCalc extends Component
     if($userList!=false){
       $sql.=' WHERE u1.uid in ('.implode(',',$userList).')';
     }
-    $connection->createCommand($sql)->execute();
+    Yii::$app->db->createCommand($sql)->execute();
     //d($sql);
     if($type==false || in_array('cash',$type)){
       $sql="UPDATE cw_users u1
@@ -102,9 +102,16 @@ class BalanceCalc extends Component
               u1.sum_from_ref_confirmed=u2.sum_from_ref_confirmed
         ";
       if($userList!=false){
-        $sql.=' WHERE uid in (SELECT `referrer_id` FROM cw_users WHERE `uid` in ('.implode(',',$userList).'))';
+        $ref=Users::find()->where(['uid'=>$userList])->select(['referrer_id'])->asArray()->all();
+        $ref_id=[];
+        foreach($ref as $user){
+          if($user['referrer_id']>0){
+            $ref_id[]=  $user['referrer_id'];
+          }
+        };
+        $sql.=' WHERE uid in ('.implode(',',$ref_id).')';
       }
-      $connection->createCommand($sql)->execute();
+      Yii::$app->db->createCommand($sql)->execute();
       //d($sql);
     }
   }

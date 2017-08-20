@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\meta\models;
+namespace frontend\modules\meta\models;
 
 use Yii;
 

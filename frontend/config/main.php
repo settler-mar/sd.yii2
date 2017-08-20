@@ -105,7 +105,7 @@ $config= [
       ]
     ],
     'constants' => [
-      'class' => 'app\modules\constants\Module',
+      'class' => 'frontend\modules\constants\Module',
     ],
     'coupons' => [
       'class' => 'frontend\modules\coupons\Module',

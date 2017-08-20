@@ -5,7 +5,7 @@ namespace frontend\modules\payments\controllers;
 use yii;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\components\Pagination;
 
 
@@ -48,8 +48,8 @@ class AccountController extends \yii\web\Controller
         $dataBase = Payments::find()
             ->from(Payments::tableName().' cwp')
             ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active'])
-            ->innerJoin(SpaLink::tableName().
-                ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.spa_id = cwsl.spa_id')
+            ->innerJoin(CpaLink::tableName().
+                ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id')
             ->innerJoin(Stores::tableName(). ' cws', "cwsl.stores_id = cws.uid")
             ->where(['cwp.user_id' => \Yii::$app->user->id])
             ->orderBy('cwp.action_id DESC');

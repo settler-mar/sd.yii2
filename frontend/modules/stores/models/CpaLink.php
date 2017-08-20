@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "cw_cpa_link".
  *
  * @property integer $id
- * @property integer $spa_id
+ * @property integer $cpa_id
  * @property integer $stores_id
  * @property integer $affiliate_id
  * @property string $affiliate_link
  */
-class SpaLink extends \yii\db\ActiveRecord
+class CpaLink extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -29,10 +29,10 @@ class SpaLink extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['spa_id', 'stores_id', 'affiliate_id', 'affiliate_link'], 'required'],
-            [['spa_id', 'stores_id', 'affiliate_id'], 'integer'],
+            [['cpa_id', 'stores_id', 'affiliate_id', 'affiliate_link'], 'required'],
+            [['cpa_id', 'stores_id', 'affiliate_id'], 'integer'],
             [['affiliate_link'], 'string', 'max' => 255],
-            [['spa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['spa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
+            //[['cpa_id', 'stores_id', 'affiliate_id'], 'unique', 'targetAttribute' => ['cpa_id', 'stores_id', 'affiliate_id'], 'message' => 'The combination of Spa ID, Stores ID and Affiliate ID has already been taken.'],
         ];
     }
 
@@ -43,7 +43,7 @@ class SpaLink extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'spa_id' => 'Spa ID',
+            'cpa_id' => 'Cpa ID',
             'stores_id' => 'Stores ID',
             'affiliate_id' => 'Affiliate ID',
             'affiliate_link' => 'Affiliate Link',
@@ -57,5 +57,10 @@ class SpaLink extends \yii\db\ActiveRecord
   public function getStore()
   {
     return Stores::findOne(['uid' => $this->stores_id]);
+  }
+
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'spa_id']);
   }
 }

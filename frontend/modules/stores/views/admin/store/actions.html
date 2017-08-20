@@ -1,0 +1,39 @@
+<div class="to_remove">
+  <input type="checkbox" id="action_{{action.uid}}" class="acordion_ch">
+  <label for="action_{{action.uid}}">
+    {{action.name}} ({{action.tariffs | length}})
+  </label>
+  <span class="ajax_remove" uid="{{action.uid}}" url="/admin/stores/ajax_remove/action">Удалить</span>
+
+  <div class="acordion_content">
+    <div class="edit_wrapper ajax_save" uid="{{action.uid}}" save_url="/admin/stores/ajax_save/action">
+      <div class="edit_blk">
+        <p><span>Action ID:</span> <br><input type="text" name="action_id" value="{{action.action_id}}"></p>
+        <p><span>Action name:</span> <br><input type="text" name="name" value="{{action.name}}"></p>
+      </div>
+      <div class="edit_blk">
+        <p><span>Hold time:</span> <br><input type="text" name="hold_time" value="{{action.hold_time}}"></p>
+        <p><span>Type:</span> <br>
+
+          <select name="type" id="">
+            {% for key,action_type in action_types %}
+            <option value="{{key}}" {% if key==action.type %}selected{% endif %}>{{action_type}}</option>
+            {% endfor %}
+          </select>
+
+        </p>
+      </div>
+    </div>
+
+
+    <h4>
+      Тарифы
+      <span class="add_button add_shop_element" mode="tariff" parent="{{action.uid}}">Добавить тариф</span>
+    </h4>
+    {% if action.tariffs|length > 0 %}
+      {% for tariff in action.tariffs %}
+        {% include 'store/tariffs.html' %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

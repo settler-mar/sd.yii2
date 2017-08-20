@@ -5,7 +5,7 @@ namespace console\controllers;
 use console\models\Admitad;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
-use frontend\modules\stores\models\SpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\users\models\Users;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -24,7 +24,7 @@ class PaymentsController extends Controller
   private function getStore($adm_id)
   {
     if (!isset($this->stores[$adm_id])) {
-      $store = SpaLink::findOne(['spa_id' => 1, 'affiliate_id' => $adm_id]);
+      $store = CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $adm_id]);
       if ($store) {
         $this->stores[$adm_id] = $store->getStore(1);
       } else {
@@ -170,7 +170,7 @@ class PaymentsController extends Controller
                 ]
               )
               ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-              ->setTo($this->email)
+              ->setTo($user->email)
               ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
               ->send();
           }
@@ -230,10 +230,6 @@ class PaymentsController extends Controller
 
           if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
-          }
-
-          if ($user->referrer_id > 0 && !in_array($user->referrer_id, $users)) {
-            $users[] = $user->referrer_id;
           }
         }
       }
