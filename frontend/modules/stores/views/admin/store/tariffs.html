@@ -3,7 +3,7 @@
   <label for="tariff_{{tariff.uid}}">
     {{tariff.name}} ({{tariff.rates | length}})
   </label>
-  <span class="ajax_remove" uid="{{tariff.uid}}" url="/admin/stores/ajax_remove/tariff">Удалить</span>
+  <span class="ajax_remove" uid="{{tariff.uid}}" mode="tariff" url="/admin/stores/ajax_remove/tariff">Удалить</span>
   <div class="acordion_content">
 
     <div class="edit_wrapper ajax_save" uid="{{tariff.uid}}" save_url="/admin/stores/ajax_save/tariff">

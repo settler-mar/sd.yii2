@@ -287,7 +287,9 @@ class AdminController extends Controller
     return $store->save();
   }
 
-  public function AjaxRemove($type,$post){
+  public function actionAjax_remove(){
+    $post = Yii::$app->request->post();
+    $type = $post['type'];
     $todo=false;
     $post['id']=array($post['id']);
     if($type=='store'){

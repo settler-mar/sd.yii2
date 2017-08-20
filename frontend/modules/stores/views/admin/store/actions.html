@@ -3,7 +3,7 @@
   <label for="action_{{action.uid}}">
     {{action.name}} ({{action.tariffs | length}})
   </label>
-  <span class="ajax_remove" uid="{{action.uid}}" url="/admin/stores/ajax_remove/action">Удалить</span>
+  <span class="ajax_remove" uid="{{action.uid}}" mode="action" url="/admin/stores/ajax_remove/action">Удалить</span>
 
   <div class="acordion_content">
     <div class="edit_wrapper ajax_save" uid="{{action.uid}}" save_url="/admin/stores/ajax_save/action">

@@ -8,6 +8,6 @@
   <td class="check_input"><input type="checkbox" value=1 name="is_percentage" {% if rate.is_percentage == 1 %}checked{% endif %}></td>
   <td class="check_input"><input type="checkbox" value=1 name="auto_update" {% if rate.auto_update == 1 %}checked{% endif %}></td>
   <td>
-    <span class="ajax_remove" uid="{{rate.uid}}" url="/admin/stores/ajax_remove/rate">Удалить</span>
+    <span class="ajax_remove" uid="{{rate.uid}}" mode="rate" url="/admin/stores/ajax_remove/rate">Удалить</span>
   </td>
 </tr>

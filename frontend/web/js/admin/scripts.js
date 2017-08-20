@@ -4012,7 +4012,6 @@ function closeCustomRoxy(img){
           options.this.parent().addClass('ajaxSavingOk');
           setTimeout(clearClass.bind(options),3000)
         }.bind(options)).fail(function(){
-          console.log(777);
           var options=this;
           options.this.parent().removeClass('ajaxInSaving');
           options.this.parent().addClass('ajaxSavingFailed');
@@ -4036,8 +4035,10 @@ $(function() {
   function onRemove(){
     $this=$(this);
     post={
-      id:$this.attr('uid')
+      id:$this.attr('uid'),
+      type:$this.attr('mode')
     };
+    console.log(post);
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
         alert("Невозможно удалить элемент");
