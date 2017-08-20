@@ -2,8 +2,10 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\stores\models\ActionsTariffs;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\StoresActions;
+use frontend\modules\stores\models\TariffsRates;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
@@ -128,13 +130,18 @@ class AdminController extends Controller
       ));
 
       if($type=='rate'){
-        $m = \ORM::for_table('cw_tariffs_rates')->create();
-        $m->id_tariff = (int)$post['parent'];
-        if($m->save()){
+        $tariffRate = new TariffsRates();
+        $tariffRate->id_tariff = (int)$post['parent'];
+        $tariffRate->id_rate = 0;
+        $tariffRate->price_s = 0;
+        $tariffRate->size = 0;
+        $tariffRate->our_size = 0;
+        $tariffRate->is_percentage = 0;
+        if($tariffRate->save()){
           $data=array(
             'rate'=>array(
-              'uid'=>$m->uid,
-              'id_tariff'=>$m->id_tariff,
+              'uid'=>$tariffRate->uid,
+              'id_tariff'=>$tariffRate->id_tariff,
               'id_rate'=>'',
               'date_s'=>'0000-00-00',
             )
@@ -144,15 +151,16 @@ class AdminController extends Controller
         }
       }
       if($type=='tariff'){
-        $m = \ORM::for_table('cw_actions_tariffs')->create();
-        $m->id_action = (int)$post['parent'];
-        $m->name = "Новый тариф";
-        if($m->save()){
+        $actionTariffs = new ActionsTariffs();
+        $actionTariffs->id_action = (int)$post['parent'];
+        $actionTariffs->name = "Новый тариф";
+        $actionTariffs->id_tariff = 0;
+        if($actionTariffs->save()){
           $data=array(
             'tariff'=>array(
-              'uid'=>$m->uid,
-              'name'=>$m->name,
-              'id_action'=>$m->id_action,
+              'uid'=>$actionTariffs->uid,
+              'name'=>$actionTariffs->name,
+              'id_action'=>$actionTariffs->id_action,
             )
           );
           echo $twig->render('tariffs.html', $data);
