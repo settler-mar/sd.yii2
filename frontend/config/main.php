@@ -143,6 +143,9 @@ $config= [
     'support' => [
       'class' => 'frontend\modules\support\Module',
     ],
+    'favorites' => [
+      'class' => 'frontend\modules\favorites\Module',
+    ],
   ],
   'params' => $params,
 ];
