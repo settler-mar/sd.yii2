@@ -8,14 +8,14 @@
   <div class="acordion_content">
     <div class="edit_wrapper ajax_save" uid="{{action.uid}}" save_url="/admin/stores/ajax_save/action">
       <div class="edit_blk">
-        <p><span>Action ID:</span> <br><input type="text" name="action_id" value="{{action.action_id}}"></p>
-        <p><span>Action name:</span> <br><input type="text" name="name" value="{{action.name}}"></p>
+        <p><span>Action ID:</span> <br><input type="text" mode="action" name="action_id" value="{{action.action_id}}"></p>
+        <p><span>Action name:</span> <br><input type="text" mode="action" name="name" value="{{action.name}}"></p>
       </div>
       <div class="edit_blk">
-        <p><span>Hold time:</span> <br><input type="text" name="hold_time" value="{{action.hold_time}}"></p>
+        <p><span>Hold time:</span> <br><input type="text" mode="action" name="hold_time" value="{{action.hold_time}}"></p>
         <p><span>Type:</span> <br>
 
-          <select name="type" id="">
+          <select name="type" mode="action" id="">
             {% for key,action_type in action_types %}
             <option value="{{key}}" {% if key==action.type %}selected{% endif %}>{{action_type}}</option>
             {% endfor %}

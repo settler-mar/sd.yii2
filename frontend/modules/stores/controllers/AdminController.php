@@ -87,13 +87,13 @@ class AdminController extends Controller
             },
           ])
           ->joinWith('storesActions')->all();*/
-       $tariffs = Cpa::find() -> with([
-         'cpaLink' => function($query)use($model){
-          $query->andWhere(['stores_id' => $model->uid]);
-         },
-         'actions.tariffs.rates'])
+       $tariffs = CpaLink::find() ->where(['stores_id' => $model->uid])-> with([
+         'cpa',
+         'storeActions.tariffs.rates'])
          ->all();
-
+      foreach ($tariffs as $q=>$y)
+       d($y->storeActions);
+     // ddd(22);
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
@@ -217,8 +217,7 @@ class AdminController extends Controller
   {
 
     $post = Yii::$app->request->post();
-    //return implode(' + ',$post);
-    $type = $post['name'];
+    $type = $post['type'];
     if($type=='rate'){
       return $this->AjaxSaveRate($post);
     }
@@ -254,30 +253,30 @@ class AdminController extends Controller
     }
 
   public function AjaxSaveRate($post){
-    $sql="UPDATE `cw_tariffs_rates` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = TariffsRates::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveCpa($post){
-    $sql="UPDATE `cw_cpa_link` SET `".$post['name']."` = '".$post['value']."' WHERE `id` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = CpaLink::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveAction($post){
-    $sql="UPDATE `cw_stores_actions` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = StoresActions::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveTariff($post){
-    $sql="UPDATE `cw_actions_tariffs` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = ActionsTariffs::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
@@ -285,14 +284,14 @@ class AdminController extends Controller
   public function AjaxSaveActiveCpa($post){
     $store = Stores::findOne($post['id']);
     $store->active_cpa = $post['value'];
-    return $store->save();
+    return $store->save(false);
   }
 
   public function actionAjax_remove(){
     $post = Yii::$app->request->post();
     $type = $post['type'];
     $todo=false;
-    $post['id']=array($post['id']);
+    //$post['id']=array($post['id']);
     if($type=='store'){
       $todo=true;
       $store_id=$post['id'];
@@ -325,10 +324,7 @@ class AdminController extends Controller
       $todo=true;
       $cpa_id=$post['id'];
       $payment= Payments::find()
-        ->with([
-        'cpaLink' => function($query)use($cpa_id){
-          $query->andWhere(['id' => $cpa_id]);
-        }])
+        ->where(['spa_id'=> $cpa_id])
         ->asArray()
         ->all();
       if(count($payment)>0){
@@ -347,7 +343,9 @@ class AdminController extends Controller
           $post["id"][]=$item['uid'];
         }
       }
+      $tmp = count(CpaLink::find()->all());
       CpaLink::deleteAll(['id' => $cpa_id]);
+      return $tmp.' '.count(CpaLink::find()->all()).' '.$cpa_id;
     }
     if($type=='action'){
       $todo=true;

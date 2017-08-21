@@ -7,10 +7,10 @@
   </h4>
   <div class="edit_wrapper ajax_save" uid="{{tariff.id}}" save_url="/admin/stores/ajax_save/cpa">
     <div class="edit_blk">
-      <p><span>Affiliate ID:</span> <br><input type="text" name="affiliate_id" value="{{tariff.cpaLink.affiliate_id}}"></p>
+      <p><span>Affiliate ID:</span> <br><input type="text" mode="cpa" name="affiliate_id" value="{{tariff.affiliate_id}}"></p>
     </div>
     <div class="edit_blk">
-      <p><span>Affiliate LINK:</span> <br><input type="text" name="affiliate_link" value="{{tariff.cpaLink.affiliate_link}}"></p>
+      <p><span>Affiliate LINK:</span> <br><input type="text" mode="cpa" name="affiliate_link" value="{{tariff.affiliate_link}}"></p>
     </div>
   </div>
 
@@ -18,7 +18,7 @@
     События
     <span class="add_button add_shop_element" mode="action" parent="{{tariff.id}}">Добавить событие</span>
   </h4>
-  {% for action in tariff.actions %}
+  {% for action in tariff.storeActions %}
     {% include 'store/actions.html' %}
   {% endfor %}
 </div>

@@ -1,12 +1,12 @@
 <tr uid="{{rate.uid}}" class="ajax_save to_remove" save_url="/admin/stores/ajax_save/rate">
-  <td><input value="{{rate.id_rate}}" name="id_rate"></td>
-  <td><input value="{{rate.additional_id}}" name="additional_id"></td>
-  <td><input value="{{rate.price_s}}" name="price_s"></td>
-  <td><input value="{{rate.size}}" name="size"></td>
-  <td><input value="{{rate.our_size}}" name="our_size"></td>
-  <td><input value="{{rate.date_s}}" name="date_s"></td>
-  <td class="check_input"><input type="checkbox" value=1 name="is_percentage" {% if rate.is_percentage == 1 %}checked{% endif %}></td>
-  <td class="check_input"><input type="checkbox" value=1 name="auto_update" {% if rate.auto_update == 1 %}checked{% endif %}></td>
+  <td><input value="{{rate.id_rate}}" mode="rate" name="id_rate"></td>
+  <td><input value="{{rate.additional_id}}" mode="rate" name="additional_id"></td>
+  <td><input value="{{rate.price_s}}" mode="rate" name="price_s"></td>
+  <td><input value="{{rate.size}}" mode="rate" name="size"></td>
+  <td><input value="{{rate.our_size}}" mode="rate" name="our_size"></td>
+  <td><input value="{{rate.date_s}}" mode="rate" name="date_s"></td>
+  <td class="check_input"><input mode="rate" type="checkbox" value=1 name="is_percentage" {% if rate.is_percentage == 1 %}checked{% endif %}></td>
+  <td class="check_input"><input mode="rate" type="checkbox" value=1 name="auto_update" {% if rate.auto_update == 1 %}checked{% endif %}></td>
   <td>
     <span class="ajax_remove" uid="{{rate.uid}}" mode="rate" url="/admin/stores/ajax_remove/rate">Удалить</span>
   </td>
