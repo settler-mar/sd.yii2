@@ -82,8 +82,6 @@ class PaymentsController extends Controller
 
     $payments = $admitad->getPayments($params);
     while ($payments) {
-      d($params);
-      ddd($payments);
       foreach ($payments['results'] as $payment) {
         if (!$payment['subid']) {
           continue;

@@ -33,7 +33,9 @@
                             <td>{{_date(w.request_date)}}</td>
                             <td>{{w.name}}</td>
                             <td>{{w.bill}}</td>
-                            <td class="cashback {{w.status}}">{{w.amount}} <span class="fa fa-rub"></span></td>
+                            <td class="cashback {{w.status}}">
+                                {{ _nf(w.amount) }} <span class="fa fa-rub"></span>
+                            </td>
                             <td class="status {{w.status}}">
                             {% if w.status == 1 %}
                             <span class="fa fa-clock-o"></span> В ожидании

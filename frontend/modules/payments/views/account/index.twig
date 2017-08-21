@@ -47,18 +47,20 @@
                             {% endif %}
                             </td>
                             <td>{{ _date(payment.action_date)}}</td>
-                            <td class="cashback status_{{payment.status}}">{{payment.cashback}} <span class="fa fa-rub"></span></td>
+                            <td class="cashback status_{{payment.status}}">
+                                {{ _nf(payment.cashback) }} <span class="fa fa-rub"></span>
+                            </td>
                             <td class="status status_{{payment.status}}">
-                            {% if payment.status == '0' %}
-                            <span class="fa fa-clock-o"></span>
-                            {% endif %}
-                            {% if payment.status == '2' %}
-                            <span class="fa fa-check"></span>
-                            {% endif %}         
-                            {% if payment.status == '1' %}
-                            <span class="fa fa-times"></span>
-                            {% endif %}
-                                {{payment.status_title}}
+                                {% if payment.status == '0' %}
+                                <span class="fa fa-clock-o"></span>
+                                {% endif %}
+                                {% if payment.status == '2' %}
+                                <span class="fa fa-check"></span>
+                                {% endif %}
+                                {% if payment.status == '1' %}
+                                <span class="fa fa-times"></span>
+                                {% endif %}
+                                    {{payment.status_title}}
                             </td>
                         </tr>
                         {% endfor %}

@@ -7,16 +7,12 @@ class m170821_073925_editTask extends Migration
   public function safeUp()
   {
     $this->alterColumn('cw_task', 'param', $this->integer()->null()->defaultValue(0));
-    $this->alterColumn('cw_task', 'user_id', $this->integer()->null()->defaultValue(0));
-    $this->alterColumn('cw_task', 'shop_id', $this->integer()->null()->defaultValue(0));
   }
 
   public function safeDown()
   {
     echo "m170821_073925_editTask cannot be reverted.\n";
     $this->alterColumn('cw_task', 'param', $this->integer()->notNull()->defaultValue(0));
-    $this->alterColumn('cw_task', 'user_id', $this->integer()->notNull()->defaultValue(0));
-    $this->alterColumn('cw_task', 'shop_id', $this->integer()->notNull()->defaultValue(0));
     return false;
   }
 

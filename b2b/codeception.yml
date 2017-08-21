@@ -1,4 +1,4 @@
-namespace: backend\tests
+namespace: b2b\tests
 actor: Tester
 paths:
     tests: tests

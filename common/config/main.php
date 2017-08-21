@@ -101,6 +101,9 @@ $config = [
     'balanceCalc' => [
         'class' => 'common\components\BalanceCalc',
      ],
+    'messageParcer' => [
+        'class' => 'common\components\MessageParser',
+     ],
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[
