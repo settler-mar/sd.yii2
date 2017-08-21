@@ -63,6 +63,7 @@ $config= [
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/index',
         'account/settings' => 'users/account/settings',
+
         'admin' => 'site/admin',
         'faq' => 'site/faq',
         'howitworks' => 'site/howitworks',
@@ -73,6 +74,8 @@ $config= [
         'recommendations' => 'site/recommendations',
         'about' => 'site/about',
         'account-blocked' => 'site/accountblocked',
+
+        'fixing/<action:payment|stores>'=> 'fixing/<action>',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
