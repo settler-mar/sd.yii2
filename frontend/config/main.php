@@ -143,6 +143,12 @@ $config= [
     'support' => [
       'class' => 'frontend\modules\support\Module',
     ],
+    'favorites' => [
+      'class' => 'frontend\modules\favorites\Module',
+    ],
+    'affiliate' => [
+      'class' => 'frontend\modules\affiliate\Module',
+    ],
   ],
   'params' => $params,
 ];

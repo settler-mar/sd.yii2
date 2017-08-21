@@ -1,0 +1,90 @@
+<div class="content-wrapper">
+  <section class="account-home">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="balance">
+          <div>Друзей: <b>{{number_referrals}}</b></div>
+          <div class="confirm">Доход от друзей: <span>{{_nf(pending_payments_referrals)}} <span class="fa fa-rub"></span></span></div>
+          <div class="pending">Ожидаемый доход: <span>{{_nf(confirmed_payments_referrals)}} <span class="fa fa-rub"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="affiliate account-padding">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="text-center">
+          {% if h1 %}
+            {{ h1 | raw}}
+          {% else %}
+            Принцип работы партнёрской программы
+          {% endif %}
+        </h3>
+      </div>
+      {% include 'parts/principle-affiliate.twig' %}
+      <div class="col-md-12 ways-to-invite">
+        <h3 class="text-center">А пригласить можно так</h3>
+      </div>
+      <div class="col-md-4 ways-invitation">
+        <div class="intro-icon">
+          <span data-icon="&#xe052;" class="icon"></span>
+        </div>
+        <div class="intro-content">
+          <h5 style="white-space: nowrap;">Расскажите о нас в соцсетях</h5>
+
+          <div
+            class="share42init accauntSoc accauntSoc_32"
+            data-socials="1,0,2,4,3"
+            data-icon-type="css"
+            data-title="{{ _constant('affiliate_share_title')}}"
+            data-description="{{ _constant('affiliate_share_description')}}"
+            data-image="https://secretdiscounter.ru{{images_path}}templates/woman_600.png"
+            data-url="https://secretdiscounter.ru/?r={{user_id}}"
+          ></div>
+          <script type="text/javascript" src="/js/share42.js"></script>
+
+        </div>
+      </div>
+      <div class="col-md-4 ways-invitation">
+        <div class="intro-icon">
+          <span data-icon="&#xe021;" class="icon"></span>
+        </div>
+        <div class="intro-content">
+          <h5>Отправьте друзьям ссылку</h5>
+          <p class="link" style="margin-top: 15px;">
+            <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{user_id}}">
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 ways-invitation">
+        <div class="intro-icon">
+          <span data-icon="&#xe028;" class="icon"></span>
+        </div>
+        <div class="intro-content">
+          <h5>Или по электронной почте</h5>
+          <form class="mail-invitation-form" action="/" method="POST" role="form">
+            <p class="mail" style="padding-top: 2px;">
+              <input name="email" type="text" placeholder="test@mail.ru, test@gmail.com">
+              <input name="type" type="hidden" value="invitation">
+              <button type="submit" class="btn btn-fill btn-accent btn-small" style="padding: 8px 0;text-align: center;">
+                Отправить приглашение
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <p class="warning text-center">
+          <b>Внимание!</b> Для продвижения Вашей реферальной ссылки категорически запрещается использовать СПАМ.
+          <br>
+          Об остальных условиях партнерской программы читайте ниже.
+        </p>
+      </div>
+    </div>
+  </section>
+  {% if content %}
+  <section class="section-content section-padding">
+    {{ content | raw}}
+  </section>
+  {% endif %}
+</div>
