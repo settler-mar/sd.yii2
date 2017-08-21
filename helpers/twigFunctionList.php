@@ -1,5 +1,5 @@
 <?php
-use app\modules\constants\models\Constants;
+use frontend\modules\constants\models\Constants;
 $currencyIcon = [
   'RUB' => '<span class="fa fa-rub"></span>',
   'EUR' => '<span class="fa fa-eur"></span>',

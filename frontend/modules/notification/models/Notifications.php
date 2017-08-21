@@ -77,14 +77,33 @@ class Notifications extends \yii\db\ActiveRecord
   }
 
     /**
+     * @param $userId
+     * @return mixed
+     */
+    public static function getUnreadCount($userId)
+    {
+        $cacheName ='account_notification_unread_count_' . $userId;
+        return \Yii::$app->cache->getOrSet($cacheName, function () use ($userId) {
+            return self::find()
+            ->where(['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0])
+            ->count();
+        });
+    }
+    /**
      * отметить оповещения с uid из массива $ids для пользователя как прочитанные
      * @param $userId
      * @param $ids array uid
      */
     public static function doRead($userId, $ids)
     {
-        $where = ['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0, 'uid' => $ids];
+        $count = self::getUnreadCount($userId);
+       // ddd($count);
+        if ($count) {
+            $where = ['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0, 'uid' => $ids];
 
-        self::updateAll(['is_viewed' => 1], $where);
+            self::updateAll(['is_viewed' => 1], $where);
+            //чистим кеш - количество непрочитанных для пользователя
+            \Yii::$app->cache->delete('account_notification_unread_count_' . $userId);
+        }
     }
 }
