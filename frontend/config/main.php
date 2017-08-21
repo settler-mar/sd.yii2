@@ -146,6 +146,9 @@ $config= [
     'favorites' => [
       'class' => 'frontend\modules\favorites\Module',
     ],
+    'affiliate' => [
+      'class' => 'frontend\modules\affiliate\Module',
+    ],
   ],
   'params' => $params,
 ];
