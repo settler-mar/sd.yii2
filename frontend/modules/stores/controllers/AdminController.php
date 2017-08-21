@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\ActionsTariffs;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\StoresActions;
@@ -295,19 +296,21 @@ class AdminController extends Controller
     if($type=='store'){
       $todo=true;
       $store_id=$post['id'];
-      $payment= \ORM::forTable("cw_payments")
-        ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
-        ->whereIn("cwsl.stores_id", $store_id)
-        ->findArray();
+      $payment= Payments::find()->with([
+        'cpaLink' => function($query)use($store_id){
+          $query->andWhere(['stores_id' => $store_id]);
+        }])
+        ->asArray()
+        ->all();
       if(count($payment)>0){
         http_response_code(404);
         exit;
       }
-      $cwsl = \ORM::forTable("cw_cpa_link")
+      $cwsl = CpaLink::find()
         ->select('id')
-        ->whereIn("stores_id", $store_id)
-        ->findArray();
+        ->where(['stores_id' => $store_id])
+        ->asArray()
+        ->all();
       if(count($cwsl)>0){
         $type='cpa';
         $post["id"]=[];
@@ -315,34 +318,36 @@ class AdminController extends Controller
           $post["id"][]=$item['id'];
         }
       }
-      $this->Delete($store_id[0]);
+      Stores::deleteAll(['uid' => $store_id]);
+      //$this->Delete($store_id[0]);  !!!!! надо переписать эту функцию для очистки БД от хлама
     }
     if($type=='cpa'){
       $todo=true;
       $cpa_id=$post['id'];
-      $payment= \ORM::forTable("cw_payments")
-        ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
-        ->whereIn("cwsl.id", $cpa_id)
-        ->findArray();
+      $payment= Payments::find()
+        ->with([
+        'cpaLink' => function($query)use($cpa_id){
+          $query->andWhere(['id' => $cpa_id]);
+        }])
+        ->asArray()
+        ->all();
       if(count($payment)>0){
         http_response_code(404);
         exit;
       }
-      $cwsl = \ORM::forTable("cw_stores_actions")
+      $storesActions = StoresActions::find()
         ->select('uid')
-        ->whereIn("cpa_link_id", $cpa_id)
-        ->findArray();
-      if(count($cwsl)>0){
+        ->where(["cpa_link_id"=> $cpa_id])
+        ->asArray()
+        ->all();
+      if(count($storesActions)>0){
         $type='action';
         $post["id"]=[];
-        foreach ($cwsl as $item){
+        foreach ($storesActions as $item){
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_cpa_link")
-        ->whereIn("id", $cpa_id)
-        ->delete_many();
+      CpaLink::deleteAll(['id' => $cpa_id]);
     }
     if($type=='action'){
       $todo=true;

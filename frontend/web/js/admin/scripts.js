@@ -4038,12 +4038,12 @@ $(function() {
       id:$this.attr('uid'),
       type:$this.attr('mode')
     };
-    console.log(post);
     $.post($this.attr('url'),post,function(data){
+      console.log(data);
+
       if(data && data=='err'){
         alert("Невозможно удалить элемент");
       }
-
       mode=$this.attr('mode');
       if(!mode){
         mode='rm';
