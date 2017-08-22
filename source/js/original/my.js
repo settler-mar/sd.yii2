@@ -1,4 +1,4 @@
-$('body').on('click','a[href=#login],a[href=#registration],a[href=#resetpassword]',function(e){
+$('body').on('click','a[href=#login],a[href=#registration],a[href=#resetpassword],a.ajaxFormOpen',function(e){
   e.preventDefault();
   href=this.href.split('#');
   href=href[href.length-1];

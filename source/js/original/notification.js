@@ -34,7 +34,7 @@ var notification = (function() {
   }
 
   function closeModal(){
-    $('body').removeClass('show_notifi');
+    $('html').removeClass('show_notifi');
   }
   function closeModalFon(e){
     var target = e.target || e.srcElement;
@@ -74,7 +74,7 @@ var notification = (function() {
 
 
     setTimeout(function() {
-      $('body').addClass('show_notifi');
+      $('html').addClass('show_notifi');
     },100)
   }
 
@@ -112,7 +112,7 @@ var notification = (function() {
     }
 
     setTimeout(function() {
-      $('body').addClass('show_notifi');
+      $('html').addClass('show_notifi');
     },100)
 
   }

@@ -221,7 +221,10 @@ $functionsList=[
     $s=implode('@<wbr>',$s);
     return $s;
   },
-  '_nf'=>function($s,$k=2){
+  '_nf'=>function($s,$k=2,$minus_test = true){
+    if($minus_test && $s<0){
+      $s=0;
+    }
     return number_format($s,$k,'.','&nbsp;');
   },
   '_if'=>function($is,$then=false,$else=false){

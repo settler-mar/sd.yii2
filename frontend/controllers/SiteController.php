@@ -214,14 +214,19 @@ class SiteController extends SdController
    * для адресов 1-го уровня проверяет их наличие в таблице META и дает возможность их вывести не прописывая роут
    */
   public function actionStaticPage($action){
-    $page=Meta::findOne(['page'=>$action]);
+    $page=Meta::find()
+      ->where(['page'=>$action])
+      ->asArray()
+      ->one();
     if(!$page){
       throw new HttpException(404 ,'User not found');
     }
     if(Yii::$app->request->isAjax){
-      return $this->renderAjax('static_page');
+      return json_encode([
+        'html'=>$this->renderAjax('static_page_ajax',$page)
+        ]);
     }else{
-      return $this->render('static_page');
+      return $this->render('static_page',$page);
     }
   }
 }
