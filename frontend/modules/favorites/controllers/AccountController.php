@@ -4,7 +4,7 @@ namespace frontend\modules\favorites\controllers;
 
 use yii;
 use frontend\modules\favorites\models\UsersFavorites;
-use frontend\modules\Stores\models\Stores;
+use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
 
 class AccountController extends \yii\web\Controller

@@ -241,6 +241,10 @@ $functionsList=[
     return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
   },
 
+  'parts'=>function ($part) {
+    return '/parts/'.$part.'.twig';
+  },
+
 ];
 
 return $functionsList;

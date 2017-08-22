@@ -21,6 +21,12 @@ $config= [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
     ],
+    'sphinx' => [
+      'class' => 'yii\sphinx\Connection',
+      'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+      'username' => 'root',
+      'password' => '123456',
+    ],
     'log' => [
       'traceLevel' => YII_LOG_LAVEL ? YII_LOG_LAVEL : 0,
       'targets' => [
@@ -63,6 +69,9 @@ $config= [
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/index',
         'account/settings' => 'users/account/settings',
+
+        'search' => 'search/default/index',
+        'search/<action>' => '404',
 
         'admin' => 'site/admin',
         'faq' => 'site/faq',
@@ -148,6 +157,9 @@ $config= [
     ],
     'affiliate' => [
       'class' => 'frontend\modules\affiliate\Module',
+    ],
+    'search' => [
+      'class' => 'frontend\modules\search\Module',
     ],
   ],
   'params' => $params,

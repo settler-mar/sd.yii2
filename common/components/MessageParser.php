@@ -46,7 +46,7 @@ class MessageParser extends Component
     $code=$cpa_id.'_'.$affiliate_id;
     if(!isset($this->stores[$code])){
       $store=CpaLink::findOne(['cpa_id'=>$cpa_id,'affiliate_id'=>$affiliate_id]);
-      if($store){
+      if(count($store)>0){
         $store=$store->store->toArray(['name','route','currency']);
         $this->stores[$code]=[];
         foreach ($store as $k=>$val){
