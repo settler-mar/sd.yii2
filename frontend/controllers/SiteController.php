@@ -226,6 +226,7 @@ class SiteController extends SdController
         'html'=>$this->renderAjax('static_page_ajax',$page)
         ]);
     }else{
+      $this->params['breadcrumbs'][] = $page['title'];
       return $this->render('static_page',$page);
     }
   }

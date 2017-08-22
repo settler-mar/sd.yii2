@@ -46,4 +46,35 @@ class UsersFavorites extends \yii\db\ActiveRecord
             'store_id' => 'Store ID',
         ];
     }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
+    }
+
+    if ($this->isNewRecord) {
+      if(!isset($this->user_id) || $this->user_id==0){
+        $this->user_id=Yii::$app->user->id;
+      }
+      $this->added = date('Y-m-d H:i:s');
+    }
+
+    return true;
+  }
+
+  public static function getUserFav(){
+    $cache = Yii::$app->cache;
+    return $cache->getOrSet('account_favorites_'.Yii::$app->user->id, function () {
+      $fav = self::find()
+        ->where(['user_id'=>Yii::$app->user->id])
+        ->asArray()
+        ->all();
+      $out=[];
+      foreach ($fav as $item){
+        $out[]=$item['store_id'];
+      }
+      return $out;
+    });
+  }
 }

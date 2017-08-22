@@ -1,6 +1,7 @@
 <?php
 namespace frontend\components;
 
+use frontend\modules\favorites\models\UsersFavorites;
 use Yii;
 use yii\web\View;
 use yii\helpers\Url;
@@ -32,6 +33,8 @@ class SdView extends View
       $this->all_params['user']=$this->user;
       $this->all_params['balance']=$this->balance;
       $this->all_params['user_id']=$this->user_id;
+
+      $this->all_params['fav_ids']=UsersFavorites::getUserFav();
     }
 
     $arr = $this->getPageMetadata();

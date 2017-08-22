@@ -31,4 +31,4 @@ account_withdraw_history_<user_id>_<page> - account/withdraw-history
 account_charity_<user_id>_<page> - account/charity
 account_notifications_<type_id>_<user_id>_<page> - account/notification
 account_notification_unread_count_<user_id> - количество непрочитанных оповещений для пользователя
-account_favorites_<user_id> - /account/favorites
+account_favorites_<user_id> - /account/favorites кеширование избранного
