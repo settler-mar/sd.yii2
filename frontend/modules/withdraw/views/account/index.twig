@@ -1,0 +1,78 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Доступные средства для вывода: <span>{{ _nf(balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="history"><a href="/account/withdraw/history">Посмотреть историю вывода денег</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="account-withdraw account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Вывод денежных средств</h3>
+                <ul>
+                    <li>Вывод денежных средств доступен только в случае, если Ваш подтверждённый кэшбэк составляет <b>350 и более рублей</b>.</li>
+                    <li>Заявка на вывод обрабатывается в течение 2-4 рабочих дней. О результате вывода Вы будете оповещены через указанный Вами email адрес.</li>
+                </ul>
+            </div>
+            {% if balance.current >= 350 %}
+                <div class="col-md-12">
+                    <h3 class="text-center">Выберите способ вывода денег:</h3>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="2">
+                            <a href="#"><img src="/images/account/webmoney-l.png" at=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="1">
+                            <a href="#"><img src="/images/account/yandex-l.png" at=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="3">
+                            <a href="#"><img src="/images/account/qiwi-l.png" at=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="4">
+                            <a href="#"><img src="/images/account/cart-l.png" at=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="5">
+                            <a href="#"><img src="/images/account/paypal-l.jpg" at=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="option" data-option-process="6">
+                            <a href="#"><img src="/images/account/sim-l.png" at=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-center">Заполните платёжные данные</h3>
+                    <div class="payment-info">
+                        <form action="/" method="post" role="form" name="withdraw-form">
+                            <div class="form-input-group">
+                                <i class="fa fa-info-circle"></i><input name="bill" type="text" placeholder="Введите номер счёта" required>
+                            </div>
+                            <div class="form-input-group">
+                                <i class="fa fa-money"></i><input name="amount" type="text" placeholder="Введите сумму для вывода" required>
+                            </div>
+                            <textarea name="additional-info" cols="30" rows="10" placeholder="Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard)."></textarea>
+                            <input type="hidden" name="withdraw-process" value="0">
+                            <button type="submit" class="btn-fill btn-form">Сделать запрос на вывод денег</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="not-found">У Вас недостаточно средств для вывода денег.</div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>

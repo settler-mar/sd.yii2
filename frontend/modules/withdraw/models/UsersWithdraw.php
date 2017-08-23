@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\withdraw_history\models;
+namespace frontend\modules\withdraw\models;
 
 use Yii;
 
@@ -33,7 +33,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'process_id', 'bill', 'request_date', 'user_comment', 'admin_comment'], 'required'],
+            [['user_id', 'process_id', 'bill', 'request_date'], 'required'],
             [['user_id', 'process_id', 'status'], 'integer'],
             [['amount'], 'number'],
             [['request_date'], 'safe'],
@@ -59,4 +59,19 @@ class UsersWithdraw extends \yii\db\ActiveRecord
             'admin_comment' => 'Admin Comment',
         ];
     }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
+    }
+
+    if ($this->isNewRecord) {
+      $this->user_id =  Yii::$app->user->id;
+      $this->request_date = date('Y-m-d H:i:s');
+    }
+
+    return true;
+
+  }
 }

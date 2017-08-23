@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\modules\withdraw_history;
+namespace frontend\modules\withdraw;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'frontend\modules\withdraw_history\controllers';
+    public $controllerNamespace = 'frontend\modules\withdraw\controllers';
 
     public function init()
     {

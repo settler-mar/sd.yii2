@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\withdraw_history\models;
+namespace frontend\modules\withdraw\models;
 
 use Yii;
 

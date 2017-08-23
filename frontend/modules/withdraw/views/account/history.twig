@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                             <td>{{w.name}}</td>
                             <td>{{w.bill}}</td>
                             <td class="cashback {{w.status}}">
-                                {{ _nf(w.amount) }} <span class="fa fa-rub"></span>
+                                {{ _nf(w.amount) | raw}} <span class="fa fa-rub"></span>
                             </td>
                             <td class="status {{w.status}}">
                             {% if w.status == 1 %}

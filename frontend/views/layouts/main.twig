@@ -96,7 +96,7 @@
                 <nav>
                     <ul class="member-actions mobile-member-actions">
                         {% if this.user_id %}
-                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if this.balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{ _nf(this.balance.current)}} <span class="fa fa-rub"></span></a></li>
+                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if this.balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{ _nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></a></li>
                             <li><a href="/account" rel="nofollow" class="account"><i class="fa fa-user" aria-hidden="true"></i> Мой аккаунт</a></li>
                         {% else %}
                             <li><a href="#login" rel="nofollow" class="login ignore-hash"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Войти</a></li>
@@ -139,7 +139,7 @@
                     <ul class="member-actions mdes">
                         {% if this.user_id %}
                             <li><a href="/account" rel="nofollow" class="account">Мой аккаунт</a></li>
-                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if this.balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{ _nf(this.balance.current) }} <span class="fa fa-rub"></span></a></li>
+                            <li class="balance-wrapper"><a href="/account/payments" rel="nofollow" data-toggle="tooltip" data-placement="bottom" data-original-title="История заказов" class="balance {% if this.balance.current > 350 %}confirmed{% else %}pending{% endif %} btn-fill btn-small">Баланс: {{ _nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></a></li>
                         {% else %}
                             <li><a href="#login" rel="nofollow" class="login ignore-hash">Войти</a></li>
                             <li class="registration-wrapper"><a href="#registration" rel="nofollow" class="registration btn-white btn-small ignore-hash">Зарегистрироваться</a></li>

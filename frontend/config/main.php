@@ -140,8 +140,8 @@ $config= [
     'transitions' => [
       'class' => 'frontend\modules\transitions\Module',
     ],
-    'withdraw-history' => [
-      'class' => 'frontend\modules\withdraw_history\Module',
+    'withdraw' => [
+      'class' => 'frontend\modules\withdraw\Module',
     ],
     'charity' => [
       'class' => 'frontend\modules\charity\Module',
