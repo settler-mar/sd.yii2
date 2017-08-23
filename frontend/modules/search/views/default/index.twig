@@ -1,0 +1,25 @@
+{% include parts('breadcrumbs') %}
+
+<section class="divide shops section-padding search">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-center">
+                <h3>
+                    Результаты поиска {% if query != '' %} по запросу '{{query}}' {% endif %}
+                </h3>
+            </div>
+            {% if stores|length > 0 %}
+                {% for store in stores %}
+                    <div class="col-sm-3 col-md-2">
+                        {% include parts('shop') %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-sm-12 col-md-12 text-center">
+                    <span data-icon="&#xe05c;" class="icon"></span>
+                    По Вашему запросу ничего не найдено
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

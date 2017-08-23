@@ -43,10 +43,15 @@ class AccountController extends \yii\web\Controller
             ->where($where)
             ->orderBy('added DESC');
 
+
         $cacheName = 'account_notifications_' . $type . '_' . \Yii::$app->user->id . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['notifications'] = $pagination->data();
+        foreach ($data['notifications'] as &$notification){
+          $notification['text'] = Yii::$app->messageParcer->notificationText($notification);
+          $notification['title'] = Yii::$app->messageParcer->notificationTitle($notification);
+        };
 
         //помечаем выгруженные строки как прочитанные
         Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));

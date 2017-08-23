@@ -35,7 +35,7 @@ console
     migrations/          contains database migrations
     models/              contains console-specific model classes
     runtime/             contains files generated during runtime
-backend                  партнерский сайт????
+b2b                  партнерский сайт????
     assets/              contains application assets such as JavaScript and CSS
     config/              contains backend configurations
     controllers/         contains Web controller classes
@@ -60,7 +60,7 @@ helpers/                 вспомогательные библиотеки
   twig/                  библиотеки для twig
 ```
 
-Папка ```backend``` предназначена для партнеров.
+Папка ```b2b``` предназначена для партнеров.
 
 Папка ```frontend``` предназначена для обычных поситителей.
 

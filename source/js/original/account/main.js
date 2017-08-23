@@ -473,7 +473,7 @@ $(function() {
                     return false;
                 });
 
-                ajax.control.sendFormData("#top form[name=fund-transfer-form]", "/account/fund-transfer/add", "Fund Transfer Ajax Error", function() {
+                ajax.control.sendFormData("#top form[name=fund-transfer-form]", "/account/dobro/send", "Fund Transfer Ajax Error", function() {
                     var withdrawSuccess = noty({
                         text: "<b>Поздравляем!</b><br>Денежные средства успешно переведены. Спасибо за Вашу помощь. Историю Ваших добрых дел вы можете посмотреть в <a href='/account/charity'>личном кабинете</a>.",
                         animation: {
@@ -491,7 +491,7 @@ $(function() {
                     $("#top form[name=fund-transfer-form]")[0].reset();
                 });
 
-                ajax.control.sendFormData("#top form[name=autopayment-form]", "/account/fund-transfer/auto", "Auto Payment Ajax Error", function() {
+                ajax.control.sendFormData("#top form[name=autopayment-form]", "/account/dobro/auto-send", "Auto Payment Ajax Error", function() {
                     var withdrawSuccess = noty({
                         text: "<b>Поздравляем!</b><br>Автоплатёж был успешно установлен.",
                         animation: {
@@ -507,7 +507,7 @@ $(function() {
                     });
                 });
 
-                ajax.control.sendFormData("#top form[name=delete-autopayment-form]", "/account/fund-transfer/delete-auto", "Delete Auto Payment Ajax Error", function() {
+                ajax.control.sendFormData("#top form[name=delete-autopayment-form]", "/account/dobro/auto-delete", "Delete Auto Payment Ajax Error", function() {
                     var withdrawSuccess = noty({
                         text: "<b>Поздравляем!</b><br>Автоплатёж был успешно удалён.",
                         animation: {

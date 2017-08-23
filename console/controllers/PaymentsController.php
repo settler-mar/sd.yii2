@@ -56,7 +56,7 @@ class PaymentsController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionIndex()
+  public function actionIndex($options = false)
   {
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
@@ -66,6 +66,10 @@ class PaymentsController extends Controller
       'status_updated_start' => date('d.m.Y H:i:s', time() - 86400 * $days), //последнии 7 дней
       'status_updated_end' => date('d.m.Y H:i:s')
     ];
+
+    if (is_array($options)) {
+      $params = array_merge($params, $options);
+    }
 
     $pay_status = array(
       'pending' => 0,

@@ -872,7 +872,7 @@ Sign up form
   margin: 0px auto 10px;
   display: block;
   height: 150px;
-  width: 75%;
+  width: 90%;
   resize: none;
 }
 .sign-up .signup-form .form-input-group input::-webkit-input-placeholder,
@@ -1079,7 +1079,8 @@ footer .auxiliary-panel ul.footer-group {
 }
 footer .auxiliary-panel p {
   font-size: 15px;
-  padding-bottom: 0px; }
+  padding-bottom: 9px;
+}
 footer .auxiliary-panel a.twitter-share {
   height: 60px;
   width: 60px;

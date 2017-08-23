@@ -21,6 +21,12 @@ $config= [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
     ],
+    'sphinx' => [
+      'class' => 'yii\sphinx\Connection',
+      'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+      'username' => 'root',
+      'password' => '123456',
+    ],
     'log' => [
       'traceLevel' => YII_LOG_LAVEL ? YII_LOG_LAVEL : 0,
       'targets' => [
@@ -63,6 +69,10 @@ $config= [
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/index',
         'account/settings' => 'users/account/settings',
+
+        'search' => 'search/default/index',
+        'search/<action>' => '404',
+
         'admin' => 'site/admin',
         'faq' => 'site/faq',
         'howitworks' => 'site/howitworks',
@@ -73,6 +83,8 @@ $config= [
         'recommendations' => 'site/recommendations',
         'about' => 'site/about',
         'account-blocked' => 'site/accountblocked',
+
+        'fixing/<action:payment|stores>'=> 'fixing/<action>',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
@@ -128,14 +140,26 @@ $config= [
     'transitions' => [
       'class' => 'frontend\modules\transitions\Module',
     ],
-    'withdraw-history' => [
-      'class' => 'frontend\modules\withdraw_history\Module',
+    'withdraw' => [
+      'class' => 'frontend\modules\withdraw\Module',
     ],
     'charity' => [
       'class' => 'frontend\modules\charity\Module',
     ],
     'funds' => [
       'class' => 'frontend\modules\funds\Module',
+    ],
+    'support' => [
+      'class' => 'frontend\modules\support\Module',
+    ],
+    'favorites' => [
+      'class' => 'frontend\modules\favorites\Module',
+    ],
+    'affiliate' => [
+      'class' => 'frontend\modules\affiliate\Module',
+    ],
+    'search' => [
+      'class' => 'frontend\modules\search\Module',
     ],
   ],
   'params' => $params,

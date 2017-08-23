@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current)}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending)}}  <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity)}}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}}  <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <h3>Уведомления</h3>
                 <p>
-                    На данной странице будут отображаться все уведомления, которые так или иначе связаны с Вашим аккаунтом и сайтом в целом.
+                    На данной странице будут отображаться все уведомления, которые связвнны с Вашим аккаунтом и сайтом в целом.
                 </p>
             </div>
             {% if notifications|length > 0 %}

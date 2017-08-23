@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{ _nf(this.balance.current) }} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{ _nf(this.balance.pending) }} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{ _nf(this.balance.charity) }}  <span class="fa fa-rub"></span></span> <a href="/account/fund-transfer" class="btn-fill">Благотворительность</a></div>
+                    <div class="confirm">Баланс: <span>{{ _nf(this.balance.current) | raw }} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{ _nf(this.balance.pending) | raw }} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{ _nf(this.balance.charity) | raw }}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
                     <div class="history hpayments"><a href="/account/payments">Посмотреть историю заказов</a></div>
                 </div>
             </div>
@@ -17,7 +17,6 @@
                         {% if status.bonus <= this_tarif.bonus %}
                             <div class="trophy {{status.code}}">
                                 <span data-icon="&#xe023;"></span>
-                                {{ key }} = {{ t_satus_id }}
                                 {% if key==t_satus_id %}
                                     <p>Текущий статус</p>
                                 {% endif %}

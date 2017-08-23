@@ -160,19 +160,19 @@
                       <div class="line">
                         <div class="name">confirmed</div>
                         <div class="value">
-                          {{ _nf(user.cnt_confirmed,0)}}
+                          {{ _nf(user.cnt_confirmed,0) | raw}}
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_confirmed) }} р
+                          {{ _nf(user.sum_confirmed) | raw }} р
                         </div>
                       </div>
                       <div class="line">
                         <div class="name">pending</div>
                         <div class="value">
-                          {{ _nf(user.cnt_pending,0) }}
+                          {{ _nf(user.cnt_pending,0) | raw }}
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_pending) }} р
+                          {{ _nf(user.sum_pending) | raw }} р
                         </div>
                       </div>
                       <b>За рефералов</b>
@@ -181,7 +181,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_from_ref_confirmed) }} р
+                          {{ _nf(user.sum_from_ref_confirmed) | raw }} р
                         </div>
                       </div>
                       <div class="line">
@@ -189,7 +189,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_from_ref_pending) }} р
+                          {{ _nf(user.sum_from_ref_pending) | raw }} р
                         </div>
                       </div>
                       <div class="line">
@@ -197,7 +197,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_bonus) }} р
+                          {{ _nf(user.sum_bonus) | raw }} р
                         </div>
                       </div>
                       <div class="line">
@@ -205,7 +205,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_foundation) }} р
+                          {{ _nf(user.sum_foundation) | raw }} р
                         </div>
                       </div>
                       <div class="line">
@@ -213,7 +213,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.sum_withdraw) }} р
+                          {{ _nf(user.sum_withdraw) | raw }} р
                         </div>
                       </div>
                       <div class="line sum">
@@ -221,7 +221,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.currentBalance) }}
+                          {{ _nf(user.currentBalance) | raw }}
                         </div>
                       </div>
                       <div class="line">
@@ -229,7 +229,7 @@
                         <div class="value">
                         </div>
                         <div class="value">
-                          {{ _nf(user.pending) }}
+                          {{ _nf(user.pending) | raw }}
                         </div>
                       </div>
                     </div>
@@ -260,7 +260,7 @@
 
                       <div class="line">
                         <div class="name">Рефералов</div>
-                        <div class="value">{{ _nf(user.ref_total,0) }}</div>
+                        <div class="value">{{ _nf(user.ref_total,0) | raw }}</div>
                       </div>
                       <div class="line">
                         <div class="name">Активен</div>

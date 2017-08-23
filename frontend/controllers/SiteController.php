@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\modules\meta\models\Meta;
 use frontend\modules\users\models\RegistrationForm;
 use Yii;
 use yii\base\InvalidParamException;
@@ -13,6 +14,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
 use yii\helpers\Url;
+use yii\web\HttpException;
 
 /**
  * Site controller
@@ -192,6 +194,7 @@ class SiteController extends SdController
     $this->params['breadcrumbs'][] = 'Аккаунт заблокирован';
     return $this->render('user-blocked');
   }
+
   /**
    * Displays 404 error.
    *
@@ -203,5 +206,28 @@ class SiteController extends SdController
     return $this->render('404');
   }
 
-
+  /**
+   * @param $action - адрес страницы
+   * @return string
+   * @throws HttpException
+   *
+   * для адресов 1-го уровня проверяет их наличие в таблице META и дает возможность их вывести не прописывая роут
+   */
+  public function actionStaticPage($action){
+    $page=Meta::find()
+      ->where(['page'=>$action])
+      ->asArray()
+      ->one();
+    if(!$page){
+      throw new HttpException(404 ,'User not found');
+    }
+    if(Yii::$app->request->isAjax){
+      return json_encode([
+        'html'=>$this->renderAjax('static_page_ajax',$page)
+        ]);
+    }else{
+      $this->params['breadcrumbs'][] = $page['title'];
+      return $this->render('static_page',$page);
+    }
+  }
 }

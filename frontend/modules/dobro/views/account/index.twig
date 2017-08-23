@@ -1,0 +1,81 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance ftransfer">
+                    <div class="confirm">Доступные средства для благотворительности: <span>{{ _nf(balance.max_fundation) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="history"><a href="/account/charity">Посмотреть историю добрых дел</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="account-fund-transfer account-withdraw account-padding">
+        <div class="row">
+            <div class="col-md-12 head">
+                <h3 class="text-center">SecretDiscounter</h3>
+                <h4 class="text-center">Делаем Добрые Дела вместе!</h4>
+                <div class="text-center"><a href="/dobro">подробная информация</a></div>
+            </div>
+            {% if autopayment %}
+                <div class="col-md-12">
+                    <div class="self-autopayment">
+                        <h3 class="text-center">У вас установлен автоплатёж для благотворительного фонда <span>{{autopayment.fond.title}}</span></h3>
+                        <form action="/" method="post" role="form" name="delete-autopayment-form">
+                            <input type="hidden" name="type" value="delete-autopayment">
+                            <button type="submit" class="btn-fill btn-form">Отменить автоплатёж</button>
+                        </form>
+                        <p class="text-center"><strong>!</strong> Весь ваш накопленный кэшбэк в конце каждого календарного месяца направляется данному благотворительному фонду.</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if funds|length > 0 %}
+                <div class="col-md-12">
+                    <h3 class="text-center fhead">1. Выберите благотворительный фонд:</h3>
+                    {% for fund in funds %}
+                        {% if fund.uid != '9' and fund.title != 'Переговоры с данным Фондом еще не завершены' %}
+                            <div class="col-md-6">
+                                <div class="option" data-option-process="{{fund.uid}}">
+                                    <span class="title">{{fund.title}}</span>
+                                    <a href="#"><img src="/images/dobro/{{fund.image}}" at=""></a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-center to-fund">Указанная Вами сумма будет полностью перечислена в благотворительный фонд <span></span></h3>
+                    <h3 class="text-center hpreform">2. Введите сумму для пожертвования:</h3>
+                    <div class="payment-info">
+                        <form action="/account/dobro/add" method="post" role="form" name="fund-transfer-form" class="ajax_form">
+                            <div class="form-input-group">
+                                <i class="fa fa-money"></i><input name="amount" type="text" placeholder="Сумма для пожертвования" required>
+                            </div>
+                            <input type="hidden" name="charity-process" value="0">
+                            <button type="submit" class="btn-fill btn-form">Перечислить деньги</button>
+                        </form>
+                    </div>
+                </div>
+                {% if not autopayment %}
+                    <div class="col-md-12">
+                        <div class="autopayment-info">
+                            <h3 class="text-center hpreform">3. Также вы можете:</h3>
+                            <h3 class="text-center to-fund">Установить автоплатёж для фонда <span></span></h3>
+                            <form action="/" method="post" role="form" name="autopayment-form">
+                                <input type="hidden" name="autopayment-uid" value="0">
+                                <button type="submit" class="btn-fill btn-form">Установить автоплатёж</button>
+                            </form>
+                            <p class="autopayment-terms">Нажимая кнопку "Установить автоплатёж", я соглашаюсь с тем, что <strong>весь</strong> мой накопленный кэшбэк в конце<br> каждого календарного месяца будет направляться данному благотворительному фонду.<p>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-md-12">
+                    <p class="support-fund text-center">Возникли вопросы, связанные с благотворительностью? Напишите в нашу <a href="/account/support">службу поддержки</a>.</p>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="not-found">У Вас недостаточно средств для благотворительности.</div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>

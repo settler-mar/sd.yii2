@@ -23,7 +23,7 @@ class SdUrlRule implements UrlRuleInterface
     //проверка реф ссылки
     if(isset($params['r'])){
       $user=Users::find()->where(['uid'=>$params['r']])->one();
-      if($user){
+      if(Yii::$app->user->isGuest && $user){
         Yii::$app->session->set('referrer_id',$user->uid);
       };
       Yii::$app->getResponse()->redirect('/', 301);
@@ -39,10 +39,11 @@ class SdUrlRule implements UrlRuleInterface
     $route = [];
 
     //редиректим actions от основного контроллера
-    if ($parameters[0] == 'index') {
+    if ($parameters[0] == 'index' || $parameters[0] == 'static-page') {
       Yii::$app->getResponse()->redirect('/', 301);
       return ['', $params];
     }
+
     if ($parameters[0] == 'site') {
       if ($parameters[1] == 'index') {
         $parameters[1] = '';
@@ -90,7 +91,6 @@ class SdUrlRule implements UrlRuleInterface
     if (count($parameters) > 1) {
       $route[] = $parameters[1];
       $route[] = $parameters[0];
-
       if(
         $parameters[0]=='admin' AND
         Yii::$app->session->get('admin_id')!==null &&
@@ -111,6 +111,20 @@ class SdUrlRule implements UrlRuleInterface
       return [implode('/', $route), $params];
     }
 
+    if(count($parameters)==1){
+      $site=\Yii::$app->createController('site');
+      $action='action'.
+        strtoupper(mb_substr($parameters[0],0,1)).
+        strtolower(mb_substr($parameters[0],1));
+
+      if(method_exists($site[0],$action)){
+        return ['site/'.$parameters[0], $params];
+      }else{
+        $params['action']=$parameters[0];
+        return ['site/static-page', $params];
+      };
+    }
+
     return [implode('/', $parameters), $params];
   }
 
@@ -125,18 +139,18 @@ class SdUrlRule implements UrlRuleInterface
   public function createUrl($manager, $route, $params)
   {
     $route=explode('/',$route);
-    if(count($route)<2){
-     // return false;
-    }
 
     if($route[0]=='permit'){
       return false;
     }
 
-    $tmp = $route[0];
-    $route[0] = $route[1];
-    $route[1] = $tmp;
-    //$route=[$route[1],$route[0]];
+    if(count($route)<2){
+      // return false;
+    }else {
+      $tmp = $route[0];
+      $route[0] = $route[1];
+      $route[1] = $tmp;
+    }
 
     if(isset($params['store'])){
       $route[] = 'store:' . $params['store'];

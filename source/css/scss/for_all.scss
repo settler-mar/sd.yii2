@@ -234,6 +234,10 @@ table .status_bg_1 {
 
     .notify_content{
       padding: 15px 10px;
+
+      h1,h2,h3{
+        margin-top: 0;
+      }
     }
 
     .notify_control{
@@ -304,12 +308,14 @@ table .status_bg_1 {
 
 .show_notifi{
   overflow: hidden;
+  //height: 100vh;
 
   .notification_box{
     //box-shadow: #999 0px 0px 5vmax 50vmin inset;
     padding: 20px;
     animation-name: notification_box_show;
     animation-delay: 0.0s;
+    overflow: auto;
   }
 
   .notify_box{
@@ -375,4 +381,51 @@ form.loading{
 body>h3,
 body>.news-index{
   margin-top:70px;
+}
+
+.help_button{
+  display: block;
+  position: fixed;
+  top: 50%;
+  right: 0;
+  margin-right: -91px;
+  margin-top: -18px;
+  z-index: 990;
+  transform: rotate(270deg);
+
+  a {
+    position: relative;
+    padding: 8px 40px 6px 8px;
+    text-decoration: none;
+    color: #000;
+    font-size: 15px;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #fee255;
+
+    &:after {
+      content: "\f105";
+      font-family: FontAwesome;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 34px;
+      height: 100%;
+      background-size: 34px, auto;
+      margin: auto;
+      text-align: center;
+      line-height: 34px;
+      background: #FEEB88;
+    }
+    &:before {
+      content: "";
+      background: url(/favicon-16x16.png);
+      height: 16px;
+      width: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  }
 }

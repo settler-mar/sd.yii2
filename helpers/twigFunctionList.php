@@ -1,5 +1,5 @@
 <?php
-use app\modules\constants\models\Constants;
+use frontend\modules\constants\models\Constants;
 $currencyIcon = [
   'RUB' => '<span class="fa fa-rub"></span>',
   'EUR' => '<span class="fa fa-eur"></span>',
@@ -221,7 +221,10 @@ $functionsList=[
     $s=implode('@<wbr>',$s);
     return $s;
   },
-  '_nf'=>function($s,$k=2){
+  '_nf'=>function($s,$k=2,$minus_test = true){
+    if($minus_test && $s<0){
+      $s=0;
+    }
     return number_format($s,$k,'.','&nbsp;');
   },
   '_if'=>function($is,$then=false,$else=false){
@@ -236,6 +239,10 @@ $functionsList=[
     $m = explode("-", $d);
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
     return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
+  },
+
+  'parts'=>function ($part) {
+    return '/parts/'.$part.'.twig';
   },
 
 ];

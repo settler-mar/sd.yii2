@@ -1,0 +1,32 @@
+<div class="content-wrapper">
+    <section class="account-home">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="balance">
+                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="support account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Служба поддержки</h3>
+                <p>
+                    Отправьте сообщение в нашу службу поддержки, и наши квалифицированные специалисты помогут Вам в течение одного рабочего дня.
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <form action="/" method="post" role="form" name="support-form">
+                    <div class="form-input-group">
+                        <i class="fa fa-info-circle"></i><input autocomplete="off" name="title" type="text" placeholder="Тема письма" required>
+                    </div>
+                    <textarea cols="30" rows="10" name="message" placeholder="Текст обращения" required></textarea>
+                    <button type="submit" class="btn-fill btn-form">Отправить сообщение в службу поддержки</button>
+                </form>
+            </div>      
+        </div>
+    </section>
+</div>

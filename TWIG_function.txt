@@ -16,3 +16,4 @@ $item=[
    href - ссылка
    title - содержание (то что будет между li)
  ]
+part($part) - путь для элемента шаблона. к примеру {% include parts('breadcrumbs') %}

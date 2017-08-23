@@ -193,7 +193,7 @@
                         <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
                         {% endif %}
                         {% if user_id %}
-                        <a href="#reviewstore" class="btn btn-ghost btn-accent btn-large ignore-hash">Оставить отзыв</a>
+                        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
                         {% else %}
                         <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
                         <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.

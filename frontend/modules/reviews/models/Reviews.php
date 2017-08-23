@@ -34,11 +34,11 @@ class Reviews extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'title', 'text', 'rating', 'added'], 'required'],
+            [['title', 'text', 'rating'], 'required'],
             [['user_id', 'rating', 'is_active', 'is_top', 'store_id'], 'integer'],
-            [['text'], 'string'],
             [['added'], 'safe'],
-            [['title'], 'string', 'max' => 100],
+            [['title'], 'string', 'max' => 100, 'min' => 5],
+            [['text'], 'string', 'min' => 20],
         ];
     }
 
@@ -50,8 +50,8 @@ class Reviews extends \yii\db\ActiveRecord
         return [
             'uid' => 'Uid',
             'user_id' => 'User ID',
-            'title' => 'Title',
-            'text' => 'Text',
+            'title' => 'Заголовок',
+            'text' => 'Текст отзыва',
             'rating' => 'Rating',
             'added' => 'Added',
             'is_active' => 'Is Active',
@@ -59,6 +59,21 @@ class Reviews extends \yii\db\ActiveRecord
             'store_id' => 'Store ID',
         ];
     }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
+    }
+
+    if ($this->isNewRecord) {
+      $this->user_id =  Yii::$app->user->id;
+      $this->added = date('Y-m-d H:i:s');
+    }
+
+    return true;
+
+  }
 
     /**
      *
