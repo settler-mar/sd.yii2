@@ -91,9 +91,6 @@ class AdminController extends Controller
          'cpa',
          'storeActions.tariffs.rates'])
          ->all();
-      foreach ($tariffs as $q=>$y)
-       d($y->storeActions);
-     // ddd(22);
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
