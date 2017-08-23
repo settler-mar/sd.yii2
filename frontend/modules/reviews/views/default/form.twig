@@ -1,0 +1,55 @@
+<div class="feedback popup-content" style="opacity: 1;">
+    <h3>
+        {% if(shop==0) %}
+            Отзыв о сайте
+        {% else %}
+            Отзыв о магазине {{ store_name }}
+        {% endif %}
+    </h3>
+    <p class="tagline"><b>Внимание:</b> в отзывах запрещается использовать нецензурные и оскорбительные <br>выражения,
+        а также указывать ссылки на внешние интернет-ресурсы.</p>
+    {% set form = active_form_begin({
+        'id' : 'reviews-form',
+        'layout' : 'horizontal',
+        'fieldConfig':{
+            'horizontalCssClasses':{
+                'wrapper':'form-input-group',
+            }
+        },
+        'options' : {
+            'class' : 'feedback-form',
+            'role' : 'form'
+        },
+    }) %}
+
+
+        {{ form.field(model, 'title',{
+            'template' :
+            '{beginWrapper}<i class="fa fa-info"></i>{input}\n{endWrapper}\n{error}'
+        }).textInput({'placeholder':'Заголовок','required':true}) | raw }}
+
+        {{ form.field(model, 'text',{
+            'template' :
+            '{input}\n{error}'
+        }).textarea({'placeholder':'Текст отзыва','required':true}) | raw }}
+
+
+        <div class="rating">
+            <span class="title">Рейтинг:</span>
+            <span class="fa-wrapper">
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </span>
+        </div>
+
+        {{ form.field(model, 'rating',{
+            'template' :
+            '{input}'
+        }).hiddenInput().label(false) | raw}}
+
+        <button type="submit" class="btn-fill">Оставить отзыв</button>
+    {{ active_form_end() }}
+</div>
