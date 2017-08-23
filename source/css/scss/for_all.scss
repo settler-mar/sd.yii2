@@ -234,6 +234,10 @@ table .status_bg_1 {
 
     .notify_content{
       padding: 15px 10px;
+
+      h1,h2,h3{
+        margin-top: 0;
+      }
     }
 
     .notify_control{

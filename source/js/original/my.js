@@ -16,4 +16,24 @@ $('body').on('click','a[href=#login],a[href=#registration],a[href=#resetpassword
   },'json')
 });
 
+$(function() {
+  function starNomination(index) {
+    var stars = $(".notify_content .rating .fa-wrapper .fa");
+    stars.removeClass("fa-star").addClass("fa-star-o");
+    for (var i = 0; i < index; i++) {
+      stars.eq(i).removeClass("fa-star-o").addClass("fa-star");
+    }
+  }
+
+  $(document).on("mouseover", ".notify_content .rating .fa-wrapper .fa", function (e) {
+    starNomination($(this).index() + 1);
+  }).on("mouseleave", ".notify_content .rating .fa-wrapper", function (e) {
+    starNomination($(".notify_content input[name=\"Reviews[rating]\"]").val());
+  }).on("click", ".notify_content .rating .fa-wrapper .fa", function (e) {
+    starNomination($(this).index() + 1);
+
+    $(".notify_content input[name=\"Reviews[rating]\"]").val($(this).index() + 1);
+  });
+});
+
 ajaxForm($('.ajax_form'));

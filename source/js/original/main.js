@@ -370,17 +370,17 @@ $(function() {
                                             '.terms' : 'Регистрируясь, я соглашаюсь с <a href="/terms">Правилами</a>',
                                             'input[name=type]' : 'registration'
                                         },*/
-                                        '#givefeedback' : {
+                                        /*'#givefeedback' : {
                                             'h3' : 'Отзыв о сайте',
                                             'input[name=type]' : 'feedback'
-                                        },
+                                        },*/
                                         '#reviewstore' : {
                                             'h3' : 'Отзыв о магазине ' + $("#store-information").attr("data-store-name"),
                                             'input[name=type]' : 'review_' + $("#store-information").attr("data-store-id")
                                         }
                                     };
 
-                            if($.inArray(activeElement, ['#login', '#registration']) != -1) {
+                            /*if($.inArray(activeElement, ['#login', '#registration']) != -1) {
                                 var popupWindow = $("#top").find(".popup_content").find(".sign-up");
                                 popupWindow.find(".social-icon").prepend("" + 
                                         "<div id=\"uLogin6dab3a2d\"" + 
@@ -392,7 +392,7 @@ $(function() {
                                         "<img src=\"/images/account/tw.png\" data-uloginbutton=\"twitter\" alt=\"twitter-ulogin\">" +
                                         "<img src=\"/images/account/ok.png\" data-uloginbutton=\"odnoklassniki\" alt=\"odnoklassniki-ulogin\">" +
                                         "</div>");
-                            }
+                            }*/
                             if($.inArray(activeElement, ['#givefeedback', '#reviewstore']) != -1) {
                                 var popupWindow = $("#top").find(".popup_content").find(".feedback");
                             }
@@ -425,8 +425,8 @@ $(function() {
                       popups = {
                             //'a[href=#login]' : $("#top").find('.popup-login').html(),
                             //'a[href=#registration]' : $("#top").find('.popup-login').html(),
-                            'a[href=#givefeedback]' :  $("#top").find('.popup-givefeedback').html(),
-                            'a[href=#reviewstore]' :  $("#top").find('.popup-givefeedback').html(),
+                            /*'a[href=#givefeedback]' :  $("#top").find('.popup-givefeedback').html(),
+                            'a[href=#reviewstore]' :  $("#top").find('.popup-givefeedback').html(),*/
                             'a[href=#cert]' :  $("#top").find('.popup-cert').html(),
                             //'a[href=#password-recovery]' : $("#top").find('.popup-recovery').html()
                       }
@@ -437,7 +437,7 @@ $(function() {
                     $("#top .popup-sign-up").closest(".popup").next(".popup_close").click();
                 });*/
 
-                $(document).on("mouseover", "#top .popup .feedback.popup-content .rating .fa-wrapper .fa", function(e) {
+                /*$(document).on("mouseover", "#top .popup .feedback.popup-content .rating .fa-wrapper .fa", function(e) {
                       self.starNomination($(this).index() + 1);
                 }).on("mouseleave", "#top .popup .feedback.popup-content .rating .fa-wrapper", function(e) {
                       self.starNomination($("#top .popup .feedback.popup-content input[name=rating]").val());                
@@ -445,7 +445,7 @@ $(function() {
                       self.starNomination($(this).index() + 1);
 
                       $("#top .popup .feedback.popup-content input[name=rating]").val($(this).index() + 1);
-                });
+                });*/
 
                 /*ajax.control.sendFormData("#top .signup-form", "/authorization", "Auth Ajax Error", function(data) {
                     if(data.type == 'registration') {
@@ -477,7 +477,7 @@ $(function() {
         }
     }
 
-    var reviews = {
+    /*var reviews = {
         control: {
             events: function() {
                 // add a comment to the site
@@ -501,7 +501,7 @@ $(function() {
                 });     
             }
         }
-    }
+    }*/
 
     var catalog = {
         control: {
@@ -628,7 +628,7 @@ $(function() {
     popup.control.events();
     header.control.events();
     coupons.control.events();
-    reviews.control.events();
+    //reviews.control.events();
     catalog.control.events();
     favorites.control.events();
 });
