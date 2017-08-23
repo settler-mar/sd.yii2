@@ -140,13 +140,21 @@ $functionsList=[
     });
   },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
-  '_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
+  '_cashback'=> function ($cashback, $currency,$action = 0) use ($currencyIcon) {
+    if($action == 1){
+      $value = preg_replace('/[^0-9\.]/', '', $cashback);
+      $cashback = str_replace($value,$value*2,$cashback);
+    }
     return $cashback . ((strpos($cashback, '%') === false) ? ' ' .
         (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency) : '');
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
-  '_shop_cashback'=> function ($cashback, $currency) use ($currencyIcon) {
-    $value = preg_replace("/[^0-9]/", '', $cashback);
+  '_shop_cashback'=> function ($cashback, $currency, $action = 0) use ($currencyIcon) {
+    $value = preg_replace('/[^0-9\.]/', '', $cashback);
+    if($action == 1){
+      $cashback = str_replace($value,$value*2,$cashback);
+    }
+
     if (intval($value) == 0) {
       return '<i class="red fa fa-heart"></i>';
     } elseif (strpos($cashback, '%') === false) {

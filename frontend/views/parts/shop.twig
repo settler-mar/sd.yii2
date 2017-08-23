@@ -20,10 +20,10 @@
             Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
 
         </a>
-        {% if store.action_id == 1 %}
+        {% if store.action_id != 0 %}
         <a class="cashback-link" href="/stores/{{store.route}}">
 
-            Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
+            Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}</b>
 
         </a>
         {% endif %}

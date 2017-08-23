@@ -200,6 +200,16 @@ class SiteController extends SdController
    *
    * @return mixed
    */
+  public function actionGoto($store=0,$coupon=0)
+  {
+    return 'goto store '.$store.' $coupon '.$coupon;
+  }
+
+  /**
+   * Displays 404 error.
+   *
+   * @return mixed
+   */
   public function action404()
   {
     $this->params['breadcrumbs'][] = '404';

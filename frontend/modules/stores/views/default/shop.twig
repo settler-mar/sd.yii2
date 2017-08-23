@@ -64,14 +64,14 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="cashback {% if current_store.action_id == 1 %}old{% endif %}">
+                <div class="cashback {% if current_store.action_id != 0 %}old{% endif %}">
                     Кэшбэк
                     <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
                 </div>
-                {% if current_store.action_id == 1 %}
+                {% if current_store.action_id != 0 %}
                 <div class="cashback promo">
                     Кэшбэк
-                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
                 </div>
                 {% endif %}
                 {% if current_store.conditions != '' or current_store.is_active==0 %}

@@ -91,17 +91,21 @@ class SdView extends View
     }
 
     //прямого совпадения нет ищем по плейсхолдерам
-    $arr = explode('/', $page);
+    $arr = explode('/', str_replace(':','/',$page));
     $page_t = false;
     if (count($arr) > 2) {
       $page_t = $arr[0] . '/' . $arr[1];
     } elseif (count($arr) > 1) {
       $page_t = $arr[0];
     }
+
     if ($page_t) {
+      if(strpos($page,':')===false){
+        $page_t.='/';
+      };
       $mdataArray = Meta::find()
         ->select(['title', 'description', 'keywords', 'h1', 'content'])
-        ->where(['like', 'page', $page_t . '/*', false])
+        ->where(['like', 'page', $page_t . '*', false])
         ->OrderBy(['page' => SORT_ASC])
         ->asArray()
         ->one();
@@ -116,7 +120,8 @@ class SdView extends View
       return $meta[$page];
     };
 
-    return false;
+    //если ни чего не нашлось подходящего то возвращаем как для index
+    return Yii::$app->params['meta']['index'];
   }
 
   public function afterRender($viewFile, $params, &$output){
