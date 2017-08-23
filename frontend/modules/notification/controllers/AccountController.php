@@ -43,10 +43,13 @@ class AccountController extends \yii\web\Controller
             ->where($where)
             ->orderBy('added DESC');
 
+
         $cacheName = 'account_notifications_' . $type . '_' . \Yii::$app->user->id . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['notifications'] = $pagination->data();
+
+      ddd($data['notifications']);
 
         //помечаем выгруженные строки как прочитанные
         Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));

@@ -72,6 +72,8 @@ class AccountController extends \yii\web\Controller
       $withdraw->user_comment = $request->post('additional-info');
       $withdraw->save();
 
+      Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
+
       return json_encode([
         'error' => false
       ]);

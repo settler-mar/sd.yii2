@@ -214,10 +214,10 @@ $images: "/images";
               &:hover > ul {
                 position: absolute;
                 left: 230px;
-                top: 0px;
+                top: -9px;
                 background-color: #282b37;
                 border-left: 2px solid #20232d;
-                padding: 10px;
+                padding: 10px 0 10px 0;
                 width: 320px;
                 display: block;
               }
@@ -2625,9 +2625,13 @@ ul.faq__list{
 
 .checkbox-blue + label {
   position: relative;
- // display: block;
   padding-left: 30px;
   cursor: pointer;
+  max-width: calc(100vw - 35px);
+  box-sizing: inherit;
+  display: inline-block;
+  margin: auto;
+  line-height: 16px;
 }
 
 .checkbox-blue + label:hover:before {
