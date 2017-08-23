@@ -24,30 +24,30 @@
                                     <p><span>Добавлен:</span> {{store.added}}</p>
                                     <p><span>Посещений:</span> {{store.visit}}</p>
                                     <p><span>Картчка магазина:</span> <a href="/stores/{{store.route}}" target="_blank">перейти</a></p>
-                                    <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true})|raw }}</p>
+                                    <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
                                     <p><span>Logo:</span> <img src=" {{model.logo}} "> </p>
-                                    {{ form.field(model, 'logoImage').fileInput()|raw }}
-                                    <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true})|raw }}</p>
-                                    <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true})|raw }}</p>
+                                    {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
+                                    <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Магазин активен:</span><br>
-                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Заблокирован пользователем','0' : 'Временно не активен','1' : 'Активен'})|raw }}
+                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Заблокирован пользователем','0' : 'Временно не активен','1' : 'Активен'}).label(false)|raw }}
                                     </p>
                                 </div>
                             </div>
-                            <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true})|raw }}</p>
+                            <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
                             <p><span>Краткое описание  (Информация о  ...):</span> <br> <textarea name="short_description" class="visual_editor">{{store.short_description}}</textarea></p>
                             <p>
                                 <span>Описание  (Информация о кэшбэк в ...):</span>
-                                <br> {{ form.field(model, 'description').textarea({'maxlength':true})|raw }}</textarea>
+                                <br> {{ form.field(model, 'description').textarea({'maxlength':true}).label(false)|raw }}</textarea>
                             </p>
-                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true})|raw }}</p>
+                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true}).label(false)|raw }}</p>
                             <input type="hidden" name="type" value="update_main_information">
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
