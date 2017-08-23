@@ -48,8 +48,10 @@ class AccountController extends \yii\web\Controller
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['notifications'] = $pagination->data();
-
-      ddd($data['notifications']);
+        foreach ($data['notifications'] as &$notification){
+          $notification['text'] = Yii::$app->messageParcer->notificationText($notification);
+          $notification['title'] = Yii::$app->messageParcer->notificationTitle($notification);
+        };
 
         //помечаем выгруженные строки как прочитанные
         Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));
