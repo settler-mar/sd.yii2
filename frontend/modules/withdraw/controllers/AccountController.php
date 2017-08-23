@@ -43,6 +43,7 @@ class AccountController extends \yii\web\Controller
       ){
         return json_encode(['error' => ['Не выбран способ вывода денег.']]);
       }
+
       if(
         !$request->post('bill')!= null ||
         (int)$request->post('bill') == 0

@@ -18,42 +18,55 @@ use Yii;
  */
 class Charity extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'cw_charity';
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'cw_charity';
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      [['user_id', 'foundation_id', 'amount', 'added'], 'required'],
+      [['user_id', 'foundation_id', 'is_showed', 'is_listed'], 'integer'],
+      [['amount'], 'number'],
+      [['added'], 'safe'],
+      [['note'], 'string', 'max' => 255],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+      'uid' => 'Uid',
+      'user_id' => 'User ID',
+      'foundation_id' => 'Foundation ID',
+      'amount' => 'Amount',
+      'added' => 'Added',
+      'note' => 'Note',
+      'is_showed' => 'Is Showed',
+      'is_listed' => 'Is Listed',
+    ];
+  }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['user_id', 'foundation_id', 'amount', 'added', 'note'], 'required'],
-            [['user_id', 'foundation_id', 'is_showed', 'is_listed'], 'integer'],
-            [['amount'], 'number'],
-            [['added'], 'safe'],
-            [['note'], 'string', 'max' => 255],
-        ];
+    if ($this->isNewRecord) {
+      $this->user_id = Yii::$app->user->id;
+      $this->added = date('Y-m-d H:i:s');
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'uid' => 'Uid',
-            'user_id' => 'User ID',
-            'foundation_id' => 'Foundation ID',
-            'amount' => 'Amount',
-            'added' => 'Added',
-            'note' => 'Note',
-            'is_showed' => 'Is Showed',
-            'is_listed' => 'Is Listed',
-        ];
-    }
+    return true;
+  }
 }

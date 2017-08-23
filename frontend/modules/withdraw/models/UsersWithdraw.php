@@ -19,46 +19,46 @@ use Yii;
  */
 class UsersWithdraw extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'cw_users_withdraw';
-    }
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'cw_users_withdraw';
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['user_id', 'process_id', 'bill', 'request_date'], 'required'],
-            [['user_id', 'process_id', 'status'], 'integer'],
-            [['amount'], 'number'],
-            [['request_date'], 'safe'],
-            [['user_comment', 'admin_comment'], 'string'],
-            [['bill'], 'string', 'max' => 255],
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      [['user_id', 'process_id', 'bill', 'request_date'], 'required'],
+      [['user_id', 'process_id', 'status'], 'integer'],
+      [['amount'], 'number'],
+      [['request_date'], 'safe'],
+      [['user_comment', 'admin_comment'], 'string'],
+      [['bill'], 'string', 'max' => 255],
+    ];
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'uid' => 'Uid',
-            'user_id' => 'User ID',
-            'process_id' => 'Process ID',
-            'bill' => 'Bill',
-            'amount' => 'Amount',
-            'status' => 'Status',
-            'request_date' => 'Request Date',
-            'user_comment' => 'User Comment',
-            'admin_comment' => 'Admin Comment',
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+      'uid' => 'Uid',
+      'user_id' => 'User ID',
+      'process_id' => 'Process ID',
+      'bill' => 'Bill',
+      'amount' => 'Amount',
+      'status' => 'Status',
+      'request_date' => 'Request Date',
+      'user_comment' => 'User Comment',
+      'admin_comment' => 'Admin Comment',
+    ];
+  }
 
   public function beforeValidate()
   {
@@ -67,11 +67,9 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     }
 
     if ($this->isNewRecord) {
-      $this->user_id =  Yii::$app->user->id;
+      $this->user_id = Yii::$app->user->id;
       $this->request_date = date('Y-m-d H:i:s');
     }
-
     return true;
-
   }
 }
