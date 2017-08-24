@@ -165,6 +165,10 @@ class DefaultController extends SdController
         if (!$store) {
             throw new \yii\web\NotFoundHttpException;
         }
+        if($store->is_active<0){
+          return $this->redirect('/stores');
+        }
+
         $contentData["current_store"] = $store;
         $contentData["current_store.description"] = htmlspecialchars_decode($store->description);
 
@@ -175,8 +179,9 @@ class DefaultController extends SdController
         $coupons = $cache->getOrSet('store_coupons_store_'.$id, function () use ($store) {
             return Coupons::find()
                 ->from(Coupons::tableName(). ' cwc')
-                ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
-                    'cws.currency as store_currency', 'cws.displayed_cashback'])
+              ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+                'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+                'cws.action_id as store_action_id', 'cws.logo as store_image'])
                 ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1], 'cws.uid' => $store->uid])
                 ->orderBy(Coupons::$defaultSort)

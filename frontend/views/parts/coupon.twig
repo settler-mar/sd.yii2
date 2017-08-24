@@ -15,7 +15,7 @@
         </span>
         {% if coupon.store_action_id == 1 %}
         <span>&nbsp;+ кэшбэк
-            {{ _cashback(coupon.store_cashback, coupon.store_currency)|raw }}
+            {{ _cashback(coupon.store_cashback, coupon.store_currency,coupon.store_action_id)|raw }}
         </span>
         {% endif %}
         </p>

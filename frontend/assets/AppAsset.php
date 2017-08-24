@@ -18,43 +18,44 @@ class AppAsset extends AssetBundle
   public $js = [
   ];
   public $depends = [
-      'yii\web\YiiAsset',
-      'yii\bootstrap\BootstrapPluginAsset',
-      'yii\bootstrap\BootstrapAsset',
+    'yii\web\YiiAsset',
+    'yii\bootstrap\BootstrapPluginAsset',
+    'yii\bootstrap\BootstrapAsset',
   ];
 
   public function init()
   {
     parent::init();
 
-    $url=Url::current();
-    $script_version=Yii::$app->params['scriptVersion'];
-    $path_scripts=Yii::$app->params['pathToScript'];
+    $url = Url::current();
+    $script_version = Yii::$app->params['scriptVersion'];
+    $path_scripts = Yii::$app->params['pathToScript'];
 
-    $path=trim($url,'/');
-    $dir=explode('/',$path);
-    $dir=$dir[0];
-    if(isset($path_scripts[$dir])){
-      $path_script=$path_scripts[$dir];
-    }else{
-      $path_script=$path_scripts['default'];
+    $path = trim($url, '/');
+    $dir = explode('/', $path);
+    $dir = $dir[0];
+    if (isset($path_scripts[$dir])) {
+      $path_script = $path_scripts[$dir];
+    } else {
+      $path_script = $path_scripts['default'];
     }
-    
+
     //прописываем js
-    if(isset($path_script['js'])){
-      foreach ($path_script['js'] as $js ){
-        $js=str_replace('{{script_version}}',$script_version,$js);
-        $this->js[]=$js;
+    if (isset($path_script['js'])) {
+      foreach ($path_script['js'] as $js) {
+        $js = str_replace('{{script_version}}', $script_version, $js);
+        $js = str_replace('..', '.', $js);
+        $this->js[] = $js;
       }
     }
 
     //прописываем стили
-    if(isset($path_script['css'])){
-      foreach ($path_script['css'] as $css ){
-        $css=str_replace('{{script_version}}',$script_version,$css);
-        $this->css[]=$css;
+    if (isset($path_script['css'])) {
+      foreach ($path_script['css'] as $css) {
+        $css = str_replace('{{script_version}}', $script_version, $css);
+        $css = str_replace('..', '.', $css);
+        $this->css[] = $css;
       }
     }
-
   }
 }

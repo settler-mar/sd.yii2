@@ -46,9 +46,9 @@
                             <p><span>Краткое описание  (Информация о  ...):</span> <br> <textarea name="short_description" class="visual_editor">{{store.short_description}}</textarea></p>
                             <p>
                                 <span>Описание  (Информация о кэшбэк в ...):</span>
-                                <br> {{ form.field(model, 'description').textarea({'maxlength':true}).label(false)|raw }}</textarea>
+                                <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</textarea>
                             </p>
-                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true}).label(false)|raw }}</p>
+                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
                             <input type="hidden" name="type" value="update_main_information">
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>

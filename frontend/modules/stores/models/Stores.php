@@ -189,6 +189,7 @@ class Stores extends \yii\db\ActiveRecord
     $data = $cache->getOrSet('top_12_stores', function () {
       return self::find()
         ->orderBy('visit DESC')
+        ->where(['is_active' => [0, 1]])
         ->limit(12)
         ->all();
     });
@@ -204,7 +205,10 @@ class Stores extends \yii\db\ActiveRecord
     $cache = Yii::$app->cache;
     $data = $cache->getOrSet('store_by_route_' . $route, function () use ($route) {
       return self::find()
-        ->where(['route' => $route])
+        ->where([
+          'route' => $route,
+          //'is_active' => [0, 1]
+        ])
         ->one();
     });
     return $data;
