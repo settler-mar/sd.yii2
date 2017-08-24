@@ -85,11 +85,9 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-          $store = Stores::findOne($model->store_id);
             return $this->render('update.twig', [
                 'model'=>$model,
-                'promo_store'=>$model,
-                'store' => $store
+                'promo_store'=>$model
             ]);
         }
     }
