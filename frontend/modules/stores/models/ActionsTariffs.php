@@ -51,6 +51,6 @@ class ActionsTariffs extends \yii\db\ActiveRecord
 
   public function getRates()
   {
-    return $this->hasMany(TariffsRates::className(), ['uid' => 'id_tariff']);
+    return $this->hasMany(TariffsRates::className(), ['id_tariff' => 'uid']);
   }
 }

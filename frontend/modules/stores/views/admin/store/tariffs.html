@@ -3,15 +3,15 @@
   <label for="tariff_{{tariff.uid}}">
     {{tariff.name}} ({{tariff.rates | length}})
   </label>
-  <span class="ajax_remove" uid="{{tariff.uid}}" url="/admin/stores/ajax_remove/tariff">Удалить</span>
+  <span class="ajax_remove" uid="{{tariff.uid}}" mode="tariff" url="/admin/stores/ajax_remove/tariff">Удалить</span>
   <div class="acordion_content">
 
     <div class="edit_wrapper ajax_save" uid="{{tariff.uid}}" save_url="/admin/stores/ajax_save/tariff">
       <div class="edit_blk">
-        <p><span>Tariff ID:</span> <br><input type="text" name="id_tariff" value="{{tariff.id_tariff}}"></p>
+        <p><span>Tariff ID:</span> <br><input mode="tariff" type="text" name="id_tariff" value="{{tariff.id_tariff}}"></p>
       </div>
       <div class="edit_blk">
-        <p><span>Tariff name:</span> <br><input type="text" name="name" value="{{tariff.name}}"></p>
+        <p><span>Tariff name:</span> <br><input mode="tariff" type="text" name="name" value="{{tariff.name}}"></p>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
       </tr>
       {% if tariff.rates|length > 0 %}
         {% for rate in tariff.rates %}
-          {% include 'admin/store/rates.html' %}
+          {% include 'store/rates.html' %}
         {% endfor %}
       {% endif %}
     </table>

@@ -119,6 +119,9 @@ $config= [
     'constants' => [
       'class' => 'frontend\modules\constants\Module',
     ],
+    'meta' => [
+      'class' => 'frontend\modules\meta\Module',
+    ],
     'coupons' => [
       'class' => 'frontend\modules\coupons\Module',
     ],

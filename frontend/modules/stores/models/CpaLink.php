@@ -63,4 +63,9 @@ class CpaLink extends \yii\db\ActiveRecord
   {
     return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
   }
+
+  public function getStoreActions()
+  {
+    return $this->hasMany(StoresActions::className(), ['cpa_link_id' => 'id']);
+  }
 }

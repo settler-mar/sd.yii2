@@ -95,4 +95,9 @@ class Payments extends \yii\db\ActiveRecord
     $cpa=CpaLink::findOne(['cpa_id'=>1,'affiliate_id'=>$this->affiliate_id]);
     return $cpa->store;
   }
+
+  public function getCpaLink()
+  {
+    return $this->hasMany(CpaLink::className(), ['spa_id' => 'cpa_id']);
+  }
 }

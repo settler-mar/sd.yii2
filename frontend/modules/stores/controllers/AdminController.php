@@ -2,7 +2,11 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\payments\models\Payments;
+use frontend\modules\stores\models\ActionsTariffs;
 use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\StoresActions;
+use frontend\modules\stores\models\TariffsRates;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
@@ -83,13 +87,10 @@ class AdminController extends Controller
             },
           ])
           ->joinWith('storesActions')->all();*/
-       $tariffs = Cpa::find() -> with([
-         'cpaLink' => function($query)use($model){
-          $query->andWhere(['stores_id' => $model->uid]);
-         },
-         'actions.tariffs.rates'])
+       $tariffs = CpaLink::find() ->where(['stores_id' => $model->uid])-> with([
+         'cpa',
+         'storeActions.tariffs.rates'])
          ->all();
-
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
@@ -127,13 +128,18 @@ class AdminController extends Controller
       ));
 
       if($type=='rate'){
-        $m = \ORM::for_table('cw_tariffs_rates')->create();
-        $m->id_tariff = (int)$post['parent'];
-        if($m->save()){
+        $tariffRate = new TariffsRates();
+        $tariffRate->id_tariff = (int)$post['parent'];
+        $tariffRate->id_rate = 0;
+        $tariffRate->price_s = 0;
+        $tariffRate->size = 0;
+        $tariffRate->our_size = 0;
+        $tariffRate->is_percentage = 0;
+        if($tariffRate->save()){
           $data=array(
             'rate'=>array(
-              'uid'=>$m->uid,
-              'id_tariff'=>$m->id_tariff,
+              'uid'=>$tariffRate->uid,
+              'id_tariff'=>$tariffRate->id_tariff,
               'id_rate'=>'',
               'date_s'=>'0000-00-00',
             )
@@ -143,15 +149,16 @@ class AdminController extends Controller
         }
       }
       if($type=='tariff'){
-        $m = \ORM::for_table('cw_actions_tariffs')->create();
-        $m->id_action = (int)$post['parent'];
-        $m->name = "Новый тариф";
-        if($m->save()){
+        $actionTariffs = new ActionsTariffs();
+        $actionTariffs->id_action = (int)$post['parent'];
+        $actionTariffs->name = "Новый тариф";
+        $actionTariffs->id_tariff = 0;
+        if($actionTariffs->save()){
           $data=array(
             'tariff'=>array(
-              'uid'=>$m->uid,
-              'name'=>$m->name,
-              'id_action'=>$m->id_action,
+              'uid'=>$actionTariffs->uid,
+              'name'=>$actionTariffs->name,
+              'id_action'=>$actionTariffs->id_action,
             )
           );
           echo $twig->render('tariffs.html', $data);
@@ -159,18 +166,20 @@ class AdminController extends Controller
         }
       }
       if($type=='action'){
-        $m = \ORM::for_table('cw_stores_actions')->create();
-        $m->cpa_link_id = (int)$post['parent'];
-        $m->name = "Новое событие";
-        if($m->save()){
+        $storeAction = new StoresActions();
+        $storeAction->cpa_link_id = (int)$post['parent'];
+        $storeAction->name = "Новое событие";
+        $storeAction->action_id = 0;
+        $storeAction->hold_time = 0;
+        if($storeAction->save()){
           $data=array(
             'action'=>array(
-              'uid'=>$m->uid,
-              'name'=>$m->name,
-              'cpa_link_id'=>$m->cpa_link_id,
+              'uid'=>$storeAction->uid,
+              'name'=>$storeAction->name,
+              'cpa_link_id'=>$storeAction->cpa_link_id,
               'type'=>0,
             ),
-            "action_types" => \Cwcashback\Settings::call()->getDictionary('action_type')
+            "action_types" => Yii::$app->params['dictionary']['action_type']
           );
           echo $twig->render('actions.html', $data);
           exit;
@@ -205,8 +214,7 @@ class AdminController extends Controller
   {
 
     $post = Yii::$app->request->post();
-    //return implode(' + ',$post);
-    $type = $post['name'];
+    $type = $post['type'];
     if($type=='rate'){
       return $this->AjaxSaveRate($post);
     }
@@ -242,30 +250,30 @@ class AdminController extends Controller
     }
 
   public function AjaxSaveRate($post){
-    $sql="UPDATE `cw_tariffs_rates` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = TariffsRates::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveCpa($post){
-    $sql="UPDATE `cw_cpa_link` SET `".$post['name']."` = '".$post['value']."' WHERE `id` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = CpaLink::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveAction($post){
-    $sql="UPDATE `cw_stores_actions` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = StoresActions::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
   public function AjaxSaveTariff($post){
-    $sql="UPDATE `cw_actions_tariffs` SET `".$post['name']."` = '".$post['value']."' WHERE `uid` = ".$post['id'];
-    \ORM::raw_execute($sql);
-    echo $sql;
+    $model = ActionsTariffs::findOne($post['id']);
+    $model[$post['name']] = $post['value'];
+    $model->save(false);
     http_response_code(200);
     exit;
   }
@@ -273,28 +281,32 @@ class AdminController extends Controller
   public function AjaxSaveActiveCpa($post){
     $store = Stores::findOne($post['id']);
     $store->active_cpa = $post['value'];
-    return $store->save();
+    return $store->save(false);
   }
 
-  public function AjaxRemove($type,$post){
+  public function actionAjax_remove(){
+    $post = Yii::$app->request->post();
+    $type = $post['type'];
     $todo=false;
-    $post['id']=array($post['id']);
+    //$post['id']=array($post['id']);
     if($type=='store'){
       $todo=true;
       $store_id=$post['id'];
-      $payment= \ORM::forTable("cw_payments")
-        ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
-        ->whereIn("cwsl.stores_id", $store_id)
-        ->findArray();
+      $payment= Payments::find()->with([
+        'cpaLink' => function($query)use($store_id){
+          $query->andWhere(['stores_id' => $store_id]);
+        }])
+        ->asArray()
+        ->all();
       if(count($payment)>0){
         http_response_code(404);
         exit;
       }
-      $cwsl = \ORM::forTable("cw_cpa_link")
+      $cwsl = CpaLink::find()
         ->select('id')
-        ->whereIn("stores_id", $store_id)
-        ->findArray();
+        ->where(['stores_id' => $store_id])
+        ->asArray()
+        ->all();
       if(count($cwsl)>0){
         $type='cpa';
         $post["id"]=[];
@@ -302,60 +314,61 @@ class AdminController extends Controller
           $post["id"][]=$item['id'];
         }
       }
-      $this->Delete($store_id[0]);
+      Stores::deleteAll(['uid' => $store_id]);
+      //$this->Delete($store_id[0]);  !!!!! надо переписать эту функцию для очистки БД от хлама
     }
     if($type=='cpa'){
       $todo=true;
       $cpa_id=$post['id'];
-      $payment= \ORM::forTable("cw_payments")
-        ->tableAlias("cwp")
-        ->join('cw_cpa_link','cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id','cwsl')
-        ->whereIn("cwsl.id", $cpa_id)
-        ->findArray();
+      $payment= Payments::find()
+        ->where(['spa_id'=> $cpa_id])
+        ->asArray()
+        ->all();
       if(count($payment)>0){
         http_response_code(404);
         exit;
       }
-      $cwsl = \ORM::forTable("cw_stores_actions")
+      $storesActions = StoresActions::find()
         ->select('uid')
-        ->whereIn("cpa_link_id", $cpa_id)
-        ->findArray();
-      if(count($cwsl)>0){
+        ->where(["cpa_link_id"=> $cpa_id])
+        ->asArray()
+        ->all();
+      if(count($storesActions)>0){
         $type='action';
         $post["id"]=[];
-        foreach ($cwsl as $item){
+        foreach ($storesActions as $item){
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_cpa_link")
-        ->whereIn("id", $cpa_id)
-        ->delete_many();
+      $tmp = count(CpaLink::find()->all());
+      CpaLink::deleteAll(['id' => $cpa_id]);
+      return $tmp.' '.count(CpaLink::find()->all()).' '.$cpa_id;
     }
     if($type=='action'){
       $todo=true;
       $action_id=$post['id'];
-      $tariffs = \ORM::forTable("cw_actions_tariffs")
+      $actionsTariffs = ActionsTariffs::find()
         ->select('uid')
-        ->whereIn("id_action", $action_id)
-        ->findArray();
-      if(count($tariffs)>0){
+        ->where(['id_action' => $action_id])
+        ->asArray()
+        ->all();
+      if(count($actionsTariffs)>0){
         $type='tariff';
         $post["id"]=[];
-        foreach ($tariffs as $item){
+        foreach ($actionsTariffs as $item){
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_stores_actions")
-        ->whereIn("uid", $action_id)
-        ->delete_many();
+      StoresActions::deleteAll(['uid' => $action_id]);
     }
     if($type=='tariff'){
       $todo=true;
       $tariff_id=$post['id'];
-      $rates = \ORM::forTable("cw_tariffs_rates")
+      $rates = TariffsRates::find()
         ->select('uid')
-        ->whereIn("id_tariff", $tariff_id)
-        ->findArray();
+        ->where(['id_tariff' => $tariff_id])
+        ->asArray()
+        ->all();
       if(count($rates)>0){
         $type='rate';
         $post["id"]=[];
@@ -363,15 +376,11 @@ class AdminController extends Controller
           $post["id"][]=$item['uid'];
         }
       }
-      \ORM::forTable("cw_actions_tariffs")
-        ->whereIn("uid", $tariff_id)
-        ->delete_many();
+      ActionsTariffs::deleteAll(['uid' => $tariff_id]);
     }
     if($type=='rate'){
       $todo=true;
-      \ORM::forTable("cw_tariffs_rates")
-        ->whereIn("uid", $post["id"])
-        ->delete_many();
+      TariffsRates::deleteAll(['uid' => $post["id"]]);
     }
     if($todo){
       http_response_code(200);
