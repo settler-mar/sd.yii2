@@ -10,7 +10,7 @@
                       <li>
                         <div class="action">
                             <div class="logo">
-                                <a href="/stores/{{promo_store.route}}"><img src="/images/logos/{{promo_store.logo}}" alt="{{promo_store.name}}"></a>
+                                <a href="{{promo_store.url}}"><img src="/images/logos/{{promo_store.logo}}" alt="{{promo_store.name}}"></a>
                             </div>
                             <div class="phrase">
                                 <h2>{{promo_store.title|raw}}</h2>
@@ -21,7 +21,7 @@
                       {% endif %}
                       {% if promo_store.show_as == 'image' %}
                       <li class="image-slider" style="background:url(/images/slides/{{promo_store.image}}) center center no-repeat;background-size:cover;position:relative;">
-                        <a href="/stores/{{promo_store.route}}" style="position: absolute;left: 0;top:0;height: 100%;width:100%;"></a>
+                        <a href="{{promo_store.url}}" style="position: absolute;left: 0;top:0;height: 100%;width:100%;"></a>
                       </li>
                       {% endif %}
                       {% if promo_store.show_as == 'html' %}

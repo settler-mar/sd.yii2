@@ -18,7 +18,7 @@ class SliderSearch extends Slider
     public function rules()
     {
         return [
-            [['uid', 'type', 'is_showed', 'store_id'], 'integer'],
+            [['uid', 'type', 'is_showed'], 'integer'],
             [['title', 'description', 'date_start', 'date_end', 'html', 'image', 'show_as'], 'safe'],
         ];
     }
@@ -64,7 +64,6 @@ class SliderSearch extends Slider
             'date_end' => $this->date_end,
             'type' => $this->type,
             'is_showed' => $this->is_showed,
-            'store_id' => $this->store_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
