@@ -79,6 +79,13 @@ class AdminController extends Controller
       else {
         $cpa_list = Cpa::find()->all();
         $categories = CategoriesStores::find()->where(['parent_id'=> $model->uid])->all();
+        /* $categories = \ORM::forTable("cw_stores_to_categories")
+        ->tableAlias("cwsc")
+        ->select("cwsc.*")
+        ->select("cwcs.name", "category_name")
+        ->join("cw_categories_stores", "cwcs.uid = cwsc.category_id", "cwcs")
+        ->where("cwsc.store_id", $store["uid"])
+        ->findArray(); */
         //$cwsl = \ORM::forTable("cw_cpa_link")
        /* $tariffs = Cpa::find()
           ->joinWith([
