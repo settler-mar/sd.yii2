@@ -53,4 +53,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'down_description' => 'Down Description',
         ];
     }
+
+    public function getChildrens(){
+      return CategoriesStores::find()->where(['parent_id' => $this->uid])->all();
+    }
 }
