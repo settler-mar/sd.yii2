@@ -124,7 +124,6 @@ class SdUrlRule implements UrlRuleInterface
         return ['site/static-page', $params];
       };
     }
-
     return [implode('/', $parameters), $params];
   }
 
@@ -172,7 +171,6 @@ class SdUrlRule implements UrlRuleInterface
     if($route[0]=='default'){
       unset($route[0]);
     }
-
     $url= implode('/',$route);
 
     $params=http_build_query($params);

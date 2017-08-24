@@ -1,0 +1,29 @@
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                {{ use('/yii/widgets/ActiveForm') }}
+                <div class="meta-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'content').textarea({'rows':6})|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
