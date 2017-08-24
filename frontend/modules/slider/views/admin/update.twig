@@ -1,0 +1,40 @@
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current">
+        <div class="row">
+            {% if promo_store %}
+                <div class="col-md-12">
+                    <div class="slider-form">
+                        {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
+                        <p class="title first">Основная информация</p>
+                        <p><span>UID:</span> {{promo_store.uid}}</p>
+                        <p><span>URL:</span> <br>
+                            {{ form.field(model, 'url').textInput().label(false)|raw }}
+                        <p><span>Название:</span> <br>
+                            {{ form.field(promo_store, 'title').textInput().label(false)|raw}}
+                        </p>
+                        <p><span>Описание:</span> <br> {{ form.field(promo_store, 'description').textarea().label(false)|raw}}</p>
+                        <p><span>Изображение:</span> <br>
+                            {% if promo_store.image != '' %}
+                                <img style="max-width: 300px;" src="/images/slides/{{promo_store.image}}"> <br>
+                            {% endif %}
+                            <input name="image" type="file"></p>
+                        <p><span>HTML:</span> <br> {{ form.field(promo_store, 'html').textarea().label(false)|raw}}</p>
+                        <p><span>Отображать:</span> <br>
+                            {{ form.field(model, 'show_as').dropDownList({'text' : 'Название+Описание','html' : 'HTML','image' : 'Изображение'}).label(false)|raw }}
+                        <p><span>Старт акции:</span> <br>{{ form.field(promo_store, 'date_start').textInput().label(false)|raw}}</p>
+                        <p><span>Окончание акции:</span> <br> {{ form.field(promo_store, 'date_end').textInput().label(false)|raw}}</p>
+                        <p><span>Тип:</span> <br>{{ form.field(promo_store, 'type').textInput().label(false)|raw}}</p>
+                        <p><span>Акция активна (1 - да, 0 - нет):</span> <br>{{ form.field(promo_store, 'is_showed').textInput().label(false)|raw}}</p>
+                        <p>Если акция ставится в статус активной, то нужно обязательно <br>в соответствующем магазине поставить галочку напротив категории "Двойной кэшбэк".</p>
+                        <button type="submit">Изменить</button>
+                    {{ active_form_end() }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="not-found">Акция не найдена.</div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>

@@ -38,7 +38,7 @@ class Slider extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'description', 'date_start', 'date_end', 'html', 'image'], 'required'],
-            [['description', 'html'], 'string'],
+            [['description', 'html','url'], 'string'],
             [['date_start', 'date_end'], 'safe'],
             [['type', 'is_showed', 'store_id'], 'integer'],
             [['title', 'image'], 'string', 'max' => 255],
