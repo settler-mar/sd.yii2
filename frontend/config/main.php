@@ -28,7 +28,7 @@ $config= [
       'password' => '123456',
     ],
     'log' => [
-      'traceLevel' => YII_LOG_LAVEL ? YII_LOG_LAVEL : 0,
+      'traceLevel' => YII_LOG_LEVEL ? YII_LOG_LEVEL : 0,
       'targets' => [
         [
           'class' => 'yii\log\FileTarget',
