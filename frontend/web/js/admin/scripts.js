@@ -4000,9 +4000,9 @@ function closeCustomRoxy(img){
         var post={
           id:options.id,
           value:val,
-          name:options.this.attr('name'),
-          type: options.this.attr('mode')
+          name:options.this.attr('name')
         };
+
         options.this.parent().addClass('ajaxInSaving');
         $.post(options.url,post,function(){
           var options=this;
@@ -4033,14 +4033,13 @@ $(function() {
   function onRemove(){
     $this=$(this);
     post={
-      id:$this.attr('uid'),
-      type:$this.attr('mode')
+      id:$this.attr('uid')
     };
     $.post($this.attr('url'),post,function(data){
-
       if(data && data=='err'){
         alert("Невозможно удалить элемент");
       }
+
       mode=$this.attr('mode');
       if(!mode){
         mode='rm';

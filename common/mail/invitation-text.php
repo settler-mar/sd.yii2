@@ -1,0 +1,1 @@
+Вас приглашают на SecretDiscounter: https://secretdiscounter.ru/?r=<?=$user->uid;?>

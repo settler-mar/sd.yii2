@@ -156,7 +156,7 @@ $(function() {
     var affiliate = {
         control: {
             events: function() {
-                ajax.control.sendFormData("#top .mail-invitation-form", "/account/affiliate", "Mail Invitation Ajax Error", function() {
+                ajax.control.sendFormData("#top .mail-invitation-form", "/account/affiliate/invite", "Mail Invitation Ajax Error", function() {
                     var invitationSuccess = noty({
                         text: "<b>Поздравляем!</b><br>Приглашение было успешно отправлено.",
                         animation: {

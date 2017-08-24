@@ -6,6 +6,7 @@ include_once (__DIR__.'/start_param.php');
 $dict=require (__DIR__.'/dictionary.php');
 
 $config = [
+  'name'=>'SecretDiscounter',
   'language' => 'ru-RU',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
