@@ -71,38 +71,40 @@ class AdminController extends Controller
 
     public function actionUpdate($id)
     {
+      //ddd(Yii::$app->request->post());
       $model = $this->findModel($id);
+      if (isset(Yii::$app->request->post()['category_id'])){
+        StoresToCategories::deleteAll(['store_id'=>$model->uid]);
+        foreach (Yii::$app->request->post()['category_id'] as $category_id){
+          $new_category = new StoresToCategories();
+          $new_category->category_id = $category_id;
+          $new_category->store_id = $model->uid;
+          $new_category->save();
+        }
+      }
       if ($model->load(Yii::$app->request->post())){   // data from request
         $model->save();
         return $this->redirect(['index']);
       }
       else {
         $cpa_list = Cpa::find()->all();
-        $categories = CategoriesStores::find()->where(['parent_id'=> $model->uid])->all();
-        /* $categories = \ORM::forTable("cw_stores_to_categories")
-        ->tableAlias("cwsc")
-        ->select("cwsc.*")
-        ->select("cwcs.name", "category_name")
-        ->join("cw_categories_stores", "cwcs.uid = cwsc.category_id", "cwcs")
-        ->where("cwsc.store_id", $store["uid"])
-        ->findArray(); */
-        //$cwsl = \ORM::forTable("cw_cpa_link")
-       /* $tariffs = Cpa::find()
-          ->joinWith([
-            'cpaLink' => function ($query) use($model) {
-              $query->onCondition(['stores_id' => $model->uid]);
-            },
-          ])
-          ->joinWith('storesActions')->all();*/
+        $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
+        $models = StoresToCategories::find()->asArray()->select('category_id')->where(['store_id'=> $model->uid])->all();
+        $categories = [];
+        foreach ($models as $storeCategory){
+          $categories[] = $storeCategory['category_id'];
+        }
        $tariffs = CpaLink::find() ->where(['stores_id' => $model->uid])-> with([
          'cpa',
          'storeActions.tariffs.rates'])
          ->all();
+       //ddd($categories[0]);
         return $this->render('update', [
             'store' => $model,
             'model' => $model,
             'cpa_list' => $cpa_list,
-            'categories' => $categories,
+            'categories' => $all_categories,
+            'store_categories' => $categories,
             'tariffs' => $tariffs,
           ]);
         }

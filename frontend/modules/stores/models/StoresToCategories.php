@@ -3,7 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use Yii;
-
+use frontend\modules\category_stores\models\CategoryStores;
 /**
  * This is the model class for table "cw_stores_to_categories".
  *
@@ -42,5 +42,10 @@ class StoresToCategories extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
             'store_id' => 'Store ID',
         ];
+    }
+
+    public function getCategories()
+    {
+      return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id']);
     }
 }

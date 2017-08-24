@@ -86,7 +86,6 @@
                                 {% endif %}
                             </div>
                         </div>
-
                         {% if categories|length > 0 %}
                             <p class="title">Категории магазина</p>
                             <form method="post" action="/admin/stores/update?id={{store.uid}}" name="categories-edit-stores">
@@ -96,9 +95,9 @@
                                             <label>
                                                 <input {% if category.uid in store_categories %} checked {% endif %} data-uid="{{category.uid}}" data-parent-id="{{category.parent_id}}" type="checkbox" name="category_id[]" value="{{category.uid}}"><span>{{category.name}}</span>
                                             </label>
-                                            {% if category.items|length > 0 %}
+                                            {% if category.childrens|length > 0 %}
                                                 <ul>
-                                                    {% for category_ch in category.items %}
+                                                    {% for category_ch in category.childrens %}
                                                         <li>
                                                             <label>
                                                                 <input {% if category_ch.uid in store_categories %} checked {% endif %} data-uid="{{category_ch.uid}}" data-parent-id="{{category_ch.parent_id}}" type="checkbox" name="category_id[]" value="{{category_ch.uid}}"><span>{{category_ch.name}}</span>
