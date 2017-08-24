@@ -1,7 +1,6 @@
 <?php
 return  [
   'default'=>[
-    'layout'=>'main.twig',
     'js'=>[
       '/js/jquery-1.11.2.min.js',
       '/js/scripts{{script_version}}.js',
@@ -18,7 +17,6 @@ return  [
     ],
   ],
   'account'=>[
-      'layout'=>'account.twig',
       'js'=>[
         //'/js/jquery-2.1.4.js',
         '/js/account/scripts{{script_version}}.js',
@@ -33,6 +31,15 @@ return  [
         '/css/external/popup.css',
         '/css/account/styles{{script_version}}.css',
       ]
+  ],
+  'goto'=>[
+    'js'=>[
+    ],
+    'css'=>[
+      'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
+      'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+      '/css/notemp/styles{{script_version}}.css',
+    ],
   ],
   'admin'=>[
       'layout'=>'admin.twig',

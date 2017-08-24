@@ -40,8 +40,6 @@ class AppAsset extends AssetBundle
       $path_script=$path_scripts['default'];
     }
     
-    Yii::$app->layout = $path_script['layout'];
-
     //прописываем js
     if(isset($path_script['js'])){
       foreach ($path_script['js'] as $js ){

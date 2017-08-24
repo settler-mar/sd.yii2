@@ -1,7 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\users\models\RegistrationForm;
 use Yii;
 use yii\base\InvalidParamException;
@@ -202,7 +204,48 @@ class SiteController extends SdController
    */
   public function actionGoto($store=0,$coupon=0)
   {
-    return 'goto store '.$store.' $coupon '.$coupon;
+    if(Yii::$app->user->isGuest || ($store==0 && $coupon==0)){
+      return $this->redirect('/stores');
+    }
+
+    $visit=new UsersVisits();
+
+    $data['link']='';
+    if($coupon>0){
+      $visit->source=1;
+      $coupon=Coupons::findOne(['uid'=>$coupon]);
+      if(!$coupon){
+        return $this->redirect('/coupons');
+      }
+      $data['link']=$coupon->goto_link;
+      $store=$coupon->store_id;
+    }
+
+    $store=Stores::findOne(['uid'=>$store]);
+    if(!$store){
+      return $this->redirect('/stores');
+    }
+
+    if($data['link']=='') {
+      $data['link']=$store->cpaLink->affiliate_link;
+    }
+
+    $data['store']=$store;
+
+    if (strripos($data['link'], "?") === false) {
+      $data['link'] .= "?";
+    } else {
+      $data['link'] .= "&";
+    }
+    $data['link'].='subid='.Yii::$app->user->id;
+
+    $visit->store_id=$store->uid;
+    $visit->save();
+
+    header("Refresh: 5; url=" . $data['link']);
+
+    $this->layout = '@app/views/layouts/blank.twig';
+    return $this->render('goto',$data);
   }
 
   /**

@@ -74,7 +74,6 @@ class Slider extends \yii\db\ActiveRecord
       $queryResult = self::find()
         ->from(self::tableName() . " cwps")
         ->select(["*", "cwps.description as promo_desc"])
-        //->innerJoin(Stores::tableName(). ' cws', "cwps.store_id = cws.uid")
         ->where(["cwps.is_showed" => 1])
         ->asArray()
         ->all();
