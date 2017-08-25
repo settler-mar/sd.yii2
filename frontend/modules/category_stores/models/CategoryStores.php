@@ -4,6 +4,7 @@ namespace frontend\modules\category_stores\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\cache\models\Cache;
 
 
 /**
@@ -164,6 +165,18 @@ class CategoryStores extends \yii\db\ActiveRecord
         }
 
         return $tree;
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     * Сохраняем изображения после сохранения
+     * данных пользователя
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        Cache::clearName('catalog_stores');
+        Cache::clearName('catalog_stores_count');
     }
 
 

@@ -9,6 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_stores".
@@ -283,6 +284,9 @@ class Stores extends \yii\db\ActiveRecord
   public function afterSave($insert, $changedAttributes)
   {
     $this->saveImage();
+
+    Cache::clearName('catalog_stores');
+    Cache::clearName('catalog_stores_count');
   }
 
   /**
@@ -337,4 +341,5 @@ class Stores extends \yii\db\ActiveRecord
     $path = '/images/logo/';
     return $path;
   }
+  
 }
