@@ -87,7 +87,6 @@ class AccountController extends \yii\web\Controller
    */
   public function actionHistory($page=1)
   {
-    $request = Yii::$app->request;
 
     $validator = new \yii\validators\NumberValidator();
     if (!empty($page) && !$validator->validate($page)) {
@@ -107,7 +106,7 @@ class AccountController extends \yii\web\Controller
     $data['withdraw'] = $pagination->data();
 
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('withdraw-history/account', []);
+      $data["pagination"] = $pagination->getPagination('withdraw/account/history', []);
     }
 
     return $this->render('history', $data);
