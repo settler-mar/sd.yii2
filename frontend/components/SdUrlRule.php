@@ -109,7 +109,11 @@ class SdUrlRule implements UrlRuleInterface
       if (isset($parameters[2])) {
         if($parameters[2]=='index'){
           unset($parameters[2]);
-          Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
+          $url='/' . implode('/', $parameters);
+          if(count($params)){
+            $url.='?'.http_build_query($params);
+          }
+          Yii::$app->getResponse()->redirect($url, 301);
           return ['', $params];
         }
         $route[] = $parameters[2];
@@ -147,6 +151,10 @@ class SdUrlRule implements UrlRuleInterface
 
     if($route[0]=='permit'){
       return false;
+    }
+
+    if($route[count($route)-1]=='index'){
+      unset($route[count($route)-1]);
     }
 
     if(count($route)<2){

@@ -30,18 +30,6 @@ class AdminController extends Controller
 
   function beforeAction($action)
   {
-    /*$rule = [
-      $action->controller->id,
-      ucfirst(strtolower($action->controller->module->id)),
-      ucfirst(strtolower($action->id)),
-    ];
-    $rule = implode('', $rule);
-
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can($rule)) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
-    }*/
-
     $this->layout = '@app/views/layouts/admin.twig';
     return true;
   }
@@ -52,7 +40,7 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -115,7 +103,7 @@ class AdminController extends Controller
    */
   public function actionLogin($id)
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserLogin')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserLogin')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -133,7 +121,7 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserCreate')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserCreate')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -177,7 +165,7 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -219,7 +207,7 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -238,7 +226,7 @@ class AdminController extends Controller
    */
   protected function findModel($id)
   {
-    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
