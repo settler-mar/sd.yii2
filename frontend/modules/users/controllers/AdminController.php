@@ -70,6 +70,8 @@ class AdminController extends Controller
       ->select([
         'count(*) as total',
         'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
+        'SUM(sum_pending) as sum_pending',
+        'SUM(cnt_pending) as cnt_pending',
         'SUM(sum_confirmed) as sum_confirmed',
         'SUM(cnt_confirmed) as cnt_confirmed',
         'SUM(sum_from_ref_pending) as sum_from_ref_pending',

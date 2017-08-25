@@ -8,8 +8,15 @@ $dict=require (__DIR__.'/dictionary.php');
 $config = [
   'name'=>'SecretDiscounter',
   'language' => 'ru-RU',
+  'timeZone' => 'Europe/Moscow',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'components' => [
+    'formatter' => [
+      'dateFormat' => 'dd.MM.yyyy',
+      'decimalSeparator' => ',',
+      'thousandSeparator' => ' ',
+      'currencyCode' => 'RUB',
+    ],
     'cache'=>[
       'keyPrefix' => 'sd', // уникальный префикс ключей кэша
     ],
