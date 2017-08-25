@@ -30,18 +30,6 @@ class AdminController extends Controller
 
   function beforeAction($action)
   {
-    /*$rule = [
-      $action->controller->id,
-      ucfirst(strtolower($action->controller->module->id)),
-      ucfirst(strtolower($action->id)),
-    ];
-    $rule = implode('', $rule);
-
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can($rule)) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
-    }*/
-
     $this->layout = '@app/views/layouts/admin.twig';
     return true;
   }
@@ -52,6 +40,10 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
 
     $get=Yii::$app->request->get();
     $query = Users::find();
@@ -73,13 +65,6 @@ class AdminController extends Controller
       $query->andWhere(['like','email',$get['email']]);
     }
 
-    $countQuery = clone $query;
-    $pages = new Pagination(['totalCount' => $countQuery->count()]);
-    $models = $query->offset($pages->offset)
-      ->limit($pages->limit)
-      ->orderBy('uid DESC')
-      ->all();
-
     $totQuery = clone $query;
     $totQuery=$totQuery
       ->select([
@@ -96,6 +81,13 @@ class AdminController extends Controller
       ->asArray()
       ->one();
 
+    $countQuery = clone $query;
+    $pages = new Pagination(['totalCount' => $countQuery->count()]);
+    $models = $query->offset($pages->offset)
+      ->limit($pages->limit)
+      ->orderBy('uid DESC')
+      ->all();
+
     return $this->render('index', [
       'users' => $models,
       'pages' => $pages,
@@ -111,6 +103,11 @@ class AdminController extends Controller
    */
   public function actionLogin($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserLogin')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     Yii::$app->session->set('admin_id',Yii::$app->user->id);
     $user=Users::findOne(['uid'=>$id]);
     Yii::$app->user->login($user);
@@ -124,6 +121,10 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     $model = new Users();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -164,6 +165,11 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -201,6 +207,11 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
@@ -215,6 +226,11 @@ class AdminController extends Controller
    */
   protected function findModel($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     if (($model = Users::findOne($id)) !== null) {
       return $model;
     } else {

@@ -1,0 +1,18 @@
+/home/secretdiscounter.com/web/global/yii
+
+
+@hourly /usr/bin/php /home/secretdiscounter.com/web/global/yii coupons/delete
+@daily /usr/bin/php /home/secretdiscounter.com/web/global/yii coupons/insert
+0 0,12 * * * /usr/bin/php /home/secretdiscounter.com/web/global/yii store
+*/15 * * * * /usr/bin/php /home/secretdiscounter.com/web/global/yii payments
+*/5  * * * * /usr/bin/php /home/secretdiscounter.com/web/global/yii task
+
+
+0 10,14,18 * * * wget -O  /home/secretdiscounter.com/web/general/cron/XML_daily.asp http://www.cbr.ru/scripts/XML_daily.asp
+@weekly /usr/bin/php /srv/secretdiscounter.ru/general/cron/delete.users.mark.php
+@hourly /usr/bin/php /srv/secretdiscounter.ru/general/cron/delete.old.coupons.php
+@daily /usr/bin/php /srv/secretdiscounter.ru/general/cron/insert.coupons.php
+@daily /usr/bin/php /srv/secretdiscounter.ru/general/cron/insert.stores.php
+0 12 * * * /usr/bin/php /srv/secretdiscounter.ru/general/cron/insert.stores.php
+*/15 * * * * /usr/bin/php /srv/secretdiscounter.ru/general/cron/insert.payments.php
+*/5  * * * * /usr/bin/php /srv/secretdiscounter.ru/general/cron/task.list.php

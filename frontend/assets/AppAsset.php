@@ -33,6 +33,7 @@ class AppAsset extends AssetBundle
 
     $path = trim($url, '/');
     $dir = explode('/', $path);
+    $dir = explode('?', $dir[0]);
     $dir = $dir[0];
     if (isset($path_scripts[$dir])) {
       $path_script = $path_scripts[$dir];

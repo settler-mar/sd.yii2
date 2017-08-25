@@ -124,9 +124,9 @@ class DefaultController extends Controller
     $model = new RegistrationForm();
 
     if($request->isPost) {
-      if ($model->load($request->post()) && $model->signup()) {   // уже логинимся или только что зашли?
-
-        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="/account/?new=1"</script>';
+      if ($model->load($request->post()) && $user=$model->signup()) {   // уже логинимся или только что зашли?
+        Yii::$app->user->login($user);
+        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="/account?new=1"</script>';
         return json_encode($data);
       }
     }

@@ -17,6 +17,10 @@ class BalanceCalc extends Component
     if(!is_array($userList) && $userList!=false){
       $userList=explode(',',$userList);
     };
+    if(is_array($userList) && count($userList)==0){
+      $userList=false;
+    }
+
     if(!is_array($type) && $type!=false){
       $type=explode(',',$type);
     };
@@ -109,6 +113,9 @@ class BalanceCalc extends Component
             $ref_id[]=  $user['referrer_id'];
           }
         };
+        if(count($ref_id)==0){
+          return;
+        }
         $sql.=' WHERE uid in ('.implode(',',$ref_id).')';
       }
       Yii::$app->db->createCommand($sql)->execute();

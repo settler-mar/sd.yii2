@@ -28,6 +28,7 @@ $config = [
     ],
     'authManager' => [
       'class' => 'yii\rbac\DbManager',
+      //'cache' => 'yii\caching\FileCache',
     ],
     'sphinx' => [
       'class' => 'yii\sphinx\Connection',
