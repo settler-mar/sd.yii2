@@ -105,7 +105,7 @@
                       <div class="line">
                         <div class="name">Email</div>
                         <div class="value">
-                          <a href="/admin/users/view/{{user.uid}}">{{ _hyphen_email(user.email) | raw}}</a>
+                          <a href="/admin/users/update?id={{user.uid}}">{{ _hyphen_email(user.email) | raw}}</a>
                         </div>
                       </div>
                       <div class="line">
@@ -144,7 +144,7 @@
                         <div class="name">Привел</div>
                         <div class="value">
                           {% if  user.referrer_id>0 %}
-                           <a href="/admin/users?uid={{ user.referrer_id }}">
+                           <a href="/admin/users?ref_id={{ user.referrer_id }}">
                              {{ _hyphen_email(user.drive) | raw}} <wbr>({{ user.referrer_id }})
                            </a>
                           {% else %}
