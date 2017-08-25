@@ -272,6 +272,10 @@
                     <a href="/admin/users/update?id={{user.uid}}">Редактировать</a>
                     <br>
                     <a href="/admin/users/login?id={{user.uid}}">Login</a>
+
+                    <span class="ajax_remove" uid="{{user.uid}}" url="/admin/users/delete">
+                      Удалить
+                    </span>
                     <!--<br>
                     <a class="delete" href="/admin/users/delete?id={{user.uid}}" onclick="if(!confirm('Уверены?')) return false;">Удалить</a>-->
                   </td>
