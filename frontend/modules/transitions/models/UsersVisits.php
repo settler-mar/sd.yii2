@@ -3,6 +3,8 @@
 namespace frontend\modules\transitions\models;
 
 use Yii;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\users\models\Users;
 
 /**
  * This is the model class for table "cw_users_visits".
@@ -50,5 +52,13 @@ class UsersVisits extends \yii\db\ActiveRecord
             'store_id' => 'Store ID',
             'user_ip' => 'User Ip',
         ];
+    }
+
+    public function getStore(){
+      return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+
+    public function getUser(){
+      return $this->hasOne(Users::className(), ['uid' => 'user_id']);
     }
 }
