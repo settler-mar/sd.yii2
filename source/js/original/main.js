@@ -731,8 +731,12 @@ $(function() {
         }
         val=parseNum(val);
 
-        koef=$this.find('input').attr('data-cashback');
-        promo=$this.find('input').attr('data-cashback-promo');
+        koef=$this.find('input').attr('data-cashback').trim();
+        promo=$this.find('input').attr('data-cashback-promo').trim();
+
+        if(koef==promo){
+            promo=0;
+        }
 
         if(koef.indexOf('%')>0){
             result=parseNum(koef)*val*curs/100;
@@ -746,6 +750,7 @@ $(function() {
             }else{
                 promo=parseNum(promo)
             }
+
             if(promo>0) {
                 out = "<span class=old_price>" + result.toFixed(2) + "</span> " + promo.toFixed(2)
             }else{

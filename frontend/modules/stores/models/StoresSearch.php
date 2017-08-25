@@ -52,7 +52,12 @@ class StoresSearch extends Stores
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+          'query' => $query,
+          'sort' => [
+            'defaultOrder' => [
+              'visit' => SORT_DESC,
+            ]
+          ],
         ]);
 
         $this->load($params);
