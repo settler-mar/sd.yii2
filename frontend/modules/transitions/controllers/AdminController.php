@@ -32,7 +32,27 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $transitions = UsersVisits::find()->with(['user','store'])->all();
+      if (Yii::$app->request->post()){
+        if (isset(Yii::$app->request->post()['user_id']))
+        {
+          $transitions = UsersVisits::find()
+            ->with(['user', 'store'])
+            ->where(['user_id' => Yii::$app->request->post()['user_id']])
+            ->all();
+        }else{
+          if (isset(Yii::$app->request->post()['email'])) {
+            $transitions = UsersVisits::find()
+              ->with(['store'])
+              ->joinWith(['user' => function ($q) {
+                return $q->where(['email' => Yii::$app->request->post()['email']]);
+              }])
+              ->all();
+          }
+        }
+      }
+      else {
+        $transitions = UsersVisits::find()->with(['user', 'store'])->all();
+      }
       /*$visits = \ORM::forTable("cw_users_visits")
         ->tableAlias("cuv")
         ->select("cuv.*")
