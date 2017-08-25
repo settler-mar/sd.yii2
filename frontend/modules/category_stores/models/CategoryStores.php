@@ -4,7 +4,7 @@ namespace frontend\modules\category_stores\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\cache\models\Cache;
+use frontend\models\Cache;
 
 
 /**

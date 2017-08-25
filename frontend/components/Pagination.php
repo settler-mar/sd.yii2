@@ -21,8 +21,6 @@ class Pagination
   private $cacheName;
 
   private $dependencyName;
-  
-  private $cacheTime = 86400;
 
   /**
    * Pagination constructor.
@@ -40,7 +38,7 @@ class Pagination
     $cacheNames = explode('_', $cacheName);
     
     //в таблице cw_cache name получаем из двух первых частей названия $cacheName
-    $this->dependencyName = implode('_', [$cacheNames[0], $cacheNames[1]]);
+    $this->dependencyName = $cacheNames[0] . (isset($cacheNames[1]) ? '_' . $cacheNames[1] : '');
     
     $dependency = new yii\caching\DbDependency;
     // для первого запроса (для count) в cw_cache прибавляем '_count'
@@ -49,7 +47,7 @@ class Pagination
     $cache = \Yii::$app->cache;
     $count = $cache->getOrSet($cacheName . '_count', function () {
       return $this->activeRecord->count();
-    }, $this->cacheTime, $dependency);
+    }, $cache->defaultDuration, $dependency);
 
     $page = !empty($options['page']) ? $options['page'] - 1 : 0;
     $this->pagination = new YiiPagination([
@@ -77,7 +75,7 @@ class Pagination
         $data = $data->asArray();
       }
       return $data->all();
-    }, $this->cacheTime, $dependency);
+    }, $cache->defaultDuration, $dependency);
     return $data;
   }
 
