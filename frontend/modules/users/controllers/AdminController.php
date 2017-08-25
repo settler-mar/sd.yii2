@@ -52,6 +52,10 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
 
     $get=Yii::$app->request->get();
     $query = Users::find();
@@ -111,6 +115,11 @@ class AdminController extends Controller
    */
   public function actionLogin($id)
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserLogin')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     Yii::$app->session->set('admin_id',Yii::$app->user->id);
     $user=Users::findOne(['uid'=>$id]);
     Yii::$app->user->login($user);
@@ -124,6 +133,10 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     $model = new Users();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -164,6 +177,11 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -201,6 +219,11 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
@@ -215,6 +238,11 @@ class AdminController extends Controller
    */
   protected function findModel($id)
   {
+    if (ii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     if (($model = Users::findOne($id)) !== null) {
       return $model;
     } else {
