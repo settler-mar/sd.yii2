@@ -7,6 +7,9 @@ use yii\base\Controller;
 class TaskController extends Controller
 {
 
+  /**
+   * Выполнение задание из планировщика
+   */
   public function actionIndex()
   {
     //Обновление данных о платежах
