@@ -85,3 +85,21 @@ $('input[type=file]').on('change',function(evt){
   // Read in the image file as a data URL.
   reader.readAsDataURL(f);
 });
+
+$('body').on('click','a.ajaxFormOpen',function(e){
+  e.preventDefault();
+  href=this.href.split('#');
+  href=href[href.length-1];
+
+  data={
+    buttonYes:false,
+    notyfy_class:"notify_white loading",
+    question:''
+  };
+  notification.alert(data);
+  $.get('/'+href,function(data){
+    $('.notify_box').removeClass('loading');
+    $('.notify_box .notify_content').html(data.html);
+    ajaxForm($('.notify_box .notify_content'));
+  },'json')
+});

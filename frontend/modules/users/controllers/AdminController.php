@@ -65,13 +65,6 @@ class AdminController extends Controller
       $query->andWhere(['like','email',$get['email']]);
     }
 
-    $countQuery = clone $query;
-    $pages = new Pagination(['totalCount' => $countQuery->count()]);
-    $models = $query->offset($pages->offset)
-      ->limit($pages->limit)
-      ->orderBy('uid DESC')
-      ->all();
-
     $totQuery = clone $query;
     $totQuery=$totQuery
       ->select([
@@ -87,6 +80,13 @@ class AdminController extends Controller
       ])
       ->asArray()
       ->one();
+
+    $countQuery = clone $query;
+    $pages = new Pagination(['totalCount' => $countQuery->count()]);
+    $models = $query->offset($pages->offset)
+      ->limit($pages->limit)
+      ->orderBy('uid DESC')
+      ->all();
 
     return $this->render('index', [
       'users' => $models,
