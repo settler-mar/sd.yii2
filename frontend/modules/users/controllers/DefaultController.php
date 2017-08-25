@@ -36,7 +36,6 @@ class DefaultController extends Controller
 
     if($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
-
         $data['html']='Успешная авторизация.<script>location.href="/account"</script>';
         return json_encode($data);
       }

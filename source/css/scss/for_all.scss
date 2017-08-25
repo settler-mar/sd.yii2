@@ -316,7 +316,7 @@ table .status_bg_1 {
 
   .notification_box{
     //box-shadow: #999 0px 0px 5vmax 50vmin inset;
-    padding: 20px;
+    padding: 10px;
     animation-name: notification_box_show;
     animation-delay: 0.0s;
     overflow: auto;
@@ -372,6 +372,7 @@ table .status_bg_1 {
     margin: -5px auto 10px auto;
     width: 530px;
     text-align: center;
+    max-width: calc(100% - 20px);
   }
 }
 

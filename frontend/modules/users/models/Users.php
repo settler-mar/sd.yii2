@@ -360,7 +360,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
    */
   public function validatePassword($password)
   {
-    return Yii::$app->security->validatePassword($password, $this->password_hash);
+    return Yii::$app->security->validatePassword($password, $this->password);
   }
 
   /**
