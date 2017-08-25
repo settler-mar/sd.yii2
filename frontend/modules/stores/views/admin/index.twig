@@ -20,13 +20,19 @@
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,
-                                'columns': [
+
+                            'pager' : {
+                                'firstPageLabel' : true,
+                                'lastPageLabel' : true,
+                                'maxButtonCount':20
+                            },
+                             'columns': [
                                 {'class': '\\yii\\grid\\SerialColumn'},
 
                                 'uid',
                                 'name',
                                 'route',
-                                'alias:ntext',
+                                'local_name',
                                 'url:url',
                                 'visit',
                                 'is_active',

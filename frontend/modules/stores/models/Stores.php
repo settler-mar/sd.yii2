@@ -107,7 +107,7 @@ class Stores extends \yii\db\ActiveRecord
       'hold_time' => 'Hold Time',
       'is_active' => 'Is Active',
       'short_description' => 'Short Description',
-      'local_name' => 'Local Name',
+      'local_name' => 'Альтернативное название',
       'active_cpa' => 'Active Cpa',
       'percent' => 'Percent',
       'action_id' => 'Action ID',

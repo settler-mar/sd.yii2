@@ -58,7 +58,14 @@ class StoresSearch extends Stores
               'visit' => SORT_DESC,
             ]
           ],
+          'pagination' => [
+            //'pageSize' => 40,
+            'pageSize' => 40,
+          ],
         ]);
+
+      //ddd($dataProvider->pagination);
+      //$dataProvider->pagination = false; // отключаем пагинацию
 
         $this->load($params);
 
