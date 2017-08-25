@@ -58,7 +58,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       [['birthday', 'last_login', 'added'], 'safe'],
       [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
-      [['email', 'name', '!password', 'salt', 'registration_source'], 'string', 'max' => 255],
+      [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
       [['sex'], 'string', 'max' => 1],
       [['last_ip'], 'string', 'max' => 100],
       [['reg_ip'], 'string', 'max' => 20],
@@ -90,7 +90,6 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'name' => 'Имя',
       'password' => 'Пароль',
       'new_password' => 'Новый пароль',
-      'salt' => 'Salt',
       'birthday' => 'День рождения',
       'sex' => 'Пол',
       'photo' => 'Фото',
@@ -177,7 +176,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     $to_test=array('sum_confirmed','sum_from_ref_confirmed','sum_bonus');
     $total_change=false;
     foreach ($to_test as $t){
-      if($this->attributes[$t]!=$this->oldAttributes[$t]){
+      if(isset($this->attributes[$t]) && $this->attributes[$t]!=$this->oldAttributes[$t]){
         $total_change=true;
         break;
       }

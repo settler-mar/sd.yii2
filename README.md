@@ -148,6 +148,8 @@ helpers/                 вспомогательные библиотеки
 * **ShopEdit** Магазин - редактирование
 * **ShopDelete** Магазин - удаление
 
+Пример миграции для работы с ролями https://github.com/settler-mar/sd.yii2/blob/master/console/migrations/m170807_080513_addRBACrull.php
+
 ## Описание таблиц
 
 Часть данных хранится в словаре application/modules/Cwcashback/Dictionary.php
