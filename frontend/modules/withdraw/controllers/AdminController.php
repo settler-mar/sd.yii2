@@ -39,6 +39,11 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('WithdrawView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new UsersWithdrawSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -85,6 +90,11 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('WithdrawEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
