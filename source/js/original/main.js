@@ -733,6 +733,7 @@ $(function() {
 
         koef=$this.find('input').attr('data-cashback').trim();
         promo=$this.find('input').attr('data-cashback-promo').trim();
+        currency=$this.find('input').attr('data-cashback-currency').trim();
 
         if(koef==promo){
             promo=0;
@@ -741,14 +742,15 @@ $(function() {
         if(koef.indexOf('%')>0){
             result=parseNum(koef)*val*curs/100;
         }else{
-            result=parseNum(koef)
+            curs=parseNum($this.find('[code='+currency+']').val());
+            result=parseNum(koef)*curs
         }
 
         if(parseNum(promo)>0) {
             if(promo.indexOf('%')>0){
                 promo=parseNum(promo)*val*curs/100;
             }else{
-                promo=parseNum(promo)
+                promo=parseNum(promo)*curs
             }
 
             if(promo>0) {

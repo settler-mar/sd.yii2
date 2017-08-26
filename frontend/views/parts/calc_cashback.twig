@@ -12,6 +12,7 @@
           <input
               type="text"
               value="100"
+              data-cashback-currency="{{ current_store.currency }}"
               data-cashback="{{current_store.displayed_cashback}}"
               data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
           >
@@ -19,6 +20,7 @@
             {% for item in curs %}
               <option
                   value="{{item.value}}"
+                  code="{{item.code}}"
                   {% if item.code== current_store.currency %}
                     selected
                   {% endif %}
