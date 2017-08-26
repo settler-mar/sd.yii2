@@ -8,15 +8,15 @@
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="stores-index">
-    <h1>{{ html.encode(this.title) }}</h1>
-    {# include('_search.twig', {'model': searchModel}) #}
-    <p>
-        <a href="/admin/stores/create" class="btn btn-success">{{ 'Create Stores' }}</a>
-    </p>
     <div class="content-wrapper">
         <section>
             <div class="row">
                 <div class="col-md-12">
+                    <h1 style="padding: 0">{{ html.encode(this.title) }}</h1>
+                    {# include('_search.twig', {'model': searchModel}) #}
+                    <p>
+                        <a href="/admin/stores/create" class="btn btn-success">{{ 'Create Stores' }}</a>
+                    </p>
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,

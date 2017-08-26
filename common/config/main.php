@@ -64,6 +64,9 @@ $config = [
         'functions' => $twigFunction,
       ],
     ],
+    'help'=>[
+      'class'=>'common\components\Help',
+    ],
     'view' => [
       'class' => 'yii\web\View',
       'defaultExtension' => 'twig',

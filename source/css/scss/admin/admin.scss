@@ -684,3 +684,18 @@ table.table-users{
         font-weight: bold;
     }
 }
+
+.asc:after{
+    content: "\f15d";
+    font: normal normal normal 14px/1 FontAwesome;
+    margin-left: 3px;
+}
+.desc:after{
+    content: "\f15e";
+    font: normal normal normal 14px/1 FontAwesome;
+    margin-left: 3px;
+}
+
+h1{
+    padding: 0 !important;
+}
