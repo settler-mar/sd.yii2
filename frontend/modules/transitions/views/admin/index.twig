@@ -1,0 +1,54 @@
+<div class="content-wrapper">
+    <section class="account-padding view-list">
+        <div class="row">
+            {% if transitions|length > 0 %}
+                <div class="col-md-12">
+                    <form action="/admin/transitions" method="post">
+                        <input type="text" placeholder="Поиск по User ID" name="user_id">
+                        <button type="submit">Найти</button>
+                    </form>
+
+                    <form action="/admin/transitions" method="post" class="second-form">
+                        <input type="text" placeholder="Поиск по email" name="email">
+                        <button type="submit">Найти</button>
+                    </form>
+                    <table class="table table-transitions">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь (User ID)</th>
+                            <th>Магазин (Shop id ID)</th>
+                            <th>Источник перехода</th>
+                            <th>IP пользователя</th>
+                            <th>Дата перехода</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for transition in transitions %}
+                            <tr>
+                                <td>{{transition.uid}}</td>
+                                <td>
+                                    <a href="/admin/users/update?id={{transition.user_id}}">{{transition.user.email}} ({{transition.user_id}})</a>
+                                </td>
+                                <td><a href="/admin/stores/update?id={{transition.store_id}}">{{transition.store.name}} ({{transition.store_id}})</a></td>
+                                {% if transition.source == 1 %}
+                                    <td>Магазин</td>
+                                {% else %}
+                                    <td>Купон</td>
+                                {% endif %}
+                                <td>{{transition.user_ip}}</td>
+                                <td>{{transition.visit_date}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="not-found">На данный момент переходов нет.</div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+    {% include '/parts/pagination.html' %}
+</div>
