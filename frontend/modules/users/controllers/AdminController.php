@@ -76,6 +76,8 @@ class AdminController extends Controller
         'SUM(cnt_confirmed) as cnt_confirmed',
         'SUM(sum_from_ref_pending) as sum_from_ref_pending',
         'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
+        'SUM(sum_to_ref_pending) as sum_to_ref_pending',
+        'SUM(sum_to_ref_confirmed) as sum_to_ref_confirmed',
         'SUM(sum_foundation) as sum_foundation',
         'SUM(sum_withdraw) as sum_withdraw',
         'SUM(sum_bonus) as sum_bonus',
