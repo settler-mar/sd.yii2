@@ -48,13 +48,23 @@
           <div class="line">
             <div class="name">Ref(pending)</div>
             <div class="value">
+              <span>from</span>
               {{ _nf(users_total.sum_from_ref_pending) | raw }} р
+            </div>
+            <div class="value">
+              <span>to</span>
+              {{ _nf(users_total.sum_to_ref_pending) | raw }} р
             </div>
           </div>
           <div class="line">
             <div class="name">Ref(confirmed)</div>
             <div class="value">
+              <span>from</span>
               {{ _nf(users_total.sum_from_ref_confirmed) | raw }} р
+            </div>
+            <div class="value">
+              <span>to</span>
+              {{ _nf(users_total.sum_to_ref_confirmed) | raw }} р
             </div>
           </div>
           <div class="line">
