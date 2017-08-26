@@ -72,7 +72,13 @@ class AdminController extends Controller
           return $out;
         },
         'status' => function ($model, $key, $index, $column) {
-          return Yii::$app->help->colorStatus($model->status);
+          $st=$model->status;
+          if($st==0){
+            $st=1;
+          }elseif($st==1){
+            $st=0;
+          }
+          return Yii::$app->help->colorStatus($st);
         },
         'process' => function ($model, $key, $index, $column) {
           return $model->process_name;
