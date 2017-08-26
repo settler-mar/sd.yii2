@@ -44,7 +44,7 @@ class TaskController extends Controller
   /**
    * пересчет баланса пользователя
    */
-  public function actionUserBalance(array $users)
+  public function actionUserBalance(array $users = [])
   {
     \Yii::$app->balanceCalc->todo($users);
   }
