@@ -41,6 +41,7 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     if ($pathInfo == "") {
+      Yii::$app->params['clear_url']='index';
       return ["site/index", $params];
     }
 
@@ -127,6 +128,7 @@ class SdUrlRule implements UrlRuleInterface
         }
         $route[] = $parameters[2];
       }
+      Yii::$app->params['clear_url']=implode('/', $parameters);
       return [implode('/', $route), $params];
     }
 
@@ -136,6 +138,7 @@ class SdUrlRule implements UrlRuleInterface
         strtoupper(mb_substr($parameters[0], 0, 1)) .
         strtolower(mb_substr($parameters[0], 1));
 
+      Yii::$app->params['clear_url']= $parameters[0];
       if (method_exists($site[0], $action)) {
         return ['site/' . $parameters[0], $params];
       } else {
@@ -143,7 +146,9 @@ class SdUrlRule implements UrlRuleInterface
         return ['site/static-page', $params];
       };
     }
-    return [implode('/', $parameters), $params];
+
+    Yii::$app->params['clear_url']=implode('/', $parameters);
+    return [Yii::$app->params['clear_url'], $params];
   }
 
 
