@@ -48,6 +48,11 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new StoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -64,6 +69,11 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = new Stores();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -77,6 +87,10 @@ class AdminController extends Controller
 
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     //ddd(Yii::$app->request->post());
     $model = $this->findModel($id);
     if (isset(Yii::$app->request->post()['category_id'])) {
@@ -123,6 +137,11 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopDelate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $store = $this->findModel($id);
     if ($store) {
       $store->removeImage(Yii::$app->getBasePath() . '\web' . $store->logo);
