@@ -15,7 +15,7 @@
                 {% if(not(model.isNewRecord)) %}
                     {{ form.field(model, 'uid').textInput({'disabled':true})|raw }}
 
-                    <a href="/admin/users/login?id={{user.uid}}">Login</a>
+                    <a href="/admin/users/login?id={{model.uid}}">Login</a>
                 {% endif %}
 
                 {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}

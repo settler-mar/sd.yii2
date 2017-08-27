@@ -10,40 +10,40 @@ function initEditor(){
     height: 500,
     theme: 'modern',
     plugins: [
-    'advlist autolink lists link image charmap hr anchor pagebreak accordion',
-    'searchreplace wordcount visualblocks visualchars code fullscreen',
-    'insertdatetime media nonbreaking save table contextmenu directionality',
-    'emoticons template paste textcolor colorpicker textpattern imagetools  toc help code'
-  ],
-    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | media | forecolor backcolor | accordion | code help ',
+      'advlist autolink lists link image charmap hr anchor pagebreak accordion clear_br',
+      'searchreplace wordcount visualblocks visualchars code fullscreen',
+      'insertdatetime media nonbreaking save table contextmenu directionality',
+      'emoticons template paste textcolor colorpicker textpattern imagetools  toc help code'
+    ],
+    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | media | forecolor backcolor | accordion | clear_br | code help ',
     file_browser_callback: RoxyFileBrowser,
     image_advtab: true,
     content_css : "/plugins/tinymce/content.css",
     style_formats: [
-    { title: 'Headers', items: [
-      { title: 'h1', block: 'h1' },
-      { title: 'h2', block: 'h2' },
-      { title: 'h3', block: 'h3' },
-      { title: 'h4', block: 'h4' },
-      { title: 'h5', block: 'h5' },
-      { title: 'h6', block: 'h6' }
-    ] },
+      { title: 'Headers', items: [
+        { title: 'h1', block: 'h1' },
+        { title: 'h2', block: 'h2' },
+        { title: 'h3', block: 'h3' },
+        { title: 'h4', block: 'h4' },
+        { title: 'h5', block: 'h5' },
+        { title: 'h6', block: 'h6' }
+      ] },
 
-    { title: 'Blocks', items: [
-      { title: 'p', block: 'p' },
-      { title: 'div', block: 'div' },
-      { title: 'pre', block: 'pre' }
-    ] },
+      { title: 'Blocks', items: [
+        { title: 'p', block: 'p' },
+        { title: 'div', block: 'div' },
+        { title: 'pre', block: 'pre' }
+      ] },
 
-    { title: 'Containers', items: [
-      { title: 'section', block: 'section', wrapper: true, merge_siblings: false },
-      { title: 'article', block: 'article', wrapper: true, merge_siblings: false },
-      { title: 'blockquote', block: 'blockquote', wrapper: true },
-      { title: 'hgroup', block: 'hgroup', wrapper: true },
-      { title: 'aside', block: 'aside', wrapper: true },
-      { title: 'figure', block: 'figure', wrapper: true }
-    ] }
-  ]
+      { title: 'Containers', items: [
+        { title: 'section', block: 'section', wrapper: true, merge_siblings: false },
+        { title: 'article', block: 'article', wrapper: true, merge_siblings: false },
+        { title: 'blockquote', block: 'blockquote', wrapper: true },
+        { title: 'hgroup', block: 'hgroup', wrapper: true },
+        { title: 'aside', block: 'aside', wrapper: true },
+        { title: 'figure', block: 'figure', wrapper: true }
+      ] }
+    ]
   });
   function RoxyFileBrowser(field_name, url, type, win) {
     var roxyFileman = '/plugins/fileman/index.html';
