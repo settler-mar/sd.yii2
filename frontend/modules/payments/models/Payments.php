@@ -62,15 +62,15 @@ class Payments extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'uid' => 'Uid',
+      'uid' => 'ID',
       'is_showed' => 'Is Showed',
-      'action_id' => 'Action ID',
+      'action_id' => 'Код действия',
       'affiliate_id' => 'Affiliate ID',
-      'user_id' => 'User ID',
+      'user_id' => 'Пользователь',
       'order_price' => 'Order Price',
-      'reward' => 'Reward',
+      'reward' => 'Вознаграждение',
       'cashback' => 'Cashback',
-      'status' => 'Status',
+      'status' => 'Статус',
       'click_date' => 'Click Date',
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
@@ -78,7 +78,7 @@ class Payments extends \yii\db\ActiveRecord
       'cpa_id' => 'Spa ID',
       'additional_id' => 'Additional ID',
       'ref_bonus_id' => 'Ref Bonus ID',
-      'ref_bonus' => 'Ref Bonus',
+      'ref_bonus' => 'Кэшбэк бонус',
       'ref_id' => 'Ref ID',
       'loyalty_status' => 'Loyalty Status',
       'order_id' => 'Order ID',
@@ -101,10 +101,12 @@ class Payments extends \yii\db\ActiveRecord
     return $this->store->name;
   }
 
-  public function getStatusString(){
-      if ($this->status == 0) return 'В ожидании';
-      if ($this->status == 1) return 'Отклонён';
-      if ($this->status == 2) return 'Подтвержден';
+  public function getStringStatus()
+  {
+    $string = ['Отменен',
+      'В ожидании',
+      'Подтвержден'];
+    return '<span class="status_'.$this->status.'">'.$string[$this->status].'</span>';
   }
 
   public function getShowedString(){
@@ -113,7 +115,7 @@ class Payments extends \yii\db\ActiveRecord
   }
 
   public function getEmail(){
-    return $this->user->email;
+    return $this->user->email.'('.$this->user->uid.')';
   }
 
   public function getCpaLink()

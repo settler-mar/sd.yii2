@@ -25,11 +25,29 @@
                         {'class': '\\yii\\grid\\SerialColumn'},
                             'uid',
                             'action_id',
-                            {'attribute':'statusString','header':'Статус'},
+                            {
+                                'format':'raw',
+                                'attribute':'status',
+                                'value' : 'stringStatus',
+                                'filter':{
+                                '':'Любой',
+                                1:"В ожидании",
+                                0:"Отменен",
+                                2:"Подтвержден",
+                                },
+                            },
                             'ref_bonus',
                             'reward',
-                            'email',
-                            'storeName',
+                            {
+                                'format':'raw',
+                                'attribute':'user_id',
+                                'value' : 'email'
+                            },
+                            {
+                                'format':'raw',
+                                'header':'Магазин',
+                                'value' : 'storeName'
+                            },
                         {'class': '\\yii\\grid\\ActionColumn'},
                     ],
                 })
