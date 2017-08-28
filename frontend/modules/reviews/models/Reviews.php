@@ -133,14 +133,18 @@ class Reviews extends \yii\db\ActiveRecord
         $data = $cache->getOrSet('reviews_store_rating_'.$storeId, function () use ($storeId) {
             $data = Reviews::find()
                 ->from(Reviews::tableName().' r')
-                ->select(['avg(r.rating) as avgrating'])
+                ->select(['avg(r.rating) as avgrating', 'count(*) as reviews_count'])
                 ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
                 ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
                 ->asArray()
                 ->one();
             $rating = intval($data['avgrating']);
+            $reviewsCount = intval($data['reviews_count']);
 
-            return $rating;
+            return [
+              'value' => $rating,
+              'reviews_count' => $reviewsCount,
+            ];
         });
         return $data;
     }
