@@ -7,10 +7,18 @@
 {% set breadcrumbs = breadcrumbs|merge([{'label': 'Payments', 'url': path(['index'])}]) %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="payments-create">
-    <h1>{{ html.encode(this.title) }}</h1>
-    {{ include('_form.twig', {
-            'model': model,
-        })
-    }}
+<div class="payments-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="payments-create">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                    {{ include('_form.twig', {
+                            'model': model,
+                        })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
