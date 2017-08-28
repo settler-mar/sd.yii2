@@ -9,7 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
-use frontend\models\Cache;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_stores".

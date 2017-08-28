@@ -49,3 +49,5 @@ phpunit.phar
 log/
 /frontend/web/images/logos/
 *.sql
+
+/frontend/export

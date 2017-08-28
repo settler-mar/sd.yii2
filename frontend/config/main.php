@@ -164,6 +164,9 @@ $config= [
     'search' => [
       'class' => 'frontend\modules\search\Module',
     ],
+    'cache' => [
+      'class' => 'frontend\modules\cache\Module',
+    ],
   ],
   'params' => $params,
 ];

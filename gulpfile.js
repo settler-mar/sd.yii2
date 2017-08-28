@@ -116,7 +116,8 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/admin/ajax_remove.js',
     paths.source.js+'/original/for_all.js',
     paths.source.js+'/original/notification.js',
-    paths.source.js+'/original/admin/stores.js'
+    paths.source.js+'/original/admin/stores.js',
+    paths.source.js+'/original/jquery.ajaxForm.js'
   ], '/admin')
 );
 
