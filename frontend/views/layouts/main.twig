@@ -221,8 +221,8 @@
                 <div class="share42init accauntSoc accauntSoc_32"
                      data-url="https://secretdiscounter.ru/"
                      data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
-                     data-title="{{title}}"
-                     data-description="{{description}}">
+                     data-title="{{ html.encode(this.title) }}"
+                     data-description="{{ this.description }}">
                 </div>
                 <script type="text/javascript" src="/js/share42/share42.js"></script>
 

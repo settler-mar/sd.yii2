@@ -19,6 +19,7 @@ class SdView extends View
   public $balance = [];
   public $all_params=[];
   public $first_init= true;
+  public $description;
 
   public function init_param()
   {
@@ -39,7 +40,10 @@ class SdView extends View
 
     $arr = $this->getPageMetadata();
     if($arr && is_array($arr)) {
-      if (isset($arr['description'])) $this->metaTags[] = '<meta name="description" content="' . $arr['description'] . '">';
+      if (isset($arr['description'])) {
+        $this->metaTags[] = '<meta name="description" content="' . $arr['description'] . '">';
+        $this->description = $arr['description'];
+      }
       if (isset($arr['keywords'])) $this->metaTags[] = '<meta name="keywords" content="' . $arr['keywords'] . '">';
       if (isset($arr['title'])) $this->title = $arr['title'];
       if (isset($arr['content'])) $this->contentBD = $arr['content'];
