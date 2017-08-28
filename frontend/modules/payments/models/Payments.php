@@ -4,6 +4,7 @@ namespace frontend\modules\payments\models;
 
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\users\models\Users;
 use Yii;
 
 /**
@@ -96,8 +97,32 @@ class Payments extends \yii\db\ActiveRecord
     return $cpa->store;
   }
 
+  public function getStoreName(){
+    return $this->store->name;
+  }
+
+  public function getStatusString(){
+      if ($this->status == 0) return 'В ожидании';
+      if ($this->status == 1) return 'Отклонён';
+      if ($this->status == 2) return 'Подтвержден';
+  }
+
+  public function getShowedString(){
+      if ($this->status == 0) return 'Скрыт';
+      if ($this->status == 1) return 'Отображен';
+  }
+
+  public function getEmail(){
+    return $this->user->email;
+  }
+
   public function getCpaLink()
   {
     return $this->hasMany(CpaLink::className(), ['spa_id' => 'cpa_id']);
+  }
+
+  public function getUser()
+  {
+    return $this->hasOne(Users::className(), ['uid' => 'user_id']);
   }
 }

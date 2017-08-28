@@ -56,19 +56,20 @@ class PaymentsController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionIndex($options = false)
+  public function actionIndex($options = false, $send_mail = true)
   {
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
     $params = [
       'limit' => 500,
       'offset' => 0,
-      'status_updated_start' => date('d.m.Y H:i:s', time() - 86400 * $days), //последнии 7 дней
-      'status_updated_end' => date('d.m.Y H:i:s')
     ];
 
     if (is_array($options)) {
       $params = array_merge($params, $options);
+    } else {
+      $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $days); //последнии 7 дней
+      $params['status_updated_end'] = date('d.m.Y H:i:s');
     }
 
     $pay_status = array(
@@ -163,7 +164,7 @@ class PaymentsController extends Controller
           $notifi->save();
 
           //Отправляем email если раздрешено у пользователя
-          if ($user->notice_email == 1) {
+          if ($send_mail && $user->notice_email == 1) {
             Yii::$app
               ->mailer
               ->compose(
@@ -250,5 +251,34 @@ class PaymentsController extends Controller
     if (count($users) > 0) {
       Yii::$app->balanceCalc->todo($users, 'cash');
     }
+  }
+
+
+  public function actionClaerDouble()
+  {
+    $sql = 'SELECT uid from `cw_payments` where action_id in (
+            SELECT action_id FROM `cw_payments` group by action_id HAVING count(uid)>1)';
+
+    $payments = Yii::$app->db->createCommand($sql)->queryAll();
+    foreach ($payments as &$payment) {
+      $payment = (int)$payment['uid'];
+    }
+
+    $tot = Payments::find()
+      ->where(['uid' => $payments])
+      ->select([
+        'min(click_date) as min',
+        'max(click_date) as max',
+      ])->asArray()
+      ->one();
+
+    $params = [];
+    $params['date_start'] = date('d.m.Y', strtotime($tot['min']) - 24 * 60 * 60); //последнии 7 дней
+    $params['date_end'] = date('d.m.Y', strtotime($tot['max']) + 24 * 60 * 60);
+
+    Payments::deleteAll(['uid' => $payments]);
+    Notifications::deleteAll(['payment_id'=>$payments]);
+
+    $this->actionIndex($params, false);
   }
 }

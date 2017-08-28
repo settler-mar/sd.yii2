@@ -1,0 +1,58 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="payments-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'uid')|raw }}
+
+    {{ form.field(model, 'is_showed')|raw }}
+
+    {{ form.field(model, 'action_id')|raw }}
+
+    {{ form.field(model, 'affiliate_id')|raw }}
+
+    {{ form.field(model, 'user_id')|raw }}
+
+    {# form.field(model, 'order_price')|raw #}
+
+    {# form.field(model, 'reward')|raw #}
+
+    {# form.field(model, 'cashback')|raw #}
+
+    {# form.field(model, 'status')|raw #}
+
+    {# form.field(model, 'click_date')|raw #}
+
+    {# form.field(model, 'action_date')|raw #}
+
+    {# form.field(model, 'status_updated')|raw #}
+
+    {# form.field(model, 'closing_date')|raw #}
+
+    {# form.field(model, 'cpa_id')|raw #}
+
+    {# form.field(model, 'additional_id')|raw #}
+
+    {# form.field(model, 'ref_bonus_id')|raw #}
+
+    {# form.field(model, 'ref_bonus')|raw #}
+
+    {# form.field(model, 'ref_id')|raw #}
+
+    {# form.field(model, 'loyalty_status')|raw #}
+
+    {# form.field(model, 'order_id')|raw #}
+
+    {# form.field(model, 'shop_percent')|raw #}
+
+    {# form.field(model, 'kurs')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

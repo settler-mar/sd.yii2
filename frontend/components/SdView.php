@@ -79,8 +79,8 @@ class SdView extends View
       return false;
     }
 
-    if(isset(Yii::$app->params['clear_url'])){
-      $page=Yii::$app->params['clear_url'];
+    if(isset(Yii::$app->params['url_no_page'])){
+      $page=Yii::$app->params['url_no_page'];
       $page=str_replace('default/','',$page);
       $page=str_replace('/default','',$page);
     }else {
