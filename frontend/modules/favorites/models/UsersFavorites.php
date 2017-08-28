@@ -2,6 +2,7 @@
 
 namespace frontend\modules\favorites\models;
 
+use frontend\modules\stores\models\Stores;
 use Yii;
 
 /**
@@ -63,11 +64,14 @@ class UsersFavorites extends \yii\db\ActiveRecord
     return true;
   }
 
-  public static function getUserFav(){
+  public static function getUserFav($user_id=false){
+    if(!$user_id){
+      $user_id=Yii::$app->user->id;
+    }
     $cache = Yii::$app->cache;
-    return $cache->getOrSet('account_favorites_'.Yii::$app->user->id, function () {
+    return $cache->getOrSet('account_favorites_'.$user_id, function () use ($user_id){
       $fav = self::find()
-        ->where(['user_id'=>Yii::$app->user->id])
+        ->where(['user_id'=>$user_id])
         ->asArray()
         ->all();
       $out=[];
@@ -76,5 +80,14 @@ class UsersFavorites extends \yii\db\ActiveRecord
       }
       return $out;
     });
+  }
+
+  /**
+   * получить магазин
+   * @return \yii\db\ActiveQuery
+   */
+  public function getStore()
+  {
+    return Stores::find()->where(['uid' => $this->store_id])->asArray()->one();
   }
 }

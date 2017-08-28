@@ -49,7 +49,7 @@ class AccountController extends \yii\web\Controller
       return $this->redirect('/account/dobro/transfer');
     }
 
-    $balans=Yii::$app->user->identity->balabce;
+    $balans=Yii::$app->user->identity->balance;
     $amount=$request->post('amount');
 
     if(

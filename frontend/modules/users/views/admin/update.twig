@@ -14,3 +14,74 @@
         'model': model
     })
 }}
+
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Избранные магазины</h3>
+                {% if fav_store | length >0 %}
+                  <ul>
+                    {% for store in fav_store %}
+                      <li><a href="/admin/stores/update/id:{{ store.uid }}">
+                              {{ store.name }} ({{ store.uid }})
+                      </a></li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                    Пользователь еще не добавлял магазины в избранное
+                {% endif %}
+            </div>
+            <div class="col-md-12">
+                <h3>Рефералы</h3>
+                {% if ref_users | length >0 %}
+                    <table class="table">
+                        <tr>
+                            <th>Друг</th>
+                            <th>Дата регистрации</th>
+                            <th>Визит</th>
+                            <th>IP-авториз</th>
+                            <th>Заказов (c/p)</th>
+                            <th>Для друга (c/p)</th>
+                        </tr>
+                        {% for user in ref_users %}
+                            <tr>
+                                <td class="line">
+                                    <a href="/admin/users/update/id:{{ user.uid }}">
+                                        {{ user.email }} ({{ user.uid }})
+                                    </a>
+                                </td>
+
+                                <td>
+                                    {{ user.added }}
+                                </td>
+                                <td>
+                                    {{user.last_login}}
+                                </td>
+                                <td>
+                                    {% if(user.last_ip_count>1) %}
+                                        <a href="/admin/users?ip={{ user.last_ip }}">{{ user.last_ip }} ({{ user.last_ip_count }})</a>
+                                    {% else %}
+                                        {{ user.last_ip }} ({{ user.last_ip_count }})
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ _nf(user.cnt_confirmed,0) | raw}} /
+                                    {{ _nf(user.cnt_pending,0) | raw }}
+                                </td>
+                                <td class="line">
+                                    {{ _nf(user.sum_to_friend_confirmed) | raw }} р /
+                                    {{ _nf(user.sum_to_friend_pending) | raw }} р
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    {% include '/parts/pagination.twig' %}
+                {% else %}
+                    Пользователь еще не добавлял магазины в избранное
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>

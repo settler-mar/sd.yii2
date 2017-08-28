@@ -67,7 +67,7 @@ $config= [
         'users/<action>/<action>/<action>'=>'404',*/
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
-        'account' => 'users/account/index',
+        'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
 
         'search' => 'search/default/index',

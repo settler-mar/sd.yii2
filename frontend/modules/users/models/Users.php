@@ -191,7 +191,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     }
     if($total_change){
       $statuses=Yii::$app->params['dictionary']['loyalty_status'];
-      $total=$this->balabce['total'];
+      $total=$this->balance['total'];
       $status=$statuses[$this->loyalty_status];
 
       foreach ($statuses as $k => $status_k) {
@@ -403,7 +403,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
 
-  public function getBalabce(){
+  public function getBalance(){
     if(!$this->balans) {
       $confirmed_sum =
         floatval($this->sum_confirmed) +
@@ -503,12 +503,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   }
 
   public function getCurrentBalance(){
-    $bl=$this->getBalabce();
+    $bl=$this->getBalance();
     return $bl['current'];
   }
 
   public function getPending(){
-    $bl=$this->getBalabce();
+    $bl=$this->getBalance();
     return $bl['pending'];
   }
 
