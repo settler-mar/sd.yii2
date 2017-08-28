@@ -625,11 +625,25 @@ td{
 .sum_information{
     font-size: 14px;
 
+
+    &.table_box{
+        width: 32%;
+        min-width: 200px;
+        display: inline-block;
+        border: 1px solid;
+        margin: 0 3px 3px 0;
+    }
+
     .line{
         display: block;
         white-space: nowrap;
         &.sum{
             border-top: 2px solid #ddd;
+        }
+
+        >a{
+            display: block;
+            text-align: center;
         }
     }
     .name{

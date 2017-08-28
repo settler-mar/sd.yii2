@@ -2,6 +2,7 @@
 
 namespace frontend\modules\users\controllers;
 
+use frontend\modules\favorites\models\UsersFavorites;
 use Yii;
 use frontend\modules\users\models\Users;
 use frontend\modules\users\models\UsersSearch;
@@ -10,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\Pagination;
 use yii\helpers\Url;
+use frontend\components\Pagination as SdPagination;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -87,6 +89,8 @@ class AdminController extends Controller
 
     $countQuery = clone $query;
     $pages = new Pagination(['totalCount' => $countQuery->count()]);
+
+
     $models = $query->offset($pages->offset)
       ->limit($pages->limit)
       ->orderBy('uid DESC')
@@ -167,7 +171,7 @@ class AdminController extends Controller
    * @param integer $id
    * @return mixed
    */
-  public function actionUpdate($id)
+  public function actionUpdate($id, $page=1)
   {
     if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
@@ -200,10 +204,32 @@ class AdminController extends Controller
         $model->name=explode('@',$model->email);
         $model->name=$model->name[0];
       }
+
+      $fav_store=UsersFavorites::find()
+        ->where(['user_id'=>$id])
+        ->all();
+
+      foreach ($fav_store as $k => &$store){
+        $store=$store->store;
+        if(!$store){
+          unset ($fav_store[$k]);
+        }
+      }
+
+      $dataBase = Users::find()
+        ->where(['referrer_id'=>$id])
+        ->orderBy(['uid'=>'desc']);
+      $pagination = new SdPagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => true]);
+
+      $ref_users = $pagination->data();
+
       return $this->render('update.twig', [
         'model' => $model,
         'loyalty_status_list' => $loyalty_status_list,
         'bonus_status_list' => $bonus_status_list,
+        'fav_store'=>$fav_store,
+        'ref_users'=>$ref_users,
+        "pagination" => $pagination->getPagination('users/admin/update', ['id'=>$id]),
       ]);
     }
   }
