@@ -81,7 +81,7 @@ class Cache extends \yii\db\ActiveRecord
           ->asArray()
           ->all();
 
-        $dir = \Yii::getAlias('@app') . '/' . \Yii::$app->params['exportDir'];
+        $dir = \Yii::getAlias('@webroot') . '/' . \Yii::$app->params['exportDir'];
         if (!file_exists($dir)) {
             mkdir($dir, '0755', false);
         }
