@@ -137,7 +137,7 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopDelate')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
