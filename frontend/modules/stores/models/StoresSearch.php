@@ -55,11 +55,10 @@ class StoresSearch extends Stores
           'query' => $query,
           'sort' => [
             'defaultOrder' => [
-              'visit' => SORT_DESC,
+              'uid' => SORT_DESC,
             ]
           ],
           'pagination' => [
-            //'pageSize' => 40,
             'pageSize' => 40,
           ],
         ]);

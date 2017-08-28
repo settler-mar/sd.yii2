@@ -155,7 +155,7 @@ $functionsList=[
       }
 
     }
-    return $cashback . $cur;
+    return $cashback .' '. $cur;
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {

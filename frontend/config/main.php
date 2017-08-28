@@ -62,8 +62,8 @@ $config= [
     ],
     'urlManager' => [
       'rules' => [
-        /*'users/<action>'=>'404',
-        'users/<action>/<action>'=>'404',
+        'site/<action>'=>'404',
+        /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
