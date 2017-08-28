@@ -6,6 +6,10 @@ use yii;
 use yii\data\Pagination as YiiPagination;
 use yii\helpers\Url;
 
+/**
+ * Class Pagination
+ * @package frontend\components
+ */
 class Pagination
 {
 
@@ -13,10 +17,11 @@ class Pagination
 
   private $activeRecord;
 
-  private $options = [];
-  //'page' =>
-  //'limit' =>
-  //'asArray' => true
+  private $options = [
+    'page' => 0,
+    'limit' => 50,
+    'asArray' => false
+  ];
 
   private $cacheName;
 
@@ -29,25 +34,31 @@ class Pagination
    * query
    *
    */
-  public function __construct($activeRecord, $cacheName, $options = [])
+  public function __construct($activeRecord, $cacheName = false, $options = [])
   {
     $this->activeRecord = $activeRecord;
-    $this->options = $options;
+    $this->options = array_merge($this->options, $options);
     $this->cacheName = $cacheName;
 
     $cacheNames = explode('_', $cacheName);
     
     //в таблице cw_cache name получаем из двух первых частей названия $cacheName
     $this->dependencyName = $cacheNames[0] . (isset($cacheNames[1]) ? '_' . $cacheNames[1] : '');
-    
-    $dependency = new yii\caching\DbDependency;
-    // для первого запроса (для count) в cw_cache прибавляем '_count'
-    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '_count"';
 
-    $cache = \Yii::$app->cache;
-    $count = $cache->getOrSet($cacheName . '_count', function () {
-      return $this->activeRecord->count();
-    }, $cache->defaultDuration, $dependency);
+    if ($this->cacheName) {
+      //имеется $cacheName - count берём через кеш
+      $dependency = new yii\caching\DbDependency;
+      // для первого запроса (для count) в cw_cache прибавляем '_count'
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '_count"';
+
+      $cache = \Yii::$app->cache;
+      $count = $cache->getOrSet($this->cacheName . '_count', function () {
+        return $this->activeRecord->count();
+      }, $cache->defaultDuration, $dependency);
+    } else {
+      //нет cacheName - count сразу из базы
+      $count = $this->activeRecord->count();
+    }
 
     $page = !empty($options['page']) ? $options['page'] - 1 : 0;
     $this->pagination = new YiiPagination([
@@ -63,11 +74,24 @@ class Pagination
 
   public function data()
   {
-    $cache = Yii::$app->cache;
-    $dependency = new yii\caching\DbDependency;
-    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '"';
+    if ($this->cacheName) {
+      //имеется $cacheName - данные берём через кеш
+      $cache = Yii::$app->cache;
+      $dependency = new yii\caching\DbDependency;
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '"';
 
-    $data = $cache->getOrSet($this->cacheName, function () {
+      $data = $cache->getOrSet($this->cacheName, function () {
+        $data = $this->activeRecord
+          ->limit($this->options['limit'])
+          ->offset($this->pagination->offset);
+        if (!empty($this->options['asArray'])) {
+          $data = $data->asArray();
+        }
+        return $data->all();
+      }, $cache->defaultDuration, $dependency);
+      return $data;
+    } else {
+      //нет cacheName - данные сразу из базы
       $data = $this->activeRecord
         ->limit($this->options['limit'])
         ->offset($this->pagination->offset);
@@ -75,8 +99,8 @@ class Pagination
         $data = $data->asArray();
       }
       return $data->all();
-    }, $cache->defaultDuration, $dependency);
-    return $data;
+    }
+
   }
 
 
