@@ -103,10 +103,12 @@ class MessageParser extends Component
             ->one();
 
           $shop=$this->getShop($payment['cpa_id'],$payment['affiliate_id']);
+
+          $data=array_merge($data_in,$payment,$shop);
         }
 
         $user=$this->getUser($data_in['user_id']);
-        $data=array_merge($data_in,$payment,$shop,$user);
+        $data=array_merge($data_in,$user);
       }else{
         $data=$data_in;
       }
@@ -114,7 +116,7 @@ class MessageParser extends Component
       $data['added']=str_replace('-','/',$data['added']);
       $data['type_txt']=Yii::$app->params['dictionary']['notification_type'][$data['type_id']];
       $data['amount']=number_format($data['amount'],2,'.',' ');
-      if($data_in['payment_id']>0) {
+      if($data['payment_id']>0 && isset($data['order_price'])) {
         $data['order_price'] = number_format($data['order_price'], 2, '.', ' ');
       };
       $this->DataNotification[$uid]=$data;

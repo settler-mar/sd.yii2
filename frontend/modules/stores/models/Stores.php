@@ -104,17 +104,18 @@ class Stores extends \yii\db\ActiveRecord
       'displayed_cashback' => 'Displayed Cashback',
       'conditions' => 'Conditions',
       'added' => 'Added',
-      'visit' => 'Visit',
+      'visit' => 'Посщения',
       'hold_time' => 'Hold Time',
       'is_active' => 'Is Active',
       'short_description' => 'Short Description',
-      'local_name' => 'Local Name',
+      'local_name' => 'Альтернативное название',
       'active_cpa' => 'Active Cpa',
       'percent' => 'Percent',
       'action_id' => 'Action ID',
       'contact_name' => 'Contact Name',
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
+      'category_cnt'=>'Количество категорий'
     ];
   }
 
@@ -141,13 +142,8 @@ class Stores extends \yii\db\ActiveRecord
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
   }
 
-  /**
-   * promo stores
-   * @return $this
-   */
-  public function getPromoStores()
-  {
-    return $this->hasMany(PromoStores::className(), ['store_id' => 'uid']);
+  public function getCategory_cnt(){
+    return StoresToCategories::find()->where(['store_id'=>$this->uid])->count();
   }
 
   /**

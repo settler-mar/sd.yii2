@@ -50,6 +50,10 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ConstantsView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     $searchModel = new ConstantsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -61,6 +65,10 @@ class AdminController extends Controller
 
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ConstantsEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
       $model = $this->findModel($id);
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['index']);

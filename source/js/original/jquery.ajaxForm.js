@@ -18,6 +18,16 @@ function ajaxForm(els) {
     }
   }
 
+  function onFail(){
+    var data=this;
+    form=data.form;
+    wrap=data.wrap;
+    wrap.removeClass('loading');
+    wrap.html('Ошибка обработки формы попробуйте позже');
+    ajaxForm(wrap);
+
+  }
+
   function onSubmit(e){
     e.preventDefault();
     var data=this;
@@ -47,7 +57,12 @@ function ajaxForm(els) {
     form.addClass('loading');
     form.html('');
 
-    $.post(data.url,post,onPost.bind(data),'json');
+    $.post(
+      data.url,
+      post,
+      onPost.bind(data),
+      'json'
+    ).fail(onFail.bind(data));
 
     return false;
   }
@@ -66,6 +81,7 @@ function ajaxForm(els) {
     };
     data.url=form.attr('action') || location.href;
     data.method= form.attr('method') || 'post';
+    form.off('submit');
     form.on('submit', onSubmit.bind(data));
   }
 }

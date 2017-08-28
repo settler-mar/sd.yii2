@@ -52,8 +52,19 @@ class StoresSearch extends Stores
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+          'query' => $query,
+          'sort' => [
+            'defaultOrder' => [
+              'uid' => SORT_DESC,
+            ]
+          ],
+          'pagination' => [
+            'pageSize' => 40,
+          ],
         ]);
+
+      //ddd($dataProvider->pagination);
+      //$dataProvider->pagination = false; // отключаем пагинацию
 
         $this->load($params);
 

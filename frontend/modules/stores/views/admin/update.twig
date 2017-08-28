@@ -43,10 +43,10 @@
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
-                            <p><span>Краткое описание  (Информация о  ...):</span> <br> <textarea name="short_description" class="visual_editor">{{store.short_description}}</textarea></p>
+                            <p><span>Краткое описание  (Информация о  ...):</span> <br> {{ form.field(model, 'short_description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }} </p>
                             <p>
                                 <span>Описание  (Информация о кэшбэк в ...):</span>
-                                <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</textarea>
+                                <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}
                             </p>
                             <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
                             <input type="hidden" name="type" value="update_main_information">

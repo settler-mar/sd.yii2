@@ -1,0 +1,68 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Вывод денег' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="stores-index">
+  <div class="content-wrapper">
+    <section>
+      <div class="row">
+        <div class="col-md-12">
+            <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
+          {{ grid_view_widget({
+              'dataProvider': dataProvider,
+              'pager' : {
+                'firstPageLabel' : true,
+                'lastPageLabel' : true,
+                'maxButtonCount':20
+              },
+              'filterModel': searchModel,
+                'columns': [
+                {'class': '\\yii\\grid\\SerialColumn'},
+                'uid',
+              {
+                  'format':'raw',
+                  'attribute':'user_id',
+                  'value' : table_value.user
+              },
+              {
+                'format':'raw',
+                'attribute':'process_id',
+                'filter':process_list,
+                'value' : table_value.process
+              },
+                'bill',
+                'amount',
+            'request_date',
+                {
+                  'format':'raw',
+                  'attribute':'status',
+                  'filter':{
+                    '':'Любой',
+                    1:"В ожидании",
+                    0:"Отменен",
+                    2:"Подтвержден",
+                },
+                  'value' : table_value.status
+                },
+                {'class': '\\yii\\grid\\ActionColumn',
+                  'template' : '{update}',
+                },
+              ],
+            })
+          }}
+        </div>
+      </div>
+    </section>
+  </div>
+{#
+'status',
+'request_date',
+'user_comment:ntext',
+'admin_comment:ntext'
+#}
+</div>

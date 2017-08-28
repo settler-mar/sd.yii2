@@ -140,16 +140,25 @@ $functionsList=[
     });
   },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
-  '_cashback'=> function ($cashback, $currency,$action = 0) use ($currencyIcon) {
+  '_cashback'=> function ($cashback, $currency='',$action = 0,$mode = 0) use ($currencyIcon) {
     if($action == 1){
       $value = preg_replace('/[^0-9\.]/', '', $cashback);
       $cashback = str_replace($value,$value*2,$cashback);
     }
-    return $cashback . ((strpos($cashback, '%') === false) ? ' ' .
-        (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency) : '');
+    $cur='';
+    if(strpos($cashback, '%') === false){
+      if ($mode == 0) {
+        $cur = (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
+      }
+      if ($mode == 1) {
+        $cur = $currency;
+      }
+
+    }
+    return $cashback .' '. $cur;
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
-  '_shop_cashback'=> function ($cashback, $currency, $action = 0) use ($currencyIcon) {
+  '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
     $value = preg_replace('/[^0-9\.]/', '', $cashback);
     if($action == 1){
       $cashback = str_replace($value,$value*2,$cashback);

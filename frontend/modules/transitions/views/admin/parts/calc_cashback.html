@@ -1,0 +1,46 @@
+<section class="store-information short-calc-cashback">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="text-center">Калькулятор кэшбэка в {{current_store.name}}</h3>
+      </div>
+      <div class="col-md-12 short-description__description less">
+        <label>
+          Стоимость покупки
+        </label>
+        <span class="no_wrap">
+          <input
+              type="text"
+              value="100"
+              data-cashback="{{current_store.displayed_cashback}}"
+              data-cashback-promo="{% if promo_stores[current_store.uid] %}{{promo_stores[current_store.uid].promo_cashback}}{%endif%}"
+          >
+          <select>
+            {% for item in curs %}
+              <option
+                  value="{{item.value}}"
+                  {% if item.code== current_store.currency %}
+                    selected
+                  {% endif %}
+              >
+                {{item.code}}
+              </option>
+            {% endfor %}
+          </select>
+        </span>
+        <div class="calc-result">
+          Ваш кэшбэк для магазина <strong>{{current_store.name}}</strong> составит
+          <span class="no_wrap">
+            до
+            <span class="calc-result_value">0</span>
+            рублей
+            {% if current_store.displayed_cashback ends with '%' %}
+            {% else %}
+              (фиксированная ставка)
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

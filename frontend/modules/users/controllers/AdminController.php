@@ -70,10 +70,14 @@ class AdminController extends Controller
       ->select([
         'count(*) as total',
         'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
+        'SUM(sum_pending) as sum_pending',
+        'SUM(cnt_pending) as cnt_pending',
         'SUM(sum_confirmed) as sum_confirmed',
         'SUM(cnt_confirmed) as cnt_confirmed',
         'SUM(sum_from_ref_pending) as sum_from_ref_pending',
         'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
+        'SUM(sum_to_friend_pending) as sum_to_ref_pending',
+        'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
         'SUM(sum_foundation) as sum_foundation',
         'SUM(sum_withdraw) as sum_withdraw',
         'SUM(sum_bonus) as sum_bonus',
@@ -191,6 +195,11 @@ class AdminController extends Controller
           $bonus_status_list[$k] .= ' для веб мастеров';
         }
       };
+
+      if(strlen($model->name)<1){
+        $model->name=explode('@',$model->email);
+        $model->name=$model->name[0];
+      }
       return $this->render('update.twig', [
         'model' => $model,
         'loyalty_status_list' => $loyalty_status_list,
@@ -205,16 +214,22 @@ class AdminController extends Controller
    * @param integer $id
    * @return mixed
    */
-  public function actionDelete($id)
+  public function actionDelete()
   {
     if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    $this->findModel($id)->delete();
+    $user_id=Yii::$app->request->post('id');
+    if((int)$user_id==0){
+      throw new \yii\web\ForbiddenHttpException('Не указан id пользователя.');
+      return false;
+    }
 
-    return $this->redirect(['index']);
+
+    $this->findModel($user_id)->delete();
+    return true;
   }
 
   /**
@@ -226,11 +241,6 @@ class AdminController extends Controller
    */
   protected function findModel($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
-    }
-
     if (($model = Users::findOne($id)) !== null) {
       return $model;
     } else {
