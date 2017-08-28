@@ -17,6 +17,7 @@ class SdUrlRule implements UrlRuleInterface
   public function parseRequest($manager, $request)
   {
     //http://blog.neattutorials.com/yii2-routing-urlmanager/
+    $validator = new \yii\validators\NumberValidator();
 
     $params = $request->get();
     $pathInfo = $request->getPathInfo();
@@ -32,6 +33,10 @@ class SdUrlRule implements UrlRuleInterface
 
     //проверка реф ссылки
     if (isset($params['r'])) {
+      if (!empty($params['r']) && !$validator->validate($params['r'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
+
       $user = Users::find()->where(['uid' => $params['r']])->one();
       if (Yii::$app->user->isGuest && $user) {
         Yii::$app->session->set('referrer_id', $user->uid);
@@ -56,7 +61,7 @@ class SdUrlRule implements UrlRuleInterface
 
     if ($parameters[0] == 'site') {
       if ($parameters[1] == 'index') {
-        $parameters[1] = '';
+        unset($parameters[1]);;
       }
       Yii::$app->getResponse()->redirect('/' . $parameters[1], 301);
       return ['', $params];
@@ -66,6 +71,11 @@ class SdUrlRule implements UrlRuleInterface
     if (strpos($parameters[count($parameters) - 1], 'page-') !== false) {
       $params['page'] = substr($parameters[count($parameters) - 1], 5);
       unset ($parameters[count($parameters) - 1]);
+
+      if (!empty($params['page']) && !$validator->validate($params['page'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
+
       if ($params['page'] == 1) {
         Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
         return ['', $params];
@@ -74,21 +84,39 @@ class SdUrlRule implements UrlRuleInterface
 
     Yii::$app->params['url_no_page']=implode('/', $parameters);
 
+    //проверяем последний параметр на id
+    if (strpos($parameters[count($parameters) - 1], 'id:') !== false) {
+      $params['id'] = substr($parameters[count($parameters) - 1], 3);
+      if (!empty($params['id']) && !$validator->validate($params['id'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
+      unset ($parameters[count($parameters) - 1]);
+    }
+
     //проверяем последний параметр на store
     if (strpos($parameters[count($parameters) - 1], 'store:') !== false) {
       $params['store'] = substr($parameters[count($parameters) - 1], 6);
+      if (!empty($params['store']) && !$validator->validate($params['store'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
       unset ($parameters[count($parameters) - 1]);
     }
 
     //проверяем последний параметр на category
     if (strpos($parameters[count($parameters) - 1], 'category:') !== false) {
       $params['category'] = substr($parameters[count($parameters) - 1], 9);
+      if (!empty($params['category']) && !$validator->validate($params['category'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
       unset ($parameters[count($parameters) - 1]);
     }
 
     //проверяем последний параметр на coupon
     if (strpos($parameters[count($parameters) - 1], 'coupon:') !== false) {
       $params['coupon'] = substr($parameters[count($parameters) - 1], 7);
+      if (!empty($params['id']) && !$validator->validate($params['coupon'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
       unset ($parameters[count($parameters) - 1]);
     }
 
@@ -189,6 +217,11 @@ class SdUrlRule implements UrlRuleInterface
     if (isset($params['category'])) {
       $route[] = 'category:' . $params['category'];
       unset($params['category']);
+    }
+
+    if (isset($params['id'])) {
+      $route[] = 'id:' . $params['id'];
+      unset($params['id']);
     }
 
     if (isset($params['page'])) {

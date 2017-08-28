@@ -28,8 +28,9 @@ class SdView extends View
       $this->user_id = Yii::$app->user->id;
       $user = Yii::$app->user->identity;
       $this->user = (array)$user->getIterator();
-      $this->balance = $user->getBalabce();
+      $this->balance = $user->getBalance();
 
+      $this->all_params['bonus_status'] = $user->bonus_status_data;
       $this->all_params['user']=$this->user;
       $this->all_params['balance']=$this->balance;
       $this->all_params['user_id']=$this->user_id;

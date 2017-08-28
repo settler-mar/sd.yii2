@@ -34,7 +34,7 @@ class AccountController extends \yii\web\Controller
     $request = Yii::$app->request;
 
     if($request->isAjax && $request->isPost){
-      $balans=Yii::$app->user->identity->balabce;
+      $balans=Yii::$app->user->identity->balance;
       $amount=$request->post('amount');
 
       if(

@@ -5,6 +5,7 @@ namespace frontend\modules\users\controllers;
 use Yii;
 use frontend\modules\users\models\Users;
 use frontend\modules\users\models\UsersSearch;
+use frontend\components\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,14 +33,50 @@ class AccountController extends Controller
    * Lists all Users models.
    * @return mixed
    */
-  public function actionIndex()
+  public function actionIndex($page=1)
+  {
+    $query = Users::find()
+      ->where(['referrer_id'=> Yii::$app->user->id]);
+
+    $totQuery = clone $query;
+    $totQuery=$totQuery
+      ->select([
+        'count(*) as total',
+        'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
+        'SUM(sum_pending) as sum_pending',
+        'SUM(cnt_pending) as cnt_pending',
+        'SUM(sum_confirmed) as sum_confirmed',
+        'SUM(cnt_confirmed) as cnt_confirmed',
+        'SUM(sum_to_friend_pending) as sum_to_ref_pending',
+        'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
+      ])
+      ->asArray()
+      ->one();
+
+    $dataBase = clone $query;
+    $pagination = new Pagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
+
+    //$pages = new Pagination(['totalCount' => $countQuery->count()]);
+    $models = $pagination->data(false);
+
+    return $this->render('index', [
+      'users' => $models,
+      'pagination' => $pagination->getPagination('users/account', []),
+      'users_total'=>$totQuery,
+    ]);
+  }
+  /**
+   * Lists all Users models.
+   * @return mixed
+   */
+  public function actionWelcome()
   {
     $next_tarif = false;
     $next_tarif_min_sum = false;
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
     $status = $statuses[Yii::$app->user->identity->loyalty_status];
 
-    $total = Yii::$app->user->identity->balabce['total'];
+    $total = Yii::$app->user->identity->balance['total'];
 
     $data = [
       'newuser' => Yii::$app->request->get('new'),
@@ -71,7 +108,7 @@ class AccountController extends Controller
       $data["left"] = "";
     }
 
-    return $this->render('index.twig', $data);
+    return $this->render('welcome.twig', $data);
   }
 
   public function actionSettings()
