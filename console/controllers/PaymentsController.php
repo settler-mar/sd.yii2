@@ -277,6 +277,7 @@ class PaymentsController extends Controller
     $params['date_end'] = date('d.m.Y', strtotime($tot['max']) + 24 * 60 * 60);
 
     Payments::deleteAll(['uid' => $payments]);
+    Notifications::deleteAll(['payment_id'=>$payments]);
 
     $this->actionIndex($params, false);
   }
