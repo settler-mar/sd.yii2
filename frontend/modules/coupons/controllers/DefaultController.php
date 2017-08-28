@@ -9,6 +9,7 @@ use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
+use frontend\modules\reviews\models\Reviews;
 
 /**
  * Class DefaultController
@@ -95,6 +96,7 @@ class DefaultController extends SdController
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
     $contentData["coupons"] = $pagination->data();
+    $contentData["store_rating"] = Reviews::storeRating($store);
     $contentData["total_v"] = $pagination->count();
     $contentData["show_coupons"] = count($contentData["coupons"]);
     $contentData["offset_coupons"] = $pagination->offset();
