@@ -72,6 +72,8 @@ class SdUrlRule implements UrlRuleInterface
       }
     }
 
+    Yii::$app->params['url_no_page']=implode('/', $parameters);
+
     //проверяем последний параметр на store
     if (strpos($parameters[count($parameters) - 1], 'store:') !== false) {
       $params['store'] = substr($parameters[count($parameters) - 1], 6);
