@@ -1,47 +1,57 @@
 {{ use('/yii/widgets/ActiveForm') }}
 <div class="users-withdraw-form">
     {% set form = active_form_begin() %}
-
-    <div class="form-group">
-        <label class="control-label" for="userswithdraw-user_id">Пользователь</label>
-        <a
-            href="/admin/users/update?id={{ model.user_id }}"
-            target=_blank
-        >
-            {{ model.user.email }}
-            ({{ model.user_id }})
-        </a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="userswithdraw-user_id">Пользователь</label>
+                <a
+                    href="/admin/users/update?id={{ model.user_id }}"
+                    target=_blank
+                >
+                    {{ model.user.email }}
+                    ({{ model.user_id }})
+                </a>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="userswithdraw-user_id">Платежи</label>
+                <a
+                        href="/admin/payments?PaymentsSearch[user_id]={{ model.user_id }}"
+                        target=_blank
+                >
+                    Просмотр
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label class="control-label" for="userswithdraw-user_id">Платежи</label>
-        <a
-                href="/admin/payments?PaymentsSearch%5id%5D={{ model.user_id }}"
-                target=_blank
-        >
-            Просмотр
-        </a>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.field(model, 'process_id').dropDownList(process_list)|raw }}
+
+            {{ form.field(model, 'bill').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'amount').textInput()|raw }}
+        </div>
+        <div class="col-md-6">
+            {{ form.field(model, 'status').dropDownList({
+                0:"Отменен",
+                1:"В ожидании",
+                2:"Подтвержден",
+            })|raw }}
+
+            {{ form.field(model, 'request_date').textInput()|raw }}
+        </div>
     </div>
-
-        {{ form.field(model, 'process_id').dropDownList(process_list)|raw }}
-
-        {{ form.field(model, 'bill').textInput({'maxlength':true})|raw }}
-
-        {{ form.field(model, 'amount').textInput()|raw }}
-
-        {{ form.field(model, 'status').dropDownList({
-            0:"Отменен",
-            1:"В ожидании",
-            2:"Подтвержден",
-        })|raw }}
-
-        {{ form.field(model, 'request_date').textInput()|raw }}
-
-        {{ form.field(model, 'user_comment').textarea({'rows':6})|raw }}
-
-        {{ form.field(model, 'admin_comment').textarea({'rows':6})|raw }}
-
-    <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.field(model, 'user_comment').textarea({'rows':6})|raw }}
+        </div>
+        <div class="col-md-6">
+            {{ form.field(model, 'admin_comment').textarea({'rows':6})|raw }}
+        </div>
+        <div class="col-md-6">
+            <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+        </div>
     </div>
     {{ active_form_end() }}
 </div>
