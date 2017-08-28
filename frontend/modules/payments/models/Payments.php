@@ -103,10 +103,7 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getStringStatus()
   {
-    $string = ['Отменен',
-      'В ожидании',
-      'Подтвержден'];
-    return '<span class="status_'.$this->status.'">'.$string[$this->status].'</span>';
+    return Yii::$app->help->colorStatus($this->status);
   }
 
   public function getShowedString(){
