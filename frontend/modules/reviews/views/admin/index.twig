@@ -7,41 +7,40 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="payments-index">
-    <div class="content-wrapper">
-        <section>
-            <div class="row">
-                <div class="payments-create">
-                    <h1>{{ html.encode(this.title) }}</h1>
-                    {# include('_search.twig', {'model': searchModel}) #}
-                    <p>
-                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Reviews' }}</a>
-                    </p>
-                    {{ grid_view_widget({
-                        'dataProvider': dataProvider,
-                        'filterModel': searchModel,
-                        'columns': [
-                        {'class': '\\yii\\grid\\SerialColumn'},
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="payments-create">
+                <h1>{{ html.encode(this.title) }}</h1>
+                {# include('_search.twig', {'model': searchModel}) #}
+                <p>
+                    <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать отзыв' }}</a>
+                </p>
+                {{ grid_view_widget({
+                    'dataProvider': dataProvider,
+                    'filterModel': searchModel,
+                    'columns': [
+                    {'class': '\\yii\\grid\\SerialColumn'},
 
-                        'uid',
-                        'user_id',
-                        'title',
-                        'text:ntext',
-                        'rating',
+                    'uid',
+                    'user_id',
+                    'title',
+                    'text:ntext',
+                    'rating',
 
-                        {'class': '\\yii\\grid\\ActionColumn'},
-                        ],
-                    })
-                    }}
-                    {#
-                    'added',
-                    'is_active',
-                    'is_top',
-                    'store_id'
-                    #}
+                    {'class': '\\yii\\grid\\ActionColumn'},
+                    ],
+                })
+                }}
+                {#
+                'added',
+                'is_active',
+                'is_top',
+                'store_id'
+                #}
 
-                </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 </div>
+
