@@ -2,7 +2,7 @@
 
 namespace frontend\modules\category_stores\models;
 
-use Yii;
+use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;
 
@@ -97,6 +97,10 @@ class CategoryStores extends \yii\db\ActiveRecord
     public static function tree($parent_id = 0, $currentCategory = null)
     {
         $cache = Yii::$app->cache;
+        $dependency =  new yii\caching\DbDependency;
+        $dependencyName = 'category_tree';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
         $tree = $cache->getOrSet(
             'category_tree_'.$parent_id.'_'.$currentCategory,
             function () use ($parent_id, $currentCategory) {
@@ -112,7 +116,9 @@ class CategoryStores extends \yii\db\ActiveRecord
                     $cats = [];
                 }
                 return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
-            }
+            },
+            $cache->defaultDuration,
+            $dependency
         );
         return $tree;
     }

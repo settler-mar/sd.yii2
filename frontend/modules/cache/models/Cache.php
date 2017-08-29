@@ -49,6 +49,7 @@ class Cache extends \yii\db\ActiveRecord
 
     /**
      * @param $name
+     * В таблице зависимостей cw_cache обновляем запись с указанным name
      */
     public static function clearName($name)
     {
@@ -61,11 +62,24 @@ class Cache extends \yii\db\ActiveRecord
         $cache->save();
     }
 
+    /**
+     * полная очистка кеш и экспорт
+     */
     public static function clear()
     {
         $cache = \Yii::$app->cache;
         $cache->flush();
         self::makeExport();
+    }
+
+    /**
+     * @param $name
+     * просто удаление ключа
+     */
+    public static function deleteName($name)
+    {
+        $cache = \Yii::$app->cache;
+        $cache->delete($name);
     }
 
     private static function makeExport()

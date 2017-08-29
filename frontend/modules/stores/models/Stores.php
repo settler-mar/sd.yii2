@@ -2,7 +2,7 @@
 
 namespace frontend\modules\stores\models;
 
-use Yii;
+use yii;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
@@ -276,15 +276,21 @@ class Stores extends \yii\db\ActiveRecord
    * @param array $changedAttributes
    * Сохраняем изображения после сохранения
    * данных пользователя
+   * очищаем кеш, связанный с магазинами и данным store
    */
   public function afterSave($insert, $changedAttributes)
   {
     $this->saveImage();
-
-    Cache::clearName('catalog_stores');
-    Cache::clearName('catalog_stores_count');
+    $this->clearCache($this->uid, $this->route);
   }
 
+  /**
+   * очищаем кеш, связанный с магазинами и данным store
+   */
+  public function afterDelete()
+  {
+    $this->clearCache($this->uid, $this->route);
+  }
   /**
    * Сохранение изображения (аватара)
    * пользвоателя
@@ -336,6 +342,26 @@ class Stores extends \yii\db\ActiveRecord
   {
     $path = '/images/logo/';
     return $path;
+  }
+
+  /**
+   * @param $id
+   * @param $route
+   * очистка кеша или зависимостей кеша, связанных с магазинами или конкретным магазином
+   */
+  private function clearCache($id = null, $route = null)
+  {
+    //зависимости
+    Cache::clearName('catalog_stores');
+    Cache::clearName('catalog_stores_count');
+    Cache::clearName('additional_stores');
+    Cache::clearName('category_tree');
+    //ключи
+    Cache::deleteName('total_all_stores');
+    Cache::deleteName('top_12_stores');
+    Cache::deleteName('store_byid_' . $id);
+    Cache::deleteName('store_by_route_' . $route);
+    Cache::deleteName('categories_stores');
   }
   
 }

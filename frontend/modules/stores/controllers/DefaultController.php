@@ -62,20 +62,19 @@ class DefaultController extends SdController
         if (!empty($category)) {
             //категория
             $storesData['current_category'] = CategoryStores::byId($category);
-            $this->params['breadcrumbs'][] = [
-                'label' => $storesData['current_category']->name,
-                'url' => '/stores/category:' . $storesData['current_category']->uid,
-            ];
-
             if ($storesData['current_category'] == null) {
                 throw new \yii\web\NotFoundHttpException;
             }
             if ($storesData['current_category']->is_active == 0) {
                 return $this->redirect('/stores', 301);
             }
-
             //чтобы виджет мог получить current_category_id в main.twig
             \Yii::$app->controller->current_category_id = $category;
+
+            $this->params['breadcrumbs'][] = [
+              'label' => $storesData['current_category']->name,
+              'url' => '/stores/category:' . $storesData['current_category']->uid,
+            ];
 
             $dataBaseData = Stores::find()
                 ->from(Stores::tableName() . ' cws')
@@ -165,8 +164,9 @@ class DefaultController extends SdController
         if (!$store) {
             throw new \yii\web\NotFoundHttpException;
         }
-        if($store->is_active<0){
-          return $this->redirect('/stores');
+        if ($store->is_active<0) {
+            \Yii::info('redirect /stores/ 301');
+            return Yii::$app->getResponse()->redirect('/stores', 301);
         }
 
         $contentData["current_store"] = $store;
@@ -228,6 +228,10 @@ class DefaultController extends SdController
             }
         }
         $cache = Yii::$app->cache;
+        
+        $dependency =  new yii\caching\DbDependency;
+        $dependencyName = 'additional_stores';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
         if (!count($category)) {
             //если нет категорий (гипотетически)
             $additional_stores = $cache->getOrSet('additional_stores_except_'.$store->uid, function () use ($store) {
@@ -238,7 +242,7 @@ class DefaultController extends SdController
                     ->limit(6)
                     ->asArray()
                     ->all();
-            });
+            }, $cache->defaultDuration, $dependency);
         } else {
            //категория есть или одна или много
             $additional_stores = $cache->getOrSet(
@@ -255,7 +259,9 @@ class DefaultController extends SdController
                         ->limit(6)
                         ->asArray()
                         ->all();
-                }
+                },
+                $cache->defaultDuration,
+                $dependency
             );
             $additional_stores_category = CategoryStores::byId($category[0]);
         };
