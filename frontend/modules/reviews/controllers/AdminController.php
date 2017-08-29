@@ -108,7 +108,7 @@ class AdminController extends Controller
     $model = new Reviews();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->uid]);
+      return $this->redirect(['edit', 'id' => $model->uid]);
     } else {
       return $this->render('create.twig', [
         'model' => $model,
