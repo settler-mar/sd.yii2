@@ -3,8 +3,10 @@ $(function() {
   function onRemove(){
     $this=$(this);
     post={
-      id:$this.attr('uid')
+      id:$this.attr('uid'),
+      type:$this.attr('mode')
     };
+    console.log(post);
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
         alert("Невозможно удалить элемент");

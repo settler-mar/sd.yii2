@@ -366,7 +366,7 @@ class AdminController extends Controller
       $todo = true;
       $cpa_id = $post['id'];
       $payment = Payments::find()
-        ->where(['spa_id' => $cpa_id])
+        ->where(['cpa_id' => $cpa_id])
         ->asArray()
         ->all();
       if (count($payment) > 0) {
