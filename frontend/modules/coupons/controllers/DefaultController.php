@@ -72,6 +72,7 @@ class DefaultController extends SdController
       if ($shop->is_active == -1) {
         return $this->redirect('/coupons', 301);
       }
+      $contentData['current_store'] = $shop;
       $cacheName = 'catalog_coupons_store_' . $store . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['affiliate_id'] = $store;
       $databaseObj = Coupons::find()
