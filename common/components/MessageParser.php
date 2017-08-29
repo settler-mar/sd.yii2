@@ -104,7 +104,7 @@ class MessageParser extends Component
 
           $shop=$this->getShop($payment['cpa_id'],$payment['affiliate_id']);
 
-          $data=array_merge($data_in,$payment,$shop);
+          $data_in=array_merge($data_in,$payment,$shop);
         }
 
         $user=$this->getUser($data_in['user_id']);
