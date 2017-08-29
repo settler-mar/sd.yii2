@@ -45,7 +45,7 @@ class Coupons extends \yii\db\ActiveRecord
   public static $sortvars = [
     'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
     'date_start' => ["title" => "Новизне", "title_mobile" => "По новизне"],
-    'date_end' => ["title" => "Сроку действия", "title_mobile" => "По сроку действия", 'sort' => 'ASC'],
+    'date_end' => ["title" => "Сроку действия", "title_mobile" => "По сроку действия", 'order' => 'DESC'],
   ];
 
   /**
@@ -143,7 +143,7 @@ class Coupons extends \yii\db\ActiveRecord
         ->from(self::tableName() . ' cwc')
         ->select(['cws.name', 'cws.uid', 'count(cwc.uid) as count'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-        ->where(['cws.is_active' => 1])
+        ->where(['cws.is_active' => [0, 1]])
         ->groupBy('cwc.store_id')
         ->orderBy('cws.name ASC')
         ->asArray()

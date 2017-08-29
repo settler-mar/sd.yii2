@@ -189,7 +189,9 @@ class DefaultController extends SdController
                 'cws.action_id as store_action_id', 'cws.logo as store_image'])
               ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
               ->where(['cws.uid' => $store->uid])
-              ->orderBy(Coupons::$defaultSort)
+              ->orderBy(Coupons::$defaultSort . ' ' .
+                (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
+                  Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
               ->asArray()
               ->all();
         }, $cache->defaultDuration, $dependency);
