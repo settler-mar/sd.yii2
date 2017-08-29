@@ -2,7 +2,7 @@
 
 namespace frontend\modules\stores\models;
 
-use Yii;
+use yii;
 use frontend\modules\category_stores\models\CategoryStores;
 /**
  * This is the model class for table "cw_stores_to_categories".
@@ -44,8 +44,29 @@ class StoresToCategories extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return yii\db\ActiveQuery
+     */
     public function getCategories()
     {
-      return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id']);
+        return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     * при изменении - очистить кеш категории магазинов
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        CategoryStores::clearCache();
+    }
+
+    /**
+     * очистить кеш категорий магазинов
+     */
+    public function afterDelete()
+    {
+        CategoryStores::clearCache();
     }
 }

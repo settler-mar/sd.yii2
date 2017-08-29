@@ -359,9 +359,13 @@ class Stores extends \yii\db\ActiveRecord
     //ключи
     Cache::deleteName('total_all_stores');
     Cache::deleteName('top_12_stores');
-    Cache::deleteName('store_byid_' . $id);
-    Cache::deleteName('store_by_route_' . $route);
     Cache::deleteName('categories_stores');
+    if ($id) {
+      Cache::deleteName('store_byid_' . $id);
+    }
+    if ($route) {
+      Cache::deleteName('store_by_route_' . $route);
+    }
   }
   
 }

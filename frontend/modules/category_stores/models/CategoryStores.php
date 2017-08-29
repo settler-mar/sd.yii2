@@ -176,13 +176,40 @@ class CategoryStores extends \yii\db\ActiveRecord
     /**
      * @param bool $insert
      * @param array $changedAttributes
-     * Сохраняем изображения после сохранения
-     * данных пользователя
+     * чистим кеш
      */
     public function afterSave($insert, $changedAttributes)
     {
+        self::clearCache($this->uid);
+    }
+
+    /**
+     * чистим кеш
+     */
+    public function afterDelete()
+    {
+        self::clearCache($this->uid);
+    }
+
+    /**
+     * @param $id
+     * очистка кеш
+     */
+    public static function clearCache($id = null)
+    {
+        
+        //зависимости
         Cache::clearName('catalog_stores');
         Cache::clearName('catalog_stores_count');
+        Cache::clearName('additional_stores');
+        Cache::clearName('category_tree');
+        //ключи
+        Cache::deleteName('total_all_stores');
+        Cache::deleteName('top_12_stores');
+        Cache::deleteName('categories_stores');
+        if ($id) {
+            Cache::deleteName('store_category_byid' . $id);
+        }
     }
 
 

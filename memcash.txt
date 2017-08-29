@@ -7,7 +7,7 @@ catalog_promo_stores - PromoStores
 categories_stores - Список категорий
 category_tree_<parent_id>_<currentCategory> - дерево категорий для меню для родительской категории и текущей категории ЗАВИСИМОСТЬ: category_tree
 catalog_stores_<page>_<limit>_<sort>_<order> - магазины ЗАВИСИМОСТЬ: catalog_stores catalog_stores_count
-catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории
+catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории ЗАВИСИМОСТЬ: catalog_stores catalog_stores_count
 store_by_route_<route> - магазин по route
 store_byid_<id> - магазин по Id
 store_coupons_store_<store_id> - купоны для магазина
