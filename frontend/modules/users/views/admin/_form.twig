@@ -12,10 +12,14 @@
             }) %}
 
             <div class="col-md-6">
-                {% if(not(model.isNewRecord)) %}
-                    {{ form.field(model, 'uid').textInput({'disabled':true})|raw }}
 
-                    <a href="/admin/users/login?id={{model.uid}}">Login</a>
+                {% if(not(model.isNewRecord)) %}
+
+                    <label>
+                        ID <a href="/admin/users/login?id={{model.uid}}">Login</a>
+                    </label>
+                    {{ form.field(model, 'uid').textInput({'disabled':true}).label(false)|raw }}
+
                 {% endif %}
 
                 {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
@@ -28,9 +32,9 @@
                 {{ form.field(model, 'birthday').textInput()|raw }}
 
                 {{ form.field(model, 'sex').dropDownList({
-                    '' : 'Не опреднлен',
-                    'f' : 'Женжина',
-                    'm' : 'Мужчина'
+                    '' : 'Не определен',
+                    'f' : 'Женский',
+                    'm' : 'Мужской'
                 })|raw }}
 
                 {{ form.field(model, 'new_photo').fileInput()|raw }}

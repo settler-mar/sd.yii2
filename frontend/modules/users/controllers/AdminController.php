@@ -219,7 +219,7 @@ class AdminController extends Controller
       $dataBase = Users::find()
         ->where(['referrer_id'=>$id])
         ->orderBy(['uid'=>'desc']);
-      $pagination = new SdPagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => true]);
+      $pagination = new SdPagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
 
       $ref_users = $pagination->data();
 
