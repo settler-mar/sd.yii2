@@ -49,14 +49,14 @@ class Reviews extends \yii\db\ActiveRecord
     {
         return [
             'uid' => 'Uid',
-            'user_id' => 'User ID',
+            'user_id' => 'Пользователь',
             'title' => 'Заголовок',
             'text' => 'Текст отзыва',
-            'rating' => 'Rating',
+            'rating' => 'Рейтинг',
             'added' => 'Added',
-            'is_active' => 'Is Active',
-            'is_top' => 'Is Top',
-            'store_id' => 'Store ID',
+            'is_active' => 'Активный',
+            'is_top' => 'Топ отзыв',
+            'store_id' => 'ID магазина',
         ];
     }
 

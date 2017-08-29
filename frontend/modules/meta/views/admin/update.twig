@@ -1,4 +1,4 @@
-{% set title = 'Update Meta: ' ~ model.title %}
+{% set title = 'Обновитьт методаные: ' ~ model.page %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -9,7 +9,6 @@
 {% set breadcrumbs = breadcrumbs|merge(['Update']) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="meta-update">
-    <h1>{{ html.encode(this.title) }}</h1>
         {{ include('_form.twig', {
                 'model': model,
             })

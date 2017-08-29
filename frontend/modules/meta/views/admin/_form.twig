@@ -2,6 +2,7 @@
     <section>
         <div class="row">
             <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
                 <div class="meta-form">
                     {% set form = active_form_begin() %}
