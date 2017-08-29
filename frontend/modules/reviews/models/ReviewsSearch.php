@@ -45,12 +45,21 @@ class ReviewsSearch extends Reviews
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+      $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+        'sort' => [
+          'defaultOrder' => [
+            'uid' => SORT_DESC,
+          ]
+        ],
+        'pagination' => [
+          'pageSize' => 40,
+        ],
+      ]);
 
         $this->load($params);
 
+      $this->isNewRecord=false;
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

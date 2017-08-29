@@ -11,13 +11,13 @@
     <div class="content-wrapper">
         <section>
             <div class="row">
-                <div class="payments-create">
+                <div class="col-md-12">
                     <h1>{{ html.encode(this.title) }}</h1>
+                </div>
                     {{ include('_form.twig', {
                         'model': model,
                     })
                     }}
-                </div>
             </div>
         </section>
     </div>

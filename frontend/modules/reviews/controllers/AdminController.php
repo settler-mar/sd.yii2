@@ -14,17 +14,17 @@ use yii\filters\VerbFilter;
  */
 class AdminController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
+  public function behaviors()
+  {
+    return [
+      'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+          'delete' => ['post'],
+        ],
+      ],
+    ];
+  }
 
   function beforeAction($action)
   {
@@ -32,96 +32,145 @@ class AdminController extends Controller
     return true;
   }
 
-    /**
-     * Lists all Reviews models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new ReviewsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index.twig', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+  /**
+   * Lists all Reviews models.
+   * @return mixed
+   */
+  public function actionIndex()
+  {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
     }
 
-    /**
-     * Displays a single Reviews model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view.twig', [
-            'model' => $this->findModel($id),
-        ]);
+    $searchModel = new ReviewsSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+    return $this->render('index.twig', [
+      'searchModel' => $searchModel,
+      'dataProvider' => $dataProvider,
+      'table_value' => array(
+        'user' => function ($model, $key, $index, $column) {
+          $user = $model->getUser();
+          $out = '<a href="/admin/users/update?id=';
+          $out .= $user->uid;
+          $out .= '" target=_blank>';
+          $out .= $user->email;
+          $out .= ' (';
+          $out .= $user->uid;
+          $out .= ')</a>';
+          return $out;
+        },
+        'rating' => function ($model, $key, $index, $column) {
+          $out='';
+          for($i=0;$i<5;$i++){
+            if($i<$model->rating) {
+              $out .= '<span class="fa fa-star"></span>';
+            }else{
+              $out .= '<span class="fa fa-star-o"></span>';
+            }
+          }
+          return $out;
+        },
+        'store'=>function ($model, $key, $index, $column) {
+          $store = $model->getStore();
+          if(!$store){
+            return 'Общий';
+          }
+          $out = '<a href="/admin/stores/update?id=';
+          $out .= $store->uid;
+          $out .= '" target=_blank>';
+          $out .= $store->name;
+          $out .= ' (';
+          $out .= $store->uid;
+          $out .= ')</a>';
+          return $out;
+        },
+        'is_active' => function ($model, $key, $index, $column) {
+          return $model->is_active==0?"Скрыт":"Активен";
+        },
+      )
+    ]);
+  }
+
+  /**
+   * Creates a new Reviews model.
+   * If creation is successful, the browser will be redirected to the 'view' page.
+   * @return mixed
+   */
+  public function actionCreate()
+  {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
     }
 
-    /**
-     * Creates a new Reviews model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Reviews();
+    $model = new Reviews();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        } else {
-            return $this->render('create.twig', [
-                'model' => $model,
-            ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      return $this->redirect(['view', 'id' => $model->uid]);
+    } else {
+      return $this->render('create.twig', [
+        'model' => $model,
+      ]);
+    }
+  }
+
+  /**
+   * Updates an existing Reviews model.
+   * If update is successful, the browser will be redirected to the 'view' page.
+   * @param integer $id
+   * @return mixed
+   */
+  public function actionUpdate($id)
+  {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
     }
 
-    /**
-     * Updates an existing Reviews model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        } else {
-            return $this->render('update.twig', [
-                'model' => $model,
-            ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      return $this->redirect(['view', 'id' => $model->uid]);
+    } else {
+      return $this->render('update.twig', [
+        'model' => $model,
+      ]);
+    }
+  }
+
+  /**
+   * Deletes an existing Reviews model.
+   * If deletion is successful, the browser will be redirected to the 'index' page.
+   * @param integer $id
+   * @return mixed
+   */
+  public function actionDelete($id)
+  {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
     }
 
-    /**
-     * Deletes an existing Reviews model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    return $this->redirect(['index']);
+  }
 
-    /**
-     * Finds the Reviews model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Reviews the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Reviews::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+  /**
+   * Finds the Reviews model based on its primary key value.
+   * If the model is not found, a 404 HTTP exception will be thrown.
+   * @param integer $id
+   * @return Reviews the loaded model
+   * @throws NotFoundHttpException if the model cannot be found
+   */
+  protected function findModel($id)
+  {
+    if (($model = Reviews::findOne($id)) !== null) {
+      return $model;
+    } else {
+      throw new NotFoundHttpException('The requested page does not exist.');
     }
+  }
 }

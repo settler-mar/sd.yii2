@@ -2,23 +2,58 @@
 <div class="reviews-form">
     {% set form = active_form_begin() %}
 
-        {{ form.field(model, 'user_id').textInput()|raw }}
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label" for="userswithdraw-user_id">
+                Пользователь:
+                <a
+                        href="/admin/users/update?id={{ model.user_id }}"
+                        target=_blank
+                >
+                    {{ model.user.email }}
+                    ({{ model.user_id }})
+                </a>
+            </label>
+            {{ form.field(model, 'user_id').textInput().label(false)|raw }}
+        </div>
 
+        <div class="form-group">
+            <label class="control-label" for="userswithdraw-user_id">
+                Магазин:
+                <a
+                        href="/admin/stores/update?id={{ model.store_id }}"
+                        target=_blank
+                >
+                    {{ model.store.name }}
+                    ({{ model.store_id }})
+                </a>
+            </label>
+            {{ form.field(model, 'store_id').textInput().label(false)|raw }}
+        </div>
+        {{ form.field(model, 'added').textInput()|raw }}
+    </div>
+    <div class="col-md-6">
+        {{ form.field(model, 'rating').textInput()|raw }}
+
+
+
+        {{ form.field(model, 'is_active').dropDownList({
+            0:"Скрыт",
+            1:"Активен",
+        })|raw }}
+
+        {{ form.field(model, 'is_top').dropDownList({
+            0:"Обычный",
+            1:"Топ",
+        })|raw }}
+    </div>
+    <div class="col-md-12">
         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'text').textarea({'rows':6})|raw }}
+    </div>
 
-        {{ form.field(model, 'rating').textInput()|raw }}
-
-        {{ form.field(model, 'added').textInput()|raw }}
-
-        {{ form.field(model, 'is_active').textInput()|raw }}
-
-        {{ form.field(model, 'is_top').textInput()|raw }}
-
-        {{ form.field(model, 'store_id').textInput()|raw }}
-
-    <div class="form-group">
+    <div class="col-md-12">
         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
     {{ active_form_end() }}

@@ -10,7 +10,7 @@
 <div class="content-wrapper">
     <section>
         <div class="row">
-            <div class="payments-create">
+            <div class="col-md-12">
                 <h1>{{ html.encode(this.title) }}</h1>
                 {# include('_search.twig', {'model': searchModel}) #}
                 <p>
@@ -19,21 +19,59 @@
                 {{ grid_view_widget({
                     'dataProvider': dataProvider,
                     'filterModel': searchModel,
+                    'pager' : {
+                        'firstPageLabel' : true,
+                        'lastPageLabel' : true,
+                        'maxButtonCount':20
+                    },
                     'columns': [
                     {'class': '\\yii\\grid\\SerialColumn'},
 
                     'uid',
-                    'user_id',
+                    {
+                        'format':'raw',
+                        'attribute':'user_id',
+                        'value' : table_value.user
+                    },
+                    {
+                        'format':'raw',
+                        'attribute':'store_id',
+                        'value' : table_value.store
+                    },
                     'title',
+                    'added',
+                    {
+                        'format':'raw',
+                        'attribute':'rating',
+                        'value' : table_value.rating,
+                        'filter':{
+                            '':'Все',
+                            1:"1",
+                            2:"2",
+                            3:"3",
+                            4:"4",
+                            5:"5",
+                        },
+                    },
                     'text:ntext',
-                    'rating',
-
-                    {'class': '\\yii\\grid\\ActionColumn'},
+                    {
+                        'format':'raw',
+                        'attribute':'is_active',
+                        'filter':{
+                            '':'Любой',
+                            0:"Скрыт",
+                            1:"Активен",
+                        },
+                        'value' : table_value.is_active,
+                    },
+                    {'class': '\\yii\\grid\\ActionColumn',
+                        'template' : '{update}{delete}',
+                    },
                     ],
                 })
                 }}
                 {#
-                'added',
+
                 'is_active',
                 'is_top',
                 'store_id'
