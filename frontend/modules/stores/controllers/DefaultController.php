@@ -176,18 +176,23 @@ class DefaultController extends SdController
         $contentData["store_rating"] = Reviews::storeRating($store->uid);
 
         $cache = \Yii::$app->cache;
+
+        $dependency =  new yii\caching\DbDependency;
+        $dependencyName = 'store_coupons_store';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+        
         $coupons = $cache->getOrSet('store_coupons_store_'.$id, function () use ($store) {
             return Coupons::find()
-                ->from(Coupons::tableName(). ' cwc')
+              ->from(Coupons::tableName() . ' cwc')
               ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
                 'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
                 'cws.action_id as store_action_id', 'cws.logo as store_image'])
-                ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-                ->where(['cws.is_active' => [0, 1], 'cws.uid' => $store->uid])
-                ->orderBy(Coupons::$defaultSort)
-                ->asArray()
-                ->all();
-        });
+              ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+              ->where(['cws.uid' => $store->uid])
+              ->orderBy(Coupons::$defaultSort)
+              ->asArray()
+              ->all();
+        }, $cache->defaultDuration, $dependency);
         $contentData["store_coupons"] = $coupons;
 
         $additionalStores = $this->getAdditionals($store);

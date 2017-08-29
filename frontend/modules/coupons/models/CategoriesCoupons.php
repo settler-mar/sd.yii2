@@ -4,6 +4,7 @@ namespace frontend\modules\coupons\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\cache\models\Cache;
 
 
 /**
@@ -68,6 +69,35 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             return self::findOne($categoryId);
         });
         return $category;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        self::clearCache($this->uid);
+    }
+    
+    public function afterDelete()
+    {
+        self::clearCache($this->uid);
+    }
+
+    /**
+     * @param null $id
+     * очистка кеш
+     */
+    public static function clearCache($id = null)
+    {
+        //зависимости
+        Cache::clearName('catalog_coupons');
+        Cache::clearName('catalog_coupons_count');
+
+        //ключи
+        Cache::deleteName('total_all_coupons');
+        Cache::deleteName('stores_coupons');
+        Cache::deleteName('categories_coupons');
+        if ($id) {
+            Cache::deleteName('categories_coupons_byid_' . $id);
+        }
     }
 
 

@@ -366,6 +366,7 @@ class Stores extends \yii\db\ActiveRecord
     if ($route) {
       Cache::deleteName('store_by_route_' . $route);
     }
+    Cache::deleteName('stores_coupons');
   }
   
 }
