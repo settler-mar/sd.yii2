@@ -52,7 +52,7 @@ class DefaultController extends SdController
       if (!$cat) {
         throw new \yii\web\NotFoundHttpException;
       }
-      $cacheName = 'coupons_category_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName = 'catalog_coupons_category_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['category_id'] = $category;
       $contentData['current_category'] = $cat;
       $databaseObj = Coupons::find()
@@ -72,7 +72,8 @@ class DefaultController extends SdController
       if ($shop->is_active == -1) {
         return $this->redirect('/coupons', 301);
       }
-      $cacheName = 'coupons_store_' . $store . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $contentData['current_store'] = $shop;
+      $cacheName = 'catalog_coupons_store_' . $store . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['affiliate_id'] = $store;
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
@@ -83,7 +84,7 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $store])
         ->orderBy($sort . ' ' . $order);
     } else {
-      $cacheName = 'coupons_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName = 'catalog_coupons_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',

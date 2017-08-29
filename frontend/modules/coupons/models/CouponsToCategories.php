@@ -2,7 +2,8 @@
 
 namespace frontend\modules\coupons\models;
 
-use Yii;
+use yii;
+use frontend\modules\coupons\models\CategoriesCoupons;
 
 /**
  * This is the model class for table "cw_coupons_to_categories".
@@ -42,5 +43,14 @@ class CouponsToCategories extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
             'coupon_id' => 'Coupon ID',
         ];
+    }
+    
+    public function afterSave($insert, $changedAttributes)
+    {
+        CategoriesCoupons::clearCache();
+    }
+    public function afterDelete()
+    {
+        CategoriesCoupons::clearCache();
     }
 }

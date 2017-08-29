@@ -2,7 +2,7 @@
 
 namespace frontend\modules\category_stores\models;
 
-use Yii;
+use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;
 
@@ -97,6 +97,10 @@ class CategoryStores extends \yii\db\ActiveRecord
     public static function tree($parent_id = 0, $currentCategory = null)
     {
         $cache = Yii::$app->cache;
+        $dependency =  new yii\caching\DbDependency;
+        $dependencyName = 'category_tree';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
         $tree = $cache->getOrSet(
             'category_tree_'.$parent_id.'_'.$currentCategory,
             function () use ($parent_id, $currentCategory) {
@@ -112,7 +116,9 @@ class CategoryStores extends \yii\db\ActiveRecord
                     $cats = [];
                 }
                 return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
-            }
+            },
+            $cache->defaultDuration,
+            $dependency
         );
         return $tree;
     }
@@ -170,13 +176,40 @@ class CategoryStores extends \yii\db\ActiveRecord
     /**
      * @param bool $insert
      * @param array $changedAttributes
-     * Сохраняем изображения после сохранения
-     * данных пользователя
+     * чистим кеш
      */
     public function afterSave($insert, $changedAttributes)
     {
+        self::clearCache($this->uid);
+    }
+
+    /**
+     * чистим кеш
+     */
+    public function afterDelete()
+    {
+        self::clearCache($this->uid);
+    }
+
+    /**
+     * @param $id
+     * очистка кеш
+     */
+    public static function clearCache($id = null)
+    {
+        
+        //зависимости
         Cache::clearName('catalog_stores');
         Cache::clearName('catalog_stores_count');
+        Cache::clearName('additional_stores');
+        Cache::clearName('category_tree');
+        //ключи
+        Cache::deleteName('total_all_stores');
+        Cache::deleteName('top_12_stores');
+        Cache::deleteName('categories_stores');
+        if ($id) {
+            Cache::deleteName('store_category_byid' . $id);
+        }
     }
 
 

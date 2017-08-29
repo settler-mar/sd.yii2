@@ -23,7 +23,7 @@ class AdminController extends \yii\web\Controller
             throw new yii\web\notFoundHTTPException;
         } else {
             Cache::clear();
-            return json_encode(['html' => 'Кеш очищен. Данные экспорта обновлнны.']);
+            return json_encode(['html' => 'Кэш очищен. Данные экспорта обновлены.']);
         }
     }
 
