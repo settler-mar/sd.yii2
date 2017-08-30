@@ -66,6 +66,7 @@ class CouponsController extends Controller
       $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
+
         $coupon_categories = [];
         $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id']]);
 

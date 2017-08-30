@@ -61,7 +61,7 @@ class StoreController extends Controller
         }
 
         $is_new = false; //метка если более выский уровень вновь созданный
-        $route = Stores::str2url($store['name']);
+        $route = Yii::$app->help->str2url($store['name']);
 
         //если лого адмитадовский, то проверяем его наличие и при нобходимости обновляем
         if($test_logo){
