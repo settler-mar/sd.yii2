@@ -44,7 +44,7 @@ class PaymentsSearch extends Payments
     public function search($params)
     {
         $query = Payments::find();
-ddd(Payments::find()->joinWith('store')->all());
+//ddd(Payments::find()->joinWith('store')->all());
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -64,7 +64,9 @@ ddd(Payments::find()->joinWith('store')->all());
             return $dataProvider;
         }
        // $query->joinWith(['user']);
-      //  $query->joinWith(['store'])->where(['store.name' => $this->storeName]);
+       if ($this->storeName) {
+         $query->joinWith(['store'])->where(['name' => $this->storeName]);
+       }
        // ddd($dataProvider);
         // grid filtering conditions
         $query->andFilterWhere([

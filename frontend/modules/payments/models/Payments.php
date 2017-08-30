@@ -94,7 +94,7 @@ class Payments extends \yii\db\ActiveRecord
    */
   public function getCpaLink()
   {
-    return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id'])->andWhere(['cpa_id' => 1]);
+    return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id','cpa_id' => 'cpa_id']);
   }
 
   public function getStore()
