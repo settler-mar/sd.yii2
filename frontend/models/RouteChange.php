@@ -2,7 +2,8 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_route_change".
@@ -50,5 +51,48 @@ class RouteChange extends \yii\db\ActiveRecord
             'route' => 'Route',
             'new_route' => 'New Route',
         ];
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     * обновляем зависимость кеш
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        Cache::clearName('route_changes');
+    }
+
+    /**
+     * обновляем зависимость кеш
+     */
+    public function afterDelete()
+    {
+        Cache::clearName('route_changes');
+    }
+    /**
+     * @param $route
+     * @param int $routeType
+     * @return string
+     * находим по роуту и по типу, закешировано, возвращаем новый роут
+     */
+    public static function getNew($route, $routeType = 0)
+    {
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'route_changes';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+        $cache = \Yii::$app->cache;
+        return $cache->getOrSet(
+            'route_changes_'.$route.'_'.$routeType,
+            function () use ($route, $routeType) {
+                $route =  self::findOne(['route' => $route, 'route_type' => $routeType]);
+                if ($route) {
+                    return $route->new_route;
+                }
+                return null;
+            },
+            $cache->defaultDuration,
+            $dependency
+        );
     }
 }

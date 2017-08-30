@@ -43,12 +43,6 @@ class Stores extends \yii\db\ActiveRecord
   public $logoImage;
 
   /**
-   * @var
-   * сохраняем старое значение записи
-   */
-  private $oldRecord;
-
-  /**
    * @var string
    */
   public static $defaultSort = 'name';
@@ -141,15 +135,6 @@ class Stores extends \yii\db\ActiveRecord
 
     return true;
   }
-
-  /**
-   * сохраняем старое значение записи
-   */
-  public function afterFind()
-  {
-    $this->oldRecord = clone $this;
-  }
-
   /**
    * категории магазина
    * @return $this
@@ -255,9 +240,10 @@ class Stores extends \yii\db\ActiveRecord
     if ($insert) {
       return true;
     }
-    if ($this->oldRecord->route != $this->route) {
+    $oldRoute =  $this->__get('oldAttributes')['route'];
+    if ($oldRoute != $this->route) {
       $routeChange = new RouteChange();
-      $routeChange->route = $this->oldRecord->route;
+      $routeChange->route = $oldRoute;
       $routeChange->new_route = $this->route;
       $routeChange->route_type = RouteChange::ROUTE_TYPE_STORES;
       $routeChange->save();

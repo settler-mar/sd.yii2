@@ -10,6 +10,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
+use frontend\models\RouteChange;
 
 class DefaultController extends SdController
 {
@@ -160,13 +161,20 @@ class DefaultController extends SdController
         if (!$validator->validate($id)) {
             throw new \yii\web\NotFoundHttpException;
         }
+        //ищем сторе в изменённых роутах
+        $newRoute = RouteChange::getNew($id);
+        if ($newRoute) {
+            //если у магазина изменён роут
+            $this->redirect('/stores/'.$newRoute, 301)->send();
+            exit();
+        }
         $store = Stores::byRoute($id);
         if (!$store) {
             throw new \yii\web\NotFoundHttpException;
         }
         if ($store->is_active<0) {
-            \Yii::info('redirect /stores/ 301');
-            return Yii::$app->getResponse()->redirect('/stores', 301);
+            $this->redirect('/stores', 301)->send();
+            exit();
         }
 
         $contentData["current_store"] = $store;
