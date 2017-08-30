@@ -33,7 +33,12 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new SliderSearch();
+      if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('SliderView')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $searchModel = new SliderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index.twig', [
@@ -61,7 +66,12 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Slider();
+      if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('SliderCreate')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $model = new Slider();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->uid]);
@@ -80,6 +90,10 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+      if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('SliderEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
       $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -100,6 +114,10 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+      if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('SliderDelete')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -4032,7 +4032,8 @@ $(function() {
   function onRemove(){
     $this=$(this);
     post={
-      id:$this.attr('uid')
+      id:$this.attr('uid'),
+      type:$this.attr('mode')
     };
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
@@ -4364,7 +4365,8 @@ $(function() {
     $this=$(this);
     post={
       code:$this.attr('code'),
-      parent:$this.attr('parent')
+      parent:$this.attr('parent'),
+      type:$this.attr('mode')
     };
     updateElement=update.bind($this);
     $.post("/admin/stores/ajax_insert/"+$this.attr('mode'),post,updateElement).fail(function() {

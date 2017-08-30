@@ -39,12 +39,11 @@
                             'reward',
                             {
                                 'format':'raw',
-                                'attribute':'user_id',
-                                'value' : 'email'
-                            },{
+                                'attribute':'email',
+                            },
+                            {
                                 'format':'raw',
-                                'header':'Магазин',
-                                'value' : 'storeName'
+                                'attribute':'storeName'
                             },
                             {'class': '\\yii\\grid\\ActionColumn',
                                 'template' : '{update} {delete}',
