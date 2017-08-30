@@ -4,12 +4,14 @@ namespace frontend\modules\stores\models;
 
 use yii;
 use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
 use frontend\modules\cache\models\Cache;
+use frontend\models\RouteChange;
 
 /**
  * This is the model class for table "cw_stores".
@@ -39,6 +41,12 @@ class Stores extends \yii\db\ActiveRecord
   public $filename;
   public $logoTmp;
   public $logoImage;
+
+  /**
+   * @var
+   * сохраняем старое значение записи
+   */
+  private $oldRecord;
 
   /**
    * @var string
@@ -78,6 +86,8 @@ class Stores extends \yii\db\ActiveRecord
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique'],
+      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoryStores::className()],
+      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
         'minHeight' => 500,
@@ -130,6 +140,14 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     return true;
+  }
+
+  /**
+   * сохраняем старое значение записи
+   */
+  public function afterFind()
+  {
+    $this->oldRecord = clone $this;
   }
 
   /**
@@ -224,6 +242,28 @@ class Stores extends \yii\db\ActiveRecord
     return $data;
   }
 
+  /**
+   * @param bool $insert
+   * @return bool
+   * если изменился route - пишем в таблицу изменённых роутов
+   */
+  public function beforeSave($insert)
+  {
+    if (!parent::beforeSave($insert)) {
+      return false;
+    }
+    if ($insert) {
+      return true;
+    }
+    if ($this->oldRecord->route != $this->route) {
+      $routeChange = new RouteChange();
+      $routeChange->route = $this->oldRecord->route;
+      $routeChange->new_route = $this->route;
+      $routeChange->route_type = RouteChange::ROUTE_TYPE_STORES;
+      $routeChange->save();
+    }
+    return true;
+  }
   /**
    * @param bool $insert
    * @param array $changedAttributes
