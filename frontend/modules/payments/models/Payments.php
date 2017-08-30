@@ -104,8 +104,8 @@ class Payments extends \yii\db\ActiveRecord
   }
 
   public function getStoreName(){
-    return $this->store->name;
-    //'<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.'</a>';
+    //return $this->store->name;
+    return '<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.'</a>';
   }
 
   public function getStringStatus()
@@ -119,8 +119,8 @@ class Payments extends \yii\db\ActiveRecord
   }
 
   public function getEmail(){
-    return $this->user->email;
-    //return '<a href="/admin/users/update?id='.$this->user->uid.'">'.$this->user->email.'('.$this->user->uid.')</a>';
+    //return $this->user->email;
+    return '<a href="/admin/users/update?id='.$this->user->uid.'">'.$this->user->email.'('.$this->user->uid.')</a>';
   }
 
  // public function getCpaLink()

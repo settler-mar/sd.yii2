@@ -37,8 +37,14 @@
                             },
                             'ref_bonus',
                             'reward',
-                            'email',
-                            'storeName',
+                            {
+                                'format':'raw',
+                                'attribute':'email',
+                            },
+                            {
+                                'format':'raw',
+                                'attribute':'storeName'
+                            },
                             {'class': '\\yii\\grid\\ActionColumn',
                                 'template' : '{update} {delete}',
                             },
