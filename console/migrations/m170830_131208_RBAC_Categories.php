@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170829_120701_RBAC_reviews extends Migration
+class m170830_131208_RBAC_Categories extends Migration
 {
   private $auth;
 
@@ -12,33 +12,34 @@ class m170829_120701_RBAC_reviews extends Migration
     $role = $this->auth->getRole('admin');
 
     $this->createPermission(
-      'ReviewsView',
-      'Отзывы - просмотр (общая таблица)',
+      'CategoriesView',
+      'Категории - просмотр (общая таблица)',
       [$role]
     );
 
     $this->createPermission(
-      'ReviewsEdit',
-      'Отзывы - редактирование',
+      'CategoriesEdit',
+      'Категории - редактирование',
       [$role]
     );
 
     $this->createPermission(
       'ReviewsDelete',
-      'Отзывы - удаление',
+      'Категории - удаление',
       [$role]
     );
 
     $this->createPermission(
       'ReviewsCreate',
-      'Отзывы - создание',
+      'Категории - создание',
       [$role]
     );
   }
 
+
   public function safeDown()
   {
-    echo "m170829_120701_RBAC_reviews cannot be reverted.\n";
+    echo "m170830_131208_RBAC_Categories cannot be reverted.\n";
 
     return false;
   }

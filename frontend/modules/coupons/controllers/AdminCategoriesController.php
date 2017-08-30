@@ -38,6 +38,11 @@ class AdminCategoriesController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new CategoriesCouponsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,6 +59,10 @@ class AdminCategoriesController extends Controller
    */
   public function actionCreate()
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     $model = new CategoriesCoupons();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -73,6 +82,11 @@ class AdminCategoriesController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -92,6 +106,11 @@ class AdminCategoriesController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
