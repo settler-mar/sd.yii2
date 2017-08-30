@@ -31,10 +31,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'name'], 'required'],
+            [['parent_id', 'name', 'route'], 'required'],
             [['parent_id', 'is_active', 'menu_index'], 'integer'],
             [['short_description', 'down_description'], 'string'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'route'], 'string', 'max' => 255],
         ];
     }
 
@@ -51,6 +51,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'short_description' => 'Short Description',
             'menu_index' => 'Menu Index',
             'down_description' => 'Down Description',
+            'route' => 'Route',
         ];
     }
 
