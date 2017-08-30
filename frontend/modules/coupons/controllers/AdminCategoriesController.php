@@ -1,16 +1,16 @@
 <?php
 
-namespace frontend\modules\stores\controllers;
+namespace frontend\modules\coupons\controllers;
 
 use Yii;
-use frontend\modules\stores\models\CategoriesStores;
-use frontend\modules\stores\models\CategoriesStoresSearch;
+use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\coupons\models\CategoriesCouponsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminCategoriesController implements the CRUD actions for CategoriesStores model.
+ * AdminCategoriesController implements the CRUD actions for CategoriesCoupons model.
  */
 class AdminCategoriesController extends Controller
 {
@@ -33,33 +33,28 @@ class AdminCategoriesController extends Controller
   }
 
   /**
-   * Lists all CategoriesStores models.
+   * Lists all CategoriesCoupons models.
    * @return mixed
    */
   public function actionIndex()
   {
-    $searchModel = new CategoriesStoresSearch();
+    $searchModel = new CategoriesCouponsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
-      'table' => [
-        'is_active' => function ($model, $key, $index, $column) {
-          return $model->is_active == 1 ? 'Активная' : 'Скрытая';
-        },
-      ]
     ]);
   }
 
   /**
-   * Creates a new CategoriesStores model.
+   * Creates a new CategoriesCoupons model.
    * If creation is successful, the browser will be redirected to the 'view' page.
    * @return mixed
    */
   public function actionCreate()
   {
-    $model = new CategoriesStores();
+    $model = new CategoriesCoupons();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
@@ -71,7 +66,7 @@ class AdminCategoriesController extends Controller
   }
 
   /**
-   * Updates an existing CategoriesStores model.
+   * Updates an existing CategoriesCoupons model.
    * If update is successful, the browser will be redirected to the 'view' page.
    * @param integer $id
    * @return mixed
@@ -90,7 +85,7 @@ class AdminCategoriesController extends Controller
   }
 
   /**
-   * Deletes an existing CategoriesStores model.
+   * Deletes an existing CategoriesCoupons model.
    * If deletion is successful, the browser will be redirected to the 'index' page.
    * @param integer $id
    * @return mixed
@@ -103,15 +98,15 @@ class AdminCategoriesController extends Controller
   }
 
   /**
-   * Finds the CategoriesStores model based on its primary key value.
+   * Finds the CategoriesCoupons model based on its primary key value.
    * If the model is not found, a 404 HTTP exception will be thrown.
    * @param integer $id
-   * @return CategoriesStores the loaded model
+   * @return CategoriesCoupons the loaded model
    * @throws NotFoundHttpException if the model cannot be found
    */
   protected function findModel($id)
   {
-    if (($model = CategoriesStores::findOne($id)) !== null) {
+    if (($model = CategoriesCoupons::findOne($id)) !== null) {
       return $model;
     } else {
       throw new NotFoundHttpException('The requested page does not exist.');

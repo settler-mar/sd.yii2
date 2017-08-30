@@ -1,0 +1,14 @@
+{% set title = 'Создание категории купонов' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Categories Coupons', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+
+    {{ include('_form.twig', {
+            'model': model,
+        })
+    }}

@@ -1,0 +1,24 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+            </div>
+            <div class="col-md-12">
+                {% set form = active_form_begin() %}
+
+                {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
+
+                {{ form.field(model, 'short_description').textarea({'rows':6,'class':'visual_editor'})|raw }}
+
+                <div class="form-group">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+            </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>
