@@ -1,0 +1,37 @@
+{{ use('/yii/widgets/ActiveForm') }}
+
+<div class="stores-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+                {% set form = active_form_begin() %}
+                <div class="col-md-6">
+                    {{ form.field(model, 'parent_id').textInput()|raw }}
+
+                    {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'is_active').dropDownList({
+                        0:"Скрытая",
+                        1:"Активная",
+                    })|raw }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.field(model, 'menu_index').textInput()|raw }}
+                    {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
+                </div>
+                <div class="col-md-12">
+                    {{ form.field(model, 'short_description').textarea({'rows':6,'class':'visual_editor'})|raw }}
+                    {{ form.field(model, 'down_description').textarea({'rows':6,'class':'visual_editor'})|raw }}
+                </div>
+
+                <div class="col-md-12">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+                {{ active_form_end() }}
+            </div>
+        </section>
+    </div>
+</div>

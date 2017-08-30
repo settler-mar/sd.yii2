@@ -32,7 +32,8 @@ class AppAsset extends AssetBundle
     $path_scripts = Yii::$app->params['pathToScript'];
 
     $path = trim($url, '/');
-    $dir = explode('/', $path);
+    $dir = str_replace('-','/', $path);
+    $dir = explode('/', $dir);
     $dir = explode('?', $dir[0]);
     $dir = $dir[0];
     if (isset($path_scripts[$dir])) {

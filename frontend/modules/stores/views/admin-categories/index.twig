@@ -1,0 +1,55 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Категории магазинов' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="stores-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                    {# include('_search.twig', {'model': searchModel}) #}
+                    <p>
+                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать категорию' }}</a>
+                    </p>
+                    {{ grid_view_widget({
+                            'dataProvider': dataProvider,
+                            'filterModel': searchModel,
+                                'columns': [
+                                {'class': '\\yii\\grid\\SerialColumn'},
+
+                                'uid',
+                                'parent_id',
+                                'name',
+                                'route',
+                                {
+                                    'format':'raw',
+                                    'attribute':'is_active',
+                                    'filter':{
+                                    '':'Любой',
+                                        0:"Скрыта",
+                                        1:"Активна"
+                                    },
+                                    'value':table.is_active
+                                },
+                                {'class': '\\yii\\grid\\ActionColumn',
+                                    'template' : '{update} {delete}',
+                                },
+                            ],
+                        })
+                    }}
+                    {#
+                    'menu_index',
+                    'down_description:ntext',
+                    'route'
+                    #}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

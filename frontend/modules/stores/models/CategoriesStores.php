@@ -50,12 +50,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
     {
         return [
             'uid' => 'Uid',
-            'parent_id' => 'Parent ID',
-            'name' => 'Name',
-            'is_active' => 'Is Active',
-            'short_description' => 'Short Description',
-            'menu_index' => 'Menu Index',
-            'down_description' => 'Down Description',
+            'parent_id' => 'ID родительской категории',
+            'name' => 'Имя',
+            'is_active' => 'Состояние',
+            'short_description' => 'Краткое описание',
+            'menu_index' => 'Позиция меню',
+            'down_description' => 'Нижнее описание',
             'route' => 'Route',
         ];
     }
