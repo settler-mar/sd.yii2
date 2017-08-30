@@ -45,7 +45,7 @@ class AdminController extends Controller
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-    return $this->render('index.php', [
+    return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
     ]);
