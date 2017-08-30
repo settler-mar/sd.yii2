@@ -10,6 +10,7 @@ use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
+use common\components\Help;
 
 class CouponsController extends Controller
 {
@@ -110,12 +111,13 @@ class CouponsController extends Controller
         break;
       }
     }
-
+    $help = new Help();
     foreach ($categories as $k => $categorie) {
       if(!CategoriesCoupons::findOne(['uid'=>$k])){
         $cat=new CategoriesCoupons();
         $cat->uid=$k;
         $cat->name=$categorie;
+        $cat->route = $help->str2url($categorie);
         $cat->save();
       }
     }
