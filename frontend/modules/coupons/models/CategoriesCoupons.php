@@ -30,9 +30,9 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'route'], 'required'],
             [['short_description'], 'string'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'route'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,6 +45,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             'uid' => 'Uid',
             'name' => 'Name',
             'short_description' => 'Short Description',
+            'route' => 'Route',
         ];
     }
     /**
