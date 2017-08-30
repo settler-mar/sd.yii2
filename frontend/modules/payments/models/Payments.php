@@ -51,7 +51,7 @@ class Payments extends \yii\db\ActiveRecord
       [['is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
       [['action_id', 'affiliate_id', 'user_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required'],
       [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
-      [['click_date', 'action_date', 'status_updated', 'closing_date'], 'safe'],
+      [['click_date', 'action_date', 'status_updated', 'closing_date','storeName','email'], 'safe'],
       [['order_id'], 'string', 'max' => 50],
     ];
   }
@@ -84,6 +84,7 @@ class Payments extends \yii\db\ActiveRecord
       'order_id' => 'Order ID',
       'shop_percent' => 'Shop Percent',
       'kurs' => 'kurs',
+      'storeName' => 'Название магазина',
     ];
   }
 
@@ -91,14 +92,20 @@ class Payments extends \yii\db\ActiveRecord
    * магазин купона
    * @return \yii\db\ActiveQuery
    */
+  public function getCpaLink()
+  {
+    return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id'])->andWhere(['cpa_id' => 1]);
+  }
+
   public function getStore()
   {
-    $cpa=CpaLink::findOne(['cpa_id'=>1,'affiliate_id'=>$this->affiliate_id]);
-    return $cpa->store;
+    return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
+      ->via('cpaLink');
   }
 
   public function getStoreName(){
-    return '<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.'</a>';
+    return $this->store->name;
+    //'<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.'</a>';
   }
 
   public function getStringStatus()
@@ -112,13 +119,14 @@ class Payments extends \yii\db\ActiveRecord
   }
 
   public function getEmail(){
-    return '<a href="/admin/users/update?id='.$this->user->uid.'">'.$this->user->email.'('.$this->user->uid.')</a>';
+    return $this->user->email;
+    //return '<a href="/admin/users/update?id='.$this->user->uid.'">'.$this->user->email.'('.$this->user->uid.')</a>';
   }
 
-  public function getCpaLink()
-  {
-    return $this->hasMany(CpaLink::className(), ['spa_id' => 'cpa_id']);
-  }
+ // public function getCpaLink()
+ // {
+ //   return $this->hasMany(CpaLink::className(), ['spa_id' => 'cpa_id']);
+ // }
 
   public function getUser()
   {

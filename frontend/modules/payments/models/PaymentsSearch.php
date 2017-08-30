@@ -12,6 +12,7 @@ use frontend\modules\payments\models\Payments;
  */
 class PaymentsSearch extends Payments
 {
+    public $storeName;
     /**
      * @inheritdoc
      */
@@ -20,7 +21,7 @@ class PaymentsSearch extends Payments
         return [
             [['uid', 'is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
-            [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id'], 'safe'],
+            [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id','storeName'], 'safe'],
         ];
     }
 
@@ -43,7 +44,7 @@ class PaymentsSearch extends Payments
     public function search($params)
     {
         $query = Payments::find();
-
+ddd(Payments::find()->joinWith('store')->all());
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -51,7 +52,7 @@ class PaymentsSearch extends Payments
           'sort' => [
             'defaultOrder' => [
               'uid' => SORT_DESC,
-            ]
+            ],
           ],
         ]);
 
@@ -62,7 +63,9 @@ class PaymentsSearch extends Payments
             // $query->where('0=1');
             return $dataProvider;
         }
-
+       // $query->joinWith(['user']);
+      //  $query->joinWith(['store'])->where(['store.name' => $this->storeName]);
+       // ddd($dataProvider);
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
@@ -87,7 +90,6 @@ class PaymentsSearch extends Payments
             'shop_percent' => $this->shop_percent,
             'kurs' => $this->kurs,
         ]);
-
         $query->andFilterWhere(['like', 'order_id', $this->order_id]);
 
         return $dataProvider;

@@ -45,7 +45,7 @@ class AdminController extends Controller
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-    return $this->render('index.twig', [
+    return $this->render('index.php', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
     ]);
@@ -116,7 +116,7 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can('PaymentsDelеte')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('PaymentsDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }

@@ -37,15 +37,8 @@
                             },
                             'ref_bonus',
                             'reward',
-                            {
-                                'format':'raw',
-                                'attribute':'user_id',
-                                'value' : 'email'
-                            },{
-                                'format':'raw',
-                                'header':'Магазин',
-                                'value' : 'storeName'
-                            },
+                            'email',
+                            'storeName',
                             {'class': '\\yii\\grid\\ActionColumn',
                                 'template' : '{update} {delete}',
                             },
