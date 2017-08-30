@@ -1,4 +1,3 @@
-es (21 sloc)  714 Bytes
 <?php
 use yii\helpers\Html;
 /* @var $this \yii\web\View view component instance */

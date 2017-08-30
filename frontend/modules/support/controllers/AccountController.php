@@ -66,6 +66,7 @@ class AccountController extends \yii\web\Controller
           [
             'title' => $title,
             'message' => $message,
+            'user'=>Yii::$app->user->identity,
           ]
         )
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
