@@ -116,7 +116,7 @@ class StoreController extends Controller
         $store_id=$db_store->uid;
 
         //если нет в базе CPA ЛИНК то создаем ее
-        if($cpa_id==false){
+        if(!$cpa_id){
           $cpa_link = new CpaLink();
           $cpa_link->cpa_id = 1;
           $cpa_link->stores_id = $store_id;
@@ -138,14 +138,12 @@ class StoreController extends Controller
         //если СPA не выбранна то выставляем текущую
         if((int)$db_store->active_cpa==0) {
           $db_store->active_cpa = $cpa_id;
-          $db_store->save();
         }
 
         $p_cback = [];
         $v_cback = [];
         foreach ($store['actions_detail'] AS $action) {
           $is_new_action = $is_new;
-
           //если магазин был в базе то проверяем есть у него данное событие
           if (!$is_new) {
             $action_r = StoresActions::findOne(['cpa_link_id'=>$cpa_id,'action_id'=>$action['id']]);
@@ -180,13 +178,13 @@ class StoreController extends Controller
               $tariff_r->name=$tariff['name'];
               $tariff_r->id_action_out=$tariff['action_id'];
 
-              if(!$action_r->save()){
+              $tariff_r->validate();
+              if(!$tariff_r->save()){
                 continue;
               };
               $is_new_tarif=true;
             }
             $tariff_id = $tariff_r->uid;
-
             foreach ($tariff['rates'] as $rate) {
               $isPercentage = in_array($rate['is_percentage'], ["true", "True"]) ? 1 : 0;
               $our_size = floatval(str_replace(",", ".", $rate['size'])) / 2;
@@ -233,7 +231,8 @@ class StoreController extends Controller
               $rate_r->id_tariff=$tariff_id;
               $rate_r->id_rate=$rate['id'];
               $rate_r->price_s=$rate['price_s'];
-              $rate_r->size=$our_size;
+              $rate_r->our_size = $our_size;
+              $rate_r->size=$rate['size'];
               $rate_r->is_percentage=$isPercentage;
               $rate_r->additional_id=isset($rate['country'])?$rate['country']:'';
               $rate_r->date_s=$rate['date_s'];
@@ -276,6 +275,7 @@ class StoreController extends Controller
         if($db_store->is_active!=-1){
           $db_store->is_active=1;
         }
+        $db_store->save();
       }
       $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
       if ($params['offset'] < $stores['_meta']['count']) {
