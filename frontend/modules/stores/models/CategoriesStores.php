@@ -2,7 +2,9 @@
 
 namespace frontend\modules\stores\models;
 
-use Yii;
+use yii;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\CategoriesCoupons;
 
 /**
  * This is the model class for table "cw_categories_stores".
@@ -35,6 +37,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
             [['parent_id', 'is_active', 'menu_index'], 'integer'],
             [['short_description', 'down_description'], 'string'],
             [['name', 'route'], 'string', 'max' => 255],
+            [['route'], 'unique'],
+            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
+            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
         ];
     }
 
