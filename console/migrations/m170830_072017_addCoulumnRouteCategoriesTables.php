@@ -7,46 +7,41 @@ use common\components\Help;
 
 class m170830_072017_addCoulumnRouteCategoriesTables extends Migration
 {
-    public function safeUp()
-    {
-        $this->addColumn('cw_categories_stores', 'route', $this->string()->notNull());
+  public function safeUp()
+  {
+    //$this->addColumn('cw_categories_stores', 'route', $this->string()->notNull());
 
-        $help = new Help();
-
-        $categories = CategoriesStores::find()->all();
-        foreach ($categories as $category) {
-            $category->route = $help->str2url($category->name);
-            $category->save();
-        }
-        $this->createIndex('cw_categories_stores_route_unique', 'cw_categories_stores', 'route', true);
-
-        $this->addColumn('cw_categories_coupons', 'route', $this->string()->notNull());
-        $categories = CategoriesCoupons::find()->all();
-        foreach ($categories as $category) {
-            $category->route = $help->str2url($category->name);
-            $category->save();
-        }
-        $this->createIndex('cw_categories_coupons_route_unique', 'cw_categories_coupons', 'route', true);
+    $help = new Help();
+    $categories = CategoriesStores::find()->all();
+    foreach ($categories as $category) {
+      $category->route = $help->str2url($category->name);
+      $i = 1;
+      while (!$category->validate()) {
+        $category->route = $help->str2url($category->name) . '_' . $i;
+        $i++;
+      };
+      $category->save();
     }
+    $this->createIndex('cw_categories_stores_route_unique', 'cw_categories_stores', 'route', true);
 
-    public function safeDown()
-    {
-        $this->dropColumn('cw_categories_stores', 'route');
-        $this->dropColumn('cw_categories_coupons', 'route');
+    $this->addColumn('cw_categories_coupons', 'route', $this->string()->notNull());
+    $categories = CategoriesCoupons::find()->all();
+    foreach ($categories as $category) {
+      $category->route = $help->str2url($category->name);
+      $i = 1;
+      while (!$category->validate()) {
+        $category->route = $help->str2url($category->name) . '_' . $i;
+        $i++;
+      };
+      $category->save();
     }
+    $this->createIndex('cw_categories_coupons_route_unique', 'cw_categories_coupons', 'route', true);
+  }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
+  public function safeDown()
+  {
+    $this->dropColumn('cw_categories_stores', 'route');
+    $this->dropColumn('cw_categories_coupons', 'route');
+  }
 
-    }
-
-    public function down()
-    {
-        echo "m170830_072017_addCoulumnRouteCategoriesTables cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

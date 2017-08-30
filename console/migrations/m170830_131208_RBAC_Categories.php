@@ -24,13 +24,13 @@ class m170830_131208_RBAC_Categories extends Migration
     );
 
     $this->createPermission(
-      'ReviewsDelete',
+      'CategoriesDelete',
       'Категории - удаление',
       [$role]
     );
 
     $this->createPermission(
-      'ReviewsCreate',
+      'CategoriesCreate',
       'Категории - создание',
       [$role]
     );

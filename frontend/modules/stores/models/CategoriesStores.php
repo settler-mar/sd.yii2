@@ -39,7 +39,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
             [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
-            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
+            //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
         ];
     }
 

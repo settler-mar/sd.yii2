@@ -59,7 +59,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionCreate()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsCreate')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesCreate')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -106,7 +106,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionDelete($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ReviewsDelete')) {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
