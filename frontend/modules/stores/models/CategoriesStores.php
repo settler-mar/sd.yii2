@@ -5,6 +5,7 @@ namespace frontend\modules\stores\models;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\CategoriesCoupons;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_categories_stores".
@@ -58,6 +59,26 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'down_description' => 'Нижнее описание',
             'route' => 'Route',
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+        if (empty($this->route)) {
+            $help = new Help();
+            $this->route = $help->str2url($this->name);
+        }
+//        if (empty($this->menu_index)) {
+//            $index = CategoriesStores::find()
+//                ->select(['max(menu_index) as max'])
+//                ->where(['parent_id' => $this->parent_id])
+//                ->asArray()
+//                ->all();
+//            $this->menu_index = intval($index['max']) + 1;
+//        }
+        return true;
     }
 
     public function getChildrens(){

@@ -5,6 +5,7 @@ namespace frontend\modules\category_stores\models;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;
+use common\components\Help;
 
 
 /**
@@ -38,6 +39,9 @@ class CategoryStores extends \yii\db\ActiveRecord
             [['parent_id', 'is_active', 'menu_index'], 'integer'],
             [['short_description', 'down_description'], 'string'],
             [['name'], 'string', 'max' => 255],
+            [['route'], 'unique'],
+            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
+            //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
         ];
     }
 
@@ -54,6 +58,7 @@ class CategoryStores extends \yii\db\ActiveRecord
             'short_description' => 'Short Description',
             'menu_index' => 'Menu Index',
             'down_description' => 'Down Description',
+            'route' => 'Route',
         ];
     }
 
@@ -143,7 +148,8 @@ class CategoryStores extends \yii\db\ActiveRecord
     {
         $cache = \Yii::$app->cache;
         $category = $cache->getOrSet('store_category_byroute_' . $route, function () use ($route) {
-            return self::findOne(['route' => $route, 'is_active' => 1]);
+            //return self::findOne(['route' => $route, 'is_active' => 1]);
+            return self::findOne(['route' => $route]);
         });
         return $category;
     }
@@ -227,6 +233,5 @@ class CategoryStores extends \yii\db\ActiveRecord
             Cache::deleteName('store_category_byroute_' . $route);
         }
     }
-
 
 }

@@ -6,6 +6,7 @@ use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\cache\models\Cache;
+use common\components\Help;
 
 
 /**
@@ -51,6 +52,19 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             'short_description' => 'Short Description',
             'route' => 'Route',
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+
+        if (empty($this->route)) {
+            $help = new Help();
+            $this->route = $help->str2url($this->name);
+        }
+        return true;
     }
     /**
      * купоны категории

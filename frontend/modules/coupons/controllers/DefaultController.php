@@ -11,6 +11,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 use frontend\modules\reviews\models\Reviews;
+use frontend\models\RouteChange;
 
 /**
  * Class DefaultController
@@ -25,6 +26,7 @@ class DefaultController extends SdController
    */
   public function createAction($actionId)
   {
+
     $request = \Yii::$app->request;
     $category = $request->get('category');
     $store = $request->get('store');
@@ -37,11 +39,20 @@ class DefaultController extends SdController
       if ($categoryCoupons = CategoriesCoupons::byRoute($actionId) or
         $store = Stores::byRoute($actionId)){
         //если есть одна из них
-        //ddd($categoryCoupons, $store);
         echo $this->actionIndex($actionId, $categoryCoupons, $store);
         exit;
       };
       //если нет категории или магазина
+      //найти в удалённых шопах или категориях купонов
+      $newRoute = RouteChange::getNew(
+        $actionId,
+        [RouteChange::ROUTE_TYPE_CATEGORY_COUPONS, RouteChange::ROUTE_TYPE_STORES]
+      );
+      if ($newRoute){
+        //если есть новый роут для удалённого, делаем редирект
+        $this->redirect('/coupons/'.$newRoute, 301)->send();
+        exit;
+      };
       throw new \yii\web\NotFoundHttpException;
     }
     return parent::createAction($actionId);
@@ -53,20 +64,15 @@ class DefaultController extends SdController
    */
   public function actionIndex($actionId = '', $categoryCoupons = null, $store = null)
   {
-    //ddd($categoryCoupons);
     $request = \Yii::$app->request;
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-   // $category = $request->get('category');
-   // $store = $request->get('store');
+
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'date_start', 'date_end']]);
     if (!empty($limit) && !$validator->validate($limit) ||
-   //   !empty($page) && !$validator->validate($page) ||
-   //   !empty($category) && !$validator->validate($category) ||
-    //  !empty($store) && !$validator->validate($store) ||
       !empty($sort) && !$validatorIn->validate($sort)
     ) {
       throw new \yii\web\NotFoundHttpException;
@@ -79,10 +85,6 @@ class DefaultController extends SdController
     $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
 
     if (!empty($categoryCoupons)) {
-//      $cat = CategoriesCoupons::byId($category);
-//      if (!$cat) {
-//        throw new \yii\web\NotFoundHttpException;
-//      }
       $category = $categoryCoupons->uid;
       $cacheName = 'catalog_coupons_category_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['category_id'] = $category;
@@ -97,11 +99,6 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
         ->orderBy($sort . ' ' . $order);
     } elseif (!empty($store)) {
-
-//      $shop = Stores::byId($store);
-//      if (!$shop) {
-//        throw new \yii\web\NotFoundHttpException;
-//      }
       $storeId = $store->uid;
       if ($store->is_active == -1) {
         return $this->redirect('/coupons', 301);
@@ -133,7 +130,6 @@ class DefaultController extends SdController
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
     $contentData["coupons"] = $pagination->data();
-    //$contentData["store_rating"] = Reviews::storeRating($store);
     $contentData["total_v"] = $pagination->count();
     $contentData["show_coupons"] = count($contentData["coupons"]);
     $contentData["offset_coupons"] = $pagination->offset();
@@ -142,8 +138,6 @@ class DefaultController extends SdController
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
 
     $paginateParams = [
-      //'category' => $category,
-      //'store' => $store,
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Coupons::$defaultSort == $sort ? null : $sort,
       'page' => $page,
@@ -171,17 +165,20 @@ class DefaultController extends SdController
   public function actionRedirects($coupon, $store)
   {
     if ($coupon) {
+      //категория купона
       $parent = CategoriesCoupons::byId($coupon);
+      if (!$parent) {
+        throw new \yii\web\NotFoundHttpException;
+      }
     } else {
+      //шоп
       $parent = Stores::byId($store);
-      if ($parent && $parent->is_active < 0) {
+      if (!$parent || $parent->is_active == -1 || count($parent->coupons) == 0) {
         throw new \yii\web\NotFoundHttpException;
       }
     }
-    if ($parent) {
-        $this->redirect('/coupons/'.$parent->route, 301)->send();
-        exit();
-    }
-    throw new \yii\web\NotFoundHttpException;
+    $this->redirect('/coupons/'.$parent->route, 301)->send();
+    exit;
   }
+
 }

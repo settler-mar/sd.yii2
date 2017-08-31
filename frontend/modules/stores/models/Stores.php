@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use JBZoo\Image\Image;
 use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_stores".
@@ -132,6 +133,10 @@ class Stores extends \yii\db\ActiveRecord
     if ($this->isNewRecord) {
       $this->added = date('Y-m-d H:i:s');
     }
+    if (empty($this->route)) {
+      $help = new Help();
+      $this->route = $help->str2url($this->name);
+    }
 
     return true;
   }
@@ -241,7 +246,8 @@ class Stores extends \yii\db\ActiveRecord
       return true;
     }
     $oldRoute =  $this->__get('oldAttributes')['route'];
-    if ($oldRoute != $this->route) {
+
+    if (!$this->isNewRecord && $oldRoute != $this->route) {
       $routeChange = new RouteChange();
       $routeChange->route = $oldRoute;
       $routeChange->new_route = $this->route;
