@@ -76,21 +76,30 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         return $category;
     }
 
+    public static function byRoute($route)
+    {
+        $cache = \Yii::$app->cache;
+        $category = $cache->getOrSet('categories_coupons_byroute_' . $route, function () use ($route) {
+            return self::findOne(['route' => $route]);
+        });
+        return $category;
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
-        self::clearCache($this->uid);
+        self::clearCache($this->uid, $this->route);
     }
     
     public function afterDelete()
     {
-        self::clearCache($this->uid);
+        self::clearCache($this->uid, $this->route);
     }
 
     /**
      * @param null $id
      * очистка кеш
      */
-    public static function clearCache($id = null)
+    public static function clearCache($id = null, $route = null)
     {
         //зависимости
         Cache::clearName('catalog_coupons');
@@ -102,6 +111,9 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         Cache::deleteName('categories_coupons');
         if ($id) {
             Cache::deleteName('categories_coupons_byid_' . $id);
+        }
+        if ($route) {
+            Cache::deleteName('categories_coupons_byroute_' . $route);
         }
     }
 

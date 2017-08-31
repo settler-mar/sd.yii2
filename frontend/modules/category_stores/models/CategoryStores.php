@@ -136,6 +136,19 @@ class CategoryStores extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param $route
+     * @return mixed
+     */
+    public static function byRoute($route)
+    {
+        $cache = \Yii::$app->cache;
+        $category = $cache->getOrSet('store_category_byroute_' . $route, function () use ($route) {
+            return self::findOne(['route' => $route, 'is_active' => 1]);
+        });
+        return $category;
+    }
+
+    /**
      * @param $cats
      * @param int $parent_id
      * @param null $currentCategory
@@ -195,7 +208,7 @@ class CategoryStores extends \yii\db\ActiveRecord
      * @param $id
      * очистка кеш
      */
-    public static function clearCache($id = null)
+    public static function clearCache($id = null, $route = null)
     {
         
         //зависимости
@@ -209,6 +222,9 @@ class CategoryStores extends \yii\db\ActiveRecord
         Cache::deleteName('categories_stores');
         if ($id) {
             Cache::deleteName('store_category_byid' . $id);
+        }
+        if ($route) {
+            Cache::deleteName('store_category_byroute_' . $route);
         }
     }
 
