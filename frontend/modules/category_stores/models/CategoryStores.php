@@ -80,7 +80,7 @@ class CategoryStores extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $data = $cache->getOrSet('categories_stores', function () {
             $categories = self::find()
-                ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'count(cstc.category_id) as count'])
+                ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'count(cstc.category_id) as count'])
                 ->from([self::tableName(). ' ccs'])
                 ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
                 ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
@@ -171,7 +171,7 @@ class CategoryStores extends \yii\db\ActiveRecord
 
             foreach ($cats[$parent_id] as $cat) {
                 $c = $parent_id == 0 ? "class='title'" : "";
-                $catURL = "/stores/category:" . $cat['uid'];
+                $catURL = "/stores/" . $cat['route'];
 
                 $tree .= "<li>";
                 if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId) {
