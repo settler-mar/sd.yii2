@@ -255,7 +255,7 @@ class Stores extends \yii\db\ActiveRecord
     if ($insert) {
       return true;
     }
-    if ($this->oldRecord->route != $this->route) {
+    if (!$this->isNewRecord && $this->oldRecord->route != $this->route) {
       $routeChange = new RouteChange();
       $routeChange->route = $this->oldRecord->route;
       $routeChange->new_route = $this->route;

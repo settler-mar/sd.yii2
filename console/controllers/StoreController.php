@@ -196,7 +196,7 @@ class StoreController extends Controller
                 }
                 $p_cback[] = $our_size;
               } else {
-                $our_size = number_format($our_size, 2);
+                $our_size = round($our_size, 2);
                 $v_cback[] = $our_size;
               }
 
@@ -237,6 +237,7 @@ class StoreController extends Controller
               $rate_r->additional_id=isset($rate['country'])?$rate['country']:'';
               $rate_r->date_s=$rate['date_s'];
               $rate_r->save();
+              //ddd($rate_r);
             }
           }
         }
