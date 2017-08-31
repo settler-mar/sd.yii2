@@ -237,7 +237,6 @@ class StoreController extends Controller
               $rate_r->additional_id=isset($rate['country'])?$rate['country']:'';
               $rate_r->date_s=$rate['date_s'];
               $rate_r->save();
-              //ddd($rate_r);
             }
           }
         }

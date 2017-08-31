@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/LinkPager') }}
-{% set title = 'За время работы с SecretDiscounter Вы привели' %}
+{% set title = 'За время работы с SecretDiscounter Вы привели:' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -33,17 +33,17 @@
         </b>
       </div>
       <div class="col-md-12">
-        Количество покупок (подтвержденных/ожидающие):
+        Количество покупок (подтвержденных/ожидающих):
         <b>{{ _nf(users_total.cnt_confirmed,0) | raw}}</b> /
         <b>{{ _nf(users_total.cnt_pending,0) | raw}}</b>
       </div>
       <div class="col-md-12">
-        Кэшбэк друзей (подтвержденный/ожижаемый):
+        Кэшбэк друзей (подтвержденный/ожидаемый):
         <b>{{ _nf(users_total.sum_confirmed,0) | raw}} руб</b> /
         <b>{{ _nf(users_total.sum_pending,0) | raw}} руб</b>
       </div>
       <div class="col-md-12">
-        Доход от друзей (подтвержденный/ожижаемый):
+        Доход от друзей (подтвержденный/ожидаемый):
         <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} руб</b> /
         <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} руб</b>
       </div>
@@ -63,11 +63,11 @@
             </th>
             <th>
               Кэшбэк друзей <br>
-              (подтвержденный/ожижаемый)
+              (подтвержденный/ожидаемый)
             </th>
             <th>
               Ваш бонус <br>
-              (подтвержденный/ожижаемый)
+              (подтвержденный/ожидаемый)
             </th>
             <th></th>
           </tr>

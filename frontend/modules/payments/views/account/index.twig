@@ -75,4 +75,33 @@
         </div>
     </section>
     {% include '/parts/pagination.twig' %}
+
+
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Итого:</h3>
+                <div class="sum_information">
+                    <div class="line">
+                        <div class="name">Подтвержденный</div>
+                        <div class="value">
+                            {{ _nf(user.sum_confirmed) | raw}} руб
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="name">Ожидаемый</div>
+                        <div class="value">
+                            {{ _nf(user.sum_pending) | raw }} руб
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="name">Отклоненный</div>
+                        <div class="value">
+                            {{ _nf(user.sum_declined) | raw }} руб
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

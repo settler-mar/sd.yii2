@@ -60,4 +60,12 @@
         </div>
     </section>
     {% include '/parts/pagination.twig' %}
+    <section class="account-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Итого выплачено: {{ _nf(user.sum_withdraw) | raw }} руб</h3>
+            </div>
+        </div>
+    </section>
+
 </div>

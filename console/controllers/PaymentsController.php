@@ -60,9 +60,11 @@ class PaymentsController extends Controller
   {
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
+ //   $days=300;
     $params = [
       'limit' => 500,
       'offset' => 0,
+//      'subid'=>61690,
     ];
 
     if (is_array($options)) {
@@ -88,6 +90,7 @@ class PaymentsController extends Controller
           continue;
         }
 
+       // d($payment);
         $action_id = $payment['action_id'];
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
