@@ -48,6 +48,22 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'old_value_control'=>function ($model, $value, $index, $column){
+        $name=$column->attribute;
+        $old_name='old_'.$name;
+        $out=$model->$name;
+        if(
+          isset($model->$old_name) &&
+          $model->$old_name > 0 &&
+          $model->$name!=$model->$old_name
+        ){
+          $out.='<span class="old_value value_'.($model->$name<$model->$old_name?'down':'up').'">
+            '.$model->$old_name.'
+            </span>';
+        };
+
+        return $out;
+      }
     ]);
   }
 
