@@ -127,7 +127,11 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getStringStatus()
   {
-    return Yii::$app->help->colorStatus($this->status);
+    $out=Yii::$app->help->colorStatus($this->status);
+    if($this->cpa_id==1) {
+      $out .= '<span class="admitad_data" data-col="status"></span>';
+    }
+    return $out;
   }
 
   public function getShowedString(){

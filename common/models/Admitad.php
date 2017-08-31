@@ -1,6 +1,6 @@
 <?php
 
-namespace console\models;
+namespace common\models;
 
 use \Admitad\Api\Api;
 use Yii;
@@ -57,5 +57,14 @@ class Admitad{
     $websiteId=$this->config['websiteId'];
     $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
+  }
+
+  public static function getStatus(){
+    return array(
+      'pending' => 0,
+      'declined' => 1,
+      'confirmed' => 2,
+      'approved' => 2,
+    );
   }
 }

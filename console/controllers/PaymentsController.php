@@ -2,7 +2,7 @@
 
 namespace console\controllers;
 
-use console\models\Admitad;
+use common\models\Admitad;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\CpaLink;
@@ -74,12 +74,7 @@ class PaymentsController extends Controller
       $params['status_updated_end'] = date('d.m.Y H:i:s');
     }
 
-    $pay_status = array(
-      'pending' => 0,
-      'declined' => 1,
-      'confirmed' => 2,
-      'approved' => 2,
-    );
+    $pay_status = Admitad::getStatus();
 
     $users = [];
 
