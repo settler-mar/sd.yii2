@@ -7,13 +7,6 @@
     </div>
   <div class="shop__header"><a href="/stores/{{store.route}}" {% if store.name|length> 35 %} class="small-size" {% endif
     %}>{{store.name}}</a></div>
-    <div class="gotostore">
-        {% if user_id %}
-        <a href="/goto/store:{{store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-fill">Сразу к покупкам</a>
-        {% else %}
-        <a href="#registration" class="btn btn-fill">Сразу к покупкам</a>
-        {% endif %}
-    </div>
     <div class="shop-bottom">
         <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.route}}">
 
