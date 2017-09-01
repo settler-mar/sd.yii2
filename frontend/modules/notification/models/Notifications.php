@@ -2,7 +2,8 @@
 
 namespace frontend\modules\notification\models;
 
-use Yii;
+use yii;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_users_notification".
@@ -83,11 +84,14 @@ class Notifications extends \yii\db\ActiveRecord
     public static function getUnreadCount($userId)
     {
         $cacheName ='account_notification_unread_count_' . $userId;
+        $dependencyName = 'account_notification_unread';
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
         return \Yii::$app->cache->getOrSet($cacheName, function () use ($userId) {
             return self::find()
             ->where(['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0])
             ->count();
-        });
+        }, \Yii::$app->cache->defaultDuration, $dependency);
     }
     /**
      * отметить оповещения с uid из массива $ids для пользователя как прочитанные
@@ -106,4 +110,15 @@ class Notifications extends \yii\db\ActiveRecord
             \Yii::$app->cache->delete('account_notification_unread_count_' . $userId);
         }
     }
+
+  public function afterSave($insert, $changedAttributes)
+  {
+    Cache::clearName('account_notification_unread');
+    Cache::clearName('account_notifications');
+  }
+  public function afterDelete()
+  {
+    Cache::clearName('account_notification_unread');
+    Cache::clearName('account_notifications');
+  }
 }

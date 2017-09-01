@@ -2,7 +2,8 @@
 
 namespace frontend\modules\charity\models;
 
-use Yii;
+use yii;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_charity".
@@ -68,5 +69,13 @@ class Charity extends \yii\db\ActiveRecord
       $this->added = date('Y-m-d H:i:s');
     }
     return true;
+  }
+  public function afterSave($insert, $changedAttributes)
+  {
+    Cache::clearName('account_charity');
+  }
+  public function afterDelete()
+  {
+    Cache::clearName('account_charity');
   }
 }

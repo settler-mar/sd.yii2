@@ -22,14 +22,13 @@ catalog_coupons_category_<category>_<page>_<limit>_<sort>_<order> - купоны
 additional_stores_except_<store_id> - дополнительные магазины для магазина, кроме самого ЗАВИСИМОСТЬ: additional_stores
 additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - дополнительные магазины для магазина принадлежащие категориям, кроме самого магазина ЗАВИСИМОСТЬ: additional_stores_except_<id>
 store_category_byid_<category_id> - категория магазина по id
-reviews_store_rating_<store_id> - средний рейтинг магазина по id
 conversion_cources - курсы валют
-account_payments_<user_id>_<page>  - account/payments
-account_bonuses_<user_id>_<page>  - account/bonuses
-account_transitions_<user_id>_<page>  - account/transitions
-account_withdraw_history_<user_id>_<page> - account/withdraw-history
-account_charity_<user_id>_<page> - account/charity
-account_notifications_<type_id>_<user_id>_<page> - account/notification
-account_notification_unread_count_<user_id> - количество непрочитанных оповещений для пользователя
+account_payments_<user_id>_<page>  - account/payments ЗАВИСИМОСТЬ: account_payments
+account_bonuses_<user_id>_<page>  - account/bonuses ЗАВИСИМОСТЬ: account_bonuses
+account_transitions_<user_id>_<page>  - account/transitions ЗАВИСИМОСТЬ: account_transitions
+account_withdraw_history_<user_id>_<page> - account/withdraw-history ЗАВИСИМОСТЬ: account_withdraw
+account_charity_<user_id>_<page> - account/charity ЗАВИСИМОСТЬ: account_charity
+account_notifications_<type_id>_<user_id>_<page> - account/notification ЗАВИСИМОСТЬ: account_notifications
+account_notification_unread_count_<user_id> - количество непрочитанных оповещений для пользователя ЗАВИСИМОСТЬ: account_notification_unread
 account_favorites_<user_id> - /account/favorites кеширование избранного
-route_changes_<route>_<route_type> - изменённые роуты ЗАВИСИМОСТЬ: route_changes
+

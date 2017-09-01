@@ -3,7 +3,8 @@
 namespace frontend\modules\withdraw\models;
 
 use frontend\modules\users\models\Users;
-use Yii;
+use frontend\modules\cache\models\Cache;
+use yii;
 
 /**
  * This is the model class for table "cw_users_withdraw".
@@ -85,8 +86,14 @@ class UsersWithdraw extends \yii\db\ActiveRecord
         $changedAttributes['status'] != $this->status
       )
     ) {
-      \Yii::$app->balanceCalc->todo([$this->user_id],'withdraw');
+      \Yii::$app->balanceCalc->todo([$this->user_id], 'withdraw');
     };
+    Cache::clearName('account_withdraw');
+  }
+
+  public function afterDelete()
+  {
+    Cache::clearName('account_withdraw');
   }
 
   public function getUser()
