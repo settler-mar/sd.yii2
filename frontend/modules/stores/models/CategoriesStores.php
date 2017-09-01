@@ -63,4 +63,28 @@ class CategoriesStores extends \yii\db\ActiveRecord
     public function getChildrens(){
       return CategoriesStores::find()->where(['parent_id' => $this->uid])->all();
     }
+
+    public function getParentName(){
+      if($this->parent_id==0){
+        return '<Крень>';
+      }
+      $cat=CategoriesStores::find()
+        ->where(['parent_id' => $this->parent_id])
+        ->asArray()
+        ->one();
+      return $cat?$cat['name']:'Ошибка вывода';
+    }
+
+    public static function getParentsList($base = array()){
+      $cat=CategoriesStores::find()
+        ->where(['parent_id' => 0])
+        ->asArray()
+        ->all();
+      $base[0]='<Крень>';
+      foreach ($cat as $item){
+        $base[$item['uid']]=$item['name'];
+      }
+
+      return $base;
+    }
 }

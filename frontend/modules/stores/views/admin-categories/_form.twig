@@ -9,7 +9,7 @@
                 </div>
                 {% set form = active_form_begin() %}
                 <div class="col-md-6">
-                    {{ form.field(model, 'parent_id').textInput()|raw }}
+                    {{ form.field(model, 'parent_id').dropDownList(parentsList)|raw }}
 
                     {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 

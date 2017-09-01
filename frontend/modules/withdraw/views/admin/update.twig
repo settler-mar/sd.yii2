@@ -1,4 +1,4 @@
-{% set title = 'Обновлнеи выплаты: ' ~ model.uid %}
+{% set title = 'Обновление выплаты: ' ~ model.uid %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
