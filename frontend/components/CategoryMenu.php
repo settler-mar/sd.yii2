@@ -3,7 +3,7 @@
 namespace frontend\components;
 
 use yii\base\Widget;
-use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\CategoriesStores;
 
 
 class CategoryMenu extends Widget
@@ -18,6 +18,6 @@ class CategoryMenu extends Widget
     {
         $categoryId =
             !empty(\Yii::$app->controller->current_category_id) ? \Yii::$app->controller->current_category_id : null;
-        return CategoryStores::tree(0, $categoryId);
+        return CategoriesStores::tree(0, $categoryId);
     }
 }

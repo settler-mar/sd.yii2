@@ -4,7 +4,6 @@ namespace frontend\modules\coupons\models;
 
 use yii;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\category_stores\models\CategoryStores;
 use frontend\modules\cache\models\Cache;
 use common\components\Help;
 
@@ -37,7 +36,6 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
             [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
-            //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoryStores::className()],
         ];
     }
 

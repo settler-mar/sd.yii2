@@ -3,7 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use yii;
-use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
@@ -81,7 +81,7 @@ class Stores extends \yii\db\ActiveRecord
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique'],
-      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoryStores::className()],
+      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
@@ -146,7 +146,7 @@ class Stores extends \yii\db\ActiveRecord
    */
   public function getCategories()
   {
-    return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
+    return $this->hasMany(CategoriesStores::className(), ['uid' => 'category_id'])
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
   }
 

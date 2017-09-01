@@ -3,7 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use yii;
-use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\CategoriesStores;
 /**
  * This is the model class for table "cw_stores_to_categories".
  *
@@ -49,7 +49,7 @@ class StoresToCategories extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id']);
+        return $this->hasMany(CategoriesStores::className(), ['uid' => 'category_id']);
     }
 
     /**
@@ -59,7 +59,7 @@ class StoresToCategories extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CategoryStores::clearCache();
+        CategoriesStores::clearCache();
     }
 
     /**
@@ -67,6 +67,6 @@ class StoresToCategories extends \yii\db\ActiveRecord
      */
     public function afterDelete()
     {
-        CategoryStores::clearCache();
+        CategoriesStores::clearCache();
     }
 }

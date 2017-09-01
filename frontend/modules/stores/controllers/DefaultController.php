@@ -7,7 +7,7 @@ use frontend\components\SdController;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\coupons\models\Coupons;
-use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\CategoriesStores;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
@@ -36,7 +36,7 @@ class DefaultController extends SdController
                 echo $this->actionStore($store);
                 exit;
             }
-            $categoryStore = CategoryStores::byRoute($id);
+            $categoryStore = CategoriesStores::byRoute($id);
             if ($categoryStore) {
                 //если есть категория
                 \Yii::$app->params['url_mask'] = 'stores/category/'.$id;
@@ -285,7 +285,7 @@ class DefaultController extends SdController
                 $cache->defaultDuration,
                 $dependency
             );
-            $additional_stores_category = CategoryStores::byId($category[0]);
+            $additional_stores_category = CategoriesStores::byId($category[0]);
         };
         return [
             'additional_stores' => $additional_stores,
@@ -300,7 +300,7 @@ class DefaultController extends SdController
      */
     public function actionRedirects($store)
     {
-        $parent = CategoryStores::byId($store);
+        $parent = CategoriesStores::byId($store);
         if (!$parent || $parent->is_active == 0) {
             throw new \yii\web\NotFoundHttpException;
         }
