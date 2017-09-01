@@ -113,7 +113,7 @@ $(function() {
 		ad=$('.admitad_data');
 		ad.addClass('loading');
 		ad.removeClass('normal_load');
-		as.text('');
+		ad.text('');
 
 		tr=ad.closest('tr');
 		ids=[];

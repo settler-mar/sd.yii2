@@ -58,8 +58,11 @@
 
                     {{ form.field(model, 'kurs').textInput()|raw }}
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                <div  class="col-md-12">
+                    {{ form.field(model, 'admin_comment').textInput()|raw }}
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
                 </div>
                 {{ active_form_end() }}
             </div>
