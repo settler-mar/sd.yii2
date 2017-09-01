@@ -85,6 +85,7 @@ class DefaultController extends SdController
     $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
 
     if (!empty($categoryCoupons)) {
+      \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
       $cacheName = 'catalog_coupons_category_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['category_id'] = $category;
@@ -103,6 +104,7 @@ class DefaultController extends SdController
       if ($store->is_active == -1) {
         return $this->redirect('/coupons', 301);
       }
+      \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
       $contentData['current_store'] = $store;
       $cacheName = 'catalog_coupons_store_' . $storeId . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['affiliate_id'] = $storeId;
