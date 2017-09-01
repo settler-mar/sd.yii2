@@ -124,7 +124,7 @@
                 </div>
                 <div class="info-text">
                     Текущий баланс:
-                    <span>{{balance.current}} <span class="fa fa-rub"></span></span>
+                    <span>{{ _nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span>
                 </div>
             </li>
             <li class="dobro-account"><a href="/dobro">Делаем добро</a></li>

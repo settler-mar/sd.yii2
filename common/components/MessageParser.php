@@ -109,6 +109,7 @@ class MessageParser extends Component
 
         $user=$this->getUser($data_in['user_id']);
         $data=array_merge($data_in,$user);
+        //ddd($data);
       }else{
         $data=$data_in;
       }

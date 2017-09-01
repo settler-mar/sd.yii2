@@ -9,7 +9,7 @@ class m170830_072017_addCoulumnRouteCategoriesTables extends Migration
 {
   public function safeUp()
   {
-    //$this->addColumn('cw_categories_stores', 'route', $this->string()->notNull());
+    $this->addColumn('cw_categories_stores', 'route', $this->string()->notNull());
 
     $help = new Help();
     $categories = CategoriesStores::find()->all();

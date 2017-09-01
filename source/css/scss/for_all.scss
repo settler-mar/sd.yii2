@@ -434,3 +434,80 @@ body>.news-index{
     }
   }
 }
+
+.sum_information{
+  font-size: 14px;
+
+
+  &.table_box{
+    width: 32%;
+    min-width: 200px;
+    display: inline-block;
+    border: 1px solid;
+    margin: 0 3px 3px 0;
+  }
+
+  .line{
+    display: block;
+    white-space: nowrap;
+    &.sum{
+      border-top: 2px solid #ddd;
+    }
+
+    >a{
+      display: block;
+      text-align: center;
+    }
+  }
+  .name{
+    width: 180px;
+    vertical-align: top;
+    padding-right: 5px;
+    text-align: right;
+    display: inline-block;
+
+    &:after{
+      content: ":";
+    }
+  }
+  .value {
+    font-weight: bold;
+    text-align: left;
+    width: 110px;
+    display: inline-block;
+    span{
+      font-weight: normal;
+      font-size: 0.8em;
+      color: #607D8B;
+    }
+  }
+  .metrica{
+    display: inline-block;
+  }
+  .name-none:after{
+    content: '';
+  }
+}
+table.table-users{
+  .sum_information {
+    &.long_value {
+      .value {
+        width: 180px;
+        text-align: left;
+      }
+    }
+    .value {
+      width: 70px;
+      text-align: right;
+    }
+
+    .name {
+      width: 90px;
+    }
+  }
+
+  td:first-child{
+    vertical-align: middle;
+    font-weight: bold;
+  }
+}

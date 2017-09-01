@@ -41,6 +41,8 @@ class BalanceCalc extends Component
                 SUM(IF(status=0,cashback,0)) as sum_pending,
                 SUM(IF(status=2,1,0)) as cnt_confirmed,
                 SUM(IF(status=2,cashback,0)) as sum_confirmed,
+                SUM(IF(status=1,1,0)) as cnt_declined,
+                SUM(IF(status=1,cashback,0)) as sum_declined,
                 SUM(IF(status=0,ref_bonus,0)) as sum_to_friend_pending,
                 SUM(IF(status=2 ,ref_bonus,0)) as sum_to_friend_confirmed
             from cw_payments
@@ -50,6 +52,8 @@ class BalanceCalc extends Component
               u1.sum_pending=cwp.sum_pending,
               u1.cnt_confirmed=cwp.cnt_confirmed,
               u1.sum_confirmed=cwp.sum_confirmed,
+              u1.cnt_declined=cwp.cnt_declined,
+              u1.sum_declined=cwp.sum_declined,
               u1.sum_to_friend_pending=cwp.sum_to_friend_pending,
               u1.sum_to_friend_confirmed=cwp.sum_to_friend_confirmed
               ';

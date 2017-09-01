@@ -142,9 +142,14 @@ class DefaultController extends SdController
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Coupons::$defaultSort == $sort ? null : $sort,
-      'page' => $page,
+      'page' => $page
     ];
+
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
+
+    $contentData['is_root'] = (!$categoryCoupons && !$store);
+
+
     if ($pagination->pages() > 1) {
       $contentData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
       $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);

@@ -272,8 +272,8 @@ body {
         }
 
         input {
-            font-size: 13px;
-            padding: 1px 3px;
+            /*font-size: 13px;
+            /*padding: 1px 3px;*/
             width: 300px;
             outline: none;
 
@@ -339,8 +339,8 @@ body {
         float: right;
 
         input {
-            font-size: 13px;
-            padding: 3px 7px;
+            /*font-size: 13px;
+            padding: 3px 7px;*/
             outline: none;
         }
 
@@ -622,80 +622,28 @@ td{
         list-style: none;
     }
 }
-.sum_information{
-    font-size: 14px;
 
+.old_value{
+    display: block;
+    color: #999;
+    font-size: 0.9em;
 
-    &.table_box{
-        width: 32%;
-        min-width: 200px;
-        display: inline-block;
-        border: 1px solid;
-        margin: 0 3px 3px 0;
+    &:before {
+        content: 'Было: ';
     }
 
-    .line{
-        display: block;
-        white-space: nowrap;
-        &.sum{
-            border-top: 2px solid #ddd;
-        }
+    &:after{
+        font: normal normal normal 14px/1 FontAwesome;
 
-        >a{
-            display: block;
-            text-align: center;
-        }
     }
-    .name{
-        width: 180px;
-        vertical-align: top;
-        padding-right: 5px;
-        text-align: right;
-        display: inline-block;
-
-        &:after{
-            content: ":";
-        }
-    }
-    .value {
-        font-weight: bold;
-        text-align: left;
-        width: 110px;
-        display: inline-block;
-      span{
-        font-weight: normal;
-        font-size: 0.8em;
-        color: #607D8B;
-      }
-    }
-    .metrica{
-        display: inline-block;
-    }
-    .name-none:after{
-        content: '';
-    }
-}
-table.table-users{
-    .sum_information {
-        &.long_value {
-            .value {
-                width: 180px;
-                text-align: left;
-            }
-        }
-        .value {
-            width: 70px;
-            text-align: right;
-        }
-
-        .name {
-            width: 90px;
-        }
+    &.value_up:after {
+        content: "\f176";
+        color: green;
     }
 
-    td:first-child{
-        vertical-align: middle;
-        font-weight: bold;
+    &.value_down:after {
+        content: "\f175";
+        color: red;
     }
 }
 
@@ -708,6 +656,31 @@ table.table-users{
     content: "\f15e";
     font: normal normal normal 14px/1 FontAwesome;
     margin-left: 3px;
+}
+
+.admitad_data{
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.8;
+
+    &.normal_load{
+        background: url(/images/admiad-16x16.png) no-repeat 0% 50%;
+        padding-left: 22px;
+    }
+}
+.warning_value{
+     background: url(/images/warning-16x16.png) no-repeat 50% 50%;
+     height: 16px;
+     width: 16px;
+    display: inline-block;
+    float: right;
+}
+.loading{
+    min-height: 20px;
+    background: url(/images/preloader.gif) no-repeat 50% 50%;
+}
+a.btn{
+    color:#fff;
 }
 
 h1{

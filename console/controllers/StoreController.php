@@ -196,7 +196,7 @@ class StoreController extends Controller
                 }
                 $p_cback[] = $our_size;
               } else {
-                $our_size = number_format($our_size, 2);
+                $our_size = round($our_size, 2);
                 $v_cback[] = $our_size;
               }
 

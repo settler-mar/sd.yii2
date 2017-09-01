@@ -107,3 +107,54 @@ $(function() {
 		input.prop('checked',$this.prop('checked'))
 	})
 });*/
+$(function() {
+	$('.get_admitad').on('click',function(e){
+		e.preventDefault();
+		ad=$('.admitad_data');
+		ad.addClass('loading');
+		ad.removeClass('normal_load')
+
+		tr=ad.closest('tr');
+		ids=[];
+		for(var i=0;i<tr.length;i++){
+			id=tr.eq(i).data('key');
+			if(id)ids.push(id);
+		}
+
+		if(ids.length==0){
+			ad.removeClass('loading');
+			alert('Нет заказов для проверки');
+			return;
+		}
+
+		$.post('/admin/payments/admitad-test',{'ids':ids},function(data){
+			ad=$('.admitad_data');
+			ad.text('данные не найдены');
+			ad.removeClass('loading');
+
+			tr=ad.closest('tr');
+			for(var i=0;i<tr.length;i++) {
+				var item = tr.eq(i);
+				id = item.data('key');
+				if (!data[id]) {
+					continue;
+				}
+
+				tds=item.find('.admitad_data');
+				for(var j=0;j<tds.length;j++) {
+					var td = tds.eq(j);
+					key=td.data('col');
+					if(data[id][key]){
+						td.html(data[id][key]);
+						td.addClass('normal_load');
+					}
+				}
+			}
+		},'json').fail(function () {
+			ad.removeClass('loading');
+			alert('Ошибка обработки запроса')
+		});
+
+		return false;
+	})
+});

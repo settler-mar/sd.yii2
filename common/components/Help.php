@@ -93,7 +93,7 @@ class Help extends Component
     $out='<span class="status_'.$status.'"">';
 
     if($showIcon && isset($icon_list[$status])){
-      $out.=$icon_list[$status].' ';
+      $out.=$icon_list[$status].'&nbsp;';
     }
     $out.=$status_list[$status];
     $out.='</span>';

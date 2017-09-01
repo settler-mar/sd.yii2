@@ -2,6 +2,7 @@
 
 namespace frontend\modules\payments\controllers;
 
+use common\models\Admitad;
 use Yii;
 use frontend\modules\payments\models\Payments;
 use app\modules\payments\models\PaymentsSearch;
@@ -45,12 +46,120 @@ class AdminController extends Controller
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+    $canAdmitadUpdate=false;
+    $sort=trim(Yii::$app->request->get('sort'),'-');
+    if(in_array($sort,array(null,'uid'))){
+      $canAdmitadUpdate=true;
+    }
+
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'canAdmitadUpdate'=>$canAdmitadUpdate,
+      'sub_ids'=>Yii::$app->request->get('PaymentsSearch')['user_id'],
+      'old_value_control'=>function ($model, $value, $index, $column){
+        $name=$column->attribute;
+        $old_name='old_'.$name;
+        $out=$model->$name;
+        if(
+          isset($model->$old_name) &&
+          $model->$old_name > 0 &&
+          $model->$name!=$model->$old_name
+        ){
+          $out.='<span class="old_value value_'.($model->$name<$model->$old_name?'down':'up').'">
+            '.$model->$old_name.'
+            </span>';
+        };
+        if($model->cpa_id==1) {
+          $out .= '<span data-col="'.$name.'" class="admitad_data"></span>';
+        }
+        return $out;
+      }
     ]);
   }
+  public function actionAdmitadTest(){
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('PaymentsView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
 
+    $request=Yii::$app->request;
+    if(!$request->isAjax || !$request->isPost){
+      return $this->redirect(['index']);
+    }
+
+    $payments = Payments::find()
+      ->where(['uid'=>$request->post('ids')])
+      ->asArray()
+      ->all();
+
+    $user_ids=[];
+    $payments_list=[];
+    $min_date=false;
+    $max_date=false;
+
+    foreach ($payments as $payment){
+      $data=strtotime($payment['click_date']);
+      if(!$min_date || $min_date>$data){
+        $min_date=$data;
+      }
+      if(!$max_date || $max_date<$data){
+        $max_date=$data;
+      }
+      if(!in_array($payment['user_id'],$user_ids)){
+        $user_ids[]=(int)$payment['user_id'];
+      }
+      if(!in_array($payment['action_id'],$payments_list)){
+        $payments_list[$payment['action_id']]=$payment;
+      }
+    }
+
+    $admitad = new Admitad();
+    $pay_status = Admitad::getStatus();
+
+    $params = [
+      'limit' => 500,
+      'offset' => 0,
+      'date_start' => date('d.m.Y', $min_date - 86400 ),
+      'date_end' => date('d.m.Y', $max_date + 86400)
+    ];
+    if(count($user_ids)==1){
+      $params['subid']=$user_ids[0];
+    }
+
+
+    $payments = $admitad->getPayments($params);
+    $out=[];
+    foreach ($payments['results'] as $payment) {
+      if(!isset($payments_list[$payment['id']]))continue;
+
+      $db_payment=$payments_list[$payment['id']];
+
+      $status=isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
+      $kurs=$db_payment['kurs'];
+
+      $reward=$payment['payment'].' '.$payment['currency'];
+      if($kurs>1){
+        $reward.=' x '.$kurs.' = '.
+          number_format($payment['payment']*$kurs,2,'.',' ').
+          ' RUB';
+      }
+
+      $err='<span class="warning_value"></span>';
+      $wr_st=($status!=$db_payment['status']?$err:'');
+      $wr_pr=($payment['cart']!=$db_payment['order_price']?$err:'');
+      $wr_rf=(number_format($payment['payment']*$kurs,2,'.','')!=$db_payment['reward']?$err:'');
+
+      $item=[
+        'status'=>Yii::$app->help->colorStatus($status).$wr_st,
+        'order_price'=>$payment['cart'].' '.$payment['currency'].$wr_pr,
+        'reward'=>$reward.$wr_rf,
+      ];
+      $out[$db_payment['uid']]=$item;
+    }
+
+    return json_encode($out);
+  }
   /**
    * Displays a single Payments model.
    * @param integer $id

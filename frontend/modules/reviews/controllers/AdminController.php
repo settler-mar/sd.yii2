@@ -132,7 +132,7 @@ class AdminController extends Controller
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->uid]);
+      return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
         'model' => $model,
