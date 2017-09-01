@@ -115,7 +115,6 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     {
         //зависимости
         Cache::clearName('catalog_coupons');
-        Cache::clearName('catalog_coupons_count');
 
         //ключи
         Cache::deleteName('total_all_coupons');

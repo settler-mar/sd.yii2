@@ -338,7 +338,6 @@ class Stores extends \yii\db\ActiveRecord
   {
     //зависимости
     Cache::clearName('catalog_stores');
-    Cache::clearName('catalog_stores_count');
     Cache::clearName('additional_stores');
     Cache::clearName('category_tree');
     //ключи

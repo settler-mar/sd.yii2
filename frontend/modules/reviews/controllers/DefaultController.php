@@ -19,7 +19,7 @@ class DefaultController extends SdController
       throw new \yii\web\NotFoundHttpException;
     };
 
-    $cacheName = 'reviews_' . $page;
+    $cacheName = 'reviews_catalog_' . $page;
     $databaseObj = Reviews::find()
       ->select(['ur.*', "u.email", "u.name", "u.photo", "u.sex"])
       ->from(Reviews::tableName() . ' ur')

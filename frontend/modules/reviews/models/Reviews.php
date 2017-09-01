@@ -3,8 +3,9 @@
 namespace frontend\modules\reviews\models;
 
 use frontend\modules\stores\models\Stores;
-use Yii;
+use yii;
 use frontend\modules\users\models\Users;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_users_reviews".
@@ -115,6 +116,9 @@ class Reviews extends \yii\db\ActiveRecord
   public static function byStoreId($storeId)
   {
     $cache = Yii::$app->cache;
+    $dependencyName = 'reviews_catalog';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $data = $cache->getOrSet('reviews_by_store_' . $storeId, function () use ($storeId) {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
@@ -124,7 +128,7 @@ class Reviews extends \yii\db\ActiveRecord
         ->asArray()
         ->all();
       return $reviews;
-    });
+    }, $cache->defaultDuration, $dependency);
     return $data;
   }
 
@@ -135,6 +139,9 @@ class Reviews extends \yii\db\ActiveRecord
   public static function storeRating($storeId)
   {
     $cache = Yii::$app->cache;
+    $dependencyName = 'reviews_catalog';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $data = $cache->getOrSet('reviews_store_rating_' . $storeId, function () use ($storeId) {
       $data = Reviews::find()
         ->from(Reviews::tableName() . ' r')
@@ -150,7 +157,24 @@ class Reviews extends \yii\db\ActiveRecord
         'value' => $rating,
         'reviews_count' => $reviewsCount,
       ];
-    });
+    }, $cache->defaultDuration, $dependency);
     return $data;
+  }
+  
+  public function afterSave($insert, $changedAttributes)
+  {
+    $this->clearCache();
+  }
+  public function afterDelete()
+  {
+    $this->clearCache();
+  }
+  
+  private function clearCache($id = null)
+  {
+      //удаляем ключи
+      Cache::deleteName('reviews_top');
+      //обновляем зависимости
+      Cache::clearName('reviews_catalog');
   }
 }
