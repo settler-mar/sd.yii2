@@ -23,7 +23,10 @@ class DefaultController extends SdController
     {
         $request = \Yii::$app->request;
         $category = $request->get('category');
-
+        $store = $request->get('store');
+        if ($store) {
+            throw new \yii\web\NotFoundHttpException;
+        }
         if ($category) {
             $this->actionRedirects($category);
             exit;
