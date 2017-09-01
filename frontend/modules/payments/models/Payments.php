@@ -53,6 +53,7 @@ class Payments extends \yii\db\ActiveRecord
       [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
       [['click_date', 'action_date', 'status_updated', 'closing_date','storeName','email'], 'safe'],
       [['order_id'], 'string', 'max' => 50],
+      [['admin_comment'], 'string', 'max' => 255],
     ];
   }
 
@@ -63,6 +64,7 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
       'uid' => 'ID',
+      'admin_comment'=>'Коментарий администратора',
       'is_showed' => 'Is Showed',
       'action_id' => 'Код действия',
       'affiliate_id' => 'Affiliate ID',

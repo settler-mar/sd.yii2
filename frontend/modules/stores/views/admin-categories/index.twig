@@ -24,7 +24,12 @@
                                 {'class': '\\yii\\grid\\SerialColumn'},
 
                                 'uid',
-                                'parent_id',
+                                {
+                                    'format':'raw',
+                                    'attribute':'parent_id',
+                                    'filter':parentsList,
+                                    'value':'parentName'
+                                },
                                 'name',
                                 'route',
                                 {

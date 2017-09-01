@@ -49,6 +49,7 @@ class AdminCategoriesController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'parentsList' => CategoriesStores::getParentsList([''=>'Любая']),
       'table' => [
         'is_active' => function ($model, $key, $index, $column) {
           return $model->is_active == 1 ? 'Активная' : 'Скрытая';
@@ -75,6 +76,7 @@ class AdminCategoriesController extends Controller
     } else {
       return $this->render('create.twig', [
         'model' => $model,
+        'parentsList' => CategoriesStores::getParentsList(),
       ]);
     }
   }
@@ -98,6 +100,7 @@ class AdminCategoriesController extends Controller
     } else {
       return $this->render('update.twig', [
         'model' => $model,
+        'parentsList' => CategoriesStores::getParentsList(),
       ]);
     }
   }

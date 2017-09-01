@@ -1275,10 +1275,11 @@ table {
 ------------------------------------*/
 .autocomplete-suggestions {
     position: fixed!important;
+    top: 45px!important;
     background-color: #2D3238;
     color: #fff;
     padding: 5px 0px;
-    margin-left: 15px;
+    //margin-left: 15px;
     width: 250px!important;
     max-height: 600px !important;
 
