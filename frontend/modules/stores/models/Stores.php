@@ -3,7 +3,7 @@
 namespace frontend\modules\stores\models;
 
 use yii;
-use frontend\modules\category_stores\models\CategoryStores;
+use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use JBZoo\Image\Image;
 use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_stores".
@@ -41,12 +42,6 @@ class Stores extends \yii\db\ActiveRecord
   public $filename;
   public $logoTmp;
   public $logoImage;
-
-  /**
-   * @var
-   * сохраняем старое значение записи
-   */
-  private $oldRecord;
 
   /**
    * @var string
@@ -86,7 +81,7 @@ class Stores extends \yii\db\ActiveRecord
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique'],
-      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoryStores::className()],
+      [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
@@ -138,25 +133,20 @@ class Stores extends \yii\db\ActiveRecord
     if ($this->isNewRecord) {
       $this->added = date('Y-m-d H:i:s');
     }
+    if (empty($this->route)) {
+      $help = new Help();
+      $this->route = $help->str2url($this->name);
+    }
 
     return true;
   }
-
-  /**
-   * сохраняем старое значение записи
-   */
-  public function afterFind()
-  {
-    $this->oldRecord = clone $this;
-  }
-
   /**
    * категории магазина
    * @return $this
    */
   public function getCategories()
   {
-    return $this->hasMany(CategoryStores::className(), ['uid' => 'category_id'])
+    return $this->hasMany(CategoriesStores::className(), ['uid' => 'category_id'])
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
   }
 
@@ -255,9 +245,11 @@ class Stores extends \yii\db\ActiveRecord
     if ($insert) {
       return true;
     }
-    if (!$this->isNewRecord && $this->oldRecord->route != $this->route) {
+    $oldRoute =  $this->__get('oldAttributes')['route'];
+
+    if (!$this->isNewRecord && $oldRoute != $this->route) {
       $routeChange = new RouteChange();
-      $routeChange->route = $this->oldRecord->route;
+      $routeChange->route = $oldRoute;
       $routeChange->new_route = $this->route;
       $routeChange->route_type = RouteChange::ROUTE_TYPE_STORES;
       $routeChange->save();

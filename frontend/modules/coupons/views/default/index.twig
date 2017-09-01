@@ -32,7 +32,7 @@
                     <li {% if not category_id and not affiliate_id %} class="active" {% endif %}><a href="/coupons">Все купоны <span>({{total_all_coupons}})</span></a></li>
                     {% if coupons_categories|length > 0 %}
                         {% for coupon_category in coupons_categories %}
-                        <li {% if category_id == coupon_category.uid %} {% set category_name = coupon_category.name %} class="active" {% endif %}><a href="/coupons/category:{{coupon_category.uid}}">{{coupon_category.name}} <span>({{coupon_category.count}})</span></a></li>
+                        <li {% if category_id == coupon_category.uid %} {% set category_name = coupon_category.name %} class="active" {% endif %}><a href="/coupons/{{coupon_category.route}}">{{coupon_category.name}} <span>({{coupon_category.count}})</span></a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>
@@ -42,7 +42,7 @@
                 {% if stores_coupons|length > 0 %}
                 <ul class="coupons-stores" data-mcs-theme="dark">
                     {% for store in stores_coupons %}
-                    <li {% if affiliate_id == store.uid %} {% set store_name = store.name %} class="active" {% endif %}><a href="/coupons/store:{{store.uid}}">{{store.name}} <span>({{store.count}})</span></a></li>
+                    <li {% if affiliate_id == store.uid %} {% set store_name = store.name %} class="active" {% endif %}><a href="/coupons/{{store.route}}">{{store.name}} <span>({{store.count}})</span></a></li>
                     {% endfor %}
                 </ul>
                 {% endif %}

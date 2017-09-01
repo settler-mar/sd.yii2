@@ -31,3 +31,4 @@ account_charity_<user_id>_<page> - account/charity
 account_notifications_<type_id>_<user_id>_<page> - account/notification
 account_notification_unread_count_<user_id> - количество непрочитанных оповещений для пользователя
 account_favorites_<user_id> - /account/favorites кеширование избранного
+route_changes_<route>_<route_type> - изменённые роуты ЗАВИСИМОСТЬ: route_changes

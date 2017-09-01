@@ -1,13 +1,10 @@
 <?php
 namespace frontend\components;
 
-use Yii;
+use yii;
 use yii\web\Controller;
 //use frontend\components\Help;
 use yii\helpers\Url;
-
-
-use frontend\modules\category_stores\models\CategoryStores;
 
 /**
  * как родительский для контроллеров, где нужно выводить девево Категории Магазинов

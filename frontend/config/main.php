@@ -106,9 +106,6 @@ $config= [
     'reviews' => [
       'class' => 'frontend\modules\reviews\Module',
     ],
-    'category_strores' => [
-      'class' => 'frontend\modules\category_stores\Module',
-    ],
     'permit' => [
       'class' => 'developeruz\db_rbac\Yii2DbRbac',
       'params' => [

@@ -120,7 +120,7 @@ class Coupons extends \yii\db\ActiveRecord
     $categories = $cache->getOrSet('categories_coupons', function () {
       return CategoriesCoupons::find()
         ->from(CategoriesCoupons::tableName() . ' ccc')
-        ->select(['ccc.name', 'ccc.uid', 'count(cct.coupon_id) as count'])
+        ->select(['ccc.name', 'ccc.uid', 'ccc.route', 'count(cct.coupon_id) as count'])
         ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
         ->innerJoin(self::tableName() . ' cwc', 'cct.coupon_id = cwc.coupon_id')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
@@ -141,7 +141,7 @@ class Coupons extends \yii\db\ActiveRecord
     $categories = $cache->getOrSet('stores_coupons', function () {
       return self::find()
         ->from(self::tableName() . ' cwc')
-        ->select(['cws.name', 'cws.uid', 'count(cwc.uid) as count'])
+        ->select(['cws.name', 'cws.uid', 'cws.route', 'count(cwc.uid) as count'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
         ->groupBy('cwc.store_id')

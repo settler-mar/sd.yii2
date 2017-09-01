@@ -84,8 +84,8 @@ class SdView extends View
       return false;
     }
 
-    if(isset(Yii::$app->params['url_no_page'])){
-      $page=Yii::$app->params['url_no_page'];
+    if(isset(Yii::$app->params['url_mask'])){
+      $page=Yii::$app->params['url_mask'];
       $page=str_replace('default/','',$page);
       $page=str_replace('/default','',$page);
     }else {
@@ -108,18 +108,13 @@ class SdView extends View
     }
 
     //прямого совпадения нет ищем по плейсхолдерам
-    $arr = explode('/', str_replace(':','/',$page));
+    $arr = explode('/', $page);
     $page_t = false;
-    if (count($arr) > 2) {
-      $page_t = $arr[0] . '/' . $arr[1];
-    } elseif (count($arr) > 1) {
-      $page_t = $arr[0];
+    if (count($arr) > 1) {
+      unset($arr[count($arr)-1]);
+      $page_t = implode('/', $arr) . '/';
     }
-
     if ($page_t) {
-      if(strpos($page,':')===false){
-        $page_t.='/';
-      };
       $mdataArray = Meta::find()
         ->select(['title', 'description', 'keywords', 'h1', 'content'])
         ->where(['like', 'page', $page_t . '*', false])
