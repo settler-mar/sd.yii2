@@ -95,14 +95,14 @@ class Payments extends \yii\db\ActiveRecord
   public function beforeSave($insert)
   {
     if(
-      $this->isNewRecord ||
+      !$this->isNewRecord &&
       $this->oldAttributes['order_price']!=$this->order_price)
     {
       $this->old_order_price=$this->oldAttributes['order_price'];
     }
 
     if(
-      $this->isNewRecord ||
+      !$this->isNewRecord &&
       $this->oldAttributes['reward']!=$this->reward)
     {
       $this->old_reward=$this->oldAttributes['reward'];

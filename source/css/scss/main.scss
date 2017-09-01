@@ -2745,4 +2745,72 @@ ul.faq__list{
 footer ul.footer-group li .red_item {
   color: red;
 }
+
+img{
+  max-width:100%;
+}
+
+.help-msg{
+  h1{
+    color:#e4c94c;
+    font-weight: bold;
+    counter-reset: h_num
+  }
+
+  h3{
+    font-size: 22px;
+  }
+
+  h4{
+    font-size: 22px;
+    font-weight: bold;
+    color:#0f181a;
+    position: relative;
+    padding-left: 45px;
+    text-transform: uppercase;
+
+    &:before{
+      counter-increment: h_num;
+      content: counter(h_num);
+      color:#e4c94c;
+      font-size: 65px;
+      position: absolute;
+      top: -10px;
+      left: 0;
+    }
+
+    + p{
+      padding-left: 45px;
+    }
+  }
+
+  ol{
+    line-height: 29px;
+    counter-reset: li;
+    padding: 0;
+  }
+
+  li{
+    list-style: none;
+    margin-bottom: 10px;
+    padding-left: 30px;
+    position: relative;
+
+    &:before{
+      counter-increment: li;
+      content: counter(li);
+      background: #e4c94c;
+      line-height: 24px;
+      width: 24px;
+      display: block;
+      text-align: center;
+      border-radius: 100%;
+      font-size: 16px;
+      position: absolute;
+      left: 0;
+      top: 3px;
+    }
+  }
+}
+
 @import  "../external/queries";

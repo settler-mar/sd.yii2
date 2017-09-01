@@ -124,6 +124,7 @@ class PaymentsController extends Controller
           $db_payment->reward = $reward;
           $db_payment->cashback = $cashback;
           $db_payment->status = $status;
+          $db_payment->cpa_id = 1;
           $db_payment->click_date = $payment['click_date'];
           $db_payment->action_date = $payment['action_date'];
           $db_payment->status_updated = $payment['status_updated'];

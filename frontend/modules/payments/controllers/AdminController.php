@@ -77,6 +77,7 @@ class AdminController extends Controller
       }
     ]);
   }
+
   public function actionAdmitadTest(){
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('PaymentsView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');

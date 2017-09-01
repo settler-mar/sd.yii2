@@ -96,10 +96,15 @@ $('body').on('click','a.ajaxFormOpen',function(e){
     notyfy_class:"notify_white loading",
     question:''
   };
+  modal_class=$(this).data('modal-class');
+
   notification.alert(data);
   $.get('/'+href,function(data){
     $('.notify_box').removeClass('loading');
     $('.notify_box .notify_content').html(data.html);
     ajaxForm($('.notify_box .notify_content'));
+    if(modal_class){
+      $('.notify_box .notify_content .row').addClass(modal_class);
+    }
   },'json')
 });

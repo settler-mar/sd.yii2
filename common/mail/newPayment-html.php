@@ -9,7 +9,11 @@
         </tr>
         <tr>
           <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 15px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-            Здравствуйте! <?=$payment->action_date;?> Вами был сделан заказ (ID SecretDiscounter: <?=$payment->uid;?>) в <span style="color: #4d4d4d; font-weight: bold;"><?=$payment->store->name;?></span>, за который Вам было начислено <br><span style="color: #4d4d4d; font-weight: bold;"><?=$payment->cashback;?> р.</span> кэшбэка.
+            Здравствуйте!
+            <?=$payment->action_date;?> Вами был сделан заказ (ID SecretDiscounter: <?=$payment->uid;?>) в
+            <span style="color: #4d4d4d; font-weight: bold;"><?=$payment->store->name;?></span>,
+            за который Вам было начислено <br>
+            <span style="color: #4d4d4d; font-weight: bold;"><?=$payment->cashback;?> р.</span> кэшбэка.
           </td>
         </tr>
         <tr>

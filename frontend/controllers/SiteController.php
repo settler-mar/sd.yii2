@@ -82,7 +82,7 @@ class SiteController extends SdController
 
     $reviews = Reviews::top();
 
-    $reg_form = new RegistrationForm();
+    //$reg_form = new RegistrationForm();
 
     return $this->render('index', [
       'time' => time(),
