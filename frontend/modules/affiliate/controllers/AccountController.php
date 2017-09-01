@@ -79,7 +79,6 @@ class AccountController extends \yii\web\Controller
       }
     }
 
-
     $user = Yii::$app->user->identity;
     foreach ($valid_mail as $email) {
       Yii::$app
@@ -95,6 +94,7 @@ class AccountController extends \yii\web\Controller
         )
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
         ->setTo($email)
+        ->setReplyTo($user->email)
         ->setSubject('Вас приглашают на ' . Yii::$app->name)
         ->send();
     }
