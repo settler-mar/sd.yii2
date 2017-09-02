@@ -49,7 +49,7 @@ class Pagination
       //имеется $cacheName - count берём через кеш
       $dependency = new yii\caching\DbDependency;
       // для первого запроса (для count) в cw_cache прибавляем '_count'
-      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '_count"';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $this->dependencyName . '"';
 
       $cache = \Yii::$app->cache;
       $count = $cache->getOrSet($this->cacheName . '_count', function () {
