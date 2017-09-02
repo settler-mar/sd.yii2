@@ -230,7 +230,7 @@ class AdminController extends Controller
             'id' => $m->id,
             'cpa_id' => $m->cpa_id,
             'stores_id' => $m->stores_id,
-            'name' => $cpa->name,
+            'cpa' => array('name' => $cpa->name),
           )
         );
         $out = array(
