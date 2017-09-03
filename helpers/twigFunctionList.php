@@ -153,7 +153,6 @@ $functionsList=[
       if ($mode == 1) {
         $cur = $currency;
       }
-
     }
     return $cashback .' '. $cur;
   },

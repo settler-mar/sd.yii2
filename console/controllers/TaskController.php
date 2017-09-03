@@ -2,6 +2,8 @@
 
 namespace console\controllers;
 
+use frontend\models\Task;
+use frontend\modules\notification\models\Notifications;
 use frontend\modules\users\models\Users;
 use yii\console\Controller;
 
@@ -38,6 +40,39 @@ class TaskController extends Controller
       \Yii::$app->db->createCommand($sql2)->execute();
 
       $period = \Yii::$app->db->createCommand($sql)->queryOne();
+    }
+
+
+    //Отключение премиум аккаунта
+    $tasks= Task::find()
+      ->andWhere(['task'=>2])
+      ->andWhere(['<','add_time',time()])
+      ->all();
+    foreach ($tasks as $task){
+      $user=Users::find()
+        ->where(['uid'=>abs($task->param)])
+        ->one();
+
+      //еси это был бонус за регистрацию то долаем нотификацию
+      if($task->param<0){
+        $notify = new Notifications();
+        $notify->user_id = $user->uid;
+        $notify->type_id = 2;
+        $notify->status = 2;
+        $notify->amount = 0;
+        $notify->payment_id = 0;
+        $notify->twig_template = 4;
+        $notify->save();
+      }
+
+      $user->new_loyalty_status_end=0;
+      $user->loyalty_status=$user->old_loyalty_status;
+      $user->old_loyalty_status=0;
+
+      $user->testLoyality();
+      $user->save();
+
+      $task->delete();
     }
   }
 

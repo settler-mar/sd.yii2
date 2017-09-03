@@ -641,7 +641,10 @@ $(window).load(function(){
     // $("#top").find(".submenu .tree").mCustomScrollbar({
     //     axis:"y",
     //     setHeight: 300
-    // }); 
+    // });
+    if($("#top").find(".c-wrapper").length){
+        return true;
+    }
     $("#top").find(".c-wrapper").mCustomScrollbar({
         axis:"y",
         setHeight: 700

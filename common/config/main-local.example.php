@@ -10,13 +10,19 @@ return [
       ],
       'mailer' => [
         'class' => 'yii\swiftmailer\Mailer',
-        'useFileTransport' => true,
+        'useFileTransport' => false,
 
-        'host' => 'mail.ukraine.com.ua',
-        'username' => 'admin@test.com',
-        'password' => 'pass',
-        'port' => '2525',
-        'encryption' => 'tls',
+        'transport' => [
+          'class' => 'Swift_SmtpTransport',
+          'host' => 'smtp.mail.ru',
+          'username' => 'support@secretdiscounter.ru',
+          'password' => '??????????',
+          //'port' => '465',
+          //'port' => '2525',
+          'port' => '587',
+          'encryption' => 'tls',
+          //'extraParams' => null*/
+        ]
       ],
       'cache' => [
         //'class' => 'yii\caching\FileCache',

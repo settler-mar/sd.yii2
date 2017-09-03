@@ -52,7 +52,7 @@ $dict = [
         'bonus'=>30,
         'min_sum'=>10000,
         'description'=>'накопленного кэшбэка требуется для получения статуса <b>Platinum</b> - и ваш кэшбэк с каждого заказа станет <b>на 30% больше</b>',
-        'is_vip'=>1,
+        'is_vip'=>0,
         ],
       5=>[
         'name'=>"personal 5%",
@@ -180,6 +180,12 @@ $dict = [
 
       'notification_title_manual_2'=>'{{text}}',
       'notification_text_manual_2'=>'Вам был начислен бонус <b>{{amount}} руб.)</b> от администрации SecretDiscounter.',
+
+      'notification_title_manual_3'=>'Бонус за регистрацию',
+      'notification_text_manual_3'=>'Поздравляем, вам, как новому пользователю, подключен премиум-аккаунт (+30% кэшбэка). Срок его действия – 10 дней с момента регистрации на нашем сайте(до {{text}}).',
+
+      'notification_title_manual_4'=>'Бонус за регистрацию',
+      'notification_text_manual_4'=>'Ваш премиум-аккаунт отключен по истечении 10 дней после регистрации. Подробнее о нашей накопительной системе лояльности читайте <a href="https://secretdiscounter.ru/loyalty">здесь</a>',
     ],
     'twig_list_name'=>[
       0=>"Автоматически",

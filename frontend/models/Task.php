@@ -31,7 +31,7 @@ class Task extends \yii\db\ActiveRecord
   {
     return [
       [['task', 'add_time'], 'required'],
-      [['task', 'add_time', 'param', 'user_id', 'shop_id'], 'integer'],
+      [['task', 'add_time', 'param'], 'integer'],
     ];
   }
 

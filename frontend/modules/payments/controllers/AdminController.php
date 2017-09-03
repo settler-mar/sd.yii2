@@ -122,8 +122,12 @@ class AdminController extends Controller
       'limit' => 500,
       'offset' => 0,
       'date_start' => date('d.m.Y', $min_date - 86400 ),
-      'date_end' => date('d.m.Y', $max_date + 86400)
     ];
+
+    if($max_date <time()-90000) {
+      $params['date_end'] = date('d.m.Y', $max_date + 86400);
+    }
+
     if(count($user_ids)==1){
       $params['subid']=$user_ids[0];
     }
