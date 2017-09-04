@@ -2424,11 +2424,12 @@ $page404paragraphColor: #0B0A0A;
   }
   &__buttons {
     &_list {
-      margin: 40px -15px 10px;
+      margin: 40px -15px 10px 0;
+      padding-left: 0;
     }
     &_item {
       display: inline-block;
-      margin-left: 10px;
+      margin-right: 10px;
 
       & a {
         background-color: #FCE341;
