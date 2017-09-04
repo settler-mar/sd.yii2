@@ -167,10 +167,22 @@
                         {% if store_coupons|length > 0 %}
                         <div class="c-wrapper coupons-list" data-mcs-theme="dark">
                             {% for coupon in store_coupons %}
-                            <div class="col-sm-12 col-md-6 coupons-item">
+                            <div class="col-sm-12 col-md-6 coupons-item {% if loop.index > 6 %}more{% endif %}">
                             {% include 'parts/coupon.twig' %}
                             </div>
+                                {% if loop.index == 6 and store_coupons|length > 6 %}
+                                    <div class="col-md-12 store-coupons__buttons-more">
+                                        <a class="btn store-coupons__show-more" href="#">Показать все</a>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
+                            {% if store_coupons|length > 6 %}
+                                <div class="col-md-12 col-md-12 store-coupons__buttons-less">
+                                    <a class="btn store-coupons__show-less" href="#">Скрыть</a>&nbsp;
+                                    <a class="btn" href="/coupons">Все купоны и акции</a>&nbsp;
+                                    <a class="btn" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды</a>
+                                </div>
+                            {% endif %}
                         </div>
                         {% else %}
                         <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
