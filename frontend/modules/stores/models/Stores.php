@@ -85,7 +85,8 @@ class Stores extends \yii\db\ActiveRecord
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
-        'minHeight' => 500,
+        'minHeight' => 60,
+        'minWidth' => 145,
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],

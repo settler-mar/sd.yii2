@@ -15,7 +15,7 @@
                         <p><span>Описание:</span> <br> {{ form.field(promo_store, 'description').textarea().label(false)|raw}}</p>
                         <p><span>Изображение:</span> <br>
                             {% if promo_store.image != '' %}
-                                <img style="max-width: 300px;" src="/images/slides/{{promo_store.image}}"> <br>
+                                <img for="image" style="max-height: 150px;" src="{{ model.image }} | raw }}"><br>
                             {% endif %}
                             <input name="image" type="file"></p>
                         <p><span>HTML:</span> <br> {{ form.field(promo_store, 'html').textarea().label(false)|raw}}</p>

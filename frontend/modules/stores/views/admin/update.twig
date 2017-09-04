@@ -30,7 +30,10 @@
                                     <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
-                                    <p><span>Logo:</span> <img src=" {{model.logo}} "> </p>
+                                    <p>
+                                        <span>Logo:</span>
+                                        <img for="Stores[logoImage]" style="max-height: 150px;" src="images/logos/{{ model.logo | raw }}">
+                                    </p>
                                     {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
                                     <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true}).label(false)|raw }}</p>

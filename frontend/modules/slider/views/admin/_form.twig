@@ -15,6 +15,7 @@
         {{ form.field(model, 'html').textarea({'rows':6})|raw }}
 
         {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+        <img for="Slider[image]" style="max-height: 150px;" src="{{ model.image }} | raw }}">
 
         {{ form.field(model, 'show_as').textInput({'maxlength':true})|raw }}
 
