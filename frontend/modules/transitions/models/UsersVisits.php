@@ -64,7 +64,7 @@ class UsersVisits extends \yii\db\ActiveRecord
     if ($this->isNewRecord) {
       $this->user_ip = $_SERVER["REMOTE_ADDR"];
       $this->visit_date = date('Y-m-d H:i:s');
-      $this->user_id = Yii::$app->user->id;
+      $this->user_id = (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
     }
     return true;
 
