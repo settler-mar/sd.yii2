@@ -138,15 +138,19 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
    */
   public static function afterLogin($id)
   {
-    if(
-      !Yii::$app->session->get('admin_id') ||
-      Yii::$app->session->get('admin_id')!=Yii::$app->user->id
-    ){
-      self::getDb()->createCommand()->update(self::tableName(), [
-        'last_ip' => $_SERVER["REMOTE_ADDR"],
-        'last_login' => date('Y-m-d H:i:s'),
-      ], ['uid' => $id])->execute();
-    }
+//    if(
+//      !Yii::$app->session->get('admin_id') ||
+//      Yii::$app->session->get('admin_id')!=Yii::$app->user->id
+//    ){
+      $user = self::findOne($id);
+      $user->last_ip =  $_SERVER["REMOTE_ADDR"];
+      $user->last_login = date('Y-m-d H:i:s');
+      $user->save();
+//      self::getDb()->createCommand()->update(self::tableName(), [
+//        'last_ip' => $_SERVER["REMOTE_ADDR"],
+//        'last_login' => date('Y-m-d H:i:s'),
+//      ], ['uid' => $id])->execute();
+   // }
 
   }
 
