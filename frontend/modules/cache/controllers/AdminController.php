@@ -13,6 +13,20 @@ class AdminController extends \yii\web\Controller
 {
 
     /**
+     * @param yii\base\Action $action
+     * @return bool
+     * @throws yii\web\ForbiddenHttpException
+     */
+    public function beforeAction($action)
+    {
+        //todo нужна проверка на админа
+        if (Yii::$app->user->isGuest) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        }
+        return true;
+    }
+
+    /**
      * @return mixed
      * @throws yii\web\notFoundHTTPException
      */
