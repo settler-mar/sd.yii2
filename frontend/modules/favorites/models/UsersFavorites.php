@@ -4,6 +4,7 @@ namespace frontend\modules\favorites\models;
 
 use frontend\modules\stores\models\Stores;
 use Yii;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_users_favorites".
@@ -69,7 +70,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
       $user_id=Yii::$app->user->id;
     }
     $cache = Yii::$app->cache;
-    return $cache->getOrSet('account_favorites_'.$user_id, function () use ($user_id){
+    return $cache->getOrSet('account_favorite_stores_'.$user_id, function () use ($user_id){
       $fav = self::find()
         ->where(['user_id'=>$user_id])
         ->asArray()
@@ -89,5 +90,17 @@ class UsersFavorites extends \yii\db\ActiveRecord
   public function getStore()
   {
     return Stores::find()->where(['uid' => $this->store_id])->asArray()->one();
+  }
+
+  public function afterSave($insert, $changedAttributes)
+  {
+    //ключи
+    Cache::deleteName('account_favorite_stores_' . $this->user_id);
+    Cache::deleteName('account_favorites_' . $this->user_id);
+  }
+  public function afterDelete()
+  {
+    Cache::deleteName('account_favorite_stores_' . $this->user_id);
+    Cache::deleteName('account_favorites_' . $this->user_id);
   }
 }

@@ -72,10 +72,10 @@ class Charity extends \yii\db\ActiveRecord
   }
   public function afterSave($insert, $changedAttributes)
   {
-    Cache::clearName('account_charity');
+    Cache::clearName('account_charity' . $this->user_id);
   }
   public function afterDelete()
   {
-    Cache::clearName('account_charity');
+    Cache::clearName('account_charity' . $this->user_id);
   }
 }

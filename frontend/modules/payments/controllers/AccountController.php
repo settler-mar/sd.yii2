@@ -55,7 +55,7 @@ class AccountController extends \yii\web\Controller
       ->where(['cwp.user_id' => $id])
       ->orderBy('cwp.action_id DESC');
 
-    $cacheName = 'account_payments_' . $id . '_' . $page;
+    $cacheName = 'account_payments' . $id . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
