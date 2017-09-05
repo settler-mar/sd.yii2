@@ -226,6 +226,10 @@ class SiteController extends SdController
       return $this->redirect('/stores');
     }
 
+    if($store->is_active==0){
+      return $this->redirect('/stores/'.$store->route);
+    }
+
     if($data['link']=='') {
       $data['link']=$store->cpaLink->affiliate_link;
     }

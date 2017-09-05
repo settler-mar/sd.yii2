@@ -44,10 +44,8 @@ class AccountController extends Controller
       $search_range = date('d-m-Y', time() - 90 * 24 * 60 * 60) . ' - ' . date('d-m-Y');
     }
 
+
     list($start_date, $end_date) = explode(' - ', $search_range);
-    $start_date = date('Y-m-d', strtotime($start_date));
-    $end_date = date('Y-m-d', strtotime($end_date));
-    $query->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
     $data_ranger = Help::DateRangePicker(
       $start_date . ' - ' . $end_date,
       'date', [
@@ -57,6 +55,10 @@ class AccountController extends Controller
           }",
       ]
     ]);
+
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
+    $query->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
 
     $totQuery = clone $query;
     $totQuery = $totQuery

@@ -64,9 +64,6 @@ class AccountController extends \yii\web\Controller
     }
 
     list($start_date, $end_date) = explode(' - ', $search_range);
-    $start_date = date('Y-m-d', strtotime($start_date));
-    $end_date = date('Y-m-d', strtotime($end_date));
-    $dataBase->andFilterWhere(['between', 'action_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
     $data['data_ranger'] = Help::DateRangePicker(
       $start_date . ' - ' . $end_date,
       'date', [
@@ -76,6 +73,10 @@ class AccountController extends \yii\web\Controller
           }",
       ]
     ]);
+
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
+    $dataBase->andFilterWhere(['between', 'action_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
 
     $total = clone $dataBase;
     $data['total'] = $total

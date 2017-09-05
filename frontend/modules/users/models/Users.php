@@ -142,14 +142,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       !Yii::$app->session->get('admin_id') ||
       Yii::$app->session->get('admin_id')!=Yii::$app->user->id
     ){
-      $user = self::findOne($id);
-      $user->last_ip =  $_SERVER["REMOTE_ADDR"];
-      $user->last_login = date('Y-m-d H:i:s');
-      $user->save();
-//      self::getDb()->createCommand()->update(self::tableName(), [
-//        'last_ip' => $_SERVER["REMOTE_ADDR"],
-//        'last_login' => date('Y-m-d H:i:s'),
-//      ], ['uid' => $id])->execute();
+      self::getDb()->createCommand()->update(self::tableName(), [
+        'last_ip' => $_SERVER["REMOTE_ADDR"],
+        'last_login' => date('Y-m-d H:i:s'),
+      ], ['uid' => $id])->execute();
     }
 
   }
@@ -256,7 +252,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
       $store=Stores::top12(12);
 
-      if(Yii::$app
+      Yii::$app
         ->mailer
         ->compose(
           ['html' => 'welcome-html', 'text' => 'welcome-text'],
@@ -268,11 +264,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
         ->setTo($this->email)
         ->setSubject(Yii::$app->name . ': Регистрация')
-        ->send()){
-        //письмо ушло
-      }else{
-        //письмо не ушло
-      }
+        ->send();
     }
     $this->saveImage();
   }

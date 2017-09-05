@@ -123,21 +123,29 @@ class Help extends Component
       'pluginOptions' => [
         'timePicker'=>false,
         'locale'=>[
-          'format'=>'d-m-Y'
+          'format'=>'d-m-Y',
         ],
         'ranges'=>Help::dateRanges(),
         //'opens'=>'left',
         'showDropdowns'=>true,
         //'autoUpdateInput' => true,
+        'todayHighlight' => true,
       ],
       //'presetDropdown'=>true,
       'hideInput'=>true,
-      /*'pluginEvents' => [
-        "show.daterangepicker" => "function() { console.log(\"show.daterangepicker\"); }",
-        "hide.daterangepicker" => "function() { console.log(\"hide.daterangepicker\"); }",
+      'pluginEvents' => [
+        /*"show.daterangepicker" => "function(ev,range) {
+          ranges=range.element.text().trim().split(' - ')
+          console.log(ranges);
+          ranges[0]='05-09-2017'
+          ranges[1]='05-09-2017'
+          range.setStartDate(ranges[0])
+          range.setEndDate(ranges[1])
+          }",
+        /*"hide.daterangepicker" => "function() { console.log(\"hide.daterangepicker\"); }",
         "apply.daterangepicker" => "function() { console.log(\"apply.daterangepicker\"); }",
-        "cancel.daterangepicker" => "function() { console.log(\"cancel.daterangepicker\"); }",
-      ],*/
+        "cancel.daterangepicker" => "function() { console.log(\"cancel.daterangepicker\"); }",*/
+      ],
     ],$option);
 
     if(is_string($Model)){

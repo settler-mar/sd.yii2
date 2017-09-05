@@ -78,7 +78,7 @@ class AdminController extends Controller
         }
         return $out;
       },
-      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range')
+      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false])
     ]);
   }
 
