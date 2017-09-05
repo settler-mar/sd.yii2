@@ -1,7 +1,9 @@
 <?php
 
 namespace common\components;
+use kartik\daterange\DateRangePicker;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Help
@@ -75,9 +77,9 @@ class Help extends Component
     return $str;
   }
 
-  public function colorStatus($status, $showIcon = true, $status_list=false)
+  public function colorStatus($status, $showIcon = true, $status_list = false)
   {
-    if(!$status_list) {
+    if (!$status_list) {
       $status_list = [
         'В ожидании',
         'Отклонён',
@@ -89,14 +91,65 @@ class Help extends Component
       '<span class="fa fa-times"></span>',
       '<span class="fa fa-check"></span>',
     ];
-    if(!isset($status_list[$status]))return '!!! ОЩИБКА !!!';
-    $out='<span class="status_'.$status.'"">';
+    if (!isset($status_list[$status])) return '!!! ОЩИБКА !!!';
+    $out = '<span class="status_' . $status . '"">';
 
-    if($showIcon && isset($icon_list[$status])){
-      $out.=$icon_list[$status].'&nbsp;';
+    if ($showIcon && isset($icon_list[$status])) {
+      $out .= $icon_list[$status] . '&nbsp;';
     }
-    $out.=$status_list[$status];
-    $out.='</span>';
+    $out .= $status_list[$status];
+    $out .= '</span>';
     return $out;
+  }
+
+  public function dateRanges()
+  {
+    return [
+      'Сегодня' => ["moment().startOf('day')", "moment()"],
+      'Вчера' => ["moment().startOf('day').subtract(1,'days')", "moment().endOf('day').subtract(1,'days')"],
+      'Текущая неделя' => ["moment().startOf('weak')", "moment()"],
+      'Последние 7 дней' => ["moment().startOf('day').subtract(6, 'days')", "moment()"],
+      'Последние 30 дней' => ["moment().startOf('day').subtract(29, 'days')", "moment()"],
+      'Этот месяц' => ["moment().startOf('month')", "moment()"],
+      'Последний месяц' => ["moment().subtract(1, 'month').startOf('month')", "moment().subtract(1, 'month').endOf('month')"],
+      'Этот год' => ["moment().startOf('year')", "moment()"],
+      'Прошлый год' => ["moment().subtract(1, 'year').startOf('year')", "moment().subtract(1, 'year').endOf('year')"],
+    ];
+  }
+
+  public function DateRangePicker($Model,$attrName,$option=array()){
+    $option=ArrayHelper::merge([
+      'convertFormat'=>true,
+      'pluginOptions' => [
+        'timePicker'=>false,
+        'locale'=>[
+          'format'=>'d-m-Y'
+        ],
+        'ranges'=>Help::dateRanges(),
+        //'opens'=>'left',
+        'showDropdowns'=>true,
+        //'autoUpdateInput' => true,
+      ],
+      //'presetDropdown'=>true,
+      'hideInput'=>true,
+      /*'pluginEvents' => [
+        "show.daterangepicker" => "function() { console.log(\"show.daterangepicker\"); }",
+        "hide.daterangepicker" => "function() { console.log(\"hide.daterangepicker\"); }",
+        "apply.daterangepicker" => "function() { console.log(\"apply.daterangepicker\"); }",
+        "cancel.daterangepicker" => "function() { console.log(\"cancel.daterangepicker\"); }",
+      ],*/
+    ],$option);
+
+    if(is_string($Model)){
+      $option['value'] = $Model;
+      $option['name'] = $attrName;
+      //$option['useWithAddon'] = true;
+    }else{
+      $option['model'] = $Model;
+      $option['attribute'] = $attrName;
+    };
+
+    //ddd($option);
+    return DateRangePicker::widget($option);
   }
 }

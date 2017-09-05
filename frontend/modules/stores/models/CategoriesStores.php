@@ -263,7 +263,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
     public function getParentName(){
       if($this->parent_id==0){
-        return '<Крень>';
+        return '<Корень>';
       }
       $cat=CategoriesStores::find()
         ->where(['parent_id' => $this->parent_id])
@@ -277,7 +277,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->where(['parent_id' => 0])
         ->asArray()
         ->all();
-      $base[0]='<Крень>';
+      $base[0]='<Корень>';
       foreach ($cat as $item){
         $base[$item['uid']]=$item['name'];
       }

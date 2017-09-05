@@ -2,6 +2,8 @@
 
 namespace frontend\modules\payments\controllers;
 
+use app\modules\payments\models\PaymentsSearch;
+use common\components\Help;
 use frontend\modules\users\models\Users;
 use yii;
 use frontend\modules\payments\models\Payments;
@@ -33,14 +35,14 @@ class AccountController extends \yii\web\Controller
 
   public function actionRef($id, $page = 1)
   {
-    $user=Users::find()
+    $user = Users::find()
       ->where([
-        'uid'=>$id,
-        'referrer_id'=>\Yii::$app->user->id
+        'uid' => $id,
+        'referrer_id' => \Yii::$app->user->id
       ])
       ->one();
 
-    if(!$user){
+    if (!$user) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -55,7 +57,42 @@ class AccountController extends \yii\web\Controller
       ->where(['cwp.user_id' => $id])
       ->orderBy('cwp.action_id DESC');
 
-    $cacheName = 'account_payments_' . $id . '_' . $page;
+
+    $search_range = Yii::$app->request->get('date');
+    if (empty($search_range) || strpos($search_range, '-') === false) {
+      $search_range = date('d-m-Y', time() - 90 * 24 * 60 * 60) . ' - ' . date('d-m-Y');
+    }
+
+    list($start_date, $end_date) = explode(' - ', $search_range);
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
+    $dataBase->andFilterWhere(['between', 'action_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+    $data['data_ranger'] = Help::DateRangePicker(
+      $start_date . ' - ' . $end_date,
+      'date', [
+      'pluginEvents' => [
+        "apply.daterangepicker" => "function(ev, picker) { 
+            picker.element.closest('form').submit(); 
+          }",
+      ]
+    ]);
+
+    $total = clone $dataBase;
+    $data['total'] = $total
+      ->select([
+        'count(*) as total',
+        'SUM(if(status=0,1,0)) as cnt_pending',
+        'SUM(if(status=2,1,0)) as cnt_confirm',
+        'SUM(if(status=0,cashback,0)) as sum_pending',
+        'SUM(if(status=2,cashback,0)) as sum_confirm',
+        'SUM(if(status=0,ref_bonus,0)) as sum_ref_pending',
+        'SUM(if(status=2,ref_bonus,0)) as sum_ref_confirm',
+      ])
+      ->asArray()
+      ->one();
+    //ddd($data['total']);
+
+    $cacheName = 'account_payments_' . $id . '_' . str_replace(' ', '', $search_range) . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
@@ -65,10 +102,9 @@ class AccountController extends \yii\web\Controller
     }
     $data['payments'] = $payments;
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('payments/account/ref', ['id'=>$id]);
+      $data["pagination"] = $pagination->getPagination('payments/account/ref', ['id' => $id,'date'=>$search_range]);
     }
     $data['ref_user'] = $user;
-
     return $this->render('ref', $data);
   }
 

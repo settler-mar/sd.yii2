@@ -13,7 +13,9 @@ use frontend\modules\payments\models\Payments;
 class PaymentsSearch extends Payments
 {
     public $storeName;
-    /**
+
+  public $created_at_range;
+  /**
      * @inheritdoc
      */
     public function rules()
@@ -22,6 +24,7 @@ class PaymentsSearch extends Payments
             [['uid', 'is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
             [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id','storeName'], 'safe'],
+          [['created_at_range'], 'safe'],
         ];
     }
 
@@ -94,6 +97,14 @@ class PaymentsSearch extends Payments
         ]);
         $query->andFilterWhere(['like', 'order_id', $this->order_id]);
 
-        return $dataProvider;
+      if(!empty($this->created_at_range) && strpos($this->created_at_range, '-') !== false) {
+        //ddd($this->created_at_range);
+        list($start_date, $end_date) = explode(' - ', $this->created_at_range);
+        $start_date=date('Y-m-d',strtotime($start_date));
+        $end_date=date('Y-m-d',strtotime($end_date));
+        $query->andFilterWhere(['between', 'action_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+      }
+
+      return $dataProvider;
     }
 }

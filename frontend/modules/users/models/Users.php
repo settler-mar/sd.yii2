@@ -522,6 +522,15 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     return $loyalty_status_list[$ls];
   }
 
+  public function getOld_loyalty_status_data(){
+    $ls=$this->old_loyalty_status;
+    $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
+    if(!isset($loyalty_status_list[$ls])){
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls];
+  }
+
   public function getBonus_status_data(){
     $bs=$this->bonus_status;
     $Bonus_status_list=Yii::$app->params['dictionary']['bonus_status'];

@@ -27,7 +27,14 @@
                                 {'class': '\\yii\\grid\\SerialColumn'},
                                     'uid',
                                     'action_id',
-                                    'action_date',
+                                    {
+                                        'format':'raw',
+                                        'attribute':'action_date',
+                                        'headerOptions' : {
+                                            'class' : 'col-md-2'
+                                        },
+                                        'filter': data_ranger
+                                    },
                                     {
                                         'format':'raw',
                                         'attribute':'status',

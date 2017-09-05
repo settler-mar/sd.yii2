@@ -130,6 +130,7 @@ class Pagination
     $displayCount = 5;//сколько кнопок отоображается в центре
     $page = $this->pagination->page + 1;
     $total = $this->pagination->pageCount;
+    if($total<2)return false;
     $pageName = preg_replace('/\/page-[0-9]*/', '', $pageName);
     $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
     $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);

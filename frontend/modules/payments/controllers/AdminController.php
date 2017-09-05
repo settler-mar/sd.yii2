@@ -2,6 +2,7 @@
 
 namespace frontend\modules\payments\controllers;
 
+use common\components\Help;
 use common\models\Admitad;
 use Yii;
 use frontend\modules\payments\models\Payments;
@@ -9,6 +10,7 @@ use app\modules\payments\models\PaymentsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\daterange\DateRangePicker;
 
 /**
  * AdminController implements the CRUD actions for Payments model.
@@ -46,6 +48,7 @@ class AdminController extends Controller
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+
     $canAdmitadUpdate=false;
     $sort=trim(Yii::$app->request->get('sort'),'-');
     if(in_array($sort,array(null,'uid'))){
@@ -74,7 +77,8 @@ class AdminController extends Controller
           $out .= '<span data-col="'.$name.'" class="admitad_data"></span>';
         }
         return $out;
-      }
+      },
+      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range')
     ]);
   }
 
