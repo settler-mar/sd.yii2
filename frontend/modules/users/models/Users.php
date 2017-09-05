@@ -252,7 +252,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
       $store=Stores::top12(12);
 
-      Yii::$app
+      if(Yii::$app
         ->mailer
         ->compose(
           ['html' => 'welcome-html', 'text' => 'welcome-text'],
@@ -264,7 +264,11 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
         ->setTo($this->email)
         ->setSubject(Yii::$app->name . ': Регистрация')
-        ->send();
+        ->send()){
+        //письмо ушло
+      }else{
+        //письмо не ушло
+      }
     }
     $this->saveImage();
   }
