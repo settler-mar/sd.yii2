@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\transitions\models;
+namespace frontend\modules\transitions\models;
 
 use Yii;
 use yii\base\Model;
@@ -47,10 +47,18 @@ class TransitionsSearch extends UsersVisits
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                'uid' => SORT_DESC,
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 40,
+            ],
         ]);
 
         $this->load($params);
-
+        $this->isNewRecord = false;
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -65,7 +73,6 @@ class TransitionsSearch extends UsersVisits
             'visit_date' => $this->visit_date,
             'store_id' => $this->store_id,
         ]);
-
         $query->andFilterWhere(['like', 'user_ip', $this->user_ip]);
 
         return $dataProvider;

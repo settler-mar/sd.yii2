@@ -1,54 +1,60 @@
-<div class="content-wrapper">
-    <section class="account-padding view-list">
-        <div class="row">
-            {% if transitions|length > 0 %}
-                <div class="col-md-12">
-                    <form action="/admin/transitions" method="post">
-                        <input type="text" placeholder="Поиск по User ID" name="user_id">
-                        <button type="submit">Найти</button>
-                    </form>
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Переходы пользователей' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 
-                    <form action="/admin/transitions" method="post" class="second-form">
-                        <input type="text" placeholder="Поиск по email" name="email">
-                        <button type="submit">Найти</button>
-                    </form>
-                    <table class="table table-transitions">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Пользователь (User ID)</th>
-                            <th>Магазин (Shop id ID)</th>
-                            <th>Источник перехода</th>
-                            <th>IP пользователя</th>
-                            <th>Дата перехода</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for transition in transitions %}
-                            <tr>
-                                <td>{{transition.uid}}</td>
-                                <td>
-                                    <a href="/admin/users/update?id={{transition.user_id}}">{{transition.user.email}} ({{transition.user_id}})</a>
-                                </td>
-                                <td><a href="/admin/stores/update?id={{transition.store_id}}">{{transition.store.name}} ({{transition.store_id}})</a></td>
-                                {% if transition.source == 1 %}
-                                    <td>Магазин</td>
-                                {% else %}
-                                    <td>Купон</td>
-                                {% endif %}
-                                <td>{{transition.user_ip}}</td>
-                                <td>{{transition.visit_date}}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
+<div class="stores-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="not-found">На данный момент переходов нет.</div>
+                    <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
+                    {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'pager' : {
+                            'firstPageLabel' : true,
+                            'lastPageLabel' : true,
+                            'maxButtonCount':15
+                        },
+                        'filterModel': searchModel,
+                        'columns': [
+                        {'class': '\\yii\\grid\\SerialColumn'},
+                        'uid',
+                        {
+                            'format':'raw',
+                            'attribute':'user_id',
+                            'value' : tableValue.user,
+                        },
+                        {
+                            'format':'raw',
+                            'attribute':'source',
+                            'filter':{
+                            '':'Любой',
+                            0:"Ист. 0",
+                            1:"Ист. 1"
+                            },
+                        },
+                        'visit_date',
+                        {
+                            'format':'raw',
+                            'attribute':'store_id',
+                            'value' : tableValue.store,
+                        },
+                        'user_ip',
+
+                        {'class': '\\yii\\grid\\ActionColumn',
+                            'template' : '{delete}',
+                        },
+                        ],
+                    })
+                    }}
                 </div>
-            {% endif %}
-        </div>
-    </section>
-    {% include '/parts/pagination.html' %}
+            </div>
+        </section>
+    </div>
 </div>
