@@ -112,7 +112,7 @@ class Stores extends \yii\db\ActiveRecord
       'added' => 'Added',
       'visit' => 'Посщения',
       'hold_time' => 'Hold Time',
-      'is_active' => 'Is Active',
+      'is_active' => 'Активен',
       'short_description' => 'Short Description',
       'local_name' => 'Альтернативное название',
       'active_cpa' => 'Active Cpa',
@@ -121,7 +121,8 @@ class Stores extends \yii\db\ActiveRecord
       'contact_name' => 'Contact Name',
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
-      'category_cnt'=>'Количество категорий'
+      'category_cnt'=>'Количество категорий',
+      'action_id'=>'Акция',
     ];
   }
 

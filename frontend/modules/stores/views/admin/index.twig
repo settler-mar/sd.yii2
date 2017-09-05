@@ -31,12 +31,26 @@
 
                                 'uid',
                                 'name',
-                                'route',
+                                {
+                                    'format':'raw',
+                                    'attribute':'route',
+                                    'value' : table_value.route
+                                },
                                 'local_name',
                                 'url:url',
                                 'visit',
                                 'category_cnt',
-                                'is_active',
+                                {
+                                    'format':'raw',
+                                    'attribute':'is_active',
+                                    'filter':{
+                                        '':'Любой',
+                                        1:"Активен",
+                                        0:"Приостановлен",
+                                        '-1':"Выключен",
+                                    },
+                                    'value' : table_value.is_active
+                                },
                                 {'class': '\\yii\\grid\\ActionColumn',
                                     'template' : '{update} {delete}',
                                 },

@@ -28,6 +28,7 @@
                                     <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Акция</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
                                     <p>
@@ -40,9 +41,8 @@
                                     <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Магазин активен:</span><br>
-                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Заблокирован пользователем','0' : 'Временно не активен','1' : 'Активен'}).label(false)|raw }}
+                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
                                     </p>
-                                    <p><span>Action ID</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
