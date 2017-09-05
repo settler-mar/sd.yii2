@@ -534,7 +534,6 @@ $(function() {
     charity.control.events();
     settings.control.events();
     balance.control.events();
-    affiliate.control.events();
     favorites.control.events();
     header.control.events();
 });
