@@ -4,7 +4,8 @@ namespace frontend\modules\transitions\controllers;
 
 use Yii;
 use frontend\modules\transitions\models\UsersVisits;
-use app\modules\transitions\models\TransitionsSearch;
+use frontend\modules\transitions\models\TransitionsSearch;
+//use app\modules\transitions\models\TransitionsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,93 +33,51 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-      if (Yii::$app->request->post()){
-        if (isset(Yii::$app->request->post()['user_id']))
-        {
-          $transitions = UsersVisits::find()
-            ->with(['user', 'store'])
-            ->where(['user_id' => Yii::$app->request->post()['user_id']])
-            ->all();
-        }else{
-          if (isset(Yii::$app->request->post()['email'])) {
-            $transitions = UsersVisits::find()
-              ->with(['store'])
-              ->joinWith(['user' => function ($q) {
-                return $q->where(['email' => Yii::$app->request->post()['email']]);
-              }])
-              ->all();
-          }
+        //todo видимо, нужно другое разрешение
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
         }
-      }
-      else {
-        $transitions = UsersVisits::find()->with(['user', 'store'])->all();
-      }
-      /*$visits = \ORM::forTable("cw_users_visits")
-        ->tableAlias("cuv")
-        ->select("cuv.*")
-        ->select("cwu.email")
-        ->select("cwu.uid", "user_id")
-        ->select("cws.name", "store_name")
-        ->select("cws.uid", "store_uid")
-            ->join("cw_stores", "cuv.affiliate_id = cws.affiliate_id", "cws")
-            ->join("cw_users", "cuv.user_id = cwu.uid", "cwu")
-        ->order_by_desc("cuv.visit_date")
-        ->where("cuv.user_id", $user_id)
-        ->offset($offset)
-        ->limit($limit)
-        ->findArray();*/
-        return $this->render('index.twig', [
-          'transitions'=>$transitions,
+        $tableValue = [
+            'user' => function ($model, $key, $index, $column) {
+                $user = $model->user;
+                $out = '';
+                if ($user != null) {
+                    $out = '<a href="/admin/users/update?id=';
+                    $out .= $user->uid;
+                    $out .= '" target=_blank>';
+                    $out .= $user->email;
+                    $out .= ' (';
+                    $out .= $user->uid;
+                    $out .= ')</a>';
+                }
+                return $out;
+            },
+            'store' => function ($model, $key, $index, $column) {
+                $store = $model->store;
+                $out = '';
+                if ($store != null) {
+                    $out = '<a href="/admin/stores/update/id:';
+                    $out .= $store->uid;
+                    $out .= '" target=_blank>';
+                    $out .= $store->url;
+                    $out .= ' (';
+                    $out .= $store->uid;
+                    $out .= ')</a>';
+                }
+                return $out;
+            },
+           
+        ];
+
+        $searchModel = new TransitionsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'tableValue' => $tableValue,
+
         ]);
-    }
-
-    /**
-     * Displays a single UsersVisits model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view.twig', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new UsersVisits model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new UsersVisits();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        } else {
-            return $this->render('create.twig', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing UsersVisits model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        } else {
-            return $this->render('update.twig', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**
@@ -129,6 +88,11 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+        //todo видимо, нужно другое разрешение
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -150,9 +114,9 @@ class AdminController extends Controller
         }
     }
 
-  function beforeAction($action)
-  {
-    $this->layout = '@app/views/layouts/admin.twig';
-    return true;
-  }
+    public function beforeAction($action)
+    {
+        $this->layout = '@app/views/layouts/admin.twig';
+        return true;
+    }
 }

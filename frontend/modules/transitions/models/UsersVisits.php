@@ -100,4 +100,5 @@ class UsersVisits extends \yii\db\ActiveRecord
   {
     return $this->hasOne(Users::className(), ['uid' => 'user_id']);
   }
+
 }
