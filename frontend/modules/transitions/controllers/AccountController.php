@@ -50,7 +50,7 @@ class AccountController extends \yii\web\Controller
             ->where(['cuv.user_id' => \Yii::$app->user->id])
             ->orderBy('cuv.visit_date DESC');
 
-        $cacheName = 'account_transitions_' . \Yii::$app->user->id . '_' . $page;
+        $cacheName = 'account_transitions' . \Yii::$app->user->id . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['visit_history'] = $pagination->data();

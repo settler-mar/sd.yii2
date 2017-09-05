@@ -120,6 +120,12 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters) - 1]);
     }
 
+    //проверяем последний параметр на expired
+    if ($parameters[count($parameters) - 1] == 'expired') {
+      $params['expired'] = 1;
+      unset ($parameters[count($parameters) - 1]);
+    }
+
     //проверяем что б это не был прямой заход в default
     if ($parameters[0] == 'default') {
       unset ($parameters[0]);

@@ -51,11 +51,11 @@ class AccountController extends \yii\web\Controller
     //в данном случае пагинация только для пагинации, данные получаем вручную
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => $limit, 'asArray' => true]);
 
-    $dependencyName = 'account_bonuses';
+    $dependencyName = 'account_bonuses' . \Yii::$app->user->id;
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     
-    $cacheName = 'account_bonuses_' . \Yii::$app->user->id . '_' . $page;
+    $cacheName = 'account_bonuses' . \Yii::$app->user->id . '_' . $page;
     $sql .= 'limit ' . $pagination->offset() . ',' . $limit;
     $data['bonuses'] = Yii::$app->cache->getOrSet($cacheName, function () use ($sql) {
       $bonuses = Yii::$app->db->createCommand($sql)->queryAll();

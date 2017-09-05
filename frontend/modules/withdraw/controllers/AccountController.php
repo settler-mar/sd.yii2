@@ -100,7 +100,7 @@ class AccountController extends \yii\web\Controller
       ->where(['cwuw.user_id' => \Yii::$app->user->id])
       ->orderBy('cwuw.request_date DESC');
 
-    $cacheName = 'account_withdraw_history_' . \Yii::$app->user->id . '_' . $page;
+    $cacheName = 'account_withdrawhistory' . \Yii::$app->user->id . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $data['withdraw'] = $pagination->data();

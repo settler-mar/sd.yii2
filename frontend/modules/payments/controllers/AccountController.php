@@ -35,14 +35,14 @@ class AccountController extends \yii\web\Controller
 
   public function actionRef($id, $page = 1)
   {
-    $user = Users::find()
+    $user=Users::find()
       ->where([
-        'uid' => $id,
-        'referrer_id' => \Yii::$app->user->id
+        'uid'=>$id,
+        'referrer_id'=>\Yii::$app->user->id
       ])
       ->one();
 
-    if (!$user) {
+    if(!$user){
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -105,6 +105,7 @@ class AccountController extends \yii\web\Controller
       $data["pagination"] = $pagination->getPagination('payments/account/ref', ['id' => $id,'date'=>$search_range]);
     }
     $data['ref_user'] = $user;
+
     return $this->render('ref', $data);
   }
 

@@ -44,7 +44,7 @@ class AccountController extends \yii\web\Controller
             ->orderBy('added DESC');
 
 
-        $cacheName = 'account_notifications_' . $type . '_' . \Yii::$app->user->id . '_' . $page;
+        $cacheName = 'account_notifications' . \Yii::$app->user->id . '_' . $type . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['notifications'] = $pagination->data();

@@ -83,11 +83,13 @@ class DefaultController extends SdController
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
+    $cacheName = 'catalog_coupons' . ($request->get('expired') ? 'expired' : '');
+    $dateEnd = $request->get('expired') ? date('Y-m-d H:i:s', time()) : '9999-12-31';
 
     if (!empty($categoryCoupons)) {
       \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
-      $cacheName = 'catalog_coupons_category_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName .= '_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['category_id'] = $category;
       $contentData['current_category'] = $categoryCoupons;
       $databaseObj = Coupons::find()
@@ -98,6 +100,7 @@ class DefaultController extends SdController
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
         ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
+        ->andWhere(['<', 'cwc.date_end', $dateEnd])
         ->orderBy($sort . ' ' . $order);
     } elseif (!empty($store)) {
       $storeId = $store->uid;
@@ -106,7 +109,7 @@ class DefaultController extends SdController
       }
       \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
       $contentData['current_store'] = $store;
-      $cacheName = 'catalog_coupons_store_' . $storeId . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName .= '_' . $storeId . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
@@ -115,10 +118,11 @@ class DefaultController extends SdController
         ->from(Coupons::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
+        ->andWhere(['<', 'cwc.date_end', $dateEnd])
         ->orderBy($sort . ' ' . $order);
        $contentData["store_rating"] = Reviews::storeRating($storeId);
     } else {
-      $cacheName = 'catalog_coupons_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName .= '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
@@ -126,6 +130,7 @@ class DefaultController extends SdController
         ->from(Coupons::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
+        ->andWhere(['<', 'cwc.date_end', $dateEnd])
         ->orderBy($sort . ' ' . $order);
 
     }

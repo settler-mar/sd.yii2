@@ -202,9 +202,9 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function actionGoto($store=0,$coupon=0)
+  public function actionGoto($store=0, $coupon=0)
   {
-    if(Yii::$app->user->isGuest || ($store==0 && $coupon==0)){
+    if((Yii::$app->user->isGuest || $store == 0) && $coupon == 0){
       return $this->redirect('/stores');
     }
 
@@ -237,7 +237,7 @@ class SiteController extends SdController
     } else {
       $data['link'] .= "&";
     }
-    $data['link'].='subid='.Yii::$app->user->id;
+    $data['link'].='subid=' . (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
 
     $visit->store_id=$store->uid;
     $visit->save();

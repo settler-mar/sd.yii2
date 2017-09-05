@@ -114,13 +114,13 @@ class Payments extends \yii\db\ActiveRecord
   
   public function afterSave($insert, $changedAttributes)
   {
-    Cache::clearName('account_payments');
-    Cache::clearName('account_bonuses');
+    Cache::clearName('account_payments' . $this->user_id);
+    Cache::clearName('account_bonuses' . $this->user_id);
   }
   public function afterDelete()
   {
-    Cache::clearName('account_payments');
-    Cache::clearName('account_bonuses');
+    Cache::clearName('account_payments' . $this->user_id);
+    Cache::clearName('account_bonuses' . $this->user_id);
   }
   public function getCpaLink()
   {

@@ -88,12 +88,12 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     ) {
       \Yii::$app->balanceCalc->todo([$this->user_id], 'withdraw');
     };
-    Cache::clearName('account_withdraw');
+    Cache::clearName('account_withdrawhistory' . $this->user_id);
   }
 
   public function afterDelete()
   {
-    Cache::clearName('account_withdraw');
+    Cache::clearName('account_withdrawhistory' . $this->user_id);
   }
 
   public function getUser()

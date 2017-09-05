@@ -49,7 +49,7 @@ class AccountController extends \yii\web\Controller
             ->where(['cwch.user_id' => \Yii::$app->user->id])
             ->orderBy('cwch.added DESC');
 
-        $cacheName = 'account_charity_' . \Yii::$app->user->id . '_' . $page;
+        $cacheName = 'account_charity' . \Yii::$app->user->id . '_' . $page;
         $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
         $data['charity'] = $pagination->data();

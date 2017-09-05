@@ -2482,6 +2482,9 @@ h1.page_title{
 .coupons-item {
   display: inline-flex;
   flex-direction: column;
+  &.more {
+    display: none;
+  }
 }
 .short-description__description {
   p {
@@ -2813,5 +2816,14 @@ img{
     }
   }
 }
+
+.store-coupons__buttons-less {
+  display: none;
+}
+.store-coupons__buttons-less,
+.store-coupons__buttons-more {
+  text-align: center;
+}
+
 
 @import  "../external/queries";
