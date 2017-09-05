@@ -2824,6 +2824,33 @@ img{
 .store-coupons__buttons-more {
   text-align: center;
 }
+.coupon-noregister {
+  text-align: center;
+  &__icon {
+    margin: 25px;
+  }
+  &__text {
+    font-size: 14px;
+    line-height: 2;
+    margin: 15px;
+  }
+  &__buttons {
+    margin: 15px;
+    padding: 15px;
+
+  }
+}
+.btn-popup {
+  width: 180px;
+  border-radius: 20px;
+  padding: 8px 5px;
+  &:not(:last-child) {
+    margin-right: 22px;
+  }
+}
+div .popup {
+  border-radius: 5px;
+}
 
 
 @import  "../external/queries";

@@ -32,12 +32,13 @@
         {% endif %}
         <div class="coupon-goto">
             <div class="goto">
-                {#{% if user_id %}#}
-                <a href="#showpromocode" class="btn btn-fill btn-small">Показать промокод</a>
-                <div class="promocode">{{coupon.promocode}}</div>
-                {#{% else %}#}
-                {#<a href="#registration" class="btn btn-fill btn-small">Показать промокод</a>#}
-                {#{% endif %}#}
+                {% if user_id %}
+                    <a href="#showpromocode" class="btn btn-fill btn-small">Показать промокод</a>
+                    <div class="promocode">{{coupon.promocode}}</div>
+                {% else %}
+                    {#<a href="#registration" class="btn btn-fill btn-small">Показать промокод</a>#}
+                    <a href="#showpromocode-noregister" data-id="{{ coupon.uid }}" class="btn btn-fill btn-small">Показать промокод</a>
+                {% endif %}
             </div>
         </div>
     </div>
