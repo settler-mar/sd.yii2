@@ -234,6 +234,20 @@ class SdUrlRule implements UrlRuleInterface
       unset($params['id']);
     }
 
+
+    if (isset($params['all'])) {
+      if ($params['all'] == 1) {
+        $route[] = 'all';
+      }
+      unset($params['all']);
+    }
+    if (isset($params['expired'])) {
+      if ($params['expired'] == 1) {
+        $route[] = 'expired';
+      }
+      unset($params['expired']);
+    }
+
     if (isset($params['page'])) {
       if ($params['page'] != 1) {
         $route[] = 'page-' . $params['page'];

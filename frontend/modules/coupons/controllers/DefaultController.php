@@ -155,7 +155,9 @@ class DefaultController extends SdController
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Coupons::$defaultSort == $sort ? null : $sort,
-      'page' => $page
+      'page' => $page,
+      'expired' => $request->get('expired') ? 1 : null,
+      'all' => $request->get('all') ? 1 : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
