@@ -48,7 +48,7 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopView')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -59,14 +59,14 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
-      'table_value' =>[
+      'table_value' => [
         'is_active' => function ($model, $key, $index, $column) {
-          $st=[
-            1=>"Активен",
-            0=>"Приостановлен",
-            -1=>"Выключен",
+          $st = [
+            1 => "Активен",
+            0 => "Приостановлен",
+            -1 => "Выключен",
           ];
-          $v=isset($st[$model->is_active])?$st[$model->is_active]:"ОШИБКА !!!";
+          $v = isset($st[$model->is_active]) ? $st[$model->is_active] : "ОШИБКА !!!";
           return $v;
         },
         'route' => function ($model, $key, $index, $column) {
@@ -88,7 +88,7 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopCreate')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopCreate')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -98,6 +98,7 @@ class AdminController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
+      //ddd($model);
       return $this->render('create.twig', [
         'model' => $model,
       ]);
@@ -106,7 +107,7 @@ class AdminController extends Controller
 
   public function actionUpdate($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopEdit')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -144,6 +145,7 @@ class AdminController extends Controller
         'categories' => $all_categories,
         'store_categories' => $categories,
         'tariffs' => $tariffs,
+        "action_types" => Yii::$app->params['dictionary']['action_type'],
       ]);
     }
   }
@@ -156,29 +158,35 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('ShopDelete')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
     $store = $this->findModel($id);
-    if ($store) {
+    if ($store && $this->actionAjax_remove('store', $id,false)) {
       $store->removeImage(Yii::$app->getBasePath() . '\web' . $store->logo);
-      $store->delete();
     }
 
     return $this->redirect(['index']);
   }
 
-  public function actionAjax_insert()
+  public function actionAjax_insert($params = 0)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isPost || !$request->isAjax) {
+      throw new \yii\web\ForbiddenHttpException('Не верный тип запроса.');
+      return false;
+    }
+
     $post = Yii::$app->request->post();
-    $type = $post['type'];
-    $path = realpath(Yii::$app->getBasePath() . '\modules\stores\views\admin\store/');
-    $loader = new \Twig_Loader_Filesystem($path);
-    $twig = new \Twig_Environment($loader, array(
-      'auto_reload' => true
-    ));
+
+    $type = $params === 0 ? $post['type'] : $params;
 
     if ($type == 'rate') {
       $tariffRate = new TariffsRates();
@@ -188,16 +196,12 @@ class AdminController extends Controller
       $tariffRate->size = 0;
       $tariffRate->our_size = 0;
       $tariffRate->is_percentage = 0;
+      $tariffRate->date_s = date('Y-m-d');
       if ($tariffRate->save()) {
         $data = array(
-          'rate' => array(
-            'uid' => $tariffRate->uid,
-            'id_tariff' => $tariffRate->id_tariff,
-            'id_rate' => '',
-            'date_s' => '0000-00-00',
-          )
+          'rate' => $tariffRate
         );
-        echo $twig->render('rates.html', $data);
+        echo $this->renderAjax('store/rates.twig', $data);
         exit;
       }
     }
@@ -208,13 +212,9 @@ class AdminController extends Controller
       $actionTariffs->id_tariff = 0;
       if ($actionTariffs->save()) {
         $data = array(
-          'tariff' => array(
-            'uid' => $actionTariffs->uid,
-            'name' => $actionTariffs->name,
-            'id_action' => $actionTariffs->id_action,
-          )
+          'tariff' => $actionTariffs
         );
-        echo $twig->render('tariffs.html', $data);
+        echo $this->renderAjax('store/tariffs.twig', $data);
         exit;
       }
     }
@@ -226,15 +226,10 @@ class AdminController extends Controller
       $storeAction->hold_time = 0;
       if ($storeAction->save()) {
         $data = array(
-          'action' => array(
-            'uid' => $storeAction->uid,
-            'name' => $storeAction->name,
-            'cpa_link_id' => $storeAction->cpa_link_id,
-            'type' => 0,
-          ),
+          'action' => $storeAction,
           "action_types" => Yii::$app->params['dictionary']['action_type']
         );
-        echo $twig->render('actions.html', $data);
+        echo $this->renderAjax('store/actions.twig', $data);
         exit;
       }
     }
@@ -253,9 +248,9 @@ class AdminController extends Controller
           )
         );
         $out = array(
-          'tab_body' => $twig->render('tab_body.html', $data),
-          'tab_head_but' => $twig->render('tab_head_but.html', $data),
-          'tab_head_suf' => $twig->render('tab_head_suf.html', $data),
+          'tab_body' => $this->renderAjax('store/tab_body.twig', $data),
+          'tab_head_but' => $this->renderAjax('store/tab_head_but.twig', $data),
+          'tab_head_suf' => $this->renderAjax('store/tab_head_suf.twig', $data),
         );
         return json_encode($out);
       }
@@ -264,25 +259,188 @@ class AdminController extends Controller
     exit;
   }
 
-  public function actionAjax_save($type = 0)
+  public function actionAjax_save($params = 0)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
 
-    $post = Yii::$app->request->post();
-    $type = $post['type'];
-    if ($type == 'rate') {
+    $request = Yii::$app->request;
+    if (!$request->isPost || !$request->isAjax) {
+      throw new \yii\web\ForbiddenHttpException('Не верный тип запроса.');
+      return false;
+    }
+
+    $post = $request->post();
+
+    if ($params === 0) {
+      $params = $request->post('type');
+    }
+
+    if ($params == 'rate') {
       return $this->AjaxSaveRate($post);
     }
-    if ($type == 'active_cpa') {
+    if ($params == 'active_cpa') {
       return $this->AjaxSaveActiveCpa($post);
     }
-    if ($type == 'cpa') {
+    if ($params == 'cpa') {
       return $this->AjaxSaveCpa($post);
     }
-    if ($type == 'action') {
+    if ($params == 'action') {
       return $this->AjaxSaveAction($post);
     }
-    if ($type == 'tariff') {
+    if ($params == 'tariff') {
       return $this->AjaxSaveTariff($post);
+    }
+    http_response_code(404);
+    exit;
+  }
+
+  public function actionAjax_remove($params = 0, $id = 0, $not_return = true)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    /* if(!$request->isPost || !$request->isAjax){
+       throw new \yii\web\ForbiddenHttpException('Не верный тип запроса.');
+       return false;
+     }*/
+
+    $post = Yii::$app->request->post();
+    if ($id > 0) {
+      $post['id'] = $id;
+    }
+
+    $type = $params === 0 ? $post['type'] : $params;
+
+    $todo = false;
+    $post['id'] = array($post['id']);
+    if ($type == 'store') {
+      $todo = true;
+      $store_id = $post['id'];
+
+      $cpa_link=CpaLink::find()
+        ->select(['affiliate_id'=>'id','cpa_id'])
+        ->where(['stores_id'=>$store_id])
+        ->asArray()
+        ->all();
+
+      $payment = Payments::find();
+//        ->andFilterWhere(['OR',$cpa_link]);
+
+      foreach ($cpa_link as &$item){
+        $payment = $payment->orFilterWhere(['AND',$item]);
+        //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
+      }
+
+      $payment = $payment
+        ->asArray()
+        ->all();
+
+
+      if (count($payment) > 0) {
+        if(!$not_return){
+          return false;
+        }
+        http_response_code(404);
+        exit;
+      }
+      $cwsl = CpaLink::find()
+        ->select('id')
+        ->where(['stores_id' => $store_id])
+        ->asArray()
+        ->all();
+      if (count($cwsl) > 0) {
+        $type = 'cpa';
+        $post["id"] = [];
+        foreach ($cwsl as $item) {
+          $post["id"][] = $item['id'];
+        }
+      }
+      Stores::deleteAll(['uid' => $store_id]);
+      //$this->Delete($store_id[0]);  !!!!! надо переписать эту функцию для очистки БД от хлама
+    }
+    if ($type == 'cpa') {
+      $todo = true;
+      $cpa_id = $post['id'];
+      $payment = Payments::find()
+        ->where(['cpa_id' => $cpa_id])
+        ->asArray()
+        ->all();
+      if (count($payment) > 0) {
+        if(!$not_return){
+          return false;
+        }
+        http_response_code(404);
+        exit;
+      }
+      $storesActions = StoresActions::find()
+        ->select('uid')
+        ->where(["cpa_link_id" => $cpa_id])
+        ->asArray()
+        ->all();
+      if (count($storesActions) > 0) {
+        $type = 'action';
+        $post["id"] = [];
+        foreach ($storesActions as $item) {
+          $post["id"][] = $item['uid'];
+        }
+      }
+      //$tmp = count(CpaLink::find()->all());
+      CpaLink::deleteAll(['id' => $cpa_id]);
+      //return $tmp . ' ' . count(CpaLink::find()->all()) . ' ' . $cpa_id;
+    }
+
+    if ($type == 'action') {
+      $todo = true;
+      $action_id = $post['id'];
+      $actionsTariffs = ActionsTariffs::find()
+        ->select('uid')
+        ->where(['id_action' => $action_id])
+        ->asArray()
+        ->all();
+      if (count($actionsTariffs) > 0) {
+        $type = 'tariff';
+        $post["id"] = [];
+        foreach ($actionsTariffs as $item) {
+          $post["id"][] = $item['uid'];
+        }
+      }
+      StoresActions::deleteAll(['uid' => $action_id]);
+    }
+    if ($type == 'tariff') {
+      $todo = true;
+      $tariff_id = $post['id'];
+      $rates = TariffsRates::find()
+        ->select('uid')
+        ->where(['id_tariff' => $tariff_id])
+        ->asArray()
+        ->all();
+      if (count($rates) > 0) {
+        $type = 'rate';
+        $post["id"] = [];
+        foreach ($rates as $item) {
+          $post["id"][] = $item['uid'];
+        }
+      }
+      ActionsTariffs::deleteAll(['uid' => $tariff_id]);
+    }
+    if ($type == 'rate') {
+      $todo = true;
+      TariffsRates::deleteAll(['uid' => $post["id"]]);
+    }
+
+    if(!$not_return){
+      return $todo;
+    }
+
+    if ($todo) {
+      http_response_code(200);
+      exit;
     }
     http_response_code(404);
     exit;
@@ -347,110 +505,4 @@ class AdminController extends Controller
     return $store->save(false);
   }
 
-  public function actionAjax_remove()
-  {
-    $post = Yii::$app->request->post();
-    $type = $post['type'];
-    $todo = false;
-    //$post['id']=array($post['id']);
-    if ($type == 'store') {
-      $todo = true;
-      $store_id = $post['id'];
-      $payment = Payments::find()->with([
-        'cpaLink' => function ($query) use ($store_id) {
-          $query->andWhere(['stores_id' => $store_id]);
-        }])
-        ->asArray()
-        ->all();
-      if (count($payment) > 0) {
-        http_response_code(404);
-        exit;
-      }
-      $cwsl = CpaLink::find()
-        ->select('id')
-        ->where(['stores_id' => $store_id])
-        ->asArray()
-        ->all();
-      if (count($cwsl) > 0) {
-        $type = 'cpa';
-        $post["id"] = [];
-        foreach ($cwsl as $item) {
-          $post["id"][] = $item['id'];
-        }
-      }
-      Stores::deleteAll(['uid' => $store_id]);
-      //$this->Delete($store_id[0]);  !!!!! надо переписать эту функцию для очистки БД от хлама
-    }
-    if ($type == 'cpa') {
-      $todo = true;
-      $cpa_id = $post['id'];
-      $payment = Payments::find()
-        ->where(['cpa_id' => $cpa_id])
-        ->asArray()
-        ->all();
-      if (count($payment) > 0) {
-        http_response_code(404);
-        exit;
-      }
-      $storesActions = StoresActions::find()
-        ->select('uid')
-        ->where(["cpa_link_id" => $cpa_id])
-        ->asArray()
-        ->all();
-      if (count($storesActions) > 0) {
-        $type = 'action';
-        $post["id"] = [];
-        foreach ($storesActions as $item) {
-          $post["id"][] = $item['uid'];
-        }
-      }
-      $tmp = count(CpaLink::find()->all());
-      CpaLink::deleteAll(['id' => $cpa_id]);
-      return $tmp . ' ' . count(CpaLink::find()->all()) . ' ' . $cpa_id;
-    }
-    if ($type == 'action') {
-      $todo = true;
-      $action_id = $post['id'];
-      $actionsTariffs = ActionsTariffs::find()
-        ->select('uid')
-        ->where(['id_action' => $action_id])
-        ->asArray()
-        ->all();
-      if (count($actionsTariffs) > 0) {
-        $type = 'tariff';
-        $post["id"] = [];
-        foreach ($actionsTariffs as $item) {
-          $post["id"][] = $item['uid'];
-        }
-      }
-      StoresActions::deleteAll(['uid' => $action_id]);
-    }
-    if ($type == 'tariff') {
-      $todo = true;
-      $tariff_id = $post['id'];
-      $rates = TariffsRates::find()
-        ->select('uid')
-        ->where(['id_tariff' => $tariff_id])
-        ->asArray()
-        ->all();
-      if (count($rates) > 0) {
-        $type = 'rate';
-        $post["id"] = [];
-        foreach ($rates as $item) {
-          $post["id"][] = $item['uid'];
-        }
-      }
-      ActionsTariffs::deleteAll(['uid' => $tariff_id]);
-    }
-    if ($type == 'rate') {
-      $todo = true;
-      TariffsRates::deleteAll(['uid' => $post["id"]]);
-    }
-    if ($todo) {
-      http_response_code(200);
-      exit;
-    }
-    http_response_code(404);
-    exit;
-  }
 }

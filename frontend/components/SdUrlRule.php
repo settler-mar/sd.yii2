@@ -164,6 +164,19 @@ class SdUrlRule implements UrlRuleInterface
         }
         $route[] = $parameters[2];
       }
+
+      if(count($parameters)>3){
+        if(count($parameters)==4){
+          $params_url=$parameters[3];
+        }else {
+          $params_url = [];
+          for ($i = 3; $i < count($parameters); $i++) {
+            $params_url[] = $parameters[$i];
+          }
+        }
+        $params['params']=$params_url;
+      }
+
       Yii::$app->params['clear_url']=implode('/', $parameters);
       return [implode('/', $route), $params];
     }

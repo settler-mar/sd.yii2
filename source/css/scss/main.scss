@@ -2825,5 +2825,7 @@ img{
   text-align: center;
 }
 
-
+.additional-information{
+  p+ul{margin-top: 0;}
+}
 @import  "../external/queries";
