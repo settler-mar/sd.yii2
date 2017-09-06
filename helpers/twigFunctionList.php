@@ -256,7 +256,12 @@ $functionsList=[
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
     return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
   },
-
+  'date'=>function ($date) use ($month) {
+    $d = date('d',$date);
+    $m = date('m',$date);
+    $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', strtotime($date));
+    return $d.' '.$currMonth.' '.date('Y',$date);
+  },
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';
   },

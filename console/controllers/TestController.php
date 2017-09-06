@@ -2,7 +2,7 @@
 
 namespace console\controllers;
 
-use console\models\Admitad;
+use common\models\Admitad;
 use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;

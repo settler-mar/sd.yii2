@@ -3,7 +3,6 @@ $(function() {
   function update(data){
     $this=$(this);
     mode=$this.attr('mode');
-
     if(mode=='rate'){
       $parent=$this.closest('.acordion_content');
       $parent=$parent.find('table');

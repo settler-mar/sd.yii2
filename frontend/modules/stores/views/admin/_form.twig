@@ -15,7 +15,8 @@
 
                         {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'logo').textInput({'maxlength':true})|raw }}
+                        {{ form.field(model, 'logoImage').fileInput()|raw }}
+                        <img for="Stores[logoImage]" style="max-height: 150px;" src="images/logos/{{ model.logo | raw }}">
 
                         {{ form.field(model, 'description').textarea({'rows':6})|raw }}
 

@@ -6,7 +6,6 @@ $(function() {
       id:$this.attr('uid'),
       type:$this.attr('mode')
     };
-    console.log(post);
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
         alert("Невозможно удалить элемент");
@@ -26,8 +25,7 @@ $(function() {
 
         rm.remove();
       }
-
-      if(mode='reload'){
+      if(mode=='reload'){
         location.reload();
         location.href=location.href;
       }

@@ -85,7 +85,8 @@ class Stores extends \yii\db\ActiveRecord
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
-        'minHeight' => 500,
+        'minHeight' => 60,
+        'minWidth' => 145,
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
@@ -111,7 +112,7 @@ class Stores extends \yii\db\ActiveRecord
       'added' => 'Added',
       'visit' => 'Посщения',
       'hold_time' => 'Hold Time',
-      'is_active' => 'Is Active',
+      'is_active' => 'Активен',
       'short_description' => 'Short Description',
       'local_name' => 'Альтернативное название',
       'active_cpa' => 'Active Cpa',
@@ -120,7 +121,8 @@ class Stores extends \yii\db\ActiveRecord
       'contact_name' => 'Contact Name',
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
-      'category_cnt'=>'Количество категорий'
+      'category_cnt'=>'Количество категорий',
+      'action_id'=>'Акция',
     ];
   }
 

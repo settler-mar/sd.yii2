@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\modules\users\models\UserSetting;
+use common\components\Help;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -36,10 +37,31 @@ class AccountController extends Controller
   public function actionIndex($page=1)
   {
     $query = Users::find()
-      ->where(['referrer_id'=> Yii::$app->user->id]);
+      ->where(['referrer_id' => Yii::$app->user->id]);
+
+    $search_range = Yii::$app->request->get('date');
+    if (empty($search_range) || strpos($search_range, '-') === false) {
+      $search_range = date('d-m-Y', time() - 90 * 24 * 60 * 60) . ' - ' . date('d-m-Y');
+    }
+
+
+    list($start_date, $end_date) = explode(' - ', $search_range);
+    $data_ranger = Help::DateRangePicker(
+      $start_date . ' - ' . $end_date,
+      'date', [
+      'pluginEvents' => [
+        "apply.daterangepicker" => "function(ev, picker) { 
+            picker.element.closest('form').submit(); 
+          }",
+      ]
+    ]);
+
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
+    $query->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
 
     $totQuery = clone $query;
-    $totQuery=$totQuery
+    $totQuery = $totQuery
       ->select([
         'count(*) as total',
         'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
@@ -53,8 +75,11 @@ class AccountController extends Controller
       ->asArray()
       ->one();
 
+
     $dataBase = clone $query;
     $pagination = new Pagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
+    if ($pagination->pages() > 1) {
+    }
 
     //$pages = new Pagination(['totalCount' => $countQuery->count()]);
     $models = $pagination->data(false);
@@ -62,7 +87,8 @@ class AccountController extends Controller
     return $this->render('index', [
       'users' => $models,
       'pagination' => $pagination->getPagination('users/account', []),
-      'users_total'=>$totQuery,
+      'users_total' => $totQuery,
+      'data_ranger' => $data_ranger,
     ]);
   }
   /**

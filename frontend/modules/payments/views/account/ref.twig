@@ -15,19 +15,23 @@
         </div>
         <div class="col-md-12">
             Количество покупок (подтвержденных/ожидающих):
-            <b>{{ _nf(ref_user.cnt_confirmed,0) | raw}}</b> /
-            <b>{{ _nf(ref_user.cnt_pending,0) | raw}}</b>
+            <b>{{ _nf(total.cnt_confirm,0) | raw}}</b> /
+            <b>{{ _nf(total.cnt_pending,0) | raw}}</b>
         </div>
         <div class="col-md-12">
             Кэшбэк друзей (подтвержденный/ожидаемый):
-            <b>{{ _nf(ref_user.sum_confirmed,0) | raw}} руб</b> /
-            <b>{{ _nf(ref_user.sum_pending,0) | raw}} руб</b>
+            <b>{{ _nf(total.sum_confirm) | raw}} руб</b> /
+            <b>{{ _nf(total.sum_pending) | raw}} руб</b>
         </div>
         <div class="col-md-12">
             Доход от друзей (подтвержденный/ожидаемый):
-            <b>{{ _nf(ref_user.sum_to_friend_confirmed,0) | raw}} руб</b> /
-            <b>{{ _nf(ref_user.sum_to_friend_pending,0) | raw}} руб</b>
+            <b>{{ _nf(total.sum_ref_confirm) | raw}} руб</b> /
+            <b>{{ _nf(total.sum_ref_pending) | raw}} руб</b>
         </div>
+        <form method="get" class="col-md-12">
+            Период:
+            {{ data_ranger | raw }}
+        </form>
     </div>
     <section class="account-padding">
         <div class="row">
@@ -85,7 +89,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент Вы не совершали никаких заказов.</div>
+                <div class="not-found">На данный момент нет никаких заказов в выбранный период времени.</div>
             </div>
             {% endif %}
         </div>

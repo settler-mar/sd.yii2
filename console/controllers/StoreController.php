@@ -4,7 +4,7 @@ namespace console\controllers;
 
 use frontend\modules\stores\models\ActionsTariffs;
 use frontend\modules\stores\models\StoresActions;
-use console\models\Admitad;
+use common\models\Admitad;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\TariffsRates;

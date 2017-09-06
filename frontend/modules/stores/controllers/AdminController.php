@@ -59,6 +59,25 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'table_value' =>[
+        'is_active' => function ($model, $key, $index, $column) {
+          $st=[
+            1=>"Активен",
+            0=>"Приостановлен",
+            -1=>"Выключен",
+          ];
+          $v=isset($st[$model->is_active])?$st[$model->is_active]:"ОШИБКА !!!";
+          return $v;
+        },
+        'route' => function ($model, $key, $index, $column) {
+          $out = '<a href="/stores/';
+          $out .= $model->route;
+          $out .= '" target=_blank>';
+          $out .= $model->route;
+          $out .= '</a>';
+          return $out;
+        },
+      ]
     ]);
   }
 
@@ -230,7 +249,7 @@ class AdminController extends Controller
             'id' => $m->id,
             'cpa_id' => $m->cpa_id,
             'stores_id' => $m->stores_id,
-            'name' => $cpa->name,
+            'cpa' => array('name' => $cpa->name),
           )
         );
         $out = array(

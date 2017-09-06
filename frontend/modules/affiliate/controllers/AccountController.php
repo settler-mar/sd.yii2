@@ -47,7 +47,7 @@ class AccountController extends \yii\web\Controller
     return $this->render('index', $contentData);
   }
 
-  public function actionInvite()
+  /*public function actionInvite()
   {
     $request = \Yii::$app->request;
 
@@ -101,6 +101,6 @@ class AccountController extends \yii\web\Controller
 
     //todo отправка сообщения
     return json_encode(['error' => false]);
-  }
+  }*/
 
 }

@@ -142,14 +142,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       !Yii::$app->session->get('admin_id') ||
       Yii::$app->session->get('admin_id')!=Yii::$app->user->id
     ){
-      $user = self::findOne($id);
-      $user->last_ip =  $_SERVER["REMOTE_ADDR"];
-      $user->last_login = date('Y-m-d H:i:s');
-      $user->save();
-//      self::getDb()->createCommand()->update(self::tableName(), [
-//        'last_ip' => $_SERVER["REMOTE_ADDR"],
-//        'last_login' => date('Y-m-d H:i:s'),
-//      ], ['uid' => $id])->execute();
+      self::getDb()->createCommand()->update(self::tableName(), [
+        'last_ip' => $_SERVER["REMOTE_ADDR"],
+        'last_login' => date('Y-m-d H:i:s'),
+      ], ['uid' => $id])->execute();
     }
 
   }
@@ -519,6 +515,15 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
   public function getLoyalty_status_data(){
     $ls=$this->loyalty_status;
+    $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
+    if(!isset($loyalty_status_list[$ls])){
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls];
+  }
+
+  public function getOld_loyalty_status_data(){
+    $ls=$this->old_loyalty_status;
     $loyalty_status_list=Yii::$app->params['dictionary']['loyalty_status'];
     if(!isset($loyalty_status_list[$ls])){
       return 'Ошибка';

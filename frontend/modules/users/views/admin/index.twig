@@ -257,6 +257,21 @@
                           {% endif %}
                         </div>
                       </div>
+                      {% if user.new_loyalty_status_end>0 %}
+                        <div class="line">
+                          <div class="name">до </div>
+                          <div class="value">
+                            {{ date(user.new_loyalty_status_end) }}
+                          </div>
+                        </div>
+                        <div class="line">
+                          <div class="name">после</div>
+                          <div class="value">
+                            {{user.old_loyalty_status_data.display_name}}
+                            ({{user.old_loyalty_status_data.bonus}}%)
+                          </div>
+                        </div>
+                      {% endif %}
                       <div class="line">
                         <div class="name">За рефералов</div>
                         <div class="value">

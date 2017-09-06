@@ -2,7 +2,7 @@
 
 namespace console\controllers;
 
-use console\models\Admitad;
+use common\models\Admitad;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\CouponsToCategories;
 use yii\console\Controller;

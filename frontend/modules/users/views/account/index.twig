@@ -47,6 +47,10 @@
         <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} руб</b> /
         <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} руб</b>
       </div>
+      <form method="get" class="col-md-12">
+        Период:
+        {{ data_ranger | raw }}
+      </form>
     </div>
 
     <div class="col-md-12">
@@ -113,7 +117,7 @@
 
       {% else %}
           <div class="col-md-12">
-            <div class="not-found">На данный момент у Вас нет еще рефералов.</div>
+            <div class="not-found">На данный момент у Вас нет зарегистрированных рефералов в выбранный период времени.</div>
           </div>
       {% endif %}
     </div>

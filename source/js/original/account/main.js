@@ -153,29 +153,6 @@ $(function() {
         }
     }
 
-    var affiliate = {
-        control: {
-            events: function() {
-                ajax.control.sendFormData("#top .mail-invitation-form", "/account/affiliate/invite", "Mail Invitation Ajax Error", function() {
-                    var invitationSuccess = noty({
-                        text: "<b>Поздравляем!</b><br>Приглашение было успешно отправлено.",
-                        animation: {
-                            open: 'animated fadeInLeft',
-                            close: 'animated flipOutX',
-                            easing: 'swing',
-                            speed: 300
-                        },
-                        type: 'success',
-                        theme: 'relax',
-                        layout: 'topRight',
-                        timeout: 7000
-                    });
-
-                    $("#top .mail-invitation-form")[0].reset();
-                });
-            }
-        }
-    }
 
     var balance = {
         control: {
@@ -557,7 +534,6 @@ $(function() {
     charity.control.events();
     settings.control.events();
     balance.control.events();
-    affiliate.control.events();
     favorites.control.events();
     header.control.events();
 });

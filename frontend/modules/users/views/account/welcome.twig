@@ -122,14 +122,19 @@
                 </div>
             {% endif %}
 
-            {% if this_tarif.is_vip==1  %}
+            {% if user.new_loyalty_status_end>0 %}
+                <div class="col-md-12">
+                    <div class="cashbonus vip">
+                        Премиум-аккаунт действует до {{ date(user.new_loyalty_status_end) }}.
+                    </div>
+                </div>
+            {% elseif this_tarif.is_vip==1  %}
                 <div class="col-md-12">
                     <div class="cashbonus vip">
                         Вы почётный <strong>VIP</strong> клиент кэшбэк сервиса SecretDiscounter.<br> Если у Вас возник какой-либо вопрос связанный с работой нашего сайта, <br>обратитесь к нам напрямую написав на наш официальный skype - <strong>secretdiscounter.official</strong>.
                     </div>
                 </div>
             {% endif %}
-
         </div>
     </section>
 </div>
