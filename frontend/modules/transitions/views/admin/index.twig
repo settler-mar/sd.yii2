@@ -34,10 +34,11 @@
                             'format':'raw',
                             'attribute':'source',
                             'filter':{
-                            '':'Любой',
-                            0:"Ист. 0",
-                            1:"Ист. 1"
+                                '':'Любой',
+                                0:"Купоны",
+                                1:"Шопы",
                             },
+                            'value': tableValue.source,
                         },
                         'visit_date',
                         {
@@ -46,10 +47,6 @@
                             'value' : tableValue.store,
                         },
                         'user_ip',
-
-                        {'class': '\\yii\\grid\\ActionColumn',
-                            'template' : '{delete}',
-                        },
                         ],
                     })
                     }}
