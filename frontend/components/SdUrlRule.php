@@ -126,10 +126,10 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters) - 1]);
     }
     //проверяем последний параметр на all
-    if ($parameters[count($parameters) - 1] == 'all') {
-      $params['all'] = 1;
-      unset ($parameters[count($parameters) - 1]);
-    }
+//    if ($parameters[count($parameters) - 1] == 'all') {
+//      $params['all'] = 1;
+//      unset ($parameters[count($parameters) - 1]);
+//    }
     //проверяем что б это не был прямой заход в default
     if ($parameters[0] == 'default') {
       unset ($parameters[0]);
@@ -235,12 +235,12 @@ class SdUrlRule implements UrlRuleInterface
     }
 
 
-    if (isset($params['all'])) {
-      if ($params['all'] == 1) {
-        $route[] = 'all';
-      }
-      unset($params['all']);
-    }
+//    if (isset($params['all'])) {
+//      if ($params['all'] == 1) {
+//        $route[] = 'all';
+//      }
+//      unset($params['all']);
+//    }
     if (isset($params['expired'])) {
       if ($params['expired'] == 1) {
         $route[] = 'expired';

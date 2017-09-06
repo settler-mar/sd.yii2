@@ -89,7 +89,7 @@ class SdView extends View
       $page=str_replace('default/','',$page);
       $page=str_replace('/default','',$page);
     }else {
-      $page = $request->pathInfo;
+      $page = preg_replace('/\/$/', '', $request->pathInfo);
     }
 
     if ($page == 'affiliate-system') {
@@ -97,6 +97,7 @@ class SdView extends View
     };
     if ($page == '') $page = 'index';
 
+    //todo закешировать с этого места
     $page_meta = Meta::find()
       ->select(['title', 'description', 'keywords', 'h1', 'content'])
       ->where(['page' => $page])
@@ -108,25 +109,36 @@ class SdView extends View
     }
 
     //прямого совпадения нет ищем по плейсхолдерам
+    //перебираем путь, вместо каждого элемента подставляем '*', и ищем
+    //в каждом цикле затем ещё цикл - уменьшяем длину пути до '*'
     $arr = explode('/', $page);
-    $page_t = false;
-    if (count($arr) > 1) {
-      unset($arr[count($arr)-1]);
-      $page_t = implode('/', $arr) . '/';
-    }
-    if ($page_t) {
-      $mdataArray = Meta::find()
+    for ($i=0; $i<count($arr); $i++) {
+      $pageArr = $arr;
+      $pageArr[$i] = '*';
+      $page_t = implode('/', $pageArr);
+      $metadataArray = Meta::find()
         ->select(['title', 'description', 'keywords', 'h1', 'content'])
-        ->where(['like', 'page', $page_t . '*', false])
-        ->OrderBy(['page' => SORT_ASC])
+        ->where(['like', 'page', $page_t , false])
         ->asArray()
         ->one();
-      if ($mdataArray) {
-        return $mdataArray;
+      if ($metadataArray) {
+        return $metadataArray;
+      }
+      while($pageArr[count($pageArr)-1] != '*' && count($pageArr) > 2) {
+        unset($pageArr[count($pageArr)-1]);
+        $page_t = implode('/', $pageArr);
+        $metadataArray = Meta::find()
+          ->select(['title', 'description', 'keywords', 'h1', 'content'])
+          ->where(['like', 'page', $page_t , false])
+          ->asArray()
+          ->one();
+        if ($metadataArray) {
+          return $metadataArray;
+        }
       }
     }
 
-    //пробуем получитьт метотеги из параметров
+    //пробуем получить метатеги из параметров
     $meta=Yii::$app->params['meta'];
     if(isset($meta[$page])){
       return $meta[$page];

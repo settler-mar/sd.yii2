@@ -21,6 +21,7 @@ class DefaultController extends SdController
      */
     public function createAction($id)
     {
+        //todo stores/003/xxxx - сделать 404, и аналогично для купонов
         $request = \Yii::$app->request;
         $category = $request->get('category');
         $store = $request->get('store');
@@ -217,6 +218,7 @@ class DefaultController extends SdController
         }, $cache->defaultDuration, $dependency);
         $contentData["store_coupons"] = $coupons;
         $contentData["coupons_counts"] = Coupons::counts($store->uid);
+        $contentData["all_coupons_counts"] = Coupons::counts();
         $additionalStores = $this->getAdditionals($store);
         $contentData["additional_stores"] = $additionalStores['additional_stores'];
         $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];

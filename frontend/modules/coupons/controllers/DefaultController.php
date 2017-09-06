@@ -131,6 +131,7 @@ class DefaultController extends SdController
        $contentData["store_rating"] = Reviews::storeRating($storeId);
     } else {
       $contentData["counts"] = Coupons::counts();
+      \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
@@ -142,6 +143,8 @@ class DefaultController extends SdController
         ->orderBy($sort . ' ' . $order);
 
     }
+    \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
+    //\Yii::$app->params['url_mask'] .=  ($request->get('all') ? '/all' : '');//на будущее, если нужны будут метатеги для /all/
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
     $contentData["coupons"] = $pagination->data();
