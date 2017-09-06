@@ -125,7 +125,16 @@ class DefaultController extends Controller
     if($request->isPost) {
       if ($model->load($request->post()) && $user=$model->signup()) {   // уже логинимся или только что зашли?
         Yii::$app->user->login($user);
-        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="/account?new=1"</script>';
+
+        $referrer  = $_SERVER['HTTP_REFERER'];
+        $referrerArray = explode('/', $_SERVER['HTTP_REFERER']);
+        if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores'){
+          $location = $referrer;
+        } else {
+          $location = '/account?new=1';
+        };
+
+        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
         return json_encode($data);
       }
     }

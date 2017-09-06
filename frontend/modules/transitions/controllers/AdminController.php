@@ -5,10 +5,10 @@ namespace frontend\modules\transitions\controllers;
 use Yii;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\transitions\models\TransitionsSearch;
-//use app\modules\transitions\models\TransitionsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\Help;
 
 /**
  * AdminController implements the CRUD actions for UsersVisits model.
@@ -67,6 +67,9 @@ class AdminController extends Controller
                 }
                 return $out;
             },
+            'source' => function ($model, $key, $index, $column) {
+                return $model->source == 0 ? 'Купоны' : 'Шопы';
+            }
            
         ];
 
@@ -76,26 +79,9 @@ class AdminController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tableValue' => $tableValue,
+            'data_ranger' => Help::DateRangePicker($searchModel, 'visit_date_range', ['hideInput'=>false]),
 
         ]);
-    }
-
-    /**
-     * Deletes an existing UsersVisits model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        //todo видимо, нужно другое разрешение
-        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-            return false;
-        }
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

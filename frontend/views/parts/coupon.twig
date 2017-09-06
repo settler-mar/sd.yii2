@@ -1,5 +1,7 @@
 <div class="current-coupon" data-uid="{{coupon.uid}}">
-    <div class="expiry col-sm-12">срок действия купона истёк<br><span data-icon="&#xe05c;" class="icon"></span></div>
+    <div class="expiry col-sm-12">
+        <div class="expiry-text">срок действия купона истёк</div>
+    </div>
     <div class="col-sm-12 col-md-4 logo">
         {% if coupon.store_action_id == 1 %}
         <span class="promo-label x2"></span>
@@ -32,12 +34,13 @@
         {% endif %}
         <div class="coupon-goto">
             <div class="goto">
-                {#{% if user_id %}#}
-                <a href="#showpromocode" class="btn btn-fill btn-small">Показать промокод</a>
-                <div class="promocode">{{coupon.promocode}}</div>
-                {#{% else %}#}
-                {#<a href="#registration" class="btn btn-fill btn-small">Показать промокод</a>#}
-                {#{% endif %}#}
+                {% if user_id %}
+                    <a href="#showpromocode" class="btn btn-fill btn-small">Показать промокод</a>
+                    <div class="promocode">{{coupon.promocode}}</div>
+                {% else %}
+                    {#<a href="#registration" class="btn btn-fill btn-small">Показать промокод</a>#}
+                    <a href="#showpromocode-noregister" data-id="{{ coupon.uid }}" class="btn btn-fill btn-small">Показать промокод</a>
+                {% endif %}
             </div>
         </div>
     </div>
