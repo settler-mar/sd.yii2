@@ -2,7 +2,7 @@
 
 namespace frontend\modules\coupons\models;
 
-use Yii;
+use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;
 
@@ -169,6 +169,41 @@ class Coupons extends \yii\db\ActiveRecord
   {
     $this->clearCache();
   }
+  
+  public static function counts($store=false, $category=false)
+  {
+    $cache = \Yii::$app->cache;
+    $cacheName = 'coupons_counts'.($store ? '_'.$store : '').($category ? '_'.$category : '');
+    $dependencyName = 'coupons_counts';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $data = $cache->getOrSet($cacheName, function () use ($store, $category) {
+      $coupons = self::find()
+        ->from(self::tableName().' cwc')
+        ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+        ->where(['cws.is_active' => [0, 1]]);
+      if ($store) {
+        $coupons = $coupons->andWhere(['cws.uid' => $store]);
+      }
+      if ($category) {
+        $coupons = $coupons
+          ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
+          ->andWhere(['cctc.category_id' => $category]);
+      }
+      $all = $coupons->count();
+      $coupons2 = clone $coupons;
+      $expired = $coupons->andWhere(['<', 'cwc.date_end', date('Y-m-d H:i:s', time())])->count();
+      $actual = $coupons2->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])->count();
+
+      return [
+        'all' => $all,
+        'expired' => $expired,
+        'actual' => $actual,
+      ]; 
+    }, $cache->defaultDuration, $dependency);
+    
+    return $data;
+  }
  
   protected function clearCache()
   {
@@ -176,6 +211,7 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::clearName('catalog_coupons');
     Cache::clearName('catalog_coupons_count');
     Cache::clearName('store_coupons_store');
+    Cache::clearName('coupons_counts');
 
     //ключи
     Cache::deleteName('total_all_coupons');

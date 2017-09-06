@@ -716,14 +716,14 @@ $('.additional-information__handle.less a').click(function(e){
 });
 $('.store-coupons__show-less').click(function(e){
     e.preventDefault();
-    $('.store-coupons__buttons-more').show();
-    $('.store-coupons__buttons-less').hide();
+    $('.store-coupons__buttons.more').show();
+    $('.store-coupons__buttons.less').hide();
     $('.coupons-item.more').hide();
 });
 $('.store-coupons__show-more').click(function(e){
     e.preventDefault();
-   $('.store-coupons__buttons-less').show();
-   $('.store-coupons__buttons-more').hide();
+   $('.store-coupons__buttons.less').show();
+   $('.store-coupons__buttons.more').hide();
    $('.coupons-item.more').show();
 });
 

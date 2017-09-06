@@ -2819,16 +2819,16 @@ img{
   }
 }
 
-.store-coupons__buttons-less {
-  display: none;
-}
-.store-coupons__buttons-less,
-.store-coupons__buttons-more {
+.store-coupons__buttons,
+.store-coupons__buttons {
   text-align: center;
   .btn {
     &:not(:last-child) {
       margin-right: 25px;
     }
+  }
+  &.less {
+    display: none;
   }
 }
 .coupon-noregister {
