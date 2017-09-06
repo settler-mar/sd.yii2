@@ -8,6 +8,7 @@ use frontend\modules\transitions\models\TransitionsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\Help;
 
 /**
  * AdminController implements the CRUD actions for UsersVisits model.
@@ -78,6 +79,7 @@ class AdminController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tableValue' => $tableValue,
+            'data_ranger' => Help::DateRangePicker($searchModel, 'visit_date_range', ['hideInput'=>false]),
 
         ]);
     }

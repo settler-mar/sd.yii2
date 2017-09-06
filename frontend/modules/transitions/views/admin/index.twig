@@ -40,7 +40,14 @@
                             },
                             'value': tableValue.source,
                         },
-                        'visit_date',
+                        {
+                            'format':'raw',
+                            'attribute':'visit_date',
+                            'headerOptions' : {
+                                'class' : 'col-md-2'
+                            },
+                            'filter': data_ranger
+                        },
                         {
                             'format':'raw',
                             'attribute':'store_id',

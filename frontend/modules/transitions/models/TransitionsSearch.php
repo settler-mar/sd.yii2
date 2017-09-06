@@ -12,6 +12,7 @@ use frontend\modules\transitions\models\UsersVisits;
  */
 class TransitionsSearch extends UsersVisits
 {
+    public $visit_date_range;
     /**
      * @inheritdoc
      */
@@ -20,6 +21,7 @@ class TransitionsSearch extends UsersVisits
         return [
             [['uid', 'user_id', 'source', 'store_id'], 'integer'],
             [['visit_date', 'user_ip'], 'safe'],
+            [['visit_date_range'], 'safe'],
         ];
     }
 
@@ -70,10 +72,17 @@ class TransitionsSearch extends UsersVisits
             'uid' => $this->uid,
             'user_id' => $this->user_id,
             'source' => $this->source,
-            'visit_date' => $this->visit_date,
             'store_id' => $this->store_id,
         ]);
         $query->andFilterWhere(['like', 'user_ip', $this->user_ip]);
+
+        if (!empty($this->visit_date_range) && strpos($this->visit_date_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->visit_date_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'visit_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+
 
         return $dataProvider;
     }
