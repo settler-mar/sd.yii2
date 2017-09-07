@@ -2829,6 +2829,7 @@ img{
 .store-coupons__buttons {
   text-align: center;
   .btn {
+    margin-bottom: 5px;
     &:not(:last-child) {
       margin-right: 25px;
     }
