@@ -101,6 +101,9 @@ var megaslider = (function() {
     "hinge",
     "rollOut"
   ];
+  var stTable;
+  var paralaxTable;
+
   function genInput(data){
     var input='<input class="' + (data.inputClass || '') + '" value="' + (data.value || '') + '">';
     if(data.label) {
@@ -178,7 +181,7 @@ var megaslider = (function() {
       data.obj.addClass(data.prefix+ch);
       data.el.attr('t_val',ch);
 
-      $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
+      $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
     }.bind({
       el:input,
       obj:data.obj,
@@ -275,7 +278,7 @@ var megaslider = (function() {
     el.append('<h2>Управление</h2>');
     el.append($('<textarea/>',{
       text:JSON.stringify(slider_data[0]),
-      name:'slide'
+      id:'slide_data'
     }));
 
     var btn=$('<button class=""/>').text("Активировать слайд");
@@ -302,7 +305,7 @@ var megaslider = (function() {
       onChange:function(){
         slider_data[0].mobile=$(this).val()
         $('.mob_bg').eq(0).css('background-image','url('+slider_data[0].mobile+')');
-        $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
       }
     }));
 
@@ -313,7 +316,7 @@ var megaslider = (function() {
       onChange:function(){
         slider_data[0].fon=$(this).val()
         $('#mega_slider .slide').eq(0).css('background-image','url('+slider_data[0].fon+')')
-        $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
       }
     }));
 
@@ -325,7 +328,7 @@ var megaslider = (function() {
       onChange:function(){
         slider_data[0].button.text=$(this).val();
         $('#mega_slider .slider__href').eq(0).text(slider_data[0].button.text);
-        $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
       },
     }));
 
@@ -373,62 +376,19 @@ var megaslider = (function() {
             "<th>Анимация исчезновения</th>"+
             "<th>Задержка исчезновения</th>"+
             "<th>Действие</th>";
-    var table=$('<table border="1"><tr>'+th+'</tr></table>');
+    stTable=$('<table border="1"><tr>'+th+'</tr></table>');
     //если есть паралакс слои заполняем
     var data=slider_data[0].fixed;
     if(data && data.length>0){
       for(var i=0;i<data.length;i++){
-        var tr=$('<tr/>');
-        tr.append('<td class="td_counter"/>');
-        tr.append(genInput({
-          value:data[i].img,
-          label:false,
-          parent:'td',
-          inputClass:"fileSelect",
-          bind:{
-            gr:'fixed',
-            index:i,
-            param:'img',
-            obj:$('#mega_slider .fixed_group .fixed__layer').eq(i).find('.animation_layer'),
-          },
-          onChange:function(){
-            var data=this;
-            data.obj.css('background-image','url('+data.input.val()+')');
-            slider_data[0].fixed[data.index].img=data.input.val();
-            $('textarea[name=slide]').text(JSON.stringify(slider_data[0]));
-          }
-        }));
-        tr.append(genSelect({
-          list:posArr,
-          val_list:pos_list,
-          val_type:2,
-          obj:$('#mega_slider .fixed_group .fixed__layer').eq(i),
-          gr:'fixed',
-          index:i,
-          param:'pos',
-          parent:'td',
-        }));
-        tr.append(genSelect({
-          list:yes_no_val,
-          val_list:yes_no_arr,
-          val_type:2,
-          obj:$('#mega_slider .fixed_group .fixed__layer').eq(i),
-          gr:'fixed',
-          index:i,
-          param:'full_height',
-          parent:'td',
-        }));
-        tr.append(getSelAnimationControll({
-          type:1,
-          obj:$('#mega_slider .fixed_group .fixed__layer').eq(i).find('.animation_layer'),
-          gr:'fixed',
-          index:i,
-          parent:'td'
-        }));
-        table.append(tr)
+        addTrStatic(data[i]);
       }
     }
-    layer.append(table);
+    layer.append(stTable);
+    var addBtn=$('<button/>',{
+      text:"Добавить слой"
+    });
+    layer.append(addBtn);
     el.append(layer);
 
     var layer=$('<div class="paralax_layer"/>');
@@ -439,70 +399,159 @@ var megaslider = (function() {
       "<th>Удаленность (целое положительное число)</th>"+
       "<th>Действие</th>";
 
-    var table=$('<table border="1"><tr>'+th+'</tr></table>');
+    paralaxTable=$('<table border="1"><tr>'+th+'</tr></table>');
     //если есть паралакс слои заполняем
     var data=slider_data[0].paralax;
     if(data && data.length>0){
       for(var i=0;i<data.length;i++){
-        var tr=$('<tr/>');
-        tr.append('<td class="td_counter"/>');
-        tr.append(genInput({
-          value:data[i].img,
-          label:false,
-          parent:'td',
-          inputClass:"fileSelect",
-          bind:{
-            index:i,
-            param:'img',
-            obj:$('#mega_slider .parallax__group .parallax__layer').eq(i).find('span'),
-          },
-          onChange:function(){
-            var data=this;
-            data.obj.css('background-image','url('+data.input.val()+')');
-            slider_data[0].paralax[data.index].img=data.input.val();
-            $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
-          }
-        }));
-        tr.append(genSelect({
-          list:posArr,
-          val_list:pos_list,
-          val_type:2,
-          obj:$('#mega_slider .parallax__group .parallax__layer').eq(i).find('span'),
-          gr:'paralax',
-          index:i,
-          param:'pos',
-          parent:'td',
-          start_option:'<option value="" code="">на весь экран</option>'
-        }));
-        tr.append(genInput({
-          value:data[i].z,
-          label:false,
-          parent:'td',
-          bind:{
-            index:i,
-            param:'img',
-            obj:$('#mega_slider .parallax__group .parallax__layer').eq(i),
-          },
-          onChange:function(){
-            var data=this;
-            data.obj.attr('z',data.input.val());
-            slider_data[0].paralax[data.index].z=data.input.val();
-            $('textarea[name=slide]').text(JSON.stringify(slider_data[0]))
-          }
-        }));
-
-        var delBtn=$('<button/>',{
-          text:"Удалить"
-        });
-        var delBtnTd=$('<td/>').append(delBtn);
-        tr.append(delBtnTd);
-        table.append(tr)
+        addTrParalax(data[i]);
       }
     }
-    layer.append(table);
+    layer.append(paralaxTable);
+    var addBtn=$('<button/>',{
+      text:"Добавить слой"
+    });
+    layer.append(addBtn);
     el.append(layer);
 
     initImageServerSelect(el.find('.fileSelect'))
+  }
+
+  function addTrStatic(data) {
+
+    var i=stTable.children().length-1;
+    var tr=$('<tr/>');
+    tr.append('<td class="td_counter"/>');
+    tr.append(genInput({
+      value:data.img,
+      label:false,
+      parent:'td',
+      inputClass:"fileSelect",
+      bind:{
+        gr:'fixed',
+        index:i,
+        param:'img',
+        obj:$('#mega_slider .fixed_group .fixed__layer').eq(i).find('.animation_layer'),
+      },
+      onChange:function(){
+        var data=this;
+        data.obj.css('background-image','url('+data.input.val()+')');
+        slider_data[0].fixed[data.index].img=data.input.val();
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
+      }
+    }));
+    tr.append(genSelect({
+      list:posArr,
+      val_list:pos_list,
+      val_type:2,
+      obj:$('#mega_slider .fixed_group .fixed__layer').eq(i),
+      gr:'fixed',
+      index:i,
+      param:'pos',
+      parent:'td',
+    }));
+    tr.append(genSelect({
+      list:yes_no_val,
+      val_list:yes_no_arr,
+      val_type:2,
+      obj:$('#mega_slider .fixed_group .fixed__layer').eq(i),
+      gr:'fixed',
+      index:i,
+      param:'full_height',
+      parent:'td',
+    }));
+    tr.append(getSelAnimationControll({
+      type:1,
+      obj:$('#mega_slider .fixed_group .fixed__layer').eq(i).find('.animation_layer'),
+      gr:'fixed',
+      index:i,
+      parent:'td'
+    }));
+    var delBtn=$('<button/>',{
+      text:"Удалить"
+    });
+    delBtn.on('click',function(){
+      var $this=$(this.el);
+      i=$this.closest('tr').index()-1;
+      $('#mega_slider .fixed_group .fixed__layer').eq(i).remove(); //удаляем слой на слайдере
+      $this.closest('tr').remove(); //удаляем строку в таблице
+      this.slider_data[0].fixed.splice(i, 1); //удаляем из конфига слайда
+      $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
+    }.bind({
+      el:delBtn,
+      slider_data:slider_data
+    }));
+    var delBtnTd=$('<td/>').append(delBtn);
+    tr.append(delBtnTd);
+    stTable.append(tr)
+  }
+
+  function addTrParalax(data) {
+    var i=paralaxTable.children().length-1;
+    var tr=$('<tr/>');
+    tr.append('<td class="td_counter"/>');
+    tr.append(genInput({
+      value:data.img,
+      label:false,
+      parent:'td',
+      inputClass:"fileSelect",
+      bind:{
+        index:i,
+        param:'img',
+        obj:$('#mega_slider .parallax__group .parallax__layer').eq(i).find('span'),
+      },
+      onChange:function(){
+        var data=this;
+        data.obj.css('background-image','url('+data.input.val()+')');
+        slider_data[0].paralax[data.index].img=data.input.val();
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
+      }
+    }));
+    tr.append(genSelect({
+      list:posArr,
+      val_list:pos_list,
+      val_type:2,
+      obj:$('#mega_slider .parallax__group .parallax__layer').eq(i).find('span'),
+      gr:'paralax',
+      index:i,
+      param:'pos',
+      parent:'td',
+      start_option:'<option value="" code="">на весь экран</option>'
+    }));
+    tr.append(genInput({
+      value:data.z,
+      label:false,
+      parent:'td',
+      bind:{
+        index:i,
+        param:'img',
+        obj:$('#mega_slider .parallax__group .parallax__layer').eq(i),
+      },
+      onChange:function(){
+        var data=this;
+        data.obj.attr('z',data.input.val());
+        slider_data[0].paralax[data.index].z=data.input.val();
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
+      }
+    }));
+
+    var delBtn=$('<button/>',{
+      text:"Удалить"
+    });
+    delBtn.on('click',function(){
+      var $this=$(this.el);
+      i=$this.closest('tr').index()-1;
+      $('#mega_slider .fixed_group .fixed__layer').eq(i).remove(); //удаляем слой на слайдере
+      $this.closest('tr').remove(); //удаляем строку в таблице
+      this.slider_data[0].paralax.splice(i, 1); //удаляем из конфига слайда
+      $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
+    }.bind({
+      el:delBtn,
+      slider_data:slider_data
+    }));
+    var delBtnTd=$('<td/>').append(delBtn);
+    tr.append(delBtnTd);
+    paralaxTable.append(tr)
   }
 
   function add_animation(el,data){
