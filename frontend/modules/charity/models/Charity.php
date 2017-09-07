@@ -4,6 +4,8 @@ namespace frontend\modules\charity\models;
 
 use yii;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\users\models\Users;
+use frontend\modules\dobro\models\Foundations;
 
 /**
  * This is the model class for table "cw_charity".
@@ -47,14 +49,14 @@ class Charity extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'uid' => 'Uid',
-      'user_id' => 'User ID',
-      'foundation_id' => 'Foundation ID',
-      'amount' => 'Amount',
-      'added' => 'Added',
+      'uid' => 'ID',
+      'user_id' => 'Пользователь',
+      'foundation_id' => 'Фонд',
+      'amount' => 'Сумма',
+      'added' => 'Дата',
       'note' => 'Note',
       'is_showed' => 'Is Showed',
-      'is_listed' => 'Is Listed',
+      'is_listed' => 'Статус',
     ];
   }
 
@@ -70,6 +72,16 @@ class Charity extends \yii\db\ActiveRecord
     }
     return true;
   }
+
+  public function getUser()
+  {
+    return $this->hasOne(Users::className(), ['uid' => 'user_id']);
+  }
+  public function getFoundation()
+  {
+    return $this->hasOne(Foundations::className(), ['uid' => 'foundation_id']);
+  }
+
   public function afterSave($insert, $changedAttributes)
   {
     Cache::clearName('account_charity' . $this->user_id);

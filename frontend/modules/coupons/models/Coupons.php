@@ -159,7 +159,7 @@ class Coupons extends \yii\db\ActiveRecord
       return self::find()
         ->from(self::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-        ->where(['cws.is_active' => 1])
+        ->where(['cws.is_active' => [0, 1]])
         ->count();
     });
     return $count;
