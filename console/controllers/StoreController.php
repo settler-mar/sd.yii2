@@ -22,6 +22,8 @@ class StoreController extends Controller
       'connection_status' => 'active',
     ];
 
+    d(time());
+
     $action_type=array_flip(Yii::$app->params['dictionary']['action_type']);
 
     $stores=$admitad->getStore($params);
