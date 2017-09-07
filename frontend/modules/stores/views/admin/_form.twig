@@ -4,57 +4,47 @@
     <section>
         <div class="row">
             <div class="col-md-12">
-                <div class="stores-form">
-                    {% set form = active_form_begin() %}
+                <h1>
+                    {{ html.encode(this.title) }}
+                </h1>
+            </div>
+            <div class="stores-form">
+                {% set form = active_form_begin() %}
 
-                        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'alias').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'logoImage').fileInput()|raw }}
-                        <img for="Stores[logoImage]" style="max-height: 150px;" src="images/logos/{{ model.logo | raw }}">
-
-                        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'displayed_cashback').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'conditions').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'added').textInput()|raw }}
-
-                        {{ form.field(model, 'visit').textInput()|raw }}
-
-                        {{ form.field(model, 'hold_time').textInput()|raw }}
-
-                        {{ form.field(model, 'is_active').textInput()|raw }}
-
-                        {{ form.field(model, 'short_description').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'local_name').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'active_cpa').textInput()|raw }}
-
-                        {{ form.field(model, 'percent').textInput()|raw }}
-
-                        {{ form.field(model, 'action_id').textInput()|raw }}
-
-                        {{ form.field(model, 'contact_name').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'contact_phone').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'contact_email').textInput({'maxlength':true})|raw }}
-
-                    <div class="form-group">
-                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-                    </div>
-                    {{ active_form_end() }}
+                <div class="col-md-6">
+                    <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Акция</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
                 </div>
+                <div class="col-md-6">
+                    <p>
+                        <span>Logo:</span>
+                        <img for="Stores[logoImage]" style="max-height: 150px;" src="images/logos/{{ model.logo | raw }}">
+                    </p>
+                    {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
+                    <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Магазин активен:</span><br>
+                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
+                    <p><span>Краткое описание  (Информация о  ...):</span> <br> {{ form.field(model, 'short_description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }} </p>
+                    <p>
+                        <span>Описание  (Информация о кэшбэк в ...):</span>
+                        <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}
+                    </p>
+                    <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+                {{ active_form_end() }}
             </div>
         </div>
     </section>

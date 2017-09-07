@@ -68,7 +68,7 @@ class AdminController extends Controller
                 return $out;
             },
             'source' => function ($model, $key, $index, $column) {
-                return $model->source == 0 ? 'Купоны' : 'Шопы';
+                return $model->source == 1 ? 'Купоны' : 'Шопы';
             }
            
         ];

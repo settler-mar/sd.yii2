@@ -67,9 +67,7 @@ class PaymentsSearch extends Payments
             return $dataProvider;
         }
        // $query->joinWith(['user']);
-       if ($this->storeName) {
-         $query->joinWith(['store'])->where(['name' => $this->storeName]);
-       }
+
        // ddd($dataProvider);
         // grid filtering conditions
         $query->andFilterWhere([
@@ -97,6 +95,17 @@ class PaymentsSearch extends Payments
         ]);
         $query->andFilterWhere(['like', 'order_id', $this->order_id]);
 
+      if ($this->storeName) {
+        $query->joinWith(['store']);
+        $query->andFilterWhere([
+          'or',[
+            'like', 'cw_stores.name', $this->storeName
+            ],[
+            'cw_stores.uid'=>$this->storeName
+            ],
+        ]);
+        //$query->joinWith(['store'])->where(['cw_stores.name' => $this->storeName]);
+      }
       if(!empty($this->created_at_range) && strpos($this->created_at_range, '-') !== false) {
         //ddd($this->created_at_range);
         list($start_date, $end_date) = explode(' - ', $this->created_at_range);

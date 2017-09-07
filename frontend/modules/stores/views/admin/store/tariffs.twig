@@ -33,7 +33,7 @@
       </tr>
       {% if tariff.rates|length > 0 %}
         {% for rate in tariff.rates %}
-          {% include 'store/rates.html' %}
+          {% include 'store/rates.twig' %}
         {% endfor %}
       {% endif %}
     </table>

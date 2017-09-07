@@ -73,7 +73,7 @@ class Stores extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['name', 'route', 'url', 'currency', 'logo', 'added', 'hold_time'], 'required'],
+      [['name', 'route', 'url', 'currency', 'added', 'hold_time'], 'required'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
@@ -292,8 +292,8 @@ class Stores extends \yii\db\ActiveRecord
       $exch = explode('.', $photo->name);
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
-      $this->logo = $path . $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'\web';
+      $this->logo = $name;   // Путь файла и название
+      $bp=Yii::$app->getBasePath().'\web'.$path;
       if (!file_exists($bp.$path)) {
         mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
       }
@@ -327,7 +327,7 @@ class Stores extends \yii\db\ActiveRecord
 
   public function getStorePath()
   {
-    $path = '/images/logo/';
+    $path = '/images/logos/';
     return $path;
   }
 

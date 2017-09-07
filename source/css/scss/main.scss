@@ -2859,5 +2859,7 @@ div .popup {
   border-radius: 5px;
 }
 
-
+.additional-information{
+  p+ul{margin-top: 0;}
+}
 @import  "../external/queries";
