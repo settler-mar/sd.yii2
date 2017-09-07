@@ -666,11 +666,11 @@ $(window).load(function(){
         axis:"y",
         setHeight: 300
     }); 
-    $("#top").find(".comments .current-comment .text .comment").mCustomScrollbar({
-        axis:"y",
-        setHeight: 150,
-        theme: "dark"
-    }); 
+    // $("#top").find(".comments .current-comment .text .comment").mCustomScrollbar({
+    //     axis:"y",
+    //     setHeight: 150,
+    //     theme: "dark"
+    // }); 
     $("#top").find(".categories ul:not(.subcategories)").mCustomScrollbar({
         axis:"y",
         setHeight: 250

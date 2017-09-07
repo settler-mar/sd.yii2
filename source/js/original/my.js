@@ -73,3 +73,28 @@ $("a[href='#showpromocode-noregister']").popup({
     $('.popup_content')[0].innerHTML = this.o.content;
   }
 });
+$("a[href='#comment-popup']").popup({
+  content : function() {
+    var content = this.ele.parentElement.parentElement.cloneNode(true);
+    content.setAttribute('data-comment-id', '9999');
+    var div = document.createElement('div');
+    div.className = 'comments';
+    div.append(content);
+    $(div).find('.current-comment__more').remove();
+    $(div).find('.comment.list').removeClass('list');
+    return div;
+  },
+  width: 500
+});
+//пройти по комментам, ограничить длину текста, вставить ссылку "показать полностью"
+$('.current-comment').each(function(index, element) {
+  var text = $(element).find('.text');
+  var comment = $(text).find('.comment');
+  if (comment[0].innerHTML.length > 210) {
+    var a = document.createElement('a');
+    a.className = 'current-comment__more';
+    a.setAttribute('href', '#comment-popup');
+    a.innerHTML = 'Показать полностью';
+    text.append(a);
+  }
+});
