@@ -89,8 +89,9 @@ class DefaultController extends SdController
     $cacheName .= $sort ? '_'.$sort : '';
     $cacheName .= $order ? '_'.$order : '';
 
-    $dateRange = $request->get('expired') ? ['<', 'cwc.date_end', date('Y-m-d H:i:s', time())] : (
-      $request->get('all') ? [] : ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
+    $dateRange = $request->get('expired') ? ['<', 'cwc.date_end', date('Y-m-d H:i:s', time())] :
+      ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
+    $contentData['show_expired'] = $request->get('expired');
 
     if (!empty($categoryCoupons)) {
       \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;

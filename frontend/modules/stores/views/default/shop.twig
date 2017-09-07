@@ -178,7 +178,7 @@
 
                             {% endfor %}
                             {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
-                                <div class="col-md-12 col-md-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
+                                <div class="col-md-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
                                     {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
                                     <a class="btn" target="_blank" href="/coupons">Все купоны и акции ({{ all_coupons_counts.actual }})</a>
                                     {% if coupons_counts.expired > 0 %}
@@ -190,7 +190,7 @@
                         {% else %}
                         <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
                             {% if coupons_counts.expired > 0 %}
-                                <div class="col-md-12 col-md-12 store-coupons__buttons">
+                                <div class="col-md-12 store-coupons__buttons">
                                     <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
                                 </div>
                             {% endif %}
