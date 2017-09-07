@@ -39,8 +39,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        //todo видимо, нужно другое разрешение
-        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CharityView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
@@ -96,6 +95,10 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CharityEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $model = $this->findModel($id);
 
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
