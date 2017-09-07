@@ -634,54 +634,54 @@ $(function() {
 });
 
 
-// $(window).load(function(){
-//
-//     /* Scrollbar Init
-//     ------------------------------------*/
-//     // $("#top").find(".submenu .tree").mCustomScrollbar({
-//     //     axis:"y",
-//     //     setHeight: 300
-//     // });
-//     if($("#top").find(".c-wrapper").length < 1){
-//        return true;
-//     }
-//     $("#top").find(".c-wrapper").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 700
-//     });
-//     $("#top").find(".cm-wrapper").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 640
-//     });
-//     // $("#top").find(".view-store .additional-information").mCustomScrollbar({
-//     //     axis:"y",
-//     //     setHeight: 65
-//     // });
-//     $("#top").find(".funds .fund .title").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 45,
-//         theme: "dark"
-//     }); 
-//     $("#top").find(".autocomplete-suggestions").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 300
-//     }); 
-//     $("#top").find(".comments .current-comment .text .comment").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 150,
-//         theme: "dark"
-//     }); 
-//     $("#top").find(".categories ul:not(.subcategories)").mCustomScrollbar({
-//         axis:"y",
-//         setHeight: 250
-//     });
-//
-//     /*$('[data-toggle="tooltip"]').tooltip({
-//         delay: {
-//             show: 500, hide: 2000
-//         }
-//     });*/
-// });
+$(window).load(function(){
+
+    /* Scrollbar Init
+    ------------------------------------*/
+    // $("#top").find(".submenu .tree").mCustomScrollbar({
+    //     axis:"y",
+    //     setHeight: 300
+    // });
+    // if($("#top").find(".c-wrapper").length < 1){
+    //    return true;
+    // }
+    $("#top").find(".c-wrapper").mCustomScrollbar({
+        axis:"y",
+        setHeight: 700
+    });
+    $("#top").find(".cm-wrapper").mCustomScrollbar({
+        axis:"y",
+        setHeight: 640
+    });
+    // $("#top").find(".view-store .additional-information").mCustomScrollbar({
+    //     axis:"y",
+    //     setHeight: 65
+    // });
+    $("#top").find(".funds .fund .title").mCustomScrollbar({
+        axis:"y",
+        setHeight: 45,
+        theme: "dark"
+    }); 
+    $("#top").find(".autocomplete-suggestions").mCustomScrollbar({
+        axis:"y",
+        setHeight: 300
+    }); 
+    $("#top").find(".comments .current-comment .text .comment").mCustomScrollbar({
+        axis:"y",
+        setHeight: 150,
+        theme: "dark"
+    }); 
+    $("#top").find(".categories ul:not(.subcategories)").mCustomScrollbar({
+        axis:"y",
+        setHeight: 250
+    });
+
+    /*$('[data-toggle="tooltip"]').tooltip({
+        delay: {
+            show: 500, hide: 2000
+        }
+    });*/
+});
 
 
 $('.short-description__handle.more a').click(function(e){
