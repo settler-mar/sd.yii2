@@ -403,8 +403,14 @@ $images: "/images";
         font-size: 13px;
         line-height: 24px;
         font-weight: 500;
-        max-height: 150px;
+        //max-height: 150px;
+        &.list {
+          max-height: 125px;
+          overflow: hidden;
+          text-overflow: clip;
+        }
       }
+
     }
   }
 }
@@ -2819,16 +2825,16 @@ img{
   }
 }
 
-.store-coupons__buttons-less {
-  display: none;
-}
-.store-coupons__buttons-less,
-.store-coupons__buttons-more {
+.store-coupons__buttons,
+.store-coupons__buttons {
   text-align: center;
   .btn {
     &:not(:last-child) {
       margin-right: 25px;
     }
+  }
+  &.less {
+    display: none;
   }
 }
 .coupon-noregister {

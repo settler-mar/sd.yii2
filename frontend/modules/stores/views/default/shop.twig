@@ -165,27 +165,35 @@
                     <div class="coupons">
                         <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
                         {% if store_coupons|length > 0 %}
-                        <div class="c-wrapper coupons-list" data-mcs-theme="dark">
+                        <div class="coupons-list" data-mcs-theme="dark">
                             {% for coupon in store_coupons %}
                             <div class="col-sm-12 col-md-6 coupons-item {% if loop.index > 6 %}more{% endif %}">
                             {% include 'parts/coupon.twig' %}
                             </div>
-                                {% if loop.index == 6 and store_coupons|length > 6 %}
-                                    <div class="col-md-12 store-coupons__buttons-more">
-                                        <a class="btn store-coupons__show-more" href="#">Показать все</a>
+                                {% if (loop.index == 6 and (store_coupons|length > 6)) %}
+                                    <div class="col-md-12 store-coupons__buttons more">
+                                        <a class="btn store-coupons__show-more" href="#">Показать все ({{ coupons_counts.all }})</a>
                                     </div>
                                 {% endif %}
+
                             {% endfor %}
-                            {% if store_coupons|length > 6 %}
-                                <div class="col-md-12 col-md-12 store-coupons__buttons-less">
-                                    <a class="btn store-coupons__show-less" href="#">Скрыть</a>
-                                    <a class="btn" href="/coupons">Все купоны и акции</a>
-                                    <a class="btn" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды</a>
+                            {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
+                                <div class="col-md-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
+                                    {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
+                                    <a class="btn" target="_blank" href="/coupons">Все купоны и акции ({{ all_coupons_counts.actual }})</a>
+                                    {% if coupons_counts.expired > 0 %}
+                                        <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </div>
                         {% else %}
                         <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
+                            {% if coupons_counts.expired > 0 %}
+                                <div class="col-md-12 store-coupons__buttons">
+                                    <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

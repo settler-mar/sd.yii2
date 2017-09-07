@@ -83,13 +83,21 @@ class DefaultController extends SdController
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
-    $cacheName = 'catalog_coupons' . ($request->get('expired') ? 'expired' : '');
-    $dateEnd = $request->get('expired') ? date('Y-m-d H:i:s', time()) : '9999-12-31';
+    $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
+    $cacheName .= $page ? '_'.$page : '';
+    $cacheName .= $limit ? '_'.$limit : '';
+    $cacheName .= $sort ? '_'.$sort : '';
+    $cacheName .= $order ? '_'.$order : '';
+
+    $dateRange = $request->get('expired') ? ['<', 'cwc.date_end', date('Y-m-d H:i:s', time())] :
+      ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
+    $contentData['show_expired'] = $request->get('expired');
 
     if (!empty($categoryCoupons)) {
       \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
-      $cacheName .= '_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $contentData["counts"] = Coupons::counts(false, $category);
+      $cacheName .= '_' . $category;
       $contentData['category_id'] = $category;
       $contentData['current_category'] = $categoryCoupons;
       $databaseObj = Coupons::find()
@@ -100,7 +108,7 @@ class DefaultController extends SdController
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
         ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
-        ->andWhere(['<', 'cwc.date_end', $dateEnd])
+        ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
     } elseif (!empty($store)) {
       $storeId = $store->uid;
@@ -108,8 +116,9 @@ class DefaultController extends SdController
         return $this->redirect('/coupons', 301);
       }
       \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
+      $contentData["counts"] = Coupons::counts($storeId);
       $contentData['current_store'] = $store;
-      $cacheName .= '_' . $storeId . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
@@ -118,11 +127,12 @@ class DefaultController extends SdController
         ->from(Coupons::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
-        ->andWhere(['<', 'cwc.date_end', $dateEnd])
+        ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
        $contentData["store_rating"] = Reviews::storeRating($storeId);
     } else {
-      $cacheName .= '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $contentData["counts"] = Coupons::counts();
+      \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::find()
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
@@ -130,10 +140,12 @@ class DefaultController extends SdController
         ->from(Coupons::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
-        ->andWhere(['<', 'cwc.date_end', $dateEnd])
+        ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
 
     }
+    \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
+    //\Yii::$app->params['url_mask'] .=  ($request->get('all') ? '/all' : '');//на будущее, если нужны будут метатеги для /all/
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
 
     $contentData["coupons"] = $pagination->data();
@@ -147,7 +159,9 @@ class DefaultController extends SdController
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Coupons::$defaultSort == $sort ? null : $sort,
-      'page' => $page
+      'page' => $page,
+      'expired' => $request->get('expired') ? 1 : null,
+      'all' => $request->get('all') ? 1 : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';

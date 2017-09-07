@@ -21,6 +21,7 @@ class DefaultController extends SdController
      */
     public function createAction($id)
     {
+        //todo stores/003/xxxx - сделать 404, и аналогично для купонов
         $request = \Yii::$app->request;
         $category = $request->get('category');
         $store = $request->get('store');
@@ -198,8 +199,9 @@ class DefaultController extends SdController
         $dependency =  new yii\caching\DbDependency;
         $dependencyName = 'store_coupons_store';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-        
+
         $coupons = $cache->getOrSet('store_coupons_store_'.$store->uid, function () use ($store) {
+            $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
             return Coupons::find()
               ->from(Coupons::tableName() . ' cwc')
               ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
@@ -207,6 +209,7 @@ class DefaultController extends SdController
                 'cws.action_id as store_action_id', 'cws.logo as store_image'])
               ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
               ->where(['cws.uid' => $store->uid])
+              ->andWhere($dateRange)
               ->orderBy(Coupons::$defaultSort . ' ' .
                 (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
                   Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
@@ -214,7 +217,8 @@ class DefaultController extends SdController
               ->all();
         }, $cache->defaultDuration, $dependency);
         $contentData["store_coupons"] = $coupons;
-
+        $contentData["coupons_counts"] = Coupons::counts($store->uid);
+        $contentData["all_coupons_counts"] = Coupons::counts();
         $additionalStores = $this->getAdditionals($store);
         $contentData["additional_stores"] = $additionalStores['additional_stores'];
         $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];

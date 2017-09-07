@@ -16,12 +16,8 @@ categories_coupons - Cписок категорий купонов
 categories_coupons_byid_<id> - категория купонов по id
 stores_coupon - Список магазинов с купонами
 total_all_coupons - Количество активных купонов
-catalog_coupons_<page>_<limit>_<sort>_<order> - купоны ЗАВИСИМОСТЬ: catalog_coupons
-catalog_coupons_store_<store>_<page>_<limit>_<sort>_<order> - купоны магазина ЗАВИСИМОСТЬ: catalog_coupons
-catalog_coupons_category_<category>_<page>_<limit>_<sort>_<order> - купоны категории ЗАВИСИМОСТЬ: catalog_coupons
-catalog_couponsexpired_<page>_<limit>_<sort>_<order> - купоны, с истёкшим сроком ЗАВИСИМОСТЬ: catalog_coupons
-catalog_couponsexpired_store_<store>_<page>_<limit>_<sort>_<order> - купоны магазина, с истёкшим сроком ЗАВИСИМОСТЬ: catalog_coupons
-catalog_couponsexpired_category_<category>_<page>_<limit>_<sort>_<order> - купоны категории, с истёкшим сроком ЗАВИСИМОСТЬ: catalog_coupons
+catalog_coupons[_expired][_all][_store_<store>][_category_<category>][_<page>][_<limit>][_<sort>][_<order>] - купоны ЗАВИСИМОСТЬ: catalog_coupons
+coupons_counts[_<store_id>][_<category_id>] - количества купонов (всего, просроченных, активных) ЗАВИСИМОСТЬ: coupons_counts
 additional_stores_except_<store_id> - дополнительные магазины для магазина, кроме самого ЗАВИСИМОСТЬ: additional_stores
 additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - дополнительные магазины для магазина принадлежащие категориям, кроме самого магазина ЗАВИСИМОСТЬ: additional_stores_except_<id>
 store_category_byid_<category_id> - категория магазина по id
