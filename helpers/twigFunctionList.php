@@ -154,23 +154,24 @@ $functionsList=[
         $cur = $currency;
       }
     }
-    return $cashback .' '. $cur;
+    return trim($cashback .' '. $cur);
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
     $value = preg_replace('/[^0-9\.]/', '', $cashback);
-    if($action == 1){
-      $cashback = str_replace($value,$value*2,$cashback);
+    if ($action == 1) {
+      $cashback = str_replace($value, $value * 2, $cashback);
     }
 
     if (intval($value) == 0) {
-      return '<i class="red fa fa-heart"></i>';
+      $out = '<i class="red fa fa-heart"></i>';
     } elseif (strpos($cashback, '%') === false) {
-      return $cashback . ' ' .
-      (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
+      $out = $cashback . ' ' .
+        (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
     } else {
-      return $cashback;
+      $out = $cashback;
     }
+    return trim($out);
   },
 
   '_hyphen_words'=>function ($s,$wbr=true){
