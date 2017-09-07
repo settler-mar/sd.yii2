@@ -11,8 +11,18 @@
     <div class="content-wrapper">
         <section>
             <div class="row">
+                <h1>{{ html.encode(this.title) }}</h1>
+                <div class="col-md-12" style="text-align:right;">
+                    <a href="" class="charity-action btn btn-default " data-value="0">В ожидании</a>
+                    <a href="" class="charity-action btn btn-default" data-value="1">Отклонён</a>
+                    <a href="" class="charity-action btn btn-default" data-value="2">Проведён</a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <h1>{{ html.encode(this.title) }}</h1>
+
+
+
                     {# include('_search.twig', {'model': searchModel}) #}
                     {#<p>#}
                         {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Charity' }}</a>#}
@@ -22,8 +32,17 @@
                             'filterModel': searchModel,
                                 'columns': [
                                 {'class': '\\yii\\grid\\SerialColumn'},
-
-                                'uid',
+                                {'class': '\\yii\\grid\\CheckboxColumn',
+                                    'headerOptions' : {
+                                    'class' : 'col-md-1',
+                                    },
+                                },
+                                {
+                                    'attribute':'uid',
+                                    'headerOptions' : {
+                                        'class' : 'col-md-1',
+                                    },
+                                },
                                 {
                                     'format':'raw',
                                     'attribute':'user_id',
