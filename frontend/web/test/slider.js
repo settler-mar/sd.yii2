@@ -134,7 +134,12 @@ var megaslider = (function() {
     if(data.index!==false){
       el=el[data.index];
     }
-    data.value=el[data.param];
+
+    if(el[data.param]){
+      data.value=el[data.param];
+    }else{
+      data.value=0;
+    }
 
     if(data.start_option){
       input.append(data.start_option)
@@ -417,7 +422,6 @@ var megaslider = (function() {
       var paralax_gr = $('#mega_slider .parallax__group');
       addParalaxLayer(data.data, paralax_gr);
 
-      this.slider_data[0].paralax.push(data.data); //удаляем из конфига слайда
       $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
     }.bind({
       el:paralaxTable,
@@ -432,7 +436,7 @@ var megaslider = (function() {
 
   function addTrStatic(data) {
 
-    var i=stTable.children().length-1;
+    var i=stTable.find('tr').length-1;
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
     tr.append(genInput({
@@ -500,13 +504,14 @@ var megaslider = (function() {
   }
 
   function addTrParalax(data) {
+    var i=paralaxTable.find('tr').length-1;
     if(!data){
       data={
         "img":"",
         "z":1
       };
+      slider_data[0].paralax.push(data);
     };
-    var i=paralaxTable.children().length-1;
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
     tr.append(genInput({
