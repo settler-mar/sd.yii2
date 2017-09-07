@@ -59,7 +59,7 @@ class CharitySearch extends Charity
             // $query->where('0=1');
             return $dataProvider;
         }
-        $this->is_listed = $this->is_listed === null ? 1 : $this->is_listed;//делаем по умолчанию
+        $this->is_listed = $this->is_listed === null ? 0 : $this->is_listed;//делаем по умолчанию
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,

@@ -68,13 +68,7 @@ class AdminController extends Controller
                 return $out;
             },
             'status' => function ($model, $key, $index, $column) {
-                $st=$model->is_listed;
-                if ($st==0) {
-                    $st=1;
-                } elseif ($st==1) {
-                    $st=0;
-                }
-                return Yii::$app->help->colorStatus($st);
+                return Yii::$app->help->colorStatus($model->is_listed);
             },
         ];
         $searchModel = new CharitySearch();
