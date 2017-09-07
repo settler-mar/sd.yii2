@@ -576,6 +576,10 @@
 
 
 /*Редактор*/
+#mega_slider_controle{
+  overflow: auto;
+}
+
 #mega_slider_controle button{
   min-height: 24px;
   vertical-align: bottom;

@@ -411,6 +411,19 @@ var megaslider = (function() {
     var addBtn=$('<button/>',{
       text:"Добавить слой"
     });
+    addBtn.on('click',function() {
+      data = addTrParalax(false);
+      initImageServerSelect(data.editor.find('.fileSelect'));
+      var paralax_gr = $('#mega_slider .parallax__group');
+      addParalaxLayer(data.data, paralax_gr);
+
+      this.slider_data[0].paralax.push(data.data); //удаляем из конфига слайда
+      $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
+    }.bind({
+      el:paralaxTable,
+      slider_data:slider_data
+    }));
+
     layer.append(addBtn);
     el.append(layer);
 
@@ -487,6 +500,12 @@ var megaslider = (function() {
   }
 
   function addTrParalax(data) {
+    if(!data){
+      data={
+        "img":"",
+        "z":1
+      };
+    };
     var i=paralaxTable.children().length-1;
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
@@ -552,6 +571,11 @@ var megaslider = (function() {
     var delBtnTd=$('<td/>').append(delBtn);
     tr.append(delBtnTd);
     paralaxTable.append(tr)
+
+    return {
+      editor:tr,
+      data:data
+    }
   }
 
   function add_animation(el,data){
@@ -597,15 +621,7 @@ var megaslider = (function() {
     if(data.paralax && data.paralax.length>0){
       var paralax_gr=$('<div class="parallax__group"/>');
       for(var i=0;i<data.paralax.length;i++){
-        var parallax_layer=$('<div class="parallax__layer"\>');
-        parallax_layer.attr('z',data.paralax[i].z||i*10);
-        var dop_blk=$("<span class='slider__text'/>");
-        if(data.paralax[i].pos) {
-          dop_blk.addClass(posArr[data.paralax[i].pos]);
-        }
-        dop_blk.css('background-image','url('+data.paralax[i].img+')');
-        parallax_layer.append(dop_blk);
-        paralax_gr.append(parallax_layer);
+        addParalaxLayer(data.paralax[i],paralax_gr)
       }
       slide.append(paralax_gr)
     }
@@ -634,6 +650,18 @@ var megaslider = (function() {
 
     slide.append(fix);
     return slide;
+  }
+
+  function addParalaxLayer(data,paralax_gr){
+    var parallax_layer=$('<div class="parallax__layer"\>');
+    parallax_layer.attr('z',data.z||i*10);
+    var dop_blk=$("<span class='slider__text'/>");
+    if(data.pos) {
+      dop_blk.addClass(posArr[data.pos]);
+    }
+    dop_blk.css('background-image','url('+data.img+')');
+    parallax_layer.append(dop_blk);
+    paralax_gr.append(parallax_layer);
   }
 
   function img_to_load(src){
@@ -760,7 +788,9 @@ var megaslider = (function() {
        '</div>';
     container.html(l);
 
+
     start_init_slide(data[0]);
+
     //генерируем кнопки и слайды
     for (var i=0;i<data.length;i++){
       //slides.append(generate_slide(data[i]));

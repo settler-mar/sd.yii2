@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 	<meta http-equiv="X-UA-compatible" content="IE=edge" /> 
     <title>Slider page</title>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!--css-->
 	<link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,400italic,500,300italic,500italic,700,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
