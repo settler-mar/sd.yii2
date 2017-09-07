@@ -649,10 +649,10 @@ $(window).load(function(){
         axis:"y",
         setHeight: 700
     });
-    $("#top").find(".cm-wrapper").mCustomScrollbar({
-        axis:"y",
-        setHeight: 640
-    });
+    // $("#top").find(".cm-wrapper").mCustomScrollbar({
+    //     axis:"y",
+    //     setHeight: 640
+    // });
     // $("#top").find(".view-store .additional-information").mCustomScrollbar({
     //     axis:"y",
     //     setHeight: 65
@@ -726,7 +726,18 @@ $('.store-coupons__show-more').click(function(e){
    $('.store-coupons__buttons.more').hide();
    $('.coupons-item.more').show();
 });
-
+$('.store-reviews__show-less').click(function(e){
+    e.preventDefault();
+    $('.store-reviews__buttons.more').show();
+    $('.store-reviews__buttons.less').hide();
+    $('.store-reviews-item.more').hide();
+});
+$('.store-reviews__show-more').click(function(e){
+    e.preventDefault();
+    $('.store-reviews__buttons.less').show();
+    $('.store-reviews__buttons.more').hide();
+    $('.store-reviews-item.more').show();
+});
 $(function() {
     function parseNum(str){
         return parseFloat(

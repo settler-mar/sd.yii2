@@ -2826,7 +2826,7 @@ img{
 }
 
 .store-coupons__buttons,
-.store-coupons__buttons {
+.store-reviews__buttons {
   text-align: center;
   .btn {
     margin-bottom: 5px;
@@ -2837,6 +2837,9 @@ img{
   &.less {
     display: none;
   }
+}
+.store-reviews-item.more {
+  display: none;
 }
 .coupon-noregister {
   text-align: center;

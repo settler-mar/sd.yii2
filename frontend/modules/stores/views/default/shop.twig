@@ -203,10 +203,20 @@
                         {% if store_reviews|length > 0 %}
                         <div class="cm-wrapper" data-mcs-theme="dark">
                             {% for review in store_reviews %}
-                            <div class="col-sm-12 col-md-6">
-                            {% include 'parts/comment.twig' %}
-                            </div>
+                                <div class="col-sm-12 col-md-6 store-reviews-item {% if loop.index > 6 %}more{% endif %}">
+                                    {% include 'parts/comment.twig' %}
+                                </div>
+                                {% if (loop.index == 6 and (store_reviews|length > 6)) %}
+                                    <div class="col-xs-12 store-reviews__buttons more">
+                                        <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
+                            {% if store_reviews|length > 6 %}
+                                <div class="col-xs-12 store-reviews__buttons less">
+                                    <a class="btn store-reviews__show-less" href="#">Скрыть все</a>
+                                </div>
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
