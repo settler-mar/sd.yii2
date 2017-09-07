@@ -393,6 +393,13 @@ var megaslider = (function() {
     var addBtn=$('<button/>',{
       text:"Добавить слой"
     });
+    addBtn.on('click',function() {
+      data = addTrStatic(false);
+      initImageServerSelect(data.editor.find('.fileSelect'));
+      $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
+    }.bind({
+      slider_data:slider_data
+    }));
     layer.append(addBtn);
     el.append(layer);
 
@@ -419,12 +426,8 @@ var megaslider = (function() {
     addBtn.on('click',function() {
       data = addTrParalax(false);
       initImageServerSelect(data.editor.find('.fileSelect'));
-      var paralax_gr = $('#mega_slider .parallax__group');
-      addParalaxLayer(data.data, paralax_gr);
-
       $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
     }.bind({
-      el:paralaxTable,
       slider_data:slider_data
     }));
 
@@ -435,8 +438,23 @@ var megaslider = (function() {
   }
 
   function addTrStatic(data) {
-
     var i=stTable.find('tr').length-1;
+    if(!data){
+      data={
+        "img":"",
+        "full_height":0,
+        "pos":0,
+        "show_delay":1,
+        "show_animation":"lightSpeedIn",
+        "hide_delay":1,
+        "hide_animation":"bounceOut"
+      };
+      slider_data[0].fixed.push(data);
+      var fix = $('#mega_slider .fixed_group');
+      addStaticLayer(data, fix,true);
+    };
+    console.log(i);
+
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
     tr.append(genInput({
@@ -501,6 +519,11 @@ var megaslider = (function() {
     var delBtnTd=$('<td/>').append(delBtn);
     tr.append(delBtnTd);
     stTable.append(tr)
+
+    return {
+      editor:tr,
+      data:data
+    }
   }
 
   function addTrParalax(data) {
@@ -511,6 +534,8 @@ var megaslider = (function() {
         "z":1
       };
       slider_data[0].paralax.push(data);
+      var paralax_gr = $('#mega_slider .parallax__group');
+      addParalaxLayer(data, paralax_gr);
     };
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
@@ -633,14 +658,7 @@ var megaslider = (function() {
 
     var fix=$('<div class="fixed_group"/>');
     for(var i=0;i<data.fixed.length;i++){
-      var dop_blk=$("<div class='fixed__layer'/>");
-      dop_blk.addClass(posArr[data.fixed[i].pos]);
-      if(data.fixed[i].full_height){
-        dop_blk.addClass('fixed__full-height');
-      }
-      dop_blk=add_animation(dop_blk,data.fixed[i]);
-      dop_blk.find('.animation_layer').css('background-image','url('+data.fixed[i].img+')');
-      fix.append(dop_blk)
+      addStaticLayer(data.fixed[i],fix)
     }
 
     var dop_blk=$("<div class='fixed__layer'/>");
@@ -667,6 +685,22 @@ var megaslider = (function() {
     dop_blk.css('background-image','url('+data.img+')');
     parallax_layer.append(dop_blk);
     paralax_gr.append(parallax_layer);
+  }
+
+  function addStaticLayer(data,fix,befor_button){
+    var dop_blk=$("<div class='fixed__layer'/>");
+    dop_blk.addClass(posArr[data.pos]);
+    if(data.full_height){
+      dop_blk.addClass('fixed__full-height');
+    }
+    dop_blk=add_animation(dop_blk,data);
+    dop_blk.find('.animation_layer').css('background-image','url('+data.img+')');
+
+    if(befor_button){
+      fix.find('.slider__href').closest('.fixed__layer').before(dop_blk)
+    }else {
+      fix.append(dop_blk)
+    }
   }
 
   function img_to_load(src){
