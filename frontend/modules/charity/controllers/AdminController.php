@@ -93,9 +93,11 @@ class AdminController extends Controller
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
+        if (!\Yii::$app->request->isAjax) {
+            throw new \yii\web\NotFoundHttpException;
+        }
         $ids = \Yii::$app->request->post('ids');
         $status = \Yii::$app->request->post('status');
-
         $validatorIn = new \yii\validators\RangeValidator(['range' => [0, 1, 2]]);
         $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
         $error = false;
@@ -104,8 +106,9 @@ class AdminController extends Controller
         ) {
             return json_encode(['error'=>$error]);
         }
+
         Charity::updateAll(['is_listed' => $status], ['uid' => $ids]);
-        return json_encode(['error' => $error, 'html' => 'Статус изменён успешно!']);
+        return json_encode(['error' => false, 'html' => 'Статус изменён успешно!']);
     }
 
 }

@@ -28,6 +28,7 @@
                         {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Charity' }}</a>#}
                     {#</p>#}
                     {{ grid_view_widget({
+                            'id': 'grid-charity',
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,
                                 'columns': [

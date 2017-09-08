@@ -62,8 +62,7 @@ $(function() {
 	$('.charity-action').click(function(e) {
 		e.preventDefault();
 		var status = $(this).data('value');
-		var ids = $('#w0').yiiGridView('getSelectedRows');
-		console.log(ids);
+		var ids = $('#grid-charity').yiiGridView('getSelectedRows');
 		if (ids.length > 0) {
 			$.ajax({
 				url: '/admin/charity/status',
@@ -74,14 +73,8 @@ $(function() {
 					ids: ids
 				}
 			}).success(function(data) {
-				if (data.error == false) {
-					window.location = '/admin/charity';
-					// ids.forEach(function (item) {
-					// 	var row = document.getElementById('charity-row-' + item);
-					// 	//row.removeAttribute('class');
-					// 	row.className = 'status_bg_' + status;
-					// });
-				} else {
+				$('#grid-charity').yiiGridView("applyFilter");
+				if (data.error != false) {
 					alert('Произошла ошибка!');
 				}
 			}).fail(function(data){
