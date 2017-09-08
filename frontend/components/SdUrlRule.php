@@ -4,6 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 use frontend\modules\users\models\Users;
+use frontend\models\DeletedPages;
 
 class SdUrlRule implements UrlRuleInterface
 {
@@ -16,6 +17,8 @@ class SdUrlRule implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
+    $this->checkDeletedPage($request);
+
     //http://blog.neattutorials.com/yii2-routing-urlmanager/
     $validator = new \yii\validators\NumberValidator();
 
@@ -278,5 +281,21 @@ class SdUrlRule implements UrlRuleInterface
       $url .= '?' . $params;
     }
     return $url;
+  }
+
+  /**
+   * @param $request
+   * проверяем на удалённую страницу
+   */
+  private function checkDeletedPage($request)
+  {
+    $deletedPage = DeletedPages::findOne(['page'=> '/' . $request->pathinfo]);
+    if ($deletedPage) {
+      //count и дата ставятся автоматом в модели
+      $deletedPage->save();
+      //редиректим
+      \Yii::$app->response->redirect($deletedPage->new_page, 301)->send();
+      exit;
+    }
   }
 }

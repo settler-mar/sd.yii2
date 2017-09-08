@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use JBZoo\Image\Image;
 use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
+use frontend\models\DeletedPages;
 use common\components\Help;
 
 /**
@@ -273,10 +274,20 @@ class Stores extends \yii\db\ActiveRecord
 
   /**
    * очищаем кеш, связанный с магазинами и данным store
+   * пишем записи в удалённые страницы
    */
   public function afterDelete()
   {
     $this->clearCache($this->uid, $this->route);
+
+    $deletedPage = new DeletedPages();
+    $deletedPage->page = '/stores/'.$this->route;
+    $deletedPage->new_page = '/stores';
+    $deletedPage->save();
+    $deletedPage = new DeletedPages();
+    $deletedPage->page = '/coupons/'.$this->route;
+    $deletedPage->new_page = '/coupons';
+    $deletedPage->save();
   }
   /**
    * Сохранение изображения (аватара)

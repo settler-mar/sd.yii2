@@ -361,7 +361,9 @@ class AdminController extends Controller
           $post["id"][] = $item['id'];
         }
       }
-      Stores::deleteAll(['uid' => $store_id]);
+      //Stores::deleteAll(['uid' => $store_id]);
+      //deleteAll не вызывает событие afterDelete beforeDelete
+      Stores::findOne($store_id)->delete();
       //$this->Delete($store_id[0]);  !!!!! надо переписать эту функцию для очистки БД от хлама
     }
     if ($type == 'cpa') {
