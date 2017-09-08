@@ -36,6 +36,98 @@ class SdController extends Controller
 
     public $params;
 
+    protected $request_params = [];
+
+    private $params_allow = [
+        //для каждого модуля и действия свои разрешённые параметры
+        'stores' => [
+            'index' => ['page'],
+            'store' => [],
+        ],
+        'coupons' => [
+            'index' => ['page', 'expired'],
+        ],
+        'reviews' => [
+            'index' => ['page'],
+        ],
+    ];
+    //проверяются только эти параметры, остальные игнорируются
+    private $params_check = ['page', 'category', 'store', 'expired', 'id', 'coupon'];
+
+    public function init()
+    {
+        //из всех параметров только те, что совпадают с проверяемыми $params_check
+        $this->request_params = array_intersect(array_keys(\Yii::$app->request->get()), $this->params_check);
+    }
+
+    /**
+     * @param yii\base\Action $action
+     * @return bool
+     * @throws yii\web\BadRequestHttpException
+     * @throws yii\web\NotFoundHttpException
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        $actionId = isset($action->id) ? $action->id : false;
+        $this->checkParams($actionId);
+        return true; // or false to not run the action
+    }
+
+    /**
+     * @param bool $action
+     * @return null
+     * @throws yii\web\NotFoundHttpException
+     * проверка, что запрашиваемые параметры разрешены для даного действия
+     */
+    protected function checkParams($action = false)
+    {
+        if (empty($this->request_params)) {
+            //проверять нечего
+            return null;
+        }
+        $action = $action ? $action : 'index';
+        $module = $this->module->id;
+
+         //массив разрешённых параметров для модуля/действия, если нет то для модуля/index
+        $paramsAllow = isset($this->params_allow[$module][$action]) ? $this->params_allow[$module][$action] :
+          (isset($this->params_allow[$module]['index']) ? $this->params_allow[$module]['index'] : null);
+        //d($module, $action, $paramsAllow, $this->request_params);
+
+        if ($paramsAllow === null) {
+            //для данного модуля/действия нет разрешённых параметров  - раз не задан модуль - не проверяем
+            //иначе будет проверять всё, в т.ч. саму 404
+            return null;
+            //throw new \yii\web\NotFoundHttpException;
+        }
+        if (count($this->request_params) != count(array_intersect($this->request_params, $paramsAllow))) {
+            //не каждый параметр разрешен  - 404
+            //d('404');
+            throw new \yii\web\NotFoundHttpException;
+        }
+    }
+
+    /**
+     * @param $wrongParams
+     * @throws yii\web\NotFoundHttpException
+     * более частная проверка в отличие от checkParams
+     * неправильные параметры задаются как агрументы
+     * применяем по крайней мере для старых роутов, т.к. с них редиректы, и до проверки beforeAction просто не доходит
+     */
+    protected function checkWrongParams($wrongParams)
+    {
+        if (empty($this->request_params)) {
+            return null;
+        }
+        //d('local',array_intersect($this->request_params, $wrongParams));
+        if (array_intersect($this->request_params, $wrongParams)) {
+            //d('404');
+            throw new \yii\web\NotFoundHttpException;
+        }
+    }
+
     /**
      * @param $total
      * @param $page

@@ -28,7 +28,10 @@ class DefaultController extends SdController
   {
 
     $request = \Yii::$app->request;
-    $this->wrongParams($request->get(), ['coupon', 'id']);
+    //здесь делаются редиректы со старых роутов, поэтому делаем проверку для параметров старых роутов
+    //передаваемых в запросе быть не должно
+    $this->checkWrongParams(['coupon', 'id']);
+    
     $category = $request->get('category');
     $store = $request->get('store');
     if ($category || $store) {
@@ -40,6 +43,7 @@ class DefaultController extends SdController
       if ($categoryCoupons = CategoriesCoupons::byRoute($actionId) or
         $store = Stores::byRoute($actionId)){
         //если есть одна из них
+        //$this->checkParams();
         echo $this->actionIndex($actionId, $categoryCoupons, $store);
         exit;
       };
@@ -210,20 +214,6 @@ class DefaultController extends SdController
     }
     $this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
-  }
-
-  /**
-   * @param $params
-   * @param $wrongParams
-   * @throws \yii\web\NotFoundHttpException
-   * чтобы отследить появление в адресе лишних /page-xxx/expired/coupon:xx/ и прочее
-   */
-  private function wrongParams($params, $wrongParams)
-  {
-    $params = array_flip($params);
-    if (array_intersect($params, $wrongParams)) {
-      throw new \yii\web\NotFoundHttpException;
-    }
   }
 
 }

@@ -80,8 +80,9 @@ class SdUrlRule implements UrlRuleInterface
       };
 
       if ($params['page'] == 1) {
-        Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
-        return ['', $params];
+        Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301)->send();
+        exit;
+        //return ['', $params];
       }
     }
 
@@ -128,11 +129,7 @@ class SdUrlRule implements UrlRuleInterface
       $params['expired'] = 1;
       unset ($parameters[count($parameters) - 1]);
     }
-    //проверяем последний параметр на all
-//    if ($parameters[count($parameters) - 1] == 'all') {
-//      $params['all'] = 1;
-//      unset ($parameters[count($parameters) - 1]);
-//    }
+
     //проверяем что б это не был прямой заход в default
     if ($parameters[0] == 'default') {
       unset ($parameters[0]);
@@ -204,7 +201,7 @@ class SdUrlRule implements UrlRuleInterface
       } else {
         $params['action'] = $parameters[0];
         return ['site/static-page', $params];
-      };
+      }
     }
 
     Yii::$app->params['clear_url']=implode('/', $parameters);
@@ -254,13 +251,6 @@ class SdUrlRule implements UrlRuleInterface
       unset($params['id']);
     }
 
-
-//    if (isset($params['all'])) {
-//      if ($params['all'] == 1) {
-//        $route[] = 'all';
-//      }
-//      unset($params['all']);
-//    }
     if (isset($params['expired'])) {
       if ($params['expired'] == 1) {
         $route[] = 'expired';
