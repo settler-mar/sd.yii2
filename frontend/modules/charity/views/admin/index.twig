@@ -11,19 +11,39 @@
     <div class="content-wrapper">
         <section>
             <div class="row">
+                <h1>{{ html.encode(this.title) }}</h1>
+                <div class="col-md-12" style="text-align:right;">
+                    <a href="" class="charity-action btn btn-default status_0" data-value="0"><span class="fa fa-clock-o"></span> В ожидании</a>
+                    <a href="" class="charity-action btn btn-default status_1" data-value="1"><span class="fa fa-times"></span> Отклонён</a>
+                    <a href="" class="charity-action btn btn-default status_2" data-value="2"><span class="fa fa-check"></span> Проведён</a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <h1>{{ html.encode(this.title) }}</h1>
+
+
+
                     {# include('_search.twig', {'model': searchModel}) #}
                     {#<p>#}
                         {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Charity' }}</a>#}
                     {#</p>#}
                     {{ grid_view_widget({
+                            'id': 'grid-charity',
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,
                                 'columns': [
                                 {'class': '\\yii\\grid\\SerialColumn'},
-
-                                'uid',
+                                {'class': '\\yii\\grid\\CheckboxColumn',
+                                    'headerOptions' : {
+                                    'class' : 'col-md-1',
+                                    },
+                                },
+                                {
+                                    'attribute':'uid',
+                                    'headerOptions' : {
+                                        'class' : 'col-md-1',
+                                    },
+                                },
                                 {
                                     'format':'raw',
                                     'attribute':'user_id',

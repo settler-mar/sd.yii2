@@ -33,8 +33,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        //todo видимо, нужно другое разрешение
-        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('TransitionsView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }

@@ -21,7 +21,8 @@ class AdminController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'update' => ['post'],
+                    'index' => ['get'],
+                    'status' => ['post'],
                 ],
             ],
         ];
@@ -39,8 +40,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        //todo видимо, нужно другое разрешение
-        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CharityView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
@@ -84,37 +84,31 @@ class AdminController extends Controller
 
     /**
      * Updates an existing Charity model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionStatus()
     {
-        $model = $this->findModel($id);
-
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->uid]);
-//        } else {
-//            return $this->render('update.twig', [
-//                'model' => $model,
-//            ]);
-//        }
-    }
-
-
-    /**
-     * Finds the Charity model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Charity the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Charity::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CharityEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
         }
+        if (!\Yii::$app->request->isAjax) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+        $ids = \Yii::$app->request->post('ids');
+        $status = \Yii::$app->request->post('status');
+        $validatorIn = new \yii\validators\RangeValidator(['range' => [0, 1, 2]]);
+        $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+        $error = false;
+        if (!isset($status) || !$validatorIn->validate($status, $error)
+          || empty($ids) || !is_array($ids) || !$validatorEach->validate($ids, $error)
+        ) {
+            return json_encode(['error'=>$error]);
+        }
+
+        Charity::updateAll(['is_listed' => $status], ['uid' => $ids]);
+        return json_encode(['error' => $error, 'html' => 'Статус изменён успешно!']);
     }
+
 }
