@@ -108,7 +108,7 @@ class AdminController extends Controller
         }
 
         Charity::updateAll(['is_listed' => $status], ['uid' => $ids]);
-        return json_encode(['error' => false, 'html' => 'Статус изменён успешно!']);
+        return json_encode(['error' => $error, 'html' => 'Статус изменён успешно!']);
     }
 
 }

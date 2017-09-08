@@ -681,6 +681,15 @@ td{
 }
 a.btn{
     color:#fff;
+    &.status_0 {
+        background-color: #FF9800 !important;
+    }
+    &.status_1 {
+        background-color: #F44336 !important;
+    }
+    &.status_2 {
+        background-color: #8BC34A !important;
+    }
 }
 
 h1{
