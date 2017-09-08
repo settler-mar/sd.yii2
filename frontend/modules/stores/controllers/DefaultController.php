@@ -21,15 +21,15 @@ class DefaultController extends SdController
      */
     public function createAction($id)
     {
-        //todo stores/003/xxxx - сделать 404, и аналогично для купонов
         $request = \Yii::$app->request;
+        $this->wrongParams($request->get(), ['store', 'expired', 'coupon', 'id']);
         $category = $request->get('category');
-        $store = $request->get('store');
-        if ($store) {
-            throw new \yii\web\NotFoundHttpException;
-        }
+//        $store = $request->get('store');
+//        if ($store) {
+//            throw new \yii\web\NotFoundHttpException;
+//        }
         if ($category) {
-            $this->actionRedirects($category);
+            $this->routeRedirects($category);
             exit;
         }
         if ($id) {
@@ -37,6 +37,7 @@ class DefaultController extends SdController
             $store = Stores::byRoute($id);
             if ($store) {
                 //есть магазин
+                $this->wrongParams($request->get(), ['page']);
                 echo $this->actionStore($store);
                 exit;
             }
@@ -305,7 +306,7 @@ class DefaultController extends SdController
      * @throws \yii\web\NotFoundHttpException
      * из маршрутизации "по-старому" перенаправления на "по-новому"
      */
-    public function actionRedirects($store)
+    private function routeRedirects($store)
     {
         $parent = CategoriesStores::byId($store);
         if (!$parent || $parent->is_active == 0) {
@@ -314,6 +315,22 @@ class DefaultController extends SdController
         $this->redirect('/stores/'.$parent->route, 301)->send();
         exit;
     }
+
+    /**
+     * @param $params
+     * @param $wrongParams
+     * @throws yii\web\NotFoundHttpException
+     * чтобы отследить появление в адресе лишних /page-xxx/expired/coupon:xx/ и прочее
+     */
+    private function wrongParams($params, $wrongParams)
+    {
+        $params = array_flip($params);
+        if (array_intersect($params, $wrongParams)) {
+            throw new \yii\web\NotFoundHttpException;
+        }
+    }
+
+
 
 
 }

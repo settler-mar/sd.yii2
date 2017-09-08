@@ -28,10 +28,11 @@ class DefaultController extends SdController
   {
 
     $request = \Yii::$app->request;
+    $this->wrongParams($request->get(), ['coupon', 'id']);
     $category = $request->get('category');
     $store = $request->get('store');
     if ($category || $store) {
-      $this->actionRedirects($category, $store);
+      $this->routeRedirects($category, $store);
       exit;
     }
     if ($actionId) {
@@ -188,8 +189,12 @@ class DefaultController extends SdController
    * @throws \yii\web\NotFoundHttpException
    * из маршрутизации "по-старому" перенаправления на "по-новому"
    */
-  public function actionRedirects($coupon, $store)
+  public function routeRedirects($coupon, $store)
   {
+    if ($coupon && $store) {
+      //так нельзя, 404
+      throw new \yii\web\NotFoundHttpException;
+    }
     if ($coupon) {
       //категория купона
       $parent = CategoriesCoupons::byId($coupon);
@@ -205,6 +210,20 @@ class DefaultController extends SdController
     }
     $this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
+  }
+
+  /**
+   * @param $params
+   * @param $wrongParams
+   * @throws \yii\web\NotFoundHttpException
+   * чтобы отследить появление в адресе лишних /page-xxx/expired/coupon:xx/ и прочее
+   */
+  private function wrongParams($params, $wrongParams)
+  {
+    $params = array_flip($params);
+    if (array_intersect($params, $wrongParams)) {
+      throw new \yii\web\NotFoundHttpException;
+    }
   }
 
 }

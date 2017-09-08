@@ -139,7 +139,6 @@ class SdUrlRule implements UrlRuleInterface
       Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
       return ['', $params];
     }
-
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
     if (
     array_key_exists($parameters[0], \Yii::$app->modules)
@@ -184,7 +183,12 @@ class SdUrlRule implements UrlRuleInterface
         $params['params']=$params_url;
       }
 
+      //если есть лишние части пути (кроме модуль, контроллер, экшн), то 404
+      if (count($parameters)>3) {
+        throw new \yii\web\NotFoundHttpException;
+      }
       Yii::$app->params['clear_url']=implode('/', $parameters);
+
       return [implode('/', $route), $params];
     }
 
