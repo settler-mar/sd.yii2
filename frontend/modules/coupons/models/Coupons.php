@@ -160,6 +160,7 @@ class Coupons extends \yii\db\ActiveRecord
         ->from(self::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
+        ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
         ->count();
     });
     return $count;
