@@ -4,6 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 use frontend\modules\users\models\Users;
+use frontend\models\DeletedPages;
 
 class SdUrlRule implements UrlRuleInterface
 {
@@ -16,6 +17,8 @@ class SdUrlRule implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
+    $this->checkDeletedPage($request);
+
     //http://blog.neattutorials.com/yii2-routing-urlmanager/
     $validator = new \yii\validators\NumberValidator();
 
@@ -77,8 +80,9 @@ class SdUrlRule implements UrlRuleInterface
       };
 
       if ($params['page'] == 1) {
-        Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
-        return ['', $params];
+        Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301)->send();
+        exit;
+        //return ['', $params];
       }
     }
 
@@ -125,18 +129,13 @@ class SdUrlRule implements UrlRuleInterface
       $params['expired'] = 1;
       unset ($parameters[count($parameters) - 1]);
     }
-    //проверяем последний параметр на all
-//    if ($parameters[count($parameters) - 1] == 'all') {
-//      $params['all'] = 1;
-//      unset ($parameters[count($parameters) - 1]);
-//    }
+
     //проверяем что б это не был прямой заход в default
     if ($parameters[0] == 'default') {
       unset ($parameters[0]);
       Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
       return ['', $params];
     }
-
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
     if (
     array_key_exists($parameters[0], \Yii::$app->modules)
@@ -181,7 +180,12 @@ class SdUrlRule implements UrlRuleInterface
         $params['params']=$params_url;
       }
 
+      //если есть лишние части пути (кроме модуль, контроллер, экшн), то 404
+      if (count($parameters)>3) {
+        throw new \yii\web\NotFoundHttpException;
+      }
       Yii::$app->params['clear_url']=implode('/', $parameters);
+
       return [implode('/', $route), $params];
     }
 
@@ -197,7 +201,7 @@ class SdUrlRule implements UrlRuleInterface
       } else {
         $params['action'] = $parameters[0];
         return ['site/static-page', $params];
-      };
+      }
     }
 
     Yii::$app->params['clear_url']=implode('/', $parameters);
@@ -247,13 +251,6 @@ class SdUrlRule implements UrlRuleInterface
       unset($params['id']);
     }
 
-
-//    if (isset($params['all'])) {
-//      if ($params['all'] == 1) {
-//        $route[] = 'all';
-//      }
-//      unset($params['all']);
-//    }
     if (isset($params['expired'])) {
       if ($params['expired'] == 1) {
         $route[] = 'expired';
@@ -278,5 +275,21 @@ class SdUrlRule implements UrlRuleInterface
       $url .= '?' . $params;
     }
     return $url;
+  }
+
+  /**
+   * @param $request
+   * проверяем на удалённую страницу
+   */
+  private function checkDeletedPage($request)
+  {
+    $deletedPage = DeletedPages::findOne(['page'=> '/' . $request->pathinfo]);
+    if ($deletedPage) {
+      //count и дата ставятся автоматом в модели
+      $deletedPage->save();
+      //редиректим
+      \Yii::$app->response->redirect($deletedPage->new_page, 301)->send();
+      exit;
+    }
   }
 }

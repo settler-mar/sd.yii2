@@ -21,15 +21,17 @@ class DefaultController extends SdController
      */
     public function createAction($id)
     {
-        //todo stores/003/xxxx - сделать 404, и аналогично для купонов
         $request = \Yii::$app->request;
+        //здесь могут быть редиректы со старых роутов, поэтому делаем проверку для параметров старых роутов
+        //передаваемых в запросе быть не должно
+        $this->checkWrongParams(['store', 'expired', 'coupon', 'id']);
         $category = $request->get('category');
-        $store = $request->get('store');
-        if ($store) {
-            throw new \yii\web\NotFoundHttpException;
-        }
+//        $store = $request->get('store');
+//        if ($store) {
+//            throw new \yii\web\NotFoundHttpException;
+//        }
         if ($category) {
-            $this->actionRedirects($category);
+            $this->routeRedirects($category);
             exit;
         }
         if ($id) {
@@ -37,6 +39,8 @@ class DefaultController extends SdController
             $store = Stores::byRoute($id);
             if ($store) {
                 //есть магазин
+                //$this->Params($request->get(), ['page']);
+                $this->checkParams('store');
                 echo $this->actionStore($store);
                 exit;
             }
@@ -305,7 +309,7 @@ class DefaultController extends SdController
      * @throws \yii\web\NotFoundHttpException
      * из маршрутизации "по-старому" перенаправления на "по-новому"
      */
-    public function actionRedirects($store)
+    private function routeRedirects($store)
     {
         $parent = CategoriesStores::byId($store);
         if (!$parent || $parent->is_active == 0) {
@@ -314,7 +318,6 @@ class DefaultController extends SdController
         $this->redirect('/stores/'.$parent->route, 301)->send();
         exit;
     }
-
 
 }
 
