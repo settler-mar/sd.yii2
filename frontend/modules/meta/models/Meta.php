@@ -52,4 +52,87 @@ class Meta extends \yii\db\ActiveRecord
             'content' => 'Content',
         ];
     }
+
+    public static function findByUrl($url,$model=false)
+    {
+      if(isset(Yii::$app->params['url_mask'])){
+        $page=Yii::$app->params['url_mask'];
+        $page=str_replace('default/','',$page);
+        $page=str_replace('/default','',$page);
+      }else {
+        $page = preg_replace('/\/$/', '', $url);
+      }
+
+      if ($page == 'affiliate-system') {
+        $page = 'account/affiliate';
+      };
+      if ($page == '') $page = 'index';
+
+      //todo закешировать с этого места
+      $page_meta = Meta::find()
+        ->where(['page' => $page]);
+
+      if ($page_meta->count()>0) {
+        if($model){
+          return $page_meta->limit(1);
+        }
+        return $page_meta
+          ->select(['title', 'description', 'keywords', 'h1', 'content'])
+          ->asArray()
+          ->one();
+      }
+
+      //прямого совпадения нет ищем по плейсхолдерам
+      //перебираем путь, вместо каждого элемента подставляем '*', и ищем
+      //в каждом цикле затем ещё цикл - уменьшяем длину пути до '*'
+      //Замену производим начиня со 2-го элемента
+      $arr = explode('/', $page);
+      for ($i=1; $i<count($arr); $i++) {
+        $pageArr = $arr;
+        $pageArr[$i] = '*';
+        $page_t = implode('/', $pageArr);
+        $metadataArray = Meta::find()
+          ->where(['like', 'page', $page_t , false]);
+
+        if ($metadataArray->count()>0) {
+          if($model){
+            return $metadataArray->limit(1);
+          }
+          return $metadataArray
+            ->select(['title', 'description', 'keywords', 'h1', 'content'])
+            ->asArray()
+            ->one();
+        }
+
+        while($pageArr[count($pageArr)-1] != '*' && count($pageArr) > 2) {
+          unset($pageArr[count($pageArr)-1]);
+          $page_t = implode('/', $pageArr);
+          $metadataArray = Meta::find()
+            ->where(['like', 'page', $page_t , false]);
+
+          if ($metadataArray->count()>0) {
+            if($model){
+              return $metadataArray->limit(1);
+            }
+            return $metadataArray
+              ->select(['title', 'description', 'keywords', 'h1', 'content'])
+              ->asArray()
+              ->one();
+          }
+        }
+      }
+
+      if($model){
+        return $page_meta;
+      }
+
+      //пробуем получить метатеги из параметров
+      $meta=Yii::$app->params['meta'];
+      if(isset($meta[$page])){
+        return $meta[$page];
+      };
+
+      //если ни чего не нашлось подходящего то возвращаем как для index
+      return Yii::$app->params['meta']['index'];
+    }
 }
