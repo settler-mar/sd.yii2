@@ -14,18 +14,21 @@ class DefaultController extends SdController
   {
 
     $Query = new Query();
-    $rows = $Query->from('stores', $offset = 0, $limit = 10)
+    $rows = $Query->from('stores', $offset = 0)
       ->match($query)
-      ->limit($limit)
-      ->offset($offset)
+      //->limit(Yii::$app->request->isAjax?10:1000)
+      //->offset($offset)
       ->all();
 
     $id_s = [];
     foreach ($rows as $item) {
       $id_s[] = (int)$item['id'];
     }
+
     $stores = Stores::find()
       ->where(['uid' => $id_s])
+      ->limit(Yii::$app->request->isAjax?10:1000)
+      ->orderBy(['visit'=>'DESC','added'=> 'DESC'])
       ->asArray()
       ->all();
 
