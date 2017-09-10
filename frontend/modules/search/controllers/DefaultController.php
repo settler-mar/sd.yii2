@@ -6,6 +6,7 @@ use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\components\SdController;
 use yii\sphinx\Query;
+use yii\sphinx\ActiveRecord;
 
 class DefaultController extends SdController
 {
@@ -16,8 +17,9 @@ class DefaultController extends SdController
     $Query = new Query();
     $rows = $Query->from('stores', $offset = 0)
       ->match($query)
-      //->limit(Yii::$app->request->isAjax?10:1000)
+      ->limit(1000)
       //->offset($offset)
+      //->orderBy(['visit'=>'DESC','added'=> 'DESC'])
       ->all();
 
     $id_s = [];
