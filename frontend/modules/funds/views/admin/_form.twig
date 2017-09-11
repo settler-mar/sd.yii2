@@ -1,0 +1,27 @@
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+                {{ use('/yii/widgets/ActiveForm') }}
+                <div class="foundations-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'description').textarea({'rows':6,'class':'visual_editor'})|raw }}
+
+                        {{ form.field(model, 'is_active').dropDownList({
+                            0:"Скрытый",
+                            1:"Активный",
+                        })|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

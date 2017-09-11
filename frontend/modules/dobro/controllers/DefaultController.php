@@ -4,7 +4,7 @@ namespace frontend\modules\dobro\controllers;
 
 use yii\web\Controller;
 use frontend\components\SdController;
-use frontend\modules\dobro\models\Foundations;
+use frontend\modules\funds\models\Foundations;
 
 /**
  * Class DefaultController
