@@ -1,1 +1,42 @@
-Стартовая админки
+<div class="content-wrapper">
+    <section class="account-stat">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="stat-block">
+                    <div class="stat-head">
+                        Пользователей зарегистрировано
+                    </div>
+                    <div class="stat-curr">
+                        Всего
+                        <span>{{users_count}}</span>
+                    </div>
+                    <div class="stat-curr">
+                        Сегодня
+                        <span>{{users_today_count}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stat-block">
+                    <div class="stat-head">
+                        Совершено платежей
+                    </div>
+                    <div class="stat-curr">
+                        Всего
+                        <span>{{payments_count}}</span>
+                    </div>
+                    <div class="stat-curr">
+                        Сегодня
+                        <span>{{payments_today_count}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="stat-block-cashback">
+                    Всего выплачено кэшбэка<br>
+                    <span>{{_nf(total_cashback)|raw}} <i class="fa fa-rub" aria-hidden="true"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
