@@ -67,6 +67,10 @@ class AdminController extends Controller
       $query->andWhere(['like','email',$get['email']]);
     }
 
+    if(isset($get['is_active']) && strlen($get['is_active'])>0){
+      $query->andWhere(['is_active' => $get['is_active']]);
+    }
+
     $totQuery = clone $query;
     $totQuery=$totQuery
       ->select([

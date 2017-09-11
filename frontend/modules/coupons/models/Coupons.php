@@ -124,7 +124,8 @@ class Coupons extends \yii\db\ActiveRecord
         ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
         ->innerJoin(self::tableName() . ' cwc', 'cct.coupon_id = cwc.coupon_id')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-        ->where(['cws.is_active' => 1])
+        ->where(['cws.is_active' => [0, 1]])
+        ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
         ->groupBy('cct.category_id')
         ->asArray()
         ->all();
@@ -138,18 +139,19 @@ class Coupons extends \yii\db\ActiveRecord
   public static function getActiveStoresCoupons()
   {
     $cache = Yii::$app->cache;
-    $categories = $cache->getOrSet('stores_coupons', function () {
+    $stores = $cache->getOrSet('stores_coupons', function () {
       return self::find()
         ->from(self::tableName() . ' cwc')
         ->select(['cws.name', 'cws.uid', 'cws.route', 'count(cwc.uid) as count'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
+        ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
         ->groupBy('cwc.store_id')
         ->orderBy('cws.name ASC')
         ->asArray()
         ->all();
     });
-    return $categories;
+    return $stores;
   }
 
   public static function activeCount()

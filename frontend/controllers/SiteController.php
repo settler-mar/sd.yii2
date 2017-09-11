@@ -15,6 +15,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
+use frontend\modules\payments\models\Payments;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -124,9 +125,24 @@ class SiteController extends SdController
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+    $users = Users::find();
+    $usersCount = $users->count();
+    $users = $users->where(['>=', 'added', date('Y-m-d 00:00:00', time())]);
+    $usersToday = $users->count();
+    $payments = Payments::find();
+    $paymentsCount = $payments->count();
+    $payments = $payments->where(['>=', 'click_date',date('Y-m-d 00:00:00', time())]);
+    $paymentsToday = $payments->count();
+    $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
 
     $this->layout='@app/views/layouts/admin.twig';
-    return $this->render('admin');
+    return $this->render('admin', [
+      'users_count' => $usersCount,
+      'users_today_count' => $usersToday,
+      'payments_count' => $paymentsCount,
+      'payments_today_count' => $paymentsToday,
+      'total_cashback' => $totalCashback['summ'],
+    ]);
   }
 
   /**

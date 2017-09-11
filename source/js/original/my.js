@@ -75,7 +75,7 @@ $("a[href='#showpromocode-noregister']").popup({
 });
 $("a[href='#comment-popup']").popup({
   content : function() {
-    var content = this.ele.parentElement.parentElement.cloneNode(true);
+    var content = this.ele.parentElement.parentElement.parentElement.cloneNode(true);
     content.setAttribute('data-comment-id', '9999');
     var div = document.createElement('div');
     div.className = 'comments';
@@ -83,18 +83,27 @@ $("a[href='#comment-popup']").popup({
     $(div).find('.current-comment__more').remove();
     $(div).find('.comment.list').removeClass('list');
     return div;
-  },
-  width: 500
+  }
+  ,
+  width: function () {
+    var comments = $('.current-comment');
+    if (comments.length>1) {
+      return comments[0].offsetWidth * 0.9;
+    }
+    return 500;
+  }
 });
 //пройти по комментам, ограничить длину текста, вставить ссылку "показать полностью"
 $('.current-comment').each(function(index, element) {
   var text = $(element).find('.text');
   var comment = $(text).find('.comment');
   if (comment[0].innerHTML.length > 210) {
-    var a = document.createElement('a');
+    var a = document.createElement('a'),
+        p = document.createElement('p');
     a.className = 'current-comment__more';
     a.setAttribute('href', '#comment-popup');
     a.innerHTML = 'Показать полностью';
-    text.append(a);
+    p.append(a);
+    text.append(p);
   }
 });

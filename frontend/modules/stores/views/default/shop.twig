@@ -201,9 +201,9 @@
                     <div class="comments">
                         <h3>Отзывы о магазине {{current_store.name}}</h3>
                         {% if store_reviews|length > 0 %}
-                        <div class="cm-wrapper" data-mcs-theme="dark">
+                        <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
                             {% for review in store_reviews %}
-                                <div class="col-sm-12 col-md-6 store-reviews-item {% if loop.index > 6 %}more{% endif %}">
+                                <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">
                                     {% include 'parts/comment.twig' %}
                                 </div>
                                 {% if (loop.index == 6 and (store_reviews|length > 6)) %}
@@ -220,15 +220,20 @@
                         </div>
                         {% endif %}
                     </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
                     <div class="comments-handler">
                         {% if store_reviews|length == 0 %}
-                        <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
+                            <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
                         {% endif %}
                         {% if user_id %}
-                        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
+                            <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
                         {% else %}
-                        <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-                        <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+                            <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+                            <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
                         {% endif %}
                     </div>
                 </div>

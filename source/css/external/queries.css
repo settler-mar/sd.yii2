@@ -757,6 +757,10 @@
   .sign-up.popup-sign-up .sign-up-tagline {
     width: 420px;
   }
+  .btn-popup {
+    width: 100%;
+    margin-bottom: 15px;
+  }
 
 }
 
