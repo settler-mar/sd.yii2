@@ -347,7 +347,7 @@ $images: "/images";
     margin-top: 35px;
     min-height: 250px;
     padding-bottom: 30px;
-    border-bottom: 1px solid #EEE;
+   // border-bottom: 1px solid #EEE;
 
     .comment-photo {
       width: 80px;
@@ -2480,6 +2480,7 @@ h1.page_title{
 }
 
 .coupons-list,
+.reviews-list,
 .mCSB_container {
   display: flex;
   flex-wrap: wrap;
@@ -2487,6 +2488,7 @@ h1.page_title{
 .mCustomScrollBox {
   width: 100%;
 }
+.reviews-item,
 .coupons-item {
   display: inline-flex;
   flex-direction: column;
