@@ -27,7 +27,7 @@ class LoginForm extends Model
             [['email', 'password'], 'required'],
             [['email'], 'email'],
             [['password'], 'string', 'max' => 60],
-            [['password'], 'string', 'min' => 6],
+            [['password'], 'string', 'min' => 5],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()

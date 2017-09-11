@@ -60,7 +60,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       [['email'], 'unique','message' => 'Данныей email принадлежит другому пользователю.'],
       ['new_password', 'trim'],
       [['new_password'], 'string', 'max' => 60],
-      [['new_password'], 'string', 'min' => 6],
+      [['new_password'], 'string', 'min' => 5],
       [['birthday', 'last_login', 'added'], 'safe'],
       [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
