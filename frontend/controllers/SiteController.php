@@ -92,7 +92,7 @@ class SiteController extends SdController
     ]);
   }
 
-  public function actionTests(){
+/*  public function actionTests(){
     try {
       Yii::$app
         ->mailer
@@ -109,7 +109,7 @@ class SiteController extends SdController
       return 2;
     }
     return 1;
-  }
+  }*/
 
   public function actionAdmin(){
     if(
