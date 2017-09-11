@@ -676,11 +676,15 @@ $(window).load(function(){
         setHeight: 250
     });
 
-    /*$('[data-toggle="tooltip"]').tooltip({
+    $('[data-toggle="tooltip"]').tooltip({
         delay: {
             show: 500, hide: 2000
         }
-    });*/
+    });
+    $('[data-toggle="tooltip"]').on('click',function (e) {
+        e.preventDefault()
+        return false;
+    })
 });
 
 
