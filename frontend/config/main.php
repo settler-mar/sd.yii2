@@ -17,6 +17,14 @@ $config= [
     'request' => [
       'csrfParam' => '_csrf-frontend',
     ],
+    'assetManager'=>[
+      'bundles'=>[
+        'yii\bootstrap\BootstrapAsset' => [
+          'js' => [],
+        ],
+        'bootstrap.js'=>false,
+      ]
+    ],
     'session' => [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',

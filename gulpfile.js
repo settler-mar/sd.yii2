@@ -64,7 +64,7 @@ gulp.task('jscommon', compileJs([
         //paths.source.js+'/external/jquery-1.11.2.min.js',
         paths.source.js+'/external/retina.js',
         paths.source.js+'/external/jquery.fancybox.pack.js',
-        //paths.source.js+'/external/bootstrap.min.js',
+        paths.source.js+'/external/bootstrap.min.js',
         paths.source.js+'/external/scripts.js',
         paths.source.js+'/external/jquery.flexslider-min.js',
         paths.source.js+'/external/classie.js',
