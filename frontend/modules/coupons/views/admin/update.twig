@@ -1,0 +1,45 @@
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current">
+        <div class="row">
+            {% if coupon %}
+                <div class="col-md-12">
+                    <form method="post" action="/admin/coupons/edit/{{coupon.uid}}">
+                        <p class="title first">Основная информация</p>
+                        <p><span>UID:</span> {{coupon.uid}}</p>
+                        <p><span>Coupon ID:</span> {{coupon.coupon_id}}</p>
+                        <p><span>Название:</span> <br><input type="text" name="name" value="{{coupon.name}}"></p>
+                        <p><span>Image:</span> <img src="/images/logos/{{coupon.store.logo}}"></p>
+                        <p><span>Описание:</span> <br> <textarea name="description">{{coupon.description}}</textarea></p>
+                        <p><span>Магазин:</span> <a href="/admin/stores/update/id:{{coupon.store.uid}}">{{coupon.store.name}}</a></p>
+                        <p><span>Начало действия:</span> <br><input type="text" name="date_start" value="{{coupon.date_start}}"></p>
+                        <p><span>Окончание действия:</span> <br><input type="text" name="date_end" value="{{coupon.date_end}}"></p>
+                        <p><span>Goto Link:</span> <br><input type="text" name="goto_link" value="{{coupon.goto_link}}"></p>
+                        <p><span>Промокод:</span> <br><input type="text" name="promocode" value="{{coupon.promocode}}"></p>
+                        <p><span>Эксклюзивный (1 - да, 0 - нет):</span> <br><input type="text" name="exclusive" value="{{coupon.exclusive}}"></p>
+                        <p><span>Посещений:</span> {{coupon.visit}}</p>
+                        <input type="hidden" name="type" value="update_main_information">
+                        <button type="submit">Изменить</button>
+                    </form>
+
+                    {% if categories|length > 0 %}
+                        <p class="title">Категории купона</p>
+                        <form method="post" action="/admin/coupons/edit/{{coupon.uid}}">
+                            <p>
+                                {% for category in categories %}
+                                    <input {% if category.uid in coupon_categories %} checked {% endif %} type="checkbox" name="{{category.name}}" value="{{category.uid}}"><span>{{category.name}}</span><br>
+                                {% endfor %}
+                                <input type="hidden" name="coupon_id" value="{{coupon.coupon_id}}">
+                                <input type="hidden" name="type" value="update_categories">
+                                <button type="submit">Изменить</button>
+                            </p>
+                        </form>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="not-found">Купон не найден.</div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
