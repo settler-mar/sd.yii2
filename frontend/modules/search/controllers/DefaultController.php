@@ -18,7 +18,11 @@ class DefaultController extends SdController
         'or',
         ['like', 'name', $query],
         ['like', 'alias', ', '.$query.','],
+        ['like', 'alias', ','.$query.','],
+        ['like', 'alias', ','.$query.' ,'],
         ['like', 'alias', $query.' ,%', false],
+        ['like', 'alias', $query.',%', false],
+        ['like', 'alias', '%, '.$query, false],
         ['like', 'alias', '%,'.$query, false],
         ['=', 'alias', $query]]
       )
