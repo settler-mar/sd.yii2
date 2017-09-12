@@ -5,30 +5,27 @@ namespace frontend\modules\search\controllers;
 use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\components\SdController;
-use yii\sphinx\Query;
-use yii\sphinx\ActiveRecord;
+//use yii\sphinx\Query;
+//use yii\sphinx\ActiveRecord;
 
 class DefaultController extends SdController
 {
 
   public function actionIndex($query)
   {
-
-    $Query = new Query();
-    $rows = $Query->from('stores', $offset = 0)
-      ->match($query)
-      ->limit(1000)
-      //->offset($offset)
-      //->orderBy(['visit'=>'DESC','added'=> 'DESC'])
-      ->all();
-
-    $id_s = [];
-    foreach ($rows as $item) {
-      $id_s[] = (int)$item['id'];
-    }
-
     $stores = Stores::find()
-      ->where(['uid' => $id_s])
+      ->where([
+        'or',
+        ['like', 'name', $query],
+        ['like', 'alias', ', '.$query.','],
+        ['like', 'alias', ','.$query.','],
+        ['like', 'alias', ','.$query.' ,'],
+        ['like', 'alias', $query.' ,%', false],
+        ['like', 'alias', $query.',%', false],
+        ['like', 'alias', '%, '.$query, false],
+        ['like', 'alias', '%,'.$query, false],
+        ['=', 'alias', $query]]
+      )
       ->limit(Yii::$app->request->isAjax?10:1000)
       ->orderBy([
         'added'=> 'DESC',
