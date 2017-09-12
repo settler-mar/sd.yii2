@@ -86,8 +86,10 @@ class Stores extends \yii\db\ActiveRecord
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
-        'minHeight' => 60,
-        'minWidth' => 145,
+        'minHeight' => 59,
+        'minWidth' => 143,
+        'maxHeight' => 59,
+        'maxWidth' => 143,
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
@@ -310,7 +312,7 @@ class Stores extends \yii\db\ActiveRecord
       }
       $img = (new Image($photo->tempName));
       $img
-        ->fitToWidth(500)
+        ->fitToWidth(143)
         ->saveAs($bp.$this->logo);
       if ($img) {
         $this->removeImage($bp.$oldImage);   // удаляем старое изображение

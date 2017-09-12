@@ -58,21 +58,23 @@ class AccountController extends \yii\web\Controller
       ) {
         return json_encode(['error' => true]);
       }
-
-      Yii::$app
-        ->mailer
-        ->compose(
-          ['html' => 'support-html', 'text' => 'support-text'],
-          [
-            'title' => $title,
-            'message' => $message,
-            'user'=>Yii::$app->user->identity,
-          ]
-        )
-        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-        ->setTo(Yii::$app->params['supportEmail'])
-        ->setSubject(Yii::$app->name . ': Запрос в техподдержку')
-        ->send();
+      try{
+        Yii::$app
+          ->mailer
+          ->compose(
+            ['html' => 'support-html', 'text' => 'support-text'],
+            [
+              'title' => $title,
+              'message' => $message,
+              'user'=>Yii::$app->user->identity,
+            ]
+          )
+          ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+          ->setTo(Yii::$app->params['supportEmail'])
+          ->setSubject(Yii::$app->name . ': Запрос в техподдержку')
+          ->send();
+      } catch (\Exception $e) {
+      }
 
       return json_encode(['error' => false]);
     }

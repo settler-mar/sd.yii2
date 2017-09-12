@@ -25,15 +25,19 @@ class TestController extends Controller
    */
   public function actionMail()
   {
-    Yii::$app
-      ->mailer
-      ->compose()
-      ->setSubject('Тема сообщения')
-      ->setTextBody('Текст сообщения')
-      ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
-      ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-      ->setTo('matuhinmax@mail.ru')
-      ->setSubject(Yii::$app->name . ': Тест')
-      ->send();
+    try {
+      Yii::$app
+        ->mailer
+        ->compose()
+        ->setSubject('Тема сообщения')
+        ->setTextBody('Текст сообщения')
+        ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
+        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+        ->setTo('matuhinmax@mail.ru')
+        ->setSubject(Yii::$app->name . ': Тест')
+        ->send();
+    } catch (\Exception $e) {
+      echo  'error';
+    }
   }
 }

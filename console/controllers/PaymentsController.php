@@ -166,19 +166,22 @@ class PaymentsController extends Controller
 
           //Отправляем email если раздрешено у пользователя
           if ($send_mail && $user->notice_email == 1) {
-            Yii::$app
-              ->mailer
-              ->compose(
-                ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
-                [
-                  'user' => $user,
-                  'payment' => $db_payment,
-                ]
-              )
-              ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-              ->setTo($user->email)
-              ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
-              ->send();
+            try {
+              Yii::$app
+                ->mailer
+                ->compose(
+                  ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
+                  [
+                    'user' => $user,
+                    'payment' => $db_payment,
+                  ]
+                )
+                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+                ->setTo($user->email)
+                ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
+                ->send();
+            } catch (\Exception $e) {
+            }
           }
         } else {
           //для подтвержденных заказов ни чего не меняем уже

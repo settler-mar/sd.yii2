@@ -40,7 +40,8 @@ class UserSetting extends Users
       [['old_password','new_password','r_new_password'], 'string'],
       [['old_password','new_password','r_new_password'], 'trim'],
       [['old_password','new_password','r_new_password'], 'string', 'max' => 60],
-      [['old_password','new_password','r_new_password'], 'string', 'min' => 6],
+      [['new_password','r_new_password'], 'string', 'min' => 6],
+      [['old_password'], 'string', 'min' => 5],
 
       ['old_password', 'validatePassword'],
 

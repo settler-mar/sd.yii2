@@ -30,7 +30,10 @@ class DefaultController extends SdController
     $stores = Stores::find()
       ->where(['uid' => $id_s])
       ->limit(Yii::$app->request->isAjax?10:1000)
-      ->orderBy(['visit'=>'DESC','added'=> 'DESC'])
+      ->orderBy([
+        'added'=> 'DESC',
+        'visit'=>'DESC',
+      ])
       ->asArray()
       ->all();
 

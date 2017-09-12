@@ -93,6 +93,24 @@ class SiteController extends SdController
     ]);
   }
 
+/*  public function actionTests(){
+    try {
+      Yii::$app
+        ->mailer
+        ->compose(
+          ['html' => 'test', 'text' => 'test'],
+          [
+          ]
+        )
+        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+        ->setTo('12312321')
+        ->setSubject(Yii::$app->name . ': Регистрация')
+        ->send();
+    } catch (\Exception $e) {
+      return 2;
+    }
+    return 1;
+  }*/
 
   public function actionAdmin(){
     if(
