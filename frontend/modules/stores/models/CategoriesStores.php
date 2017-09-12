@@ -64,21 +64,21 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
+
         if (!parent::beforeValidate()) {
             return false;
         }
         if (empty($this->route)) {
-            $help = new Help();
-            $this->route = $help->str2url($this->name);
+            $this->route = Help::str2url($this->name);
         }
-//        if (empty($this->menu_index)) {
-//            $index = CategoriesStores::find()
-//                ->select(['max(menu_index) as max'])
-//                ->where(['parent_id' => $this->parent_id])
-//                ->asArray()
-//                ->all();
-//            $this->menu_index = intval($index['max']) + 1;
-//        }
+        if (empty($this->menu_index)) {
+            $index = CategoriesStores::find()
+                ->select(['max(menu_index) as max'])
+                ->where(['parent_id' => $this->parent_id])
+                ->asArray()
+                ->one();
+            $this->menu_index = intval($index['max']) + 1;
+        }
         return true;
     }
 
@@ -263,14 +263,11 @@ class CategoriesStores extends \yii\db\ActiveRecord
     }
 
     public function getParentName(){
-      if($this->parent_id==0){
+      if ($this->parent_id==0) {
         return '<Корень>';
       }
-      $cat=CategoriesStores::find()
-        ->where(['parent_id' => $this->parent_id])
-        ->asArray()
-        ->one();
-      return $cat?$cat['name']:'Ошибка вывода';
+      $cat = CategoriesStores::findOne($this->parent_id);
+      return $cat ? $cat->name : 'Ошибка вывода';
     }
 
     public static function getParentsList($base = array()){

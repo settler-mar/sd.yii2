@@ -32,6 +32,12 @@ class CategoriesStoresSearch extends CategoriesStores
         return Model::scenarios();
     }
 
+    //переопределяем, чтобы не мешался родительский при поиске
+    public function beforeValidate()
+    {
+        return true;
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
