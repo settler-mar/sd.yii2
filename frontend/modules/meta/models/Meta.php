@@ -76,6 +76,7 @@ class Meta extends \yii\db\ActiveRecord
         if($model){
           return $page_meta->limit(1);
         }
+
         return $page_meta
           ->select(['title', 'description', 'keywords', 'h1', 'content'])
           ->asArray()
