@@ -111,4 +111,36 @@ class AdminController extends Controller
         return json_encode(['error' => $error, 'html' => 'Статус изменён успешно!']);
     }
 
+    /**
+     * Deletes an existing model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('CharityDelete')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+    /**
+     * Finds the model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return  Charity
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Charity::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
+
 }
