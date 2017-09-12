@@ -157,90 +157,92 @@
 
 {% include 'parts/calc_cashback.twig' %}
 
-{% if current_store.is_active==1 %}
-    <section class="store-2line">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <div class="coupons">
-                        <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
-                        {% if store_coupons|length > 0 %}
-                        <div class="coupons-list" data-mcs-theme="dark">
-                            {% for coupon in store_coupons %}
-                            <div class="col-sm-12 col-md-6 coupons-item {% if loop.index > 6 %}more{% endif %}">
-                            {% include 'parts/coupon.twig' %}
-                            </div>
-                                {% if (loop.index == 6 and (store_coupons|length > 6)) %}
-                                    <div class="col-xs-12 store-coupons__buttons more">
-                                        <a class="btn store-coupons__show-more" href="#">Показать все ({{ coupons_counts.actual }})</a>
-                                    </div>
-                                {% endif %}
 
-                            {% endfor %}
-                            {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
-                                <div class="col-xs-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
-                                    {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
-                                    <a class="btn" target="_blank" href="/coupons">Все купоны и акции ({{ all_coupons_counts.actual }})</a>
-                                    {% if coupons_counts.expired > 0 %}
-                                        <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
-                                    {% endif %}
+<section class="store-2line">
+    <div class="container">
+        <div class="row">
+            {% if current_store.is_active==1 %}
+            <div class="col-sm-12 col-md-12">
+                <div class="coupons">
+                    <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
+                    {% if store_coupons|length > 0 %}
+                    <div class="coupons-list" data-mcs-theme="dark">
+                        {% for coupon in store_coupons %}
+                        <div class="col-sm-12 col-md-6 coupons-item {% if loop.index > 6 %}more{% endif %}">
+                        {% include 'parts/coupon.twig' %}
+                        </div>
+                            {% if (loop.index == 6 and (store_coupons|length > 6)) %}
+                                <div class="col-xs-12 store-coupons__buttons more">
+                                    <a class="btn store-coupons__show-more" href="#">Показать все ({{ coupons_counts.actual }})</a>
                                 </div>
                             {% endif %}
-                        </div>
-                        {% else %}
-                        <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
-                            {% if coupons_counts.expired > 0 %}
-                                <div class="col-xs-12 store-coupons__buttons">
+
+                        {% endfor %}
+                        {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
+                            <div class="col-xs-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
+                                {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
+                                <a class="btn" target="_blank" href="/coupons">Все купоны и акции ({{ all_coupons_counts.actual }})</a>
+                                {% if coupons_counts.expired > 0 %}
                                     <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-12">
-                    <div class="comments">
-                        <h3>Отзывы о магазине {{current_store.name}}</h3>
-                        {% if store_reviews|length > 0 %}
-                        <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
-                            {% for review in store_reviews %}
-                                <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">
-                                    {% include 'parts/comment.twig' %}
-                                </div>
-                                {% if (loop.index == 6 and (store_reviews|length > 6)) %}
-                                    <div class="col-xs-12 store-reviews__buttons more">
-                                        <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
-                                    </div>
                                 {% endif %}
-                            {% endfor %}
-                            {% if store_reviews|length > 6 %}
-                                <div class="col-xs-12 store-reviews__buttons less">
-                                    <a class="btn store-reviews__show-less" href="#">Скрыть все</a>
-                                </div>
-                            {% endif %}
-                        </div>
+                            </div>
                         {% endif %}
                     </div>
-
+                    {% else %}
+                    <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
+                        {% if coupons_counts.expired > 0 %}
+                            <div class="col-xs-12 store-coupons__buttons">
+                                <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <div class="comments-handler">
-                        {% if store_reviews|length == 0 %}
-                            <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
-                        {% endif %}
-                        {% if user_id %}
-                            <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
-                        {% else %}
-                            <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-                            <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+            {% endif %}
+            <div class="col-sm-12 col-md-12">
+                <div class="comments">
+                    <h3>Отзывы о магазине {{current_store.name}}</h3>
+                    {% if store_reviews|length > 0 %}
+                    <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
+                        {% for review in store_reviews %}
+                            <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">
+                                {% include 'parts/comment.twig' %}
+                            </div>
+                            {% if (loop.index == 6 and (store_reviews|length > 6)) %}
+                                <div class="col-xs-12 store-reviews__buttons more">
+                                    <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if store_reviews|length > 6 %}
+                            <div class="col-xs-12 store-reviews__buttons less">
+                                <a class="btn store-reviews__show-less" href="#">Скрыть все</a>
+                            </div>
                         {% endif %}
                     </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="comments-handler">
+                    {% if store_reviews|length == 0 %}
+                        <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
+                    {% endif %}
+                    {% if user_id %}
+                        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
+                    {% else %}
+                        <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+                        <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </section>
-{% endif %}
+    </div>
+</section>
+
 <section class="store-intro shops">
     <div class="container">
         <div class="row">

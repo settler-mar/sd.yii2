@@ -347,7 +347,11 @@ $images: "/images";
     margin-top: 35px;
     min-height: 250px;
     padding-bottom: 30px;
-   // border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+
+    &.modal-popup {
+      border: none;
+    }
 
     .comment-photo {
       width: 80px;
@@ -373,6 +377,7 @@ $images: "/images";
       .name {
         @include emptyBottom();
         font-weight: 500;
+        word-wrap: break-word;
         color: #5D626D;
       }
 
@@ -1612,6 +1617,7 @@ $images: "/images";
   }
 
   &.shops {
+    margin-top: 25px;
     padding-top: 25px;
     padding-bottom: 55px;
   }
@@ -1683,7 +1689,7 @@ $images: "/images";
 
   .give-feedback {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
   }
 }
 
@@ -2523,6 +2529,7 @@ a.btn,
 .sort-menu-mobile a,
 .tree-cat a,
 .breadcrumbs a,
+.container .a-stores,
 footer .container a{
   text-decoration:none;
 }
