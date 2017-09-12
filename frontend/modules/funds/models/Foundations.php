@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\dobro\models;
+namespace frontend\modules\funds\models;
 
 use Yii;
 
@@ -31,7 +31,7 @@ class Foundations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'image', 'is_active'], 'required'],
+            [['title', 'description', 'is_active'], 'required'],
             [['title', 'description', 'image'], 'string'],
             [['title', 'image'], 'string', 'max' => 255],
             [['is_active'], 'integer'],
@@ -45,10 +45,10 @@ class Foundations extends \yii\db\ActiveRecord
     {
         return [
             'uid' => 'Uid',
-            'title' => 'Title',
-            'description' => 'Description',
+            'title' => 'Название',
+            'description' => 'Описание',
             'image' => 'Image',
-            'is_active' => 'Is Active',
+            'is_active' => 'Статус',
         ];
     }
 }

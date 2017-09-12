@@ -4,7 +4,7 @@ namespace frontend\modules\dobro\controllers;
 
 use frontend\modules\charity\models\Charity;
 use frontend\modules\dobro\models\Autopayments;
-use frontend\modules\dobro\models\Foundations;
+use frontend\modules\funds\models\Foundations;
 use yii;
 
 

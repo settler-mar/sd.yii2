@@ -1,0 +1,61 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Купоны' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="coupons-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <h1>{{ html.encode(this.title) }}</h1>
+                <div class="col-md-12">
+                    <p class="add-item">Купоны автоматически удаляются раз в час и добавляются раз в сутки.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {# include('_search.twig', {'model': searchModel}) #}
+                    {#<p>#}
+                        {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Coupons' }}</a>#}
+                    {#</p>#}
+                    {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'pager' : {
+                            'firstPageLabel' : true,
+                            'lastPageLabel' : true,
+                            'maxButtonCount':20
+                        },
+
+                        'filterModel': searchModel,
+                                'columns': [
+                                {'class': '\\yii\\grid\\SerialColumn'},
+
+                                'uid',
+                                'coupon_id',
+                                'name',
+                                'description:ntext',
+                                'date_start',
+                                {'class': '\\yii\\grid\\ActionColumn',
+                                    'template' : '{update} {delete}',
+                                },
+                            ],
+                        })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
+{#
+'date_end',
+'goto_link',
+'promocode',
+'exclusive',
+'species',
+'visit',
+'store_id'
+#}
+</div>

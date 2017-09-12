@@ -1,5 +1,5 @@
 {{ use('/yii/grid/GridView') }}
-{% set title = 'Категории магазинов' %}
+{% set title = 'Фонды' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -7,7 +7,7 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="stores-index">
+<div class="foundations-index">
     <div class="content-wrapper">
         <section>
             <div class="row">
@@ -15,7 +15,7 @@
                     <h1>{{ html.encode(this.title) }}</h1>
                     {# include('_search.twig', {'model': searchModel}) #}
                     <p>
-                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать категорию' }}</a>
+                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Добавить фонд' }}</a>
                     </p>
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
@@ -24,38 +24,32 @@
                                 {'class': '\\yii\\grid\\SerialColumn'},
 
                                 'uid',
+                                'title',
+                                'description:html',
                                 {
-                                    'format':'raw',
-                                    'attribute':'parent_id',
-                                    'filter':parentsList,
-                                    'value':'parentName'
-                                },
-                                'name',
-                                'route',
-                                'menu_index',
-                                {
-                                    'format':'raw',
+
                                     'attribute':'is_active',
                                     'filter':{
-                                    '':'Любой',
-                                        0:"Скрыта",
-                                        1:"Активна"
+                                        0:"Скрытый",
+                                        1:"Активный",
                                     },
-                                    'value':table.is_active
+                                    'value': table_value.is_active,
+                                    'headerOptions' : {
+                                        'class' : 'col-md-2'
+                                    },
                                 },
-                                {'class': '\\yii\\grid\\ActionColumn',
-                                    'template' : '{update} {delete}',
+                                {
+                                    'class': '\\yii\\grid\\ActionColumn',
+                                    'template': '{update} {delete}',
                                 },
                             ],
                         })
                     }}
-                    {#
-                    'menu_index',
-                    'down_description:ntext',
-                    'route'
-                    #}
                 </div>
             </div>
         </section>
     </div>
 </div>
+{#
+ image,
+#}

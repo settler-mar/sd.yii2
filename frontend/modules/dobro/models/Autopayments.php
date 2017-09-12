@@ -3,6 +3,7 @@
 namespace frontend\modules\dobro\models;
 
 use Yii;
+use frontend\modules\funds\models\Foundations;
 
 /**
  * This is the model class for table "cw_autopayments".

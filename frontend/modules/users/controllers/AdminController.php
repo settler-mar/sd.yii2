@@ -67,8 +67,38 @@ class AdminController extends Controller
       $query->andWhere(['like','email',$get['email']]);
     }
 
-    if(isset($get['is_active']) && strlen($get['is_active'])>0){
-      $query->andWhere(['is_active' => $get['is_active']]);
+    if (isset( $get['is_active'])) {
+      if ($get['is_active'] == 1) {
+        $query->andFilterWhere([
+          'or',
+          ['>', 'sum_pending', 0],
+          ['>', 'sum_confirmed', 0],
+          ['>', 'sum_from_ref_pending', 0],
+          ['>', 'sum_from_ref_confirmed', 0],
+        ]);
+      } elseif ($get['is_active'] === '0') {
+        $query->andWhere([
+          'or',
+          ['sum_pending' => null],
+          ['=', 'sum_pending', 0]
+        ]);
+        $query->andWhere([
+          'or',
+          ['sum_confirmed' => null],
+          ['=', 'sum_confirmed', 0]
+        ]);
+        $query->andWhere([
+          'or',
+          ['sum_from_ref_pending' => null],
+          ['=', 'sum_from_ref_pending', 0]
+        ]);
+        $query->andWhere([
+          'or',
+          ['sum_from_ref_confirmed' => null],
+          ['=', 'sum_from_ref_confirmed', 0]
+        ]);
+
+      }
     }
 
     $totQuery = clone $query;

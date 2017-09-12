@@ -5,7 +5,7 @@ namespace frontend\modules\charity\models;
 use yii;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\users\models\Users;
-use frontend\modules\dobro\models\Foundations;
+use frontend\modules\funds\models\Foundations;
 
 /**
  * This is the model class for table "cw_charity".

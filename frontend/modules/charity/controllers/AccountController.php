@@ -4,7 +4,7 @@ namespace frontend\modules\charity\controllers;
 
 use yii;
 use frontend\modules\charity\models\Charity;
-use frontend\modules\dobro\models\Foundations;
+use frontend\modules\funds\models\Foundations;
 use frontend\components\Pagination;
 
 /**

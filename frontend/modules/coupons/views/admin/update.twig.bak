@@ -1,0 +1,33 @@
+{% set title = 'Изменить купон: ' ~ model.name %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Coupons', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': model.name, 'url': path('view', {'id': model.uid})}]) %}
+{% set breadcrumbs = breadcrumbs|merge(['Update']) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="coupons-update">
+    <div class="content-wrapper">
+        <section class="account-padding view-list view-current">
+            <div class="row">
+                {% if model %}
+                <h1>{{ html.encode(this.title) }}</h1>
+                <div class="col-md-12">
+                    <div class="stores-form">
+                        {{ include('_form.twig', {
+                                'model': model,
+                            })
+                        }}
+                    </div>
+                </div>
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="not-found">Купон не найден.</div>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</div>

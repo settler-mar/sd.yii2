@@ -1,0 +1,31 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="coupons-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'coupon_id').textInput({'disabled': 'disabled'})|raw }}
+
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+        {{ form.field(model, 'date_start').textInput()|raw }}
+
+        {{ form.field(model, 'date_end').textInput()|raw }}
+
+        {{ form.field(model, 'goto_link').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'promocode').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'exclusive').textInput()|raw }}
+
+        {{ form.field(model, 'species').textInput()|raw }}
+
+        {{ form.field(model, 'visit').textInput()|raw }}
+
+        {{ form.field(model, 'store_id').textInput()|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
