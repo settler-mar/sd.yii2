@@ -32,9 +32,9 @@ class SdView extends View
       $this->balance = $user->getBalance();
 
       $this->all_params['bonus_status'] = $user->bonus_status_data;
-      $this->all_params['user']=$this->user;
-      $this->all_params['balance']=$this->balance;
-      $this->all_params['user_id']=$this->user_id;
+      $this->all_params['user']=(array)$user->getIterator();
+      $this->all_params['balance']=$user->getBalance();
+      $this->all_params['user_id']=Yii::$app->user->id;
 
       $this->all_params['fav_ids']=UsersFavorites::getUserFav();
     }

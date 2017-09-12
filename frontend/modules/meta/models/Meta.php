@@ -87,7 +87,7 @@ class Meta extends \yii\db\ActiveRecord
       //в каждом цикле затем ещё цикл - уменьшяем длину пути до '*'
       //Замену производим начиня со 2-го элемента
       $arr = explode('/', $page);
-      for ($i=1; $i<count($arr); $i++) {
+      for ($i=count($arr)-1; $i>0; $i--) {
         $pageArr = $arr;
         $pageArr[$i] = '*';
         $page_t = implode('/', $pageArr);
