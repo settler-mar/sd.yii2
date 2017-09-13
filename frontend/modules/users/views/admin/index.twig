@@ -23,8 +23,10 @@
               {{ _nf(users_total.total,0)  | raw}}
             </div>
             <div class="value">
-              <span>активных</span>
-              {{ _nf(users_total.active,0) | raw}}
+              <a href="/admin/users?is_active=1">
+                <span>активных</span>
+                {{ _nf(users_total.active,0) | raw}}
+              </a>
             </div>
           </div>
           <div class="line">

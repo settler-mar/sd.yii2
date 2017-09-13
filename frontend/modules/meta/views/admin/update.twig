@@ -1,4 +1,4 @@
-{% set title = 'Обновитьт методаные: ' ~ model.page %}
+{% set title = 'Обновить метаданые: ' ~ model.page %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}

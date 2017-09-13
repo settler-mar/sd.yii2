@@ -253,9 +253,19 @@ class AdminController extends Controller
       $dataBase = Users::find()
         ->where(['referrer_id'=>$id])
         ->orderBy(['uid'=>'desc']);
+      $refsActive = clone $dataBase;
       $pagination = new SdPagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
 
       $ref_users = $pagination->data();
+      $refsActive = $refsActive
+        ->andWhere([
+          'or',
+          ['>', 'sum_pending', 0],
+          ['>', 'sum_confirmed', 0],
+          ['>', 'sum_from_ref_pending', 0],
+          ['>', 'sum_from_ref_confirmed', 0],
+        ])
+        ->count();
 
       return $this->render('update.twig', [
         'model' => $model,
@@ -264,6 +274,7 @@ class AdminController extends Controller
         'fav_store'=>$fav_store,
         'ref_users'=>$ref_users,
         "pagination" => $pagination->getPagination('users/admin/update', ['id'=>$id]),
+        'refs_active' => $refsActive,
       ]);
     }
   }

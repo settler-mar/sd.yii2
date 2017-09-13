@@ -77,6 +77,12 @@
 
                     {{ form.field(model, 'ref_total').textInput({'disabled':true})|raw }}
 
+                    <div class="form-group field-users-ref_total-active">
+                        <label class="control-label" for="users-ref_total-active">Из них активных</label>
+                        <input type="text" id="users-ref_total-active" class="form-control" value="{{ refs_active }}" disabled>
+                        <div class="help-block"></div>
+                    </div>
+
                     {{ form.field(model, 'sum_pending').textInput({'disabled':true})|raw }}
 
                     {{ form.field(model, 'cnt_pending').textInput({'disabled':true})|raw }}

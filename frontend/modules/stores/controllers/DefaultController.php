@@ -16,6 +16,17 @@ class DefaultController extends SdController
 {
 
   /**
+   * Переопределяем для stores
+   * @var array
+   */
+  public $limitVars = [24, 48, 96];
+  /**
+   * переопределяем для stores
+   * @var int
+   */
+  public $defaultLimit = 48;
+
+  /**
    * @param string $id
    * @return null|yii\base\Action
    */

@@ -24,7 +24,7 @@ class DefaultController extends SdController
       ->select(['ur.*', "u.email", "u.name", "u.photo", "u.sex"])
       ->from(Reviews::tableName() . ' ur')
       ->innerJoin(Users::tableName() . ' u', 'ur.user_id = u.uid')
-      ->where(["u.is_active" => 1, "ur.is_active" => 1])
+      ->where(["u.is_active" => 1, "ur.is_active" => 1, "ur.store_id" => 0])
       ->orderBy('added DESC');
 
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => 10, 'page' => $page, 'asArray' => true]);

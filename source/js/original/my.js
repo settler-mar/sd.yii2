@@ -76,7 +76,7 @@ $("a[href='#showpromocode-noregister']").popup({
 $("a[href='#comment-popup']").popup({
   content : function() {
     var content = this.ele.parentElement.parentElement.parentElement.cloneNode(true);
-    content.setAttribute('data-comment-id', '9999');
+    content.className += ' modal-popup';
     var div = document.createElement('div');
     div.className = 'comments';
     div.append(content);
