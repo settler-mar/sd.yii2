@@ -173,6 +173,13 @@ $functionsList=[
     }
     return trim($out);
   },
+  //для шопов - благотворительность, если кэебэк не возвращается, то 10% в метатегах
+  '_check_charity' => function ($cashback) {
+    if (empty($cashback)) {
+      return '10%';
+    }
+    return $cashback;
+  },
 
   '_hyphen_words'=>function ($s,$wbr=true){
     #регулярное выражение для атрибутов тагов
