@@ -111,7 +111,7 @@
   </div>
 </div>
 
-{% if current_store.short_description or content %}
+{% if current_store.short_description or content or current_store.displayed_cashback == null or current_store.displayed_cashback == 0 %}
 <section class="store-information short-description">
     <div class="container">
         <div class="row">
@@ -127,6 +127,16 @@
                 <div >
                     <div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
                     <div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
+                </div>
+            {% elseif current_store.displayed_cashback == null or current_store.displayed_cashback == 0 %}
+                <div class="col-md-12 short-description__description">
+                    <div class="description">
+                        К сожалению, магазин {{current_store.name}} запретил выплачивать кэшбэк с покупок в их магазине,
+                        но вы все равно можете совершать там покупки, переходя по нашей ссылке
+                        или используя купоны и промокоды (уже получая бесплатную скидку),
+                        с той лишь разницей, что сумма Вашего кэшбэка будет полностью направлена на
+                        <a href="/dobro">благотворительность</a>. Спасибо!
+                    </div>
                 </div>
             {% else %}
                 <div class="col-md-12 short-description__description">
