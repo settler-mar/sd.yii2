@@ -178,7 +178,22 @@ $functionsList=[
     if (empty($cashback)) {
       return '10%';
     }
+    $value = floatval(preg_replace('/[^0-9\.]/', '', $cashback));
+    if (empty($value)) {
+      return '10%';
+    }
     return $cashback;
+  },
+  //проверка, что значение null или 0 или цифровая часть 0 0.0
+  '_is_empty' =>function($value) {
+    if (empty($value)) {
+      return true;
+    }
+    $value = floatval(preg_replace('/[^0-9\.]/', '', $value));
+    if (empty($value)) {
+      return true;
+    }
+    return false;
   },
 
   '_hyphen_words'=>function ($s,$wbr=true){
