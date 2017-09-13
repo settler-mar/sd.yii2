@@ -181,9 +181,9 @@
                         {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
                             <div class="col-xs-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
                                 {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
-                                <a class="btn" target="_blank" href="/coupons">Все купоны и акции ({{ all_coupons_counts.actual }})</a>
+                                <a class="btn" target="_blank" href="/coupons"><span>Все купоны и акции ({{ all_coupons_counts.actual }})</span></a>
                                 {% if coupons_counts.expired > 0 %}
-                                    <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
+                                    <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -192,7 +192,7 @@
                     <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
                         {% if coupons_counts.expired > 0 %}
                             <div class="col-xs-12 store-coupons__buttons">
-                                <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</a>
+                                <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -232,7 +232,7 @@
                         <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
                     {% endif %}
                     {% if user_id %}
-                        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-large ignore-hash ajaxFormOpen">Оставить отзыв</a>
+                        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-revert ignore-hash ajaxFormOpen">Оставить отзыв</a>
                     {% else %}
                         <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
                         <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.

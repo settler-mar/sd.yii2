@@ -106,13 +106,13 @@
     <div class="col-xs-12 store-coupons__buttons">
         {% if counts.actual > 0 %}
             {% if current_store %}
-                <a class="btn" href="/coupons/{{ current_store.route }}">Новые купоны этого магазина ({{ counts.actual }})</a>
+                <a class="btn" href="/coupons/{{ current_store.route }}"><span>Новые купоны этого магазина ({{ counts.actual }})</span></a>
             {% endif %}
             {% if current_category %}
-                <a class="btn" href="/coupons/{{ current_category.route }}">Новые купоны этой категории ({{ counts.actual }})</a>
+                <a class="btn" href="/coupons/{{ current_category.route }}"><span>Новые купоны этой категории ({{ counts.actual }})</span></a>
             {% endif %}
         {% endif %}
-        <a class="btn" href="/coupons">Новые купоны всех магазинов ({{ total_all_coupons }})</a>
+        <a class="btn" href="/coupons"><span>Новые купоны всех магазинов ({{ total_all_coupons }})</span></a>
     </div>
     </section>
 {% endif %}
@@ -120,11 +120,11 @@
     <section style="margin-top: -10px;margin-bottom: 80px;">
         <div class="col-xs-12 store-coupons__buttons">
             {% if current_store %}
-                <a class="btn" href="/coupons/{{ current_store.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</a>
+                <a class="btn" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
             {% elseif current_category %}
-                <a class="btn" href="/coupons/{{ current_category.route }}/expired">Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</a>
+                <a class="btn" href="/coupons/{{ current_category.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
             {% else %}
-                <a class="btn" href="/coupons/expired">Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</a>
+                <a class="btn" href="/coupons/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
             {% endif %}
         </div>
     </section>

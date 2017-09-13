@@ -2845,6 +2845,9 @@ img{
     &:not(:last-child) {
       margin-right: 25px;
     }
+    span {
+      white-space: normal;
+    }
   }
   &.less {
     display: none;
@@ -2883,5 +2886,14 @@ div .popup {
 
 .additional-information{
   p+ul{margin-top: 0;}
+}
+.btn-revert {
+  background-color: #e6ae03;
+  color: #fff;
+  border-color: #e6ae03;
+  &:hover {
+    background-color: #fff;
+    color: #e6ae03;
+  }
 }
 @import  "../external/queries";
