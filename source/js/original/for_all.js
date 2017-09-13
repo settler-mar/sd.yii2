@@ -1,6 +1,8 @@
-$(window).load(function() {
+//$(window).load(function() {
 
-  $('.accordion .accordion-control').on('click', function (e) {
+var accordionControl = $('.accordion .accordion-control');
+
+accordionControl.on('click', function (e) {
     e.preventDefault();
     $this = $(this);
     $accordion = $this.closest('.accordion');
@@ -14,7 +16,8 @@ $(window).load(function() {
     }
     return false;
   });
-})
+accordionControl.show();
+//})
 
 objects = function (a,b) {
   var c = b,
