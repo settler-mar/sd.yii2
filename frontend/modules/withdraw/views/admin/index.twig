@@ -10,9 +10,33 @@
 <div class="stores-index">
   <div class="content-wrapper">
     <section>
-      <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
+                <div class="col-md-3">
+                    <div class="sum_information">
+                        <div class="line">
+                            <div class="name">Пользователей</div>
+                            <div class="value">
+                                {{ stat.users }} / {{ stat.users_all }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="sum_information">
+                        <div class="line">
+                            <div class="name">Сумма</div>
+                            <div class="value">
+                                {{ _nf(stat.summ)|raw }} / {{ _nf(stat.summ_all)|raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
         <div class="col-md-12">
-            <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
           {{ grid_view_widget({
               'dataProvider': dataProvider,
               'pager' : {
