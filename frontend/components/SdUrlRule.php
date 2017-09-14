@@ -36,6 +36,7 @@ class SdUrlRule implements UrlRuleInterface
 
     //проверка реф ссылки
     if (isset($params['r'])) {
+      $params['r'] = str_replace('/','',$params['r']);
       if (!empty($params['r']) && !$validator->validate($params['r'])) {
         throw new \yii\web\NotFoundHttpException;
       };
