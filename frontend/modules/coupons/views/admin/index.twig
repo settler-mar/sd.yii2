@@ -31,17 +31,33 @@
                         },
 
                         'filterModel': searchModel,
-                                'columns': [
-                                {'class': '\\yii\\grid\\SerialColumn'},
+                        'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
 
-                                'uid',
-                                'coupon_id',
-                                'name',
-                                'description:ntext',
-                                'date_start',
-                                {'class': '\\yii\\grid\\ActionColumn',
-                                    'template' : '{update} {delete}',
+                            'uid',
+                            'coupon_id',
+                            'name',
+                            'storeName',
+                            'description:ntext',
+                            {
+                                'format':'raw',
+                                'attribute':'date_start',
+                                'headerOptions' : {
+                                    'class' : 'col-md-2'
                                 },
+                                'filter': startDataRanger
+                            },
+                            {
+                                'format':'raw',
+                                'attribute':'date_end',
+                                'headerOptions' : {
+                                    'class' : 'col-md-2'
+                                },
+                                'filter': endDataRanger
+                            },
+                            {'class': '\\yii\\grid\\ActionColumn',
+                                'template' : '{update} {delete}',
+                            },
                             ],
                         })
                     }}

@@ -81,6 +81,7 @@ class Coupons extends \yii\db\ActiveRecord
       'species' => 'Species',
       'visit' => 'Visit',
       'store_id' => 'Store ID',
+      'storeName' => 'Магазин'
     ];
   }
 
@@ -101,6 +102,10 @@ class Coupons extends \yii\db\ActiveRecord
     return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
   }
 
+  public function getStoreName()
+  {
+    return $this->store->name;
+  }
   /**
    * Категории купона
    * @return $this
