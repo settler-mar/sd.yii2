@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\ActionsTariffs;
 use frontend\modules\stores\models\CategoriesStores;
