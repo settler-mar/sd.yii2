@@ -48,6 +48,26 @@ class AdminController extends Controller
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+    //получение статистики
+    //для выборки
+    $stat = clone $dataProvider->query;
+    $stat = $stat->select(['sum(order_price) as order_price', 'sum(reward) as reward', 'sum(cashback) as cashback']);
+    $statsQuery['all'] = $stat->asArray()->one();
+    $statWait = clone $stat;
+    $statRevoke = clone $stat;
+    $statSuccess = clone $stat;
+    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->asArray()->one();
+    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->asArray()->one();
+    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->asArray()->one();
+    $statsQuery['users'] = $stat->groupBy('user_id')->count();
+    //всего
+    $statAll = Payments::find()
+      ->select(['sum(order_price) as order_price', 'sum(reward) as reward', 'sum(cashback) as cashback']);
+    $statsAll['all'] = $statAll->asArray()->one();
+    $statsAll['wait'] = $statAll->where(['status' => 0])->asArray()->one();
+    $statsAll['revoke'] = $statAll->where(['status' => 1])->asArray()->one();
+    $statsAll['success'] = $statAll->where(['status' => 2])->asArray()->one();
+    $statsAll['users'] = $statAll->where([])->groupBy('user_id')->count();
 
     $canAdmitadUpdate=false;
     $sort=trim(Yii::$app->request->get('sort'),'-');
@@ -78,7 +98,9 @@ class AdminController extends Controller
         }
         return $out;
       },
-      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false])
+      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
+      'stats_query' => $statsQuery,
+      'stats_all' => $statsAll,
     ]);
   }
 

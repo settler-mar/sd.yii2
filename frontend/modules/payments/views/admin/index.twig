@@ -12,8 +12,13 @@
         <div class="content-wrapper">
             <section>
                 <div class="row">
+                    <div class="col-md-12">
+                        <h1>{{ html.encode(this.title) }}</h1>
+                        {{ include('_stat.twig') }}
+                    </div>
+                </div>
+                <div class="row">
                     <div  class="col-md-12">
-                            <h1>{{ html.encode(this.title) }}</h1>
                             {# include('_search.twig', {'model': searchModel}) #}
                             <p>
                                 <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Payments' }}</a>
