@@ -62,15 +62,19 @@ $(function() {
 	$('.charity-action').click(function(e) {
 		e.preventDefault();
 		var status = $(this).data('value');
+		var href = $(this).attr('href');
 		var ids = $('#grid-charity').yiiGridView('getSelectedRows');
+		if (!confirm('Подтвердите изменение записей')) {
+			return null;
+		}
 		if (ids.length > 0) {
 			$.ajax({
-				url: '/admin/charity/status',
+				url: href,
 				type: 'post',
 				dataType: 'json',
 				data: {
 					status: status,
-					ids: ids
+					id: ids
 				}
 			}).success(function(data) {
 				$('#grid-charity').yiiGridView("applyFilter");

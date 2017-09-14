@@ -14,7 +14,8 @@ class DefaultController extends SdController
   public function actionIndex($query)
   {
     $stores = Stores::find()
-      ->where([
+      ->where(['is_active' => [0, 1]])
+      ->andWhere([
         'or',
         ['like', 'name', $query],
         ['like', 'alias', ', '.$query.','],

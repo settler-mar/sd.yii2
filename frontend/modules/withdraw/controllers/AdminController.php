@@ -47,6 +47,16 @@ class AdminController extends Controller
     $searchModel = new UsersWithdrawSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+    //статистика полная
+    $statAll = UsersWithdraw::find();
+    $stats['summ_all'] = $statAll->select('sum(amount) as sum')->asArray()->one()['sum'];
+    $stats['users_all'] = $statAll->groupBy('user_id')->count();
+    //статистика для выборки
+    $stat = clone $dataProvider->query;
+    $stats['summ']= $stat->select('sum(amount) as sum')->asArray()->one()['sum'];
+    $stats['users'] = $stat->groupBy('user_id')->count();
+
+
     $process=WithdrawProcess::find()
       ->asArray()
       ->all();
@@ -84,6 +94,8 @@ class AdminController extends Controller
           return $model->process_name;
         },
       )
+      ,
+      'stat' => $stats,
     ]);
   }
 

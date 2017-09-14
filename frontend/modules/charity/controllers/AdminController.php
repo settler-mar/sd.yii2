@@ -96,7 +96,7 @@ class AdminController extends Controller
         if (!\Yii::$app->request->isAjax) {
             throw new \yii\web\NotFoundHttpException;
         }
-        $ids = \Yii::$app->request->post('ids');
+        $ids = \Yii::$app->request->post('id');
         $status = \Yii::$app->request->post('status');
         $validatorIn = new \yii\validators\RangeValidator(['range' => [0, 1, 2]]);
         $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
@@ -114,19 +114,32 @@ class AdminController extends Controller
     /**
      * Deletes an existing model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
         if (Yii::$app->user->isGuest || !Yii::$app->user->can('CharityDelete')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
-        $this->findModel($id)->delete();
+        if (Yii::$app->request->isAjax) {
+            $ids = Yii::$app->request->post('id');
+            $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+            if (!is_array($ids) || !$validatorEach->validate($ids)) {
+                return json_encode(['error'=>true]);
+            }
 
-        return $this->redirect(['index']);
+            Charity::deleteAll(['uid' => $ids]);
+            return json_encode(['error' => false, 'html' => 'Записи удалены!']);
+
+        } else {
+            $id = Yii::$app->request->get('id');
+            $this->findModel($id)->delete();
+
+            return $this->redirect(['index']);
+        }
     }
+
     /**
      * Finds the model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
