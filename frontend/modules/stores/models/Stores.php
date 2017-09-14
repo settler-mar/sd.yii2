@@ -290,6 +290,23 @@ class Stores extends \yii\db\ActiveRecord
     $deletedPage->page = '/coupons/'.$this->route;
     $deletedPage->new_page = '/coupons';
     $deletedPage->save();
+
+    //удаляем купоны
+    $coupons = Coupons::find()
+      ->where(['store_id' => $this->uid])
+      ->all();
+    foreach ($coupons as $coupon){
+      $coupon->delete();
+    }
+
+    //удаляем отзывы
+    $reviews = Reviews::find()
+      ->where(['store_id' => $this->uid])
+      ->all();
+    foreach ($reviews as $review){
+      $review->delete();
+    }
+
   }
   /**
    * Сохранение изображения (аватара)
