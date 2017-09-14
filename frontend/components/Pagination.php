@@ -178,7 +178,7 @@ class Pagination
 
     $pages .= ($total - $page <= $displayCount - 1 ? '' : '...');
 
-    return '<ul>' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
+    return '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
   }
 
 
