@@ -5,13 +5,17 @@ namespace frontend\modules\coupons\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\modules\coupons\models\Coupons;
+//use frontend\modules\coupons\models\Coupons;
+use frontend\modules\stores\models\Stores;
 
 /**
  * CouponsSearch represents the model behind the search form about `frontend\modules\coupons\models\Coupons`.
  */
 class CouponsSearch extends Coupons
 {
+    public $storeName;
+    public $date_start_range;
+    public $date_end_range;
     /**
      * @inheritdoc
      */
@@ -19,7 +23,8 @@ class CouponsSearch extends Coupons
     {
         return [
             [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
-            [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode'], 'safe'],
+            [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
+              'date_start_range', 'date_end_range'], 'safe'],
         ];
     }
 
@@ -49,6 +54,21 @@ class CouponsSearch extends Coupons
             'query' => $query,
         ]);
 
+        $dataProvider->setSort([
+            'attributes' => [
+                'uid',
+                'coupon_id',
+                'name',
+                'storeName' => [
+                   'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+                   'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+                ],
+                'description',
+                'date_start',
+                'date_end',
+            ],
+        ]);
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -59,20 +79,38 @@ class CouponsSearch extends Coupons
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'uid' => $this->uid,
+            static::tableName(). '.uid' => $this->uid,
             'coupon_id' => $this->coupon_id,
             'date_start' => $this->date_start,
             'date_end' => $this->date_end,
             'exclusive' => $this->exclusive,
             'species' => $this->species,
             'visit' => $this->visit,
-            'store_id' => $this->store_id,
+            //'store_id' => $this->store_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', static::tableName() . '.name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'goto_link', $this->goto_link])
             ->andFilterWhere(['like', 'promocode', $this->promocode]);
+        if ($this->storeName) {
+            // Фильтр по имени шопа
+            $query->joinWith(['store' => function ($q) {
+                $q->andFilterWhere(['like', Stores::tableName() . '.name', $this->storeName]);
+            }]);
+        }
+        if (!empty($this->date_start_range) && strpos($this->date_start_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->date_start_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'date_start', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+        if (!empty($this->date_end_range) && strpos($this->date_end_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->date_end_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'date_end', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
 
         return $dataProvider;
     }

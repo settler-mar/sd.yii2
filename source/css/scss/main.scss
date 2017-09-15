@@ -2744,10 +2744,12 @@ ul.faq__list{
   padding-bottom: 30px;
 
   .row{
-    //background: #0f181a;
-    //border: 2px dashed #fbcf4a;
-    background: #d83636;
-    border: 2px dashed #fff;
+    background: #0f181a;
+    border: 2px dashed #fbcf4a;
+    &.no-cashback {
+      background: #d83636;
+      border: 2px dashed #fff;
+    }
     padding: 20px;
     width: 90%;
     margin: auto;
@@ -2891,7 +2893,7 @@ div .popup {
 }
 .btn-revert {
   background-color: #e6ae03;
-  color: #fff;
+  color: #000;
   border-color: #e6ae03;
   &:hover {
     background-color: #fff;

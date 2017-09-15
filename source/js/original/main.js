@@ -682,7 +682,11 @@ $(window).load(function(){
         }
     });
     $('[data-toggle="tooltip"]').on('click',function (e) {
-        e.preventDefault()
+        if($(this).closest('ul').hasClass('paginate')) {
+            //для пагинации ссылка должна работать
+            return true;
+        }
+        e.preventDefault();
         return false;
     })
 });

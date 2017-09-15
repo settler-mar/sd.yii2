@@ -9,6 +9,7 @@ use frontend\modules\coupons\models\CategoriesCoupons;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\Help;
 
 /**
  * AdminController implements the CRUD actions for Coupons model.
@@ -48,6 +49,8 @@ class AdminController extends Controller
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'startDataRanger' => Help::DateRangePicker($searchModel, 'date_start_range', ['hideInput'=>false]),
+            'endDataRanger' => Help::DateRangePicker($searchModel, 'date_end_range', ['hideInput'=>false]),
         ]);
     }
 
@@ -126,7 +129,10 @@ class AdminController extends Controller
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->date_end = date('Y-m-d', time());
+        $model->save();
 
         return $this->redirect(['index']);
     }

@@ -252,45 +252,34 @@ class DefaultController extends SdController
   {
     //вычисляем, не пришёл ли пользователь из категории
     $referrer = \Yii::$app->request->referrer;
-    $category = [];
+    $category = false;
     if ($referrer && strpos($referrer, '/stores/')) {
-      $categoryRoute = explode('/', $referrer);
-      foreach ($categoryRoute as $route) {
-        if (preg_match('/category\:[0-9]*$/', $route)) {
-          $category[0] = substr($route, 9);
-          break;
-        }
+      $path = explode('/', $referrer);
+      $pos = array_search('stores', $path);
+      if (isset($path[$pos + 1])) {
+        $category = CategoriesStores::byRoute($path[$pos + 1]);
       }
     }
-    //если не из категории в качестве категорий берём категории товара
-    if (empty($category)) {
-      $categories = $store->categories;
-      foreach ($categories as $cat) {
-        if ($cat->is_active == 1) {
-          $category[] = $cat->uid;
-        }
-      }
-    }
-    $cache = Yii::$app->cache;
 
+    $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'additional_stores';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    if (!count($category)) {
-      //если нет категорий (гипотетически)
+    if (!$category) {
+      //если нет категории
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
         return Stores::find()
           ->where(['is_active' => [0, 1]])
           ->andWhere(['<>', 'uid', $store->uid])
-          ->orderBy('RAND()')
+          ->orderBy('visit DESC')
           ->limit(6)
           ->asArray()
           ->all();
       }, $cache->defaultDuration, $dependency);
     } else {
-      //категория есть или одна или много
+      //категория есть
       $additional_stores = $cache->getOrSet(
-        'additional_stores_by_categories_' . implode('_', $category) . '_except_' . $store->uid,
+        'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
         function () use ($category, $store
         ) {
           return Stores::find()
@@ -307,11 +296,10 @@ class DefaultController extends SdController
         $cache->defaultDuration,
         $dependency
       );
-      $additional_stores_category = CategoriesStores::byId($category[0]);
     };
     return [
       'additional_stores' => $additional_stores,
-      'additional_stores_category' => empty($additional_stores_category) ? null : $additional_stores_category,
+      'additional_stores_category' => $category,
     ];
   }
 
