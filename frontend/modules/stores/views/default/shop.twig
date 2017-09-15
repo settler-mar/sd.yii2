@@ -228,17 +228,7 @@
                             <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">
                                 {% include 'parts/comment.twig' %}
                             </div>
-                            {% if (loop.index == 6 and (store_reviews|length > 6)) %}
-                                <div class="col-xs-12 store-reviews__buttons more">
-                                    <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
-                                </div>
-                            {% endif %}
                         {% endfor %}
-                        {% if store_reviews|length > 6 %}
-                            <div class="col-xs-12 store-reviews__buttons less">
-                                <a class="btn store-reviews__show-less" href="#">Скрыть все</a>
-                            </div>
-                        {% endif %}
                     </div>
                     {% endif %}
                 </div>
@@ -251,6 +241,11 @@
                     {% if store_reviews|length == 0 %}
                         <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
                     {% endif %}
+                    {% if store_reviews|length > 6 %}
+                        <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
+                        <a class="btn store-reviews__show-less" href="#" style="display: none;">Скрыть все</a>
+                    {% endif %}
+
                     {% if user_id %}
                         <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-revert ignore-hash ajaxFormOpen">Оставить отзыв</a>
                     {% else %}

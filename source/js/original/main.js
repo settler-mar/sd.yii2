@@ -736,14 +736,14 @@ $('.store-coupons__show-more').click(function(e){
 });
 $('.store-reviews__show-less').click(function(e){
     e.preventDefault();
-    $('.store-reviews__buttons.more').show();
-    $('.store-reviews__buttons.less').hide();
+    $('.store-reviews__show-more').show();
+    $('.store-reviews__show-less').hide();
     $('.store-reviews-item.more').hide();
 });
 $('.store-reviews__show-more').click(function(e){
     e.preventDefault();
-    $('.store-reviews__buttons.less').show();
-    $('.store-reviews__buttons.more').hide();
+    $('.store-reviews__show-less').show();
+    $('.store-reviews__show-more').hide();
     $('.store-reviews-item.more').show();
 });
 $(function() {
