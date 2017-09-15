@@ -6,8 +6,8 @@
             <div class="comment-photo no_ava" style="background-image: url(/images/no_ava.png);"></div>
         {% endif %}
         <p class="name">
-            {% if review.name %}
-                {{review.name}}
+            {% if ((review.name) and (review.name|length > 2)) %}
+                {{ review.name }}
             {% else %}
                 {{ email_to_name(review.email)}}
             {% endif %}
