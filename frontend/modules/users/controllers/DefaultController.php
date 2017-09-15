@@ -111,7 +111,7 @@ class DefaultController extends Controller
    */
   public function actionRegistration()
   {
-    1/0;
+
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
       return $this->goHome();
     }
