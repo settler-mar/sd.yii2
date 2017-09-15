@@ -30,12 +30,18 @@ objects = function (a,b) {
   return c;
 };
 
-(function() {
+$( document ).ready(function() {
   function img_load_finish(){
     data=this;
-    data.img.attr('src',data.src);
+    if(data.type==0) {
+      data.img.attr('src', data.src);
+    }else{
+      data.img.css('background-image', 'url('+data.src+')');
+      data.img.removeClass('no_ava');
+    }
   }
 
+  //тест лого магазина
   imgs=$('section:not(.navigation)').find('.logo img');
   for (var i=0;i<imgs.length;i++){
     img=imgs.eq(i);
@@ -43,13 +49,38 @@ objects = function (a,b) {
     img.attr('src','/images/template-logo.jpg');
     data={
       src:src,
-      img:img
+      img:img,
+      type:0 // для img[src]
     };
     image=$('<img/>',{
       src:src
     }).on('load',img_load_finish.bind(data))
   }
-})();
+
+  //тест аватарок в коментариях
+  imgs=$('.comment-photo');
+  for (var i=0;i<imgs.length;i++){
+    img=imgs.eq(i);
+    if(img.hasClass('no_ava')){
+      continue;
+    }
+
+    src=img.css('background-image');
+    src=src.replace('url("','');
+    src=src.replace('")','');
+    img.addClass('no_ava');
+
+    img.css('background-image','url(/images/no_ava.png)');
+    data={
+      src:src,
+      img:img,
+      type:1 // для фоновых картинок
+    };
+    image=$('<img/>',{
+      src:src
+    }).on('load',img_load_finish.bind(data))
+  }
+});
 
 (function() {
   els=$('.ajax_load');

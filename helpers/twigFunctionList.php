@@ -288,6 +288,15 @@ $functionsList=[
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';
   },
+  'test_image'=>function ($path) {
+    if(strlen($path)<5) return false;
+    if(strpos($path,'http')!==false) return true;
+
+
+    $path=str_replace('//','/',__DIR__.'/../frontend/web/'.$path);
+return false;
+    return file_exists($path);
+  },
 
 ];
 

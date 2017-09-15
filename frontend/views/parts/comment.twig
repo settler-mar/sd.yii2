@@ -1,13 +1,9 @@
 <div class="current-comment" data-comment-id="{{review.uid}}">
     <div class="col-sm-12 col-md-4 logo">
-        {% if review.photo %}
-            <div class="comment-photo" style="background-image:url({{review.photo}})"></div>
+        {% if test_image(review.photo) %}
+            <div class="comment-photo" style="background-image:url({{ review.photo }})"></div>
         {% else %}
-            {% if review.sex == 'm' or review.sex == '' %}
-            <span data-icon="&#xe040;" class="icon"></span>
-            {% elseif review.sex == 'f' %}
-            <span data-icon="&#xe041;" class="icon"></span>
-            {% endif %}
+            <div class="comment-photo no_ava" style="background-image: url(/images/no_ava.png);"></div>
         {% endif %}
         <p class="name">
             {% if review.name %}
