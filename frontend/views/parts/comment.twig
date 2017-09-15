@@ -9,7 +9,7 @@
             {% if review.name %}
                 {{review.name}}
             {% else %}
-                {{review.email}}
+                {{ email_to_name(review.email)}}
             {% endif %}
         </p>
         <p class="rating">

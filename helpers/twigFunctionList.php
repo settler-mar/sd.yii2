@@ -294,8 +294,12 @@ $functionsList=[
 
 
     $path=str_replace('//','/',__DIR__.'/../frontend/web/'.$path);
-return false;
+    //return false;
     return file_exists($path);
+  },
+  'email_to_name'=>function ($email) {
+    $email=explode('@',$email);
+    return $email[0];
   },
 
 ];
