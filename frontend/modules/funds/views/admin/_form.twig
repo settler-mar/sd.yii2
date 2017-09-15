@@ -16,6 +16,12 @@
                             1:"Активный",
                         })|raw }}
 
+                        <p>
+                            <span>Logo:</span>
+                            <img for="Foundations[imageImage]" style="max-height: 150px;" src="/images/dobro/{{ model.image | raw }}">
+                        </p>
+                        {{ form.field(model, 'imageImage').fileInput().label(false)|raw }}
+
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
                     </div>

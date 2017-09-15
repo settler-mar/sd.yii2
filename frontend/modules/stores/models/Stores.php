@@ -307,7 +307,11 @@ class Stores extends \yii\db\ActiveRecord
       $review->delete();
     }
 
+    $path = $this->getStorePath();// Путь для сохранения
+    $bp=Yii::$app->getBasePath().'\web'.$path;
+    $this->removeImage($bp.$this->Image);   // удаляем старое изображение
   }
+
   /**
    * Сохранение изображения (аватара)
    * пользвоателя
