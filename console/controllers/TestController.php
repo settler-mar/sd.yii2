@@ -37,6 +37,7 @@ class TestController extends Controller
         ->setSubject(Yii::$app->name . ': Тест')
         ->send();
     } catch (\Exception $e) {
+      ddd($e);
       echo  'error';
     }
   }
