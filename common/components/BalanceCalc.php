@@ -13,7 +13,6 @@ use yii\base\Component;
 class BalanceCalc extends Component
 {
   public function todo($userList=false,$type=false){
-
     if(!is_array($userList) && $userList!=false){
       $userList=explode(',',$userList);
     };

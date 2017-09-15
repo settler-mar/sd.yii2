@@ -233,6 +233,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function afterSave($insert, $changedAttributes)
   {
     if($insert) {
+      if($this->referrer_id>0) {
+        Yii::$app->balanceCalc->todo($this->referrer_id, 'ref');
+      }
+
       $notify = new Notifications();
       $notify->user_id = $this->uid;
       $notify->type_id = 2;
@@ -244,8 +248,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
       $notify->save();
 
+      //задание на отключение ремиуи статуса
       $task= new Task();
-      $task->param=-$this->uid;
+      $task->param=-$this->uid; // - Что б понимать что это приемиуи за регистрацию
       $task->task=2;
       $task->add_time=time()+10*24*60*60;
       $task->save();

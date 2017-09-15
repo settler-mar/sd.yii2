@@ -111,6 +111,9 @@ class CouponsController extends Controller
         break;
       }
     }
+
+    Coupons::deleteAll(['store_id'=>0]);
+
     $help = new Help();
     foreach ($categories as $k => $categorie) {
       if(!CategoriesCoupons::findOne(['uid'=>$k])){

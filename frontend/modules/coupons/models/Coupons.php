@@ -104,7 +104,11 @@ class Coupons extends \yii\db\ActiveRecord
 
   public function getStoreName()
   {
-    return $this->store->name;
+    if($this->store){
+      return $this->store->name;
+    }else{
+      return '';
+    }
   }
   /**
    * Категории купона

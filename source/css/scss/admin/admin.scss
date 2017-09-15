@@ -706,3 +706,11 @@ form label{
 table{
     font-size:12px;
 }
+
+.table-sum{
+    width:100%;
+
+    .value{
+        font-weight: bold;
+    }
+}

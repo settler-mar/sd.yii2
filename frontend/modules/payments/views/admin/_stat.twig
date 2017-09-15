@@ -1,98 +1,49 @@
-<div class="col-md-3">
-    <h5>Сумма заказов</h5>
+<div class="col-md-12">
     <div class="sum_information">
         <div class="line">
-            <div class="name">Всего</div>
+            <div class="name">Пользователей в выборке</div>
             <div class="value">
-                {{ _nf(stats_query.all.order_price)|raw }} / {{ _nf(stats_all.all.order_price)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">В ожидании</div>
-            <div class="value">
-                {{ _nf(stats_query.wait.order_price)|raw }} / {{ _nf(stats_all.wait.order_price)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Отменено</div>
-            <div class="value">
-                {{ _nf(stats_query.revoke.order_price)|raw }} / {{ _nf(stats_all.revoke.order_price)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Подтверждено</div>
-            <div class="value">
-                {{ _nf(stats_query.success.order_price)|raw }} / {{ _nf(stats_all.success.order_price)|raw }}
+                {{ stats_query.users }}
             </div>
         </div>
     </div>
 </div>
-<div class="col-md-3">
-    <h5>Вознаграждение</h5>
-    <div class="sum_information">
-        <div class="line">
-            <div class="name">Всего</div>
-            <div class="value">
-                {{ _nf(stats_query.all.reward)|raw }} / {{ _nf(stats_all.all.reward)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">В ожидании</div>
-            <div class="value">
-                {{ _nf(stats_query.wait.reward)|raw }} / {{ _nf(stats_all.wait.reward)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Отменено</div>
-            <div class="value">
-                {{ _nf(stats_query.revoke.reward)|raw }} / {{ _nf(stats_all.revoke.reward)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Подтверждено</div>
-            <div class="value">
-                {{ _nf(stats_query.success.reward)|raw }} / {{ _nf(stats_all.success.reward)|raw }}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-3">
-    <h5>Кэшбэк</h5>
-    <div class="sum_information">
-        <div class="line">
-            <div class="name">Всего</div>
-            <div class="value">
-                {{ _nf(stats_query.all.cashback)|raw }} / {{ _nf(stats_all.all.cashback)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">В ожидании</div>
-            <div class="value">
-                {{ _nf(stats_query.wait.cashback)|raw }} / {{ _nf(stats_all.wait.cashback)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Отменено</div>
-            <div class="value">
-                {{ _nf(stats_query.revoke.cashback)|raw }} / {{ _nf(stats_all.revoke.cashback)|raw }}
-            </div>
-        </div>
-        <div class="line">
-            <div class="name">Подтверждено</div>
-            <div class="value">
-                {{ _nf(stats_query.success.cashback)|raw }} / {{ _nf(stats_all.success.cashback)|raw }}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-3">
-    <h5>Другое</h5>
-    <div class="sum_information">
-        <div class="line">
-            <div class="name">Пользователей</div>
-            <div class="value">
-                {{ stats_query.users }} / {{ stats_all.users }}
-            </div>
-        </div>
-    </div>
+<div class="col-md-12">
+    <table  class="table table-sum" >
+        <tr>
+            <th></th>
+            <th>Сумма заказов</th>
+            <th>Вознаграждение</th>
+            <th>Кэшбэк</th>
+            <th>Бонус другу</th>
+        </tr>
+        <tr class="line">
+            <td class="name">Всего</td>
+            <td class="value">{{ _nf(stats_query.all.order_price)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.all.reward)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.all.cashback)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.all.ref)|raw }}</td>
+        </tr>
+        <tr class="line">
+            <td class="name">В ожидании</td>
+            <td class="value">{{ _nf(stats_query.wait.order_price)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.wait.reward)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.wait.cashback)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.wait.ref)|raw }}</td>
+        </tr>
+        <tr class="line">
+            <td class="name">Отменено</td>
+            <td class="value">{{ _nf(stats_query.revoke.order_price)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.revoke.reward)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.revoke.cashback)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.revoke.ref)|raw }}</td>
+        </tr>
+        <tr class="line">
+            <td class="name">Подтверждено</td>
+            <td class="value">{{ _nf(stats_query.success.order_price)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.success.reward)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.success.cashback)|raw }}</td>
+            <td class="value">{{ _nf(stats_query.success.ref)|raw }}</td>
+        </tr>
+    </table>
 </div>
