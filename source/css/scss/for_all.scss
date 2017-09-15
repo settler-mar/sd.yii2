@@ -195,6 +195,14 @@ table .status_bg_1 {
   animation-fill-mode: both;
   opacity: 0;
 
+  .form-horizontal .form-group{
+    margin: 0;
+  }
+
+  .sign-up.popup-sign-up .sign-up-tagline{
+    width: 100%;
+  }
+
   .form-group{
     margin-bottom: 0;
   }

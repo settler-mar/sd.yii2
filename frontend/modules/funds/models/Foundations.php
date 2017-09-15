@@ -42,7 +42,7 @@ class Foundations extends \yii\db\ActiveRecord
       ['!imageImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['imageImage'], 'image',
         'minHeight' => 150,
-        'minWidth' => 300,
+        'minWidth' => 1000,
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],

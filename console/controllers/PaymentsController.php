@@ -69,7 +69,15 @@ class PaymentsController extends Controller
 
     if (is_array($options)) {
       $params = array_merge($params, $options);
-    } else {
+    } else if($options) {
+      $options_t=explode(',',$options);
+      foreach ($options_t as $t){
+        $t=explode('=',$t);
+        if($t[0]='days'){
+          $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $t[1]);
+        }
+      }
+    }else{
       $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $days); //последнии 7 дней
       //$params['status_updated_end'] = date('d.m.Y H:i:s');
     }
@@ -78,6 +86,7 @@ class PaymentsController extends Controller
 
     $users = [];
     //d($params);
+    //ddd($params);
 
     $payments = $admitad->getPayments($params);
     while ($payments) {
@@ -153,6 +162,11 @@ class PaymentsController extends Controller
             $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
           }
 
+          if(!$db_payment->closing_date){
+            $time=strtotime($payment['action_date']);
+            $time+=$store->hold_time*24*60*60;
+            $db_payment->closing_date=date("Y-m-d H:i:s",$time);
+          }
           $db_payment->save();
 
           //Создаем нотификацию пользователя
