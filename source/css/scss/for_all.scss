@@ -261,6 +261,10 @@ table .status_bg_1 {
       }
     }
 
+    &.notify_not_big{
+      max-width: 600px;
+    }
+
     &.notify_white{
       border-radius: 3px;
       overflow: hidden;

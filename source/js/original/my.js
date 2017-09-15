@@ -73,26 +73,27 @@ $("a[href='#showpromocode-noregister']").popup({
     $('.popup_content')[0].innerHTML = this.o.content;
   }
 });
-$("a[href='#comment-popup']").popup({
-  content : function() {
-    var content = this.ele.parentElement.parentElement.parentElement.cloneNode(true);
-    content.className += ' modal-popup';
-    var div = document.createElement('div');
-    div.className = 'comments';
-    div.append(content);
-    $(div).find('.current-comment__more').remove();
-    $(div).find('.comment.list').removeClass('list');
-    return div;
-  }
-  ,
-  width: function () {
-    var comments = $('.current-comment');
-    if (comments.length>1) {
-      return comments[0].offsetWidth * 0.9;
-    }
-    return 500;
-  }
+$(document).on('click',"a[href='#comment-popup']",function(e){
+  e.preventDefault();
+  var data={
+    buttonYes:false,
+    notyfy_class:"notify_white notify_not_big"
+  };
+
+  $this=$(this);
+  var content = $this.closest('.current-comment').clone();
+  content=content[0];
+  content.className += ' modal-popup';
+  var div = document.createElement('div');
+  div.className = 'comments';
+  div.append(content);
+  $(div).find('.current-comment__more').remove();
+  $(div).find('.comment.list').removeClass('list');
+  data.question= div.outerHTML;
+
+  notification.alert(data);
 });
+
 //пройти по комментам, ограничить длину текста, вставить ссылку "показать полностью"
 $('.current-comment').each(function(index, element) {
   var text = $(element).find('.text');

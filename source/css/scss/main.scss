@@ -420,6 +420,19 @@ $images: "/images";
   }
 }
 
+.notification_box{
+  .comments .current-comment{
+    height: auto;
+    //min-height: 250px;
+    margin: 0;
+    //padding: 0;
+
+    .text{
+      float: none;
+      width: 100%;
+    }
+  }
+}
 /* Dropdown
 ------------------------------------*/
 .dropdown-select {
