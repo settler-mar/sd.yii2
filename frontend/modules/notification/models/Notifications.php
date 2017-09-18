@@ -71,9 +71,9 @@ class Notifications extends \yii\db\ActiveRecord
       return false;
     }
 
-    $this->amount=(float)$this->amount;
-    $this->payment_id=(int)$this->payment_id;
     if ($this->isNewRecord) {
+      $this->amount=(float)$this->amount;
+      $this->payment_id=(int)$this->payment_id;
       $this->added = date('Y-m-d H:i:s');
     }
 
