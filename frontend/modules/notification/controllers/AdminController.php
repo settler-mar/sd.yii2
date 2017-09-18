@@ -39,6 +39,11 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('NotifiView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new NotificationsSearch();
 
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -61,6 +66,11 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('NotifiCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = new Notifications();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -86,6 +96,11 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('NotifiEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -107,6 +122,11 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('NotifiDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
