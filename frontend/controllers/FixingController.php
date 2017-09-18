@@ -12,8 +12,10 @@ use frontend\components\SdController;
  */
 class FixingController extends SdController{
   public function beforeAction($action) {
-    $this->enableCsrfValidation = true;
-    return parent::beforeAction($action);
+    $this->enableCsrfValidation = false;
+    Yii::$app->request->enableCsrfValidation = false;
+    parent::beforeAction($action);
+    return true;
   }
 
   /**
@@ -21,6 +23,7 @@ class FixingController extends SdController{
    */
   public function actionPayment(){
     $request=Yii::$app->request;
+
     $task= new Task();
     $task->task=1;
     $task->param=time();
