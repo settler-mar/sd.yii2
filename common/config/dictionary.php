@@ -178,8 +178,8 @@ $dict = [
       'notification_title_manual_1'=>'Бонус за регистрацию',
       'notification_text_manual_1'=>'Вам был начислен бонус <b>({{amount}} руб.)</b> за регистрацию на нашем сайте.',
 
-      'notification_title_manual_2'=>'{{text}}',
-      'notification_text_manual_2'=>'Вам был начислен бонус <b>{{amount}} руб.)</b> от администрации SecretDiscounter. <br> {{admin_comment}}',
+      'notification_title_manual_2'=>'Бонус от администрации',
+      'notification_text_manual_2'=>'Вам был начислен бонус <b>({{amount}} руб.)</b> от администрации SecretDiscounter.',
 
       'notification_title_manual_3'=>'Бонус за регистрацию',
       'notification_text_manual_3'=>'Поздравляем, вам, как новому пользователю, подключен премиум-аккаунт (+30% кэшбэка). Срок его действия – 10 дней с момента регистрации на нашем сайте (до {{text}}).',

@@ -150,17 +150,26 @@ class MessageParser extends Component
   {
     $data=(array)$data;
     $data=$this->getFullDataNotification($data['uid'],$data);
+
     if($data['twig_template']!=0){
-      return $this->render('notification_text_manual_'.$data['twig_template'], $data);
+      $code='notification_text_manual_'.$data['twig_template'];
+    }else {
+      $code = 'notification_text';
+      if ($data['type_id'] == 1) {
+        $code .= '_' . $data['status'];
+      }
+      if ($data['type_id'] == 3) {
+        $code .= '_ref_' . $data['status'];
+      }
     }
-    $code='notification_text';
-    if($data['type_id']==1){
-      $code.='_'.$data['status'];
-    }
-    if($data['type_id']==3){
-      $code.='_ref_'.$data['status'];
-    }
-    return $this->render($code, $data);
+
+    $out=$this->render($code, $data);
+
+    if($data['admin_comment'] && strlen($data['admin_comment'])>5){
+      $out.='<br><br><b>Комментарий:</b><br> <span style="font-style: italic;">'.str_replace("\n","<br>",$data['admin_comment']).'</span>';
+    };
+
+    return $out;
   }
 
 }
