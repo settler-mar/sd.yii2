@@ -74,7 +74,7 @@ class AdminController extends Controller
     $model = new Notifications();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['update', 'id' => $model->uid]);
+      return $this->redirect(['index']);
     } else {
       $model->status=2;
       $model->twig_template=2;
@@ -104,7 +104,7 @@ class AdminController extends Controller
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['update', 'id' => $model->uid]);
+      return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
         'model' => $model,
