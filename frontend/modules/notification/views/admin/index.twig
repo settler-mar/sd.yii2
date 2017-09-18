@@ -1,0 +1,89 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Уведомления/бонусы' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="content-wrapper">
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{ html.encode(this.title) }}</h1>
+        {# include('_search.twig', {'model': searchModel}) #}
+        <p>
+          <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать' }}</a>
+        </p>
+        {{ grid_view_widget({
+            'dataProvider': dataProvider,
+            'filterModel': searchModel,
+              'columns': [
+              {'class': '\\yii\\grid\\SerialColumn'},
+
+              'uid',
+              {
+                'format':'raw',
+                'attribute':'user_id',
+                'value':'email',
+              },
+              {
+                  'format':'raw',
+                  'attribute':'type_id',
+                  'value' : 'stringType',
+                  'filter':type_list
+              },
+                'amount',
+            {
+                'format':'raw',
+                'attribute':'payment_id',
+                'value' : 'stringPayment'
+            },
+            {
+                'format':'raw',
+                'attribute':'status',
+                'value' : 'stringStatus',
+                'filter':{
+                '':'Любой',
+                0:"В ожидании",
+                1:"Отклонён",
+                2:"Подтвержден",
+            },
+            },
+            {
+                'format':'raw',
+                'attribute':'added',
+                'headerOptions' : {
+                    'class' : 'col-md-2'
+                },
+                'filter': data_ranger
+            },
+            {
+                'format':'raw',
+                'attribute':'is_viewed',
+                'value' : 'stringIsViewed',
+                'filter':{
+                '':'Любой',
+                0:"Нет",
+                1:"Просмотрен",
+            },
+            },
+              {'class': '\\yii\\grid\\ActionColumn',
+                'template' : '{update} {delete}',
+              },
+            ],
+          })
+        }}
+        {#
+        'status',
+        'amount',
+        'payment_id',
+        'text:ntext',
+        'admin_comment:ntext',
+        'twig_template'
+        #}
+      </div>
+    </div>
+  </section>
+</div>

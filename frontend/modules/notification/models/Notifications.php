@@ -2,6 +2,7 @@
 
 namespace frontend\modules\notification\models;
 
+use frontend\modules\users\models\Users;
 use yii;
 use frontend\modules\cache\models\Cache;
 
@@ -50,17 +51,17 @@ class Notifications extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'uid' => 'Uid',
-            'user_id' => 'User ID',
-            'type_id' => 'Type ID',
-            'added' => 'Added',
-            'is_viewed' => 'Is Viewed',
-            'status' => 'Status',
-            'amount' => 'Amount',
-            'payment_id' => 'Payment ID',
+            'uid' => 'ID',
+            'user_id' => 'Пользователь',
+            'type_id' => 'Тип',
+            'added' => 'Добавлено',
+            'is_viewed' => 'Просмотрено',
+            'status' => 'Статус',
+            'amount' => 'Сумма',
+            'payment_id' => 'Связанный платеж',
             'text' => 'Text',
-            'admin_comment' => 'Admin Comment',
-            'twig_template' => 'Twig Template',
+            'admin_comment' => 'Комментарий администратора',
+            'twig_template' => 'Шаблон',
         ];
     }
 
@@ -119,5 +120,56 @@ class Notifications extends \yii\db\ActiveRecord
   {
     Cache::deleteName('account_notification_unread_count_' . $this->user_id);
     Cache::clearName('account_notifications' . $this->user_id);
+  }
+
+  public function getUser()
+  {
+    return $this->hasOne(Users::className(), ['uid' => 'user_id']);
+  }
+
+  public function getEmail(){
+    //return $this->user->email;
+    $user=$this->user;
+    if (!$user){
+      return '-';
+    }
+    return '<a href="/admin/users/update?id='.$user->uid.'">'.$user->email.'('.$user->uid.')</a>';
+  }
+
+  public function getStringIsViewed(){
+    if ($this->is_viewed == 0) return 'Нет';
+    if ($this->is_viewed == 1) return 'Порсмотрен';
+  }
+
+  public function getStringType(){
+    $list=(\Yii::$app->params['dictionary']['notification_type']);
+    $tpl_twig=(\Yii::$app->params['dictionary']['twig_list_name']);
+
+    if(!isset($list[$this->type_id])){
+      return '-';
+    }
+
+    if(
+      $this->type_id==2 &&
+      $this->twig_template>0 &&
+      isset($tpl_twig[$this->twig_template])
+    ){
+      return $tpl_twig[$this->twig_template];
+    }
+
+    return $list[$this->type_id];
+  }
+
+  public function getStringStatus()
+  {
+    $out=Yii::$app->help->colorStatus($this->status);
+    return $out;
+  }
+
+  public function getStringPayment(){
+    if ($this->payment_id==0){
+      return '-';
+    };
+    return '<a href="/admin/payments/update/id:'.$this->payment_id.'" target="_blank">'.$this->payment_id.'</a>';
   }
 }

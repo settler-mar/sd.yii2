@@ -1,0 +1,45 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+            </div>
+            {% set form = active_form_begin() %}
+                <div class="col-md-6">
+                    {{ form.field(model, 'user_id').textInput()|raw }}
+
+                    {{ form.field(model, 'type_id').dropDownList(type_list)|raw }}
+
+                    {{ form.field(model, 'added').textInput()|raw }}
+
+                    {{ form.field(model, 'status').dropDownList({
+                        '0':'В ожидании',
+                        '1':'Отклонён',
+                        '2':'Подтвержден'
+                    })|raw }}
+
+                </div>
+                <div class="col-md-6">
+                    {{ form.field(model, 'amount').textInput()|raw }}
+
+                    {{ form.field(model, 'payment_id').textInput()|raw }}
+
+                    {{ form.field(model, 'twig_template').dropDownList(twig_template_list)|raw }}
+
+                    {{ form.field(model, 'is_viewed').dropDownList({
+                        '0':'Нет',
+                        '1':'Да',
+                    })|raw }}
+                </div>
+                <div class="col-md-12">
+                    {{ form.field(model, 'text').textarea({'rows':6})|raw }}
+                    {{ form.field(model, 'admin_comment').textarea({'rows':6})|raw }}
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Сохранить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>

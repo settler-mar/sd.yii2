@@ -1,26 +1,28 @@
 <?php
 
-namespace frontend\modules\withdraw\models;
+namespace frontend\modules\notification\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\modules\withdraw\models\UsersWithdraw;
+use frontend\modules\notification\models\Notifications;
 
 /**
- * UsersWithdrawSearch represents the model behind the search form about `frontend\modules\withdraw\models\UsersWithdraw`.
+ * NotificationsSearch represents the model behind the search form about `frontend\modules\notification\models\Notifications`.
  */
-class UsersWithdrawSearch extends UsersWithdraw
+class NotificationsSearch extends Notifications
 {
+  public $added_range;
   /**
    * @inheritdoc
    */
   public function rules()
   {
     return [
-      [['uid', 'user_id', 'process_id', 'status'], 'integer'],
-      [['bill', 'request_date', 'user_comment', 'admin_comment'], 'safe'],
+      [['uid', 'user_id', 'type_id', 'is_viewed', 'status', 'payment_id', 'twig_template'], 'integer'],
+      [['added', 'text', 'admin_comment'], 'safe'],
       [['amount'], 'number'],
+      [['added_range'], 'safe'],
     ];
   }
 
@@ -42,10 +44,8 @@ class UsersWithdrawSearch extends UsersWithdraw
    */
   public function search($params)
   {
-    $query = UsersWithdraw::find();
-
+    $query = Notifications::find();
     // add conditions that should always apply here
-
 
     $dataProvider = new ActiveDataProvider([
       'query' => $query,
@@ -61,7 +61,10 @@ class UsersWithdrawSearch extends UsersWithdraw
 
     $this->load($params);
 
-    $this->isNewRecord = false;
+    $this->isNewRecord=false;
+    if (!$this->validate()) {
+      return $dataProvider;
+    }
     if (!$this->validate()) {
       // uncomment the following line if you do not want to return any records when validation fails
       // $query->where('0=1');
@@ -72,15 +75,25 @@ class UsersWithdrawSearch extends UsersWithdraw
     $query->andFilterWhere([
       'uid' => $this->uid,
       'user_id' => $this->user_id,
-      'process_id' => $this->process_id,
-      'amount' => $this->amount,
+      'type_id' => $this->type_id,
+      'is_viewed' => $this->is_viewed,
       'status' => $this->status,
-      'request_date' => $this->request_date,
+      'amount' => $this->amount,
+      'payment_id' => $this->payment_id,
+      'twig_template' => $this->twig_template,
     ]);
 
-    $query->andFilterWhere(['like', 'bill', $this->bill])
-      ->andFilterWhere(['like', 'user_comment', $this->user_comment])
+    $query->andFilterWhere(['like', 'text', $this->text])
       ->andFilterWhere(['like', 'admin_comment', $this->admin_comment]);
+
+    if(!empty($this->added_range) && strpos($this->added_range, '-') !== false) {
+      //ddd($this->created_at_range);
+      list($start_date, $end_date) = explode(' - ', $this->added_range);
+      $start_date=date('Y-m-d',strtotime($start_date));
+      $end_date=date('Y-m-d',strtotime($end_date));
+      $query->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+    }
+
 
     return $dataProvider;
   }
