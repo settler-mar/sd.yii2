@@ -26,6 +26,13 @@ class AdminController extends Controller
     ];
   }
 
+
+  function beforeAction($action)
+  {
+    $this->layout = '@app/views/layouts/admin.twig';
+    return true;
+  }
+
   /**
    * Lists all Meta models.
    * @return mixed
