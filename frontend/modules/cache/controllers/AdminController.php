@@ -40,7 +40,13 @@ class AdminController extends \yii\web\Controller
             throw new yii\web\notFoundHTTPException;
         } else {
             Cache::clear();
-            return json_encode(['html' => 'Кэш очищен. Данные экспорта обновлены.']);
+            return json_encode(['html' =>
+              '
+              <center>
+                 Кэш очищен. Данные экспорта обновлены.<br>
+                <a class="btn btn-success" href="/admin">На стартовую</a>
+              </center>
+            ']);
         }
     }
 
