@@ -101,4 +101,15 @@ class TaskController extends Controller
     };
     \Yii::$app->balanceCalc->todo($ref_id);
   }
+
+  /**
+   * пересчет количества рефералов пользователя
+   */
+  public function actionUserRefCount(array $users)
+  {
+    if($users[0]==0){
+      $users=false;
+    };
+    \Yii::$app->balanceCalc->todo($users,'ref');
+  }
 }
