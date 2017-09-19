@@ -276,6 +276,17 @@
   .header-nav.open nav ul.primary-nav {
     position: relative;
     padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .header-nav.open nav ul.primary-nav li.stores {
+    order: 2;
+  }
+  .header-nav.open nav ul.primary-nav li.coupons-l {
+    order: 1;
+  }
+  .header-nav.open nav ul.primary-nav li.promo-l {
+    order: 0;
   }
 
   .header-nav.open nav ul.primary-nav li.stores > a,
