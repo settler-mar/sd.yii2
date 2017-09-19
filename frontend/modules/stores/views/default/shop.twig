@@ -140,43 +140,35 @@
 </section>
 {% endif %}
 
+{% if current_store.is_active==0 %}
+    <section class="store-information store-not-active">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 store-not-active__content">
+                    <div class="description">
+                        {{ _constant('shop_not_active_description')|raw}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+
 {% if _is_empty(current_store.displayed_cashback) %}
 <section class="store-information store-not-active">
     <div class="container">
         <div class="row no-cashback">
             <div class="col-md-12 store-not-active__content">
                 <div class="description">
-                    {#<p>К сожалению, магазин {{current_store.name}} запретил выплачивать кэшбэк с покупок в их магазине,#}
-                    {#но вы все равно можете совершать там покупки, переходя по нашей ссылке#}
-                    {#или используя купоны и промокоды (уже получая бесплатную скидку),#}
-                    {#с той лишь разницей, что сумма Вашего кэшбэка будет полностью направлена на#}
-                    {#<a href="/dobro">благотворительность</a>. Спасибо!#}
-                        {#</p>#}
                     {{ _constant('shop_no_cashback')|raw}}
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 {% endif %}
-{% if current_store.is_active==0 %}
-<section class="store-information store-not-active">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 store-not-active__content">
-                <div class="description">
-                    {{ _constant('shop_not_active_description')|raw}}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
 
 {% include 'parts/calc_cashback.twig' %}
-
 
 <section class="store-2line">
     <div class="container">
