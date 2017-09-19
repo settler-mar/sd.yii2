@@ -81,7 +81,8 @@ class AdminController extends Controller
             $request = Yii::$app->request;
             $validator = new \yii\validators\NumberValidator();
             $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
-            if (!$request->post('coupon_id') || !$validator->validate($request->post('coupon_id'))
+            if (!$request->validateCsrfToken()
+            || !$request->post('coupon_id') || !$validator->validate($request->post('coupon_id'))
             || !$request->post('category_id') || !is_array($request->post('category_id'))
             || !$validatorEach->validate($request->post('category_id'))
             ) {

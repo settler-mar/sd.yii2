@@ -11,6 +11,7 @@
                     {% if categories|length > 0 %}
                         <p class="title">Категории купона</p>
                         <form method="post" action="/admin/coupons/update/id:{{coupon.uid}}">
+                            <input type="hidden" name="{{ app.request.csrfParam }}" value="{{ app.request.csrfToken }}">
                             <p>
                                 {% for category in categories %}
                                     <input {% if category.uid in coupon_categories %} checked {% endif %} type="checkbox" name="category_id[]" value="{{category.uid}}"><span>{{category.name}}</span><br>
