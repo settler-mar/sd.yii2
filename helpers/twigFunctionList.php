@@ -301,6 +301,9 @@ $functionsList=[
     $email=explode('@',$email);
     return $email[0];
   },
+  '_n_to_br'=>function ($txt) {
+    return str_replace("\n",'<br>',$txt);
+  },
 
 ];
 

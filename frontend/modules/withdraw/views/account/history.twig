@@ -25,6 +25,7 @@
                             <th>Счёт/Номер/Email</th>
                             <th>Сумма</th>
                             <th>Статус</th>
+                            <th>Комментарий администратора</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +47,9 @@
                             {% if w.status == 0 %}
                             <span class="fa fa-times"></span> Отклонён
                             {% endif %}     
+                            </td>
+                            <td>
+                                {{ _n_to_br(w.admin_comment) | raw}}
                             </td>
                         </tr>                        
                         {% endfor %}

@@ -152,7 +152,7 @@ class Notifications extends \yii\db\ActiveRecord
   public function getStringIsViewed()
   {
     if ($this->is_viewed == 0) return 'Нет';
-    if ($this->is_viewed == 1) return 'Порсмотрен';
+    if ($this->is_viewed == 1) return 'Просмотрен';
   }
 
   public function getStringType()

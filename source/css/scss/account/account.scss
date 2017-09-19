@@ -1382,6 +1382,7 @@ table {
     .table-wh td:nth-of-type(3):before { content: "Счёт/Номер/Email"; }
     .table-wh td:nth-of-type(4):before { content: "Сумма"; color: #1b2527; font-weight: normal;}
     .table-wh td:nth-of-type(5):before { content: "Статус";  color: #1b2527; font-weight: normal;}
+    .table-wh td:nth-of-type(6):before { content: "Комментарий";  color: #1b2527; font-weight: normal;}
 
     .table-support td:nth-of-type(1):before { content: "Тема"; }
     .table-support td:nth-of-type(2):before { content: "Дата"; }
