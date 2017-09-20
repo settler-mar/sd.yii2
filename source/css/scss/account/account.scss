@@ -110,6 +110,17 @@ $images: "/images";
 
         &__header {
             text-align: center;
+            padding: 0 5px;
+            display: flex;
+            height: 82px;
+            overflow: hidden;
+            a {
+                font-weight: 700;
+                font-size: 15px;
+                color: #283133;
+                margin: auto;
+                text-decoration: none;
+            }
         }
 
         .gotostore {

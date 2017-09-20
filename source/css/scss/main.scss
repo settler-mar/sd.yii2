@@ -70,6 +70,9 @@ $images: "/images";
 /* Breadcrumbs
 ------------------------------------*/
 .breadcrumbs {
+  ul {
+    padding: 0;
+  }
   .col-md-12 {
     height: 30px;
   }
@@ -1044,7 +1047,7 @@ $images: "/images";
     padding-bottom: 0;
     margin-top: 10px;
     line-height: 26px;
-    font-weight: 500;
+    font-weight: 700;
     color: #3D4351;
   }
 

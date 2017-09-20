@@ -604,14 +604,16 @@ $(function() {
                                         "data-original-title": "Удалить из избранного"
                                     });
 
-                                    self.find(".fa").removeClass("fa-spin fa-star-o").addClass("pulse2 fa-star");
+                                    // self.find(".fa").removeClass("fa-spin fa-star-o").addClass("pulse2 fa-star");
+                                    self.find(".fa").removeClass("fa-spin fa-heart-o").addClass("pulse2 fa-heart");
                                 } else if(type == "delete") {
                                     self.attr({
                                         "data-state": "add",
                                         "data-original-title" : "Добавить в избранное"
                                     });                   
 
-                                    self.find(".fa").removeClass("fa-spin fa-star").addClass("pulse2 fa-star-o muted");             
+                                    // self.find(".fa").removeClass("fa-spin fa-star").addClass("pulse2 fa-star-o muted");
+                                    self.find(".fa").removeClass("fa-spin fa-heart").addClass("pulse2 fa-heart-o muted");
                                 }
                             }
                         }
