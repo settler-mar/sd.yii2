@@ -22,16 +22,19 @@
                     {% if user_id %}
                         {% if current_store.uid in fav_ids %}
                         <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить из избранного">
-                            <span class="fa fa-star"></span>
+                            {#<span class="fa fa-star"></span>#}
+                            <span class="fa fa-heart"></span>
                         </a>
                         {% else %}
                         <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить в избранное">
-                            <span class="fa fa-star-o muted"></span>
+                            {#<span class="fa fa-star-o muted"></span>#}
+                            <span class="fa fa-heart-o muted"></span>
                         </a>
                         {% endif %}
                     {% else %}
                     <a class="favorite-link ignore-hash" href="#registration" data-toggle="tooltip" data-placement="top" data-original-title="Добавить в избранное">
-                        <span class="fa fa-star-o muted"></span>
+                        {#<span class="fa fa-star-o muted"></span>#}
+                        <span class="fa fa-heart-o muted"></span>
                     </a>
                     {% endif %}
                 </div>

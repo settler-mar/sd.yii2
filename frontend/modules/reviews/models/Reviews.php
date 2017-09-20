@@ -125,6 +125,7 @@ class Reviews extends \yii\db\ActiveRecord
         ->select(['r.*', 'u.name', 'u.photo', 'u.email'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
         ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
+        ->orderBy('added DESC')
         ->asArray()
         ->all();
       return $reviews;
