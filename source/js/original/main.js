@@ -901,32 +901,32 @@ $(function() {
         {
             'name': 'Fibonacci',
             'href': '/stores/fibonacci',
-            'discount': '5000 руб'
+            'discount': '5000 руб.'
         },
         {
             'name': 'ОТП Банк RU',
             'href': '/stores/otp-bank-ru',
-            'discount': '2700 руб'
+            'discount': '2700 руб.'
         },
         {
             'name': 'МебельЖе',
             'href': '/stores/mebelzhe',
-            'discount': '2500 руб'
+            'discount': '2500 руб.'
         },
         {
             'name': '2can.ru',
             'href': '/stores/2can',
-            'discount': '1955 руб'
+            'discount': '1955 руб.'
         },
         {
             'name': 'LiveTex',
             'href': '/stores/livetex',
-            'discount': '1880 руб'
+            'discount': '1880 руб.'
         },
         {
             'name': 'ЕЦВДО',
             'href': '/stores/ecvdo',
-            'discount': '1800 руб'
+            'discount': '1800 руб.'
         },
     ];
 
@@ -948,22 +948,22 @@ $(function() {
         } else {
             msg +='купил(a) со скидкой '+ shop.discount + '% и ';
             discount = Math.round(Math.random() * 100000) / 100;
-            discount = discount.toFixed(2) + ' руб';
+            discount = discount.toFixed(2) + ' руб.';
         }
-        msg += 'заработал(a) ' + discount + ' по заказу';
-        msg += '<br><a href="' + shop.href + '">' + shop.name + '</a>';
+        msg += 'заработал(a) ' + discount + ' кэшбэка в ';
+        msg += '<a href="' + shop.href + '">' + shop.name + '</a>';
         return msg;
     };
 
     function showMSG(){
         var f=this.showMSG.bind(this);
         notification.notifi({
-            time:10000,
             message:this.randomMSG(),
-            img:'//graph.facebook.com/1902351173329946/picture?type=large',
-            title: 'Новая покупка',
+            //img:'//graph.facebook.com/1902351173329946/picture?type=large',
+            title: 'Новый кэшбэк',
         });
         setTimeout(f,10000+Math.round(Math.random() * 30000));
+        //setTimeout(f,10000);
     }
 
     f=showMSG.bind({showMSG:showMSG,randomMSG:randomMSG});

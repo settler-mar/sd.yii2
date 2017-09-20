@@ -3,7 +3,7 @@ var notification = (function() {
   var mouseOver = 0;
   var timerClearAll = null;
   var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-  var time = 3000;
+  var time = 10000;
 
   var notification_box =false;
   var is_init=false;
