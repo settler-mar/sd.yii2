@@ -29,7 +29,7 @@
         <p><span>Посещений:</span> {{model.visit}}</p>
 
     <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+        <button type="submit">{{ model.isNewRecord ? 'Создать' : 'Изменить' }}</button>
     </div>
     {{ active_form_end() }}
 </div>

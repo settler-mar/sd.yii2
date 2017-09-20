@@ -69,29 +69,21 @@ class AdminController extends Controller
             return false;
         }
         $model = $this->findModel($id);
-        $categories = CategoriesCoupons::find()
-          ->orderBy('name ASC')
-          ->asArray()
-          ->all();
+        $validator = new \yii\validators\NumberValidator();
+        $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+        $request = Yii::$app->request;
 
-        if (Yii::$app->request->post('type') != 'update_categories' &&
-            $model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($request->post('type') != 'update_categories' &&
+            $model->load($request->post()) && $model->save()) {
+            //изменение модели
             return $this->redirect(['index']);
-        } elseif (Yii::$app->request->post('type') == 'update_categories') {
-            $request = Yii::$app->request;
-            $validator = new \yii\validators\NumberValidator();
-            $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
-            if (!$request->validateCsrfToken()
-            || !$request->post('coupon_id') || !$validator->validate($request->post('coupon_id'))
-            || !$request->post('category_id') || !is_array($request->post('category_id'))
-            || !$validatorEach->validate($request->post('category_id'))
+        } elseif ($request->post('type') == 'update_categories' &&
+            $request->validateCsrfToken()
+            && $request->post('coupon_id') && $validator->validate($request->post('coupon_id'))
+            && $request->post('category_id') && is_array($request->post('category_id'))
+            && $validatorEach->validate($request->post('category_id'))
             ) {
-                return $this->render('update.twig', [
-                  'coupon' => $model,
-                  'coupon_categories' => array_column($model->categories, 'uid'),
-                  'categories' => $categories,
-                ]);
-            }
+            //изменение категорий купона
             CouponsToCategories::deleteAll(['coupon_id' => $request->post('coupon_id')]);
             foreach ($request->post('category_id') as $categoryId) {
                 $categoryCoupons = new CouponsToCategories;
@@ -101,6 +93,11 @@ class AdminController extends Controller
             }
             return $this->redirect(['index']);
         } else {
+            //вывод формы
+            $categories = CategoriesCoupons::find()
+              ->orderBy('name ASC')
+              ->asArray()
+              ->all();
             return $this->render('update.twig', [
                 'coupon' => $model,
                 'coupon_categories' => array_column($model->categories, 'uid'),
