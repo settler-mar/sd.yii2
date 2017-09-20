@@ -6,10 +6,12 @@ use Yii;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CouponsSearch;
 use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\coupons\models\CouponsToCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\components\Help;
+use yii\validators;
 
 /**
  * AdminController implements the CRUD actions for Coupons model.
@@ -55,40 +57,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Displays a single Coupons model.
-     * @param integer $id
-     * @return mixed
-     */
-//    public function actionView($id)
-//    {
-//        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CouponsView')) {
-//            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-//            return false;
-//        }
-//        return $this->render('view.twig', [
-//            'model' => $this->findModel($id),
-//        ]);
-//    }
-
-    /**
-     * Creates a new Coupons model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-//    public function actionCreate()
-//    {
-//        $model = new Coupons();
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->uid]);
-//        } else {
-//            return $this->render('create.twig', [
-//                'model' => $model,
-//            ]);
-//        }
-//    }
-
-    /**
      * Updates an existing Coupons model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -101,14 +69,35 @@ class AdminController extends Controller
             return false;
         }
         $model = $this->findModel($id);
-        $categories = CategoriesCoupons::find()
-          ->orderBy('name ASC')
-          ->asArray()
-          ->all();
+        $validator = new \yii\validators\NumberValidator();
+        $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+        if ($request->post('type') != 'update_categories' &&
+            $model->load($request->post()) && $model->save()) {
+            //изменение модели
+            return $this->redirect(['index']);
+        } elseif ($request->post('type') == 'update_categories' &&
+            $request->validateCsrfToken()
+            && $request->post('coupon_id') && $validator->validate($request->post('coupon_id'))
+            && $request->post('category_id') && is_array($request->post('category_id'))
+            && $validatorEach->validate($request->post('category_id'))
+            ) {
+            //изменение категорий купона
+            CouponsToCategories::deleteAll(['coupon_id' => $request->post('coupon_id')]);
+            foreach ($request->post('category_id') as $categoryId) {
+                $categoryCoupons = new CouponsToCategories;
+                $categoryCoupons->coupon_id = $request->post('coupon_id');
+                $categoryCoupons->category_id = $categoryId;
+                $categoryCoupons->save();
+            }
+            return $this->redirect(['index']);
         } else {
+            //вывод формы
+            $categories = CategoriesCoupons::find()
+              ->orderBy('name ASC')
+              ->asArray()
+              ->all();
             return $this->render('update.twig', [
                 'coupon' => $model,
                 'coupon_categories' => array_column($model->categories, 'uid'),

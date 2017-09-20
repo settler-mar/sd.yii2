@@ -2,11 +2,17 @@
 <div class="coupons-form">
     {% set form = active_form_begin() %}
 
+        {{ form.field(model, 'uid').textInput({'disabled': 'disabled'})|raw }}
+
         {{ form.field(model, 'coupon_id').textInput({'disabled': 'disabled'})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
+        <p><span>Image:</span> <img src="/images/logos/{{model.store.logo}}"></p>
+
         {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+        <p><span>Магазин:</span> <a href="/admin/stores/update/id:{{model.store.uid}}">{{model.store.name}}</a></p>
 
         {{ form.field(model, 'date_start').textInput()|raw }}
 
@@ -20,12 +26,10 @@
 
         {{ form.field(model, 'species').textInput()|raw }}
 
-        {{ form.field(model, 'visit').textInput()|raw }}
-
-        {{ form.field(model, 'store_id').textInput()|raw }}
+        <p><span>Посещений:</span> {{model.visit}}</p>
 
     <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+        <button type="submit">{{ model.isNewRecord ? 'Создать' : 'Изменить' }}</button>
     </div>
     {{ active_form_end() }}
 </div>
