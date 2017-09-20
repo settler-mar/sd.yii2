@@ -55,11 +55,13 @@ class Meta extends \yii\db\ActiveRecord
 
     public static function findByUrl($url,$model=false)
     {
-      if(isset(Yii::$app->params['url_mask'])){
+      if (isset(Yii::$app->params['url_mask'])) {
         $page=Yii::$app->params['url_mask'];
         $page=str_replace('default/','',$page);
         $page=str_replace('/default','',$page);
-      }else {
+      } elseif (isset(Yii::$app->params['url_no_page'])) {
+        $page = Yii::$app->params['url_no_page'];
+      } else {
         $page = preg_replace('/\/$/', '', $url);
       }
 
