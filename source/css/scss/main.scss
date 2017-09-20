@@ -2171,6 +2171,17 @@ $images: "/images";
   .address {
     min-height: 200px;
 
+    &__head {
+      text-transform: none;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    p {
+      font-size: 13px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
     span {
       font-size: 13px;
     }
@@ -2195,6 +2206,14 @@ $images: "/images";
 /* Recommendations
 ------------------------------------*/
 .recommendations {
+  &__item {
+    &-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
   p {
     font-weight: 500;
   }
@@ -2916,4 +2935,18 @@ div .popup {
     color: #e6ae03;
   }
 }
+.sd-content {
+  h5 {
+    font-weight: 700;
+    font-size: 14px;
+  }
+}
+.faq__header,
+.howitworks__header,
+.loayalty__header,
+.promo__header,
+.recommendations__header {
+ font-size: 28px;
+}
+
 @import  "../external/queries";
