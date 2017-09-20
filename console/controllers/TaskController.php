@@ -112,4 +112,36 @@ class TaskController extends Controller
     };
     \Yii::$app->balanceCalc->todo($users,'ref');
   }
+
+  public function actionGenerateUserList(){
+    $users=Users::find()
+      ->select(['name','photo'])
+      ->andWhere('registration_source!=\'\'')
+      ->andWhere('registration_source!=\'default\'')
+      ->andWhere('name!=\'\'')
+      ->orderBy('last_login')
+      ->asArray()
+      ->limit(300)
+      ->all();
+
+    $i=0;
+    foreach ($users as &$user){
+      $user['name']=explode(' ',$user['name']);
+      if(count($user['name'])>1){
+        $user['name']=$user['name'][0].' '.mb_substr($user['name'][1],0,1).'.';
+      }else{
+        $user['name']=$user['name'][0];
+      }
+
+      $i++;
+      if($i==4){
+        $i=0;
+        $user['photo']='/images/no_ava.png';
+      }
+    }
+
+    $dir=(realpath(__DIR__.'/../../frontend/web/js'));
+    file_put_contents($dir . '/user_list.json', json_encode($users));
+
+  }
 }

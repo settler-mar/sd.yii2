@@ -234,7 +234,7 @@ var notification = (function() {
 
 $('[ref=popup]').on('click',function (e){
   e.preventDefault();
-  $this=$(this)
+  $this=$(this);
   el=$($this.attr('href'));
   data=el.data();
 

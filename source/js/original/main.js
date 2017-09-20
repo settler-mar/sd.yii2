@@ -819,6 +819,8 @@ $(function() {
         'Полина', 'Александра', 'Евгений', 'Кристина', 'Кирилл', 'Денис', 'Виктор', 'Константин', 'Ангелина', 'Яна', 'Алиса', 'Егор'
     ];
 
+    var users;
+
     shops = [
         {
             'name': 'Aliexpress',
@@ -941,8 +943,12 @@ $(function() {
         return randomItem() + ' ' + f[0] + '.';
     }
 
-    function randomMSG() {
-        msg = randomName() + ' только что ';
+    function randomUser() {
+        return users[Math.floor(Math.random() * users.length)]
+    };
+
+    function randomMSG(user) {
+        msg = user.name + ' только что ';
         shop = shops[Math.floor(Math.random() * shops.length)];
 
         if (shop.discount.search(' ') > 0) {
@@ -957,17 +963,22 @@ $(function() {
         return msg;
     };
 
-    function showMSG(){
-        var f=this.showMSG.bind(this);
+    function showMSG() {
+        var f = this.showMSG.bind(this);
+        var user = randomUser();
         notification.notifi({
-            message:this.randomMSG(),
-            //img:'//graph.facebook.com/1902351173329946/picture?type=large',
+            message: this.randomMSG(user),
+            img: user.photo,
             title: 'Новый кэшбэк',
         });
-        setTimeout(f,10000+Math.round(Math.random() * 30000));
-        //setTimeout(f,10000);
+        setTimeout(f, 10000 + Math.round(Math.random() * 20000));
     }
 
-    f=showMSG.bind({showMSG:showMSG,randomMSG:randomMSG});
-    setTimeout(f,10000+Math.round(Math.random() * 30000));
+    function startShowMSG(data){
+        users=data;
+        var f = this.showMSG.bind(this);
+        setTimeout(f,10000+Math.round(Math.random() * 20000));
+    }
+    f=startShowMSG.bind({showMSG:showMSG,randomMSG:randomMSG});
+    $.post('/js/user_list.json',f,'json');
 }());
