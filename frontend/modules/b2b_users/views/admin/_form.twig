@@ -14,16 +14,17 @@
 
                     {{ form.field(model, 'last_name').textInput({'maxlength':true})|raw }}
 
-                    {{ form.field(model, 'city').textInput()|raw }}
-
                     {{ form.field(model, 'password').textInput({'maxlength':true})|raw }}
-
-                    {{ form.field(model, 'created_at').textInput()|raw }}
-
-                    {{ form.field(model, 'login_at').textInput()|raw }}
-
-                    {{ form.field(model, 'ip').textInput({'maxlength':true})|raw }}
                 </div>
+                {% if(not(model.isNewRecord)) %}
+                    <div class="col-md-6">
+                        {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'login_at').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'ip').textInput({'disabled':true})|raw }}
+                    </div>
+                {% endif %}
                 <div class="col-md-12">
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

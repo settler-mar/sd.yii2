@@ -22,54 +22,87 @@ use Yii;
  */
 class B2bUsers extends \yii\db\ActiveRecord
 {
-    public $password;
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'b2b_users';
+  public $password;
+
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'b2b_users';
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      [['email', 'first_name', 'last_name'], 'required'],
+      [['email'], 'email'],
+      [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
+      ['password', 'trim'],
+      [['password'], 'string', 'max' => 60],
+      [['password'], 'string', 'min' => 5],
+      [['created_at', 'login_at'], 'safe'],
+      [['email'], 'string', 'max' => 255],
+      [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
+      [['auth_key'], 'string', 'max' => 32],
+      [['ip'], 'string', 'max' => 20],
+    ];
+  }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['email', 'first_name', 'last_name', 'city'], 'required'],
-            [['email'], 'email'],
-            [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
-            ['password', 'trim'],
-            [['password'], 'string', 'max' => 60],
-            [['password'], 'string', 'min' => 5],
-            [['city'], 'integer'],
-            [['created_at', 'login_at'], 'safe'],
-            [['email'], 'string', 'max' => 255],
-            [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
-            [['auth_key'], 'string', 'max' => 32],
-            [['ip'], 'string', 'max' => 20],
-        ];
+    if ($this->isNewRecord) {
+      //$this->reg_ip = $_SERVER["REMOTE_ADDR"];
+      $this->created_at = date('Y-m-d H:i:s');
+
+      if (!isset($this->auth_key)) {
+        $this->auth_key = '';
+      }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'email' => 'Email',
-            'first_name' => 'Имя',
-            'last_name' => 'Фамилия',
-            'city' => 'Город',
-            'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
-            'email_confirm_token' => 'Email Confirm Token',
-            'auth_key' => 'Auth Key',
-            'created_at' => 'Создан',
-            'login_at' => 'Последний вход',
-            'ip' => 'Ip',
-        ];
+    if ($this->password) {
+      $this->setPassword($this->password);
     }
+    return true;
+
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+      'id' => 'ID',
+      'email' => 'Email',
+      'first_name' => 'Имя',
+      'last_name' => 'Фамилия',
+      'password' => 'Пароль',
+      'password_hash' => 'Password Hash',
+      'password_reset_token' => 'Password Reset Token',
+      'email_confirm_token' => 'Email Confirm Token',
+      'auth_key' => 'Auth Key',
+      'created_at' => 'Создан',
+      'login_at' => 'Последний вход',
+      'ip' => 'Ip',
+    ];
+  }
+
+  /**
+   * Generates password hash from password and sets it to the model
+   *
+   * @param string $password
+   */
+  public function setPassword($password)
+  {
+    $this->password = $password;
+    $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+  }
 }

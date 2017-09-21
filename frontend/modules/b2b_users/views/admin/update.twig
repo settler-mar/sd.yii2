@@ -1,4 +1,4 @@
-{% set title = 'Update B2b Users: ' ~ model.id %}
+{% set title = 'Редактирование пользователя-партнера: ' ~ model.email %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
