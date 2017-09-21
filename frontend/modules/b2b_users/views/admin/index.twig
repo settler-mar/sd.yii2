@@ -1,5 +1,5 @@
 {{ use('/yii/grid/GridView') }}
-{% set title = 'Metas' %}
+{% set title = 'Пользователи-партнеры' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -7,7 +7,7 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="meta-index">
+<div class="b2b-users-index">
     <div class="content-wrapper">
         <section>
             <div class="row">
@@ -15,7 +15,7 @@
                     <h1>{{ html.encode(this.title) }}</h1>
                     {# include('_search.twig', {'model': searchModel}) #}
                     <p>
-                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Meta' }}</a>
+                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать пользователя-партнера' }}</a>
                     </p>
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
@@ -23,15 +23,14 @@
                                 'columns': [
                                 {'class': '\\yii\\grid\\SerialColumn'},
 
-
-                                'page',
-                                'title',
-                                'description:ntext',
-                                'keywords:ntext',
-
-                                {'class': '\\yii\\grid\\ActionColumn',
-                                    'template' : '{update} {delete}',
-                                },
+                                'id',
+                                'email:email',
+                                'first_name',
+                                'last_name',
+                                'created_at',
+                                'login_at',
+                                'ip',
+                                {'class': '\\yii\\grid\\ActionColumn'},
                             ],
                         })
                     }}
@@ -39,8 +38,14 @@
             </div>
         </section>
     </div>
+</div>
 {#
-'h1',
-'content:ntext'
+'password_hash',
+'password_reset_token',
+'email_confirm_token:email',
+'auth_key',
+'created_at',
+'login_at',
+'ip'
 #}
 </div>

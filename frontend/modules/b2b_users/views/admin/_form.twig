@@ -1,0 +1,36 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+            </div>
+            {% set form = active_form_begin() %}
+                <div class="col-md-6">
+
+                    {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'first_name').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'last_name').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'city').textInput()|raw }}
+
+                    {{ form.field(model, 'password').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'created_at').textInput()|raw }}
+
+                    {{ form.field(model, 'login_at').textInput()|raw }}
+
+                    {{ form.field(model, 'ip').textInput({'maxlength':true})|raw }}
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    <br>
+                </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>
