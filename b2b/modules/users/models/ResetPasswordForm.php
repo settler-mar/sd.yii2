@@ -11,6 +11,7 @@ use b2b\modules\users\models\B2bUsers;
 class ResetPasswordForm extends Model
 {
   public $password;
+  public $password_confirm;
   /**
    * @var \common\models\User
    */
@@ -39,8 +40,16 @@ class ResetPasswordForm extends Model
   public function rules()
   {
     return [
-      ['password', 'required'],
+      [['password', 'password_confirm'], 'required'],
       ['password', 'string', 'min' => 6],
+      ['password_confirm', 'compare', 'compareAttribute' => 'password'],
+    ];
+  }
+  public function attributeLabels()
+  {
+    return [
+      'password' => 'Пароль',
+      'password_confirm' => 'Подтверждение пароля',
     ];
   }
   /**

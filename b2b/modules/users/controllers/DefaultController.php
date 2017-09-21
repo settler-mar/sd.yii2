@@ -79,7 +79,7 @@ class DefaultController extends Controller
     public function actionReset($token = null)
     {
         //todo
-        d($token);
+        //d($token);
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {
