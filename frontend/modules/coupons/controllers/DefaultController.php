@@ -55,7 +55,8 @@ class DefaultController extends SdController
       );
       if ($newRoute){
         //если есть новый роут для удалённого, делаем редирект
-        $this->redirect('/coupons/'.$newRoute, 301)->send();
+        header("Location: /coupons".$newRoute,TRUE,301);
+        //$this->redirect('/coupons/'.$newRoute, 301)->send();
         exit;
       };
       throw new \yii\web\NotFoundHttpException;
@@ -118,7 +119,9 @@ class DefaultController extends SdController
     } elseif (!empty($store)) {
       $storeId = $store->uid;
       if ($store->is_active == -1) {
-        return $this->redirect('/coupons', 301);
+        header("Location: /coupons",TRUE,301);
+        exit;
+        //return $this->redirect('/coupons', 301);
       }
       \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
       $contentData["counts"] = Coupons::counts($storeId);
@@ -213,7 +216,8 @@ class DefaultController extends SdController
         throw new \yii\web\NotFoundHttpException;
       }
     }
-    $this->redirect('/coupons/'.$parent->route, 301)->send();
+    header("Location: /coupons".$parent->route,TRUE,301);
+    //$this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
   }
 

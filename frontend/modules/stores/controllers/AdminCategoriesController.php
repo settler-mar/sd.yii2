@@ -54,6 +54,9 @@ class AdminCategoriesController extends Controller
         'is_active' => function ($model, $key, $index, $column) {
           return $model->is_active == 1 ? 'Активная' : 'Скрытая';
         },
+        'menu_hidden' => function ($model, $key, $index, $column) {
+          return $model->menu_hidden == 1 ? 'Скрыто' : 'Нет';
+        },
       ]
     ]);
   }

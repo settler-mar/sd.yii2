@@ -36,7 +36,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id', 'name', 'route'], 'required'],
-            [['parent_id', 'is_active', 'menu_index'], 'integer'],
+            [['parent_id', 'is_active', 'menu_index', 'menu_hidden'], 'integer'],
             [['short_description', 'down_description'], 'string'],
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
@@ -59,6 +59,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'menu_index' => 'Позиция меню',
             'down_description' => 'Нижнее описание',
             'route' => 'Route',
+            'menu_hidden' => 'Скрыто в верхнем меню',
         ];
     }
 
@@ -108,7 +109,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $data = $cache->getOrSet('categories_stores', function () {
             $categories = self::find()
-              ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'count(cstc.category_id) as count'])
+              ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden',
+                'count(cstc.category_id) as count'])
               ->from([self::tableName(). ' ccs'])
               ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
               ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
@@ -127,7 +129,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
      * @param null $currentCategory
      * @return null|string
      */
-    public static function tree($parent_id = 0, $currentCategory = null)
+    public static function tree($parent_id = 0, $currentCategory = null, $showHidden =  true)
     {
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
@@ -135,12 +137,19 @@ class CategoriesStores extends \yii\db\ActiveRecord
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $tree = $cache->getOrSet(
-          'category_tree_' . $parent_id . '_' . $currentCategory,
-          function () use ($parent_id, $currentCategory) {
+          'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : ''),
+          function () use ($parent_id, $currentCategory, $showHidden) {
               $categories = self::activeList();
               $c = [];
               if (count($categories) > 0) {
                   foreach ($categories as $category) {
+                      if ($showHidden == false &&
+                        ((!empty($categories[$category['parent_id']]) && $categories[$category['parent_id']]['menu_hidden'] == 1)
+                          || $category['menu_hidden'] == 1)
+                      ) {
+                          //не включаем в меню, если включена опция и (родительская скрыта или категория скрыта)
+                          continue;
+                      }
                       $c[$category['parent_id']][$category['uid']] = $category;
                   }
 

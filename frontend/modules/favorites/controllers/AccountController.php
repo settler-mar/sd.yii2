@@ -52,7 +52,7 @@ class AccountController extends \yii\web\Controller
           $fav->save();
 
           $cache->delete($cash_id);
-          return json_encode(['error'=>false,'msg'=>'<b>Поздравляем!</b><br> Магазин был успешно добавлен в избранное.']);
+          return json_encode(['error'=>false,'msg'=>'Магазин был успешно добавлен в избранное.']);
         }
       }
       if($type=='delete'){
@@ -62,7 +62,7 @@ class AccountController extends \yii\web\Controller
 
           $fav->delete();
           $cache->delete($cash_id);
-          return json_encode(['error'=>false,'msg'=>'<b>Поздравляем!</b><br> Магазин был успешно удалён из избранного.']);
+          return json_encode(['error'=>false,'msg'=>'Магазин был успешно удалён из избранного.']);
         }
       }
       return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);
