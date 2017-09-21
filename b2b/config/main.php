@@ -16,9 +16,12 @@ return [
             'csrfParam' => '_csrf-b2b',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'b2b\modules\users\models\B2bUsers',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-b2b', 'httpOnly' => true],
+            'on afterLogin' => function($event) {
+              b2b\modules\users\models\B2bUsers::afterLogin($event->identity->id);
+            }
         ],
         'session' => [
             // this is the name of the session cookie used for login on the b2b
@@ -40,6 +43,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
             ],
         ],
     ],
