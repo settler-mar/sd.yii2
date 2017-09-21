@@ -11,7 +11,6 @@ use Yii;
  * @property string $email
  * @property string $first_name
  * @property string $last_name
- * @property integer $city
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email_confirm_token
@@ -36,8 +35,7 @@ class B2bUsers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['email', 'first_name', 'last_name', 'city'], 'required'],
-            [['city'], 'integer'],
+            [['email', 'first_name', 'last_name',], 'required'],
             [['created_at', 'login_at'], 'safe'],
             [['email'], 'string', 'max' => 255],
             [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
@@ -56,7 +54,6 @@ class B2bUsers extends \yii\db\ActiveRecord
             'email' => 'Email',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
-            'city' => 'City',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email_confirm_token' => 'Email Confirm Token',
