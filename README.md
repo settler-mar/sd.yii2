@@ -71,6 +71,7 @@ helpers/                 вспомогательные библиотеки
 2. Настраиваем доступ к базе данных common/config/main-local.php
 3. Устанавливаем библиотеки composer install
 4. Выполняем миграции yii migrate
+5. для работы всплывающего блока с рекламой ```php yii task/generate-user-list```
 
 ## Известные баги
 
