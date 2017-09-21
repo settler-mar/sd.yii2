@@ -17,7 +17,6 @@ class m170921_073747_b2b_users extends Migration
       'email'                => Schema::TYPE_STRING . '(255) NOT NULL',
       'first_name'           => Schema::TYPE_STRING . '(60) NOT NULL',
       'last_name'            => Schema::TYPE_STRING . '(60) NOT NULL',
-      'city'                 => Schema::TYPE_INTEGER . ' NOT NULL',
       'password_hash'        => Schema::TYPE_STRING . '(60)',
       'password_reset_token' => Schema::TYPE_STRING . '(60)',
       'email_confirm_token'  => Schema::TYPE_STRING . '(60)',
