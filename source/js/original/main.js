@@ -980,5 +980,5 @@ $(function() {
         setTimeout(f,10000+Math.round(Math.random() * 20000));
     }
     f=startShowMSG.bind({showMSG:showMSG,randomMSG:randomMSG});
-    $.post('/js/user_list.json',f,'json');
+    $.get('/js/user_list.json',f,'json');
 }());
