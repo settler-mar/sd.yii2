@@ -2814,6 +2814,8 @@ img{
 }
 
 .help-msg{
+  counter-reset: h_num;
+
   h1{
     color:#e4c94c;
     font-weight: bold;
