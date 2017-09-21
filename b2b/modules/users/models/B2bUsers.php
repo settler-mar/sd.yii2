@@ -3,6 +3,9 @@
 namespace b2b\modules\users\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "b2b_users".
@@ -19,7 +22,7 @@ use Yii;
  * @property string $login_at
  * @property string $ip
  */
-class B2bUsers extends \yii\db\ActiveRecord
+class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -63,4 +66,85 @@ class B2bUsers extends \yii\db\ActiveRecord
             'ip' => 'Ip',
         ];
     }
+
+    public function getUserName()
+    {
+        return $this->first_name . ' ' .$this->last_name;
+    }
+
+    /**
+     * Действия, выполняющиеся после авторизации.
+     * Сохранение IP адреса и даты авторизации.
+     *
+     * Для активации текущего обновления необходимо
+     * повесить текущую функцию на событие 'on afterLogin'
+     * компонента user в конфигурационном файле.
+     * @param $id - ID пользователя
+     */
+    public static function afterLogin($id)
+    {
+        self::getDb()->createCommand()->update(self::tableName(), [
+          'ip' => $_SERVER["REMOTE_ADDR"],
+          'login_at' => date('Y-m-d H:i:s'),
+        ], ['id' => $id])->execute();
+    }
+    /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id]);
+    }
+
 }
