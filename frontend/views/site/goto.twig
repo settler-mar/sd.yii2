@@ -2,13 +2,16 @@
 <div id="transition-wrapper">
     <div class="center-block">
         <div class="phrase">
-            Осуществляется переход в интернет-магазин <b>{{store.name}}</b><br>
-            За заказ в нём Вы получите
-                <span>
-                    {{ _cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
-                </span>
-            кэшбэка
-
+            <p>
+                Осуществляется переход в интернет-магазин <strong>{{store.name}}</strong>
+            </p>
+            <p>
+                За заказ в нём Вы получите
+                    <span>
+                        {{ _cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
+                    </span>
+                кэшбэка
+            </p>
             <div class="manual-shift">Если автоматический переход не произошёл, нажмите <a href="{{link}}">сюда</a>.</div>
         </div>
         <div class="svg-container">

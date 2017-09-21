@@ -204,7 +204,8 @@
                         {% endif %}
                     </div>
                     {% else %}
-                    <p class="text-center">На данный момент промокоды, купоны или скидки для магазина  <br>{{current_store.name}} отсутствуют.</p>
+                    <p class="text-center">На данный момент промокоды, купоны или скидки для магазина</p>
+                    <p class="text-center">{{current_store.name}} отсутствуют.</p>
                         {% if coupons_counts.expired > 0 %}
                             <div class="col-xs-12 store-coupons__buttons">
                                 <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
@@ -234,7 +235,8 @@
             <div class="col-sm-12 col-md-12">
                 <div class="comments-handler">
                     {% if store_reviews|length == 0 %}
-                        <p class="ntfnd">На данный момент отзывы о магазине <br>{{current_store.name}} отсутствуют. Будь первым!</p>
+                        <p class="ntfnd">На данный момент отзывы о магазине</p>
+                        <p>{{current_store.name}} отсутствуют. Будь первым!</p>
                     {% endif %}
                     {% if store_reviews|length > 6 %}
                         <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
@@ -244,8 +246,10 @@
                     {% if user_id %}
                         <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-revert ignore-hash ajaxFormOpen">Оставить отзыв</a>
                     {% else %}
-                        <br>Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-                        <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+                        <p>
+                            Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+                            <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+                        </p>
                     {% endif %}
                 </div>
             </div>
