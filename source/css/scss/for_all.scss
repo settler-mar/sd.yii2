@@ -385,9 +385,9 @@ table .status_bg_1 {
   right: 0;
   padding: 5px;
   z-index: 99999;
+  top: 70px;
 
   a{
-    font-weight: bold;
     text-decoration: underline;
   }
 }
@@ -417,12 +417,7 @@ table .status_bg_1 {
 }
 
 .notification_item-success {
-  background: rgba(33, 97, 8, 0.8);
-}
-.noty_bar.noty_type_success {
-  background: rgba(33, 97, 8, 0.8);
-  color: rgb(227, 255, 227);
-  //color: rgb(124, 221, 119);border color
+  background: rgba(60, 184, 104, 0.8)
 }
 
 .notification_img {
@@ -430,7 +425,8 @@ table .status_bg_1 {
   margin: 10px 10px 10px 10px;
   float: left;
   width: 50px;
-  background-size: contain;
+  background-size: cover;
+  background-position: 50% 50%;
   background-repeat: no-repeat;
 }
 
@@ -455,10 +451,9 @@ table .status_bg_1 {
 }
 .notification_title {
   font-size: 18px;
-  color: #fff;
   font-weight: bold;
   padding-bottom: 0;
-  color: #e6ae03;
+  color: #fee255;
 }
 
 .notification_hide {

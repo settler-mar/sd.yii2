@@ -173,20 +173,10 @@ $(function() {
                                     }
                                 }
                             } else {
-                                var passRecovSuccess = noty({
-                                    text: "<b>Поздравляем!</b><br> Пароль успешно изменён. Новый пароль: <b>" + response.password + "</b><br><br>",
-                                    animation: {
-                                        open: 'animated fadeInLeft',
-                                        close: 'animated flipOutX',
-                                        easing: 'swing',
-                                        speed: 300
-                                    },
-                                    type: 'success',
-                                    theme: 'relax',
-                                    layout: 'center',
-                                    timeout: false,
-                                    modal: true,
-                                    closeWith: ['button']
+                                notification.notifi({
+                                    message:"Пароль успешно изменён. Новый пароль: <b>" + response.password + "</b>",
+                                    title:'Поздравляем!',
+                                    type:'success'
                                 });
                             }
                         },
@@ -431,77 +421,9 @@ $(function() {
                             //'a[href=#password-recovery]' : $("#top").find('.popup-recovery').html()
                       }
 
-                //this.registration(popups);
-
-                /*$(document).on("click", "#top a[href=#password-recovery]", function() {
-                    $("#top .popup-sign-up").closest(".popup").next(".popup_close").click();
-                });*/
-
-                /*$(document).on("mouseover", "#top .popup .feedback.popup-content .rating .fa-wrapper .fa", function(e) {
-                      self.starNomination($(this).index() + 1);
-                }).on("mouseleave", "#top .popup .feedback.popup-content .rating .fa-wrapper", function(e) {
-                      self.starNomination($("#top .popup .feedback.popup-content input[name=rating]").val());                
-                }).on("click", "#top .popup .feedback.popup-content .rating .fa-wrapper .fa", function(e) {
-                      self.starNomination($(this).index() + 1);
-
-                      $("#top .popup .feedback.popup-content input[name=rating]").val($(this).index() + 1);
-                });*/
-
-                /*ajax.control.sendFormData("#top .signup-form", "/authorization", "Auth Ajax Error", function(data) {
-                    if(data.type == 'registration') {
-                        location.href = urlPrefix + "/account" + data.param;
-                    } else {
-                        location.href = urlPrefix + "/account";
-                    }
-                });*/
-
-                /*ajax.control.sendFormData("#top .recovery-form", "/password-recovery/instructions", "Password Recovery Instructions Ajax Error", function() {
-                    $("#top .recovery").closest(".popup").next(".popup_close").click();
-
-                    var passNotySuccess = noty({
-                        text: "<b>Поздравляем!</b><br> Инструкции по восстановлению пароля успешно" +
-                                " отправлены на указанный email адрес. Если письмо не пришло в течение 2 минут, посмотрите в папке «Спам».",
-                        animation: {
-                            open: 'animated fadeInLeft',
-                            close: 'animated flipOutX',
-                            easing: 'swing',
-                            speed: 300
-                        },
-                        type: 'success',
-                        theme: 'relax',
-                        layout: 'topRight',
-                        timeout: 7000
-                    });                    
-                });*/
             }
         }
     }
-
-    /*var reviews = {
-        control: {
-            events: function() {
-                // add a comment to the site
-                ajax.control.sendFormData("#top .feedback-form", "/reviews", "Reviews Ajax Error", function() {
-                    $("#top .feedback").closest(".popup").next(".popup_close").click();
-
-                    var reviewSuccess = noty({
-                        text: "<b>Спасибо!</b><br>Ваш отзыв успешно добавлен и будет" +
-                                " опубликован на сайте после модерации.",
-                        animation: {
-                            open: 'animated fadeInLeft',
-                            close: 'animated flipOutX',
-                            easing: 'swing',
-                            speed: 300
-                        },
-                        type: 'success',
-                        theme: 'relax',
-                        layout: 'topRight',
-                        timeout: 7000
-                    });
-                });     
-            }
-        }
-    }*/
 
     var catalog = {
         control: {
@@ -533,22 +455,11 @@ $(function() {
                         data: "type=" + type + "&affiliate_id=" + affiliate_id,
                         error: function (jqxhr) {
                             errors.control.log('Favorites Ajax Error', jqxhr);
-
-                            var favErrorAjax = noty({
-                                text: "<b>Технические работы!</b><br>В данный момент времени" + 
-                                        " произведённое действие невозможно. Попробуйте позже." +
-                                        " Приносим свои извинения за неудобство.",
-                                animation: {
-                                    open: 'animated fadeInLeft',
-                                    close: 'animated flipOutX',
-                                    easing: 'swing',
-                                    speed: 300
-                                },
-                                type: 'warning',
-                                theme: 'relax',
-                                layout: 'topRight',
-                                timeout: 10000
-                            });
+                            notification.notifi({
+                                message:"В данный момент времени" +
+                                " произведённое действие невозможно. Попробуйте позже." +
+                                  " Приносим свои извинения за неудобство.',title:'Технические работы!",
+                                type:'err'});
 
                             if(type == "add") {
                                 self.find(".fa").addClass("muted");
@@ -562,18 +473,10 @@ $(function() {
                             if(response.error) {
                                 for(key in response) {
                                     if(response[key][0] !== undefined) {
-                                        var favoritesError = noty({
-                                            text: "<b>Ошибка!</b> " + response[key][0],
-                                            animation: {
-                                                open: 'animated fadeInLeft',
-                                                close: 'animated flipOutX',
-                                                easing: 'swing',
-                                                speed: 300
-                                            },
-                                            type: 'error',
-                                            theme: 'relax',
-                                            layout: 'topRight',
-                                            timeout: 7000
+                                        notification.notifi({
+                                            message:response[key][0],
+                                            title:'Ошибка!',
+                                            type:'err'
                                         });
                                     }
                                 }
@@ -584,18 +487,10 @@ $(function() {
 
                                 self.find(".fa").removeClass("fa-spin").addClass("pulse2");
                             } else {
-                                var favoritesSuccess = noty({
-                                    text: response.msg,
-                                    animation: {
-                                        open: 'animated fadeInLeft',
-                                        close: 'animated flipOutX',
-                                        easing: 'swing',
-                                        speed: 300
-                                    },
-                                    type: 'success',
-                                    theme: 'relax',
-                                    layout: 'topRight',
-                                    timeout: 7000
+                                notification.notifi({
+                                    message:response.msg,
+                                    title:'Поздравляем!',
+                                    type:'success'
                                 });
 
                                 if(type == "add") {
