@@ -419,6 +419,11 @@ table .status_bg_1 {
 .notification_item-success {
   background: rgba(33, 97, 8, 0.8);
 }
+.noty_bar.noty_type_success {
+  background: rgba(33, 97, 8, 0.8);
+  color: rgb(227, 255, 227);
+  //color: rgb(124, 221, 119);border color
+}
 
 .notification_img {
   height: 50px;
