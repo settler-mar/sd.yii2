@@ -1,15 +1,21 @@
 {{ use('/yii/widgets/ActiveForm') }}
-    {% set form = active_form_begin() %}
+{{ use('/yii/helpers/Html') }}
+    {% set form = active_form_begin({
+        'id' : 'form',
+        'enableAjaxValidation' : false,
+        'enableClientValidation' : false,
+        'validateOnSubmit':false,
 
-        {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+    }) %}
+    <h3>Шаг 1. Выбор магазина</h3>
+    <div class="form-group">
+        <label class="control-label">Магазин(id)</label>
+        {{ html.input('text', 'username', '', {'class' : 'ds'}) | raw}}
+    </div>
 
-        {{ form.field(model, 'first_name').textInput({'maxlength':true})|raw }}
+    <br>
 
-        {{ form.field(model, 'last_name').textInput({'maxlength':true})|raw }}
-
-        {{ form.field(model, 'password').textInput({'maxlength':true})|raw }}
-
-        <div class="form-group">
-            <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-        </div>
+    <div class="form-group">
+        <input type="submit" value="Далее" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
 {{ active_form_end() }}
