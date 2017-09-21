@@ -5,7 +5,7 @@ reviews_by_store_<storeId> = rewiews для магазина ЗАВИСИМОС�
 reviews_store_ratind_<storeId> = reviews рейтинг для магазина ЗАВИСИМОСТЬ: reviews_catalog
 reviews_catalog_<page> = для страницы reviews ЗАВИСИМОСТЬ: reviews_catalog
 categories_stores - Список категорий
-category_tree_<parent_id>_<currentCategory> - дерево категорий для меню для родительской категории и текущей категории ЗАВИСИМОСТЬ: category_tree
+category_tree_<parent_id>_<currentCategory>[_hide_hidden] - дерево категорий для меню для родительской категории и текущей категории ([_hide_hidden] не показывать закрытые) ЗАВИСИМОСТЬ: category_tree
 catalog_stores_<page>_<limit>_<sort>_<order> - магазины ЗАВИСИМОСТЬ: catalog_stores
 catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории ЗАВИСИМОСТЬ: catalog_stores
 store_by_route_<route> - магазин по route
