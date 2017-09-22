@@ -5,6 +5,8 @@ namespace frontend\modules\users\controllers;
 use frontend\modules\favorites\models\UsersFavorites;
 use Yii;
 use frontend\modules\users\models\Users;
+use frontend\modules\withdraw\models\UsersWithdraw;
+use frontend\modules\reviews\models\Reviews;
 use frontend\modules\users\models\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -123,7 +125,9 @@ class AdminController extends Controller
 
     $countQuery = clone $query;
     $pages = new Pagination(['totalCount' => $countQuery->count()]);
-
+    
+    $notes['users_withdraw'] = UsersWithdraw::waitingCount();
+    $notes['users_reviews'] = Reviews::waitingCount();
 
     $models = $query->offset($pages->offset)
       ->limit($pages->limit)
@@ -135,6 +139,7 @@ class AdminController extends Controller
       'pages' => $pages,
       'get'=>$get,
       'users_total'=>$totQuery,
+      'notes' => $notes,
     ]);
   }
 

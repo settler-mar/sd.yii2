@@ -62,6 +62,11 @@ class AccountController extends \yii\web\Controller
           'error' => ['Максимальная сумма для вывода '.number_format($balans['current'],2,'.',' ').'р.']
         ]);
       }
+      if ($balans['withdraw_waiting'] > 0){
+        return json_encode([
+          'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
+        ]);
+      }
 
       $withdraw = new UsersWithdraw();
       $withdraw->admin_comment='';

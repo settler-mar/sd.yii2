@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\payments\models\Payments;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\users\models\Users;
 
 /**
  * PaymentsSearch represents the model behind the search form about `frontend\modules\payments\models\Payments`.
@@ -21,9 +23,9 @@ class PaymentsSearch extends Payments
     public function rules()
     {
         return [
-            [['uid', 'is_showed', 'action_id', 'affiliate_id', 'user_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
+            [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
-            [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id','storeName'], 'safe'],
+            [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id', 'storeName', 'user_id'], 'safe'],
           [['created_at_range'], 'safe'],
         ];
     }
@@ -46,15 +48,29 @@ class PaymentsSearch extends Payments
      */
     public function search($params)
     {
-        $query = Payments::find();
-//ddd(Payments::find()->joinWith('store')->all());
-        // add conditions that should always apply here
+        $query = Payments::find()
+          ->joinWith(['store'])
+          ->joinWith(['user']);
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-          'sort' => [
-            'defaultOrder' => [
-              'uid' => SORT_DESC,
+          'query' => $query,
+        ]);
+        $dataProvider->setSort([
+          'attributes' => [
+            'uid',
+            'action_id',
+            'status',
+            'action_date',
+            'order_price',
+            'reward',
+            'cashback',
+            'user_id' => [
+              'asc' => [Users::tableName() . '.email' => SORT_ASC],
+              'desc' => [Users::tableName(). '.email' => SORT_DESC],
+            ],
+            'storeName' => [
+              'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+              'desc' => [Stores::tableName(). '.name' => SORT_DESC],
             ],
           ],
         ]);
@@ -66,16 +82,16 @@ class PaymentsSearch extends Payments
             // $query->where('0=1');
             return $dataProvider;
         }
-       // $query->joinWith(['user']);
 
-       // ddd($dataProvider);
+        $this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
+
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
             'is_showed' => $this->is_showed,
             'action_id' => $this->action_id,
             'affiliate_id' => $this->affiliate_id,
-            'user_id' => $this->user_id,
+           // 'user_id' => $this->user_id,
             'order_price' => $this->order_price,
             'reward' => $this->reward,
             'cashback' => $this->cashback,
@@ -96,18 +112,24 @@ class PaymentsSearch extends Payments
         $query->andFilterWhere(['like', 'order_id', $this->order_id]);
 
       if ($this->storeName) {
-        $query->joinWith(['store']);
         $query->andFilterWhere([
           'or',[
-            'like', 'cw_stores.name', $this->storeName
+            'like', Stores::tableName() . '.name', $this->storeName
             ],[
-            'cw_stores.uid'=>$this->storeName
+            Stores::tableName() . '.uid'=>$this->storeName
             ],
         ]);
-        //$query->joinWith(['store'])->where(['cw_stores.name' => $this->storeName]);
+      }
+      if ($this->user_id) {
+        $query->andFilterWhere([
+          'or',[
+            'like', Users::tableName() . '.email', $this->user_id
+          ],[
+            Users::tableName() . '.uid'=>$this->user_id
+          ],
+        ]);
       }
       if(!empty($this->created_at_range) && strpos($this->created_at_range, '-') !== false) {
-        //ddd($this->created_at_range);
         list($start_date, $end_date) = explode(' - ', $this->created_at_range);
         $start_date=date('Y-m-d',strtotime($start_date));
         $end_date=date('Y-m-d',strtotime($end_date));

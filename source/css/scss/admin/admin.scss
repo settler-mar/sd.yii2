@@ -714,3 +714,22 @@ table{
         font-weight: bold;
     }
 }
+//оповещения на странице пользователей
+.notes_users {
+    display: inline-block;
+    padding: 2px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    vertical-align: super;
+    &.withdraw {
+        background: darkgreen;
+        color: #fff;
+        border: 1px solid darkgreen;
+    }
+    &.reviews {
+        background: #ffea00;
+        color: #5a5301;
+        border: 1px solid #b9ae01;
+    }
+}

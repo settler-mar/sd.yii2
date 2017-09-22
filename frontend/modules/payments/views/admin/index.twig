@@ -24,59 +24,62 @@
                                 <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Payments' }}</a>
                                 <a href="#get_admitad" class="btn btn-info {{ _if(canAdmitadUpdate,'get_admitad','disabled') }}">{{ 'Получить даные с Admitad' }}</a>
                                 <a href="https://www.admitad.com/ru/webmaster/statistics/actions/?{{ _if(sub_ids>0,'sub_ids='~sub_ids) }}&predefined_range=this_year" class="btn btn-warning" target="_blank">{{ 'Перейти в Admitad' }}</a>
+                                <a href="/admin/payments/delete" class="ajax-action btn btn-danger" ><span class="fa fa-trash"></span> Удалить</a>
                             </p>
                                 {{ grid_view_widget({
-                            'dataProvider': dataProvider,
-                            'filterModel': searchModel,
-                                'columns': [
-                                {'class': '\\yii\\grid\\SerialColumn'},
-                                    'uid',
-                                    'action_id',
-                                    {
-                                        'format':'raw',
-                                        'attribute':'action_date',
-                                        'headerOptions' : {
-                                            'class' : 'col-md-2'
-                                        },
-                                        'filter': data_ranger
-                                    },
-                                    {
-                                        'format':'raw',
-                                        'attribute':'status',
-                                        'value' : 'stringStatus',
-                                        'filter':{
-                                        '':'Любой',
-                                        0:"В ожидании",
-                                        1:"Отклонён",
-                                        2:"Подтвержден",
-                                        },
-                                    },
-                                    {
-                                        'format':'raw',
-                                        'attribute':'order_price',
-                                        'value': old_value_control,
-                                    },
-                                    {
-                                        'format':'raw',
-                                        'attribute':'reward',
-                                        'value': old_value_control,
-                                    },
-                                    'cashback',
-                                    {
-                                        'format':'raw',
-                                        'attribute':'user_id',
-                                        'value':'email',
-                                    },
-                                    {
-                                        'format':'raw',
-                                        'attribute':'storeName'
-                                    },
-                                    {'class': '\\yii\\grid\\ActionColumn',
-                                        'template' : '{update} {delete}',
-                                    },
-                            ],
-                        })
-                    }}
+                                    'id': 'grid-ajax-action',
+                                    'dataProvider': dataProvider,
+                                    'filterModel': searchModel,
+                                        'columns': [
+                                        {'class': '\\yii\\grid\\SerialColumn'},
+                                            {'class': '\\yii\\grid\\CheckboxColumn'},
+                                            'uid',
+                                            'action_id',
+                                            {
+                                                'format':'raw',
+                                                'attribute':'action_date',
+                                                'headerOptions' : {
+                                                    'class' : 'col-md-2'
+                                                },
+                                                'filter': data_ranger
+                                            },
+                                            {
+                                                'format':'raw',
+                                                'attribute':'status',
+                                                'value' : 'stringStatus',
+                                                'filter':{
+                                                '':'Любой',
+                                                0:"В ожидании",
+                                                1:"Отклонён",
+                                                2:"Подтвержден",
+                                                },
+                                            },
+                                            {
+                                                'format':'raw',
+                                                'attribute':'order_price',
+                                                'value': old_value_control,
+                                            },
+                                            {
+                                                'format':'raw',
+                                                'attribute':'reward',
+                                                'value': old_value_control,
+                                            },
+                                            'cashback',
+                                            {
+                                                'format':'raw',
+                                                'attribute':'user_id',
+                                                'value':'email',
+                                            },
+                                            {
+                                                'format':'raw',
+                                                'attribute':'storeName'
+                                            },
+                                            {'class': '\\yii\\grid\\ActionColumn',
+                                                'template' : '{update} {delete}',
+                                            },
+                                    ],
+                                })
+                            }}
                     </div>
                 </div>
             </section>
