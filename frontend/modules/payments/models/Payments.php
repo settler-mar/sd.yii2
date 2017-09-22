@@ -154,7 +154,11 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getEmail(){
     //return $this->user->email;
-    return '<a href="/admin/users/update?id='.$this->user->uid.'">'.$this->user->email.'('.$this->user->uid.')</a>';
+    $user=$this->user;
+    if(!$user){
+      return 'Пользователь удален - '.$this->user_id;
+    }
+    return '<a href="/admin/users/update?id='.$user->uid.'">'.$user->email.'('.$user->uid.')</a>';
   }
 
  // public function getCpaLink()
