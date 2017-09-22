@@ -8,6 +8,11 @@
 
     }) %}
     <h3>Шаг 1. Выбор магазина</h3>
+    {% if error %}
+        <p styele="color:red;">
+            {{ error }}
+        </p>
+    {% endif %}
     <div class="form-group">
         <label class="control-label">Магазин(id)</label>
         {{ html.input('text', 'store_id', '', {'class' : 'ds'}) | raw}}

@@ -3,6 +3,8 @@
 namespace frontend\modules\b2b_users\controllers;
 
 use frontend\modules\b2b_users\models\B2bNewUsers;
+use frontend\modules\b2b_users\models\UsersCpa;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use Yii;
 use frontend\modules\b2b_users\models\B2bUsers;
@@ -98,21 +100,70 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
     }
 
+    $error = false;
+
     if($request->isPost){
       if($request->post('store_id')){
         $store=Stores::find()
           ->where(['uid'=>$request->post('store_id')])
           ->asArray()
           ->one();
+        if($store){
+          if($request->post('сpa_id')){
+            $cpa_list=CpaLink::find()
+              ->andWhere([
+                'stores_id'=>$store['uid'],
+                'id' => $request->post('сpa_id')
+              ])
+              ->one();
+            if(!$cpa_list){
+              $error = 'Ошибка выбора CPA';
+            }else{
+              $l=UsersCpa::find()
+                ->where([
+                  'cpa_link_id'=>$cpa_list->id,
+                  'user_id'=>$id
+                ])
+                ->one();
+              if($l){
+                $error = 'Данная CPA от этого магазина уже подключенны.';
+              }else{
+                $l = new UsersCpa();
+                $l->user_id = $id;
+                $l->cpa_link_id=$cpa_list->id;
+                $l->save();
+
+                return json_encode([
+                  'html' => 'CPA успешно подключенна'.
+                    '<script>location.href="/admin/b2b_users/update/id:'.$id.'"</script>'
+                ]);
+              }
+            }
+          }
+
+          $cpa_list=CpaLink::find()
+            ->where(['stores_id'=>$store['uid']])
+            ->all();
+          return json_encode([
+            'html' => $this->renderAjax('add_shop_step2.twig', [
+              'user_id' => $id,
+              'store' => $store,
+              'cpa_list' => $cpa_list,
+              'error' => $error,
+            ]),
+          ]);
+        }else{
+          $error = 'Магазин не найден.';
+        }
       }
     }
 
     $out = [
       'html' => $this->renderAjax('add_shop_step1.twig', [
         'user_id' => $id,
+        'error' => $error,
       ]),
     ];
-
     return json_encode($out);
   }
 

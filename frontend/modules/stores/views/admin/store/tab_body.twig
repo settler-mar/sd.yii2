@@ -7,11 +7,20 @@
   </h4>
   <div class="edit_wrapper ajax_save" uid="{{tariff.id}}" save_url="/admin/stores/ajax_save/cpa">
     <div class="edit_blk">
-      <p><span>Affiliate ID:</span> <br><input type="text" mode="cpa" name="affiliate_id" value="{{tariff.affiliate_id}}"></p>
+      <p>
+        <span>Affiliate ID:</span> <br>
+        {% if tariff.cpa_id == 1 %}
+          <input type="text" mode="cpa" name="affiliate_id" value="{{tariff.affiliate_id}}">
+        {% else %}
+          <input type="text" value="{{tariff.id}}" disabled>
+        {% endif %}
+      </p>
     </div>
-    <div class="edit_blk">
-      <p><span>Affiliate LINK:</span> <br><input type="text" mode="cpa" name="affiliate_link" value="{{tariff.affiliate_link}}"></p>
-    </div>
+    {% if tariff.cpa_id != 2 %}
+      <div class="edit_blk">
+        <p><span>Affiliate LINK:</span> <br><input type="text" mode="cpa" name="affiliate_link" value="{{tariff.affiliate_link}}"></p>
+      </div>
+    {% endif %}
   </div>
 
   <h4>
