@@ -62,9 +62,9 @@ class AdminController extends Controller
     $statWait = clone $stat;
     $statRevoke = clone $stat;
     $statSuccess = clone $stat;
-    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->asArray()->one();
-    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->asArray()->one();
-    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->asArray()->one();
+    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->one();
+    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->one();
+    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->one();
     $statsQuery['users'] = $stat->groupBy('user_id')->count();
 
     $canAdmitadUpdate=false;

@@ -49,8 +49,8 @@ class PaymentsSearch extends Payments
     public function search($params)
     {
         $query = Payments::find()
-          ->joinWith(['store'])
-          ->joinWith(['user']);
+            ->joinWith(['store'])
+            ->joinWith(['user']);
 
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
@@ -120,6 +120,7 @@ class PaymentsSearch extends Payments
             ],
         ]);
       }
+
       if ($this->user_id) {
         $query->andFilterWhere([
           'or',[
