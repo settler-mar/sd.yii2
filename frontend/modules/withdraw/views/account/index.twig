@@ -16,9 +16,19 @@
                 <ul>
                     <li>Вывод денежных средств доступен только в случае, если Ваш подтверждённый кэшбэк составляет <b>350 и более рублей</b>.</li>
                     <li>Заявка на вывод обрабатывается в течение 2-4 рабочих дней. О результате вывода Вы будете оповещены через указанный Вами email адрес.</li>
+                    <li>Вывод денежных средств возможен не чаще одного раза в сутки.</li>
                 </ul>
             </div>
-            {% if balance.current >= 350 %}
+
+            {% if balance.withdraw_count > 0 %}
+                <div class="col-md-12">
+                    <div class="not-found">У вас имеется заявка на вывод денежных средств.</div>
+                </div>
+            {% elseif balance.current < 350 %}
+                <div class="col-md-12">
+                    <div class="not-found">У Вас недостаточно средств для вывода денег.</div>
+                </div>
+            {% else %}
                 <div class="col-md-12">
                     <h3 class="text-center">Выберите способ вывода денег:</h3>
                     <div class="col-md-4">
@@ -67,10 +77,6 @@
                             <button type="submit" class="btn-fill btn-form">Сделать запрос на вывод денег</button>
                         </form>
                     </div>
-                </div>
-            {% else %}
-                <div class="col-md-12">
-                    <div class="not-found">У Вас недостаточно средств для вывода денег.</div>
                 </div>
             {% endif %}
         </div>
