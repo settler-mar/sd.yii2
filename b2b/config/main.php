@@ -43,6 +43,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'site/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
             ],
         ],
