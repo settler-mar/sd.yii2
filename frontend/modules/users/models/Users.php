@@ -494,9 +494,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       foreach ($bl as $k => &$v) {
         $v = number_format($v, 2, ".", "");
       }
-      $bl['withdraw_waiting'] = UsersWithdraw::find()
-        ->where(['user_id' => $this->uid, 'status' => 1])
-        ->count();
+      $bl['withdraw_waiting'] = UsersWithdraw::waitingCount($this->uid);
       $this->balans = $bl;
     }
     return $this->balans;

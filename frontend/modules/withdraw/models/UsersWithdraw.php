@@ -106,4 +106,17 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     $pr=WithdrawProcess::findOne(['uid'=>$this->process_id]);
     return $pr->name;
   }
+
+  /**
+   * @param bool $userId - для пользователя или все
+   * @return int|string количество неподтверждённых
+   */
+  public static function waitingCount($userId = false)
+  {
+    $count = self::find()->where(['status' => 1]);
+    if ($userId) {
+      $count = $count->andWhere(['user_id' => $userId]);
+    }
+    return $count->count();
+  }
 }

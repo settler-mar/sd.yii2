@@ -178,4 +178,17 @@ class Reviews extends \yii\db\ActiveRecord
       //обновляем зависимости
       Cache::clearName('reviews_catalog');
   }
+
+  /**
+   * @param bool $userId
+   * @return int|string количество в ожидании
+   */
+  public static function waitingCount($userId = false)
+  {
+    $count =  self::find()->where(['is_active' => 0]);
+    if ($userId) {
+      $count = $count->andWhere(['user_id' => $userId]);
+    }
+    return $count->count();
+  }
 }
