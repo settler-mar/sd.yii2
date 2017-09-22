@@ -200,6 +200,10 @@ body {
             @include stat-span();
         }
     }
+    .stat-block-actions {
+        margin-top: 50px;
+        font-size: 30px;
+    }
 }
 
 /* Paginations
