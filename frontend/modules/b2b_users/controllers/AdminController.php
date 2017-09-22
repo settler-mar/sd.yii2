@@ -3,6 +3,7 @@
 namespace frontend\modules\b2b_users\controllers;
 
 use frontend\modules\b2b_users\models\B2bNewUsers;
+use frontend\modules\stores\models\Stores;
 use Yii;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\b2b_users\models\B2bUsersSearch;
@@ -92,6 +93,20 @@ class AdminController extends Controller
 
   public function actionAddStore($id)
   {
+    $request = Yii::$app->request;
+    if(!$request->isAjax){
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+    }
+
+    if($request->isPost){
+      if($request->post('store_id')){
+        $store=Stores::find()
+          ->where(['uid'=>$request->post('store_id')])
+          ->asArray()
+          ->one();
+      }
+    }
+
     $out = [
       'html' => $this->renderAjax('add_shop_step1.twig', [
         'user_id' => $id,
