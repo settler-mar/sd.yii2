@@ -86,9 +86,13 @@ class AdminController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
+      $cpa_link=UsersCpa::find()->where(['user_id' => $id])->all();
+
+      //ddd($cpa_link[0]->cpaStore->store);
       return $this->render('update.twig', [
         'model' => $model,
         'user_id' => $id,
+        'cpa_list' => $cpa_link,
       ]);
     }
   }

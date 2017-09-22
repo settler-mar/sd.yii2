@@ -2,6 +2,8 @@
 
 namespace frontend\modules\b2b_users\models;
 
+use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Stores;
 use Yii;
 
 /**
@@ -44,6 +46,13 @@ class UsersCpa extends \yii\db\ActiveRecord
       'user_id' => 'User ID',
       'created_at' => 'Created At',
     ];
+  }
+
+  public function getCpaStore()
+  {
+    return $this->hasOne(CpaLink::className(), ['id' => 'cpa_link_id'])
+    //return CpaLink::findOne(['id' => $this->cpa_link_id])
+;
   }
 
   public function beforeValidate()
