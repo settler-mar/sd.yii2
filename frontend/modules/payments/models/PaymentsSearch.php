@@ -68,7 +68,8 @@ class PaymentsSearch extends Payments
         }
        // $query->joinWith(['user']);
 
-       // ddd($dataProvider);
+        $this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
+
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
