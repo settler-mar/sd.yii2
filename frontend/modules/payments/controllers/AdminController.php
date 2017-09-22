@@ -71,7 +71,6 @@ class AdminController extends Controller
     if(in_array($sort,array(null,'uid'))){
       $canAdmitadUpdate=true;
     }
-
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,

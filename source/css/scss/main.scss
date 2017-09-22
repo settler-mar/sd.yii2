@@ -2464,12 +2464,17 @@ $page404paragraphColor: #0B0A0A;
     color: $page404headColor;
     font-size: 56px;
     font-weight: bold;
+    &-h1 {
+      color: $page404headColor;
+      font-size: 24px;
+      font-weight: bold;
+    }
   }
-  & h4 {
-    color: $page404headColor;
-    font-size: 24px;
-    font-weight: bold;
-  }
+  //&-h1- {
+  //  color: $page404headColor;
+  //  font-size: 24px;
+  //  font-weight: bold;
+  //}
   & p {
     color: $page404paragraphColor;
     font-size: 16px;
@@ -2814,6 +2819,8 @@ img{
 }
 
 .help-msg{
+  counter-reset: h_num;
+
   h1{
     color:#e4c94c;
     font-weight: bold;
@@ -2945,8 +2952,16 @@ div .popup {
 .howitworks__header,
 .loayalty__header,
 .promo__header,
-.recommendations__header {
+.recommendations__header,
+.about__header,
+.terms__header {
  font-size: 28px;
 }
+.dobro-head__header,
+.reviews__header,
+.search__header {
+  font-size: 24px;
+}
+
 
 @import  "../external/queries";

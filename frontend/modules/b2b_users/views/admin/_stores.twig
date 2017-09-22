@@ -1,0 +1,41 @@
+<div class="content-wrapper" style="margin-top: 0px;    padding-top: 0;">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Подключенные магазины</h1>
+            </div>
+            <div class="col-md-12">
+                <p>
+                    <a href="#admin/b2b_users/add-store/id:{{ user_id }}" class="btn btn-success ajaxFormOpen">{{ 'Подключить магазин' }}</a>
+                </p>
+                {% if cpa_list|length > 0 %}
+                    <table class="table table-users">
+                        <thead>
+                        <tr>
+                            <th>Магазин</th>
+                            <th>CPA</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for cpa in cpa_list %}
+                            <tr>
+                                {% set  cpaStore = cpa.cpaStore %}
+                                {% set  store = cpaStore.store %}
+                                <td>{{ store.name }}</td>
+                                <td>{{ cpaStore.cpa.name }}</td>
+                                <td>{{ store.uid }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="not-found">На данный момент магазины еще не подключенны.</div>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+</div>

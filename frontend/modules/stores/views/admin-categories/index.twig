@@ -43,6 +43,16 @@
                                     },
                                     'value':table.is_active
                                 },
+                                {
+                                    'format':'raw',
+                                    'attribute':'menu_hidden',
+                                    'filter':{
+                                        '':'Любое',
+                                        0:"Нет",
+                                        1:"Скрыто"
+                                    },
+                                    'value':table.menu_hidden
+                                },
                                 {'class': '\\yii\\grid\\ActionColumn',
                                     'template' : '{update} {delete}',
                                 },

@@ -305,6 +305,7 @@ class AdminController extends Controller
       return false;
     }
 
+
     $request = Yii::$app->request;
     /* if(!$request->isPost || !$request->isAjax){
        throw new \yii\web\ForbiddenHttpException('Не верный тип запроса.');

@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 text-center">
-                <h3>
+                <h1 class="search__header">
                     Результаты поиска {% if query != '' %} по запросу '{{query}}' {% endif %}
-                </h3>
+                </h1>
             </div>
             {% if stores|length > 0 %}
                 {% for store in stores %}
