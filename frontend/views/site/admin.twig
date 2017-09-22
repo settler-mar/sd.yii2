@@ -38,5 +38,15 @@
                 </div>
             </div>
         </div>
+        {% if notes.users_reviews or notes.users_withdraw %}
+                <div class="row">
+                    <div class="col-md-12 stat-block-actions">
+                        Ожидает действий администратора
+                        {% if notes.users_reviews %}<a href="/admin/reviews?ReviewsSearch%5Bis_active%5D=0"><span title="Неактивных отзывов" class="notes_users reviews">{{ notes.users_reviews }}</span></a>{% endif %}
+                        {% if notes.users_withdraw %}<a href="/admin/withdraw?UsersWithdrawSearch%5Bstatus%5D=1"><span title="Запросов на вывод средств в ожидании" class="notes_users withdraw">{{ notes.users_withdraw }}</span></a>{% endif %}
+                    </div>
+                </div>
+        {% endif %}
+
     </section>
 </div>
