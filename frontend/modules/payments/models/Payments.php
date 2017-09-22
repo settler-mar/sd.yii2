@@ -135,7 +135,7 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getStoreName(){
     //return $this->store->name;
-    return '<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.'</a>';
+    return '<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.' ('.$this->store->uid.')</a>';
   }
 
   public function getStringStatus()
