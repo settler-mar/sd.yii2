@@ -14,17 +14,25 @@
                         <tr>
                             <th>Магазин</th>
                             <th>CPA</th>
-                            <th>Действия</th>
+                            <th>Контактное лицо</th>
+                            <th>Почта для связи</th>
+                            <th>Телефон для связи</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for cpa in cpa_list %}
-                            <tr>
-                                {% set  cpaStore = cpa.cpaStore %}
-                                {% set  store = cpaStore.store %}
+                            {% set  cpaStore = cpa.cpaStore %}
+                            {% set  store = cpaStore.store %}
+                            <tr
+                                    class="ajax_save to_remove"
+                                    uid="{{ store.uid }}"
+                                    save_url="/admin/b2b_users/update-store"
+                            >
                                 <td>{{ store.name }}</td>
                                 <td>{{ cpaStore.cpa.name }}</td>
-                                <td>{{ store.uid }}</td>
+                                <td><input value="{{ store.contact_name }}" mode="contact_name" name="contact_name"></td>
+                                <td><input value="{{ store.contact_email }}" mode="contact_email" name="contact_email"></td>
+                                <td><input value="{{ store.contact_phone }}" mode="contact_phone" name="contact_phone"></td>
                             </tr>
                         {% endfor %}
                         </tbody>
