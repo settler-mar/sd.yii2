@@ -17,6 +17,7 @@
                             <th>Контактное лицо</th>
                             <th>Почта для связи</th>
                             <th>Телефон для связи</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,9 @@
                                 <td><input value="{{ store.contact_name }}" mode="contact_name" name="contact_name"></td>
                                 <td><input value="{{ store.contact_email }}" mode="contact_email" name="contact_email"></td>
                                 <td><input value="{{ store.contact_phone }}" mode="contact_phone" name="contact_phone"></td>
+                                <td>
+                                    <span class="ajax_remove" uid="{{ cpa.id }}" url="/admin/b2b_users/remove-store">Удалить</span>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

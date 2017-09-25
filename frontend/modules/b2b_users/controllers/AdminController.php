@@ -9,6 +9,7 @@ use frontend\modules\stores\models\Stores;
 use Yii;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\b2b_users\models\B2bUsersSearch;
+use yii\bootstrap\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -57,6 +58,14 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'actionButtons' => [
+        'login' => function ($url, $model) {
+          return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
+            'title' => 'Авторизироваться',
+            'target' => '_blank'
+          ]);
+        },
+      ]
     ]);
   }
 
@@ -133,6 +142,46 @@ class AdminController extends Controller
 
     $store->$col = $value;
     $store->save();
+  }
+
+  public function actionRemoveStore()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+    }
+
+    $cpa=UsersCpa::find()
+      ->where(['id'=>$request->post('id')])
+      ->one();
+    return $cpa && $cpa->delete();
+  }
+
+  public function actionLogin($id)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersLogin')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $user=B2bUsers::find()
+      ->where(['id'=>$id])
+      ->one();
+
+    if(!$user){
+      throw new \yii\web\ForbiddenHttpException('Пользователь не найден.');
+      return false;
+    }
+
+    $user->temp_key=md5(uniqid(rand(), true)).md5(time());
+    $user->save();
+    $url=Yii::$app->params['b2b_address'].'/login?key='.$user->temp_key;
+    return Yii::$app->getResponse()->redirect($url);
   }
 
   public function actionAddStore($id)
