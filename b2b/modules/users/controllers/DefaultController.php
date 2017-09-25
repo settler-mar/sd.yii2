@@ -76,10 +76,8 @@ class DefaultController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionReset($token = null)
+    public function actionReset($token)
     {
-        //todo
-        //d($token);
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {
