@@ -24,7 +24,7 @@ $(function() {
         }
 
         rm.remove();
-        notification.notifi({message:'Успешое удаление.',type:'info'})
+        notification.notifi({message:'Успешное удаление.',type:'info'})
       }
       if(mode=='reload'){
         location.reload();

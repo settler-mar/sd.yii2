@@ -46,7 +46,8 @@ class CouponsSearch extends Coupons
      */
     public function search($params)
     {
-        $query = Coupons::find();
+        $query = Coupons::find()
+            ->joinWith(['store']);
 
         // add conditions that should always apply here
 
@@ -86,7 +87,6 @@ class CouponsSearch extends Coupons
             'exclusive' => $this->exclusive,
             'species' => $this->species,
             'visit' => $this->visit,
-            //'store_id' => $this->store_id,
         ]);
 
         $query->andFilterWhere(['like', static::tableName() . '.name', $this->name])
@@ -94,10 +94,12 @@ class CouponsSearch extends Coupons
             ->andFilterWhere(['like', 'goto_link', $this->goto_link])
             ->andFilterWhere(['like', 'promocode', $this->promocode]);
         if ($this->storeName) {
-            // Фильтр по имени шопа
-            $query->joinWith(['store' => function ($q) {
-                $q->andFilterWhere(['like', Stores::tableName() . '.name', $this->storeName]);
-            }]);
+            // Фильтр по имени шопа или uid
+            $query->andFilterWhere([
+                'or',
+                ['=', Stores::tableName() . '.uid', $this->storeName],
+                ['like', Stores::tableName() . '.name', $this->storeName],
+                ]);
         }
         if (!empty($this->date_start_range) && strpos($this->date_start_range, '-') !== false) {
             list($start_date, $end_date) = explode(' - ', $this->date_start_range);

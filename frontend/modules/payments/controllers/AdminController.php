@@ -55,15 +55,16 @@ class AdminController extends Controller
       ['sum(order_price*kurs) as order_price',
         'sum(reward) as reward',
         'sum(cashback) as cashback',
-        'sum(ref_bonus) as ref',
+        'sum(ref_bonus) as ref_bonus'
       ]);
-    $statsQuery['all'] = $stat->asArray()->one();
+    //$statsQuery['all'] = $stat->asArray()->one();
+    $statsQuery['all'] = $stat->one();
     $statWait = clone $stat;
     $statRevoke = clone $stat;
     $statSuccess = clone $stat;
-    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->asArray()->one();
-    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->asArray()->one();
-    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->asArray()->one();
+    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->one();
+    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->one();
+    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->one();
     $statsQuery['users'] = $stat->groupBy('user_id')->count();
 
     $canAdmitadUpdate=false;
@@ -71,6 +72,7 @@ class AdminController extends Controller
     if(in_array($sort,array(null,'uid'))){
       $canAdmitadUpdate=true;
     }
+
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
@@ -247,18 +249,33 @@ class AdminController extends Controller
   /**
    * Deletes an existing Payments model.
    * If deletion is successful, the browser will be redirected to the 'index' page.
-   * @param integer $id
    * @return mixed
    */
-  public function actionDelete($id)
+  public function actionDelete()
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('PaymentsDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    $this->findModel($id)->delete();
+    if (Yii::$app->request->isAjax) {
+      $ids = Yii::$app->request->post('id');
+      $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+      if (!is_array($ids) || !$validatorEach->validate($ids)) {
+        return json_encode(['error'=>true]);
+      }
 
-    return $this->redirect(['index']);
+      Payments::deleteAll(['uid' => $ids]);
+      return json_encode(['error' => false, 'html' => 'Записи удалены!']);
+
+    } else {
+      $id = Yii::$app->request->get('id');
+      $this->findModel($id)->delete();
+
+      return $this->redirect(['index']);
+    }
+//    $this->findModel($id)->delete();
+//
+//    return $this->redirect(['index']);
   }
 
   /**

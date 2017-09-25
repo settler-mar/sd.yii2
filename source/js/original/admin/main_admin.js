@@ -59,11 +59,11 @@ $(function() {
 		);
 	});
 	
-	$('.charity-action').click(function(e) {
+	$('.ajax-action').click(function(e) {
 		e.preventDefault();
 		var status = $(this).data('value');
 		var href = $(this).attr('href');
-		var ids = $('#grid-charity').yiiGridView('getSelectedRows');
+		var ids = $('#grid-ajax-action').yiiGridView('getSelectedRows');
 		if (!confirm('Подтвердите изменение записей')) {
 			return null;
 		}
@@ -77,7 +77,7 @@ $(function() {
 					id: ids
 				}
 			}).success(function(data) {
-				$('#grid-charity').yiiGridView("applyFilter");
+				$('#grid-ajax-action').yiiGridView("applyFilter");
 				if (data.error != false) {
 					alert('Произошла ошибка!');
 				}

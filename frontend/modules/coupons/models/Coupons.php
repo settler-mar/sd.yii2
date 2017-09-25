@@ -104,9 +104,10 @@ class Coupons extends \yii\db\ActiveRecord
 
   public function getStoreName()
   {
-    if($this->store){
-      return $this->store->name;
-    }else{
+    if ($this->store) {
+      //return $this->store->name;
+      return '<a href="/admin/stores/update?id='.$this->store->uid.'">'.$this->store->name.' ('.$this->store->uid.')</a>';
+    } else {
       return '';
     }
   }

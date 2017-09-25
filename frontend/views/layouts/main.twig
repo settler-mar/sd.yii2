@@ -162,9 +162,9 @@
                         <li>{{ get_menu_item({'href': '/recommendations', 'title': 'Советы по совершению покупок'})|raw }}</li>
                         <li>{{ get_menu_item({'href': '/reviews', 'title': 'Отзывы о нас'})|raw }}</li>
                         <li>{{ get_menu_item({'href': '/dobro', 'title': 'Делаем добро'})|raw }}</li>
-                        <li><a href="https://blog.secretdiscounter.ru">Наш блог</a></li>
-                        <li><a href="https://forum.secretdiscounter.ru">Форум</a></li>
-                        <li><a href="https://gdeposylka.secretdiscounter.ru">Отследить посылку</a></li>
+                        <li><a href="https://blog.secretdiscounter.ru" target="_blank" rel="nofollow noopener">Наш блог</a></li>
+                        <li><a href="https://forum.secretdiscounter.ru" target="_blank" rel="nofollow noopener">Форум</a></li>
+                        <li><a href="https://gdeposylka.secretdiscounter.ru" target="_blank" rel="nofollow noopener">Отследить посылку</a></li>
                         <li><a class="red_item" href="/b2b">Подключить ваш магазин</a></li>
                     </ul>
                     <p class="withdraw-title">Накопленный кэшбэк Вы можете вывести любым удобным для Вас спобом:</p>
@@ -303,6 +303,11 @@
         } else { f(); }
     })(document, window, "yandex_metrika_callbacks");
 </script>
+
+<script charset="UTF-8" src="//cdn.sendpulse.com/28edd3380a1c17cf65b137fe96516659/js/push/f6abdd289df0fc24de9884b6be58d588_1.js" async></script>
+
+{{ Notification() | raw}}
+
 <noscript><div><img src="https://mc.yandex.ru/watch/42229559" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 </body>

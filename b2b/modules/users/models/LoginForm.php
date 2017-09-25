@@ -76,4 +76,16 @@ class LoginForm extends Model
     }
     return $this->user;
   }
+
+  public function loginByKey($key){
+    if ($this->user === false) {
+      $this->user = B2bUsers::find()
+      ->where(['temp_key'=>$key])
+      ->one();
+    }
+    if ($this->user){
+      return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+    };
+    return false;
+  }
 }

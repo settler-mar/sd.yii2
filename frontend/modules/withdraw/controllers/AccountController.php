@@ -46,7 +46,7 @@ class AccountController extends \yii\web\Controller
 
       if(
         !$request->post('bill')!= null ||
-        (int)$request->post('bill') == 0
+        strlen($request->post('bill')) < 5
       ){
         return json_encode(['error' => ['Не заполнены реквизиты перевода.']]);
       }
@@ -60,6 +60,11 @@ class AccountController extends \yii\web\Controller
       if($amount>$balans['current']){
         return json_encode([
           'error' => ['Максимальная сумма для вывода '.number_format($balans['current'],2,'.',' ').'р.']
+        ]);
+      }
+      if ($balans['withdraw_waiting'] > 0){
+        return json_encode([
+          'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
         ]);
       }
 
