@@ -8,6 +8,9 @@ use b2b\modules\users\models\LoginForm;
 use b2b\modules\users\models\PasswordResetRequestForm;
 use b2b\modules\users\models\ResetPasswordForm;
 use b2b\modules\users\models\B2bUsers;
+use b2b\modules\stores_points\models\B2bStoresPoints;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CpaLink;
 use yii\filters\AccessControl;
 
 class DefaultController extends Controller
@@ -30,9 +33,21 @@ class DefaultController extends Controller
     }
     public function actionIndex()
     {
-        $user = B2bUsers::findOne(Yii::$app->user->identity->id);
+        $stores = Stores::find()
+          ->select(['cws.uid', 'cws.name', 'cws.contact_name', 'cws.contact_email', 'cws.contact_phone', 'cws.logo',
+          'cwcl.affiliate_link', 'cwcl.cpa_id'])
+          ->from(Stores::tableName(). ' cws')
+          ->innerJoin(CpaLink::tableName(). ' cwcl', 'cws.uid  = cwcl.stores_id')
+          ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
+          ->where(['b2buc.user_id' => Yii::$app->user->identity->id])
+          ->asArray()
+          ->all();
+
+        foreach ($stores as &$store) {
+            $store['points'] = B2bStoresPoints::find()->where(['store_id' => $store['uid']])->asArray()->all();
+        }
         return $this->render('index', [
-            'spa_links' => $user->cpaLinks,
+            'stores' => $stores,
         ]);
     }
     /**

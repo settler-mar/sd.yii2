@@ -43,10 +43,12 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => false,
             'rules' => [
                 '/' => 'site/index',
                 '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
+                '/stores_points/create' => 'stores_points/default/create'
             ],
         ],
     ],
@@ -54,6 +56,9 @@ return [
     'modules' => [
         'users' => [
             'class' => 'b2b\modules\users\Module',
+        ],
+        'stores_points' => [
+            'class' => 'b2b\modules\stores_points\Module',
         ],
     ],
 ];
