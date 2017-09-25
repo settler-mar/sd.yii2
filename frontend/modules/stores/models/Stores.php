@@ -7,6 +7,7 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
+use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
@@ -176,6 +177,13 @@ class Stores extends \yii\db\ActiveRecord
     return $this->hasOne(CpaLink::className(), ['id' => 'active_cpa']);
   }
 
+  /**
+   * @return yii\db\ActiveQuery
+   */
+  public function getStoresPoints()
+  {
+    return $this->hasMany(B2bStoresPoints::className(), ['store_id' => 'uid']);
+  }
   /**
    * @return mixed
    */

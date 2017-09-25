@@ -9,15 +9,28 @@
 <div class="site-login">
     <h1>{{ html.encode(title) }}</h1>
     {% for link in spa_links %}
-    <div>
-        <a href="{{ link.affiliate_link }}">{{ link.affiliate_link }}</a>
-        <img src="https:/secretdiscounter.ru/images/logos/{{ link.store2.logo }}" alt="{{ link.store2.name }} logo">
-        {{ link.store2.name }}
-        {{ link.store2.contact_name }}
-        {{ link.store2.contact_phone }}
-        {{ link.store2.contact_email }}
-        {#{{ link.cpa.name }}#}
-    </div>
+        <div>
+            <a href="{{ link.affiliate_link }}">{{ link.affiliate_link }}</a>
+            <img src="https:/secretdiscounter.ru/images/logos/{{ link.store2.logo }}" alt="{{ link.store2.name }} logo">
+            {{ link.store2.name }} {{ link.store2.contact_name }} {{ link.store2.contact_phone }} {{ link.store2.contact_email }}
+            cpa-type {{ link.cpa.name }}
+            {% if link.cpa_id == 2 %}
+            <div>
+                {% if link.store2.storesPoints %}
+                    <h5>Точки продаж</h5>
+                    <ul>
+                        {% for point  in link.store2.storesPoints %}
+                            <li>
+                                {{ point.name }} {{ point.address }}
+                                <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <a href="/stores_points/create?store_id={{ link.store.uid }}">Добавить точку продаж</a>
+            </div>
+            {% endif %}
+        </div>
     {% endfor %}
 
 
