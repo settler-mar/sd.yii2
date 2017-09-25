@@ -55,7 +55,7 @@ class AdminController extends Controller
       ['sum(order_price*kurs) as order_price',
         'sum(reward) as reward',
         'sum(cashback) as cashback',
-        'sum(ref_bonus) as ref_bonus',
+        'sum(ref_bonus) as ref_bonus'
       ]);
     //$statsQuery['all'] = $stat->asArray()->one();
     $statsQuery['all'] = $stat->one();

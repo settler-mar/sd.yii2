@@ -46,7 +46,7 @@ class AccountController extends \yii\web\Controller
 
       if(
         !$request->post('bill')!= null ||
-        (int)$request->post('bill') == 0
+        strlen($request->post('bill')) < 5
       ){
         return json_encode(['error' => ['Не заполнены реквизиты перевода.']]);
       }

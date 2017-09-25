@@ -87,9 +87,9 @@ class PaymentsSearch extends Payments
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'uid' => $this->uid,
+            'cw_payments.uid' => $this->uid,
             'is_showed' => $this->is_showed,
-            'action_id' => $this->action_id,
+            'cw_payments.action_id' => $this->action_id,
             'affiliate_id' => $this->affiliate_id,
            // 'user_id' => $this->user_id,
             'order_price' => $this->order_price,
