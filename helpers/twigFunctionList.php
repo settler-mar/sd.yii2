@@ -304,6 +304,41 @@ $functionsList=[
   '_n_to_br'=>function ($txt) {
     return str_replace("\n",'<br>',$txt);
   },
+  'Notification'=>function () {
+    $flashes = \Yii::$app->session->getAllFlashes(true);
+
+    if(isset(Yii::$app->params['exception'])){
+      $exception=Yii::$app->params['exception'];
+      $pathInfo = Yii::$app->request->getPathInfo();
+      if(
+        (
+          strpos($pathInfo,'admin')===false ||
+          (
+            !Yii::$app->user->isGuest && Yii::$app->user->can('adminIndex')
+          )
+        ) &&
+        $exception->getMessage()!=='User not found'
+      ){
+        if(!isset($flashes['err'])){
+          $flashes['err']=array();
+        }
+        $flashes['err'][]=$exception->getMessage();
+      };
+    }
+
+    if (count($flashes) == 0) {
+      return '';
+    }
+
+    $js = '';
+    foreach ($flashes as $type => $flashe) {
+      Yii::$app->session->removeFlash($type);
+      foreach ($flashe as $txt) {
+        $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'});' . "\n";
+      }
+    }
+    return '<script type="text/javascript">' . "\n" . $js . '</script>';
+  },
 
 ];
 
