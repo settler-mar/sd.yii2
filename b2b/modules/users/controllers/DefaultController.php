@@ -22,16 +22,25 @@ class DefaultController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-          'model' => $model,
-        ]);
+      if (!Yii::$app->user->isGuest) {
+        return $this->goHome();
+      }
+      $model = new LoginForm();
+
+      if (Yii::$app->request->get('key')) {
+        if($model->loginByKey(Yii::$app->request->get('key'))){
+          return $this->goHome();
+        }else{
+          return Yii::$app->getResponse()->redirect('/login');
+        };
+      }
+
+      if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        return $this->goBack();
+      }
+      return $this->render('login', [
+        'model' => $model,
+      ]);
     }
     /**
      * Logout action.

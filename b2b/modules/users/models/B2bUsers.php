@@ -90,6 +90,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
         self::getDb()->createCommand()->update(self::tableName(), [
           'ip' => $_SERVER["REMOTE_ADDR"],
           'login_at' => date('Y-m-d H:i:s'),
+          'temp_key' => '',
         ], ['id' => $id])->execute();
     }
     /**
