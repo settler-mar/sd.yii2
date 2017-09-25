@@ -18,6 +18,10 @@ use frontend\modules\stores\models\CpaLink;
  */
 class B2bStoresPoints extends \yii\db\ActiveRecord
 {
+    /**
+     * @var
+     * вместо id магазина на форме добавления
+     */
     public $route;
     /**
      * @inheritdoc
@@ -37,7 +41,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 $cpa = CpaLink::find()
                     ->from(CpaLink::tableName() . ' cwcl')
                     ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
-                    ->where(['stores_id' => $value, 'b2buc.user_id'=> Yii::$app->user->identity->id])
+                    ->where([
+                      'stores_id' => $value,
+                      'b2buc.user_id'=> Yii::$app->user->identity->id,
+                      'cpa_id' => 2 //шоп офлайн
+                    ])
                     ->count();
                 if ($cpa == 0) {
                     return 'false';
@@ -61,8 +69,8 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'store_id' => 'ID магазина',
-            'name' => 'Название',
-            'address' => 'Адрес',
+            'name' => 'Название точки продаж',
+            'address' => 'Адрес точки продаж',
             'access_code' => 'Access Code',
             'created_at' => 'Created At',
             'route' => 'Магазин',
