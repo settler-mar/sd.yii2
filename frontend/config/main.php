@@ -172,6 +172,9 @@ $config= [
     'cache' => [
       'class' => 'frontend\modules\cache\Module',
     ],
+    'b2b_users' => [
+      'class' => 'frontend\modules\b2b_users\Module',
+    ],
   ],
   'params' => $params,
 ];

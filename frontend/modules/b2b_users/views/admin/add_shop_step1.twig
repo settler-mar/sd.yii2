@@ -1,0 +1,27 @@
+{{ use('/yii/widgets/ActiveForm') }}
+{{ use('/yii/helpers/Html') }}
+    {% set form = active_form_begin({
+        'id' : 'form',
+        'enableAjaxValidation' : false,
+        'enableClientValidation' : false,
+        'validateOnSubmit':false,
+
+    }) %}
+    <h3>Шаг 1. Выбор магазина</h3>
+    {% if error %}
+        <p styele="color:red;">
+            {{ error }}
+        </p>
+    {% endif %}
+    <div class="form-group">
+        <label class="control-label">Магазин(id)</label>
+        {{ html.input('text', 'store_id', '', {'class' : 'ds'}) | raw}}
+    </div>
+
+    <br>
+
+    <div class="form-group">
+        <a href="/admin/stores/create" class="btn btn-primary" target="_blank">Создать магазин</a>
+        <input type="submit" value="Далее" class="btn btn-success">
+    </div>
+{{ active_form_end() }}

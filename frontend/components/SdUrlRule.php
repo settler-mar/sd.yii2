@@ -182,7 +182,8 @@ class SdUrlRule implements UrlRuleInterface
       }
 
       //если есть лишние части пути (кроме модуль, контроллер, экшн), то 404
-      if (count($parameters)>3) {
+      //исключение админ часть
+      if ($parameters[0]=='admic' AND count($parameters)>3) {
         throw new \yii\web\NotFoundHttpException;
       }
       Yii::$app->params['clear_url']=implode('/', $parameters);
