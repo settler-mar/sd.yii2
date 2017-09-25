@@ -31,7 +31,7 @@
     {% if app.user.isGuest %}
         {% set menuItems = menuItems|merge([{'label': 'Авторизация', 'url': ['/login']}]) %}
     {% else %}
-        {% set label='Выход('~app.user.identity.username~')' %}
+        {% set label='Выход ('~app.user.identity.username~')' %}
         {% set menuItems = menuItems|merge([{'label': label, 'url': ['/logout']}]) %}
     {% endif %}
     {{ nav_widget({'options': {'class': 'navbar-nav navbar-right'}, 'items': menuItems,}) }}

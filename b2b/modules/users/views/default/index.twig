@@ -8,18 +8,18 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="site-login">
     <h1>{{ html.encode(title) }}</h1>
-    {% for link in spa_links %}
+    {% for store in stores %}
         <div>
-            <a href="{{ link.affiliate_link }}">{{ link.affiliate_link }}</a>
-            <img src="https:/secretdiscounter.ru/images/logos/{{ link.store2.logo }}" alt="{{ link.store2.name }} logo">
-            {{ link.store2.name }} {{ link.store2.contact_name }} {{ link.store2.contact_phone }} {{ link.store2.contact_email }}
-            cpa-type {{ link.cpa.name }}
-            {% if link.cpa_id == 2 %}
+            <a href="{{ store.affiliate_link }}">{{ store.affiliate_link }}</a>
+            <img src="https:/secretdiscounter.ru/images/logos/{{ store.logo }}" alt="{{ store.name }} logo">
+            {{ store.name }} {{ store.contact_name }} {{ store.contact_phone }} {{ store.contact_email }}
+            cpa-type {{ store.cpa_id }}
+            {% if store.cpa_id == 2 %}
             <div>
-                {% if link.store2.storesPoints %}
+                {% if store.points %}
                     <h5>Точки продаж</h5>
                     <ul>
-                        {% for point  in link.store2.storesPoints %}
+                        {% for point  in store.points %}
                             <li>
                                 {{ point.name }} {{ point.address }}
                                 <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
