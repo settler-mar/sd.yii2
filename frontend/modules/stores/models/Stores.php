@@ -74,7 +74,7 @@ class Stores extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['name', 'route', 'url', 'currency', 'added', 'hold_time'], 'required'],
+      [['name', 'route', 'url', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
