@@ -143,11 +143,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
               $c = [];
               if (count($categories) > 0) {
                   foreach ($categories as $category) {
-                      if ($showHidden == false &&
-                        ((!empty($categories[$category['parent_id']]) && $categories[$category['parent_id']]['menu_hidden'] == 1)
-                          || $category['menu_hidden'] == 1)
-                      ) {
-                          //не включаем в меню, если включена опция и (родительская скрыта или категория скрыта)
+                      if ($showHidden == false && $category['menu_hidden'] == 1) {
+                          //не включаем в меню, если включена опция и категория скрыта
                           continue;
                       }
                       $c[$category['parent_id']][$category['uid']] = $category;
