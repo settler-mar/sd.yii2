@@ -135,6 +135,26 @@ class AdminController extends Controller
     $store->save();
   }
 
+
+
+  public function actionRemoveStore()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+    }
+
+    $cpa=UsersCpa::find()
+      ->where(['id'=>$request->post('id')])
+      ->one();
+    return $cpa && $cpa->delete();
+  }
+
   public function actionAddStore($id)
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
