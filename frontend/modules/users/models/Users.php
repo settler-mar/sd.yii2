@@ -287,6 +287,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     if ($photo) {
       $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
       $oldImage = $this->photo;
+
+      if(!isReadable($photo->tempName)){
+        Yii::$app->session->addFlash('err','Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
+        return;
+      }
+
       $name = time(); // Название файла
       $exch = explode('.', $photo->name);
       $exch = $exch[count($exch) - 1];
