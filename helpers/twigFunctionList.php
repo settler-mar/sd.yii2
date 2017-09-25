@@ -334,6 +334,9 @@ $functionsList=[
     foreach ($flashes as $type => $flashe) {
       Yii::$app->session->removeFlash($type);
       foreach ($flashe as $txt) {
+        if($txt=='Просмотр данной страницы запрещен.'){
+          $txt='Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
+        }
         $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'});' . "\n";
       }
     }
