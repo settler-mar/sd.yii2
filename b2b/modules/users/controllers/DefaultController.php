@@ -7,14 +7,34 @@ use yii\web\Controller;
 use b2b\modules\users\models\LoginForm;
 use b2b\modules\users\models\PasswordResetRequestForm;
 use b2b\modules\users\models\ResetPasswordForm;
+use b2b\modules\users\models\B2bUsers;
+use yii\filters\AccessControl;
 
 class DefaultController extends Controller
 {
-//    public function actionIndex()
-//    {
-//        return 'index';
-//        return $this->render('index');
-//    }
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+    public function actionIndex()
+    {
+        $user = B2bUsers::findOne(Yii::$app->user->identity->id);
+        return $this->render('index', [
+            'spa_links' => $user->cpaLinks,
+        ]);
+    }
     /**
      * Login action.
      *

@@ -58,6 +58,14 @@ class CpaLink extends \yii\db\ActiveRecord
   {
     return Stores::findOne(['uid' => $this->stores_id]);
   }
+  /**
+   * магазин купона
+   * @return \yii\db\ActiveQuery
+   */
+  public function getStore2()
+  {
+    return $this->hasOne(Stores::className(), ['uid' => 'stores_id']);
+  }
 
   public function getCpa()
   {
