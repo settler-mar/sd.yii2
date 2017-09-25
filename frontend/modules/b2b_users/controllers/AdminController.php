@@ -46,6 +46,11 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new B2bUsersSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +67,11 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersCreate')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = new B2bNewUsers();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -81,6 +91,11 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -97,8 +112,56 @@ class AdminController extends Controller
     }
   }
 
+
+  public function actionUpdateStore()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+    }
+
+    $store = Stores::find()
+      ->where(['uid' => $request->post('id')])
+      ->one();
+    $col = $request->post('name');
+    $value = $request->post('value');
+
+    $store->$col = $value;
+    $store->save();
+  }
+
+
+
+  public function actionRemoveStore()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+    }
+
+    $cpa=UsersCpa::find()
+      ->where(['id'=>$request->post('id')])
+      ->one();
+    return $cpa && $cpa->delete();
+  }
+
   public function actionAddStore($id)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $request = Yii::$app->request;
     if(!$request->isAjax){
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
@@ -179,6 +242,11 @@ class AdminController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('B2bUsersDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
