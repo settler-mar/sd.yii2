@@ -8,6 +8,7 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="site-login">
     <h1>{{ html.encode(title) }}</h1>
+    {% if stores %}
     {% for store in stores %}
         <div>
             <a href="{{ store.affiliate_link }}">{{ store.affiliate_link }}</a>
@@ -27,11 +28,16 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <a href="/stores_points/create?store_id={{ link.store.uid }}">Добавить точку продаж</a>
+                <a href="/stores_points/create?route={{ store.route }}">Добавить точку продаж</a>
             </div>
             {% endif %}
         </div>
     {% endfor %}
+    {% else %}
+        <div>
+            У вас нет магазинов!
+        </div>
+    {% endif %}
 
 
 </div>

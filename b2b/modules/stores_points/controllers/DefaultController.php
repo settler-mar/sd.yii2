@@ -5,6 +5,7 @@ namespace b2b\modules\stores_points\controllers;
 use Yii;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use b2b\modules\stores_points\models\B2bStoresPointsSearch;
+use frontend\modules\stores\models\Stores;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,14 +69,16 @@ class DefaultController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($store_id)
+    public function actionCreate($route)
     {
         $model = new B2bStoresPoints();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/home']);
         } else {
-            $model->store_id = $store_id;
+            $store = Stores::byRoute($route);
+            $model->store_id = $store->uid;
+            $model->route = $store->route;
             return $this->render('create.twig', [
                 'model' => $model,
             ]);
