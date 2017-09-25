@@ -21,7 +21,8 @@ return [
             'identityCookie' => ['name' => '_identity-b2b', 'httpOnly' => true],
             'on afterLogin' => function($event) {
               b2b\modules\users\models\B2bUsers::afterLogin($event->identity->id);
-            }
+            },
+            'loginUrl' => ['/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the b2b
@@ -44,6 +45,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '/' => 'site/index',
+                '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
             ],
         ],

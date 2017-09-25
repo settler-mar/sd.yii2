@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
+use frontend\modules\stores\models\CpaLink;
 
 /**
  * This is the model class for table "b2b_users".
@@ -74,6 +75,12 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
     public function getName()
     {
         return $this->userName;
+    }
+
+    public function getCpaLinks()
+    {
+        return $this->hasMany(CpaLink::className(), ['id' => 'cpa_link_id'])
+            ->viaTable('b2b_users_cpa', ['user_id' => 'id']);
     }
 
     /**

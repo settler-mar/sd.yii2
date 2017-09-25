@@ -27,7 +27,7 @@
         'brandUrl' : '/',
         'options' : {'class': 'navbar-inverse navbar-fixed-top'}
     })  }}
-    {%  set menuItems = [{'label': 'Home', 'url': ['/site/index']}] %}
+    {%  set menuItems = [{'label': 'Личный кабинет', 'url': ['/home']}] %}
     {% if app.user.isGuest %}
         {% set menuItems = menuItems|merge([{'label': 'Авторизация', 'url': ['/login']}]) %}
     {% else %}

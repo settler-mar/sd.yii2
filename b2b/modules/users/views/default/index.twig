@@ -1,0 +1,24 @@
+{% set title = 'Личный кабинет' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="site-login">
+    <h1>{{ html.encode(title) }}</h1>
+    {% for link in spa_links %}
+    <div>
+        <a href="{{ link.affiliate_link }}">{{ link.affiliate_link }}</a>
+        <img src="https:/secretdiscounter.ru/images/logos/{{ link.store2.logo }}" alt="{{ link.store2.name }} logo">
+        {{ link.store2.name }}
+        {{ link.store2.contact_name }}
+        {{ link.store2.contact_phone }}
+        {{ link.store2.contact_email }}
+        {#{{ link.cpa.name }}#}
+    </div>
+    {% endfor %}
+
+
+</div>
