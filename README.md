@@ -4,7 +4,7 @@ SD Yii2 Advanced Project
 Проект состоит из 2-х связанных блоков.
 
 1. [Основной сайт (secretdiscounter.ru)](https://secretdiscounter.ru)
-2. [Партнерский сайт (sd.secretdiscounter.ru)](https://sd.secretdiscounter.ru)
+2. [Партнерский сайт (b2b.secretdiscounter.ru)](https://b2b.secretdiscounter.ru)
 
 
 ## Встроенный генератор/парсер ссылок
