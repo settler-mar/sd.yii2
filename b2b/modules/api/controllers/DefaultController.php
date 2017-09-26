@@ -159,6 +159,6 @@ class DefaultController extends Controller
   }
 
   public function actionMsg(){
-    return $this->view->renderAjax('msg');
+    return $this->renderAjax('msg_ok');
   }
 }
