@@ -31,6 +31,10 @@
                     <p><span>Магазин активен:</span><br>
                         {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
                     </p>
+                    <p><span>Магазин оффлайн:</span><br>
+                        {{ form.field(model, 'is_offline').dropDownList({'0' : 'Онлайн','1' : 'Оффлайн'}).label(false)|raw }}
+                    </p>
+                    <p><span>Связанный магазин (ID):</span> <br>{{ form.field(model, 'related').textInput({'maxlength':true}).label(false)|raw }}</p>
                 </div>
                 <div class="col-md-12">
                     <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>

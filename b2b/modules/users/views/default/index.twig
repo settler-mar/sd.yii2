@@ -45,7 +45,7 @@
                     <img src="https:/secretdiscounter.ru/images/logos/{{ store.logo }}" alt="{{ store.name }} logo">
                 </td>
             </tr>
-                {% if store.cpa_id == 2 %}
+                {% if store.is_offline == 1 %}
                 <tr>
                     <th colspan="2"></th>
                     <th colspan="4" style="text-align:center;background-color:rgb(239, 239, 239);">
