@@ -4,6 +4,7 @@
 {{ use('yii/bootsrap/Nav') }}
 {{ use('yii/bootsrap/NavBar') }}
 {{ use('yii/widgets/Breadcrumbs') }}
+{{ use('b2b/components/ContentMenu') }}
 {{ use('common/widgets/Alert') }}
 {{ register_asset_bundle('b2b/assets/AppAsset') }}
 
@@ -41,7 +42,20 @@
     <div class="container">
         {{ breadcrumbs_widget({'links': this.params.breadcrumbs}) }}
         {{ alert_widget() }}
-        {{ content|raw }}
+        {% set content_menu = content_menu_widget({'current_item':this.title}) %}
+        {% if content_menu %}
+            <div class="col-sm-2">
+                {{ content_menu|raw }}
+            </div>
+            <div class="col-sm-9">
+                {{ content|raw }}
+            </div>
+        {% else %}
+            <div class="col-sm-12">
+                {{ content|raw }}
+            </div>
+        {% endif %}
+
     </div>
 </div>
 

@@ -57,4 +57,14 @@ class B2bContent extends \yii\db\ActiveRecord
             'menu_index' => 'Порядок в меню',
         ];
     }
+
+    public static function menu()
+    {
+        return self::find()
+            ->select(['page', 'title'])
+            ->where(['menu_show' => 1])
+            ->orderBy('menu_index ASC')
+            ->asArray()
+            ->all();
+    }
 }
