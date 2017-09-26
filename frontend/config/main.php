@@ -175,6 +175,9 @@ $config= [
     'b2b_users' => [
       'class' => 'frontend\modules\b2b_users\Module',
     ],
+    'b2b_content' => [
+      'class' => 'frontend\modules\b2b_content\Module',
+    ],
   ],
   'params' => $params,
 ];
