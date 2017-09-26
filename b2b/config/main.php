@@ -48,7 +48,10 @@ return [
                 '/' => 'site/index',
                 '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
-                '/stores_points/create' => 'stores_points/default/create'
+                '/stores_points/<action:(create)>' => 'stores_points/default/<action>',
+
+                '/api/<action:(login)>' => 'api/default/<action>',
+                '/api/<controller>/<action2>' => '404', //закрываем доступ
             ],
         ],
     ],
@@ -59,6 +62,9 @@ return [
         ],
         'stores_points' => [
             'class' => 'b2b\modules\stores_points\Module',
+        ],
+        'api' => [
+            'class' => 'app\modules\api\Module',
         ],
     ],
 ];
