@@ -50,7 +50,7 @@ return [
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
                 '/stores_points/<action:(create)>' => 'stores_points/default/<action>',
 
-                '/api/<action:(login|categories)>' => 'api/default/<action>',
+                '/api/<action:(login|categories|save)>' => 'api/default/<action>',
                 '/api/<controller>/<action2>' => '404', //закрываем доступ
             ],
         ],
