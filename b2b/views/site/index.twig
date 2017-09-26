@@ -1,11 +1,11 @@
 {% set title = 'Главная' %}
 {{ set(this, 'title', title) }}
-{% if not this.params.breadcrumbs %}
-    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
-{% endif %}
-{% set breadcrumbs = this.params.breadcrumbs %}
-{% set breadcrumbs = breadcrumbs|merge([title]) %}
-{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+{#{% if not this.params.breadcrumbs %}#}
+    {#{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}#}
+{#{% endif %}#}
+{#{% set breadcrumbs = this.params.breadcrumbs %}#}
+{#{% set breadcrumbs = breadcrumbs|merge([title]) %}#}
+{#{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}#}
 <div class="site-index">
 
     <div class="jumbotron">

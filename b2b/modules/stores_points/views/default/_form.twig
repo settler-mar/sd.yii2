@@ -2,18 +2,16 @@
 <div class="b2b-stores-points-form">
     {% set form = active_form_begin() %}
 
-        {{ form.field(model, 'store_id').textInput({'readOnly':true})|raw }}
+        {{ form.field(model, 'store_id').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+
+        {{ form.field(model, 'route').textInput({'readOnly':true})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
 
-        {#{{ form.field(model, 'access_code').textInput({'maxlength':true})|raw }}#}
-
-        {#{{ form.field(model, 'created_at').textInput()|raw }}#}
-
     <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
     {{ active_form_end() }}
 </div>

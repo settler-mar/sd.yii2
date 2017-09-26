@@ -2,7 +2,7 @@
 {{ use('yii/bootstrap/ActiveForm') }}
 {{ use('yii/helpers/ArrayHelper') }}
 {{ use('app/models/User') }}
-{% set title = 'Login' %}
+{% set title = 'Авторизация' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
   {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
