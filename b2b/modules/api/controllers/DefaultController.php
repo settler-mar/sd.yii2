@@ -159,6 +159,7 @@ class DefaultController extends Controller
   }
 
   public function actionMsg(){
-    return $this->renderAjax('msg_ok');
+    $request=Yii::$app->request;
+    return $this->renderAjax('msg_ok',$request->get());
   }
 }
