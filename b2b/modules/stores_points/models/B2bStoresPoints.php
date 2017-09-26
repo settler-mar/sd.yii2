@@ -57,7 +57,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['store_id'], 'integer', 'message' => 'Неправильный магазин'],
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
-            [['name', 'address'], 'string', 'max' => 255],
+            [['name', 'address', 'work_time'], 'string', 'max' => 255],
             [['access_code'], 'string', 'max' => 150],
         ];
     }
@@ -74,6 +74,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'address' => 'Адрес точки продаж',
             'access_code' => 'Access Code',
             'created_at' => 'Created At',
+            'work_time' => 'Время работы',
             'route' => 'Магазин',
         ];
     }

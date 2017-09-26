@@ -59,6 +59,7 @@
                                         <th></th>
                                         <th>Название</th>
                                         <th>Адрес</th>
+                                        <th>Время работы</th>
                                         <th>CR code</th>
                                     </tr>
                                     </thead>
@@ -67,6 +68,7 @@
                                             <th>{{ key+1 }}.</th>
                                             <th>{{ point.name }}</th>
                                             <th>{{ point.address }}</th>
+                                            <th>{{ point.work_time }}</th>
                                             <th><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code"></th>
                                         </tr>
                                     {% endfor %}
