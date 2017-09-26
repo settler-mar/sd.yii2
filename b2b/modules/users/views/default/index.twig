@@ -6,33 +6,79 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="site-login">
+<div class="home-page">
     <h1>{{ html.encode(title) }}</h1>
+    <h3>Мои магазины</h3>
     {% if stores %}
-    {% for store in stores %}
-        <div>
-            <a href="{{ store.affiliate_link }}">{{ store.affiliate_link }}</a>
-            <img src="https:/secretdiscounter.ru/images/logos/{{ store.logo }}" alt="{{ store.name }} logo">
-            {{ store.name }} {{ store.contact_name }} {{ store.contact_phone }} {{ store.contact_email }}
-            cpa-type {{ store.cpa_id }}
-            {% if store.cpa_id == 2 %}
-            <div>
-                {% if store.points %}
-                    <h5>Точки продаж</h5>
-                    <ul>
-                        {% for point  in store.points %}
-                            <li>
-                                {{ point.name }} {{ point.address }}
-                                <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
-                            </li>
-                        {% endfor %}
-                    </ul>
+
+        <table style="width:100%">
+            <thead><tr>
+                <th></th>
+                <th>Название</th>
+                <th>Контактное лицо</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                <th>Logo</th>
+            </tr></thead>
+        {% for index, store in stores %}
+            <tr>
+
+                {#<td>#}
+                {#<a href="{{ store.affiliate_link }}">{{ store.affiliate_link }}</a>#}
+                {#</td>#}
+                <td>
+                    {{ index+1 }}.
+                </td>
+                <td>
+                    {{ store.name }}
+                </td>
+                <td>
+                    {{ store.contact_name }}
+                </td>
+                <td>
+                    {{ store.contact_phone }}
+                </td>
+                <td>
+                    {{ store.contact_email }}
+                </td>
+                <td>
+                    <img src="https:/secretdiscounter.ru/images/logos/{{ store.logo }}" alt="{{ store.name }} logo">
+                </td>
+            </tr>
+                {% if store.cpa_id == 2 %}
+                <tr>
+                    <th colspan="2"></th>
+                    <th colspan="4" style="text-align:center;background-color:rgb(239, 239, 239);">
+                        <h4>Точки продаж</h4>
+                        <a href="/stores_points/create?route={{ store.route }}">Добавить точку продаж</a>
+
+                            {% if store.points %}
+                                <table style="width:100%;">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Название</th>
+                                        <th>Адрес</th>
+                                        <th>CR code</th>
+                                    </tr>
+                                    </thead>
+                                    {% for key, point  in store.points %}
+                                        <tr>
+                                            <th>{{ key+1 }}.</th>
+                                            <th>{{ point.name }}</th>
+                                            <th>{{ point.address }}</th>
+                                            <th><img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code"></th>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endif %}
+                    </th>
+                </tr>
                 {% endif %}
-                <a href="/stores_points/create?route={{ store.route }}">Добавить точку продаж</a>
-            </div>
-            {% endif %}
-        </div>
-    {% endfor %}
+
+
+        {% endfor %}
+        </table>
     {% else %}
         <div>
             У вас нет магазинов!

@@ -4,7 +4,8 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
-{% set breadcrumbs = breadcrumbs|merge([{'label': 'B2b Stores Points', 'url': path(['index'])}]) %}
+{#{% set breadcrumbs = breadcrumbs|merge([{'label': 'B2b Stores Points', 'url': path(['index'])}]) %}#}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Личный кабинет', 'url': path(['/home'])}]) %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="b2b-stores-points-create">
