@@ -48,7 +48,10 @@ return [
                 '/' => 'site/index',
                 '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
-                '/stores_points/create' => 'stores_points/default/create'
+                '/stores_points/create' => 'stores_points/default/create',
+                [
+                    'class' => 'b2b\components\ContentUrlRule',
+                ],
             ],
         ],
     ],
@@ -59,6 +62,9 @@ return [
         ],
         'stores_points' => [
             'class' => 'b2b\modules\stores_points\Module',
+        ],
+        'content' => [
+            'class' => 'b2b\modules\content\Module',
         ],
     ],
 ];
