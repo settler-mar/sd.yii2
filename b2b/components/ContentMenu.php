@@ -14,6 +14,7 @@ class ContentMenu extends Widget
   public $link_class = 'content_menu__link';
   public $current_item_class = 'current';
   public $current_item = '';//текущий пункт (title)
+  public $is_guests = false;//юсер незарегистрирован
 
   public function init()
   {
@@ -22,7 +23,7 @@ class ContentMenu extends Widget
 
   public function run()
   {
-    $list = B2bContent::menu();
+    $list = B2bContent::menu($this->is_guests);
     if (count($list) == 0) {
       return null;
     }

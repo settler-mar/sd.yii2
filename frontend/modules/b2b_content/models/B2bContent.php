@@ -35,7 +35,7 @@ class B2bContent extends \yii\db\ActiveRecord
             [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'required'],
             [['page'], 'unique'],
             [['description', 'keywords', 'content'], 'string'],
-            [['menu_show', 'menu_index'], 'integer'],
+            [['menu_show', 'menu_index', 'registered_only'], 'integer'],
             [['page', 'title', 'h1'], 'string', 'max' => 255],
         ];
     }
@@ -55,15 +55,24 @@ class B2bContent extends \yii\db\ActiveRecord
             'content' => 'Content',
             'menu_show' => 'Показывать в левом меню',
             'menu_index' => 'Порядок в меню',
+            'registered_only' => 'Только для авторизованных',
         ];
     }
 
-    public static function menu()
+    /**
+     * @param bool $guestUser
+     * @return array|\yii\db\ActiveRecord[]
+     * меню для контента
+     */
+    public static function menu($guestUser = false)
     {
-        return self::find()
+        $items =  self::find()
             ->select(['page', 'title'])
-            ->where(['menu_show' => 1])
-            ->orderBy('menu_index ASC')
+            ->where(['menu_show' => 1]);
+        if ($guestUser) {
+            $items = $items->andWhere(['<', 'registered_only', 1]);
+        }
+        return $items->orderBy('menu_index ASC')
             ->asArray()
             ->all();
     }

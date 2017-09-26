@@ -18,7 +18,7 @@ class B2bContentSearch extends B2bContent
     public function rules()
     {
         return [
-            [['id', 'menu_show', 'menu_index'], 'integer'],
+            [['id', 'menu_show', 'menu_index', 'registered_only'], 'integer'],
             [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'safe'],
         ];
     }
@@ -62,6 +62,7 @@ class B2bContentSearch extends B2bContent
             'id' => $this->id,
             'menu_show' => $this->menu_show,
             'menu_index' => $this->menu_index,
+            'registered_only' => $this->registered_only,
         ]);
 
         $query->andFilterWhere(['like', 'page', $this->page])

@@ -37,6 +37,14 @@
                                 },
                             },
                             'menu_index',
+                            {
+                                'format':'raw',
+                                'attribute': 'registered_only',
+                                'filter': {
+                                    '0': 'Нет',
+                                    '1': 'Да',
+                                },
+                            },
                             {'class': '\\yii\\grid\\ActionColumn',
                                 'template' : '{update} {delete}',
                             },

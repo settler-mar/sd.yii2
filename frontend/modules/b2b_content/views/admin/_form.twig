@@ -25,6 +25,11 @@
 
                 {{ form.field(model, 'menu_index').textInput()|raw }}
 
+                {{ form.field(model, 'registered_only').dropDownList({
+                    '0':'Для всех',
+                    '1':'Только для авторизованных',
+                })|raw }}
+
             </div>
             <div class="col-md-12">
                 {{ form.field(model, 'description').textarea({'rows':6})|raw }}
