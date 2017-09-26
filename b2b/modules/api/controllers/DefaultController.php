@@ -64,9 +64,14 @@ class DefaultController extends Controller
     $cat_ist=$cpa->getStoreActions()->asArray()->all();
     $out=array();
     foreach ($cat_ist as $item){
-      $out[]= '"'.$item['uid'].': '.str_replace('"',"\\\"",$item['name']).'"';
+      $out[]=[
+        $item['name'],
+        $item['uid']
+      ];
+      //$out[]= '"'.$item['uid'].': '.str_replace('"',"\\\"",$item['name']).'"';
     }
-    return implode(',',$out)."\n";
+    return json_encode($out);
+    //return implode(',',$out)."\n";
   }
 
   public function actionSave(){
@@ -77,12 +82,14 @@ class DefaultController extends Controller
     }
 
     $request=Yii::$app->request;
-    if(
-      !$request->post('category') ||
-      !$request->post('user_code') ||
-      !$request->post('sum')
-    ){
-      return 'Ошибка данных';
+    if(!$request->post('category')){
+      return 'Выберите категорию';
+    }
+    if(!$request->post('user_code')){
+      return 'Заполните данные пользователя';
+    }
+    if(!$request->post('sum')){
+      return 'Введите сумму покупки';
     }
 
     if(!$store_id){
@@ -94,13 +101,20 @@ class DefaultController extends Controller
       ->one();
     $cpa = $store->getCpaLink()->one();
 
-    $action_id=explode(':',$request->post('category'));
+    if(!$cpa){
+      return 'Ошибка получения данных магазина';
+    }
+
+
+    $action_id=(int)$request->post('category');
+
     $action=StoresActions::find()
       ->where([
-        'uid'=>$action_id[0],
-        'cpa_link_id'=>$cpa->uid
+        'uid'=>(int)$action_id,
+        'cpa_link_id'=>$cpa->id
       ])
       ->one();
+
     if(!$action){
       return 'Категория не доступна';
     }
@@ -108,19 +122,30 @@ class DefaultController extends Controller
     $tariff=$action->getTariffs()
       ->orderBy('uid')
       ->one();
+    if(!$tariff){
+      return 'Ошибка получения данных категории товара';
+    }
+
+
     $rates=$tariff->getRates()
-      ->where('date_s<'.date("Y-m-d H:i:s"))
-      ->orderBy(['date_s DESC','uid'])
+      ->where(['<','date_s',date("Y-m-d H:i:s")])
+      //->orderBy(['date_s DESC','uid'])
       ->one();
+    if(!$rates){
+      return 'Не найденна ставка кешбека для данной категории';
+    }
 
     $user=explode('-',trim($request->post('user_code')));
-    if(mb_strtolower($user[0])!='SD'){
+    if(mb_strtolower($user[0])!='sd' || count($user)!=2){
       return 'Не верный формат идентификатора пользователя';
     }
 
+    $user=(int)$user[1];
+
     $user=Users::find()
-      ->where(['uid'=>(int)$user[1]])
+      ->where(['uid'=>$user])
       ->one();
+
     if(!$user){
       return 'Пользователь не найден';
     }
@@ -131,6 +156,9 @@ class DefaultController extends Controller
     }
 
     return 'OK';
+  }
 
+  public function actionMsg(){
+    return $this->view->renderAjax('msg');
   }
 }
