@@ -19,6 +19,8 @@ use Yii;
  */
 class B2bContent extends \yii\db\ActiveRecord
 {
+    public $no_breadcrumbs = false;
+
     /**
      * @inheritdoc
      */
@@ -48,40 +50,42 @@ class B2bContent extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'page' => 'Страница',
-            'title' => 'Title',
-            'description' => 'Description',
-            'keywords' => 'Keywords',
-            'h1' => 'H1',
-            'content' => 'Content',
-            'menu_show' => 'Показывать в левом меню',
-            'menu_index' => 'Порядок в меню',
-            'registered_only' => 'Только для авторизованных',
-        ];
-    }
 
-    /**
-     * @param bool $guestUser
-     * @return array|\yii\db\ActiveRecord[]
-     * меню для контента
-     */
-    public static function menu($guestUser = false)
-    {
-        $items =  self::find()
-            ->select(['page', 'title'])
-            ->where(['menu_show' => 1]);
-        if ($guestUser) {
-            $items = $items->andWhere(['<', 'registered_only', 1]);
-        }
-        return $items->orderBy('menu_index ASC')
-            ->asArray()
-            ->all();
+
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+      'id' => 'ID',
+      'page' => 'Страница',
+      'title' => 'Title',
+      'description' => 'Description',
+      'keywords' => 'Keywords',
+      'h1' => 'H1',
+      'content' => 'Content',
+      'menu_show' => 'Показывать в левом меню',
+      'menu_index' => 'Порядок в меню',
+      'registered_only' => 'Только для авторизованных',
+    ];
+  }
+
+  /**
+   * @param bool $guestUser
+   * @return array|\yii\db\ActiveRecord[]
+   * меню для контента
+   */
+  public static function menu($guestUser = false)
+  {
+    $items = self::find()
+      ->select(['page', 'title'])
+      ->where(['menu_show' => 1]);
+    if ($guestUser) {
+      $items = $items->andWhere(['<', 'registered_only', 1]);
     }
+    return $items->orderBy('menu_index ASC')
+      ->asArray()
+      ->all();
+  }
 }
