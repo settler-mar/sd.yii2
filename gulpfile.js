@@ -26,6 +26,10 @@ var paths = {
     app: { /*папка с готовым проектом */
         css: './frontend/web/css',
         js: './frontend/web/js'
+    },
+    b2b: {
+      css: './b2b/web/css',
+      js: './b2b/web/js'
     }
 };
 
@@ -40,6 +44,8 @@ version=version.toString();
 
 gulp.task('compile',['clear', 'css', 'js']);
 
+gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
+
 //сервер и слежение -
 gulp.task('default',['server']);
 
@@ -48,16 +54,20 @@ gulp.task('js',['jscommon', 'jsaccount', 'jsadmin']);
 gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp']);
 
 gulp.task('csscommon', function(){
-  return compileCss('/scss/main.scss', '')
+  return compileCss('/scss/main.scss', paths.app.css)
 });
 gulp.task('cssaccount',  function(){
-  return compileCss('/scss/account/account.scss', '/account')
+  return compileCss('/scss/account/account.scss', paths.app.css + '/account')
 });
 gulp.task('cssadmin',  function() {
-  return compileCss('/scss/admin/admin.scss', '/admin')
+  return compileCss('/scss/admin/admin.scss', paths.app.css + '/admin')
 });
 gulp.task('cssnotemp',  function() {
-  return compileCss('/scss/notemp/notemp.scss', '/notemp');
+  return compileCss('/scss/notemp/notemp.scss', paths.app.css + '/notemp');
+});
+
+gulp.task('cssb2b', function() {
+  return compileCss('/scss/b2b.scss', paths.b2b.css)
 });
 
 gulp.task('jscommon', compileJs([
@@ -81,7 +91,7 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
         paths.source.js+'/original/my.js'
-    ], '')
+    ], paths.app.js)
 );
 
 gulp.task('jsaccount', compileJs([
@@ -97,8 +107,10 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/original/account/main.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/for_all.js'
-    ], '/account')
+    ], paths.app.js + '/account')
 );
+
+
 
 gulp.task('jsadmin', compileJs([
     //paths.source.js+'/external/account/jquery-2.1.4.js',
@@ -118,9 +130,15 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/notification.js',
     paths.source.js+'/original/admin/stores.js',
     paths.source.js+'/original/jquery.ajaxForm.js'
-  ], '/admin')
+  ], paths.app.js + '/admin')
 );
 
+gulp.task('jsb2b', compileJs([
+        //paths.source.js+'/external/jquery-1.11.2.min.js',
+        paths.source.js+'/original/for_all.js',
+        paths.source.js+'/original/b2b.js'
+    ], paths.b2b.js)
+);
 
 function compileCss (source, dest) {
   gulp.src(paths.source.css + source)
@@ -133,11 +151,11 @@ function compileCss (source, dest) {
     }))
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
-    .pipe(gulp.dest(paths.app.css + dest))
+    .pipe(gulp.dest(dest))
     .pipe(gcmq())
     .pipe(cleanCSS({compatibility: 'ie9'}))
     .pipe(plugins.rename('styles.min.' + version + '.css'))
-    .pipe(gulp.dest(paths.app.css + dest))
+    .pipe(gulp.dest(dest))
 }
 
 function compileJs(sources, dest) {
@@ -146,27 +164,28 @@ function compileJs(sources, dest) {
       .pipe(sourcemap.init())
       .pipe(plugins.concat('scripts.js'))
       .pipe(sourcemap.write())
-      .pipe(gulp.dest(paths.app.js + dest))
+      .pipe(gulp.dest(dest))
 
       .pipe(plugins.uglify())
       .pipe(plugins.rename('scripts.min.'+version+'.js'))
-      .pipe(gulp.dest(paths.app.js + dest));
+      .pipe(gulp.dest(dest));
 }
 
 // запуск browsersync  и дальнейшее слежение
-gulp.task('server',['css','js'], function() {
+gulp.task('server',['css', 'js', 'cssb2b', 'jsb2b'], function() {
     // browserSync.init({
     //     server: "./public"
     // });
 
-    gulp.watch(paths.watch.css, ['css']);
-    gulp.watch(paths.watch.scss, ['css']);
-    gulp.watch(paths.watch.js, ['js']);
+    gulp.watch(paths.watch.css, ['css', 'cssb2b']);
+    gulp.watch(paths.watch.scss, ['css', 'cssb2b']);
+    gulp.watch(paths.watch.js, ['js', 'jsb2b']);
     // gulp.watch(paths.watch.scss).on('change', browserSync.reload);
     // gulp.watch(paths.watch.js).on('change', browserSync.reload);
     // gulp.watch(paths.watch.css).on('change', browserSync.reload);
 
 });
+
 
 gulp.task('clear', function(){
    var files = [
@@ -177,6 +196,17 @@ gulp.task('clear', function(){
        paths.app.js+'/account/script*.js',
        paths.app.js+'/script*.js',
        paths.app.js+'/admin/script*.js'
+   ];
+    files.forEach(function(file){
+        console.log(file);
+        gulp.src(file, { read: true }) // much faster
+            .pipe(rimraf({force: false}));
+    });
+});
+gulp.task('clearb2b', function(){
+   var files = [
+       paths.b2b.css+'/styles*.css',
+       paths.b2b.js+'/scripts*.js'
    ];
     files.forEach(function(file){
         console.log(file);
