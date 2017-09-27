@@ -45,7 +45,8 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                '/' => 'site/index',
+                '/' => 'content/default/main',
+                '/index' => '404',
                 '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
                 '/stores_points/<action:(create)>' => 'stores_points/default/<action>',

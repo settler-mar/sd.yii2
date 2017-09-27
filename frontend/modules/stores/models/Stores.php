@@ -129,7 +129,7 @@ class Stores extends \yii\db\ActiveRecord
       'contact_email' => 'Contact Email',
       'category_cnt'=>'Количество категорий',
       'related' => 'Связанный магазин',
-      'is_offline' => 'Оффлайн',
+      'is_offline' => 'Тип магазина',
     ];
   }
 
