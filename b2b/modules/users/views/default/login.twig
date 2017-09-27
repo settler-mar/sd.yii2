@@ -10,35 +10,56 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="site-login">
-  <h1>{{ html.encode(title) }}</h1>
-
-  <p>Заполните следующие поля для авторизации:</p>
-
-  {% set form = Active_Form_begin({
-    'id': 'login-form',
-    'options': {'class': 'form-horizontal'},
-    'fieldConfig': {
-      'template': "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-      'labelOptions': {'class': 'col-lg-1 control-label'},
-    },
-  }) %}
-
-  {{ form.field(model, 'email').textInput({'autofocus': true})|raw }}
-
-
-  {{ form.field(model, 'password').passwordInput()|raw }}
-
-  {{ form.field(model, 'rememberMe').checkbox({'template': "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>", })|raw }}
-
-  <p ><a href="/resetpassword" >Забыли пароль?</a></p>
-
-<div class="form-group">
-    <div class="col-lg-offset-1 col-lg-11">
-      {{ html.submitButton('Login', {'class': 'btn btn-primary', 'name': 'login-button'})|raw }}
-    </div>
+<div class="site-login clearfix">
+  <div class="col-sm-8 site-login__left">
+    <h1 class="site-login__header">Вход в личный кабинет</h1>
+    <p>Если Вы уже являетесь нашим партнёром, войдите в личный кабинет при помощи логина и пароля</p>
+    {#<div class="site-login__left-img">#}
+      {#<img src="/images/templates/back600.jpg" alt="login-image">#}
+    {#</div>#}
   </div>
+  <div class="col-sm-4 site-login__right">
 
-  {{ Active_Form_end() }}
+    <div class="site-login__right-header">
+      <h4 class="site-login__right-text">Вход на сайт</h4>
+    </div>
+    {% set form = Active_Form_begin({
+      'id': 'login-form',
+      'options': {'class': 'form-horizontal'},
+      'fieldConfig': {
+        'template': "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+        'labelOptions': {'class': 'col-lg-1 control-label'},
+      },
+    }) %}
+
+    {#{{ form.field(model, 'email').textInput({'autofocus': true})|raw }}#}
+    <div class="form-group field-loginform-email required">
+      <label class="col-lg-12 " for="loginform-email">Введите e-mail или логин</label>
+      <div class="col-lg-12"><input type="text" id="loginform-email" class="form-control" name="LoginForm[email]" autofocus aria-required="true"></div>
+      <div class="col-lg-12"><p class="help-block help-block-error"></p></div>
+    </div>
+
+    {#{{ form.field(model, 'password').passwordInput()|raw }}#}
+    <div class="form-group field-loginform-password required">
+      <label class="col-lg-12 " for="loginform-password">Введите пароль</label>
+      <div class="col-lg-12"><input type="password" id="loginform-password" class="form-control" name="LoginForm[password]" aria-required="true"></div>
+      <div class="col-lg-12"><p class="help-block help-block-error"></p></div>
+    </div>
+
+    {#{{ form.field(model, 'rememberMe').checkbox({'template': "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>", })|raw }}#}
+
+
+
+    <div class="form-group">
+      <div class="col-lg-6">
+        {{ html.submitButton('<i class="fa fa-user" aria-hidden="true"></i> Войти', {'class': 'btn btn-primary', 'name': 'login-button'})|raw }}
+      </div>
+      <div class="col-lg-6">
+        <p class="site-login__forget-password"><a href="/resetpassword" >Забыли пароль?</a></p>
+      </div>
+    </div>
+
+    {{ Active_Form_end() }}
+  </div>
 
 </div>
