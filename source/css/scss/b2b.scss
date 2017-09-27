@@ -42,8 +42,15 @@
         margin-top: 5px;
       }
     }
+    &-buttons {
+      margin-top: 35px;
+    }
   }
   &__forget-password {
     margin-top: 5px;
   }
+}
+
+.footer__href {
+  color: #333;
 }
