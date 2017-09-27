@@ -94,7 +94,18 @@
                             </div>
                         </div>
                         {% if categories|length > 0 %}
-                            <p class="title">Категории магазина</p>
+                            <p class="title">
+                                Категории магазина
+                                {% if related %}
+                                <a
+                                        class="btn btn-primary ajax-confirm"
+                                        style="float: right;font-size: 12px;padding: 3px 10px;"
+                                        data-question="Хотите импортировать все категории из {{ related.name }} ({{ related.uid }})?
+                                                        <br>Все текущие категории будут очищенны."
+                                        data-store="{{ store.uid }}"
+                                >Копировать из {{ related.name }} ({{ related.uid }})</a>
+                                {% endif %}
+                            </p>
                             <form method="post" action="/admin/stores/update?id={{store.uid}}" name="categories-edit-stores">
                                 <ul class="ch_tree">
                                     {% for category in categories %}

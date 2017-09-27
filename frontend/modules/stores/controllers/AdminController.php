@@ -97,7 +97,8 @@ class AdminController extends Controller
     $model = new Stores();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['index']);
+      Yii::$app->session->addFlash('info','Магазин создан');
+      return $this->redirect(['update',['id'=>$model->uid]]);
     } else {
       //ddd($model);
       return $this->render('create.twig', [
@@ -122,10 +123,13 @@ class AdminController extends Controller
         $new_category->store_id = $model->uid;
         $new_category->save();
       }
+      Yii::$app->session->addFlash('info','Категории магазина обновленны');
+      return $this->redirect(['update','id'=>$model->uid]);
     }
     if ($model->load(Yii::$app->request->post())) {   // data from request
       $model->save();
-      return $this->redirect(['index']);
+      Yii::$app->session->addFlash('info','Магазин обновленн');
+      return $this->redirect(['update','id'=>$model->uid]);
     } else {
       $cpa_list = Cpa::find()->all();
       $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
@@ -138,10 +142,17 @@ class AdminController extends Controller
         'cpa',
         'storeActions.tariffs.rates'])
         ->all();
+
+      if($model->related>0){
+        $related=Stores::findOne(['uid'=>$model->related]);
+      }else{
+        $related=false;
+      }
       //ddd($categories[0]);
       return $this->render('update', [
         'store' => $model,
         'model' => $model,
+        'related'=>$related,
         'cpa_list' => $cpa_list,
         'categories' => $all_categories,
         'store_categories' => $categories,
@@ -151,6 +162,40 @@ class AdminController extends Controller
     }
   }
 
+  public function actionImportCat($id){
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request= Yii::$app->request;
+    if(!$request->isAjax || !$request->isPost){
+      throw new \yii\web\ForbiddenHttpException('Неверный тип запроса.');
+      return false;
+    }
+
+    $store=Stores::findOne(['uid'=>$id]);
+    if(!$store->related){
+      return json_encode([
+        'error'=>'Нет связанного магазина'
+      ]);
+    }
+    $cats=StoresToCategories::find()
+      ->where(['store_id' => $store->related])
+      ->all();
+
+    StoresToCategories::deleteAll(['store_id' => $id]);
+    foreach ($cats as $cat) {
+      $new_category = new StoresToCategories();
+      $new_category->category_id = $cat->category_id;
+      $new_category->store_id = $id;
+      $new_category->save();
+    }
+    Yii::$app->session->addFlash('info','Категории магазина импортированны');
+    return json_encode([
+      'code'=>200
+    ]);
+  }
   /**
    * Deletes an existing Stores model.
    * If deletion is successful, the browser will be redirected to the 'index' page.

@@ -88,8 +88,30 @@ $(function() {
 			alert('Необходимо выбрать элементы!')
 		}
 	});
-	
 
+	$('.ajax-confirm').on('click',function(e) {
+		e.preventDefault();
+		$this=$(this);
+		data={
+			'question':$this.data('question')||'Вы увуренны?',
+			'title':$this.data('title')||'Подтверждение действия',
+			'callbackYes':function(){
+				$this=$(this);
+				$.post('/admin/stores/import-cat/id:'+$this.data('store'),function(data){
+					if(data.error){
+						notification.notifi({message:data.error,type:'err'})
+					}else {
+						location.reload();
+					}
+				},'json')
+					.fail(function() {
+						notification.notifi({message:"Ошибка передачи данных",type:'err'})
+					});
+			},
+			'obj':$this
+		};
+		notification.confirm(data)
+	})
 });
 
 /*$(function() {
