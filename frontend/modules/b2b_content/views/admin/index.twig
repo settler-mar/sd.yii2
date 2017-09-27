@@ -32,18 +32,20 @@
                                 'format':'raw',
                                 'attribute': 'menu_show',
                                 'filter': {
-                                    '0': 'Скрыть',
+                                    '0': 'Нет',
                                     '1': 'Показать',
                                 },
+                                'value': table_data.menu_show,
                             },
                             'menu_index',
                             {
                                 'format':'raw',
                                 'attribute': 'registered_only',
                                 'filter': {
-                                    '0': 'Нет',
-                                    '1': 'Да',
+                                    '0': 'Для всех',
+                                    '1': 'Для авторизованных',
                                 },
+                                'value': table_data.registered_only,
                             },
                             {'class': '\\yii\\grid\\ActionColumn',
                                 'template' : '{update} {delete}',

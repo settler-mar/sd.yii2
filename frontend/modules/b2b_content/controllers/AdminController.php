@@ -47,10 +47,21 @@ class AdminController extends Controller
         }
         $searchModel = new B2bContentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $tableData = [
+            'menu_show' => function ($model, $key, $index, $column) {
+                $value = $model->menu_show ==  1 ? 'Показать' : 'Нет';
+                return $value;
+            },
+            'registered_only' => function ($model, $key, $index, $column) {
+                $value = $model->registered_only ==  1 ? 'Для авторизованных' : 'Для всех';
+                return $value;
+            },
+        ];
+        
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'table_data' => $tableData,
         ]);
     }
 

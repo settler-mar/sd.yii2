@@ -35,6 +35,14 @@ class B2bContent extends \yii\db\ActiveRecord
             [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'required'],
             [['page'], 'unique'],
             [['description', 'keywords', 'content'], 'string'],
+            [['menu_index'], 'filter', 'filter' => function ($value) {
+                if ($value == 0) {
+                    $maxIndex = self::find()->select('max(menu_index) as max')->asArray()->one();
+                    $maxIndex = $maxIndex['max'];
+                    $value = empty($maxIndex) ? 1 : intval($maxIndex) + 1;
+                }
+                return $value;
+            }, 'skipOnArray' => true],
             [['menu_show', 'menu_index', 'registered_only'], 'integer'],
             [['page', 'title', 'h1'], 'string', 'max' => 255],
         ];
