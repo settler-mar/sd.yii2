@@ -27,24 +27,15 @@
       'id': 'login-form',
       'options': {'class': 'form-horizontal'},
       'fieldConfig': {
-        'template': "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        'labelOptions': {'class': 'col-lg-1 control-label'},
+        'template': "{label}\n<div class=\"col-lg-12\">{input}</div>\n<div class=\"col-lg-12\">{error}</div>",
+        'labelOptions': {'class': 'col-lg-12 control-label'},
       },
     }) %}
 
-    {#{{ form.field(model, 'email').textInput({'autofocus': true})|raw }}#}
-    <div class="form-group field-loginform-email required">
-      <label class="col-lg-12 " for="loginform-email">Введите e-mail или логин</label>
-      <div class="col-lg-12"><input type="text" id="loginform-email" class="form-control" name="LoginForm[email]" autofocus aria-required="true"></div>
-      <div class="col-lg-12"><p class="help-block help-block-error"></p></div>
-    </div>
+    {{ form.field(model, 'email').textInput({'autofocus': true})|raw }}
 
-    {#{{ form.field(model, 'password').passwordInput()|raw }}#}
-    <div class="form-group field-loginform-password required">
-      <label class="col-lg-12 " for="loginform-password">Введите пароль</label>
-      <div class="col-lg-12"><input type="password" id="loginform-password" class="form-control" name="LoginForm[password]" aria-required="true"></div>
-      <div class="col-lg-12"><p class="help-block help-block-error"></p></div>
-    </div>
+
+    {{ form.field(model, 'password').passwordInput()|raw }}
 
     {#{{ form.field(model, 'rememberMe').checkbox({'template': "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>", })|raw }}#}
 

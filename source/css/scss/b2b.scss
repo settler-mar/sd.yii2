@@ -31,9 +31,15 @@
       label {
         color: #606060;
         font-weight: 500;
+        &.control-label {
+          text-align: left;
+        }
       }
       button {
         width: 100%;
+      }
+      p.help-block {
+        margin-top: 5px;
       }
     }
   }
