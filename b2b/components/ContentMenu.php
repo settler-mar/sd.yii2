@@ -29,10 +29,10 @@ class ContentMenu extends Widget
     }
     $items = '';
     foreach ($list as $item) {
-      $items .= '<li class="'.$this->list_class .
+      $items .= '<li class="'.$this->item_class .
         ($this->current_item == $item['title'] ? ' '.$this->current_item_class : '').
         '"><a class="'.$this->link_class.'" href="/'.$item['page'].'">'.$item['title'].'</a></li>';
     }
-    return '<div class="'.$this->wrapper_class.'"><ul class="'.$this->item_class.'">'.$items.'</ul></div>';
+    return '<div class="'.$this->wrapper_class.'"><ul class="'.$this->list_class.'">'.$items.'</ul></div>';
   }
 }
