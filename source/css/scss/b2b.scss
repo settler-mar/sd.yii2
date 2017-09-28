@@ -8,6 +8,7 @@ $white_color: #fff;
 $menu_hover_color: #626262;
 $href_color: #e6ae03;
 $href_active_color: #F5BD03;
+$button_register_font_color: #9bbdda;
 
 .site-login {
   background: url(/images/templates/back600.jpg) no-repeat;
@@ -53,6 +54,16 @@ $href_active_color: #F5BD03;
     }
     &-buttons {
       margin-top: 35px;
+      &-register {
+        width: 100%;
+        color: $button_register_font_color;
+        &:visited, &:focus, &:hover, &:active {
+          color: $button_register_font_color;
+        }
+        &.disabled {
+          color: $button_register_font_color;
+        }
+      }
     }
   }
   &__forget-password {
