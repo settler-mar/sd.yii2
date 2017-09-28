@@ -17,12 +17,14 @@
         href:'abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&title=secretdiscounter',
         langText: {
             ru: {
-                title: 'ВНИМАНИЕ: Функционал сайта ограничен!',
+                title: 'ВНИМАНИЕ: <span style="color:red;">Ваш кэшбэк не отслеживается!</span>',
                 description: 'Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить ваш кэшбэк или использовать промокод, возможны и другие ошибки.',
                 listTitle: 'Проблема может быть вызвана:',
                 button: 'Настроить Adblock',
-                browserSettings: '<strong>Настройками вашего браузера.</strong> Зайдите в настройки браузера и разрешите использование файлов cookie. ',
-                adblockSettings: '<strong>Сторонним расширением типа AdBlock.</strong> Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. '
+                browserSettings: '<h4>Настройками вашего браузера</h4> ' +
+                '<p>Зайдите в настройки браузера и разрешите использование файлов cookie. </p>',
+                adblockSettings: '<h4>Сторонним расширением типа AdBlock</h4> ' +
+                '<p>Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. </p>'
             },
             en: {
                 title: 'Site has a limited functionality',
@@ -163,7 +165,7 @@
             var text='';
 
 
-            text+='<h3 style="text-align: center">';
+            text+='<h3 style="text-align: center;font-weight: bold;">';
             text+=lang.title;
             text+='</h3>';
             text+='<p>';
@@ -172,10 +174,10 @@
             text+='<h3>';
             text+=lang.listTitle;
             text+='</h3>';
-            text+='<ul class="ad_recomend">';
-            text+='<li>'+lang.browserSettings+'</li>';
-            text+='<li>'+lang.adblockSettings+'</li>';
-            text+='</ul>';
+            text+='<div class="ad_recomend help-msg">';
+            text+='<div>'+lang.browserSettings+'</div>';
+            text+='<div>'+lang.adblockSettings+'</div>';
+            text+='</div>';
 
             text=text.replace('___adblockLink___',this.href);
             notification.alert({

@@ -2836,21 +2836,21 @@ img{
     font-weight: bold;
     color:#0f181a;
     position: relative;
-    padding-left: 45px;
+    padding-left: 35px;
     text-transform: uppercase;
 
     &:before{
       counter-increment: h_num;
       content: counter(h_num);
       color:#e4c94c;
-      font-size: 65px;
+      font-size: 45px;
       position: absolute;
-      top: -10px;
+      top: -4px;
       left: 0;
     }
 
     + p{
-      padding-left: 45px;
+      padding-left: 35px;
     }
   }
 
