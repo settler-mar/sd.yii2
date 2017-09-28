@@ -65,6 +65,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
             'created_at' => 'Created At',
             'login_at' => 'Login At',
             'ip' => 'Ip',
+            'password' => 'Пороль',
         ];
     }
 
