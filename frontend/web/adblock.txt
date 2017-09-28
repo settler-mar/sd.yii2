@@ -1,0 +1,5 @@
+[Adblock Plus 2.0]
+! Title: admitad.com - a next-generation affiliate network.
+! Homepage: https://admitad.com/
+@@||admitad.com
+@@||dumedia.ru

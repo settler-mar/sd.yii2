@@ -294,7 +294,7 @@ table .status_bg_1 {
       .notify_control{
         border-top: none;
 
-        div{
+        div,a{
           background-color: #e6ae03;
           border-radius: 3px;
           font-size: 13px;
@@ -303,6 +303,7 @@ table .status_bg_1 {
           border: none;
           padding: 10px 20px;
           margin-bottom: 20px;
+          display: inline-block;
 
           &:hover{
             background-color: #ffc503;
@@ -310,6 +311,18 @@ table .status_bg_1 {
           }
         }
       }
+    }
+  }
+
+  .ad_recomend{
+    margin-top: -15px;
+    padding-left: 0;
+
+    li{
+      margin-bottom: 20px;
+      list-style: none;
+      border-left: 4px solid #e6ae03;
+      padding-left: 10px;
     }
   }
 }

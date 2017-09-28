@@ -14,6 +14,7 @@
             lang: 'ru'
         },
 
+        href:'abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&title=secretdiscounter',
         langText: {
             ru: {
                 title: 'Функционал сайта ограничен',
@@ -157,10 +158,33 @@
             // document.body.appendChild(div);
             //
             // Checker.showPopup();
+
+            var lang = this.langText.ru;
+            var text='';
+
+
+            text+='<h3>';
+            text+=lang.title;
+            text+='</h3>';
+            text+='<p>';
+            text+=lang.description;
+            text+='</p>';
+            text+='<h3>';
+            text+=lang.listTitle;
+            text+='</h3>';
+            text+='<ul class="ad_recomend">';
+            text+='<li>'+lang.browserSettings+'</li>';
+            text+='<li>'+lang.adblockSettings+'</li>';
+            text+='</ul>';
+
+            text=text.replace('___adblockLink___',this.href);
             notification.alert({
-                buttonYes:false,
+                buttonYes:lang.button,
+                buttonTag:'a',
+                buttonYesDop:'href="'+this.href+'"',
                 notyfy_class:"notify_white",
-                question: this.langText.ru.description
+                question: text,
+
             });
             console.log('alert cookie_checker');
         },

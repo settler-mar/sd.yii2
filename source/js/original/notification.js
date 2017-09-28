@@ -15,6 +15,9 @@ var notification = (function() {
     callbackYes:false,
     callbackNo:false,
     obj:false,
+    buttonTag:'div',
+    buttonYesDop:'',
+    buttonNoDop:'',
   };
   var alert_opt={
     title:"",
@@ -113,8 +116,8 @@ var notification = (function() {
 
     if(data.buttonYes||data.buttonNo) {
       box_html += '<div class="notify_control">';
-      if (data.buttonYes)box_html += '<div class="notify_btn_yes">' + data.buttonYes + '</div>';
-      if (data.buttonNo)box_html += '<div class="notify_btn_no">' + data.buttonNo + '</div>';
+      if (data.buttonYes)box_html += '<'+data.buttonTag+' class="notify_btn_yes" '+data.buttonYesDop+'>' + data.buttonYes + '</'+data.buttonTag+'>';
+      if (data.buttonNo)box_html += '<'+data.buttonTag+' class="notify_btn_no" '+data.buttonNoDop+'>' + data.buttonNo + '</'+data.buttonTag+'>';
       box_html += '</div>';
     };
 
