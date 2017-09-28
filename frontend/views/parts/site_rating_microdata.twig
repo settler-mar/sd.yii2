@@ -1,0 +1,31 @@
+{% if this.site_rating %}
+<div typeof="v:Review-aggregate" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="http://rdf.data-vocabulary.org/#" class="microdata-site-rating">
+    Рейтинг
+    <span property="v:itemreviewed">Secret Discounter:
+        <span  rel="v:rating">
+            <span class="number" typeof="v:Rating">
+                <span property="v:average">{{ this.site_rating.value }}</span>
+                из
+                <span property="v:best">5</span>
+            </span>
+        </span>
+        <span class="little">( на основании опроса</span>
+        <span class="little" property="v:votes">{{ this.site_rating.reviews_count }}</span>
+        <span class="little">наших пользователей)</span>
+    </span>
+</div>
+<div class="site-rating">
+    {% if this.site_rating.value > 0 %}
+        {% for i in range(1, this.site_rating.value) %}
+            <span class="fa fa-star"></span>
+        {% endfor %}
+    {% endif %}
+
+    {% set estar =  5 - this.site_rating.value %}
+    {% if estar != 0 %}
+        {% for i in range(1, estar) %}
+            <span class="fa fa-star-o"></span>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endif %}

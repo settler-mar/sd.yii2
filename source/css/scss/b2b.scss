@@ -15,6 +15,7 @@ $menu_left_color_hover: #eee; // цвет текста в меню
 
 $href_color: #e6ae03;
 $href_active_color: #F5BD03;
+$button_register_font_color: #9bbdda;
 
 //цвета кнопок
 $btn_primary_color: #fff;
@@ -122,6 +123,16 @@ a{
     }
     &-buttons {
       margin-top: 35px;
+      &-register {
+        width: 100%;
+        color: $button_register_font_color;
+        &:visited, &:focus, &:hover, &:active {
+          color: $button_register_font_color;
+        }
+        &.disabled {
+          color: $button_register_font_color;
+        }
+      }
     }
   }
   &__forget-password {

@@ -209,6 +209,7 @@
                 </div>
             </div>
             <div class="auxiliary-panel">
+                {% include 'parts/site_rating_microdata.twig' %}
                 {% if footer_categories|length > 0 %}
                     <ul class="footer-group">
                         {% for category in footer_categories %}
