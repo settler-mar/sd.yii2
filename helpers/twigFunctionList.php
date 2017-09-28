@@ -158,12 +158,12 @@ $functionsList=[
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
-    $value = preg_replace('/[^0-9\.]/', '', $cashback);
+    $value = floatval(preg_replace('/[^0-9\.]/', '', $cashback));
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
     }
 
-    if (intval($value) == 0) {
+    if ($value == 0) {
       $out = '<i class="red fa fa-heart"></i>';
     } elseif (strpos($cashback, '%') === false) {
       $out = $cashback . ' ' .
