@@ -54,24 +54,30 @@ class PaymentsSearch extends Payments
 
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
-        ]);
-        $dataProvider->setSort([
-          'attributes' => [
-            'uid',
-            'action_id',
-            'status',
-            'action_date',
-            'order_price',
-            'reward',
-            'cashback',
-            'user_id' => [
-              'asc' => [Users::tableName() . '.email' => SORT_ASC],
-              'desc' => [Users::tableName(). '.email' => SORT_DESC],
+          'sort' => [
+            'attributes' => [
+              'uid',
+              'action_id',
+              'status',
+              'action_date',
+              'order_price',
+              'reward',
+              'cashback',
+              'user_id' => [
+                'asc' => [Users::tableName() . '.email' => SORT_ASC],
+                'desc' => [Users::tableName(). '.email' => SORT_DESC],
+              ],
+              'storeName' => [
+                'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+                'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+              ],
             ],
-            'storeName' => [
-              'asc' => [Stores::tableName() . '.name' => SORT_ASC],
-              'desc' => [Stores::tableName(). '.name' => SORT_DESC],
-            ],
+            'defaultOrder' => [
+              'uid' => SORT_DESC,
+            ]
+          ],
+          'pagination' => [
+            'pageSize' => 40,
           ],
         ]);
 
@@ -83,7 +89,7 @@ class PaymentsSearch extends Payments
             return $dataProvider;
         }
 
-        $this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
+        //$this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
 
         // grid filtering conditions
         $query->andFilterWhere([

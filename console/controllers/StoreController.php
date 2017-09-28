@@ -111,7 +111,7 @@ class StoreController extends Controller
           $db_store->logo=$logo;
           $db_store->currency=$store['currency'];
           $db_store->hold_time=$store['max_hold_time']?(int)$store['max_hold_time']:30;
-
+          $db_store->percent=50;
           $db_store->save();
         }
 
