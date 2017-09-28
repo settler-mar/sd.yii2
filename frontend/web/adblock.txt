@@ -1,5 +1,6 @@
 [Adblock Plus 2.0]
-! Title: admitad.com - a next-generation affiliate network.
-! Homepage: https://admitad.com/
+! Title: secretdiscounter.com - a next-generation affiliate network.
+! Homepage: https://secretdiscounter.ru/
+@@||secretdiscounter.ru
 @@||admitad.com
 @@||dumedia.ru

@@ -17,12 +17,12 @@
         href:'abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&title=secretdiscounter',
         langText: {
             ru: {
-                title: 'Функционал сайта ограничен',
-                description: 'Настройки вашего браузера или одно из его расширений не дают нашему сайту установить cookie. Без cookie будет невозможно воспользоваться купоном на скидку или услугой возврата части денег за вашу покупку, вероятны и другие ошибки.',
+                title: 'ВНИМАНИЕ: Функционал сайта ограничен!',
+                description: 'Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить ваш кэшбэк или использовать промокод, возможны и другие ошибки.',
                 listTitle: 'Проблема может быть вызвана:',
                 button: 'Настроить Adblock',
                 browserSettings: '<strong>Настройками вашего браузера.</strong> Зайдите в настройки браузера и разрешите использование файлов cookie. ',
-                adblockSettings: '<strong>Сторонним расширением AdBlock.</strong> Чтобы наш сайт заработал корректно вам нужно добавить его в <a href="___adblockLink___">белый список</a> в настройках AdBlock. '
+                adblockSettings: '<strong>Сторонним расширением типа AdBlock.</strong> Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. '
             },
             en: {
                 title: 'Site has a limited functionality',
@@ -163,7 +163,7 @@
             var text='';
 
 
-            text+='<h3>';
+            text+='<h3 style="text-align: center">';
             text+=lang.title;
             text+='</h3>';
             text+='<p>';
