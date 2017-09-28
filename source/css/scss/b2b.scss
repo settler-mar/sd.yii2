@@ -1,5 +1,14 @@
 @import "for_all.scss";
 
+$header_color: #536384;//верхняя граница формы
+$back_color: #DEE7F0;//бекграунд формы
+$footer_font_color: #333;//цвет фонта в футере
+$form_label_color: #606060;
+$white_color: #fff;
+$menu_hover_color: #626262;
+$href_color: #e6ae03;
+$href_active_color: #F5BD03;
+
 .site-login {
   background: url(/images/templates/back600.jpg) no-repeat;
   background-position-y: 120px;
@@ -13,9 +22,9 @@
     }
   }
   &__right {
-    background: #DEE7F0;
-    border-radius: 5px;
-    border-top: 24px solid #536384;
+    background: $footer_font_color;
+    border-radius: 2px;
+    border-top: 24px solid $header_color;
     margin-top: 40px;
     margin-bottom: 120px;
     &-header {
@@ -29,7 +38,7 @@
     form {
       margin-bottom: 70px;
       label {
-        color: #606060;
+        color: $form_label_color;
         font-weight: 500;
         &.control-label {
           text-align: left;
@@ -52,5 +61,39 @@
 }
 
 .footer__href {
-  color: #333;
+  color: $href_color;
+  text-decoration: underline;
+  &:hover {
+    color: $href_active_color;
+  }
+}
+
+.content_menu {
+  background: $footer_font_color;
+  padding: 20px 10px;
+  border-radius: 5px;
+  &__list {
+    padding-left: 0;
+  }
+  &__item {
+    list-style-type: none;
+  }
+  .current a {
+    font-weight: 700;
+  }
+  &__link {
+    color: $white_color;
+    padding: 10px;
+    border-radius: 2px;
+    display: block;
+    width: 100%;
+    &:hover {
+      color: $white_color;
+      background: $menu_hover_color;
+      text-decoration: none;
+    }
+    .current {
+      text-decoration: underline;
+    }
+  }
 }
