@@ -74,5 +74,15 @@ return [
 
         ],
     ],
+    //для возврата с формы login на предыдущую страницу
+    'on afterAction' => function (yii\base\ActionEvent $e) {
+      if(($e->action->id !== 'login'
+        || $e->action->controller->module->id !== 'users')
+        && $e->action->controller->module->id !== 'debug'
+      ){
+        Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+      }
+
+    },
 ]
 ;
