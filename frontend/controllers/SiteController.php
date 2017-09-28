@@ -63,7 +63,8 @@ class SiteController extends SdController
   {
     return [
       'error' => [
-        'class' => 'yii\web\ErrorAction',
+        //'class' => 'yii\web\ErrorAction',
+        'class' => 'frontend\components\SdErrorHandler',
       ],
       'captcha' => [
         'class' => 'yii\captcha\CaptchaAction',
