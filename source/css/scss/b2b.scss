@@ -125,13 +125,15 @@ a{
       margin-top: 35px;
       &-register {
         width: 100%;
-        color: $button_register_font_color;
+        text-decoration: none;
+        //color: $button_register_font_color;
         &:visited, &:focus, &:hover, &:active {
-          color: $button_register_font_color;
+          //color: $button_register_font_color;
+          text-decoration: none;
         }
-        &.disabled {
-          color: $button_register_font_color;
-        }
+        //&.disabled {
+        //  color: $button_register_font_color;
+        //}
       }
     }
   }
