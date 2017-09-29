@@ -5,6 +5,7 @@ namespace b2b\modules\stores_points\controllers;
 use Yii;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use b2b\modules\stores_points\models\B2bStoresPointsSearch;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -110,11 +111,34 @@ class DefaultController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
+        $id=Yii::$app->request->post('id');
+        //проверка, что пункт принадлежит магазину юсера
+        $validator = new Yii\validators\NumberValidator();
+        if (!$validator->validate($id)) {
+            Yii::$app->session->addFlash('err', 'Ошибка');
+            $this->redirect(['/home']);
+        }
+        $model = $this->findModel($id);
+        $cpa = CpaLink::find()
+          ->from(CpaLink::tableName() . ' cwcl')
+          ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
+          ->innerJoin(Stores::tableName(). ' cws', 'cws.uid = cwcl.stores_id')
+          ->where([
+            'cws.uid' => $model->store_id,
+            'b2buc.user_id'=> Yii::$app->user->identity->id,
+          ])->all();
+        ddd($cpa);
+          //->count();
+
+
+
+        $model->store->
+
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/home']);
     }
 
     /**
