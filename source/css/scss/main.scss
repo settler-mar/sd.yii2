@@ -2966,21 +2966,20 @@ div .popup {
   color: #ACB1B4;
   font-size: 13px;
   span {
-    //color: #ACB1B4;
-    //font-size: 13px;
-    &.little {
-      //font-size: 13px;
-    }
     &.number {
       color: #D6DBDE;
       font-weight: 700;
     }
 
   }
+  a.site-rating {
+    color: #e4c84b;
+    &:hover {
+      color: #FFDC73;
+    }
+  }
 }
-.site-rating span {
-  color: #FF9800;
-}
+
 
 
 @import  "../external/queries";

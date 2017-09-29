@@ -6,26 +6,32 @@
             <span class="number" typeof="v:Rating">
                 <span property="v:average">{{ this.site_rating.value }}</span>
                 из
-                <span property="v:best">5</span>
+                <span property="v:best">5 </span>
             </span>
         </span>
-        <span class="little">( на основании опроса</span>
-        <span class="little" property="v:votes">{{ this.site_rating.reviews_count }}</span>
-        <span class="little">наших пользователей)</span>
+        <a class="site-rating ajaxFormOpen" href="#reviews/send">
+            {% if this.site_rating.value > 0 %}
+                {% for i in range(1, this.site_rating.value) %}
+                    <span class="fa fa-star"></span>
+                {% endfor %}
+            {% endif %}
+
+            {% set estar =  5 - this.site_rating.value %}
+            {% if estar != 0 %}
+                {% for i in range(1, estar) %}
+                    <span class="fa fa-star-o"></span>
+                {% endfor %}
+            {% endif %}
+        </a>
+        <br>
+
+
+        <span>(на основании опроса</span>
+        <span property="v:votes">{{ this.site_rating.reviews_count }}</span>
+        <span>наших пользователей)</span>
     </span>
 </div>
-<div class="site-rating">
-    {% if this.site_rating.value > 0 %}
-        {% for i in range(1, this.site_rating.value) %}
-            <span class="fa fa-star"></span>
-        {% endfor %}
-    {% endif %}
+{#<div class="site-rating">#}
 
-    {% set estar =  5 - this.site_rating.value %}
-    {% if estar != 0 %}
-        {% for i in range(1, estar) %}
-            <span class="fa fa-star-o"></span>
-        {% endfor %}
-    {% endif %}
-</div>
+{#</div>#}
 {% endif %}
