@@ -59,6 +59,8 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['created_at'], 'safe'],
             [['name', 'address', 'work_time'], 'string', 'max' => 255],
             [['access_code'], 'string', 'max' => 150],
+            [['coordinate_x', 'coordinate_y'], 'double'],
+            [['work_time_json'], 'string'],
         ];
     }
 
@@ -75,6 +77,8 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'access_code' => 'Access Code',
             'created_at' => 'Created At',
             'work_time' => 'Время работы',
+            'coordinate_x' => 'Координата Х',
+            'coordinate_y' => 'Координата Y',
             'route' => 'Магазин',
         ];
     }
