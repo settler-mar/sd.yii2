@@ -15,6 +15,7 @@ use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
 use common\components\Help;
+use vova07\fileapi\behaviors\UploadBehavior;
 
 /**
  * This is the model class for table "cw_stores".
@@ -44,7 +45,7 @@ class Stores extends \yii\db\ActiveRecord
   public $filename;
   public $logoTmp;
   public $logoImage;
-
+  public $image_url;
   /**
    * @var string
    */
@@ -149,6 +150,23 @@ class Stores extends \yii\db\ActiveRecord
 
     return true;
   }
+
+  public function behaviors()
+  {
+    return [
+      'uploadBehavior' => [
+        'class' => UploadBehavior::className(),
+        'attributes' => [
+          'image_url' => [
+            'path' => '/path/to/images',
+            'tempPath' => '/path/to/temp/files/images',
+            'url' => '/url/to/images'
+          ]
+        ]
+      ]
+    ];
+  }
+
   /**
    * категории магазина
    * @return $this

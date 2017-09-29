@@ -1,4 +1,6 @@
 {{ use('/yii/widgets/ActiveForm') }}
+use vova07\fileapi\Widget as FileAPI;
+{{ use('vova07\fileapi\Widget','FileAPI') }}
 {% set title = 'Update Stores: ' ~ model.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
@@ -93,6 +95,11 @@
                                 {% endif %}
                             </div>
                         </div>
+
+                        <p class="title">
+                            Фотографии магазина
+                        </p>
+
                         {% if categories|length > 0 %}
                             <p class="title">
                                 Категории магазина

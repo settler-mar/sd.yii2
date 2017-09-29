@@ -19,6 +19,7 @@ use yii\db\ActiveRecord;
 use frontend\modules\stores\models\StoresToCategories;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
+use vova07\fileapi\actions\UploadAction as FileAPIUpload;
 
 /**
  * AdminController implements the CRUD actions for Stores model.
@@ -34,6 +35,16 @@ class AdminController extends Controller
           'delete' => ['post'],
         ],
       ],
+    ];
+  }
+
+  public function actions()
+  {
+    return [
+      'fileapi-upload' => [
+        'class' => FileAPIUpload::className(),
+        'path' => '/path/to/temp/files'
+      ]
     ];
   }
 
