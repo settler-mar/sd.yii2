@@ -201,12 +201,28 @@ a{
       margin-top: 10px;
     }
     &_row {
-      border: 1px solid $login_back_color;
+      border-bottom: 1px solid $login_back_color;
+      th {
+        padding: 5px;
+      }
     }
-    &_qrcode {
-      padding: 5px 0;
-    }
+
 
   }
 
+}
+//кнопки действий в таблице
+.table-action {
+  &-form {
+    display: inline;
+  }
+  &-button {
+    display: inline;
+    border: none;
+    background: rgba(255, 255, 255, 0);
+    color: $href_color;
+    &:hover, &:active, &:focus {
+      color: $href_active_color;
+    }
+  }
 }

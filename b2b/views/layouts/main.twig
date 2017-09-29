@@ -30,6 +30,7 @@
     })  }}
     {% if app.user.isGuest %}
         {% set menuItems = [{'label': 'Вход в личный кабинет', 'url': ['/login']}] %}
+        {% set menuItems = menuItems|merge([{'label': 'Подключить магазин', 'url': ['/registration']}]) %}
     {% else %}
         {%  set menuItems = [{'label': 'Личный кабинет', 'url': ['/home']}] %}
         {% set label='Выход ('~app.user.identity.username~')' %}

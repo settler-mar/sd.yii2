@@ -74,13 +74,16 @@
                                                 <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
                                             </th>
                                             <th>
-                                                <a href="/stores_points/edit?id={{ point.id }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <a href="/stores_points/update?id={{ point.id }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
                                                 {% set form = active_form_begin({
+                                                    'options': {
+                                                        'class':'table-action-form',
+                                                        },
                                                     'action': '/stores_points/delete'
                                                 }) %}
                                                 <input type="hidden" name="id" value="{{ point.id }}">
-                                                <button type="submit" class="table-action"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                <button type="submit" class="table-action-button action_user_confirm"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                                 {{ active_form_end() }}
 
                                                 {#<a href="/stores_points/delete?id={{ point.id }}"><i class="fa fa-trash" aria-hidden="true"></i></a>#}

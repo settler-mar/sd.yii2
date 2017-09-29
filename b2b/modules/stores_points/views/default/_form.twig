@@ -12,6 +12,10 @@
 
         {{ form.field(model, 'work_time').textInput({'maxlength':true})|raw }}
 
+        {{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'coordinate_y').textInput({'maxlength':true})|raw }}
+
     <div class="form-group">
         <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
