@@ -26,9 +26,7 @@
         "developeruz/yii2-db-rbac": "*",
         "twig/twig": "~1.0",
         "jbzoo/image": "^3.0",
-        "admitad/api": "dev-master",
-        "kartik-v/yii2-date-range": "dev-master",
-        "vova07/yii2-fileapi-widget": "^0.1.9"
+        "admitad/api": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

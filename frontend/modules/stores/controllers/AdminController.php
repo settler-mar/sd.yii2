@@ -11,16 +11,15 @@ use frontend\modules\stores\models\TariffsRates;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
+use yii\base\DynamicModel;
+use yii\base\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use yii\db\ActiveRecord;
 use frontend\modules\stores\models\StoresToCategories;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
-use vova07\fileapi\actions\UploadAction as FileAPIUpload;
-
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -35,16 +34,6 @@ class AdminController extends Controller
           'delete' => ['post'],
         ],
       ],
-    ];
-  }
-
-  public function actions()
-  {
-    return [
-      'fileapi-upload' => [
-        'class' => FileAPIUpload::className(),
-        'path' => '/path/to/temp/files'
-      ]
     ];
   }
 
@@ -108,13 +97,38 @@ class AdminController extends Controller
     $model = new Stores();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      Yii::$app->session->addFlash('info','Магазин создан');
-      return $this->redirect(['update',['id'=>$model->uid]]);
+      Yii::$app->session->addFlash('info', 'Магазин создан');
+      return $this->redirect(['update', ['id' => $model->uid]]);
     } else {
       //ddd($model);
       return $this->render('create.twig', [
         'model' => $model,
       ]);
+    }
+  }
+
+  public function actionFileapiUpload($id)
+  {
+    $path = '@app/web/img';
+
+    if (Yii::$app->request->isPost) {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $store = Stores::findOne(['uid' => $id]);
+      if (!$store) {
+        $result = [
+          'error' => 'Магазин не найден',
+        ];
+        return json_encode($result);
+      }
+
+      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'));
+      return json_encode($result);
+    } else {
+      throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
     }
   }
 
@@ -134,13 +148,13 @@ class AdminController extends Controller
         $new_category->store_id = $model->uid;
         $new_category->save();
       }
-      Yii::$app->session->addFlash('info','Категории магазина обновленны');
-      return $this->redirect(['update','id'=>$model->uid]);
+      Yii::$app->session->addFlash('info', 'Категории магазина обновлены');
+      return $this->redirect(['update', 'id' => $model->uid]);
     }
     if ($model->load(Yii::$app->request->post())) {   // data from request
       $model->save();
-      Yii::$app->session->addFlash('info','Магазин обновленн');
-      return $this->redirect(['update','id'=>$model->uid]);
+      Yii::$app->session->addFlash('info', 'Магазин обновлен');
+      return $this->redirect(['update', 'id' => $model->uid]);
     } else {
       $cpa_list = Cpa::find()->all();
       $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
@@ -154,44 +168,46 @@ class AdminController extends Controller
         'storeActions.tariffs.rates'])
         ->all();
 
-      if($model->related>0){
-        $related=Stores::findOne(['uid'=>$model->related]);
-      }else{
-        $related=false;
+      if ($model->related > 0) {
+        $related = Stores::findOne(['uid' => $model->related]);
+      } else {
+        $related = false;
       }
       //ddd($categories[0]);
       return $this->render('update', [
         'store' => $model,
         'model' => $model,
-        'related'=>$related,
+        'related' => $related,
         'cpa_list' => $cpa_list,
         'categories' => $all_categories,
         'store_categories' => $categories,
         'tariffs' => $tariffs,
         "action_types" => Yii::$app->params['dictionary']['action_type'],
+        //'FileInput' => FileInput::className(),
       ]);
     }
   }
 
-  public function actionImportCat($id){
+  public function actionImportCat($id)
+  {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    $request= Yii::$app->request;
-    if(!$request->isAjax || !$request->isPost){
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
       throw new \yii\web\ForbiddenHttpException('Неверный тип запроса.');
       return false;
     }
 
-    $store=Stores::findOne(['uid'=>$id]);
-    if(!$store->related){
+    $store = Stores::findOne(['uid' => $id]);
+    if (!$store->related) {
       return json_encode([
-        'error'=>'Нет связанного магазина'
+        'error' => 'Нет связанного магазина'
       ]);
     }
-    $cats=StoresToCategories::find()
+    $cats = StoresToCategories::find()
       ->where(['store_id' => $store->related])
       ->all();
 
@@ -202,11 +218,12 @@ class AdminController extends Controller
       $new_category->store_id = $id;
       $new_category->save();
     }
-    Yii::$app->session->addFlash('info','Категории магазина импортированны');
+    Yii::$app->session->addFlash('info', 'Категории магазина импортированны');
     return json_encode([
-      'code'=>200
+      'code' => 200
     ]);
   }
+
   /**
    * Deletes an existing Stores model.
    * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -221,8 +238,8 @@ class AdminController extends Controller
     }
 
     $store = $this->findModel($id);
-    if ($store && $this->actionAjax_remove('store', $id,false)) {
-      $store->removeImage(Yii::$app->getBasePath() . '\web' . $store->logo);
+    if ($store && $this->actionAjax_remove('store', $id, false)) {
+      $store->removeImage(Yii::$app->getBasePath() . '/web' . $store->logo);
     }
 
     return $this->redirect(['index']);
@@ -381,17 +398,17 @@ class AdminController extends Controller
       $todo = true;
       $store_id = $post['id'];
 
-      $cpa_link=CpaLink::find()
-        ->select(['affiliate_id'=>'id','cpa_id'])
-        ->where(['stores_id'=>$store_id])
+      $cpa_link = CpaLink::find()
+        ->select(['affiliate_id' => 'id', 'cpa_id'])
+        ->where(['stores_id' => $store_id])
         ->asArray()
         ->all();
 
       $payment = Payments::find();
 //        ->andFilterWhere(['OR',$cpa_link]);
 
-      foreach ($cpa_link as &$item){
-        $payment = $payment->orFilterWhere(['AND',$item]);
+      foreach ($cpa_link as &$item) {
+        $payment = $payment->orFilterWhere(['AND', $item]);
         //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
       }
 
@@ -401,7 +418,7 @@ class AdminController extends Controller
 
 
       if (count($payment) > 0) {
-        if(!$not_return){
+        if (!$not_return) {
           return false;
         }
         http_response_code(404);
@@ -432,7 +449,7 @@ class AdminController extends Controller
         ->asArray()
         ->all();
       if (count($payment) > 0) {
-        if(!$not_return){
+        if (!$not_return) {
           return false;
         }
         http_response_code(404);
@@ -494,7 +511,7 @@ class AdminController extends Controller
       TariffsRates::deleteAll(['uid' => $post["id"]]);
     }
 
-    if(!$not_return){
+    if (!$not_return) {
       return $todo;
     }
 

@@ -866,7 +866,7 @@ $(function() {
             img: user.photo,
             title: 'Новый кэшбэк',
         });
-        setTimeout(f, 10000 + Math.round(Math.random() * 20000));
+        setTimeout(f, 30000 + Math.round(Math.random() * 60000));
     }
 
     function startShowMSG(data){

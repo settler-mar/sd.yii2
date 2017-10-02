@@ -151,22 +151,6 @@ class Stores extends \yii\db\ActiveRecord
     return true;
   }
 
-  public function behaviors()
-  {
-    return [
-      'uploadBehavior' => [
-        'class' => UploadBehavior::className(),
-        'attributes' => [
-          'image_url' => [
-            'path' => '/path/to/images',
-            'tempPath' => '/path/to/temp/files/images',
-            'url' => '/url/to/images'
-          ]
-        ]
-      ]
-    ];
-  }
-
   /**
    * категории магазина
    * @return $this
@@ -337,7 +321,7 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     $path = $this->getStorePath();// Путь для сохранения
-    $bp=Yii::$app->getBasePath().'\web'.$path;
+    $bp=Yii::$app->getBasePath().'/web'.$path;
     $this->removeImage($bp.$this->Image);   // удаляем старое изображение
   }
 
@@ -356,8 +340,8 @@ class Stores extends \yii\db\ActiveRecord
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
       $this->logo = $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'\web'.$path;
-      if (!file_exists($bp.$path)) {
+      $bp=Yii::$app->getBasePath().'/web'.$path;
+      if (!file_exists($bp)) {
         mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
       }
       $img = (new Image($photo->tempName));
@@ -374,6 +358,39 @@ class Stores extends \yii\db\ActiveRecord
     }
   }
 
+  public function getPhotoList(){
+    $path = $this->getStorePhotoPath();
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    $list=array_diff(scandir($bp), array('..', '.'));
+    foreach ($list as &$item){
+      $item=$path.$item;
+    }
+    return $list;
+  }
+
+  public function addPhoto($photo){
+    if ($photo) {
+      $path = $this->getStorePhotoPath();// Путь для сохранения
+      $name = time(); // Название файла
+      $exch = explode('.', $photo->name);
+      $exch = $exch[count($exch) - 1];
+      $name .= '.' . $exch;
+      $bp=Yii::$app->getBasePath().'/web'.$path;
+      if (!file_exists($bp)) {
+        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
+      }
+      $img = (new Image($photo->tempName));
+      $img
+        ->fitToWidth(1000)
+        ->saveAs($bp.$name);
+      if(!$img){
+        return ['error' => 'Ошибка сохранения файла'];
+      }
+      return ['name' => $path.$name];
+    }else{
+      return ['error' => 'Ошибка сохранения файла'];
+    }
+  }
   /**
    * Удаляем изображение при его наличии
    */
@@ -391,6 +408,13 @@ class Stores extends \yii\db\ActiveRecord
   public function getStorePath()
   {
     $path = '/images/logos/';
+    return $path;
+  }
+
+  public function getStorePhotoPath()
+  {
+    $dir=($this->uid % 100);
+    $path = '/images/photos/'.(($this->uid-$dir)/100).'/'.($dir).'/';
     return $path;
   }
 
