@@ -85,6 +85,7 @@ $config = [
             'html' => '\yii\helpers\Html',
             'url' => 'yii\helpers\Url',
             'ActiveForm'=>'yii\bootstrap\ActiveForm',
+            'MultipleInput' => 'unclead\multipleinput\MultipleInput',
           ],
           'functions' => $twigFunction,
           'uses' => ['yii\bootstrap'],
