@@ -42,12 +42,15 @@ class AppAsset extends AssetBundle
       $path_script = $path_scripts['default'];
     }
 
+    $bp=Yii::$app->getBasePath().'/web/';
     //прописываем js
     if (isset($path_script['js'])) {
       foreach ($path_script['js'] as $js) {
         $js = str_replace('{{script_version}}', $script_version, $js);
         $js = str_replace('..', '.', $js);
-        $this->js[] = $js;
+        $v=$this->getV($bp.$js);
+
+        $this->js[] = $js.$v;
       }
     }
 
@@ -56,8 +59,20 @@ class AppAsset extends AssetBundle
       foreach ($path_script['css'] as $css) {
         $css = str_replace('{{script_version}}', $script_version, $css);
         $css = str_replace('..', '.', $css);
-        $this->css[] = $css;
+        $v=$this->getV($bp.$css);
+
+        $this->css[] = $css.$v;
       }
     }
+  }
+
+  private function getV($filename){
+    $filename=str_replace('//','/',$filename);
+    if (!file_exists($filename)) {
+      return '';
+    }
+    $v=filemtime($filename);
+
+    return '?v='.$v;
   }
 }
