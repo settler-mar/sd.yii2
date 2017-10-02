@@ -1,4 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
+{{ use('/unclead/multipleinput/MultipleInput') }}
 <div class="b2b-stores-points-form">
     {% set form = active_form_begin() %}
 
@@ -10,7 +11,94 @@
 
         {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
 
+        {{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'coordinate_y').textInput({'maxlength':true})|raw }}
+
         {{ form.field(model, 'work_time').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'work_time_details').widget(MultipleInput.className(), {
+            'max':'7',
+            'columns': [
+                {
+                    'name': 'work_time_day_1',
+                    'title': 'Пн.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_2',
+                    'title': 'Вт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_3',
+                    'title': 'Ср.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_4',
+                    'title': 'Чт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_5',
+                    'title': 'Пт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_6',
+                    'title': 'Сб.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_7',
+                    'title': 'Вс.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'holiday',
+                    'title': 'Выходной',
+                    'type': 'checkbox'
+                },
+                {
+                    'name': '24-hour',
+                    'title': 'Круглосуточно',
+                    'type': 'checkbox',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
+                },
+                {
+                    'name': 'work_time_start',
+                    'title': 'Начало работы',
+                    'options': {
+                        'class': 'depends-holiday depends-24-hour'
+                    }
+                },
+                {
+                    'name': 'work_time_end',
+                    'title': 'Конец работы',
+                    'options': {
+                        'class': 'depends-holiday depends-24-hour'
+                    }
+                },
+                {
+                    'name': 'work_time_lunch_start',
+                    'title': 'Начало перерыва',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
+                },
+                {
+                    'name': 'work_time_lunch_end',
+                    'title': 'Конец перерыва',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
+                },
+
+            ],
+        })|raw }}
 
     <div class="form-group">
         <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

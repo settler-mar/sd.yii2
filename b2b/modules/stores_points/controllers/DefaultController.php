@@ -3,6 +3,7 @@
 namespace b2b\modules\stores_points\controllers;
 
 use Yii;
+use yii\validators\NumberValidator;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use b2b\modules\stores_points\models\B2bStoresPointsSearch;
 use frontend\modules\stores\models\CpaLink;
@@ -42,28 +43,28 @@ class DefaultController extends Controller
      * Lists all B2bStoresPoints models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new B2bStoresPointsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index.twig', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+//    public function actionIndex()
+//    {
+//        $searchModel = new B2bStoresPointsSearch();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//
+//        return $this->render('index.twig', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//        ]);
+//    }
 
     /**
      * Displays a single B2bStoresPoints model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
-        return $this->render('view.twig', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+//    public function actionView($id)
+//    {
+//        return $this->render('view.twig', [
+//            'model' => $this->findModel($id),
+//        ]);
+//    }
 
     /**
      * Creates a new B2bStoresPoints model.
@@ -97,8 +98,11 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/home']);
         } else {
+            $store = Stores::findOne($model->store_id);
+            $model->route = $store->route;
+            $model->work_time_details = json_decode($model->work_time_json, true);
             return $this->render('update.twig', [
                 'model' => $model,
             ]);
@@ -114,13 +118,13 @@ class DefaultController extends Controller
     public function actionDelete()
     {
         $id=Yii::$app->request->post('id');
-        //проверка, что пункт принадлежит магазину юсера
-        $validator = new Yii\validators\NumberValidator();
+        $validator = new NumberValidator();
         if (!$validator->validate($id)) {
             Yii::$app->session->addFlash('err', 'Ошибка');
             $this->redirect(['/home']);
         }
         $model = $this->findModel($id);
+        //проверка, что точка продаж для магазина юсера
         $cpa = CpaLink::find()
           ->from(CpaLink::tableName() . ' cwcl')
           ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
@@ -128,16 +132,13 @@ class DefaultController extends Controller
           ->where([
             'cws.uid' => $model->store_id,
             'b2buc.user_id'=> Yii::$app->user->identity->id,
-          ])->all();
-        ddd($cpa);
-          //->count();
-
-
-
-        $model->store->
-
-        $this->findModel($id)->delete();
-
+          ])->count();
+        if ($cpa != 1) {
+            Yii::$app->session->addFlash('err', 'Ошибка');
+            $this->redirect(['/home']);
+        }
+        $model->delete();
+        Yii::$app->session->addFlash('info', 'Точка продаж удалена');
         return $this->redirect(['/home']);
     }
 
