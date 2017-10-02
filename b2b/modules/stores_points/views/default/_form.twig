@@ -56,21 +56,47 @@
                     'type': 'checkbox',
                 },
                 {
+                    'name': 'holiday',
+                    'title': 'Выходной',
+                    'type': 'checkbox'
+                },
+                {
+                    'name': '24-hour',
+                    'title': 'Круглосуточно',
+                    'type': 'checkbox',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
+                },
+                {
                     'name': 'work_time_start',
                     'title': 'Начало работы',
+                    'options': {
+                        'class': 'depends-holiday depends-24-hour'
+                    }
                 },
                 {
                     'name': 'work_time_end',
                     'title': 'Конец работы',
+                    'options': {
+                        'class': 'depends-holiday depends-24-hour'
+                    }
                 },
                 {
                     'name': 'work_time_lunch_start',
                     'title': 'Начало перерыва',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
                 },
                 {
                     'name': 'work_time_lunch_end',
                     'title': 'Конец перерыва',
+                    'options': {
+                        'class': 'depends-holiday'
+                    }
                 },
+
             ],
         })|raw }}
 

@@ -6,16 +6,16 @@ class m170929_084657_AddColumnsB2bStoresPointsTable extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('B2b_stores_points', 'coordinate_x', $this->float());
-        $this->addColumn('B2b_stores_points', 'coordinate_y', $this->float());
-        $this->addColumn('B2b_stores_points', 'work_time_json', $this->text());
+        $this->addColumn('b2b_stores_points', 'coordinate_x', $this->float());
+        $this->addColumn('b2b_stores_points', 'coordinate_y', $this->float());
+        $this->addColumn('b2b_stores_points', 'work_time_json', $this->text());
     }
 
     public function safeDown()
     {
-        $this->dropColumn('B2b_stores_points', 'coordinate_x');
-        $this->dropColumn('B2b_stores_points', 'coordinate_y');
-        $this->dropColumn('B2b_stores_points', 'work_time_json');
+        $this->dropColumn('b2b_stores_points', 'coordinate_x');
+        $this->dropColumn('b2b_stores_points', 'coordinate_y');
+        $this->dropColumn('b2b_stores_points', 'work_time_json');
     }
 
     /*
