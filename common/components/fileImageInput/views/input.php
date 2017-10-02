@@ -6,14 +6,16 @@
     </div>
     <?php
       foreach ($value as $item){
-    ?>
-        <div class="img_blk">
-          <div class="img">
-            <img src="<?=$item;?>">
+        if(strlen($item)>0) {
+          ?>
+          <div class="img_blk">
+            <div class="img">
+              <img src="<?= $item; ?>">
+            </div>
+            <div class="del"></div>
           </div>
-          <div class="del"></div>
-        </div>
-    <?php
+          <?php
+        }
       }
     ?>
   </div>
