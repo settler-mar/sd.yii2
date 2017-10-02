@@ -361,6 +361,9 @@ class Stores extends \yii\db\ActiveRecord
   public function getPhotoList(){
     $path = $this->getStorePhotoPath();
     $bp=Yii::$app->getBasePath().'/web'.$path;
+    if(!is_readable($bp)){
+      return array();
+    }
     $list=array_diff(scandir($bp), array('..', '.'));
     foreach ($list as &$item){
       $item=$path.$item;
