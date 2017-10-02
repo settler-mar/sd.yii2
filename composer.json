@@ -28,7 +28,8 @@
         "jbzoo/image": "^3.0",
         "admitad/api": "dev-master",
         "kartik-v/yii2-date-range": "dev-master",
-        "unclead/yii2-multiple-input": "~2.0"
+        "unclead/yii2-multiple-input": "~2.0",
+        "vova07/yii2-fileapi-widget": "^0.1.9"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
