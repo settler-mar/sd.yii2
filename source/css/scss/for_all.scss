@@ -43,25 +43,31 @@
     font-size: 14px;
     color: #1e2527;
     border-radius: 3px;
-    max-width: 750px;
+    //max-width: 750px;
 
-    &:before{
+    //&:before{
+    //  content:"\f067";
+    //  width: 20px;
+    //  display: inline-block;
+    //  text-align: center;
+    //  margin-left: 3px;
+    //  font: normal normal normal 14px/1 FontAwesome;
+    //}
+    &:after{
       content:"\f067";
       width: 20px;
       display: inline-block;
       text-align: center;
-      margin-left: 3px;
-      display: inline-block;
       font: normal normal normal 14px/1 FontAwesome;
+      float: right;
     }
-
     +.accordion-content{
       margin-bottom: 20px;
       padding: 10px;
       border: 1px solid #D2D6DE;
       border-top: 0;
       border-radius: 0 0 3px 3px;
-      max-width: 750px;
+      //max-width: 750px;
     }
   }
 
