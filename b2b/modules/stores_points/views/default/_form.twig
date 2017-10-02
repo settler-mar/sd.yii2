@@ -1,5 +1,4 @@
 {{ use('/yii/widgets/ActiveForm') }}
-{{ use('/unclead/multipleinput/MultipleInput') }}
 <div class="b2b-stores-points-form">
     {% set form = active_form_begin() %}
 
@@ -12,8 +11,10 @@
         {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}
+        {#{{ form.field(model, 'coordinate_x').widget(MaskedInput.className(), {'mask': '999.999999'})|raw }}#}
 
         {{ form.field(model, 'coordinate_y').textInput({'maxlength':true})|raw }}
+        {#{{ form.field(model, 'coordinate_y').widget(MaskedInput.className(), {'mask': '99.999999'})|raw }}#}
 
         {{ form.field(model, 'work_time').textInput({'maxlength':true})|raw }}
 
@@ -71,30 +72,38 @@
                 {
                     'name': 'work_time_start',
                     'title': 'Начало работы',
+                    'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday depends-24-hour'
+                        'class': 'depends-holiday depends-24-hour',
+                        'mask': '99:99',
                     }
                 },
                 {
                     'name': 'work_time_end',
                     'title': 'Конец работы',
+                    'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday depends-24-hour'
+                        'class': 'depends-holiday depends-24-hour',
+                        'mask': '99:99',
                     }
                 },
                 {
                     'name': 'work_time_lunch_start',
                     'title': 'Начало перерыва',
+                    'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday'
+                        'class': 'depends-holiday',
+                        'mask': '99:99',
                     }
                 },
                 {
                     'name': 'work_time_lunch_end',
                     'title': 'Конец перерыва',
+                    'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday'
-                    }
+                        'class': 'depends-holiday',
+                        'mask': '99:99',
+                }
                 },
 
             ],
