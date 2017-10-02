@@ -142,15 +142,3 @@ $('body').on('click','a.ajaxFormOpen',function(e){
     }
   },'json')
 });
-
-//проверка блокировщика рекламы
-// CookieChecker.setCallback(function(cookieAllowed, adblockEnabled) {
-//   console.log('Cookie Checker callback');
-//
-//   console.log(cookieAllowed);
-//   console.log(adblockEnabled);
-// });
-
-setTimeout(function () {
-  CookieChecker.run()
-}, 2000);

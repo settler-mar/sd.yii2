@@ -1,0 +1,63 @@
+.input_file .img_blk{
+  height: 150px;
+  width: 150px;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background: #e4e4e4;
+  border-radius: 2px;
+  vertical-align: top;
+  position: relative;
+}
+.input_file .img_blk.tpl{
+  display: none;
+}
+.input_file .img_blk .img.loading:before {
+  background: url(/images/preloader.gif) no-repeat 50% 50%;
+  content: '';
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+.input_file .img_blk .img{
+  background-image: none;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+.input_file .img_blk.loading .del{
+  display: none;
+}
+.input_file .img_blk:hover .del{
+  opacity: 0.5;
+  top: 5px;
+}
+.input_file .img_blk .del{
+  position: absolute;
+  transition: all 0.2s linear;
+  opacity: 0;
+  top: -5px;
+  right: 5px;
+  cursor: pointer;
+  background: #f00;
+  color: #fff;
+  width: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 100%;
+}
+.input_file .img_blk .del:hover{
+  opacity: 1;
+  transform: rotate3d(0.1,1,0,360deg);
+}
+
+.input_file .img_blk .del:before{
+  content: "X";
+  font-weight: bold;
+}
+.input_file .img_blk .img img{
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+}

@@ -24,6 +24,7 @@ var notification = (function() {
     question:"Сообщение",
     buttonYes:"Да",
     callbackYes:false,
+    buttonTag:'div',
     obj:false,
   };
 

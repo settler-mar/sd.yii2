@@ -1,6 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
-use vova07\fileapi\Widget as FileAPI;
-{{ use('vova07\fileapi\Widget','FileAPI') }}
+{{ use('common/components/fileImageInput/FileInput') }}
 {% set title = 'Update Stores: ' ~ model.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
@@ -17,6 +16,7 @@ use vova07\fileapi\Widget as FileAPI;
             <div class="row">
                 {% if store %}
                     <div class="col-md-12">
+
                         <div class="stores-form">
                             {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
                             <p class="title first">Основная информация</p>
@@ -99,6 +99,52 @@ use vova07\fileapi\Widget as FileAPI;
                         <p class="title">
                             Фотографии магазина
                         </p>
+                        <div>
+                            {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
+
+                            {{ FileInput_widget({
+                                'name':'photo_input',
+                                'url' : {0:'/stores/admin/fileapi-upload','id':model.uid},
+                                'removeUrl' : {0:'/stores/admin/removeFileapi','id':model.uid},
+                                'value':model.photoList
+                            }) | raw }}
+
+                            {#form.field(
+                                model,
+                                'image_url'
+                            ).widget(
+                                FileAPI, {
+                                    'template':'@app/views/parts/muliimg.twig',
+                                    'settings':{
+                                        'url' : {0:'/stores/admin/fileapi-upload','id':model.uid},
+                                        'multiple': 1,
+                                        'accept' : 'image/*',
+                                        'elements': {
+                                            'ctrl': { 'upload': '.js-upload' },
+                                            'empty': { 'show': '.b-upload__hint' },
+                                            'emptyQueue': { 'hide': '.js-upload' },
+                                            'list': '.js-files',
+                                            'file': {
+                                                'tpl': '.js-file-tpl',
+                                                'preview': {
+                                                    'el': '.b-thumb__preview',
+                                                    'width': 80,
+                                                    'height': 80
+                                                },
+                                                'upload': {
+                                                    'show': '.progress',
+                                                    'hide': '.b-thumb__rotate'
+                                                },
+                                                'complete': { 'hide': '.progress' },
+                                                'progress': '.progress .bar'
+                                            }
+                                        }
+                                    }
+                                }
+                            ).label(false)|raw #}
+
+                            {{ active_form_end() }}
+                        </div>
 
                         {% if categories|length > 0 %}
                             <p class="title">
