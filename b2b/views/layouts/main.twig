@@ -45,10 +45,10 @@
         {{ alert_widget() }}
         {% set content_menu = content_menu_widget({'current_item':this.title, 'is_guests':app.user.isGuest}) %}
         {% if content_menu %}
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 {{ content_menu|raw }}
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 {{ content|raw }}
             </div>
         {% else %}
@@ -71,6 +71,7 @@
 
 {{   void(this.endBody()) }}
 </body>
+{{ Notification()|raw }}
 </html>
 {{   void(this.endPage()) }}
 

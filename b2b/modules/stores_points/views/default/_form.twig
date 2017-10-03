@@ -7,9 +7,14 @@
         {{ form.field(model, 'route').textInput({'readOnly':true})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
-
-        {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
-
+        <div class="row">
+            <div class="col-sm-10">
+                {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
+            </div>
+            <div class="col-sm-2">
+                <button id="address-search" class="btn btn-primary" >Найти</button>
+            </div>
+        </div>
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}
         {#{{ form.field(model, 'coordinate_x').widget(MaskedInput.className(), {'mask': '999.999999'})|raw }}#}
 
@@ -108,3 +113,216 @@
     </div>
     {{ active_form_end() }}
 </div>
+<div id="map" style="height: 600px;"></div>
+<input id="pac-input" class="controls" type="text" placeholder="Поиск">
+<style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    /*#map {*/
+        /*height: 100%;*/
+    /*}*/
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 300px;
+    }
+
+    #pac-input:focus {
+        border-color: #4d90fe;
+    }
+
+    .pac-container {
+        font-family: Roboto;
+    }
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+    #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+    }
+    #target {
+        width: 345px;
+    }
+</style>
+<script>
+    document.getElementById('address-search').onclick = function(e){
+        e.preventDefault();
+        var input = document.getElementById('b2bstorespoints-address');
+        googleMap.searchAddress(input);
+    };
+</script>
+<script>
+   var googleMap = {
+       gMap: null,
+       markers: [],
+       initMap: function() {
+
+           var map = new google.maps.Map(document.getElementById('map'), {
+               {% if model.coordinate_x and model.coordinate_y %}
+                   center: {lat: {{ model.coordinate_x }}, lng: {{ model.coordinate_y }} },
+                   zoom: 15,
+               {% else %}
+                   center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                   zoom: 10,
+               {% endif %}
+               mapTypeId: 'roadmap'
+           });
+           this.gMap = map;
+
+           // Create the search box and link it to the UI element.
+           var input = document.getElementById('pac-input');
+           var searchBox = new google.maps.places.SearchBox(input);
+           map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+           // Bias the SearchBox results towards current map's viewport.
+           map.addListener('bounds_changed', function () {
+               searchBox.setBounds(map.getBounds());
+           });
+
+           //var markers = [];
+           {% if model.coordinate_x and model.coordinate_y %}
+               var marker = new google.maps.Marker({
+                   position : map.center,
+                   map: map,
+                   title: '{{ model.name }}'
+               });
+           {% endif %}
+           this.markers.push(marker);
+           // Listen for the event fired when the user selects a prediction and retrieve
+           // more details for that place.
+           searchBox.addListener('places_changed', function () {
+               var places = searchBox.getPlaces();
+
+               if (places.length == 0) {
+                   return;
+               }
+
+               // Clear out the old markers.
+               googleMap.markers.forEach(function (marker) {
+                   marker.setMap(null);
+               });
+               googleMap.markers = [];
+
+               // For each place, get the icon, name and location.
+               var bounds = new google.maps.LatLngBounds();
+               places.forEach(function (place) {
+                   if (!place.geometry) {
+                       console.log("Returned place contains no geometry");
+                       return;
+                   }
+                   var icon = {
+                       url: place.icon,
+                       size: new google.maps.Size(71, 71),
+                       origin: new google.maps.Point(0, 0),
+                       anchor: new google.maps.Point(17, 34),
+                       scaledSize: new google.maps.Size(25, 25)
+                   };
+
+                   // Create a marker for each place.
+                   googleMap.markers.push(new google.maps.Marker({
+                       map: map,
+                       icon: icon,
+                       title: place.name,
+                       position: place.geometry.location
+                   }));
+                   //console.log(place.geometry.location);
+
+                   if (place.geometry.viewport) {
+                       // Only geocodes have viewport.
+                       bounds.union(place.geometry.viewport);
+                   } else {
+                       bounds.extend(place.geometry.location);
+                   }
+               });
+               map.fitBounds(bounds);
+           });
+
+
+       },
+       searchAddress: function(input){
+           var value = input.getAttribute('value');
+           var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value + '&key={{ app.params.googleApiKey }}';
+           console.log(url);
+           $.ajax({
+               url: url,
+               type: 'get',
+               format: 'json',
+               success: function (data) {
+                   //получили результат поиска по адресу
+                   if (data.status == 'OK' && data.results.length > 0) {
+                       //console.log(data.results[0]);
+                       var place = data.results[0];
+
+                       input.setAttribute('value', place.formatted_address);
+
+                       var bound = new google.maps.LatLngBounds();
+                       if (!place.geometry) {
+                          console.log("Returned place contains no geometry");
+                          return;
+                       }
+                       // Clear out the old markers.
+                       googleMap.markers.forEach(function (marker) {
+                           marker.setMap(null);
+                       });
+                       googleMap.markers = [];
+                       var marker = new google.maps.Marker({
+                           map: googleMap.gMap,
+                          // icon: icon,
+                           title: place.name,
+                           position: place.geometry.location,
+                           draggable:true
+                       });
+
+                       google.maps.event.addListener(marker, "dragend", function(event) {
+                           googleMap.placeLocation(marker.position.lng(), marker.position.lat());
+                       });
+                       googleMap.markers.push(marker);
+
+                       bound.extend(place.geometry.location);
+                       googleMap.placeLocation(place.geometry.location.lng, place.geometry.location.lat);
+                       googleMap.gMap.fitBounds(bound);
+                   }
+               }
+           })
+       },
+       placeLocation: function(lat, lng) {
+           var inputX = document.getElementById('b2bstorespoints-coordinate_x');
+           var inputY = document.getElementById('b2bstorespoints-coordinate_y');
+           inputX.setAttribute('value', lng);
+           inputY.setAttribute('value', lat);
+       }
+
+   };
+
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>

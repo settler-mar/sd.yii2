@@ -76,6 +76,7 @@ class DefaultController extends Controller
         $model = new B2bStoresPoints();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->addFlash('info', 'Создана точка продаж');
             return $this->redirect(['/home']);
         } else {
             $store = Stores::byRoute($route);
@@ -98,6 +99,7 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->addFlash('info', 'Точка продаж обновлена');
             return $this->redirect(['/home']);
         } else {
             $store = Stores::findOne($model->store_id);
