@@ -12,7 +12,7 @@
                 {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
             </div>
             <div class="col-sm-2">
-                <button id="address-search" class="btn btn-primary" >Найти</button>
+                <button id="address-search" class="address-search btn btn-primary" >Найти</button>
             </div>
         </div>
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
