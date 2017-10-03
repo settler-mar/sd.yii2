@@ -4,7 +4,7 @@
 
         {{ form.field(model, 'store_id').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
 
-        {{ form.field(model, 'route').textInput({'readOnly':true})|raw }}
+        {{ form.field(model, 'store_name').textInput({'readOnly':true})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
         <div class="row">
@@ -15,13 +15,10 @@
                 <button id="address-search" class="btn btn-primary" >Найти</button>
             </div>
         </div>
-        {{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}
-        {#{{ form.field(model, 'coordinate_x').widget(MaskedInput.className(), {'mask': '999.999999'})|raw }}#}
+        {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
 
-        {{ form.field(model, 'coordinate_y').textInput({'maxlength':true})|raw }}
-        {#{{ form.field(model, 'coordinate_y').widget(MaskedInput.className(), {'mask': '99.999999'})|raw }}#}
+        {{ form.field(model, 'coordinate_y').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
 
-        {{ form.field(model, 'work_time').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'work_time_details').widget(MultipleInput.className(), {
             'max':'7',
@@ -109,7 +106,7 @@
         })|raw }}
 
     <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Сохранить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
     {{ active_form_end() }}
 </div>
@@ -214,8 +211,9 @@
                    map: map,
                    title: '{{ model.name }}'
                });
+               this.markers.push(marker);
            {% endif %}
-           this.markers.push(marker);
+
            // Listen for the event fired when the user selects a prediction and retrieve
            // more details for that place.
            searchBox.addListener('places_changed', function () {
@@ -268,9 +266,11 @@
 
        },
        searchAddress: function(input){
-           var value = input.getAttribute('value');
+           var value = input.value;
+           if (!value) {
+               return false;
+           }
            var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value + '&key={{ app.params.googleApiKey }}';
-           console.log(url);
            $.ajax({
                url: url,
                type: 'get',
@@ -281,7 +281,7 @@
                        //console.log(data.results[0]);
                        var place = data.results[0];
 
-                       input.setAttribute('value', place.formatted_address);
+                       input.value = place.formatted_address;
 
                        var bound = new google.maps.LatLngBounds();
                        if (!place.geometry) {
@@ -316,8 +316,8 @@
        placeLocation: function(lat, lng) {
            var inputX = document.getElementById('b2bstorespoints-coordinate_x');
            var inputY = document.getElementById('b2bstorespoints-coordinate_y');
-           inputX.setAttribute('value', lng);
-           inputY.setAttribute('value', lat);
+           inputX.value = lng;
+           inputY.value = lat;
        }
 
    };

@@ -22,7 +22,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
      * @var
      * вместо id магазина на форме добавления
      */
-    public $route;
+    public $store_name;
     public $work_time_details;
 
     /**
@@ -59,11 +59,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['store_id'], 'integer', 'message' => 'Неправильный магазин'],
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
-            [['name', 'address', 'work_time'], 'string', 'max' => 255],
+            [['name', 'address'], 'string', 'max' => 255],
             [['access_code'], 'string', 'max' => 150],
             [['coordinate_y'], 'number', 'max'=> 90, 'min' => -90],
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
-            [['work_time_details'], 'safe'],
+            [['work_time_details', 'store_name'], 'safe'],
             [['work_time_json'], 'string'],
         ];
     }
@@ -80,11 +80,10 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'address' => 'Адрес точки продаж',
             'access_code' => 'Access Code',
             'created_at' => 'Created At',
-            'work_time' => 'Время работы',
             'coordinate_x' => 'Координата Х',
             'coordinate_y' => 'Координата Y',
-            'route' => 'Магазин',
-            'work_time_details' => 'Время работы подробно',
+            'store_name' => 'Магазин',
+            'work_time_details' => 'Время работы',
         ];
     }
 
@@ -98,7 +97,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             $this->access_code = Yii::$app->getSecurity()->generateRandomString(100);
         }
         $workDays = $this->work_time_details;
-        if ($workDays) {
+
+        if (count($workDays) == 1 && $this->checkBoxChecked($workDays[0]) == 0) {
+            //если только один день и чек-боксы не выбраны, то просто null
+            $this->work_time_json = null;
+        } elseif ($workDays) {
             for ($i=1; $i<=7; $i++) {
                 if (array_sum(array_column($workDays, 'work_time_day_'.$i))>1) {
                     //хотя бы один день выбран более 1 раза
@@ -106,11 +109,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 }
             }
             foreach ($workDays as $workDay) {
-                $checkboxesCount = 0;
-                for ($i=1; $i<=7; $i++) {
-                    $checkboxesCount += $workDay['work_time_day_'.$i];
-                }
-                if ($checkboxesCount<1) {
+                if ($this->checkBoxChecked($workDay) < 1) {
                     //не выбран ни один день
                     return false;
                 }
@@ -118,6 +117,15 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             $this->work_time_json = json_encode($workDays);
         }
         return true;
+    }
+
+    private function checkBoxChecked($workDay)
+    {
+        $checkboxesCount = 0;
+        for ($i=1; $i<=7; $i++) {
+            $checkboxesCount += $workDay['work_time_day_'.$i];
+        }
+        return $checkboxesCount;
     }
 
 }

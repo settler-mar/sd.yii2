@@ -81,7 +81,7 @@ class DefaultController extends Controller
         } else {
             $store = Stores::byRoute($route);
             $model->store_id = $store->uid;
-            $model->route = $store->route;
+            $model->store_name = $store->name;
             return $this->render('create.twig', [
                 'model' => $model,
             ]);
@@ -103,7 +103,7 @@ class DefaultController extends Controller
             return $this->redirect(['/home']);
         } else {
             $store = Stores::findOne($model->store_id);
-            $model->route = $store->route;
+            $model->store_name = $store->name;
             $model->work_time_details = json_decode($model->work_time_json, true);
             return $this->render('update.twig', [
                 'model' => $model,
