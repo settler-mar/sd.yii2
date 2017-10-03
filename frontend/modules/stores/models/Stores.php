@@ -15,7 +15,6 @@ use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
 use common\components\Help;
-use vova07\fileapi\behaviors\UploadBehavior;
 
 /**
  * This is the model class for table "cw_stores".
@@ -323,6 +322,9 @@ class Stores extends \yii\db\ActiveRecord
     $path = $this->getStorePath();// Путь для сохранения
     $bp=Yii::$app->getBasePath().'/web'.$path;
     $this->removeImage($bp.$this->Image);   // удаляем старое изображение
+
+    $this->clearPhotos(); //чистим фотки магазина
+    B2bStoresPoints::deleteAll(['store_id'=>$this->uid]);//удаление торговых точек
   }
 
   /**
@@ -371,6 +373,20 @@ class Stores extends \yii\db\ActiveRecord
     return $list;
   }
 
+  public function clearPhotos(){
+    $path = $this->getStorePhotoPath();
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    if(!is_readable($bp)){
+      return true;
+    }
+    $list=array_diff(scandir($bp), array('..', '.'));
+    foreach ($list as $item){
+      unlink($bp.$item);
+    }
+    rmdir($bp);
+    return true;
+  }
+
   public function addPhoto($photo){
     if ($photo) {
       $path = $this->getStorePhotoPath();// Путь для сохранения
@@ -393,6 +409,15 @@ class Stores extends \yii\db\ActiveRecord
     }else{
       return ['error' => 'Ошибка сохранения файла'];
     }
+  }
+
+  public function removePhoto($path){
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    if (!file_exists($bp)) {
+      return 'err';
+    }
+    unlink($bp);
+    return true;
   }
   /**
    * Удаляем изображение при его наличии

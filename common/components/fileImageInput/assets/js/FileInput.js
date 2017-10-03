@@ -98,6 +98,9 @@ $(function() {
           .removeClass('loading')
           .attr('err','Ошибка удалния');
         notification.notifi({message: 'Невозможно удалить элемент', type: 'err'});
+      }else{
+        this.remove();
+        notification.notifi({message: 'Фаил успешно удален', type: 'info'});
       }
     }.bind($this)).fail(function(){
       this

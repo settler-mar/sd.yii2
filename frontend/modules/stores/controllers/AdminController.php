@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\ActionsTariffs;
@@ -104,6 +105,29 @@ class AdminController extends Controller
       return $this->render('create.twig', [
         'model' => $model,
       ]);
+    }
+  }
+
+  public function actionFileapiRemove($id)
+  {
+    if (Yii::$app->request->isPost) {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $store = Stores::findOne(['uid' => $id]);
+      if (!$store) {
+        $result = [
+          'error' => 'Магазин не найден',
+        ];
+        return json_encode($result);
+      }
+
+      $result = $store->removePhoto(Yii::$app->request->post('path'));
+      return $result;
+    } else {
+      throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
     }
   }
 
@@ -469,6 +493,8 @@ class AdminController extends Controller
       }
       //$tmp = count(CpaLink::find()->all());
       CpaLink::deleteAll(['id' => $cpa_id]);
+
+      B2bUsers::deleteAll(['cpa_link_id' => $cpa_id]);//удаляем связанных ользователей b2b
       //return $tmp . ' ' . count(CpaLink::find()->all()) . ' ' . $cpa_id;
     }
 
