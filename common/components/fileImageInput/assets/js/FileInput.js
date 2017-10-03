@@ -80,3 +80,44 @@ function init_file_prev(obj){
     prew_blk.append(tpl);
   }
 }
+
+$(function() {
+
+  function onRemove() {
+    data = this;
+    $this = data.el;
+    del_url = data.del_url;
+    $this.addClass('loading');
+
+    post={
+      path:$this.find('.img img').attr('src')
+    };
+    $.post(del_url,post,function(data) {
+      if (data && data == 'err') {
+        this
+          .removeClass('loading')
+          .attr('err','Ошибка удалния');
+        notification.notifi({message: 'Невозможно удалить элемент', type: 'err'});
+      }
+    }.bind($this)).fail(function(){
+      this
+        .removeClass('loading')
+        .attr('err','Ошибка удалния');
+      notification.notifi({message:'Ошибка удалния',type:'err'});
+    }.bind($this))
+    console.log(this);
+  }
+
+  $('body .input_file').on('click', '.del', function () {
+    $this = $(this).closest('.img_blk');
+    del_url = $this.closest('.input_file').find('.btn-add input[type=file]').data('remove-url');
+    data = {
+      el: $this,
+      del_url: del_url
+    };
+    notification.confirm({
+      callbackYes: onRemove,
+      obj: data
+    })
+  })
+});

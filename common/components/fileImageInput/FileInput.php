@@ -48,7 +48,7 @@ class FileInput extends InputWidget
         'id'=>$this->options['id'],
         'data'=>[
           'url'=>Url::toRoute($this->url),
-          'removeUrl'=>Url::toRoute($this->removeUrl),
+          'remove-url'=>Url::toRoute($this->removeUrl),
         ]
       ]);
     $this->registerPlugin();
