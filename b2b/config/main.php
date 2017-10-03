@@ -75,14 +75,14 @@ return [
         ],
     ],
     //для возврата с формы login на предыдущую страницу
-    'on afterAction' => function (yii\base\ActionEvent $e) {
-      if(($e->action->id !== 'login'
-        || $e->action->controller->module->id !== 'users')
-        && $e->action->controller->module->id !== 'debug'
-      ){
-        Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+    'on beforeAction' => function (yii\base\ActionEvent $e) {
+      if (Yii::$app->user->isGuest) {
+        $request = Yii::$app->request;
+        // исключаем страницу авторизации или ajax-запросы
+        if (!($request->isAjax || strpos($request->url, 'login') !== false)) {
+          Yii::$app->user->setReturnUrl($request->url);
+        }
       }
-
     },
 ]
 ;
