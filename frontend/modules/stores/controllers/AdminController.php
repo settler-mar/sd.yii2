@@ -2,6 +2,8 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\b2b_users\models\B2bUsers;
+use frontend\modules\b2b_users\models\UsersCpa;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\ActionsTariffs;
@@ -104,6 +106,29 @@ class AdminController extends Controller
       return $this->render('create.twig', [
         'model' => $model,
       ]);
+    }
+  }
+
+  public function actionFileapiRemove($id)
+  {
+    if (Yii::$app->request->isPost) {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $store = Stores::findOne(['uid' => $id]);
+      if (!$store) {
+        $result = [
+          'error' => 'Магазин не найден',
+        ];
+        return json_encode($result);
+      }
+
+      $result = $store->removePhoto(Yii::$app->request->post('path'));
+      return $result;
+    } else {
+      throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
     }
   }
 
@@ -404,25 +429,27 @@ class AdminController extends Controller
         ->asArray()
         ->all();
 
-      $payment = Payments::find();
-//        ->andFilterWhere(['OR',$cpa_link]);
+      if(count($cpa_link)>0) {
+        $payment = Payments::find();
+        //        ->andFilterWhere(['OR',$cpa_link]);
 
-      foreach ($cpa_link as &$item) {
-        $payment = $payment->orFilterWhere(['AND', $item]);
-        //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
-      }
-
-      $payment = $payment
-        ->asArray()
-        ->all();
-
-
-      if (count($payment) > 0) {
-        if (!$not_return) {
-          return false;
+        foreach ($cpa_link as &$item) {
+          $payment = $payment->orFilterWhere(['AND', $item]);
+          //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
         }
-        http_response_code(404);
-        exit;
+
+        $payment = $payment
+          ->asArray()
+          ->all();
+
+        if (count($payment) > 0) {
+          Yii::$app->session->addFlash('err','Нельзя удалить магазин т.к. у него есть платежи');
+          if (!$not_return) {
+            return false;
+          }
+          http_response_code(404);
+          exit;
+        }
       }
       $cwsl = CpaLink::find()
         ->select('id')
@@ -469,6 +496,8 @@ class AdminController extends Controller
       }
       //$tmp = count(CpaLink::find()->all());
       CpaLink::deleteAll(['id' => $cpa_id]);
+      Yii::$app->session->addFlash('info','Магазин успешно удален');
+      UsersCpa::deleteAll(['cpa_link_id' => $cpa_id]);//удаляем связанных ользователей b2b
       //return $tmp . ' ' . count(CpaLink::find()->all()) . ' ' . $cpa_id;
     }
 

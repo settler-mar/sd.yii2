@@ -43,7 +43,7 @@
     font-size: 14px;
     color: #1e2527;
     border-radius: 3px;
-    //max-width: 750px;
+    max-width: 935px;
 
     //&:before{
     //  content:"\f067";
@@ -86,7 +86,7 @@
     .accordion-title {
       border-radius: 3px 3px 0 0;
 
-      &:before{
+      &:after{
         content:"\f068";
       }
     }

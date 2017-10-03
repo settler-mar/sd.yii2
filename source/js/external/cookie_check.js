@@ -40,6 +40,7 @@
         testAd: function () {
             var $adDetect = $('.ad-detect:visible').length;
             this.adblockEnabled = ($adDetect>0);
+
             if((!this.adblockEnabled || !this.cookiesEnabled) && !getCookie('adBlockShow')){
                 setCookie('adBlockShow','show');
                 this.showPopup();
@@ -76,18 +77,6 @@
                 question: text,
 
             });
-        },
-
-        run: function(options) {
-
-            Checker.resetOptions();
-
-            Checker.setOptions(options);
-
-            Checker.checkRemoteCookiesEnabled();
-            Checker.checkAdblock();
-
-            Checker.timer = setInterval(Checker.checkResults, 200);
         }
     };
 
@@ -145,6 +134,6 @@
 
         document.cookie = updatedCookie;
     }
-
     Checker.init();
+    //setTimeout(Checker.init,100);
 }(window, document));

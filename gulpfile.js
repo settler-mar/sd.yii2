@@ -105,7 +105,6 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/external/animo.js',
         paths.source.js+'/external/jquery.mockjax.js',
         paths.source.js+'/external/jquery.autocomplete.js',
-        paths.source.js+'/external/cookie_check.js',
         paths.source.js+'/original/account/main.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/for_all.js'
@@ -123,7 +122,6 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/external/account/main.js',
     paths.source.js+'/external/jquery.mockjax.js',
     paths.source.js+'/external/jquery.autocomplete.js',
-    paths.source.js+'/external/cookie_check.js',
     paths.source.js+'/original/admin/select2.full.min.js',
     paths.source.js+'/original/admin/main_admin.js',
     paths.source.js+'/original/admin/editor_init.js',
