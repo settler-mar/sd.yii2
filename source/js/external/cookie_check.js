@@ -40,12 +40,7 @@
         testAd: function () {
             var $adDetect = $('.ad-detect:visible').length;
             this.adblockEnabled = ($adDetect>0);
-            if(!this.adblockEnabled){
-                alert('!this.adblockEnabled')
-            }
-            if(!this.cookiesEnabled){
-                alert('!this.cookiesEnabled')
-            }
+
             if((!this.adblockEnabled || !this.cookiesEnabled) && !getCookie('adBlockShow')){
                 setCookie('adBlockShow','show');
                 this.showPopup();
