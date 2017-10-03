@@ -105,6 +105,16 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                     return false;
                 }
             }
+            foreach ($workDays as $workDay) {
+                $checkboxesCount = 0;
+                for ($i=1; $i<=7; $i++) {
+                    $checkboxesCount += $workDay['work_time_day_'.$i];
+                }
+                if ($checkboxesCount<1) {
+                    //не выбран ни один день
+                    return false;
+                }
+            }
             $this->work_time_json = json_encode($workDays);
         }
         return true;

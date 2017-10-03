@@ -57,25 +57,14 @@
                     'type': 'checkbox',
                 },
                 {
-                    'name': 'holiday',
-                    'title': 'Выходной',
-                    'type': 'checkbox'
-                },
-                {
-                    'name': '24-hour',
-                    'title': 'Круглосуточно',
-                    'type': 'checkbox',
-                    'options': {
-                        'class': 'depends-holiday'
-                    }
-                },
-                {
                     'name': 'work_time_start',
                     'title': 'Начало работы',
                     'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday depends-24-hour',
                         'mask': '99:99',
+                        'options': {
+                            'class': 'form-control  depends-24-hour',
+                        }
                     }
                 },
                 {
@@ -83,8 +72,10 @@
                     'title': 'Конец работы',
                     'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday depends-24-hour',
                         'mask': '99:99',
+                        'options': {
+                            'class': 'form-control depends-24-hour',
+                        }
                     }
                 },
                 {
@@ -92,7 +83,6 @@
                     'title': 'Начало перерыва',
                     'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday',
                         'mask': '99:99',
                     }
                 },
@@ -101,9 +91,13 @@
                     'title': 'Конец перерыва',
                     'type': MaskedInput.className(),
                     'options': {
-                        'class': 'depends-holiday',
                         'mask': '99:99',
-                }
+                    }
+                },
+                {
+                    'name': '24-hour',
+                    'title': 'Круглосуточно',
+                    'type': 'checkbox',
                 },
 
             ],
