@@ -321,7 +321,7 @@ class Stores extends \yii\db\ActiveRecord
 
     $path = $this->getStorePath();// Путь для сохранения
     $bp=Yii::$app->getBasePath().'/web'.$path;
-    $this->removeImage($bp.$this->Image);   // удаляем старое изображение
+    $this->removeImage($bp.$this->logo);   // удаляем старое изображение
 
     $this->clearPhotos(); //чистим фотки магазина
     B2bStoresPoints::deleteAll(['store_id'=>$this->uid]);//удаление торговых точек
@@ -396,7 +396,7 @@ class Stores extends \yii\db\ActiveRecord
       $name .= '.' . $exch;
       $bp=Yii::$app->getBasePath().'/web'.$path;
       if (!file_exists($bp)) {
-        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
+        mkdir($bp, 0777, true);   // Создаем директорию при отсутствии
       }
       $img = (new Image($photo->tempName));
       $img
