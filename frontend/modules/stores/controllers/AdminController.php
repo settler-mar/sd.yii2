@@ -150,7 +150,7 @@ class AdminController extends Controller
         return json_encode($result);
       }
 
-      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'));
+      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'),Yii::$app->request->post('index'));
       return json_encode($result);
     } else {
       throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');

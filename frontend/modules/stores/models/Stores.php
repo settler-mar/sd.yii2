@@ -399,10 +399,11 @@ class Stores extends \yii\db\ActiveRecord
     return true;
   }
 
-  public function addPhoto($photo){
+  public function addPhoto($photo,$index=0){
     if ($photo) {
+      $index=($index==0?'':'-'.$index);
       $path = $this->getStorePhotoPath();// Путь для сохранения
-      $name = time(); // Название файла
+      $name = time().$index; // Название файла
       $exch = explode('.', $photo->name);
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
