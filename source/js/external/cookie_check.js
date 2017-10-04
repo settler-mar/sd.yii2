@@ -42,8 +42,7 @@
             var $adDetect = $('.ad-detect:visible').length;
             this.adblockEnabled = ($adDetect>0);
 
-            if((!this.adblockEnabled || !this.cookiesEnabled) && !getCookie('adBlockShow')){
-                setCookie('adBlockShow','show');
+            if((!this.adblockEnabled || !this.cookiesEnabled)){
                 this.showPopup();
             }
         },
@@ -51,6 +50,11 @@
             setTimeout(this.showPop.bind(this),500);
         },
         showPop: function() {
+            if(getCookie('adBlockShow')){
+                return;
+            }
+            setCookie('adBlockShow','show');
+
             var lang = this.langText.ru;
             var text='';
 
@@ -108,7 +112,7 @@
         var cookie_string = name + "=" + escape ( value );
         document.cookie = cookie_string;
     }
-    function eraseCookie(cookie_name){
+    function eraseCookie(name){
         var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
         document.cookie = cookie_string;
     }
