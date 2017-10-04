@@ -34,7 +34,7 @@
             }
         },
         testCookies: function () {
-            setCookie('testWork','test',10);
+            setCookie('testWork','test');
             this.cookiesEnabled = (getCookie('testWork')==='test'?true:false);
             eraseCookie('testWork');
         },
@@ -104,18 +104,13 @@
     function getCookie(n) {
         return unescape((RegExp(n + '=([^;]+)').exec(document.cookie) || [1, ''])[1]);
     }
-    function setCookie(name, value, exp) {
+    function setCookie(name, value) {
         var cookie_string = name + "=" + escape ( value );
-        if ( exp )
-        {
-            var expires = new Date;
-            expires.setTime(expires.getTime() + (exp*1000));
-            cookie_string += "; expires=" + expires.toGMTString();
-        }
         document.cookie = cookie_string;
     }
     function eraseCookie(cookie_name){
-        setCookie(cookie_name, '', -1);
+        var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
+        document.cookie = cookie_string;
     }
     Checker.init();
     //setTimeout(Checker.init,100);
