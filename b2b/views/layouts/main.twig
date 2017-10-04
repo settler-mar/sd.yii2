@@ -42,7 +42,7 @@
 
     <div class="container">
         {{ breadcrumbs_widget({'links': this.params.breadcrumbs}) }}
-        {{ alert_widget() }}
+        {#{{ alert_widget() }}#}
         {% set content_menu = content_menu_widget({'current_item':this.title, 'is_guests':app.user.isGuest}) %}
         {% if content_menu %}
             <div class="col-sm-3">
