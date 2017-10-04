@@ -35,14 +35,14 @@
         },
         testCookies: function () {
             setCookie('testWork','test');
-            this.cookiesEnabled = (getCookie('testWork')=='test');
+            this.cookiesEnabled = (getCookie('testWork')==='test'?true:false);
+            eraseCookie('testWork');
         },
         testAd: function () {
             var $adDetect = $('.ad-detect:visible').length;
             this.adblockEnabled = ($adDetect>0);
 
-            if((!this.adblockEnabled || !this.cookiesEnabled) && !getCookie('adBlockShow')){
-                setCookie('adBlockShow','show');
+            if((!this.adblockEnabled || !this.cookiesEnabled)){
                 this.showPopup();
             }
         },
@@ -50,6 +50,11 @@
             setTimeout(this.showPop.bind(this),500);
         },
         showPop: function() {
+            if(getCookie('adBlockShow')){
+                return;
+            }
+            setCookie('adBlockShow','show');
+
             var lang = this.langText.ru;
             var text='';
 
@@ -100,39 +105,16 @@
             return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
     };
-    function getCookie(name) {
-        var matches = document.cookie.match(new RegExp(
-          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
+    function getCookie(n) {
+        return unescape((RegExp(n + '=([^;]+)').exec(document.cookie) || [1, ''])[1]);
     }
-    function setCookie(name, value, options) {
-        options = options || {};
-
-        var expires = options.expires;
-
-        if (typeof expires == "number" && expires) {
-            var d = new Date();
-            d.setTime(d.getTime() + expires * 1000);
-            expires = options.expires = d;
-        }
-        if (expires && expires.toUTCString) {
-            options.expires = expires.toUTCString();
-        }
-
-        value = encodeURIComponent(value);
-
-        var updatedCookie = name + "=" + value;
-
-        for (var propName in options) {
-            updatedCookie += "; " + propName;
-            var propValue = options[propName];
-            if (propValue !== true) {
-                updatedCookie += "=" + propValue;
-            }
-        }
-
-        document.cookie = updatedCookie;
+    function setCookie(name, value) {
+        var cookie_string = name + "=" + escape ( value );
+        document.cookie = cookie_string;
+    }
+    function eraseCookie(name){
+        var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
+        document.cookie = cookie_string;
     }
     Checker.init();
     //setTimeout(Checker.init,100);
