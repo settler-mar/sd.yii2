@@ -82,7 +82,7 @@ class Stores extends \yii\db\ActiveRecord
       [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
-      [['route'], 'unique'],
+      [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       [['related'], 'compare', 'compareAttribute' => 'uid', 'operator' => '!='],
@@ -135,10 +135,6 @@ class Stores extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
-    if (!parent::beforeValidate()) {
-      return false;
-    }
-
     if ($this->isNewRecord) {
       $this->added = date('Y-m-d H:i:s');
     }
@@ -147,7 +143,7 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    return true;
+    return parent::beforeValidate();
   }
 
   /**
