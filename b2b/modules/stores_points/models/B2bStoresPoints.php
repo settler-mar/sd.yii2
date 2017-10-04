@@ -5,6 +5,7 @@ namespace b2b\modules\stores_points\models;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
+//use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "b2b_stores_points".
@@ -94,6 +95,15 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         $this->work_time_details = json_decode($this->work_time_json, true);
     }
 
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        Cache::deleteName('store_store_points_' . $this->store_id);
+//    }
+//    public function afterDelete()
+//    {
+//        Cache::deleteName('store_store_points_' . $this->store_id);
+//    }
+
     public function beforeValidate()
     {
         if (!parent::beforeValidate()) {
@@ -133,6 +143,31 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             $checkboxesCount += $workDay['work_time_day_'.$i];
         }
         return $checkboxesCount;
+    }
+
+
+    
+    public static function byStoreId($storeId)
+    {
+//        $cache = Yii::$app->cache;
+//        $data = $cache->getOrSet('store_store_points_' . $storeId, function () use ($storeId) {
+//            return self::find()->where(['store_id' => $storeId])->asArray()->all();
+//        });
+        $query = self::find()->where(['store_id' => $storeId]);
+        $count = $query->count();
+        if ($count === 0) {
+            return null;
+        } elseif ($count == 1) {
+            return [
+                'count' => $count,
+                'data' => $query->asArray()->one(),
+            ];
+        } else {
+            return [
+                'count' => $count,
+                'data' => $query->orderBy(['country' => 'DESC', 'city' => 'DESC'])->asArray()->all(),
+            ];
+        }
     }
 
 }
