@@ -89,6 +89,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         ];
     }
 
+    public function afterFind()
+    {
+        $this->work_time_details = json_decode($this->work_time_json, true);
+    }
+
     public function beforeValidate()
     {
         if (!parent::beforeValidate()) {
