@@ -106,10 +106,10 @@
     }
     function setCookie(name, value, exp) {
         var cookie_string = name + "=" + escape ( value );
-        if ( exp_y )
+        if ( exp )
         {
             var expires = new Date;
-            expires.setTime(expire_date.getTime() + (exp*1000));
+            expires.setTime(expires.getTime() + (exp*1000));
             cookie_string += "; expires=" + expires.toGMTString();
         }
         document.cookie = cookie_string;
