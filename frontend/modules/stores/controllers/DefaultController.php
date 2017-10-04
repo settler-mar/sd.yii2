@@ -238,8 +238,6 @@ class DefaultController extends SdController
     $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
     $contentData["curs"] = Yii::$app->conversion->options();
-    //$contentData["fotorama"] = new fotorama;
-
     return $this->render('shop', $contentData);
   }
 

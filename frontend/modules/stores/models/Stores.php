@@ -160,6 +160,10 @@ class Stores extends \yii\db\ActiveRecord
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
   }
 
+  public function getRelatedData(){
+    return $this->hasOne(Stores::className(),['uid'=>'related']);
+  }
+
   public function getCategory_cnt(){
     return StoresToCategories::find()->where(['store_id'=>$this->uid])->count();
   }
