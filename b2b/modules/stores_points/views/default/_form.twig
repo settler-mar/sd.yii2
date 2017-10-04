@@ -7,6 +7,11 @@
         {{ form.field(model, 'store_name').textInput({'readOnly':true})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'country').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'city').textInput({'maxlength':true})|raw }}
+
         <div class="row">
             <div class="col-sm-10">
                 {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
@@ -15,6 +20,7 @@
                 <button id="address-search" class="address-search btn btn-primary" >Найти</button>
             </div>
         </div>
+
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
 
         {{ form.field(model, 'coordinate_y').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
@@ -209,7 +215,11 @@
                var marker = new google.maps.Marker({
                    position : map.center,
                    map: map,
-                   title: '{{ model.name }}'
+                   title: '{{ model.name }}',
+                   draggable:true
+               });
+               google.maps.event.addListener(marker, "dragend", function(event) {
+                   googleMap.placeLocation(marker.position.lng(), marker.position.lat());
                });
                this.markers.push(marker);
            {% endif %}
@@ -278,10 +288,10 @@
                success: function (data) {
                    //получили результат поиска по адресу
                    if (data.status == 'OK' && data.results.length > 0) {
-                       //console.log(data.results[0]);
                        var place = data.results[0];
 
-                       input.value = place.formatted_address;
+                       //данные адреса на форму
+                       googleMap.placeAddress(place);
 
                        var bound = new google.maps.LatLngBounds();
                        if (!place.geometry) {
@@ -307,6 +317,7 @@
                        googleMap.markers.push(marker);
 
                        bound.extend(place.geometry.location);
+                       //данные места - на форму
                        googleMap.placeLocation(place.geometry.location.lng, place.geometry.location.lat);
                        googleMap.gMap.fitBounds(bound);
                    }
@@ -314,10 +325,34 @@
            })
        },
        placeLocation: function(lng, lat) {
-           var inputX = document.getElementById('b2bstorespoints-coordinate_x');
-           var inputY = document.getElementById('b2bstorespoints-coordinate_y');
+           var inputX = document.getElementById('b2bstorespoints-coordinate_x'),
+               inputY = document.getElementById('b2bstorespoints-coordinate_y');
            inputX.value = lng;
            inputY.value = lat;
+       },
+       placeAddress: function(place) {
+           if (!place) {
+               return;
+           }
+           var inputAddress = document.getElementById('b2bstorespoints-address'),
+               inputCountry = document.getElementById('b2bstorespoints-country'),
+               inputCity = document.getElementById('b2bstorespoints-city');
+           inputAddress.value = place.formatted_address;
+           var adressItem = this.getAddressComponent(place.address_components, 'country');
+           inputCountry.value = adressItem ? adressItem : inputCountry.value;
+           adressItem = this.getAddressComponent(place.address_components, 'administrative_area_level_2');
+           inputCity.value = adressItem ? adressItem : inputCity.value;
+       },
+       getAddressComponent(addressComponents, type) {
+           var result = '';
+           addressComponents.forEach(function(item) {
+               item.types.forEach(function(typeItem){
+                   if (typeItem == type) {
+                       result = item.long_name;
+                   }
+               });
+           });
+           return result;
        }
 
    };

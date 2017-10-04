@@ -104,7 +104,7 @@ class DefaultController extends Controller
         } else {
             $store = Stores::findOne($model->store_id);
             $model->store_name = $store->name;
-            $model->work_time_details = json_decode($model->work_time_json, true);
+            //$model->work_time_details = json_decode($model->work_time_json, true);
             return $this->render('update.twig', [
                 'model' => $model,
             ]);

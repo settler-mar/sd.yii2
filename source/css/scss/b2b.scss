@@ -25,6 +25,9 @@ $btn_primary_bg_hover: #e4c84b;
 $btn_primary_border:#e4c84b;
 $btn_primary_border_hover:#e6ae03;
 
+//цвета текста
+$text_holiday_color: red;
+
 //жлюавим плавности всем ссылкам
 a,button,input{
   transition: all 0.2s linear;
@@ -204,6 +207,20 @@ a{
       border-bottom: 1px solid $login_back_color;
       th {
         padding: 5px;
+      }
+    }
+    &_work_time {
+      &_list {
+        padding-left: 0;
+      }
+      &_item {
+        list-style-type: none;
+        span {
+          color: $text_holiday_color;
+        }
+      &:not(:last-child) {
+        border-bottom: 1px solid $login_back_color;
+      }
       }
     }
 

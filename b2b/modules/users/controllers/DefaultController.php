@@ -44,7 +44,10 @@ class DefaultController extends Controller
           ->all();
 
         foreach ($stores as &$store) {
-            $store['points'] = B2bStoresPoints::find()->where(['store_id' => $store['uid']])->asArray()->all();
+            $store['points'] = B2bStoresPoints::find()
+              ->where(['store_id' => $store['uid']])
+              //->asArray()
+              ->all();
         }
         return $this->render('index', [
             'stores' => $stores,
@@ -67,7 +70,7 @@ class DefaultController extends Controller
           return $this->goHome();
         }else{
           return Yii::$app->getResponse()->redirect('/login');
-        };
+        }
       }
 
       if ($model->load(Yii::$app->request->post()) && $model->login()) {
