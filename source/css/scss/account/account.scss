@@ -999,6 +999,16 @@ table {
                 line-height: 22px;
                 color: rgba(28,54,83,0.9);
             }
+            .link-sent {
+                a {
+                    color: #e4c84b;
+                    text-decoration: none;
+                    &:hover {
+                        color: #FFDC73;
+                        text-decoration: underline;
+                    }
+                }
+            }
         }
     } 
 

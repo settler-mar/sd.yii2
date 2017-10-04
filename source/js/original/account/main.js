@@ -545,3 +545,19 @@ $(function(){
         $(this).select();
     });
 });
+
+$('body').on('click', '.link-to-clipboard', function(e){
+    e.preventDefault();
+    var linkText = $(this).data('link');
+    var tmp   = document.createElement('INPUT');
+    tmp.value = linkText;
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand('copy');
+    document.body.removeChild(tmp);
+    notification.notifi({
+        title: 'Успешно',
+        message: 'Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!',
+        type: 'success'
+    });
+});
