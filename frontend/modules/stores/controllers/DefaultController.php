@@ -114,7 +114,7 @@ class DefaultController extends SdController
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
         'label' => $categoryStore['name'],
-        'url' => '/stores/' . $categoryStore->route,
+        'url' => $categoryStore->route,
       ];
 
       $dataBaseData = Stores::find()
@@ -218,7 +218,7 @@ class DefaultController extends SdController
       $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
       return Coupons::find()
         ->from(Coupons::tableName() . ' cwc')
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')

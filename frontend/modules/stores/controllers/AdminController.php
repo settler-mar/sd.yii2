@@ -74,9 +74,9 @@ class AdminController extends Controller
         },
         'route' => function ($model, $key, $index, $column) {
           $out = '<a href="/stores/';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
           $out .= '" target=_blank>';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
           $out .= '</a>';
           return $out;
         },

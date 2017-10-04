@@ -152,7 +152,7 @@ class Coupons extends \yii\db\ActiveRecord
     $stores = $cache->getOrSet('stores_coupons', function () {
       return self::find()
         ->from(self::tableName() . ' cwc')
-        ->select(['cws.name', 'cws.uid', 'cws.route', 'count(cwc.uid) as count'])
+        ->select(['cws.name', 'cws.uid', 'cws.route','cws.is_offline', 'count(cwc.uid) as count'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]])
         ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
@@ -160,6 +160,7 @@ class Coupons extends \yii\db\ActiveRecord
         ->orderBy('cws.name ASC')
         ->asArray()
         ->all();
+
     });
     return $stores;
   }

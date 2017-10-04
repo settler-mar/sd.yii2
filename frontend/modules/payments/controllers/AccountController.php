@@ -50,7 +50,7 @@ class AccountController extends \yii\web\Controller
 
     $dataBase = Payments::find()
       ->from(Payments::tableName() . ' cwp')
-      ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active'])
+      ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active', 'cws.is_offline'])
       ->innerJoin(CpaLink::tableName() .
         ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id')
       ->innerJoin(Stores::tableName() . ' cws', "cwsl.stores_id = cws.uid")
@@ -118,7 +118,7 @@ class AccountController extends \yii\web\Controller
   {
     $dataBase = Payments::find()
       ->from(Payments::tableName() . ' cwp')
-      ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active'])
+      ->select(['cwp.*', 'cws.name', 'cws.route', 'cws.is_active', 'cws.is_offline'])
       ->innerJoin(CpaLink::tableName() .
         ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id')
       ->innerJoin(Stores::tableName() . ' cws', "cwsl.stores_id = cws.uid")

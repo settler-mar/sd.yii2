@@ -222,19 +222,31 @@ class Stores extends \yii\db\ActiveRecord
     return $data;
   }
 
+  public function getRouteUrl(){
+    $url=$this->route;
+    if($this->is_offline==1){
+      $url.='-offline';
+    }
+    return $url;
+  }
   /**
    * @param $route
    * @return mixed
    */
   public static function byRoute($route)
   {
+    $where = array();
+    if(strpos($route,'-offline')){
+      $where['is_offline']=1;
+      $where['route']=str_replace('-offline','',$route);
+    }else{
+      $where['is_offline']=0;
+      $where['route']=$route;
+    }
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($route) {
+    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
       return self::find()
-        ->where([
-          'route' => $route,
-          //'is_active' => [0, 1]
-        ])
+        ->where($where)
         ->one();
     });
     return $data;
