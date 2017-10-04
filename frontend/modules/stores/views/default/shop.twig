@@ -55,18 +55,20 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="goto" id="goto">
-                    {% if user_id %}
-                        {% if current_store.is_active == 1 %}
-                            <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                {% if current_store.is_offline==0 %}
+                    <div class="goto" id="goto">
+                        {% if user_id %}
+                            {% if current_store.is_active == 1 %}
+                                <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                            {% else %}
+                                 <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
+                            {% endif %}
                         {% else %}
-                             <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
+                            <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
                         {% endif %}
-                    {% else %}
-                        <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
-                    {% endif %}
-                    <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
-                </div>
+                        <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <div class="cashback {% if current_store.action_id != 0 %}old{% endif %}">
@@ -113,6 +115,11 @@
       </div>
   </div>
 </div>
+
+{% set photos = current_store.photoList %}
+{% if photos | length %}
+    {% include 'parts/photos.twig' %}
+{% endif %}
 
 {% if current_store.short_description or content %}
 <section class="store-information short-description">
@@ -171,7 +178,9 @@
 </section>
 {% endif %}
 
-{% include 'parts/calc_cashback.twig' %}
+{% if current_store.is_offline==0 %}
+    {% include 'parts/calc_cashback.twig' %}
+{% endif %}
 
 <section class="store-2line">
     <div class="container">
@@ -298,6 +307,8 @@
     </div>
 </section>
 {% endif %}
+
+{% if current_store.is_offline==0 %}
 <section class="store-intro intro section-padding" id="howgetcashback">
     <div class="container">
         <div class="row">
@@ -338,6 +349,8 @@
         </div>
     </div>
 </section>
+{% endif %}
+
 <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
 {% include 'parts/popups/popup-givefeedback.twig' %}
 
@@ -347,4 +360,5 @@
     {{ _constant('shop_not_active_message')|raw}}
 </div>
 {% endif %}
+
 {% include 'parts/store_rating_microdata.twig' %}

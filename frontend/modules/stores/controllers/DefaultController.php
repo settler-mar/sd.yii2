@@ -11,7 +11,6 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
-
 class DefaultController extends SdController
 {
 
@@ -239,6 +238,7 @@ class DefaultController extends SdController
     $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
     $contentData["curs"] = Yii::$app->conversion->options();
+    //$contentData["fotorama"] = new fotorama;
 
     return $this->render('shop', $contentData);
   }

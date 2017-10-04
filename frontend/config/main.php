@@ -63,7 +63,8 @@ $config= [
       'renderers' => [
         'twig' => [
           'globals' => [
-            'AppAsset'=>'frontend\assets\AppAsset'
+            'AppAsset'=>'frontend\assets\AppAsset',
+            'Fotorama'=>'\kotchuprik\fotorama\Widget',
           ]
         ]
       ]
