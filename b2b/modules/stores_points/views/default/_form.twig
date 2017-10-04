@@ -184,7 +184,7 @@
 
            var map = new google.maps.Map(document.getElementById('map'), {
                {% if model.coordinate_x and model.coordinate_y %}
-                   center: {lat: {{ model.coordinate_x }}, lng: {{ model.coordinate_y }} },
+                   center: {lat: {{ model.coordinate_y }}, lng: {{ model.coordinate_x }} },
                    zoom: 15,
                {% else %}
                    center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
@@ -313,7 +313,7 @@
                }
            })
        },
-       placeLocation: function(lat, lng) {
+       placeLocation: function(lng, lat) {
            var inputX = document.getElementById('b2bstorespoints-coordinate_x');
            var inputY = document.getElementById('b2bstorespoints-coordinate_y');
            inputX.value = lng;
