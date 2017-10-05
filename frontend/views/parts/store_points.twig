@@ -1,17 +1,83 @@
-{% if store_points %}
+{% if current_store.is_offline == 1 and store_points.points %}
 <section class="store-points">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 store-not-active__content">
-                {% if store_point.count == 1 %}
-                    {{ store_point.data.name }}
+            <div class="col-md-12">
+                {% if store_points.points|length == 1 %}
+                    {#одна точка#}
+
+                    {{ store_points.points[0].country }}
+                    {{ store_points.points[0].city }}
+                    {{ store_points.points[0].name }}
+                    {% set work_times = store_points.points[0].work_time_details %}
+                    {% include('parts/work_time.twig') %}
                 {% else %}
-                    {% for store_point in store_points.data %}
-                        {{ store_point.name }}
+                    {#несколько точек #}
+                    <table class="store-points__table">
+                    {% for country,country_item in store_points.groups %}
+                        {% for city,city_item in country_item.cities %}
+                            {% for point_item in city_item %}
+
+                                <tr>
+                                    {% if loop.parent.loop.index == 1  %}
+                                        <td rowspan="{{ country_item.count }}">
+                                        {{ point_item.country }}
+                                        </td>
+                                    {% endif %}
+
+                                    {% if loop.index == 1  %}
+                                        <td rowspan="{{ city_item|length }}">
+                                            {{ point_item.city }}
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        {{ point_item.name }}
+                                    </td>
+                                    <td>
+                                        {{ point_item.address }}
+                                    </td>
+                                    <td>
+                                        {% set work_times = point_item.work_time_details %}
+                                        {% include('parts/work_time.twig') %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
                     {% endfor %}
+                    </table>
                 {% endif %}
             </div>
         </div>
+        <div id="map" class="store-points__map"></div>
     </div>
 </section>
+    <script>
+        var googleMap = {
+            initMap: function() {
+                //todo центровка и массштаб
+                {% for store_point in store_points.points %}
+                    {% if store_point.coordinate_x and store_point.coordinate_y  and not break %}
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            center: {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },//первая точка
+                            zoom: 10,
+                            mapTypeId: 'roadmap'
+                        });
+                        {% set break = true %}
+                    {% endif %}
+                {% endfor %}
+
+                {% for store_point in store_points.points %}
+                    {% if store_point.coordinate_x and store_point.coordinate_y %}
+                        new google.maps.Marker({
+                            position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
+                            map: map,
+                            title: '{{ store_point.name }}'
+                        });
+                    {% endif %}
+                {% endfor %}
+            }
+        };
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
 {% endif %}

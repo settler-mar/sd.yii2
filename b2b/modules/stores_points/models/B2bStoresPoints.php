@@ -5,7 +5,7 @@ namespace b2b\modules\stores_points\models;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
-//use frontend\modules\cache\models\Cache;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "b2b_stores_points".
@@ -95,14 +95,14 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         $this->work_time_details = json_decode($this->work_time_json, true);
     }
 
-//    public function afterSave($insert, $changedAttributes)
-//    {
-//        Cache::deleteName('store_store_points_' . $this->store_id);
-//    }
-//    public function afterDelete()
-//    {
-//        Cache::deleteName('store_store_points_' . $this->store_id);
-//    }
+    public function afterSave($insert, $changedAttributes)
+    {
+        Cache::deleteName('store_store_points_' . $this->store_id);
+    }
+    public function afterDelete()
+    {
+        Cache::deleteName('store_store_points_' . $this->store_id);
+    }
 
     public function beforeValidate()
     {
@@ -149,25 +149,27 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     
     public static function byStoreId($storeId)
     {
-//        $cache = Yii::$app->cache;
-//        $data = $cache->getOrSet('store_store_points_' . $storeId, function () use ($storeId) {
-//            return self::find()->where(['store_id' => $storeId])->asArray()->all();
-//        });
-        $query = self::find()->where(['store_id' => $storeId]);
-        $count = $query->count();
-        if ($count === 0) {
-            return null;
-        } elseif ($count == 1) {
-            return [
-                'count' => $count,
-                'data' => $query->asArray()->one(),
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('store_store_points_' . $storeId, function () use ($storeId) {
+            $points =  self::find()
+                ->where(['store_id' => $storeId])
+                ->orderBy(['country' => 'ASC', 'city' => 'ASC'])
+                //->asArray()
+                ->all();
+            $groups = [];
+            foreach ($points as $point) {
+                $groups[$point['country']]['cities'][$point['city']][] = $point;
+                $groups[$point['country']]['count'] = $groups[$point['country']]['count'] ?
+                  $groups[$point['country']]['count'] + 1 : 1;
+            }
+            $result = [
+              'points' => $points,
+              'groups' => $groups,
             ];
-        } else {
-            return [
-                'count' => $count,
-                'data' => $query->orderBy(['country' => 'DESC', 'city' => 'DESC'])->asArray()->all(),
-            ];
-        }
+            //ddd($result);
+            return $result;
+        });
+        return $data;
     }
 
 }

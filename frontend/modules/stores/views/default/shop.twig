@@ -366,6 +366,41 @@
         </div>
     </div>
 </section>
+{% else %}
+    <section class="store-intro intro section-padding" id="howgetcashback">
+        <div class="container">
+            <div class="row">
+                <h3>Как получить кэшбэк?</h3>
+                <div class="col-md-4 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe00c;" class="icon"></span>
+                    </div>
+                    <div class="intro-content">
+                        <h5>ВЫБИРАЕТЕ МАГАЗИН</h5>
+                        <p>Приходите в нужный магазин/ресторан и пр. <a href="/stores/offline">из нашего списка</a>, выбираете товар.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe027;" class="icon"></span>
+                    </div>
+                    <div class="intro-content">
+                        <h5>ПРЕДЪЯВЛЯЕТЕ СКИДКУ</h5>
+                        <p>Перед оплатой товара говорите кассиру/менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой личный штрихкод.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe016;" class="icon"></span>
+                    </div>
+                    <div class="intro-content last">
+                        <h5>ДОЖИДАЕТЕСЬ ПОДТВЕРЖДЕНИЯ ПОКУПКИ</h5>
+                        <p>В течение нескольких минут на ваш телефон придет SMS или push-сообщение, что ваша покупка зафиксирована. Вскоре после этого кэшбэк отобразится в вашем Личном кабинете в SecretDiscounter.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endif %}
 
 <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
