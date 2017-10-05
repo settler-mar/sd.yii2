@@ -2988,6 +2988,32 @@ div .popup {
   }
 }
 
+.store-points {
+  &__table {
+    text-align: center;
+    width: 90%;
+    margin: 0 5% 20px 5%;
+    td {
+      border: 1px solid #D6DBDE;
+      padding: 5px;
+      vertical-align: top;
+    }
+  }
+  &__store_time {
+    span {
+      color: red;
+    }
+    li {
+      list-style-type: none;
+    }
+  }
+  &__map {
+    width: 90%;
+    margin: 0 5% 20px 5%;
+    height: 600px;
+  }
+}
+
 
 
 @import  "../external/queries";
