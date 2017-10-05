@@ -210,7 +210,6 @@
                searchBox.setBounds(map.getBounds());
            });
 
-           //var markers = [];
            {% if model.coordinate_x and model.coordinate_y %}
                var marker = new google.maps.Marker({
                    position : map.center,
@@ -219,7 +218,7 @@
                    draggable:true
                });
                google.maps.event.addListener(marker, "dragend", function(event) {
-                   googleMap.placeLocation(marker.position.lng(), marker.position.lat());
+                   googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
                });
                this.markers.push(marker);
            {% endif %}
@@ -255,13 +254,18 @@
                    };
 
                    // Create a marker for each place.
-                   googleMap.markers.push(new google.maps.Marker({
+                   var marker = new google.maps.Marker({
                        map: map,
                        icon: icon,
                        title: place.name,
-                       position: place.geometry.location
-                   }));
-                   //console.log(place.geometry.location);
+                       position: place.geometry.location,
+                       draggable:true
+                   });
+                   google.maps.event.addListener(marker, "dragend", function(event) {
+                       console.log(marker);
+                       googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
+                   });
+                   googleMap.markers.push(marker);
 
                    if (place.geometry.viewport) {
                        // Only geocodes have viewport.
@@ -290,9 +294,6 @@
                    if (data.status == 'OK' && data.results.length > 0) {
                        var place = data.results[0];
 
-                       //данные адреса на форму
-                       googleMap.placeAddress(place);
-
                        var bound = new google.maps.LatLngBounds();
                        if (!place.geometry) {
                           console.log("Returned place contains no geometry");
@@ -303,44 +304,56 @@
                            marker.setMap(null);
                        });
                        googleMap.markers = [];
+                       console.log(place);
                        var marker = new google.maps.Marker({
                            map: googleMap.gMap,
                           // icon: icon,
-                           title: place.name,
+                           title: place.formatted_address,
                            position: place.geometry.location,
                            draggable:true
                        });
 
                        google.maps.event.addListener(marker, "dragend", function(event) {
-                           googleMap.placeLocation(marker.position.lng(), marker.position.lat());
+                           googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
                        });
                        googleMap.markers.push(marker);
 
                        bound.extend(place.geometry.location);
                        //данные места - на форму
-                       googleMap.placeLocation(place.geometry.location.lng, place.geometry.location.lat);
+                       googleMap.placeLocation(place.geometry.location.lng, place.geometry.location.lat, false);
+                       //данные адреса на форму
+                       googleMap.placeAddress(place);
                        googleMap.gMap.fitBounds(bound);
                    }
                }
            })
        },
-       placeLocation: function(lng, lat) {
+       placeLocation: function(lng, lat, findLocation) {
            var inputX = document.getElementById('b2bstorespoints-coordinate_x'),
                inputY = document.getElementById('b2bstorespoints-coordinate_y');
            inputX.value = lng;
            inputY.value = lat;
+           if (findLocation) {
+               //если задано, то поиск адреса для места
+               geocoder = new google.maps.Geocoder;
+               geocoder.geocode({'location': {lat: lat, lng: lng}}, function (results, status) {
+                   if (status === 'OK' && results[0]) {
+                       googleMap.placeAddress(results[0]);
+                   }
+               });
+           }
        },
        placeAddress: function(place) {
            if (!place) {
                return;
            }
-           var inputAddress = document.getElementById('b2bstorespoints-address'),
+           var //inputAddress = document.getElementById('b2bstorespoints-address'),
                inputCountry = document.getElementById('b2bstorespoints-country'),
                inputCity = document.getElementById('b2bstorespoints-city');
-           inputAddress.value = place.formatted_address;
+           //inputAddress.value = place.formatted_address;
            var adressItem = this.getAddressComponent(place.address_components, 'country');
            inputCountry.value = adressItem ? adressItem : inputCountry.value;
-           adressItem = this.getAddressComponent(place.address_components, 'administrative_area_level_2');
+           adressItem = this.getAddressComponent(place.address_components, 'locality');
            inputCity.value = adressItem ? adressItem : inputCity.value;
        },
        getAddressComponent(addressComponents, type) {
