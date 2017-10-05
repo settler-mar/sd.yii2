@@ -342,6 +342,9 @@ $functionsList=[
     }
     return '<script type="text/javascript">' . "\n" . $js . '</script>';
   },
+  'getShop'=>function ($id) {
+    return \frontend\modules\stores\models\Stores::findOne(['uid'=>$id]);
+  },
 
 ];
 
