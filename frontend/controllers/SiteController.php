@@ -268,7 +268,7 @@ class SiteController extends SdController
     }
 
     if($store->is_active==0){
-      return $this->redirect('/stores/'.$store->route);
+      return $this->redirect('/store/'.$store->routeUrl);
     }
 
     if($data['link']=='') {

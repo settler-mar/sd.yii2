@@ -11,7 +11,7 @@ function init_file_prev(obj){
       var tpl = prew_blk.find('.img_blk.tpl');
       var save_url=$this.data('url');
       for(var i=0;i<input.files.length;i++){
-        add_photo(input.files[0],prew_blk,tpl.clone().removeClass('tpl'),save_url)
+        add_photo(input.files[i],prew_blk,tpl.clone().removeClass('tpl'),save_url,i)
       }
     }else{
       file_name = $this.val();
@@ -31,7 +31,7 @@ function init_file_prev(obj){
     $(this).hide();
   });
 
-  function add_photo(file,prew_blk,tpl,save_url) {
+  function add_photo(file,prew_blk,tpl,save_url,index) {
     baze_img=tpl.find('.img');
     file_name = file.name;
 
@@ -42,11 +42,12 @@ function init_file_prev(obj){
     baze_img
       .addClass('loading');
 
-    reader.onload = (function(aImg,file) {
+    reader.onload = (function(aImg,file,index) {
       return function(e) {
         var $data = new FormData();
         $data.append('title', file.name);
         $data.append('file', file);
+        $data.append('index', index);
 
         $.ajax({
           type: 'POST',
@@ -74,7 +75,7 @@ function init_file_prev(obj){
         img.src = e.target.result;
         aImg.append(img);
       };
-    })(baze_img,file);
+    })(baze_img,file,index);
 
     reader.readAsDataURL(file);
     prew_blk.append(tpl);

@@ -1,0 +1,20 @@
+{{ use({'Fotorama':'kotchuprik/fotorama/Widget'}) }}
+<section>
+    <div class="container">
+        {% set gel=fotorama_begin({
+            'version' : '4.5.2',
+            'options' : {
+                'nav' : 'thumbs',
+                'allowfullscreen':'true',
+                'width':'100%',
+                'height':'70%',
+
+            },
+        }) %}
+            {% for photo in photos %}
+                <img src="{{ photo }}" data-fit="contain">
+            {% endfor %}
+
+        {% do gel.end() %}
+    </div>
+</section>

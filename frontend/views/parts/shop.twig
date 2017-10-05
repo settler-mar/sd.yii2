@@ -3,18 +3,18 @@
         <span class="promo-label x2"></span>
     {% endif %}
     <div class="logo">
-        <a href="/stores/{{store.route}}"><img src="images/logos/{{store.logo}}" alt="{{store.name}}"></a>
+        <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"><img src="images/logos/{{store.logo}}" alt="{{store.name}}"></a>
     </div>
-  <div class="shop__header"><a href="/stores/{{store.route}}" {% if store.name|length> 35 %} class="small-size" {% endif
+  <div class="shop__header"><a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}" {% if store.name|length> 35 %} class="small-size" {% endif
     %}>{{store.name}}</a></div>
     <div class="shop-bottom">
-        <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.route}}">
+        <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.routeUrl}}">
 
             Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
 
         </a>
         {% if store.action_id != 0 %}
-        <a class="cashback-link" href="/stores/{{store.route}}">
+        <a class="cashback-link" href="/stores/{{store.routeUrl}}">
 
             Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}</b>
 

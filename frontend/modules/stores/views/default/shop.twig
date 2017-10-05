@@ -2,7 +2,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <div class="shop-name {% if current_store.name|length < 14 %} big {% endif %}">{{current_store.name}}</div>
+                <div class="shop-name {% if current_store.name|length < 14 %} big {% endif %}">
+                    {{ _if(current_store.is_offline,'Оффлайн:') }}
+                    {{current_store.name}}
+                </div>
                 <div class="hold-name">
                     Кэшбэк станет активным для вывода через
                     <span>{{current_store.hold_time}} дней
@@ -55,18 +58,20 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="goto" id="goto">
-                    {% if user_id %}
-                        {% if current_store.is_active == 1 %}
-                            <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                {% if current_store.is_offline==0 %}
+                    <div class="goto" id="goto">
+                        {% if user_id %}
+                            {% if current_store.is_active == 1 %}
+                                <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
+                            {% else %}
+                                 <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
+                            {% endif %}
                         {% else %}
-                             <a href="#shop_not_active" ref="popup" class="btn btn-fill btn-large fancybox">Перейти к покупкам</a>
+                            <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
                         {% endif %}
-                    {% else %}
-                        <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
-                    {% endif %}
-                    <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
-                </div>
+                        <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <div class="cashback {% if current_store.action_id != 0 %}old{% endif %}">
@@ -113,6 +118,23 @@
       </div>
   </div>
 </div>
+
+{% if current_store.related %}
+<section style="margin-bottom: 20px;">
+    <div class="container">
+        <div class="row" style="text-align: center;">
+            <a class="btn" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
+                Этот магазин также торгует в Интернете
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% set photos = current_store.photoList %}
+{% if photos | length %}
+    {% include 'parts/photos.twig' %}
+{% endif %}
 
 {% if current_store.short_description or content %}
 <section class="store-information short-description">
@@ -171,7 +193,9 @@
 </section>
 {% endif %}
 
-{% include 'parts/calc_cashback.twig' %}
+{% if current_store.is_offline==0 %}
+    {% include 'parts/calc_cashback.twig' %}
+{% endif %}
 
 {% include 'parts/store_points.twig' %}
 
@@ -210,7 +234,7 @@
                     <p class="text-center">{{current_store.name}} отсутствуют.</p>
                         {% if coupons_counts.expired > 0 %}
                             <div class="col-xs-12 store-coupons__buttons">
-                                <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
+                                <a class="btn" target="_blank" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -265,7 +289,7 @@
             <div class="col-md-12">
                 {% if additional_stores_category %}
                     <h3>Популярные магазины из раздела
-                        <a href="/stores/category:{{additional_stores_category.uid}}">
+                        <a href="/stores/category/{{additional_stores_category.route}}">
                             {{ additional_stores_category.name }} с кэшбэком
                         </a>
                     </h3>
@@ -300,6 +324,8 @@
     </div>
 </section>
 {% endif %}
+
+{% if current_store.is_offline==0 %}
 <section class="store-intro intro section-padding" id="howgetcashback">
     <div class="container">
         <div class="row">
@@ -340,6 +366,8 @@
         </div>
     </div>
 </section>
+{% endif %}
+
 <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
 {% include 'parts/popups/popup-givefeedback.twig' %}
 
@@ -349,4 +377,5 @@
     {{ _constant('shop_not_active_message')|raw}}
 </div>
 {% endif %}
+
 {% include 'parts/store_rating_microdata.twig' %}

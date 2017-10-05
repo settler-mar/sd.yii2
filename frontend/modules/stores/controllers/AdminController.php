@@ -74,9 +74,9 @@ class AdminController extends Controller
         },
         'route' => function ($model, $key, $index, $column) {
           $out = '<a href="/stores/';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
           $out .= '" target=_blank>';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
           $out .= '</a>';
           return $out;
         },
@@ -150,7 +150,7 @@ class AdminController extends Controller
         return json_encode($result);
       }
 
-      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'));
+      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'),Yii::$app->request->post('index'));
       return json_encode($result);
     } else {
       throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
@@ -163,7 +163,7 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    //ddd(Yii::$app->request->post());
+
     $model = $this->findModel($id);
     if (isset(Yii::$app->request->post()['category_id'])) {
       StoresToCategories::deleteAll(['store_id' => $model->uid]);
@@ -176,41 +176,40 @@ class AdminController extends Controller
       Yii::$app->session->addFlash('info', 'Категории магазина обновлены');
       return $this->redirect(['update', 'id' => $model->uid]);
     }
-    if ($model->load(Yii::$app->request->post())) {   // data from request
-      $model->save();
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {   // data from request
       Yii::$app->session->addFlash('info', 'Магазин обновлен');
       return $this->redirect(['update', 'id' => $model->uid]);
-    } else {
-      $cpa_list = Cpa::find()->all();
-      $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
-      $models = StoresToCategories::find()->asArray()->select('category_id')->where(['store_id' => $model->uid])->all();
-      $categories = [];
-      foreach ($models as $storeCategory) {
-        $categories[] = $storeCategory['category_id'];
-      }
-      $tariffs = CpaLink::find()->where(['stores_id' => $model->uid])->with([
-        'cpa',
-        'storeActions.tariffs.rates'])
-        ->all();
-
-      if ($model->related > 0) {
-        $related = Stores::findOne(['uid' => $model->related]);
-      } else {
-        $related = false;
-      }
-      //ddd($categories[0]);
-      return $this->render('update', [
-        'store' => $model,
-        'model' => $model,
-        'related' => $related,
-        'cpa_list' => $cpa_list,
-        'categories' => $all_categories,
-        'store_categories' => $categories,
-        'tariffs' => $tariffs,
-        "action_types" => Yii::$app->params['dictionary']['action_type'],
-        //'FileInput' => FileInput::className(),
-      ]);
     }
+    $cpa_list = Cpa::find()->all();
+    $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
+    $models = StoresToCategories::find()->asArray()->select('category_id')->where(['store_id' => $model->uid])->all();
+    $categories = [];
+    foreach ($models as $storeCategory) {
+      $categories[] = $storeCategory['category_id'];
+    }
+    $tariffs = CpaLink::find()->where(['stores_id' => $model->uid])->with([
+      'cpa',
+      'storeActions.tariffs.rates'])
+      ->all();
+
+    if ($model->related > 0) {
+      $related = Stores::findOne(['uid' => $model->related]);
+    } else {
+      $related = false;
+    }
+    //ddd($categories[0]);
+    return $this->render('update', [
+      'store' => $model,
+      'model' => $model,
+      'related' => $related,
+      'cpa_list' => $cpa_list,
+      'categories' => $all_categories,
+      'store_categories' => $categories,
+      'tariffs' => $tariffs,
+      "action_types" => Yii::$app->params['dictionary']['action_type'],
+      //'FileInput' => FileInput::className(),
+    ]);
   }
 
   public function actionImportCat($id)

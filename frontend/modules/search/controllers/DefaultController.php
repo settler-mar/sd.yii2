@@ -32,7 +32,7 @@ class DefaultController extends SdController
         'added'=> 'DESC',
         'visit'=>'DESC',
       ])
-      ->asArray()
+      //->asArray()
       ->all();
 
     if (Yii::$app->request->isAjax) {
@@ -40,7 +40,13 @@ class DefaultController extends SdController
       $out["suggestions"] = [];
       $out["query"] = $query;
       foreach ($stores as $k => $v) {
-        $out["suggestions"][] = ["value" => $v["name"], "data" => $v];
+        $out["suggestions"][] = [
+          "value" => $v->name,
+          "data" => [
+            'name' => $v->name,
+            'route' => $v->routeUrl
+          ]
+        ];
       }
       echo json_encode($out);
       exit;

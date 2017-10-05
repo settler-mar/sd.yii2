@@ -25,7 +25,7 @@
                                     <p><span>UID:</span> {{store.uid}}</p>
                                     <p><span>Добавлен:</span> {{store.added}}</p>
                                     <p><span>Посещений:</span> {{store.visit}}</p>
-                                    <p><span>Картчка магазина:</span> <a href="/stores/{{store.route}}" target="_blank">перейти</a></p>
+                                    <p><span>Картчка магазина:</span> <a href="/stores/{{store.routeUrl}}" target="_blank">перейти</a></p>
                                     <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>

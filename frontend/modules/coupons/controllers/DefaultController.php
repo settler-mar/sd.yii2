@@ -129,7 +129,7 @@ class DefaultController extends SdController
       $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::find()
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->from(Coupons::tableName() . ' cwc')
@@ -142,7 +142,7 @@ class DefaultController extends SdController
       $contentData["counts"] = Coupons::counts();
       \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::find()
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->from(Coupons::tableName() . ' cwc')

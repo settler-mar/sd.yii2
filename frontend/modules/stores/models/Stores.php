@@ -82,7 +82,7 @@ class Stores extends \yii\db\ActiveRecord
       [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
-      [['route'], 'unique'],
+      [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
       [['related'], 'compare', 'compareAttribute' => 'uid', 'operator' => '!='],
@@ -135,10 +135,6 @@ class Stores extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
-    if (!parent::beforeValidate()) {
-      return false;
-    }
-
     if ($this->isNewRecord) {
       $this->added = date('Y-m-d H:i:s');
     }
@@ -147,7 +143,7 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    return true;
+    return parent::beforeValidate();
   }
 
   /**
@@ -158,6 +154,10 @@ class Stores extends \yii\db\ActiveRecord
   {
     return $this->hasMany(CategoriesStores::className(), ['uid' => 'category_id'])
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
+  }
+
+  public function getRelatedData(){
+    return $this->hasOne(Stores::className(),['uid'=>'related']);
   }
 
   public function getCategory_cnt(){
@@ -218,19 +218,31 @@ class Stores extends \yii\db\ActiveRecord
     return $data;
   }
 
+  public function getRouteUrl(){
+    $url=$this->route;
+    if($this->is_offline==1){
+      $url.='-offline';
+    }
+    return $url;
+  }
   /**
    * @param $route
    * @return mixed
    */
   public static function byRoute($route)
   {
+    $where = array();
+    if(strpos($route,'-offline')){
+      $where['is_offline']=1;
+      $where['route']=str_replace('-offline','',$route);
+    }else{
+      $where['is_offline']=0;
+      $where['route']=$route;
+    }
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($route) {
+    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
       return self::find()
-        ->where([
-          'route' => $route,
-          //'is_active' => [0, 1]
-        ])
+        ->where($where)
         ->one();
     });
     return $data;
@@ -387,10 +399,11 @@ class Stores extends \yii\db\ActiveRecord
     return true;
   }
 
-  public function addPhoto($photo){
+  public function addPhoto($photo,$index=0){
     if ($photo) {
+      $index=($index==0?'':'-'.$index);
       $path = $this->getStorePhotoPath();// Путь для сохранения
-      $name = time(); // Название файла
+      $name = time().$index; // Название файла
       $exch = explode('.', $photo->name);
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
