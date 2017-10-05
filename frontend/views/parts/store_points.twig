@@ -1,4 +1,4 @@
-{% if store_points %}
+{% if current_store.is_offline != 0 and store_points %}
 <section class="store-points">
     <div class="container">
         <div class="row">
