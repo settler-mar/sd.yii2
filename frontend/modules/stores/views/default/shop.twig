@@ -193,11 +193,12 @@
 </section>
 {% endif %}
 
-{% if current_store.is_offline==0 %}
-    {% include 'parts/calc_cashback.twig' %}
-{% endif %}
 
-{% include 'parts/store_points.twig' %}
+{% include 'parts/calc_cashback.twig' %}
+
+{% if current_store.is_offline==1 %}
+    {% include 'parts/store_points.twig' %}
+{% endif %}
 
 <section class="store-2line">
     <div class="container">
@@ -306,7 +307,9 @@
     </div>
 </section>
 
-{% include 'parts/tracker.twig' %}
+{% if current_store.is_offline==0 %}
+    {% include 'parts/tracker.twig' %}
+{% endif %}
 
 {% if current_store.description %}
 <section class="store-information">
