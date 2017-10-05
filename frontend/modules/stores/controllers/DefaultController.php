@@ -11,6 +11,8 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
+use b2b\modules\stores_points\models\B2bStoresPoints;
+
 class DefaultController extends SdController
 {
 
@@ -114,7 +116,7 @@ class DefaultController extends SdController
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
         'label' => $categoryStore['name'],
-        'url' => $categoryStore->route,
+        'url' => '/stores/' . $categoryStore->route,
       ];
 
       $dataBaseData = Stores::find()
@@ -237,7 +239,10 @@ class DefaultController extends SdController
     $contentData["additional_stores"] = $additionalStores['additional_stores'];
     $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
 
+    $contentData['store_points'] = B2bStoresPoints::byStoreId($store->uid);
+
     $contentData["curs"] = Yii::$app->conversion->options();
+
     return $this->render('shop', $contentData);
   }
 

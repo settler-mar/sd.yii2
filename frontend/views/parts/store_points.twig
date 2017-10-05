@@ -1,0 +1,17 @@
+{% if store_points %}
+<section class="store-points">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 store-not-active__content">
+                {% if store_point.count == 1 %}
+                    {{ store_point.data.name }}
+                {% else %}
+                    {% for store_point in store_points.data %}
+                        {{ store_point.name }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
