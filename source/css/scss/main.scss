@@ -351,6 +351,9 @@ $images: "/images";
     height: 250px;
     padding-bottom: 30px;
     border-bottom: 1px solid #EEE;
+    @media all and (max-width:991px) {
+      height: 290px;
+    }
 
     &.modal-popup {
       border: none;
@@ -392,6 +395,8 @@ $images: "/images";
     }
 
     .text {
+      position: initial;
+
       .title {
         @include emptyBottom();
         font-size: 15px;
@@ -419,6 +424,13 @@ $images: "/images";
         }
       }
 
+      .current-comment__more{
+        position: absolute;
+        bottom: 1px;
+        background: #ffffff;
+        width: 100%;
+        text-align: left;
+      }
     }
   }
 }
