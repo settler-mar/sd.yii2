@@ -87,6 +87,7 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
+    $offline = $request->get('offline');
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'name', 'added',
@@ -102,6 +103,10 @@ class DefaultController extends SdController
     $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
 
     $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
+    if ($offline) {
+      $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
+    }
+
     $storesData = [];
     if ($categoryStore) {
       \Yii::$app->params['url_mask'] = 'stores/category/'.$categoryStore->route;
@@ -156,6 +161,10 @@ class DefaultController extends SdController
     if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
       $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
     }
+    if ($offline) {
+      $cacheName .= '_offline';
+      $dataBaseData->andWhere(['is_offline' => 1]);
+    }
 
     $pagination = new Pagination(
       $dataBaseData,
@@ -175,6 +184,7 @@ class DefaultController extends SdController
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Stores::$defaultSort == $sort ? null : $sort,
       'page' => $page,
+      'offline' => $offline ? 1 : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'stores';
