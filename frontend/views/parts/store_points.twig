@@ -17,40 +17,53 @@
                 {% elseif store_points.countries|length == 1   %}
                     {#несколько точек в одной стpане #}
                     <h4>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}</h4>
-                    <div class="store-points__point-selects">
+                    <div class="col-sm-12 store-points__point-selects">
                         <select hidden name="store_point_country" id="store_point_country">
                             <option value=""></option>
                             <option value="{{ store_points.points[0].country}}" selected>{{ store_points.points[0].country }}</option>
                         </select>
-                        <label for="store_point_city">Выберите город</label>
-                        <select name="store_point_city" id="store_point_city">
-                            <option value=""></option>
-                            {% for city in store_points.cities %}
-                                <option value="{{ city }}">{{ city }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="col-sm-3">
+                            <label for="store_point_city">Выберите город</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select  class="form-control"  name="store_point_city" id="store_point_city">
+                                <option value=""></option>
+                                {% for city in store_points.cities %}
+                                    <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
+
                     {% set no_country = 1 %}
                     {% set no_visible = 1 %}
 
                     {% else %}
                     {#точки в разных странах#}
                     <h4>Сеть магазинов {{ current_store.name }}</h4>
-                    <div class="store-points__point-selects">
-                        <label for="store_point_country">Выберите страну</label>
-                        <select name="store_point_country" id="store_point_country">
-                            <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
-                            {% for country, country_arr in store_points.countries %}
-                                <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
-                            {% endfor %}
-                        </select>
-                        <label for="store_point_">Выберите город</label>
-                        <select name="store_point_city" id="store_point_city">
-                            <option value=""></option>
-                            {% for city in store_points.cities %}
-                                <option value="{{ city }}">{{ city }}</option>
-                            {% endfor %}
-                        </select>
+                    <div class="col-sm-12 store-points__point-selects">
+                        <div class="col-sm-3">
+                            <label for="store_point_country">Выберите страну</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control" name="store_point_country" id="store_point_country">
+                                <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
+                                {% for country, country_arr in store_points.countries %}
+                                    <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="store_point_">Выберите город</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select  class="form-control"  name="store_point_city" id="store_point_city">
+                                <option value=""></option>
+                                {% for city in store_points.cities %}
+                                    <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
 
                     {% set no_visible = 1 %}
@@ -72,7 +85,7 @@
                             </div>
                         {% endif %}
                         <div class="store-points__point_name " >
-                            {{ store_point.address }}
+                            Адрес: {{ store_point.address }}
                         </div>
                         <div class="store-points__point_work-time " >
                             {% set work_times = store_point.work_time_details %}

@@ -2677,6 +2677,16 @@ div .popup {
   &__info {
     width: 90%;
     margin: 0 5% 20px 5%;
+    text-align: center;
+  }
+  &__point-selects {
+    margin-bottom: 20px;
+  }
+  &__point {
+    border-bottom: 1px solid #D6DBDE;
+    padding-bottom: 10px;
+    width: 60%;
+    margin: 10px auto 10px;
   }
   &__store_time {
     span {
@@ -2692,6 +2702,8 @@ div .popup {
     height: 600px;
   }
 }
+
+
 
 .btn-relink{
   background: #0f181a;
