@@ -155,6 +155,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 ->where(['store_id' => $storeId])
                 ->orderBy(['country' => 'ASC', 'city' => 'ASC'])
                 ->all();
+
             $countries = [];
             $agregate = self::find()
               ->select([

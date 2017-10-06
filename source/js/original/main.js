@@ -465,7 +465,7 @@ $(function() {
                                 self.find(".fa").addClass("muted");
                             }
 
-                            self.find(".fa").removeClass("fa-spin").addClass("pulse2");
+                            self.find(".fa").removeClass("fa-spin");
                         },
                         success: function(response) {
                             var response = $.parseJSON(response);
@@ -485,7 +485,7 @@ $(function() {
                                     self.find(".fa").addClass("muted");
                                 }
 
-                                self.find(".fa").removeClass("fa-spin").addClass("pulse2");
+                                self.find(".fa").removeClass("fa-spin");
                             } else {
                                 notification.notifi({
                                     message:response.msg,
@@ -496,19 +496,19 @@ $(function() {
                                 if(type == "add") {
                                     self.attr({
                                         "data-state": "delete",
-                                        "data-original-title": "Удалить из избранного"
+                                        "data-original-title": "Удалить магазин из избранного"
                                     });
 
                                     // self.find(".fa").removeClass("fa-spin fa-star-o").addClass("pulse2 fa-star");
-                                    self.find(".fa").removeClass("fa-spin fa-heart-o").addClass("pulse2 fa-heart");
+                                    self.find(".fa").removeClass("fa-spin fa-heart-o").addClass("fa-heart");
                                 } else if(type == "delete") {
                                     self.attr({
                                         "data-state": "add",
-                                        "data-original-title" : "Добавить в избранное"
+                                        "data-original-title" : "Добавить магазин в избранное"
                                     });                   
 
                                     // self.find(".fa").removeClass("fa-spin fa-star").addClass("pulse2 fa-star-o muted");
-                                    self.find(".fa").removeClass("fa-spin fa-heart").addClass("pulse2 fa-heart-o muted");
+                                    self.find(".fa").removeClass("fa-spin fa-heart").addClass("fa-heart-o muted");
                                 }
                             }
                         }
@@ -579,8 +579,13 @@ $(window).load(function(){
         }
     });
     $('[data-toggle="tooltip"]').on('click',function (e) {
-        if($(this).closest('ul').hasClass('paginate')) {
+        $this=$(this)
+        if($this.closest('ul').hasClass('paginate')) {
             //для пагинации ссылка должна работать
+            return true;
+        }
+        if($this.hasClass('workHref')){
+            //Если ссылка помеченна как рабочая то нужно переходить
             return true;
         }
         e.preventDefault();

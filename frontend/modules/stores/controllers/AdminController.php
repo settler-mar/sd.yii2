@@ -80,6 +80,17 @@ class AdminController extends Controller
           $out .= '</a>';
           return $out;
         },
+        'url' =>  function ($model, $key, $index, $column) {
+          $out = '<a href="';
+          $out .= $model->url;
+          $out .= '" target=_blank>';
+          $out .= substr($model->url,0,40);
+          if(strlen($model->url)>40){
+            $out .= '...';
+          }
+          $out .= '</a>';
+          return $out;
+        },
       ]
     ]);
   }

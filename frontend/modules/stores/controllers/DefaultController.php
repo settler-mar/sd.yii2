@@ -121,7 +121,7 @@ class DefaultController extends SdController
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
         'label' => $categoryStore['name'],
-        'url' => $categoryStore->route,
+        'url' => '/stores/' . $categoryStore->route,
       ];
 
       $dataBaseData = Stores::find()
@@ -252,6 +252,7 @@ class DefaultController extends SdController
     $contentData['store_points'] = B2bStoresPoints::byStoreId($store->uid);
 
     $contentData["curs"] = Yii::$app->conversion->options();
+
     return $this->render('shop', $contentData);
   }
 

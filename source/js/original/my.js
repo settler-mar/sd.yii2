@@ -98,7 +98,10 @@ $(document).on('click',"a[href='#comment-popup']",function(e){
 $('.current-comment').each(function(index, element) {
   var text = $(element).find('.text');
   var comment = $(text).find('.comment');
-  if (comment[0].innerHTML.length > 210) {
+
+  var max_h=$(element).innerHeight()-text.position().top
+
+  if (text.outerHeight() > max_h) {
     var a = document.createElement('a'),
         p = document.createElement('p');
     a.className = 'current-comment__more';
