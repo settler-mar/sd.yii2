@@ -917,14 +917,14 @@ $images: "/images";
     margin-top: 20px;
     border-bottom: 1px solid;
     padding-bottom: 10px;
+    margin-top: 15px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     &.big {
       font-size: 35px;
-      margin-top: 15px;
-      height: 130px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
     .shop-name-offline{

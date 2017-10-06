@@ -58,8 +58,9 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                {% if current_store.is_offline==0 %}
-                    <div class="goto" id="goto">
+
+                <div class="goto" id="goto">
+                    {% if current_store.is_offline==0 %}
                         {% if user_id %}
                             {% if current_store.is_active == 1 %}
                                 <a href="/goto/store:{{current_store.uid}}" id="gotostore" target="_blank" rel="nofollow noopener" class="btn btn-fill btn-large">Перейти к покупкам</a>
@@ -69,9 +70,10 @@
                         {% else %}
                             <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
                         {% endif %}
-                        <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                    <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
+                </div>
+
             </div>
             <div class="col-md-4">
                 <div class="cashback {% if current_store.action_id != 0 %}old{% endif %}">
@@ -131,13 +133,6 @@
   </div>
 </div>
 
-
-
-{% set photos = current_store.photoList %}
-{% if photos | length %}
-    {% include 'parts/photos.twig' %}
-{% endif %}
-
 {% if current_store.short_description or content %}
 <section class="store-information short-description">
     <div class="container">
@@ -165,6 +160,12 @@
         </div>
     </div>
 </section>
+{% endif %}
+
+
+{% set photos = current_store.photoList %}
+{% if photos | length %}
+    {% include 'parts/photos.twig' %}
 {% endif %}
 
 {% if current_store.is_active==0 %}
@@ -410,7 +411,6 @@
 
 <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
 {% include 'parts/popups/popup-givefeedback.twig' %}
-
 
 {% if current_store.is_active==0 %}
 <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
