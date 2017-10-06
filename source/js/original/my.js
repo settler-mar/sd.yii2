@@ -131,13 +131,23 @@ $('body').on('change', '#store_point_city', function(e) {
   var country = $('option:selected', $('#store_point_country')).attr('value');
   console.log(country, city);
   if (country && city) {
-    var items = $('#store-points').find('.store-points__point');
+    //var items = $('#store-points').find('.store-points__point');
+    var points= $('#store-points'),
+        items = points.find('.store-points__points_row'),
+        head = points.find('.store-points__points_head'),
+        visible = false;
     $.each(items, function(index, div){
       if ($(div).data('city') == city && $(div).data('country') == country){
         $(div).show();
+        visible = true;
       } else {
         $(div).hide() ;
       }
     });
+    if (visible) {
+      $(head).show();
+    } else {
+      $(head).hide();
+    }
   }
 });
