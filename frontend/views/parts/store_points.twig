@@ -94,17 +94,20 @@
     <script>
         var googleMap = {
             initMap: function() {
-                //todo центровка и массштаб
-                {% for store_point in store_points.points %}
-                    {% if store_point.coordinate_x and store_point.coordinate_y  and not break %}
-                        var map = new google.maps.Map(document.getElementById('map'), {
-                            center: {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },//первая точка
+
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        {% if store_points.range.avg_x and store_points.range.avg_y %}
+                            center: {lat: {{store_points.range.avg_y }}, lng: {{ store_points.range.avg_x }} },//средняя между точками
+                        {% else %}
+                            center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                        {% endif %}
+                        {% if store_points.range.zoom %}
+                            zoom: {{ store_points.range.zoom }},
+                        {% else %}
                             zoom: 10,
-                            mapTypeId: 'roadmap'
-                        });
-                        {% set break = true %}
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                        mapTypeId: 'roadmap'
+                    });
 
                 {% for store_point in store_points.points %}
                     {% if store_point.coordinate_x and store_point.coordinate_y %}
