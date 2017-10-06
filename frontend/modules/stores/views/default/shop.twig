@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="shop-name {% if current_store.name|length < 14 %} big {% endif %}">
-                    {{ _if(current_store.is_offline,'Оффлайн:') }}
+                    {{ _if(current_store.is_offline,'<span class="shop-name-offline">Offline:</span>') | raw}}
                     {{current_store.name}}
                 </div>
                 <div class="hold-name">
@@ -112,24 +112,26 @@
             Кэшбэк с покупок на {{current_store.name}}
         {% endif %}
     </h1>
+      {% if current_store.related %}
+          <div class="row" style="text-align: center;">
+              <a class="btn btn-relink" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
+                  {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
+              </a>
+          </div>
+      {% endif %}
       <div class="store-recommendation-link">
-        <p><input id="store-recommendation-link-checkbox" class="checkbox-blue" type="checkbox" checked> <label class="checkbox-blue__label" for="store-recommendation-link-checkbox">Я ознакомлен и согласен с <a href="/recommendations">Правилами покупок с кэшбэком</a></label></p>
-
+        <p>
+            <input id="store-recommendation-link-checkbox" class="checkbox-blue" type="checkbox" checked>
+            <label class="checkbox-blue__label" for="store-recommendation-link-checkbox">
+                Я ознакомлен и согласен с <a href="/recommendations">Правилами покупок с кэшбэком
+                </a>
+            </label>
+        </p>
       </div>
   </div>
 </div>
 
-{% if current_store.related %}
-<section style="margin-bottom: 20px;">
-    <div class="container">
-        <div class="row" style="text-align: center;">
-            <a class="btn" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
-                Этот магазин также торгует в Интернете
-            </a>
-        </div>
-    </div>
-</section>
-{% endif %}
+
 
 {% set photos = current_store.photoList %}
 {% if photos | length %}
