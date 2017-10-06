@@ -21,6 +21,9 @@
             </div>
         </div>
 
+        {#{{ form.field(model, 'coordinate_x').textInput({'maxlength':true})|raw }}#}
+
+        {#{{ form.field(model, 'coordinate_y').textInput({'maxlength':true})|raw }}#}
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
 
         {{ form.field(model, 'coordinate_y').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
@@ -240,7 +243,7 @@
 
                // For each place, get the icon, name and location.
                var bounds = new google.maps.LatLngBounds();
-               places.forEach(function (place) {
+               places.forEach(function (place, index) {
                    if (!place.geometry) {
                        console.log("Returned place contains no geometry");
                        return;
@@ -262,7 +265,6 @@
                        draggable:true
                    });
                    google.maps.event.addListener(marker, "dragend", function(event) {
-                       console.log(marker);
                        googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
                    });
                    googleMap.markers.push(marker);
@@ -272,6 +274,11 @@
                        bounds.union(place.geometry.viewport);
                    } else {
                        bounds.extend(place.geometry.location);
+                   }
+                   if (index == 0) {
+                       //для первого результата
+                       //данные места и адреса - на форму
+                       googleMap.placeLocation(place.geometry.location.lng(), place.geometry.location.lat(), true);
                    }
                });
                map.fitBounds(bounds);
@@ -304,7 +311,6 @@
                            marker.setMap(null);
                        });
                        googleMap.markers = [];
-                       console.log(place);
                        var marker = new google.maps.Marker({
                            map: googleMap.gMap,
                           // icon: icon,

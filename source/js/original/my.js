@@ -111,3 +111,33 @@ $('.current-comment').each(function(index, element) {
     text.append(p);
   }
 });
+
+//для точек продаж, события на выбор селектов
+$('body').on('change', '#store_point_country', function(e) {
+  var data = $('option:selected', this).data('cities');
+  data = data.split(',');
+  if (data.length > 0) {
+    var select = document.getElementById('store_point_city');
+    var options = '<option value=""></option>';
+    data.forEach(function(item){
+      options += '<option value="'+item+'">'+item+'</option>';
+    });
+    select.innerHTML = options;
+  }
+});
+
+$('body').on('change', '#store_point_city', function(e) {
+  var city = $('option:selected', this).attr('value');
+  var country = $('option:selected', $('#store_point_country')).attr('value');
+  console.log(country, city);
+  if (country && city) {
+    var items = $('#store-points').find('.store-points__point');
+    $.each(items, function(index, div){
+      if ($(div).data('city') == city && $(div).data('country') == country){
+        $(div).show();
+      } else {
+        $(div).hide() ;
+      }
+    });
+  }
+});

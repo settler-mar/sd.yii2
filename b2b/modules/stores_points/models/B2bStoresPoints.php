@@ -154,19 +154,37 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             $points =  self::find()
                 ->where(['store_id' => $storeId])
                 ->orderBy(['country' => 'ASC', 'city' => 'ASC'])
-                //->asArray()
                 ->all();
-            $groups = [];
-            //ddd($points);
+
+            $countries = [];
+            $agregate = self::find()
+              ->select([
+                'max(coordinate_y) as max_y',
+                'min(coordinate_y) as min_y',
+                'max(coordinate_x) as max_x',
+                'min(coordinate_x) as min_x',
+              ])
+              ->where(['store_id' => $storeId])
+              ->asArray()
+              ->one();
+            $cities = array_unique(array_column($points, 'city'));
             foreach ($points as $point) {
-                $groups[$point['country']]['cities'][$point['city']][] = $point;
-                $groups[$point['country']]['count'] =
-                  isset($groups[$point['country']]['count']) ?
-                  $groups[$point['country']]['count'] + 1 : 1;
+                if (!isset($countries[$point->country]) || !in_array($point->city, $countries[$point->country])) {
+                    $countries[$point->country][] = $point->city;
+                }
             }
+            $range = ($agregate['max_y']-$agregate['min_y'] > $agregate['max_x']-$agregate['min_x'] ?
+              $agregate['max_y']-$agregate['min_y'] : $agregate['max_x']-$agregate['min_x']);
+            $zoom = $range == 0 ? 10 : round(25/(log(100 * $range + 1)));
             $result = [
-              'points' => $points,
-              'groups' => $groups,
+                'points' => $points,
+                'countries' => $countries,
+                'cities' => $cities,
+                'range' => [
+                    'avg_x' => ($agregate['max_x'] + $agregate['min_x']) / 2,
+                    'avg_y' => ($agregate['max_y'] + $agregate['min_y']) / 2,
+                    'zoom' => $zoom,
+                ]
             ];
             //ddd($result);
             return $result;
