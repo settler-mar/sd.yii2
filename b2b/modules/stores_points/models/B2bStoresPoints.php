@@ -157,9 +157,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 //->asArray()
                 ->all();
             $groups = [];
+            //ddd($points);
             foreach ($points as $point) {
                 $groups[$point['country']]['cities'][$point['city']][] = $point;
-                $groups[$point['country']]['count'] = $groups[$point['country']]['count'] ?
+                $groups[$point['country']]['count'] =
+                  isset($groups[$point['country']]['count']) ?
                   $groups[$point['country']]['count'] + 1 : 1;
             }
             $result = [
