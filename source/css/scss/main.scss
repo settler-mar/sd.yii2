@@ -2674,15 +2674,9 @@ div .popup {
 }
 
 .store-points {
-  &__table {
-    text-align: center;
+  &__info {
     width: 90%;
     margin: 0 5% 20px 5%;
-    td {
-      border: 1px solid #D6DBDE;
-      padding: 5px;
-      vertical-align: top;
-    }
   }
   &__store_time {
     span {

@@ -2,17 +2,15 @@
 <section class="store-points">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 store-points__info">
 
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
                     {#одна точка#}
-                    <div class="store_points__points-1">
 
                 {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
                     {#несколько точек в одном городе #}
                     <h4>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h4>
-                    <div class="store-points__points" id="store-points">
                     {% set no_country = 1 %}
                     {% set no_city = 1 %}
 
@@ -32,7 +30,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="store-points__points" id="store-points">
                     {% set no_country = 1 %}
                     {% set no_visible = 1 %}
 
@@ -55,12 +52,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="store-points__points" id="store-points">
+
                     {% set no_visible = 1 %}
 
-                {#закончили условия для шапки#}
                 {% endif %}
-                {#вывод точек одни для всех условий    #}
+                {#вывод точек для всех условий #}
+                <div class="store-points__points{% if store_points.points|length == 1 %}-single{% endif %}" id="store-points">
                 {% for store_point in store_points.points %}
                     <div {% if no_visible == 1 %}hidden{% endif %} data-city="{{ store_point.city }}" data-country="{{ store_point.country }}" class="store-points__point">
                         <h5>{{ store_point.name }}</h5>
@@ -84,11 +81,12 @@
                         </div>
                     </div>
                 {% endfor %}
-                </div>{#закрывает <div class="store-points__points"> или   <div class="store-points__points-1">#}
+                </div>
 
+            </div>
 
+            <div id="map" class="store-points__map"></div>
         </div>
-        <div id="map" class="store-points__map"></div>
     </div>
 </section>
     <script>
