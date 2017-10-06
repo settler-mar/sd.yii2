@@ -253,7 +253,7 @@ class AdminController extends Controller
       $new_category->store_id = $id;
       $new_category->save();
     }
-    Yii::$app->session->addFlash('info', 'Категории магазина импортированны');
+    Yii::$app->session->addFlash('info', 'Категории магазина импортированы');
     return json_encode([
       'code' => 200
     ]);
