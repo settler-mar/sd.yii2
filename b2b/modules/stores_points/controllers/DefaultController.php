@@ -80,6 +80,10 @@ class DefaultController extends Controller
             return $this->redirect(['/home']);
         } else {
             $store = Stores::byRoute($route);
+            if (!$store) {
+                Yii::$app->session->addFlash('err', 'Неправильный магазин');
+                return $this->redirect(['/home']);
+            }
             $model->store_id = $store->uid;
             $model->store_name = $store->name;
             return $this->render('create.twig', [
