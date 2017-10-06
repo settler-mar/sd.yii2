@@ -156,15 +156,18 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 ->orderBy(['country' => 'ASC', 'city' => 'ASC'])
                 //->asArray()
                 ->all();
-            $groups = [];
+            $countries = [];
+            //$counries = array_unique(array_column($points, 'country'));
+            $cities = array_unique(array_column($points, 'city'));
             foreach ($points as $point) {
-                $groups[$point['country']]['cities'][$point['city']][] = $point;
-                $groups[$point['country']]['count'] = $groups[$point['country']]['count'] ?
-                  $groups[$point['country']]['count'] + 1 : 1;
+                if (!isset($countries[$point->country]) || !in_array($point->city, $countries[$point->country])) {
+                    $countries[$point->country][] = $point->city;
+                }
             }
             $result = [
-              'points' => $points,
-              'groups' => $groups,
+                'points' => $points,
+                'countries' => $countries,
+                'cities' => $cities,
             ];
             //ddd($result);
             return $result;
