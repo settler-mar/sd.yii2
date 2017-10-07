@@ -209,7 +209,10 @@ class DefaultController extends SdController
    */
   private function actionStore($store)
   {
-    if ($store->is_active < 0) {
+    if (
+      $store->is_active < 0 &&
+      (Yii::$app->user->isGuest ||!Yii::$app->user->can('ShopView'))
+    ) {
       $this->redirect('/stores', 301)->send();
       exit();
     }
