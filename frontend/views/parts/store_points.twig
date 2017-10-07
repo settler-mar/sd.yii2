@@ -7,12 +7,11 @@
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
                     {#одна точка#}
+                    <h4>Магазин {{ current_store.name }} в {{store_points.cities[0] }}</h4>
 
                 {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
                     {#несколько точек в одном городе #}
                     <h4>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h4>
-                    {% set no_country = 1 %}
-                    {% set no_city = 1 %}
 
                 {% elseif store_points.countries|length == 1   %}
                     {#несколько точек в одной стpане #}
@@ -34,9 +33,8 @@
                             </select>
                         </div>
                     </div>
-
-                    {% set no_country = 1 %}
                     {% set no_visible = 1 %}
+
 
                     {% else %}
                     {#точки в разных странах#}
@@ -71,29 +69,51 @@
                 {% endif %}
                 {#вывод точек для всех условий #}
                 <div class="store-points__points{% if store_points.points|length == 1 %}-single{% endif %}" id="store-points">
-                {% for store_point in store_points.points %}
-                    <div {% if no_visible == 1 %}hidden{% endif %} data-city="{{ store_point.city }}" data-country="{{ store_point.country }}" class="store-points__point">
-                        <h5>{{ store_point.name }}</h5>
-                        {% if no_country != 1 %}
-                            <div class="store-points__point_country" >
-                                Страна  {{ store_point.country }}
-                            </div>
-                        {% endif %}
-                        {% if no_city != 1 %}
-                            <div class="store-points__point_city " >
-                                Город  {{ store_point.city }}
-                            </div>
-                        {% endif %}
-                        <div class="store-points__point_name " >
-                            Адрес: {{ store_point.address }}
-                        </div>
-                        <div class="store-points__point_work-time " >
-                            {% set work_times = store_point.work_time_details %}
-                        Время работы
-                            {% include('parts/work_time.twig') %}
-                        </div>
-                    </div>
-                {% endfor %}
+                {#{% for store_point in store_points.points %}#}
+                    {#<div {% if no_visible == 1 %}hidden{% endif %} data-city="{{ store_point.city }}" data-country="{{ store_point.country }}" class="store-points__point">#}
+                        {#<h5>{{ store_point.name }}</h5>#}
+                        {#{% if no_country != 1 %}#}
+                            {#<div class="store-points__point_country" >#}
+                                {#Страна  {{ store_point.country }}#}
+                            {#</div>#}
+                        {#{% endif %}#}
+                        {#{% if no_city != 1 %}#}
+                            {#<div class="store-points__point_city " >#}
+                                {#Город  {{ store_point.city }}#}
+                            {#</div>#}
+                        {#{% endif %}#}
+                        {#<div class="store-points__point_name " >#}
+                            {#Адрес: {{ store_point.address }}#}
+                        {#</div>#}
+                        {#<div class="store-points__point_work-time " >#}
+                            {#{% set work_times = store_point.work_time_details %}#}
+                        {#Время работы#}
+                            {#{% include('parts/work_time.twig') %}#}
+                        {#</div>#}
+                    {#</div>#}
+                {#{% endfor %}#}
+                    <table class="store-points__points_table" >
+                        <thead >
+                            <tr {% if no_visible == 1 %}hidden{% endif %} class="store-points__points_head">
+                                <td>Название</td>
+                                <td>Адрес</td>
+                                <td>Время работы</td>
+                            </tr>
+                        </thead>
+                        {% for store_point in store_points.points %}
+                        <tr  {% if no_visible == 1 %}hidden{% endif %}
+                             data-city="{{ store_point.city }}"
+                             data-country="{{ store_point.country }}"
+                             class="store-points__points_row" >
+                            <th>{{ store_point.name }}</th>
+                            <th>{{ store_point.address }}</th>
+                            <th>
+                                {% set work_times = store_point.work_time_details %}
+                                {% include('parts/work_time.twig') %}
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
 
             </div>

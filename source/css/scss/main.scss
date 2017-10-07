@@ -2688,6 +2688,15 @@ div .popup {
     width: 60%;
     margin: 10px auto 10px;
   }
+  &__points_table {
+    width: 100%;
+    th,
+    td {
+      border: 1px solid #D6DBDE;
+      padding: 5px;
+      text-align: center;
+    }
+  }
   &__store_time {
     span {
       color: red;
