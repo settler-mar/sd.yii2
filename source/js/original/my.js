@@ -99,7 +99,8 @@ $('.current-comment').each(function(index, element) {
   var text = $(element).find('.text');
   var comment = $(text).find('.comment');
 
-  var max_h=$(element).innerHeight()-text.position().top
+  //var max_h=$(element).height()-text.position().top
+  var max_h=$(element).height()+$(element).offset().top-text.offset().top-6;
 
   if (text.outerHeight() > max_h) {
     var a = document.createElement('a'),
