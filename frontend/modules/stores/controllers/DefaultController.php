@@ -12,6 +12,7 @@ use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
 use b2b\modules\stores_points\models\B2bStoresPoints;
+use yii\db\Query;
 
 class DefaultController extends SdController
 {
@@ -106,6 +107,12 @@ class DefaultController extends SdController
     if ($offline) {
       $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
     }
+    //подзапрос
+    $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating'])
+      ->from(Stores::tableName(). ' cws2')
+      ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+      ->groupBy('cws2.uid')
+      ->where(['cwur.is_active' => 1]);
 
     $storesData = [];
     if ($categoryStore) {
@@ -133,25 +140,30 @@ class DefaultController extends SdController
           " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
           " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+          'store_rating.rating as  rating',
         ])
         ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
+        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
         ->where([
           'cstc.category_id' => $category,
-          'is_active' => [0, 1],
+          'cws.is_active' => [0, 1],
         ])
         ->orderBy($sort . ' ' . $order);
       $cacheName = 'catalog_stores_category' . '_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
     } else {
       //нет категории /stores
       $dataBaseData = Stores::find()
+        ->from(Stores::tableName() . ' cws')
         ->select([
-          '*',
+          'cws.*',
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
           " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
           " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+          'store_rating.rating as  rating',
         ])
-        ->where(['is_active' => [0, 1]])
+        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
+        ->where(['cws.is_active' => [0, 1]])
         ->orderBy($sort . ' ' . $order);
       $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
     }

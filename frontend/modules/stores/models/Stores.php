@@ -164,6 +164,11 @@ class Stores extends \yii\db\ActiveRecord
     return StoresToCategories::find()->where(['store_id'=>$this->uid])->count();
   }
 
+  public function getRating()
+  {
+    $rating = Reviews::storeRating($this->uid);
+    return $rating ? $rating['value_float'] : null;
+  }
   /**
    * coupons
    * @return $this
