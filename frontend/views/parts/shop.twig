@@ -34,6 +34,12 @@
                     <span class="fa fa-home"></span>
                 </a>
             {% endif %}
+            {% if store.rating %}
+                <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
+                   class="shop-link">
+                    <i class="fa fa-star" aria-hidden="true"></i> {{ _nf(store.rating, 1) }}
+                    </a>
+            {% endif %}
 
 
             {% if store.related %}
