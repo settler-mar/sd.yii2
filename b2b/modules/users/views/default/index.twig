@@ -60,6 +60,7 @@
                                         <th>Название</th>
                                         <th>Адрес</th>
                                         <th>Время работы</th>
+                                        <th>Телефон</th>
                                         <th>QR-код</th>
                                         <th></th>
                                     </tr>
@@ -70,6 +71,7 @@
                                             <th>{{ point.name }}</th>
                                             <th>{{ point.country }} {{ point.address }}</th>
                                             <th>{% include('parts/work_time.twig') %}</th>
+                                            <th>{{ point.phone }}</th>
                                             <th class="users-stores__stores-points_qrcode">
                                                 <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
                                             </th>

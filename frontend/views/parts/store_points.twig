@@ -77,6 +77,7 @@
                                 <td>Название</td>
                                 <td>Адрес</td>
                                 <td>Время работы</td>
+                                <td>Телефон</td>
                             </tr>
                         </thead>
                         {% for store_point in store_points.points %}
@@ -89,6 +90,9 @@
                             <th>
                                 {% set work_times = store_point.work_time_details %}
                                 {% include('parts/work_time.twig') %}
+                            </th>
+                            <th>
+                                {{ store_point.phone }}
                             </th>
                         </tr>
                         {% endfor %}
