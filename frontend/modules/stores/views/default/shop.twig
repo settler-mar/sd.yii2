@@ -192,12 +192,6 @@
     </section>
 {% endif %}
 
-{% set photos = current_store.photoList %}
-{% set videos = current_store.video %}
-{% if photos | length or  videos | length %}
-    {% include 'parts/photos.twig' %}
-{% endif %}
-
 {% if _is_empty(current_store.displayed_cashback) %}
 <section class="store-information store-not-active">
     <div class="container">
@@ -212,8 +206,13 @@
 </section>
 {% endif %}
 
-
 {% include 'parts/calc_cashback.twig' %}
+
+{% set photos = current_store.photoList %}
+{% set videos = current_store.video %}
+{% if photos | length or  videos | length %}
+    {% include 'parts/photos.twig' %}
+{% endif %}
 
 {% if current_store.is_offline==1 %}
     {% include 'parts/store_points.twig' %}
