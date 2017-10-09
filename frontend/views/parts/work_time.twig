@@ -4,9 +4,9 @@
         <li class="">
             {% if work_day.work_time_day_1  %}Пн {% endif %}{% if work_day.work_time_day_2 %}Вт {% endif %}{% if work_day.work_time_day_3 %}Ср {% endif %}{% if work_day.work_time_day_4 %}Чт {% endif %}{% if work_day.work_time_day_5 %}Пт {% endif %}{% if work_day.work_time_day_6 %}<span>Сб</span> {% endif %}{% if work_day.work_time_day_7 %}<span>Вс</span>{% endif %}
             {% if work_day.hour_24 %}
-                Круглосуточно
+               - Круглосуточно
             {% elseif  work_day.work_time_start and work_day.work_time_end %}
-                {{ work_day.work_time_start }}-{{ work_day.work_time_end }}
+               - {{ work_day.work_time_start }}-{{ work_day.work_time_end }}
             {% endif %}
             {% if work_day.work_time_lunch_start  and work_day.work_time_lunch_end %}
                (Перерыв {{ work_day.work_time_lunch_start }}-{{ work_day.work_time_lunch_end }})

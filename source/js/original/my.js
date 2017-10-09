@@ -131,10 +131,8 @@ $('body').on('change', '#store_point_city', function(e) {
   var city = $('option:selected', this).attr('value');
   var country = $('option:selected', $('#store_point_country')).attr('value');
   if (country && city) {
-    //var items = $('#store-points').find('.store-points__point');
     var points= $('#store-points'),
         items = points.find('.store-points__points_row'),
-        head = points.find('.store-points__points_head'),
         visible = false;
     googleMap.hideMarkers();
     googleMap.showMarker(country, city);
@@ -147,10 +145,11 @@ $('body').on('change', '#store_point_city', function(e) {
       }
     });
     if (visible) {
-      $(head).show();
+      $(points).removeClass('hidden');
       googleMap.showMap();
+
     } else {
-      $(head).hide();
+      $(points).addClass('hidden');
       googleMap.hideMap();
     }
   }
