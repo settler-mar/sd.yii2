@@ -188,6 +188,10 @@ a{
 //магазины юсера
 .users-stores {
   width: 100%;
+  th, tr {
+    padding: 5px;
+    text-align: center;
+  }
   &__stores-points {
     text-align:center;
     background-color:rgb(239, 239, 239);
@@ -205,8 +209,9 @@ a{
     }
     &_row {
       border-bottom: 1px solid $login_back_color;
-      th {
+      th, tr {
         padding: 5px;
+        text-align: center;
       }
     }
     &_work_time {

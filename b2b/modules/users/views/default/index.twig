@@ -47,8 +47,8 @@
             </tr>
                 {% if store.is_offline == 1 %}
                 <tr>
-                    <th colspan="2"></th>
-                    <th colspan="4" class="users-stores__stores-points">
+                    <th colspan="1"></th>
+                    <th colspan="5" class="users-stores__stores-points">
                         <h4 class="users-stores__stores-points_header">Точки продаж</h4>
                         <a class="users-stores__stores-points_add-point" href="/stores_points/create?route={{ store.route }}-offline">Добавить точку продаж</a>
 
@@ -68,7 +68,7 @@
                                         <tr class="users-stores__stores-points_row">
                                             <th>{{ key+1 }}.</th>
                                             <th>{{ point.name }}</th>
-                                            <th>{{ point.address }}</th>
+                                            <th>{{ point.country }} {{ point.address }}</th>
                                             <th>{% include('parts/work_time.twig') %}</th>
                                             <th class="users-stores__stores-points_qrcode">
                                                 <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">
