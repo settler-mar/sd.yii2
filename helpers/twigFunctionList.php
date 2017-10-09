@@ -291,6 +291,7 @@ $functionsList=[
   'test_image'=>function ($path) {
     if(strlen($path)<5) return false;
     if(strpos($path,'http')!==false) return true;
+    if(strpos($path,'//')!==false) return true;
 
 
     $path=str_replace('//','/',__DIR__.'/../frontend/web/'.$path);
