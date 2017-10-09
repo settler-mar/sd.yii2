@@ -76,16 +76,18 @@
 
             </div>
             <div class="col-md-4">
-                <div class="cashback {% if current_store.action_id != 0 %}old{% endif %}">
-                    Кэшбэк
-                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                <div class="cashback">
+                    <div class="{% if current_store.action_id != 0 %}old{% endif %}">
+                        Кэшбэк
+                        <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                    </div>
+                    {% if current_store.action_id != 0 %}
+                        <div class="promo">
+                            Кэшбэк
+                            <span>{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
+                        </div>
+                    {% endif %}
                 </div>
-                {% if current_store.action_id != 0 %}
-                <div class="cashback promo">
-                    Кэшбэк
-                    <span>{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
-                </div>
-                {% endif %}
                 {% if current_store.conditions != '' or current_store.is_active==0 %}
                 <div class="additional-information">
                     <span>Дополнительная информация:</span>
@@ -176,13 +178,6 @@
 </section>
 {% endif %}
 
-
-{% set photos = current_store.photoList %}
-{% set videos = current_store.video %}
-{% if photos | length or  videos | length %}
-    {% include 'parts/photos.twig' %}
-{% endif %}
-
 {% if current_store.is_active==0 %}
     <section class="store-information store-not-active">
         <div class="container">
@@ -195,6 +190,12 @@
             </div>
         </div>
     </section>
+{% endif %}
+
+{% set photos = current_store.photoList %}
+{% set videos = current_store.video %}
+{% if photos | length or  videos | length %}
+    {% include 'parts/photos.twig' %}
 {% endif %}
 
 {% if _is_empty(current_store.displayed_cashback) %}
@@ -399,7 +400,7 @@
                     </div>
                     <div class="intro-content">
                         <h5>ВЫБИРАЕТЕ МАГАЗИН</h5>
-                        <p>Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a href="/stores/offline">нашего каталога</a>, выбираете товар
+                        <p>Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a href="/stores/offline">нашего каталога</a>, выбираете товар.
                     </div>
                 </div>
                 <div class="col-md-4 intro-feature">

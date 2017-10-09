@@ -36,7 +36,10 @@
             {% endif %}
             {% if store.rating %}
                 <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
-                   class="shop-link">
+                   class="shop-link"
+                   data-toggle="tooltip" data-state="delete" data-placement="top"
+                   data-original-title="Рейтинг магазина на основании отзывов наших пользователей"
+                >
                     <i class="fa fa-star" aria-hidden="true"></i>
                     <span>
                         {{ _nf(store.rating, 1) }}

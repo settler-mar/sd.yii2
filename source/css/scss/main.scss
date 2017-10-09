@@ -937,7 +937,7 @@ $images: "/images";
     margin-top: 65px;
 
     a {
-      color: #FFC107;
+      color: #f44336;
       font-size: 15px;
     }
   }
@@ -985,7 +985,7 @@ $images: "/images";
       }
     }
 
-    &.old {
+    .old {
       font-size: 13px;
       border-bottom: 0px;
       text-decoration: line-through;
@@ -1001,7 +1001,7 @@ $images: "/images";
       }
     }
 
-    &.promo {
+    .promo {
       margin-top: 0px;
     }
   }

@@ -154,14 +154,14 @@ class TaskController extends Controller
    */
   public function actionResortReviews(){
     //1) проставляем новые даты отзывов и рейтинг
-    $start = mktime(0,0,0,4,1,2017);
+    $start = mktime(0,0,0,10,9,2017);
     $end = time();
     $range=$end-$start;
     $sql= 'UPDATE `cw_users_reviews` SET 
         `added` = FROM_UNIXTIME(RAND() * '.$range.'+'.$start.'),
         `rating` = 4.1+RAND()
         WHERE store_id>0'
-    //    .'AND added>'.date('Y-m-d H:i:s',$start)
+        .'AND added>'.date('Y-m-d H:i:s',$start)
     ;
     \Yii::$app->db->createCommand($sql)->execute();
 
