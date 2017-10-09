@@ -1,4 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
+
 {{ use('common/components/fileImageInput/FileInput') }}
 {% set title = 'Update Stores: ' ~ model.name %}
 {{ set(this, 'title', title) }}
@@ -58,6 +59,11 @@
                                 <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}
                             </p>
                             <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
+
+                            {{ form.field(model, 'video').widget(MultipleInput.className(), {
+                                'allowEmptyList':true,
+
+                            })|raw }}
                             <input type="hidden" name="type" value="update_main_information">
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
