@@ -46,6 +46,16 @@
                                 'category_cnt',
                                 {
                                     'format':'raw',
+                                    'attribute':'is_offline',
+                                    'filter':{
+                                        '':'Любой',
+                                        0:"Онлайн",
+                                        1:"Оффлайн",
+                                    },
+                                    'value' : table_value.is_offline
+                                },
+                                {
+                                    'format':'raw',
                                     'attribute':'is_active',
                                     'filter':{
                                         '':'Любой',
