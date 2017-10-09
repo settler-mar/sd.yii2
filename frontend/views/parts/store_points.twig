@@ -7,24 +7,24 @@
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
                     {#одна точка#}
-                    <h4>Магазин {{ current_store.name }} в {{store_points.cities[0] }}</h4>
+                    <h3>Магазин {{ current_store.name }} в {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
                     {#несколько точек в одном городе #}
-                    <h4>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h4>
+                    <h3>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1   %}
                     {#несколько точек в одной стpане #}
-                    <h4>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}</h4>
+                    <h3>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}</h3>
                     <div class="col-sm-12 store-points__point-selects">
                         <select hidden name="store_point_country" id="store_point_country">
                             <option value=""></option>
                             <option value="{{ store_points.points[0].country}}" selected>{{ store_points.points[0].country }}</option>
                         </select>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <label for="store_point_city">Выберите город</label>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <select  class="form-control"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
@@ -38,12 +38,12 @@
 
                     {% else %}
                     {#точки в разных странах#}
-                    <h4>Сеть магазинов {{ current_store.name }}</h4>
+                    <h3>Сеть магазинов {{ current_store.name }}</h3>
                     <div class="col-sm-12 store-points__point-selects">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <label for="store_point_country">Выберите страну</label>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <select class="form-control" name="store_point_country" id="store_point_country">
                                 <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
                                 {% for country, country_arr in store_points.countries %}
@@ -51,10 +51,10 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <label for="store_point_">Выберите город</label>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <select  class="form-control"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
@@ -68,11 +68,12 @@
 
                 {% endif %}
                 {#вывод точек для всех условий #}
-                <div class="store-points__points{% if store_points.points|length == 1 %}-single{% endif %}" id="store-points">
+                <div class="col-md-12 store-points__points {% if store_points.points|length == 1 %}single{% endif %} {% if no_visible == 1 %}hidden{% endif %}" id="store-points">
+                    <h3>Адреса магазина {{ current_store.name }}</h3>
 
                     <table class="store-points__points_table" >
                         <thead >
-                            <tr {% if no_visible == 1 %}hidden{% endif %} class="store-points__points_head">
+                            <tr class="store-points__points_head">
                                 <td>Название</td>
                                 <td>Адрес</td>
                                 <td>Время работы</td>
