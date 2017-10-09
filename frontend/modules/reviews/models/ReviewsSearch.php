@@ -49,7 +49,7 @@ class ReviewsSearch extends Reviews
         'query' => $query,
         'sort' => [
           'defaultOrder' => [
-            'uid' => SORT_DESC,
+            'added' => SORT_DESC,
           ]
         ],
         'pagination' => [

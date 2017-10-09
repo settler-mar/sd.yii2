@@ -319,13 +319,13 @@
           font-weight: 100;
           -o-transition: all .5s; -moz-transition: all .5s; -webkit-transition: all .5s; -ms-transition: all .5s; transition: all .5s;
 
-          /*&.muted {
-            opacity: 1;
-            color: #6a6a6a;*/
           &:hover{
             color: rgba(255, 191, 9, 0.61);
           }
-          /*}*/
+        }
+        span{
+          font-size: 10px;
+          margin-left: -3px;
         }
       }
     }

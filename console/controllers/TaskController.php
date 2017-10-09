@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use frontend\models\Task;
 use frontend\modules\notification\models\Notifications;
+use frontend\modules\reviews\models\Reviews;
 use frontend\modules\users\models\Users;
 use yii\console\Controller;
 
@@ -113,6 +114,9 @@ class TaskController extends Controller
     \Yii::$app->balanceCalc->todo($users,'ref');
   }
 
+  /**
+   * Сгенерироывать новый список пользователей для рекламных банеров
+   */
   public function actionGenerateUserList(){
     $users=Users::find()
       ->select(['name','photo'])
@@ -143,5 +147,24 @@ class TaskController extends Controller
     $dir=(realpath(__DIR__.'/../../frontend/web/js'));
     file_put_contents($dir . '/user_list.json', json_encode($users));
 
+  }
+
+  /**
+   * Перемешать отзывы пользователей
+   */
+  public function actionResortReviews(){
+    //1) проставляем новые даты отзывов и рейтинг
+    $start = mktime(0,0,0,4,1,2017);
+    $end = time();
+    $range=$end-$start;
+    $sql= 'UPDATE `cw_users_reviews` SET 
+        `added` = FROM_UNIXTIME(RAND() * '.$range.'+'.$start.'),
+        `rating` = 4.1+RAND()
+        WHERE store_id>0
+        ';
+    \Yii::$app->db->createCommand($sql)->execute();
+
+    //2) делаем сортирову по дате и перепрописываем uid
+    //Пока отбой
   }
 }
