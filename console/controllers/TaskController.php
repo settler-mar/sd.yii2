@@ -160,8 +160,9 @@ class TaskController extends Controller
     $sql= 'UPDATE `cw_users_reviews` SET 
         `added` = FROM_UNIXTIME(RAND() * '.$range.'+'.$start.'),
         `rating` = 4.1+RAND()
-        WHERE store_id>0
-        ';
+        WHERE store_id>0'
+    //    .'AND added>'.date('Y-m-d H:i:s',$start)
+    ;
     \Yii::$app->db->createCommand($sql)->execute();
 
     //2) делаем сортирову по дате и перепрописываем uid
