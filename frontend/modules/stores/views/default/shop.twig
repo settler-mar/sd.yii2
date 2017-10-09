@@ -114,7 +114,7 @@
             Кэшбэк с покупок на {{current_store.name}}
         {% endif %}
     </h1>
-      {% if current_store.related %}
+      {% if current_store.related and current_store.relatedData.is_active in [0, 1] %}
           <div class="row" style="text-align: center;">
               <a class="btn btn-relink" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
                   {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
@@ -384,7 +384,7 @@
                     </div>
                     <div class="intro-content">
                         <h5>ВЫБИРАЕТЕ МАГАЗИН</h5>
-                        <p>Приходите в нужный магазин/ресторан и пр. <a href="/stores/offline">из нашего списка</a>, выбираете товар.</p>
+                        <p>Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a href="/stores/offline">нашего каталога</a>, выбираете товар
                     </div>
                 </div>
                 <div class="col-md-4 intro-feature">
@@ -393,7 +393,7 @@
                     </div>
                     <div class="intro-content">
                         <h5>ПРЕДЪЯВЛЯЕТЕ СКИДКУ</h5>
-                        <p>Перед оплатой товара говорите кассиру/менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой личный штрихкод.</p>
+                        <p>Перед оплатой товара говорите кассиру или менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой индивидуальный штрихкод.</p>
                     </div>
                 </div>
                 <div class="col-md-4 intro-feature">
@@ -401,8 +401,8 @@
                         <span data-icon="&#xe016;" class="icon"></span>
                     </div>
                     <div class="intro-content last">
-                        <h5>ДОЖИДАЕТЕСЬ ПОДТВЕРЖДЕНИЯ ПОКУПКИ</h5>
-                        <p>В течение нескольких минут на ваш телефон придет SMS или push-сообщение, что ваша покупка зафиксирована. Вскоре после этого кэшбэк отобразится в вашем Личном кабинете в SecretDiscounter.</p>
+                        <h5>ДОЖИДАЕТЕСЬ ПОДТВЕРЖДЕНИЯ</h5>
+                        <p>Сразу после покупки на ваш телефон придет сообщение «Ваша покупка зафиксирована». Вскоре после этого кэшбэк отобразится в вашем Личном кабинете в SecretDiscounter.</p>
                     </div>
                 </div>
             </div>
