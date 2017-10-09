@@ -25,15 +25,6 @@
         </a>
         {% endif %}
         <div class="shop_panel">
-            {% if store.is_offline %}
-                <a
-                    class="shop-link ignore-hash ia"
-                    data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Оффлайн-магазин"
-                >
-                    {#<span class="fa fa-star"></span>#}
-                    <span class="fa fa-home"></span>
-                </a>
-            {% endif %}
             {% if store.rating %}
                 <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
                    class="shop-link"
@@ -47,6 +38,15 @@
                 </a>
             {% endif %}
 
+            {% if store.is_offline %}
+                <a
+                    class="shop-link ignore-hash ia"
+                    data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Оффлайн-магазин"
+                >
+                    {#<span class="fa fa-star"></span>#}
+                    <span class="fa fa-home"></span>
+                </a>
+            {% endif %}
 
             {% if store.related %}
                 {% set s=getShop(store.related) %}
