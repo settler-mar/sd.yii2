@@ -178,7 +178,8 @@
 
 
 {% set photos = current_store.photoList %}
-{% if photos | length %}
+{% set videos = current_store.video %}
+{% if photos | length or  videos | length %}
     {% include 'parts/photos.twig' %}
 {% endif %}
 
