@@ -59,7 +59,7 @@
                     {% endif %}
                 </div>
 
-                <div class="goto" id="goto">
+                <div class="goto {% if current_store.is_offline==1 %}offline{% endif %}" id="goto">
                     {% if current_store.is_offline==0 %}
                         {% if user_id %}
                             {% if current_store.is_active == 1 %}
