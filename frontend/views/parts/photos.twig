@@ -11,6 +11,10 @@
 
             },
         }) %}
+            {% for video in videos %}
+                <a href="{{ video }}"></a>
+            {% endfor %}
+
             {% for photo in photos %}
                 <img src="{{ photo }}" data-fit="contain">
             {% endfor %}

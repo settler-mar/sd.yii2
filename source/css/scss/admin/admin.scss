@@ -859,3 +859,10 @@ table{
         }
     }
 }
+.view-list.view-current {
+    .multiple-input-list__item {
+        input {
+            width: 100%;
+        }
+    }
+}

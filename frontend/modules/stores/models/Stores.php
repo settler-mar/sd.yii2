@@ -76,7 +76,7 @@ class Stores extends \yii\db\ActiveRecord
   {
     return [
       [['name', 'route', 'url', 'currency', 'added', 'hold_time','percent'], 'required'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related'], 'integer'],
       [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
@@ -130,6 +130,7 @@ class Stores extends \yii\db\ActiveRecord
       'category_cnt'=>'Количество категорий',
       'related' => 'Связанный магазин',
       'is_offline' => 'Тип магазина',
+      'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
     ];
   }
 
@@ -143,6 +144,7 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
+    $this->video = json_encode($this->video);
     return parent::beforeValidate();
   }
 
@@ -193,6 +195,17 @@ class Stores extends \yii\db\ActiveRecord
   {
     return $this->hasMany(B2bStoresPoints::className(), ['store_id' => 'uid']);
   }
+
+  public function afterFind()
+  {
+    $this->video = json_decode($this->video, true);
+    /*$str=$this->video[0];
+    $str=explode('?',$str);
+    d($str);
+    parse_str($str[1],$data);
+    ddd($data);*/
+  }
+
   /**
    * @return mixed
    */
