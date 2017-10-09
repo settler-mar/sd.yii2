@@ -105,32 +105,34 @@
         </div>
     </div>
 </section>
+    <script src="/js/external/markerclusterer.js"></script>
     <script>
         var googleMap = {
             mapElement: document.getElementById('map'),
             points: [],
             map: null,
+            cluster: null,
             initMap: function() {
 
-                    this.map = new google.maps.Map(this.mapElement, {
-                        {% if store_points.range.avg_x and store_points.range.avg_y %}
-                            center: {lat: {{store_points.range.avg_y }}, lng: {{ store_points.range.avg_x }} },//средняя между точками
-                        {% else %}
-                            center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
-                        {% endif %}
-                        {% if store_points.range.zoom %}
-                            zoom: {{ store_points.range.zoom }},
-                        {% else %}
-                            zoom: 10,
-                        {% endif %}
-                        mapTypeId: 'roadmap'
-                    });
+                map = new google.maps.Map(this.mapElement, {
+                    {% if store_points.range.avg_x and store_points.range.avg_y %}
+                        center: {lat: {{store_points.range.avg_y }}, lng: {{ store_points.range.avg_x }} },//средняя между точками
+                    {% else %}
+                        center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                    {% endif %}
+                    {% if store_points.range.zoom %}
+                        zoom: {{ store_points.range.zoom }},
+                    {% else %}
+                        zoom: 10,
+                    {% endif %}
+                    mapTypeId: 'roadmap'
+                });
 
                 {% for store_point in store_points.points %}
                     {% if store_point.coordinate_x and store_point.coordinate_y %}
                         var marker = new google.maps.Marker({
                             position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
-                            map: this.map,
+                            map: map,
                             title: '{{ store_point.name }}',
                             {% if no_visible == 1 %}
                                 visible: false
@@ -144,8 +146,15 @@
 
                     {% endif %}
                 {% endfor %}
+                this.map = map;
+                this.cluster = new MarkerClusterer(this.map, [], {
+                    imagePath: '/images/google_clusterer/m'
+                });
             },
             hideMarkers: function() {
+                if (this.cluster) {
+                    this.cluster.clearMarkers();
+                }
                 this.points.forEach(function(point){
                     point.marker.setVisible(false);
                 });
@@ -154,9 +163,11 @@
                 if (this.map === null) {
                     this.showMap();
                 }
+                var cluster = this.cluster;
                 this.points.forEach(function(point){
                     if (point.country == country && point.city == city) {
                         point.marker.setVisible(true);
+                        cluster.addMarker(point.marker);
                     }
                 });
             },
@@ -165,6 +176,7 @@
                     this.initMap();
                 }
                 this.mapElement.classList.remove('hidden');
+                this.cluster.redraw();
             },
             hideMap: function() {
                 this.mapElement.classList.add('hidden');
