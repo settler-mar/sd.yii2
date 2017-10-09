@@ -123,12 +123,14 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             for ($i=1; $i<=7; $i++) {
                 if (array_sum(array_column($workDays, 'work_time_day_'.$i))>1) {
                     //хотя бы один день выбран более 1 раза
+                    Yii::$app->session->addFlash('err', 'Ошибка, нельзя выбрать один день недели более одного раза!');
                     return false;
                 }
             }
             foreach ($workDays as $workDay) {
                 if ($this->checkBoxChecked($workDay) < 1) {
                     //не выбран ни один день
+                    Yii::$app->session->addFlash('err', 'Ошибка, нужно отметить дни недели в каждой строке времени работы');
                     return false;
                 }
             }

@@ -18,7 +18,7 @@ class StoresSearch extends Stores
     public function rules()
     {
         return [
-            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
+            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email'], 'safe'],
         ];
     }
@@ -84,6 +84,7 @@ class StoresSearch extends Stores
             'active_cpa' => $this->active_cpa,
             'percent' => $this->percent,
             'action_id' => $this->action_id,
+            'is_offline' => $this->is_offline,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

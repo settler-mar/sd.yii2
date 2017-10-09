@@ -63,6 +63,9 @@ class AdminController extends Controller
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
       'table_value' => [
+        'is_offline' => function ($model, $key, $index, $column) {
+          return $model->is_offline == 1 ? 'Оффлайн' : 'Онлайн';
+        },
         'is_active' => function ($model, $key, $index, $column) {
           $st = [
             1 => "Активен",

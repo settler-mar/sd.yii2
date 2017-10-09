@@ -1091,6 +1091,9 @@ $images: "/images";
       font-weight: 500;
       display: block;
     }
+    &.offline .howgetcashback {
+      margin-top: 20px;
+    }
   }
 }
 .shop-name-question {
@@ -2678,24 +2681,21 @@ div .popup {
     width: 90%;
     margin: 0 5% 20px 5%;
     text-align: center;
+    padding: 0;
   }
   &__point-selects {
-    //margin-bottom: 20px;
     margin: 20px 0;
   }
-  &__point {
-    border-bottom: 1px solid #D6DBDE;
-    padding-bottom: 10px;
-    width: 60%;
-    margin: 10px auto 10px;
-  }
-  &__points_table {
-    width: 100%;
-    th,
-    td {
-      border: 1px solid #D6DBDE;
-      padding: 5px;
-      text-align: center;
+  &__points {
+    padding: 0;
+    &_table {
+      width: 100%;
+      th,
+      td {
+        border: 1px solid #D6DBDE;
+        padding: 5px;
+        text-align: center;
+      }
     }
   }
   &__store_time {
