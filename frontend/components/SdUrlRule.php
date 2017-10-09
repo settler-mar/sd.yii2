@@ -22,11 +22,7 @@ class SdUrlRule implements UrlRuleInterface
     $params = $request->get();
     $pathInfo = $request->getPathInfo();
 
-    $ref_cpec=array(
-      'ali'=>59914,
-      'hotels'=>58326,
-      'fashion'=>6,
-    );
+    $ref_cpec=Yii::$app->params['ref_cpec'];
     if (isset($ref_cpec[$pathInfo])) {
       $params['r']=$ref_cpec[$pathInfo];
     }
