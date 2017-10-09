@@ -69,29 +69,7 @@
                 {% endif %}
                 {#вывод точек для всех условий #}
                 <div class="store-points__points{% if store_points.points|length == 1 %}-single{% endif %}" id="store-points">
-                {#{% for store_point in store_points.points %}#}
-                    {#<div {% if no_visible == 1 %}hidden{% endif %} data-city="{{ store_point.city }}" data-country="{{ store_point.country }}" class="store-points__point">#}
-                        {#<h5>{{ store_point.name }}</h5>#}
-                        {#{% if no_country != 1 %}#}
-                            {#<div class="store-points__point_country" >#}
-                                {#Страна  {{ store_point.country }}#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                        {#{% if no_city != 1 %}#}
-                            {#<div class="store-points__point_city " >#}
-                                {#Город  {{ store_point.city }}#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                        {#<div class="store-points__point_name " >#}
-                            {#Адрес: {{ store_point.address }}#}
-                        {#</div>#}
-                        {#<div class="store-points__point_work-time " >#}
-                            {#{% set work_times = store_point.work_time_details %}#}
-                        {#Время работы#}
-                            {#{% include('parts/work_time.twig') %}#}
-                        {#</div>#}
-                    {#</div>#}
-                {#{% endfor %}#}
+
                     <table class="store-points__points_table" >
                         <thead >
                             <tr {% if no_visible == 1 %}hidden{% endif %} class="store-points__points_head">
@@ -118,15 +96,18 @@
 
             </div>
 
-            <div id="map" class="store-points__map"></div>
+            <div id="map" class="{% if no_visible == 1 %}hidden{% endif %} store-points__map"></div>
         </div>
     </div>
 </section>
     <script>
         var googleMap = {
+            mapElement: document.getElementById('map'),
+            points: [],
+            map: null,
             initMap: function() {
 
-                    var map = new google.maps.Map(document.getElementById('map'), {
+                    this.map = new google.maps.Map(this.mapElement, {
                         {% if store_points.range.avg_x and store_points.range.avg_y %}
                             center: {lat: {{store_points.range.avg_y }}, lng: {{ store_points.range.avg_x }} },//средняя между точками
                         {% else %}
@@ -142,16 +123,54 @@
 
                 {% for store_point in store_points.points %}
                     {% if store_point.coordinate_x and store_point.coordinate_y %}
-                        new google.maps.Marker({
+                        var marker = new google.maps.Marker({
                             position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
-                            map: map,
-                            title: '{{ store_point.name }}'
+                            map: this.map,
+                            title: '{{ store_point.name }}',
+                            {% if no_visible == 1 %}
+                                visible: false
+                            {% endif %}
                         });
+                        this.points.push({
+                            'city':'{{ store_point.city }}',
+                            'country': '{{ store_point.country }}',
+                            'marker': marker
+                        });
+
                     {% endif %}
                 {% endfor %}
+            },
+            hideMarkers: function() {
+                this.points.forEach(function(point){
+                    point.marker.setVisible(false);
+                });
+            },
+            showMarker: function(country, city){
+                if (this.map === null) {
+                    this.showMap();
+                }
+                this.points.forEach(function(point){
+                    if (point.country == country && point.city == city) {
+                        point.marker.setVisible(true);
+                    }
+                });
+            },
+            showMap: function() {
+                if (this.map === null) {
+                    this.initMap();
+                }
+                this.mapElement.classList.remove('hidden');
+            },
+            hideMap: function() {
+                this.mapElement.classList.add('hidden');
             }
+
         };
     </script>
+    {% if no_visible == 1 %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places" async defer></script>
+    {% else %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
+    {% endif %}
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
 {% endif %}

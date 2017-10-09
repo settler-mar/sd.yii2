@@ -130,13 +130,14 @@ $('body').on('change', '#store_point_country', function(e) {
 $('body').on('change', '#store_point_city', function(e) {
   var city = $('option:selected', this).attr('value');
   var country = $('option:selected', $('#store_point_country')).attr('value');
-  console.log(country, city);
   if (country && city) {
     //var items = $('#store-points').find('.store-points__point');
     var points= $('#store-points'),
         items = points.find('.store-points__points_row'),
         head = points.find('.store-points__points_head'),
         visible = false;
+    googleMap.hideMarkers();
+    googleMap.showMarker(country, city);
     $.each(items, function(index, div){
       if ($(div).data('city') == city && $(div).data('country') == country){
         $(div).show();
@@ -147,8 +148,10 @@ $('body').on('change', '#store_point_city', function(e) {
     });
     if (visible) {
       $(head).show();
+      googleMap.showMap();
     } else {
       $(head).hide();
+      googleMap.hideMap();
     }
   }
 });
