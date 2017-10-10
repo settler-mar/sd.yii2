@@ -25,7 +25,7 @@
         </a>
         {% endif %}
         <div class="shop_panel">
-            {% if store.rating %}
+            {# if store.rating %}
                 <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
                    class="shop-link"
                    data-toggle="tooltip" data-state="delete" data-placement="top"
@@ -36,7 +36,7 @@
                         {{ _nf(store.rating, 1) }}
                     </span>
                 </a>
-            {% endif %}
+            {% endif #}
 
             {% if store.is_offline %}
                 <a
