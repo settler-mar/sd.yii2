@@ -2622,6 +2622,20 @@ img{
     margin-right: 22px;
   }
 }
+.btn-popup2 {
+  min-width: 240px;
+  border-radius: 20px;
+  padding: 8px 5px;
+  &:not(:last-child) {
+    margin-right: 22px;
+  }
+
+  @media all and (max-width:640px) {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 15px;
+  }
+}
 div .popup {
   border-radius: 5px;
 }

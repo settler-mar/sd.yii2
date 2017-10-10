@@ -52,10 +52,10 @@ ajaxForm($('.ajax_form'));
 $("a[href='#showpromocode-noregister']").popup({
   content : '<div class="coupon-noregister">'+
   '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
-  '<div class="coupon-noregister__text">Для получения кэшбэка необходимо</br>авторизоваться на сайте</div>' +
+  '<div class="coupon-noregister__text">Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте,<br> но можно воспользоваться купоном и без регистрации</div>' +
   '<div class="coupon-noregister__buttons">'+
-  '<a href="goto/coupon:{id}" target="_blank" class="btn  btn-popup">Воспользоваться</br>купоном</br>без регистрации</a>'+
-  '<a href="#registration" class="btn btn-popup">Зарегистрироваться</br>и получить</br>ещё и кэшбэк</a>'+
+  '<a href="goto/coupon:{id}" target="_blank" class="btn  btn-popup2">Воспользоваться купоном</a>'+
+  '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>'+
   '</div>'+
   '<div>',
   type : 'html',
