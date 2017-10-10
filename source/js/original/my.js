@@ -161,3 +161,7 @@ $('body').on('change', '#store_point_city', function(e) {
   }
 
 });
+
+$(".select2-select").select2({
+    minimumResultsForSearch: 15
+});

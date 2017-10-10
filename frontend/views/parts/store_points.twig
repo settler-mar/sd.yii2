@@ -25,7 +25,7 @@
                             <label for="store_point_city">Выберите город</label>
                         </div>
                         <div class="col-sm-4">
-                            <select  class="form-control"  name="store_point_city" id="store_point_city">
+                            <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
                                     <option value="{{ city }}">{{ city }}</option>
@@ -44,7 +44,7 @@
                             <label for="store_point_country">Выберите страну</label>
                         </div>
                         <div class="col-sm-4">
-                            <select class="form-control" name="store_point_country" id="store_point_country">
+                            <select class="form-control select2-select" data-placeholder="Страна" name="store_point_country" id="store_point_country">
                                 <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
                                 {% for country, country_arr in store_points.countries %}
                                     <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
@@ -55,7 +55,7 @@
                             <label for="store_point_">Выберите город</label>
                         </div>
                         <div class="col-sm-4">
-                            <select  class="form-control"  name="store_point_city" id="store_point_city">
+                            <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
                                     <option value="{{ city }}">{{ city }}</option>

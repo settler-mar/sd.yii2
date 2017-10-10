@@ -87,6 +87,7 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/external/jquery.mockjax.js',
         paths.source.js+'/external/jquery.autocomplete.js',
         paths.source.js+'/external/cookie_check.js',
+        paths.source.js+'/original/admin/select2.full.min.js',
         paths.source.js+'/original/main.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/for_all.js',
