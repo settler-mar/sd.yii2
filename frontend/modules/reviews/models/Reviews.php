@@ -153,8 +153,9 @@ class Reviews extends \yii\db\ActiveRecord
         ->one();
 
       return [
-        'value' => intval($data['avgrating']),
-        'value_float' => floatval($data['avgrating']),
+        'value' => $data['avgrating'],
+        //'value' => intval($data['avgrating']),
+        //'value_float' => floatval($data['avgrating']),
         'reviews_count' => intval($data['reviews_count']),
       ];
     }, $cache->defaultDuration, $dependency);

@@ -4,7 +4,7 @@
     <span property="v:itemreviewed">Средняя оценка:
         <span rel="v:rating">
             <span typeof="v:Rating">
-                <span property="v:average">{{ store_rating.value }}</span>
+                <span property="v:average">{{ _nf(store_rating.value, 1) }}</span>
                 из
                 <span property="v:best">5</span>
             </span>

@@ -5,7 +5,9 @@ namespace frontend\modules\favorites\controllers;
 use yii;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
 use frontend\components\Pagination;
+use Yii\db\Query;
 
 class AccountController extends \yii\web\Controller
 {
@@ -68,12 +70,25 @@ class AccountController extends \yii\web\Controller
       return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);
     }
 
+
     $cacheName = 'account_favorites_' . \Yii::$app->user->id;
     $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
+      //подзапрос
+      $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
+        ->from(Stores::tableName(). ' cws2')
+        ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+        ->groupBy('cws2.uid')
+        ->where(['cwur.is_active' => 1]);
+
       return UsersFavorites::find()
         ->from(UsersFavorites::tableName() . ' cuf')
-        ->select(['cws.*'])
+        ->select([
+          'cws.*',
+          'store_rating.rating as rating',
+          'store_rating.reviews_count as reviews_count',
+        ])
         ->innerJoin(Stores::tableName() . ' cws', 'cws.uid = cuf.store_id')
+        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
         ->where(["cuf.user_id" => \Yii::$app->user->id, "cws.is_active" => [0, 1]])
         ->orderBy('cuf.added DESC')
         ->asArray()
