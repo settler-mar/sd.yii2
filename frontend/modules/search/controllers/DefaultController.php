@@ -5,7 +5,7 @@ namespace frontend\modules\search\controllers;
 use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\components\SdController;
-use Yii\db\Query;
+use yii\db\Query;
 use frontend\modules\reviews\models\Reviews;
 //use yii\sphinx\Query;
 //use yii\sphinx\ActiveRecord;
@@ -16,7 +16,8 @@ class DefaultController extends SdController
   public function actionIndex($query)
   {
     //подзапрос
-    $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
+    $ratingQuery = (new Query())
+      ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
       ->from(Stores::tableName(). ' cws2')
       ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
       ->groupBy('cws2.uid')

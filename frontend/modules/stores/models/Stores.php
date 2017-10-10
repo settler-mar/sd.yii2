@@ -15,7 +15,7 @@ use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
 use common\components\Help;
-
+use yii\db\Query;
 /**
  * This is the model class for table "cw_stores".
  *
@@ -222,10 +222,26 @@ class Stores extends \yii\db\ActiveRecord
   {
     $cache = Yii::$app->cache;
     $data = $cache->getOrSet('top_12_stores', function () {
+
+      $ratingQuery = (new Query())
+        ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
+        ->from(Stores::tableName(). ' cws2')
+        ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+        ->groupBy('cws2.uid')
+        ->where(['cwur.is_active' => 1]);
+
       return self::find()
+        ->from(Stores::tableName() . ' cws')
+        ->select([
+          'cws.*',
+          'store_rating.rating as rating',
+          'store_rating.reviews_count as reviews_count',
+        ])
+        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
         ->orderBy('visit DESC')
         ->where(['is_active' => [0, 1]])
         ->limit(12)
+        ->asArray()
         ->all();
     });
     return $data;

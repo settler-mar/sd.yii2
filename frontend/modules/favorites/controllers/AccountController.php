@@ -7,7 +7,7 @@ use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\Pagination;
-use Yii\db\Query;
+use yii\db\Query;
 
 class AccountController extends \yii\web\Controller
 {
