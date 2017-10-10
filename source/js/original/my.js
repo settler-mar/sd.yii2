@@ -48,31 +48,26 @@ $(function() {
 
 ajaxForm($('.ajax_form'));
 
-
-$("a[href='#showpromocode-noregister']").popup({
-  content : '<div class="coupon-noregister">'+
-  '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
-  '<div class="coupon-noregister__text">Для получения кэшбэка необходимо</br>авторизоваться на сайте</div>' +
-  '<div class="coupon-noregister__buttons">'+
-  '<a href="goto/coupon:{id}" target="_blank" class="btn  btn-popup">Воспользоваться</br>купоном</br>без регистрации</a>'+
-  '<a href="#registration" class="btn btn-popup">Зарегистрироваться</br>и получить</br>ещё и кэшбэк</a>'+
-  '</div>'+
-  '<div>',
-  type : 'html',
-  beforeOpen: function() {
-    //заменить в контенте {id}
-    var id = $(this.ele).data('id');
-    this.o.content = this.o.content.replace('{id}', id);
-    //если закрыли принудительно, то показать
-    popup = $('div.popup_cont, div.popup_back');
-    if (popup) {
-      popup.show();
-    }
-  },
-  afterOpen: function() {
-    $('.popup_content')[0].innerHTML = this.o.content;
+$("a[href='#showpromocode-noregister']").on('click',function(e){
+  e.preventDefault();
+  var id = $(this).data('id');
+  console.log(id);
+  var data={
+    buttonYes:false,
+    notyfy_class:"notify_white notify_not_big",
+    question:
+      '<div class="coupon-noregister">'+
+        '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
+      '<div class="coupon-noregister__text"><b>Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте, но можно воспользоваться купоном и без регистрации.</b></div>' +
+      '<div class="coupon-noregister__buttons">'+
+      '<a href="goto/coupon:'+id+'" target="_blank" class="btn  btn-popup2">Воспользоваться купоном</a>'+
+      '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>'+
+      '</div>'+
+      '<div>'
   }
+  notification.alert(data)
 });
+
 $(document).on('click',"a[href='#comment-popup']",function(e){
   e.preventDefault();
   var data={

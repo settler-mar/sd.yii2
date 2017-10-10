@@ -345,6 +345,9 @@ $functionsList=[
   'getShop'=>function ($id) {
     return \frontend\modules\stores\models\Stores::findOne(['uid'=>$id]);
   },
+  '_can'=>function ($do) {
+    return !Yii::$app->user->isGuest && Yii::$app->user->can($do);
+  },
 
 ];
 

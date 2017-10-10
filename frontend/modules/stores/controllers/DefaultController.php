@@ -271,12 +271,10 @@ class DefaultController extends SdController
     if (!$category) {
       //если нет категории
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
-        return Stores::find()
-          ->where(['is_active' => [0, 1]])
-          ->andWhere(['<>', 'uid', $store->uid])
+        return Stores::items()
+          ->andWhere(['<>', 'cws.uid', $store->uid])
           ->orderBy('visit DESC')
           ->limit(6)
-          ->asArray()
           ->all();
       }, $cache->defaultDuration, $dependency);
     } else {
@@ -285,15 +283,12 @@ class DefaultController extends SdController
         'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
         function () use ($category, $store
         ) {
-          return Stores::find()
-            ->from(Stores::tableName() . ' cws')
-            ->select(['cws.*'])
+          return Stores::items()
             ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
-            ->where(['cws.is_active' => [0, 1], 'cwstc.category_id' => $category])
             ->andWhere(['<>', 'cws.uid', $store->uid])
-            ->orderBy('RAND()')
+            ->andWhere(['cwstc.category_id' => $category])
+            ->orderBy('visit DESC')
             ->limit(6)
-            ->asArray()
             ->all();
         },
         $cache->defaultDuration,

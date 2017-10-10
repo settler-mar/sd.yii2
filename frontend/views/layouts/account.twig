@@ -171,6 +171,11 @@
             <li class="favorite-icon fasicon">
                 <a href="/account/favorites">Избранные магазины</a>
             </li>
+            {% if _can('MetaView') %}
+                <li class="offlineshop-icon fasicon">
+                    <a href="/account/offline">Кэшбэк с оффлайна</a>
+                </li>
+            {% endif %}
             <li class="affiliate-icon fasicon">
                 <a href="/account/affiliate">Приведи друга</a>
             </li>
