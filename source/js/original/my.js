@@ -48,8 +48,26 @@ $(function() {
 
 ajaxForm($('.ajax_form'));
 
-
-$("a[href='#showpromocode-noregister']").popup({
+$("a[href='#showpromocode-noregister']").on('click',function(e){
+  e.preventDefault();
+  var id = $(this).data('id');
+  console.log(id);
+  var data={
+    buttonYes:false,
+    notyfy_class:"notify_white notify_not_big",
+    question:
+      '<div class="coupon-noregister">'+
+        '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
+      '<div class="coupon-noregister__text"><b>Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте, но можно воспользоваться купоном и без регистрации.</b></div>' +
+      '<div class="coupon-noregister__buttons">'+
+      '<a href="goto/coupon:'+id+'" target="_blank" class="btn  btn-popup2">Воспользоваться купоном</a>'+
+      '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>'+
+      '</div>'+
+      '<div>'
+  }
+  notification.alert(data)
+});
+/*$("a[href='#showpromocode-noregister']").popup({
   content : '<div class="coupon-noregister">'+
   '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
   '<div class="coupon-noregister__text"><b>Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте,<br> но можно воспользоваться купоном и без регистрации.</b></div>' +
@@ -72,7 +90,8 @@ $("a[href='#showpromocode-noregister']").popup({
   afterOpen: function() {
     $('.popup_content')[0].innerHTML = this.o.content;
   }
-});
+});*/
+
 $(document).on('click',"a[href='#comment-popup']",function(e){
   e.preventDefault();
   var data={
