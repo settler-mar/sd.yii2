@@ -108,7 +108,7 @@ class DefaultController extends SdController
       $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
     }
     //подзапрос
-    $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating'])
+    $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
       ->from(Stores::tableName(). ' cws2')
       ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
       ->groupBy('cws2.uid')
@@ -137,10 +137,11 @@ class DefaultController extends SdController
           'cws.*',
           'cstc.category_id',
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
+            " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-          'store_rating.rating as  rating',
+            " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+          'store_rating.rating as rating',
+          'store_rating.reviews_count as reviews_count',
         ])
         ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
         ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
@@ -157,10 +158,11 @@ class DefaultController extends SdController
         ->select([
           'cws.*',
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
+            " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
           "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-          'store_rating.rating as  rating',
+            " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+          'store_rating.rating as rating',
+          'store_rating.reviews_count as reviews_count',
         ])
         ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
         ->where(['cws.is_active' => [0, 1]])
