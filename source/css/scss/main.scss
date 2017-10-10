@@ -3,6 +3,7 @@
 @import  "../external/jquery.fancybox";
 @import  "../external/flexslider";
 @import  "../external/etline.font";
+@import "../external/admin/select2.min";
 
 @import  "../external/styles";
 
@@ -1100,14 +1101,6 @@ $images: "/images";
   font-size: 18px;
   color: #fff;
 }
-.tooltip > .tooltip-inner {
-  background-color: #fff;
-  color: #000;
-  border: 1px solid gray;
-  padding: 15px;
-  font-size: 14px;
-}
-
 .store-h1 {
   text-align: center;
   font-size: 40px;
@@ -2740,6 +2733,10 @@ div .popup {
     background: #999;
     color:#fff;
   }
+}
+section.store_photos {
+  margin-top: 33px;
+  margin-bottom: 33px;
 }
 
 @import  "../external/queries";

@@ -15,7 +15,7 @@ use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
 use common\components\Help;
-
+use yii\db\Query;
 /**
  * This is the model class for table "cw_stores".
  *
@@ -222,11 +222,7 @@ class Stores extends \yii\db\ActiveRecord
   {
     $cache = Yii::$app->cache;
     $data = $cache->getOrSet('top_12_stores', function () {
-      return self::find()
-        ->orderBy('visit DESC')
-        ->where(['is_active' => [0, 1]])
-        ->limit(12)
-        ->all();
+      return self::items()->orderBy('visit DESC')->limit(12)->all();
     });
     return $data;
   }
@@ -470,6 +466,36 @@ class Stores extends \yii\db\ActiveRecord
     $dir=($this->uid % 100);
     $path = '/images/photos/'.(($this->uid-$dir)/100).'/'.($dir).'/';
     return $path;
+  }
+
+  /**
+   * @return $this
+   * список шопов для разных страниц
+   * применять
+   * ->addSelect([..])
+   * ->andWhere([...])
+   * ->orderBy(...)
+   * ->all()
+   */
+  public static function items()
+  {
+    $ratingQuery = (new Query())
+      ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
+      ->from(self::tableName(). ' cws2')
+      ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+      ->groupBy('cws2.uid')
+      ->where(['cwur.is_active' => 1]);
+
+    return self::find()
+      ->from(self::tableName() . ' cws')
+      ->select([
+        'cws.*',
+        'store_rating.rating as rating',
+        'store_rating.reviews_count as reviews_count',
+      ])
+      ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
+      ->where(['cws.is_active' => [0, 1]])
+      ->asArray();
   }
 
   /**

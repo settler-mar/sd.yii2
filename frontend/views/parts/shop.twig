@@ -27,7 +27,7 @@
         <div class="shop_panel">
             {# if store.rating %}
                 <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
-                   class="shop-link"
+                   class="shop-link workHref"
                    data-toggle="tooltip" data-state="delete" data-placement="top"
                    data-original-title="Рейтинг магазина на основании отзывов {{ store.reviews_count }} наших пользователей"
                 >
