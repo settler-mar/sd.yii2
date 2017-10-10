@@ -230,7 +230,8 @@
       text-align: center;
       height: 82px;
       overflow: hidden;
-      margin-top: 20px;
+      //margin-top: 20px;
+      margin-top: 30px;
 
       a {
         font-weight: 700;
@@ -248,7 +249,10 @@
     }
 
     .shop-bottom {
-      margin-top: 10px;
+      //margin-top: 10px;
+      margin-top: -10px;
+      display: flex;
+      height: 50px;
 
       .shop_panel{
         text-align: right;
@@ -264,6 +268,7 @@
         text-align: center;
         width: 100%;
         height: auto;
+        margin: auto auto 0;
         text-transform: uppercase;
         padding: 5px;
         background: rgba(255, 193, 7, 0.71);
