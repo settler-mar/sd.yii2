@@ -780,3 +780,11 @@ form > .kv-drp-container{
   text-align: center;
   margin-top: 20px;
 }
+
+.tooltip > .tooltip-inner {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid gray;
+  padding: 15px;
+  font-size: 14px;
+}

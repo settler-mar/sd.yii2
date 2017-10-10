@@ -142,3 +142,22 @@ $('body').on('click','a.ajaxFormOpen',function(e){
     }
   },'json')
 });
+
+$('[data-toggle="tooltip"]').tooltip({
+  delay: {
+    show: 500, hide: 2000
+  }
+});
+$('[data-toggle="tooltip"]').on('click',function (e) {
+  $this=$(this);
+  if($this.closest('ul').hasClass('paginate')) {
+    //для пагинации ссылка должна работать
+    return true;
+  }
+  if($this.hasClass('workHref')){
+    //Если ссылка помеченна как рабочая то нужно переходить
+    return true;
+  }
+  e.preventDefault();
+  return false;
+});
