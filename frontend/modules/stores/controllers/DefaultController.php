@@ -12,7 +12,7 @@ use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
 use b2b\modules\stores_points\models\B2bStoresPoints;
-use yii\db\Query;
+
 
 class DefaultController extends SdController
 {
@@ -107,17 +107,22 @@ class DefaultController extends SdController
     if ($offline) {
       $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
     }
-    //подзапрос
-    $ratingQuery = (new Query())->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
-      ->from(Stores::tableName(). ' cws2')
-      ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
-      ->groupBy('cws2.uid')
-      ->where(['cwur.is_active' => 1]);
 
     $storesData = [];
+    $dataBaseData = Stores::items()
+      ->addSelect([
+        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
+          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
+        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
+          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+      ])
+      ->orderBy($sort . ' ' . $order);
+    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+
     if ($categoryStore) {
+      //категория магазина
       \Yii::$app->params['url_mask'] = 'stores/category/'.$categoryStore->route;
-      //категория
+
       $category = $categoryStore->uid;
       $storesData['current_category'] = $categoryStore->attributes;//CategoryStores::byId($category);
       if ($categoryStore->is_active == 0) {
@@ -131,44 +136,12 @@ class DefaultController extends SdController
         'url' => '/stores/' . $categoryStore->route,
       ];
 
-      $dataBaseData = Stores::find()
-        ->from(Stores::tableName() . ' cws')
-        ->select([
-          'cws.*',
-          'cstc.category_id',
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-            " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-            " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-          'store_rating.rating as rating',
-          'store_rating.reviews_count as reviews_count',
-        ])
-        ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
-        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-        ->where([
-          'cstc.category_id' => $category,
-          'cws.is_active' => [0, 1],
-        ])
-        ->orderBy($sort . ' ' . $order);
-      $cacheName = 'catalog_stores_category' . '_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
-    } else {
-      //нет категории /stores
-      $dataBaseData = Stores::find()
-        ->from(Stores::tableName() . ' cws')
-        ->select([
-          'cws.*',
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-            " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-            " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-          'store_rating.rating as rating',
-          'store_rating.reviews_count as reviews_count',
-        ])
-        ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-        ->where(['cws.is_active' => [0, 1]])
-        ->orderBy($sort . ' ' . $order);
-      $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $dataBaseData->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
+        ->andWhere(['cstc.category_id' => $category]);
+
+      $cacheName .= '_' . $category;
     }
+
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;
     }
@@ -183,7 +156,7 @@ class DefaultController extends SdController
     $pagination = new Pagination(
       $dataBaseData,
       $cacheName,
-      ['limit' => $limit, 'page' => $page, 'asArray' => 1]
+      ['limit' => $limit, 'page' => $page]
     );
 
     $storesData['stores'] = $pagination->data();

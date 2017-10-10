@@ -7,11 +7,11 @@
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
                     {#одна точка#}
-                    <h3>Магазин {{ current_store.name }} в {{store_points.cities[0] }}</h3>
+                    <h3>Адрес магазина {{ current_store.name }} в {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
                     {#несколько точек в одном городе #}
-                    <h3>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
+                    <h3>Адреса магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1   %}
                     {#несколько точек в одной стpане #}
@@ -38,7 +38,7 @@
 
                     {% else %}
                     {#точки в разных странах#}
-                    <h3>Сеть магазинов {{ current_store.name }}</h3>
+                    <h3>Адреса магазинов {{ current_store.name }}</h3>
                     <div class="col-sm-12 store-points__point-selects">
                         <div class="col-sm-2">
                             <label for="store_point_country">Выберите страну</label>
