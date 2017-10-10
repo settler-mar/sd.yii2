@@ -678,6 +678,9 @@ Sidebar
 .cd-side-nav > ul > li.favorite-icon > a::before {
   content: "\f005";
 }
+.cd-side-nav > ul > li.offlineshop-icon > a::before {
+  content: "\f291";
+}
 .cd-side-nav > ul > li.affiliate-icon > a::before {
   content: "\f0c0";
 }
