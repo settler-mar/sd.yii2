@@ -104,7 +104,7 @@ class SiteController extends SdController
           [
           ]
         )
-        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo('12312321')
         ->setSubject(Yii::$app->name . ': Регистрация')
         ->send();

@@ -267,7 +267,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
               'stores' => $store,
             ]
           )
-          ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo($this->email)
           ->setSubject(Yii::$app->name . ': Регистрация')
           ->send();

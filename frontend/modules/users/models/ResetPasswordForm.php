@@ -104,7 +104,7 @@ class ResetPasswordForm extends Model
         ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
         ['user' => $user]
       )
-      ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($this->email)
       ->setSubject('Сброс пароля на сайте ' . Yii::$app->name)
       ->send();
