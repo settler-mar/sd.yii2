@@ -260,6 +260,8 @@ class SiteController extends SdController
       }
       $data['link']=$coupon->goto_link;
       $store=$coupon->store_id;
+      $coupon->visit++;
+      $coupon->save();
     }
 
     $store=Stores::findOne(['uid'=>$store]);
