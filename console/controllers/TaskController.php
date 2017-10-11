@@ -5,8 +5,11 @@ namespace console\controllers;
 use frontend\models\Task;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\reviews\models\Reviews;
+use frontend\modules\payments\models\Payments;
 use frontend\modules\users\models\Users;
+use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
+
 
 class TaskController extends Controller
 {
@@ -167,5 +170,50 @@ class TaskController extends Controller
 
     //2) делаем сортирову по дате и перепрописываем uid
     //Пока отбой
+  }
+  
+  public function actionMakeRating()
+  {
+    $dateStart = date('Y-m-d H:i:s', strtotime("-3 months", time()));
+    $reviewsCount = Reviews::find()
+      ->where([
+        '>', 'added', $dateStart])
+      ->andWhere(['is_active' => 1])
+      ->count();
+    $paymentsCount = Payments::find()
+      ->where(['>', 'action_date', $dateStart])
+      ->andWhere(['status' => 2])
+      ->count();
+
+    $sql = 'UPDATE `cw_stores` `cws`
+       LEFT JOIN
+       (SELECT `cws2`.`uid`,
+         avg(`cwur`.`rating`) as `rating`,
+         count(`cwur`.`uid`) as `reviews_count`,
+         exp(sum(log(`rating`))/count(*)) as `rating_geometr`
+         FROM `cw_stores` `cws2`
+         LEFT JOIN `cw_users_reviews` `cwur` ON cws2.uid = cwur.store_id
+         WHERE `cwur`.`is_active`= 1 and `cwur`.`added` > "' . $dateStart . '"
+         GROUP BY `cws2`.`uid`)
+         `store_rating` ON `cws`.`uid` = `store_rating`.`uid`
+       LEFT JOIN
+       (SELECT `cws3`.`uid`,
+         count(`cwp`.`uid`) as `payments`
+         FROM `cw_stores` `cws3` 
+         LEFT JOIN `cw_cpa_link` `cwcl` on `cws3`.`uid` = `cwcl`.`stores_id`
+         LEFT JOIN `cw_payments` `cwp` on `cwp`.`affiliate_id` = `cwcl`.`affiliate_id`
+         WHERE `cwp`.`status` = 2 and `cwp`.`action_date` > "' . $dateStart . '"
+         GROUP BY `cws3`.`uid`)
+         `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
+         SET `cws`.`calculated_rating` = ifnull(`store_rating`.`rating_geometr`, 0)'.
+         ($reviewsCount > 0 ? '+ (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
+         ($paymentsCount > 0 ? '+ (10 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '');
+      //алгоритм
+    \Yii::$app->db->createCommand($sql)->execute();
+
+
+
+
+
   }
 }
