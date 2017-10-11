@@ -157,13 +157,13 @@ $dict = [
       'notification_title'=>'{{type_txt}}',
       'notification_text'=>'Вам был начислен бонус <b>({{amount}} руб.)</b> за регистрацию на нашем сайте.',// Бонус за регистрацию
 
-      'notification_title_1_0'=>'Новый кэшбэк',
-      'notification_text_0'=>'Ваш кэшбэк на <b>{{amount}}</b> руб. в магазине <b>{{shop_name}}</b> (заказ №{{order_id}}) зафиксирован в нашей системе.',//'в ожидании',//'pending',
+      'notification_title_1_0'=>'Зафиксирован новый кэшбэк',
+      'notification_text_0'=>'Ваш кэшбэк на <b>{{amount}}</b> руб. в <b>{{shop_name}}</b> (заказ №{{order_id}}) зафиксирован в нашей системе.',//'в ожидании',//'pending',
 
       'notification_title_1_1'=>'Кэшбэк отклонен',
       'notification_text_1'=>'К сожалению, ваш кэшбэк в <b>{{shop_name}}</b> (заказ №{{order_id}}) на сумму <b>{{amount}}</b> руб. отклонен.',//'Отменен',//'declined',
 
-      'notification_title_1_2'=>'Начислен кэшбэк',
+      'notification_title_1_2'=>'Зафиксирован новый кэшбэк',
       'notification_text_2'=>'Поздравляем! {{added}} вами был сделан заказ №{{order_id}} в <b>{{shop_name}}</b>, за который вам было начислено <b>{{amount}} руб.</b> кэшбэка.',//'Подтвержден',//'confirmed'
 
       'notification_title_ref_0'=>'Ожидается вознаграждение партнера',
