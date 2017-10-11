@@ -118,8 +118,10 @@ $(function() {
     
     var header = {
         control: {
-            headerStoresMenu: $("#top").find(".stores"), 
-            storesSubmenu: $("#top").find(".stores").find(".submenu"),
+            //headerStoresMenu: $("#top").find(".stores"),
+            headerStoresMenu: $("#top").find(".submenu-handl"),
+            //storesSubmenu: $("#top").find(".stores").find(".submenu"),
+            storesSubmenus: $("#top").find(".submenu-handl").find(".submenu"),
             popupSignUp: $("#top").find(".popup_content").find(".sign-up"),
             storeShow: '',
             storeHide: '',
@@ -189,21 +191,30 @@ $(function() {
             events: function() {
                 var self = this;
                 self.headerStoresMenu.hover(function() {
+                    var submenu = $(this).find('.submenu');
                     if($(window).width() > 991) {
                         clearTimeout(self.storeHide);
+                        self.storesSubmenus.css("display", "none");
                         self.storeShow = setTimeout(function() {
-                            self.storesSubmenu.clearQueue();
-                            self.storesSubmenu.css("display", "block").animate({"opacity": 1}, 350);
+                            submenu.clearQueue();
+                            submenu.css("display", "block").animate({"opacity": 1}, 350);
+                            // self.storesSubmenu.clearQueue();
+                            // self.storesSubmenu.css("display", "block").animate({"opacity": 1}, 350);
                         }, 200);
                     }
                 }, function() {
+                    var submenu = $(this).find('.submenu');
                     if($(window).width() > 991) {
                         clearTimeout(self.storeShow);
                         self.storeHide = setTimeout(function() {
-                            self.storesSubmenu.clearQueue();
-                            self.storesSubmenu.animate({"opacity": 0}, 200, function() {
+                            submenu.clearQueue();
+                            submenu.animate({"opacity": 0}, 200, function() {
                                 $(this).css("display", "none");
                             });
+                            // self.storesSubmenu.clearQueue();
+                            // self.storesSubmenu.animate({"opacity": 0}, 200, function() {
+                            //     $(this).css("display", "none");
+                            // });
                         }, 300);
                     }
                 });

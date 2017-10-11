@@ -25,6 +25,12 @@ class SdController extends Controller
     public $current_category_id;
 
     /**
+     * для виджета  меню категорий купонов - текущая категория
+     * @var
+     */
+    public $current_coupon_category_id;
+
+    /**
      * Possible limit options with default value
      * @var array
      */

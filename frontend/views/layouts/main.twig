@@ -101,7 +101,7 @@
 
                     <ul class="primary-nav">
 
-                        <li class="stores">
+                        <li class="stores submenu-handl">
                             {{ get_menu_item({'href': '/stores', 'title': 'Магазины'})|raw }}
                             <form action="/search" class="form-mobile" name="search" method="get">
                                 <input type="text" name="query" id="search" value="" placeholder="Поиск магазинов">
@@ -118,7 +118,18 @@
                                 </div>
                             {% endif %}
                         </li>
-                        <li class="coupons-l">{{ get_menu_item({'href': '/coupons', 'title': 'Купоны'})|raw }}</li>
+                        <li class="coupons-l stores submenu-handl">{{ get_menu_item({'href': '/coupons', 'title': 'Купоны'})|raw }}
+                            {{ use('frontend/components/CategoryCouponsMenu') }}
+                            {% set category_coupons_list = category_coupons_menu_widget() %}
+                            {% if category_coupons_list %}
+                                <div class="submenu">
+                                    <span class="fa fa-caret-up"></span>
+                                    <div class="tree">
+                                        {{category_coupons_list|raw}}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </li>
                         <li class="promo-l">{{ get_menu_item({'href': '/promo', 'title': 'Акции'})|raw }}</li>
                         <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>Делаем добро</span></a>
                         <li class="search">

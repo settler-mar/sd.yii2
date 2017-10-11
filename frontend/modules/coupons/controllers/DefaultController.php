@@ -102,6 +102,7 @@ class DefaultController extends SdController
     if (!empty($categoryCoupons)) {
       \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
+      $this->current_coupon_category_id = $category;
       $contentData["counts"] = Coupons::counts(false, $category);
       $cacheName .= '_' . $category;
       $contentData['category_id'] = $category;
