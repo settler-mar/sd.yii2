@@ -190,9 +190,9 @@ class PaymentsController extends Controller
                     'payment' => $db_payment,
                   ]
                 )
-                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
                 ->setTo($user->email)
-                ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
+                ->setSubject(Yii::$app->name . ': Новый кэшбэк')
                 ->send();
             } catch (\Exception $e) {
             }
