@@ -28,7 +28,7 @@
         "jbzoo/image": "^3.0",
         "admitad/api": "dev-master",
         "kartik-v/yii2-date-range": "dev-master",
-        "unclead/yii2-multiple-input": "~2.0",
+        "unclead/yii2-multiple-input": "2.10.*",
         "kotchuprik/yii2-fotorama-widget": "^1.0"
     },
     "require-dev": {

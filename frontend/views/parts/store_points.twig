@@ -127,49 +127,64 @@
                     {% endif %}
                     mapTypeId: 'roadmap'
                 });
-
+                var markers = [];
                 {% for store_point in store_points.points %}
                     {% if store_point.coordinate_x and store_point.coordinate_y %}
                         var marker = new google.maps.Marker({
                             position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
                             map: map,
                             title: '{{ store_point.name }}',
-                            {% if no_visible == 1 %}
-                                visible: false
-                            {% endif %}
+                            visible: true,
+                            {#{% if no_visible == 1 %}#}
+                                {#visible: false#}
+                            {#{% endif %}#}
                         });
                         this.points.push({
                             'city':'{{ store_point.city }}',
                             'country': '{{ store_point.country }}',
                             'marker': marker
                         });
+                        markers.push(marker);
 
                     {% endif %}
                 {% endfor %}
                 this.map = map;
-                this.cluster = new MarkerClusterer(this.map, [], {
+                this.cluster = new MarkerClusterer(this.map, markers, {
                     imagePath: '/images/google_clusterer/m'
                 });
             },
             hideMarkers: function() {
-                if (this.cluster) {
-                    this.cluster.clearMarkers();
-                }
-                this.points.forEach(function(point){
-                    point.marker.setVisible(false);
-                });
+//                if (this.cluster) {
+//                    this.cluster.clearMarkers();
+//                }
+//                this.points.forEach(function(point){
+//                    point.marker.setVisible(false);
+//                });
             },
             showMarker: function(country, city){
                 if (this.map === null) {
                     this.showMap();
                 }
-                var cluster = this.cluster;
+                //var cluster = this.cluster;
+                var minX = 0, maxX = 0, minY = 0, maxY = 0;
                 this.points.forEach(function(point){
                     if (point.country == country && point.city == city) {
-                        point.marker.setVisible(true);
-                        cluster.addMarker(point.marker);
+                        //point.marker.setVisible(true);
+                        //cluster.addMarker(point.marker);
+                        minX = (minX > point.marker.position.lng() || minX == 0 ? point.marker.position.lng() : minX);
+                        maxX = (maxX < point.marker.position.lng() || maxX == 0 ? point.marker.position.lng() : maxX);
+                        minY = (minY > point.marker.position.lat() || minY == 0 ? point.marker.position.lat() : minY);
+                        maxY = (maxY < point.marker.position.lat() || maxY == 0 ? point.marker.position.lat() : maxY);
                     }
                 });
+                //console.log(minX, maxX, minY, maxY);
+                var centerX = (maxX + minX)/2;
+                var centerY = (maxY + minY)/2;
+                var range = maxY-minY > maxX-minX ? maxY-minY : maxY-minY;
+                var zoom = range == 0 ? 10 : Math.round(30/(Math.log10(10000 * range + 1)));
+                //console.log(range, zoom);
+                this.map.setCenter({lat: centerY, lng: centerX});
+                this.map.setZoom(zoom);
             },
             showMap: function() {
                 if (this.map === null) {
