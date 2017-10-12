@@ -54,7 +54,7 @@ class Stores extends \yii\db\ActiveRecord
    * @var array
    */
   public static $sortvars = [
-    'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
+    'rating' => ["title" => "Популярности", "title_mobile" => "По популярности"],
     'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
     'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
     'cashback_percent' => ["title" => "%", "title_mobile" => "По % кэшбэка"],
@@ -490,7 +490,7 @@ class Stores extends \yii\db\ActiveRecord
       ->from(self::tableName() . ' cws')
       ->select([
         'cws.*',
-        'store_rating.rating as rating',
+        'store_rating.rating as reviews_rating',
         'store_rating.reviews_count as reviews_count',
       ])
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')

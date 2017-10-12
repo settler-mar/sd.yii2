@@ -25,7 +25,7 @@
         </a>
         {% endif %}
         <div class="shop_panel">
-            {% if store.rating %}
+            {% if store.reviews_rating %}
                 <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
                    class="shop-link workHref"
                    data-toggle="tooltip" data-state="delete" data-placement="top"
@@ -33,7 +33,7 @@
                 >
                     <i class="fa fa-star" aria-hidden="true"></i>
                     <span>
-                        {{ _nf(store.rating, 1) }}
+                        {{ _nf(store.reviews_rating, 1) }}
                     </span>
                 </a>
             {% endif %}

@@ -188,9 +188,9 @@ class TaskController extends Controller
     $sql = 'UPDATE `cw_stores` `cws`
        LEFT JOIN
        (SELECT `cws2`.`uid`,
-         avg(`cwur`.`rating`) as `rating`,
+         avg(`cwur`.`rating`) as `rating_avg`,
          count(`cwur`.`uid`) as `reviews_count`,
-         exp(sum(log(`rating`))/count(*)) as `rating_geometr`
+         exp(sum(log(`cwur`.`rating`))/count(*)) as `rating_geometr`
          FROM `cw_stores` `cws2`
          LEFT JOIN `cw_users_reviews` `cwur` ON cws2.uid = cwur.store_id
          WHERE `cwur`.`is_active`= 1 and `cwur`.`added` > "' . $dateStart . '"
@@ -205,7 +205,7 @@ class TaskController extends Controller
          WHERE `cwp`.`status` = 2 and `cwp`.`action_date` > "' . $dateStart . '"
          GROUP BY `cws3`.`uid`)
          `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
-         SET `cws`.`calculated_rating` = ifnull(`store_rating`.`rating_geometr`, 0)'.
+         SET `cws`.`rating` = ifnull(`store_rating`.`rating_geometr`, 0)'.
          ($reviewsCount > 0 ? '+ (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
          ($paymentsCount > 0 ? '+ (10 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '');
       //алгоритм

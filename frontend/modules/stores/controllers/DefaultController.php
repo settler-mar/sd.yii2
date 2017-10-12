@@ -91,8 +91,7 @@ class DefaultController extends SdController
     $offline = $request->get('offline');
 
     $validator = new \yii\validators\NumberValidator();
-    $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'name', 'added',
-      'cashback_percent', 'cashback_summ']]);
+    $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys(Stores::$sortvars)]);
     if (!empty($limit) && !$validator->validate($limit) ||
       !empty($sort) && !$validatorIn->validate($sort)
     ) {
