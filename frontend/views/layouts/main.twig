@@ -122,7 +122,7 @@
                             {{ use('frontend/components/CategoryCouponsMenu') }}
                             {% set category_coupons_list = category_coupons_menu_widget() %}
                             {% if category_coupons_list %}
-                                <div class="submenu">
+                                <div class="submenu coupons">
                                     <span class="fa fa-caret-up"></span>
                                     <div class="tree">
                                         {{category_coupons_list|raw}}

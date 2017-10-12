@@ -1,6 +1,7 @@
 {{ use({'Fotorama':'kotchuprik/fotorama/Widget'}) }}
 <section class="store_photos">
     <div class="container">
+        <h3>Фото и видео {{ current_store.name }}</h3>
         {% set gel=fotorama_begin({
             'version' : '4.5.2',
             'options' : {

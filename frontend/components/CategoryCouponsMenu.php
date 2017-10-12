@@ -2,6 +2,7 @@
 
 namespace frontend\components;
 
+use yii;
 use yii\base\Widget;
 use frontend\modules\coupons\models\Coupons;
 
@@ -28,7 +29,8 @@ class CategoryCouponsMenu extends Widget
         foreach ($categories as $category) {
             $out .= '<li>';
 
-            if ($currentCategoryId != null && $category['uid'] == $currentCategoryId) {
+            if ($currentCategoryId != null && $category['uid'] == $currentCategoryId
+                || $category['uid'] == 0 && Yii::$app->request->pathinfo == 'coupons') {
                 $class = 'class="active title"';
                 $classCount = 'class="active-count title"';
                 $out .=  '<span ' . $class . '">' . $category['name'] . "</span> <span ".$classCount.">(" .

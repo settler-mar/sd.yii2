@@ -9,6 +9,8 @@ use frontend\modules\payments\models\Payments;
 use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
+use yii;
+use frontend\modules\cache\models\Cache;
 
 
 class TaskController extends Controller
@@ -177,7 +179,8 @@ class TaskController extends Controller
    */
   public function actionMakeRating()
   {
-    $dateStart = date('Y-m-d H:i:s', strtotime("-3 months", time()));
+    $interval = Yii::$app->params['rating_calculate_interval'];
+    $dateStart = date('Y-m-d H:i:s', strtotime("-".($interval ? $interval : 3)." months", time()));
     $reviewsCount = Reviews::find()
       ->where([
         '>', 'added', $dateStart])
@@ -209,16 +212,15 @@ class TaskController extends Controller
          GROUP BY `cws3`.`uid`)
          `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
          SET 
-         ifnull(`store_rating`.`rating_geometr`, 0)
+         rating = ifnull(`store_rating`.`rating_geometr`, 0)
          '.
          ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
-         ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '');
+         ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '')
+         .'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)' ;
       //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
-
-
-
+    Cache::clear();
 
   }
 }

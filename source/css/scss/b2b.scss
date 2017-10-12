@@ -189,8 +189,9 @@ a{
 .users-stores {
   width: 100%;
   th, tr {
-    padding: 5px;
+    padding: 15px 5px 5px;
     text-align: center;
+    vertical-align: top;
   }
   &__stores-points {
     text-align:center;
@@ -210,8 +211,9 @@ a{
     &_row {
       border-bottom: 1px solid $login_back_color;
       th, tr {
-        padding: 5px;
+        padding: 15px 5px 5px;
         text-align: center;
+        vertical-align: top;
       }
     }
     &_work_time {
@@ -228,8 +230,6 @@ a{
       }
       }
     }
-
-
   }
 
 }

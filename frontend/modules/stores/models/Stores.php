@@ -78,8 +78,9 @@ class Stores extends \yii\db\ActiveRecord
       [['name', 'route', 'url', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video'], 'string'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related'], 'integer'],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
       [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
+      [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
@@ -131,6 +132,9 @@ class Stores extends \yii\db\ActiveRecord
       'related' => 'Связанный магазин',
       'is_offline' => 'Тип магазина',
       'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
+      'rating' => 'Рейтинг',
+      'no_rating_calculate' => 'Не пересчитывать рейтинг',
+      'cash_number' => 'Номер чека',
     ];
   }
 

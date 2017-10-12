@@ -179,12 +179,17 @@ $images: "/images";
         opacity: 0;
         background-color: #282b37;
         color: #fff;
-        width: 250px;
+        //width: 250px;
+        width: 330px;
         z-index: 2;
         font-weight: 500;
         margin-top: 20px;
         margin-left: -85px;
         box-shadow: 0 0 10px #1F222B;
+        &.coupons {
+          width: 290px;
+        }
+
 
         .tree {
           padding: 20px 10px;
@@ -217,12 +222,14 @@ $images: "/images";
 
               &:hover > ul {
                 position: absolute;
-                left: 230px;
+                //left: 230px;
+                left: 310px;
                 top: -9px;
                 background-color: #282b37;
                 border-left: 2px solid #20232d;
                 padding: 10px 0 10px 0;
-                width: 320px;
+                //width: 320px;
+                width: 380px;
                 display: block;
               }
 
@@ -2691,7 +2698,10 @@ div .popup {
     padding: 0;
   }
   &__point-selects {
-    margin: 20px 0;
+    margin: 60px 0 20px;
+    //.select2-selection.select2-selection--single {
+    //  width: 100%;
+    //}
   }
   &__points {
     padding: 0;
@@ -2735,8 +2745,12 @@ div .popup {
   }
 }
 section.store_photos {
-  margin-top: 33px;
+  text-align: center;
+  margin-top: 10px;
   margin-bottom: 33px;
+  .fotorama {
+    margin-top: 60px;
+  }
 }
 
 @import  "../external/queries";
