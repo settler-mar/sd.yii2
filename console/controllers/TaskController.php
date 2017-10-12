@@ -171,7 +171,10 @@ class TaskController extends Controller
     //2) делаем сортирову по дате и перепрописываем uid
     //Пока отбой
   }
-  
+
+  /**
+   * Пересчет рейтинга магазинов
+   */
   public function actionMakeRating()
   {
     $dateStart = date('Y-m-d H:i:s', strtotime("-3 months", time()));
@@ -182,7 +185,7 @@ class TaskController extends Controller
       ->count();
     $paymentsCount = Payments::find()
       ->where(['>', 'action_date', $dateStart])
-      ->andWhere(['status' => 2])
+      ->andWhere(['status' => [0,2]])
       ->count();
 
     $sql = 'UPDATE `cw_stores` `cws`
@@ -205,9 +208,11 @@ class TaskController extends Controller
          WHERE `cwp`.`status` = 2 and `cwp`.`action_date` > "' . $dateStart . '"
          GROUP BY `cws3`.`uid`)
          `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
-         SET `cws`.`rating` = ifnull(`store_rating`.`rating_geometr`, 0)'.
-         ($reviewsCount > 0 ? '+ (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
-         ($paymentsCount > 0 ? '+ (10 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '');
+         SET 
+         ifnull(`store_rating`.`rating_geometr`, 0)
+         '.
+         ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
+         ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '');
       //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
