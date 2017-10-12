@@ -626,10 +626,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $code_src = $generator->getBarcode($this->all_params['user_code'], $generator::TYPE_CODE_128);
      */
 
-    $centerCode = 505; //центр по горизонтали для вставки кода
-    $insertY=375; //положение кода по вертикали
+    $centerCode = 160; //центр по горизонтали для вставки кода
+    $insertY=335; //положение кода по вертикали
     $insertH=100; //высота штрихкода
-    $textY=505; //положение текста по вертикали
+    $textY=460; //положение текста по вертикали
     $fontSize=20; //Размер шрифта текста
     $font='/phpfont/DejaVuSerif.ttf'; // шрифт
 
@@ -649,8 +649,11 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $bW = ImageSX($barcode);
       $bH = ImageSY($barcode);
 
-      $fon = imageCreateFromJpeg($bp.'/images/barcode_file.jpg');
-      //$fon = ImageCreateFromPNG($bp.'/image/barcode_file.png');
+      //$fon = imageCreateFromJpeg($bp.'/images/barcode_file.jpg');
+      $fon = ImageCreateFromPNG($bp.'/images/barcode_file.png');
+      imagealphablending($fon, true);
+      imagecolortransparent($fon, 0xFF00FF);
+      imagesavealpha($fon, true);
 
       //вставляем код на подложку
       $insertX=$centerCode-$bW/2;
@@ -671,6 +674,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
       $x=$centerCode-$textSize[2]/2;
       imagettftext($fon, $fontSize, 0, $x, $textY, $black, $font, $code);
+
+      /*header('Content-Type: image/png');
+      ImagePNG($fon);
+      exit;*/
 
       ImagePNG($fon,$bp . $path.$file); // вывод в браузер
     }

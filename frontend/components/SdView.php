@@ -39,7 +39,7 @@ class SdView extends View
 
       $this->all_params['user_code']=$user->barcode;
       $code_src=$user->barcodeImg;
-      $this->all_params['user_code_img']='<img src="'.$code_src.'">';
+      $this->all_params['user_code_img']=$code_src;
 
       $this->all_params['fav_ids']=UsersFavorites::getUserFav();
     }
