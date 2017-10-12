@@ -21,9 +21,9 @@ class CategoryCouponsMenu extends Widget
           'name' => 'Все купоны',
           'count' => Coupons::activeCount(),
           'route' => '',
+          'uid' => 0
         ]];
         $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
-        //ddd($categories);
         $out = '<ul data-mcs-theme="dark">';
         foreach ($categories as $category) {
             $out .= '<li>';
