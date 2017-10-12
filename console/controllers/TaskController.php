@@ -10,6 +10,7 @@ use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
 use yii;
+use frontend\modules\cache\models\Cache;
 
 
 class TaskController extends Controller
@@ -219,9 +220,7 @@ class TaskController extends Controller
       //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
-
-
-
+    Cache::clear();
 
   }
 }
