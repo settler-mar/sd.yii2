@@ -1,3 +1,6 @@
+p em {
+  font-style: italic;
+}
 .accordion{
   margin-bottom: 3px;
   //max-width: 935px;
@@ -68,6 +71,7 @@
       border: 1px solid #D2D6DE;
       border-top: 0;
       border-radius: 0 0 3px 3px;
+      font-size: 14px;
       //max-width: 750px;
     }
   }

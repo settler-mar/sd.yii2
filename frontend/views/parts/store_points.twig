@@ -2,29 +2,29 @@
 <section class="store-points">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 store-points__info">
+            <div class="col-sm-12 store-points__info">
 
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
                     {#одна точка#}
-                    <h3>Адрес магазина {{ current_store.name }} в {{store_points.cities[0] }}</h3>
+                    <h3>Адрес торговой точки {{ current_store.name }} в {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
                     {#несколько точек в одном городе #}
-                    <h3>Адреса магазинов {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
+                    <h3>Адреса торговых точек {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
 
                 {% elseif store_points.countries|length == 1   %}
                     {#несколько точек в одной стpане #}
-                    <h3>Сеть магазинов {{ current_store.name }} в {{store_points.points[0].country }}</h3>
-                    <div class="col-sm-12 store-points__point-selects">
+                    <h3>Адреса торговых точек {{ current_store.name }} в {{store_points.points[0].country }}</h3>
+                    <div class="row store-points__point-selects">
                         <select hidden name="store_point_country" id="store_point_country">
                             <option value=""></option>
                             <option value="{{ store_points.points[0].country}}" selected>{{ store_points.points[0].country }}</option>
                         </select>
-                        <div class="col-sm-2">
+                        <div c="col-sm-2">
                             <label for="store_point_city">Выберите город</label>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6>
                             <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
@@ -38,12 +38,12 @@
 
                     {% else %}
                     {#точки в разных странах#}
-                    <h3>Адреса магазинов {{ current_store.name }}</h3>
-                    <div class="col-sm-12 store-points__point-selects">
+                    <h3>Адреса торговых точек {{ current_store.name }}</h3>
+                    <div class="row store-points__point-selects">
                         <div class="col-sm-2">
                             <label for="store_point_country">Выберите страну</label>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <select class="form-control select2-select" data-placeholder="Страна" name="store_point_country" id="store_point_country">
                                 <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
                                 {% for country, country_arr in store_points.countries %}
@@ -51,10 +51,10 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 col-sm-offset-1">
                             <label for="store_point_">Выберите город</label>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
