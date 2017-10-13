@@ -288,6 +288,21 @@ $functionsList=[
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';
   },
+  '_include'=>function ($part) {
+    $path=Yii::getAlias('@app').'/views/parts/'.$part.'.twig';
+
+    if(!is_readable($path)){
+      return '<pre>Фаил не найден '.$path.'</pre>';
+    }
+
+    $output=file_get_contents($path);
+    $output=Yii::$app->TwigString->render(
+      $output,
+      Yii::$app->params['all_params']
+    );
+
+    return $output;
+  },
   'test_image'=>function ($path) {
     if(strlen($path)<5) return false;
     if(strpos($path,'http')!==false) return true;
