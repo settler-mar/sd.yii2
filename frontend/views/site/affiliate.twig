@@ -1,27 +1,27 @@
 {% include 'parts/breadcrumbs.twig' %}
-<section class="affiliate section-padding">
+<section class="affiliate section-padding content-wrapper">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h3>Партнёрская программа</h3>
+        <h1>Партнёрская программа</h1>
         <p>
           Приглашение друзей и знакомых — это ещё один верный способ увеличить свой доход в нашем сервисе. Взгляните ниже на принцип работы партнёрской программы и <a href="#registration" class="ignore-hash">регистрируйтесь</a>, чтобы опробовать всё лично.
         </p>
       </div>
       <div class="col-md-12">
-        <h3 class="text-center">
+        <h2 class="text-center">
           {% if h1 %}
           {{ h1 | raw}}
           {% else %}
             Принцип работы партнёрской программы
           {% endif %}
-        </h3>
+        </h2>
       </div>
       
       {% include 'parts/principle-affiliate.twig' %}
 
       <div class="col-md-12">
-        <h3 class="text-center">Способы приглашения</h3>
+        <h2 class="text-center">Способы приглашения</h2>
       </div>
       <div class="col-md-4 ways-invitation">
         <div class="intro-icon">
