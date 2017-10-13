@@ -261,7 +261,7 @@ class Stores extends \yii\db\ActiveRecord
       return self::find()
         ->where($where)
         ->one();
-    }, $cache->dafaultDuration, $dependency);
+    }, $cache->defaultDuration, $dependency);
     
     return $data;
   }
@@ -279,7 +279,7 @@ class Stores extends \yii\db\ActiveRecord
 
     $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
       return self::findOne($id);
-    }, $cache->dafaultDuration, $dependency);
+    }, $cache->defaultDuration, $dependency);
     
     return $data;
   }
