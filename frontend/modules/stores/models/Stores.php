@@ -261,7 +261,7 @@ class Stores extends \yii\db\ActiveRecord
       return self::find()
         ->where($where)
         ->one();
-    }, $cache->dafaultDuration, $dependency);
+    }, $cache->defaultDuration, $dependency);
     
     return $data;
   }

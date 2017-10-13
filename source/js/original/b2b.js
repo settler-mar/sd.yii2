@@ -38,3 +38,17 @@ function  checkDisabled(row, checked, className) {
     inputsText.attr('disabled', checked);
     //inputsCheckbox.attr('disabled', checked);
 }
+
+$('#payments_select_store').on('change', function(){
+    var points = $('option:selected', this).attr('data-points');
+    var selectPoints = document.getElementById('payments_select_store_point');
+    var options = '';
+    if (points) {
+        points = JSON.parse(points);
+        options = '<option></option>';
+        points.forEach(function(item){
+            options += '<option value="'+item.id+'">'+item.name+' '+item.country+' '+item.address+'</options>';
+        });
+    }
+    selectPoints.innerHTML = options;
+});

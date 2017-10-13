@@ -91,6 +91,14 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStore()
+    {
+        return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+
     public function afterFind()
     {
         $this->work_time_details = json_decode($this->work_time_json, true);
