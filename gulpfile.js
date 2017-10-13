@@ -136,6 +136,7 @@ gulp.task('jsadmin', compileJs([
 
 gulp.task('jsb2b', compileJs([
         //paths.source.js+'/external/jquery-1.11.2.min.js',
+        paths.source.js+'/external/bootstrap.min.js',
         paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/jquery.ajaxForm.js',

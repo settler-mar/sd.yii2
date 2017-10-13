@@ -70,7 +70,7 @@ class Payments extends \yii\db\ActiveRecord
       'action_id' => 'Код действия',
       'affiliate_id' => 'Affiliate ID',
       'user_id' => 'Пользователь',
-      'order_price' => 'Order Price',
+      'order_price' => 'Сумма заказа',
       'old_order_price' => 'Old Order Price',
       'reward' => 'Вознаграждение',
       'old_reward' => 'Старое Вознаграждение',

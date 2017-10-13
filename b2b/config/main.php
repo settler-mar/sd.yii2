@@ -73,6 +73,9 @@ return [
             'class' => 'app\modules\api\Module',
 
         ],
+        'payments' => [
+            'class' => 'b2b\modules\payments\Module',
+        ],
     ],
     //для возврата с формы login на предыдущую страницу
     'on beforeAction' => function (yii\base\ActionEvent $e) {

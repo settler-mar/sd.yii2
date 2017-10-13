@@ -1,0 +1,53 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="payments-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'is_showed').textInput()|raw }}
+
+        {{ form.field(model, 'action_id').textInput()|raw }}
+
+        {{ form.field(model, 'affiliate_id').textInput()|raw }}
+
+        {{ form.field(model, 'user_id').textInput()|raw }}
+
+        {{ form.field(model, 'order_price').textInput()|raw }}
+
+        {{ form.field(model, 'reward').textInput()|raw }}
+
+        {{ form.field(model, 'cashback').textInput()|raw }}
+
+        {{ form.field(model, 'status').textInput()|raw }}
+
+        {{ form.field(model, 'click_date').textInput()|raw }}
+
+        {{ form.field(model, 'action_date').textInput()|raw }}
+
+        {{ form.field(model, 'status_updated').textInput()|raw }}
+
+        {{ form.field(model, 'closing_date').textInput()|raw }}
+
+        {{ form.field(model, 'cpa_id').textInput()|raw }}
+
+        {{ form.field(model, 'additional_id').textInput()|raw }}
+
+        {{ form.field(model, 'ref_bonus_id').textInput()|raw }}
+
+        {{ form.field(model, 'ref_bonus').textInput()|raw }}
+
+        {{ form.field(model, 'ref_id').textInput()|raw }}
+
+        {{ form.field(model, 'loyalty_status').textInput()|raw }}
+
+        {{ form.field(model, 'order_id').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'shop_percent').textInput()|raw }}
+
+        {{ form.field(model, 'kurs').textInput()|raw }}
+
+        {{ form.field(model, 'admin_comment').textInput({'maxlength':true})|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
