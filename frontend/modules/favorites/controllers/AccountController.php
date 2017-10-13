@@ -69,13 +69,18 @@ class AccountController extends \yii\web\Controller
 
 
     $cacheName = 'account_favorites_' . \Yii::$app->user->id;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'account_favorites';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    
     $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
         return Stores::items()
           ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
           ->orderBy('cuf.added DESC')
           ->all();
-    });
+    }, \Yii::$app->cache->defaultDuration, $dependency);
+    
     $contentData["favids"] = array_column($contentData["favorites"], 'uid');
 
     return $this->render('index', $contentData);

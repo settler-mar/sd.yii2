@@ -220,7 +220,11 @@ class TaskController extends Controller
       //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
-    Cache::clear();
+    Cache::deleteName('top_12_stores');
 
+    Cache::clearName('catalog_stores');
+    Cache::clearName('additional_stores');
+    Cache::clearName('account_favorites');
+    Cache::clearName('stores_by_column');
   }
 }

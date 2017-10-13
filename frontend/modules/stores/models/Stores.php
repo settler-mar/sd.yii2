@@ -253,11 +253,16 @@ class Stores extends \yii\db\ActiveRecord
       $where['route']=$route;
     }
     $cache = Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'stores_by_column';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
     $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
       return self::find()
         ->where($where)
         ->one();
-    });
+    }, $cache->dafaultDuration, $dependency);
+    
     return $data;
   }
 
@@ -268,9 +273,14 @@ class Stores extends \yii\db\ActiveRecord
   public static function byId($id)
   {
     $cache = Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'stores_by_column';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
     $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
       return self::findOne($id);
-    });
+    }, $cache->dafaultDuration, $dependency);
+    
     return $data;
   }
 
@@ -514,6 +524,7 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('additional_stores');
     Cache::clearName('category_tree');
     Cache::clearName('coupons_counts');
+    Cache::clearName('account_favorites');
     //ключи
     Cache::deleteName('total_all_stores');
     Cache::deleteName('top_12_stores');
