@@ -1,6 +1,5 @@
-<div class="col-md-12">
-    <h2>ВАШ ЛИЧНЫЙ ШТРИХКОД</h2>
-</div>
+<h2>Ваш личный штрихкод</h2>
+
 <div class="affiliate row">
     <div class="col-md-4 ways-invitation">
         <img src="{{ user_code_img }}" alt="" width="230">
@@ -12,10 +11,7 @@
                 <span class="icon icon-download" aria-hidden="true" data-icon=""></span>
             </div>
             <div class="intro-content">
-                <h5><a href="{{ user_code_img }}" download>Сохрани</a></h5>
-                <p style="margin-top: -5px;">
-                    себе что б было всегда под рукой
-                </p>
+                <p class="intro-content_header"><a href="{{ user_code_img }}" download>Сохранить в телефон или ПК</a></p>
             </div>
         </div>
         <div class="col-md-12" style="margin-top: 35px">
@@ -23,16 +19,16 @@
                 <span data-icon="" class="icon"></span>
             </div>
             <div class="intro-content">
-                <h5 style="white-space: nowrap;">Поделись с родными или друзьями</h5>
+                <p  class="intro-content_header">Поделиться с родными или друзьями</p>
 
                 <div
                         class="share42init accauntSoc accauntSoc_32"
                         data-socials="1,0,2,4,3"
                         data-icon-type="css"
-                        data-title="{{ _constant('affiliate_share_title')}}"
-                        data-description="{{ _constant('affiliate_share_description')}}"
-                        data-image="https://secretdiscounter.ru{{images_path}}templates/woman_600.png"
-                        data-url="https://secretdiscounter.ru/?r={{user_id}}"
+                        data-title="{{ _constant('affiliate_offline_title')}}"
+                        data-description="{{ _constant('affiliate_offline_description')}}"
+                        data-image="https://secretdiscounter.ru{{ user_code_img }}"
+                        data-url="https://secretdiscounter.ru/offline?r={{user_id}}"
                 ></div>
                 <script type="text/javascript" src="/js/share42.js"></script>
             </div>

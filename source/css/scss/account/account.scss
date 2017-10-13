@@ -864,6 +864,12 @@ table {
                     }
                 }
             }
+
+            .intro-content_header{
+                font-size: 1.3rem;
+                font-weight: bold;
+                white-space: nowrap;
+            }
         }
     } 
 
@@ -874,6 +880,7 @@ table {
     .ways-invitation {
         span.icon {
             font-size: 50px;
+            line-height: 50px;
             color: #1b2527;
         }
 
