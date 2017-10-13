@@ -9,7 +9,6 @@ use frontend\modules\meta\models\Meta;
 use yii\twig\ViewRenderer;
 use frontend\modules\reviews\models\Reviews;
 
-
 class SdView extends View
 {
   public $h1;
@@ -38,10 +37,9 @@ class SdView extends View
       $this->all_params['balance']=$user->getBalance();
       $this->all_params['user_id']=Yii::$app->user->id;
 
-      $this->all_params['user_code']='SD-'.str_pad(Yii::$app->user->id, 8, "0", STR_PAD_LEFT);
-      $code_src='https://barcode.tec-it.com/barcode.ashx?data='.$this->all_params['user_code'].'&code=Code128&dpi=96';
-      $this->all_params['user_code_img']='<img src="'.$code_src.'">';
-
+      $this->all_params['user_code']=$user->barcode;
+      $code_src=$user->barcodeImg;
+      $this->all_params['user_code_img']=$code_src;
 
       $this->all_params['fav_ids']=UsersFavorites::getUserFav();
     }
