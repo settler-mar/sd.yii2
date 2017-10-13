@@ -61,6 +61,15 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
             [['name', 'address', 'country', 'city', 'phone'], 'string', 'max' => 255],
+            [['password'], 'required', 'when' => function () {
+                return $this->isNewRecord === true;
+            }],
+            [['password'], 'string', 'max'=> 20, 'min' => 6],
+            [['password'], 'filter', 'filter' => function ($value) {
+                if (!empty($value)) {
+                    return Yii::$app->security->generatePasswordHash($value);
+                }
+            }],
             [['access_code'], 'string', 'max' => 150],
             [['coordinate_y'], 'number', 'max'=> 90, 'min' => -90],
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
@@ -88,6 +97,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'coordinate_y' => 'Координата Y',
             'store_name' => 'Магазин',
             'work_time_details' => 'Время работы',
+            'password' => 'Пароль',
         ];
     }
 
@@ -123,6 +133,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             $this->access_code = Yii::$app->getSecurity()->generateRandomString(100);
         }
         $workDays = $this->work_time_details;
+
 
         if (count($workDays) == 1 && $this->checkBoxChecked($workDays[0]) == 0) {
             //если только один день и чек-боксы не выбраны, то просто null
