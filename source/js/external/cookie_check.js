@@ -26,10 +26,13 @@
 
         init: function() {
             this.isMobile=!!isMobile.any();
-            this.testCookies();
+            /*this.testCookies();
             if(this.isMobile && !this.cookiesEnabled){
                 this.showPopup();
             }else{
+                this.testAd();
+            }*/
+            if(!this.isMobile){
                 this.testAd();
             }
         },
