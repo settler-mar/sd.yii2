@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\cache\models\Cache;
+use common\components\Help;
 
 /**
  * This is the model class for table "b2b_stores_points".
@@ -25,6 +26,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
      */
     public $store_name;
     public $work_time_details;
+    public $password_no_hash;
 
     /**
      * @inheritdoc
@@ -66,6 +68,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             }],
             [['password'], 'string', 'max'=> 20, 'min' => 6],
             [['password'], 'filter', 'filter' => function ($value) {
+                $this->password_no_hash = $value;
                 if (!empty($value)) {
                     return Yii::$app->security->generatePasswordHash($value);
                 }
@@ -98,6 +101,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'store_name' => 'Магазин',
             'work_time_details' => 'Время работы',
             'password' => 'Пароль',
+            'login' => 'Логин',
         ];
     }
 
@@ -117,10 +121,18 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         Cache::deleteName('store_store_points_' . $this->store_id);
+        if ($this->password) {
+            Yii::$app->session->addFlash('info', ($insert ? 'Создан' : 'Изменён') . ' пользователь.</br>'.
+              ' Логин ' . $this->login . '</br> Пароль ' . $this->password_no_hash);
+        }
     }
     public function afterDelete()
     {
         Cache::deleteName('store_store_points_' . $this->store_id);
+    }
+    public function getLogin()
+    {
+        return $this->store->route . '_'.Help::str2url($this->name);
     }
 
     public function beforeValidate()

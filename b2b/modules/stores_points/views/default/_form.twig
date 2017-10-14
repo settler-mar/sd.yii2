@@ -23,6 +23,10 @@
             </div>
         </div>
 
+        {% if model.isNewRecord == false  %}
+            {{ form.field(model, 'login').textInput({'readOnly':true})|raw }}
+        {% endif %}
+
         {{ form.field(model, 'password').passwordInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
