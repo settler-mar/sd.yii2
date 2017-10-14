@@ -29,12 +29,20 @@ p em {
       font: normal normal normal 14px/1 FontAwesome;
       color: #e6ae03;
       font-size: 14px;
+      margin-top: 4px;
     }
     .angle-down .icon:before {
       content: "\f107";
     }
     .angle-up .icon:before {
       content: "\f106";
+    }
+
+    h1,h2,h3,h4,h5,h6{
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
     }
   }
 
@@ -791,4 +799,54 @@ form > .kv-drp-container{
   border: 1px solid gray;
   padding: 15px;
   font-size: 14px;
+}
+
+
+//Фикс заголовков
+.content-wrapper {
+  h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+    padding: 0 !important;
+  }
+  h2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h4 {
+    display: block;
+    -webkit-margin-before: 1.33em;
+    -webkit-margin-after: 1.33em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h5 {
+    display: block;
+    font-size: 0.83em;
+    -webkit-margin-before: 1.67em;
+    -webkit-margin-after: 1.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
 }

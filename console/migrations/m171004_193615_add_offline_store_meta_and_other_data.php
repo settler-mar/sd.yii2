@@ -8,6 +8,7 @@ class m171004_193615_add_offline_store_meta_and_other_data extends Migration
     public function safeUp()
     {
       $this->execute('UPDATE `cw_cpa_link` SET `affiliate_id` = `id` WHERE cpa_id!=1 ');
+
       $this->alterColumn('cw_stores','route',$this->string(100)->notNull());
       $this->dropIndex('cw_stores_route_idx','cw_stores');;
       $this->createIndex('cw_stores_route_idx','cw_stores',['route','is_offline']);;
