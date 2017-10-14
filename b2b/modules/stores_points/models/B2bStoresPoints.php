@@ -58,7 +58,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 }
                 return $value;
             }, 'skipOnArray' => true],
-            [['store_id', 'name', 'address'], 'required'],
+            [['store_id', 'name', 'address', 'login'], 'required'],
             [['store_id'], 'integer', 'message' => 'Неправильный магазин'],
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
@@ -73,6 +73,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                     return Yii::$app->security->generatePasswordHash($value);
                 }
             }],
+            [['login'], 'unique'],
             [['access_code'], 'string', 'max' => 150],
             [['coordinate_y'], 'number', 'max'=> 90, 'min' => -90],
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
@@ -130,7 +131,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     {
         Cache::deleteName('store_store_points_' . $this->store_id);
     }
-    public function getLogin()
+
+    /**
+     * @return string формируем логин
+     */
+    public function makeLogin()
     {
         return $this->store->route . '_'.Help::str2url($this->name);
     }
@@ -143,6 +148,9 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         if ($this->isNewRecord) {
             $this->created_at = date('Y-m-d H:i:s');
             $this->access_code = Yii::$app->getSecurity()->generateRandomString(100);
+        }
+        if (!$this->login) {
+            $this->login = $this->makeLogin();
         }
         $workDays = $this->work_time_details;
 
@@ -224,6 +232,11 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             return $result;
         });
         return $data;
+    }
+    
+    public static function byLogin($login)
+    {
+        return self::findOne(['login' => $login]);
     }
 
 }
