@@ -302,7 +302,13 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       if (!file_exists($bp . $path)) {
         mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
       }
-      $img = (new Image($photo->tempName));
+
+      if(exif_imagetype($photo->tempName)==2){
+        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+      }else {
+        $img = (new Image($photo->tempName));
+      }
+
       $img
         ->fitToWidth(500)
         ->saveAs($bp . $this->photo);
