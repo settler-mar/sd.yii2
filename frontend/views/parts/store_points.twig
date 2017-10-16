@@ -2,7 +2,7 @@
 <section class="store-points">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 store-points__info">
+            <div class="store-points__info">
 
                 {#шапка от условий#}
                 {% if store_points.points|length == 1 %}
@@ -68,9 +68,7 @@
 
                 {% endif %}
                 {#вывод точек для всех условий #}
-                <div class="col-md-12 store-points__points {% if store_points.points|length == 1 %}single{% endif %} {% if no_visible == 1 %}hidden{% endif %}" id="store-points">
-                    <h3>Адреса магазина {{ current_store.name }}</h3>
-
+                <div class="store-points__points {% if store_points.points|length == 1 %}single{% endif %} {% if no_visible == 1 %}hidden{% endif %}" id="store-points">
                     <table class="store-points__points_table" >
                         <thead >
                             <tr class="store-points__points_head">

@@ -263,7 +263,7 @@
             <a name="reviews"></a>
             <div class="col-sm-12 col-md-12">
                 <div class="comments">
-                    <h3>Отзывы</h3>
+                    <h3>Отзывы о {{ current_store.name }}</h3>
                     {% if store_reviews|length > 0 %}
                     <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
                         {% for review in store_reviews %}
