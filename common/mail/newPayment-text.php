@@ -1,1 +1,1 @@
-Здравствуйте! <?=$payment->action_date;?> Вами был сделан заказ (ID SecretDiscounter: <?=$payment->uid;?>) в <?=$payment->store->name;?>, за который Вам было начислено <?=$payment->cashback;?> р. кэшбэка.
+Здравствуйте! Ваш кэшбэк на <?=$payment->cashback;?> руб. в <?=$payment->store->name;?> (заказ №<?=$payment->uid;?>) зафиксирован в нашей системе.

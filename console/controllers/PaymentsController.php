@@ -131,7 +131,7 @@ class PaymentsController extends Controller
           $db_payment->is_showed = 1;
           $db_payment->affiliate_id = $payment['advcampaign_id'];
           $db_payment->user_id = $payment['subid'];
-          $db_payment->order_price = $payment['cart'];
+          $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
           $db_payment->reward = $reward;
           $db_payment->cashback = $cashback;
           $db_payment->status = $status;
@@ -192,7 +192,7 @@ class PaymentsController extends Controller
                 )
                 ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
                 ->setTo($user->email)
-                ->setSubject(Yii::$app->name . ': Новый кэшбэк')
+                ->setSubject(Yii::$app->name . ': Зафиксирован новый кэшбэк')
                 ->send();
             } catch (\Exception $e) {
             }
