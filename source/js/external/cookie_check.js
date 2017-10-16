@@ -45,7 +45,7 @@
             var $adDetect = $('.ad-detect:visible').length;
             this.adblockEnabled = ($adDetect>0);
 
-            if((!this.adblockEnabled || !this.cookiesEnabled)){
+            if((!this.adblockEnabled)){
                 this.showPopup();
             }
         },
