@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\cache\models\Cache;
+use common\components\Help;
 
 /**
  * This is the model class for table "b2b_stores_points".
@@ -25,6 +26,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
      */
     public $store_name;
     public $work_time_details;
+    public $password_no_hash;
 
     /**
      * @inheritdoc
@@ -61,15 +63,21 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
             [['name', 'address', 'country', 'city', 'phone'], 'string', 'max' => 255],
-            [['password'], 'required', 'when' => function () {
-                return $this->isNewRecord === true;
-            }],
+            [['password'], 'required', 'on' => 'insert'],
             [['password'], 'string', 'max'=> 20, 'min' => 6],
             [['password'], 'filter', 'filter' => function ($value) {
+                $this->password_no_hash = $value;
                 if (!empty($value)) {
                     return Yii::$app->security->generatePasswordHash($value);
                 }
             }],
+            [['login'], 'filter', 'filter' => function ($value) {
+                if ($value == '') {
+                    $value = $this->makeLogin();
+                }
+                return $value;
+            }],
+            [['login'], 'unique'],
             [['access_code'], 'string', 'max' => 150],
             [['coordinate_y'], 'number', 'max'=> 90, 'min' => -90],
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
@@ -98,6 +106,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'store_name' => 'Магазин',
             'work_time_details' => 'Время работы',
             'password' => 'Пароль',
+            'login' => 'Логин',
         ];
     }
 
@@ -117,10 +126,22 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         Cache::deleteName('store_store_points_' . $this->store_id);
+        if ($this->password) {
+            Yii::$app->session->addFlash('info', ($insert ? 'Создан' : 'Изменён') . ' пользователь.</br>'.
+              ' Логин ' . $this->login . '</br> Пароль ' . $this->password_no_hash);
+        }
     }
     public function afterDelete()
     {
         Cache::deleteName('store_store_points_' . $this->store_id);
+    }
+
+    /**
+     * @return string формируем логин
+     */
+    public function makeLogin()
+    {
+        return $this->store->route . '_'.Help::str2url($this->name);
     }
 
     public function beforeValidate()
@@ -213,5 +234,79 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         });
         return $data;
     }
+    
+    public static function byLogin($login)
+    {
+        return self::findOne(['login' => $login]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token)
+    {
+        //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['auth_key' => $token]);
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id]);
+    }
+
+    public static function writeIdentity($id)
+    {
+        $token = Yii::$app->security->generateRandomString(20);
+        $user = self::findIdentity($id);
+        if ($user) {
+            self::getDb()->createCommand()->update(self::tableName(), [
+              'ip' => $_SERVER["REMOTE_ADDR"],
+              'last_login' => date('Y-m-d H:i:s'),
+              'auth_key' => $token,
+            ], ['id' => $id])->execute();
+        }
+        $cookies = Yii::$app->response->cookies;
+
+        $cookies->add(new \yii\web\Cookie([
+          'name' => B2bStoresPointsLoginForm::$identity_cookie,
+          'value' => $token,
+        ]));
+    }
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
 
 }

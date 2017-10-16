@@ -28,7 +28,10 @@
         'brandUrl' : '/',
         'options' : {'class': 'navbar-inverse navbar-fixed-top'}
     })  }}
-    {% if app.user.isGuest %}
+    {% if app.storePointUser.id %}
+        {% set label='Выход ('~app.storePointUser.name~')' %}
+        {% set menuItems = [{'label': label, 'url': ['/stores_points/logout']}] %}
+    {% elseif app.user.isGuest %}
         {% set menuItems = [{'label': 'Вход в личный кабинет', 'url': ['/login']}] %}
         {% set menuItems = menuItems|merge([{'label': 'Подключить магазин', 'url': ['/registration']}]) %}
     {% else %}

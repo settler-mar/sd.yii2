@@ -5,6 +5,7 @@ namespace b2b\modules\stores_points\controllers;
 use Yii;
 use yii\validators\NumberValidator;
 use b2b\modules\stores_points\models\B2bStoresPoints;
+use b2b\modules\stores_points\models\B2bStoresPointsLoginForm;
 use b2b\modules\stores_points\models\B2bStoresPointsSearch;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
@@ -31,8 +32,14 @@ class DefaultController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['login', 'logout'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -73,7 +80,7 @@ class DefaultController extends Controller
      */
     public function actionCreate($route)
     {
-        $model = new B2bStoresPoints();
+        $model = new B2bStoresPoints(['scenario' => 'insert']);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->addFlash('info', 'Создана точка продаж');
@@ -147,6 +154,38 @@ class DefaultController extends Controller
         $model->delete();
         Yii::$app->session->addFlash('info', 'Точка продаж удалена');
         return $this->redirect(['/home']);
+    }
+    
+    public function actionLogin()
+    {
+        if (!Yii::$app->storePointUser->isGuest) {
+            //todo нужно поменять адрес
+            return $this->goHome();
+        }
+        $model = new B2bStoresPointsLoginForm();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            Yii::$app->session->addFlash('info', 'Поздравляем. Вы успешно вошли в систему!');
+            //todo также нужен адрес
+            return $this->goBack();
+        }
+        return $this->render('login', [
+          'model' => $model,
+        ]);
+    }
+
+
+    public function actionLogout()
+    {
+        $id = Yii::$app->storePointUser->id;
+        if ($id) {
+            B2bStoresPoints::getDb()->createCommand()->update(B2bStoresPoints::tableName(), [
+              'auth_key' => null,
+            ], ['id' => $id])->execute();
+            $cookies = Yii::$app->response->cookies;
+            $cookies->remove(B2bStoresPointsLoginForm::$identity_cookie);
+        }
+        return $this->goHome();
     }
 
     /**
