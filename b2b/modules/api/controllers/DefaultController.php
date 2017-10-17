@@ -165,11 +165,11 @@ class DefaultController extends Controller
 
     $sum = (float)$request->post('sum');
     if ($rates->is_percentage) {
-      $reward = $sum * $rates->our_size * $kurs / 100;
-      $cashback = $sum * $rates->size * $kurs / 100;
+      $reward = $sum * $rates->size * $kurs / 100;
+      $cashback = $sum * $rates->our_size * $kurs / 100;
     } else {
-      $reward = $rates->our_size;
-      $cashback = $rates->size;
+      $reward = $rates->size;
+      $cashback = $rates->our_size;
     }
     $cashback = round($cashback, 2);
     $reward = round($reward, 2);

@@ -152,6 +152,31 @@ class SiteController extends SdController
     ]);
   }
 
+  public function actionOffline($r=0){
+
+    $user=Users::find()
+      ->where(['uid'=>$r])
+      ->one();
+    if(!$user || !$user->getBarcodeImg(true)){
+      throw new HttpException(404 ,'User not found');
+    }
+
+    $page=Meta::find()
+      ->where(['page'=>'offline'])
+      ->asArray()
+      ->one();
+    if(!$page){
+      throw new HttpException(404 ,'User not found');
+    }
+
+    $page['user']=$user;
+    if(Yii::$app->request->isAjax){
+        throw new HttpException(404 ,'User not found');
+    }else{
+      $this->params['breadcrumbs'][] = $page['title'];
+      return $this->render('static_page',$page);
+    }
+  }
   /**
    * /faq
    * @return string

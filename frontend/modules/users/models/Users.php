@@ -625,7 +625,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     return 'SD-'.str_pad($this->uid, 8, "0", STR_PAD_LEFT);
   }
 
-  public function getBarcodeImg(){
+  public function getBarcodeImg($onlyTest=false){
     /*
       $code_src='https://barcode.tec-it.com/barcode.ashx?data='.$this->all_params['user_code'].'&code=Code128&dpi=96';
       $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
@@ -645,10 +645,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
     $bp = Yii::$app->getBasePath() . '/web';
     if (!file_exists($bp . $path)) {
+      if($onlyTest)return false;
       mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
     }
 
     if(!file_exists($bp . $path.$file)){
+      if($onlyTest)return false;
       $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
       $barcode = imagecreatefromstring($generator->getBarcode($code, $generator::TYPE_CODE_128));
       ImageAlphaBlending($barcode, true);

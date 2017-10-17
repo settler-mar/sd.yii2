@@ -83,15 +83,8 @@ $config= [
         'search' => 'search/default/index',
         'search/<action>' => '404',
 
-        'admin' => 'site/admin',
-        'faq' => 'site/faq',
-        'howitworks' => 'site/howitworks',
-        'terms' => 'site/terms',
-        'promo' => 'site/promo',
+        '<action:(faq|admin|howitworks|terms|promo|loyalty|recommendations|about|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
-        'loyalty' => 'site/loyalty',
-        'recommendations' => 'site/recommendations',
-        'about' => 'site/about',
         'account-blocked' => 'site/accountblocked',
 
         'fixing/<action:payment|stores>'=> 'fixing/<action>',
