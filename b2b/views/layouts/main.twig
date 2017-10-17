@@ -29,10 +29,12 @@
         'options' : {'class': 'navbar-inverse navbar-fixed-top'}
     })  }}
     {% if app.storePointUser.id %}
+        {% set menuItems = [{'label': 'Добавить платёж', 'url': ['/stores_points/payments']}] %}
         {% set label='Выход ('~app.storePointUser.name~')' %}
-        {% set menuItems = [{'label': label, 'url': ['/stores_points/logout']}] %}
+        {% set menuItems = menuItems|merge([{'label': label, 'url': ['/stores_points/logout']}]) %}
     {% elseif app.user.isGuest %}
-        {% set menuItems = [{'label': 'Вход в личный кабинет', 'url': ['/login']}] %}
+        {% set menuItems = [{'label': 'Личный кабинет', 'url': ['/login']}] %}
+        {% set menuItems = menuItems|merge([{'label': 'Личный кабинет точки продаж', 'url': ['/stores_points/login']}]) %}
         {% set menuItems = menuItems|merge([{'label': 'Подключить магазин', 'url': ['/registration']}]) %}
     {% else %}
         {%  set menuItems = [{'label': 'Личный кабинет', 'url': ['/home']}] %}

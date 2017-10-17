@@ -115,10 +115,10 @@ class Payments extends \yii\db\ActiveRecord
   {
     //для оффлайн шопов с формы
     if ($this->scenario == 'offline') {
-      $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
-      if ($store_point) {
-        $this->affiliate_id = $store_point->store->cpaLink->affiliate_id;
-        $this->cpa_id = $store_point->store->cpaLink->cpa_id;
+      $store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
+      if ($store) {
+        $this->affiliate_id = $store->cpaLink->affiliate_id;
+        $this->cpa_id = $store->cpaLink->cpa_id;
       } else {
         Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
         return false;
@@ -129,7 +129,7 @@ class Payments extends \yii\db\ActiveRecord
       $this->click_date = $dateNow;
       $this->action_date = $dateNow;
       $this->status_updated = $dateNow;
-      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store_point->store->hold_time . " day"));;
+      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));;
 
       //прочее
       $this->action_id = time();
@@ -168,7 +168,7 @@ class Payments extends \yii\db\ActiveRecord
         Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
         return false;
       }
-      $this->kurs = Yii::$app->conversion->getRUB(1, $store_point->store->currency);
+      $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
 
       if ($rates->is_percentage) {
         $reward = $this->order_price * $rates->size * $this->kurs / 100;
@@ -182,7 +182,7 @@ class Payments extends \yii\db\ActiveRecord
 
       $this->reward = $reward;
       $this->cashback = $cashback;
-      $this->shop_percent = $store_point->store->percent;
+      $this->shop_percent = $store->percent;
 
       return true;
     }
