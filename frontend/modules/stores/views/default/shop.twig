@@ -264,7 +264,7 @@
             <div class="col-sm-12 col-md-12">
                 <div class="comments">
                     <h3>Отзывы о {{current_store.name}}</h3>
-gi                    {% if store_reviews|length > 0 %}
+                    {% if store_reviews|length > 0 %}
                     <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
                         {% for review in store_reviews %}
                             <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">

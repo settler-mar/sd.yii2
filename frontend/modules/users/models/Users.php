@@ -302,7 +302,13 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       if (!file_exists($bp . $path)) {
         mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
       }
-      $img = (new Image($photo->tempName));
+
+      if(exif_imagetype($photo->tempName)==2){
+        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+      }else {
+        $img = (new Image($photo->tempName));
+      }
+
       $img
         ->fitToWidth(500)
         ->saveAs($bp . $this->photo);
@@ -634,7 +640,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     $font='/phpfont/DejaVuSerif.ttf'; // шрифт
 
     $code=$this->getBarcode();
-    $file=$code.'.png';
+    $file=$code.'.jpg';
     $path=$this->getUserPath($this->uid);
 
     $bp = Yii::$app->getBasePath() . '/web';
@@ -679,7 +685,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       ImagePNG($fon);
       exit;*/
 
-      ImagePNG($fon,$bp . $path.$file); // вывод в браузер
+      ImageJPEG($fon,$bp . $path.$file); // вывод в браузер
     }
 
     return $path.$file;

@@ -271,7 +271,6 @@ class PaymentsController extends Controller
     }
   }
 
-
   public function actionClaerDouble()
   {
     $sql = 'SELECT uid from `cw_payments` where action_id in (
