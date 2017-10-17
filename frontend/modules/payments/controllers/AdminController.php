@@ -212,7 +212,7 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    $model = new Payments();
+    $model = new Payments(['scenario'=>'online']);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);

@@ -49,7 +49,7 @@ return [
                 '/index' => '404',
                 '/home' =>'users/default/index',
                 '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
-                '/stores_points/<action:(create|update|delete|login|logout)>' => 'stores_points/default/<action>',
+                '/stores_points/<action:(create|update|delete|login|logout|payments)>' => 'stores_points/default/<action>',
                 '/api/<action:(login|categories|save|msg)>' => 'api/default/<action>',
                 '/api/<controller>/<action2>' => '404', //закрываем доступ
                 [
