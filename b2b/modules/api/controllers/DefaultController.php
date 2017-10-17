@@ -176,6 +176,7 @@ class DefaultController extends Controller
 
     $pay = new Payments();
     $pay->cpa_id = $cpa->cpa_id;
+    $pay->store_point_id = Yii::$app->session->get('point');
     $pay->click_date = date("Y-m-d H:i:s");
     $pay->action_date = date("Y-m-d H:i:s");
     $pay->status_updated = date("Y-m-d H:i:s");
