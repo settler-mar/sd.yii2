@@ -34,11 +34,13 @@ use b2b\modules\stores_points\models\B2bStoresPoints;
  * @property integer $loyalty_status
  * @property string $order_id
  * @property integer $shop_percent
+ * @property integer $store_point_id
  */
 class Payments extends \yii\db\ActiveRecord
 {
   public $category;
 
+  //public $store_point_id;
   /**
    * @inheritdoc
    */
@@ -54,7 +56,7 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
       [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-        'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
+        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id'], 'integer'],
       [['user_id'], 'integer', 'on' => 'online'],
       [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
         'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
@@ -105,6 +107,7 @@ class Payments extends \yii\db\ActiveRecord
       'shop_percent' => 'Shop Percent',
       'kurs' => 'kurs',
       'storeName' => 'Название магазина',
+      'store_point_id' => 'ID точки продаж',
     ];
   }
 
@@ -135,6 +138,8 @@ class Payments extends \yii\db\ActiveRecord
       $this->is_showed = 1;
       $this->status = 0;
 
+      $this->store_point_id = Yii::$app->storePointUser->id;
+
       //суммы
       $action = StoresActions::findOne([
         'uid' => $this->category,
@@ -146,6 +151,8 @@ class Payments extends \yii\db\ActiveRecord
         Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
         return false;
       }
+      $this->action_code = $action->uid;
+
       $tariff = $action->getTariffs()
         ->orderBy('uid')
         ->one();
@@ -176,6 +183,7 @@ class Payments extends \yii\db\ActiveRecord
       $this->reward = $reward;
       $this->cashback = $cashback;
       $this->shop_percent = $store_point->store->percent;
+
       return true;
     }
   }
