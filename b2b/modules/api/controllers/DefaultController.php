@@ -109,7 +109,7 @@ class DefaultController extends Controller
       return 'Ошибка получения данных магазина';
     }
 
-    if (!$request->post('order_number') && $store->order_number != 1) {
+    if (!$request->post('order_number') && $store->cash_number != 1) {
       return 'Не заполнен № чека';
     }
 
@@ -189,7 +189,7 @@ class DefaultController extends Controller
     $pay->order_price = $sum;
     $pay->reward = $reward;
     $pay->cashback = $cashback;
-    $pay->order_id = $store->order_number != 1 ? $request->post('order_number') : time();
+    $pay->order_id = $store->cash_number != 1 ? $request->post('order_number') : time();
     $pay->shop_percent = $store->percent;
     $pay->loyalty_status = $user->loyalty_status;
     $pay->kurs = $kurs;
