@@ -4,6 +4,7 @@ namespace frontend\modules\payments\models;
 
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\StoresActions;
 use frontend\modules\users\models\Users;
 use yii;
 use frontend\modules\cache\models\Cache;
@@ -52,21 +53,23 @@ class Payments extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer', 'on' => 'online'],
-      [['uid'], 'integer', 'on' => 'offline'],
+      [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
+        'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
       [['user_id'], 'integer', 'on' => 'online'],
-      [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline', 'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
+      [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
+        'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
       [['user_id'], 'filter', 'on' => 'offline', 'filter'=> function ($value) {
         $value = intval(preg_replace('/[^0-9\.]/', '', $value));
         return $value;
       }],
       [['user_id'], 'required'],
-      [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required', 'on' => 'online'],
+      [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
+        'on' => 'online'],
       [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
-      [['click_date', 'action_date', 'status_updated', 'closing_date','storeName','email'], 'safe', 'on' => 'online'],
-      [['category'], 'safe', 'on' => 'offline'],
+      [['click_date', 'action_date', 'status_updated', 'closing_date', 'storeName', 'email', 'category'], 'safe'],
+
       [['order_id'], 'string', 'max' => 50],
-      [['admin_comment'], 'string', 'max' => 255, 'on' => 'online'],
+      [['admin_comment'], 'string', 'max' => 255],
     ];
   }
 
@@ -107,6 +110,7 @@ class Payments extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
+    //для оффлайн шопов с формы
     if ($this->scenario == 'offline') {
       $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
       if ($store_point) {
@@ -116,19 +120,61 @@ class Payments extends \yii\db\ActiveRecord
         Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
         return false;
       }
+
       //даты
       $dateNow = date('Y-m-d H:i:s', time());
       $this->click_date = $dateNow;
       $this->action_date = $dateNow;
       $this->status_updated = $dateNow;
-      $this->closing_date = $dateNow;
-      //пока непонятно
-      $this->action_id = 111111111;//??
-      $this->order_id = !empty($this->order_id) ? $this->order_id : '111111';
+      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store_point->store->hold_time . " day"));;
+
+      //прочее
+      $this->action_id = time();
+      $this->order_id = !empty($this->order_id) ? $this->order_id : time();
+      $this->additional_id = 0;
+      $this->is_showed = 1;
+      $this->status = 0;
+
       //суммы
-      $this->kurs = 1;//продположим, всё в рублях
-      $this->reward = $this->storeCashback($this->order_price, $store_point->store->displayed_cashback);//вычислить возврат
-      $this->cashback = $this->reward * $store_point->store->percent / 100;
+      $action = StoresActions::findOne([
+        'uid' => $this->category,
+        'cpa_link_id' => $this->affiliate_id,
+      ]);
+      //$action = StoresActions::findOne($this->category);
+
+      if (!$action) {
+        Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
+        return false;
+      }
+      $tariff = $action->getTariffs()
+        ->orderBy('uid')
+        ->one();
+      if (!$tariff) {
+        Yii::$app->session->addFlash('err', 'Ошибка - не найден тариф для категории');
+        return false;
+      }
+      $rates = $tariff->getRates()
+        ->where(['<', 'date_s', date("Y-m-d H:i:s")])
+        //->orderBy(['date_s DESC','uid'])
+        ->one();
+      if (!$rates) {
+        Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
+        return false;
+      }
+      $this->kurs = Yii::$app->conversion->getRUB(1, $store_point->store->currency);
+
+      if ($rates->is_percentage) {
+        $reward = $this->order_price * $rates->size * $this->kurs / 100;
+        $cashback = $this->order_price * $rates->our_size * $this->kurs / 100;
+      } else {
+        $reward = $rates->size;
+        $cashback = $rates->our_size;
+      }
+      $cashback = round($cashback, 2);
+      $reward = round($reward, 2);
+
+      $this->reward = $reward;
+      $this->cashback = $cashback;
       $this->shop_percent = $store_point->store->percent;
       return true;
     }
@@ -212,13 +258,4 @@ class Payments extends \yii\db\ActiveRecord
     return $this->hasOne(Users::className(), ['uid' => 'user_id']);
   }
 
-  private function storeCashback($value, $cashback)
-  {
-    if (strpos($cashback, '%') === false) {
-      return $cashback;
-    } else {
-      $rate = floatval(preg_replace('/[^0-9\.]/', '', $cashback));
-      return $value * $rate / 100;
-    }
-  }
 }
