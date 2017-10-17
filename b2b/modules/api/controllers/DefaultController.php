@@ -212,6 +212,9 @@ class DefaultController extends Controller
     }
 
     $pay->save();
+
+    \Yii::$app->balanceCalc->todo($user->uid, 'cash');
+
     return 'OK';
   }
 
