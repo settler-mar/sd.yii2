@@ -34,11 +34,13 @@ use b2b\modules\stores_points\models\B2bStoresPoints;
  * @property integer $loyalty_status
  * @property string $order_id
  * @property integer $shop_percent
+ * @property integer $store_point_id
  */
 class Payments extends \yii\db\ActiveRecord
 {
   public $category;
 
+  //public $store_point_id;
   /**
    * @inheritdoc
    */
@@ -54,7 +56,7 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
       [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-        'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
+        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id'], 'integer'],
       [['user_id'], 'integer', 'on' => 'online'],
       [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
         'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
@@ -105,6 +107,7 @@ class Payments extends \yii\db\ActiveRecord
       'shop_percent' => 'Shop Percent',
       'kurs' => 'kurs',
       'storeName' => 'Название магазина',
+      'store_point_id' => 'ID точки продаж',
     ];
   }
 
@@ -112,10 +115,10 @@ class Payments extends \yii\db\ActiveRecord
   {
     //для оффлайн шопов с формы
     if ($this->scenario == 'offline') {
-      $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
-      if ($store_point) {
-        $this->affiliate_id = $store_point->store->cpaLink->affiliate_id;
-        $this->cpa_id = $store_point->store->cpaLink->cpa_id;
+      $store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
+      if ($store) {
+        $this->affiliate_id = $store->cpaLink->affiliate_id;
+        $this->cpa_id = $store->cpaLink->cpa_id;
       } else {
         Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
         return false;
@@ -126,7 +129,7 @@ class Payments extends \yii\db\ActiveRecord
       $this->click_date = $dateNow;
       $this->action_date = $dateNow;
       $this->status_updated = $dateNow;
-      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store_point->store->hold_time . " day"));;
+      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));;
 
       //прочее
       $this->action_id = time();
@@ -134,6 +137,8 @@ class Payments extends \yii\db\ActiveRecord
       $this->additional_id = 0;
       $this->is_showed = 1;
       $this->status = 0;
+
+      $this->store_point_id = Yii::$app->storePointUser->id;
 
       //суммы
       $action = StoresActions::findOne([
@@ -146,6 +151,8 @@ class Payments extends \yii\db\ActiveRecord
         Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
         return false;
       }
+      $this->action_code = $action->uid;
+
       $tariff = $action->getTariffs()
         ->orderBy('uid')
         ->one();
@@ -161,7 +168,7 @@ class Payments extends \yii\db\ActiveRecord
         Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
         return false;
       }
-      $this->kurs = Yii::$app->conversion->getRUB(1, $store_point->store->currency);
+      $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
 
       if ($rates->is_percentage) {
         $reward = $this->order_price * $rates->size * $this->kurs / 100;
@@ -175,7 +182,8 @@ class Payments extends \yii\db\ActiveRecord
 
       $this->reward = $reward;
       $this->cashback = $cashback;
-      $this->shop_percent = $store_point->store->percent;
+      $this->shop_percent = $store->percent;
+
       return true;
     }
   }

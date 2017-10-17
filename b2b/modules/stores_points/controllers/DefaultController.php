@@ -162,7 +162,7 @@ class DefaultController extends Controller
     {
         if (!Yii::$app->storePointUser->isGuest) {
             //todo нужно поменять адрес
-            return $this->goHome();
+            return  $this->redirect(['/']);
         }
         $model = new B2bStoresPointsLoginForm();
         
@@ -198,7 +198,7 @@ class DefaultController extends Controller
         $model = new Payments(['scenario' => 'offline']);//задаём сценарии
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->addFlash('info', 'Платёж принят');
-            return $this->redirect(['/stores_points']);//todo поменять
+            return $this->redirect(['/']);//todo поменять
         } else {
             $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
             $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');
@@ -209,6 +209,7 @@ class DefaultController extends Controller
             if ($model->user_id && !preg_match('/^SD-\w*/', $model->user_id)) {
                 $model->user_id = 'SD-'  . $model->user_id;
             }
+            $payments = Payments::find()->where(['affiliate_id' => 145])->all();
 
             return $this->render('payment', [
                 'model' => $model,
