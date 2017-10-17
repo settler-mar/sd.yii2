@@ -92,11 +92,11 @@ class PaymentsController extends Controller
     while ($payments) {
       //d($payments['_meta']);
       foreach ($payments['results'] as $payment) {
-        if (!$payment['subid']) {
+        if (!$payment['subid'] || (int)$payment['subid']==0) {
           continue;
         }
 
-        // d($payment);
+        //ddd($payment);
         $action_id = $payment['action_id'];
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
@@ -167,7 +167,10 @@ class PaymentsController extends Controller
             $time+=$store->hold_time*24*60*60;
             $db_payment->closing_date=date("Y-m-d H:i:s",$time);
           }
-          $db_payment->save();
+
+          if(!$db_payment->save()){
+            continue;
+          };
 
           //Создаем нотификацию пользователя
           $notifi = new Notifications();

@@ -111,6 +111,7 @@ class Payments extends \yii\db\ActiveRecord
     ];
   }
 
+
   public function beforeValidate()
   {
     //для оффлайн шопов с формы
@@ -183,9 +184,11 @@ class Payments extends \yii\db\ActiveRecord
       $this->reward = $reward;
       $this->cashback = $cashback;
       $this->shop_percent = $store->percent;
-
-      return true;
+    }else{
+      $this->store_point_id=0;
     }
+
+    return parent::beforeValidate();
   }
 
   public function beforeSave($insert)
