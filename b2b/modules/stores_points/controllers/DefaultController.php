@@ -202,8 +202,11 @@ class DefaultController extends Controller
         } else {
             $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
             $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');
+            if (count($categories) == 1) {
+                $model->category = array_keys($categories)[0];
+            }
 
-            if ($model->user_id && !preg_match('/^SD-\w*', $model->user_id)) {
+            if ($model->user_id && !preg_match('/^SD-\w*/', $model->user_id)) {
                 $model->user_id = 'SD-'  . $model->user_id;
             }
 
