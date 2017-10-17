@@ -9,10 +9,12 @@ use b2b\modules\stores_points\models\B2bStoresPointsLoginForm;
 use b2b\modules\stores_points\models\B2bStoresPointsSearch;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\payments\models\Payments;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
 /**
  * DefaultController implements the CRUD actions for B2bStoresPoints model.
@@ -38,7 +40,7 @@ class DefaultController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['login', 'logout'],
+                        'actions' => ['login', 'logout', 'payments'],
                         'roles' => ['?'],
                     ],
                 ],
@@ -188,6 +190,31 @@ class DefaultController extends Controller
         return $this->goHome();
     }
 
+    public function actionPayments()
+    {
+        if (Yii::$app->storePointUser->isGuest) {
+            return $this->redirect('stores_points/login');
+        }
+        $model = new Payments(['scenario' => 'offline']);//задаём сценарии
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->addFlash('info', 'Платёж принят');
+            return $this->redirect(['/stores_points']);//todo поменять
+        } else {
+            $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
+            $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');
+
+            if ($model->user_id && !preg_match('/^SD-\w*', $model->user_id)) {
+                $model->user_id = 'SD-'  . $model->user_id;
+            }
+
+            return $this->render('payment', [
+                'model' => $model,
+                'categories' => $categories,
+                'store' => $store_point->store,
+            ]);
+        }
+    }
+    
     /**
      * Finds the B2bStoresPoints model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -114,7 +114,7 @@ class PaymentsController extends Controller
           //добавляем новый платеж
           $is_update = true;
 
-          $db_payment = new Payments();
+          $db_payment = new Payments(['scenario' => 'online']);
 
           $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
 
