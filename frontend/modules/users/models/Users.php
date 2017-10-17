@@ -649,7 +649,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
     }
 
-    if(!file_exists($bp . $path.$file)){
+    if(!file_exists($bp . $path.$file) || filemtime($bp.'/images/barcode_file.png')>filemtime($bp . $path.$file)){
       if($onlyTest)return false;
       $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
       $barcode = imagecreatefromstring($generator->getBarcode($code, $generator::TYPE_CODE_128));
