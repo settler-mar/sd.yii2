@@ -22,7 +22,6 @@ class DefaultController extends Controller
 
   public function actionLogin()
   {
-
     $request=Yii::$app->request;
     if(!$request->post('regNumber')){
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
@@ -71,7 +70,7 @@ class DefaultController extends Controller
       //$out[]= '"'.$item['uid'].': '.str_replace('"',"\\\"",$item['name']).'"';
     }
     return json_encode([
-      $store_id->cash_number,
+      $store->cash_number,
       $out
     ]);
     //return implode(',',$out)."\n";
