@@ -186,8 +186,15 @@
 <script>
     document.getElementById('address-search').onclick = function(e){
         e.preventDefault();
-        var input = document.getElementById('b2bstorespoints-address');
-        googleMap.searchAddress(input);
+        var input1 = document.getElementById('b2bstorespoints-country'),
+            input2 = document.getElementById('b2bstorespoints-city'),
+            input3 = document.getElementById('b2bstorespoints-address');
+
+        googleMap.searchAddress(
+            (input1 ? input1.value : '')
+            +(input2 ? ' '+input2.value : '')
+            +(input3 ? ' '+input3.value : '')
+        );
     };
 </script>
 <script>
@@ -291,8 +298,7 @@
 
 
        },
-       searchAddress: function(input){
-           var value = input.value;
+       searchAddress: function(value){
            if (!value) {
                return false;
            }
