@@ -70,7 +70,10 @@ class DefaultController extends Controller
       ];
       //$out[]= '"'.$item['uid'].': '.str_replace('"',"\\\"",$item['name']).'"';
     }
-    return json_encode($out);
+    return json_encode([
+      $store_id->cash_number,
+      $out
+    ]);
     //return implode(',',$out)."\n";
   }
 
