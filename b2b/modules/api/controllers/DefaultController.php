@@ -193,6 +193,7 @@ class DefaultController extends Controller
     $pay->shop_percent = $store->percent;
     $pay->loyalty_status = $user->loyalty_status;
     $pay->kurs = $kurs;
+    $pay->action_code=$action->uid;
 
 
     if ($user->referrer_id > 0) {
