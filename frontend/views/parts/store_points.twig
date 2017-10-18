@@ -17,14 +17,14 @@
                     {#несколько точек в одной стpане #}
                     <h3>Адреса торговых точек {{ current_store.name }} в {{store_points.points[0].country }}</h3>
                     <div class="row store-points__point-selects">
-                        <select hidden name="store_point_country" id="store_point_country">
+                        <select class="hidden" name="store_point_country" id="store_point_country">
                             <option value=""></option>
                             <option value="{{ store_points.points[0].country}}" selected>{{ store_points.points[0].country }}</option>
                         </select>
-                        <div c="col-sm-2">
+                        <div class="col-sm-2">
                             <label for="store_point_city">Выберите город</label>
                         </div>
-                        <div class="col-sm-6>
+                        <div class="col-sm-6">
                             <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
                                 <option value=""></option>
                                 {% for city in store_points.cities %}
@@ -113,16 +113,8 @@
             initMap: function() {
 
                 map = new google.maps.Map(this.mapElement, {
-                    {% if store_points.range.avg_x and store_points.range.avg_y %}
-                        center: {lat: {{store_points.range.avg_y }}, lng: {{ store_points.range.avg_x }} },//средняя между точками
-                    {% else %}
-                        center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
-                    {% endif %}
-                    {% if store_points.range.zoom %}
-                        zoom: {{ store_points.range.zoom }},
-                    {% else %}
-                        zoom: 10,
-                    {% endif %}
+                    center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                    zoom: 11,
                     mapTypeId: 'roadmap'
                 });
                 var markers = [];
@@ -132,10 +124,7 @@
                             position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
                             map: map,
                             title: '{{ store_point.name }}',
-                            visible: true,
-                            {#{% if no_visible == 1 %}#}
-                                {#visible: false#}
-                            {#{% endif %}#}
+                            visible: true
                         });
                         this.points.push({
                             'city':'{{ store_point.city }}',
@@ -150,39 +139,29 @@
                 this.cluster = new MarkerClusterer(this.map, markers, {
                     imagePath: '/images/google_clusterer/m'
                 });
-            },
-            hideMarkers: function() {
-//                if (this.cluster) {
-//                    this.cluster.clearMarkers();
-//                }
-//                this.points.forEach(function(point){
-//                    point.marker.setVisible(false);
-//                });
+                var city = false, country = false;
+                {% if no_visible != 1 %}
+                //если одна страна и один город, пишем, чтобы показать на карте
+                    country = '{{store_points.points[0].country }}';
+                    city = '{{store_points.cities[0] }}';
+                {% endif %}
+                if (city && country) {
+                    this.showMarker(country, city);
+                }
             },
             showMarker: function(country, city){
                 if (this.map === null) {
                     this.showMap();
                 }
-                //var cluster = this.cluster;
-                var minX = 0, maxX = 0, minY = 0, maxY = 0;
+                var cityPoints = [];
                 this.points.forEach(function(point){
                     if (point.country == country && point.city == city) {
-                        //point.marker.setVisible(true);
-                        //cluster.addMarker(point.marker);
-                        minX = (minX > point.marker.position.lng() || minX == 0 ? point.marker.position.lng() : minX);
-                        maxX = (maxX < point.marker.position.lng() || maxX == 0 ? point.marker.position.lng() : maxX);
-                        minY = (minY > point.marker.position.lat() || minY == 0 ? point.marker.position.lat() : minY);
-                        maxY = (maxY < point.marker.position.lat() || maxY == 0 ? point.marker.position.lat() : maxY);
+                        cityPoints.push(point.marker);
                     }
                 });
-                //console.log(minX, maxX, minY, maxY);
-                var centerX = (maxX + minX)/2;
-                var centerY = (maxY + minY)/2;
-                var range = maxY-minY > maxX-minX ? maxY-minY : maxY-minY;
-                var zoom = range == 0 ? 10 : Math.round(30/(Math.log10(10000 * range + 1)));
-                //console.log(range, zoom);
-                this.map.setCenter({lat: centerY, lng: centerX});
-                this.map.setZoom(zoom);
+                if (cityPoints.length > 0) {
+                    this.setMapPosition(cityPoints);
+                }
             },
             showMap: function() {
                 if (this.map === null) {
@@ -193,6 +172,22 @@
             },
             hideMap: function() {
                 this.mapElement.classList.add('hidden');
+            },
+            setMapPosition: function(markers) {
+                var minX = 0, maxX = 0, minY = 0, maxY = 0;
+                markers.forEach(function(marker){
+                    minX = (minX > marker.position.lng() || minX == 0 ? marker.position.lng() : minX);
+                    maxX = (maxX < marker.position.lng() || maxX == 0 ? marker.position.lng() : maxX);
+                    minY = (minY > marker.position.lat() || minY == 0 ? marker.position.lat() : minY);
+                    maxY = (maxY < marker.position.lat() || maxY == 0 ? marker.position.lat() : maxY);
+                });
+                //console.log(minX, maxX, minY, maxY);
+                var centerX = (maxX + minX)/2;
+                var centerY = (maxY + minY)/2;
+                var range = maxY-minY > maxX-minX ? maxY-minY : maxY-minY;
+                var zoom = range == 0 ? 16 : Math.round(30/(Math.log10(10000 * range + 1)));
+                this.map.setCenter({lat: centerY, lng: centerX});
+                this.map.setZoom(zoom);
             }
 
         };
