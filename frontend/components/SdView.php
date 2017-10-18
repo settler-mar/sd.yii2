@@ -42,6 +42,10 @@ class SdView extends View
       $this->all_params['user_code_img']=$code_src;
 
       $this->all_params['fav_ids']=UsersFavorites::getUserFav();
+
+      $this->all_params['ref_id']='?r='.$this->user_id;
+    }else{
+      $this->all_params['ref_id']='';
     }
 
     $request = Yii::$app->request;
