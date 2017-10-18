@@ -26,6 +26,9 @@
 
         {% if store.cash_number == 1 %}
             {{ form.field(model, 'order_id').textInput({'maxlength':true})|raw }}
+        {% else  %}
+            {% set random_string = app.security.generateRandomString(10) %}
+            {{ form.field(model, 'order_id').textInput({'maxlength':true}).hiddenInput({'value': random_string }).label(false)|raw }}
         {% endif %}
 
         <div  class="col-md-12">

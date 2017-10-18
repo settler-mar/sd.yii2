@@ -27,6 +27,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public $store_name;
     public $work_time_details;
     public $password_no_hash;
+    public $password_repeat;
 
     /**
      * @inheritdoc
@@ -50,7 +51,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                     ->where([
                       'cws.uid' => $value,
                       'b2buc.user_id'=> Yii::$app->user->identity->id,
-                      'cws.is_offline' => 1 //шоп офлайн новая версия
+                      'cws.is_offline' => 1 //шоп офлайн
                     ])
                     ->count();
                 if ($cpa == 0) {
@@ -65,6 +66,13 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['name', 'address', 'country', 'city', 'phone'], 'string', 'max' => 255],
             [['password'], 'required', 'on' => 'insert'],
             [['password'], 'string', 'max'=> 20, 'min' => 6],
+            ['password_repeat', 'required', 'when' => function ($model) {
+                  return $model->password != null;
+                  }, 'whenClient' => "function (attribute, value) {
+                       return $('#b2bstorespoints-password').val() != '';
+                  }",
+            ],
+            [['password_repeat'], 'compare', 'compareAttribute' => 'password'],
             [['password'], 'filter', 'filter' => function ($value) {
                 $this->password_no_hash = $value;
                 if (!empty($value)) {
@@ -106,6 +114,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'store_name' => 'Магазин',
             'work_time_details' => 'Время работы',
             'password' => 'Пароль',
+            'password_repeat' => 'Подтверждение пароля',
             'login' => 'Логин',
         ];
     }
@@ -155,6 +164,10 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         }
         $workDays = $this->work_time_details;
 
+//        if ($this->password != $this->password_repeat) {
+//            Yii::$app->session->addFlash('err', 'Ошибка, пароль и подтверждение пароля должны совпадать!');
+//            return false;
+//        }
 
         if (count($workDays) == 1 && $this->checkBoxChecked($workDays[0]) == 0) {
             //если только один день и чек-боксы не выбраны, то просто null

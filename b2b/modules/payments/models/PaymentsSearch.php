@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Stores;
+use b2b\modules\stores_points\models\B2bStoresPoints;
 
 /**
  * PaymentsSearch represents the model behind the search form about `frontend\modules\payments\models\Payments`.
@@ -14,6 +15,11 @@ use frontend\modules\stores\models\Stores;
 class PaymentsSearch extends Payments
 {
     public $storeName;
+    public $storePointName;
+
+    //public $storeId;
+//    public $store_point;
+//    public $data_ranger;
     /**
      * @inheritdoc
      */
@@ -24,7 +30,7 @@ class PaymentsSearch extends Payments
                 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'old_reward', 'old_order_price'], 'number'],
             [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id', 'admin_comment',
-              'storeName'], 'safe'],
+              'storeName', 'storePointName'], 'safe'],
         ];
     }
 
@@ -46,10 +52,14 @@ class PaymentsSearch extends Payments
      */
     public function search($params)
     {
+        //ddd($this);
         $query = Payments::find()
-          ->joinWith(['store']);
-
-        // add conditions that should always apply here
+            ->from(Payments::tableName()  . ' cwp')
+            ->joinWith(['store'])
+            ->joinWith(['storesPoint'])
+            ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+            ->where(['b2buc.user_id' => Yii::$app->user->identity->id]);
+         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -66,7 +76,10 @@ class PaymentsSearch extends Payments
                         'asc' => [Stores::tableName() . '.name' => SORT_ASC],
                         'desc' => [Stores::tableName(). '.name' => SORT_DESC],
                     ],
-                ],
+                    'storePointName' => [
+                        'asc' => [B2bStoresPoints::tableName() . '.name' => SORT_ASC],
+                        'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+                    ],               ],
                 'defaultOrder' => [
                   'uid' => SORT_DESC,
                 ]
@@ -80,6 +93,7 @@ class PaymentsSearch extends Payments
             // $query->where('0=1');
             return $dataProvider;
         }
+
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -112,6 +126,7 @@ class PaymentsSearch extends Payments
             ->andFilterWhere(['like', 'admin_comment', $this->admin_comment]);
 
         $query->andFilterWhere([Stores::tableName() . '.is_offline' =>1]);
+
         if ($this->storeName) {
             $query->andFilterWhere([
               'or',[
@@ -121,7 +136,32 @@ class PaymentsSearch extends Payments
               ],
             ]);
         }
+        if ($this->storePointName) {
+            $query->andFilterWhere([
+              'or',[
+                'like', B2bStoresPoints::tableName() . '.name', $this->storePointName
+              ],[
+                B2bStoresPoints::tableName() . '.id'=>$this->storePointName
+              ],
+            ]);
+        }
+        if (!empty($params['storeId'])) {
+            $query->andFilterWhere([Stores::tableName().'.uid' => $params['storeId']]);
+        }
+        if (!empty($params['store_point'])) {
+            $query->andFilterWhere(['store_point_id' =>$params['store_point']]);
+        }
+
+        if (!empty($params['date'])) {
+            list($start_date, $end_date) = explode(' - ', $params['date']);
+            //ddd($params['date'], $start_date, $end_date);
+            $start_date = date('Y-m-d', strtotime($start_date));
+            $end_date = date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'action_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+        }
+
 
         return $dataProvider;
     }
+
 }

@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\components\Help;
+use b2b\modules\users\models\B2bUsers;
 
 /**
  * DefaultController implements the CRUD actions for Payments model.
@@ -50,8 +51,8 @@ class DefaultController extends Controller
           $start_date . ' - ' . $end_date,
           'date', [
           'pluginEvents' => [
-            "apply.daterangepicker" => "function(ev, picker) { 
-            picker.element.closest('form').submit(); 
+            "apply.daterangepicker" => "function(ev, picker) {
+            picker.element.closest('form').submit();
           }",
           ]
         ]);
@@ -65,23 +66,29 @@ class DefaultController extends Controller
           ->all();
 
         $stores = [];
+
+
         foreach ($storesPoints as $point) {
             $stores[$point['store_id']]['name'] = $point['store_name'];
             $stores[$point['store_id']]['points'][] = $point;
         }
         $tableData = [
             'store_name' => function ($model) {
-                return $model->store->name;
+                return $model->store->name . ' (' . $model->store->uid . ')';
+            },
+            'store_point_name' => function ($model) {
+                return $model->storesPoint->name . ' (' . $model->storesPoint->id . ')';
             }
 
         ];
-        //ddd($stores);
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'data_ranger' => $dataRanger,
             'stores' => $stores,
             'table_data' => $tableData,
+            'storeId' => Yii::$app->request->get('storeId'),
+            'store_point' => Yii::$app->request->get('store_point'),
         ]);
     }
 
