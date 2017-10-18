@@ -1,0 +1,43 @@
+@media print { /* Стиль для печати */
+  body {
+    font-family: Times, 'Times New Roman', serif; /* Шрифт с засечками */
+  }
+  h1, h2, p {
+    color: #000; /* Черный цвет текста */
+  }
+
+  .help_button{
+    display:none !important;
+
+    & > *{
+      display:none !important;
+    }
+  }
+  jdiv{
+    display: none !important;
+  }
+
+  .navigation{
+    display:none !important;
+  }
+
+  .breadcrumbs{
+    display:none !important;
+  }
+
+  .no_print{
+    display:none !important;
+  }
+
+  footer{
+    display:none !important;
+  }
+
+  section{
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .intro-icon{
+    display: none !important;
+  }
+}
