@@ -182,7 +182,7 @@ class SiteController extends SdController
     Yii::$app->view->metaTags[]="<meta property=\"og:type\" content=\"website\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"website title\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"website description\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"".$user->getBarcodeImg()."\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/".$user->getBarcodeImg()."\" />";
     return $this->render('static_page',$page);
 
   }
