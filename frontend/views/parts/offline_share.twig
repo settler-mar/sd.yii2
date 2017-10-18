@@ -1,4 +1,15 @@
-<h3>Ваш личный штрихкод ↓</h3>
+<h3>
+    {% if friend_user %}
+        Штрихкод вашего друга
+        {% set user_code_img = friend_user.barcodeImg  %}
+        {% set user_id = friend_user.uid  %}
+        {% set print = "print();return false;" %}
+    {% else %}
+        Ваш личный штрихкод
+        {% set print = "window.open(this.href).print();return false;" %}
+    {% endif %}
+    ↓
+</h3>
 
 <div class="affiliate row">
     <div class="col-md-4 ways-invitation">
@@ -30,9 +41,18 @@
                         data-image="https://secretdiscounter.ru{{ user_code_img }}"
                         data-url="https://secretdiscounter.ru/offline?r={{user_id}}"
                 ></div>
-                <script type="text/javascript" src="/js/share42.js"></script>
+                {% if not friend_user %}
+                    <script type="text/javascript" src="/js/share42.js"></script>
+                {% endif %}
             </div>
         </div>
-
+        <div class="col-md-12"  style="margin-top: 35px">
+            <div class="intro-icon">
+                <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
+            </div>
+            <div class="intro-content">
+                <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>Распечатать</a></p>
+            </div>
+        </div>
     </div>
 </div>

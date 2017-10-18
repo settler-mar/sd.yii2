@@ -169,13 +169,16 @@ class SiteController extends SdController
       throw new HttpException(404 ,'User not found');
     }
 
-    $page['user']=$user;
+    $page['friend_user']=$user;
     if(Yii::$app->request->isAjax){
         throw new HttpException(404 ,'User not found');
-    }else{
-      $this->params['breadcrumbs'][] = $page['title'];
-      return $this->render('static_page',$page);
     }
+
+    $page['dopline']='{{_include(\'instruction_offline\') | raw}}';
+    $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $this->params['breadcrumbs'][] = $page['title'];
+    return $this->render('static_page',$page);
+
   }
   /**
    * /faq
