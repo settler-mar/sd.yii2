@@ -348,83 +348,9 @@
 {% endif %}
 
 {% if current_store.is_offline==0 %}
-<section class="store-intro intro section-padding" id="howgetcashback">
-    <div class="container">
-        <div class="row">
-            <h3>Как получить кэшбэк?</h3>
-            <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe00c;" class="icon"></span>
-                </div>
-                <div class="intro-content {% if user_id %}through{% endif %}">
-                    <h5>Регистрируйтесь на сайте</h5>
-                    <p>Пройдите {% if not user_id %}<a href="#registration" class="ignore-hash">простую регистрацию</a>{% else %} простую регистрацию {% endif %} в кэшбэк-сервисе SecretDiscounter.</p>
-                </div>
-            </div>
-            <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe027;" class="icon"></span>
-                </div>
-                <div class="intro-content">
-                    <h5>Перейдите в магазин</h5>
-                    <p>Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a> и сделайте заказ на сайте.</p>
-                </div>
-            </div>
-            <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe016;" class="icon"></span>
-                </div>
-                <div class="intro-content last">
-                    <h5>Получите деньги</h5>
-                    <p>Кэшбэк за заказ автоматически зачислится на 
-                    {% if user_id %}
-                    <a href="/account">Ваш счёт</a> 
-                    {% else %}
-                    Ваш счёт
-                    {% endif %}
-                    в SecretDiscounter.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    {% include 'parts/instruction_online.twig' %}
 {% else %}
-    <section class="store-intro intro section-padding" id="howgetcashback">
-        <div class="container">
-            <div class="row">
-                <h3>Как получить кэшбэк?</h3>
-                <div class="col-md-4 intro-feature">
-                    <div class="intro-icon">
-                        <span data-icon="&#xe00c;" class="icon"></span>
-                    </div>
-                    <div class="intro-content">
-                        <h5>ВЫБИРАЕТЕ МАГАЗИН</h5>
-                        <p>Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a href="/stores/offline">нашего каталога</a>, выбираете товар.
-                    </div>
-                </div>
-                <div class="col-md-4 intro-feature">
-                    <div class="intro-icon">
-                        <span data-icon="&#xe027;" class="icon"></span>
-                    </div>
-                    <div class="intro-content">
-                        <h5>ПРЕДЪЯВЛЯЕТЕ СКИДКУ</h5>
-                        <p>Перед оплатой товара говорите кассиру или менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой индивидуальный штрихкод.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 intro-feature">
-                    <div class="intro-icon">
-                        <span data-icon="&#xe016;" class="icon"></span>
-                    </div>
-                    <div class="intro-content last">
-                        <h5>ДОЖИДАЕТЕСЬ ПОДТВЕРЖДЕНИЯ</h5>
-                        <p>
-                            Кассир сканирует ваш штрихкод, вводит сумму покупки и номер чека и показывает вам всплывающее окно об успешной операции. Вскоре после этого кэшбэк отобразится в вашем Личном кабинете в SecretDiscounter.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    {% include 'parts/instruction_offline.twig' %}
 {% endif %}
 
 <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>

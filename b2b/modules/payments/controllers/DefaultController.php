@@ -47,15 +47,7 @@ class DefaultController extends Controller
         }
 
         list($start_date, $end_date) = explode(' - ', $search_range);
-        $dataRanger = Help::DateRangePicker(
-          $start_date . ' - ' . $end_date,
-          'date', [
-          'pluginEvents' => [
-            "apply.daterangepicker" => "function(ev, picker) {
-            picker.element.closest('form').submit();
-          }",
-          ]
-        ]);
+        $dataRanger = Help::DateRangePicker($start_date . ' - ' . $end_date, 'date', []);
         $storesPoints = B2bStoresPoints::find()
           ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
             'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
