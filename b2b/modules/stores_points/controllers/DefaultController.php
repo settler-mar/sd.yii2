@@ -209,8 +209,7 @@ class DefaultController extends Controller
             if ($model->user_id && !preg_match('/^SD-\w*/', $model->user_id)) {
                 $model->user_id = 'SD-'  . $model->user_id;
             }
-            $payments = Payments::find()->where(['affiliate_id' => 145])->all();
-
+            
             return $this->render('payment', [
                 'model' => $model,
                 'categories' => $categories,

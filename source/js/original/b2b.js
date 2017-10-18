@@ -39,16 +39,25 @@ function  checkDisabled(row, checked, className) {
     //inputsCheckbox.attr('disabled', checked);
 }
 
-$('#payments_select_store').on('change', function(){
-    var points = $('option:selected', this).attr('data-points');
-    var selectPoints = document.getElementById('payments_select_store_point');
-    var options = '';
-    if (points) {
-        points = JSON.parse(points);
-        options = '<option></option>';
-        points.forEach(function(item){
-            options += '<option value="'+item.id+'">'+item.name+' '+item.country+' '+item.address+'</options>';
-        });
+$('#payments_select_store').on('change', paymentsSelectStore);
+
+function paymentsSelectStore(){
+    var self = document.getElementById('payments_select_store'),
+        selectPoints = document.getElementById('payments_select_store_point');
+    if (self && selectPoints) {
+        var points = $('option:selected', self).attr('data-points'),
+            getSelectPoint = $(selectPoints).data('get'),
+            options = '';
+        if (points) {
+            points = JSON.parse(points);
+            options = '<option></option>';
+            points.forEach(function(item){
+                options += '<option value="'+item.id+'" '+(parseInt(getSelectPoint) == parseInt(item.id) ? 'selected' : '')+
+                    '>'+item.name+' '+item.country+' '+item.address+'</options>';
+            });
+        }
+        selectPoints.innerHTML = options;
     }
-    selectPoints.innerHTML = options;
-});
+
+}
+paymentsSelectStore();

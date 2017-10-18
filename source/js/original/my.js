@@ -132,7 +132,6 @@ $('body').on('change', '#store_point_city', function(e) {
   if (country && city) {
     var items = points.find('.store-points__points_row'),
         visible = false;
-    googleMap.hideMarkers();
     googleMap.showMarker(country, city);
     $.each(items, function(index, div){
       if ($(div).data('city') == city && $(div).data('country') == country){

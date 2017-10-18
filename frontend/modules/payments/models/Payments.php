@@ -64,7 +64,8 @@ class Payments extends \yii\db\ActiveRecord
         $value = intval(preg_replace('/[^0-9\.]/', '', $value));
         return $value;
       }],
-      [['user_id'], 'required'],
+      [['user_id', 'order_price'], 'required'],
+      [['order_id'], 'required', 'on' => 'offline'],
       [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
         'on' => 'online'],
       [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
@@ -91,7 +92,7 @@ class Payments extends \yii\db\ActiveRecord
       'old_order_price' => 'Old Order Price',
       'reward' => 'Вознаграждение',
       'old_reward' => 'Старое Вознаграждение',
-      'cashback' => 'Cashback',
+      'cashback' => 'Кешбек',
       'status' => 'Статус',
       'click_date' => 'Click Date',
       'action_date' => 'Action Date',
@@ -103,11 +104,12 @@ class Payments extends \yii\db\ActiveRecord
       'ref_bonus' => 'Кэшбэк бонус',
       'ref_id' => 'Ref ID',
       'loyalty_status' => 'Loyalty Status',
-      'order_id' => 'Order ID',
+      'order_id' => 'Номер заказа',
       'shop_percent' => 'Shop Percent',
       'kurs' => 'kurs',
       'storeName' => 'Название магазина',
       'store_point_id' => 'ID точки продаж',
+      'storePointName' => 'Точка продаж',
     ];
   }
 
@@ -267,6 +269,11 @@ class Payments extends \yii\db\ActiveRecord
   public function getUser()
   {
     return $this->hasOne(Users::className(), ['uid' => 'user_id']);
+  }
+
+  public function getStoresPoint()
+  {
+    return $this->hasOne(B2bStoresPoints::className(), ['id' => 'store_point_id']);
   }
 
 }

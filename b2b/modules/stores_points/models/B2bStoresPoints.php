@@ -27,6 +27,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public $store_name;
     public $work_time_details;
     public $password_no_hash;
+    public $password_repeat;
 
     /**
      * @inheritdoc
@@ -50,7 +51,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                     ->where([
                       'cws.uid' => $value,
                       'b2buc.user_id'=> Yii::$app->user->identity->id,
-                      'cws.is_offline' => 1 //шоп офлайн новая версия
+                      'cws.is_offline' => 1 //шоп офлайн
                     ])
                     ->count();
                 if ($cpa == 0) {
@@ -65,6 +66,13 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['name', 'address', 'country', 'city', 'phone'], 'string', 'max' => 255],
             [['password'], 'required', 'on' => 'insert'],
             [['password'], 'string', 'max'=> 20, 'min' => 6],
+            ['password_repeat', 'required', 'when' => function ($model) {
+                  return $model->password != null;
+                  }, 'whenClient' => "function (attribute, value) {
+                       return $('#b2bstorespoints-password').val() != '';
+                  }",
+            ],
+            [['password_repeat'], 'compare', 'compareAttribute' => 'password'],
             [['password'], 'filter', 'filter' => function ($value) {
                 $this->password_no_hash = $value;
                 if (!empty($value)) {
@@ -106,6 +114,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'store_name' => 'Магазин',
             'work_time_details' => 'Время работы',
             'password' => 'Пароль',
+            'password_repeat' => 'Подтверждение пароля',
             'login' => 'Логин',
         ];
     }
@@ -155,6 +164,10 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         }
         $workDays = $this->work_time_details;
 
+//        if ($this->password != $this->password_repeat) {
+//            Yii::$app->session->addFlash('err', 'Ошибка, пароль и подтверждение пароля должны совпадать!');
+//            return false;
+//        }
 
         if (count($workDays) == 1 && $this->checkBoxChecked($workDays[0]) == 0) {
             //если только один день и чек-боксы не выбраны, то просто null
@@ -198,38 +211,18 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 ->where(['store_id' => $storeId])
                 ->orderBy(['country' => 'ASC', 'city' => 'ASC'])
                 ->all();
-
             $countries = [];
-            $agregate = self::find()
-              ->select([
-                'max(coordinate_y) as max_y',
-                'min(coordinate_y) as min_y',
-                'max(coordinate_x) as max_x',
-                'min(coordinate_x) as min_x',
-              ])
-              ->where(['store_id' => $storeId])
-              ->asArray()
-              ->one();
             $cities = array_unique(array_column($points, 'city'));
             foreach ($points as $point) {
                 if (!isset($countries[$point->country]) || !in_array($point->city, $countries[$point->country])) {
                     $countries[$point->country][] = $point->city;
                 }
             }
-            $range = ($agregate['max_y']-$agregate['min_y'] > $agregate['max_x']-$agregate['min_x'] ?
-              $agregate['max_y']-$agregate['min_y'] : $agregate['max_x']-$agregate['min_x']);
-            $zoom = $range == 0 ? 10 : round(25/(log(100 * $range + 1)));
             $result = [
                 'points' => $points,
                 'countries' => $countries,
                 'cities' => $cities,
-                'range' => [
-                    'avg_x' => ($agregate['max_x'] + $agregate['min_x']) / 2,
-                    'avg_y' => ($agregate['max_y'] + $agregate['min_y']) / 2,
-                    'zoom' => $zoom,
-                ]
             ];
-            //ddd($result);
             return $result;
         });
         return $data;

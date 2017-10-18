@@ -9,21 +9,17 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="payments-index">
     <h1>{{ html.encode(this.title) }}</h1>
-    {# include('_search.twig', {'model': searchModel}) #}
-    <div class="col-md-12">
-        Количество покупок (подтвержденных/ожидающих):
+    <div class="col-md-12 payments-result">
+        Количество покупок (подтвержденных/ожидающих): <span>{{ result_waiting.count }}/{{ result_success.count }}</span>
     </div>
-    <div class="col-md-12">
-        Кэшбэк (подтвержденный/ожидаемый):
+    <div class="col-md-12 payments-result">
+        Кэшбэк (подтвержденный/ожидаемый):  <span>{{ _nf(result_waiting.cashback, 2)|raw }}/{{ _nf(result_success.cashback, 2)|raw }} </span>
     </div>
-    <div class="col-md-12">
-        Доход от друзей (подтвержденный/ожидаемый):
-    </div>
-    <div class="form-horizontal col-md-12" style="margin: 20px auto;">
+    <form method="get" class="form-horizontal col-md-12 payments-search" style="margin: 20px auto;">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="payments_select_store">Магазин</label>
             <div class="col-sm-10">
-                <select class="form-control" name="store" id="payments_select_store">
+                <select class="form-control" name="storeId" id="payments_select_store">
                     <option value=""></option>
                     {% for index, store in stores %}
                         <option
@@ -33,7 +29,7 @@
                                 {"id":"{{ point.point_id }}","country":"{{ point.country}}","name":"{{ point.point_name}}","address":"{{ point.address}}"}
                                 {% if loop.index < loop.length %},{% endif %}
                             {% endfor %}]'
-
+                        {% if index == storeId %}selected{% endif %}
                         >{{ store.name }}</option>
                     {% endfor %}
                 </select>
@@ -42,25 +38,27 @@
         <div class="form-group">
             <label class="col-sm-2 control-label" for="payments_select_store_point">Торговая точка</label>
             <div class="col-sm-10">
-                <select class="form-control" name="store_point" id="payments_select_store_point">
+                <select class="form-control" data-get="{{ store_point }}" name="store_point" id="payments_select_store_point">
                 </select>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="date_range">Период</label>
-            <form method="get" class="col-sm-10">
+            <div  class="col-sm-8">
                 {{ data_ranger | raw }}
-            </form>
+            </div>
+            <div class="col-sm-2">
+                <input type="submit" value="Поиск" class="btn btn-primary">
+            </div>
         </div>
-    </div>
-
+    </form>
 
     {{ grid_view_widget({
             'dataProvider': dataProvider,
             'pager' : {
                 'firstPageLabel' : true,
                 'lastPageLabel' : true,
-                'maxButtonCount':20
+                'maxButtonCount':10
             },
             'filterModel': searchModel,
             'columns': [
@@ -70,6 +68,11 @@
                     'format':'raw',
                     'attribute':'storeName',
                     'value': table_data.store_name
+                },
+                {
+                    'format':'raw',
+                    'attribute':'storePointName',
+                    'value': table_data.store_point_name
                 },
                 'click_date',
                 'action_date',
