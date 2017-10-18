@@ -9,11 +9,11 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="payments-index">
     <h1>{{ html.encode(this.title) }}</h1>
-    <div class="col-md-12">
-        Количество покупок (подтвержденных/ожидающих):
+    <div class="col-md-12 payments-result">
+        Количество покупок (подтвержденных/ожидающих): <span>{{ result_waiting.count }}/{{ result_success.count }}</span>
     </div>
-    <div class="col-md-12">
-        Кэшбэк (подтвержденный/ожидаемый):
+    <div class="col-md-12 payments-result">
+        Кэшбэк (подтвержденный/ожидаемый):  <span>{{ _nf(result_waiting.cashback, 2)|raw }}/{{ _nf(result_success.cashback, 2)|raw }} </span>
     </div>
     <form method="get" class="form-horizontal col-md-12 payments-search" style="margin: 20px auto;">
         <div class="form-group">

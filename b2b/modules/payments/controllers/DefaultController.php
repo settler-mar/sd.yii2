@@ -73,6 +73,13 @@ class DefaultController extends Controller
             }
 
         ];
+        //статистика по выборке
+        $query1 = clone $dataProvider->query;
+        $query1->select(['sum(cashback) as cashback', 'count(*) as count'])->asArray();
+        $query2 = clone $query1;
+        $resultWaiting = $query1->andWhere(['status'=> 0])->one();
+        $resultSuccess = $query2->andWhere(['status'=> 2])->one();
+
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -81,6 +88,8 @@ class DefaultController extends Controller
             'table_data' => $tableData,
             'storeId' => Yii::$app->request->get('storeId'),
             'store_point' => Yii::$app->request->get('store_point'),
+            'result_waiting' => $resultWaiting,
+            'result_success' => $resultSuccess,
         ]);
     }
 
