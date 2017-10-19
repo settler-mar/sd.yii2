@@ -39,6 +39,7 @@
     {% else %}
         {%  set menuItems = [{'label': 'Личный кабинет', 'url': ['/home']}] %}
         {% set label='Выход ('~app.user.identity.username~')' %}
+        {% set menuItems = menuItems|merge([{'label': 'Платежи', 'url': ['/payments']}]) %}
         {% set menuItems = menuItems|merge([{'label': label, 'url': ['/logout']}]) %}
     {% endif %}
     {{ nav_widget({'options': {'class': 'navbar-nav navbar-right'}, 'items': menuItems,}) }}
