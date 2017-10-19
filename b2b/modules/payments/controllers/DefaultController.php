@@ -86,10 +86,14 @@ class DefaultController extends Controller
         ];
         //статистика по выборке
         $query1 = clone $dataProvider->query;
-        $query1->select(['sum(cashback) as cashback', 'count(*) as count'])->asArray();
+        $query1->select(['sum(cashback) as cashback']);
         $query2 = clone $query1;
-        $resultWaiting = $query1->andWhere(['status'=> 0])->one();
-        $resultSuccess = $query2->andWhere(['status'=> 2])->one();
+        $query1->andWhere(['status'=> 0]);
+        $query2->andWhere(['status'=> 2]);
+        $resultWaitingCount = $query1->count();
+        $resultSuccessCount = $query2->count();
+        $resultWaiting = $query1->one();
+        $resultSuccess = $query2->one();
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -99,8 +103,8 @@ class DefaultController extends Controller
             'table_data' => $tableData,
             'storeId' => Yii::$app->request->get('storeId'),
             'store_point' => Yii::$app->request->get('store_point'),
-            'result_waiting' => $resultWaiting,
-            'result_success' => $resultSuccess,
+            'result_waiting' => ['count'=>$resultWaitingCount,'cashback'=>$resultWaiting->cashback],
+            'result_success' => ['count' => $resultSuccessCount, 'cashback'=> $resultSuccess->cashback],
         ]);
     }
 
