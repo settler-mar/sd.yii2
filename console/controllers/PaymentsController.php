@@ -274,6 +274,36 @@ class PaymentsController extends Controller
     }
   }
 
+
+  /**
+   * Завершение платежей по close date
+   */
+  public function actionAutoComplite(){
+    $users = [];
+
+    $payments = Payments::find()
+      ->andWhere(['<','closing_date',date("Y-m-d H:i:s")])
+      ->andWhere(['status'=>0])
+      ->all();
+
+    foreach ($payments as $payment) {
+      $payment->status=2;
+      $payment->save();
+      if (!in_array($payment->user_id, $users)) {
+        $users[] = $payment->user_id;
+      }
+    }
+
+    //делаем пересчет бланса пользователей
+    if (count($users) > 0) {
+      Yii::$app->balanceCalc->todo($users, 'cash');
+    }
+  }
+
+
+  /*
+   * Удаление дубликатов платежей
+   */
   public function actionClaerDouble()
   {
     $sql = 'SELECT uid from `cw_payments` where action_id in (
