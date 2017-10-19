@@ -34,56 +34,76 @@ class AccountController extends \yii\web\Controller
     $request = Yii::$app->request;
 
     if($request->isAjax && $request->isPost){
-      $balans=Yii::$app->user->identity->balance;
-      $amount=$request->post('amount');
 
-      if(
-        !$request->post('withdraw-process')!= null ||
-        (int)$request->post('withdraw-process') == 0
-      ){
-        return json_encode(['error' => ['Не выбран способ вывода денег.']]);
-      }
-
-      if(
-        !$request->post('bill')!= null ||
-        strlen($request->post('bill')) < 5
-      ){
-        return json_encode(['error' => ['Не заполнены реквизиты перевода.']]);
-      }
-
-      if($balans['current']<350){
-        return json_encode(['error' => ['На балансе недостаточная сумма для вывода.']]);
-      }
-      if($amount<350){
-        return json_encode(['error' => ['Минимальная сумма для вывода 350р.']]);
-      }
-      if($amount>$balans['current']){
-        return json_encode([
-          'error' => ['Максимальная сумма для вывода '.number_format($balans['current'],2,'.',' ').'р.']
-        ]);
-      }
-      if ($balans['withdraw_waiting'] > 0){
+      $balanse=Yii::$app->user->identity->balance;
+      if ($balanse['withdraw_waiting'] > 0){
         return json_encode([
           'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
         ]);
       }
-
       $withdraw = new UsersWithdraw();
-      $withdraw->admin_comment='';
-      $withdraw->process_id=$request->post('withdraw-process');
-      $withdraw->bill = $request->post('bill');
-      $withdraw->amount = number_format($amount, 2, ".", "");
-      $withdraw->status = 1;
-      $withdraw->user_comment = $request->post('additional-info');
-      $withdraw->save();
 
-      Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
+      if ($withdraw->load(Yii::$app->request->post()) && $withdraw->save()) {
 
-      return json_encode([
-        'error' => false
-      ]);
+        Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
+        return json_encode([
+          'error' => false
+        ]);
+      } else {
+        return json_encode([
+          'error' => $withdraw->firstErrors,
+        ]);
+      }
+
+//        $amount=$request->post('amount');
+//      ddd($request->post('process_id'), $request->post('amount'), $request->post('bill') );
+//      if(
+//        !$request->post('process_id')!= null ||
+//        (int)$request->post('process_id') == 0
+//      ){
+//        return json_encode(['error' => ['Не выбран способ вывода денег.']]);
+//      }
+//
+//      if(
+//        !$request->post('bill')!= null ||
+//        strlen($request->post('bill')) < 5
+//      ){
+//        return json_encode(['error' => ['Не заполнены реквизиты перевода.']]);
+//      }
+//
+//      if($balans['current']<350){
+//        return json_encode(['error' => ['На балансе недостаточная сумма для вывода.']]);
+//      }
+//      if($amount<350){
+//        return json_encode(['error' => ['Минимальная сумма для вывода 350р.']]);
+//      }
+//      if($amount>$balans['current']){
+//        return json_encode([
+//          'error' => ['Максимальная сумма для вывода '.number_format($balans['current'],2,'.',' ').'р.']
+//        ]);
+//      }
+//      if ($balans['withdraw_waiting'] > 0){
+//        return json_encode([
+//          'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
+//        ]);
+//      }
+//
+//      $withdraw = new UsersWithdraw();
+//      $withdraw->admin_comment='';
+//      $withdraw->process_id=$request->post('process_id');
+//      $withdraw->bill = $request->post('bill');
+//      $withdraw->amount = number_format($amount, 2, ".", "");
+//      $withdraw->status = 1;
+//      $withdraw->user_comment = $request->post('user_comment');
+//      $withdraw->save();
+//
+//      Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
+//
+//      return json_encode([
+//        'error' => false
+//      ]);
     }
-    return $this->render('index');
+    return $this->render('index', ['model' => new UsersWithdraw()]);
   }
 
   /**

@@ -376,7 +376,7 @@ $(function() {
                     $("#top").find(".account-withdraw .option a").removeClass("active");
                     self.addClass("active");
 
-                    $("#top").find("form[name=withdraw-form]").find("input[name=withdraw-process]").val(option);
+                    $("#top").find("form[name=withdraw-form]").find('#userswithdraw-process_id').val(option);
 
                     switch(option) {
                         case "1":
@@ -404,7 +404,7 @@ $(function() {
                         break;
                     }
 
-                    $("#top").find("form[name=withdraw-form]").find("input[name=bill]").attr("placeholder", placeholder);
+                    $("#top").find("form[name=withdraw-form]").find("#userswithdraw-bill").attr("placeholder", placeholder);
 
                     return false;
                 });
