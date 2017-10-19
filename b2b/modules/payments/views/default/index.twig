@@ -5,6 +5,7 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'url':'/home','label':'Личный кабинет'}]) %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="payments-index">
@@ -55,6 +56,9 @@
 
     {{ grid_view_widget({
             'dataProvider': dataProvider,
+            'options': {
+                'class': 'payments-grid-view'
+            },
             'pager' : {
                 'firstPageLabel' : true,
                 'lastPageLabel' : true,
@@ -74,16 +78,43 @@
                     'attribute':'storePointName',
                     'value': table_data.store_point_name
                 },
-                'click_date',
-                'action_date',
+                {
+                    'format':'raw',
+                    'attribute':'userEmail',
+                    'value': table_data.email,
+                    'label': 'Пользователь'
+                },
+                {
+                    'format':'raw',
+                    'attribute':'click_date',
+                    'value': table_data.click_date,
+                    'label': 'Дата'
+                },
                 'order_price',
                 'reward',
                 'cashback',
-                'status',
+                {
+                    'format':'raw',
+                    'attribute':'status',
+                    'value': table_data.status,
+                    'filter': {
+                        0: 'В ожидании',
+                        1: 'Отменён',
+                        2: 'Подтверждён',
+                    },
+                    'options': {
+                        'class': 'col-sm-2',
+                    }
+                },
             ],
         })
     }}
 {#
+{
+    'format':'raw',
+    'attribute':'action_date',
+    'value': table_data.action_date
+},
 'order_price',
 'reward',
 'cashback',

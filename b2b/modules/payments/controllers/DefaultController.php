@@ -66,12 +66,23 @@ class DefaultController extends Controller
         }
         $tableData = [
             'store_name' => function ($model) {
-                return $model->store->name . ' (' . $model->store->uid . ')';
+                return $model->store->name;
             },
             'store_point_name' => function ($model) {
-                return $model->storesPoint->name . ' (' . $model->storesPoint->id . ')';
-            }
-
+                return $model->storesPoint->name;
+            },
+            'click_date' => function ($model) {
+                return date('d.m.Y H:i', strtotime($model->click_date));
+            },
+            'action_date' => function ($model) {
+                return date('d.m.Y H:i', strtotime($model->action_date));
+            },
+            'email' => function ($model) {
+                return $model->user ? $model->user->email : '';
+            },
+            'status' => function ($model) {
+                return Yii::$app->help->colorStatus($model->status);
+            },
         ];
         //статистика по выборке
         $query1 = clone $dataProvider->query;
