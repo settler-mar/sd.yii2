@@ -116,14 +116,16 @@
                             </div>
                         {% endfor %}
 
+                        <div class="col-md-12 shops-pagination">
+                            {% include 'parts/pagination.twig' %}
+                        </div>
+
                         {% if current_category.down_description %}
                             <div class="col-md-12 down-description">
                                 {{current_category.down_description|raw}}
                             </div>
                         {% endif %}
-                        <div class="col-md-12 shops-pagination">
-                            {% include 'parts/pagination.twig' %}
-                        </div>
+
                     {% else %}
                         Ничего не найдено.
                     {% endif %}

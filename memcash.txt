@@ -10,6 +10,8 @@ catalog_stores_<page>_<limit>_<sort>_<order> - магазины ЗАВИСИМО
 catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории ЗАВИСИМОСТЬ: catalog_stores
 store_by_route_<route> - магазин по route ЗАВИСИМОСТЬ: stores_by_column
 store_byid_<id> - магазин по Id ЗАВИСИМОСТЬ: stores_by_column
+store_category_byid_<category_id> - категория магазина по id ЗАВИСИМОСТЬ: catalog_stores
+store_category_byroute_<route> - категория магазина по route ЗАВИСИМОСТЬ: catalog_stores
 store_coupons_store_<store_id> - купоны для магазина ЗАВИСИМОСТЬ: store_coupons_store
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
 categories_coupons - Cписок категорий купонов
@@ -20,7 +22,6 @@ catalog_coupons[_expired][_all][_store_<store>][_category_<category>][_<page>][_
 coupons_counts[_<store_id>][_<category_id>] - количества купонов (всего, просроченных, активных) ЗАВИСИМОСТЬ: coupons_counts
 additional_stores_except_<store_id> - дополнительные магазины для магазина, кроме самого ЗАВИСИМОСТЬ: additional_stores
 additional_stores_by_categories_<cat1>_<cat2>...._except_<store_id> - дополнительные магазины для магазина принадлежащие категориям, кроме самого магазина ЗАВИСИМОСТЬ: additional_stores
-store_category_byid_<category_id> - категория магазина по id
 conversion_cources - курсы валют
 account_payments<user_id>_<page>  - account/payments ЗАВИСИМОСТЬ: account_payments<user_id>
 account_bonuses<user_id>_<page>  - account/bonuses ЗАВИСИМОСТЬ: account_bonuses<user_id>

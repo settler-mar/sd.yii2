@@ -169,9 +169,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
     public static function byId($id)
     {
         $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_stores';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+        
         return $cache->getOrSet('store_category_byid_'.$id, function () use ($id) {
             return self::findOne($id);
-        });
+        }, $cache->defaultDuration, $dependency);
     }
 
     /**
@@ -181,10 +185,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
     public static function byRoute($route)
     {
         $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_stores';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
         $category = $cache->getOrSet('store_category_byroute_' . $route, function () use ($route) {
             //return self::findOne(['route' => $route, 'is_active' => 1]);
             return self::findOne(['route' => $route]);
-        });
+        }, $cache->defaultDuration, $dependency);
         return $category;
     }
 
