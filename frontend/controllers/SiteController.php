@@ -86,6 +86,10 @@ class SiteController extends SdController
     $reviews = Reviews::top();
 
     //$reg_form = new RegistrationForm();
+    Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
     return $this->render('index', [
       'time' => time(),
@@ -95,24 +99,24 @@ class SiteController extends SdController
     ]);
   }
 
-/*  public function actionTests(){
-    try {
-      Yii::$app
-        ->mailer
-        ->compose(
-          ['html' => 'test', 'text' => 'test'],
-          [
-          ]
-        )
-        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-        ->setTo('12312321')
-        ->setSubject(Yii::$app->name . ': Регистрация')
-        ->send();
-    } catch (\Exception $e) {
-      return 2;
-    }
-    return 1;
-  }*/
+  /*  public function actionTests(){
+      try {
+        Yii::$app
+          ->mailer
+          ->compose(
+            ['html' => 'test', 'text' => 'test'],
+            [
+            ]
+          )
+          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+          ->setTo('12312321')
+          ->setSubject(Yii::$app->name . ': Регистрация')
+          ->send();
+      } catch (\Exception $e) {
+        return 2;
+      }
+      return 1;
+    }*/
 
   public function actionAdmin(){
     if(
@@ -138,7 +142,7 @@ class SiteController extends SdController
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
 
     $this->layout='@app/views/layouts/admin.twig';
-    
+
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
 
@@ -171,18 +175,17 @@ class SiteController extends SdController
 
     $page['friend_user']=$user;
     if(Yii::$app->request->isAjax){
-        throw new HttpException(404 ,'User not found');
+      throw new HttpException(404 ,'User not found');
     }
 
     $page['dopline']='{{_include(\'instruction_offline\') | raw}}';
-    $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $page['infotitle']='Как получить кэшбэк в оффлайне?';
     $this->params['breadcrumbs'][] = $page['title'];
 
     Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?r=".$user->uid."\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:type\" content=\"website\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"website title\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"website description\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/".$user->getBarcodeImg()."\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru".$user->getBarcodeImg()."\" />";
     return $this->render('static_page',$page);
 
   }
@@ -358,7 +361,7 @@ class SiteController extends SdController
     if(Yii::$app->request->isAjax){
       return json_encode([
         'html'=>$this->renderAjax('static_page_ajax',$page)
-        ]);
+      ]);
     }else{
       $this->params['breadcrumbs'][] = $page['title'];
       return $this->render('static_page',$page);

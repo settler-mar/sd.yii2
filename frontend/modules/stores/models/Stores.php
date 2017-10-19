@@ -197,7 +197,11 @@ class Stores extends \yii\db\ActiveRecord
 
   public function afterFind()
   {
-    $this->video = json_decode($this->video, true);
+    if(strlen($this->video)<10) {
+      $this->video = array();
+    }else {
+      $this->video = json_decode($this->video, true);
+    }
     /*$str=$this->video[0];
     $str=explode('?',$str);
     d($str);
