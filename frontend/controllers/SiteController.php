@@ -179,7 +179,7 @@ class SiteController extends SdController
     }
 
     $page['dopline']='{{_include(\'instruction_offline\') | raw}}';
-    $page['infotitle']='Как получить кэшбэк в оффлайне?';
+    $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter??';
     $this->params['breadcrumbs'][] = $page['title'];
 
     Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?r=".$user->uid."\" />";
