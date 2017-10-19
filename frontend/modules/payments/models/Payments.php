@@ -214,6 +214,9 @@ class Payments extends \yii\db\ActiveRecord
   
   public function afterSave($insert, $changedAttributes)
   {
+    if ($this->scenario == 'offline') {
+      \Yii::$app->balanceCalc->todo($this->user_id, 'cash');
+    }
     Cache::clearName('account_payments' . $this->user_id);
     Cache::clearName('account_bonuses' . $this->user_id);
   }
