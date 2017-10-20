@@ -171,6 +171,11 @@ class DefaultController extends Controller
       $reward = $rates->size;
       $cashback = $rates->our_size;
     }
+
+    // просчет лояльности
+    $loyalty_bonus = $user->loyalty_status_data['bonus'];
+    $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+
     $cashback = round($cashback, 2);
     $reward = round($reward, 2);
 
