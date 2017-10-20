@@ -18,6 +18,15 @@ class PaymentsController extends Controller
   private $stores = [];
   private $users = [];
 
+  //добавляем параметры для запуска
+  public $day;
+  public function options($actionID)
+  {
+    if($actionID=='index') {
+      return ['day'];
+    }
+  }
+
   /**
    * Получает наш id магазина по id от адмитада
    */
@@ -56,7 +65,7 @@ class PaymentsController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionIndex($options = false, $send_mail = true)
+  public function actionIndex($options = false, $send_mail = true, $day=false)
   {
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
@@ -66,6 +75,10 @@ class PaymentsController extends Controller
       'offset' => 0,
 //      'subid'=>61690,
     ];
+
+    if($this->day){
+      $days=$this->day;
+    }
 
     if (is_array($options)) {
       $params = array_merge($params, $options);
@@ -147,6 +160,7 @@ class PaymentsController extends Controller
           $db_payment->shop_percent = $store->percent;
           $db_payment->order_id = $payment['order_id'];
           $db_payment->kurs = $kurs;
+          $db_payment->action_code = $payment['tariff_id'];
 
           if ($user->referrer_id > 0) {
             $ref = $this->getUserData($user->referrer_id);
@@ -226,6 +240,7 @@ class PaymentsController extends Controller
           $db_payment->reward = $reward;
           $db_payment->cashback = $cashback;
           $db_payment->status = $status;
+          $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
 
           if ($user->referrer_id > 0) {
             $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
