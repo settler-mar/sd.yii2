@@ -8,11 +8,17 @@
 
                     {{ form.field(model, 'user_id').textInput()|raw }}
 
-                    {{ form.field(model, 'order_price').textInput()|raw }}
+                    <div cur="{{ model.storeCur }}">
+                        {{ form.field(model, 'order_price').textInput()|raw }}
+                    </div>
 
-                    {{ form.field(model, 'reward').textInput()|raw }}
+                    <div cur="RUB">
+                     {{ form.field(model, 'reward').textInput({})|raw }}
+                    </div>
 
-                    {{ form.field(model, 'cashback').textInput()|raw }}
+                    <div cur="RUB">
+                        {{ form.field(model, 'cashback').textInput()|raw }}
+                    </div>
 
                     {{ form.field(model, 'status').dropDownList({
                         '0':'В ожидании',
@@ -33,23 +39,13 @@
 
                     {{ form.field(model, 'additional_id').textInput()|raw }}
 
-                    {{ form.field(model, 'ref_bonus_id').dropDownList({
-                        '' :'Любой',
-                        '0':'В ожидании',
-                        '1':'Отклонён',
-                        '2':'Подтвержден'
-                    })|raw }}
+                    {{ form.field(model, 'ref_bonus_id').dropDownList(bonus_status_list)|raw }}
 
                     {{ form.field(model, 'ref_bonus').textInput()|raw }}
 
                     {{ form.field(model, 'ref_id').textInput()|raw }}
 
-                    {{ form.field(model, 'loyalty_status').dropDownList({
-                        '' :'Любой',
-                        '0':'В ожидании',
-                        '1':'Отклонён',
-                        '2':'Подтвержден'
-                    })|raw }}
+                    {{ form.field(model, 'loyalty_status').dropDownList(loyalty_status_list)|raw }}
 
                     {{ form.field(model, 'order_id').textInput({'maxlength':true})|raw }}
 
