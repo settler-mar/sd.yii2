@@ -96,15 +96,26 @@ class DefaultController extends Controller
             },
         ];
         //статистика по выборке
-        $query1 = clone $dataProvider->query;
-        $query1->select(['sum(cashback) as cashback']);
-        $query2 = clone $query1;
-        $query1->andWhere(['status'=> 0]);
-        $query2->andWhere(['status'=> 2]);
-        $resultWaitingCount = $query1->count();
-        $resultSuccessCount = $query2->count();
-        $resultWaiting = $query1->one();
-        $resultSuccess = $query2->one();
+        $queryAll = clone $dataProvider->query;
+        $queryAll->select(['sum(cashback) as cashback', 'sum(order_price * kurs) as order_price']);
+        $resultAllCount = $queryAll->count();
+        $resultAll = $queryAll->one();
+
+        $querySuccess = clone $queryAll;
+        $querySuccess->andWhere(['status'=> 2]);
+        $resultSuccessCount = $querySuccess->count();
+        $resultSuccess = $querySuccess->one();
+
+        $queryWaiting = clone $queryAll;
+        $queryWaiting->andWhere(['status'=> 0]);
+        $resultWaitingCount = $queryWaiting->count();
+        $resultWaiting = $queryWaiting->one();
+
+        $queryRevoke = clone $queryAll;
+        $queryRevoke->andWhere(['status'=> 1]);
+        $resultRevokeCount = $queryRevoke->count();
+        $resultRevoke = $queryRevoke->one();
+
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -114,8 +125,10 @@ class DefaultController extends Controller
             'table_data' => $tableData,
             'storeId' => Yii::$app->request->get('storeId'),
             'store_point' => Yii::$app->request->get('store_point'),
-            'result_waiting' => ['count'=>$resultWaitingCount,'cashback'=>$resultWaiting->cashback],
-            'result_success' => ['count' => $resultSuccessCount, 'cashback'=> $resultSuccess->cashback],
+            'result_waiting' => ['count'=>$resultWaitingCount,'summs'=>$resultWaiting],
+            'result_success' => ['count' => $resultSuccessCount, 'summs'=> $resultSuccess],
+            'result_all' => ['count' => $resultAllCount, 'summs'=> $resultAll],
+            'result_revoke' => ['count' => $resultRevokeCount, 'summs'=> $resultRevoke],
         ]);
     }
 
