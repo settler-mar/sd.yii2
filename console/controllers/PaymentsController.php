@@ -6,6 +6,7 @@ use common\models\Admitad;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -123,6 +124,15 @@ class PaymentsController extends Controller
           continue;
         }
 
+        if($payment['positions'] && $payment['positions'][0] && $payment['positions'][0]['rate_id']){
+          $rate=TariffsRates::find()
+            ->where(['id_rate'=>$payment['positions'][0]['rate_id']])
+            ->one();
+          $rate_id=$rate->uid;
+        }else{
+          $rate_id=0;
+        }
+
         if (!$db_payment) {
           //добавляем новый платеж
           $is_update = true;
@@ -161,6 +171,7 @@ class PaymentsController extends Controller
           $db_payment->order_id = $payment['order_id'];
           $db_payment->kurs = $kurs;
           $db_payment->action_code = $payment['tariff_id'];
+          $db_payment->rate_id = $rate_id;
 
           if ($user->referrer_id > 0) {
             $ref = $this->getUserData($user->referrer_id);
@@ -215,11 +226,6 @@ class PaymentsController extends Controller
             }
           }
         } else {
-          //для подтвержденных заказов ни чего не меняем уже
-          if ($db_payment->status == 2) {
-            continue;
-          }
-
           //обновляем старый платеж
           if ($db_payment->kurs > 0) {
             $kurs = $db_payment->kurs;
@@ -228,28 +234,36 @@ class PaymentsController extends Controller
             $kurs = $db_payment->reward / $payment['payment'];
           }
 
-          $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
-          $reward = $kurs * $payment['payment'];
+          //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
+          if ($db_payment->status == 2) {
+            //continue;
 
-          $cashback = $reward * $db_payment->shop_percent / 100;
-          $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+            //через врямя удалить
+            $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
+            $db_payment->rate_id = $rate_id;
+          }else {
+            $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
+            $reward = $kurs * $payment['payment'];
 
-          $cashback = round($cashback, 2);
-          $reward = round($reward, 2);
+            $cashback = $reward * $db_payment->shop_percent / 100;
+            $cashback = $cashback + $cashback * $loyalty_bonus / 100;
 
-          $db_payment->reward = $reward;
-          $db_payment->cashback = $cashback;
-          $db_payment->status = $status;
-          $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
+            $cashback = round($cashback, 2);
+            $reward = round($reward, 2);
 
-          if ($user->referrer_id > 0) {
-            $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
-            if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-              $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
-            } else {
-              $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+            $db_payment->reward = $reward;
+            $db_payment->cashback = $cashback;
+            $db_payment->status = $status;
+
+            if ($user->referrer_id > 0) {
+              $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
+              if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
+                $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+              } else {
+                $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+              }
+              $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
             }
-            $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
           }
 
           if (count($db_payment->getDirtyAttributes()) > 0) {

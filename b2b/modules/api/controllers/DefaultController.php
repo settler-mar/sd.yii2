@@ -195,6 +195,7 @@ class DefaultController extends Controller
     $pay->loyalty_status = $user->loyalty_status;
     $pay->kurs = $kurs;
     $pay->action_code = $action->uid;
+    $pay->rate_id = $rates->uid;
 
     if ($user->referrer_id > 0) {
       $ref = $this->getUserData($user->referrer_id);

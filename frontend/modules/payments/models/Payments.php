@@ -57,7 +57,8 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
       [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id'], 'integer'],
+        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id','rate_id'], 'integer'],
+      [['recalc_json'],'string'],
       [['user_id'], 'integer', 'on' => 'online'],
       [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
         'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
