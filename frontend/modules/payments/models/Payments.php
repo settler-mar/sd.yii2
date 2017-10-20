@@ -305,4 +305,9 @@ class Payments extends \yii\db\ActiveRecord
     return $this->hasOne(B2bStoresPoints::className(), ['id' => 'store_point_id']);
   }
 
+  public function getStoresPointText()
+  {
+    $point = $this->getStoresPoint()->one();
+    return $point->name.', '.$point->country.', '.$point->city.', '.$point->address;
+  }
 }

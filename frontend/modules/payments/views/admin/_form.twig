@@ -5,13 +5,19 @@
                     <div class="form-group field-payments-storename">
                         <label class="control-label" for="payments-storename">Магазин</label>
                         {{ model.storeName | raw }}
-                        <div class="help-block"></div>
                     </div>
+
+                    {% if model.store_point_id %}
+                    <div class="form-group field-payments-storename">
+                        <label class="control-label" for="payments-storename">Торговая точка</label>
+                        {{ model.storesPointText | raw }}
+                    </div>
+                    {% endif %}
 
                     <div class="form-group field-payments-storename">
                         <label class="control-label" for="payments-storename">Тарифф</label>
-                        {{ model.tariff | raw }}
-                        <div class="help-block"></div>
+
+
                     </div>
 
                     {{ form.field(model, 'action_id').textInput()|raw }}
