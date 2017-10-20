@@ -102,7 +102,7 @@ class AdminController extends Controller
         return $out;
       },
       'cashback_txt'=>function ($model, $value, $index, $column){
-        return $value.' RUB';
+        return number_format($model['cashback'],2,'.',' ').' RUB';
       },
       'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
