@@ -25,12 +25,20 @@ class CategoryCouponsMenu extends Widget
           'uid' => 0
         ]];
         $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
+        $categories = array_merge($categories, [[
+          'name' => 'Завершившиеся акции',
+          'count' => Coupons::activeCount(true),
+          'route' => 'expired',
+          'uid' => -1
+        ]]);
         $out = '<ul data-mcs-theme="dark">';
         foreach ($categories as $category) {
             $out .= '<li>';
 
             if ($currentCategoryId != null && $category['uid'] == $currentCategoryId
-                || $category['uid'] == 0 && Yii::$app->request->pathinfo == 'coupons') {
+                || $category['uid'] == 0 && Yii::$app->request->pathinfo == 'coupons'
+                || $category['uid'] == -1 && Yii::$app->request->pathinfo == 'coupons/expired'
+            ) {
                 $class = 'class="active title"';
                 $classCount = 'class="active-count title"';
                 $out .=  '<span ' . $class . '">' . $category['name'] . "</span> <span ".$classCount.">(" .
@@ -42,7 +50,6 @@ class CategoryCouponsMenu extends Widget
             $out .='</li>';
         }
         $out .= '</ul>';
-        //ddd($out);
         return $out;
     }
 }

@@ -165,16 +165,21 @@ class Coupons extends \yii\db\ActiveRecord
     return $stores;
   }
 
-  public static function activeCount()
+  public static function activeCount($expired = false)
   {
     $cache = Yii::$app->cache;
-    $count = $cache->getOrSet('total_all_coupons', function () {
-      return self::find()
+    $cacheName = 'total_all_coupons' . ($expired ? '_expired' : '');
+    $count = $cache->getOrSet($cacheName, function () use ($expired) {
+      $result =  self::find()
         ->from(self::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-        ->where(['cws.is_active' => [0, 1]])
-        ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
-        ->count();
+        ->where(['cws.is_active' => [0, 1]]);
+      if ($expired) {
+        $result->andWhere(['<=', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
+      } else {
+        $result->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
+      }
+      return $result->count();
     });
     return $count;
   }
@@ -229,6 +234,7 @@ class Coupons extends \yii\db\ActiveRecord
 
     //ключи
     Cache::deleteName('total_all_coupons');
+    Cache::deleteName('total_all_coupons_expired');
     Cache::deleteName('stores_coupons');
     Cache::deleteName('categories_coupons');
   }
