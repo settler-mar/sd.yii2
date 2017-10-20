@@ -206,8 +206,12 @@ class DefaultController extends Controller
                 $model->category = array_keys($categories)[0];
             }
 
-            if ($model->user_id && !preg_match('/^SD-\w*/', $model->user_id)) {
-                $model->user_id = 'SD-'  . $model->user_id;
+            if ($model->user_id) {
+                if (!preg_match('/^SD-\w*/', $model->user_id)) {
+                    $model->user_id = 'SD-'  . $model->user_id;
+                }
+            } else {
+                $model->user_id = 'SD-';
             }
             
             return $this->render('payment', [

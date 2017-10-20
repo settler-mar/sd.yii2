@@ -11,10 +11,13 @@
 <div class="payments-index">
     <h1>{{ html.encode(this.title) }}</h1>
     <div class="col-md-12 payments-result">
-        Количество покупок (подтвержденных/ожидающих): <span>{{ result_success.count }}/{{ result_waiting.count }}</span>
+        Количество покупок (всего/подтвержденных/отменённых/ожидающих): <span>{{ result_all.count }} / {{ result_success.count }} / {{ result_revoke.count }} / {{ result_waiting.count }}</span>
     </div>
     <div class="col-md-12 payments-result">
-        Кэшбэк (подтвержденный/ожидаемый):  <span>{{ _nf(result_success.cashback, 2)|raw }}/{{ _nf(result_waiting.cashback, 2)|raw }} </span>
+        Cумма покупок (всего/подтвержденных/отменённых/ожидающих): <span>{{ _nf(result_all.summs.order_price, 2)|raw }} / {{ _nf(result_success.summs.order_price, 2)|raw }} / {{ _nf(result_revoke.summs.order_price, 2)|raw }} / {{ _nf(result_waiting.summs.order_price, 2)|raw }}</span>
+    </div>
+    <div class="col-md-12 payments-result">
+        Кэшбэк (всего/подтвержденный/отменённых/ожидаемый):  <span>{{ _nf(result_all.summs.cashback, 2)|raw }} / {{ _nf(result_success.summs.cashback, 2)|raw }} / {{ _nf(result_revoke.summs.cashback, 2)|raw }}  / {{ _nf(result_waiting.summs.cashback, 2)|raw }} </span>
     </div>
     <form method="get" class="form-horizontal col-md-12 payments-search" style="margin: 20px auto;">
         <div class="form-group">

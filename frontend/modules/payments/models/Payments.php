@@ -73,6 +73,8 @@ class Payments extends \yii\db\ActiveRecord
 
       [['order_id'], 'string', 'max' => 50],
       [['admin_comment'], 'string', 'max' => 255],
+      [['category'], 'required', 'on' => 'offline', 'message' => 'Необходимо выбрать "Категория покупки"'],
+      [['category'], 'integer'],
     ];
   }
 
@@ -121,7 +123,7 @@ class Payments extends \yii\db\ActiveRecord
       $store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
       if ($store) {
         $this->affiliate_id = $store->cpaLink->affiliate_id;
-        $this->cpa_id = $store->cpaLink->cpa_id;
+        $this->cpa_id = $store->cpaLink->id;
       } else {
         Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
         return false;
@@ -146,9 +148,8 @@ class Payments extends \yii\db\ActiveRecord
       //суммы
       $action = StoresActions::findOne([
         'uid' => $this->category,
-        'cpa_link_id' => $this->affiliate_id,
+        'cpa_link_id' => $this->cpa_id,
       ]);
-      //$action = StoresActions::findOne($this->category);
 
       if (!$action) {
         Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
