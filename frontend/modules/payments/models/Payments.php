@@ -87,7 +87,7 @@ class Payments extends \yii\db\ActiveRecord
       'admin_comment' => 'Коментарий администратора',
       'is_showed' => 'Is Showed',
       'action_id' => 'Код действия',
-      'affiliate_id' => 'Affiliate ID',
+      'affiliate_id' => 'Affiliate ID (Код связанной CPA)',
       'user_id' => 'Пользователь',
       'order_price' => 'Сумма заказа',
       'old_order_price' => 'Old Order Price',
@@ -99,8 +99,8 @@ class Payments extends \yii\db\ActiveRecord
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
       'closing_date' => 'Closing Date',
-      'cpa_id' => 'Spa ID',
-      'additional_id' => 'Additional ID',
+      'cpa_id' => 'Cpa ID',
+      'additional_id' => 'Additional ID (Вспомогательный код для тарифа)',
       'ref_bonus_id' => 'Ref Bonus ID',
       'ref_bonus' => 'Кэшбэк бонус',
       'ref_id' => 'Ref ID',
@@ -249,7 +249,7 @@ class Payments extends \yii\db\ActiveRecord
       $this->_store=$this->store;
     }
     //return $this->store->name;
-    return '<a href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+    return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
   }
 
   public function getStoreCur()
