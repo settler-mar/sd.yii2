@@ -40,6 +40,7 @@ class Payments extends \yii\db\ActiveRecord
 {
   public $category;
 
+  private $_store;
   //public $store_point_id;
   /**
    * @inheritdoc
@@ -116,80 +117,84 @@ class Payments extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
-    //для оффлайн шопов с формы
-    if ($this->scenario == 'offline') {
-      $store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
-      if ($store) {
-        $this->affiliate_id = $store->cpaLink->affiliate_id;
-        $this->cpa_id = $store->cpaLink->cpa_id;
+    if($this->isNewRecord) {
+      //для оффлайн шопов с формы
+      if ($this->scenario == 'offline') {
+        if (!$this->_store) {
+          $this->_store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
+        }
+        $store = $this->_store;
+        if ($store) {
+          $this->affiliate_id = $store->cpaLink->affiliate_id;
+          $this->cpa_id = $store->cpaLink->cpa_id;
+        } else {
+          Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
+          return false;
+        }
+
+        //даты
+        $dateNow = date('Y-m-d H:i:s', time());
+        $this->click_date = $dateNow;
+        $this->action_date = $dateNow;
+        $this->status_updated = $dateNow;
+        $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));;
+
+        //прочее
+        $this->action_id = time();
+        $this->order_id = !empty($this->order_id) ? $this->order_id : time();
+        $this->additional_id = 0;
+        $this->is_showed = 1;
+        $this->status = 0;
+
+        $this->store_point_id = Yii::$app->storePointUser->id;
+
+        //суммы
+        $action = StoresActions::findOne([
+          'uid' => $this->category,
+          'cpa_link_id' => $this->affiliate_id,
+        ]);
+        //$action = StoresActions::findOne($this->category);
+
+        if (!$action) {
+          Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
+          return false;
+        }
+        $this->action_code = $action->uid;
+
+        $tariff = $action->getTariffs()
+          ->orderBy('uid')
+          ->one();
+        if (!$tariff) {
+          Yii::$app->session->addFlash('err', 'Ошибка - не найден тариф для категории');
+          return false;
+        }
+        $rates = $tariff->getRates()
+          ->where(['<', 'date_s', date("Y-m-d H:i:s")])
+          //->orderBy(['date_s DESC','uid'])
+          ->one();
+        if (!$rates) {
+          Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
+          return false;
+        }
+        $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
+
+        if ($rates->is_percentage) {
+          $reward = $this->order_price * $rates->size * $this->kurs / 100;
+          $cashback = $this->order_price * $rates->our_size * $this->kurs / 100;
+        } else {
+          $reward = $rates->size;
+          $cashback = $rates->our_size;
+        }
+        $cashback = round($cashback, 2);
+        $reward = round($reward, 2);
+
+        $this->reward = $reward;
+        $this->cashback = $cashback;
+        $this->shop_percent = $store->percent;
       } else {
-        Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
-        return false;
+        $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
       }
-
-      //даты
-      $dateNow = date('Y-m-d H:i:s', time());
-      $this->click_date = $dateNow;
-      $this->action_date = $dateNow;
-      $this->status_updated = $dateNow;
-      $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));;
-
-      //прочее
-      $this->action_id = time();
-      $this->order_id = !empty($this->order_id) ? $this->order_id : time();
-      $this->additional_id = 0;
-      $this->is_showed = 1;
-      $this->status = 0;
-
-      $this->store_point_id = Yii::$app->storePointUser->id;
-
-      //суммы
-      $action = StoresActions::findOne([
-        'uid' => $this->category,
-        'cpa_link_id' => $this->affiliate_id,
-      ]);
-      //$action = StoresActions::findOne($this->category);
-
-      if (!$action) {
-        Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
-        return false;
-      }
-      $this->action_code = $action->uid;
-
-      $tariff = $action->getTariffs()
-        ->orderBy('uid')
-        ->one();
-      if (!$tariff) {
-        Yii::$app->session->addFlash('err', 'Ошибка - не найден тариф для категории');
-        return false;
-      }
-      $rates = $tariff->getRates()
-        ->where(['<', 'date_s', date("Y-m-d H:i:s")])
-        //->orderBy(['date_s DESC','uid'])
-        ->one();
-      if (!$rates) {
-        Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
-        return false;
-      }
-      $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
-
-      if ($rates->is_percentage) {
-        $reward = $this->order_price * $rates->size * $this->kurs / 100;
-        $cashback = $this->order_price * $rates->our_size * $this->kurs / 100;
-      } else {
-        $reward = $rates->size;
-        $cashback = $rates->our_size;
-      }
-      $cashback = round($cashback, 2);
-      $reward = round($reward, 2);
-
-      $this->reward = $reward;
-      $this->cashback = $cashback;
-      $this->shop_percent = $store->percent;
-    } else {
-      $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
     }
-
     return parent::beforeValidate();
   }
 
@@ -240,8 +245,19 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getStoreName()
   {
+    if(!$this->_store){
+      $this->_store=$this->store;
+    }
     //return $this->store->name;
-    return '<a href="/admin/stores/update?id=' . $this->store->uid . '">' . $this->store->name . ' (' . $this->store->uid . ')</a>';
+    return '<a href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+  }
+
+  public function getStoreCur()
+  {
+    if(!$this->_store){
+      $this->_store=$this->store;
+    }
+    return $this->store->currency;
   }
 
   public function getStringStatus()
