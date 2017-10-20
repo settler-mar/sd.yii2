@@ -176,7 +176,7 @@ class DefaultController extends Controller
 
     $pay = new Payments();
     $pay->cpa_id = $cpa->cpa_id;
-    $pay->store_point_id = Yii::$app->session->get('point');
+    $pay->store_point_id = (int)Yii::$app->session->get('point');
     $pay->click_date = date("Y-m-d H:i:s");
     $pay->action_date = date("Y-m-d H:i:s");
     $pay->status_updated = date("Y-m-d H:i:s");
@@ -190,12 +190,11 @@ class DefaultController extends Controller
     $pay->order_price = $sum;
     $pay->reward = $reward;
     $pay->cashback = $cashback;
-    $pay->order_id = $store->cash_number != 1 ? $request->post('order_number') : time();
+    $pay->order_id = $store->cash_number != 1 ? $request->post('order_number') : (string)time();
     $pay->shop_percent = $store->percent;
     $pay->loyalty_status = $user->loyalty_status;
     $pay->kurs = $kurs;
-    $pay->action_code=$action->uid;
-
+    $pay->action_code = $action->uid;
 
     if ($user->referrer_id > 0) {
       $ref = $this->getUserData($user->referrer_id);
@@ -211,10 +210,12 @@ class DefaultController extends Controller
       $pay->ref_bonus = round($pay->ref_bonus, 2);
     }
 
-    $pay->save();
+    if (!$pay->save()) {
+      //var_dump($pay->getErrors());
+      return 'Непредвиденная ошибка';
+    }
 
     \Yii::$app->balanceCalc->todo($user->uid, 'cash');
-
     return 'OK';
   }
 

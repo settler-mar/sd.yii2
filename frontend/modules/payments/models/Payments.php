@@ -187,7 +187,7 @@ class Payments extends \yii\db\ActiveRecord
       $this->cashback = $cashback;
       $this->shop_percent = $store->percent;
     } else {
-      $this->store_point_id = $this->store_point_id ? $this->store_point_id : 0;
+      $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
     }
 
     return parent::beforeValidate();
