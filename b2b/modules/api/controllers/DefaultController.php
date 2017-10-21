@@ -171,6 +171,11 @@ class DefaultController extends Controller
       $reward = $rates->size;
       $cashback = $rates->our_size;
     }
+
+    // просчет лояльности
+    $loyalty_bonus = $user->loyalty_status_data['bonus'];
+    $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+
     $cashback = round($cashback, 2);
     $reward = round($reward, 2);
 
@@ -195,6 +200,7 @@ class DefaultController extends Controller
     $pay->loyalty_status = $user->loyalty_status;
     $pay->kurs = $kurs;
     $pay->action_code = $action->uid;
+    $pay->rate_id = $rates->uid;
 
     if ($user->referrer_id > 0) {
       $ref = $this->getUserData($user->referrer_id);

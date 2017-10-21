@@ -34,7 +34,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
    */
   public function rules()
   {
-      $balanse=Yii::$app->user->identity->balance;
+      //$balanse=Yii::$app->user->identity->balance;
       return [
       [['user_id', 'process_id', 'bill', 'request_date', 'amount'], 'required'],
       [['process_id'], 'required', 'message'=>'Неправильный способ вывода'],
@@ -51,7 +51,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
         return $model->process_id == 2;
       }, 'whenClient' => "function(attribute,value){return parseInt($('#userswithdraw-process_id').val()) == 2;}" ,
       'message' => 'Введите правильный кошелёк webmoney R000000000000'],
-      [['amount'], 'number', 'min'=> 350, 'max' => ($balanse ? $balanse['current'] : null)],
+      [['amount'], 'number', 'min'=> 350/*, 'max' => ($balanse ? $balanse['current'] : null)*/],
       [['amount'], 'filter', 'filter' => function ($value) {
         return number_format($value, 2, ".", "");
       }],

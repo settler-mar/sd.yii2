@@ -866,3 +866,14 @@ table{
         }
     }
 }
+[cur]{
+    position: relative;
+
+    &:before{
+        position: absolute;
+        content: attr(cur);
+        right: 5px;
+        top: 25px;
+        color: #999;
+    }
+}

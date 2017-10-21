@@ -91,18 +91,20 @@ class AdminController extends Controller
             '.$model->$old_name.'
             </span>';
         };
+
         if($name!='order_price') {
           $out .= ' RUB';
         }else{
           $out.=' '.$model->storeCur;
         };
+
         if($model->cpa_id==1) {
           $out .= '<span data-col="'.$name.'" class="admitad_data"></span>';
         }
         return $out;
       },
       'cashback_txt'=>function ($model, $value, $index, $column){
-        return $value.' RUB';
+        return number_format($model['cashback'],2,'.',' ').' RUB';
       },
       'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
@@ -197,17 +199,7 @@ class AdminController extends Controller
 
     return json_encode($out);
   }
-  /**
-   * Displays a single Payments model.
-   * @param integer $id
-   * @return mixed
-   */
-  public function actionView($id)
-  {
-    return $this->render('view.twig', [
-      'model' => $this->findModel($id),
-    ]);
-  }
+
 
   /**
    * Creates a new Payments model.
@@ -226,8 +218,26 @@ class AdminController extends Controller
       \Yii::$app->balanceCalc->todo($model->user_id, 'cash');
       return $this->redirect(['index']);
     } else {
+
+      $loyalty_status_list = [];
+      foreach (Yii::$app->params['dictionary']['loyalty_status'] as $k => $v) {
+        $loyalty_status_list[$k] = $v['display_name'] . ' (' . $v['bonus'] . ')';
+        if (isset($v['is_vip']) && $v['is_vip'] == 1) {
+          $loyalty_status_list[$k] .= ' VIP клиент';
+        }
+      };
+
+      $bonus_status_list = [];
+      foreach (Yii::$app->params['dictionary']['bonus_status'] as $k => $v) {
+        $bonus_status_list[$k] = $v['display_name'] . ' (' . $v['bonus'] . ')';
+        if (isset($v['is_webmaster']) && $v['is_webmaster'] == 1) {
+          $bonus_status_list[$k] .= ' для веб мастеров';
+        }
+      };
       return $this->render('create.twig', [
         'model' => $model,
+        'loyalty_status_list' => $loyalty_status_list,
+        'bonus_status_list' => $bonus_status_list,
       ]);
     }
   }
@@ -247,14 +257,29 @@ class AdminController extends Controller
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-
       \Yii::$app->balanceCalc->todo($model->user_id, 'cash');
-
       return $this->redirect(['index']);
     } else {
+      $loyalty_status_list = [];
+      foreach (Yii::$app->params['dictionary']['loyalty_status'] as $k => $v) {
+        $loyalty_status_list[$k] = $v['display_name'] . ' (' . $v['bonus'] . ')';
+        if (isset($v['is_vip']) && $v['is_vip'] == 1) {
+          $loyalty_status_list[$k] .= ' VIP клиент';
+        }
+      };
+
+      $bonus_status_list = [];
+      foreach (Yii::$app->params['dictionary']['bonus_status'] as $k => $v) {
+        $bonus_status_list[$k] = $v['display_name'] . ' (' . $v['bonus'] . ')';
+        if (isset($v['is_webmaster']) && $v['is_webmaster'] == 1) {
+          $bonus_status_list[$k] .= ' для веб мастеров';
+        }
+      };
+
       return $this->render('update.twig', [
         'model' => $model,
+        'loyalty_status_list' => $loyalty_status_list,
+        'bonus_status_list' => $bonus_status_list,
       ]);
     }
   }

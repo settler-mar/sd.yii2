@@ -57,7 +57,8 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
       [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id'], 'integer'],
+        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id','rate_id'], 'integer'],
+      [['recalc_json'],'string'],
       [['user_id'], 'integer', 'on' => 'online'],
       [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
         'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
@@ -89,7 +90,7 @@ class Payments extends \yii\db\ActiveRecord
       'admin_comment' => 'Коментарий администратора',
       'is_showed' => 'Is Showed',
       'action_id' => 'Код действия',
-      'affiliate_id' => 'Affiliate ID',
+      'affiliate_id' => 'Affiliate ID (Код связанной CPA)',
       'user_id' => 'Пользователь',
       'order_price' => 'Сумма заказа',
       'old_order_price' => 'Old Order Price',
@@ -101,8 +102,8 @@ class Payments extends \yii\db\ActiveRecord
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
       'closing_date' => 'Closing Date',
-      'cpa_id' => 'Spa ID',
-      'additional_id' => 'Additional ID',
+      'cpa_id' => 'CPA ID',
+      'additional_id' => 'Additional ID (Вспомогательный код для тарифа)',
       'ref_bonus_id' => 'Ref Bonus ID',
       'ref_bonus' => 'Кэшбэк бонус',
       'ref_id' => 'Ref ID',
@@ -253,8 +254,12 @@ class Payments extends \yii\db\ActiveRecord
     if(!$this->_store){
       $this->_store=$this->store;
     }
+    if(!$this->_store){
+      //ddd($this);
+      return "err";
+    };
     //return $this->store->name;
-    return '<a href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+    return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
   }
 
   public function getStoreCur()
@@ -262,6 +267,9 @@ class Payments extends \yii\db\ActiveRecord
     if(!$this->_store){
       $this->_store=$this->store;
     }
+    if(!$this->_store){
+      return "err";
+    };
     return $this->store->currency;
   }
 
@@ -305,4 +313,9 @@ class Payments extends \yii\db\ActiveRecord
     return $this->hasOne(B2bStoresPoints::className(), ['id' => 'store_point_id']);
   }
 
+  public function getStoresPointText()
+  {
+    $point = $this->getStoresPoint()->one();
+    return $point->name.', '.$point->country.', '.$point->city.', '.$point->address;
+  }
 }
