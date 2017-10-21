@@ -18,6 +18,8 @@ class PaymentsSearch extends Payments
     public $storeName;
     public $storePointName;
     public $userEmail;
+    public $click_data_range;
+    public $end_data_range;
 
     //public $storeId;
 //    public $store_point;
@@ -33,6 +35,7 @@ class PaymentsSearch extends Payments
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'old_reward', 'old_order_price'], 'number'],
             [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id', 'admin_comment',
               'storeName', 'storePointName','userEmail'], 'safe'],
+            [['click_data_range', 'end_data_range'], 'safe'],
         ];
     }
 
@@ -72,6 +75,7 @@ class PaymentsSearch extends Payments
                     'status',
                     'action_date',
                     'click_date',
+                    'closing_date',
                     'order_price',
                     'reward',
                     'cashback',
@@ -174,7 +178,19 @@ class PaymentsSearch extends Payments
             //ddd($params['date'], $start_date, $end_date);
             $start_date = date('Y-m-d', strtotime($start_date));
             $end_date = date('Y-m-d', strtotime($end_date));
-            $query->andFilterWhere(['between', 'action_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+            $query->andFilterWhere(['between', 'click_date', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+        }
+        if (!empty($this->click_data_range) && strpos($this->click_data_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->click_data_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'click_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+        if (!empty($this->end_data_range) && strpos($this->end_data_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->end_data_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'end_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
         }
 
 

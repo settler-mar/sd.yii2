@@ -58,36 +58,6 @@ $(function() {
 			}
 		);
 	});
-	
-	$('.ajax-action').click(function(e) {
-		e.preventDefault();
-		var status = $(this).data('value');
-		var href = $(this).attr('href');
-		var ids = $('#grid-ajax-action').yiiGridView('getSelectedRows');
-		if (!confirm('Подтвердите изменение записей')) {
-			return null;
-		}
-		if (ids.length > 0) {
-			$.ajax({
-				url: href,
-				type: 'post',
-				dataType: 'json',
-				data: {
-					status: status,
-					id: ids
-				}
-			}).success(function(data) {
-				$('#grid-ajax-action').yiiGridView("applyFilter");
-				if (data.error != false) {
-					alert('Произошла ошибка!');
-				}
-			}).fail(function(data){
-				alert('Произошла ошибка!');
-			});
-		} else {
-			alert('Необходимо выбрать элементы!')
-		}
-	});
 
 	$('.ajax-confirm').on('click',function(e) {
 		e.preventDefault();

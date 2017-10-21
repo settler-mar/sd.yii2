@@ -161,15 +161,15 @@ class DefaultController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->storePointUser->isGuest) {
-            //todo нужно поменять адрес
-            return  $this->redirect(['/']);
+
+            return  $this->redirect(['payments']);
         }
         $model = new B2bStoresPointsLoginForm();
         
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             Yii::$app->session->addFlash('info', 'Поздравляем. Вы успешно вошли в систему!');
-            //todo также нужен адрес
-            return $this->goBack();
+
+            return $this->redirect(['payments']);
         }
         return $this->render('login', [
           'model' => $model,
@@ -197,8 +197,8 @@ class DefaultController extends Controller
         }
         $model = new Payments(['scenario' => 'offline']);//задаём сценарии
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->addFlash('info', 'Платёж принят');
-            return $this->redirect(['/']);//todo поменять
+            Yii::$app->session->addFlash('info', 'Платёж зафиксирован');
+            return $this->redirect(['payments']);
         } else {
             $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
             $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');

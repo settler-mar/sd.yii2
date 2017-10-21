@@ -24,6 +24,8 @@ $btn_primary_bg: #e6ae03;
 $btn_primary_bg_hover: #e4c84b;
 $btn_primary_border:#e4c84b;
 $btn_primary_border_hover:#e6ae03;
+$btn_action_status_1: #F44336;
+$btn_action_status_2: #8BC34A;
 
 //цвета текста
 $text_holiday_color: red;
@@ -263,4 +265,14 @@ a{
 }
 .payments-result span {
  font-weight: 700;
+}
+
+.btn.records-action {
+  &.status_1 {
+    background-color: $btn_action_status_1;
+  }
+  &.status_2 {
+    background-color: $btn_action_status_2;
+  }
+
 }

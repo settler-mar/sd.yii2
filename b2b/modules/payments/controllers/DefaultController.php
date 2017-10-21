@@ -13,6 +13,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\components\Help;
 use yii\filters\AccessControl;
+use yii\validators\NumberValidator;
+use yii\validators\EachValidator;
+use yii\validators\RequiredValidator;
 
 /**
  * DefaultController implements the CRUD actions for Payments model.
@@ -25,14 +28,15 @@ class DefaultController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'status' => ['post'],
+                    'update' => ['post'],
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'status', 'update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -57,7 +61,6 @@ class DefaultController extends Controller
         }
 
         list($start_date, $end_date) = explode(' - ', $search_range);
-        $dataRanger = Help::DateRangePicker($start_date . ' - ' . $end_date, 'date', []);
         $storesPoints = B2bStoresPoints::find()
           ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
             'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
@@ -85,14 +88,21 @@ class DefaultController extends Controller
             'click_date' => function ($model) {
                 return date('d.m.Y H:i', strtotime($model->click_date));
             },
-            'action_date' => function ($model) {
-                return date('d.m.Y H:i', strtotime($model->action_date));
+            'closing_date' => function ($model) {
+                return date('d.m.Y H:i', strtotime($model->closing_date));
             },
             'email' => function ($model) {
                 return $model->user ? $model->user->email : '';
             },
             'status' => function ($model) {
                 return Yii::$app->help->colorStatus($model->status);
+            },
+            'update_button' => function ($model) {
+                if (in_array($model->status, [0, 2])) {
+                    return '<a href="#" data-id="' . $model->uid . '" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>';
+                } else {
+                    return '';
+                }
             },
         ];
         //статистика по выборке
@@ -120,7 +130,9 @@ class DefaultController extends Controller
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'data_ranger' => $dataRanger,
+            'data_ranger' => Help::DateRangePicker($start_date . ' - ' . $end_date, 'date', []),
+            'click_data_range'=>Help::DateRangePicker($searchModel, 'click_data_range', ['hideInput'=>false]),
+            'end_data_range'=>Help::DateRangePicker($searchModel, 'end_data_range', ['hideInput'=>false]),
             'stores' => $stores,
             'table_data' => $tableData,
             'storeId' => Yii::$app->request->get('storeId'),
@@ -132,35 +144,45 @@ class DefaultController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Payments model.
-     * @param integer $id
-     * @return mixed
-     */
-//    public function actionView($id)
-//    {
-//        return $this->render('view.twig', [
-//            'model' => $this->findModel($id),
-//        ]);
-//    }
 
     /**
-     * Creates a new Payments model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws NotFoundHttpException
      */
-//    public function actionCreate()
-//    {
-//        $model = new Payments();
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->uid]);
-//        } else {
-//            return $this->render('create.twig', [
-//                'model' => $model,
-//            ]);
-//        }
-//    }
+    public function actionStatus()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $status = $request->post('status');
+        $ids = $request->post('id');
+        $validator = new NumberValidator();
+        $validatorEach = new EachValidator(['rule' => ['integer']]);
+        $validatorRequired = new RequiredValidator();
+        if (!$validatorRequired->validate([$ids, $status])
+            || !$validator->validate($status)
+            || !$validatorEach->validate($ids)
+        ) {
+            return json_encode(['error'=>true]);
+        }
+        //перед изменением, проверка, что платежи из магазинов юсера, и статус 0
+        $payments = Payments::find()
+            ->select(['cwp.uid'])
+            ->from(Payments::tableName()  . ' cwp')
+            ->joinWith(['store'])
+            ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+            ->where([
+                'b2buc.user_id' => Yii::$app->user->identity->id,
+                'cwp.status' => 0,
+                'cwp.uid' => $ids,
+            ])->column();
+        Payments::updateAll(['status' => $status], ['uid' => $payments]);
+        return json_encode(['error' => false]);
+    }
+
+
+
 
     /**
      * Updates an existing Payments model.
@@ -181,32 +203,4 @@ class DefaultController extends Controller
 //        }
 //    }
 
-    /**
-     * Deletes an existing Payments model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-//    public function actionDelete($id)
-//    {
-//        $this->findModel($id)->delete();
-//
-//        return $this->redirect(['index']);
-//    }
-
-    /**
-     * Finds the Payments model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Payments the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-//    protected function findModel($id)
-//    {
-//        if (($model = Payments::findOne($id)) !== null) {
-//            return $model;
-//        } else {
-//            throw new NotFoundHttpException('The requested page does not exist.');
-//        }
-//    }
 }

@@ -128,8 +128,8 @@ class Payments extends \yii\db\ActiveRecord
         }
         $store = $this->_store;
         if ($store) {
-          $this->affiliate_id = $store->cpaLink->affiliate_id;
-          $this->cpa_id = $store->cpaLink->id;
+          $this->affiliate_id = $store->cpaLink->id;//affiliate_id;
+          $this->cpa_id = $store->cpaLink->cpa_id;
         } else {
           Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
           return false;
@@ -154,7 +154,7 @@ class Payments extends \yii\db\ActiveRecord
         //суммы
         $action = StoresActions::findOne([
           'uid' => $this->category,
-          'cpa_link_id' => $this->cpa_id,
+          'cpa_link_id' => $store->cpaLink->id,
         ]);
         //$action = StoresActions::findOne($this->category);
 
@@ -195,6 +195,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->reward = $reward;
         $this->cashback = $cashback;
         $this->shop_percent = $store->percent;
+        //ddd($store->cpaLink, $action);
       } else {
         $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
       }
