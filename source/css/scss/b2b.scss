@@ -263,10 +263,12 @@ a{
     }
   }
 }
-.payments-result span {
- font-weight: 700;
+.payments-result {
+  font-weight: 700;
+  span {
+    font-weight: 700;
+  }
 }
-
 .btn.records-action {
   &.status_1 {
     background-color: $btn_action_status_1;
