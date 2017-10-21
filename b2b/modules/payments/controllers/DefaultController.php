@@ -89,7 +89,7 @@ class DefaultController extends Controller
                 return date('d.m.Y H:i', strtotime($model->click_date));
             },
             'closing_date' => function ($model) {
-                return date('d.m.Y H:i', strtotime($model->closing_date));
+                return date('d.m.Y', strtotime($model->closing_date));
             },
             'email' => function ($model) {
                 return $model->user ? $model->user->email : '';
@@ -104,6 +104,14 @@ class DefaultController extends Controller
                     return '';
                 }
             },
+            'checkbox_options'=> function ($model) {
+                if ($model->status != 0) {
+                    return ['disabled' => '1'];
+                } else {
+                    return [];
+                }
+            }
+
         ];
         //статистика по выборке
         $queryAll = clone $dataProvider->query;

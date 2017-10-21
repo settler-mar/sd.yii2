@@ -259,15 +259,18 @@ a{
   table {
     font-size: 13px;
     th, td {
-      word-break: break-all;
+      //word-break: break-all;
     }
   }
 }
 .payments-result {
-  font-weight: 700;
-  span {
+  td.name {
     font-weight: 700;
   }
+  //font-weight: 700;
+  //span {
+  //  //font-weight: 700;
+  //}
 }
 .btn.records-action {
   &.status_1 {
