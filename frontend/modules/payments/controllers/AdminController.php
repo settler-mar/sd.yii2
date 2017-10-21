@@ -91,11 +91,13 @@ class AdminController extends Controller
             '.$model->$old_name.'
             </span>';
         };
+
         if($name!='order_price') {
           $out .= ' RUB';
         }else{
           $out.=' '.$model->storeCur;
         };
+
         if($model->cpa_id==1) {
           $out .= '<span data-col="'.$name.'" class="admitad_data"></span>';
         }

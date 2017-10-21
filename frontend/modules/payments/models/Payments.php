@@ -102,7 +102,7 @@ class Payments extends \yii\db\ActiveRecord
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
       'closing_date' => 'Closing Date',
-      'cpa_id' => 'Cpa ID',
+      'cpa_id' => 'CPA ID',
       'additional_id' => 'Additional ID (Вспомогательный код для тарифа)',
       'ref_bonus_id' => 'Ref Bonus ID',
       'ref_bonus' => 'Кэшбэк бонус',
@@ -253,6 +253,10 @@ class Payments extends \yii\db\ActiveRecord
     if(!$this->_store){
       $this->_store=$this->store;
     }
+    if(!$this->_store){
+      //ddd($this);
+      return "err";
+    };
     //return $this->store->name;
     return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
   }
@@ -262,6 +266,9 @@ class Payments extends \yii\db\ActiveRecord
     if(!$this->_store){
       $this->_store=$this->store;
     }
+    if(!$this->_store){
+      return "err";
+    };
     return $this->store->currency;
   }
 

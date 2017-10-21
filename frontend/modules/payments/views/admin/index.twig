@@ -30,57 +30,57 @@
                                     'id': 'grid-ajax-action',
                                     'dataProvider': dataProvider,
                                     'filterModel': searchModel,
-                                        'columns': [
+                                    'columns': [
                                         {'class': '\\yii\\grid\\SerialColumn'},
-                                            {'class': '\\yii\\grid\\CheckboxColumn'},
-                                            'uid',
-                                            'action_id',
-                                            {
-                                                'format':'raw',
-                                                'attribute':'action_date',
-                                                'headerOptions' : {
-                                                    'class' : 'col-md-2'
-                                                },
-                                                'filter': data_ranger
+                                        {'class': '\\yii\\grid\\CheckboxColumn'},
+                                        'uid',
+                                        'action_id',
+                                        {
+                                            'format':'raw',
+                                            'attribute':'action_date',
+                                            'headerOptions' : {
+                                                'class' : 'col-md-2'
                                             },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'status',
-                                                'value' : 'stringStatus',
-                                                'filter':{
-                                                '':'Любой',
-                                                0:"В ожидании",
-                                                1:"Отклонён",
-                                                2:"Подтвержден",
-                                                },
+                                            'filter': data_ranger
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'status',
+                                            'value' : 'stringStatus',
+                                            'filter':{
+                                            '':'Любой',
+                                            0:"В ожидании",
+                                            1:"Отклонён",
+                                            2:"Подтвержден",
                                             },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'order_price',
-                                                'value': old_value_control,
-                                            },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'reward',
-                                                'value': old_value_control,
-                                            },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'cashback',
-                                                'value': cashback_txt,
-                                            },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'user_id',
-                                                'value':'email',
-                                            },
-                                            {
-                                                'format':'raw',
-                                                'attribute':'storeName'
-                                            },
-                                            {'class': '\\yii\\grid\\ActionColumn',
-                                                'template' : '{update} {delete}',
-                                            },
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'order_price',
+                                            'value': old_value_control,
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'reward',
+                                            'value': old_value_control,
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'cashback',
+                                            'value': cashback_txt,
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'user_id',
+                                            'value':'email',
+                                        },
+                                        {
+                                            'format':'raw',
+                                            'attribute':'storeName'
+                                        },
+                                        {'class': '\\yii\\grid\\ActionColumn',
+                                            'template' : '{update} {delete}',
+                                        },
                                     ],
                                 })
                             }}
