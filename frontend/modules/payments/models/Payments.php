@@ -189,14 +189,26 @@ class Payments extends \yii\db\ActiveRecord
           $reward = $rates->size;
           $cashback = $rates->our_size;
         }
-        $cashback = round($cashback, 2);
+
         $reward = round($reward, 2);
 
+        // просчет лояльности
+        $user_id = intval(preg_replace('/[^0-9\.]/', '', $this->user_id));
+        $user = Users::findOne(['uid' => $user_id]);
+        if (!$user) {
+          Yii::$app->session->addFlash('err', 'Ошибка - не найден пользователь!');
+          return false;
+        }
+
+        $loyalty_bonus = $user->loyalty_status_data['bonus'];
+        $this->loyalty_status = $user->loyalty_status;
+
+        $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+        $cashback = round($cashback, 2);
 
         $this->reward = $reward;
         $this->cashback = $cashback;
         $this->shop_percent = $store->percent;
-        //ddd($store->cpaLink, $action);
       } else {
         $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
       }
