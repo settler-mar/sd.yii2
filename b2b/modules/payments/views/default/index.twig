@@ -52,6 +52,7 @@
     {#<div class="col-md-12 payments-result">#}
         {#Кэшбэк (всего/подтвержденный/отменённый/ожидаемый):  <span>{{ _nf(result_all.summs.cashback, 2)|raw }} / {{ _nf(result_success.summs.cashback, 2)|raw }} / {{ _nf(result_revoke.summs.cashback, 2)|raw }}  / {{ _nf(result_waiting.summs.cashback, 2)|raw }} </span>#}
     {#</div>#}
+
     <form method="get" class="form-horizontal col-md-12 payments-search" style="margin: 20px auto;">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="payments_select_store">Магазин</label>
@@ -100,7 +101,6 @@
 
         </div>
     </form>
-
     {{ grid_view_widget({
             'dataProvider': dataProvider,
             'options': {
@@ -152,7 +152,12 @@
                 },
                 'order_price',
                 'reward',
-                'cashback',
+                {
+                    'attribute': 'cashback',
+                    'contentOptions': {
+                        'class': 'td-cashback',
+                    }
+                },
                 {
                     'format':'raw',
                     'attribute':'status',

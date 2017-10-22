@@ -16,6 +16,7 @@ use yii\filters\AccessControl;
 use yii\validators\NumberValidator;
 use yii\validators\EachValidator;
 use yii\validators\RequiredValidator;
+use yii\validators\StringValidator;
 
 /**
  * DefaultController implements the CRUD actions for Payments model.
@@ -98,15 +99,15 @@ class DefaultController extends Controller
                 return Yii::$app->help->colorStatus($model->status);
             },
             'update_button' => function ($model) {
-                if (in_array($model->status, [0, 2])) {
-                    return '<a href="#" data-id="' . $model->uid . '" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>';
+                if (in_array($model->status, [0])) {
+                    return '<a href="#" data-id="' . $model->uid . '" data-cashback="'. $model->cashback .'" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>';
                 } else {
                     return '';
                 }
             },
             'checkbox_options'=> function ($model) {
                 if ($model->status != 0) {
-                    return ['disabled' => '1'];
+                    return ['disabled' => '1', 'class' => 'hidden'];
                 } else {
                     return [];
                 }
@@ -194,21 +195,48 @@ class DefaultController extends Controller
 
     /**
      * Updates an existing Payments model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-//    public function actionUpdate($id)
-//    {
-//        $model = $this->findModel($id);
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->uid]);
-//        } else {
-//            return $this->render('update.twig', [
-//                'model' => $model,
-//            ]);
-//        }
-//    }
+    public function actionUpdate()
+    {
+        if (!Yii::$app->request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $request = Yii::$app->request;
+        $cashback = $request->post('cashback');
+        $id = intval($request->post('id'));
+        $adminComment = $request->post('admin-comment');
+        $validator = new NumberValidator();
+        $validatorRequired = new RequiredValidator();
+        $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
+        if (!$validatorRequired->validate([$id, $cashback, $adminComment])
+          || !$validator->validate($id)
+          || !$validator->validate($cashback)
+          || !$validatorString->validate($adminComment)
+        ) {
+            return json_encode(['error'=>true, 'message' => 'Неправильные данные', 'post' => $request->post()]);
+        }
+
+        $payment = Payments::find()
+          ->from(Payments::tableName()  . ' cwp')
+          ->joinWith(['store'])
+          ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+          ->where([
+            'b2buc.user_id' => Yii::$app->user->identity->id,
+            'cwp.status' => 0,
+            'cwp.uid' => $id,
+          ])->one();
+
+        if ($payment) {
+            $cashback = round($cashback, 2);
+            $payment->cashback = $cashback;
+            $payment->admin_comment = $adminComment;
+            $payment->save();
+            return json_encode(['error'=>false, 'cashback' => $cashback]);
+        } else {
+            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
+        }
+    }
 
 }

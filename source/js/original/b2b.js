@@ -61,3 +61,53 @@ function paymentsSelectStore(){
 
 }
 paymentsSelectStore();
+
+$(".payments-grid-view .change-order-price").on('click',function(e){
+    e.preventDefault();
+    var id = $(this).data('id');
+    var cashback = $(this).data('cashback');
+    var data={
+        buttonYes:false,
+        notyfy_class:"notify_white notify_not_big",
+        title: 'Изменить сумму кэшбэка',
+        question:
+        '<form action="/payments/update" method="post" class="change_order_price_form">'+
+        '<input type="hidden" name="Payments[uid]" id="payments-id" value="'+id+'"'+'>'+
+        '<div class="form-group">'+
+        '<label>Новая сумма</label>'+
+        '<input type="text" class="form-control" id="payments-cashback" name="Payments[cashback]" placeholder="Введите новую сумму" value="'+cashback+'">'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<label>Комментарий</label>'+
+        '<input type="text" class="form-control" id="payments-admin-comment" name="Payments[admin-comment]" placeholder="Введите комментарий">'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<input type="submit" class="btn btn-primary" value="Изменить">'+
+        '</div>' +
+        '<form>'
+    };
+    notification.alert(data)
+});
+
+$(document).on('submit','form.change_order_price_form', function(e){
+    e.preventDefault();
+    var id = $('#payments-id').val();
+    var cashback = $('#payments-cashback').val();
+    var data = {
+        'id' : id,
+        'cashback' : cashback,
+        'admin-comment' : $('#payments-admin-comment').val()
+    };
+    $.post($(this).attr('action'), data, function(response){
+        $('html').removeClass('show_notifi');
+        if (response.error == false) {
+            notification.notifi({message: 'Платёж изменён', type:'success'});
+            $('tr[data-key="'+id+'"]').find('.td-cashback').text(response.cashback);
+        } else {
+            notification.notifi({message: 'Произошла ошибка', type:'err'});
+        }
+    },'json').fail(function (data) {
+        $('html').removeClass('show_notifi');
+        notification.notifi({message:'Произошла ошибка!', type:'err'})
+    });
+});
