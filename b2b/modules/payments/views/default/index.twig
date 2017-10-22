@@ -107,6 +107,7 @@
                 'id': 'grid-ajax-action',
                 'class': 'payments-grid-view'
             },
+            'rowOptions': table_data.date_alarm,
             'pager' : {
                 'firstPageLabel' : true,
                 'lastPageLabel' : true,
@@ -132,9 +133,9 @@
                 },
                 {
                     'format':'raw',
-                    'attribute':'userEmail',
-                    'value': table_data.email,
-                    'label': 'Пользователь'
+                    'attribute':'user_id',
+                    'label': 'Пользователь',
+                    'value': table_data.user
                 },
                 {
                     'format':'raw',
@@ -150,7 +151,10 @@
                     'label': 'Дата завершения',
                     'filter': end_data_range
                 },
-                'order_price',
+                {
+                    'attribute': 'order_price',
+                    'label': 'Сумма покупки',
+                },
                 'reward',
                 {
                     'attribute': 'cashback',
@@ -169,7 +173,8 @@
                     },
                     'options': {
                         'class': 'col-sm-2',
-                    }
+                    },
+                    'label': 'Статус платежа',
                 },
                 {
                     'format':'raw',

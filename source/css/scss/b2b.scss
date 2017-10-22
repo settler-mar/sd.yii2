@@ -29,6 +29,8 @@ $btn_action_status_2: #8BC34A;
 
 //цвета текста
 $text_holiday_color: red;
+//выделенная строка в таблице
+$table_alarm_color: rgba(244, 151, 71, 0.33);
 
 //жлюавим плавности всем ссылкам
 a,button,input{
@@ -260,6 +262,12 @@ a{
     font-size: 13px;
     th, td {
       //word-break: break-all;
+
+    }
+    tr {
+      &.date_alarm {
+        background-color: $table_alarm_color;
+      }
     }
   }
 }

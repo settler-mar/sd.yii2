@@ -92,8 +92,8 @@ class DefaultController extends Controller
             'closing_date' => function ($model) {
                 return date('d.m.Y', strtotime($model->closing_date));
             },
-            'email' => function ($model) {
-                return $model->user ? $model->user->email : '';
+            'user' => function ($model) {
+                return 'SD-' . str_pad($model->user_id, 8, '0', STR_PAD_LEFT);
             },
             'status' => function ($model) {
                 return Yii::$app->help->colorStatus($model->status);
@@ -111,7 +111,13 @@ class DefaultController extends Controller
                 } else {
                     return [];
                 }
-            }
+            },
+            'date_alarm' => function ($model) {
+                return [
+                    'class' => (strtotime('+5 days') > strtotime($model->closing_date) && $model->status == 0) ?
+                      'date_alarm': '',
+                ];
+            },
 
         ];
         //статистика по выборке

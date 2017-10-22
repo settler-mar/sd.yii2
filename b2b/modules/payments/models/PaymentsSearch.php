@@ -17,7 +17,7 @@ class PaymentsSearch extends Payments
 {
     public $storeName;
     public $storePointName;
-    public $userEmail;
+   // public $userEmail;
     public $click_data_range;
     public $end_data_range;
 
@@ -61,7 +61,7 @@ class PaymentsSearch extends Payments
         $query = Payments::find()
             ->from(Payments::tableName()  . ' cwp')
             ->joinWith(['store'])
-            ->joinWith(['user'])
+            //->joinWith(['user'])
             ->joinWith(['storesPoint'])
             ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
             ->where(['b2buc.user_id' => Yii::$app->user->identity->id]);
@@ -79,6 +79,7 @@ class PaymentsSearch extends Payments
                     'order_price',
                     'reward',
                     'cashback',
+                    'user_id',
                     'storeName' => [
                         'asc' => [Stores::tableName() . '.name' => SORT_ASC],
                         'desc' => [Stores::tableName(). '.name' => SORT_DESC],
@@ -87,10 +88,10 @@ class PaymentsSearch extends Payments
                         'asc' => [B2bStoresPoints::tableName() . '.name' => SORT_ASC],
                         'desc' => [Stores::tableName(). '.name' => SORT_DESC],
                     ],
-                    'userEmail' => [
-                        'asc' => [Users::tableName() . '.email' => SORT_ASC],
-                        'desc' => [Users::tableName(). '.email' => SORT_DESC],
-                    ],
+//                    'userEmail' => [
+//                        'asc' => [Users::tableName() . '.email' => SORT_ASC],
+//                        'desc' => [Users::tableName(). '.email' => SORT_DESC],
+//                    ],
                 ],
                 'defaultOrder' => [
                   'uid' => SORT_DESC,
@@ -113,7 +114,7 @@ class PaymentsSearch extends Payments
            // 'is_showed' => $this->is_showed,
            // 'action_id' => $this->action_id,
            // 'affiliate_id' => $this->affiliate_id,
-           // 'user_id' => $this->user_id,
+            'user_id' => $this->user_id,
             'order_price' => $this->order_price,
             'reward' => $this->reward,
             'cashback' => $this->cashback,
@@ -157,15 +158,15 @@ class PaymentsSearch extends Payments
               ],
             ]);
         }
-        if ($this->userEmail) {
-            $query->andFilterWhere([
-              'or',[
-                'like', Users::tableName() . '.email', $this->userEmail
-              ],[
-                Users::tableName() . '.uid'=>$this->userEmail
-              ],
-            ]);
-        }
+//        if ($this->userEmail) {
+//            $query->andFilterWhere([
+//              'or',[
+//                'like', Users::tableName() . '.email', $this->userEmail
+//              ],[
+//                Users::tableName() . '.uid'=>$this->userEmail
+//              ],
+//            ]);
+//        }
         if (!empty($params['storeId'])) {
             $query->andFilterWhere([Stores::tableName().'.uid' => $params['storeId']]);
         }
