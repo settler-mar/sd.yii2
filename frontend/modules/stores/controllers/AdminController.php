@@ -114,7 +114,7 @@ class AdminController extends Controller
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       Yii::$app->session->addFlash('info', 'Магазин создан');
-      return $this->redirect(['update', ['id' => $model->uid]]);
+      return $this->redirect('update/id:' . $model->uid);
     } else {
       //ddd($model);
       return $this->render('create.twig', [
@@ -621,7 +621,7 @@ class AdminController extends Controller
   {
     $store = Stores::findOne($post['id']);
     $store->active_cpa = $post['value'];
-    return $store->save(false);
+    return $store->save();
   }
 
 }

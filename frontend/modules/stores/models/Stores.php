@@ -75,7 +75,7 @@ class Stores extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['name', 'route', 'url', 'currency', 'added', 'hold_time','percent'], 'required'],
+      [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
@@ -438,7 +438,13 @@ class Stores extends \yii\db\ActiveRecord
       if (!file_exists($bp)) {
         mkdir($bp, 0777, true);   // Создаем директорию при отсутствии
       }
-      $img = (new Image($photo->tempName));
+
+      if(exif_imagetype($photo->tempName)==2){
+        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+      }else {
+        $img = (new Image($photo->tempName));
+      }
+
       $img
         ->fitToWidth(1000)
         ->saveAs($bp.$name);
