@@ -85,11 +85,14 @@ class UserSetting extends Users
     ];
   }
 
-  public function validatePassword($old_password)
+  public function validatePassword($param_name)
   {
-    if (!Yii::$app->getSecurity()->validatePassword($this->old_password, $this->password)) {
+    $old=$this->getOldAttributes();
+    $passord=$old['password'];
+    if (!Yii::$app->security->validatePassword($this->old_password, $passord)) {
       $this->addError('old_password', 'Старый пароль введен не верно.');
     }
+    Yii::$app->session->addFlash('info', 'Пароль изменен на <b>'.$this->new_password.'</b>');
   }
 
   public function attributeLabels() {
