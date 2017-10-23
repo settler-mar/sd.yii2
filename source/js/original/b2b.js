@@ -81,7 +81,7 @@ $(".payments-grid-view .change-order-price").on('click',function(e){
         '<label>Комментарий</label>'+
         '<input type="text" class="form-control" id="payments-admin-comment" name="Payments[admin-comment]" placeholder="Введите комментарий">'+
         '</div>' +
-        '<div class="form-group">'+
+        '<div class="form-group buttons">'+
         '<input type="submit" class="btn btn-primary" value="Изменить">'+
         '</div>' +
         '<form>'
