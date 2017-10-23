@@ -68,7 +68,12 @@
                                     {% for key, point  in store.points %}
                                         <tr class="users-stores__stores-points_row">
                                             <th>{{ key+1 }}.</th>
-                                            <th>{{ point.name }}</th>
+                                            <th>
+                                                {{ point.name }}
+                                                {% if point.password ==  null or point.password == '' %}
+                                                <div class="alert">Необходимо задать пароль для точки продаж!</div>
+                                                {% endif %}
+                                            </th>
                                             <th>{{ point.country }}, {{ point.city }}, {{ point.address }}</th>
                                             <th>{% include('parts/work_time.twig') %}</th>
                                             <th>{{ point.phone }}</th>

@@ -73,7 +73,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                   }",
             ],
             [['password_repeat'], 'compare', 'compareAttribute' => 'password'],
-            [['password'], 'filter', 'filter' => function ($value) {
+            [['password'], 'filter', 'skipOnEmpty' => true, 'filter' => function ($value) {
                 $this->password_no_hash = $value;
                 if (!empty($value)) {
                     return Yii::$app->security->generatePasswordHash($value);
@@ -164,11 +164,9 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         }
         $workDays = $this->work_time_details;
 
-//        if ($this->password != $this->password_repeat) {
-//            Yii::$app->session->addFlash('err', 'Ошибка, пароль и подтверждение пароля должны совпадать!');
-//            return false;
-//        }
-
+        if (!$this->isNewRecord && $this->password == '') {
+            $this->offsetUnset('password');
+        }
         if (count($workDays) == 1 && $this->checkBoxChecked($workDays[0]) == 0) {
             //если только один день и чек-боксы не выбраны, то просто null
             $this->work_time_json = null;

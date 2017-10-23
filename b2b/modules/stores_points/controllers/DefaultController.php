@@ -117,8 +117,6 @@ class DefaultController extends Controller
         } else {
             $store = Stores::findOne($model->store_id);
             $model->store_name = $store->name;
-            $model->password = '';
-            //$model->work_time_details = json_decode($model->work_time_json, true);
             return $this->render('update.twig', [
                 'model' => $model,
             ]);
@@ -137,7 +135,7 @@ class DefaultController extends Controller
         $validator = new NumberValidator();
         if (!$validator->validate($id)) {
             Yii::$app->session->addFlash('err', 'Ошибка');
-            $this->redirect(['/home']);
+            return $this->redirect(['/home']);
         }
         $model = $this->findModel($id);
         //проверка, что точка продаж для магазина юсера
@@ -151,7 +149,12 @@ class DefaultController extends Controller
           ])->count();
         if ($cpa != 1) {
             Yii::$app->session->addFlash('err', 'Ошибка');
-            $this->redirect(['/home']);
+            return $this->redirect(['/home']);
+        }
+        $payments = Payments::find()->where(['store_point_id' => $id])->count();
+        if ($payments > 0) {
+            Yii::$app->session->addFlash('err', 'Точка доступа имеет продажи, удаление невозможно!');
+            return $this->redirect(['/home']);
         }
         $model->delete();
         Yii::$app->session->addFlash('info', 'Точка продаж удалена');
