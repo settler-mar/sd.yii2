@@ -201,14 +201,16 @@ class DefaultController extends Controller
             return $this->redirect(['payments']);
         } else {
             $store_point = B2bStoresPoints::findOne(Yii::$app->storePointUser->id);
-            $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');
-            if (count($categories) == 1) {
+            if ($store_point) {
+                $categories = ArrayHelper::map($store_point->store->cpaLink->storeActions, 'uid', 'name');
+            }
+            if (isset($categories) && count($categories) == 1) {
                 $model->category = array_keys($categories)[0];
             }
 
             if ($model->user_id) {
                 if (!preg_match('/^SD-\w*/', $model->user_id)) {
-                    $model->user_id = 'SD-'  . $model->user_id;
+                    $model->user_id = 'SD-'  . str_pad($model->user_id, 8, '0', STR_PAD_LEFT);
                 }
             } else {
                 $model->user_id = 'SD-';
@@ -216,7 +218,7 @@ class DefaultController extends Controller
             
             return $this->render('payment', [
                 'model' => $model,
-                'categories' => $categories,
+                'categories' => $categories ? $categories : null,
                 'store' => $store_point->store,
             ]);
         }
