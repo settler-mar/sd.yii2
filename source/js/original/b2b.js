@@ -73,13 +73,16 @@ $(".payments-grid-view .change-order-price").on('click',function(e){
         question:
         '<form action="/payments/update" method="post" class="change_order_price_form">'+
         '<input type="hidden" name="Payments[uid]" id="payments-id" value="'+id+'"'+'>'+
+        '<p class="help-block help-block-error"></p>'+
         '<div class="form-group">'+
         '<label>Новая сумма</label>'+
         '<input type="text" class="form-control" id="payments-cashback" name="Payments[cashback]" placeholder="Введите новую сумму" value="'+cashback+'">'+
+            '<p class="help-block help-block-error"></p>'+
         '</div>' +
         '<div class="form-group">'+
         '<label>Комментарий</label>'+
         '<input type="text" class="form-control" id="payments-admin-comment" name="Payments[admin-comment]" placeholder="Введите комментарий">'+
+        '<p class="help-block help-block-error"></p>'+
         '</div>' +
         '<div class="form-group buttons">'+
         '<input type="submit" class="btn btn-primary" value="Изменить">'+
@@ -91,12 +94,27 @@ $(".payments-grid-view .change-order-price").on('click',function(e){
 
 $(document).on('submit','form.change_order_price_form', function(e){
     e.preventDefault();
+    $(this).find('p.help-block').text('');
     var id = $('#payments-id').val();
     var cashback = $('#payments-cashback').val();
+    var admin_comment = $('#payments-admin-comment').val();
+    if (parseInt(id)<1) {
+        $('#payments-id').siblings('p.help-block').text('ID должен быть целым числом');
+        return false;
+    }
+    var reg = /^\d*\.?\d*$/;
+    if (!cashback.match(reg)) {
+        $('#payments-cashback').siblings('p.help-block').text('Введите правильно сумму');
+        return false;
+    }
+    if (admin_comment.length<5 || admin_comment.length>256) {
+        $('#payments-admin-comment').siblings('p.help-block').text('Длина комментария должна быть от 5 до 256 символов');
+        return false;
+    }
     var data = {
-        'id' : id,
+        'id' : parseInt(id),
         'cashback' : cashback,
-        'admin-comment' : $('#payments-admin-comment').val()
+        'admin-comment' : admin_comment
     };
     $.post($(this).attr('action'), data, function(response){
         $('html').removeClass('show_notifi');
