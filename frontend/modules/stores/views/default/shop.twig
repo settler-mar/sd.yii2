@@ -42,7 +42,7 @@
                     {% endif %}
                 </div>
                 <div class="logo">
-                    <img src="/images/logos/{{current_store.logo}}" alt="{{current_store.name}}">
+                    <img src="/images/logos/{{current_store.logo}}" alt="{{current_store.name}}" height="59px">
                 </div>
                 <div class="rating">
                     {% if store_rating.value > 0 %}
@@ -70,8 +70,10 @@
                         {% else %}
                             <a href="#registration" id="gotostore" class="btn btn-fill btn-large">Перейти к покупкам</a>
                         {% endif %}
+                        <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
+                    {% else %}
+                        <a href="#howgetcashback" class="btn btn-fill btn-large">Как получить кэшбэк?</a>
                     {% endif %}
-                    <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
                 </div>
 
             </div>
