@@ -96,7 +96,7 @@ class Payments extends \yii\db\ActiveRecord
       'old_order_price' => 'Old Order Price',
       'reward' => 'Вознаграждение',
       'old_reward' => 'Старое Вознаграждение',
-      'cashback' => 'Кешбек',
+      'cashback' => 'Кэшбэк',
       'status' => 'Статус',
       'click_date' => 'Click Date',
       'action_date' => 'Action Date',
