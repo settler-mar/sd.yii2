@@ -272,7 +272,7 @@ class DefaultController extends SdController
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
         return Stores::items()
           ->andWhere(['<>', 'cws.uid', $store->uid])
-          ->orderBy('visit DESC')
+          ->orderBy('rating DESC')
           ->limit(6)
           ->all();
       }, $cache->defaultDuration, $dependency);
@@ -285,8 +285,8 @@ class DefaultController extends SdController
           return Stores::items()
             ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
             ->andWhere(['<>', 'cws.uid', $store->uid])
-            ->andWhere(['cwstc.category_id' => $category])
-            ->orderBy('visit DESC')
+            ->andWhere(['cwstc.category_id' => $category->uid])
+            ->orderBy('rating DESC')
             ->limit(6)
             ->all();
         },
