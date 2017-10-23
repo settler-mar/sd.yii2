@@ -181,6 +181,12 @@ class Payments extends \yii\db\ActiveRecord
           return false;
         }
         $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
+        $this->rate_id = $rates->uid;
+
+        $this->recalc_json = json_encode([
+          'tariff' => $tariff->toArray(),
+          'rate' => $rates->toArray(),
+        ]);
 
         if ($rates->is_percentage) {
           $reward = $this->order_price * $rates->size * $this->kurs / 100;

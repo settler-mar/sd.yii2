@@ -29,8 +29,10 @@ $btn_action_status_2: #8BC34A;
 
 //цвета текста
 $text_holiday_color: red;
+$text_error_color: #e34b4b;
 //выделенная строка в таблице
 $table_alarm_color: rgba(244, 151, 71, 0.33);
+
 
 //жлюавим плавности всем ссылкам
 a,button,input{
@@ -288,4 +290,14 @@ a{
     background-color: $btn_action_status_2;
   }
 
+}
+.change_order_price_form {
+  width: 460px;
+  .form-group.buttons {
+    margin-top: 15px;
+    text-align: center;
+  }
+  p.help-block {
+    color: $text_error_color;
+  }
 }

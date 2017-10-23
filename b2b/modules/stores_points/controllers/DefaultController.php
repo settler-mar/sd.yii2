@@ -218,7 +218,7 @@ class DefaultController extends Controller
             
             return $this->render('payment', [
                 'model' => $model,
-                'categories' => $categories ? $categories : null,
+                'categories' => isset($categories) ? $categories : null,
                 'store' => $store_point->store,
             ]);
         }
