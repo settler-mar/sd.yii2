@@ -53,7 +53,7 @@ function paymentsSelectStore(){
             options = '<option></option>';
             points.forEach(function(item){
                 options += '<option value="'+item.id+'" '+(parseInt(getSelectPoint) == parseInt(item.id) ? 'selected' : '')+
-                    '>'+item.name+' '+item.country+' '+item.address+'</options>';
+                    '>'+item.name+', '+item.country+', '+item.city+', '+item.address+'</options>';
             });
         }
         selectPoints.innerHTML = options;

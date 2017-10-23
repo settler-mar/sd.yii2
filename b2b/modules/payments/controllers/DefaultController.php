@@ -84,7 +84,7 @@ class DefaultController extends Controller
             },
             'store_point_name' => function ($model) {
               if(!$model->store_point_id)return '';
-              return $model->storesPoint->name;
+              return $model->storesPointText;
             },
             'click_date' => function ($model) {
                 return date('d.m.Y H:i', strtotime($model->click_date));

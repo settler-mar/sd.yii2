@@ -9,6 +9,9 @@
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="b2b-payment-create-update">
     <h1>{{ html.encode(this.title) }}</h1>
+    {% if (categories == null) %}
+        <p>У магазина нет категорий товаров. Свяжитесь с администратором.</p>
+    {% else %}
     <div class="b2b-stores-points-form">
         {% set form = active_form_begin() %}
 
@@ -16,8 +19,9 @@
 
         {{ form.field(model, 'user_id').textInput({'maxlength':true}).label('Покупатель')|raw }}
 
+
         {% if categories|length > 1 %}
-            {{ form.field(model, 'category').dropDownList(categories, {'prompt':'Выберите категорию'} ).label('Категория покупки')|raw }}
+            {{ form.field(model, 'category').dropDownList(categories, {'prompt':'Выберите категорию'}).label('Категория покупки')|raw }}
         {% else  %}
             {{ form.field(model, 'category').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
         {% endif %}
@@ -39,4 +43,5 @@
         {{ active_form_end() }}
 
     </div>
+    {% endif %}
 </div>

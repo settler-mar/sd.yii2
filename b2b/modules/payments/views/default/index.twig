@@ -64,7 +64,7 @@
                             value="{{ index }}"
                             data-points='[
                             {% for point in store.points %}
-                                {"id":"{{ point.point_id }}","country":"{{ point.country}}","name":"{{ point.point_name}}","address":"{{ point.address}}"}
+                                {"id":"{{ point.point_id }}","country":"{{ point.country}}","name":"{{ point.point_name}}","address":"{{ point.address}}","city":"{{ point.city }}"}
                                 {% if loop.index < loop.length %},{% endif %}
                             {% endfor %}]'
                         {% if index == storeId %}selected{% endif %}
