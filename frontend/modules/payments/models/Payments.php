@@ -121,7 +121,6 @@ class Payments extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
-
     if($this->isNewRecord) {
       //для оффлайн шопов с формы
       if ($this->scenario == 'offline') {
@@ -347,13 +346,12 @@ class Payments extends \yii\db\ActiveRecord
 
     if(!$action){
       $action=StoresActions::find()
-        ->where(['affiliate_id'=>$this->action_code])
+        ->where(['action_id'=>$this->action_code])
         ->one();
     }
 
-    if(!$tariff){
-      $tariff = $action->getTariffs()
-        ->orderBy('uid')
+    if(!$tariff && $action && $rates){
+      $tariff = $rates->getTariff()
         ->one();
     }
 
@@ -365,7 +363,7 @@ class Payments extends \yii\db\ActiveRecord
     $tariff=$tariff->toArray();
     $rates=$rates->toArray();
 
-    $this->recalc_json = json_encode([
+    $recalc_json=[
       'action' => [
         'uid'=>$action['uid'],
         'name' => $action['name']
@@ -374,7 +372,31 @@ class Payments extends \yii\db\ActiveRecord
         'uid'=>$tariff['uid'],
         'name' => $tariff['name']
       ],
-      'rate' => $rates->toArray(),
-    ]);
+      'rate' => $rates,
+    ];
+    $this->recalc_json = json_encode($recalc_json);
+  }
+
+  public function getTariffText(){
+    if(!$this->recalc_json || strlen($this->recalc_json)<5){
+      return "Нет данных";
+    }
+
+    $data=json_decode($this->recalc_json,true);
+    if(!$this->_store){
+      $this->_store=$this->store;
+    }
+    if(!$this->_store){
+      return "ERR";
+    }
+
+    $out=$this->_store->is_offline?$data['action']['name']:$data['tariff']['name'];
+    $suf=$data['rate']['is_percentage']?'%':$this->_store->currency;
+    $out.=' (вознаграждение:';
+    $out.=$data['rate']['size'].$suf;
+    $out.='; кэшбек:';
+    $out.=$data['rate']['our_size'].$suf;
+    $out.=' )';
+    return $out;
   }
 }

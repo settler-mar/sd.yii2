@@ -16,8 +16,7 @@
 
                     <div class="form-group field-payments-storename">
                         <label class="control-label" for="payments-storename">Тариф</label>
-
-
+                        {{ model.tariffText | raw }}
                     </div>
 
                     {{ form.field(model, 'action_id').textInput()|raw }}
