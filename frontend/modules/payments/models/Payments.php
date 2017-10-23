@@ -5,6 +5,7 @@ namespace frontend\modules\payments\models;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresActions;
+use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
 use yii;
 use frontend\modules\cache\models\Cache;
@@ -136,12 +137,21 @@ class Payments extends \yii\db\ActiveRecord
           return false;
         }
 
+        $action = StoresActions::findOne([
+          'uid' => $this->category,
+          'cpa_link_id' => $store->cpaLink->id,
+        ]);
+        if (!$action) {
+          Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
+          return false;
+        }
+
         //даты
         $dateNow = date('Y-m-d H:i:s', time());
         $this->click_date = $dateNow;
         $this->action_date = $dateNow;
         $this->status_updated = $dateNow;
-        $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));;
+        $this->closing_date = date("Y-m-d H:i:s", strtotime("+" . $action->hold_time . " day"));;
 
         //прочее
         $this->action_id = time();
@@ -153,16 +163,8 @@ class Payments extends \yii\db\ActiveRecord
         $this->store_point_id = Yii::$app->storePointUser->id;
 
         //суммы
-        $action = StoresActions::findOne([
-          'uid' => $this->category,
-          'cpa_link_id' => $store->cpaLink->id,
-        ]);
         //$action = StoresActions::findOne($this->category);
 
-        if (!$action) {
-          Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
-          return false;
-        }
         $this->action_code = $action->uid;
 
         $tariff = $action->getTariffs()
@@ -183,10 +185,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
         $this->rate_id = $rates->uid;
 
-        $this->recalc_json = json_encode([
-          'tariff' => $tariff->toArray(),
-          'rate' => $rates->toArray(),
-        ]);
+        $this->updateRecalcJson($action,$tariff,$rates);
 
         if ($rates->is_percentage) {
           $reward = $this->order_price * $rates->size * $this->kurs / 100;
@@ -216,6 +215,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->cashback = $cashback;
         $this->shop_percent = $store->percent;
       } else {
+        $this->updateRecalcJson();
         $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
       }
     }
@@ -335,5 +335,46 @@ class Payments extends \yii\db\ActiveRecord
   {
     $point = $this->getStoresPoint()->one();
     return $point->name.', '.$point->country.', '.$point->city.', '.$point->address;
+  }
+
+  public function updateRecalcJson($action=false,$tariff=false,$rates=false)
+  {
+    if(!$rates){
+      $rates=TariffsRates::find()
+        ->where(['uid'=>$this->rate_id])
+        ->one();
+    }
+
+    if(!$action){
+      $action=StoresActions::find()
+        ->where(['affiliate_id'=>$this->action_code])
+        ->one();
+    }
+
+    if(!$tariff){
+      $tariff = $action->getTariffs()
+        ->orderBy('uid')
+        ->one();
+    }
+
+    if(!$action || !$tariff || !$rates){
+      return false;
+    }
+
+    $action=$action->toArray();
+    $tariff=$tariff->toArray();
+    $rates=$rates->toArray();
+
+    $this->recalc_json = json_encode([
+      'action' => [
+        'uid'=>$action['uid'],
+        'name' => $action['name']
+      ],
+      'tariff' => [
+        'uid'=>$tariff['uid'],
+        'name' => $tariff['name']
+      ],
+      'rate' => $rates->toArray(),
+    ]);
   }
 }

@@ -185,7 +185,7 @@ class DefaultController extends Controller
     $pay->click_date = date("Y-m-d H:i:s");
     $pay->action_date = date("Y-m-d H:i:s");
     $pay->status_updated = date("Y-m-d H:i:s");
-    $pay->closing_date = date("Y-m-d H:i:s", strtotime("+" . $store->hold_time . " day"));
+    $pay->closing_date = date("Y-m-d H:i:s", strtotime("+" . $action->hold_time . " day"));
     $pay->action_id = time();
     $pay->additional_id = 0;
     $pay->affiliate_id = $cpa->id;
