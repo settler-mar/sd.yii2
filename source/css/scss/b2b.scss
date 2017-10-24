@@ -280,16 +280,9 @@ form .alert-block {
     }
   }
 }
-.payments-result {
-  td.name {
-    font-weight: 700;
-  }
-  //font-weight: 700;
-  //span {
-  //  //font-weight: 700;
-  //}
-}
+
 .btn.records-action {
+  text-decoration: none;
   &.status_1 {
     background-color: $btn_action_status_1;
   }
@@ -298,13 +291,33 @@ form .alert-block {
   }
 
 }
-.change_order_price_form {
-  width: 460px;
-  .form-group.buttons {
-    margin-top: 15px;
-    text-align: center;
+.payments {
+  &-result {
+    td.name {
+      font-weight: 700;
+    }
+    .value {
+      text-align: right;
+    }
+    th {
+      text-align: right;
+    }
   }
-  p.help-block {
-    color: $text_error_color;
+  &-info {
+    p {
+      span {
+        font-weight: 700;
+      }
+    }
+  }
+  &-forms {
+    width: 460px;
+    .form-group.buttons {
+      margin-top: 15px;
+      text-align: center;
+    }
+    p.help-block {
+      color: $text_error_color;
+    }
   }
 }
