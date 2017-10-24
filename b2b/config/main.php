@@ -25,6 +25,12 @@ return [
           ]
         ]
       ],
+      'reCaptcha' => [
+        'name' => 'reCaptcha',
+        'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
+        'siteKey' => '6LcklDUUAAAAAHK_xOVtNRLsIEt5ARhirsS_M_pc',
+        'secret' => '6LcklDUUAAAAAKJuCpga3iCnTeb7ypwMyVrH054_',
+      ],
         'user' => [
             'identityClass' => 'b2b\modules\users\models\B2bUsers',
             'enableAutoLogin' => true,
