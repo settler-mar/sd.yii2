@@ -17,6 +17,9 @@
 
     <div class="body-content">
         {{ this.params.no_breadcrumbs }}
+        {% if before_content %}
+            {{ before_content | raw}}
+        {% endif %}
         {#<div class="row">#}
             {{ content|raw }}
         {#</div>#}

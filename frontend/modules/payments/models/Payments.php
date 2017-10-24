@@ -392,11 +392,11 @@ class Payments extends \yii\db\ActiveRecord
 
     $out=$this->_store->is_offline?$data['action']['name']:$data['tariff']['name'];
     $suf=$data['rate']['is_percentage']?'%':$this->_store->currency;
-    $out.=' (вознаграждение:';
+    $out.=' (вознаграждение: ';
     $out.=$data['rate']['size'].$suf;
-    $out.='; кэшбек:';
+    $out.='; кэшбек: ';
     $out.=$data['rate']['our_size'].$suf;
-    $out.=' )';
+    $out.=')';
     return $out;
   }
 }
