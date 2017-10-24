@@ -20,7 +20,7 @@ return [
         'renderers' => [
           'twig' => [
             'globals' => [
-
+              'ActiveForm'=>'/yii/widgets/ActiveForm'
             ]
           ]
         ]

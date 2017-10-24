@@ -23,7 +23,7 @@ class DefaultController extends Controller
 
     if($page->page=='registration'){
       $page=$page->toArray();
-      $page['before_content']='{{ _include("reg_form") | raw}}';
+      $page['before_include']='reg_form';
     };
 
     return $this->render('index', $page);
