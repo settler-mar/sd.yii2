@@ -21,12 +21,12 @@ class DefaultController extends Controller
       'content' => $page->keywords,
     ]);
 
-    return $this->render('index', [
-      'title' => $page->title,
-      'h1' => $page->h1,
-      'content' => $page->content,
-      'no_breadcrumbs' => $page->no_breadcrumbs,
-    ]);
+    if($page->page=='registration'){
+      $page=$page->toArray();
+      $page['before_include']='reg_form';
+    };
+
+    return $this->render('index', $page);
   }
 
   public function actionMain()

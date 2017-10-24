@@ -15,6 +15,16 @@ return [
         'request' => [
             'csrfParam' => '_csrf-b2b',
         ],
+      'view'=>[
+        'class' => 'b2b\components\SdView',
+        'renderers' => [
+          'twig' => [
+            'globals' => [
+              'ActiveForm'=>'/yii/widgets/ActiveForm'
+            ]
+          ]
+        ]
+      ],
         'user' => [
             'identityClass' => 'b2b\modules\users\models\B2bUsers',
             'enableAutoLogin' => true,
