@@ -39,7 +39,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'first_name', 'last_name',], 'required'],
+            [['email', 'fio'], 'required'],
             [['created_at', 'login_at'], 'safe'],
             [['email'], 'string', 'max' => 255],
             [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
@@ -56,8 +56,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'email' => 'Email',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
+            'fio' => 'Ф.И.О.',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email_confirm_token' => 'Email Confirm Token',
@@ -71,7 +70,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getUserName()
     {
-        return $this->first_name . ' ' .$this->last_name;
+        return $this->fio;
     }
     public function getName()
     {

@@ -60,7 +60,17 @@ class LoginForm extends Model
   public function login()
   {
     if ($this->validate()) {
-      return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+      $this->getUser();
+      if ($this->user->is_active != 2) {
+        Yii::$app->session->addFlash(
+          'err',
+          $this->user->is_active == 0 ? 'Ваша заявка на рассмотрении.' :
+            ($this->user->is_active == 1 ? 'Ваш пользователь не активен, обратитесь к администратору.' :
+              'Ошибка входа в систему, обратитесь к администратору.')
+        );
+        return false;
+      }
+      return Yii::$app->user->login($this->user, $this->rememberMe ? 3600*24*30 : 0);
     }
     return false;
   }
