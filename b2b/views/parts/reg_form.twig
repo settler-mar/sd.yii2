@@ -1,10 +1,36 @@
 {% set form = active_form_begin() %}
     <div class="row">
         <div class="col-sm-6">
-123
+            {{ form.field(model, 'firm').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'category').textInput({'maxlength':true,'placeholder':'Например, магазин обуви, ресторан'})|raw }}
+
+            {{ form.field(model, 'region').textInput({'maxlength':true,'placeholder':'Например, вся Россия, СНГ или только Москва'})|raw }}
+
+            {{ form.field(model, 'type').textInput({'maxlength':true,'placeholder':'ООО, ИП и т.п.'})|raw }}
+
+            {{ form.field(model, 'old').textInput({'maxlength':true,'placeholder':'Например, менне года, 5 лет, 10 лет'})|raw }}
+
+            {{ form.field(model, 'points').textInput({'maxlength':true,'placeholder':'1, 2, 10 и т.п.'})|raw }}
         </div>
         <div class="col-sm-6">
-3231
+            {{ form.field(model, 'fio').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'position').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'phone').textInput({'maxlength':true,'placeholder':'+'})|raw }}
+
+            {{ form.field(model, 'password').passwordInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'repassword').passwordInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'reCaptcha').widget(reCaptcha)|raw }}
+
+            {{ html.submitButton('Отправить заявку', {'class': 'btn btn-primary', 'name': 'login-button'})|raw }}
         </div>
     </div>
 {{ active_form_end() }}

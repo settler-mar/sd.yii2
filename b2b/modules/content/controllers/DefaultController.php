@@ -5,6 +5,7 @@ namespace b2b\modules\content\controllers;
 use frontend\modules\b2b_content\models\B2bContent;
 use yii\web\Controller;
 use Yii;
+use b2b\models\Regform;
 
 class DefaultController extends Controller
 {
@@ -24,6 +25,8 @@ class DefaultController extends Controller
     if($page->page=='registration'){
       $page=$page->toArray();
       $page['before_include']='reg_form';
+      $page['model']= new Regform;
+      $page['reCaptcha']= \himiklab\yii2\recaptcha\ReCaptcha::className();
     };
 
     return $this->render('index', $page);

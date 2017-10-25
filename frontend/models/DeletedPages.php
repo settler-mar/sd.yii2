@@ -51,6 +51,7 @@ class DeletedPages extends \yii\db\ActiveRecord
             'count' => 'Count',
         ];
     }
+
     public function beforeValidate()
     {
         if (!parent::beforeValidate()) {
