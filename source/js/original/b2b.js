@@ -62,21 +62,47 @@ function paymentsSelectStore(){
 }
 paymentsSelectStore();
 
-$(".payments-grid-view .change-order-price").on('click',function(e){
+// b2b платежи - действия с грид
+$(".revert-order").on('click', function(e) {
     e.preventDefault();
-    var id = $(this).data('id');
-    var cashback = $(this).data('cashback');
+    var href = '/payments/revoke';
+    var ids = $(this).data('id');
     var data={
         buttonYes:false,
         notyfy_class:"notify_white notify_not_big",
-        title: 'Изменить сумму кэшбэка',
+        title: 'При отмене платежей нужно указать причину отмены',
         question:
-        '<form action="/payments/update" method="post" class="change_order_price_form">'+
+        '<form action="'+href+'" method="post" class="payments-forms revoke_payents_form">'+
+        '<input type="hidden" name="ids" id="payments-id" value="'+ids+'"'+'>'+
+        '<div class="form-group">'+
+        '<input type="text" class="form-control" id="payments-admin-comment" name="admin-comment" placeholder="Введите причину отмены">'+
+        '<p class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group buttons">'+
+        '<input type="submit" class="btn btn-primary" value="Отклонить">'+
+        '</div>' +
+        '<form>'
+    };
+    notification.alert(data)
+
+
+});
+
+$(".payments-grid-view .change-order-price").on('click',function(e){
+    e.preventDefault();
+    var id = $(this).data('id');
+    var order_price = $(this).data('orderprice');
+    var data={
+        buttonYes:false,
+        notyfy_class:"notify_white notify_not_big",
+        title: 'Изменить сумму покупки',
+        question:
+        '<form action="/payments/update" method="post" class="payments-forms change_order_price_form">'+
         '<input type="hidden" name="Payments[uid]" id="payments-id" value="'+id+'"'+'>'+
         '<p class="help-block help-block-error"></p>'+
         '<div class="form-group">'+
         '<label>Новая сумма</label>'+
-        '<input type="text" class="form-control" id="payments-cashback" name="Payments[cashback]" placeholder="Введите новую сумму" value="'+cashback+'">'+
+        '<input type="text" class="form-control" id="payments-order_price" name="Payments[order_price]" placeholder="Введите новую сумму" value="'+order_price+'">'+
             '<p class="help-block help-block-error"></p>'+
         '</div>' +
         '<div class="form-group">'+
@@ -96,15 +122,19 @@ $(document).on('submit','form.change_order_price_form', function(e){
     e.preventDefault();
     $(this).find('p.help-block').text('');
     var id = $('#payments-id').val();
-    var cashback = $('#payments-cashback').val();
+    var order_price = $('#payments-order_price').val();
     var admin_comment = $('#payments-admin-comment').val();
     if (parseInt(id)<1) {
         $('#payments-id').siblings('p.help-block').text('ID должен быть целым числом');
         return false;
     }
+    if (order_price == '') {
+        $('#payments-order_price').siblings('p.help-block').text('Введите сумму');
+        return false;
+    }
     var reg = /^\d*\.?\d*$/;
-    if (!cashback.match(reg)) {
-        $('#payments-cashback').siblings('p.help-block').text('Введите правильно сумму');
+    if (!order_price.match(reg)) {
+        $('#payments-order_price').siblings('p.help-block').text('Введите правильно сумму');
         return false;
     }
     if (admin_comment.length<5 || admin_comment.length>256) {
@@ -113,14 +143,50 @@ $(document).on('submit','form.change_order_price_form', function(e){
     }
     var data = {
         'id' : parseInt(id),
-        'cashback' : cashback,
+        'order_price' : order_price,
         'admin-comment' : admin_comment
     };
     $.post($(this).attr('action'), data, function(response){
         $('html').removeClass('show_notifi');
         if (response.error == false) {
-            notification.notifi({message: 'Платёж изменён', type:'success'});
-            $('tr[data-key="'+id+'"]').find('.td-cashback').text(response.cashback);
+            // notification.notifi({message: 'Платёж изменён', type:'success'});
+            // var row = $('tr[data-key="'+id+'"]');
+            // var td_price = $(row).find('.td-order-price');
+            // $(td_price).text(response.recalc.order_price+' '+$(td_price).data('cur'));
+            // $(row).find('.td-reward').html(response.recalc.reward+' <span class="fa fa-rub"></span>');
+            // $(row).find('.td-cashback').html(response.recalc.cashback+' <span class="fa fa-rub"></span>');
+            // $(row).find('.change-order-price').attr('data-orderprice', response.recalc.order_price);
+            $('#grid-ajax-action').yiiGridView("applyFilter");
+        } else {
+            notification.notifi({message: 'Произошла ошибка', type:'err'});
+        }
+    },'json').fail(function (data) {
+        $('html').removeClass('show_notifi');
+        notification.notifi({message:'Произошла ошибка!', type:'err'})
+    });
+});
+
+$(document).on('submit','form.revoke_payents_form', function(e){
+    e.preventDefault();
+    $(this).find('p.help-block').text('');
+    var ids = $('#payments-id').val();
+    var status = $('#payments-status').val();
+    var admin_comment = $('#payments-admin-comment').val();
+
+    if (admin_comment.length<5 || admin_comment.length>256) {
+        $('#payments-admin-comment').siblings('p.help-block').text('Длина комментария должна быть от 5 до 256 символов');
+        return false;
+    }
+    var data = {
+        'ids' : ids,
+        'status' : status,
+        'admin-comment' : admin_comment
+    };
+    $.post($(this).attr('action'), data, function(response){
+        $('html').removeClass('show_notifi');
+        if (response.error == false) {
+            
+            $('#grid-ajax-action').yiiGridView("applyFilter");
         } else {
             notification.notifi({message: 'Произошла ошибка', type:'err'});
         }

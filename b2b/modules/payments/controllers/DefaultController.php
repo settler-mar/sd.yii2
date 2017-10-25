@@ -31,13 +31,14 @@ class DefaultController extends Controller
                 'actions' => [
                     'status' => ['post'],
                     'update' => ['post'],
+                    'revoke' => ['post'],
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'status', 'update'],
+                        'actions' => ['index', 'status', 'update', 'revoke'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -98,9 +99,10 @@ class DefaultController extends Controller
             'status' => function ($model) {
                 return Yii::$app->help->colorStatus($model->status);
             },
-            'update_button' => function ($model) {
+            'update_buttons' => function ($model) {
                 if (in_array($model->status, [0])) {
-                    return '<a href="#" data-id="' . $model->uid . '" data-cashback="'. $model->cashback .'" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>';
+                    return '<a href="#" data-id="' . $model->uid . '" data-orderprice="'. $model->order_price .'" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>'.
+                    '<a href="#" data-id="' . $model->uid . '" title="Отменить платёж" class="revert-order"><i class="fa fa-trash"></i></a>';
                 } else {
                     return '';
                 }
@@ -117,6 +119,20 @@ class DefaultController extends Controller
                     'class' => (strtotime('+5 days') > strtotime($model->closing_date) && $model->status == 0) ?
                       'date_alarm': '',
                 ];
+            },
+            'order_price_options' => function ($model) {
+                return [
+                    'class' => 'td-order-price'
+                ];
+            },
+            'order_price_value' => function ($model) {
+                return $model->order_price.' '.$model->storeCur;
+            },
+            'reward_value' => function ($model) {
+                return $model->reward.' <span class="fa fa-rub"></span>';
+            },
+            'cashback_value' => function ($model) {
+                return $model->cashback.' <span class="fa fa-rub"></span>';
             },
 
         ];
@@ -181,19 +197,11 @@ class DefaultController extends Controller
         ) {
             return json_encode(['error'=>true]);
         }
-        //перед изменением, проверка, что платежи из магазинов юсера, и статус 0
-        $payments = Payments::find()
-            ->select(['cwp.uid'])
-            ->from(Payments::tableName()  . ' cwp')
-            ->joinWith(['store'])
-            ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
-            ->where([
-                'b2buc.user_id' => Yii::$app->user->identity->id,
-                'cwp.status' => 0,
-                'cwp.uid' => $ids,
-            ])->column();
-        Payments::updateAll(['status' => $status], ['uid' => $payments]);
-        return json_encode(['error' => false]);
+        if ($this->update($ids, ['status' => $status])) {
+            return json_encode(['error' => false]);
+        } else {
+            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
+        }
     }
 
 
@@ -210,39 +218,82 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
         $request = Yii::$app->request;
-        $cashback = $request->post('cashback');
+        $orderPrice = $request->post('order_price');
         $id = intval($request->post('id'));
         $adminComment = $request->post('admin-comment');
         $validator = new NumberValidator();
         $validatorRequired = new RequiredValidator();
         $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
-        if (!$validatorRequired->validate([$id, $cashback, $adminComment])
+        if (!$validatorRequired->validate([$id, $orderPrice, $adminComment])
           || !$validator->validate($id)
-          || !$validator->validate($cashback)
+          || !$validator->validate($orderPrice)
           || !$validatorString->validate($adminComment)
         ) {
             return json_encode(['error'=>true, 'message' => 'Неправильные данные', 'post' => $request->post()]);
         }
 
-        $payment = Payments::find()
-          ->from(Payments::tableName()  . ' cwp')
+        $recalc = Payments::recalcCashback($id, $orderPrice);
+        
+        if ($recalc && $this->update($id, [
+            'order_price' => $recalc['order_price'],
+            'admin_comment' => $adminComment,
+            'reward' => $recalc['reward'],
+            'cashback' => $recalc['cashback'],
+        ])) {
+            return json_encode(['error' => false, 'recalc' => $recalc]);
+        } else {
+            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
+        }
+    }
+
+    public function actionRevoke()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $ids = $request->post('ids');
+        $adminComment = $request->post('admin-comment');
+        $validator = new NumberValidator();
+        $validatorRequired = new RequiredValidator();
+        $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
+        if (!$validatorRequired->validate([$ids, $adminComment])
+          || !$validator->validate($ids)
+          || !$validatorString->validate($adminComment)
+        ) {
+            return json_encode(['error'=>true, 'message' => 'Неправильные данные']);
+        }
+        if ($this->update($ids, ['status' => 1, 'admin_comment' => $adminComment])) {
+            return json_encode(['error' => false]);
+        } else {
+            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
+        }
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return array|bool
+     */
+    private function update($id, $data)
+    {
+        $payments = Payments::find()
+          ->select(['cwp.uid'])
+          ->from(Payments::tableName() . ' cwp')
           ->joinWith(['store'])
           ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
           ->where([
             'b2buc.user_id' => Yii::$app->user->identity->id,
             'cwp.status' => 0,
             'cwp.uid' => $id,
-          ])->one();
-
-        if ($payment) {
-            $cashback = round($cashback, 2);
-            $payment->cashback = $cashback;
-            $payment->admin_comment = $adminComment;
-            $payment->save();
-            return json_encode(['error'=>false, 'cashback' => $cashback]);
+          ])->column();
+        if ($payments) {
+            Payments::updateAll($data, ['uid' => $payments]);
+            return $payments;
         } else {
-            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
+            return false;
         }
     }
+
 
 }

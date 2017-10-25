@@ -399,4 +399,33 @@ class Payments extends \yii\db\ActiveRecord
     $out.=')';
     return $out;
   }
+
+  public static function recalcCashback($id, $newPrice)
+  {
+    $payment = self::findOne($id);
+    if (!$payment || empty($payment->recalc_json) || strlen($payment->recalc_json)<5) {
+      return  null;
+    }
+    $newPrice = round($newPrice, 2);
+    $recalc = json_decode($payment->recalc_json, true);
+    if ($recalc['rate']['is_percentage']) {
+      $reward = $newPrice * $recalc['rate']['size'] * $payment->kurs / 100;
+      $cashback = $newPrice * $recalc['rate']['our_size'] * $payment->kurs / 100;
+    } else {
+      $reward = $recalc['rate']['size'];
+      $cashback = $recalc['rate']['our_size'];
+    }
+    $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
+    if (isset($loyalty_status_list[$payment->loyalty_status]['bonus'])) {
+      $loyalty_bonus = $loyalty_status_list[$payment->loyalty_status]['bonus'];
+      $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+    }
+    $reward = round($reward, 2);
+    $cashback = round($cashback, 2);
+      return [
+      'reward' => $reward,
+      'cashback' => $cashback,
+      'order_price' => $newPrice
+    ];
+  }
 }

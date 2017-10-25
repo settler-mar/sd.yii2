@@ -28,20 +28,32 @@
             </tr>
             <tr class="line">
                 <td class="name">Сумма покупок</td>
-                <td class="value">{{ _nf(result_all.summs.order_price, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_success.summs.order_price, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_revoke.summs.order_price, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_waiting.summs.order_price, 2)|raw }}</td>
+                <td class="value">{{ _nf(result_all.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_success.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_revoke.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_waiting.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
             </tr>
             <tr class="line">
                 <td class="name">Кэшбэк</td>
-                <td class="value">{{ _nf(result_all.summs.cashback, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_success.summs.cashback, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_revoke.summs.cashback, 2)|raw }}</td>
-                <td class="value">{{ _nf(result_waiting.summs.cashback, 2)|raw }}</td>
+                <td class="value">{{ _nf(result_all.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_success.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_revoke.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_waiting.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
             </tr>
 
         </table>
+    </div>
+    <div class="col-md-12 payments-info">
+        <p>
+            Все платежи подтверждаются <span>автоматически</span> по истечении времени холда, в вашем случае равного <span>35</span> дням (за 5 дней <span>до</span> автоматического подтверждения платеж помечается красным цветом).
+            Если произошел <span>возврат товара или любая другая отмена сделки</span> – вы должны до истечения времени холда выделить этот платеж и нажать красную кнопку «Отклонить», обязательно указав причину отмены в комментарии.
+            Если произошел <span>частичный возврат</span> – отклонять платеж не нужно, но следует нажать на «карандашик» в конце строки и уменьшить сумму платежа, также снабдив комментарием.
+            <span>Подтвердить</span> платеж можно и до истечения времени холда – выделите его и нажмите на зеленую кнопку «Провести».
+        </p>
+        <p>
+            ! Помните, что если вы не предприняли никаких действий до автоматического подтверждения платежа, такой платеж априори считается <span>подтвержденным</span>, и вы обязаны уплатить с него сумму комиссионных.
+
+        </p>
     </div>
     {#<div class="col-md-12 payments-result">#}
         {#Количество покупок (всего/подтвержденных/отменённых/ожидающих): <span>{{ result_all.count }} / {{ result_success.count }} / {{ result_revoke.count }} / {{ result_waiting.count }}</span>#}
@@ -82,17 +94,13 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label" for="date_range">Период</label>
-            <div  class="col-sm-4">
+            <div  class="col-sm-6">
                 {{ data_ranger | raw }}
             </div>
             <div class="col-sm-2">
                 <input type="submit" value="Поиск" class="btn btn-primary">
             </div>
-            <div class="col-sm-4">
-                <a href="/payments/status" class="ajax-action records-action btn btn-default status_1"
-                   title="Отклонить выбранное"
-                   data-value="1"><span class="fa fa-times"></span> Отклонить
-                </a>
+            <div class="col-sm-2">
                 <a href="/payments/status" class="ajax-action records-action btn btn-default status_2"
                    title="Провести выбранное"
                    data-value="2"><span class="fa fa-check"></span> Провести
@@ -154,10 +162,21 @@
                 {
                     'attribute': 'order_price',
                     'label': 'Сумма покупки',
+                    'value': table_data.order_price_value,
+                    'contentOptions': table_data.order_price_options,
                 },
-                'reward',
                 {
+                    'format':'raw',
+                    'attribute':'reward',
+                    'value': table_data.reward_value,
+                    'contentOptions': {
+                        'class': 'td-reward',
+                    }
+                },
+                {
+                    'format':'raw',
                     'attribute': 'cashback',
+                    'value': table_data.cashback_value,
                     'contentOptions': {
                         'class': 'td-cashback',
                     }
@@ -172,14 +191,14 @@
                         2: 'Подтверждён',
                     },
                     'options': {
-                        'class': 'col-sm-2',
+                        'class': 'td-status',
                     },
                     'label': 'Статус платежа',
                 },
                 {
                     'format':'raw',
                     'attribute':'update_button',
-                    'value': table_data.update_button,
+                    'value': table_data.update_buttons,
                     'label': '',
                 },
             ],

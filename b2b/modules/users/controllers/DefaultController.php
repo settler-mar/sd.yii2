@@ -35,7 +35,7 @@ class DefaultController extends Controller
     {
         $stores = Stores::find()
           ->select(['cws.uid', 'cws.name', 'cws.contact_name', 'cws.contact_email', 'cws.contact_phone', 'cws.logo',
-          'cws.route', 'cwcl.affiliate_link', 'cws.is_offline'])
+          'cws.route', 'cwcl.affiliate_link', 'cws.is_offline', 'cwcl.cpa_id'])
           ->from(Stores::tableName(). ' cws')
           ->innerJoin(CpaLink::tableName(). ' cwcl', 'cws.uid  = cwcl.stores_id')
           ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
