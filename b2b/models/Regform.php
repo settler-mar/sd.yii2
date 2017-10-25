@@ -22,6 +22,7 @@ class Regform extends Model
         'required',
         'message' => 'Это поле обязательно для заполнения.'
       ],
+      [['email'], 'email','message' => 'Введеное значение не является правильным email адресом.'],
       [['firm','category','region','type','old','points','fio','position','email','phone','password','repassword','url'], 'trim'],
       [['url'], 'safe'],
       [['password','repassword'], 'string', 'max' => 60],
@@ -31,7 +32,7 @@ class Regform extends Model
         'compareAttribute' => 'password',
         'message' => 'Введенные пароли не совпадают.'
       ],
-      [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className()]
+      [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
     ];
   }
 
