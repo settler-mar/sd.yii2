@@ -111,7 +111,8 @@ $('.current-comment').each(function(index, element) {
 //для точек продаж, события на выбор селектов
 $('body').on('change', '#store_point_country', function(e) {
   var data = $('option:selected', this).data('cities'),
-      points= $('#store-points');
+      points= $('#store-points'),
+      country = $('option:selected', this).attr('value');
   data = data.split(',');
   if (data.length > 0) {
     var select = document.getElementById('store_point_city');
@@ -122,7 +123,10 @@ $('body').on('change', '#store_point_country', function(e) {
     select.innerHTML = options;
   }
   $(points).addClass('hidden');
-  googleMap.hideMap();
+  googleMap.showMap();
+  googleMap.showMarker(country, '');
+
+  //googleMap.hideMap();
 });
 
 $('body').on('change', '#store_point_city', function(e) {

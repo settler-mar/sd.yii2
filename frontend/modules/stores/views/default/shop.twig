@@ -216,7 +216,8 @@
     {% include 'parts/photos.twig' %}
 {% endif %}
 
-{% if current_store.is_offline==1 %}
+{#{% if current_store.is_offline==1 %}#}
+{% if store_points %}
     {% include 'parts/store_points.twig' %}
 {% endif %}
 
@@ -328,7 +329,7 @@
     </div>
 </section>
 
-{% if current_store.is_offline==0 %}
+{% if current_store.is_offline==0  %}
     {% include 'parts/tracker.twig' %}
 {% endif %}
 
