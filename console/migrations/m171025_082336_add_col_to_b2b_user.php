@@ -10,8 +10,9 @@ class m171025_082336_add_col_to_b2b_user extends Migration
       $this->addColumn('b2b_users', 'fio', $this->string()->null()->defaultValue(''));
       $this->addColumn('b2b_users', 'position', $this->string()->null()->defaultValue(''));
       $this->addColumn('b2b_users', 'phone', $this->string()->null()->defaultValue(''));
-      $this->addColumn('b2b_users', 'first_name', $this->text()->null());
-      $this->addColumn('b2b_users', 'last_name', $this->text()->null());
+      $this->addColumn('b2b_users', 'anketa', $this->text()->null());
+      $this->dropColumn('b2b_users', 'first_name');
+      $this->dropColumn('b2b_users', 'last_name');
     }
 
     public function safeDown()
