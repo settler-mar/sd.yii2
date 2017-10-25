@@ -45,12 +45,12 @@
                     <img src="https:/secretdiscounter.ru/images/logos/{{ store.logo }}" alt="{{ store.name }} logo">
                 </td>
             </tr>
-                {% if store.is_offline == 1 %}
+                {% if store.is_offline == 1 or store.cpa_id == 2 %}
                 <tr>
                     <th colspan="1"></th>
                     <th colspan="5" class="users-stores__stores-points">
                         <h4 class="users-stores__stores-points_header">Точки продаж</h4>
-                        <a class="users-stores__stores-points_add-point" href="/stores_points/create?route={{ store.route }}-offline">Добавить точку продаж</a>
+                        <a class="users-stores__stores-points_add-point" href="/stores_points/create?route={{ store.route }}{% if store.is_offline %}-offline{% endif %}">Добавить точку продаж</a>
 
                             {% if store.points %}
                                 <table class="users-stores__stores-points_table">

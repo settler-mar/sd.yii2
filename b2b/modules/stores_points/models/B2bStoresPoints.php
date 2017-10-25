@@ -49,9 +49,14 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                     ->innerJoin('b2b_users_cpa b2buc', 'b2buc.cpa_link_id = cwcl.id')
                     ->innerJoin(Stores::tableName(). ' cws', 'cws.uid = cwcl.stores_id')
                     ->where([
-                      'cws.uid' => $value,
-                      'b2buc.user_id'=> Yii::$app->user->identity->id,
-                      'cws.is_offline' => 1 //шоп офлайн
+                        'cws.uid' => $value,
+                        'b2buc.user_id'=> Yii::$app->user->identity->id,
+                    //  'cws.is_offline' => 1 //шоп офлайн
+                    ])
+                    ->andWhere([
+                        'or',
+                        'cws.is_offline = 1', //шоп офлайн
+                        'cwcl.cpa_id = 2',//cpa_id = 2 оффлайн
                     ])
                     ->count();
                 if ($cpa == 0) {
