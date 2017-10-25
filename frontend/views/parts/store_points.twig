@@ -1,4 +1,3 @@
-{% if current_store.is_offline == 1 and store_points.points %}
 <section class="store-points">
     <div class="container">
         <div class="row">
@@ -155,7 +154,7 @@
                 }
                 var cityPoints = [];
                 this.points.forEach(function(point){
-                    if (point.country == country && point.city == city) {
+                    if (point.country == country && (point.city == city || city == '')) {
                         cityPoints.push(point.marker);
                     }
                 });
@@ -198,4 +197,3 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
     {% endif %}
 
-{% endif %}

@@ -738,6 +738,17 @@ table{
         color: #5a5301;
         border: 1px solid #b9ae01;
     }
+    &.charity {
+        background: #ff8007;
+        color: #fff;
+        border: 1px solid #b45a07;
+    }
+    &.b2b_users {
+        background: #096cff;
+        color: #fff;
+        border: 1px solid #064296;
+    }
+
 }
 
 .withdraw_buttons {
@@ -875,5 +886,23 @@ table{
         right: 5px;
         top: 25px;
         color: #999;
+    }
+}
+.stores-form {
+    &__stores-points_table {
+        width: 100%;
+        font-size: 13px;
+        td, th {
+            border: 1px solid #eee;
+            padding: 5px;
+        }
+    }
+    .store-points__store_time {
+        li {
+            list-style-type: none;
+            span {
+                color: red;
+            }
+        }
     }
 }

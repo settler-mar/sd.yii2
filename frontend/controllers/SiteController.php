@@ -17,6 +17,8 @@ use frontend\components\SdController;
 use frontend\modules\users\models\Users;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\withdraw\models\UsersWithdraw;
+use frontend\modules\charity\models\Charity;
+use frontend\modules\b2b_users\models\B2bUsers;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -145,6 +147,8 @@ class SiteController extends SdController
 
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
+    $notes['users_charity'] = Charity::waitingCount();
+    $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
 
     return $this->render('admin', [
       'users_count' => $usersCount,
