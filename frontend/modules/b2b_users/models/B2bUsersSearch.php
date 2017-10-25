@@ -74,6 +74,9 @@ class B2bUsersSearch extends B2bUsers
       ->andFilterWhere(['like', 'auth_key', $this->auth_key])
       ->andFilterWhere(['like', 'ip', $this->ip]);
 
+    $query->andFilterWhere([
+      'is_active' => $this->is_active,
+      ]);
     return $dataProvider;
   }
 }
