@@ -20,6 +20,7 @@ class B2bUsersSearch extends B2bUsers
     return [
       [['id'], 'integer'],
       [['email', 'fio', 'password_hash', 'password_reset_token', 'email_confirm_token', 'auth_key', 'created_at', 'login_at', 'ip'], 'safe'],
+      [['is_active'], 'number'],
     ];
   }
 
@@ -73,6 +74,9 @@ class B2bUsersSearch extends B2bUsers
       ->andFilterWhere(['like', 'auth_key', $this->auth_key])
       ->andFilterWhere(['like', 'ip', $this->ip]);
 
+    $query->andFilterWhere([
+      'is_active' => $this->is_active,
+      ]);
     return $dataProvider;
   }
 }

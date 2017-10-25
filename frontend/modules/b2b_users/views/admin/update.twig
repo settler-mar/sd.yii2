@@ -13,6 +13,51 @@
                 'model': model,
             })
         }}
+
+    {% if model.anketa %}
+        <div class="content-wrapper" style="margin-top: 0px;    padding-top: 0;">
+            <section>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Дополнительные данные анкеты</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label class="col-md-6">Компания</label>
+                            <div class="col-md-6">{{ model.anketa.firm }}</div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-6">Адрес сайта</label>
+                            <div class="col-md-6">{{ model.anketa.url }}</div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-6">Сфера деятельности</label>
+                            <div class="col-md-6">{{ model.anketa.category }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label class="col-md-6">Регион</label>
+                            <div class="col-md-6">{{ model.anketa.region }}</div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-6">Форма собственности</label>
+                            <div class="col-md-6">{{ model.anketa.type }}</div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-6">Лет на рынке</label>
+                            <div class="col-md-6">{{ model.anketa.old }}</div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-4">Кол-во торговых точек</label>
+                            <div class="col-md-8">{{ model.anketa.points }}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    {% endif %}
+
     {{ include('_stores.twig', {
         'cpa_list': cpa_list,
         'user_id': user_id,

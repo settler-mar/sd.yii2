@@ -29,6 +29,17 @@
                                 'created_at',
                                 'login_at',
                                 'ip',
+                                {
+                                    'format':'raw',
+                                    'attribute':'is_active',
+                                    'value' : 'stringActive',
+                                    'filter':{
+                                        '':'Любой',
+                                        0:"В ожидании",
+                                        1:"Отклонён",
+                                        2:"Подтвержден",
+                                    },
+                                },
                                 {'class': '\\yii\\grid\\ActionColumn',
                                     'template' : '{login} {update} {delete}',
                                     'buttons' : actionButtons

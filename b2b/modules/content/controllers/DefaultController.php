@@ -37,7 +37,7 @@ class DefaultController extends Controller
         $user->position = $model->position;
         $user->email = $model->email;
         $user->phone = $model->phone;
-        $user->anketa = json_encode([
+        $user->anketa = [
           'firm'=>$model->firm,
           'url'=>$model->url,
           'category'=>$model->category,
@@ -45,11 +45,10 @@ class DefaultController extends Controller
           'type'=>$model->type,
           'old'=>$model->old,
           'points'=>$model->points,
-        ]);
+        ];
         if($user->save()){
-          $model= new Regform;
           Yii::$app->session->addFlash('info', 'Ваша заяка отправленна. В ближайшее время с Вами свяжится администратор.');
-          $page['before_include']='reg_finish';
+          return $this->redirect(['registration_finish']);
         }
       }
 
