@@ -31,6 +31,9 @@ class SdView extends View
     if($this->first_init){
       $this->init_param();
     }
+    if(!is_array($params)) {
+      $params=$params->toArray();
+    }
     $this->all_params=array_merge($this->all_params,$params);
     if($this->all_params && isset($this->all_params['exception'])){
       Yii::$app->params['exception'] = $this->all_params['exception'];
