@@ -65,6 +65,11 @@ class B2bUsers extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
+
+    if(is_array($this->anketa)) {
+      $this->anketa = json_encode($this->anketa);
+    }
+
     if (!parent::beforeValidate()) {
       return false;
     }
@@ -104,6 +109,7 @@ class B2bUsers extends \yii\db\ActiveRecord
       'fio' => 'Ф.И.О.',
       'position' => 'Должность',
       'phone' => 'Телефон',
+      'is_active' => 'Статус',
     ];
   }
 

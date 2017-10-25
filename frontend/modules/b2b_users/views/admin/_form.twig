@@ -25,6 +25,13 @@
                         {{ form.field(model, 'login_at').textInput({'disabled':true})|raw }}
 
                         {{ form.field(model, 'ip').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'is_active').dropDownList({
+                            '0':'В ожидании',
+                            '1':'Отклонён',
+                            '2':'Активен'
+                        })|raw }}
+
                     </div>
                 {% endif %}
                 <div class="col-md-12">
