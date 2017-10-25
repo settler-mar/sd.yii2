@@ -90,7 +90,8 @@
 
 
                     <ul class="primary-nav">
-
+                        {% if app.params.stores_menu_separate != 1 %}
+                        {#общее меню шопов#}
                         <li class="stores submenu-handl">
                             {{ get_menu_item({'href': '/stores', 'title': 'Магазины'})|raw }}
                             <form action="/search" class="form-mobile" name="search" method="get">
@@ -108,6 +109,39 @@
                                 </div>
                             {% endif %}
                         </li>
+                        {% else  %}
+                        {#меню шопов раздельно онлайн-оффлайн#}
+                            {{ use('frontend/components/CategoryMenu') }}
+                            <li class="stores submenu-handl">
+                                {{ get_menu_item({'href': '/stores', 'title': 'Магазины'})|raw }}
+                                <form action="/search" class="form-mobile" name="search" method="get">
+                                    <input type="text" name="query" id="search" value="" placeholder="Поиск магазинов">
+                                    <span class="fa fa-search"></span>
+                                </form>
+
+                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 1}) %}
+                                {% if category_tree %}
+                                    <div class="submenu">
+                                        <span class="fa fa-caret-up"></span>
+                                        <div class="tree">
+                                            {{category_tree|raw}}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </li>
+                            <li class="stores submenu-handl">
+                                {{ get_menu_item({'href': '/stores/offline', 'title': 'Магазины оффлайн'})|raw }}
+                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 0}) %}
+                                {% if category_tree %}
+                                    <div class="submenu">
+                                        <span class="fa fa-caret-up"></span>
+                                        <div class="tree">
+                                            {{category_tree|raw}}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endif %}
                         <li class="coupons-l stores submenu-handl">{{ get_menu_item({'href': '/coupons', 'title': 'Купоны'})|raw }}
                             {{ use('frontend/components/CategoryCouponsMenu') }}
                             {% set category_coupons_list = category_coupons_menu_widget() %}

@@ -104,10 +104,15 @@ class CategoriesStores extends \yii\db\ActiveRecord
     /**
      * @return mixed
      */
-    public static function activeList()
+    public static function activeList($online = null)
     {
         $cache = Yii::$app->cache;
-        $data = $cache->getOrSet('categories_stores', function () {
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'category_tree';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $casheName = 'categories_stores '.($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
+        $data = $cache->getOrSet($casheName, function () use ($online) {
             $categories = self::find()
               ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden',
                 'count(cstc.category_id) as count'])
@@ -116,11 +121,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
               ->leftJoin(Stores::tableName().' cws', 'cws.uid = cstc.store_id')
               ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
               ->groupBy(['ccs.name','ccs.parent_id','ccs.uid'])
-              ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC'])
-              ->asArray()
-              ->all();
+              ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC']);
+            if ($online !== null) {
+                $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
+            }
+            $categories =  $categories->asArray()->all();
             return $categories;
-        });
+        }, $cache->defaultDuration, $dependency);
         return $data;
     }
 
@@ -129,17 +136,18 @@ class CategoriesStores extends \yii\db\ActiveRecord
      * @param null $currentCategory
      * @return null|string
      */
-    public static function tree($parent_id = 0, $currentCategory = null, $showHidden =  true)
+    public static function tree($parent_id = 0, $currentCategory = null, $showHidden =  true, $online = null)
     {
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'category_tree';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
+        $cacheName = 'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : '') .
+          ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
         $tree = $cache->getOrSet(
-          'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : ''),
-          function () use ($parent_id, $currentCategory, $showHidden) {
-              $categories = self::activeList();
+          $cacheName,
+          function () use ($parent_id, $currentCategory, $showHidden, $online) {
+              $categories = self::activeList($online);
               $c = [];
               if (count($categories) > 0) {
                   foreach ($categories as $category) {
