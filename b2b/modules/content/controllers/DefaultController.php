@@ -47,8 +47,8 @@ class DefaultController extends Controller
           'points'=>$model->points,
         ];
         if($user->save()){
-          Yii::$app->session->addFlash('info', 'Ваша заяка отправленна. В ближайшее время с Вами свяжится администратор.');
-          return $this->redirect(['registration_finish']);
+          Yii::$app->session->addFlash('info', 'Ваша заяка отправлена. В ближайшее время с Вами свяжется администратор.');
+          return $this->redirect('/registration_finish');
         }
       }
 
