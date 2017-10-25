@@ -19,7 +19,7 @@ class B2bUsersSearch extends B2bUsers
   {
     return [
       [['id'], 'integer'],
-      [['email', 'first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token', 'auth_key', 'created_at', 'login_at', 'ip'], 'safe'],
+      [['email', 'fio', 'password_hash', 'password_reset_token', 'email_confirm_token', 'auth_key', 'created_at', 'login_at', 'ip'], 'safe'],
     ];
   }
 
@@ -66,8 +66,7 @@ class B2bUsersSearch extends B2bUsers
     ]);
 
     $query->andFilterWhere(['like', 'email', $this->email])
-      ->andFilterWhere(['like', 'first_name', $this->first_name])
-      ->andFilterWhere(['like', 'last_name', $this->last_name])
+      ->andFilterWhere(['like', 'fio', $this->fio])
       ->andFilterWhere(['like', 'password_hash', $this->password_hash])
       ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
       ->andFilterWhere(['like', 'email_confirm_token', $this->email_confirm_token])

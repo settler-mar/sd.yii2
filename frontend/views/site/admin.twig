@@ -38,12 +38,14 @@
                 </div>
             </div>
         </div>
-        {% if notes.users_reviews or notes.users_withdraw %}
+        {% if notes.users_reviews or notes.users_withdraw or notes.users_charity or notes.b2b_users_requests %}
                 <div class="row">
                     <div class="col-md-12 stat-block-actions">
                         Ожидает действий администратора
                         {% if notes.users_reviews %}<a href="/admin/reviews?ReviewsSearch%5Bis_active%5D=0"><span title="Неактивных отзывов" class="notes_users reviews">{{ notes.users_reviews }}</span></a>{% endif %}
                         {% if notes.users_withdraw %}<a href="/admin/withdraw?UsersWithdrawSearch%5Bstatus%5D=1"><span title="Запросов на вывод средств в ожидании" class="notes_users withdraw">{{ notes.users_withdraw }}</span></a>{% endif %}
+                        {% if notes.users_charity %}<a href="/admin/charity"><span title="Запросов на благотвроительность в ожидании" class="notes_users charity">{{ notes.users_charity }}</span></a>{% endif %}
+                        {% if notes.b2b_users_requests %}<a href="/admin/b2b_users"><span title="Запросов на регистрацию пользователей B2b" class="notes_users b2b_users">{{ notes.b2b_users_requests }}</span></a>{% endif %}
                     </div>
                 </div>
         {% endif %}

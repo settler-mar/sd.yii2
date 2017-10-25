@@ -738,6 +738,17 @@ table{
         color: #5a5301;
         border: 1px solid #b9ae01;
     }
+    &.charity {
+        background: #ff8007;
+        color: #fff;
+        border: 1px solid #b45a07;
+    }
+    &.b2b_users {
+        background: #096cff;
+        color: #fff;
+        border: 1px solid #064296;
+    }
+
 }
 
 .withdraw_buttons {
