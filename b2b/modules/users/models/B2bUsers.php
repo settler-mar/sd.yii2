@@ -42,7 +42,7 @@ class B2bUsers extends \yii\db\ActiveRecord implements IdentityInterface
             [['email', 'fio'], 'required'],
             [['created_at', 'login_at'], 'safe'],
             [['email'], 'string', 'max' => 255],
-            [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
+            [['fio', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
             [['auth_key'], 'string', 'max' => 32],
             [['ip'], 'string', 'max' => 20],
         ];
