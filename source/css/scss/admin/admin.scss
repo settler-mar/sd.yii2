@@ -888,3 +888,21 @@ table{
         color: #999;
     }
 }
+.stores-form {
+    &__stores-points_table {
+        width: 100%;
+        font-size: 13px;
+        td, th {
+            border: 1px solid #eee;
+            padding: 5px;
+        }
+    }
+    .store-points__store_time {
+        li {
+            list-style-type: none;
+            span {
+                color: red;
+            }
+        }
+    }
+}

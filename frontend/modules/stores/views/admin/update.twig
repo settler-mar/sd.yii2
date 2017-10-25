@@ -161,6 +161,34 @@
                                 </ul>
                             </form>
                         {% endif %}
+                        {% if store.storesPoints|length > 0%}
+                            <p class="title">Точки продаж</p>
+                            <table class="stores-form__stores-points_table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Название</th>
+                                    <th>Адрес</th>
+                                    <th>Время работы</th>
+                                    <th>Телефон</th>
+                                </tr>
+                                </thead>
+                                {% for store_point  in store.storesPoints %}
+                                    <tr class="stores-form__stores-points_row">
+                                        <th>{{ loop.index }}.</th>
+                                        <th>
+                                            {{ store_point.name }}
+                                        </th>
+                                        <th> {{ store_point.country }}, {{ store_point.city }}, {{ store_point.address }}</th>
+                                        <th>
+                                            {% set work_times = store_point.work_time_details %}
+                                            {% include('parts/work_time.twig')%}
+                                        </th>
+                                        <th>{{ store_point.phone }}</th>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
                     </div>
                 {% else %}
                     <div class="col-md-12">
