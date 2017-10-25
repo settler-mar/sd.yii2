@@ -38,18 +38,29 @@ class B2bUsers extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['email', 'first_name', 'last_name'], 'required'],
+      [['email', 'fio'], 'required'],
       [['email'], 'email'],
+      [['is_active'], 'number'],
       [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
-      ['password', 'trim'],
+      [['password','email'], 'trim'],
+      [['fio','position','email','phone','anketa'],'safe'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 5],
       [['created_at', 'login_at'], 'safe'],
       [['email'], 'string', 'max' => 255],
-      [['first_name', 'last_name', 'password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
+      [['password_hash', 'password_reset_token', 'email_confirm_token'], 'string', 'max' => 60],
       [['auth_key'], 'string', 'max' => 32],
       [['ip'], 'string', 'max' => 20],
     ];
+  }
+
+  public function afterFind()
+  {
+    if($this->anketa && strlen($this->anketa)) {
+      $this->anketa = json_decode($this->anketa, true);
+    }else{
+      $this->anketa=false;
+    }
   }
 
   public function beforeValidate()
@@ -82,8 +93,6 @@ class B2bUsers extends \yii\db\ActiveRecord
     return [
       'id' => 'ID',
       'email' => 'Email',
-      'first_name' => 'Имя',
-      'last_name' => 'Фамилия',
       'password' => 'Пароль',
       'password_hash' => 'Password Hash',
       'password_reset_token' => 'Password Reset Token',
@@ -92,6 +101,9 @@ class B2bUsers extends \yii\db\ActiveRecord
       'created_at' => 'Создан',
       'login_at' => 'Последний вход',
       'ip' => 'Ip',
+      'fio' => 'Ф.И.О.',
+      'position' => 'Должность',
+      'phone' => 'Телефон',
     ];
   }
 
