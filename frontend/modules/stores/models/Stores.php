@@ -79,7 +79,7 @@ class Stores extends \yii\db\ActiveRecord
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
-      [['name', 'route', 'url','url_alternative', 'logo', 'local_name'], 'string', 'max' => 255],
+      [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
       [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
@@ -136,6 +136,7 @@ class Stores extends \yii\db\ActiveRecord
       'rating' => 'Рейтинг',
       'no_rating_calculate' => 'Не пересчитывать рейтинг',
       'cash_number' => 'Номер чека',
+      'related_stores' => 'Связанные магазины (ID через запятую)',
     ];
   }
 
@@ -165,6 +166,15 @@ class Stores extends \yii\db\ActiveRecord
 
   public function getRelatedData(){
     return $this->hasOne(Stores::className(),['uid'=>'related']);
+  }
+
+  public function getRelatedStores()
+  {
+    if (empty($this->related_stores)) {
+      return null;
+    }
+    $ids = explode(',', $this->related_stores);
+    return self::find()->where(['is_active' => [0, 1], 'uid' => $ids])->all();
   }
 
   public function getCategory_cnt(){
