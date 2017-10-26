@@ -134,7 +134,7 @@ $(document).on('submit','form.change_order_price_form', function(e){
     }
     var reg = /^\d*\.?\d*$/;
     if (!order_price.match(reg)) {
-        $('#payments-order_price').siblings('p.help-block').text('Введите правильно сумму');
+        $('#payments-order_price').siblings('p.help-block').html('Введите правильно сумму.<br>Копейки от рублей должны отделяться точкой');
         return false;
     }
     if (admin_comment.length<5 || admin_comment.length>256) {

@@ -29,6 +29,7 @@ $btn_action_status_2: #8BC34A;
 
 //цвета текста
 $text_holiday_color: red;
+$text_payments_color: red;
 $text_error_color: #a94442;
 //выделенная строка в таблице
 $table_alarm_color: rgba(244, 151, 71, 0.33);
@@ -292,6 +293,9 @@ form .alert-block {
 
 }
 .payments {
+  &-info {
+    color: $text_payments_color;
+  }
   &-result {
     td.name {
       font-weight: 700;
