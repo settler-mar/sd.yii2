@@ -9,11 +9,11 @@
 
             {{ form.field(model, 'region').textInput({'maxlength':true,'placeholder':'Например, вся Россия, СНГ или только Москва'})|raw }}
 
-            {{ form.field(model, 'type').textInput({'maxlength':true,'placeholder':'ООО, ИП и т.п.'})|raw }}
+            {{ form.field(model, 'type').textInput({'maxlength':true,'placeholder':'ООО, ИП и т.д.'})|raw }}
 
-            {{ form.field(model, 'old').textInput({'maxlength':true,'placeholder':'Например, менне года, 5 лет, 10 лет'})|raw }}
+            {{ form.field(model, 'old').textInput({'maxlength':true,'placeholder':'Например, менее года, 5 лет, 10 лет'})|raw }}
 
-            {{ form.field(model, 'points').textInput({'maxlength':true,'placeholder':'1, 2, 10 и т.п.'})|raw }}
+            {{ form.field(model, 'points').textInput({'maxlength':true,'placeholder':'1, 2, 10 и т.д.'})|raw }}
         </div>
         <div class="col-sm-6">
             {{ form.field(model, 'fio').textInput({'maxlength':true})|raw }}

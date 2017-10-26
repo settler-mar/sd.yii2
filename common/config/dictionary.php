@@ -152,6 +152,12 @@ $dict = [
         'bonus'=>50,
         'is_webmaster'=>1,
       ],
+      2=>[
+        'name'=>"web master 60%",
+        'display_name'=>"web master",
+        'bonus'=>60,
+        'is_webmaster'=>1,
+      ],
     ],
     'twig_template'=>[
       'notification_title'=>'{{type_txt}}',

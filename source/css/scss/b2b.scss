@@ -325,3 +325,9 @@ form .alert-block {
     }
   }
 }
+
+.form-group.required label:after{
+  content: '*';
+  color: $text_error_color;
+  margin-left: 5px;
+}
