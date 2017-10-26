@@ -216,9 +216,10 @@
     {% include 'parts/photos.twig' %}
 {% endif %}
 
-{#{% if current_store.is_offline==1 %}#}
-{% if store_points %}
-    {% include 'parts/store_points.twig' %}
+{% if current_store.is_offline==1 %}
+    {% if store_points %}
+        {% include 'parts/store_points.twig' %}
+    {% endif %}
 {% endif %}
 
 <section class="store-2line">
