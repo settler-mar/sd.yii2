@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\stores\models\CategoriesStores;
 use common\components\Help;
 
 /**
@@ -96,6 +97,8 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
             [['work_time_details', 'store_name'], 'safe'],
             [['work_time_json'], 'string'],
+            [['category_id'], 'integer'],
+            [['category_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => CategoriesStores::className()]
         ];
     }
 
@@ -121,6 +124,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'password' => 'Пароль',
             'password_repeat' => 'Подтверждение пароля',
             'login' => 'Логин',
+            'category_id' => 'Категория',
         ];
     }
 

@@ -23,6 +23,9 @@
             </div>
         </div>
 
+        {{ form.field(model, 'category_id').dropDownList(categories, {'prompt':'Выберите категорию'})|raw }}
+
+
         {% if model.isNewRecord == false  %}
             {{ form.field(model, 'login').textInput({'readOnly':true})|raw }}
         {% endif %}

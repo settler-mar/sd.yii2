@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use frontend\modules\stores\models\CategoriesStores;
 
 /**
  * DefaultController implements the CRUD actions for B2bStoresPoints model.
@@ -97,6 +98,7 @@ class DefaultController extends Controller
             $model->store_name = $store->name;
             return $this->render('create.twig', [
                 'model' => $model,
+                'categories' => $this->categoriesStores(),
             ]);
         }
     }
@@ -119,6 +121,7 @@ class DefaultController extends Controller
             $model->store_name = $store->name;
             return $this->render('update.twig', [
                 'model' => $model,
+                'categories' => $this->categoriesStores(),
             ]);
         }
     }
@@ -241,5 +244,21 @@ class DefaultController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * @return array список категорий шопов
+     */
+    private function categoriesStores()
+    {
+        return ArrayHelper::map(
+            CategoriesStores::find()
+                ->where(['is_active' => 1])
+                ->andWhere(['!=', 'name', 'Оффлайн-магазины'])
+                ->orderBy('name ASC')
+                ->all(),
+            'uid',
+            'name'
+        );
     }
 }
