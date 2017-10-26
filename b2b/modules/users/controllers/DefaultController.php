@@ -61,13 +61,13 @@ class DefaultController extends Controller
     public function actionLogin()
     {
       if (!Yii::$app->user->isGuest) {
-        return $this->goHome();
+        return Yii::$app->getResponse()->redirect('/home');
       }
       $model = new LoginForm();
 
       if (Yii::$app->request->get('key')) {
         if($model->loginByKey(Yii::$app->request->get('key'))){
-          return $this->goHome();
+          return Yii::$app->getResponse()->redirect('/home');
         }else{
           return Yii::$app->getResponse()->redirect('/login');
         }

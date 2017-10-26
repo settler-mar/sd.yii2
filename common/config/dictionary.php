@@ -199,6 +199,23 @@ $dict = [
       2=>"Бонус от администратора",
       3=>"За регистрацию(премиум)",
     ],
+    'map_icons'=>[
+      1 => "/images/maps/markers/12.png",
+      2 => "/images/maps/markers/13.png",
+      3 => "/images/maps/markers/14.png",
+      4 => "/images/maps/markers/15.png",
+      5 => "/images/maps/markers/24.png",
+      6 => "/images/maps/markers/25.png",
+      7 => "/images/maps/markers/26.png",
+      8=> "/images/maps/markers/32.png",
+      9 => "/images/maps/markers/33.png",
+      10 => "/images/maps/markers/34.png",
+      11 => "/images/maps/markers/36.png",
+      12 => "/images/maps/markers/42.png",
+      13 => "/images/maps/markers/44.png",
+      14 => "/images/maps/markers/45.png",
+      15 => "/images/maps/markers/46.png"
+    ],
   ];
 
 return $dict;

@@ -31,7 +31,8 @@
         "unclead/yii2-multiple-input": "2.10.*",
         "kotchuprik/yii2-fotorama-widget": "^1.0",
         "picqer/php-barcode-generator": "^0.2.2",
-        "himiklab/yii2-recaptcha-widget": "^1.0"
+        "himiklab/yii2-recaptcha-widget": "^1.0",
+        "dvixi/yii2-icon-select": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
