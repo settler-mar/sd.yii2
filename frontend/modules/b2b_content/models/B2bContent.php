@@ -34,7 +34,7 @@ class B2bContent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'required'],
+            [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
             [['page'], 'unique'],
             [['description', 'keywords', 'content'], 'string'],
             [['menu_index'], 'filter', 'filter' => function ($value) {
