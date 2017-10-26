@@ -13,6 +13,8 @@
 
                     {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
+                    {{ form.field(model, 'map_icon').widget(iconSelectClass,iconSelectParam)|raw }}
+
                     {{ form.field(model, 'is_active').dropDownList({
                         0:"Скрытая",
                         1:"Активная",
