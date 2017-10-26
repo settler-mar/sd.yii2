@@ -2754,5 +2754,18 @@ section.store_photos {
   }
 }
 
+.google-map-point-content {
+  &__work_time {
+    ul {
+      padding: 0;
+    }
+    &_header {
+      margin-top: 3px;
+      margin-bottom: 3px;
+      font-weight: 400;
+    }
+  }
+}
+
 @import "print.scss";
 @import  "../external/queries";

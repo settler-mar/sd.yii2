@@ -117,14 +117,36 @@
                     mapTypeId: 'roadmap'
                 });
                 var markers = [];
+                var infowindow = new google.maps.InfoWindow();
                 {% for store_point in store_points.points %}
                     {% if store_point.coordinate_x and store_point.coordinate_y %}
                         var marker = new google.maps.Marker({
                             position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
                             map: map,
                             title: '{{ store_point.name }}',
+                            content: '<div class="google-map-point-content">'+
+                                '<h5 class="google-map-point-content__header">{{ store_point.name }}</h5>'+
+                                '<div class="google-map-point-content__address">Адрес: {{ store_point.address }}</div>'+
+                                '<div class="google-map-point-content__phone">Телефон: {{ store_point.phone }}</div>'+
+                                {% if store_point.work_time_details %}
+                                    '<h6 class="google-map-point-content__work_time_header">Время работы:</h5>'+
+                                    '<div class="google-map-point-content__work_time">'+
+                                    '{% set work_times = store_point.work_time_details %}'+
+                                    '{% set foo = include('parts/work_time.twig')%}'+
+                                    '{{ foo|replace({'\n': ''})|raw }}'+
+                                    '</div>'+
+                                {% endif %}
+                                '</div>',
                             visible: true
+                            {% if store_point.icon  %} ,icon: '{{ store_point.icon }}' {% endif %}
                         });
+
+                        google.maps.event.addListener(marker, 'click', (function(marker) {
+                            return function() {
+                                infowindow.setContent(marker.content);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker));
                         this.points.push({
                             'city':'{{ store_point.city }}',
                             'country': '{{ store_point.country }}',

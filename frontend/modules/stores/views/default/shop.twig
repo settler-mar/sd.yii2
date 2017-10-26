@@ -216,11 +216,11 @@
     {% include 'parts/photos.twig' %}
 {% endif %}
 
-{% if current_store.is_offline==1 %}
-    {% if store_points %}
+{#{% if current_store.is_offline==1 %}#}
+    {% if store_points and store_points.points|length > 0 %}
         {% include 'parts/store_points.twig' %}
     {% endif %}
-{% endif %}
+{#{% endif %}#}
 
 <section class="store-2line">
     <div class="container">

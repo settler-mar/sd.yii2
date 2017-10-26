@@ -124,7 +124,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'password' => 'Пароль',
             'password_repeat' => 'Подтверждение пароля',
             'login' => 'Логин',
-            'category_id' => 'Категория',
+            'category_id' => 'Основной вид деятельности',
         ];
     }
 
@@ -134,6 +134,14 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public function getStore()
     {
         return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+    public function getCategory()
+    {
+        return $this->hasOne(CategoriesStores::className(), ['uid' => 'category_id']);
+    }
+    public function getIcon()
+    {
+        return $this->category->icon;
     }
 
     public function afterFind()
