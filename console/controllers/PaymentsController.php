@@ -110,7 +110,7 @@ class PaymentsController extends Controller
           continue;
         }
 
-        //ddd($payment);
+        //ddd($payment['id']);
         $action_id = $payment['action_id'];
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
@@ -232,6 +232,10 @@ class PaymentsController extends Controller
           } else {
             //в старых платежах нет курса. Получаем его косвенно
             $kurs = $db_payment->reward / $payment['payment'];
+          }
+
+          if(!$kurs){
+            $kurs=Yii::$app->conversion->getRUB(1, $payment['currency']);
           }
 
           //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
