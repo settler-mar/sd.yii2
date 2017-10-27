@@ -76,7 +76,7 @@ class Stores extends \yii\db\ActiveRecord
   {
     return [
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
@@ -130,13 +130,14 @@ class Stores extends \yii\db\ActiveRecord
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
       'category_cnt'=>'Количество категорий',
-      'related' => 'Связанный магазин',
+      'related' => 'Связанный магазин(ID, связка онлайн-оффлайн)',
       'is_offline' => 'Тип магазина',
       'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
       'rating' => 'Рейтинг',
       'no_rating_calculate' => 'Не пересчитывать рейтинг',
       'cash_number' => 'Номер чека',
-      'related_stores' => 'Связанные магазины (ID через запятую)',
+      'related_stores' => 'Магазины торговой сети (ID через запятую)',
+      'network_name' => 'Название торговой сети',
     ];
   }
 
@@ -168,13 +169,28 @@ class Stores extends \yii\db\ActiveRecord
     return $this->hasOne(Stores::className(),['uid'=>'related']);
   }
 
+  /*
+   * Выдает магазины сети автоматом добавдяя сяанный онлайн-оффлайн магазин и удаляется текущий
+   *
+   */
   public function getRelatedStores()
   {
     if (empty($this->related_stores)) {
       return null;
     }
     $ids = explode(',', $this->related_stores);
-    return self::find()->where(['is_active' => [0, 1], 'uid' => $ids])->all();
+    $ids[]=$this->related;
+
+    foreach(array_keys($ids,$this->uid) as $key){
+      unset($ids[$key]);
+    }
+
+    $stores = self::find()
+      ->where(['is_active' => [0, 1], 'uid' => $ids])
+      ->asArray()
+      ->all();
+
+    return ($stores);
   }
 
   public function getCategory_cnt(){
@@ -213,11 +229,6 @@ class Stores extends \yii\db\ActiveRecord
     }else {
       $this->video = json_decode($this->video, true);
     }
-    /*$str=$this->video[0];
-    $str=explode('?',$str);
-    d($str);
-    parse_str($str[1],$data);
-    ddd($data);*/
   }
 
   /**
@@ -323,6 +334,7 @@ class Stores extends \yii\db\ActiveRecord
     }
     return true;
   }
+
   /**
    * @param bool $insert
    * @param array $changedAttributes

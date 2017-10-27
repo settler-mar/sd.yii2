@@ -6,26 +6,13 @@ class m171026_134634_AddColumnStoresTable extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('cw_stores', 'related_stores', $this->string());
+        $this->addColumn('cw_stores', 'related_stores', $this->string()->null());
+        $this->addColumn('cw_stores', 'network_name', $this->string()->null()->defaultValue(''));
     }
 
     public function safeDown()
     {
         $this->dropColumn('cw_stores', 'related_stores');
+        $this->dropColumn('cw_stores', 'network_name');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m171026_134634_AddColumnStoresTable cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

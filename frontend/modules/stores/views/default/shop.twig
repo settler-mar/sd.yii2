@@ -216,11 +216,32 @@
     {% include 'parts/photos.twig' %}
 {% endif %}
 
-{#{% if current_store.is_offline==1 %}#}
+{% set related_stores = current_store.relatedStores %}
+{% if related_stores and  related_stores | length %}
+    <section class="store-intro shops">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>
+                        Все магазины сети {{ current_store.network_name }}
+                    </h3>
+                </div>
+                {% for store in related_stores %}
+                    <div class="col-sm-3 col-md-2">
+                        {% include 'parts/shop.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+
+
+{% if current_store.is_offline==1 %}
     {% if store_points and store_points.points|length > 0 %}
         {% include 'parts/store_points.twig' %}
     {% endif %}
-{#{% endif %}#}
+{% endif %}
 
 <section class="store-2line">
     <div class="container">
