@@ -26,6 +26,9 @@
         {#<div class="row">#}
             {{ content|raw }}
         {#</div>#}
+        <div class="hidden">
+            <input id="recaptcha-key" type="hidden" value="{{ app.reCaptcha.siteKey }}">
+        </div>
 
     </div>
 </div>

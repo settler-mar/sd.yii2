@@ -64,7 +64,7 @@ return [
                 '/' => 'content/default/main',
                 '/index' => '404',
                 '/home' =>'users/default/index',
-                '<action:(login|logout|resetpassword|reset)>' => 'users/default/<action>',
+                '<action:(login|logout|resetpassword|reset|register)>' => 'users/default/<action>',
                 '/stores_points/<action:(create|update|delete|login|logout|payments)>' => 'stores_points/default/<action>',
                 '/payments/<action:(index|update|status|revoke)>' => 'payments/default/<action>',
                 '/api/<action:(login|categories|save|msg)>' => 'api/default/<action>',

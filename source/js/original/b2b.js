@@ -195,3 +195,83 @@ $(document).on('submit','form.revoke_payents_form', function(e){
         notification.notifi({message:'Произошла ошибка!', type:'err'})
     });
 });
+
+$('a[href="#register-by-partner"]').on('click',function(e){
+    e.preventDefault();
+    var recaptchaKey = $('#recaptcha-key').val();
+    var data={
+        buttonYes:false,
+        notyfy_class:"notify_white notify_not_big",
+        title: 'Заявка на регистацию',
+        question:
+        '<form method="post" class="payments-forms register_form">'+
+        '<div class="form-group">'+
+        '<label>Тема</label>'+
+        '<input type="text" class="form-control" id="register-subject" name="RegisterForm[subject]" placeholder="Тема сообщения" >'+
+        '<p class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<label>Сообщение</label>'+
+        '<textarea class="form-control" id="register-text" name="RegisterForm[text]" placeholder="Сообщение"></textarea>'+
+        '<p class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<label>Я не робот</label>'+
+        '<script src="https://www.google.com/recaptcha/api.js" async defer></script>'+
+        '<div id="g-recaptcha" class="g-recaptcha" data-sitekey="'+recaptchaKey+'"></div>'+
+        '<p id="recaptcha-help" class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group buttons">'+
+        '<input type="submit" class="btn btn-primary" value="Отправить">'+
+        '</div>' +
+        '<form>'
+    };
+    notification.alert(data);
+
+});
+
+$(document).on('submit','form.register_form', function(e){
+    e.preventDefault();
+    $(this).find('p.help-block').text('');
+    var subject = $('#register-subject').val();
+    var text = $('#register-text').val();
+    var recaptcha = $('#g-recaptcha-response').val();
+
+    var error = false;
+    if (subject == '') {
+        $('#register-subject').siblings('p.help-block').text('Тема сообщения обязательна.');
+        error = true;
+    }
+    if (text == '') {
+        $('#register-text').siblings('p.help-block').text('Текст сообщения обязателен.');
+        error = true;
+    }
+    if (!recaptcha) {
+        $('#recaptcha-help').text('Докажите, что вы не робот.');
+        error = true;
+    }
+    if (error) {
+        return false;
+    }
+    var data = {
+        'RegisterForm[subject]' : subject,
+        'RegisterForm[text]' : text,
+        'RegisterForm[reCaptcha]' : recaptcha
+        };
+    $.post('', data, function(response){
+        console.log(response);
+        $('html').removeClass('show_notifi');
+        if (response.error == false) {
+           //notification.notifi({message: (response.message ? response.message : 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.'), type:'success'});
+           location.reload();
+        } else {
+            notification.notifi({message: 'Произошла ошибка', type:'err'});
+        }
+    },'json').fail(function (data) {
+        $('html').removeClass('show_notifi');
+        notification.notifi({message:'Произошла ошибка!', type:'err'})
+    });
+});
+
+
+
