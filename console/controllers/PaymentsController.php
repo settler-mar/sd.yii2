@@ -238,6 +238,8 @@ class PaymentsController extends Controller
             $kurs=Yii::$app->conversion->getRUB(1, $payment['currency']);
           }
 
+          $db_payment->kurs=$kurs;
+
           //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
           if ($db_payment->status == 2) {
             //continue;
