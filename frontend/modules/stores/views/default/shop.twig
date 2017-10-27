@@ -246,7 +246,8 @@
 <section class="store-2line">
     <div class="container">
         <div class="row">
-            {% if current_store.is_active==1 %}
+            {#% if current_store.is_active==1 %#}
+            {% set not_active = 1-current_store.is_active %}
             <div class="col-sm-12 col-md-12">
                 <div class="coupons">
                     <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
@@ -284,7 +285,7 @@
                     {% endif %}
                 </div>
             </div>
-            {% endif %}
+            {#% endif %#}
             <a name="reviews"></a>
             <div class="col-sm-12 col-md-12">
                 <div class="comments">
