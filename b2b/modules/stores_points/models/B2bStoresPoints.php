@@ -141,7 +141,10 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     }
     public function getIcon()
     {
-        return $this->category->icon;
+      $category=$this->category;
+      if(!$category)return false;
+
+      return $category->icon;
     }
 
     public function afterFind()
