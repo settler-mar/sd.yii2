@@ -161,6 +161,7 @@ class SiteController extends SdController
   }
 
   public function actionOffline($r=0){
+    $page='offline';
 
     $user=Users::find()
       ->where(['uid'=>$r])
@@ -170,7 +171,7 @@ class SiteController extends SdController
     }
 
     $page=Meta::find()
-      ->where(['page'=>'offline'])
+      ->where(['page'=>$page])
       ->asArray()
       ->one();
     if(!$page){
@@ -190,6 +191,7 @@ class SiteController extends SdController
     Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru".$user->getBarcodeImg()."\" />";
+
     return $this->render('static_page',$page);
 
   }
@@ -240,6 +242,20 @@ class SiteController extends SdController
     };
     $this->params['breadcrumbs'][] = 'Партнёрская программа';
     return $this->render('affiliate');
+  }
+
+
+  /**
+   * /affiliate
+   * @return string
+   */
+  public function actionOfflineSystem()
+  {
+    if (!Yii::$app->user->isGuest) {
+      Yii::$app->response->redirect(Url::to('/account/offline'));
+    };
+    //$this->params['breadcrumbs'][] = 'Партнёрская программа';
+    return $this->actionStaticPage('account/offline');
   }
   /**
    * /loyalty

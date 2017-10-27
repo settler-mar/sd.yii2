@@ -85,6 +85,7 @@ $config= [
 
         '<action:(faq|admin|howitworks|terms|promo|loyalty|recommendations|about|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
+        'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
 
         'fixing/<action:payment|stores>'=> 'fixing/<action>',
