@@ -56,7 +56,7 @@ class DefaultController extends Controller
       $page['model']=$model;
       $page['reCaptcha']= \himiklab\yii2\recaptcha\ReCaptcha::className();
     };
-    if (in_array($page->page, ['affiliate-offline', 'online'])) {
+    if (isset($page->page) && in_array($page->page, ['affiliate-offline', 'online'])) {
       $page=$page->toArray();
       $request = Yii::$app->request;
 
