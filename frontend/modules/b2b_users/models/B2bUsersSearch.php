@@ -48,6 +48,14 @@ class B2bUsersSearch extends B2bUsers
 
     $dataProvider = new ActiveDataProvider([
       'query' => $query,
+      'sort' => [
+        'defaultOrder' => [
+          'uid' => SORT_DESC,
+        ]
+      ],
+      'pagination' => [
+        'pageSize' => 40,
+      ],
     ]);
 
     $this->load($params);
