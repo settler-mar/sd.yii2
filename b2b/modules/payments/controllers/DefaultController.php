@@ -23,277 +23,281 @@ use yii\validators\StringValidator;
  */
 class DefaultController extends Controller
 {
-    public function behaviors()
-    {
+  public function behaviors()
+  {
+    return [
+      'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+          'status' => ['post'],
+          'update' => ['post'],
+          'revoke' => ['post'],
+        ],
+      ],
+      'access' => [
+        'class' => AccessControl::className(),
+        'rules' => [
+          [
+            'actions' => ['index', 'status', 'update', 'revoke'],
+            'allow' => true,
+            'roles' => ['@'],
+          ],
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Lists all Payments models.
+   * @return mixed
+   */
+  public function actionIndex()
+  {
+    $searchModel = new PaymentsSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+    $user_id = Yii::$app->user->id;
+
+    $search_range = Yii::$app->request->get('date');
+    if (empty($search_range) || strpos($search_range, '-') === false) {
+      $search_range = date('01-01-Y') . ' - ' . date('d-m-Y');
+    }
+
+    list($start_date, $end_date) = explode(' - ', $search_range);
+    $storesPoints = B2bStoresPoints::find()
+      ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
+        'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
+      ->from(B2bStoresPoints::tableName() . ' sp')
+      ->innerJoin(Stores::tableName() . ' cws', 'sp.store_id = cws.uid')
+      ->innerJoin('cw_cpa_link', 'cws.active_cpa = cw_cpa_link.id')
+      ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+      ->where([
+        'b2buc.user_id' => $user_id
+      ])
+      ->orderBy(['cws.name' => 'DESC', 'sp.name' => 'DESC'])
+      ->asArray()
+      ->all();
+
+    $stores = [];
+
+    foreach ($storesPoints as $point) {
+      $stores[$point['store_id']]['name'] = $point['store_name'];
+      $stores[$point['store_id']]['points'][] = $point;
+    }
+    $tableData = [
+      'store_name' => function ($model) {
+        return $model->store->name;
+      },
+      'store_point_name' => function ($model) {
+        if (!$model->store_point_id) return '';
+        return $model->storesPointText;
+      },
+      'click_date' => function ($model) {
+        return date('d.m.Y H:i', strtotime($model->click_date));
+      },
+      'closing_date' => function ($model) {
+        return date('d.m.Y', strtotime($model->closing_date));
+      },
+      'user' => function ($model) {
+        return 'SD-' . str_pad($model->user_id, 8, '0', STR_PAD_LEFT);
+      },
+      'status' => function ($model) {
+        return Yii::$app->help->colorStatus($model->status);
+      },
+      'update_buttons' => function ($model) {
+        if (in_array($model->status, [0])) {
+          return '<a href="#" data-id="' . $model->uid . '" data-orderprice="' . $model->order_price . '" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>' .
+          '<a href="#" data-id="' . $model->uid . '" title="Отменить платёж" class="revert-order"><i class="fa fa-trash"></i></a>';
+        } else {
+          return '';
+        }
+      },
+      'checkbox_options' => function ($model) {
+        if ($model->status != 0) {
+          return ['disabled' => '1', 'class' => 'hidden'];
+        } else {
+          return [];
+        }
+      },
+      'date_alarm' => function ($model) {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'status' => ['post'],
-                    'update' => ['post'],
-                    'revoke' => ['post'],
-                ],
-            ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index', 'status', 'update', 'revoke'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
+          'class' => (strtotime('+5 days') > strtotime($model->closing_date) && $model->status == 0) ?
+            'date_alarm' : '',
         ];
-    }
-
-    /**
-     * Lists all Payments models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new PaymentsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-
-        $search_range = Yii::$app->request->get('date');
-        if (empty($search_range) || strpos($search_range, '-') === false) {
-            $search_range = date('01-01-Y') . ' - ' . date('d-m-Y');
-        }
-
-        list($start_date, $end_date) = explode(' - ', $search_range);
-        $storesPoints = B2bStoresPoints::find()
-          ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
-            'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
-          ->from(B2bStoresPoints::tableName(). ' sp')
-          ->innerJoin(Stores::tableName().' cws', 'sp.store_id = cws.uid')
-          ->orderBy(['cws.name' => 'DESC', 'sp.name' => 'DESC'])
-          ->asArray()
-          ->all();
-
-        $stores = [];
-
-
-        foreach ($storesPoints as $point) {
-            $stores[$point['store_id']]['name'] = $point['store_name'];
-            $stores[$point['store_id']]['points'][] = $point;
-        }
-        $tableData = [
-            'store_name' => function ($model) {
-                return $model->store->name;
-            },
-            'store_point_name' => function ($model) {
-              if(!$model->store_point_id)return '';
-              return $model->storesPointText;
-            },
-            'click_date' => function ($model) {
-                return date('d.m.Y H:i', strtotime($model->click_date));
-            },
-            'closing_date' => function ($model) {
-                return date('d.m.Y', strtotime($model->closing_date));
-            },
-            'user' => function ($model) {
-                return 'SD-' . str_pad($model->user_id, 8, '0', STR_PAD_LEFT);
-            },
-            'status' => function ($model) {
-                return Yii::$app->help->colorStatus($model->status);
-            },
-            'update_buttons' => function ($model) {
-                if (in_array($model->status, [0])) {
-                    return '<a href="#" data-id="' . $model->uid . '" data-orderprice="'. $model->order_price .'" title="Изменить сумму" class="change-order-price"><i class="fa fa-pencil"></i></a>'.
-                    '<a href="#" data-id="' . $model->uid . '" title="Отменить платёж" class="revert-order"><i class="fa fa-trash"></i></a>';
-                } else {
-                    return '';
-                }
-            },
-            'checkbox_options'=> function ($model) {
-                if ($model->status != 0) {
-                    return ['disabled' => '1', 'class' => 'hidden'];
-                } else {
-                    return [];
-                }
-            },
-            'date_alarm' => function ($model) {
-                return [
-                    'class' => (strtotime('+5 days') > strtotime($model->closing_date) && $model->status == 0) ?
-                      'date_alarm': '',
-                ];
-            },
-            'order_price_options' => function ($model) {
-                return [
-                    'class' => 'td-order-price'
-                ];
-            },
-            'order_price_value' => function ($model) {
-                return $model->order_price.' '.$model->storeCur;
-            },
-            'reward_value' => function ($model) {
-                return $model->reward.' <span class="fa fa-rub"></span>';
-            },
-            'cashback_value' => function ($model) {
-                return $model->cashback.' <span class="fa fa-rub"></span>';
-            },
-
+      },
+      'order_price_options' => function ($model) {
+        return [
+          'class' => 'td-order-price'
         ];
-        //статистика по выборке
-        $queryAll = clone $dataProvider->query;
-        $queryAll->select(['sum(cashback) as cashback', 'sum(order_price * kurs) as order_price']);
-        $resultAllCount = $queryAll->count();
-        $resultAll = $queryAll->one();
+      },
+      'order_price_value' => function ($model) {
+        return $model->order_price . ' ' . $model->storeCur;
+      },
+      'reward_value' => function ($model) {
+        return $model->reward . ' <span class="fa fa-rub"></span>';
+      },
+      'cashback_value' => function ($model) {
+        return $model->cashback . ' <span class="fa fa-rub"></span>';
+      },
 
-        $querySuccess = clone $queryAll;
-        $querySuccess->andWhere(['status'=> 2]);
-        $resultSuccessCount = $querySuccess->count();
-        $resultSuccess = $querySuccess->one();
+    ];
+    //статистика по выборке
+    $queryAll = clone $dataProvider->query;
+    $queryAll->select(['sum(cashback) as cashback', 'sum(order_price * kurs) as order_price']);
+    $resultAllCount = $queryAll->count();
+    $resultAll = $queryAll->one();
 
-        $queryWaiting = clone $queryAll;
-        $queryWaiting->andWhere(['status'=> 0]);
-        $resultWaitingCount = $queryWaiting->count();
-        $resultWaiting = $queryWaiting->one();
+    $querySuccess = clone $queryAll;
+    $querySuccess->andWhere(['status' => 2]);
+    $resultSuccessCount = $querySuccess->count();
+    $resultSuccess = $querySuccess->one();
 
-        $queryRevoke = clone $queryAll;
-        $queryRevoke->andWhere(['status'=> 1]);
-        $resultRevokeCount = $queryRevoke->count();
-        $resultRevoke = $queryRevoke->one();
+    $queryWaiting = clone $queryAll;
+    $queryWaiting->andWhere(['status' => 0]);
+    $resultWaitingCount = $queryWaiting->count();
+    $resultWaiting = $queryWaiting->one();
+
+    $queryRevoke = clone $queryAll;
+    $queryRevoke->andWhere(['status' => 1]);
+    $resultRevokeCount = $queryRevoke->count();
+    $resultRevoke = $queryRevoke->one();
 
 
-        return $this->render('index.twig', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'data_ranger' => Help::DateRangePicker($start_date . ' - ' . $end_date, 'date', []),
-            'click_data_range'=>Help::DateRangePicker($searchModel, 'click_data_range', ['hideInput'=>false]),
-            'end_data_range'=>Help::DateRangePicker($searchModel, 'end_data_range', ['hideInput'=>false]),
-            'stores' => $stores,
-            'table_data' => $tableData,
-            'storeId' => Yii::$app->request->get('storeId'),
-            'store_point' => Yii::$app->request->get('store_point'),
-            'result_waiting' => ['count'=>$resultWaitingCount,'summs'=>$resultWaiting],
-            'result_success' => ['count' => $resultSuccessCount, 'summs'=> $resultSuccess],
-            'result_all' => ['count' => $resultAllCount, 'summs'=> $resultAll],
-            'result_revoke' => ['count' => $resultRevokeCount, 'summs'=> $resultRevoke],
-        ]);
+    return $this->render('index.twig', [
+      'searchModel' => $searchModel,
+      'dataProvider' => $dataProvider,
+      'data_ranger' => Help::DateRangePicker($start_date . ' - ' . $end_date, 'date', []),
+      'click_data_range' => Help::DateRangePicker($searchModel, 'click_data_range', ['hideInput' => false]),
+      'end_data_range' => Help::DateRangePicker($searchModel, 'end_data_range', ['hideInput' => false]),
+      'stores' => $stores,
+      'table_data' => $tableData,
+      'storeId' => Yii::$app->request->get('storeId'),
+      'store_point' => Yii::$app->request->get('store_point'),
+      'result_waiting' => ['count' => $resultWaitingCount, 'summs' => $resultWaiting],
+      'result_success' => ['count' => $resultSuccessCount, 'summs' => $resultSuccess],
+      'result_all' => ['count' => $resultAllCount, 'summs' => $resultAll],
+      'result_revoke' => ['count' => $resultRevokeCount, 'summs' => $resultRevoke],
+    ]);
+  }
+
+
+  /**
+   * @return mixed
+   * @throws NotFoundHttpException
+   */
+  public function actionStatus()
+  {
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      throw new NotFoundHttpException();
+    }
+    $status = $request->post('status');
+    $ids = $request->post('id');
+    $validator = new NumberValidator();
+    $validatorEach = new EachValidator(['rule' => ['integer']]);
+    $validatorRequired = new RequiredValidator();
+    if (!$validatorRequired->validate([$ids, $status])
+      || !$validator->validate($status)
+      || !$validatorEach->validate($ids)
+    ) {
+      return json_encode(['error' => true]);
+    }
+    if ($this->update($ids, ['status' => $status])) {
+      return json_encode(['error' => false]);
+    } else {
+      return json_encode(['error' => true, 'message' => 'Платёж не найден']);
+    }
+  }
+
+
+  /**
+   * Updates an existing Payments model.
+   * @param integer $id
+   * @return mixed
+   */
+  public function actionUpdate()
+  {
+    if (!Yii::$app->request->isAjax) {
+      throw new NotFoundHttpException();
+    }
+    $request = Yii::$app->request;
+    $orderPrice = $request->post('order_price');
+    $id = intval($request->post('id'));
+    $adminComment = $request->post('admin-comment');
+    $validator = new NumberValidator();
+    $validatorRequired = new RequiredValidator();
+    $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
+    if (!$validatorRequired->validate([$id, $orderPrice, $adminComment])
+      || !$validator->validate($id)
+      || !$validator->validate($orderPrice)
+      || !$validatorString->validate($adminComment)
+    ) {
+      return json_encode(['error' => true, 'message' => 'Неправильные данные', 'post' => $request->post()]);
     }
 
+    $recalc = Payments::recalcCashback($id, $orderPrice);
 
-    /**
-     * @return mixed
-     * @throws NotFoundHttpException
-     */
-    public function actionStatus()
-    {
-        $request = Yii::$app->request;
-        if (!$request->isAjax) {
-            throw new NotFoundHttpException();
-        }
-        $status = $request->post('status');
-        $ids = $request->post('id');
-        $validator = new NumberValidator();
-        $validatorEach = new EachValidator(['rule' => ['integer']]);
-        $validatorRequired = new RequiredValidator();
-        if (!$validatorRequired->validate([$ids, $status])
-            || !$validator->validate($status)
-            || !$validatorEach->validate($ids)
-        ) {
-            return json_encode(['error'=>true]);
-        }
-        if ($this->update($ids, ['status' => $status])) {
-            return json_encode(['error' => false]);
-        } else {
-            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
-        }
+    if ($recalc && $this->update($id, [
+        'order_price' => $recalc['order_price'],
+        'admin_comment' => $adminComment,
+        'reward' => $recalc['reward'],
+        'cashback' => $recalc['cashback'],
+      ])
+    ) {
+      return json_encode(['error' => false, 'recalc' => $recalc]);
+    } else {
+      return json_encode(['error' => true, 'message' => 'Платёж не найден']);
     }
+  }
 
-
-
-
-    /**
-     * Updates an existing Payments model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate()
-    {
-        if (!Yii::$app->request->isAjax) {
-            throw new NotFoundHttpException();
-        }
-        $request = Yii::$app->request;
-        $orderPrice = $request->post('order_price');
-        $id = intval($request->post('id'));
-        $adminComment = $request->post('admin-comment');
-        $validator = new NumberValidator();
-        $validatorRequired = new RequiredValidator();
-        $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
-        if (!$validatorRequired->validate([$id, $orderPrice, $adminComment])
-          || !$validator->validate($id)
-          || !$validator->validate($orderPrice)
-          || !$validatorString->validate($adminComment)
-        ) {
-            return json_encode(['error'=>true, 'message' => 'Неправильные данные', 'post' => $request->post()]);
-        }
-
-        $recalc = Payments::recalcCashback($id, $orderPrice);
-        
-        if ($recalc && $this->update($id, [
-            'order_price' => $recalc['order_price'],
-            'admin_comment' => $adminComment,
-            'reward' => $recalc['reward'],
-            'cashback' => $recalc['cashback'],
-        ])) {
-            return json_encode(['error' => false, 'recalc' => $recalc]);
-        } else {
-            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
-        }
+  public function actionRevoke()
+  {
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      throw new NotFoundHttpException();
     }
-
-    public function actionRevoke()
-    {
-        $request = Yii::$app->request;
-        if (!$request->isAjax) {
-            throw new NotFoundHttpException();
-        }
-        $ids = $request->post('ids');
-        $adminComment = $request->post('admin-comment');
-        $validator = new NumberValidator();
-        $validatorRequired = new RequiredValidator();
-        $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
-        if (!$validatorRequired->validate([$ids, $adminComment])
-          || !$validator->validate($ids)
-          || !$validatorString->validate($adminComment)
-        ) {
-            return json_encode(['error'=>true, 'message' => 'Неправильные данные']);
-        }
-        if ($this->update($ids, ['status' => 1, 'admin_comment' => $adminComment])) {
-            return json_encode(['error' => false]);
-        } else {
-            return json_encode(['error'=>true, 'message' => 'Платёж не найден']);
-        }
+    $ids = $request->post('ids');
+    $adminComment = $request->post('admin-comment');
+    $validator = new NumberValidator();
+    $validatorRequired = new RequiredValidator();
+    $validatorString = new StringValidator(['min' => 5, 'max' => 256]);
+    if (!$validatorRequired->validate([$ids, $adminComment])
+      || !$validator->validate($ids)
+      || !$validatorString->validate($adminComment)
+    ) {
+      return json_encode(['error' => true, 'message' => 'Неправильные данные']);
     }
-
-    /**
-     * @param $id
-     * @param $data
-     * @return array|bool
-     */
-    private function update($id, $data)
-    {
-        $payments = Payments::find()
-          ->select(['cwp.uid'])
-          ->from(Payments::tableName() . ' cwp')
-          ->joinWith(['store'])
-          ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
-          ->where([
-            'b2buc.user_id' => Yii::$app->user->identity->id,
-            'cwp.status' => 0,
-            'cwp.uid' => $id,
-          ])->column();
-        if ($payments) {
-            Payments::updateAll($data, ['uid' => $payments]);
-            return $payments;
-        } else {
-            return false;
-        }
+    if ($this->update($ids, ['status' => 1, 'admin_comment' => $adminComment])) {
+      return json_encode(['error' => false]);
+    } else {
+      return json_encode(['error' => true, 'message' => 'Платёж не найден']);
     }
+  }
+
+  /**
+   * @param $id
+   * @param $data
+   * @return array|bool
+   */
+  private function update($id, $data)
+  {
+    $payments = Payments::find()
+      ->select(['cwp.uid'])
+      ->from(Payments::tableName() . ' cwp')
+      ->joinWith(['store'])
+      ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+      ->where([
+        'b2buc.user_id' => Yii::$app->user->identity->id,
+        'cwp.status' => 0,
+        'cwp.uid' => $id,
+      ])->column();
+    if ($payments) {
+      Payments::updateAll($data, ['uid' => $payments]);
+      return $payments;
+    } else {
+      return false;
+    }
+  }
 
 
 }
