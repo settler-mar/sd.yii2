@@ -124,7 +124,7 @@ class DefaultController extends SdController
         exit;
         //return $this->redirect('/coupons', 301);
       }
-      \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
+      \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId.($store->cpaLink->cpa_id == 2 ? '/online' : '');
       $contentData["counts"] = Coupons::counts($storeId);
       $contentData['current_store'] = $store;
       $cacheName .= '_' . $storeId;

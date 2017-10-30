@@ -53,6 +53,10 @@ class DefaultController extends SdController
       if ($store) {
         //есть магазин
         //$this->Params($request->get(), ['page']);
+        if ($store->cpaLink->cpa_id == 2) {
+          //online-offline шоп, для поиска мететегов добавляем в url-mask
+          \Yii::$app->params['url_mask'] = $request->pathInfo . '/online';
+        }
         $this->checkParams('store');
         echo $this->actionStore($store);
         exit;

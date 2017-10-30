@@ -29,7 +29,9 @@ return [
         'name' => 'reCaptcha',
         'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
         'siteKey' => '6LcklDUUAAAAAHK_xOVtNRLsIEt5ARhirsS_M_pc',
+        //'siteKey' => '6LcHwBsTAAAAAPdqjvMO86g1llZ32DJtzBtcFcXa',
         'secret' => '6LcklDUUAAAAAKJuCpga3iCnTeb7ypwMyVrH054_',
+        //'secret' => '6LcHwBsTAAAAAGppzvtTXu1CBu1dZo3t_lqOXHyy',
       ],
         'user' => [
             'identityClass' => 'b2b\modules\users\models\B2bUsers',

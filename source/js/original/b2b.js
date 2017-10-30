@@ -199,20 +199,38 @@ $(document).on('submit','form.revoke_payents_form', function(e){
 $('a[href="#register-by-partner"]').on('click',function(e){
     e.preventDefault();
     var recaptchaKey = $('#recaptcha-key').val();
+    var title = $(this).data('title');
+    var offline = $(this).data('offline');
+    title = typeof title != "undefined" ? title : 'Подключить интернет магазин';
+    offline = typeof offline != "undefined" ? offline : 0;
     var data={
         buttonYes:false,
         notyfy_class:"notify_white notify_not_big",
-        title: 'Заявка на регистацию',
+        title: title,
         question:
         '<form method="post" class="payments-forms register_form">'+
         '<div class="form-group">'+
-        '<label>Тема</label>'+
-        '<input type="text" class="form-control" id="register-subject" name="RegisterForm[subject]" placeholder="Тема сообщения" >'+
+        '<input type="hidden" class="form-control" id="register-subject" name="RegisterForm[subject]" value="'+title+'" >'+
+        '<input type="hidden" class="form-control" id="register-offline" name="RegisterForm[offline]" value="'+offline+'" >'+
+            '<p>Оставьте предварительную заявку через эту форму и мы обязательно с вами свяжемся</p>'+
+        '<div class="form-group">'+
+        '<label>Ваше имя</label>'+
+        '<input type="text" class="form-control" id="register-name" name="RegisterForm[name]" placeholder="Ваше имя" >'+
+        '<p class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<label>Email</label>'+
+        '<input type="email" class="form-control" id="register-email" name="RegisterForm[email]" placeholder="Ваш email" >'+
+        '<p class="help-block help-block-error"></p>'+
+        '</div>' +
+        '<div class="form-group">'+
+        '<label>Телефон</label>'+
+        '<input type="text" class="form-control" id="register-phone" name="RegisterForm[phone]" placeholder="Ваш телефон" >'+
         '<p class="help-block help-block-error"></p>'+
         '</div>' +
         '<div class="form-group">'+
         '<label>Сообщение</label>'+
-        '<textarea class="form-control" id="register-text" name="RegisterForm[text]" placeholder="Сообщение"></textarea>'+
+        '<textarea class="form-control" rows="6" id="register-text" name="RegisterForm[text]" placeholder="Сообщение"></textarea>'+
         '<p class="help-block help-block-error"></p>'+
         '</div>' +
         '<div class="form-group">'+
@@ -234,16 +252,28 @@ $(document).on('submit','form.register_form', function(e){
     e.preventDefault();
     $(this).find('p.help-block').text('');
     var subject = $('#register-subject').val();
+    var offline = $('#register-offline').val();
     var text = $('#register-text').val();
+    var name = $('#register-name').val();
+    var phone = $('#register-phone').val();
+    var email = $('#register-email').val();
     var recaptcha = $('#g-recaptcha-response').val();
 
     var error = false;
-    if (subject == '') {
-        $('#register-subject').siblings('p.help-block').text('Тема сообщения обязательна.');
-        error = true;
-    }
     if (text == '') {
         $('#register-text').siblings('p.help-block').text('Текст сообщения обязателен.');
+        error = true;
+    }
+    if (email == '') {
+        $('#register-email').siblings('p.help-block').text('Email обязателен.');
+        error = true;
+    }
+    if (name == '') {
+        $('#register-name').siblings('p.help-block').text('Имя обязательно.');
+        error = true;
+    }
+    if (phone != '' && !phone.match(/^\d*$/)) {
+        $('#register-phone').siblings('p.help-block').text('Телефон должен быть числом.');
         error = true;
     }
     if (!recaptcha) {
@@ -255,7 +285,11 @@ $(document).on('submit','form.register_form', function(e){
     }
     var data = {
         'RegisterForm[subject]' : subject,
+        'RegisterForm[offline]' : offline,
         'RegisterForm[text]' : text,
+        'RegisterForm[phone]' : phone,
+        'RegisterForm[email]' : email,
+        'RegisterForm[name]' : name,
         'RegisterForm[reCaptcha]' : recaptcha
         };
     $.post('', data, function(response){
