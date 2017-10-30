@@ -9,6 +9,9 @@ function initEditor(){
     selector:'.visual_editor',
     height: 500,
     theme: 'modern',
+    relative_urls:false,
+    remove_script_host : false,
+    document_base_url : "https://secretdiscounter.ru/",
     plugins: [
       'advlist autolink lists link image charmap hr anchor pagebreak accordion clear_br',
       'searchreplace wordcount visualblocks visualchars code fullscreen',

@@ -2,6 +2,7 @@
 
 namespace b2b\modules\users\controllers;
 
+use b2b\modules\stores_points\models\B2bStoresPointsLoginForm;
 use Yii;
 use yii\web\Controller;
 use b2b\modules\users\models\LoginForm;
@@ -60,12 +61,15 @@ class DefaultController extends Controller
      */
     public function actionLogin()
     {
-      if (!Yii::$app->user->isGuest) {
-        return Yii::$app->getResponse()->redirect('/home');
-      }
       $model = new LoginForm();
 
       if (Yii::$app->request->get('key')) {
+
+        //на всякий случай разлогиниваем B2B пользователя и B2B торговую точку
+        $cookies = Yii::$app->response->cookies;
+        $cookies->remove(B2bStoresPointsLoginForm::$identity_cookie);
+        Yii::$app->user->logout();
+
         if($model->loginByKey(Yii::$app->request->get('key'))){
           return Yii::$app->getResponse()->redirect('/home');
         }else{
@@ -73,8 +77,13 @@ class DefaultController extends Controller
         }
       }
 
+      if (!Yii::$app->user->isGuest) {
+        return Yii::$app->getResponse()->redirect('/home');
+      }
+
+
       if ($model->load(Yii::$app->request->post()) && $model->login()) {
-        return $this->goBack();
+        return Yii::$app->getResponse()->redirect('/home');
       }
       return $this->render('login', [
         'model' => $model,

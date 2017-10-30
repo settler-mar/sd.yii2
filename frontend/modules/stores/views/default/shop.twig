@@ -218,7 +218,7 @@
 
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
-    <section class="store-intro shops">
+    <section class="store-intro shops" style="padding-top: 0px; padding-bottom: 50px;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -374,7 +374,11 @@
 {% endif %}
 
 {% if current_store.is_offline==0 %}
-    {% include 'parts/instruction_online.twig' %}
+    {% if current_store.cpaLink.cpa_id==1 %}
+        {% include 'parts/instruction_online.twig' %}
+    {% else %}
+        {% include 'parts/instruction_online_offline.twig' %}
+    {% endif %}
 {% else %}
     {% include 'parts/instruction_offline.twig' %}
 {% endif %}
