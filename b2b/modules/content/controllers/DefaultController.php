@@ -63,7 +63,8 @@ class DefaultController extends Controller
       if ($request->isAjax) {
         $model = new RegisterForm;
         if ($model->load($request->post())) {
-          if ($this->sendRegistration($model)) {
+          $email = $model->offline ? Yii::$app->params['registerEmailOffline'] : Yii::$app->params['registerEmail'];
+          if ($this->sendRegistration($email, $model)) {
             Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
             return json_encode(['error'=>false]);
           } else {
@@ -86,14 +87,20 @@ class DefaultController extends Controller
     return $this->actionIndex();
   }
 
-  protected function sendRegistration($model)
+  protected function sendRegistration($mailTo, $model)
   {
     return Yii::$app->mailer->compose(
         ['html' => 'b2b-register-form-html', 'text' => 'b2b-register-form-text'],
-        ['message' => $model->text, 'title' => $model->subject]
+        [
+          'message' => $model->text,
+          'title' => $model->subject,
+          'name' => $model->name,
+          'email' => $model->email,
+          'phone' => $model->phone,
+        ]
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName'] . ' robot'])
-      ->setTo(Yii::$app->params['registerEmail'])
+      ->setTo($mailTo)
       ->setSubject($model->subject)
       ->send();
   }

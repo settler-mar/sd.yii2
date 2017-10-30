@@ -9,7 +9,7 @@ use yii\base\Model;
 class RegisterForm extends Model
 {
 
-  public $subject, $text;
+  public $subject, $text, $email, $name, $phone, $offline;
   public $reCaptcha;
   /**
    * @inheritdoc
@@ -17,9 +17,12 @@ class RegisterForm extends Model
   public function rules()
   {
     return [
-      [['subject', 'text', 'reCaptcha'], 'required'],
-      [['subject'], 'string', 'max' => 256],
+      [['subject', 'text', 'reCaptcha', 'name', 'email'], 'required'],
+      [['subject', 'name'], 'string', 'max' => 256],
       [['text'], 'string'],
+      [['email'], 'email'],
+      [['phone'], 'number'],
+      [['offline'], 'safe'],
       [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
     ];
   }
