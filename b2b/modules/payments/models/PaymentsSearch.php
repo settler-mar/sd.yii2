@@ -62,9 +62,9 @@ class PaymentsSearch extends Payments
             ->from(Payments::tableName()  . ' cwp')
             ->joinWith(['store'])
             //->joinWith(['user'])
-            ->joinWith(['storesPoint'])
-            ->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
-            ->where(['b2buc.user_id' => Yii::$app->user->identity->id]);
+            ->joinWith(['storesPoint']);
+            //->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
+            //->where(['b2buc.user_id' => Yii::$app->user->identity->id]);
          // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -138,8 +138,6 @@ class PaymentsSearch extends Payments
         $query->andFilterWhere(['like', 'order_id', $this->order_id])
             ->andFilterWhere(['like', 'admin_comment', $this->admin_comment]);
 
-        $query->andFilterWhere([Stores::tableName() . '.is_offline' =>1]);
-
         if ($this->storeName) {
             $query->andFilterWhere([
               'or',[
@@ -169,6 +167,9 @@ class PaymentsSearch extends Payments
 //        }
         if (!empty($params['storeId'])) {
             $query->andFilterWhere([Stores::tableName().'.uid' => $params['storeId']]);
+        }
+        if (!empty($params['users_shops'])) {
+            $query->andFilterWhere([Stores::tableName().'.uid' => $params['users_shops']]);
         }
         if (!empty($params['store_point'])) {
             $query->andFilterWhere(['store_point_id' =>$params['store_point']]);

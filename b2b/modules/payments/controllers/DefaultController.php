@@ -53,17 +53,8 @@ class DefaultController extends Controller
    */
   public function actionIndex()
   {
-    $searchModel = new PaymentsSearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
     $user_id = Yii::$app->user->id;
 
-    $search_range = Yii::$app->request->get('date');
-    if (empty($search_range) || strpos($search_range, '-') === false) {
-      $search_range = date('01-01-Y') . ' - ' . date('d-m-Y');
-    }
-
-    list($start_date, $end_date) = explode(' - ', $search_range);
     $storesPoints = B2bStoresPoints::find()
       ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
         'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
@@ -79,11 +70,29 @@ class DefaultController extends Controller
       ->all();
 
     $stores = [];
+    $store_ids = [];
 
     foreach ($storesPoints as $point) {
       $stores[$point['store_id']]['name'] = $point['store_name'];
       $stores[$point['store_id']]['points'][] = $point;
+      if(!in_array($point['store_id'],$store_ids)){
+        $store_ids[]=$point['store_id'];
+      }
     }
+
+
+    $params=Yii::$app->request->queryParams;
+    $params['users_shops']=$store_ids;
+
+    $searchModel = new PaymentsSearch();
+    $dataProvider = $searchModel->search($params);
+
+    $search_range = Yii::$app->request->get('date');
+    if (empty($search_range) || strpos($search_range, '-') === false) {
+      $search_range = date('01-01-Y') . ' - ' . date('d-m-Y');
+    }
+    list($start_date, $end_date) = explode(' - ', $search_range);
+
     $tableData = [
       'store_name' => function ($model) {
         return $model->store->name;
