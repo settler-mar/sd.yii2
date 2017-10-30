@@ -24,6 +24,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
+            [['email'], 'trim'],
             [['email', 'password'], 'required'],
             [['email'], 'email'],
             [['password'], 'string', 'max' => 60],
