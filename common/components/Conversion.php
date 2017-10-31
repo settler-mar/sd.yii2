@@ -37,33 +37,15 @@ class Conversion extends Component
    */
   public function init()
   {
-    $cources = Yii::$app->cache->getOrSet('conversion_cources', function () {
-      try {
-        $xml = simplexml_load_file('http://www.cbr.ru/scripts/XML_daily.asp');
-        $data2[] = [
-          'code' => 'RUB',
-          'value' => strval(1),
-        ];
-        $data = [];
-        if (isset($xml->Valute)) {
-          foreach ($xml->Valute as $valute) {
-            $data[strval($valute->CharCode)] =
-              (floatval(str_replace(",", ".", strval($valute->Value))) / intval($valute->Nominal));
-            if (in_array(strval($valute->CharCode), $this->options)) {
-              $data2[] = [
-                'code' => strval($valute->CharCode),
-                'value' => (floatval(str_replace(",", ".", strval($valute->Value)))
-                  / intval($valute->Nominal)),
-              ];
-            }
+    $path=Yii::$app->basePath.'/../common/config';
+    $path=realpath($path).'/curs.php';
 
-          }
-        }
-        return ['data' => $data, 'dataOptions' => $data2];
-      } catch (\Exception $e) {
-        return ['data' => [], 'dataOptions' => []];
-      }
-    }, $this->cache_duration);
+    if(!is_readable($path)){
+      $cources= ['data' => [], 'dataOptions' => []];
+    }else{
+      $cources = require ($path);
+    }
+
     $this->data = $cources['data'];
     $this->dataOptions = $cources['dataOptions'];
   }

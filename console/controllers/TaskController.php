@@ -50,17 +50,17 @@ class TaskController extends Controller
 
 
     //Отключение премиум аккаунта
-    $tasks= Task::find()
-      ->andWhere(['task'=>2])
-      ->andWhere(['<','add_time',time()])
+    $tasks = Task::find()
+      ->andWhere(['task' => 2])
+      ->andWhere(['<', 'add_time', time()])
       ->all();
-    foreach ($tasks as $task){
-      $user=Users::find()
-        ->where(['uid'=>abs($task->param)])
+    foreach ($tasks as $task) {
+      $user = Users::find()
+        ->where(['uid' => abs($task->param)])
         ->one();
 
       //еси это был бонус за регистрацию то долаем нотификацию
-      if($task->param<0){
+      if ($task->param < 0) {
         $notify = new Notifications();
         $notify->user_id = $user->uid;
         $notify->type_id = 2;
@@ -71,9 +71,9 @@ class TaskController extends Controller
         $notify->save();
       }
 
-      $user->new_loyalty_status_end=0;
-      $user->loyalty_status=$user->old_loyalty_status;
-      $user->old_loyalty_status=0;
+      $user->new_loyalty_status_end = 0;
+      $user->loyalty_status = $user->old_loyalty_status;
+      $user->old_loyalty_status = 0;
 
       $user->testLoyality();
       $user->save();
@@ -95,15 +95,15 @@ class TaskController extends Controller
    */
   public function actionUserRefBalance(array $users)
   {
-    $users=Users::find()
+    $users = Users::find()
       ->select('uid')
-      ->where(['referrer_id'=>$users])
+      ->where(['referrer_id' => $users])
       ->asArray()
       ->all();
 
-    $ref_id=[];
-    foreach($users as $user){
-      $ref_id[]=  $user['uid'];
+    $ref_id = [];
+    foreach ($users as $user) {
+      $ref_id[] = $user['uid'];
     };
     \Yii::$app->balanceCalc->todo($ref_id);
   }
@@ -113,18 +113,19 @@ class TaskController extends Controller
    */
   public function actionUserRefCount(array $users)
   {
-    if($users[0]==0){
-      $users=false;
+    if ($users[0] == 0) {
+      $users = false;
     };
-    \Yii::$app->balanceCalc->todo($users,'ref');
+    \Yii::$app->balanceCalc->todo($users, 'ref');
   }
 
   /**
    * Сгенерироывать новый список пользователей для рекламных банеров
    */
-  public function actionGenerateUserList(){
-    $users=Users::find()
-      ->select(['name','photo'])
+  public function actionGenerateUserList()
+  {
+    $users = Users::find()
+      ->select(['name', 'photo'])
       ->andWhere('registration_source!=\'\'')
       ->andWhere('registration_source!=\'default\'')
       ->andWhere('name!=\'\'')
@@ -133,23 +134,23 @@ class TaskController extends Controller
       ->limit(300)
       ->all();
 
-    $i=0;
-    foreach ($users as &$user){
-      $user['name']=explode(' ',$user['name']);
-      if(count($user['name'])>1){
-        $user['name']=$user['name'][0].' '.mb_substr($user['name'][1],0,1).'.';
-      }else{
-        $user['name']=$user['name'][0];
+    $i = 0;
+    foreach ($users as &$user) {
+      $user['name'] = explode(' ', $user['name']);
+      if (count($user['name']) > 1) {
+        $user['name'] = $user['name'][0] . ' ' . mb_substr($user['name'][1], 0, 1) . '.';
+      } else {
+        $user['name'] = $user['name'][0];
       }
 
       $i++;
-      if($i==4){
-        $i=0;
-        $user['photo']='/images/no_ava.png';
+      if ($i == 4) {
+        $i = 0;
+        $user['photo'] = '/images/no_ava.png';
       }
     }
 
-    $dir=(realpath(__DIR__.'/../../frontend/web/js'));
+    $dir = (realpath(__DIR__ . '/../../frontend/web/js'));
     file_put_contents($dir . '/user_list.json', json_encode($users));
 
   }
@@ -157,17 +158,17 @@ class TaskController extends Controller
   /**
    * Перемешать отзывы пользователей
    */
-  public function actionResortReviews(){
+  public function actionResortReviews()
+  {
     //1) проставляем новые даты отзывов и рейтинг
-    $start = mktime(0,0,0,10,9,2017);
+    $start = mktime(0, 0, 0, 10, 9, 2017);
     $end = time();
-    $range=$end-$start;
-    $sql= 'UPDATE `cw_users_reviews` SET 
-        `added` = FROM_UNIXTIME(RAND() * '.$range.'+'.$start.'),
+    $range = $end - $start;
+    $sql = 'UPDATE `cw_users_reviews` SET 
+        `added` = FROM_UNIXTIME(RAND() * ' . $range . '+' . $start . '),
         `rating` = 4.1+RAND()
         WHERE store_id>0'
-        .'AND added>'.date('Y-m-d H:i:s',$start)
-    ;
+      . 'AND added>' . date('Y-m-d H:i:s', $start);
     \Yii::$app->db->createCommand($sql)->execute();
 
     //2) делаем сортирову по дате и перепрописываем uid
@@ -180,7 +181,7 @@ class TaskController extends Controller
   public function actionMakeRating()
   {
     $interval = Yii::$app->params['rating_calculate_interval'];
-    $dateStart = date('Y-m-d H:i:s', strtotime("-".($interval ? $interval : 3)." months", time()));
+    $dateStart = date('Y-m-d H:i:s', strtotime("-" . ($interval ? $interval : 3) . " months", time()));
     $reviewsCount = Reviews::find()
       ->where([
         '>', 'added', $dateStart])
@@ -188,7 +189,7 @@ class TaskController extends Controller
       ->count();
     $paymentsCount = Payments::find()
       ->where(['>', 'action_date', $dateStart])
-      ->andWhere(['status' => [0,2]])
+      ->andWhere(['status' => [0, 2]])
       ->count();
 
     $sql = 'UPDATE `cw_stores` `cws`
@@ -213,11 +214,11 @@ class TaskController extends Controller
          `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
          SET 
          rating = ifnull(`store_rating`.`rating_geometr`, 0)
-         '.
-         ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '').
-         ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /'. $paymentsCount . ')' : '')
-         .'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)' ;
-      //алгоритм
+         ' .
+      ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '') .
+      ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /' . $paymentsCount . ')' : '')
+      . 'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)';
+    //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
     Cache::deleteName('top_12_stores');
@@ -226,5 +227,44 @@ class TaskController extends Controller
     Cache::clearName('additional_stores');
     Cache::clearName('account_favorites');
     Cache::clearName('stores_by_column');
+  }
+
+
+  /*
+   * Обновление курса валют их ЦБ
+   */
+  function actionUpdateCurs()
+  {
+    try {
+      $xml = simplexml_load_file('http://www.cbr.ru/scripts/XML_daily.asp');
+      $data2 = [];
+      $data = ['RUB'=>1.0];
+      $valuta_list = Yii::$app->params['valuta_list'];
+      if (isset($xml->Valute)) {
+        foreach ($xml->Valute as $valute) {
+          $data[strval($valute->CharCode)] =
+            (floatval(str_replace(",", ".", strval($valute->Value))) / intval($valute->Nominal));
+        }
+        $k=$data[Yii::$app->params['valuta']];
+        foreach ($data as $key => &$valute) {
+          $valute=$valute/$k;
+          if(in_array($key,$valuta_list)) {
+            $data2[] = [
+              'code' => $key,
+              'value' => $valute,
+            ];
+          }else{
+            unset($data[$key]);
+          };
+        }
+      }
+    } catch (\Exception $e) {
+      ddd('Ошибка обработки');
+    }
+
+    $out=['data' => $data, 'dataOptions' => $data2];
+    $path=Yii::$app->basePath.'/../common/config';
+    $path=realpath($path).'/curs.php';
+    file_put_contents($path, '<?php return ' . var_export($out, true) . ';');
   }
 }

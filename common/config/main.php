@@ -121,7 +121,7 @@ $config = [
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[
-    'dictionary'=>$dict
+    'dictionary'=>$dict,
   ]
 ];
 
