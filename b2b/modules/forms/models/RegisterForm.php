@@ -1,6 +1,6 @@
 <?php
 
-namespace b2b\models;
+namespace b2b\modules\forms\models;
 
 use Yii;
 use yii\base\Model;
@@ -33,6 +33,11 @@ class RegisterForm extends Model
   public function attributeLabels()
   {
     return [
+      'name'=>"Ваше имя",
+      'email'=>"Email",
+      'phone'=>"Телефон",
+      'text'=>"Сообщение",
+      'reCaptcha'=>"Я не робот",
     ];
   }
 
