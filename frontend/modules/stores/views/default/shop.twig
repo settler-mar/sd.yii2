@@ -237,7 +237,7 @@
 {% endif %}
 
 
-{% if current_store.is_offline==1 or current_store.cpaLink.cpa_id==2 %}
+{% if current_store.is_offline==1 %}
     {% if store_points and store_points.points|length > 0 %}
         {% include 'parts/store_points.twig' %}
     {% endif %}
