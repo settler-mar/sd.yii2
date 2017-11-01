@@ -13,6 +13,38 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 style="padding: 0">{{ html.encode(this.title) }}</h1>
+                    <div class="sum_information">
+                        <div class="line">
+                            <div class="name">Всего магазинов</div>
+                            <div class="value">
+                                {{ stat.all }}
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="name">Активных</div>
+                            <div class="value">
+                                {{ stat.active }}
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="name">Приостановленных</div>
+                            <div class="value">
+                                {{ stat.waiting }}
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="name">Выключенных</div>
+                            <div class="value">
+                                {{ stat.blocked }}
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="name">Благотворительных</div>
+                            <div class="value">
+                                {{ stat.charity }}
+                            </div>
+                        </div>
+                    </div>
                     {# include('_search.twig', {'model': searchModel}) #}
                     <p>
                         <a href="/admin/stores/create" class="btn btn-success">{{ 'Create Stores' }}</a>

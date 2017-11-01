@@ -58,10 +58,18 @@ class AdminController extends Controller
 
     $searchModel = new StoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $stores = Stores::find();
+    $stat['all'] = $stores->count();
+    $stat['active'] = $stores->where(['is_active' => 1])->count();
+    $stat['waiting'] = $stores->where(['is_active' => 0])->count();
+    $stat['blocked'] = $stores->where(['is_active' => -1])->count();
+    $stat['charity'] = $stores->where(["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
+      " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0])->count();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'stat' => $stat,
       'table_value' => [
         'is_offline' => function ($model, $key, $index, $column) {
           return $model->is_offline == 1 ? 'Оффлайн' : 'Онлайн';
