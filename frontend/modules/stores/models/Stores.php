@@ -48,7 +48,7 @@ class Stores extends \yii\db\ActiveRecord
   /**
    * @var string
    */
-  public static $defaultSort = 'name';
+  public static $defaultSort = 'rating';
   /**
    * Possible sorting options with titles and default value
    * @var array
