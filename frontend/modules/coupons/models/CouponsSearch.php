@@ -65,6 +65,7 @@ class CouponsSearch extends Coupons
                    'desc' => [Stores::tableName(). '.name' => SORT_DESC],
                 ],
                 'description',
+                'visit',
                 'date_start',
                 'date_end',
             ],
