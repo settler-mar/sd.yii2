@@ -159,15 +159,16 @@
                 <div class="col-md-12">
                     <h3 class="text-center">Информация о {{current_store.name}}</h3>
                 </div>
-                <div class="col-md-12 short-description__description less">
+                {#<div class="col-md-12 short-description__description less">#}
+                <div class="col-md-12 short-description__description">
                     <div class="description">
                         {{ current_store.short_description|raw }}
                     </div>
                 </div>
-                <div >
-                    <div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
-                    <div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
-                </div>
+                {#<div >#}
+                    {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
+                    {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
+                {#</div>#}
             {% else %}
                 <div class="col-md-12 short-description__description">
                     <div class="description">
