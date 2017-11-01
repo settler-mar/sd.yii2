@@ -163,3 +163,13 @@ $('body').on('change', '#store_point_city', function(e) {
 $(".select2-select").select2({
     minimumResultsForSearch: 15
 });
+
+$('#store-recommendation-link-checkbox').click(function(){
+  if (!this.checked) {
+    notification.notifi({
+      'title': 'Предупреждение',
+      'type':'err',
+      'message': 'Рекомендуем не снимать галочку, что вы ознакомлены и согласны с Правилами покупок с кэшбэком'
+    });
+  }
+});
