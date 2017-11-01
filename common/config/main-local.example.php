@@ -30,4 +30,7 @@ return [
       'defaultDuration' => 86400,
     ],
   ],
+  'params'=>[
+    'valuta' => "USD"
+  ]
 ];

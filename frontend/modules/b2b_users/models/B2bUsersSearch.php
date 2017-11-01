@@ -50,7 +50,7 @@ class B2bUsersSearch extends B2bUsers
       'query' => $query,
       'sort' => [
         'defaultOrder' => [
-          'uid' => SORT_DESC,
+          'id' => SORT_DESC,
         ]
       ],
       'pagination' => [

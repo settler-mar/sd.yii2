@@ -6,8 +6,8 @@ use frontend\modules\b2b_content\models\B2bContent;
 use frontend\modules\b2b_users\models\B2bUsers;
 use yii\web\Controller;
 use Yii;
-use b2b\models\Regform;
-use b2b\models\RegisterForm;
+use b2b\modules\forms\models\Regform;
+use b2b\modules\forms\models\RegisterForm;
 
 class DefaultController extends Controller
 {
@@ -23,58 +23,6 @@ class DefaultController extends Controller
       'name' => 'keywords',
       'content' => $page->keywords,
     ]);
-
-    if($page->page=='registration'){
-      $page=$page->toArray();
-      $page['before_include']='reg_form';
-      $model= new Regform;
-
-      $request = Yii::$app->request;
-      if($model->load($request->post())) {
-        $user = new B2bUsers;
-
-        $user->password=$model->password;
-        $user->fio = $model->fio;
-        $user->position = $model->position;
-        $user->email = $model->email;
-        $user->phone = $model->phone;
-        $user->anketa = [
-          'firm'=>$model->firm,
-          'url'=>$model->url,
-          'category'=>$model->category,
-          'region'=>$model->region,
-          'type'=>$model->type,
-          'old'=>$model->old,
-          'points'=>$model->points,
-        ];
-        if($user->save()){
-          Yii::$app->session->addFlash('info', 'Ваша заяка отправлена. В ближайшее время с Вами свяжется администратор.');
-          return $this->redirect('/registration_finish');
-        }
-      }
-
-      $page['model']=$model;
-      $page['reCaptcha']= \himiklab\yii2\recaptcha\ReCaptcha::className();
-    };
-    if (isset($page->page) && in_array($page->page, ['affiliate-offline', 'online'])) {
-      $page=$page->toArray();
-      $request = Yii::$app->request;
-
-      if ($request->isAjax) {
-        $model = new RegisterForm;
-        if ($model->load($request->post())) {
-          $email = $model->offline ? Yii::$app->params['registerEmailOffline'] : Yii::$app->params['registerEmail'];
-          if ($this->sendRegistration($email, $model)) {
-            Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
-            return json_encode(['error'=>false]);
-          } else {
-            return json_encode(['error'=>true]);
-          }
-        } else {
-          return json_encode(['error'=>true]);
-        }
-      }
-    }
 
     return $this->render('index', $page);
   }

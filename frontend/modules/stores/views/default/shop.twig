@@ -72,7 +72,7 @@
                         {% endif %}
                         <a href="#howgetcashback" class="howgetcashback">Как получить кэшбэк?</a>
                     {% else %}
-                        <a href="#howgetcashback" class="btn btn-fill btn-large">Как получить кэшбэк?</a>
+                        <a href="#howgetcashback" id="gotostore" class="btn btn-fill btn-large">Как получить кэшбэк?</a>
                     {% endif %}
                 </div>
 
@@ -239,7 +239,7 @@
 {% endif %}
 
 
-{% if current_store.is_offline==1 or current_store.cpaLink.cpa_id==2 %}
+{% if current_store.is_offline==1 %}
     {% if store_points and store_points.points|length > 0 %}
         {% include 'parts/store_points.twig' %}
     {% endif %}
