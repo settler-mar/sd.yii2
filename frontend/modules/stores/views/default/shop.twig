@@ -192,6 +192,8 @@
             </div>
         </div>
     </section>
+    {#блок с похожими шопами для временно неактивных шопов сюда#}
+    {% include 'parts/additional_stores.twig' %}
 {% endif %}
 
 {% if _is_empty(current_store.displayed_cashback) %}
@@ -329,28 +331,32 @@
     </div>
 </section>
 
-<section class="store-intro shops">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                {% if additional_stores_category %}
-                    <h3>Популярные магазины из раздела
-                        <a href="/stores/{{additional_stores_category.route}}">
-                            {{ additional_stores_category.name }} с кэшбэком
-                        </a>
-                    </h3>
-                {% else %}
-                    <h3>Популярные магазины из <a href="/stores">нашего каталога</a></h3>
-                {% endif %}
-            </div>
-            {% for store in additional_stores %}
-            <div class="col-sm-3 col-md-2">
-            {% include 'parts/shop.twig' %}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
+{% if current_store.is_active != 0 %}
+    {% include 'parts/additional_stores.twig' %}
+{% endif %}
+
+{#<section class="store-intro shops">#}
+    {#<div class="container">#}
+        {#<div class="row">#}
+            {#<div class="col-md-12">#}
+                {#{% if additional_stores_category %}#}
+                    {#<h3>Популярные магазины из раздела#}
+                        {#<a href="/stores/{{additional_stores_category.route}}">#}
+                            {#{{ additional_stores_category.name }} с кэшбэком#}
+                        {#</a>#}
+                    {#</h3>#}
+                {#{% else %}#}
+                    {#<h3>Популярные магазины из <a href="/stores">нашего каталога</a></h3>#}
+                {#{% endif %}#}
+            {#</div>#}
+            {#{% for store in additional_stores %}#}
+            {#<div class="col-sm-3 col-md-2">#}
+            {#{% include 'parts/shop.twig' %}#}
+            {#</div>#}
+            {#{% endfor %}#}
+        {#</div>#}
+    {#</div>#}
+{#</section>#}
 
 {% if current_store.is_offline==0  %}
     {% include 'parts/tracker.twig' %}

@@ -1,0 +1,22 @@
+<section class="store-intro shops">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% if additional_stores_category %}
+                    <h3>Популярные магазины из раздела
+                        <a href="/stores/{{additional_stores_category.route}}">
+                            {{ additional_stores_category.name }} с кэшбэком
+                        </a>
+                    </h3>
+                {% else %}
+                    <h3>Популярные магазины из <a href="/stores">нашего каталога</a></h3>
+                {% endif %}
+            </div>
+            {% for store in additional_stores %}
+                <div class="col-sm-3 col-md-2">
+                    {% include 'parts/shop.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
