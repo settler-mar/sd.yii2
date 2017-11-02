@@ -96,8 +96,11 @@ $config= [
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
         ],
-
       ],
+      'normalizer' => [
+        'class' => 'yii\web\UrlNormalizer',
+      ],
+
     ],
   ],
   'modules' => [

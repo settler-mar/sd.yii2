@@ -39,7 +39,7 @@ $images: "/images";
 
 .triangle-background {
   background-size: cover;
-  padding: 65px 0 10px;
+  padding: 75px 0 0;
   background: url(unquote($images+"/templates/polygonal-bg.jpg")) repeat-x center -200px;
 }
 
