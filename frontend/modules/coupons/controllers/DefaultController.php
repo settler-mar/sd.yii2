@@ -217,7 +217,7 @@ class DefaultController extends SdController
         throw new \yii\web\NotFoundHttpException;
       }
     }
-    header("Location: /coupons".$parent->route,TRUE,301);
+    header("Location: /coupons/".$parent->route, TRUE, 301);
     //$this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
   }
