@@ -1,22 +1,27 @@
-{% if friend_user or user_id %}
-    <h3>
-        {% if friend_user %}
-            Штрихкод вашего друга
-            {% set user_code_img = friend_user.barcodeImg  %}
-            {% set user_id = friend_user.uid  %}
-            {% set print = "print();return false;" %}
-        {% else %}
+
+<h3>
+    {% if friend_user %}
+        Штрихкод вашего друга
+        {% set user_code_img = friend_user.barcodeImg  %}
+        {% set user_id = friend_user.uid  %}
+        {% set print = "print();return false;" %}
+    {% else %}
+        {% if user_id %}
             Ваш личный штрихкод
             {% set print = "window.open(this.href).print();return false;" %}
+        {% else %}
+            Пример штрихкода
+            {% set user_code_img = "/images/barcode_sample.png"%}
         {% endif %}
-        ↓
-    </h3>
+    {% endif %}
+    ↓
+</h3>
 
-    <div class="affiliate row">
-        <div class="col-md-4 ways-invitation">
-            <img src="{{ user_code_img }}" alt="" width="230">
-        </div>
-
+<div class="affiliate row">
+    <div class="col-md-4 ways-invitation">
+        <img src="{{ user_code_img }}" alt="" width="230">
+    </div>
+    {% if user_id %}
         <div class="col-md-4 ways-invitation no_print">
             <div class="col-md-12">
                 <div class="intro-icon">
@@ -26,35 +31,37 @@
                     <p class="intro-content_header"><a href="{{ user_code_img }}" download>Сохранить в телефон или ПК</a></p>
                 </div>
             </div>
-            <div class="col-md-12" style="margin-top: 35px">
-                <div class="intro-icon">
-                    <span data-icon="" class="icon"></span>
-                </div>
-                <div class="intro-content">
-                    <p  class="intro-content_header">Поделиться с родными или друзьями</p>
+            {% if friend_user or user_id %}
+                <div class="col-md-12" style="margin-top: 35px">
+                    <div class="intro-icon">
+                        <span data-icon="" class="icon"></span>
+                    </div>
+                    <div class="intro-content">
+                        <p  class="intro-content_header">Поделиться с родными или друзьями</p>
 
-                    <div
-                            class="share42init accauntSoc accauntSoc_32"
-                            data-socials="1,0,2,4,10,11,12"
-                            data-icon-type="css"
-                            data-title="{{ _constant('affiliate_offline_title')}}"
-                            data-description="{{ _constant('affiliate_offline_description')}}"
-                            data-image="https://secretdiscounter.ru{{ user_code_img }}"
-                            data-url="https://secretdiscounter.ru/offline?r={{user_id}}"
-                    ></div>
-                    {% if not friend_user %}
-                        <script type="text/javascript" src="/js/share42.js"></script>
-                    {% endif %}
+                        <div
+                                class="share42init accauntSoc accauntSoc_32"
+                                data-socials="1,0,2,4,10,11,12"
+                                data-icon-type="css"
+                                data-title="{{ _constant('affiliate_offline_title')}}"
+                                data-description="{{ _constant('affiliate_offline_description')}}"
+                                data-image="https://secretdiscounter.ru{{ user_code_img }}"
+                                data-url="https://secretdiscounter.ru/offline?r={{user_id}}"
+                        ></div>
+                        {% if not friend_user %}
+                            <script type="text/javascript" src="/js/share42.js"></script>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12"  style="margin-top: 35px">
-                <div class="intro-icon">
-                    <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
+                <div class="col-md-12"  style="margin-top: 35px">
+                    <div class="intro-icon">
+                        <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
+                    </div>
+                    <div class="intro-content">
+                        <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>Распечатать</a></p>
+                    </div>
                 </div>
-                <div class="intro-content">
-                    <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>Распечатать</a></p>
-                </div>
-            </div>
+            {% endif %}
         </div>
-    </div>
-{% endif %}
+    {% endif %}
+</div>

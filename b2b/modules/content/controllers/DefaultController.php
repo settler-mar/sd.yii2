@@ -34,22 +34,4 @@ class DefaultController extends Controller
     Yii::$app->params['page_content'] = $index;
     return $this->actionIndex();
   }
-
-  protected function sendRegistration($mailTo, $model)
-  {
-    return Yii::$app->mailer->compose(
-        ['html' => 'b2b-register-form-html', 'text' => 'b2b-register-form-text'],
-        [
-          'message' => $model->text,
-          'title' => $model->subject,
-          'name' => $model->name,
-          'email' => $model->email,
-          'phone' => $model->phone,
-        ]
-      )
-      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName'] . ' robot'])
-      ->setTo($mailTo)
-      ->setSubject($model->subject)
-      ->send();
-  }
 }
