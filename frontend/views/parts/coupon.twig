@@ -34,7 +34,7 @@
         </p>
         {% endif %}
         {% if not store_coupons %}
-        <p class="links"><a href="/coupons/store:{{coupon.store_id}}"><span class="fa fa-tags"></span> Показать все купоны <span>{{coupon.store_name}} </span></a></p>
+        <p class="links"><a href="/coupons/{{coupon.store_route}}"><span class="fa fa-tags"></span> Показать все купоны <span>{{coupon.store_name}} </span></a></p>
         {% else %}
         <br>
         {% endif %}
