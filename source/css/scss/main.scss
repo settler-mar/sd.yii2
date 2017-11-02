@@ -861,6 +861,18 @@ $images: "/images";
   line-height: 1.1;
 }
 
+.coupons-main-info {
+  &__header {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  &__subheader {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
 /* Paginations
 ------------------------------------*/
 .paginations {
@@ -1289,6 +1301,7 @@ $images: "/images";
 }
 
 .store-2line {
+  margin-bottom: 50px;
   .coupons {
     margin-bottom: 15px;
   }
@@ -1329,8 +1342,8 @@ $images: "/images";
   }
 
   &.shops {
-    margin-top: 25px;
-    padding-top: 25px;
+    //margin-top: 25px;
+    //padding-top: 25px;
     padding-bottom: 55px;
   }
 
