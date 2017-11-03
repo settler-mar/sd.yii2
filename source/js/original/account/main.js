@@ -549,6 +549,10 @@ $(function(){
 $('body').on('click', '.link-to-clipboard', function(e){
     e.preventDefault();
     var linkText = $(this).data('link');
+    var text = $(this).data('text');
+    if(!text){
+        text='Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!';
+    }
     var tmp   = document.createElement('INPUT');
     tmp.value = linkText;
     document.body.appendChild(tmp);
@@ -557,7 +561,7 @@ $('body').on('click', '.link-to-clipboard', function(e){
     document.body.removeChild(tmp);
     notification.notifi({
         title: 'Успешно',
-        message: 'Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!',
+        message: text,
         type: 'success'
     });
 });
