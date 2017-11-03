@@ -443,6 +443,14 @@ table .status_bg_1 {
   overflow: hidden;
   animation: show_notifycation 0.2s linear;
   border-radius: 2px;
+  a {
+    color: #ffc503;
+    //font-weight: 700;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .notification_item-err {

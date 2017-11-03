@@ -94,6 +94,15 @@ class UserSetting extends Users
     Yii::$app->session->addFlash('info', 'Пароль изменен на <b>' . $this->new_password . '</b>');
   }
 
+  public function beforeValidate()
+  {
+    if (!empty($this->getDirtyAttributes(['email']))) {
+      $this->email_verified = 0;
+      Yii::$app->session->addFlash(null, 'Вы изменили Email.<br>Новый Email не подтверждён.<br><a href="/sendverifyemail">Подтвердить</a>');
+    }
+    return parent::beforeValidate();
+  }
+
   public function attributeLabels()
   {
     return array(

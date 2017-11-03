@@ -1,0 +1,131 @@
+<?php
+namespace frontend\modules\users\models;
+
+use yii\base\Model;
+use yii\base\InvalidParamException;
+use frontend\modules\users\models\Users;
+use Yii;
+
+/**
+ * Password reset form
+ */
+class ValidateEmail extends Model
+{
+
+  private $_user;
+
+  /**
+   * Creates a form model given a token.
+   *
+   * @param string $token
+   * @param string $email
+   * @throws \yii\base\InvalidParamException if token is empty or not valid
+   */
+  public function __construct($token = false, $email = false)
+  {
+    if ($token !== false) {
+      if (empty($token) || !is_string($token)) {
+        throw new InvalidParamException('Идентификатор подтверждения email не может быть пустым.');
+      }
+      $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
+      if (!$this->_user) {
+        throw new InvalidParamException('Неверный ключ и email для подтверждения email.');
+      }
+    }
+    parent::__construct();
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      ['email', 'trim'],
+      [['email', 'token'], 'required'],
+      [['email'], 'email'],
+      [['token'], 'string'],
+    ];
+  }
+
+  /**
+   * запись в базу о подтверждении
+   * @return bool|mixed
+   */
+  public function verifyEmail()
+  {
+    $user = $this->_user;
+
+    $user->email_verified = 1;
+    $user->email_verify_token = null;
+    
+    if ($user->save()){
+      return $user->uid;
+    }else{
+      return false;
+    }
+  }
+
+  /**
+   * отправка почты
+   * @param $user
+   * @return bool
+   */
+  public static function sentEmailValidation($user)
+  {
+    $sessionVar = 'sd_verify_mail_time';
+    $lastMailTime = Yii::$app->session->get($sessionVar, false);
+
+    if ($lastMailTime && (time() - $lastMailTime < 60*30)) {
+      Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 30 минут');
+      return false;
+    }
+    Yii::$app->session->set($sessionVar, time());
+
+    return Yii::$app
+      ->mailer
+      ->compose(
+        ['html' => 'verifyEmailToken-html', 'text' => 'verifyEmailToken-text'],
+        ['user' => $user]
+      )
+      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+      ->setTo($user->email)
+      ->setSubject('Подтверждение Email на сайте ' . Yii::$app->name)
+      ->send();
+  }
+
+  /**
+   * подтверждение email (не во время регистрации)
+   * @return mixed
+   */
+  public static function validateEmail($id)
+  {
+    $user = Users::findOne(['uid' => $id]);
+    if ($user) {
+      $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
+      if (self::sentEmailValidation($user)) {
+        $user->save();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * сообщения юсеру о состоянии его email
+   * @param $user
+   */
+  public static function emailStatusInfo($user)
+  {
+    if ($user->email_verify_token != null) {
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту');
+    } elseif (empty($user->email_verified)){
+      Yii::$app->session->addFlash(
+        null,
+        'Ваш Email не подтверждён.<br><a href="/sendverifyemail">Подтвердить</a> Email<br><a href="/account/settings">Cменить</a> Email'
+      );
+    }
+  }
+
+
+}

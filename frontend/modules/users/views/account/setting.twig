@@ -46,6 +46,10 @@
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
                     }).textInput({'placeholder':'Дата рождения','required':true,'ref':'date'}) | raw }}
 
+                    {% if model.email_verified == 0 %}
+                        <div class="form-group"><a href="/sendverifyemail">Подтвердить Email</a></div>
+                    {% endif %}
+
 
                         <div class="cr-group">
                             <span class="title">Пол:</span>

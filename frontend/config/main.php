@@ -75,7 +75,8 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
+        '<action:(login|logout|registration|ulogin|resetpassword|reset|verifyemail|sendverifyemail)>' =>
+          'users/default/<action>',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',

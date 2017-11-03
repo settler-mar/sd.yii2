@@ -5,6 +5,7 @@ namespace frontend\modules\users\models;
 use Yii;
 use yii\base\Model;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\ValidateEmail;
 
 class RegistrationForm extends Model
 {
@@ -43,7 +44,16 @@ class RegistrationForm extends Model
     $user->email = $this->email;
     $user->setPassword($this->password);
     $user->generateAuthKey();
-
-    return $user->save() ? $user : null;
+    
+    //пишем токен для валидации почты
+    $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
+    
+    if (ValidateEmail::sentEmailValidation($user) && $user->save()) {
+       return $user;
+    } else {
+      return null;
+    }
   }
+
+
 }

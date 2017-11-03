@@ -8,6 +8,8 @@ use \Yii;
 use yii\web\Controller;
 use frontend\modules\users\models\LoginForm;
 use frontend\modules\users\models\RegistrationForm;
+use frontend\modules\users\models\ValidateEmail;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
@@ -37,6 +39,10 @@ class DefaultController extends Controller
     if($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
         $data['html']='Успешная авторизация.<script>location.href="/account"</script>';
+
+        //сообщения, если email не подтверждён
+        ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+
         return json_encode($data);
       }
     }
@@ -136,6 +142,9 @@ class DefaultController extends Controller
         };
 
         $data['html']='Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
+        //сообщения, если email не подтверждён
+        ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+
         return json_encode($data);
       }
     }
@@ -210,4 +219,46 @@ class DefaultController extends Controller
     }
     return $this->redirect(['/account']);
   }
+
+  /**
+   * валидация email - переход от ссылки в почте
+   * @param $token
+   * @param $email
+   * @return \yii\web\Response
+   * @throws BadRequestHttpException
+   */
+  public function actionVerifyemail($token, $email)
+  {
+    try {
+      $model = new ValidateEmail($token, $email);
+    } catch (InvalidParamException $e) {
+      throw new BadRequestHttpException($e->getMessage());
+    }
+    if ($user_id = $model->verifyEmail()) {
+      // Авторизируемся при успешной валидации
+      Yii::$app->user->login(Users::findIdentity($user_id));
+      Yii::$app->session->addFlash('success', 'Ваш Email подтверждён.');
+    }
+    return $this->redirect(['/account']);
+
+  }
+
+  /**
+   * запрос на валидацию - отправляется почта со ссылкой на валидацию
+   * @return \yii\web\Response
+   * @throws NotFoundHttpException
+   */
+  public function actionSendverifyemail()
+  {
+    if (Yii::$app->user->isGuest) {
+      throw new NotFoundHttpException();
+    }
+    if (ValidateEmail::validateEmail(Yii::$app->user->id)) {
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту');
+    } else {
+      Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш Email');
+    }
+    return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
+  }
+
 }
