@@ -79,7 +79,7 @@ class DefaultController extends Controller
     $model = new RegisterForm;
     if ($request->isPost) {
       if ($model->load($request->post())) {
-        $email = Yii::$app->params['registerEmail'];
+        $email = Yii::$app->params['registerEmailOffline'];
         $model->subject = "Подключить оффлайн магазин";
         if ($this->sendRegistration($email, $model)) {
           Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
@@ -105,7 +105,7 @@ class DefaultController extends Controller
     $model = new RegisterForm;
     if ($request->isPost) {
       if ($model->load($request->post())) {
-        $email = Yii::$app->params['registerEmailOffline'];// : Yii::$app->params['registerEmail'];
+        $email = Yii::$app->params['registerEmail'];// : Yii::$app->params['registerEmail'];
         $model->subject = "Подключить интернет магазин";
         if ($this->sendRegistration($email, $model)) {
           Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
