@@ -20,6 +20,14 @@
 <div class="affiliate row">
     <div class="col-md-4 ways-invitation">
         <img src="{{ user_code_img }}" alt="" width="230">
+        {% if friend_user or user_id %}
+            <p class="link-sent">
+                <a href="" class="link-to-clipboard"
+                   data-link="{{ user_code }}"
+                   data-text="Ваша номер штрихкода скопированн в буфер обмена. Удачных покупок!"
+                >Скопировать в буфер</a>
+            </p>
+        {% endif %}
     </div>
     {% if user_id %}
         <div class="col-md-4 ways-invitation no_print">
