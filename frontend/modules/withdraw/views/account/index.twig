@@ -1,3 +1,4 @@
+{{ use('/yii/widgets/ActiveForm') }}
 <div class="content-wrapper">
     <section class="account-home">
         <div class="row">
@@ -63,18 +64,46 @@
                 </div>
                 <div class="col-md-12">
                     <h3 class="text-center">Заполните платёжные данные</h3>
-                    <div class="payment-info">
-                        <form action="/" method="post" role="form" name="withdraw-form">
-                            <div class="form-input-group">
-                                <i class="fa fa-info-circle"></i><input name="bill" type="text" placeholder="Введите номер счёта" required>
-                            </div>
-                            <div class="form-input-group">
-                                <i class="fa fa-money"></i><input name="amount" type="text" placeholder="Введите сумму для вывода" required>
-                            </div>
-                            <textarea name="additional-info" cols="30" rows="10" placeholder="Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard)."></textarea>
-                            <input type="hidden" name="withdraw-process" value="0">
+                    <div class="payment-info users-withdraw">
+                        {% set form = active_form_begin({'action':'/account/withdraw','options':{'name':'withdraw-form', 'role':'form'},}) %}
+                        {#{% set form = active_form_begin() %}#}
+                        {#<form action="/" method="post" role="form" name="withdraw-form">#}
+                            {#<div class="form-input-group">#}
+                                {#<i class="fa fa-info-circle"></i>#}
+                            {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
+
+                            {{ form.field(model, 'bill', {
+                                'template' :'<div class="form-input-group"><i class="fa fa-info-circle"></i> {input}</div>{error}{hint}',
+                                'options': {'class':'form-group'},
+                            }).textInput({'maxlength':true, 'placeholder':'Введите номер счёта'}).label(false)|raw }}
+
+                            {{ form.field(model, 'amount', {
+                                'template' :'<div class="form-input-group"><i class="fa fa-money"></i> {input}</div>{error}{hint}',
+                                'options': {'class':'form-group'},
+                            }).textInput({'maxlength':true, 'placeholder':'Введите сумму для вывода'}).label(false)|raw }}
+
+                            {{ form.field(model, 'user_comment', {
+                                'template' : '{input}{error}{hint}',
+                                'options': {'class':'form-group'},
+                            }).textarea({
+                                'maxlength':true,
+                                'placeholder':'Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard).',
+                                'rows': '10',
+                                'cols': '30',
+                                'class': ''
+                            })|raw }}
+
+                                {# <input name="bill" type="text" placeholder="Введите номер счёта" required> #}
+
+                            {#</div>#}
+                            {#<div class="form-input-group">#}
+                                {#<i class="fa fa-money"></i><input name="amount" type="text" placeholder="Введите сумму для вывода" required>#}
+                            {#</div>#}
+                            {#<textarea name="additional-info" cols="30" rows="10" placeholder="Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard)."></textarea>#}
+                            <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
                             <button type="submit" class="btn-fill btn-form">Сделать запрос на вывод денег</button>
-                        </form>
+                        {#</form>#}
+                        {{ active_form_end() }}
                     </div>
                 </div>
             {% endif %}

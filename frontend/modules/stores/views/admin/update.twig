@@ -1,4 +1,6 @@
 {{ use('/yii/widgets/ActiveForm') }}
+
+{{ use('common/components/fileImageInput/FileInput') }}
 {% set title = 'Update Stores: ' ~ model.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
@@ -15,6 +17,7 @@
             <div class="row">
                 {% if store %}
                     <div class="col-md-12">
+
                         <div class="stores-form">
                             {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
                             <p class="title first">Основная информация</p>
@@ -23,12 +26,15 @@
                                     <p><span>UID:</span> {{store.uid}}</p>
                                     <p><span>Добавлен:</span> {{store.added}}</p>
                                     <p><span>Посещений:</span> {{store.visit}}</p>
-                                    <p><span>Картчка магазина:</span> <a href="/stores/{{store.route}}" target="_blank">перейти</a></p>
+                                    <p><span>Картчка магазина:</span> <a href="/stores/{{store.routeUrl}}" target="_blank">перейти</a></p>
                                     <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Дополнительные URL(через запятую):</span> <br>{{ form.field(model, 'url_alternative').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Акция</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
+                                    <p><span>Рейтинг</span> {{ form.field(model, 'rating').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
                                     <p>
@@ -43,6 +49,14 @@
                                     <p><span>Магазин активен:</span><br>
                                         {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
                                     </p>
+                                    <p><span>Тип магазина:</span><br>
+                                        {{ form.field(model, 'is_offline').dropDownList({'0' : 'Онлайн','1' : 'Оффлайн'}).label(false)|raw }}
+                                    </p>
+                                    <p><span>Наличие чека</span> {{ form.field(model, 'cash_number').dropDownList({'0' : 'Обязателен','1' : 'Отсутствует'}).label(false)|raw }}</p>
+                                    <p><span>Связанный магазин(ID, связка онлайн-оффлайн):</span> <br>{{ form.field(model, 'related').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Магазины торговой сети (ID через запятую):</span> <br>{{ form.field(model, 'related_stores').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    <p><span>Название торговой сети:</span> <br>{{ form.field(model, 'network_name').textInput({'maxlength':true}).label(false)|raw }}</p>
+
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
@@ -52,6 +66,11 @@
                                 <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}
                             </p>
                             <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
+
+                            {{ form.field(model, 'video').widget(MultipleInput.className(), {
+                                'allowEmptyList':true,
+
+                            })|raw }}
                             <input type="hidden" name="type" value="update_main_information">
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
@@ -89,8 +108,36 @@
                                 {% endif %}
                             </div>
                         </div>
+
+                        <p class="title">
+                            Фотографии магазина
+                        </p>
+                        <div>
+                            {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
+
+                                {{ FileInput_widget({
+                                    'name':'photo_input',
+                                    'url' : {0:'/stores/admin/fileapi-upload','id':model.uid},
+                                    'removeUrl' : {0:'/stores/admin/fileapi-remove','id':model.uid},
+                                    'value':model.photoList
+                                }) | raw }}
+
+                            {{ active_form_end() }}
+                        </div>
+
                         {% if categories|length > 0 %}
-                            <p class="title">Категории магазина</p>
+                            <p class="title">
+                                Категории магазина
+                                {% if related %}
+                                <a
+                                        class="btn btn-primary ajax-confirm"
+                                        style="float: right;font-size: 12px;padding: 3px 10px;"
+                                        data-question="Хотите импортировать все категории из {{ related.name }} ({{ related.uid }})?
+                                                        <br>Все текущие категории будут очищенны."
+                                        data-store="{{ store.uid }}"
+                                >Копировать из {{ related.name }} ({{ related.uid }})</a>
+                                {% endif %}
+                            </p>
                             <form method="post" action="/admin/stores/update?id={{store.uid}}" name="categories-edit-stores">
                                 <ul class="ch_tree">
                                     {% for category in categories %}
@@ -116,6 +163,34 @@
                                     <button type="submit">Изменить</button>
                                 </ul>
                             </form>
+                        {% endif %}
+                        {% if store.storesPoints|length > 0%}
+                            <p class="title">Точки продаж</p>
+                            <table class="stores-form__stores-points_table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Название</th>
+                                    <th>Адрес</th>
+                                    <th>Время работы</th>
+                                    <th>Телефон</th>
+                                </tr>
+                                </thead>
+                                {% for store_point  in store.storesPoints %}
+                                    <tr class="stores-form__stores-points_row">
+                                        <th>{{ loop.index }}.</th>
+                                        <th>
+                                            {{ store_point.name }}
+                                        </th>
+                                        <th> {{ store_point.country }}, {{ store_point.city }}, {{ store_point.address }}</th>
+                                        <th>
+                                            {% set work_times = store_point.work_time_details %}
+                                            {% include('parts/work_time.twig')%}
+                                        </th>
+                                        <th>{{ store_point.phone }}</th>
+                                    </tr>
+                                {% endfor %}
+                            </table>
                         {% endif %}
                     </div>
                 {% else %}

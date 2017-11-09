@@ -2,6 +2,8 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\b2b_users\models\B2bUsers;
+use frontend\modules\b2b_users\models\UsersCpa;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\ActionsTariffs;
@@ -11,15 +13,15 @@ use frontend\modules\stores\models\TariffsRates;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresSearch;
+use yii\base\DynamicModel;
+use yii\base\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use yii\db\ActiveRecord;
 use frontend\modules\stores\models\StoresToCategories;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
-
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -56,11 +58,22 @@ class AdminController extends Controller
 
     $searchModel = new StoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $stores = Stores::find();
+    $stat['all'] = $stores->count();
+    $stat['active'] = $stores->where(['is_active' => 1])->count();
+    $stat['waiting'] = $stores->where(['is_active' => 0])->count();
+    $stat['blocked'] = $stores->where(['is_active' => -1])->count();
+    $stat['charity'] = $stores->where(["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
+      " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0])->count();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'stat' => $stat,
       'table_value' => [
+        'is_offline' => function ($model, $key, $index, $column) {
+          return $model->is_offline == 1 ? 'Оффлайн' : 'Онлайн';
+        },
         'is_active' => function ($model, $key, $index, $column) {
           $st = [
             1 => "Активен",
@@ -72,9 +85,20 @@ class AdminController extends Controller
         },
         'route' => function ($model, $key, $index, $column) {
           $out = '<a href="/stores/';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
           $out .= '" target=_blank>';
-          $out .= $model->route;
+          $out .= $model->routeUrl;
+          $out .= '</a>';
+          return $out;
+        },
+        'url' =>  function ($model, $key, $index, $column) {
+          $out = '<a href="';
+          $out .= $model->url;
+          $out .= '" target=_blank>';
+          $out .= substr($model->url,0,40);
+          if(strlen($model->url)>40){
+            $out .= '...';
+          }
           $out .= '</a>';
           return $out;
         },
@@ -97,12 +121,61 @@ class AdminController extends Controller
     $model = new Stores();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['index']);
+      Yii::$app->session->addFlash('info', 'Магазин создан');
+      return $this->redirect('update/id:' . $model->uid);
     } else {
       //ddd($model);
       return $this->render('create.twig', [
         'model' => $model,
       ]);
+    }
+  }
+
+  public function actionFileapiRemove($id)
+  {
+    if (Yii::$app->request->isPost) {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $store = Stores::findOne(['uid' => $id]);
+      if (!$store) {
+        $result = [
+          'error' => 'Магазин не найден',
+        ];
+        return json_encode($result);
+      }
+
+      $result = $store->removePhoto(Yii::$app->request->post('path'));
+      return $result;
+    } else {
+      throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
+    }
+  }
+
+  public function actionFileapiUpload($id)
+  {
+    $path = '@app/web/img';
+
+    if (Yii::$app->request->isPost) {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+        throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        return false;
+      }
+
+      $store = Stores::findOne(['uid' => $id]);
+      if (!$store) {
+        $result = [
+          'error' => 'Магазин не найден',
+        ];
+        return json_encode($result);
+      }
+
+      $result = $store->addPhoto(UploadedFile::getInstanceByName('file'),Yii::$app->request->post('index'));
+      return json_encode($result);
+    } else {
+      throw new BadRequestHttpException('Доступноо только зарегистраированным пользователям');
     }
   }
 
@@ -112,7 +185,7 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    //ddd(Yii::$app->request->post());
+
     $model = $this->findModel($id);
     if (isset(Yii::$app->request->post()['category_id'])) {
       StoresToCategories::deleteAll(['store_id' => $model->uid]);
@@ -122,33 +195,79 @@ class AdminController extends Controller
         $new_category->store_id = $model->uid;
         $new_category->save();
       }
+      Yii::$app->session->addFlash('info', 'Категории магазина обновлены');
+      return $this->redirect(['update', 'id' => $model->uid]);
     }
-    if ($model->load(Yii::$app->request->post())) {   // data from request
-      $model->save();
-      return $this->redirect(['index']);
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {   // data from request
+      Yii::$app->session->addFlash('info', 'Магазин обновлен');
+      return $this->redirect(['update', 'id' => $model->uid]);
+    }
+    $cpa_list = Cpa::find()->all();
+    $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
+    $models = StoresToCategories::find()->asArray()->select('category_id')->where(['store_id' => $model->uid])->all();
+    $categories = [];
+    foreach ($models as $storeCategory) {
+      $categories[] = $storeCategory['category_id'];
+    }
+    $tariffs = CpaLink::find()->where(['stores_id' => $model->uid])->with([
+      'cpa',
+      'storeActions.tariffs.rates'])
+      ->all();
+
+    if ($model->related > 0) {
+      $related = Stores::findOne(['uid' => $model->related]);
     } else {
-      $cpa_list = Cpa::find()->all();
-      $all_categories = CategoriesStores::find()->where(['parent_id' => 0])->all();
-      $models = StoresToCategories::find()->asArray()->select('category_id')->where(['store_id' => $model->uid])->all();
-      $categories = [];
-      foreach ($models as $storeCategory) {
-        $categories[] = $storeCategory['category_id'];
-      }
-      $tariffs = CpaLink::find()->where(['stores_id' => $model->uid])->with([
-        'cpa',
-        'storeActions.tariffs.rates'])
-        ->all();
-      //ddd($categories[0]);
-      return $this->render('update', [
-        'store' => $model,
-        'model' => $model,
-        'cpa_list' => $cpa_list,
-        'categories' => $all_categories,
-        'store_categories' => $categories,
-        'tariffs' => $tariffs,
-        "action_types" => Yii::$app->params['dictionary']['action_type'],
+      $related = false;
+    }
+    //ddd($categories[0]);
+    return $this->render('update', [
+      'store' => $model,
+      'model' => $model,
+      'related' => $related,
+      'cpa_list' => $cpa_list,
+      'categories' => $all_categories,
+      'store_categories' => $categories,
+      'tariffs' => $tariffs,
+      "action_types" => Yii::$app->params['dictionary']['action_type'],
+      //'FileInput' => FileInput::className(),
+    ]);
+  }
+
+  public function actionImportCat($id)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->isPost) {
+      throw new \yii\web\ForbiddenHttpException('Неверный тип запроса.');
+      return false;
+    }
+
+    $store = Stores::findOne(['uid' => $id]);
+    if (!$store->related) {
+      return json_encode([
+        'error' => 'Нет связанного магазина'
       ]);
     }
+    $cats = StoresToCategories::find()
+      ->where(['store_id' => $store->related])
+      ->all();
+
+    StoresToCategories::deleteAll(['store_id' => $id]);
+    foreach ($cats as $cat) {
+      $new_category = new StoresToCategories();
+      $new_category->category_id = $cat->category_id;
+      $new_category->store_id = $id;
+      $new_category->save();
+    }
+    Yii::$app->session->addFlash('info', 'Категории магазина импортированы');
+    return json_encode([
+      'code' => 200
+    ]);
   }
 
   /**
@@ -165,8 +284,8 @@ class AdminController extends Controller
     }
 
     $store = $this->findModel($id);
-    if ($store && $this->actionAjax_remove('store', $id,false)) {
-      $store->removeImage(Yii::$app->getBasePath() . '\web' . $store->logo);
+    if ($store && $this->actionAjax_remove('store', $id, false)) {
+      $store->removeImage(Yii::$app->getBasePath() . '/web' . $store->logo);
     }
 
     return $this->redirect(['index']);
@@ -305,6 +424,7 @@ class AdminController extends Controller
       return false;
     }
 
+
     $request = Yii::$app->request;
     /* if(!$request->isPost || !$request->isAjax){
        throw new \yii\web\ForbiddenHttpException('Не верный тип запроса.');
@@ -324,31 +444,33 @@ class AdminController extends Controller
       $todo = true;
       $store_id = $post['id'];
 
-      $cpa_link=CpaLink::find()
-        ->select(['affiliate_id'=>'id','cpa_id'])
-        ->where(['stores_id'=>$store_id])
+      $cpa_link = CpaLink::find()
+        ->select(['affiliate_id' => 'id', 'cpa_id'])
+        ->where(['stores_id' => $store_id])
         ->asArray()
         ->all();
 
-      $payment = Payments::find();
-//        ->andFilterWhere(['OR',$cpa_link]);
+      if(count($cpa_link)>0) {
+        $payment = Payments::find();
+        //        ->andFilterWhere(['OR',$cpa_link]);
 
-      foreach ($cpa_link as &$item){
-        $payment = $payment->orFilterWhere(['AND',$item]);
-        //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
-      }
-
-      $payment = $payment
-        ->asArray()
-        ->all();
-
-
-      if (count($payment) > 0) {
-        if(!$not_return){
-          return false;
+        foreach ($cpa_link as &$item) {
+          $payment = $payment->orFilterWhere(['AND', $item]);
+          //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
         }
-        http_response_code(404);
-        exit;
+
+        $payment = $payment
+          ->asArray()
+          ->all();
+
+        if (count($payment) > 0) {
+          Yii::$app->session->addFlash('err','Нельзя удалить магазин т.к. у него есть платежи');
+          if (!$not_return) {
+            return false;
+          }
+          http_response_code(404);
+          exit;
+        }
       }
       $cwsl = CpaLink::find()
         ->select('id')
@@ -375,7 +497,7 @@ class AdminController extends Controller
         ->asArray()
         ->all();
       if (count($payment) > 0) {
-        if(!$not_return){
+        if (!$not_return) {
           return false;
         }
         http_response_code(404);
@@ -395,6 +517,8 @@ class AdminController extends Controller
       }
       //$tmp = count(CpaLink::find()->all());
       CpaLink::deleteAll(['id' => $cpa_id]);
+      Yii::$app->session->addFlash('info','Магазин успешно удален');
+      UsersCpa::deleteAll(['cpa_link_id' => $cpa_id]);//удаляем связанных ользователей b2b
       //return $tmp . ' ' . count(CpaLink::find()->all()) . ' ' . $cpa_id;
     }
 
@@ -437,7 +561,7 @@ class AdminController extends Controller
       TariffsRates::deleteAll(['uid' => $post["id"]]);
     }
 
-    if(!$not_return){
+    if (!$not_return) {
       return $todo;
     }
 
@@ -505,7 +629,7 @@ class AdminController extends Controller
   {
     $store = Stores::findOne($post['id']);
     $store->active_cpa = $post['value'];
-    return $store->save(false);
+    return $store->save();
   }
 
 }

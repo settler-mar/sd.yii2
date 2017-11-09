@@ -152,6 +152,7 @@ class AccountController extends Controller
     };
 
     if ($post && $user->load($post) && $user->save()) {
+      Yii::$app->session->addFlash('info', 'Данные успешно обновлены');
       return $this->redirect('/account/settings');
     }
 

@@ -1,0 +1,36 @@
+{% set title = title %}
+{{ set(this, 'title', title) }}
+
+{% if not no_breadcrumbs %}
+    {% if not this.params.breadcrumbs %}
+        {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+    {% endif %}
+    {% set breadcrumbs = this.params.breadcrumbs %}
+    {% set breadcrumbs = breadcrumbs|merge([title]) %}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+{% endif %}
+
+<div class="">
+    <h1>{{ h1 }}</h1>
+</div>
+
+<div class="body-content">
+    {{ content|raw }}
+    {% set form = active_form_begin() %}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}
+
+            {{ form.field(model, 'text').textarea({'maxlength':true, 'rows':6})|raw }}
+
+            {{ form.field(model, 'reCaptcha').widget(reCaptcha)|raw }}
+
+            {{ html.submitButton('Отправить заявку', {'class': 'btn btn-primary', 'name': 'login-button'})|raw }}
+        </div>
+    </div>
+    {{ active_form_end() }}
+</div>

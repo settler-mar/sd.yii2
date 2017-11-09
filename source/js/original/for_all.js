@@ -142,3 +142,53 @@ $('body').on('click','a.ajaxFormOpen',function(e){
     }
   },'json')
 });
+
+$('[data-toggle="tooltip"]').tooltip({
+  delay: {
+    show: 500, hide: 2000
+  }
+});
+$('[data-toggle="tooltip"]').on('click',function (e) {
+  $this=$(this);
+  if($this.closest('ul').hasClass('paginate')) {
+    //для пагинации ссылка должна работать
+    return true;
+  }
+  if($this.hasClass('workHref')){
+    //Если ссылка помеченна как рабочая то нужно переходить
+    return true;
+  }
+  e.preventDefault();
+  return false;
+});
+
+
+$('.ajax-action').click(function(e) {
+  e.preventDefault();
+  var status = $(this).data('value');
+  var href = $(this).attr('href');
+  var ids = $('#grid-ajax-action').yiiGridView('getSelectedRows');
+  if (ids.length > 0) {
+    if (!confirm('Подтвердите изменение записей')) {
+      return null;
+    }
+    $.ajax({
+      url: href,
+      type: 'post',
+      dataType: 'json',
+      data: {
+        status: status,
+        id: ids
+      }
+    }).success(function(data) {
+      $('#grid-ajax-action').yiiGridView("applyFilter");
+      if (data.error != false) {
+        notification.notifi({message:'Произошла ошибка!',type:'err'})
+      }
+    }).fail(function(data){
+      notification.notifi({message:'Произошла ошибка!',type:'err'})
+    });
+  } else {
+    notification.notifi({message:'Необходимо выбрать элементы!',type:'err'})
+  }
+});

@@ -32,7 +32,7 @@ class TestController extends Controller
         ->setSubject('Тема сообщения')
         ->setTextBody('Текст сообщения')
         ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
-        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo('matuhinmax@mail.ru')
         ->setSubject(Yii::$app->name . ': Тест')
         ->send();

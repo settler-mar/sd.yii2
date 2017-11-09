@@ -62,4 +62,9 @@ class TariffsRates extends \yii\db\ActiveRecord
             'date_s' => 'Date S',
         ];
     }
+
+  public function getTariff()
+  {
+    return $this->hasOne(ActionsTariffs::className(), ['uid' => 'id_tariff']);
+  }
 }

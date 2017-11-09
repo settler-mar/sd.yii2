@@ -34,13 +34,30 @@ class UsersWithdraw extends \yii\db\ActiveRecord
    */
   public function rules()
   {
-    return [
-      [['user_id', 'process_id', 'bill', 'request_date'], 'required'],
+      //$balanse=Yii::$app->user->identity->balance;
+      return [
+      [['user_id', 'process_id', 'bill', 'request_date', 'amount'], 'required'],
+      [['process_id'], 'required', 'message'=>'Неправильный способ вывода'],
+      [['process_id'], 'in', 'range' => [1, 2, 3, 4, 5, 6], 'message'=>'Выберите способ вывода'],
       [['user_id', 'process_id', 'status'], 'integer'],
-      [['amount'], 'number'],
+      [['bill'], 'integer', 'when' => function($model) {
+        return in_array($model->process_id, [1, 3, 4, 6]);
+      }, 'whenClient' => "function(attribute,value){return $.inArray(parseInt($('#userswithdraw-process_id').val()), [1, 3, 4, 6])>-1;}" ],
+      [['bill'], 'match', 'pattern'=> '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', 'when' => function($model) {
+        return $model->process_id == 5;
+      }, 'whenClient' => "function(attribute,value){return parseInt($('#userswithdraw-process_id').val()) == 5;}" ,
+      'message' => 'Введите правильный email'],
+      [['bill'], 'match', 'pattern'=> '/^R[0-9]{12}$/', 'when' => function($model) {
+        return $model->process_id == 2;
+      }, 'whenClient' => "function(attribute,value){return parseInt($('#userswithdraw-process_id').val()) == 2;}" ,
+      'message' => 'Введите правильный кошелёк webmoney R000000000000'],
+      [['amount'], 'number', 'min'=> 350/*, 'max' => ($balanse ? $balanse['current'] : null)*/],
+      [['amount'], 'filter', 'filter' => function ($value) {
+        return number_format($value, 2, ".", "");
+      }],
       [['request_date'], 'safe'],
       [['user_comment', 'admin_comment'], 'string'],
-      [['bill'], 'string', 'max' => 255],
+      //[['bill'], 'string', 'max' => 255],
     ];
   }
 
@@ -71,6 +88,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     if ($this->isNewRecord) {
       $this->user_id = Yii::$app->user->id;
       $this->request_date = date('Y-m-d H:i:s');
+      $this->status = 1;
     }
     return true;
   }

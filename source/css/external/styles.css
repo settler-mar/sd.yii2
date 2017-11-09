@@ -1079,7 +1079,7 @@ footer .auxiliary-panel ul.footer-group {
 }
 footer .auxiliary-panel p {
   font-size: 15px;
-  padding-bottom: 9px;
+  padding-bottom: 0px;
 }
 footer .auxiliary-panel a.twitter-share {
   height: 60px;

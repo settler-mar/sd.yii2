@@ -69,7 +69,7 @@ class AccountController extends \yii\web\Controller
               'user'=>Yii::$app->user->identity,
             ]
           )
-          ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo(Yii::$app->params['supportEmail'])
           ->setSubject(Yii::$app->name . ': Запрос в техподдержку')
           ->send();

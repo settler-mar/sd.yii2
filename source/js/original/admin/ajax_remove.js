@@ -8,7 +8,7 @@ $(function() {
     };
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
-        alert("Невозможно удалить элемент");
+        notification.notifi({message:'Невозможно удалить элемент',type:'err'});
       }
 
       mode=$this.attr('mode');
@@ -24,13 +24,14 @@ $(function() {
         }
 
         rm.remove();
+        notification.notifi({message:'Успешное удаление.',type:'info'})
       }
       if(mode=='reload'){
         location.reload();
         location.href=location.href;
       }
     }).fail(function(){
-      alert('Не удается удалить')
+      notification.notifi({message:'Ошибка удалния',type:'err'});
     })
   }
 

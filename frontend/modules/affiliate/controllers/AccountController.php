@@ -92,7 +92,7 @@ class AccountController extends \yii\web\Controller
             'link' => 'https://secretdiscounter.ru/',
           ]
         )
-        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo($email)
         ->setReplyTo($user->email)
         ->setSubject('Вас приглашают на ' . Yii::$app->name)

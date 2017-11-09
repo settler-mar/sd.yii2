@@ -3,6 +3,7 @@
 namespace b2b\assets;
 
 use yii\web\AssetBundle;
+use Yii;
 
 /**
  * Main b2b application asset bundle.
@@ -13,11 +14,26 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        '/css/styles{{script_version}}.css',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
     ];
     public $js = [
+        '/js/scripts{{script_version}}.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+    public function init()
+    {
+        $script_version = Yii::$app->params['scriptVersion'];
+        foreach ($this->js as &$js) {
+          $js = str_replace('{{script_version}}', $script_version, $js);
+          $js = str_replace('..', '.', $js);
+        }
+        foreach ($this->css as &$css) {
+            $css = str_replace('{{script_version}}', $script_version, $css);
+            $css = str_replace('..', '.', $css);
+        }
+    }
 }

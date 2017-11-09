@@ -1,0 +1,47 @@
+{% set title = 'Приём платежа' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Точка продаж', 'url': path(['/stores_points'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="b2b-payment-create-update">
+    <h1>{{ html.encode(this.title) }}</h1>
+    {% if (categories == null) %}
+        <p>У магазина нет категорий товаров. Свяжитесь с администратором.</p>
+    {% else %}
+    <div class="b2b-stores-points-form">
+        {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'uid').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+
+        {{ form.field(model, 'user_id').textInput({'maxlength':true}).label('Покупатель')|raw }}
+
+
+        {% if categories|length > 1 %}
+            {{ form.field(model, 'category').dropDownList(categories, {'prompt':'Выберите категорию'}).label('Категория покупки')|raw }}
+        {% else  %}
+            {{ form.field(model, 'category').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+        {% endif %}
+
+        {{ form.field(model, 'order_price').textInput({'maxlength':true}).label('Сумма покупки')|raw }}
+
+        {% if store.cash_number == 1 %}
+            {% set random_string = app.security.generateRandomString(10) %}
+            {{ form.field(model, 'order_id').textInput({'maxlength':true}).hiddenInput({'value': random_string }).label(false)|raw }}
+        {% else %}
+            {{ form.field(model, 'order_id').textInput({'maxlength':true}).label('Номер чека')|raw }}
+        {% endif %}
+
+        <div  class="col-md-12">
+             <div class="form-group">
+                <input type="submit" value="{{ model.isNewRecord ? 'Зафиксировать платёж' : 'Изменить платёж' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+            </div>
+        </div>
+        {{ active_form_end() }}
+
+    </div>
+    {% endif %}
+</div>

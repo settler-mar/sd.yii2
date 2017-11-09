@@ -33,11 +33,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="withdraw_buttons">
+                                <a href="/admin/withdraw/delete" class="ajax-action btn btn-danger" ><span class="fa fa-trash"></span> Удалить</a>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="row">
         <div class="col-md-12">
           {{ grid_view_widget({
+              'id': 'grid-ajax-action',
               'dataProvider': dataProvider,
               'pager' : {
                 'firstPageLabel' : true,
@@ -47,6 +54,7 @@
               'filterModel': searchModel,
                 'columns': [
                 {'class': '\\yii\\grid\\SerialColumn'},
+                {'class': '\\yii\\grid\\CheckboxColumn'},
                 'uid',
               {
                   'format':'raw',

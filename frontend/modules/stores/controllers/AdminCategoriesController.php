@@ -38,7 +38,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionIndex()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesView')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('CategoriesView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -49,7 +49,7 @@ class AdminCategoriesController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
-      'parentsList' => CategoriesStores::getParentsList([''=>'Любая']),
+      'parentsList' => CategoriesStores::getParentsList(['' => 'Любая']),
       'table' => [
         'is_active' => function ($model, $key, $index, $column) {
           return $model->is_active == 1 ? 'Активная' : 'Скрытая';
@@ -68,7 +68,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionCreate()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesCreate')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('CategoriesCreate')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -80,6 +80,8 @@ class AdminCategoriesController extends Controller
       return $this->render('create.twig', [
         'model' => $model,
         'parentsList' => CategoriesStores::getParentsList(),
+        'iconSelectClass' => \dvixi\IconSelectWidget::className(),
+        'iconSelectParam' => $this->getIconsParam(),
       ]);
     }
   }
@@ -92,7 +94,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionUpdate($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesEdit')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('CategoriesEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -104,6 +106,8 @@ class AdminCategoriesController extends Controller
       return $this->render('update.twig', [
         'model' => $model,
         'parentsList' => CategoriesStores::getParentsList(),
+        'iconSelectClass' => \dvixi\IconSelectWidget::className(),
+        'iconSelectParam' => $this->getIconsParam(),
       ]);
     }
   }
@@ -116,7 +120,7 @@ class AdminCategoriesController extends Controller
    */
   public function actionDelete($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesDelete')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('CategoriesDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -140,5 +144,23 @@ class AdminCategoriesController extends Controller
     } else {
       throw new NotFoundHttpException('The requested page does not exist.');
     }
+  }
+
+  private function getIconsParam()
+  {
+    $items = Yii::$app->params['dictionary']['map_icons'];
+    return [
+      'items' => $items,
+      'pluginOptions' => [
+        'selectedIconWidth' => 22,
+        'selectedIconHeight' => 36,
+        'selectedBoxPadding' => 1,
+        'iconsWidth' => 33,
+        'iconsHeight' => 54,
+        'boxIconSpace' => 3,
+        'vectoralIconNumber' => 4,
+        'horizontalIconNumber' => 4
+      ],
+    ];
   }
 }

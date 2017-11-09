@@ -1,0 +1,221 @@
+<section class="store-points">
+    <div class="container">
+        <div class="row">
+            <div class="store-points__info">
+
+                {#шапка от условий#}
+                {% if store_points.points|length == 1 %}
+                    {#одна точка#}
+                    <h3>Адрес торговой точки {{ current_store.name }} в {{store_points.cities[0] }}</h3>
+
+                {% elseif store_points.countries|length == 1 and store_points.cities|length == 1  %}
+                    {#несколько точек в одном городе #}
+                    <h3>Адреса торговых точек {{ current_store.name }} в {{store_points.points[0].country }}, {{store_points.cities[0] }}</h3>
+
+                {% elseif store_points.countries|length == 1   %}
+                    {#несколько точек в одной стpане #}
+                    <h3>Адреса торговых точек {{ current_store.name }} в {{store_points.points[0].country }}</h3>
+                    <div class="row store-points__point-selects">
+                        <select class="hidden" name="store_point_country" id="store_point_country">
+                            <option value=""></option>
+                            <option value="{{ store_points.points[0].country}}" selected>{{ store_points.points[0].country }}</option>
+                        </select>
+                        <div class="col-sm-2">
+                            <label for="store_point_city">Выберите город</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
+                                <option value=""></option>
+                                {% for city in store_points.cities %}
+                                    <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% set no_visible = 1 %}
+
+
+                    {% else %}
+                    {#точки в разных странах#}
+                    <h3>Адреса торговых точек {{ current_store.name }}</h3>
+                    <div class="row store-points__point-selects">
+                        <div class="col-sm-2">
+                            <label for="store_point_country">Выберите страну</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control select2-select" data-placeholder="Страна" name="store_point_country" id="store_point_country">
+                                <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
+                                {% for country, country_arr in store_points.countries %}
+                                    <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-2 col-sm-offset-1">
+                            <label for="store_point_">Выберите город</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select  class="form-control select2-select" data-placeholder="Город"  name="store_point_city" id="store_point_city">
+                                <option value=""></option>
+                                {% for city in store_points.cities %}
+                                    <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    {% set no_visible = 1 %}
+
+                {% endif %}
+                {#вывод точек для всех условий #}
+                <div class="store-points__points {% if store_points.points|length == 1 %}single{% endif %} {% if no_visible == 1 %}hidden{% endif %}" id="store-points">
+                    <table class="store-points__points_table" >
+                        <thead >
+                            <tr class="store-points__points_head">
+                                <td>Название</td>
+                                <td>Адрес</td>
+                                <td>Время работы</td>
+                                <td>Телефон</td>
+                            </tr>
+                        </thead>
+                        {% for store_point in store_points.points %}
+                        <tr  {% if no_visible == 1 %}hidden{% endif %}
+                             data-city="{{ store_point.city }}"
+                             data-country="{{ store_point.country }}"
+                             class="store-points__points_row" >
+                            <th>{{ store_point.name }}</th>
+                            <th>{{ store_point.address }}</th>
+                            <th>
+                                {% set work_times = store_point.work_time_details %}
+                                {% include('parts/work_time.twig') %}
+                            </th>
+                            <th>
+                                {{ store_point.phone }}
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="map" class="{% if no_visible == 1 %}hidden{% endif %} store-points__map"></div>
+        </div>
+    </div>
+</section>
+    <script src="/js/external/markerclusterer.js"></script>
+    <script>
+        var googleMap = {
+            mapElement: document.getElementById('map'),
+            points: [],
+            map: null,
+            cluster: null,
+            initMap: function() {
+
+                map = new google.maps.Map(this.mapElement, {
+                    center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                    zoom: 11,
+                    mapTypeId: 'roadmap'
+                });
+                var markers = [];
+                var infowindow = new google.maps.InfoWindow();
+                {% for store_point in store_points.points %}
+                    {% if store_point.coordinate_x and store_point.coordinate_y %}
+                        var marker = new google.maps.Marker({
+                            position : {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
+                            map: map,
+                            title: '{{ store_point.name }}',
+                            content: '<div class="google-map-point-content">'+
+                                '<h5 class="google-map-point-content__header">{{ store_point.name }}</h5>'+
+                                '<div class="google-map-point-content__address">Адрес: {{ store_point.address }}</div>'+
+                                '<div class="google-map-point-content__phone">Телефон: {{ store_point.phone }}</div>'+
+                                {% if store_point.work_time_details %}
+                                    '<h6 class="google-map-point-content__work_time_header">Время работы:</h5>'+
+                                    '<div class="google-map-point-content__work_time">'+
+                                    '{% set work_times = store_point.work_time_details %}'+
+                                    '{% set foo = include('parts/work_time.twig')%}'+
+                                    '{{ foo|replace({'\n': ''})|raw }}'+
+                                    '</div>'+
+                                {% endif %}
+                                '</div>',
+                            visible: true
+                            {% if store_point.icon  %} ,icon: '{{ store_point.icon }}' {% endif %}
+                        });
+
+                        google.maps.event.addListener(marker, 'click', (function(marker) {
+                            return function() {
+                                infowindow.setContent(marker.content);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker));
+                        this.points.push({
+                            'city':'{{ store_point.city }}',
+                            'country': '{{ store_point.country }}',
+                            'marker': marker
+                        });
+                        markers.push(marker);
+
+                    {% endif %}
+                {% endfor %}
+                this.map = map;
+                this.cluster = new MarkerClusterer(this.map, markers, {
+                    imagePath: '/images/google_clusterer/m'
+                });
+                var city = false, country = false;
+                {% if no_visible != 1 %}
+                //если одна страна и один город, пишем, чтобы показать на карте
+                    country = '{{store_points.points[0].country }}';
+                    city = '{{store_points.cities[0] }}';
+                {% endif %}
+                if (city && country) {
+                    this.showMarker(country, city);
+                }
+            },
+            showMarker: function(country, city){
+                if (this.map === null) {
+                    this.showMap();
+                }
+                var cityPoints = [];
+                this.points.forEach(function(point){
+                    if (point.country == country && (point.city == city || city == '')) {
+                        cityPoints.push(point.marker);
+                    }
+                });
+                if (cityPoints.length > 0) {
+                    this.setMapPosition(cityPoints);
+                }
+            },
+            showMap: function() {
+                if (this.map === null) {
+                    this.initMap();
+                }
+                this.mapElement.classList.remove('hidden');
+                this.cluster.redraw();
+            },
+            hideMap: function() {
+                this.mapElement.classList.add('hidden');
+            },
+            setMapPosition: function(markers) {
+                var minX = 0, maxX = 0, minY = 0, maxY = 0;
+                markers.forEach(function(marker){
+                    minX = (minX > marker.position.lng() || minX == 0 ? marker.position.lng() : minX);
+                    maxX = (maxX < marker.position.lng() || maxX == 0 ? marker.position.lng() : maxX);
+                    minY = (minY > marker.position.lat() || minY == 0 ? marker.position.lat() : minY);
+                    maxY = (maxY < marker.position.lat() || maxY == 0 ? marker.position.lat() : maxY);
+                });
+                //console.log(minX, maxX, minY, maxY);
+                var centerX = (maxX + minX)/2;
+                var centerY = (maxY + minY)/2;
+                var range = maxY-minY > maxX-minX ? maxY-minY : maxY-minY;
+                var zoom = range == 0 ? 16 : Math.round(30/(Math.log10(10000 * range + 1)));
+                this.map.setCenter({lat: centerY, lng: centerX});
+                this.map.setZoom(zoom);
+            }
+
+        };
+    </script>
+    {% if no_visible == 1 %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places" async defer></script>
+    {% else %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
+    {% endif %}
+

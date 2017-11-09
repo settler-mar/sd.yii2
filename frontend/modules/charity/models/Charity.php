@@ -90,4 +90,13 @@ class Charity extends \yii\db\ActiveRecord
   {
     Cache::clearName('account_charity' . $this->user_id);
   }
+
+  public static function waitingCount($userId = null)
+  {
+      $count = self::find()->where(['is_listed' => 0]);
+      if ($userId) {
+        $count = $count->andWhere(['user_id' => $userId]);
+      }
+      return $count->count();
+  }
 }

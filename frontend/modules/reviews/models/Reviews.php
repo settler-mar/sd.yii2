@@ -151,12 +151,12 @@ class Reviews extends \yii\db\ActiveRecord
         ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
         ->asArray()
         ->one();
-      $rating = intval($data['avgrating']);
-      $reviewsCount = intval($data['reviews_count']);
 
       return [
-        'value' => $rating,
-        'reviews_count' => $reviewsCount,
+        'value' => $data['avgrating'],
+        //'value' => intval($data['avgrating']),
+        //'value_float' => floatval($data['avgrating']),
+        'reviews_count' => intval($data['reviews_count']),
       ];
     }, $cache->defaultDuration, $dependency);
     return $data;

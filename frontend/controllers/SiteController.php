@@ -17,6 +17,8 @@ use frontend\components\SdController;
 use frontend\modules\users\models\Users;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\withdraw\models\UsersWithdraw;
+use frontend\modules\charity\models\Charity;
+use frontend\modules\b2b_users\models\B2bUsers;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
@@ -63,7 +65,8 @@ class SiteController extends SdController
   {
     return [
       'error' => [
-        'class' => 'yii\web\ErrorAction',
+        //'class' => 'yii\web\ErrorAction',
+        'class' => 'frontend\components\SdErrorHandler',
       ],
       'captcha' => [
         'class' => 'yii\captcha\CaptchaAction',
@@ -85,6 +88,10 @@ class SiteController extends SdController
     $reviews = Reviews::top();
 
     //$reg_form = new RegistrationForm();
+    Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
     return $this->render('index', [
       'time' => time(),
@@ -94,24 +101,24 @@ class SiteController extends SdController
     ]);
   }
 
-/*  public function actionTests(){
-    try {
-      Yii::$app
-        ->mailer
-        ->compose(
-          ['html' => 'test', 'text' => 'test'],
-          [
-          ]
-        )
-        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
-        ->setTo('12312321')
-        ->setSubject(Yii::$app->name . ': Регистрация')
-        ->send();
-    } catch (\Exception $e) {
-      return 2;
-    }
-    return 1;
-  }*/
+  /*  public function actionTests(){
+      try {
+        Yii::$app
+          ->mailer
+          ->compose(
+            ['html' => 'test', 'text' => 'test'],
+            [
+            ]
+          )
+          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+          ->setTo('12312321')
+          ->setSubject(Yii::$app->name . ': Регистрация')
+          ->send();
+      } catch (\Exception $e) {
+        return 2;
+      }
+      return 1;
+    }*/
 
   public function actionAdmin(){
     if(
@@ -137,9 +144,11 @@ class SiteController extends SdController
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
 
     $this->layout='@app/views/layouts/admin.twig';
-    
+
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
+    $notes['users_charity'] = Charity::waitingCount();
+    $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
 
     return $this->render('admin', [
       'users_count' => $usersCount,
@@ -151,6 +160,41 @@ class SiteController extends SdController
     ]);
   }
 
+  public function actionOffline($r=0){
+    $page='offline';
+
+    $user=Users::find()
+      ->where(['uid'=>$r])
+      ->one();
+    if(!$user || !$user->getBarcodeImg(true)){
+      throw new HttpException(404 ,'User not found');
+    }
+
+    $page=Meta::find()
+      ->where(['page'=>$page])
+      ->asArray()
+      ->one();
+    if(!$page){
+      throw new HttpException(404 ,'User not found');
+    }
+
+    $page['friend_user']=$user;
+    if(Yii::$app->request->isAjax){
+      throw new HttpException(404 ,'User not found');
+    }
+
+    $page['dopline']='{{_include(\'instruction_offline\') | raw}}';
+    $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $this->params['breadcrumbs'][] = $page['title'];
+
+    Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?r=".$user->uid."\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
+    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru".$user->getBarcodeImg()."\" />";
+
+    return $this->render('static_page',$page);
+
+  }
   /**
    * /faq
    * @return string
@@ -198,6 +242,20 @@ class SiteController extends SdController
     };
     $this->params['breadcrumbs'][] = 'Партнёрская программа';
     return $this->render('affiliate');
+  }
+
+
+  /**
+   * /affiliate
+   * @return string
+   */
+  public function actionOfflineSystem()
+  {
+    if (!Yii::$app->user->isGuest) {
+      Yii::$app->response->redirect(Url::to('/account/offline'));
+    };
+    //$this->params['breadcrumbs'][] = 'Партнёрская программа';
+    return $this->actionStaticPage('account/offline');
   }
   /**
    * /loyalty
@@ -259,6 +317,8 @@ class SiteController extends SdController
       }
       $data['link']=$coupon->goto_link;
       $store=$coupon->store_id;
+      $coupon->visit++;
+      $coupon->save();
     }
 
     $store=Stores::findOne(['uid'=>$store]);
@@ -267,7 +327,7 @@ class SiteController extends SdController
     }
 
     if($store->is_active==0){
-      return $this->redirect('/stores/'.$store->route);
+      return $this->redirect('/store/'.$store->routeUrl);
     }
 
     if($data['link']=='') {
@@ -275,6 +335,10 @@ class SiteController extends SdController
     }
 
     $data['store']=$store;
+
+    if($data['link']=='') {
+      $data['link']=$store->url;
+    }
 
     if (strripos($data['link'], "?") === false) {
       $data['link'] .= "?";
@@ -321,7 +385,7 @@ class SiteController extends SdController
     if(Yii::$app->request->isAjax){
       return json_encode([
         'html'=>$this->renderAjax('static_page_ajax',$page)
-        ]);
+      ]);
     }else{
       $this->params['breadcrumbs'][] = $page['title'];
       return $this->render('static_page',$page);

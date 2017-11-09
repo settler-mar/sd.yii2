@@ -6,6 +6,7 @@ use common\models\Admitad;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -17,6 +18,15 @@ class PaymentsController extends Controller
 
   private $stores = [];
   private $users = [];
+
+  //добавляем параметры для запуска
+  public $day;
+  public function options($actionID)
+  {
+    if($actionID=='index') {
+      return ['day'];
+    }
+  }
 
   /**
    * Получает наш id магазина по id от адмитада
@@ -56,7 +66,7 @@ class PaymentsController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionIndex($options = false, $send_mail = true)
+  public function actionIndex($options = false, $send_mail = true, $day=false)
   {
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
@@ -66,6 +76,10 @@ class PaymentsController extends Controller
       'offset' => 0,
 //      'subid'=>61690,
     ];
+
+    if($this->day){
+      $days=$this->day;
+    }
 
     if (is_array($options)) {
       $params = array_merge($params, $options);
@@ -92,11 +106,11 @@ class PaymentsController extends Controller
     while ($payments) {
       //d($payments['_meta']);
       foreach ($payments['results'] as $payment) {
-        if (!$payment['subid']) {
+        if (!$payment['subid'] || (int)$payment['subid']==0) {
           continue;
         }
 
-        // d($payment);
+        //ddd($payment['id']);
         $action_id = $payment['action_id'];
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
@@ -110,11 +124,20 @@ class PaymentsController extends Controller
           continue;
         }
 
+        if($payment['positions'] && $payment['positions'][0] && $payment['positions'][0]['rate_id']){
+          $rate=TariffsRates::find()
+            ->where(['id_rate'=>$payment['positions'][0]['rate_id']])
+            ->one();
+          $rate_id=$rate->uid;
+        }else{
+          $rate_id=0;
+        }
+
         if (!$db_payment) {
           //добавляем новый платеж
           $is_update = true;
 
-          $db_payment = new Payments();
+          $db_payment = new Payments(['scenario' => 'online']);
 
           $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
 
@@ -131,7 +154,7 @@ class PaymentsController extends Controller
           $db_payment->is_showed = 1;
           $db_payment->affiliate_id = $payment['advcampaign_id'];
           $db_payment->user_id = $payment['subid'];
-          $db_payment->order_price = $payment['cart'];
+          $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
           $db_payment->reward = $reward;
           $db_payment->cashback = $cashback;
           $db_payment->status = $status;
@@ -147,6 +170,8 @@ class PaymentsController extends Controller
           $db_payment->shop_percent = $store->percent;
           $db_payment->order_id = $payment['order_id'];
           $db_payment->kurs = $kurs;
+          $db_payment->action_code = $payment['tariff_id'];
+          $db_payment->rate_id = $rate_id;
 
           if ($user->referrer_id > 0) {
             $ref = $this->getUserData($user->referrer_id);
@@ -167,7 +192,10 @@ class PaymentsController extends Controller
             $time+=$store->hold_time*24*60*60;
             $db_payment->closing_date=date("Y-m-d H:i:s",$time);
           }
-          $db_payment->save();
+
+          if(!$db_payment->save()){
+            continue;
+          };
 
           //Создаем нотификацию пользователя
           $notifi = new Notifications();
@@ -190,19 +218,14 @@ class PaymentsController extends Controller
                     'payment' => $db_payment,
                   ]
                 )
-                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['supportEmail']])
+                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
                 ->setTo($user->email)
-                ->setSubject(Yii::$app->name . ': Начислен кэшбэк')
+                ->setSubject(Yii::$app->name . ': Зафиксирован новый кэшбэк')
                 ->send();
             } catch (\Exception $e) {
             }
           }
         } else {
-          //для подтвержденных заказов ни чего не меняем уже
-          if ($db_payment->status == 2) {
-            continue;
-          }
-
           //обновляем старый платеж
           if ($db_payment->kurs > 0) {
             $kurs = $db_payment->kurs;
@@ -211,27 +234,42 @@ class PaymentsController extends Controller
             $kurs = $db_payment->reward / $payment['payment'];
           }
 
-          $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
-          $reward = $kurs * $payment['payment'];
+          if(!$kurs){
+            $kurs=Yii::$app->conversion->getRUB(1, $payment['currency']);
+          }
 
-          $cashback = $reward * $db_payment->shop_percent / 100;
-          $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+          $db_payment->kurs=$kurs;
 
-          $cashback = round($cashback, 2);
-          $reward = round($reward, 2);
+          //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
+          if ($db_payment->status == 2) {
+            //continue;
 
-          $db_payment->reward = $reward;
-          $db_payment->cashback = $cashback;
-          $db_payment->status = $status;
+            //через врямя удалить
+            $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
+            $db_payment->rate_id = $rate_id;
+          }else {
+            $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
+            $reward = $kurs * $payment['payment'];
 
-          if ($user->referrer_id > 0) {
-            $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
-            if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-              $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
-            } else {
-              $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+            $cashback = $reward * $db_payment->shop_percent / 100;
+            $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+
+            $cashback = round($cashback, 2);
+            $reward = round($reward, 2);
+
+            $db_payment->reward = $reward;
+            $db_payment->cashback = $cashback;
+            $db_payment->status = $status;
+
+            if ($user->referrer_id > 0) {
+              $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
+              if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
+                $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+              } else {
+                $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+              }
+              $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
             }
-            $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
           }
 
           if (count($db_payment->getDirtyAttributes()) > 0) {
@@ -272,6 +310,35 @@ class PaymentsController extends Controller
   }
 
 
+  /**
+   * Завершение платежей по close date
+   */
+  public function actionAutoComplite(){
+    $users = [];
+
+    $payments = Payments::find()
+      ->andWhere(['<','closing_date',date("Y-m-d H:i:s")])
+      ->andWhere(['status'=>0])
+      ->all();
+
+    foreach ($payments as $payment) {
+      $payment->status=2;
+      $payment->save();
+      if (!in_array($payment->user_id, $users)) {
+        $users[] = $payment->user_id;
+      }
+    }
+
+    //делаем пересчет бланса пользователей
+    if (count($users) > 0) {
+      Yii::$app->balanceCalc->todo($users, 'cash');
+    }
+  }
+
+
+  /*
+   * Удаление дубликатов платежей
+   */
   public function actionClaerDouble()
   {
     $sql = 'SELECT uid from `cw_payments` where action_id in (

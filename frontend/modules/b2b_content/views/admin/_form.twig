@@ -1,0 +1,53 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+            </div>
+
+            {% set form = active_form_begin() %}
+            <div class="col-md-6">
+
+                {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
+
+                {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+
+                {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
+
+            </div>
+            <div class="col-md-6">
+
+                {{ form.field(model, 'menu_show').dropDownList({
+                    '0':'Скрыть',
+                    '1':'Показать',
+                })|raw }}
+
+                {{ form.field(model, 'menu_index').textInput()|raw }}
+
+                {{ form.field(model, 'registered_only').dropDownList({
+                    '0':'Для всех',
+                    '1':'Только для авторизованных',
+                })|raw }}
+
+            </div>
+            <div class="col-md-12">
+                {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+                {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
+
+
+                {{ form.field(model, 'content').textarea({'rows':6,'class':'visual_editor'})|raw }}
+
+
+                <div class="form-group">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+
+            </div>
+
+            </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>

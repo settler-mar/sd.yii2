@@ -29,7 +29,7 @@
                         {% for visit in visit_history %}
                         <tr>
                             <td>{{_date(visit.visit_date)}}</td>
-                            <td class="store"><a href="/stores/{{visit.route}}">{{visit.name}}</a></td>
+                            <td class="store"><a href="/stores/{{visit.route}}{{ _if(visit.is_offline,'-offline') }}">{{visit.name}}</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

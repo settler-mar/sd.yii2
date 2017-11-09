@@ -1,0 +1,49 @@
+<section class="store-intro intro section-padding" id="howgetcashback">
+    <div class="container">
+        <div class="row">
+            <h3>
+                {% if infotitle %}
+                    {{ infotitle }}
+                {% else %}
+                    Как получить кэшбэк?
+                {% endif %}
+            </h3>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe00c;" class="icon"></span>
+                </div>
+                <div class="intro-content {% if user_id %}through{% endif %}">
+                    <h5>Регистрируйтесь на сайте</h5>
+                    <p>Пройдите {% if not user_id %}<a href="#registration" class="ignore-hash">простую регистрацию</a>{% else %} простую регистрацию {% endif %} в кэшбэк-сервисе SecretDiscounter.</p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe027;" class="icon"></span>
+                </div>
+                <div class="intro-content">
+                    <h5>Перейдите в магазин</h5>
+                    <p>Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a> и сделайте заказ на сайте.</p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature">
+                <div class="intro-icon">
+                    <span data-icon="&#xe016;" class="icon"></span>
+                </div>
+                <div class="intro-content last">
+                    <h5>ЗАФИКСИРУЙТЕ ПОКУПКУ</h5>
+                    <p>
+                        При получении заказа покажите
+                        курьеру ваш <a href="/offline-system">личный штрихкод</a>,
+                        попросите зафиксировать покупку.
+                        Сразу после этого ваш кэшбэк
+                        отобразится в вашем <a href="/account"> Личном
+                        кабинете</a> в SecretDiscounter. Если же вы оформляете покупку
+                        с доставкой по почте – тогда укажите
+                        <a href="/offline-system">номер с вашего штрихкода</a> в примечании к заказу.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

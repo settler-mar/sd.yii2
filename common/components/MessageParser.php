@@ -95,16 +95,22 @@ class MessageParser extends Component
           $data_in=Notifications::find()->where(['uid'=>$uid])->asArray()->one();
         }
 
-        if($data_in['payment_id']>0) {
+        if((int)$data_in['payment_id']>0) {
           $payment=Payments::find()
             ->where(['uid'=>$data_in['payment_id']])
             ->select(['action_id','order_price','user_id','order_id','affiliate_id','cpa_id'])
             ->asArray()
             ->one();
 
-          $shop=$this->getShop($payment['cpa_id'],$payment['affiliate_id']);
 
-          $data_in=array_merge($data_in,$payment,$shop);
+          if($payment) {
+            $data_in = array_merge($data_in, $payment);
+
+            $shop=$this->getShop($payment['cpa_id'],$payment['affiliate_id']);
+            if($payment) {
+              $data_in = array_merge($data_in, $shop);
+            };
+          };
         }
 
         $user=$this->getUser($data_in['user_id']);

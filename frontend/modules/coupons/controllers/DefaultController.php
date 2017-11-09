@@ -102,6 +102,7 @@ class DefaultController extends SdController
     if (!empty($categoryCoupons)) {
       \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
+      $this->current_coupon_category_id = $category;
       $contentData["counts"] = Coupons::counts(false, $category);
       $cacheName .= '_' . $category;
       $contentData['category_id'] = $category;
@@ -123,13 +124,13 @@ class DefaultController extends SdController
         exit;
         //return $this->redirect('/coupons', 301);
       }
-      \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId;
+      \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId.($store->cpaLink->cpa_id == 2 ? '/online' : '');
       $contentData["counts"] = Coupons::counts($storeId);
       $contentData['current_store'] = $store;
       $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::find()
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->from(Coupons::tableName() . ' cwc')
@@ -142,7 +143,7 @@ class DefaultController extends SdController
       $contentData["counts"] = Coupons::counts();
       \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::find()
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->from(Coupons::tableName() . ' cwc')
@@ -216,7 +217,7 @@ class DefaultController extends SdController
         throw new \yii\web\NotFoundHttpException;
       }
     }
-    header("Location: /coupons".$parent->route,TRUE,301);
+    header("Location: /coupons/".$parent->route, TRUE, 301);
     //$this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
   }

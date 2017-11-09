@@ -1,5 +1,9 @@
+p em {
+  font-style: italic;
+}
 .accordion{
   margin-bottom: 3px;
+  //max-width: 935px;
 
   + p{
     padding-top: 7px;
@@ -25,12 +29,20 @@
       font: normal normal normal 14px/1 FontAwesome;
       color: #e6ae03;
       font-size: 14px;
+      margin-top: 4px;
     }
     .angle-down .icon:before {
       content: "\f107";
     }
     .angle-up .icon:before {
       content: "\f106";
+    }
+
+    h1,h2,h3,h4,h5,h6{
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
     }
   }
 
@@ -43,25 +55,32 @@
     font-size: 14px;
     color: #1e2527;
     border-radius: 3px;
-    max-width: 750px;
+    //max-width: 935px;
 
-    &:before{
+    //&:before{
+    //  content:"\f067";
+    //  width: 20px;
+    //  display: inline-block;
+    //  text-align: center;
+    //  margin-left: 3px;
+    //  font: normal normal normal 14px/1 FontAwesome;
+    //}
+    &:after{
       content:"\f067";
       width: 20px;
       display: inline-block;
       text-align: center;
-      margin-left: 3px;
-      display: inline-block;
       font: normal normal normal 14px/1 FontAwesome;
+      float: right;
     }
-
     +.accordion-content{
       margin-bottom: 20px;
       padding: 10px;
       border: 1px solid #D2D6DE;
       border-top: 0;
       border-radius: 0 0 3px 3px;
-      max-width: 750px;
+      font-size: 14px;
+      //max-width: 750px;
     }
   }
 
@@ -80,7 +99,7 @@
     .accordion-title {
       border-radius: 3px 3px 0 0;
 
-      &:before{
+      &:after{
         content:"\f068";
       }
     }
@@ -104,7 +123,7 @@
   height: 32px;
   width: 32px;
   margin: 2px;
-  background-image:url(/images/socialicons32.png) ;
+  background-image:url(/images/socialicons_new_32.png) ;
   display: inline-block;
 }
 
@@ -151,9 +170,18 @@
   .icon-journal {
     background-position: -115px -50px;
   }
+  .icon-telegram {
+    background-position: -115px -50px;
+  }
+  .icon-viber {
+    background-position: -148px -14px;
+  }
+  .icon-whatsapp {
+    background-position: -46px -50px;
+  }
 }
 
-#share42{
+.share42_wrap{
   white-space: nowrap
 }
 
@@ -187,7 +215,7 @@ table .status_bg_1 {
   top: 0;
   height: 0vh;
   width: 100vw;
-  z-index: 999;
+  z-index: 1999;
 
   animation-name: notification_box_hide;
   animation-delay: .15s;
@@ -294,7 +322,7 @@ table .status_bg_1 {
       .notify_control{
         border-top: none;
 
-        div{
+        div,a{
           background-color: #e6ae03;
           border-radius: 3px;
           font-size: 13px;
@@ -302,7 +330,8 @@ table .status_bg_1 {
           color:#0f181a;
           border: none;
           padding: 10px 20px;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
+          display: inline-block;
 
           &:hover{
             background-color: #ffc503;
@@ -310,6 +339,18 @@ table .status_bg_1 {
           }
         }
       }
+    }
+  }
+
+  .ad_recomend{
+    //margin-top: -10px;
+    padding-left: 0;
+
+    li{
+      margin-bottom: 20px;
+      list-style: none;
+      border-left: 4px solid #e6ae03;
+      padding-left: 10px;
     }
   }
 }
@@ -644,6 +685,10 @@ table.table-users{
   max-width: 420px;
   display: inline-block;
 }
+.payments-search .kv-drp-container{
+  display: block;
+}
+
 form > .kv-drp-container{
   margin-left: 10px ;
 }
@@ -756,4 +801,65 @@ form > .kv-drp-container{
   display: none;
 }
 
+.sign-up-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
 
+.tooltip > .tooltip-inner {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid gray;
+  padding: 15px;
+  font-size: 14px;
+}
+
+
+//Фикс заголовков
+.content-wrapper {
+  h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+    padding: 0 !important;
+  }
+  h2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h4 {
+    display: block;
+    -webkit-margin-before: 1.33em;
+    -webkit-margin-after: 1.33em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+  h5 {
+    display: block;
+    font-size: 0.83em;
+    -webkit-margin-before: 1.67em;
+    -webkit-margin-after: 1.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+  }
+}

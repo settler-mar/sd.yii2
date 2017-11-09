@@ -49,29 +49,35 @@ class PaymentsSearch extends Payments
     public function search($params)
     {
         $query = Payments::find()
-          ->joinWith(['store'])
-          ->joinWith(['user']);
+            ->joinWith(['store'])
+            ->joinWith(['user']);
 
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
-        ]);
-        $dataProvider->setSort([
-          'attributes' => [
-            'uid',
-            'action_id',
-            'status',
-            'action_date',
-            'order_price',
-            'reward',
-            'cashback',
-            'user_id' => [
-              'asc' => [Users::tableName() . '.email' => SORT_ASC],
-              'desc' => [Users::tableName(). '.email' => SORT_DESC],
+          'sort' => [
+            'attributes' => [
+              'uid',
+              'action_id',
+              'status',
+              'action_date',
+              'order_price',
+              'reward',
+              'cashback',
+              'user_id' => [
+                'asc' => [Users::tableName() . '.email' => SORT_ASC],
+                'desc' => [Users::tableName(). '.email' => SORT_DESC],
+              ],
+              'storeName' => [
+                'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+                'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+              ],
             ],
-            'storeName' => [
-              'asc' => [Stores::tableName() . '.name' => SORT_ASC],
-              'desc' => [Stores::tableName(). '.name' => SORT_DESC],
-            ],
+            'defaultOrder' => [
+              'uid' => SORT_DESC,
+            ]
+          ],
+          'pagination' => [
+            'pageSize' => 40,
           ],
         ]);
 
@@ -83,13 +89,13 @@ class PaymentsSearch extends Payments
             return $dataProvider;
         }
 
-        $this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
+        //$this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'uid' => $this->uid,
+            'cw_payments.uid' => $this->uid,
             'is_showed' => $this->is_showed,
-            'action_id' => $this->action_id,
+            'cw_payments.action_id' => $this->action_id,
             'affiliate_id' => $this->affiliate_id,
            // 'user_id' => $this->user_id,
             'order_price' => $this->order_price,
@@ -120,6 +126,7 @@ class PaymentsSearch extends Payments
             ],
         ]);
       }
+
       if ($this->user_id) {
         $query->andFilterWhere([
           'or',[

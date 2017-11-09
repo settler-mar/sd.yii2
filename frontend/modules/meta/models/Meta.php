@@ -68,7 +68,13 @@ class Meta extends \yii\db\ActiveRecord
       if ($page == 'affiliate-system') {
         $page = 'account/affiliate';
       };
+      if ($page == 'offline-system') {
+        $page = 'account/offline';
+      };
+
       if ($page == '') $page = 'index';
+
+      $page=str_replace('-offline','/offline',$page);//добавляем поддержку офлайна
 
       //todo закешировать с этого места
       $page_meta = Meta::find()

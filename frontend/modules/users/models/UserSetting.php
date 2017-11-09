@@ -19,7 +19,6 @@ class UserSetting extends Users
   private $_user;
 
 
-
   /**
    * @inheritdoc
    */
@@ -33,14 +32,14 @@ class UserSetting extends Users
       [['sex'], 'string', 'max' => 1],
       [['notice_email'], 'integer'],
 
-      [['email', 'name',  'added'], 'required'],
+      [['email', 'name', 'added'], 'required'],
       [['email'], 'email'],
-      [['email'], 'unique','message' => 'Данныей email принадлежит другому пользователю.'],
+      [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
 
-      [['old_password','new_password','r_new_password'], 'string'],
-      [['old_password','new_password','r_new_password'], 'trim'],
-      [['old_password','new_password','r_new_password'], 'string', 'max' => 60],
-      [['new_password','r_new_password'], 'string', 'min' => 6],
+      [['old_password', 'new_password', 'r_new_password'], 'string'],
+      [['old_password', 'new_password', 'r_new_password'], 'trim'],
+      [['old_password', 'new_password', 'r_new_password'], 'string', 'max' => 60],
+      [['new_password', 'r_new_password'], 'string', 'min' => 6],
       [['old_password'], 'string', 'min' => 5],
 
       ['old_password', 'validatePassword'],
@@ -53,7 +52,7 @@ class UserSetting extends Users
 
       //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
       ['new_password', 'required', 'when' => function ($model) {
-        return strlen($model->old_password)>0 || strlen($model->r_new_password)>0;
+        return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
       }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-old_password').val().length >0 ||
@@ -61,7 +60,7 @@ class UserSetting extends Users
       }"],
 
       ['old_password', 'required', 'when' => function ($model) {
-        return strlen($model->new_password)>0 || strlen($model->r_new_password)>0;
+        return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
       }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-new_password').val().length >0 ||
@@ -69,7 +68,7 @@ class UserSetting extends Users
       }"],
 
       ['r_new_password', 'required', 'when' => function ($model) {
-        return strlen($model->old_password)>0 || strlen($model->new_password)>0;
+        return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
       }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-old_password').val().length >0 ||
@@ -85,19 +84,23 @@ class UserSetting extends Users
     ];
   }
 
-  public function validatePassword($old_password)
+  public function validatePassword($param_name)
   {
-    if (!Yii::$app->getSecurity()->validatePassword($this->old_password, $this->password)) {
+    $old = $this->getOldAttributes();
+    $passord = $old['password'];
+    if (!Yii::$app->security->validatePassword($this->old_password, $passord)) {
       $this->addError('old_password', 'Старый пароль введен не верно.');
     }
+    Yii::$app->session->addFlash('info', 'Пароль изменен на <b>' . $this->new_password . '</b>');
   }
 
-  public function attributeLabels() {
+  public function attributeLabels()
+  {
     return array(
       'name' => 'Имя',
-      'old_password'=>'Старый пароль',
-      'new_password'=>'Новый пароль',
-      'r_new_password'=>'Новый пароль(повторно)',
+      'old_password' => 'Старый пароль',
+      'new_password' => 'Новый пароль',
+      'r_new_password' => 'Новый пароль(повторно)',
     );
   }
 

@@ -1,0 +1,17 @@
+{% if store_rating %}
+<div typeof="v:Review-aggregate" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="http://rdf.data-vocabulary.org/#" class="outline microdata-store-rating">
+    Рейтинг SecretDiscounter.ru</br>
+    <span property="v:itemreviewed">Средняя оценка:
+        <span rel="v:rating">
+            <span typeof="v:Rating">
+                <span property="v:average">{{ _nf(store_rating.value, 1) }}</span>
+                из
+                <span property="v:best">5</span>
+            </span>
+        </span>
+        <span> на основании опроса</span>
+        <span property="v:votes">{{ store_rating.reviews_count }}</span>
+        <span>наших пользователей</span>
+    </span>
+</div>
+{% endif %}

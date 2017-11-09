@@ -1,0 +1,227 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Платежи' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'url':'/home','label':'Личный кабинет'}]) %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="payments-index">
+    <h1>{{ html.encode(this.title) }}</h1>
+    <div class="col-md-12">
+        <table  class="table payments-result" >
+            <tr>
+                <th></th>
+                <th>Всего</th>
+                <th>Подтверждено</th>
+                <th>Отменено</th>
+                <th>В ожидании</th>
+            </tr>
+            <tr class="line">
+                <td class="name">Количество покупок</td>
+                <td class="value">{{ result_all.count }}</td>
+                <td class="value">{{ result_success.count }}</td>
+                <td class="value">{{ result_revoke.count }}</td>
+                <td class="value">{{ result_waiting.count }}</td>
+            </tr>
+            <tr class="line">
+                <td class="name">Сумма покупок</td>
+                <td class="value">{{ _nf(result_all.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_success.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_revoke.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_waiting.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+            </tr>
+            <tr class="line">
+                <td class="name">Кэшбэк</td>
+                <td class="value">{{ _nf(result_all.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_success.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_revoke.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">{{ _nf(result_waiting.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-12 payments-info">
+        <p>
+            Все платежи подтверждаются <span>автоматически</span> по истечении времени холда, например, равного <span>30</span> дням (за 5 дней до автоматического подтверждения платеж помечается красным цветом).
+            Если произошел <span>возврат товара или любая другая отмена сделки</span> – вы должны до истечения времени холда выделить этот платеж и нажать кнопку с изображением корзины в конце платежа, обязательно указав причину отмены в комментарии.
+            Если произошел <span>частичный возврат</span> – отклонять платеж не нужно, но следует нажать на «карандашик» в конце строки и уменьшить сумму платежа, также снабдив комментарием.
+            <span>Подтвердить платеж</span> можно и до истечения времени холда – выделите его и нажмите на зеленую кнопку «Провести».
+        </p>
+        <p>
+            <span>!!!</span> Помните, что если вы не предприняли никаких действий <span>до</span> автоматического подтверждения платежа, такой платеж априори считается <span>подтвержденным</span>, и вы обязаны уплатить с него сумму комиссионных.
+
+        </p>
+    </div>
+
+    <form method="get" class="form-horizontal col-md-12 payments-search" style="margin: 20px auto;">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="payments_select_store">Магазин</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="storeId" id="payments_select_store">
+                    <option value=""></option>
+                    {% for index, store in stores %}
+                        <option
+                            value="{{ index }}"
+                            data-points='[
+                            {% for point in store.points %}
+                                {"id":"{{ point.point_id }}","country":"{{ point.country}}","name":"{{ point.point_name}}","address":"{{ point.address}}","city":"{{ point.city }}"}
+                                {% if loop.index < loop.length %},{% endif %}
+                            {% endfor %}]'
+                        {% if index == storeId %}selected{% endif %}
+                        >{{ store.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="payments_select_store_point">Торговая точка</label>
+            <div class="col-sm-10">
+                <select class="form-control" data-get="{{ store_point }}" name="store_point" id="payments_select_store_point">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="date_range">Период</label>
+            <div  class="col-sm-6">
+                {{ data_ranger | raw }}
+            </div>
+            <div class="col-sm-2">
+                <input type="submit" value="Поиск" class="btn btn-primary">
+            </div>
+            <div class="col-sm-2">
+                <a href="/payments/status" class="ajax-action records-action btn btn-default status_2"
+                   title="Провести выбранное"
+                   data-value="2"><span class="fa fa-check"></span> Провести
+                </a>
+            </div>
+
+        </div>
+    </form>
+    {{ grid_view_widget({
+            'dataProvider': dataProvider,
+            'options': {
+                'id': 'grid-ajax-action',
+                'class': 'payments-grid-view'
+            },
+            'rowOptions': table_data.date_alarm,
+            'pager' : {
+                'firstPageLabel' : true,
+                'lastPageLabel' : true,
+                'maxButtonCount':10
+            },
+            'filterModel': searchModel,
+            'columns': [
+                {'class': '\\yii\\grid\\SerialColumn'},
+                {
+                    'class': '\\yii\\grid\\CheckboxColumn',
+                    'checkboxOptions': table_data.checkbox_options,
+                },
+                'uid',
+                {
+                    'format':'raw',
+                    'attribute':'storeName',
+                    'value': table_data.store_name
+                },
+                {
+                    'format':'raw',
+                    'attribute':'storePointName',
+                    'value': table_data.store_point_name
+                },
+                {
+                    'format':'raw',
+                    'attribute':'user_id',
+                    'label': 'Пользователь',
+                    'value': table_data.user
+                },
+                {
+                    'format':'raw',
+                    'attribute':'click_date',
+                    'value': table_data.click_date,
+                    'label': 'Дата покупки',
+                    'filter': click_data_range
+                },
+                {
+                    'format':'raw',
+                    'attribute':'closing_date',
+                    'value': table_data.closing_date,
+                    'label': 'Дата завершения',
+                    'filter': end_data_range
+                },
+                {
+                    'attribute': 'order_price',
+                    'label': 'Сумма покупки (в валюте торговой точки)',
+                    'value': table_data.order_price_value,
+                    'contentOptions': table_data.order_price_options,
+                },
+                {
+                    'format':'raw',
+                    'label': 'Вознаграждение (в росс. рублях)',
+                    'attribute':'reward',
+                    'value': table_data.reward_value,
+                    'contentOptions': {
+                        'class': 'td-reward',
+                    }
+                },
+                {
+                    'format':'raw',
+                    'label': 'Кэшбэк (в росс. рублях)',
+                    'attribute': 'cashback',
+                    'value': table_data.cashback_value,
+                    'contentOptions': {
+                        'class': 'td-cashback',
+                    }
+                },
+                {
+                    'format':'raw',
+                    'attribute':'status',
+                    'value': table_data.status,
+                    'filter': {
+                        0: 'В ожидании',
+                        1: 'Отменён',
+                        2: 'Подтверждён',
+                    },
+                    'options': {
+                        'class': 'td-status',
+                    },
+                    'label': 'Статус платежа',
+                },
+                {
+                    'format':'raw',
+                    'attribute':'update_button',
+                    'value': table_data.update_buttons,
+                    'label': '',
+                },
+            ],
+        })
+    }}
+{#
+{
+    'format':'raw',
+    'attribute':'action_date',
+    'value': table_data.action_date
+},
+'order_price',
+'reward',
+'cashback',
+'status',
+'click_date',
+'action_date',
+'status_updated',
+'closing_date',
+'cpa_id',
+'additional_id',
+'ref_bonus_id',
+'ref_bonus',
+'ref_id',
+'loyalty_status',
+'order_id',
+'shop_percent',
+'kurs',
+'admin_comment',
+'old_reward',
+'old_order_price'
+#}
+</div>

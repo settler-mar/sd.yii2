@@ -63,7 +63,8 @@ $config= [
       'renderers' => [
         'twig' => [
           'globals' => [
-            'AppAsset'=>'frontend\assets\AppAsset'
+            'AppAsset'=>'frontend\assets\AppAsset',
+            'Fotorama'=>'\kotchuprik\fotorama\Widget',
           ]
         ]
       ]
@@ -77,19 +78,14 @@ $config= [
         '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
+        'account/<action:offline>' => 'account/<action>',
 
         'search' => 'search/default/index',
         'search/<action>' => '404',
 
-        'admin' => 'site/admin',
-        'faq' => 'site/faq',
-        'howitworks' => 'site/howitworks',
-        'terms' => 'site/terms',
-        'promo' => 'site/promo',
+        '<action:(faq|admin|howitworks|terms|promo|loyalty|recommendations|about|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
-        'loyalty' => 'site/loyalty',
-        'recommendations' => 'site/recommendations',
-        'about' => 'site/about',
+        'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
 
         'fixing/<action:payment|stores>'=> 'fixing/<action>',
@@ -171,6 +167,12 @@ $config= [
     ],
     'cache' => [
       'class' => 'frontend\modules\cache\Module',
+    ],
+    'b2b_users' => [
+      'class' => 'frontend\modules\b2b_users\Module',
+    ],
+    'b2b_content' => [
+      'class' => 'frontend\modules\b2b_content\Module',
     ],
   ],
   'params' => $params,

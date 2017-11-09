@@ -152,18 +152,24 @@ $dict = [
         'bonus'=>50,
         'is_webmaster'=>1,
       ],
+      2=>[
+        'name'=>"web master 60%",
+        'display_name'=>"web master",
+        'bonus'=>60,
+        'is_webmaster'=>1,
+      ],
     ],
     'twig_template'=>[
       'notification_title'=>'{{type_txt}}',
       'notification_text'=>'Вам был начислен бонус <b>({{amount}} руб.)</b> за регистрацию на нашем сайте.',// Бонус за регистрацию
 
-      'notification_title_1_0'=>'Новый кэшбэк',
-      'notification_text_0'=>'Ваш кэшбэк на <b>{{amount}}</b> руб. в магазине <b>{{shop_name}}</b> (заказ №{{order_id}}) зафиксирован в нашей системе.',//'в ожидании',//'pending',
+      'notification_title_1_0'=>'Зафиксирован новый кэшбэк',
+      'notification_text_0'=>'Ваш кэшбэк на <b>{{amount}}</b> руб. в <b>{{shop_name}}</b> (заказ №{{order_id}}) зафиксирован в нашей системе.',//'в ожидании',//'pending',
 
       'notification_title_1_1'=>'Кэшбэк отклонен',
       'notification_text_1'=>'К сожалению, ваш кэшбэк в <b>{{shop_name}}</b> (заказ №{{order_id}}) на сумму <b>{{amount}}</b> руб. отклонен.',//'Отменен',//'declined',
 
-      'notification_title_1_2'=>'Начислен кэшбэк',
+      'notification_title_1_2'=>'Зафиксирован новый кэшбэк',
       'notification_text_2'=>'Поздравляем! {{added}} вами был сделан заказ №{{order_id}} в <b>{{shop_name}}</b>, за который вам было начислено <b>{{amount}} руб.</b> кэшбэка.',//'Подтвержден',//'confirmed'
 
       'notification_title_ref_0'=>'Ожидается вознаграждение партнера',
@@ -184,7 +190,7 @@ $dict = [
       'notification_title_manual_3'=>'Бонус за регистрацию',
       'notification_text_manual_3'=>'Поздравляем, вам, как новому пользователю, подключен премиум-аккаунт (+30% кэшбэка). Срок его действия – 10 дней с момента регистрации на нашем сайте (до {{text}}).',
 
-      'notification_title_manual_4'=>'Бонус за регистрацию',
+      'notification_title_manual_4'=>'Бонус за регистрацию отключен',
       'notification_text_manual_4'=>'Ваш премиум-аккаунт отключен по истечении 10 дней после регистрации. Подробнее о нашей накопительной системе лояльности читайте <a href="https://secretdiscounter.ru/loyalty">здесь</a>.',
     ],
     'twig_list_name'=>[
@@ -192,6 +198,23 @@ $dict = [
       1=>"За регистрацию(деньги)",
       2=>"Бонус от администратора",
       3=>"За регистрацию(премиум)",
+    ],
+    'map_icons'=>[
+      1 => "/images/maps/markers/12.png",
+      2 => "/images/maps/markers/13.png",
+      3 => "/images/maps/markers/14.png",
+      4 => "/images/maps/markers/15.png",
+      5 => "/images/maps/markers/24.png",
+      6 => "/images/maps/markers/25.png",
+      7 => "/images/maps/markers/26.png",
+      8=> "/images/maps/markers/32.png",
+      9 => "/images/maps/markers/33.png",
+      10 => "/images/maps/markers/34.png",
+      11 => "/images/maps/markers/36.png",
+      12 => "/images/maps/markers/42.png",
+      13 => "/images/maps/markers/44.png",
+      14 => "/images/maps/markers/45.png",
+      15 => "/images/maps/markers/46.png"
     ],
   ];
 

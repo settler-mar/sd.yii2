@@ -85,6 +85,8 @@ $config = [
             'html' => '\yii\helpers\Html',
             'url' => 'yii\helpers\Url',
             'ActiveForm'=>'yii\bootstrap\ActiveForm',
+            'MultipleInput' => 'unclead\multipleinput\MultipleInput',
+            'MaskedInput' => 'yii\widgets\MaskedInput',
           ],
           'functions' => $twigFunction,
           'uses' => ['yii\bootstrap'],
@@ -119,7 +121,7 @@ $config = [
     //'db' => require __DIR__.'/db.php'
   ],
   'params'=>[
-    'dictionary'=>$dict
+    'dictionary'=>$dict,
   ]
 ];
 

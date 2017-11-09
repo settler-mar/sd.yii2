@@ -11,6 +11,8 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
+use b2b\modules\stores_points\models\B2bStoresPoints;
+
 
 class DefaultController extends SdController
 {
@@ -51,6 +53,10 @@ class DefaultController extends SdController
       if ($store) {
         //есть магазин
         //$this->Params($request->get(), ['page']);
+        if ($store->cpaLink->cpa_id == 2) {
+          //online-offline шоп, для поиска мететегов добавляем в url-mask
+          \Yii::$app->params['url_mask'] = $request->pathInfo . '/online';
+        }
         $this->checkParams('store');
         echo $this->actionStore($store);
         exit;
@@ -86,10 +92,10 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
+    $offline = $request->get('offline');
 
     $validator = new \yii\validators\NumberValidator();
-    $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'name', 'added',
-      'cashback_percent', 'cashback_summ']]);
+    $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys(Stores::$sortvars)]);
     if (!empty($limit) && !$validator->validate($limit) ||
       !empty($sort) && !$validatorIn->validate($sort)
     ) {
@@ -101,10 +107,25 @@ class DefaultController extends SdController
     $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
 
     $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
+    if ($offline) {
+      $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
+    }
+
     $storesData = [];
+    $dataBaseData = Stores::items()
+      ->addSelect([
+        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
+          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
+        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
+          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+      ])
+      ->orderBy($sort . ' ' . $order);
+    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+
     if ($categoryStore) {
+      //категория магазина
       \Yii::$app->params['url_mask'] = 'stores/category/'.$categoryStore->route;
-      //категория
+
       $category = $categoryStore->uid;
       $storesData['current_category'] = $categoryStore->attributes;//CategoryStores::byId($category);
       if ($categoryStore->is_active == 0) {
@@ -118,48 +139,27 @@ class DefaultController extends SdController
         'url' => '/stores/' . $categoryStore->route,
       ];
 
-      $dataBaseData = Stores::find()
-        ->from(Stores::tableName() . ' cws')
-        ->select([
-          'cws.*',
-          'cstc.category_id',
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-        ])
-        ->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
-        ->where([
-          'cstc.category_id' => $category,
-          'is_active' => [0, 1],
-        ])
-        ->orderBy($sort . ' ' . $order);
-      $cacheName = 'catalog_stores_category' . '_' . $category . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
-    } else {
-      //нет категории /stores
-      $dataBaseData = Stores::find()
-        ->select([
-          '*',
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-          "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-        ])
-        ->where(['is_active' => [0, 1]])
-        ->orderBy($sort . ' ' . $order);
-      $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $dataBaseData->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
+        ->andWhere(['cstc.category_id' => $category]);
+
+      $cacheName .= '_' . $category;
     }
+
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;
     }
     if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
       $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
     }
+    if ($offline) {
+      $cacheName .= '_offline';
+      $dataBaseData->andWhere(['is_offline' => 1]);
+    }
 
     $pagination = new Pagination(
       $dataBaseData,
       $cacheName,
-      ['limit' => $limit, 'page' => $page, 'asArray' => 1]
+      ['limit' => $limit, 'page' => $page]
     );
 
     $storesData['stores'] = $pagination->data();
@@ -174,6 +174,7 @@ class DefaultController extends SdController
       'limit' => $this->defaultLimit == $limit ? null : $limit,
       'sort' => Stores::$defaultSort == $sort ? null : $sort,
       'page' => $page,
+      'offline' => $offline ? 1 : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'stores';
@@ -198,7 +199,10 @@ class DefaultController extends SdController
    */
   private function actionStore($store)
   {
-    if ($store->is_active < 0) {
+    if (
+      $store->is_active < 0 &&
+      (Yii::$app->user->isGuest ||!Yii::$app->user->can('ShopView'))
+    ) {
       $this->redirect('/stores', 301)->send();
       exit();
     }
@@ -219,7 +223,7 @@ class DefaultController extends SdController
       $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
       return Coupons::find()
         ->from(Coupons::tableName() . ' cwc')
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
           'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
           'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
@@ -237,6 +241,8 @@ class DefaultController extends SdController
     $additionalStores = $this->getAdditionals($store);
     $contentData["additional_stores"] = $additionalStores['additional_stores'];
     $contentData["additional_stores_category"] = $additionalStores['additional_stores_category'];
+
+    $contentData['store_points'] = B2bStoresPoints::byStoreId($store->uid);
 
     $contentData["curs"] = Yii::$app->conversion->options();
 
@@ -268,12 +274,10 @@ class DefaultController extends SdController
     if (!$category) {
       //если нет категории
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
-        return Stores::find()
-          ->where(['is_active' => [0, 1]])
-          ->andWhere(['<>', 'uid', $store->uid])
-          ->orderBy('visit DESC')
+        return Stores::items()
+          ->andWhere(['<>', 'cws.uid', $store->uid])
+          ->orderBy('rating DESC')
           ->limit(6)
-          ->asArray()
           ->all();
       }, $cache->defaultDuration, $dependency);
     } else {
@@ -282,15 +286,12 @@ class DefaultController extends SdController
         'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
         function () use ($category, $store
         ) {
-          return Stores::find()
-            ->from(Stores::tableName() . ' cws')
-            ->select(['cws.*'])
+          return Stores::items()
             ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
-            ->where(['cws.is_active' => [0, 1], 'cwstc.category_id' => $category])
             ->andWhere(['<>', 'cws.uid', $store->uid])
-            ->orderBy('RAND()')
+            ->andWhere(['cwstc.category_id' => $category->uid])
+            ->orderBy('rating DESC')
             ->limit(6)
-            ->asArray()
             ->all();
         },
         $cache->defaultDuration,

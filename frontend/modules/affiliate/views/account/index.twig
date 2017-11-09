@@ -17,17 +17,17 @@
   <section class="affiliate account-padding">
     <div class="row">
       <div class="col-md-12">
-        <h3 class="text-center">
+        <h1 class="text-center">
           {% if h1 %}
             {{ h1 | raw}}
           {% else %}
             Принцип работы партнёрской программы
           {% endif %}
-        </h3>
+        </h1>
       </div>
       {% include 'parts/principle-affiliate.twig' %}
       <div class="col-md-12 ways-to-invite">
-        <h3 class="text-center">А пригласить можно так</h3>
+        <h2 class="text-center">А пригласить можно так</h2>
       </div>
       <div class="col-md-4 ways-invitation">
         <div class="intro-icon">
@@ -55,8 +55,11 @@
         </div>
         <div class="intro-content">
           <h5>Отправьте друзьям ссылку</h5>
-          <p class="link" style="margin-top: 15px;">
+          <p class="link" style="margin-top: -5px; margin-bottom: 0">
             <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{user_id}}">
+          </p>
+          <p class="link-sent" >
+            <a href="" class="link-to-clipboard" data-link="https://secretdiscounter.ru/?r={{user_id}}">Скопировать в буфер</a>
           </p>
         </div>
       </div>
@@ -66,7 +69,7 @@
         </div>
         <div class="intro-content">
           <h5>Или по электронной почте</h5>
-          <p>
+          <p style="margin-top: -5px;">
               Отправьте ссылку всем своим друзьям по e-mail
           </p>
         </div>

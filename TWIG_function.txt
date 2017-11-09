@@ -21,3 +21,6 @@ $item=[
 part($part) - путь для элемента шаблона. к примеру {% include parts('breadcrumbs') %}
 test_image - проверка существования картинки
 email_to_name - обрезает email до @
+getShop - получить шоп по его ID
+_can($do) - проверяет раздрешено ли действие по RBAC
+_include($part) - вставляет элемент из папки views/parts. При рендере подгружает переменные для рендера из params['all_params']

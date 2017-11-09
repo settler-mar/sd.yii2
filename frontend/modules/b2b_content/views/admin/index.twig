@@ -1,0 +1,67 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Страницы B2b' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="b2b-content-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+
+                <h1>{{ html.encode(this.title) }}</h1>
+    {# include('_search.twig', {'model': searchModel}) #}
+                <p>
+                    <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Создать страницу' }}</a>
+                </p>
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+
+                            'id',
+                            'page',
+                            'title',
+                            'description:ntext',
+                            {
+                                'format':'raw',
+                                'attribute': 'menu_show',
+                                'filter': {
+                                    '0': 'Нет',
+                                    '1': 'Показать',
+                                },
+                                'value': table_data.menu_show,
+                            },
+                            'menu_index',
+                            {
+                                'format':'raw',
+                                'attribute': 'registered_only',
+                                'filter': {
+                                    '0': 'Для всех',
+                                    '1': 'Для авторизованных',
+                                },
+                                'value': table_data.registered_only,
+                            },
+                            {'class': '\\yii\\grid\\ActionColumn',
+                                'template' : '{update} {delete}',
+                            },
+                        ],
+                    })
+                }}
+{#
+'h1',
+'keywords:ntext',
+'content:ntext',
+'menu_show',
+'menu_index'
+#}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

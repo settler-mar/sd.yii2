@@ -13,6 +13,7 @@ function initEditor(){
     remove_script_host : false,
     document_base_url : "https://secretdiscounter.ru/",
     forced_root_block: false,
+
     plugins: [
       'advlist autolink lists link image charmap hr anchor pagebreak accordion clear_br',
       'searchreplace wordcount visualblocks visualchars code fullscreen',
@@ -57,6 +58,7 @@ function initEditor(){
       ] }
     ]
   });
+  
   function RoxyFileBrowser(field_name, url, type, win) {
     var roxyFileman = '/plugins/fileman/index.html';
     if (roxyFileman.indexOf("?") < 0) {

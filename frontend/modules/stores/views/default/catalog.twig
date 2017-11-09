@@ -27,15 +27,16 @@
                 <div class="col-md-12">
                     <h3 class="text-center">{{current_category.name}}</h3>
                 </div>
-                <div class="col-md-12 short-description__description less">
+                {#<div class="col-md-12 short-description__description less">#}
+                <div class="col-md-12 short-description__description">
                     <div class="description">
                         {{current_category.short_description|raw}}
                     </div>
                 </div>
-                <div >
-                    <div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
-                    <div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
-                </div>
+                {#<div >#}
+                    {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
+                    {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
+                {#</div>#}
             </div>
         </div>
     </section>
@@ -116,14 +117,16 @@
                             </div>
                         {% endfor %}
 
+                        <div class="col-md-12 shops-pagination">
+                            {% include 'parts/pagination.twig' %}
+                        </div>
+
                         {% if current_category.down_description %}
                             <div class="col-md-12 down-description">
                                 {{current_category.down_description|raw}}
                             </div>
                         {% endif %}
-                        <div class="col-md-12 shops-pagination">
-                            {% include 'parts/pagination.twig' %}
-                        </div>
+
                     {% else %}
                         Ничего не найдено.
                     {% endif %}

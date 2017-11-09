@@ -75,7 +75,7 @@ class Foundations extends \yii\db\ActiveRecord
   public function afterDelete()
   {
     $path = $this->getPath();// Путь для сохранения
-    $bp=Yii::$app->getBasePath().'\web'.$path;
+    $bp=Yii::$app->getBasePath().'/web'.$path;
     $this->removeImage($bp.$this->image);   // удаляем старое изображение
   }
 
@@ -94,7 +94,7 @@ class Foundations extends \yii\db\ActiveRecord
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
       $this->image = $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'\web'.$path;
+      $bp=Yii::$app->getBasePath().'/web'.$path;
       if (!file_exists($bp.$path)) {
         mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
       }

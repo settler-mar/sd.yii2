@@ -158,12 +158,12 @@ $functionsList=[
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
-    $value = preg_replace('/[^0-9\.]/', '', $cashback);
+    $value = floatval(preg_replace('/[^0-9\.]/', '', $cashback));
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
     }
 
-    if (intval($value) == 0) {
+    if ($value == 0) {
       $out = '<i class="red fa fa-heart"></i>';
     } elseif (strpos($cashback, '%') === false) {
       $out = $cashback . ' ' .
@@ -288,13 +288,26 @@ $functionsList=[
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';
   },
+  '_include'=>function ($part) {
+    $path=Yii::getAlias('@app').'/views/parts/'.$part.'.twig';
+
+    if(!is_readable($path)){
+      return '<pre>Фаил не найден '.$path.'</pre>';
+    }
+
+    $output=file_get_contents($path);
+    $output=Yii::$app->TwigString->render(
+      $output,
+      Yii::$app->params['all_params']
+    );
+    return $output;
+  },
   'test_image'=>function ($path) {
     if(strlen($path)<5) return false;
     if(strpos($path,'http')!==false) return true;
-
+    if(strpos($path,'//')!==false) return true;
 
     $path=str_replace('//','/',__DIR__.'/../frontend/web/'.$path);
-    //return false;
     return file_exists($path);
   },
   'email_to_name'=>function ($email) {
@@ -303,6 +316,58 @@ $functionsList=[
   },
   '_n_to_br'=>function ($txt) {
     return str_replace("\n",'<br>',$txt);
+  },
+  'Notification'=>function () {
+    $flashes = \Yii::$app->session->getAllFlashes(true);
+
+    if(isset(Yii::$app->params['exception'])){
+      $exception=Yii::$app->params['exception'];
+      $pathInfo = Yii::$app->request->getPathInfo();
+      if(
+        (
+          strpos($pathInfo,'admin')===false ||
+          (
+            !Yii::$app->user->isGuest && Yii::$app->user->can('adminIndex')
+          )
+        ) &&
+        $exception->getMessage()!=='User not found'
+      ){
+        if(!isset($flashes['err'])){
+          $flashes['err']=array();
+        }
+        $flashes['err'][]=$exception->getMessage();
+      };
+    }
+
+    if (count($flashes) == 0) {
+      return '';
+    }
+
+    $js = '';
+    foreach ($flashes as $type => $flashe) {
+      Yii::$app->session->removeFlash($type);
+
+      if (is_array($flashe)){
+        foreach ($flashe as $txt) {
+          if($txt=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){
+            $txt='Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
+          }
+          $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'});' . "\n";
+        }
+      } elseif (is_string($flashe)) {
+          if($flashe=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){
+            $flashe='Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
+          }
+          $js .= 'notification.notifi({message:\'' . $flashe . '\',type:\'' . $type . '\'});' . "\n";
+      }
+    }
+    return '<script type="text/javascript">' . "\n" . $js . '</script>';
+  },
+  'getShop'=>function ($id) {
+    return \frontend\modules\stores\models\Stores::findOne(['uid'=>$id]);
+  },
+  '_can'=>function ($do) {
+    return !Yii::$app->user->isGuest && Yii::$app->user->can($do);
   },
 
 ];

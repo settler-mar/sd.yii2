@@ -7,6 +7,7 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
+use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
@@ -14,7 +15,7 @@ use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
 use common\components\Help;
-
+use yii\db\Query;
 /**
  * This is the model class for table "cw_stores".
  *
@@ -43,17 +44,17 @@ class Stores extends \yii\db\ActiveRecord
   public $filename;
   public $logoTmp;
   public $logoImage;
-
+  public $image_url;
   /**
    * @var string
    */
-  public static $defaultSort = 'name';
+  public static $defaultSort = 'rating';
   /**
    * Possible sorting options with titles and default value
    * @var array
    */
   public static $sortvars = [
-    'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
+    'rating' => ["title" => "Популярности", "title_mobile" => "По популярности"],
     'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
     'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
     'cashback_percent' => ["title" => "%", "title_mobile" => "По % кэшбэка"],
@@ -74,16 +75,19 @@ class Stores extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['name', 'route', 'url', 'currency', 'added', 'hold_time'], 'required'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email'], 'string'],
+      [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name'], 'string'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id'], 'integer'],
-      [['name', 'route', 'url', 'logo', 'local_name'], 'string', 'max' => 255],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
+      [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
+      [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
-      [['route'], 'unique'],
+      [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
+      [['related'], 'compare', 'compareAttribute' => 'uid', 'operator' => '!='],
+      [['related'], 'exist', 'targetAttribute' => 'uid'],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
       [['logoImage'], 'image',
         'minHeight' => 59,
@@ -107,6 +111,7 @@ class Stores extends \yii\db\ActiveRecord
       'route' => 'Route',
       'alias' => 'Alias',
       'url' => 'Url',
+      'url_alternative' => 'Дополнительные URL(через запятую)',
       'logo' => 'Logo',
       'description' => 'Description',
       'currency' => 'Currency',
@@ -120,21 +125,24 @@ class Stores extends \yii\db\ActiveRecord
       'local_name' => 'Альтернативное название',
       'active_cpa' => 'Active Cpa',
       'percent' => 'Percent',
-      'action_id' => 'Action ID',
+      'action_id' => 'Акция',
       'contact_name' => 'Contact Name',
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
       'category_cnt'=>'Количество категорий',
-      'action_id'=>'Акция',
+      'related' => 'Связанный магазин(ID, связка онлайн-оффлайн)',
+      'is_offline' => 'Тип магазина',
+      'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
+      'rating' => 'Рейтинг',
+      'no_rating_calculate' => 'Не пересчитывать рейтинг',
+      'cash_number' => 'Номер чека',
+      'related_stores' => 'Магазины торговой сети (ID через запятую)',
+      'network_name' => 'Название торговой сети',
     ];
   }
 
   public function beforeValidate()
   {
-    if (!parent::beforeValidate()) {
-      return false;
-    }
-
     if ($this->isNewRecord) {
       $this->added = date('Y-m-d H:i:s');
     }
@@ -143,8 +151,10 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    return true;
+    $this->video = json_encode($this->video);
+    return parent::beforeValidate();
   }
+
   /**
    * категории магазина
    * @return $this
@@ -153,6 +163,34 @@ class Stores extends \yii\db\ActiveRecord
   {
     return $this->hasMany(CategoriesStores::className(), ['uid' => 'category_id'])
       ->viaTable('cw_stores_to_categories', ['store_id' => 'uid']);
+  }
+
+  public function getRelatedData(){
+    return $this->hasOne(Stores::className(),['uid'=>'related']);
+  }
+
+  /*
+   * Выдает магазины сети автоматом добавдяя сяанный онлайн-оффлайн магазин и удаляется текущий
+   *
+   */
+  public function getRelatedStores()
+  {
+    if (empty($this->related_stores)) {
+      return null;
+    }
+    $ids = explode(',', $this->related_stores);
+    $ids[]=$this->related;
+
+    foreach(array_keys($ids,$this->uid) as $key){
+      unset($ids[$key]);
+    }
+
+    $stores = self::find()
+      ->where(['is_active' => [0, 1], 'uid' => $ids])
+      ->asArray()
+      ->all();
+
+    return ($stores);
   }
 
   public function getCategory_cnt(){
@@ -177,6 +215,23 @@ class Stores extends \yii\db\ActiveRecord
   }
 
   /**
+   * @return yii\db\ActiveQuery
+   */
+  public function getStoresPoints()
+  {
+    return $this->hasMany(B2bStoresPoints::className(), ['store_id' => 'uid']);
+  }
+
+  public function afterFind()
+  {
+    if(strlen($this->video)<10) {
+      $this->video = array();
+    }else {
+      $this->video = json_decode($this->video, true);
+    }
+  }
+
+  /**
    * @return mixed
    */
   public static function activeCount()
@@ -197,30 +252,43 @@ class Stores extends \yii\db\ActiveRecord
   {
     $cache = Yii::$app->cache;
     $data = $cache->getOrSet('top_12_stores', function () {
-      return self::find()
-        ->orderBy('visit DESC')
-        ->where(['is_active' => [0, 1]])
-        ->limit(12)
-        ->all();
+      return self::items()->orderBy('visit DESC')->limit(12)->all();
     });
     return $data;
   }
 
+  public function getRouteUrl(){
+    $url=$this->route;
+    if($this->is_offline==1){
+      $url.='-offline';
+    }
+    return $url;
+  }
   /**
    * @param $route
    * @return mixed
    */
   public static function byRoute($route)
   {
+    $where = array();
+    if(strpos($route,'-offline')){
+      $where['is_offline']=1;
+      $where['route']=str_replace('-offline','',$route);
+    }else{
+      $where['is_offline']=0;
+      $where['route']=$route;
+    }
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($route) {
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'stores_by_column';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
       return self::find()
-        ->where([
-          'route' => $route,
-          //'is_active' => [0, 1]
-        ])
+        ->where($where)
         ->one();
-    });
+    }, $cache->defaultDuration, $dependency);
+    
     return $data;
   }
 
@@ -231,9 +299,14 @@ class Stores extends \yii\db\ActiveRecord
   public static function byId($id)
   {
     $cache = Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'stores_by_column';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
     $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
       return self::findOne($id);
-    });
+    }, $cache->defaultDuration, $dependency);
+    
     return $data;
   }
 
@@ -261,6 +334,7 @@ class Stores extends \yii\db\ActiveRecord
     }
     return true;
   }
+
   /**
    * @param bool $insert
    * @param array $changedAttributes
@@ -308,8 +382,11 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     $path = $this->getStorePath();// Путь для сохранения
-    $bp=Yii::$app->getBasePath().'\web'.$path;
-    $this->removeImage($bp.$this->Image);   // удаляем старое изображение
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    $this->removeImage($bp.$this->logo);   // удаляем старое изображение
+
+    $this->clearPhotos(); //чистим фотки магазина
+    B2bStoresPoints::deleteAll(['store_id'=>$this->uid]);//удаление торговых точек
   }
 
   /**
@@ -327,8 +404,8 @@ class Stores extends \yii\db\ActiveRecord
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
       $this->logo = $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'\web'.$path;
-      if (!file_exists($bp.$path)) {
+      $bp=Yii::$app->getBasePath().'/web'.$path;
+      if (!file_exists($bp)) {
         mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
       }
       $img = (new Image($photo->tempName));
@@ -345,6 +422,72 @@ class Stores extends \yii\db\ActiveRecord
     }
   }
 
+  public function getPhotoList(){
+    $path = $this->getStorePhotoPath();
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    if(!is_readable($bp)){
+      return array();
+    }
+    $list=array_diff(scandir($bp), array('..', '.'));
+    foreach ($list as &$item){
+      $item=$path.$item;
+    }
+    return $list;
+  }
+
+  public function clearPhotos(){
+    $path = $this->getStorePhotoPath();
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    if(!is_readable($bp)){
+      return true;
+    }
+    $list=array_diff(scandir($bp), array('..', '.'));
+    foreach ($list as $item){
+      unlink($bp.$item);
+    }
+    rmdir($bp);
+    return true;
+  }
+
+  public function addPhoto($photo,$index=0){
+    if ($photo) {
+      $index=($index==0?'':'-'.$index);
+      $path = $this->getStorePhotoPath();// Путь для сохранения
+      $name = time().$index; // Название файла
+      $exch = explode('.', $photo->name);
+      $exch = $exch[count($exch) - 1];
+      $name .= '.' . $exch;
+      $bp=Yii::$app->getBasePath().'/web'.$path;
+      if (!file_exists($bp)) {
+        mkdir($bp, 0777, true);   // Создаем директорию при отсутствии
+      }
+
+      if(exif_imagetype($photo->tempName)==2){
+        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+      }else {
+        $img = (new Image($photo->tempName));
+      }
+
+      $img
+        ->fitToWidth(1000)
+        ->saveAs($bp.$name);
+      if(!$img){
+        return ['error' => 'Ошибка сохранения файла'];
+      }
+      return ['name' => $path.$name];
+    }else{
+      return ['error' => 'Ошибка сохранения файла'];
+    }
+  }
+
+  public function removePhoto($path){
+    $bp=Yii::$app->getBasePath().'/web'.$path;
+    if (!file_exists($bp)) {
+      return 'err';
+    }
+    unlink($bp);
+    return true;
+  }
   /**
    * Удаляем изображение при его наличии
    */
@@ -365,6 +508,43 @@ class Stores extends \yii\db\ActiveRecord
     return $path;
   }
 
+  public function getStorePhotoPath()
+  {
+    $dir=($this->uid % 100);
+    $path = '/images/photos/'.(($this->uid-$dir)/100).'/'.($dir).'/';
+    return $path;
+  }
+
+  /**
+   * @return $this
+   * список шопов для разных страниц
+   * применять
+   * ->addSelect([..])
+   * ->andWhere([...])
+   * ->orderBy(...)
+   * ->all()
+   */
+  public static function items()
+  {
+    $ratingQuery = (new Query())
+      ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
+      ->from(self::tableName(). ' cws2')
+      ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+      ->groupBy('cws2.uid')
+      ->where(['cwur.is_active' => 1]);
+
+    return self::find()
+      ->from(self::tableName() . ' cws')
+      ->select([
+        'cws.*',
+        'store_rating.rating as reviews_rating',
+        'store_rating.reviews_count as reviews_count',
+      ])
+      ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
+      ->where(['cws.is_active' => [0, 1]])
+      ->asArray();
+  }
+
   /**
    * @param $id
    * @param $route
@@ -377,6 +557,7 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('additional_stores');
     Cache::clearName('category_tree');
     Cache::clearName('coupons_counts');
+    Cache::clearName('account_favorites');
     //ключи
     Cache::deleteName('total_all_stores');
     Cache::deleteName('top_12_stores');

@@ -6,6 +6,7 @@
 @import "../../external/account/style";
 
 @import "../for_all.scss";
+
 /* Common
 ------------------------------------*/
 $images: "/images";
@@ -49,6 +50,12 @@ $images: "/images";
         line-height: 28px;
     }
 
+    ol{
+        list-style: decimal;
+        padding-left: 20px;
+        font-size: 14px;
+        line-height: 28px;
+    }
     .not-found {
         font-size: 13px;
         margin-top: 30px;
@@ -88,205 +95,7 @@ $images: "/images";
         padding: 8px;
     }
 }
-
-/* Shops
-------------------------------------*/
-.shops {
-    position: relative;
-    background: #fff;
-
-    .shop  {
-        margin-top: 35px;
-        padding-bottom: 20px;
-        position: relative;
-        background: #f8f8f8;
-        border-bottom: 2px solid #FFC107;
-        border-radius: 5px;
-        -o-transition: all .2s; 
-        -moz-transition: all .2s; 
-        -webkit-transition: all .2s; 
-        -ms-transition: all .2s; 
-        transition: all .2s;
-
-        &__header {
-            text-align: center;
-            padding: 0 5px;
-            display: flex;
-            height: 82px;
-            overflow: hidden;
-            a {
-                font-weight: 700;
-                font-size: 15px;
-                color: #283133;
-                margin: auto;
-                text-decoration: none;
-            }
-        }
-
-        .gotostore {
-            text-align: center;
-
-            a {
-                border-radius: 0px !important;
-                font-size: 10px !important;
-                background: #fff;
-                color: #000;
-                border: 1px solid #000;
-
-                &:hover {
-                    background: #000;
-                    color: #fff !important;
-                }
-            }
-        }
-
-        .promo-label {
-            height: 77px;
-            width: 75px;
-            display: block;
-            position: absolute;
-            top: -6px;
-            left: -5px;
-
-            &.x2 {
-                background: url(unquote($images+"/x2-label.png")) no-repeat;
-            }
-        }
-
-        .logo {
-            text-align: center;
-            padding: 20px 0px;
-            background-color: #eee;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-
-            img {  
-                border-radius: 5px;
-                max-width: 130px;
-                padding: 5px 10px;
-                background-color: #fff;
-            }
-        }
-
-        h3 {
-            padding-left: 10px;
-            padding-right: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: left;
-            height: 50px;
-
-            a {
-                font-weight: 700;
-                font-size: 15px;
-                color: #565C65;
-                text-decoration: none;
-                word-break: break-all;
-
-                &:hover {
-                    color: inherit;
-                }
-            }
-        }
-
-        p {
-            padding-left: 15px;
-            padding-right: 15px;
-            line-height: 24px;
-            font-style: italic;
-        }
-
-        .shop-bottom {
-            margin-top: 20px;
-
-            .cashback-link {
-                display: inline-block;
-                text-align: center;
-                width: 100%;
-                height: auto;
-                text-transform: uppercase;
-                padding: 5px;
-                background: rgba(255, 193, 7, 0.71);
-                font-size: 15px;
-                font-weight: 400;
-                color: #232731;
-                line-height: 20px; 
-                box-shadow: 0 1px 25px 0 rgba(0,0,0,.05) inset, 0 -1px 25px 0 rgba(0,0,0,.05) inset;
-                text-decoration: none;
-
-                &.old-cashback {
-                    position: absolute;
-                    bottom: 0px;
-                    background: rgb(154, 9, 33);
-                    padding: 0px;
-                    font-size: 11px;
-                    text-decoration: line-through;
-                    color: #FBB186;
-                    height: 20px;
-                    border-bottom-right-radius: 4px;
-                    border-bottom-left-radius: 4px;
-
-                    .fa {
-                        font-size: 11px;
-                    }
-                }
-
-                i { 
-                    vertical-align: middle; 
-                }
-
-                .fa {
-                    font-size: 13px;
-                }
-
-                &:hover {
-                    box-shadow: none;                    
-                }
-
-                &:active {
-                    box-shadow: 0 5px 10px 0 rgba(0,0,0,.15) inset, 0 -1px 25px 0 rgba(0,0,0,.05) inset;                   
-                }
-            }
-
-            .favorite-link {
-                position: absolute;
-                margin-left: -7px;
-                left: 50%;
-                top: 75px;
-                color: #FFC107;
-
-                .fa {
-                    font-size: 17px;
-                    font-weight: 100;
-                    -o-transition: all .5s; -moz-transition: all .5s; -webkit-transition: all .5s; -ms-transition: all .5s; transition: all .5s;     
-
-                    &.muted {
-                        opacity: 0.3;
-                    }               
-                }
-            }            
-        }
-
-        &:hover {
-            box-shadow: 0 0 8px #aaa;
-            border-bottom-color: #607D8B;
-            
-            .shop-bottom  {
-                .favorite-link  {
-                    .fa  {
-                        opacity: 1;
-                    }     
-                }
-            }                 
-        }
-    }
-
-    .more-shops {    
-        text-align: center;
-        margin-top: 50px;
-    }
-}
+@import  "../part/shop";
 
 /* Form
 ------------------------------------*/
@@ -999,6 +808,22 @@ table {
                 line-height: 22px;
                 color: rgba(28,54,83,0.9);
             }
+            .link-sent {
+                a {
+                    color: #e4c84b;
+                    text-decoration: none;
+                    &:hover {
+                        color: #FFDC73;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .intro-content_header{
+                font-size: 1.3rem;
+                font-weight: bold;
+                white-space: nowrap;
+            }
         }
     } 
 
@@ -1009,6 +834,7 @@ table {
     .ways-invitation {
         span.icon {
             font-size: 50px;
+            line-height: 50px;
             color: #1b2527;
         }
 
@@ -1466,4 +1292,8 @@ input.link:hover{
 
 .content-wrapper a{
     text-decoration: underline;
+}
+
+.affiliate a {
+    color: #e6ae03;
 }

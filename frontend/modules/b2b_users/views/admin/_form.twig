@@ -1,0 +1,47 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+            </div>
+            {% set form = active_form_begin() %}
+                <div class="col-md-6">
+
+                    {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'fio').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'position').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}
+
+                    {{ form.field(model, 'password').textInput({'maxlength':true})|raw }}
+                </div>
+
+                <div class="col-md-6">
+                    {% if(not(model.isNewRecord)) %}
+                        {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'login_at').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'ip').textInput({'disabled':true})|raw }}
+
+                        {{ form.field(model, 'is_active').dropDownList({
+                            '0':'В ожидании',
+                            '1':'Отклонён',
+                            '2':'Активен'
+                        })|raw }}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Обновить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    <br>
+                </div>
+            {{ active_form_end() }}
+        </div>
+    </section>
+</div>

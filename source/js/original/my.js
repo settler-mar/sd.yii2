@@ -48,31 +48,26 @@ $(function() {
 
 ajaxForm($('.ajax_form'));
 
-
-$("a[href='#showpromocode-noregister']").popup({
-  content : '<div class="coupon-noregister">'+
-  '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
-  '<div class="coupon-noregister__text">Для получения кэшбэка необходимо</br>авторизоваться на сайте</div>' +
-  '<div class="coupon-noregister__buttons">'+
-  '<a href="goto/coupon:{id}" target="_blank" class="btn  btn-popup">Воспользоваться</br>купоном</br>без регистрации</a>'+
-  '<a href="#registration" class="btn btn-popup">Зарегистрироваться</br>и получить</br>ещё и кэшбэк</a>'+
-  '</div>'+
-  '<div>',
-  type : 'html',
-  beforeOpen: function() {
-    //заменить в контенте {id}
-    var id = $(this.ele).data('id');
-    this.o.content = this.o.content.replace('{id}', id);
-    //если закрыли принудительно, то показать
-    popup = $('div.popup_cont, div.popup_back');
-    if (popup) {
-      popup.show();
-    }
-  },
-  afterOpen: function() {
-    $('.popup_content')[0].innerHTML = this.o.content;
+$("a[href='#showpromocode-noregister']").on('click',function(e){
+  e.preventDefault();
+  var id = $(this).data('id');
+  console.log(id);
+  var data={
+    buttonYes:false,
+    notyfy_class:"notify_white notify_not_big",
+    question:
+      '<div class="coupon-noregister">'+
+        '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
+      '<div class="coupon-noregister__text"><b>Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте, но можно воспользоваться купоном и без регистрации.</b></div>' +
+      '<div class="coupon-noregister__buttons">'+
+      '<a href="goto/coupon:'+id+'" target="_blank" class="btn  btn-popup2">Воспользоваться купоном</a>'+
+      '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>'+
+      '</div>'+
+      '<div>'
   }
+  notification.alert(data)
 });
+
 $(document).on('click',"a[href='#comment-popup']",function(e){
   e.preventDefault();
   var data={
@@ -98,7 +93,11 @@ $(document).on('click',"a[href='#comment-popup']",function(e){
 $('.current-comment').each(function(index, element) {
   var text = $(element).find('.text');
   var comment = $(text).find('.comment');
-  if (comment[0].innerHTML.length > 210) {
+
+  //var max_h=$(element).height()-text.position().top
+  var max_h=$(element).height()+$(element).offset().top-text.offset().top-6;
+
+  if (text.outerHeight() > max_h) {
     var a = document.createElement('a'),
         p = document.createElement('p');
     a.className = 'current-comment__more';
@@ -106,5 +105,71 @@ $('.current-comment').each(function(index, element) {
     a.innerHTML = 'Показать полностью';
     p.append(a);
     text.append(p);
+  }
+});
+
+//для точек продаж, события на выбор селектов
+$('body').on('change', '#store_point_country', function(e) {
+  var data = $('option:selected', this).data('cities'),
+      points= $('#store-points'),
+      country = $('option:selected', this).attr('value');
+  data = data.split(',');
+  if (data.length > 0) {
+    var select = document.getElementById('store_point_city');
+    var options = '<option value=""></option>';
+    data.forEach(function(item){
+      options += '<option value="'+item+'">'+item+'</option>';
+    });
+    select.innerHTML = options;
+  }
+  $(points).addClass('hidden');
+  googleMap.showMap();
+  googleMap.showMarker(country, '');
+
+  //googleMap.hideMap();
+});
+
+$('body').on('change', '#store_point_city', function(e) {
+  var city = $('option:selected', this).attr('value'),
+      country = $('option:selected', $('#store_point_country')).attr('value'),
+      points= $('#store-points');
+  if (country && city) {
+    var items = points.find('.store-points__points_row'),
+        visible = false;
+    googleMap.showMarker(country, city);
+    $.each(items, function(index, div){
+      if ($(div).data('city') == city && $(div).data('country') == country){
+        $(div).show();
+        visible = true;
+      } else {
+        $(div).hide() ;
+      }
+    });
+    if (visible) {
+      $(points).removeClass('hidden');
+      googleMap.showMap();
+
+    } else {
+      $(points).addClass('hidden');
+      googleMap.hideMap();
+    }
+  } else {
+    $(points).addClass('hidden');
+    googleMap.hideMap();
+  }
+
+});
+
+$(".select2-select").select2({
+    minimumResultsForSearch: 15
+});
+
+$('#store-recommendation-link-checkbox').click(function(){
+  if (!this.checked) {
+    notification.notifi({
+      'title': 'Предупреждение',
+      'type':'err',
+      'message': 'Рекомендуем не снимать галочку, что вы ознакомлены и согласны с Правилами покупок с кэшбэком'
+    });
   }
 });

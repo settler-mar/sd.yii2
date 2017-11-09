@@ -133,6 +133,33 @@ class AdminController extends Controller
     }
   }
 
+  /**
+   * Deletes an existing UserWithdraw model.
+   */
+  public function actionDelete()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('WithdrawDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+    if (Yii::$app->request->isAjax) {
+      $ids = Yii::$app->request->post('id');
+      $validatorEach = new \yii\validators\EachValidator(['rule' => ['integer']]);
+      if (!is_array($ids) || !$validatorEach->validate($ids)) {
+
+        Yii::$app->session->addFlash('err','Ошибка');
+        return json_encode(['error'=>true]);
+      }
+
+      UsersWithdraw::deleteAll(['uid' => $ids]);
+      Yii::$app->session->addFlash('info','Записи удалены');
+      return json_encode(['error' => false, 'html' => 'Записи удалены!']);
+
+    } else {
+      throw new \yii\web\NotFoundHttpException();
+    }
+  }
+
 
   /**
    * Finds the UsersWithdraw model based on its primary key value.

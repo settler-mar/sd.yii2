@@ -13,8 +13,9 @@ class DefaultController extends SdController
 
   public function actionIndex($query)
   {
-    $stores = Stores::find()
-      ->where(['is_active' => [0, 1]])
+
+    $stores = Stores::items()
+      ->addSelect(["IF(is_offline = 1, concat(cws.route, '-offline'), cws.route) route_url"])
       ->andWhere([
         'or',
         ['like', 'name', $query],
@@ -32,7 +33,6 @@ class DefaultController extends SdController
         'added'=> 'DESC',
         'visit'=>'DESC',
       ])
-      ->asArray()
       ->all();
 
     if (Yii::$app->request->isAjax) {
@@ -40,8 +40,22 @@ class DefaultController extends SdController
       $out["suggestions"] = [];
       $out["query"] = $query;
       foreach ($stores as $k => $v) {
-        $out["suggestions"][] = ["value" => $v["name"], "data" => $v];
+        $out["suggestions"][] = [
+          "value" => $v['name'],
+          "data" => [
+            'name' => $v['name'],
+            'route' => $v['route_url']
+          ]
+        ];
+//        $out["suggestions"][] = [
+//          "value" => $v->name,
+//          "data" => [
+//            'name' => $v->name,
+//            'route' => $v->routeUrl
+//          ]
+//        ];
       }
+
       echo json_encode($out);
       exit;
     } else {

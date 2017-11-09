@@ -135,7 +135,7 @@
             <li class="has-children bookmarks">
                 <a href="/account/payments">История</a>
                 <ul>
-                    <li><a href="/account/payments">История заказов</a></li>
+                    <li><a href="/account/payments">История покупок</a></li>
                     <li><a href="/account/bonuses">История бонусов</a></li>
                     <li><a href="/account/transitions">История посещений</a></li>
                     <li><a href="/account/withdraw/history">История вывода денег</a></li>
@@ -171,6 +171,11 @@
             <li class="favorite-icon fasicon">
                 <a href="/account/favorites">Избранные магазины</a>
             </li>
+            {% if _can('MetaView') %}
+                <li class="offlineshop-icon fasicon">
+                    <a href="/account/offline">Кэшбэк с оффлайна</a>
+                </li>
+            {% endif %}
             <li class="affiliate-icon fasicon">
                 <a href="/account/affiliate">Приведи друга</a>
             </li>
@@ -223,6 +228,7 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/42229559" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 {{   void(this.endBody()) }}
+{{ Notification() | raw}}
 </body>
 </html>
 {{   void(this.endPage()) }}

@@ -1,0 +1,333 @@
+@import "for_all.scss";
+
+$header_color: #E6AE03;//верхняя граница формы
+$login_back_color: #f5f5f5;//бекграунд формы
+$footer_font_color: #333;//цвет фонта в футере
+$form_label_color: #606060;
+$white_color: #fff;
+
+
+//левое меню
+$menu_left_bg: #eee; // цвет фона меню
+$menu_left_bg_hover: #626262; // цвет фона меню при наведении
+$menu_left_color: #222; // цвет текста в меню
+$menu_left_color_hover: #eee; // цвет текста в меню
+
+$href_color: #e6ae03;
+$href_active_color: #F5BD03;
+$button_register_font_color: #9bbdda;
+
+//цвета кнопок
+$btn_primary_color: #fff;
+$btn_primary_color_hover: #fff;
+$btn_primary_bg: #e6ae03;
+$btn_primary_bg_hover: #e4c84b;
+$btn_primary_border:#e4c84b;
+$btn_primary_border_hover:#e6ae03;
+$btn_action_status_1: #F44336;
+$btn_action_status_2: #8BC34A;
+
+//цвета текста
+$text_holiday_color: red;
+$text_payments_color: red;
+$text_error_color: #a94442;
+//выделенная строка в таблице
+$table_alarm_color: rgba(244, 151, 71, 0.33);
+
+
+//жлюавим плавности всем ссылкам
+a,button,input{
+  transition: all 0.2s linear;
+}
+
+//Стилизируем все ссылки
+.footer__href,
+a{
+  color: $href_color;
+  text-decoration: underline;
+  &:hover {
+    color: $href_active_color;
+  }
+}
+
+//перебиваем цвета кнопок
+.btn-primary {
+  color: $btn_primary_color;
+  background-color: $btn_primary_bg;
+  border-color: $btn_primary_border;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+  color: $btn_primary_color;
+  background-color: $btn_primary_bg;
+  border-color: $btn_primary_border_hover;
+}
+.btn-primary:hover {
+  color: $btn_primary_color_hover;
+  background-color: $btn_primary_bg_hover;
+  border-color: $btn_primary_border_hover;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: $btn_primary_color;
+  background-color: $btn_primary_bg;
+  border-color: $btn_primary_border_hover;
+}
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.open > .dropdown-toggle.btn-primary:hover,
+.btn-primary:active:focus,
+.btn-primary.active:focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.btn-primary:active.focus,
+.btn-primary.active.focus,
+.open > .dropdown-toggle.btn-primary.focus {
+  color: $btn_primary_color_hover;
+  background-color: $btn_primary_bg_hover;
+  border-color: $btn_primary_border_hover;
+}
+
+//форма авторизации
+.site-login {
+  background: url(/images/templates/back600.jpg) no-repeat;
+  background-position-y: 120px;
+  &__header {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  &__left {
+    p {
+      width: 60%;
+    }
+  }
+  &__right {
+    background: $login_back_color;
+    border-radius: 2px;
+    border-top: 24px solid $header_color;
+    margin-top: 40px;
+    margin-bottom: 120px;
+    &-header {
+      border-bottom: 1px solid white;
+      margin: 20px 0 30px;
+    }
+    &-text {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    form {
+      margin-bottom: 70px;
+      label {
+        color: $form_label_color;
+        font-weight: 500;
+        &.control-label {
+          text-align: left;
+        }
+      }
+      button {
+        width: 100%;
+      }
+      p.help-block {
+        margin-top: 5px;
+      }
+    }
+    &-buttons {
+      margin-top: 35px;
+      &-register {
+        width: 100%;
+        text-decoration: none;
+        //color: $button_register_font_color;
+        &:visited, &:focus, &:hover, &:active {
+          //color: $button_register_font_color;
+          text-decoration: none;
+        }
+        //&.disabled {
+        //  color: $button_register_font_color;
+        //}
+      }
+    }
+  }
+  &__forget-password {
+    margin-top: 5px;
+  }
+}
+
+form .alert-block {
+  color: $text_error_color;
+}
+
+.content_menu {
+  background: $menu_left_bg;
+  //padding: 20px 10px;
+  overflow: hidden;
+  border-radius: 5px;
+
+  &__list {
+    padding-left: 0;
+    margin: 0;
+  }
+
+  &__item {
+    list-style-type: none;
+  }
+
+  .current a {
+    //font-weight: 700;
+    color: $menu_left_color_hover;
+    background: $menu_left_bg_hover;
+    text-decoration: none;
+  }
+
+  &__link {
+    color: $menu_left_color;
+    padding: 10px;
+    border-radius: 2px;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+
+    &:hover {
+      color: $menu_left_color_hover;
+      background: $menu_left_bg_hover;
+      //text-decoration: none;
+    }
+    .current {
+      //text-decoration: underline;
+    }
+  }
+}
+//магазины юсера
+.users-stores {
+  width: 100%;
+  th, tr {
+    padding: 15px 5px 5px;
+    text-align: center;
+    vertical-align: top;
+  }
+  &__stores-points {
+    text-align:center;
+    background-color:rgb(239, 239, 239);
+    &_header{
+      display: inline-block;
+    }
+    &_table {
+      width: 100%;
+      .alert {
+        color: $text_error_color;
+      }
+    }
+    &_add-point {
+      display: inline-block;
+      float: right;
+      margin-right: 20px;
+      margin-top: 10px;
+    }
+    &_row {
+      border-bottom: 1px solid $login_back_color;
+      th, tr {
+        padding: 15px 5px 5px;
+        text-align: center;
+        vertical-align: top;
+      }
+    }
+    &_work_time {
+      &_list {
+        padding-left: 0;
+      }
+      &_item {
+        list-style-type: none;
+        span {
+          color: $text_holiday_color;
+        }
+      &:not(:last-child) {
+        border-bottom: 1px solid $login_back_color;
+      }
+      }
+    }
+  }
+
+}
+//кнопки действий в таблице
+.table-action {
+  &-form {
+    display: inline;
+  }
+  &-button {
+    display: inline;
+    border: none;
+    background: rgba(255, 255, 255, 0);
+    color: $href_color;
+    &:hover, &:active, &:focus {
+      color: $href_active_color;
+    }
+  }
+}
+.b2b-stores-points-form {
+  .address-search {
+    margin-top: 25px;
+  }
+}
+.payments-grid-view {
+  table {
+    font-size: 13px;
+    th, td {
+      //word-break: break-all;
+
+    }
+    tr {
+      &.date_alarm {
+        background-color: $table_alarm_color;
+      }
+    }
+  }
+}
+
+.btn.records-action {
+  text-decoration: none;
+  &.status_1 {
+    background-color: $btn_action_status_1;
+  }
+  &.status_2 {
+    background-color: $btn_action_status_2;
+  }
+
+}
+.payments {
+  &-info {
+    color: $text_payments_color;
+  }
+  &-result {
+    td.name {
+      font-weight: 700;
+    }
+    .value {
+      text-align: right;
+    }
+    th {
+      text-align: right;
+    }
+  }
+  &-info {
+    p {
+      span {
+        font-weight: 700;
+      }
+    }
+  }
+  &-forms {
+    width: 460px;
+    .form-group.buttons {
+      margin-top: 15px;
+      text-align: center;
+    }
+    p.help-block {
+      color: $text_error_color;
+    }
+  }
+}
+
+.form-group.required label:after{
+  content: '*';
+  color: $text_error_color;
+  margin-left: 5px;
+}

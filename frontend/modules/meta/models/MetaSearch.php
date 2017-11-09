@@ -40,7 +40,7 @@ class MetaSearch extends Meta
    */
   public function search($params)
   {
-    if($params && $params['MetaSearch'] && $params['MetaSearch']['page']){
+    if($params && isset($params['MetaSearch']) && isset($params['MetaSearch']['page'])){
       $page=str_replace('https:','',$params['MetaSearch']['page']);
       $page=str_replace('http:','',$page);
       $page=str_replace($_SERVER['HTTP_HOST'],'',$page);

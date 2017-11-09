@@ -4,7 +4,7 @@ SD Yii2 Advanced Project
 Проект состоит из 2-х связанных блоков.
 
 1. [Основной сайт (secretdiscounter.ru)](https://secretdiscounter.ru)
-2. [Партнерский сайт (sd.secretdiscounter.ru)](https://sd.secretdiscounter.ru)
+2. [Партнерский сайт (b2b.secretdiscounter.ru)](https://b2b.secretdiscounter.ru)
 
 
 ## Встроенный генератор/парсер ссылок
@@ -78,6 +78,13 @@ helpers/                 вспомогательные библиотеки
 ### Проект не запускается из за bower
 
 Нужно переименовать ```vendor/bower-asset``` в ```vendor/bower```
+
+Для LINUX лучшем решением буде создания ссылки. Для этого выполняем 2 команды 
+
+```
+  cd vendor
+  ln -s bower-asset bower
+```
 
 ### Ошибка при запуске в базе данных
 

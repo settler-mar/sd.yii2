@@ -25,6 +25,12 @@ class SdController extends Controller
     public $current_category_id;
 
     /**
+     * для виджета  меню категорий купонов - текущая категория
+     * @var
+     */
+    public $current_coupon_category_id;
+
+    /**
      * Possible limit options with default value
      * @var array
      */
@@ -41,7 +47,7 @@ class SdController extends Controller
     private $params_allow = [
         //для каждого модуля и действия свои разрешённые параметры
         'stores' => [
-            'index' => ['page'],
+            'index' => ['page', 'offline'],
             'store' => [],
         ],
         'coupons' => [
@@ -52,7 +58,7 @@ class SdController extends Controller
         ],
     ];
     //проверяются только эти параметры, остальные игнорируются
-    private $params_check = ['page', 'category', 'store', 'expired', 'id', 'coupon'];
+    private $params_check = ['page', 'category', 'store', 'expired', 'id', 'coupon', 'offline'];
 
     public function init()
     {

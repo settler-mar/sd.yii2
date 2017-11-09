@@ -5,7 +5,6 @@ namespace frontend\modules\favorites\controllers;
 use yii;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
-use frontend\components\Pagination;
 
 class AccountController extends \yii\web\Controller
 {
@@ -68,17 +67,20 @@ class AccountController extends \yii\web\Controller
       return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);
     }
 
+
     $cacheName = 'account_favorites_' . \Yii::$app->user->id;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'account_favorites';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    
     $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
-      return UsersFavorites::find()
-        ->from(UsersFavorites::tableName() . ' cuf')
-        ->select(['cws.*'])
-        ->innerJoin(Stores::tableName() . ' cws', 'cws.uid = cuf.store_id')
-        ->where(["cuf.user_id" => \Yii::$app->user->id, "cws.is_active" => [0, 1]])
-        ->orderBy('cuf.added DESC')
-        ->asArray()
-        ->all();
-    });
+        return Stores::items()
+          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+          ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
+          ->orderBy('cuf.added DESC')
+          ->all();
+    }, \Yii::$app->cache->defaultDuration, $dependency);
+    
     $contentData["favids"] = array_column($contentData["favorites"], 'uid');
 
     return $this->render('index', $contentData);

@@ -1,0 +1,404 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="b2b-stores-points-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'store_id').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+
+        {{ form.field(model, 'store_name').textInput({'readOnly':true})|raw }}
+
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'country').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'city').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}
+
+        <div class="row">
+            <div class="col-sm-10">
+                {{ form.field(model, 'address').textInput({'maxlength':true})|raw }}
+            </div>
+            <div class="col-sm-2">
+                <button id="address-search" class="address-search btn btn-primary" >Найти</button>
+            </div>
+        </div>
+
+        {{ form.field(model, 'category_id').dropDownList(categories, {'prompt':'Выберите категорию'})|raw }}
+
+
+        {% if model.isNewRecord == false  %}
+            {{ form.field(model, 'login').textInput({'readOnly':true})|raw }}
+        {% endif %}
+
+        {% if model.password == null or model.password == '' %}
+            <div class="alert-block">Необходимо задать пароль для точки продаж!</div>
+        {% endif %}
+
+        {{ form.field(model, 'password').passwordInput({'maxlength':true, 'value': ''})|raw }}
+
+
+        {{ form.field(model, 'password_repeat').passwordInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'coordinate_x').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+
+        {{ form.field(model, 'coordinate_y').textInput({'maxlength':true}).hiddenInput().label(false)|raw }}
+
+
+        {{ form.field(model, 'work_time_details').widget(MultipleInput.className(), {
+            'max':'7',
+            'columns': [
+                {
+                    'name': 'work_time_day_1',
+                    'title': 'Пн.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_2',
+                    'title': 'Вт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_3',
+                    'title': 'Ср.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_4',
+                    'title': 'Чт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_5',
+                    'title': 'Пт.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_6',
+                    'title': 'Сб.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_day_7',
+                    'title': 'Вс.',
+                    'type': 'checkbox',
+                },
+                {
+                    'name': 'work_time_start',
+                    'title': 'Начало работы',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '99:99',
+                        'options': {
+                            'class': 'form-control  depends-24-hour',
+                        }
+                    }
+                },
+                {
+                    'name': 'work_time_end',
+                    'title': 'Конец работы',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '99:99',
+                        'options': {
+                            'class': 'form-control depends-24-hour',
+                        }
+                    }
+                },
+                {
+                    'name': 'work_time_lunch_start',
+                    'title': 'Начало перерыва',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '99:99',
+                    }
+                },
+                {
+                    'name': 'work_time_lunch_end',
+                    'title': 'Конец перерыва',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '99:99',
+                    }
+                },
+                {
+                    'name': 'hour_24',
+                    'title': 'Круглосуточно',
+                    'type': 'checkbox',
+                },
+
+            ],
+        })|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Сохранить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
+<div id="map" style="height: 600px;"></div>
+<input id="pac-input" class="controls" type="text" placeholder="Поиск">
+<style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    /*#map {*/
+        /*height: 100%;*/
+    /*}*/
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 300px;
+    }
+
+    #pac-input:focus {
+        border-color: #4d90fe;
+    }
+
+    .pac-container {
+        font-family: Roboto;
+    }
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+    #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+    }
+    #target {
+        width: 345px;
+    }
+</style>
+<script>
+    document.getElementById('address-search').onclick = function(e){
+        e.preventDefault();
+        var input1 = document.getElementById('b2bstorespoints-country'),
+            input2 = document.getElementById('b2bstorespoints-city'),
+            input3 = document.getElementById('b2bstorespoints-address');
+
+        googleMap.searchAddress(
+            (input1 ? input1.value : '')
+            +(input2 ? ' '+input2.value : '')
+            +(input3 ? ' '+input3.value : '')
+        );
+    };
+</script>
+<script>
+   var googleMap = {
+       gMap: null,
+       markers: [],
+       initMap: function() {
+
+           var map = new google.maps.Map(document.getElementById('map'), {
+               {% if model.coordinate_x and model.coordinate_y %}
+                   center: {lat: {{ model.coordinate_y }}, lng: {{ model.coordinate_x }} },
+                   zoom: 15,
+               {% else %}
+                   center: {lat: 55.753686, lng: 37.629944},//москва красная прощадь
+                   zoom: 10,
+               {% endif %}
+               mapTypeId: 'roadmap'
+           });
+           this.gMap = map;
+
+           // Create the search box and link it to the UI element.
+           var input = document.getElementById('pac-input');
+           var searchBox = new google.maps.places.SearchBox(input);
+           map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+           // Bias the SearchBox results towards current map's viewport.
+           map.addListener('bounds_changed', function () {
+               searchBox.setBounds(map.getBounds());
+           });
+
+           {% if model.coordinate_x and model.coordinate_y %}
+               var marker = new google.maps.Marker({
+                   position : map.center,
+                   map: map,
+                   title: '{{ model.name }}',
+                   draggable:true
+               });
+               google.maps.event.addListener(marker, "dragend", function(event) {
+                   googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
+               });
+               this.markers.push(marker);
+           {% endif %}
+
+           // Listen for the event fired when the user selects a prediction and retrieve
+           // more details for that place.
+           searchBox.addListener('places_changed', function () {
+               var places = searchBox.getPlaces();
+
+               if (places.length == 0) {
+                   return;
+               }
+
+               // Clear out the old markers.
+               googleMap.markers.forEach(function (marker) {
+                   marker.setMap(null);
+               });
+               googleMap.markers = [];
+
+               // For each place, get the icon, name and location.
+               var bounds = new google.maps.LatLngBounds();
+               places.forEach(function (place, index) {
+                   if (!place.geometry) {
+                       console.log("Returned place contains no geometry");
+                       return;
+                   }
+                   var icon = {
+                       url: place.icon,
+                       size: new google.maps.Size(71, 71),
+                       origin: new google.maps.Point(0, 0),
+                       anchor: new google.maps.Point(17, 34),
+                       scaledSize: new google.maps.Size(25, 25)
+                   };
+
+                   // Create a marker for each place.
+                   var marker = new google.maps.Marker({
+                       map: map,
+                       icon: icon,
+                       title: place.name,
+                       position: place.geometry.location,
+                       draggable:true
+                   });
+                   google.maps.event.addListener(marker, "dragend", function(event) {
+                       googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
+                   });
+                   googleMap.markers.push(marker);
+
+                   if (place.geometry.viewport) {
+                       // Only geocodes have viewport.
+                       bounds.union(place.geometry.viewport);
+                   } else {
+                       bounds.extend(place.geometry.location);
+                   }
+                   if (index == 0) {
+                       //для первого результата
+                       //данные места и адреса - на форму
+                       googleMap.placeLocation(place.geometry.location.lng(), place.geometry.location.lat(), true);
+                   }
+               });
+               map.fitBounds(bounds);
+           });
+
+
+       },
+       searchAddress: function(value){
+           if (!value) {
+               return false;
+           }
+           var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value + '&key={{ app.params.googleApiKey }}';
+           $.ajax({
+               url: url,
+               type: 'get',
+               format: 'json',
+               success: function (data) {
+                   //получили результат поиска по адресу
+                   if (data.status == 'OK' && data.results.length > 0) {
+                       var place = data.results[0];
+
+                       var bound = new google.maps.LatLngBounds();
+                       if (!place.geometry) {
+                          console.log("Returned place contains no geometry");
+                          return;
+                       }
+                       // Clear out the old markers.
+                       googleMap.markers.forEach(function (marker) {
+                           marker.setMap(null);
+                       });
+                       googleMap.markers = [];
+                       var marker = new google.maps.Marker({
+                           map: googleMap.gMap,
+                          // icon: icon,
+                           title: place.formatted_address,
+                           position: place.geometry.location,
+                           draggable:true
+                       });
+
+                       google.maps.event.addListener(marker, "dragend", function(event) {
+                           googleMap.placeLocation(marker.position.lng(), marker.position.lat(), true);
+                       });
+                       googleMap.markers.push(marker);
+
+                       bound.extend(place.geometry.location);
+                       //данные места - на форму
+                       googleMap.placeLocation(place.geometry.location.lng, place.geometry.location.lat, false);
+                       //данные адреса на форму
+                       googleMap.placeAddress(place);
+                       googleMap.gMap.fitBounds(bound);
+                       googleMap.gMap.setZoom(16);
+                   }
+               }
+           })
+       },
+       placeLocation: function(lng, lat, findLocation) {
+           var inputX = document.getElementById('b2bstorespoints-coordinate_x'),
+               inputY = document.getElementById('b2bstorespoints-coordinate_y');
+           inputX.value = lng;
+           inputY.value = lat;
+           if (findLocation) {
+               //если задано, то поиск адреса для места
+               geocoder = new google.maps.Geocoder;
+               geocoder.geocode({'location': {lat: lat, lng: lng}}, function (results, status) {
+                   if (status === 'OK' && results[0]) {
+                       googleMap.placeAddress(results[0]);
+                   }
+               });
+           }
+       },
+       placeAddress: function(place) {
+           if (!place) {
+               return;
+           }
+           var //inputAddress = document.getElementById('b2bstorespoints-address'),
+               inputCountry = document.getElementById('b2bstorespoints-country'),
+               inputCity = document.getElementById('b2bstorespoints-city');
+           //inputAddress.value = place.formatted_address;
+           var adressItem = this.getAddressComponent(place.address_components, 'country');
+           inputCountry.value = adressItem ? adressItem : inputCountry.value;
+           adressItem = this.getAddressComponent(place.address_components, 'locality');
+           inputCity.value = adressItem ? adressItem : inputCity.value;
+       },
+       getAddressComponent(addressComponents, type) {
+           var result = '';
+           addressComponents.forEach(function(item) {
+               item.types.forEach(function(typeItem){
+                   if (typeItem == type) {
+                       result = item.long_name;
+                   }
+               });
+           });
+           return result;
+       }
+
+   };
+
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places&callback=googleMap.initMap" async defer></script>
