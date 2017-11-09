@@ -4,6 +4,7 @@ namespace frontend\modules\users\controllers;
 
 use frontend\modules\users\models\ResetPasswordForm;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\UsersSocial;
 use \Yii;
 use yii\web\Controller;
 use frontend\modules\users\models\LoginForm;
@@ -166,6 +167,49 @@ class DefaultController extends Controller
       ]);
       return json_encode($data);
     }
+  }
+
+
+  public function actionSocials()
+  {
+    $serviceName = Yii::$app->getRequest()->getQueryParam('service');
+    $serviceName = $serviceName ? $serviceName : ($this->serviceName ? $this->serviceName : null);
+    //ddd($serviceName);
+    if (isset($serviceName)) {
+      /** @var $eauth \nodge\eauth\ServiceBase */
+      $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
+      $eauth->setRedirectUrl(Yii::$app->getUser()->getReturnUrl());
+      $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
+      //ddd($eauth);
+      try {
+        if ($eauth->authenticate()) {
+          //получаем юсера нашего
+          $user = UsersSocial::authenticate($eauth->getAttributes());
+
+          if (!empty($user)) {
+            Yii::$app->getUser()->login($user);
+          } else {
+            $eauth->cancel();
+          }
+          // special redirect with closing popup window
+          $eauth->redirect();
+        } else {
+          // close popup window and redirect to cancelUrl
+          $eauth->cancel();
+        }
+      } catch (\nodge\eauth\ErrorException $e) {
+        // save error to show it later
+        Yii::$app->getSession()->setFlash('error', 'EAuthException: '.$e->getMessage());
+
+        // close popup window and redirect to cancelUrl
+//              $eauth->cancel();
+        $eauth->redirect($eauth->getCancelUrl());
+      }
+    } else {
+      throw new NotFoundHttpException();
+    }
+
+    // default authorization code through login/password .
   }
   /**
    * Сброс пароля

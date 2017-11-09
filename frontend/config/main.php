@@ -44,6 +44,25 @@ $config= [
         ],
       ],
     ],
+    'eauth' => [
+      'class' => 'nodge\eauth\EAuth',
+      'popup' => true, // Use the popup window instead of redirecting.
+      'cache' => false, // Cache component name or false to disable cache.Defaults to'cache' on production environments.
+      'cacheExpire' => 0, // Cache lifetime. Defaults to 0 - means unlimited.
+      'httpClient' => [
+        // uncomment this to use streams in safe_mode
+        //'useStreamsFallback' => true,
+      ],
+      'services' => require('socials.php'),
+    ],
+    'i18n' => [
+      'translations' => [
+        'eauth' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@eauth/messages',
+        ],
+      ],
+    ],
     'user' => [
       'identityClass' => 'frontend\modules\users\models\Users',
       'enableAutoLogin' => true,
@@ -77,6 +96,7 @@ $config= [
 
         '<action:(login|logout|registration|ulogin|resetpassword|reset|verifyemail|sendverifyemail)>' =>
           'users/default/<action>',
+        'login/socials' => 'users/default/socials',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',

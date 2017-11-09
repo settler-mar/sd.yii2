@@ -39,6 +39,8 @@
           <img src="/images/account/tw.png" data-uloginbutton="twitter" alt="twitter-ulogin">
           <img src="/images/account/ok.png" data-uloginbutton="odnoklassniki" alt="odnoklassniki-ulogin">
         </div>
+      {#{{ use('frontend/components/socials/EauthWidget') }}#}
+      {#{{ eauth_widget_widget() }}#}
       </p>
       <script>uLogin.customInit('uLogin6dab3a2d',{
           redirect_uri: encodeURIComponent(location.origin+'/ulogin'),
