@@ -55,11 +55,18 @@ class TaskController extends Controller
       ->andWhere(['<', 'add_time', time()])
       ->all();
     foreach ($tasks as $task) {
+      //ddd($task);
       $user = Users::find()
         ->where(['uid' => abs($task->param)])
         ->one();
 
-      //еси это был бонус за регистрацию то долаем нотификацию
+      //вдруг удалил пользователя
+      if(!$user){
+        $task->delete();
+        continue;
+      };
+
+      //если это был бонус за регистрацию то долаем нотификацию
       if ($task->param < 0) {
         $notify = new Notifications();
         $notify->user_id = $user->uid;
@@ -230,7 +237,7 @@ class TaskController extends Controller
   }
 
 
-  /*
+  /**
    * Обновление курса валют их ЦБ
    */
   function actionUpdateCurs()
