@@ -175,5 +175,8 @@
     setTimeout(f,20000+Math.round(Math.random() * 40000));
   }
   f=startShowMSG.bind({showMSG:showMSG,randomMSG:randomMSG});
-  $.get('/js/user_list.json',f,'json');
+  var loginButton = document.getElementById('button-login');
+  if (loginButton) {
+    $.get('/js/user_list.json', f, 'json');
+  }
 }());
