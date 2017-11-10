@@ -306,6 +306,9 @@ form .alert-block {
     th {
       text-align: right;
     }
+    &__local_currency {
+      font-weight: 700;
+    }
   }
   &-info {
     p {
