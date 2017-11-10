@@ -15,31 +15,31 @@
                     <h1 style="padding: 0">{{ html.encode(this.title) }}</h1>
                     <div class="sum_information">
                         <div class="line">
-                            <div class="name">Всего магазинов</div>
+                            <div class="name"><a href="/admin/stores">Всего магазинов</a></div>
                             <div class="value">
                                 {{ stat.all }}
                             </div>
                         </div>
                         <div class="line">
-                            <div class="name">Активных</div>
+                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=1">Активных</a></div>
                             <div class="value">
                                 {{ stat.active }}
                             </div>
                         </div>
                         <div class="line">
-                            <div class="name">Приостановленных</div>
+                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=0">Приостановленных</a></div>
                             <div class="value">
                                 {{ stat.waiting }}
                             </div>
                         </div>
                         <div class="line">
-                            <div class="name">Выключенных</div>
+                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=-1">Выключенных</a></div>
                             <div class="value">
                                 {{ stat.blocked }}
                             </div>
                         </div>
                         <div class="line">
-                            <div class="name">Благотворительных</div>
+                            <div class="name"><a href="/admin/stores?StoresSearch[charity]=1">Благотворительных</a></div>
                             <div class="value">
                                 {{ stat.charity }}
                             </div>
