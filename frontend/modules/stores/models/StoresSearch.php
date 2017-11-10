@@ -12,13 +12,17 @@ use frontend\modules\stores\models\Stores;
  */
 class StoresSearch extends Stores
 {
+    const CHARITY_QUERY = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
+              " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
+    public $charity;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline'], 'integer'],
+            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity'],
+              'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email'], 'safe'],
         ];
     }
@@ -101,6 +105,9 @@ class StoresSearch extends Stores
             ->andFilterWhere(['like', 'contact_name', $this->contact_name])
             ->andFilterWhere(['like', 'contact_phone', $this->contact_phone])
             ->andFilterWhere(['like', 'contact_email', $this->contact_email]);
+        if (!empty($this->charity)) {
+            $query->andFilterWhere(self::CHARITY_QUERY);
+        }
         return $dataProvider;
     }
 }

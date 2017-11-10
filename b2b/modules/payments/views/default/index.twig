@@ -28,17 +28,41 @@
             </tr>
             <tr class="line">
                 <td class="name">Сумма покупок</td>
-                <td class="value">{{ _nf(result_all.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_success.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_revoke.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_waiting.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="value">
+                    {{ _nf(result_all.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_all.summs.order_price_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_success.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_success.summs.order_price_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_revoke.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_revoke.summs.order_price_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_waiting.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_waiting.summs.order_price_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
             </tr>
             <tr class="line">
-                <td class="name">Кэшбэк</td>
-                <td class="value">{{ _nf(result_all.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_success.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_revoke.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
-                <td class="value">{{ _nf(result_waiting.summs.cashback, 2)|raw }} <span class="fa fa-rub"></span></td>
+                <td class="name">Комисионные SecretDiscounter</td>
+                <td class="value">
+                    {{ _nf(result_all.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_all.summs.reward_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_success.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_success.summs.reward_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_revoke.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_revoke.summs.reward_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
+                <td class="value">
+                    {{ _nf(result_waiting.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>
+                    {% if currency %}<span class="payments-result__local_currency">({{ _nf(result_waiting.summs.reward_local, 2)|raw }} {{ currency }})</span>{% endif %}
+                </td>
             </tr>
 
         </table>
@@ -158,20 +182,11 @@
                 },
                 {
                     'format':'raw',
-                    'label': 'Вознаграждение (в росс. рублях)',
+                    'label': 'Комисионные SecretDiscounter (в росс. рублях)',
                     'attribute':'reward',
                     'value': table_data.reward_value,
                     'contentOptions': {
                         'class': 'td-reward',
-                    }
-                },
-                {
-                    'format':'raw',
-                    'label': 'Кэшбэк (в росс. рублях)',
-                    'attribute': 'cashback',
-                    'value': table_data.cashback_value,
-                    'contentOptions': {
-                        'class': 'td-cashback',
                     }
                 },
                 {

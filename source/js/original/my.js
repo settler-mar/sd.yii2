@@ -167,9 +167,9 @@ $(".select2-select").select2({
 $('#store-recommendation-link-checkbox').click(function(){
   if (!this.checked) {
     notification.notifi({
-      'title': 'Предупреждение',
+      'title': 'Внимание!',
       'type':'err',
-      'message': 'Рекомендуем не снимать галочку, что вы ознакомлены и согласны с Правилами покупок с кэшбэком'
+      'message': 'Для того, чтобы ваш кэшбэк отследился корректно, настоятельно рекомендуем ознакомиться с <a href="/recommendations">нашими правилами</a> и следовать им при совершении покупок.'
     });
   }
 });

@@ -63,8 +63,7 @@ class AdminController extends Controller
     $stat['active'] = $stores->where(['is_active' => 1])->count();
     $stat['waiting'] = $stores->where(['is_active' => 0])->count();
     $stat['blocked'] = $stores->where(['is_active' => -1])->count();
-    $stat['charity'] = $stores->where(["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
-      " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0])->count();
+    $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
