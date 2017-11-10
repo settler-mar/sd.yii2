@@ -54,7 +54,7 @@ class Coupons extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['coupon_id', 'name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'exclusive', 'species'], 'required'],
+      [['coupon_id', 'name', 'date_start', 'date_end', 'promocode', 'exclusive', 'species'], 'required'],
       [['coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
       [['description'], 'string'],
       [['date_start', 'date_end'], 'safe'],
