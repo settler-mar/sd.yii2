@@ -17,10 +17,18 @@ function initEditor(){
       'advlist autolink lists link image charmap hr anchor pagebreak accordion clear_br',
       'searchreplace wordcount visualblocks visualchars code fullscreen',
       'insertdatetime media nonbreaking save table contextmenu directionality',
-      'emoticons template paste textcolor colorpicker textpattern imagetools  toc help code'
+      'emoticons template paste textcolor colorpicker textpattern imagetools  toc help code filemanager responsivefilemanager'
     ],
+    external_filemanager_path:'plugins/tinymce/plugins/responsivefilemanager/filemanager/',
+    external_plugins: {
+      'filemanager': 'plugins/responsivefilemanager/filemanager/plugin.min.js',
+      'responsivefilemanager': 'plugins/responsivefilemanager/filemanager/plugin.min.js'
+    },
     toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | media | forecolor backcolor | accordion | clear_br | code help ',
-    file_browser_callback: RoxyFileBrowser,
+
+    //file_browser_callback: RoxyFileBrowser,
+
+
     image_advtab: true,
     content_css : "/plugins/tinymce/content.css",
     style_formats: [
@@ -49,6 +57,7 @@ function initEditor(){
       ] }
     ]
   });
+  
   function RoxyFileBrowser(field_name, url, type, win) {
     var roxyFileman = '/plugins/fileman/index.html';
     if (roxyFileman.indexOf("?") < 0) {

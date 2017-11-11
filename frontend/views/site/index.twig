@@ -11,12 +11,12 @@
                         {% endif %}
                     </h1>
 
-                    {% if not user_id %}
-                        <a href="#registration" class="btn btn-fill btn-large slider-mb-button">Бесплатная регистрация</a>
-                    {% else %}
-
-                    {% endif%}
                     <div class="greeting-links-box">
+                        {% if not user_id %}
+                            <a href="#registration" class="btn btn-fill btn-large">Бесплатная регистрация</a>
+                        {% else %}
+
+                        {% endif%}
                         <div class="greeting-links-box__item">
                             <a href="/howitworks">Как работает кэшбэк-сервис</a>
                         </div>
@@ -24,9 +24,9 @@
                             <a href="#popular-shops">Популярные магазины с кэшбэком</a>
                         </div>
                     </div>
-                    <p class="intro">
+                    <div class="intro">
                         {{ _constant('main_page_intro')|raw }}
-                    </p>
+                    </div>
                     <!--<a href="#popular-shops" class="btn btn-fill btn-large btn-margin-right">Популярные магазины</a>-->
                     <!--<a href="/howitworks" class="btn btn-large btn-accent">Как это работает</a> -->
                 </div>

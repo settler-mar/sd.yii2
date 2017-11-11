@@ -17,6 +17,15 @@ class CouponsController extends Controller
 
   private $stores=[];
 
+  //добавляем параметры для запуска
+  public $campaign;
+  public function options($actionID)
+  {
+    if($actionID=='insert') {
+      return ['campaign'];
+    }
+  }
+
   /**
    * Получает наш id магазина по id от адмитада
    */
@@ -53,26 +62,34 @@ class CouponsController extends Controller
   {
     $admitad = new Admitad();
     $params = [
-      /*'keyword' => '',
-      'region' => '00',*/
+      //'region' => '00',
+      //'campaign'=>'12026',
       'only_my' => 'on',
       /*'v' => 1,*/
       'limit'=>500,
       'offset'=>0,
     ];
 
+    if($this->campaign){
+      $params['campaign']=$this->campaign;
+    }
+
     $categories = [];
     $coupons = $admitad->getCoupons($params);
+    if($coupons){
+      d($params);
+      d($coupons['_meta']);
+    }
+
     while(
       $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
-
         $coupon_categories = [];
         $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id']]);
-
         //Проверяем что б купон был новый
         if (!$db_coupons) {
+
           $store_id = $this->getStore($coupon['campaign']['id']);
           if (!$store_id) {
             continue;

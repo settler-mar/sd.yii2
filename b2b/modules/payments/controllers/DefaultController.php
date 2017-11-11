@@ -152,7 +152,15 @@ class DefaultController extends Controller
     ];
     //статистика по выборке
     $queryAll = clone $dataProvider->query;
-    $queryAll->select(['sum(cashback) as cashback', 'sum(order_price * kurs) as order_price']);
+    $queryCur = clone $dataProvider->query;
+    $queryAll->select([
+      'sum(cashback) as cashback',
+      'sum(cashback/kurs) as cashback_local',
+      'sum(reward) as reward',
+      'sum(reward/kurs) as reward_local',
+      'sum(order_price * kurs) as order_price',
+      'sum(order_price) as order_price_local',
+    ]);
     $resultAllCount = $queryAll->count();
     $resultAll = $queryAll->one();
 
@@ -171,6 +179,16 @@ class DefaultController extends Controller
     $resultRevokeCount = $queryRevoke->count();
     $resultRevoke = $queryRevoke->one();
 
+    //валюта платежей, если только одного вида
+    $resultCur = $queryCur
+      ->select('cw_stores.currency')
+      ->with('store')
+      ->asArray()
+      ->all();
+    $resultCur = array_unique(array_column($resultCur, 'currency'));
+    $resultCur = count($resultCur) == 1 ? $resultCur[0] : false;
+    //ddd($resultCur);
+
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
@@ -186,6 +204,7 @@ class DefaultController extends Controller
       'result_success' => ['count' => $resultSuccessCount, 'summs' => $resultSuccess],
       'result_all' => ['count' => $resultAllCount, 'summs' => $resultAll],
       'result_revoke' => ['count' => $resultRevokeCount, 'summs' => $resultRevoke],
+      'currency' => $resultCur,
     ]);
   }
 

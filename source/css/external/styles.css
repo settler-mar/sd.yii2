@@ -359,12 +359,19 @@ greeting
 .greeting h1 {
   color: #fff;
   margin-bottom: 70px; }
-.greeting p.intro {
+.greeting .intro {
   color: #fff;
   font-size: 19px;
   font-weight: 500;
   line-height: 30px;
-  margin-bottom: 50px;}
+  margin-bottom: 50px;
+}
+.greeting .intro p {
+  color: #fff;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .greeting .greeting-content {
   /*padding-top: 15%; */
   padding-top: 12%;

@@ -41,6 +41,11 @@ class Payments extends \yii\db\ActiveRecord
 {
   public $category;
 
+  //при поиске - суммы в валюте операции
+  public $order_price_local;
+  public $cashback_local;
+  public $reward_local;
+
   private $_store;
   //public $store_point_id;
   /**

@@ -73,7 +73,7 @@ class PaymentsSearch extends Payments
               ],
             ],
             'defaultOrder' => [
-              'uid' => SORT_DESC,
+              'action_date' => SORT_DESC,
             ]
           ],
           'pagination' => [
