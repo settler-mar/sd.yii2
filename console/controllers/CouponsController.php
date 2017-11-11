@@ -76,6 +76,11 @@ class CouponsController extends Controller
 
     $categories = [];
     $coupons = $admitad->getCoupons($params);
+    if($coupons){
+      d($params);
+      d($coupons['_meta']);
+    }
+
     while(
       $coupons
     ) {
