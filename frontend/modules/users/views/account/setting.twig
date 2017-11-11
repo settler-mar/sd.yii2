@@ -39,12 +39,12 @@
                     {{ form.field(model, 'email',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':'Email адрес','required':true}) | raw }}
+                    }).textInput({'placeholder':'Email адрес'}) | raw }}
 
                     {{ form.field(model, 'birthday',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':'Дата рождения','required':true,'ref':'date'}) | raw }}
+                    }).textInput({'placeholder':'Дата рождения','ref':'date'}) | raw }}
 
 
                         <div class="cr-group">

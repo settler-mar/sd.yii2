@@ -11,12 +11,12 @@
                         {% endif %}
                     </h1>
 
-                    {% if not user_id %}
-                        <a href="#registration" class="btn btn-fill btn-large slider-mb-button">Бесплатная регистрация</a>
-                    {% else %}
-
-                    {% endif%}
                     <div class="greeting-links-box">
+                        {% if not user_id %}
+                            <a href="#registration" class="btn btn-fill btn-large">Бесплатная регистрация</a>
+                        {% else %}
+
+                        {% endif%}
                         <div class="greeting-links-box__item">
                             <a href="/howitworks">Как работает кэшбэк-сервис</a>
                         </div>
