@@ -13,17 +13,18 @@ return [ // You can change the providers and their classes.
     // register your app here: https://dev.twitter.com/apps/new
     //'class' => 'nodge\eauth\services\TwitterOAuth1Service',
     'class' => 'frontend\components\socials\Twitter',
-    'key' => '4bJtz1mauXWu0QdbNNpiNrmTJ',
-    'secret' => 'adjVJvpmmV3mfUEVLaqw2Q6jTtdHe3x2BR3n0hoix5HZPcfi3q',
+    'key' => '..',
+    'secret' => '..',
     'title' => '',
   ],
-//    'google_oauth' => array(
-//      // register your app here: https://code.google.com/apis/console/
-//      'class' => 'nodge\eauth\services\GoogleOAuth2Service',
-//      'clientId' => '...',
-//      'clientSecret' => '...',
-//      'title' => 'Google (OAuth)',
-//    ),
+  'google_oauth' => [
+    // register your app here: https://code.google.com/apis/console/
+    //'class' => 'nodge\eauth\services\GoogleOAuth2Service',
+    'class' => 'frontend\components\socials\Google',
+    'clientId' => '..',
+    'clientSecret' => '..',
+    'title' => '',
+  ],
 //    'yandex_oauth' => array(
 //      // register your app here: https://oauth.yandex.ru/client/my
 //      'class' => 'nodge\eauth\services\YandexOAuth2Service',
@@ -35,8 +36,8 @@ return [ // You can change the providers and their classes.
     // register your app here: https://developers.facebook.com/apps/
     //'class' => 'nodge\eauth\services\FacebookOAuth2Service',
     'class' => 'frontend\components\socials\Facebook',
-    'clientId' => '134898520501857',
-    'clientSecret' => 'e3fca83dd8ca78ba98fa00a425af9f0f',
+    'clientId' => '..',
+    'clientSecret' => '..',
     'title' => '',
   ],
 //    'yahoo' => array(
@@ -77,8 +78,8 @@ return [ // You can change the providers and their classes.
     // register your app here: https://vk.com/editapp?act=create&site=1
     //'class' => 'nodge\eauth\services\VKontakteOAuth2Service',
     'class' => 'frontend\components\socials\Vk',
-    'clientId' => '5838363',
-    'clientSecret' => '8iqIXAtIEU5vrM5HVgcM',
+    'clientId' => '..',
+    'clientSecret' => '..',
     'title' => '',
   ],
 //    'mailru' => array(
@@ -92,9 +93,9 @@ return [ // You can change the providers and their classes.
     // ... or here: http://www.odnoklassniki.ru/dk?st.cmd=appsInfoMyDevList&st._aid=Apps_Info_MyDev
     //'class' => 'nodge\eauth\services\OdnoklassnikiOAuth2Service',
     'class' => 'frontend\components\socials\Ok',
-    'clientId' => '1257800704',
-    'clientSecret' => 'AE881383621368434EEE336A',
-    'clientPublic' => 'CBAFIJPLEBABABABA',
+    'clientId' => '..',
+    'clientSecret' => '..',
+    'clientPublic' => '..',
     'title' => '',
   ],
 ];
