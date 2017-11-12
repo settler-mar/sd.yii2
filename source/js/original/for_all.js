@@ -201,4 +201,15 @@ $( document ).ready(function() {
   $('.editible[disabled]').on('mousedown',function () {
     $(this).prop('disabled', false)
   })
+
+  btn='<button class=unlock><i class="fa fa-unlock fa-4" aria-hidden="true"></i></button>';
+  btn=$(btn);
+  btn.on('click',function (e) {
+    e.preventDefault();
+    $this=$(this);
+    inp=$this.prev();
+    inp.prop('disabled', false);
+    return false;
+  });
+  $('.editible[disabled]').after(btn)
 });

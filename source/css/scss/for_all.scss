@@ -863,7 +863,21 @@ form > .kv-drp-container{
     font-weight: bold;
   }
 }
+
+.editible{
+  & + .unlock{
+    display: none;
+  }
+}
+
 .editible[disabled] {
   background: #fff;
   cursor: text;
+  color: #999;
+
+  & + .unlock{
+    display: block;
+    margin-top: -30px;
+    margin-left: 264px;
+  }
 }
