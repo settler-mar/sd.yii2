@@ -863,3 +863,7 @@ form > .kv-drp-container{
     font-weight: bold;
   }
 }
+.editible[disabled] {
+  background: #fff;
+  cursor: text;
+}

@@ -22,7 +22,11 @@
 
                 {% endif %}
 
-                {{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+                {{ form.field(model, 'email').textInput({
+                    'maxlength':true,
+                    'disabled':true,
+                    'class' : 'form-control editible'
+                })|raw }}
 
                 {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 

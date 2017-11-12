@@ -192,3 +192,13 @@ $('.ajax-action').click(function(e) {
     notification.notifi({message:'Необходимо выбрать элементы!',type:'err'})
   }
 });
+
+$( document ).ready(function() {
+  $('.editible[disabled]').on('click',function () {
+    $(this).prop('disabled', false)
+  })
+
+  $('.editible[disabled]').on('mousedown',function () {
+    $(this).prop('disabled', false)
+  })
+});
