@@ -118,7 +118,15 @@ class CouponsController extends Controller
             $coupon_cat->category_id = $categorie['id'];
             $coupon_cat->save();
           }
-        };
+        }else{
+          $db_coupons->name = $coupon['name'];
+          $db_coupons->description = $coupon['description'];
+          $db_coupons->date_end = $coupon['date_end'];
+          $db_coupons->goto_link = $coupon['frameset_link'];
+          $db_coupons->promocode = $coupon['promocode'];
+          $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
+          $db_coupons->save();
+        }
       }
 
       $params['offset']=$coupons['_meta']['limit']+$coupons['_meta']['offset'];
