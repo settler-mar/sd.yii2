@@ -25,13 +25,15 @@
                 {{ form.field(model, 'email').textInput({
                     'maxlength':true,
                     'disabled':true,
-                    'class' : 'form-control editible'
+                    'class' : 'form-control editible',
+                    'autocomplete':'off'
                 })|raw }}
 
                 {{ form.field(model, 'name').textInput({
                     'maxlength':true,
                     'disabled':true,
-                    'class' : 'form-control editible'
+                    'class' : 'form-control editible',
+                    'autocomplete':'off'
                 })|raw }}
 
                 {{ form.field(model, 'new_password').passwordInput({'maxlength':true})|raw }}
