@@ -64,6 +64,10 @@ class AdminController extends Controller
     $stat['waiting'] = $stores->where(['is_active' => 0])->count();
     $stat['blocked'] = $stores->where(['is_active' => -1])->count();
     $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
+    $stores->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id');
+    $stat['cpa_cpa'] = $stores->where(['cwcl.cpa_id' => 1])->count();
+    $stat['cpa_offline'] = $stores->where(['cwcl.cpa_id' => 2])->count();
+    $stat['cpa_direct'] = $stores->where(['cwcl.cpa_id' => 3])->count();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,

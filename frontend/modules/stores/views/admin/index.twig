@@ -13,41 +13,67 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 style="padding: 0">{{ html.encode(this.title) }}</h1>
-                    <div class="sum_information">
-                        <div class="line">
-                            <div class="name"><a href="/admin/stores">Всего магазинов</a></div>
-                            <div class="value">
-                                {{ stat.all }}
+                    <div class="col-md-6">
+                        <div class="sum_information">
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores">Всего магазинов</a></div>
+                                <div class="value">
+                                    {{ stat.all }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="line">
-                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=1">Активных</a></div>
-                            <div class="value">
-                                {{ stat.active }}
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[is_active]=1">Активных</a></div>
+                                <div class="value">
+                                    {{ stat.active }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="line">
-                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=0">Приостановленных</a></div>
-                            <div class="value">
-                                {{ stat.waiting }}
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[is_active]=0">Приостановленных</a></div>
+                                <div class="value">
+                                    {{ stat.waiting }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="line">
-                            <div class="name"><a href="/admin/stores?StoresSearch[is_active]=-1">Выключенных</a></div>
-                            <div class="value">
-                                {{ stat.blocked }}
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[is_active]=-1">Выключенных</a></div>
+                                <div class="value">
+                                    {{ stat.blocked }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="line">
-                            <div class="name"><a href="/admin/stores?StoresSearch[charity]=1">Благотворительных</a></div>
-                            <div class="value">
-                                {{ stat.charity }}
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[charity]=1">Благотворительных</a></div>
+                                <div class="value">
+                                    {{ stat.charity }}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="sum_information">
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=1">Через CPA</a></div>
+                                <div class="value">
+                                    {{ stat.cpa_cpa }}
+                                </div>
+                            </div>
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=2">Оффлайн</a></div>
+                                <div class="value">
+                                    {{ stat.cpa_offline }}
+                                </div>
+                            </div>
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=3">Прямые</a></div>
+                                <div class="value">
+                                    {{ stat.cpa_direct }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
                     {# include('_search.twig', {'model': searchModel}) #}
                     <p>
-                        <a href="/admin/stores/create" class="btn btn-success">{{ 'Create Stores' }}</a>
+                        <a href="/admin/stores/create" class="btn btn-success">Создать магазин</a>
                     </p>
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
