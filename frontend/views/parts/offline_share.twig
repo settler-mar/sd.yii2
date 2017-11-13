@@ -1,4 +1,3 @@
-<a name="link-to-clipboard"></a>
 <h3>
     {% if friend_user %}
         Штрихкод вашего друга
@@ -22,6 +21,7 @@
         <img src="{{ user_code_img }}" alt="" width="230">
         {% if friend_user or user_id %}
             <p class="link-sent">
+
                 <a href="" class="link-to-clipboard"
                    data-link="{{ user_code }}"
                    data-text="Номер вашего штрихкода успешно скопирован в буфер обмена. Вставьте его в примечание к заказу в интернет-магазине."
@@ -45,6 +45,7 @@
                         <span data-icon="" class="icon"></span>
                     </div>
                     <div class="intro-content">
+                        <a name="link-to-clipboard"></a>
                         <p  class="intro-content_header">Поделиться с родными или друзьями</p>
 
                         <div
