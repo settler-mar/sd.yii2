@@ -57,7 +57,7 @@ class DefaultController extends Controller
 
     $storesPoints = B2bStoresPoints::find()
       ->select(['sp.id as point_id', 'sp.country', 'sp.city', 'sp.address',
-        'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name'])
+        'sp.name as point_name', 'cws.uid as store_id', 'cws.name as store_name','cws.currency as currency'])
       ->from(B2bStoresPoints::tableName() . ' sp')
       ->innerJoin(Stores::tableName() . ' cws', 'sp.store_id = cws.uid')
       ->innerJoin('cw_cpa_link', 'cws.active_cpa = cw_cpa_link.id')
@@ -71,15 +71,20 @@ class DefaultController extends Controller
 
     $stores = [];
     $store_ids = [];
-
+    $resultCur=[];
     foreach ($storesPoints as $point) {
       $stores[$point['store_id']]['name'] = $point['store_name'];
       $stores[$point['store_id']]['points'][] = $point;
       if(!in_array($point['store_id'],$store_ids)){
         $store_ids[]=$point['store_id'];
       }
+      if(!in_array($point['currency'],$resultCur)){
+        $resultCur[]=$point['currency'];
+      }
     }
-
+    $resultCur = count($resultCur) == 1 ? $resultCur[0] : false;
+    //d($resultCur);
+    //ddd($stores);
 
     $params=Yii::$app->request->queryParams;
     $params['users_shops']=$store_ids;
@@ -152,7 +157,6 @@ class DefaultController extends Controller
     ];
     //статистика по выборке
     $queryAll = clone $dataProvider->query;
-    $queryCur = clone $dataProvider->query;
     $queryAll->select([
       'sum(cashback) as cashback',
       'sum(cashback/kurs) as cashback_local',
@@ -180,14 +184,16 @@ class DefaultController extends Controller
     $resultRevoke = $queryRevoke->one();
 
     //валюта платежей, если только одного вида
-    $resultCur = $queryCur
-      ->select('cw_stores.currency')
-      ->with('store')
+    /*$resultCur = $queryCur
+      //->select('cw_stores.currency')
+      //->with('store')
       ->asArray()
       ->all();
+
+    ddd($resultCur);
     $resultCur = array_unique(array_column($resultCur, 'currency'));
     $resultCur = count($resultCur) == 1 ? $resultCur[0] : false;
-    //ddd($resultCur);
+    //ddd($resultCur);*/
 
 
     return $this->render('index.twig', [
