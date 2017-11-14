@@ -31,55 +31,51 @@ i[class^=sd_icon]
   i[class*=sd_icon] {
     font-size: 90px;
     color: #e6ae03;
-    font-weight: 700;
+    font-weight: normal;
   }
 }
 
 
-i.sd_icon-SD-i1-01:before{
+i.sd_icon-down:before{
   content: '\EA01';
 }
 
-i.sd_icon-SD-i2-01:before{
+i.sd_icon-barcode:before{
   content: '\EA02';
 }
 
-i.sd_icon-SD-i3-01:before{
+i.sd_icon-chart_click:before{
   content: '\EA03';
 }
 
-i.sd_icon-SD-i4-01:before{
+i.sd_icon-chart_click2:before{
   content: '\EA04';
 }
 
-i.sd_icon-SD-i5-01:before{
+i.sd_icon-confirm:before{
   content: '\EA05';
 }
 
-i.sd_icon-SD-i6-01:before{
+i.sd_icon-confirm_check:before{
   content: '\EA06';
 }
 
-i.sd_icon-SD-i7-01:before{
+i.sd_icon-right:before{
   content: '\EA07';
 }
 
-i.sd_icon-SD-i8-01:before{
+i.sd_icon-save_money:before{
   content: '\EA08';
 }
 
-i.sd_icon-SD-i9-01:before{
+i.sd_icon-shop:before{
   content: '\EA09';
 }
 
-i.sd_icon-SD-down:before{
+i.sd_icon-show_barcode:before{
   content: '\EA0A';
 }
 
-i.sd_icon-SD-right:before{
+i.sd_icon-user_card:before{
   content: '\EA0B';
-}
-
-i.sd_icon-test:before{
-  content: '\EA0C';
 }

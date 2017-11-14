@@ -31,7 +31,7 @@ i[class^=<%= cssClass%>]
   i[class*=<%= cssClass%>] {
     font-size: 90px;
     color: #e6ae03;
-    font-weight: 700;
+    font-weight: normal;
   }
 }
 
