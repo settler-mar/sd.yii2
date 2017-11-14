@@ -5,12 +5,14 @@
     <div class="logo">
         <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"><img src="images/logos/{{store.logo}}" alt="{{store.name}}"></a>
     </div>
-  <div class="shop__header">
-      <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}" {% if store.name|length> 35 %} class="small-size" {% endif
-    %}>
-          {{store.name}}
-      </a>
-  </div>
+    <a
+            class="shop__header {{ _if(store.name|length> 35,"small-size") }}"
+            href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+    >
+        <span>
+            {{store.name}}
+        </span>
+    </a>
     <div class="shop-bottom">
         <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
 
