@@ -2789,5 +2789,44 @@ section.store_photos {
   }
 }
 
+//авторизация через соц сети
+.eauth-list {
+  text-align: center;
+}
+//вертикальный вариант
+.eauth-service.vertical {
+  display: block;
+  padding-left: 50px;
+  padding-bottom: 10px;
+  .eauth-service-link {
+    width: auto;
+    padding-top: 5px;
+    padding-left: 70px;
+    text-align: left;
+    &:before {
+      left: 20px;
+    }
+  }
+}
+
+.sign-up-email {
+  margin-top: 18px;
+  a {
+    padding-left: 120px;
+    position: relative;
+    &:before {
+      font-family: FontAwesome;;
+      content: "\f003";
+      font-size: 33px;
+      display: inline-block;
+      position: absolute;
+      color: #aaa;
+      left: 54px;
+      top: -14px
+    }
+  }
+}
+
+
 @import "print.scss";
 @import  "../external/queries";

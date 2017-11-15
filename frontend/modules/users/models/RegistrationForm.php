@@ -11,6 +11,7 @@ class RegistrationForm extends Model
 {
   public $email;
   public $password;
+  public $password_repeat;
 
   /**
    * @inheritdoc
@@ -19,8 +20,9 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
-      [['email', 'password'], 'required'],
+      [['email', 'password', 'password_repeat'], 'required'],
       [['email'], 'email'],
+      ['password_repeat', 'compare', 'compareAttribute' => 'password'],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
 
       ['password', 'trim'],

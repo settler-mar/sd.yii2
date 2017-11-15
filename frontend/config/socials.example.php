@@ -15,7 +15,7 @@ return [ // You can change the providers and their classes.
     'class' => 'frontend\components\socials\Twitter',
     'key' => '..',
     'secret' => '..',
-    'title' => '',
+    'title' => 'Регистрация через Twitter',
   ],
   'google_oauth' => [
     // register your app here: https://code.google.com/apis/console/
@@ -23,7 +23,7 @@ return [ // You can change the providers and their classes.
     'class' => 'frontend\components\socials\Google',
     'clientId' => '..',
     'clientSecret' => '..',
-    'title' => '',
+    'title' => 'Регистрация через Google',
   ],
 //    'yandex_oauth' => array(
 //      // register your app here: https://oauth.yandex.ru/client/my
@@ -38,7 +38,7 @@ return [ // You can change the providers and their classes.
     'class' => 'frontend\components\socials\Facebook',
     'clientId' => '..',
     'clientSecret' => '..',
-    'title' => '',
+    'title' => 'Регистрация через Facebook',
   ],
 //    'yahoo' => array(
 //      'class' => 'nodge\eauth\services\YahooOpenIDService',
@@ -80,7 +80,7 @@ return [ // You can change the providers and their classes.
     'class' => 'frontend\components\socials\Vk',
     'clientId' => '..',
     'clientSecret' => '..',
-    'title' => '',
+    'title' => 'Регистрация через Vkontakte',
   ],
 //    'mailru' => array(
 //      // register your app here: http://api.mail.ru/sites/my/add
@@ -96,6 +96,6 @@ return [ // You can change the providers and their classes.
     'clientId' => '..',
     'clientSecret' => '..',
     'clientPublic' => '..',
-    'title' => '',
+    'title' => 'Регистрация через Odnoklassniki',
   ],
 ];

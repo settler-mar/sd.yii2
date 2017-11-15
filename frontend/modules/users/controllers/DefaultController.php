@@ -116,7 +116,7 @@ class DefaultController extends Controller
    * If creation is successful, the browser will be redirected to the 'view' page.
    * @return mixed
    */
-  public function actionRegistration()
+  public function actionRegistrationemail()
   {
 
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
@@ -152,7 +152,7 @@ class DefaultController extends Controller
 
     $isIndex=$request->get('index');
     if($isIndex){
-      $data['html']= $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+      $data['html']= $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
         'model' => $model
       ]);
       if($isIndex==1){
@@ -161,13 +161,43 @@ class DefaultController extends Controller
         return json_encode($data);
       }
     }else {
-      $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+      $data['html'] = $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
         'isAjax' => true
       ]);
       return json_encode($data);
     }
   }
+
+
+  public function actionRegistration()
+  {
+
+    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+      return $this->goHome();
+    }
+
+    $request=Yii::$app->request;
+    if(!$request->isAjax){
+      return $this->goHome();
+    }
+
+    $isIndex=$request->get('index');
+    if($isIndex){
+      $data['html']= $this->renderAjax('registration'); // рисуем форму 
+      if($isIndex==1){
+        return $data['html'];
+      }else{
+        return json_encode($data);
+      }
+    }else {
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму 
+        'isAjax' => true
+      ]);
+      return json_encode($data);
+    }
+  }
+
 
 
   public function actionSocials()
