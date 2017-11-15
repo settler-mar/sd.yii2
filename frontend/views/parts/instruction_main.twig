@@ -1,0 +1,39 @@
+<section class="intro section-padding" id="howitworks">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 intro-feature wp4 not_arrow">
+                <div class="intro-icon">
+                    <span data-icon="&#xe007;" class="icon"></span>
+                </div>
+                <div class="intro-content">
+                    <h5>Выберите магазин</h5>
+                    <p>
+                        {% if not user_id %}
+                            Пройдите <a href="#registration" class="ignore-hash" rel="nofollow">простую регистрацию</a> в кэшбэк-сервисе <strong>SecretDiscounter</strong> и выберите ваш любимый магазин из <a href="/stores">нашего каталога</a>.
+                        {% else %}
+                            Выберите ваш любимый магазин из <a href="/stores">каталога</a> кэшбэк-сервиса SecretDiscounter.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature wp5">
+                <div class="intro-icon">
+                    <span data-icon="&#xe027;" class="icon"></span>
+                </div>
+                <div class="intro-content">
+                    <h5>Совершите покупку</h5>
+                    <p>Перейдите в выбранный магазин и совершайте покупки так, как вы это обычно делаете. Цена при этом будет <strong>такой же</strong>, как если бы вы зашли напрямую.</p>
+                </div>
+            </div>
+            <div class="col-md-4 intro-feature wp6">
+                <div class="intro-icon">
+                    <span data-icon="&#xe016;" class="icon"></span>
+                </div>
+                <div class="intro-content last">
+                    <h5>Получите деньги</h5>
+                    <p>Мы получаем комиссионные от магазина за совершенную вами покупку, и часть этих денег отдаём вам. Это называется <strong>кэшбэк</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

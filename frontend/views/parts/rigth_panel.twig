@@ -1,0 +1,14 @@
+{% if not this.user_id %}
+    <div class="help_button">
+        <a href="#help" class="sd_help_button ajaxFormOpen" data-modal-class="help-msg">
+            Как это работает
+        </a>
+    </div>
+{% endif %}
+{% if this.all_params.current_store %}
+    <div class="help_button" style="margin-right: -114px;">
+        <a href="#howgetcashback" class="sd_help_button" data-modal-class="help-msg">
+            Как получить кэшбэк?
+        </a>
+    </div>
+{% endif %}
