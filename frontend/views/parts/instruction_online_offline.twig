@@ -5,31 +5,30 @@
                 {% if infotitle %}
                     {{ infotitle }}
                 {% else %}
-                    Как получить кэшбэк?
+                    Как получить кэшбэк в этом магазине?
                 {% endif %}
             </h3>
-            <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe00c;" class="icon"></span>
-                </div>
+            <div class="col-md-4 intro-feature not_arrow">
+                <i class="sd_icon-user_card intro"></i>
                 <div class="intro-content {% if user_id %}through{% endif %}">
                     <h5>Регистрируйтесь на сайте</h5>
                     <p>Пройдите {% if not user_id %}<a href="#registration" class="ignore-hash">простую регистрацию</a>{% else %} простую регистрацию {% endif %} в кэшбэк-сервисе SecretDiscounter.</p>
                 </div>
             </div>
             <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe027;" class="icon"></span>
-                </div>
+                <i class="sd_icon-chart_click intro"></i>
                 <div class="intro-content">
                     <h5>Перейдите в магазин</h5>
-                    <p>Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a> и сделайте заказ на сайте.</p>
+                    <p>
+                        Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a> и сделайте заказ на сайте.<br>
+                        Если вы оформляете доставку НЕ КУРЬЕРОМ, а по почте или
+                        в пункт самовывоза – то обязательно укажите
+                        <a href="/offline-system#link-to-clipboard">номер с вашего штрихкода</a> в примечании к заказу.
+                    </p>
                 </div>
             </div>
             <div class="col-md-4 intro-feature">
-                <div class="intro-icon">
-                    <span data-icon="&#xe016;" class="icon"></span>
-                </div>
+                <i class="sd_icon-show_barcode intro"></i>
                 <div class="intro-content last">
                     <h5>ЗАФИКСИРУЙТЕ ПОКУПКУ</h5>
                     <p>
@@ -38,9 +37,7 @@
                         попросите зафиксировать покупку.
                         Сразу после этого ваш кэшбэк
                         отобразится в вашем <a href="/account"> Личном
-                        кабинете</a> в SecretDiscounter. Если же вы оформляете покупку
-                        с доставкой по почте – тогда укажите
-                        <a href="/offline-system#link-to-clipboard">номер с вашего штрихкода</a> в примечании к заказу.
+                        кабинете</a> в SecretDiscounter.
                     </p>
                 </div>
             </div>

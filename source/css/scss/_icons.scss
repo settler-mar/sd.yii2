@@ -1,0 +1,81 @@
+@font-face {
+  font-family: "sd_icon";
+  src: url('/fonts/icons/sd_icon.eot');
+  src: url('/fonts/icons/sd_icon.eot?#iefix') format('eot'),
+  url('/fonts/icons/sd_icon.woff2') format('woff2'),
+  url('/fonts/icons/sd_icon.woff') format('woff'),
+  url('/fonts/icons/sd_icon.ttf') format('truetype'),
+  url('/fonts/icons/sd_icon.svg#sd_icon') format('svg');
+}
+
+i.sd_icon:before,
+i[class*=sd_icon],
+i[class^=sd_icon]
+{
+  font-family: "sd_icon";
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  text-decoration: none;
+  text-transform: none;
+}
+
+&.intro{
+  i.sd_icon:before,
+  i[class*=sd_icon] {
+    font-size: 90px;
+    color: #e6ae03;
+    font-weight: normal;
+  }
+}
+
+
+i.sd_icon-down:before{
+  content: '\EA01';
+}
+
+i.sd_icon-barcode:before{
+  content: '\EA02';
+}
+
+i.sd_icon-chart_click:before{
+  content: '\EA03';
+}
+
+i.sd_icon-chart_click2:before{
+  content: '\EA04';
+}
+
+i.sd_icon-confirm:before{
+  content: '\EA05';
+}
+
+i.sd_icon-confirm_check:before{
+  content: '\EA06';
+}
+
+i.sd_icon-right:before{
+  content: '\EA07';
+}
+
+i.sd_icon-save_money:before{
+  content: '\EA08';
+}
+
+i.sd_icon-shop:before{
+  content: '\EA09';
+}
+
+i.sd_icon-show_barcode:before{
+  content: '\EA0A';
+}
+
+i.sd_icon-user_card:before{
+  content: '\EA0B';
+}

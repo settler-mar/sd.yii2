@@ -11,12 +11,18 @@ var gulp        = require('gulp'),
     sourcemap = require('gulp-sourcemaps'),
     scss = require('gulp-sass'),
     gcmq = require('gulp-group-css-media-queries'),
-    fs = require('fs');
+    fs = require('fs'),
+
+    iconfont = require('gulp-iconfont'),
+    runTimestamp = Math.round(Date.now()/1000),
+    svgicons2svgfont = require('gulp-svgicons2svgfont'),
+    template = require('gulp-template');
 
 var paths = {
     source: {/*пути с исходниками*/
         css: './source/css',
-        js: './source/js'
+        js: './source/js',
+        svg:  './source/svg',
     },
     watch: { /*пути для отслеживания изменений*/
         scss: './source/css/**/*.scss',
@@ -25,7 +31,8 @@ var paths = {
     },
     app: { /*папка с готовым проектом */
         css: './frontend/web/css',
-        js: './frontend/web/js'
+        js: './frontend/web/js',
+        fonts: './frontend/web/fonts',
     },
     b2b: {
       css: './b2b/web/css',
@@ -72,7 +79,7 @@ gulp.task('cssb2b', function() {
 
 gulp.task('jscommon', compileJs([
         //paths.source.js+'/external/jquery-1.11.2.min.js',
-        paths.source.js+'/external/retina.js',
+        //paths.source.js+'/external/retina.js',
         paths.source.js+'/external/jquery.fancybox.pack.js',
         paths.source.js+'/external/bootstrap.min.js',
         paths.source.js+'/external/scripts.js',
@@ -219,5 +226,38 @@ gulp.task('clearb2b', function(){
     });
 });
 
+gulp.task('Iconfont', function(){
+  gulp.src([paths.source.svg+'/sd_icon_font/*.svg'])
+    .pipe(iconfont({
+      fontName: 'sd_icon',
+      prependUnicode: true,
+      fixedWidth:true,
+      //normalize:true,
+      //fontHeight: 1000,
+      formats: [
+        'svg',
+        'ttf',
+        'eot',
+        'woff',
+        'woff2',
+      ],
+      timestamp: runTimestamp,
+    }))
+    .on('glyphs', function(glyphs) {
+      for(var i=0;i<glyphs.length;i++){
+        glyphs[i].unicode=glyphs[i].unicode[0].charCodeAt(0).toString(16).toUpperCase()
+      }
+      console.log(glyphs);
 
-
+      gulp.src(paths.source.css+'/template/_icons.scss')
+        .pipe(template({
+          glyphs: glyphs,
+          fontName:'sd_icon',
+          cssClass:'sd_icon',
+          fontPath: '/fonts/icons/',
+          timestamp: runTimestamp
+        }))
+        .pipe(gulp.dest(paths.source.css+'/scss'))
+    })
+    .pipe(gulp.dest(paths.app.fonts+'/icons'));
+});
