@@ -50,7 +50,7 @@ class RegistrationForm extends Model
     //пишем токен для валидации почты
     $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
     
-    if (ValidateEmail::sentEmailValidation($user) && $user->save()) {
+    if (ValidateEmail::sentEmailValidation($user, true) && $user->save()) {
        return $user;
     } else {
       return null;

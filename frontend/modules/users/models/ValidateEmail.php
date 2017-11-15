@@ -71,7 +71,7 @@ class ValidateEmail extends Model
    * @param $user
    * @return bool
    */
-  public static function sentEmailValidation($user)
+  public static function sentEmailValidation($user, $newUser = false)
   {
     $sessionVar = 'sd_verify_mail_time';
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
@@ -85,12 +85,14 @@ class ValidateEmail extends Model
     return Yii::$app
       ->mailer
       ->compose(
-        ['html' => 'verifyEmailToken-html', 'text' => 'verifyEmailToken-text'],
+        [
+          'html' => $newUser ? 'verifyEmailTokenNewUser-html': 'verifyEmailToken-html',
+          'text' => $newUser? 'verifyEmailTokenNewUser-text' : 'verifyEmailToken-text'],
         ['user' => $user]
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($user->email)
-      ->setSubject('Подтверждение Email на сайте ' . Yii::$app->name)
+      ->setSubject($newUser ? 'Активируйте аккаунт на SecretDiscounter.ru' : 'Подтвердите Email на SecretDiscounter.ru')
       ->send();
   }
 
