@@ -213,3 +213,47 @@ $( document ).ready(function() {
   });
   $('.editible[disabled]').after(btn)
 });
+
+$(function() {
+
+  var menu = {
+    control: {
+      headerStoresMenu: $("#top").find(".submenu-handl"),
+      storesSubmenus: $("#top").find(".submenu-handl").find(".submenu"),
+      events: function() {
+        var self = this;
+        self.headerStoresMenu.hover(function() {
+          var submenu = $(this).find('.submenu');
+          if($(window).width() > 991) {
+            clearTimeout(self.storeHide);
+            self.storesSubmenus.css("display", "none");
+            self.storeShow = setTimeout(function() {
+              submenu.clearQueue();
+              submenu.css("display", "block").animate({"opacity": 1}, 350);
+              // self.storesSubmenu.clearQueue();
+              // self.storesSubmenu.css("display", "block").animate({"opacity": 1}, 350);
+            }, 200);
+          }
+        }, function() {
+          var submenu = $(this).find('.submenu');
+          if($(window).width() > 991) {
+            clearTimeout(self.storeShow);
+            self.storeHide = setTimeout(function() {
+              submenu.clearQueue();
+              submenu.animate({"opacity": 0}, 200, function() {
+                $(this).css("display", "none");
+              });
+              // self.storesSubmenu.clearQueue();
+              // self.storesSubmenu.animate({"opacity": 0}, 200, function() {
+              //     $(this).css("display", "none");
+              // });
+            }, 300);
+          }
+        });
+      }
+    }
+  };
+
+  menu.control.events();
+
+});

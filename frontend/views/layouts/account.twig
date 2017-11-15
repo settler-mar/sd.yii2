@@ -79,9 +79,35 @@
         </form>
     </div>
     <div class="sub-menu">
-        <ul>
-            <li class="link-head-stores"><a href="/stores"><span>Магазины</span></a></li>
-            <li><a href="/coupons">Купоны</a></li>
+        <ul class="account-nav">
+            {#<li class="link-head-stores"><a href="/stores"><span>Магазины</span></a></li>#}
+            <li class="link-head-stores stores submenu-handl">
+                <a href="/stores"><span>Магазины</span></a>
+                {{ use('frontend/components/CategoryMenu') }}
+                {% set category_tree = category_menu_widget({'show_hidden': false}) %}
+                {% if category_tree %}
+                    <div class="submenu">
+                        <span class="fa fa-caret-up"></span>
+                        <div class="tree">
+                            {{category_tree|raw}}
+                        </div>
+                    </div>
+                {% endif %}
+            </li>
+            <li class="stores submenu-handl">
+                <a href="/coupons">Купоны</a>
+                {{ use('frontend/components/CategoryCouponsMenu') }}
+                {% set category_coupons_list = category_coupons_menu_widget() %}
+                {% if category_coupons_list %}
+                    <div class="submenu coupons">
+                        <span class="fa fa-caret-up"></span>
+                        <div class="tree">
+                            {{category_coupons_list|raw}}
+                        </div>
+                    </div>
+                {% endif %}
+            </li>
+
             <li><a href="/promo">Акции</a></li>
         </ul>
     </div>
