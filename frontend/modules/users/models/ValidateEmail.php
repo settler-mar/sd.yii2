@@ -31,9 +31,9 @@ class ValidateEmail extends Model
       if (!$this->_user ) {
         throw new InvalidParamException('Неверный ключ и email для подтверждения email.');
       }
-//      if ($this->_user->email_verify_time == null || strtotime($this->_user->email_verify_time) - time() > 60*60*24) {
-//        throw new InvalidParamException('Ссылка для подтверждения email устарела');
-//      }
+      if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60*60*24) {
+        throw new InvalidParamException('Ссылка для подтверждения email устарела');
+      }
     }
     parent::__construct();
   }
@@ -61,7 +61,7 @@ class ValidateEmail extends Model
 
     $user->email_verified = 1;
     $user->email_verify_token = null;
-    //$user->email_verify_time = null;
+    $user->email_verify_time = null;
 
     if ($user->save()){
       //отправляем письмо о валидации
@@ -114,7 +114,7 @@ class ValidateEmail extends Model
   }
 
   /**
-   * подтверждение email (не во время регистрации)
+   * подтверждение email (кнопкой в профиле или во встплывашке, не во время регистрации)
    * @return mixed
    */
   public static function validateEmail($id)
@@ -122,7 +122,7 @@ class ValidateEmail extends Model
     $user = Users::findOne(['uid' => $id]);
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
-      //$user->email_verify_time = date('Y-m-d H:i:s');
+      $user->email_verify_time = date('Y-m-d H:i:s');
       if (self::sentEmailValidation($user)) {
         $user->save();
         return true;

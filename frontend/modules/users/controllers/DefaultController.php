@@ -308,12 +308,15 @@ class DefaultController extends Controller
     } catch (InvalidParamException $e) {
       throw new BadRequestHttpException($e->getMessage());
     }
+
     if ($user_id = $model->verifyEmail()) {
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
       Yii::$app->session->addFlash('success', 'Ваш Email подтверждён.');
+      return $this->redirect(['/account']);
+    } else {
+      return $this->redirect(['/']);
     }
-    return $this->redirect(['/account']);
 
   }
 
