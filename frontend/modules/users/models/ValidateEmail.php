@@ -64,6 +64,8 @@ class ValidateEmail extends Model
     //$user->email_verify_time = null;
 
     if ($user->save()){
+      //отправляем письмо о валидации
+      static::sentEmailValidation($user, false, true);
       return $user->uid;
     }else{
       return false;
@@ -75,14 +77,24 @@ class ValidateEmail extends Model
    * @param $user
    * @return bool
    */
-  public static function sentEmailValidation($user, $newUser = false)
+  public static function sentEmailValidation($user, $newUser = false, $validateSuccess = false)
   {
+    $templateName = 'verifyEmailToken';
+    $subject = 'Подтвердите Email на SecretDiscounter.ru';
+    if ($newUser) {
+      $templateName = 'verifyEmailTokenNewUser';
+      $subject = 'Активируйте аккаунт на SecretDiscounter.ru';
+    }
+    if ($validateSuccess) {
+      $templateName = 'verifyEmailSuccess';
+      $subject = 'Узнайте, как экономить до 40% на покупках';
+    }
     $sessionVar = 'sd_verify_mail_time';
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
 
-    if ($lastMailTime && (time() - $lastMailTime < 60*30)) {
+    if (!$newUser && !$validateSuccess && $lastMailTime && (time() - $lastMailTime < 60*30)) {
       Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 30 минут');
-      Yii::$app->response->redirect($newUser ? '/' : '/account');
+      Yii::$app->response->redirect('/account');
       return null;
     }
     Yii::$app->session->set($sessionVar, time());
@@ -91,13 +103,13 @@ class ValidateEmail extends Model
       ->mailer
       ->compose(
         [
-          'html' => $newUser ? 'verifyEmailTokenNewUser-html': 'verifyEmailToken-html',
-          'text' => $newUser? 'verifyEmailTokenNewUser-text' : 'verifyEmailToken-text'],
+          'html' => $templateName . '-html',
+          'text' => $templateName . '-text'],
         ['user' => $user]
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($user->email)
-      ->setSubject($newUser ? 'Активируйте аккаунт на SecretDiscounter.ru' : 'Подтвердите Email на SecretDiscounter.ru')
+      ->setSubject($subject)
       ->send();
   }
 
