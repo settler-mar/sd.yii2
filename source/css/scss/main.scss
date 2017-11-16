@@ -2793,18 +2793,49 @@ section.store_photos {
 .eauth-list {
   text-align: center;
 }
-//вертикальный вариант
-.eauth-service.vertical {
-  display: block;
-  padding-left: 50px;
-  padding-bottom: 10px;
-  .eauth-service-link {
-    width: auto;
-    padding-top: 5px;
-    padding-left: 70px;
-    text-align: left;
+
+.eauth-service {
+  //вертикальный вариант
+  &.vertical {
+    display: block;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    .eauth-service-link_sd {
+      display: block;
+      width: auto;
+      padding-top: 5px;
+      padding-left: 70px;
+      text-align: left;
+      position: relative;
+      &:before {
+        left: 2px;
+        top: -7px;
+        position: absolute;
+      }
+    }
+
+  }
+  //для всех
+  .eauth-service-link_sd {
     &:before {
-      left: 20px;
+    font-family: 'sd_icon';
+    font-size: 35px;
+    color: #303030;
+  }
+    &.twitter:before {
+      content:'\EA0F';
+    }
+    &.vkontakte:before {
+      content:'\EA10';
+    }
+    &.odnoklassniki:before {
+      content:'\EA0E';
+    }
+    &.facebook:before {
+      content:'\EA0C';
+    }
+    &.google_oauth:before {
+      content:'\EA0D';
     }
   }
 }
@@ -2820,7 +2851,7 @@ section.store_photos {
       font-size: 33px;
       display: inline-block;
       position: absolute;
-      color: #aaa;
+      color: #303030;
       left: 54px;
       top: -14px
     }
