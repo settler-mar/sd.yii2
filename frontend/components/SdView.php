@@ -106,6 +106,7 @@ class SdView extends View
         strpos($viewFile,'account.twig')
       )
     ) {
+      //ddd($this->all_params);
       $output=Yii::$app->TwigString->render(
         $output,
         $this->all_params

@@ -1,3 +1,191 @@
+/* Subnavigation
+------------------------------------*/
+.primary-nav, .account-nav {
+  & > li {
+    display: inline-block !important;
+    position: relative !important;
+
+    &.stores {
+      .submenu {
+        position: absolute;
+        display: none;
+        opacity: 0;
+        background-color: #282b37;
+        color: #fff;
+        //width: 250px;
+        width: 330px;
+        z-index: 2;
+        font-weight: 500;
+        margin-top: 20px;
+        margin-left: -85px;
+        box-shadow: 0 0 10px #1F222B;
+        &.coupons {
+          width: 290px;
+        }
+
+
+        .tree {
+          padding: 20px 10px;
+
+          & > ul {
+            & > li {
+              display: block;
+              position: relative;
+              margin-top: 0;
+              margin-left: 0;
+
+              .fa-fa-carett {
+                position: absolute;
+                top: 5px;
+                width: 15px;
+                left: inherit;
+                right: 5px;
+                padding: 0;
+                text-align: right;
+                font-size: 15px;
+                color: rgba(100,108,138,0.96);
+              }
+
+              & > ul {
+                padding: 0px 10px;
+                display: none;
+
+                li {
+                  display: block;
+                  margin-top: 0;
+                  margin-left: 0;
+                }
+              }
+
+              &:hover > ul {
+                position: absolute;
+                //left: 230px;
+                left: 310px;
+                top: -9px;
+                background-color: #282b37;
+                border-left: 2px solid #20232d;
+                padding: 10px 0 10px 0;
+                //width: 320px;
+                width: 380px;
+                display: block;
+              }
+
+              a {
+                font-weight: 600 !important;
+                padding-top: 0;
+                padding-bottom: 0;
+                text-transform: none;
+                font-size: 13px;
+                color: #F1F5FF;
+                line-height: 18px;
+                border: none;
+
+                &:hover {
+                  color: #e6ae03;
+                }
+
+                &:before {
+                  content: '-';
+                  margin-right: 5px;
+                  margin-left: 7px;
+                  color: #e6ae03;
+                }
+
+                &.title {
+                  color: #fff;
+                  font-size: 13px;
+                  line-height: 18px;
+                  display: block;
+                  padding: 3px 10px;
+                  padding-right: 0;
+
+                  &:before {
+                    content: '';
+                    margin: 0;
+                  }
+
+                  &:hover {
+                    color: #e6ae03;
+                  }
+                }
+              }
+              span.active {
+                color: #e6ae03;
+                padding-left: 10px;
+                &:before {
+                  content: '-';
+                  margin-left: 9px;
+                  margin-right: 5px;
+                }
+                &.title {
+                  color: #e6ae03;
+                  &:before {
+                    content: '';
+                    margin: 0;
+                  }
+                }
+              }
+              span.active-count {
+                color: #e6ae03;
+              }
+            }
+          }
+        }
+
+        .fa {
+          position: absolute;
+          top: -25px;
+          padding: 10px 80px 10px;
+          left: 55px;
+          font-size: 26px;
+          color: rgb(40, 43, 55);
+        }
+      }
+    }
+
+    &.search {
+      form {
+        input {
+          background: transparent;
+          border: 0px;
+          border-bottom: 2px solid #fff;
+          width: 130px;
+          text-decoration: none;
+          margin-top: -2px;
+          color: #fff;
+          outline: 0;
+          text-transform: uppercase;
+          font-size: 14px;
+          font-weight: 600;
+
+          &::-webkit-input-placeholder {
+            color: #fff;
+          }
+
+          &::-moz-placeholder {
+            color: #fff;
+          }
+
+          &:-moz-placeholder {
+            color: #fff;
+          }
+
+          &:-ms-input-placeholder {
+            color: #fff;
+          }
+        }
+
+        .fa {
+          color: #fff;
+          margin-left: 5px;
+          font-size: 14px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
 p em {
   font-style: italic;
 }

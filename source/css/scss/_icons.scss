@@ -13,6 +13,7 @@ i[class*=sd_icon],
 i[class^=sd_icon]
 {
   font-family: "sd_icon";
+  font-size: 36px;
   speak: none;
   font-style: normal;
   font-variant: normal;
@@ -78,4 +79,24 @@ i.sd_icon-show_barcode:before{
 
 i.sd_icon-user_card:before{
   content: '\EA0B';
+}
+
+i.sd_icon-facebook-round:before{
+  content: '\EA0C';
+}
+
+i.sd_icon-google-round:before{
+  content: '\EA0D';
+}
+
+i.sd_icon-odnoklassniki-round:before{
+  content: '\EA0E';
+}
+
+i.sd_icon-twitter-round:before{
+  content: '\EA0F';
+}
+
+i.sd_icon-vkontakte-round:before{
+  content: '\EA10';
 }
