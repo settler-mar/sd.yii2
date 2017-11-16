@@ -12,6 +12,12 @@ class m171106_180608_createUsersSocialTable extends Migration
      */
     public function safeUp()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+        $this->execute('SET @@global.sql_mode ="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";');
+        $this->execute('SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,\'ONLY_FULL_GROUP_BY\',\'\'));');
+
+
         $this->createTable('cw_users_social', [
             'uid' => $this->primaryKey(),
             'user_id' =>$this->integer(),

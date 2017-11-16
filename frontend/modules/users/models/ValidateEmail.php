@@ -28,9 +28,12 @@ class ValidateEmail extends Model
         throw new InvalidParamException('Идентификатор подтверждения email не может быть пустым.');
       }
       $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
-      if (!$this->_user) {
+      if (!$this->_user ) {
         throw new InvalidParamException('Неверный ключ и email для подтверждения email.');
       }
+//      if ($this->_user->email_verify_time == null || strtotime($this->_user->email_verify_time) - time() > 60*60*24) {
+//        throw new InvalidParamException('Ссылка для подтверждения email устарела');
+//      }
     }
     parent::__construct();
   }
@@ -58,7 +61,8 @@ class ValidateEmail extends Model
 
     $user->email_verified = 1;
     $user->email_verify_token = null;
-    
+    //$user->email_verify_time = null;
+
     if ($user->save()){
       return $user->uid;
     }else{
@@ -78,7 +82,8 @@ class ValidateEmail extends Model
 
     if ($lastMailTime && (time() - $lastMailTime < 60*30)) {
       Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 30 минут');
-      return false;
+      Yii::$app->response->redirect($newUser ? '/' : '/account');
+      return null;
     }
     Yii::$app->session->set($sessionVar, time());
 
@@ -105,6 +110,7 @@ class ValidateEmail extends Model
     $user = Users::findOne(['uid' => $id]);
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
+      //$user->email_verify_time = date('Y-m-d H:i:s');
       if (self::sentEmailValidation($user)) {
         $user->save();
         return true;
