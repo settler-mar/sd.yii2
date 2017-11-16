@@ -1,0 +1,23 @@
+{{ use('yii/helpers/Html') }}
+{{ use('yii/web/View') }}
+
+{{ register_asset_bundle(assetBundle) }}
+
+{% if js %}
+  {{ this.registerJs(js) }}
+{% endif %}
+
+<div class="eauth" id="{{ id }}">
+  <ul class="eauth-list">
+    {% for name, service in services  %}
+      <li class="eauth-service eauth-service-id-{{ service.id }} {% if vertical %} vertical {% endif %}">
+        {% set title = vertical ? service.title : '' %}
+        {% set link = action~'?service='~name %}
+        {{ html.a(title, link,{
+          'class': 'eauth-service-link',
+          'data-eauth-service': service.id,
+        })|raw }}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
