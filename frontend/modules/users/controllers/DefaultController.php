@@ -12,6 +12,10 @@ use frontend\modules\users\models\RegistrationForm;
 use frontend\modules\users\models\ValidateEmail;
 use frontend\modules\users\models\SocialEmail;
 use yii\web\NotFoundHttpException;
+use yii\validators\StringValidator;
+use yii\validators\EmailValidator;
+use yii\validators\RequiredValidator;
+
 
 class DefaultController extends Controller
 {
@@ -355,7 +359,8 @@ class DefaultController extends Controller
         'social_id' => !empty($request->post('Email')['social_id']) ? $request->post('Email')['social_id'] : null,
       ]);
       if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
-        $user = UsersSocial::makeUser($model);
+        //создаём юсера, если уже есть, то смотрим второй параметр 
+        $user = UsersSocial::makeUser($model, true);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
         } else {
@@ -384,6 +389,38 @@ class DefaultController extends Controller
 
     }
 
+  }
+
+  /**
+   * подтверждение email для регистрации из соц сетей
+   * @param $token
+   * @param $email
+   */
+  public function actionVerifysocialemail($token, $email)
+  {
+    $validator = new StringValidator;
+    $validatorEmail = new EmailValidator;
+    $validatorRequired = new RequiredValidator;
+    
+    if (
+      $validatorRequired->validate([$token, $email])
+      && $validator->validate($token)
+      && $validatorEmail->validate($email)
+    ) {
+
+      $usersSocial = UsersSocial::verifyEmail($token, $email);
+      if ($usersSocial) {
+        $user = UsersSocial::makeUser($usersSocial, false, true);
+        if ($user) {
+          Yii::$app->getUser()->login($user);
+          return Yii::$app->response->redirect('/')->send();
+        }
+      }
+
+    }
+    
+    Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
+    return Yii::$app->response->redirect('/')->send();
   }
 
 
