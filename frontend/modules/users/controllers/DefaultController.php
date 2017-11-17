@@ -10,6 +10,7 @@ use yii\web\Controller;
 use frontend\modules\users\models\LoginForm;
 use frontend\modules\users\models\RegistrationForm;
 use frontend\modules\users\models\ValidateEmail;
+use frontend\modules\users\models\SocialEmail;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
@@ -337,5 +338,53 @@ class DefaultController extends Controller
     }
     return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
   }
+
+
+  /**
+   * После авторизации через соц сети, если нет email, ввод email вручную
+   * @param $service
+   * @param $id
+   * @return string
+   */
+  public function actionSocialemail($service, $id)
+  {
+    $request = Yii::$app->request;
+    if ($request->post()) {
+      $model = SocialEmail::findOne([
+        'social_name' => !empty($request->post('Email')['social_name']) ? $request->post('Email')['social_name'] : null,
+        'social_id' => !empty($request->post('Email')['social_id']) ? $request->post('Email')['social_id'] : null,
+      ]);
+      if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
+        $user = UsersSocial::makeUser($model);
+        if (!empty($user)) {
+          Yii::$app->getUser()->login($user);
+        } else {
+          Yii::$app->session->addFlash('error', 'Ошибка при авторизации');
+        }
+        Yii::$app->response->redirect('/')->send();
+      } else {
+        Yii::$app->session->addFlash('error', 'Ошибка ввода Email');
+      }
+
+    }
+    $model = new SocialEmail();
+    $model->social_name = $service;
+    $model->social_id = $id;
+    if($request->isAjax){
+      $data['html'] = $this->renderAjax('email', [      // рисуем форму для ввода email
+        'model' => $model,
+        'isAjax' => true
+      ]);
+      return json_encode($data);
+    } else {
+      return $this->render('email', [
+        'model' => $model,
+        'isAjax' => false
+      ]);
+
+    }
+
+  }
+
 
 }

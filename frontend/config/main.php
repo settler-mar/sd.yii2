@@ -97,6 +97,7 @@ $config= [
         '<action:(login|logout|registration|registrationemail|ulogin|resetpassword|reset|verifyemail|sendverifyemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
+        'login/socials-email' => 'users/default/socialemail',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',

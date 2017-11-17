@@ -33,7 +33,7 @@ class Vk extends \nodge\eauth\services\VKontakteOAuth2Service
     $this->attributes['photo'] = !empty($info['photo']) ? $info['photo'] : null;
     $this->attributes['sex'] = empty($info['sex']) ? null :
       ($info['sex'] == '1' ? 'f' : ($info['sex'] == '2' ? 'm' : null));
-    $this->attributes['bdate'] = !empty($info['bdate']) ?
+    $this->attributes['birthday'] = !empty($info['bdate']) ?
       date('Y-m-d H:i:s', strtotime($info['bdate'])) :
       null;
     //ddd($this->attributes);

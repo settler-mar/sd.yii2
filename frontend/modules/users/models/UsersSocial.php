@@ -92,69 +92,82 @@ class UsersSocial extends \yii\db\ActiveRecord
         //пользователь соц сетей
         $userSocial = self::findByEAuth($attributes);
 
-        //пользователь
-        $user = null;
-        if ($userSocial && $userSocial->user_id != null) {
-            $user = Users::findOne($userSocial->user_id);
-        } elseif ($userSocial && $userSocial->email != null) {
-            $user = Users::findOne(['email' =>$userSocial->email]);
-        } elseif (!empty($attributes['email'])) {
-            $user = Users::findOne(['email' => $attributes['email']]);
-        }
-        if (!$user) {
-            if (empty($attributes['email'])) {
-                //создавать нового пользователя нет возможности
-                Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно. Отсутствует Email');
-                return null;
-            }
-            $user = new User;
-            $user->photo = $attributes['photo'];
-            $user->email = $attributes['email'];
-            $user->username = $attributes["name"];//поменять в sd
-            $user->sex = $attributes['sex'];
-            $user->registration_source = $attributes["url"];
-            $user->bdate = $attributes['bdate'];//помеять в sd
-            $user->setPassword(substr(md5(uniqid()), 0, 15));
-            if (!$user->save()) {
-                Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
-                return null;
-            };
-        }
-
         if (!$userSocial) {
             $userSocial = new self;
             $userSocial->setAttributes($attributes);
-            $userSocial->user_id = !empty($user) ? $user->id : null;
-            if (!$userSocial->save()) {
+            $userSocial->user_id =  null;
+            if (!$userSocial->validate() || !$userSocial->save()) {
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
                 return null;
             };
         }
-        self::fillUser($user, $attributes, ['sex', 'bdate', 'photo']);
+        if ($userSocial->email == null) {
+            Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш Email.');
+            Yii::$app->response->redirect('login/socials-email?service='.$userSocial->social_name. '&id='.$userSocial->social_id)->send();
+            return null;
+        }
+
+        return self::makeUser($userSocial);
+    }
+
+    /**
+     * имеем пользователя соц сетей, от него находим или создаём пользователя сайта
+     * @param $userSocial
+     * @return User|null
+     */
+    public static function makeUser($userSocial)
+    {
+        if (!$userSocial) {
+            return null;
+        }
+        //пользователь
+        $user = null;
+        if ($userSocial->user_id != null) {
+            $user = Users::findOne($userSocial->user_id);
+        } elseif ($userSocial->email != null) {
+            $user = Users::findOne(['email' =>$userSocial->email]);
+        }
+        if (!$user) {
+            $user = new Users;
+            $user->photo = $userSocial->photo;
+            $user->email = $userSocial->email;
+            $user->name = $userSocial->name;//поменять в sd
+            $user->sex = $userSocial->sex;
+            $user->registration_source = $userSocial->url;
+            $user->birthday = $userSocial->birthday;//помеять в sd
+            $user->setPassword(substr(md5(uniqid()), 0, 15));
+            if (!$user->save()) {
+                Yii::$app->session->addFlash('error', 'Авторизация через ' . $userSocial->social_name . ' прошла неудачно.');
+                return null;
+            };
+        }
+        self::fillAttributes($user, $userSocial, ['sex', 'birthday', 'photo']);
         return $user;
     }
 
 
     /**
      * заполнение пустых полей User из социальных сетей
+     * и user_id для UserSocial
      * @param $user
-     * @param array $attributes
+     * @param UsersSocial $userSocial
      * @param array $fields
-     * @return array|null
+     * @return array
      */
-    protected static function fillUser(Users $user, $attributes = [], $fields = [])
+    protected static function fillAttributes(Users $user, $userSocial, $fields = [])
     {
-        if (empty($fields) || empty($attributes)) {
-            return null;
-        }
         $result = [];
         foreach ($fields as $field) {
-            if ($user->$field == null && !empty($attributes[$field])) {
-                $user->$field = $attributes[$field];
-                $result[$field]  = $attributes[$field];
+            if ($user->$field == null && $userSocial->$field != null) {
+                $user->$field = $userSocial->$field;
+                $result[$field]  = $userSocial->$field;
             }
         }
         $user->save();
+        if ($userSocial->user_id == null) {
+            $userSocial->user_id = $user->uid;
+            $userSocial->save();
+        }
         return $result;
     }
 
