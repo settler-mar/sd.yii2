@@ -533,10 +533,10 @@ Intro
   content: '\EA07';
   font-family: "sd_icon";
   color: #e6ae03;
-  font-size: 80px;
+  font-size: 60px;
   position: absolute;
   left: -30px;
-  top: -10px;
+  top: 10px;
 }
 
 @media all and (max-width: 991px){

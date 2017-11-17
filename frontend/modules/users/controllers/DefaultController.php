@@ -15,10 +15,6 @@ use yii\web\NotFoundHttpException;
 class DefaultController extends Controller
 {
 
-  public function beforeAction($action) {
-    $this->enableCsrfValidation = ($action->id !== "ulogin");
-    return parent::beforeAction($action);
-  }
   /**
    * Login action.
    *
@@ -67,56 +63,12 @@ class DefaultController extends Controller
     return $this->goHome();
   }
 
-  public function actionUlogin(){
-    $token=Yii::$app->request->post('token');
-    if (!$token) {
-      return $this->goHome();
-    };
-
-    $s = file_get_contents('http://ulogin.ru/token.php?token=' . $token . '&host=' . $_SERVER['HTTP_HOST']);
-    $data = json_decode($s, true);
-
-    if (isset($data['error']) && $data['error'] != '') {
-      return $this->goHome();
-    }
-
-    $data["photo_big"] = str_replace("http:", "https:", $data["photo_big"]);
-
-    $user= Users::findByEmail($data['email']);
-    $user_photo = str_replace('http:', '', $data["photo_big"]);
-    $user_photo=str_replace('https:', '', $user_photo);
-
-    if($user){
-      Yii::$app->user->login($user, 3600 * 24 * 30);
-      if(strripos($user->photo,'//')){
-        $user->photo = $user_photo;
-        $user->save();
-      }
-      return $this->redirect(['/account']);
-    }else{
-      $user=new Users;
-      $user->photo = $user_photo;
-      $user->email = $data['email'];
-      $user->name = $data["first_name"] . " " . $data["last_name"];
-      $user->sex = $data["sex"] == 1 ? "f" : ($data["sex"] == 2 ? "m" : "");
-      $user->registration_source = $data["identity"];
-      $user->birthday = $data['bdate'] != '' ? date('Y-m-d', strtotime($data['bdate'])) : '';
-      $user->setPassword(substr(md5(uniqid()), 0, 15));
-      if($user->save()){
-        Yii::$app->user->login($user, 3600 * 24 * 30);
-      };
-
-      return $this->redirect(['/account?new=1']);
-    }
-
-
-  }
   /**
    * Creates a new User model.
    * If creation is successful, the browser will be redirected to the 'view' page.
    * @return mixed
    */
-  public function actionRegistrationemail()
+  public function actionRegistration()
   {
 
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
@@ -152,7 +104,7 @@ class DefaultController extends Controller
 
     $isIndex=$request->get('index');
     if($isIndex){
-      $data['html']= $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
+      $data['html']= $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model
       ]);
       if($isIndex==1){
@@ -161,7 +113,7 @@ class DefaultController extends Controller
         return json_encode($data);
       }
     }else {
-      $data['html'] = $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
         'isAjax' => true
       ]);
@@ -170,7 +122,7 @@ class DefaultController extends Controller
   }
 
 
-  public function actionRegistration()
+/*  public function actionRegistration()
   {
 
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
@@ -191,12 +143,12 @@ class DefaultController extends Controller
         return json_encode($data);
       }
     }else {
-      $data['html'] = $this->renderAjax('registration', [      // рисуем форму 
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму
         'isAjax' => true
       ]);
       return json_encode($data);
     }
-  }
+  }*/
 
 
 

@@ -24,8 +24,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemai
 SecretDiscounter экономит ваши деньги!
 
 
-
-Вы получили это письмо, потому что являетесь подписчиком нашего сайта <a href="http://secretdiscounter.ru">SecretDiscounter.ru</a>
-Чтобы отписаться от рассылки, перейдите, пожалуйста, в <a href="http://secretdiscounter.ru/account/settings">настройки уведомлений</a>
+Вы получили это письмо, потому что являетесь подписчиком нашего сайта http://secretdiscounter.ru
+Чтобы отписаться от рассылки, перейдите, пожалуйста, в http://secretdiscounter.ru/account/settings
 
 

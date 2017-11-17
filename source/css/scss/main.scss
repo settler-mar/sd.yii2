@@ -2817,6 +2817,8 @@ section.store_photos {
   }
   //для всех
   .eauth-service-link_sd {
+    text-decoration: none;
+
     &:before {
     font-family: 'sd_icon';
     font-size: 35px;

@@ -110,7 +110,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             $user = new Users;
             $user->photo = $attributes['photo'];
             $user->email = $attributes['email'];
-            $user->username = $attributes["name"];//поменять в sd
+            $user->name = $attributes["name"];//поменять в sd
             $user->sex = $attributes['sex'];
             $user->registration_source = $attributes["url"];
             //$user->bdate = $attributes['bdate'];//помеять в sd
