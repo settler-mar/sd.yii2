@@ -16,7 +16,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemai
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        На сайте SecretDiscounter.ru был сделан запрос на подтверждение Email для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан Вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо.
+                        На сайте SecretDiscounter.ru был сделан запрос на подтверждение Email для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан Вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 1 сутки
                     </td>
                 </tr>
                 <tr>

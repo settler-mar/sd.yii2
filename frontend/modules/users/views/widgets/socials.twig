@@ -7,7 +7,7 @@
   {{ this.registerJs(js) }}
 {% endif %}
 
-<div class="eauth" id="{{ id }}">
+<div class="eauth sd-eauth" id="{{ id }}">
   <ul class="eauth-list">
     {% for name, service in services  %}
       <li class="eauth-service eauth-service-id-{{ service.id }} {% if vertical %} vertical {% endif %}">

@@ -9,3 +9,4 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemai
 
 Перейдите по приведенной ниже ссылке, чтобы подтвердить ваш Email:
 <?= $resetLink ?>
+Ссылка действительна 1 сутки.
