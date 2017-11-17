@@ -361,7 +361,7 @@ $(function() {
                 }
 
                 $(".dobrohead i").animo({animation: "pulse", iterate: "infinite"});
-                $(".link-head-stores span").animo({animation: "flash", iterate: "infinite", duration: 2.4});
+                $(".link-head-stores span.stores-flash").animo({animation: "flash", iterate: "infinite", duration: 2.4});
             }
         }
     }

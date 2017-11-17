@@ -82,7 +82,7 @@
         <ul class="account-nav">
             {#<li class="link-head-stores"><a href="/stores"><span>Магазины</span></a></li>#}
             <li class="link-head-stores stores submenu-handl">
-                <a href="/stores"><span>Магазины</span></a>
+                <a href="/stores"><span class="stores-flash">Магазины</span></a>
                 {{ use('frontend/components/CategoryMenu') }}
                 {% set category_tree = category_menu_widget({'show_hidden': false}) %}
                 {% if category_tree %}
