@@ -45,7 +45,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         return [
             [['social_name', 'social_id', 'name'], 'required'],
             [['status', 'user_id'], 'integer'],
-            [['user_id'], 'exist', 'targetAttribute' => 'id', 'targetClass' => Users::className()],
+            [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
             [['sex'], 'string', 'max'=> 1],
             [['created_at', 'updated_at', 'bdate'], 'safe'],
             [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex'], 'string', 'max' => 255],
@@ -107,13 +107,13 @@ class UsersSocial extends \yii\db\ActiveRecord
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно. Отсутствует Email');
                 return null;
             }
-            $user = new User;
+            $user = new Users;
             $user->photo = $attributes['photo'];
             $user->email = $attributes['email'];
             $user->username = $attributes["name"];//поменять в sd
             $user->sex = $attributes['sex'];
             $user->registration_source = $attributes["url"];
-            $user->bdate = $attributes['bdate'];//помеять в sd
+            //$user->bdate = $attributes['bdate'];//помеять в sd
             $user->setPassword(substr(md5(uniqid()), 0, 15));
             if (!$user->save()) {
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
@@ -124,13 +124,13 @@ class UsersSocial extends \yii\db\ActiveRecord
         if (!$userSocial) {
             $userSocial = new self;
             $userSocial->setAttributes($attributes);
-            $userSocial->user_id = !empty($user) ? $user->id : null;
+            $userSocial->user_id = !empty($user) ? $user->uid : null;
             if (!$userSocial->save()) {
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
                 return null;
             };
         }
-        self::fillUser($user, $attributes, ['sex', 'bdate', 'photo']);
+        self::fillUser($user, $attributes, ['sex', 'photo']);
         return $user;
     }
 
@@ -157,8 +157,4 @@ class UsersSocial extends \yii\db\ActiveRecord
         $user->save();
         return $result;
     }
-
-
-
-
 }
