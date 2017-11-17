@@ -5,11 +5,13 @@ namespace frontend\modules\users\models;
 use Yii;
 use yii\base\Model;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\ValidateEmail;
 
 class RegistrationForm extends Model
 {
   public $email;
   public $password;
+  public $password_repeat;
 
   /**
    * @inheritdoc
@@ -18,8 +20,9 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
-      [['email', 'password'], 'required'],
+      [['email', 'password', 'password_repeat'], 'required'],
       [['email'], 'email'],
+      ['password_repeat', 'compare', 'compareAttribute' => 'password'],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
 
       ['password', 'trim'],
@@ -43,7 +46,17 @@ class RegistrationForm extends Model
     $user->email = $this->email;
     $user->setPassword($this->password);
     $user->generateAuthKey();
+    
+    //пишем токен для валидации почты
+    $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
+    $user->email_verify_time = date('Y-m-d H:i:s');
 
-    return $user->save() ? $user : null;
+    if (ValidateEmail::sentEmailValidation($user, true) && $user->save()) {
+       return $user;
+    } else {
+      return null;
+    }
   }
+
+
 }

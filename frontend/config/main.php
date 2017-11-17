@@ -44,6 +44,25 @@ $config= [
         ],
       ],
     ],
+    'eauth' => [
+      'class' => 'nodge\eauth\EAuth',
+      'popup' => true, // Use the popup window instead of redirecting.
+      'cache' => false, // Cache component name or false to disable cache.Defaults to'cache' on production environments.
+      'cacheExpire' => 0, // Cache lifetime. Defaults to 0 - means unlimited.
+      'httpClient' => [
+        // uncomment this to use streams in safe_mode
+        //'useStreamsFallback' => true,
+      ],
+      'services' => require('socials.php'),
+    ],
+    'i18n' => [
+      'translations' => [
+        'eauth' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@eauth/messages',
+        ],
+      ],
+    ],
     'user' => [
       'identityClass' => 'frontend\modules\users\models\Users',
       'enableAutoLogin' => true,
@@ -75,7 +94,9 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|ulogin|resetpassword|reset)>' => 'users/default/<action>',
+        '<action:(login|logout|registration|registrationemail|ulogin|resetpassword|reset|verifyemail|sendverifyemail)>' =>
+          'users/default/<action>',
+        'login/socials' => 'users/default/socials',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',
@@ -96,8 +117,11 @@ $config= [
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
         ],
-
       ],
+      'normalizer' => [
+        'class' => 'yii\web\UrlNormalizer',
+      ],
+
     ],
   ],
   'modules' => [

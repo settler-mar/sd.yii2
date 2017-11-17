@@ -1,4 +1,4 @@
-$('body').on('click','a[href=#login],a[href=#registration],a[href=#resetpassword]',function(e){
+$('body').on('click','a[href=#login],a[href=#registration],a[href=#registrationemail],a[href=#resetpassword]',function(e){
   e.preventDefault();
   //при открытии формы регистрации закрыть, если отрыто - попап использования купона без регистрации
   var popup = $("a[href='#showpromocode-noregister']").data('popup');

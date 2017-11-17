@@ -41,7 +41,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="p:domain_verify" content="3f340faa8b74002055515f2100c43e90"/>
 
-
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
@@ -291,11 +290,7 @@
     </div>
 </footer>
 
-<div class="help_button">
-    <a href="#help" class="sd_help_button ajaxFormOpen" data-modal-class="help-msg">
-        Как это работает
-    </a>
-</div>
+{% include "parts/rigth_panel.twig" %}
 
 <img class="ad-detect" src="/images/ad.gif" style="position: absolute;"/>
 
@@ -346,7 +341,7 @@
 
 {{ Notification() | raw}}
 
-{% if not user_id %}
+{% if not this.user_id %}
     <script charset="UTF-8" src="/js/msg.js" async></script>
 {% endif %}
 

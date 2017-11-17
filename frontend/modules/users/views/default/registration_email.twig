@@ -1,0 +1,64 @@
+<div class="sign-up popup-sign-up" style="opacity: 1;">
+  <h3>Регистрация через Email</h3>
+  <p class="sign-up-tagline">
+    <center>
+      Регистрация полностью бесплатна и займёт у вас несколько секунд
+    </center>
+  </p>
+  {% set form = active_form_begin({
+    'id' : isAjax?'registration-form-ajax':'registration-form',
+    'layout' : 'horizontal',
+    'action':isAjax?"/registrationemail":'/registrationemail?index=2',
+    'fieldConfig':{
+      'horizontalCssClasses':{
+        'wrapper':'form-input-group',
+      }
+    },
+    'options' : {
+      'class' : 'signup-form ajax_form',
+      'role' : 'form'
+    },
+  }) %}
+  {{ form.field(model, 'email',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+  }).textInput({'placeholder':'Введите ваш email','required':true}) | raw }}
+
+  {{ form.field(model, 'password',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+  }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
+
+  {{ form.field(model, 'password_repeat',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+  }).passwordInput({'placeholder':'Повторите пароль','required':true}) | raw }}
+
+  <button type="submit" class="btn-fill sign-up-btn">Присоединиться и начать экономить</button>
+  {{ active_form_end() }}
+  <div class="sign-up-buttons"><a href="#login" class="btn btn-fill ignore-hash">Я уже зарегистрирован</a></div>
+  <p class="terms">
+    Регистрируясь, я соглашаюсь <a href="/terms">Правилами</a>
+  </p>
+
+  <p class="terms">
+    <a href="#registration">Все методы регистрации</a>
+  </p>
+
+  {#{% if(isAjax) %}#}
+    {#<div class="social-login">#}
+      {#<h4>Или присоединяйтесь к нам с помощью соцсетей:</h4>#}
+      {#<p class="social-icon">#}
+        {#<div id="uLogin6dab3a2d" data-ulogin="display=buttons;fields=first_name,email,last_name,nickname,sex,bdate,photo,photo_big;optional=phone,city,country;lang=ru;providers=vkontakte,odnoklassniki,facebook,twitter;" data-ulogin-inited_="1501832118427">#}
+          {#<img src="/images/account/vk.png" data-uloginbutton="vkontakte" alt="vkontakte-ulogin">#}
+          {#<img src="/images/account/fb.png" data-uloginbutton="facebook" alt="facebook-ulogin">#}
+          {#<img src="/images/account/tw.png" data-uloginbutton="twitter" alt="twitter-ulogin">#}
+          {#<img src="/images/account/ok.png" data-uloginbutton="odnoklassniki" alt="odnoklassniki-ulogin">#}
+        {#</div>#}
+      {#</p>#}
+      {#<script>uLogin.customInit('uLogin6dab3a2d',{#}
+          {#redirect_uri: encodeURIComponent(location.origin+'/ulogin'),#}
+        {#});</script>#}
+    {#</div>#}
+  {#{% endif %}#}
+</div>

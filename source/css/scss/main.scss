@@ -41,7 +41,7 @@ $images: "/images";
 
 .triangle-background {
   background-size: cover;
-  padding: 65px 0 10px;
+  padding: 75px 0 0;
   background: url(unquote($images+"/templates/polygonal-bg.jpg")) repeat-x center -200px;
 }
 
@@ -594,7 +594,7 @@ $images: "/images";
 .greeting-links-box {
   color: #fff;
   font-size: 16px;
-  margin: 0 auto 20px;
+  margin: -40px auto 40px;
   padding: 15px 0;
 
   .btn {
@@ -2788,6 +2788,76 @@ section.store_photos {
     }
   }
 }
+
+//авторизация через соц сети
+.eauth-list {
+  text-align: center;
+}
+
+.eauth-service {
+  //вертикальный вариант
+  &.vertical {
+    display: block;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    .eauth-service-link_sd {
+      display: block;
+      width: auto;
+      padding-top: 5px;
+      padding-left: 70px;
+      text-align: left;
+      position: relative;
+      &:before {
+        left: 2px;
+        top: -7px;
+        position: absolute;
+      }
+    }
+
+  }
+  //для всех
+  .eauth-service-link_sd {
+    &:before {
+    font-family: 'sd_icon';
+    font-size: 35px;
+    color: #303030;
+  }
+    &.twitter:before {
+      content:'\EA0F';
+    }
+    &.vkontakte:before {
+      content:'\EA10';
+    }
+    &.odnoklassniki:before {
+      content:'\EA0E';
+    }
+    &.facebook:before {
+      content:'\EA0C';
+    }
+    &.google_oauth:before {
+      content:'\EA0D';
+    }
+  }
+}
+
+.sign-up-email {
+  margin-top: 18px;
+  a {
+    padding-left: 120px;
+    position: relative;
+    &:before {
+      font-family: FontAwesome;;
+      content: "\f003";
+      font-size: 33px;
+      display: inline-block;
+      position: absolute;
+      color: #303030;
+      left: 54px;
+      top: -14px
+    }
+  }
+}
+
 
 @import "print.scss";
 @import  "../external/queries";

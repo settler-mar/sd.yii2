@@ -15,6 +15,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\ValidateEmail;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\charity\models\Charity;
@@ -304,6 +305,12 @@ class SiteController extends SdController
   {
     if((Yii::$app->user->isGuest || $store == 0) && $coupon == 0){
       return $this->redirect('/stores');
+    }
+
+    if ($store>0 && !Yii::$app->user->isGuest && empty(Yii::$app->user->identity->email_verified)) {
+      //переход на страницу магазина, у пользователя не веритифицирован email
+      ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+      return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/stores');
     }
 
     $visit=new UsersVisits();

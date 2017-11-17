@@ -4,10 +4,13 @@ namespace frontend\modules\users\controllers;
 
 use frontend\modules\users\models\ResetPasswordForm;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\UsersSocial;
 use \Yii;
 use yii\web\Controller;
 use frontend\modules\users\models\LoginForm;
 use frontend\modules\users\models\RegistrationForm;
+use frontend\modules\users\models\ValidateEmail;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
@@ -37,6 +40,10 @@ class DefaultController extends Controller
     if($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
         $data['html']='Успешная авторизация.<script>location.href="/account"</script>';
+
+        //сообщения, если email не подтверждён
+        ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+
         return json_encode($data);
       }
     }
@@ -109,7 +116,7 @@ class DefaultController extends Controller
    * If creation is successful, the browser will be redirected to the 'view' page.
    * @return mixed
    */
-  public function actionRegistration()
+  public function actionRegistrationemail()
   {
 
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
@@ -136,13 +143,16 @@ class DefaultController extends Controller
         };
 
         $data['html']='Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
+        //сообщения, если email не подтверждён
+        ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+
         return json_encode($data);
       }
     }
 
     $isIndex=$request->get('index');
     if($isIndex){
-      $data['html']= $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+      $data['html']= $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
         'model' => $model
       ]);
       if($isIndex==1){
@@ -151,12 +161,85 @@ class DefaultController extends Controller
         return json_encode($data);
       }
     }else {
-      $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+      $data['html'] = $this->renderAjax('registration_email', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
         'isAjax' => true
       ]);
       return json_encode($data);
     }
+  }
+
+
+  public function actionRegistration()
+  {
+
+    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+      return $this->goHome();
+    }
+
+    $request=Yii::$app->request;
+    if(!$request->isAjax){
+      return $this->goHome();
+    }
+
+    $isIndex=$request->get('index');
+    if($isIndex){
+      $data['html']= $this->renderAjax('registration'); // рисуем форму 
+      if($isIndex==1){
+        return $data['html'];
+      }else{
+        return json_encode($data);
+      }
+    }else {
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму 
+        'isAjax' => true
+      ]);
+      return json_encode($data);
+    }
+  }
+
+
+
+  public function actionSocials()
+  {
+    $serviceName = Yii::$app->getRequest()->getQueryParam('service');
+    $serviceName = $serviceName ? $serviceName : ($this->serviceName ? $this->serviceName : null);
+    //ddd($serviceName);
+    if (isset($serviceName)) {
+      /** @var $eauth \nodge\eauth\ServiceBase */
+      $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
+      $eauth->setRedirectUrl(Yii::$app->getUser()->getReturnUrl());
+      $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
+      //ddd($eauth);
+      try {
+        if ($eauth->authenticate()) {
+          //получаем юсера нашего
+          $user = UsersSocial::authenticate($eauth->getAttributes());
+
+          if (!empty($user)) {
+            Yii::$app->getUser()->login($user);
+          } else {
+            $eauth->cancel();
+          }
+          // special redirect with closing popup window
+          $eauth->redirect();
+        } else {
+          // close popup window and redirect to cancelUrl
+          $eauth->cancel();
+        }
+      } catch (\nodge\eauth\ErrorException $e) {
+        // save error to show it later
+        Yii::$app->getSession()->setFlash('error', 'EAuthException: '.$e->getMessage());
+
+        // close popup window and redirect to cancelUrl
+//              $eauth->cancel();
+        $eauth->redirect($eauth->getCancelUrl());
+      }
+    } else {
+      throw new NotFoundHttpException();
+    }
+
+    // default authorization code through login/password .
   }
   /**
    * Сброс пароля
@@ -210,4 +293,49 @@ class DefaultController extends Controller
     }
     return $this->redirect(['/account']);
   }
+
+  /**
+   * валидация email - переход от ссылки в почте
+   * @param $token
+   * @param $email
+   * @return \yii\web\Response
+   * @throws BadRequestHttpException
+   */
+  public function actionVerifyemail($token, $email)
+  {
+    try {
+      $model = new ValidateEmail($token, $email);
+    } catch (InvalidParamException $e) {
+      throw new BadRequestHttpException($e->getMessage());
+    }
+
+    if ($user_id = $model->verifyEmail()) {
+      // Авторизируемся при успешной валидации
+      Yii::$app->user->login(Users::findIdentity($user_id));
+      Yii::$app->session->addFlash('success', 'Ваш Email подтверждён.');
+      return $this->redirect(['/account']);
+    } else {
+      return $this->redirect(['/']);
+    }
+
+  }
+
+  /**
+   * запрос на валидацию - отправляется почта со ссылкой на валидацию
+   * @return \yii\web\Response
+   * @throws NotFoundHttpException
+   */
+  public function actionSendverifyemail()
+  {
+    if (Yii::$app->user->isGuest) {
+      throw new NotFoundHttpException();
+    }
+    if (ValidateEmail::validateEmail(Yii::$app->user->id)) {
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту');
+    } else {
+      Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш Email');
+    }
+    return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
+  }
+
 }

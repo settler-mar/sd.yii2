@@ -37,6 +37,8 @@ phpunit.phar
 /common/config/start_param.php
 /frontend/config/socials.php
 
+/frontend/config/socials.php
+
 /composer.lock
 
 /node_modules

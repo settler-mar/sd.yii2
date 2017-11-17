@@ -369,6 +369,9 @@ $functionsList=[
   '_can'=>function ($do) {
     return !Yii::$app->user->isGuest && Yii::$app->user->can($do);
   },
+  '_ddd'=>function ($params) {
+    ddd($params);
+  },
 
 ];
 

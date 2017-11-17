@@ -232,7 +232,7 @@ gulp.task('Iconfont', function(){
       fontName: 'sd_icon',
       prependUnicode: true,
       fixedWidth:true,
-      //normalize:true,
+      normalize:true,
       //fontHeight: 1000,
       formats: [
         'svg',
