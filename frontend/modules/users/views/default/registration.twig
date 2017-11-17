@@ -22,12 +22,12 @@
   {{ form.field(model, 'email',{
     'template' :
     '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Введите ваш email','required':true}) | raw }}
+  }).textInput({'placeholder':'Введите ваш e-mail','required':true}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
     '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
+  }).passwordInput({'placeholder':'Придумайте пароль','required':true}) | raw }}
 
   {{ form.field(model, 'password_repeat',{
     'template' :
@@ -37,14 +37,14 @@
   <button type="submit" class="btn-fill sign-up-btn">Присоединиться и начать экономить</button>
   {{ active_form_end() }}
 
-  <p class="terms">Или присоединяйтесь к нам с помощью соцсетей:</p>
+  <p class="terms">Или регистрируйтесь с помощью соцсетей:</p>
   {{ use('frontend/components/socials/EauthWidget') }}
   {{ eauth_widget_widget() }}
 
-  <div class="sign-up-buttons"><a href="#login" class="btn btn-fill ignore-hash">Я уже зарегистрирован</a></div>
+  <div class="sign-up-buttons"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>
 
   <p class="terms">
-    Регистрируясь, я соглашаюсь <a href="/terms">Правилами</a>
+    Регистрируясь, я соглашаюсь с <a href="/terms">Правилами</a>
   </p>
 
 
