@@ -43,7 +43,7 @@ GET_EMAIL	Доступ к email адресу пользователя*/
 
     $this->attributes['sex'] = empty($info['gender']) ? null :
       ($info['gender'] == 'female' ? 'f' : ($info['gender'] == 'male' ? 'm' : null));
-    $this->attributes['bdate'] = !empty($info['birthday']) ?
+    $this->attributes['birthday'] = !empty($info['birthday']) ?
       date('Y-m-d', strtotime($info['birthday'])) :
       null;
 
