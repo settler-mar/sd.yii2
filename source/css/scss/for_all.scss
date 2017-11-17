@@ -1,3 +1,5 @@
+@import "_icons.scss";
+
 /* Subnavigation
 ------------------------------------*/
 .primary-nav, .account-nav {
@@ -1075,5 +1077,123 @@ form > .kv-drp-container{
     display: block;
     margin-top: -30px;
     margin-left: 264px;
+  }
+}
+
+
+//авторизация через соц сети
+.eauth-list {
+  text-align: center;
+
+  &.float_left{
+    text-align: left;
+  }
+}
+
+.eauth-service {
+  //вертикальный вариант
+  &.vertical {
+    display: block;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    .eauth-service-link_sd {
+      display: block;
+      width: auto;
+      padding-top: 5px;
+      padding-left: 70px;
+      text-align: left;
+      position: relative;
+      &:before {
+        left: 2px;
+        top: -7px;
+        position: absolute;
+      }
+    }
+
+  }
+}
+
+//для всех
+.eauth-service-link_sd {
+  text-decoration: none!important;
+  line-height: 36px;
+
+  &:hover{
+    text-decoration: none;
+  }
+
+  &:before {
+    font-family: 'sd_icon';
+    font-size: 35px;
+    color: #303030;
+  }
+  &.twitter:before {
+    content:'\EA0F';
+  }
+  &.vkontakte:before {
+    content:'\EA10';
+  }
+  &.odnoklassniki:before {
+    content:'\EA0E';
+  }
+  &.facebook:before {
+    content:'\EA0C';
+  }
+  &.google_oauth:before {
+    content:'\EA0D';
+  }
+}
+
+.sign-up-email {
+  margin-top: 18px;
+  a {
+    padding-left: 120px;
+    position: relative;
+    &:before {
+      font-family: FontAwesome;;
+      content: "\f003";
+      font-size: 33px;
+      display: inline-block;
+      position: absolute;
+      color: #303030;
+      left: 54px;
+      top: -14px
+    }
+  }
+}
+.sign-up.noajax {
+  margin: 100px auto 150px;
+  width: 500px;
+}
+
+//кнопка удаления/отключения
+td{
+  .ajax_remove{
+    margin: 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+
+    &.delete{
+      display: inline-block;
+      width: auto;
+      font-size: 1em;
+      border: none;
+    }
+  }
+}
+.ajax_remove{
+  color:red;
+  margin-left: 10px;
+  font-size: 0.8em;
+  cursor: pointer;
+  border: 1px solid red;
+  padding: 2px 5px;
+  transition: all 0.3s;
+  text-decoration: none;
+
+  &:hover{
+    color: #fff;
+    background: red;
   }
 }

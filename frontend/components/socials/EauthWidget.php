@@ -9,6 +9,7 @@ namespace frontend\components\socials;
 class EauthWidget extends \nodge\eauth\Widget
 {
   public $vertical = false;
+  public $float = false;
 
 //  public function run()
 //  {
@@ -27,6 +28,10 @@ class EauthWidget extends \nodge\eauth\Widget
       $js = 'jQuery(".sd-eauth").eauth(' . json_encode($options) . ');';
     }
 
+    $dop_class='';
+    if($this->float){
+      $dop_class.=' float_'.$this->float;
+    }
     echo $this->render('/widgets/socials', [
       'id' => $this->getId(),
       'services' => $this->services,
@@ -35,6 +40,7 @@ class EauthWidget extends \nodge\eauth\Widget
       'assetBundle' => $this->assetBundle,
       'vertical' => $this->vertical,
       'js' => $js,
+      'dop_class'=>$dop_class
     ]);
   }
 }

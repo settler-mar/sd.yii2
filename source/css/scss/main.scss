@@ -7,8 +7,6 @@
 
 @import  "../external/styles";
 
-@import "_icons.scss";
-
 @import "for_all.scss";
 /* Common
 ------------------------------------*/
@@ -2789,80 +2787,7 @@ section.store_photos {
   }
 }
 
-//авторизация через соц сети
-.eauth-list {
-  text-align: center;
-}
 
-.eauth-service {
-  //вертикальный вариант
-  &.vertical {
-    display: block;
-    padding-left: 50px;
-    padding-bottom: 10px;
-    .eauth-service-link_sd {
-      display: block;
-      width: auto;
-      padding-top: 5px;
-      padding-left: 70px;
-      text-align: left;
-      position: relative;
-      &:before {
-        left: 2px;
-        top: -7px;
-        position: absolute;
-      }
-    }
-
-  }
-  //для всех
-  .eauth-service-link_sd {
-    text-decoration: none;
-
-    &:before {
-    font-family: 'sd_icon';
-    font-size: 35px;
-    color: #303030;
-  }
-    &.twitter:before {
-      content:'\EA0F';
-    }
-    &.vkontakte:before {
-      content:'\EA10';
-    }
-    &.odnoklassniki:before {
-      content:'\EA0E';
-    }
-    &.facebook:before {
-      content:'\EA0C';
-    }
-    &.google_oauth:before {
-      content:'\EA0D';
-    }
-  }
-}
-
-.sign-up-email {
-  margin-top: 18px;
-  a {
-    padding-left: 120px;
-    position: relative;
-    &:before {
-      font-family: FontAwesome;;
-      content: "\f003";
-      font-size: 33px;
-      display: inline-block;
-      position: absolute;
-      color: #303030;
-      left: 54px;
-      top: -14px
-    }
-  }
-}
-.sign-up.noajax {
-  margin: 100px auto 150px;
-  width: 500px;
-}
 
 
 @import "print.scss";
