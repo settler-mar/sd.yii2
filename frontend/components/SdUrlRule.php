@@ -23,8 +23,15 @@ class SdUrlRule implements UrlRuleInterface
     $pathInfo = $request->getPathInfo();
 
     $ref_cpec=Yii::$app->params['ref_cpec'];
+    $ref_redirect = Yii::$app->params['ref_redirect'];
+    $ref_cpec_redirect = Yii::$app->params['ref_cpec_redirect'];
+    $ref_href = false;
+
     if (isset($ref_cpec[$pathInfo])) {
-      $params['r']=$ref_cpec[$pathInfo];
+      $params['r'] = $ref_cpec[$pathInfo];
+      if (!$ref_href && isset($ref_cpec_redirect[$pathInfo])) {
+        $ref_href = $ref_cpec_redirect[$pathInfo];
+      }
     }
 
     //проверка реф ссылки
@@ -38,7 +45,16 @@ class SdUrlRule implements UrlRuleInterface
       if (Yii::$app->user->isGuest && $user) {
         Yii::$app->session->set('referrer_id', $user->uid);
       };
-      Yii::$app->getResponse()->redirect('/', 301);
+
+      if(!$ref_href && strlen($pathInfo)>2) {
+        $ref_href = $pathInfo;
+      }
+
+      if(!$ref_href && isset($ref_redirect[$user->uid])){
+        $ref_href=$ref_redirect[$user->uid];
+      }
+
+      Yii::$app->getResponse()->redirect($ref_href?$ref_href:'/', 301);
       return ['', $params];
     }
 
