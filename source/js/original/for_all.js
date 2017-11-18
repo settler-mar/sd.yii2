@@ -253,7 +253,20 @@ $(function() {
       }
     }
   };
-
   menu.control.events();
+});
 
+$( document ).ready(function() {
+  /*m_w = $('.text-content').width()
+  if (m_w < 50)m_w = screen.width - 40*/
+  p = $('.container img,.container iframe')
+  for (i = 0; i < p.length; i++) {
+    el = p.eq(i);
+    m_w=el.parent().width();
+    if (el.width() > m_w) {
+      k = el.width() / m_w
+      el.height(el.height() / k)
+      el.width(m_w)
+    }
+  }
 });

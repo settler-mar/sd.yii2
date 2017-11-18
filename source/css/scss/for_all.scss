@@ -233,6 +233,7 @@ p em {
       margin: 0;
       padding: 0;
       line-height: 1em;
+      max-width: calc(100% - 30px);
     }
   }
 
