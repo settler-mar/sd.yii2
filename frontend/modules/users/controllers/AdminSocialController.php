@@ -39,6 +39,12 @@ class AdminSocialController extends Controller
    */
   public function actionIndex()
   {
+
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new UsersSocialSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -78,11 +84,17 @@ class AdminSocialController extends Controller
    */
   public function actionUpdate($id)
   {
+
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       Yii::$app->session->setFlash('info','Данные социальной сети обновленны');
-      return $this->redirect(['edit', 'id' => $model->uid]);
+      return $this->redirect(['update', 'id' => $model->uid]);
     } else {
 
       $services=Yii::$app->get('eauth')->services;
@@ -107,6 +119,11 @@ class AdminSocialController extends Controller
    */
   public function actionDelete($id)
   {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
