@@ -37,10 +37,10 @@ class SocialEmail extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['social_name', 'social_id', 'email'], 'required'],
+      [['social_name', 'social_id', 'email_manual'], 'required'],
       [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
       [['social_name', 'social_id'], 'string', 'max' => 255],
-      [['email'], 'email'],
+      [['email_manual'], 'email'],
       [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name',
         'social_id'], 'message' => 'The combination of Social Name and Social ID has already been taken.'],
     ];
@@ -57,6 +57,7 @@ class SocialEmail extends \yii\db\ActiveRecord
       'social_id' => 'Social ID',
       'name' => 'Name',
       'email' => 'Email',
+      'email_manual' => 'Email',
       'url' => 'Url',
       'photo' => 'Photo',
       'status' => 'Status',
