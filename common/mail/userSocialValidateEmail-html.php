@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['verifysocialemail', 'token' => $user->email_verify_token, 'email'=>$user->email]);
+$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['verifysocialemail', 'token' => $user->email_verify_token, 'email'=>$user->email_manual]);
 
 ?>
 

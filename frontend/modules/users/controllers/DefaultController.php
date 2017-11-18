@@ -360,7 +360,7 @@ class DefaultController extends Controller
       ]);
       if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
         //создаём юсера, если уже есть, то смотрим второй параметр 
-        $user = UsersSocial::makeUser($model, true);
+        $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
         } else {
@@ -410,7 +410,7 @@ class DefaultController extends Controller
 
       $usersSocial = UsersSocial::verifyEmail($token, $email);
       if ($usersSocial) {
-        $user = UsersSocial::makeUser($usersSocial, false, true);
+        $user = UsersSocial::makeUser($usersSocial);
         if ($user) {
           Yii::$app->getUser()->login($user);
           return Yii::$app->response->redirect('/')->send();

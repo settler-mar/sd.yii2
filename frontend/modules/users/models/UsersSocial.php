@@ -118,7 +118,7 @@ class UsersSocial extends \yii\db\ActiveRecord
      * @param $emailVerified - email в соц сетях уже валидирован 
      * @return User|null
      */
-    public static function makeUser($userSocial, $onlyNew = false, $emailVerified = false)
+    public static function makeUser($userSocial)
     {
         if (!$userSocial) {
             return null;
@@ -129,8 +129,10 @@ class UsersSocial extends \yii\db\ActiveRecord
             $user = Users::findOne($userSocial->user_id);
         } elseif ($userSocial->email != null) {
             $user = Users::findOne(['email' =>$userSocial->email]);
-            if ($user && $onlyNew) {
-                //юсер есть, но нашли по емел и в данном случае необходимо подтвердить, что это его емеил
+        } elseif ($userSocial->email_manual != null) {
+            $user = Users::findOne(['email' =>$userSocial->email_manual]);
+            if ($user) {
+                //юсер есть, но нашли по емел, введённому вручную и в данном случае необходимо подтвердить, что это его емеил
                 Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
                 if (self::sendValidateEmail($userSocial)) {
                     //запрос на валидацию и редиректим на главную
@@ -140,23 +142,25 @@ class UsersSocial extends \yii\db\ActiveRecord
                 return null;
             }
         }
+
         if (!$user) {
             $user = new Users;
             $user->photo = $userSocial->photo;
-            $user->email = $userSocial->email;
+            $user->email = $userSocial->email ? $userSocial->email : $userSocial->email_manual;
             $user->name = $userSocial->name;//поменять в sd
             $user->sex = $userSocial->sex;
             $user->registration_source = $userSocial->url;
             $user->birthday = $userSocial->birthday;//помеять в sd
             $user->setPassword(substr(md5(uniqid()), 0, 15));
-            $user->email_verified = $emailVerified ? 1 : 0;
+            $user->email_verified = $userSocial->email == $userSocial->email_manual;
             if (!$user->save()) {
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $userSocial->social_name . ' прошла неудачно.');
                 return null;
             };
-            //если создаём нового юсера, то считаем, что email подтверждён
-//            $userSocial->email_verified = 1;
-//            $userSocial->save();
+            if ($userSocial->email == null && $userSocial->email_manual != null) {
+                $userSocial->email = $userSocial->email_manual;
+                $userSocial->save();
+            }
         }
         //перенос информации к юсеру, заодно ещё кое-что
         self::fillAttributes($user, $userSocial, ['sex', 'birthday', 'photo']);
@@ -171,10 +175,10 @@ class UsersSocial extends \yii\db\ActiveRecord
      */
     public static function verifyEmail($token, $email)
     {
-        $userSocial = self::findOne(['email_verify_token'=>$token, 'email' => $email]);
+        $userSocial = self::findOne(['email_verify_token'=>$token, 'email_manual' => $email]);
         if ($userSocial) {
             $userSocial->email_verify_token = null;
-            $userSocial->email_verified = 1;
+            $userSocial->email = $email;
             $userSocial->save();
             Yii::$app->session->addFlash('success', 'Email подтверждён');
             return $userSocial;
@@ -202,9 +206,6 @@ class UsersSocial extends \yii\db\ActiveRecord
                 $result[$field]  = $userSocial->$field;
             }
         }
-        if ($userSocial->email_verified == 1) {
-            $user->email_verified = 1;
-        }
         $user->save();
         if ($userSocial->user_id == null) {
             $userSocial->user_id = $user->uid;
@@ -226,7 +227,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             ['user' => $userSocial]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo($userSocial->email)
+          ->setTo($userSocial->email_manual)
           ->setSubject('Подтвердите Email на SecretDiscounter.ru при авторизации через соц сети')
           ->send();
     }
