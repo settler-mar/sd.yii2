@@ -67,11 +67,13 @@ helpers/                 вспомогательные библиотеки
 
 ## Устаноновка
 
+0. composer global require "fxp/composer-asset-plugin:~1.1.1"
 1. git clone https://github.com/settler-mar/sd.yii2.git
 2. Настраиваем доступ к базе данных common/config/main-local.php
 3. Устанавливаем библиотеки composer install
 4. Выполняем миграции yii migrate
 5. для работы всплывающего блока с рекламой ```php yii task/generate-user-list```
+5. получаем курс ```php yii task/update-curs ```
 
 ## Известные баги
 
