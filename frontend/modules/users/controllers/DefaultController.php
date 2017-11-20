@@ -375,11 +375,10 @@ class DefaultController extends Controller
     Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
     return Yii::$app->response->redirect('/')->send();
   }
-
+  
   public function actionSocialemailresult()
   {
     return $this->render('emailResult');
   }
-
 
 }
