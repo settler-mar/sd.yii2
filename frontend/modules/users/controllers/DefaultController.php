@@ -127,33 +127,33 @@ class DefaultController extends Controller
   }
 
 
-/*  public function actionRegistration()
-  {
+  /*  public function actionRegistration()
+    {
 
-    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
-      return $this->goHome();
-    }
+      if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+        return $this->goHome();
+      }
 
-    $request=Yii::$app->request;
-    if(!$request->isAjax){
-      return $this->goHome();
-    }
+      $request=Yii::$app->request;
+      if(!$request->isAjax){
+        return $this->goHome();
+      }
 
-    $isIndex=$request->get('index');
-    if($isIndex){
-      $data['html']= $this->renderAjax('registration'); // рисуем форму 
-      if($isIndex==1){
-        return $data['html'];
-      }else{
+      $isIndex=$request->get('index');
+      if($isIndex){
+        $data['html']= $this->renderAjax('registration'); // рисуем форму
+        if($isIndex==1){
+          return $data['html'];
+        }else{
+          return json_encode($data);
+        }
+      }else {
+        $data['html'] = $this->renderAjax('registration', [      // рисуем форму
+          'isAjax' => true
+        ]);
         return json_encode($data);
       }
-    }else {
-      $data['html'] = $this->renderAjax('registration', [      // рисуем форму
-        'isAjax' => true
-      ]);
-      return json_encode($data);
-    }
-  }*/
+    }*/
 
 
 
@@ -354,7 +354,7 @@ class DefaultController extends Controller
     $validator = new StringValidator;
     $validatorEmail = new EmailValidator;
     $validatorRequired = new RequiredValidator;
-    
+
     if (
       $validatorRequired->validate([$token, $email])
       && $validator->validate($token)
@@ -371,11 +371,16 @@ class DefaultController extends Controller
       }
 
     }
-    
+
     Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
     return Yii::$app->response->redirect('/')->send();
   }
   
+  public function actionSocialemailresult()
+  {
+    return $this->render('emailResult');
+  }
+
   public function actionSocialemailresult()
   {
     return $this->render('emailResult');
