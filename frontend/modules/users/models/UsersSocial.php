@@ -27,7 +27,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
 
-   // public $socialId;
+    // public $socialId;
 
     /**
      * @inheritdoc
@@ -43,14 +43,14 @@ class UsersSocial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['social_name', 'social_id', 'name'], 'required'],
-            [['status', 'user_id'], 'integer'],
-            [['user_id'], 'exist', 'targetAttribute' => 'id', 'targetClass' => Users::className()],
-            [['sex'], 'string', 'max'=> 1],
-            [['created_at', 'updated_at', 'bdate'], 'safe'],
-            [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex'], 'string', 'max' => 255],
-            [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name',
-                'social_id'], 'message' => 'The combination of Social Name and Social ID has already been taken.'],
+          [['social_name', 'social_id', 'name'], 'required'],
+          [['status', 'user_id'], 'integer'],
+          [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
+          [['sex'], 'string', 'max' => 1],
+          [['created_at', 'updated_at', 'bdate'], 'safe'],
+          [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex'], 'string', 'max' => 255],
+          [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name',
+            'social_id'], 'message' => 'The combination of Social Name and Social ID has already been taken.'],
         ];
     }
 
@@ -60,18 +60,19 @@ class UsersSocial extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'uid' => 'ID',
-            'social_name' => 'Social Name',
-            'social_id' => 'Social ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'url' => 'Url',
-            'photo' => 'Photo',
-            'status' => 'Status',
-            'bdate' => 'Birth Day',
-            'sex' => 'Sex',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+          'uid' => 'ID',
+          'social_name' => 'Социальная сеть',
+          'social_id' => 'ID в соц сети',
+          'name' => 'Имя',
+          'user_id' => 'Пользователь',
+          'email' => 'Email',
+          'url' => 'Url',
+          'photo' => 'Photo',
+          'status' => 'Status',
+          'bdate' => 'День рождения',
+          'sex' => 'Пол',
+          'created_at' => 'Подключен к SD',
+          'updated_at' => 'Updated At',
         ];
     }
 
@@ -95,7 +96,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         if (!$userSocial) {
             $userSocial = new self;
             $userSocial->setAttributes($attributes);
-            $userSocial->user_id =  null;
+            $userSocial->user_id = null;
             if (!$userSocial->validate() || !$userSocial->save()) {
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
                 return null;
@@ -104,7 +105,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         //if ($userSocial->email == null || $userSocial->email_verified == 0) {
         if ($userSocial->email == null) {
             Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш Email.');
-            Yii::$app->response->redirect('login/socials-email?service='.$userSocial->social_name. '&id='.$userSocial->social_id)->send();
+            Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
             return null;
         }
 
@@ -115,7 +116,7 @@ class UsersSocial extends \yii\db\ActiveRecord
      * имеем пользователя соц сетей, от него находим или создаём пользователя сайта
      * @param $userSocial
      * @param $onlyNew - нужен только новый пользователь, если уже есть, то особый случай
-     * @param $emailVerified - email в соц сетях уже валидирован 
+     * @param $emailVerified - email в соц сетях уже валидирован
      * @return User|null
      */
     public static function makeUser($userSocial)
@@ -128,16 +129,18 @@ class UsersSocial extends \yii\db\ActiveRecord
         if ($userSocial->user_id != null) {
             $user = Users::findOne($userSocial->user_id);
         } elseif ($userSocial->email != null) {
-            $user = Users::findOne(['email' =>$userSocial->email]);
+            $user = Users::findOne(['email' => $userSocial->email]);
         } elseif ($userSocial->email_manual != null) {
-            $user = Users::findOne(['email' =>$userSocial->email_manual]);
+            $user = Users::findOne(['email' => $userSocial->email_manual]);
+            //ddd($user);
             if ($user) {
                 //юсер есть, но нашли по емел, введённому вручную и в данном случае необходимо подтвердить, что это его емеил
-                Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
+                //Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
                 if (self::sendValidateEmail($userSocial)) {
                     //запрос на валидацию и редиректим на главную
-                    Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
-                    Yii::$app->response->redirect('/')->send();
+                    // ddd($userSocial);
+                    // Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
+                    Yii::$app->response->redirect('/login/socials-result')->send();
                 }
                 return null;
             }
@@ -175,7 +178,7 @@ class UsersSocial extends \yii\db\ActiveRecord
      */
     public static function verifyEmail($token, $email)
     {
-        $userSocial = self::findOne(['email_verify_token'=>$token, 'email_manual' => $email]);
+        $userSocial = self::findOne(['email_verify_token' => $token, 'email_manual' => $email]);
         if ($userSocial) {
             $userSocial->email_verify_token = null;
             $userSocial->email = $email;
@@ -203,7 +206,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         foreach ($fields as $field) {
             if ($user->$field == null && $userSocial->$field != null) {
                 $user->$field = $userSocial->$field;
-                $result[$field]  = $userSocial->$field;
+                $result[$field] = $userSocial->$field;
             }
         }
         $user->save();
@@ -232,9 +235,9 @@ class UsersSocial extends \yii\db\ActiveRecord
           ->send();
     }
 
-
-
-
-
-
+    public function getUser()
+    {
+        $user = Users::findOne(['uid' => $this->user_id]);
+        return $user;
+    }
 }
