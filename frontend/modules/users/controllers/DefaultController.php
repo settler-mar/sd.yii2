@@ -381,10 +381,4 @@ class DefaultController extends Controller
     return $this->render('emailResult');
   }
 
-  public function actionSocialemailresult()
-  {
-    return $this->render('emailResult');
-  }
-
-
 }
