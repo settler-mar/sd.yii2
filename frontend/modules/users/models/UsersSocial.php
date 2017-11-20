@@ -105,7 +105,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     //if ($userSocial->email == null || $userSocial->email_verified == 0) {
     if ($userSocial->email == null) {
       Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш Email.');
-      Yii::$app->response->redirect('login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
+      Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
       return null;
     }
 
@@ -132,13 +132,15 @@ class UsersSocial extends \yii\db\ActiveRecord
       $user = Users::findOne(['email' => $userSocial->email]);
     } elseif ($userSocial->email_manual != null) {
       $user = Users::findOne(['email' => $userSocial->email_manual]);
+      //ddd($user);
       if ($user) {
         //юсер есть, но нашли по емел, введённому вручную и в данном случае необходимо подтвердить, что это его емеил
-        Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
+        //Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
         if (self::sendValidateEmail($userSocial)) {
           //запрос на валидацию и редиректим на главную
-          Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
-          Yii::$app->response->redirect('/')->send();
+         // ddd($userSocial);
+         // Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
+          Yii::$app->response->redirect('/login/socials-result')->send();
         }
         return null;
       }
