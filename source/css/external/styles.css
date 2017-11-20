@@ -78,7 +78,7 @@ h5 {
 section.intro, section.features-extra, section.sign-up {
   background: #fff; }
 
-section.features, section.faq, section.blog {
+section.features, section.faq, section.blog, section.sign-up{
   background: #F3F4F8;
   overflow: hidden;
 }

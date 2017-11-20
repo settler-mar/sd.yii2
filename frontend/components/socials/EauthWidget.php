@@ -32,7 +32,7 @@ class EauthWidget extends \nodge\eauth\Widget
     if($this->float){
       $dop_class.=' float_'.$this->float;
     }
-    echo $this->render('/widgets/socials', [
+    echo $this->render('@app/views/widgets/socials', [
       'id' => $this->getId(),
       'services' => $this->services,
       'action' => 'login/socials',
