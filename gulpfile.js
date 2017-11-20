@@ -115,6 +115,7 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/external/jquery.autocomplete.js',
         paths.source.js+'/original/account/main.js',
         paths.source.js+'/original/notification.js',
+        paths.source.js+'/original/admin/ajax_remove.js',
         paths.source.js+'/original/for_all.js'
     ], paths.app.js + '/account')
 );

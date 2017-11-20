@@ -97,6 +97,56 @@
                         '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
                     }).passwordInput({'placeholder':'Повторите новый пароль'}) | raw }}
 
+                    <h3>Связанные социальные сети</h3>
+
+                    <p>Для привязки соцсети просто нажмите нужную иконку ниже:</p>
+                    {{ use('frontend/components/socials/EauthWidget') }}
+                    {{ eauth_widget_widget({'float':'left'}) }}
+
+                    {% if socials | length >0 %}
+                    <table class="table table-payments">
+                        <thead>
+                        <tr>
+                            <th>Социальная сеть</th>
+                            <th>Имя пользователя</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for social in socials %}
+                                <tr>
+                                    <td>
+                                        <center>
+                                            <a
+                                                    class="eauth-service-link_sd {{ social.social_name }}"
+                                                    href="{{ social.url }}"
+                                                    target="_blank"
+                                                    rel="nofollow noopener"
+                                            ></a>
+                                        </center>
+                                    </td>
+                                    <td>
+                                        {{ social.name }}
+                                    </td>
+                                    <td>
+                                        <span
+                                                class="ajax_remove"
+                                                mode="reload"
+                                                uid="{{ social.uid }}"
+                                                url="/account/users/social-delete"
+                                                data-remove-error="Ошибка удаления социальной сети. Обновите страницу или попробуйте позже."
+                                        >
+                                          Удалить
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    {% else %}
+                        <p>На данный момент вы еще не связали свой аккаунт в SecretDiscounter со своими соцсетями.</p>
+                    {% endif %}
+
                 </div>
             {{ active_form_end() }}
         </div>

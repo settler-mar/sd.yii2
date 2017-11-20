@@ -8,7 +8,7 @@
 {% endif %}
 
 <div class="eauth sd-eauth" id="{{ id }}">
-  <ul class="eauth-list">
+  <ul class="eauth-list{{ dop_class }}">
     {% for name, service in services  %}
       <li class="eauth-service eauth-service-id-{{ service.id }} {% if vertical %} vertical {% endif %}">
         {% set title = vertical ? service.title : '' %}

@@ -8,7 +8,6 @@
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="slider-create">
-    <h1>{{ html.encode(this.title) }}</h1>
     {{ include('_form.twig', {
             'model': model,
         })

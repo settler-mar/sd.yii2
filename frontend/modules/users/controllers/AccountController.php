@@ -2,6 +2,7 @@
 
 namespace frontend\modules\users\controllers;
 
+use frontend\modules\users\models\UsersSocial;
 use Yii;
 use frontend\modules\users\models\Users;
 use frontend\modules\users\models\UsersSearch;
@@ -160,9 +161,35 @@ class AccountController extends Controller
     $user->new_password='';
     $user->r_new_password='';
 
+    $socials=UsersSocial::find()
+      ->where(['user_id'=>$user->uid])
+      ->all();
+
     return $this->render('setting.twig', [
-      'model' => $user
+      'model' => $user,
+      'socials'=> $socials
     ]);
   }
 
+  public function actionSocialDelete(){
+    $request = Yii::$app->request;
+    if(!$request->isAjax || !$request->isPost){
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $socials=UsersSocial::find()
+      ->where([
+        'user_id'=>Yii::$app->user->id,
+        'uid'=>$request->post('id')
+      ])
+      ->one();
+
+    if(!$socials){
+      return 'err';
+    }
+
+    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключенна.');
+    $socials->delete();
+  }
 }

@@ -4,6 +4,7 @@ namespace frontend\modules\slider\models;
 
 use Yii;
 use frontend\modules\stores\models\Stores;
+use JBZoo\Image\Image;
 
 
 /**
@@ -36,7 +37,7 @@ class Slider extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['title', 'description', 'date_start', 'date_end', 'html', 'image'], 'required'],
+      [['title', 'description', 'date_start', 'date_end', 'html'], 'required'],
       [['description', 'html', 'url'], 'string'],
       [['date_start', 'date_end'], 'safe'],
       [['type', 'is_showed'], 'integer'],
@@ -52,14 +53,14 @@ class Slider extends \yii\db\ActiveRecord
   {
     return [
       'uid' => 'Uid',
-      'title' => 'Title',
-      'description' => 'Description',
+      'title' => 'Название',
+      'description' => 'Описание',
       'date_start' => 'Date Start',
       'date_end' => 'Date End',
       'type' => 'Type',
       'html' => 'Html',
       'image' => 'Image',
-      'show_as' => 'Show As',
+      'show_as' => 'Отображать',
       'is_showed' => 'Is Showed',
     ];
   }
@@ -80,7 +81,86 @@ class Slider extends \yii\db\ActiveRecord
 
       return $queryResult;
     });
+  }
 
+  /**
+   * @param bool $insert
+   * @param array $changedAttributes
+   * Сохраняем изображения после сохранения
+   * данных пользователя
+   */
+  public function afterSave($insert, $changedAttributes)
+  {
+     $this->saveImage();
+  }
 
+  /**
+   * Сохранение изображения (аватара)
+   * пользвоателя
+   */
+  public function saveImage()
+  {
+    $photo = \yii\web\UploadedFile::getInstance($this, 'image');
+    if ($photo) {
+      $path = $this->getPath($this->uid);// Путь для сохранения аватаров
+      $oldImage = $this->image;
+
+      if(!is_readable($photo->tempName)){
+        Yii::$app->session->addFlash('err','Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
+        return;
+      }
+
+      $name = time(); // Название файла
+      $exch = explode('.', $photo->name);
+      $exch = $exch[count($exch) - 1];
+      $name .= '.' . $exch;
+      $this->image = $name;   // Путь файла и название
+      $bp = Yii::$app->getBasePath() . '/web';
+      if (!file_exists($bp . $path)) {
+        mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
+      }
+
+      if(exif_imagetype($photo->tempName)==2){
+        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+      }else {
+        $img = (new Image($photo->tempName));
+      }
+
+      $img
+        //->fitToWidth(500)
+        ->saveAs($bp .$path. $name);
+      if ($img) {
+        $this->removeImage($bp . $oldImage);   // удаляем старое изображение
+        $this::getDb()
+          ->createCommand()
+          ->update($this->tableName(), ['image' => $this->image], ['uid' => $this->uid])
+          ->execute();
+      }
+    }
+  }
+
+  /**
+   * Удаляем изображение при его наличии
+   */
+  public function removeImage($img)
+  {
+    if ($img) {
+      // Если файл существует
+      if (is_readable($img) && is_file($img)) {
+        // ddd($img);
+        unlink($img);
+      }
+    }
+  }
+
+  /**
+   * Путь к папке
+   * @id - ID пользователя
+   * @return путь(string)
+   */
+  public function getPath($id)
+  {
+    $path = '/images/slides/';
+    return $path;
   }
 }

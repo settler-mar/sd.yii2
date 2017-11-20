@@ -303,7 +303,6 @@ class AdminController extends Controller
       return false;
     }
 
-
     $this->findModel($user_id)->delete();
     return true;
   }

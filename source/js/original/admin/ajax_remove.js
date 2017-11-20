@@ -8,7 +8,12 @@ $(function() {
     };
     $.post($this.attr('url'),post,function(data){
       if(data && data=='err'){
-        notification.notifi({message:'Невозможно удалить элемент',type:'err'});
+        msg=$this.data('remove-error');
+        if(!msg){
+          msg='Невозможно удалить элемент';
+        }
+        notification.notifi({message:msg,type:'err'});
+        return;
       }
 
       mode=$this.attr('mode');
@@ -16,7 +21,7 @@ $(function() {
         mode='rm';
       }
 
-      if(mode='rm') {
+      if(mode=='rm') {
         rm = $this.closest('.to_remove');
         rm_class = rm.attr('rm_class');
         if (rm_class) {
@@ -43,3 +48,4 @@ $(function() {
   });
 
 });
+
