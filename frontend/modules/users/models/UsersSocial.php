@@ -153,7 +153,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             $user->name = $userSocial->name;//поменять в sd
             $user->sex = $userSocial->sex;
             $user->registration_source = $userSocial->url;
-            $user->birthday = $userSocial->birthday;//помеять в sd
+            $user->bdate = $userSocial->birthday;//помеять в sd
             $user->setPassword(substr(md5(uniqid()), 0, 15));
             $user->email_verified = $userSocial->email == $userSocial->email_manual;
             if (!$user->save()) {
@@ -166,7 +166,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             }
         }
         //перенос информации к юсеру, заодно ещё кое-что
-        self::fillAttributes($user, $userSocial, ['sex', 'birthday', 'photo']);
+        self::fillAttributes($user, $userSocial, ['sex',  'photo']);
         return $user;
     }
 
