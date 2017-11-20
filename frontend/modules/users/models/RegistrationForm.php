@@ -20,14 +20,14 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
-      [['email', 'password', 'password_repeat'], 'required'],
+      [['email', 'password'], 'required'],
       [['email'], 'email'],
-      ['password_repeat', 'compare', 'compareAttribute' => 'password','message' => 'Введенные пароли не совпадают.'],
+      //['password_repeat', 'compare', 'compareAttribute' => 'password','message' => 'Введенные пароли не совпадают.'],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
 
-      [['password','password_repeat'], 'trim'],
-      [['password','password_repeat'], 'string', 'max' => 60],
-      [['password','password_repeat'], 'string', 'min' => 6],
+      [['password'], 'trim'],
+      [['password'], 'string', 'max' => 60],
+      [['password'], 'string', 'min' => 6],
     ];
   }
 
