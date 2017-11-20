@@ -98,6 +98,7 @@ $config= [
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
         'login/socials-email' => 'users/default/socialemail',
+        'login/socials-result' => 'users/default/socialemailresult',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',

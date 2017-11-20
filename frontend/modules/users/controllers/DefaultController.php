@@ -307,11 +307,12 @@ class DefaultController extends Controller
     $request = Yii::$app->request;
     if ($request->post()) {
       $model = SocialEmail::findOne([
-        'social_name' => !empty($request->post('Email')['social_name']) ? $request->post('Email')['social_name'] : null,
-        'social_id' => !empty($request->post('Email')['social_id']) ? $request->post('Email')['social_id'] : null,
+        'social_name' => !empty($request->post('SocialEmail')['social_name']) ? $request->post('SocialEmail')['social_name'] : null,
+        'social_id' => !empty($request->post('SocialEmail')['social_id']) ? $request->post('SocialEmail')['social_id'] : null,
       ]);
+      //ddd($model);
       if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
-        //создаём юсера, если уже есть, то смотрим второй параметр 
+        //создаём юсера
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
@@ -373,6 +374,11 @@ class DefaultController extends Controller
     
     Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
     return Yii::$app->response->redirect('/')->send();
+  }
+  
+  public function actionSocialemailresult()
+  {
+    return $this->render('emailResult');
   }
 
 

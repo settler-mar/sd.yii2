@@ -1,4 +1,5 @@
 <?php
+
 $twigFunction=require (dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
 $twigFunction['translate']='\Yii::t';
 
@@ -130,11 +131,12 @@ if (YII_DEBUG) {
   $config['bootstrap'][] = 'debug';
   $config['modules']['debug'] = [
     'class' => 'yii\debug\Module',
+    'allowedIPs' => ['*']
   ];
   $config['bootstrap'][] = 'gii';
   $config['modules']['gii'] = [
     'class' => 'aayaresko\gii\Module',
-    'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
+    'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*','82.202.204.89'],
     'generators' => [ // здесь
       /*'crud' => [ // название генератора
         'class' => 'yii\gii\generators\crud\Generator', // класс генератора
