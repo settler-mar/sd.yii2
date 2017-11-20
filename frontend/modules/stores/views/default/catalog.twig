@@ -108,16 +108,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="shops-list">
+
 
                     {% if stores|length > 0 %}
-                        {% for store in stores %}
-                            <div class="col-sm-3 col-md-3">
-                                {% include 'parts/shop.twig' %}
-                            </div>
-                        {% endfor %}
+                        <div class="shops-list">
+                            {% for store in stores %}
+                                <div class="col-sm-3 col-md-3">
+                                    {% include 'parts/shop.twig' %}
+                                </div>
+                            {% endfor %}
+                        </div>
 
-                        <div class="col-md-12 shops-pagination">
+                        <div class="col-xs-12 col-sm-12 col-md-12 shops-pagination">
                             {% include 'parts/pagination.twig' %}
                         </div>
 
@@ -135,7 +137,7 @@
                             {{ content | raw}}
                         </div>
                     {% endif %}
-                    </div>
+                    {#</div>#}
                 </div>
             </div>
         </div>
