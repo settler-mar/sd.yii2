@@ -94,11 +94,11 @@ class ValidateEmail extends Model
       $templateName = 'verifyEmailSuccess';
       $subject = 'Узнайте, как экономить до 40% на покупках';
     }
-    $sessionVar = 'sd_verify_mail_time';
+    $sessionVar = 'sd_verify_mail_time_'.$user->email;
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
 
-    if (!$newUser && !$validateSuccess && $lastMailTime && (time() - $lastMailTime < 60*30)) {
-      Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 30 минут');
+    if (!$newUser && !$validateSuccess && $lastMailTime && (time() - $lastMailTime < 60*5)) {
+      Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 5 минут');
       Yii::$app->response->redirect('/account');
       return null;
     }
