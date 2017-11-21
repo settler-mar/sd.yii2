@@ -334,3 +334,34 @@ form .alert-block {
   color: $text_error_color;
   margin-left: 5px;
 }
+
+.body-content {
+  ol, ul {
+    padding-left: 15px;
+    &.h3-header{
+      list-style-type: none;
+      counter-reset: num;
+      h3 {
+        display: inline;
+      }
+      li {
+        margin-top: 15px;
+        &:before {
+          content: counter(num) '. ';
+          counter-increment: num;
+          font-size: 18px;
+        }
+        p {
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+  p {
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 27px;
+  }
+
+}

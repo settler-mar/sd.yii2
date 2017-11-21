@@ -175,6 +175,7 @@ class DefaultController extends Controller
 
           if (!empty($user)) {
             Yii::$app->getUser()->login($user);
+            $this->redirect(['/account'.((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
           } else {
             $eauth->cancel();
           }
@@ -287,7 +288,7 @@ class DefaultController extends Controller
     if (Yii::$app->user->isGuest) {
       throw new NotFoundHttpException();
     }
-    if (ValidateEmail::validateEmail(Yii::$app->user->id)) {
+    if (ValidateEmail::validateEmail(Yii::$app->user->identity)) {
       Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
     } else {
       Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
@@ -316,6 +317,7 @@ class DefaultController extends Controller
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
+          $this->redirect(['/account'.((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
         } else {
           Yii::$app->session->addFlash('error', 'Ошибка при авторизации');
         }
