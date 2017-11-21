@@ -246,6 +246,8 @@ class DefaultController extends SdController
 
     $contentData["curs"] = Yii::$app->conversion->options();
 
+    Yii::$app->view->metaTags[]='<meta property="og:image" content="https://secretdiscounter.ru/images/logos/'. $store->logo.'" />';
+
     return $this->render('shop', $contentData);
   }
 

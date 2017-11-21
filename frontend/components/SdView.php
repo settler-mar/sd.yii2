@@ -69,6 +69,26 @@ class SdView extends View
 
       $this->all_params = array_merge($this->all_params, $arr);
     }
+
+    $tags = [];
+    foreach (Yii::$app->view->metaTags as $meta) {
+      if (strpos($meta, 'property="')) {
+        $tags[] = substr($meta, strpos($meta, 'property="') + 10, strpos($meta, '" ') - strpos($meta, 'property="') - 10);
+      }
+    }
+    if (!in_array('og:url', $tags)) {
+      Yii::$app->view->metaTags[]='<meta property="og:url" content="https://secretdiscounter.ru/'.$request->pathInfo.'" />';
+    }
+    if (!in_array('og:title', $tags)) {
+      Yii::$app->view->metaTags[]='<meta property="og:title" content="'.$this->title.'" />';
+    }
+    if (!in_array('og:description', $tags)) {
+      Yii::$app->view->metaTags[]='<meta property="og:description" content="'.$this->description.'" />';
+    }
+    if (!in_array('og:image', $tags)) {
+      Yii::$app->view->metaTags[]='<meta property="og:image" content="https://secretdiscounter.ru/images/templates/woman_600.png" />';
+    }
+
   }
 
   public function render($view, $params = [], $context = null)
