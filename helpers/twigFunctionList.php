@@ -273,11 +273,11 @@ $functionsList=[
       return ($else?$else:'');
     }
   },
-  '_date'=>function ($date) use ($month) {
+  '_date'=>function ($date,$format_time="%H:%M:%S") use ($month) {
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
-    return strftime("%e " . $currMonth . " %G в %H:%M:%S", strtotime($date));
+    return strftime("%e " . $currMonth . " %G в ".$format_time, strtotime($date));
   },
   'date'=>function ($date) use ($month) {
     $d = date('d',$date);
