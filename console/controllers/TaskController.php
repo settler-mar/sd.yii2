@@ -15,6 +15,13 @@ use frontend\modules\cache\models\Cache;
 
 class TaskController extends Controller
 {
+  public $ref_id,$day,$start_date,$count,$list,$end_date;
+  public function options($actionID)
+  {
+    if($actionID=='change-ref') {
+      return ['ref_id','day','start_date','count','list','end_date'];
+    }
+  }
 
   /**
    * Выполнение задание из планировщика
@@ -273,5 +280,108 @@ class TaskController extends Controller
     $path=Yii::$app->basePath.'/../common/config';
     $path=realpath($path).'/curs.php';
     file_put_contents($path, '<?php return ' . var_export($out, true) . ';');
+  }
+
+
+  /**
+   * Перенести пользователей и его покупки к рефералу
+   */
+  function actionChangeRef(){
+    if(!$this->ref_id){
+      echo 'ref_id нужно обязательно задать'."\n";
+      exit;
+    }
+
+    if($this->list){
+      $this->list=explode(',',$this->list);
+    }else{
+      $this->list=[];
+    }
+
+    if($this->start_date){
+      $this->start_date=strtotime($this->start_date.' 00:00:00');
+      if(!$this->end_date){
+        $this->end_date=time();
+      }else{
+        $this->end_date=strtotime($this->end_date.' 23:00:00');
+      }
+
+      if($this->start_date>$this->end_date){
+        echo 'end_date не может быть меньше start_date'."\n";
+        exit;
+      }
+
+      $start_date=date('Y-m-d',$this->start_date);
+      $end_date=date('Y-m-d',$this->end_date);
+      $user=Users::find()
+        ->select(['uid'])
+        ->andFilterWhere(['referrer_id'=>0])
+        ->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59'])
+        ->asArray()
+        ->all();
+
+      if(!$user){
+        echo 'В выбранный промежуток времени пользователей не найдено'."\n";
+        exit;
+      }
+
+      if(isset($this->count) && $this->count>count($user)){
+        echo 'В заданный период всего '.count($user)." пользователей. Что не достаточно для выборки\n";
+        exit;
+      }
+
+      if(isset($this->count)){
+        $this->list=array_rand($user,$this->count);
+      }
+
+      foreach ($this->list as &$u){
+        $u=$user[$u]['uid'];
+      }
+    }else{
+      if($this->end_date){
+        echo 'end_date используется только в паре с start_date'."\n";
+        exit;
+      }
+    }
+
+    if(count($this->list)==0){
+      echo 'Нет пользователей для выполнения операции'."\n";
+      exit;
+    }
+
+    $ref_user=Users::find()->where(['uid'=>$this->ref_id])->asArray()->one();
+    if(!$ref_user){
+      echo 'ref_id не найден в базе'."\n";
+      exit;
+    }
+    $bonus_status=Yii::$app->params['dictionary']['bonus_status'];
+    if(!isset($bonus_status[$ref_user['bonus_status']])){
+      echo 'ref_id имеет неопределенный статус реф лояльности'."\n";
+      exit;
+    }
+
+    $bonus_status=$bonus_status[$ref_user['bonus_status']];
+    echo 'ref_id имеет статус реф лояльности '.$bonus_status['name']."\n";
+
+    $bonus_k=$bonus_status['bonus']/100;
+    if($bonus_status['is_webmaster']){
+      $ref_bonus='ROUND((`reward`-`cashback`)*'.$bonus_k.',2)';;
+    }else{
+      $ref_bonus='ROUND(`cashback`*'.$bonus_k.',2)';
+    }
+
+    $sql='UPDATE `cw_users` SET `referrer_id` = '.$ref_user['uid'].' WHERE `uid` in ('.implode(',',$this->list).')';
+    Yii::$app->db->createCommand($sql)->execute();
+
+    $sql='UPDATE `cw_payments` SET 
+        `ref_bonus_id` = '.$ref_user['bonus_status'].',
+        `ref_id` = '.$ref_user['uid'].',
+        `ref_bonus` = '.$ref_bonus.'
+      WHERE `user_id` in ('.implode(',',$this->list).')';
+    Yii::$app->db->createCommand($sql)->execute();
+
+    Yii::$app->balanceCalc->todo($ref_user['uid'], 'ref');//пересчет кол-ва рефералов
+    Yii::$app->balanceCalc->todo($this->list); //пересчет кол-ва баланса
+
   }
 }
