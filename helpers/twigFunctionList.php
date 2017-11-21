@@ -274,6 +274,7 @@ $functionsList=[
     }
   },
   '_date'=>function ($date,$format_time="%H:%M:%S") use ($month) {
+    if(!$date){return false;};
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
