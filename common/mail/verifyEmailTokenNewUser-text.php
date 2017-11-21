@@ -2,8 +2,15 @@
 
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
-
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemail', 'token' => $user->email_verify_token, 'email'=>$user->email]);
+$params = [
+  '/verifyemail',
+  'token' => $user->email_verify_token,
+  'email'=>$user->email
+];
+if ($path) {
+  $params['path'] = $path;
+}
+$resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
 ?>
 Здравствуйте!
 

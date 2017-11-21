@@ -309,7 +309,8 @@ class SiteController extends SdController
 
     if ($store>0 && !Yii::$app->user->isGuest && empty(Yii::$app->user->identity->email_verified)) {
       //переход на страницу магазина, у пользователя не веритифицирован email
-      ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+      //$store = Stores::findOne($store);
+      ValidateEmail::emailStatusInfo(Yii::$app->user->identity, $store);
       return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/stores');
     }
 

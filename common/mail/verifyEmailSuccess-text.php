@@ -1,10 +1,3 @@
-<?php
-
-/* @var $this yii\web\View */
-/* @var $user common\models\User */
-
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemail', 'token' => $user->email_verify_token, 'email'=>$user->email]);
-?>
 Здраствуйте, <?= $user->name ?>,
 
 Узнайте, как экономить до 40% на покупках

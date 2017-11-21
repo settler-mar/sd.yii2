@@ -258,7 +258,7 @@ class DefaultController extends Controller
    * @return \yii\web\Response
    * @throws BadRequestHttpException
    */
-  public function actionVerifyemail($token, $email)
+  public function actionVerifyemail($token, $email, $path = null)
   {
     try {
       $model = new ValidateEmail($token, $email);
@@ -270,6 +270,10 @@ class DefaultController extends Controller
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
       Yii::$app->session->addFlash('success', 'Ваш Email подтверждён.');
+      if ($path && preg_match('/^\d+$/', $path) && $path>0) {
+        //если $path - целое число, то это store.uid
+        return $this->redirect(['/store:'.intval($path).'/goto']);
+      }
       return $this->redirect(['/account']);
     } else {
       return $this->redirect(['/']);
@@ -287,7 +291,8 @@ class DefaultController extends Controller
     if (Yii::$app->user->isGuest) {
       throw new NotFoundHttpException();
     }
-    if (ValidateEmail::validateEmail(Yii::$app->user->id)) {
+    $path = !empty(Yii::$app->request->get('path')) ? Yii::$app->request->get('path') : false;
+    if (ValidateEmail::validateEmail(Yii::$app->user->id, $path)) {
       Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту');
     } else {
       Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш Email');
