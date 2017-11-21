@@ -33,7 +33,15 @@ class TestController extends Controller
         ->setTextBody('Текст сообщения')
         ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
         ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-        ->setTo('matuhinmax@mail.ru')
+        ->setTo([
+          'matuhinmax@mail.ru',
+          'bnpparibas2011@mail.ru',
+          'bnpparibas2011@gmail.com',
+          'support@secretdiscounter.ru',
+          'admin@secretdiscounter.com',
+          'maxi_m_2016@mail.ru',
+          'secretdiscounter.com@yandex.ru'
+        ])
         ->setSubject(Yii::$app->name . ': Тест')
         ->send();
     } catch (\Exception $e) {
