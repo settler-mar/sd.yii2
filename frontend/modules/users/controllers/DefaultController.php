@@ -127,33 +127,33 @@ class DefaultController extends Controller
   }
 
 
-/*  public function actionRegistration()
-  {
+  /*  public function actionRegistration()
+    {
 
-    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
-      return $this->goHome();
-    }
+      if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+        return $this->goHome();
+      }
 
-    $request=Yii::$app->request;
-    if(!$request->isAjax){
-      return $this->goHome();
-    }
+      $request=Yii::$app->request;
+      if(!$request->isAjax){
+        return $this->goHome();
+      }
 
-    $isIndex=$request->get('index');
-    if($isIndex){
-      $data['html']= $this->renderAjax('registration'); // рисуем форму 
-      if($isIndex==1){
-        return $data['html'];
-      }else{
+      $isIndex=$request->get('index');
+      if($isIndex){
+        $data['html']= $this->renderAjax('registration'); // рисуем форму
+        if($isIndex==1){
+          return $data['html'];
+        }else{
+          return json_encode($data);
+        }
+      }else {
+        $data['html'] = $this->renderAjax('registration', [      // рисуем форму
+          'isAjax' => true
+        ]);
         return json_encode($data);
       }
-    }else {
-      $data['html'] = $this->renderAjax('registration', [      // рисуем форму
-        'isAjax' => true
-      ]);
-      return json_encode($data);
-    }
-  }*/
+    }*/
 
 
 
@@ -312,11 +312,12 @@ class DefaultController extends Controller
     $request = Yii::$app->request;
     if ($request->post()) {
       $model = SocialEmail::findOne([
-        'social_name' => !empty($request->post('Email')['social_name']) ? $request->post('Email')['social_name'] : null,
-        'social_id' => !empty($request->post('Email')['social_id']) ? $request->post('Email')['social_id'] : null,
+        'social_name' => !empty($request->post('SocialEmail')['social_name']) ? $request->post('SocialEmail')['social_name'] : null,
+        'social_id' => !empty($request->post('SocialEmail')['social_id']) ? $request->post('SocialEmail')['social_id'] : null,
       ]);
+      //ddd($model);
       if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
-        //создаём юсера, если уже есть, то смотрим второй параметр 
+        //создаём юсера
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
@@ -358,7 +359,7 @@ class DefaultController extends Controller
     $validator = new StringValidator;
     $validatorEmail = new EmailValidator;
     $validatorRequired = new RequiredValidator;
-    
+
     if (
       $validatorRequired->validate([$token, $email])
       && $validator->validate($token)
@@ -375,10 +376,14 @@ class DefaultController extends Controller
       }
 
     }
-    
+
     Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
     return Yii::$app->response->redirect('/')->send();
   }
-
+  
+  public function actionSocialemailresult()
+  {
+    return $this->render('emailResult');
+  }
 
 }

@@ -41,15 +41,17 @@
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
                     }).textInput({'placeholder':'Email адрес'}) | raw }}
 
+
                     {{ form.field(model, 'birthday',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
                     }).textInput({'placeholder':'Дата рождения','ref':'date'}) | raw }}
 
                     {% if model.email_verified == 0 %}
-                        <div class="form-group"><a href="/sendverifyemail">Подтвердить Email</a></div>
+                        <p>
+                            <a class="btn btn-yellow-border" href="/sendverifyemail">Повторно отправить письмо активации</a>
+                        </p>
                     {% endif %}
-
 
                         <div class="cr-group">
                             <span class="title">Пол:</span>

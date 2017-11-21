@@ -6,8 +6,11 @@ class m171117_175907_AddColumnsForEmailValidateUsersSocialsTable extends Migrati
 {
     public function safeUp()
     {
-        $this->addColumn('cw_users_social', 'email_manual', $this->string());
-        $this->addColumn('cw_users_social', 'email_verify_token', $this->string());
+      $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+      $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
+      $this->addColumn('cw_users_social', 'email_manual', $this->string());
+      $this->addColumn('cw_users_social', 'email_verify_token', $this->string());
     }
 
     public function safeDown()

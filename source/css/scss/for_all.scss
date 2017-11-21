@@ -1198,3 +1198,71 @@ td{
     background: red;
   }
 }
+//набор кнопочек
+.content-wrapper .btn{
+  text-decoration: none;
+}
+
+
+.btn {
+  font-size: 13px;
+  border: solid 2px;
+  border-radius: 40px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.btn:hover, .btn:focus {
+  color: #0f181a;
+  border-color: #e6ae03;
+  background-color: #e6ae03; }
+
+.btn-yellow{
+
+}
+.btn-yellow-border{
+
+}
+
+.btn-revert {
+  background-color: #e6ae03;
+  color: #000;
+  border-color: #e6ae03;
+  &:hover {
+    background-color: #fff;
+    color: #e6ae03;
+  }
+}
+
+.btn-white {
+  font-size: 13px;
+  border: solid 2px;
+  border-radius: 40px;
+  display: inline-block;
+  border-color: #fff; }
+
+.btn-white:hover, .btn-white:focus {
+  color: #e6ae03;
+  border-color: #e6ae03; }
+
+.btn-fill {
+  color: #0f181a;
+  border: solid 2px #e6ae03;
+  border-radius: 40px;
+  display: inline-block;
+  text-transform: uppercase;
+  background-color: #e6ae03; }
+
+.btn-fill:hover, .btn-fill:focus {
+  color: #0f181a;
+  background-color: #fbcf4a;
+  border-color: #fbcf4a; }
+
+.btn-small {
+  padding: 8px 30px; }
+
+.btn-large {
+  padding: 15px 40px; }
+
+.btn-margin-right {
+  margin-right: 20px; }

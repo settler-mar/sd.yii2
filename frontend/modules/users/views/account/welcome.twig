@@ -10,6 +10,20 @@
                 </div>
             </div>
 
+            {% if this.user.email_verified == 0 %}
+                <div class="col-md-12">
+                    <div class="balance">
+                        <h3>Проверьте свой e-mail для активации аккаунта</h3>
+                        <p>На ваш почтовый ящик <b>{{ this.user.email }}</b> {{ _date(this.user.email_verify_time,"%H:%M") }} (МСК) было отправлено письмо со ссылкой для активации.</p>
+                        <p>Подтверждение необходимо сделать в течение 15 минут после получения письма.</p>
+                        <p>
+                            <a class="btn btn-yellow-border" href="/sendverifyemail" style="margin-right: 20px;">Повторно отправить письмо</a>
+                            <a class="btn btn-revert" href="/account/settings">Изменить e-mail</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="col-md-12">
                 {% for key,status in statuses_marafon %}
                     <div class="col-sm-12 col-md-3 circles">

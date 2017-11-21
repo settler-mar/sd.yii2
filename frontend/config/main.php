@@ -94,10 +94,11 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|registrationemail|ulogin|resetpassword|reset|verifyemail|sendverifyemail|verifysocialemail)>' =>
+        '<action:(login|logout|registration|resetpassword|reset|verifyemail|sendverifyemail|verifysocialemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
         'login/socials-email' => 'users/default/socialemail',
+        'login/socials-result' => 'users/default/socialemailresult',
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',

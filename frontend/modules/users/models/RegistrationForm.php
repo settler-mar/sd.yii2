@@ -20,14 +20,24 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
-      [['email', 'password', 'password_repeat'], 'required'],
+      [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
+      [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
+      [['password_repeat'], 'required', 'message' => 'Необходимо повторить пароль'],
       [['email'], 'email'],
-      ['password_repeat', 'compare', 'compareAttribute' => 'password'],
+      ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Введенные пароли не совпадают.', 'operator' => '=='],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
-
-      ['password', 'trim'],
+      [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 6],
+    ];
+  }
+
+  public function attributeLabels()
+  {
+    return [
+      'email' => 'Email',
+      'password' => 'Пароль',
+      'password_repeat' => 'Повтор пароля',
     ];
   }
 

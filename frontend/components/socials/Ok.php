@@ -25,14 +25,16 @@ GET_EMAIL	Доступ к email адресу пользователя*/
     $info = $this->makeSignedRequest('', [
       'query' => [
         'method' => 'users.getCurrentUser',
+        'scope'=>'GET_EMAIL',
         'format' => 'JSON',
         'application_key' => $this->clientPublic,
         'client_id' => $this->clientId,
         //'fields' => 'EMAIL,FIRST_NAME,GENDER,LAST_NAME,BIRTHDAY,AGE,NAME,LOCATION,PHOTO_ID,HAS_EMAIL,PIC_1,PIC_2,PIC_3',
-        'fields' => 'EMAIL,FIRST_NAME,LAST_NAME,NAME,GENDER,BIRTHDAY,PIC_1',
+        'fields' => 'EMAIL,FIRST_NAME,LAST_NAME,NAME,GENDER,BIRTHDAY,PIC_1,HAS_EMAIL',
       ],
     ]);
 
+    //ddd($info);
     $this->attributes['name'] = $info['first_name'] . ' ' . $info['last_name'];
     $this->attributes['social_name'] = $this->name;
     $this->attributes['social_id'] = strval($info['uid']);

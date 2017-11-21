@@ -25,7 +25,8 @@ class LoginForm extends Model
         return [
             // username and password are both required
             [['email'], 'trim'],
-            [['email', 'password'], 'required'],
+            [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
+            [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
             [['email'], 'email'],
             [['password'], 'string', 'max' => 60],
             [['password'], 'string', 'min' => 5],

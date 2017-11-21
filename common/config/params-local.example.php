@@ -1,5 +1,8 @@
 <?php
 return [
+  'adminEmail' => 'support@secretdiscounter.com', //почта от имени которой отправлять письма
+  'adminName' => 'Secret Discounter', //имя от которого отправлять письма с сайта
+  'supportEmail' => 'support@secretdiscounter.com', //сюда письма отправлются с формы поддержки
   'admitad'=>[
     'user' => '',
     'code' => '',
