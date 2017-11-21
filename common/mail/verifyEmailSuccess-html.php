@@ -1,10 +1,3 @@
-<?php
-
-use yii\helpers\Html;
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/verifyemail', 'token' => $user->email_verify_token, 'email'=>$user->email]);
-
-?>
-
 <tr>
     <td align="center" valign="top" width="100%" style="background-color: #f7f7f7;text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
         <center>

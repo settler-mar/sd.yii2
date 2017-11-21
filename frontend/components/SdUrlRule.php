@@ -58,6 +58,17 @@ class SdUrlRule implements UrlRuleInterface
       return ['', $params];
     }
 
+    //прроверка ссылки promo
+    if (!empty(Yii::$app->params['ref_promo'])) {
+      if (isset($params['promo'])) {
+        $promo = trim($params['promo']);
+        $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
+        if ($validatorPromo->validate($promo)) {
+          Yii::$app->session->set('referrer_promo', $promo);
+        }
+      }
+    }
+
     if ($pathInfo == "") {
       Yii::$app->params['clear_url']='index';
       return ["site/index", $params];

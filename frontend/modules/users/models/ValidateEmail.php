@@ -65,7 +65,7 @@ class ValidateEmail extends Model
 
     if ($user->save()){
       //отправляем письмо о валидации
-      static::sentEmailValidation($user, false, true);
+      static::sentEmailValidation($user, ['validate_success' => true]);
       return $user->uid;
     }else{
       return false;
@@ -77,8 +77,13 @@ class ValidateEmail extends Model
    * @param $user
    * @return bool
    */
-  public static function sentEmailValidation($user, $newUser = false, $validateSuccess = false)
+  //public static function sentEmailValidation($user, $newUser = false, $validateSuccess = false, $path = false)
+  public static function sentEmailValidation($user, $options = [])
   {
+    $newUser = !empty($options['new_user']) ? $options['new_user'] : false;
+    $validateSuccess = !empty($options['validate_success']) ? $options['validate_success'] : false;
+    $path = !empty($options['path']) ? $options['path'] : false;
+
     $templateName = 'verifyEmailToken';
     $subject = 'Подтвердите Email на SecretDiscounter.ru';
     if ($newUser) {
@@ -105,7 +110,7 @@ class ValidateEmail extends Model
         [
           'html' => $templateName . '-html',
           'text' => $templateName . '-text'],
-        ['user' => $user]
+        ['user' => $user, 'path' => $path]
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($user->email)
@@ -117,13 +122,13 @@ class ValidateEmail extends Model
    * подтверждение email (кнопкой в профиле или во встплывашке, не во время регистрации)
    * @return mixed
    */
-  public static function validateEmail($user)
+  public static function validateEmail($id, $path = false)
   {
-    //$user = Users::findOne(['uid' => $id]);
+    $user = Users::findOne(['uid' => $id]);
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
       $user->email_verify_time = date('Y-m-d H:i:s');
-      if (self::sentEmailValidation($user)) {
+      if (self::sentEmailValidation($user, ['path' => $path])) {
         $user->save();
         return true;
       }
@@ -134,8 +139,9 @@ class ValidateEmail extends Model
   /**
    * сообщения юсеру о состоянии его email
    * @param $user
+   * @param $path на какую страницу редирект
    */
-  public static function emailStatusInfo($user)
+  public static function emailStatusInfo($user, $path = false)
   {
     if (empty($user->email_verified) && empty($user->email_verify_token)) {
       //если не валидирован и не отправлено письмо, то сразу отправить
@@ -146,7 +152,7 @@ class ValidateEmail extends Model
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,
-        'Ваш Email не подтверждён.<br><a href="/sendverifyemail">Подтвердить</a> Email<br><a href="/account/settings">Cменить</a> Email'
+        'Ваш E-mail не подтверждён.<br><a href="/sendverifyemail' . ($path ? '?path=' . $path : '') . '">Подтвердить</a> E-mail<br><a href="/account/settings">Cменить</a> E-mail'
       );
     }
   }
