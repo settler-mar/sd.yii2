@@ -117,9 +117,9 @@ class ValidateEmail extends Model
    * подтверждение email (кнопкой в профиле или во встплывашке, не во время регистрации)
    * @return mixed
    */
-  public static function validateEmail($id)
+  public static function validateEmail($user)
   {
-    $user = Users::findOne(['uid' => $id]);
+    //$user = Users::findOne(['uid' => $id]);
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
       $user->email_verify_time = date('Y-m-d H:i:s');
@@ -137,6 +137,10 @@ class ValidateEmail extends Model
    */
   public static function emailStatusInfo($user)
   {
+    if (empty($user->email_verified) && empty($user->email_verify_token)) {
+      //если не валидирован и не отправлено письмо, то сразу отправить
+      self::validateEmail($user);
+    }
     if ($user->email_verify_token != null) {
       Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту.');
     } elseif (empty($user->email_verified)){
