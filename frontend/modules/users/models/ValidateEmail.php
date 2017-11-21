@@ -138,7 +138,7 @@ class ValidateEmail extends Model
   public static function emailStatusInfo($user)
   {
     if ($user->email_verify_token != null) {
-      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту.');
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,

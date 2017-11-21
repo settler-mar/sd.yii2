@@ -98,7 +98,7 @@ class UserSetting extends Users
   {
     if (!empty($this->getDirtyAttributes(['email']))) {
       $this->email_verified = 0;
-      Yii::$app->session->addFlash(null, 'Вы изменили Email.<br>Новый Email не подтверждён.<br><a href="/sendverifyemail">Подтвердить</a>');
+      Yii::$app->session->addFlash(null, 'Вы изменили E-mail.<br>Новый E-mail не подтверждён.<br><a href="/sendverifyemail">Подтвердить</a>');
     }
     return parent::beforeValidate();
   }

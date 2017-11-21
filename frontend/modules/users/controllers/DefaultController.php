@@ -269,7 +269,7 @@ class DefaultController extends Controller
     if ($user_id = $model->verifyEmail()) {
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
-      Yii::$app->session->addFlash('success', 'Ваш Email подтверждён.');
+      Yii::$app->session->addFlash('success', 'Спасибо. Ваш E-mail подтверждён.');
       return $this->redirect(['/account']);
     } else {
       return $this->redirect(['/']);
@@ -288,9 +288,9 @@ class DefaultController extends Controller
       throw new NotFoundHttpException();
     }
     if (ValidateEmail::validateEmail(Yii::$app->user->id)) {
-      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту');
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
     } else {
-      Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш Email');
+      Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
     }
     return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
   }

@@ -104,7 +104,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         }
         //if ($userSocial->email == null || $userSocial->email_verified == 0) {
         if ($userSocial->email == null) {
-            Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш Email.');
+            Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш E-mail.');
             Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
             return null;
         }
