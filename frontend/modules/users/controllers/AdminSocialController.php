@@ -62,6 +62,7 @@ class AdminSocialController extends Controller
       'table_value' => [
         'user' => function ($model, $key, $index, $column) {
           $user = $model->getUser();
+          if(!$user)return '-';
           $out = '<a href="/admin/users/update?id=';
           $out .= $user->uid;
           $out .= '" target=_blank>';
@@ -69,6 +70,14 @@ class AdminSocialController extends Controller
           $out .= ' (';
           $out .= $user->uid;
           $out .= ')</a>';
+          return $out;
+        },
+        'social' => function ($model, $key, $index, $column) {
+          $out = '<a href="';
+          $out .= $model->url;
+          $out .= '" target=_blank>';
+          $out .= $model->social_name;
+          $out .= '</a>';
           return $out;
         },
       ]
