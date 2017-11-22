@@ -62,7 +62,8 @@ class AdminController extends Controller
     $model = new Slider();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->uid]);
+      Yii::$app->session->addFlash('info','Слайд создан');
+      return $this->redirect(['update', 'id' => $model->uid]);
     } else {
       return $this->render('create.twig', [
         'model' => $model,
@@ -85,6 +86,7 @@ class AdminController extends Controller
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      Yii::$app->session->addFlash('info','Слайд обновлен');
       return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
