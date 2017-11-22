@@ -36,7 +36,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
   {
     return [
       [['parent_id', 'name', 'route'], 'required'],
-      [['parent_id', 'is_active', 'menu_index', 'menu_hidden'], 'integer'],
+      [['parent_id', 'is_active', 'menu_index', 'menu_hidden','selected'], 'integer'],
       [['short_description', 'down_description', 'map_icon'], 'string'],
       [['name', 'route'], 'string', 'max' => 255],
       [['route'], 'unique'],
@@ -62,6 +62,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       'menu_hidden' => 'Скрыто в верхнем меню',
       'map_icon' => "Иконка на карте",
       'icon_img' => "Маркер",
+      'selected' => "Выделение в меню",
     ];
   }
 
@@ -134,7 +135,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $casheName = 'categories_stores ' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
     $data = $cache->getOrSet($casheName, function () use ($online) {
       $categories = self::find()
-        ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden',
+        ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected',
           'count(cstc.category_id) as count'])
         ->from([self::tableName() . ' ccs'])
         ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
@@ -240,7 +241,19 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $tree .= "<ul data-mcs-theme=\"dark\">";
 
       foreach ($cats[$parent_id] as $cat) {
-        $c = $parent_id == 0 ? "class='title'" : "";
+        $c=[];
+        if($parent_id == 0){
+          $c[]="title";
+        }
+        if($cat['selected']== 1){
+          $c[]="cat_selected";
+        }
+        if(count($c)>0){
+          $c='class=\''.implode(' ',$c).'\'';
+        }else{
+          $c='';
+        }
+
         $catURL = "/stores/" . $cat['route'];
 
         $tree .= "<li>";

@@ -22,6 +22,12 @@
                 </div>
                 <div class="col-md-6">
                     {{ form.field(model, 'menu_index').textInput()|raw }}
+
+                    {{ form.field(model, 'selected').dropDownList({
+                        0:"Нет",
+                        1:"Выделять",
+                    })|raw }}
+
                     {{ form.field(model, 'menu_hidden').dropDownList({
                         0:"Показать",
                         1:"Скрыть",

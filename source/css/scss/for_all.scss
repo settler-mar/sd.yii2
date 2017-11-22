@@ -109,6 +109,10 @@
                   &:hover {
                     color: #e6ae03;
                   }
+
+                  &.cat_selected{
+                    color: #ff0000;
+                  }
                 }
               }
               span.active {
