@@ -121,6 +121,9 @@
                         <div class="name">Email</div>
                         <div class="value">
                           <a href="/admin/users/update?id={{user.uid}}">{{ _hyphen_email(user.email) | raw}}</a>
+                          {% if user.email_verified==1 %}
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          {% endif %}
                         </div>
                       </div>
                       <div class="line">

@@ -29,6 +29,13 @@
                     'autocomplete':'off'
                 })|raw }}
 
+                {{ form.field(model, 'email_verified').dropDownList({
+                    '0' : 'Ожидает валидации',
+                    '1' : 'Подтвержден'
+                })|raw }}
+
+                {{ form.field(model, 'email_verify_time').textInput({'disabled':true})|raw }}
+
                 {{ form.field(model, 'name').textInput({
                     'maxlength':true,
                     'disabled':true,

@@ -65,7 +65,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       [['new_password'], 'string', 'max' => 60],
       [['new_password'], 'string', 'min' => 5],
       [['birthday', 'last_login', 'added'], 'safe'],
-      [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed'], 'integer'],
+      [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed','email_verified'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
       [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
       [['sex'], 'string', 'max' => 1],
@@ -127,6 +127,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'sum_foundation' => 'Сумма пожертвований',
       'sum_withdraw' => 'Выплаченная сумма',
       'sum_bonus' => 'Бонусы',
+      'email_verify_time' => 'Последнее письмо с валидаций',
+      'email_verified' => 'Статус валидации',
     ];
   }
 
