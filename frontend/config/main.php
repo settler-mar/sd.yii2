@@ -94,7 +94,7 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|resetpassword|reset|verifyemail|sendverifyemail|verifysocialemail)>' =>
+        '<action:(login|logout|registration|resetpassword|reset|verifyemail|verifysocialemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
         'login/socials-email' => 'users/default/socialemail',
@@ -102,6 +102,8 @@ $config= [
         'account' => 'users/account/welcome',
         'account/settings' => 'users/account/settings',
         'account/<action:offline>' => 'account/<action>',
+        'account/sendverifyemail' => 'users/account/sendverifyemail',
+        'account/email-success' => 'users/account/emailsuccess',
 
         'search' => 'search/default/index',
         'search/<action>' => '404',

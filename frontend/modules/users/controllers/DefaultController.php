@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\validators\StringValidator;
 use yii\validators\EmailValidator;
 use yii\validators\RequiredValidator;
+use yii\helpers\Url;
 
 
 class DefaultController extends Controller
@@ -279,33 +280,14 @@ class DefaultController extends Controller
         return $this->redirect(['/store:'.intval($path).'/goto']);
       }
 
-      return $this->redirect(['/account']);
+      return $this->redirect(['/email-success/account']);
     } else {
       return $this->redirect(['/']);
     }
 
   }
 
-  /**
-   * запрос на валидацию - отправляется почта со ссылкой на валидацию
-   * @return \yii\web\Response
-   * @throws NotFoundHttpException
-   */
-  public function actionSendverifyemail()
-  {
-    if (Yii::$app->user->isGuest) {
-      throw new NotFoundHttpException();
-    }
 
-    $path = !empty(Yii::$app->request->get('path')) ? Yii::$app->request->get('path') : false;
-
-    if (ValidateEmail::validateEmail(Yii::$app->user->id, $path)) {
-      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
-    } else {
-      Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
-    }
-    return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
-  }
 
 
   /**

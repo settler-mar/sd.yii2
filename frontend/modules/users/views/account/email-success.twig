@@ -1,0 +1,13 @@
+<div class="content-wrapper">
+    <section class="settings account-padding">
+
+        <h3>Подтверждение E-mail</h3>
+
+        {% if success %}
+            <p>Спасибо, ваш E-mail подтверждён.</p>
+        {% else %}
+            <p>Ваш E-mail <b>не подтверждён</b>. <a href="/account/sendverifyemail">Подтвердите E-mail</a>. </p>
+        {% endif %}
+
+    </section>
+</div>
