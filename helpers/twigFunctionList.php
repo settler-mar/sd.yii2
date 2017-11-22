@@ -347,13 +347,17 @@ $functionsList=[
     $js = '';
     foreach ($flashes as $type => $flashe) {
       Yii::$app->session->removeFlash($type);
-
       if (is_array($flashe)){
         foreach ($flashe as $txt) {
+          $title=false;
+          if (is_array($txt)){
+            $title=$txt['title'];
+            $txt=$txt['message'];
+          }
           if($txt=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){
             $txt='Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
           }
-          $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'});' . "\n";
+          $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\''.($title?',title:\''.$title.'\'':'').'});' . "\n";
         }
       } elseif (is_string($flashe)) {
           if($flashe=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){

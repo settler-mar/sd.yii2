@@ -630,7 +630,7 @@ table .status_bg_1 {
 
 .notification_item {
   width: 310px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.9);
   color: #fff;
   margin-bottom: 5px;
   position: relative;
@@ -649,19 +649,19 @@ table .status_bg_1 {
 }
 
 .notification_item-err {
-  background: rgba(241, 46, 46, 0.8);
+  background: rgba(241, 46, 46, 0.9);
 }
 
 .notification_item-info {
-  background: rgba(37, 135, 232, 0.7);
+  background: rgba(37, 135, 232, 0.9);
 }
 
 .notification_item-alert {
-  background: rgba(249, 196, 40, 0.8);
+  background: rgba(249, 196, 40, 0.9);
 }
 
 .notification_item-success {
-  background: rgba(60, 184, 104, 0.8)
+  background: rgba(60, 184, 104, 0.9)
 }
 
 .notification_img {
