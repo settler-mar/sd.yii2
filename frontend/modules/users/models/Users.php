@@ -221,10 +221,20 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $this->new_loyalty_status_end = time() + 10 * 24 * 60 * 60;
       $this->old_loyalty_status = 0;
       $this->loyalty_status = 4;
+      $this->bonus_status = 0;
+
       //ссылки промо
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
       if ($promo && !empty(Yii::$app->params['ref_promo']) && !empty(Yii::$app->params['ref_promo'][$promo])) {
         $promos = Yii::$app->params['ref_promo'][$promo];
+        if(isset($promo['time'])){
+          if($promo['time']===false){
+            $this->new_loyalty_status_end = 0;
+          }else{
+            $this->new_loyalty_status_end = time() + $promo['time'] * 24 * 60 * 60;
+          }
+          unset ($promo['time']);
+        }
         foreach ($promos as $field => $promo) {
           $this->$field = $promo;
         }
@@ -247,23 +257,25 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         Yii::$app->balanceCalc->todo($this->referrer_id, 'ref');
       }
 
-      $notify = new Notifications();
-      $notify->user_id = $this->uid;
-      $notify->type_id = 2;
-      $notify->status = 2;
-      $notify->amount = 0;
-      $notify->payment_id = 0;
-      $notify->twig_template = 3;
-      $notify->text = date('d.m.Y', time() + 10 * 24 * 60 * 60);
+      if($this->new_loyalty_status_end>time()) {
+        $notify = new Notifications();
+        $notify->user_id = $this->uid;
+        $notify->type_id = 2;
+        $notify->status = 2;
+        $notify->amount = 0;
+        $notify->payment_id = 0;
+        $notify->twig_template = 3;
+        $notify->text = date('d.m.Y', $this->new_loyalty_status_end);
+        $notify->save();
 
-      $notify->save();
 
-      //задание на отключение ремиуи статуса
-      $task = new Task();
-      $task->param = -$this->uid; // - Что б понимать что это приемиуи за регистрацию
-      $task->task = 2;
-      $task->add_time = time() + 10 * 24 * 60 * 60;
-      $task->save();
+        //задание на отключение ремиуи статуса
+        $task = new Task();
+        $task->param = -$this->uid; // - Что б понимать что это приемиуи за регистрацию
+        $task->task = 2;
+        $task->add_time = $this->new_loyalty_status_end;
+        $task->save();
+      }
 
       $store = Stores::top12(12);
 

@@ -3,12 +3,12 @@ return [
   'stores_menu_separate' => 0,
   'ref_promo' => [
     'default' => [
-      'bonus_status' => null,
       'loyalty_status' => 5,
+      'time'=>10,
     ],
     'premium' => [
-      'bonus_status' => null,
-      'loyalty_status' => 6,
+      'loyalty_status' => 5,
+      'time'=>false
     ],
   ],
 ];
