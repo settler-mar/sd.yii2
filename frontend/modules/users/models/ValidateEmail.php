@@ -5,6 +5,7 @@ use yii\base\Model;
 use yii\base\InvalidParamException;
 use frontend\modules\users\models\Users;
 use Yii;
+use Yii\helpers\Url;
 
 /**
  * Password reset form
@@ -85,7 +86,7 @@ class ValidateEmail extends Model
     $path = !empty($options['path']) ? $options['path'] : false;
 
     $templateName = 'verifyEmailToken';
-    $subject = 'Подтвердите Email на SecretDiscounter.ru';
+    $subject = 'Подтвердите E-mail на  SecretDiscounter.ru';
     if ($newUser) {
       $templateName = 'verifyEmailTokenNewUser';
       $subject = 'Активируйте аккаунт на SecretDiscounter.ru';
@@ -122,9 +123,10 @@ class ValidateEmail extends Model
    * подтверждение email (кнопкой в профиле или во встплывашке, не во время регистрации)
    * @return mixed
    */
-  public static function validateEmail($id, $path = false)
+  //public static function validateEmail($id, $path = false)
+  public static function validateEmail($user, $path = false)
   {
-    $user = Users::findOne(['uid' => $id]);
+    //$user = Users::findOne(['uid' => $id]);
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
       $user->email_verify_time = date('Y-m-d H:i:s');
@@ -152,7 +154,7 @@ class ValidateEmail extends Model
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,
-        'Ваш E-mail не подтверждён.<br><a href="/sendverifyemail' . ($path ? '?path=' . $path : '') . '">Подтвердить</a> E-mail<br><a href="/account/settings">Cменить</a> E-mail'
+        'Ваш E-mail не подтверждён.<br><a href="/account/sendverifyemail' . ($path ? '?path=' . $path : '') . '">Подтвердить</a> E-mail<br><a href="/account/settings">Cменить</a> E-mail'
       );
     }
   }

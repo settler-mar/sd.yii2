@@ -1,0 +1,34 @@
+<div class="content-wrapper">
+    <section class="settings account-padding">
+
+        <h3>Подтверждение E-mail</h3>
+
+        <p>Для перехода по ссылке необходимо, чтобы ваш E-mail был подтверждён</p>
+
+        <div class="col-sm-6">
+            {% set form = active_form_begin({
+                'id':'user_setting',
+                'layout' : 'horizontal',
+                'fieldConfig':{
+                    'horizontalCssClasses':{
+                        'wrapper':'form-input-group',
+                    }
+                },
+            }) %}
+
+            {{ form.field(model, 'email',{
+                'template' :
+                '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+            }).textInput({'placeholder':'Email адрес'}) | raw }}
+
+            <input type="hidden" name="path" value="{{ path }}">
+
+            <div class="form-group">
+                <input type="submit" value="Отправить письмо подтверждения" class="btn-fill btn-form">
+            </div>
+            {{ active_form_end() }}
+        </div>
+
+
+    </section>
+</div>

@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\modules\users\models\UserSetting;
+use frontend\modules\users\models\ValidateEmail;
 use common\components\Help;
 
 /**
@@ -191,5 +192,48 @@ class AccountController extends Controller
 
     Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключенна.');
     $socials->delete();
+  }
+
+  /**
+   * запрос на валидацию - отправляется почта со ссылкой на валидацию
+   * @return \yii\web\Response
+   * @throws NotFoundHttpException
+   */
+  public function actionSendverifyemail()
+  {
+    if (Yii::$app->user->isGuest) {
+      throw new NotFoundHttpException();
+    }
+
+    //$path = !empty(Yii::$app->request->get('path')) ? Yii::$app->request->get('path') : false;
+
+    $request = Yii::$app->request;
+
+    $user = Users::findOne(Yii::$app->user->id);
+
+    if ($request->getIsPost()) {
+
+      $user->load($request->post());
+      $user->save();
+
+      if (ValidateEmail::validateEmail($user, $request->post('path'))) {
+        Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
+      } else {
+        Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
+      }
+      return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
+    }
+
+    return $this->render('goto_email', ['model' => $user, 'path' => $request->get('path')]);
+  }
+
+  public function actionEmailsuccess()
+  {
+    if (Yii::$app->user->isGuest) {
+      throw new NotFoundHttpException();
+    }
+    return $this->render('email-success', [
+      'success' => Yii::$app->user->identity->email_verified,
+    ]);
   }
 }
