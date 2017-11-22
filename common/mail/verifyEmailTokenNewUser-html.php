@@ -29,7 +29,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        Для завершения регистрации необходимо подтвердить адрес электронной почты. Пожалуйста, нажмите на кнопку, чтобы подтвердить ваш E-mail. Ссылка действительна 1 сутки.
+                        Для завершения регистрации необходимо подтвердить адрес электронной почты. Пожалуйста, нажмите на кнопку, чтобы подтвердить ваш E-mail. Ссылка действительна 15 минут.
                     </td>
                 </tr>
                 <tr>

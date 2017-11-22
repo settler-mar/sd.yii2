@@ -18,4 +18,4 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
 Перейдите по приведенной ниже ссылке, чтобы подтвердить ваш E-mail:
 <?= $resetLink ?>
 
-Ссылка действительна 1 сутки.
+Ссылка действительна 15 минут.

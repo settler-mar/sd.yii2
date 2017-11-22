@@ -273,7 +273,7 @@ class DefaultController extends Controller
       Yii::$app->user->login(Users::findIdentity($user_id));
 
 
-      Yii::$app->session->addFlash('success', 'Спасибо. Ваш E-mail подтверждён.');
+      Yii::$app->session->addFlash('success', ['title'=>'Спасибо.','message'=>'Ваш E-mail подтверждён.']);
 
       if ($path && preg_match('/^\d+$/', $path) && $path>0) {
         //если $path - целое число, то это store.uid
@@ -286,9 +286,6 @@ class DefaultController extends Controller
     }
 
   }
-
-
-
 
   /**
    * После авторизации через соц сети, если нет email, ввод email вручную

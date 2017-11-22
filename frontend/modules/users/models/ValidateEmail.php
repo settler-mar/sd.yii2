@@ -150,7 +150,7 @@ class ValidateEmail extends Model
       self::validateEmail($user);
     }
     if ($user->email_verify_token != null) {
-      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
+      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».');
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,

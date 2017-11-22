@@ -213,15 +213,14 @@ class AccountController extends Controller
 
     if ($request->getIsPost()) {
 
-      $user->load($request->post());
-      $user->save();
-
-      if (ValidateEmail::validateEmail($user, $request->post('path'))) {
-        Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если вы вдруг не получили письмо проверьте папку "СПАМ".');
-      } else {
-        Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
+      if($user->load($request->post()) && $user->save()) {
+        if (ValidateEmail::validateEmail($user, $request->post('path'))) {
+          Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».');
+        } else {
+          Yii::$app->session->addFlash('err', 'Ошибка при отправке письма на ваш E-mail');
+        }
+        return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
       }
-      return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
     }
 
     return $this->render('goto_email', ['model' => $user, 'path' => $request->get('path')]);
