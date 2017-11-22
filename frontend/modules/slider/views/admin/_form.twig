@@ -13,6 +13,8 @@
 
                 {{ form.field(model, 'description').textarea({'rows':6})|raw }}
 
+                {{ form.field(model, 'sort_index').textInput()|raw}}
+
                 {{ form.field(model, 'date_start').textInput()|raw}}
 
                 {{ form.field(model, 'date_end').textInput()|raw }}

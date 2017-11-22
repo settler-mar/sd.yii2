@@ -85,6 +85,7 @@ class AdminController extends Controller
     }
     $model = $this->findModel($id);
 
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       Yii::$app->session->addFlash('info','Слайд обновлен');
       return $this->redirect(['index']);
