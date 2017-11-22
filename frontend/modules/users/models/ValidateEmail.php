@@ -81,6 +81,7 @@ class ValidateEmail extends Model
   //public static function sentEmailValidation($user, $newUser = false, $validateSuccess = false, $path = false)
   public static function sentEmailValidation($user, $options = [])
   {
+
     $newUser = !empty($options['new_user']) ? $options['new_user'] : false;
     $validateSuccess = !empty($options['validate_success']) ? $options['validate_success'] : false;
     $path = !empty($options['path']) ? $options['path'] : false;

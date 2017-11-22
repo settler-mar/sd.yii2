@@ -87,9 +87,8 @@ class DefaultController extends Controller
     }
 
     $model = new RegistrationForm();
-
     if($request->isPost) {
-      if ($model->load($request->post()) && $user=$model->signup()) {   // уже логинимся или только что зашли?
+      if ($model->load($request->post()) && $model->validate() && $user=$model->signup()) {   // уже логинимся или только что зашли?
         Yii::$app->user->login($user);
 
         $referrer  = $_SERVER['HTTP_REFERER'];

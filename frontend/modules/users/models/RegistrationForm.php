@@ -61,7 +61,7 @@ class RegistrationForm extends Model
     $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
     $user->email_verify_time = date('Y-m-d H:i:s');
 
-    if (ValidateEmail::sentEmailValidation($user, ['new_user' => true]) && $user->save()) {
+    if ($user->save() && ValidateEmail::sentEmailValidation($user, ['new_user' => true])) {
        return $user;
     } else {
       return null;
