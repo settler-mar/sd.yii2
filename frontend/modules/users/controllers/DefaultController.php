@@ -295,6 +295,7 @@ class DefaultController extends Controller
    */
   public function actionSocialemail($service, $id)
   {
+    $this->layout = '@app/views/layouts/blank.twig';
     $request = Yii::$app->request;
     if ($request->post()) {
       $model = SocialEmail::findOne([
@@ -369,6 +370,7 @@ class DefaultController extends Controller
 
   public function actionSocialemailresult()
   {
+    $this->layout = '@app/views/layouts/blank.twig';
     $new = (Yii::$app->request->get('new') !== null);
     $email = (Yii::$app->request->get('email'));
     return $this->render('emailResult', [
