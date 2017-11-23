@@ -58,9 +58,9 @@ $("a[href='#showpromocode-noregister']").on('click',function(e){
     question:
       '<div class="coupon-noregister">'+
         '<div class="coupon-noregister__icon"><img src="/images/templates/swa.png" alt=""></div>'+
-      '<div class="coupon-noregister__text"><b>Для получения кэшбэка необходимо авторизоваться (зарегистрироваться) на сайте, но можно воспользоваться купоном и без регистрации.</b></div>' +
+      '<div class="coupon-noregister__text"><b>Если вы хотите получать еще и КЭШБЭК (возврат денег), вам необходимо зарегистрироваться. Но можете и просто воспользоваться купоном, без кэшбэка.</b></div>' +
       '<div class="coupon-noregister__buttons">'+
-      '<a href="goto/coupon:'+id+'" target="_blank" class="btn  btn-popup2">Воспользоваться купоном</a>'+
+      '<a href="goto/coupon:'+id+'" target="_blank" class="btn  btn-popup2">Использовать купон</a>'+
       '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>'+
       '</div>'+
       '<div>'

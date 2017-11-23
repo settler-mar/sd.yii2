@@ -189,7 +189,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             $userSocial->email_verify_token = null;
             $userSocial->email = $email;
             $userSocial->save();
-          Yii::$app->session->addFlash('success', ['title' => 'Спасибо.', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
+          Yii::$app->session->addFlash('success', ['title' => 'Спасибо', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
             return $userSocial;
         } else {
             Yii::$app->session->addFlash('err', '');

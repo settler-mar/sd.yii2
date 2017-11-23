@@ -13,7 +13,7 @@
             {% if this.user.email_verified == 0 %}
                 <div class="col-md-12">
                     <div class="balance">
-                        <h3>Проверьте свой e-mail для активации аккаунта</h3>
+                        <h3>Подтвердите свой E-mail для активации аккаунта</h3>
                         <p>
                             На ваш почтовый ящик <b>{{ this.user.email }}</b>
                             {{ _if(this.user.email_verify_time,_date(this.user.email_verify_time,"%H:%M")~" (МСК)") }}
@@ -22,7 +22,7 @@
                         </p>
                         <p>Подтверждение необходимо сделать в течение 15 минут после получения письма.</p>
                         <p>
-                            <a class="btn btn-yellow-border" href="/account/sendverifyemail" style="margin-right: 20px;">Перейти к активации</a>
+                            <a class="btn btn-yellow-border" href="/account/sendverifyemail" style="margin-right: 20px;">Повторно отправить письмо</a>
                         </p>
                     </div>
                 </div>
