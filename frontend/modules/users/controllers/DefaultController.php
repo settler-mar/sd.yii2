@@ -369,11 +369,11 @@ class DefaultController extends Controller
 
   public function actionSocialemailresult()
   {
-    $new = (Yii::$app->request->get('new')!==null);
+    $new = (Yii::$app->request->get('new') !== null);
     $email = (Yii::$app->request->get('email'));
-    return $this->render('emailResult',[
-      'new'=>$new,
-      'email'=>$email
+    return $this->render('emailResult', [
+      'new' => $new,
+      'email' => $email
     ]);
   }
 }
