@@ -161,13 +161,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     if (!parent::beforeValidate()) {
       return false;
     }
+    if (!$this->name || strlen($this->name) == 0) {
+      $this->name = explode('@', $this->email);
+      $this->name = $this->name[0];
+    }
 
     if ($this->isNewRecord) {
-      if (!$this->name || strlen($this->name) == 0) {
-        $this->name = explode('@', $this->email);
-        $this->name = $this->name[0];
-      }
-
       $this->reg_ip = $_SERVER["REMOTE_ADDR"];
       $this->referrer_id = (int)Yii::$app->session->get('referrer_id');
       $this->added = date('Y-m-d H:i:s');
