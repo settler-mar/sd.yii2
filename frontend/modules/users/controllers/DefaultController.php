@@ -32,16 +32,16 @@ class DefaultController extends Controller
       return $this->goHome();
     }
 
-    $request=Yii::$app->request;
-    if(!$request->isAjax){
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
       return $this->goHome();
     }
 
     $model = new LoginForm();
 
-    if($request->isPost) {
+    if ($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
-        $data['html']='Успешная авторизация.<script>location.href="/account"</script>';
+        $data['html'] = 'Успешная авторизация.<script>location.href="/account"</script>';
 
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
@@ -50,9 +50,9 @@ class DefaultController extends Controller
       }
     }
 
-    $data['html']= $this->renderAjax('login', [      // рисуем форму для ввода имени и пароля
+    $data['html'] = $this->renderAjax('login', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
-      'isAjax'=>true
+      'isAjax' => true
     ]);
 
     return json_encode($data);
@@ -62,7 +62,8 @@ class DefaultController extends Controller
    * Деавторизация
    * @return \yii\web\Response
    */
-  public function actionLogout(){
+  public function actionLogout()
+  {
     $session = Yii::$app->session;
     $session->remove('admin_id');
     Yii::$app->user->logout();
@@ -81,25 +82,25 @@ class DefaultController extends Controller
       return $this->goHome();
     }
 
-    $request=Yii::$app->request;
-    if(!$request->isAjax){
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
       return $this->goHome();
     }
 
     $model = new RegistrationForm();
-    if($request->isPost) {
-      if ($model->load($request->post()) && $model->validate() && $user=$model->signup()) {   // уже логинимся или только что зашли?
+    if ($request->isPost) {
+      if ($model->load($request->post()) && $model->validate() && $user = $model->signup()) {   // уже логинимся или только что зашли?
         Yii::$app->user->login($user);
 
-        $referrer  = $_SERVER['HTTP_REFERER'];
+        $referrer = $_SERVER['HTTP_REFERER'];
         $referrerArray = explode('/', $_SERVER['HTTP_REFERER']);
-        if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores'){
+        if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores') {
           $location = $referrer;
         } else {
           $location = '/account?new=1';
         };
 
-        $data['html']='Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
+        $data['html'] = 'Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
 
@@ -107,17 +108,17 @@ class DefaultController extends Controller
       }
     }
 
-    $isIndex=$request->get('index');
-    if($isIndex){
-      $data['html']= $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
+    $isIndex = $request->get('index');
+    if ($isIndex) {
+      $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model
       ]);
-      if($isIndex==1){
+      if ($isIndex == 1) {
         return $data['html'];
-      }else{
+      } else {
         return json_encode($data);
       }
-    }else {
+    } else {
       $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
         'isAjax' => true
@@ -156,7 +157,6 @@ class DefaultController extends Controller
     }*/
 
 
-
   public function actionSocials()
   {
     $serviceName = Yii::$app->getRequest()->getQueryParam('service');
@@ -175,7 +175,7 @@ class DefaultController extends Controller
 
           if (!empty($user)) {
             Yii::$app->getUser()->login($user);
-            $this->redirect(['/account'.((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
+            $this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
           } else {
             $eauth->cancel();
           }
@@ -187,7 +187,7 @@ class DefaultController extends Controller
         }
       } catch (\nodge\eauth\ErrorException $e) {
         // save error to show it later
-        Yii::$app->getSession()->setFlash('error', 'EAuthException: '.$e->getMessage());
+        Yii::$app->getSession()->setFlash('error', 'EAuthException: ' . $e->getMessage());
 
         // close popup window and redirect to cancelUrl
 //              $eauth->cancel();
@@ -199,6 +199,7 @@ class DefaultController extends Controller
 
     // default authorization code through login/password .
   }
+
   /**
    * Сброс пароля
    * @return string|\yii\web\Response
@@ -209,8 +210,8 @@ class DefaultController extends Controller
       return $this->goHome();
     }
 
-    $request=Yii::$app->request;
-    if(!$request->isAjax){
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
       return $this->goHome();
     }
 
@@ -219,8 +220,8 @@ class DefaultController extends Controller
 
     if ($forget->load(Yii::$app->request->post()) && $forget->sendEmail()) {
       $data['question'] = $this->renderAjax('resetpassword_sendmail_ok.twig');
-      $data['render']='true';
-      $data['buttonYes']='Продолжить';
+      $data['render'] = 'true';
+      $data['buttonYes'] = 'Продолжить';
       return json_encode($data);
     }
 
@@ -239,7 +240,8 @@ class DefaultController extends Controller
    * @return \yii\web\Response
    * @throws BadRequestHttpException
    */
-  public function actionReset($token, $password){
+  public function actionReset($token, $password)
+  {
     try {
       $model = new ResetPasswordForm($token, $password);
     } catch (InvalidParamException $e) {
@@ -271,12 +273,11 @@ class DefaultController extends Controller
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
 
+      Yii::$app->session->addFlash('success', ['title' => 'Спасибо.', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
 
-      Yii::$app->session->addFlash('success', ['title'=>'Спасибо.','message'=>'Ваш E-mail подтверждён.']);
-
-      if ($path && preg_match('/^\d+$/', $path) && $path>0) {
+      if ($path && preg_match('/^\d+$/', $path) && $path > 0) {
         //если $path - целое число, то это store.uid
-        return $this->redirect(['/store:'.intval($path).'/goto']);
+        return $this->redirect(['/store:' . intval($path) . '/goto']);
       }
 
       return $this->redirect(['/email-success/account']);
@@ -300,13 +301,12 @@ class DefaultController extends Controller
         'social_name' => !empty($request->post('SocialEmail')['social_name']) ? $request->post('SocialEmail')['social_name'] : null,
         'social_id' => !empty($request->post('SocialEmail')['social_id']) ? $request->post('SocialEmail')['social_id'] : null,
       ]);
-      //ddd($model);
       if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
         //создаём юсера
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
-          $this->redirect(['/account'.((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
+          $this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
         } else {
           Yii::$app->session->addFlash('error', 'Ошибка при авторизации');
         }
@@ -319,7 +319,7 @@ class DefaultController extends Controller
     $model = new SocialEmail();
     $model->social_name = $service;
     $model->social_id = $id;
-    if($request->isAjax){
+    if ($request->isAjax) {
       $data['html'] = $this->renderAjax('email', [      // рисуем форму для ввода email
         'model' => $model,
         'isAjax' => true
@@ -366,10 +366,14 @@ class DefaultController extends Controller
     Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
     return Yii::$app->response->redirect('/')->send();
   }
-  
+
   public function actionSocialemailresult()
   {
-    return $this->render('emailResult');
+    $new = (Yii::$app->request->get('new')!==null);
+    $email = (Yii::$app->request->get('email'));
+    return $this->render('emailResult',[
+      'new'=>$new,
+      'email'=>$email
+    ]);
   }
-
 }

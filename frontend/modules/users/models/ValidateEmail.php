@@ -30,10 +30,20 @@ class ValidateEmail extends Model
       }
       $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
       if (!$this->_user ) {
-        throw new InvalidParamException('Неверный ключ и email для подтверждения email.');
+        Yii::$app->session->addFlash('err', [
+          'title'=>'Ошибка!',
+          'message'=>'Данная ссылка для активации e-mail уже использована. Если вы запросили код активации несколько раз – пройдите по ссылке в ПОСЛЕДНЕМ письме.'
+        ]);
+        Yii::$app->response->redirect('/');
+        return null;
       }
       if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60*60*24) {
-        throw new InvalidParamException('Ссылка для подтверждения email устарела');
+        Yii::$app->session->addFlash('err', [
+          'title'=>'Ошибка!',
+          'message'=>'Данная ссылка для активации e-mail уже устарела. .'
+        ]);
+        Yii::$app->response->redirect('/account/sendverifyemail');
+        return null;
       }
     }
     parent::__construct();
@@ -100,7 +110,10 @@ class ValidateEmail extends Model
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
 
     if (!$newUser && !$validateSuccess && $lastMailTime && (time() - $lastMailTime < 60*5)) {
-      Yii::$app->session->addFlash('err', 'Ограничение на отправку сообщений - не больше одного в 5 минут');
+      Yii::$app->session->addFlash('err', [
+        'title'=>'Ошибка!',
+        'message'=>'Повторное письмо для подтверждения электронной почты можно отправить раз в 5 минут. Немного подождите.'
+      ]);
       Yii::$app->response->redirect('/account');
       return null;
     }

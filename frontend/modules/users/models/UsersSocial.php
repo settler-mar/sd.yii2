@@ -132,17 +132,23 @@ class UsersSocial extends \yii\db\ActiveRecord
             $user = Users::findOne(['email' => $userSocial->email]);
         } elseif ($userSocial->email_manual != null) {
             $user = Users::findOne(['email' => $userSocial->email_manual]);
-            //ddd($user);
             if ($user) {
                 //юсер есть, но нашли по емел, введённому вручную и в данном случае необходимо подтвердить, что это его емеил
                 //Yii::$app->session->addFlash('info', 'У нас уже есть пользователь с таким Email. Для завершения регистрации необходимо подтвердить ваш Email');
                 if (self::sendValidateEmail($userSocial)) {
-                    //запрос на валидацию и редиректим на главную
                     // ddd($userSocial);
                     // Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
-                    Yii::$app->response->redirect('/login/socials-result')->send();
+                    Yii::$app->response->redirect('/login/socials-result?email='.$userSocial->email_manual)->send();
                 }
                 return null;
+            }else{
+              //новый юсер естьвведённому вручную и в данном случае необходимо подтвердить, что это его емеил
+              if (self::sendValidateEmail($userSocial)) {
+                // ddd($userSocial);
+                // Yii::$app->session->addFlash('info', 'На ваш Email отправлено письмо со ссылкой на её подтверждение. Проверьте почту.');
+                Yii::$app->response->redirect('/login/socials-result?new&email='.$userSocial->email_manual)->send();
+              }
+              return null;
             }
         }
 
@@ -183,7 +189,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             $userSocial->email_verify_token = null;
             $userSocial->email = $email;
             $userSocial->save();
-            Yii::$app->session->addFlash('success', 'Email подтверждён');
+          Yii::$app->session->addFlash('success', ['title' => 'Спасибо.', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
             return $userSocial;
         } else {
             Yii::$app->session->addFlash('err', '');

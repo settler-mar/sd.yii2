@@ -351,7 +351,7 @@ $functionsList=[
         foreach ($flashe as $txt) {
           $title=false;
           if (is_array($txt)){
-            $title=$txt['title'];
+            if(isset($txt['title']))$title=$txt['title'];
             $txt=$txt['message'];
           }
           if($txt=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){
