@@ -160,7 +160,10 @@ class TaskController extends Controller
       $i++;
       if ($i == 4) {
         $i = 0;
-        $user['photo'] = '/images/no_ava.png';
+        $user['photo'] = '/images/no_ava_dark.png';
+      }
+      if (empty($user['photo'])) {
+        $user['photo'] = '/images/no_ava_dark.png';
       }
     }
 
