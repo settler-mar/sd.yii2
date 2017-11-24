@@ -177,6 +177,9 @@
   f=startShowMSG.bind({showMSG:showMSG,randomMSG:randomMSG});
   var loginButton = document.getElementById('button-login');
   if (loginButton) {
+    $.get('/js/stores_list.json', function(data) {
+       shops = data;
+    }, 'json');
     $.get('/js/user_list.json', f, 'json');
   }
 }());

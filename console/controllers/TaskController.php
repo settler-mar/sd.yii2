@@ -172,6 +172,34 @@ class TaskController extends Controller
 
   }
 
+  public function actionGenerateStoresList()
+  {
+    $stores = Stores::find()
+      ->select([
+        'name',
+        "concat('/stores/', route) as href",
+        'displayed_cashback',
+        ])
+      ->where(['>', "substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
+        " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0", 0])
+      ->orderBy(['rating' => SORT_DESC])
+      ->asArray()
+      ->limit(100)
+      ->all();
+    if (count($stores)) {
+      foreach ($stores as &$store) {
+        $cashback = preg_replace('/[^0-9\.\,]/', '', $store['displayed_cashback']);
+        if (strpos($store['displayed_cashback'], '%') !== false) {
+          $store['discount'] = $cashback;
+        } else {
+          $store['discount'] = floatval($cashback).' руб';
+        }
+      }
+    }
+    $dir = (realpath(__DIR__ . '/../../frontend/web/js'));
+    file_put_contents($dir . '/stores_list.json', json_encode($stores ? $stores : []));
+  }
+
   /**
    * Перемешать отзывы пользователей
    */
