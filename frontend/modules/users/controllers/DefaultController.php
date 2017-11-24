@@ -41,7 +41,7 @@ class DefaultController extends Controller
 
     if ($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
-        $data['html'] = 'Успешная авторизация.<script>location.href="/account"</script>';
+        $data['html'] = 'Успешная авторизация.<script>login_redirect("/account");</script>';
 
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
@@ -100,7 +100,7 @@ class DefaultController extends Controller
           $location = '/account?new=1';
         };
 
-        $data['html'] = 'Пользователь успешно зарегистрирован.<script>location.href="' . $location . '"</script>';
+        $data['html'] = 'Пользователь успешно зарегистрирован.<script>login_redirect("' . $location . '");</script>';
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
 
