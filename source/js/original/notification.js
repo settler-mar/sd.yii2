@@ -196,14 +196,6 @@ var notification = (function() {
     option.close=close;
     li.append(close);
 
-    if(data.title && data.title.length>0) {
-      var title = $('<p/>', {
-        class: "notification_title"
-      });
-      title.html(data.title);
-      li.append(title);
-    }
-
     if(data.img && data.img.length>0) {
       var img = $('<div/>', {
         class: "notification_img"
@@ -215,11 +207,48 @@ var notification = (function() {
     var content = $('<div/>',{
       class:"notification_content"
     });
-    content.html(data.message);
+
+    if(data.title && data.title.length>0) {
+      var title = $('<h5/>', {
+        class: "notification_title"
+      });
+      title.html(data.title);
+      content.append(title);
+    }
+
+    var text= $('<div/>',{
+      class:"notification_text"
+    });
+    text.html(data.message);
+    content.append(text);
 
     li.append(content);
 
-    conteiner.append(li);
+    //
+    // if(data.title && data.title.length>0) {
+    //   var title = $('<p/>', {
+    //     class: "notification_title"
+    //   });
+    //   title.html(data.title);
+    //   li.append(title);
+    // }
+    //
+    // if(data.img && data.img.length>0) {
+    //   var img = $('<div/>', {
+    //     class: "notification_img"
+    //   });
+    //   img.css('background-image','url('+data.img+')');
+    //   li.append(img);
+    // }
+    //
+    // var content = $('<div/>',{
+    //   class:"notification_content"
+    // });
+    // content.html(data.message);
+    //
+    // li.append(content);
+    //
+     conteiner.append(li);
 
     if(option.time>0){
       option.timer=setTimeout(_closePopup.bind(close), option.time);
