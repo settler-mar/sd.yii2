@@ -324,19 +324,22 @@ $functionsList=[
     if(isset(Yii::$app->params['exception'])){
       $exception=Yii::$app->params['exception'];
       $pathInfo = Yii::$app->request->getPathInfo();
+      $msg=$exception->getMessage();
       if(
         (
-          strpos($pathInfo,'admin')===false ||
           (
+            strpos($pathInfo,'admin')===false AND
+            strpos($msg,'Creating default')===false
+          )||(
             !Yii::$app->user->isGuest && Yii::$app->user->can('adminIndex')
           )
         ) &&
-        $exception->getMessage()!=='User not found'
+        $msg!=='User not found'
       ){
         if(!isset($flashes['err'])){
           $flashes['err']=array();
         }
-        $flashes['err'][]=$exception->getMessage();
+        $flashes['err'][]=$msg;
       };
     }
 
