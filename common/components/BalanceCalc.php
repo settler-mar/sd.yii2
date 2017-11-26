@@ -23,6 +23,7 @@ class BalanceCalc extends Component
     if(!is_array($type) && $type!=false){
       $type=explode(',',$type);
     };
+
     $sql="UPDATE cw_users u1 ";
     $set=[];
     if($type==false || in_array('ref',$type)){
@@ -92,7 +93,7 @@ class BalanceCalc extends Component
       $sql.=' WHERE u1.uid in ('.implode(',',$userList).')';
     }
     Yii::$app->db->createCommand($sql)->execute();
-    //d($sql);
+    d($sql);
 
     if($type==false || in_array('cash',$type)){
       $sql="UPDATE cw_users u1
@@ -123,7 +124,7 @@ class BalanceCalc extends Component
         $sql.=' WHERE uid in ('.implode(',',$ref_id).')';
       }
       Yii::$app->db->createCommand($sql)->execute();
-      //d($sql);
+      d($sql);
     }
   }
 }
