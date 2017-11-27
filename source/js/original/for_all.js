@@ -272,3 +272,54 @@ $( document ).ready(function() {
     }
   }
 });
+
+//избранное
+$( document ).ready(function() {
+  $("#top .favorite-link").on('click',function() {
+    var self = $(this);
+    var type = self.attr("data-state"),
+      affiliate_id = self.attr("data-affiliate-id");
+
+    if(type == "add") {
+      self.find(".fa").removeClass("muted");
+    }
+
+    self.find(".fa").removeClass("pulse2").addClass("fa-spin");
+
+    $.post("/account/favorites",{
+      "type" : type ,
+      "affiliate_id": affiliate_id
+    },function (data) {
+      if(data.error){
+        notification.notifi({message:data.error,type:'err'})
+        return;
+      }
+
+      if(type == "add") {
+        self.find(".fa").addClass("muted");
+      }
+      self.find(".fa").removeClass("fa-spin");
+
+      self.attr({
+        "data-state": data["data-state"],
+        "data-original-title": data['data-original-title']
+      });
+
+      if(type == "add") {
+        self.find(".fa").removeClass("fa-spin fa-heart-o").addClass("fa-heart");
+      } else if(type == "delete") {
+        self.find(".fa").removeClass("fa-spin fa-heart").addClass("fa-heart-o muted");
+      }
+
+    },'json').fail(function() {
+      notification.notifi({message:"<b>Технические работы!</b><br>В данный момент времени" +
+      " произведённое действие невозможно. Попробуйте позже." +
+      " Приносим свои извинения за неудобство.",type:'err'});
+
+      if(type == "add") {
+        self.find(".fa").addClass("muted");
+      }
+      self.find(".fa").removeClass("fa-spin");
+    })
+  });
+});
