@@ -51,17 +51,17 @@ class AccountController extends \yii\web\Controller
           $fav->save();
 
           $cache->delete($cash_id);
-          return json_encode(['error'=>false,'msg'=>'Магазин был успешно добавлен в избранное.']);
+          return json_encode(['error'=>false,'msg'=>'Магазин был успешно добавлен в Избранное.']);
         }
       }
       if($type=='delete'){
         if(!$fav){
-          return json_encode(['error'=>['Данного магазина нет у Вас в избранном.']]);
+          return json_encode(['error'=>['Данного магазина нет у Вас в Избранном.']]);
         }else{
 
           $fav->delete();
           $cache->delete($cash_id);
-          return json_encode(['error'=>false,'msg'=>'Магазин был успешно удалён из избранного.']);
+          return json_encode(['error'=>false,'msg'=>'Магазин был успешно удалён из Избранного.']);
         }
       }
       return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);

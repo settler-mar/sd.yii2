@@ -29,7 +29,7 @@
                 },
             }) %}
                 <div class="col-md-6">
-                    <h3>Настройка аккаунта</h3>
+                    <h3>Настройки аккаунта</h3>
 
                     {{ form.field(model, 'name',{
                         'template' :
@@ -79,7 +79,6 @@
                             <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]" value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
                             <label class="first" for="checkbox-1">Получать уведомления на почту</label>
                         </div>
-                        <button type="submit" class="btn-fill btn-form">Сохранить настройки</button>
                 </div>
                 <div class="col-md-6">
                     <h3>Изменение пароля</h3>
@@ -149,6 +148,10 @@
                         <p>На данный момент вы еще не связали свой аккаунт в SecretDiscounter со своими соцсетями.</p>
                     {% endif %}
 
+                </div>
+
+                <div class="col-md-12" style="text-align: center;">
+                    <button type="submit" class="btn-fill btn-form" >Сохранить настройки</button>
                 </div>
             {{ active_form_end() }}
         </div>

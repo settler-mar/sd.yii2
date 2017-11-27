@@ -31,6 +31,8 @@ class SdUrlRule implements UrlRuleInterface
       $params['r'] = $ref_cpec[$pathInfo];
       if (!$ref_href && isset($ref_cpec_redirect[$pathInfo])) {
         $ref_href = $ref_cpec_redirect[$pathInfo];
+      }else{
+        $ref_href='/';
       }
     }
 
