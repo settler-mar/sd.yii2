@@ -23,6 +23,7 @@ class BalanceCalc extends Component
     if(!is_array($type) && $type!=false){
       $type=explode(',',$type);
     };
+
     $sql="UPDATE cw_users u1 ";
     $set=[];
     if($type==false || in_array('ref',$type)){

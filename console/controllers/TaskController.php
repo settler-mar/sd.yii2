@@ -21,6 +21,7 @@ class TaskController extends Controller
     if($actionID=='change-ref') {
       return ['ref_id','day','start_date','count','list','end_date'];
     }
+    return [];
   }
 
   /**
