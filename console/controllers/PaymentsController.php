@@ -68,6 +68,8 @@ class PaymentsController extends Controller
    */
   public function actionIndex($options = false, $send_mail = true, $day=false)
   {
+    Yii::$app->balanceCalc->setNotWork(true);
+
     $admitad = new Admitad();
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
     //   $days=300;
@@ -291,6 +293,8 @@ class PaymentsController extends Controller
 
           if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
+          }else{
+            Yii::$app->logger->add(-$user->uid);
           }
         }
       }
@@ -304,9 +308,11 @@ class PaymentsController extends Controller
     }
 
     d($users);
+    Yii::$app->logger->add($users);
     //делаем пересчет бланса пользователей
     if (count($users) > 0) {
-      Yii::$app->balanceCalc->todo($users, 'cash');
+      Yii::$app->balanceCalc->setNotWork(false);
+      Yii::$app->balanceCalc->todo($users, 'cash,bonus');
     }
   }
 

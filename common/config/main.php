@@ -115,6 +115,9 @@ $config = [
     'balanceCalc' => [
         'class' => 'common\components\BalanceCalc',
      ],
+    'logger' => [
+        'class' => 'common\components\Logger',
+     ],
     'messageParcer' => [
         'class' => 'common\components\MessageParser',
      ],
