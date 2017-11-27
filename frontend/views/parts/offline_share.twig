@@ -1,23 +1,20 @@
-<h3>
-    {% if friend_user %}
-        Штрихкод вашего друга
-        {% set user_code_img = friend_user.barcodeImg  %}
-        {% set user_id = friend_user.uid  %}
-        {% set print = "print();return false;" %}
-    {% else %}
-        {% if user_id %}
-            Ваш личный штрихкод
-            {% set print = "window.open(this.href).print();return false;" %}
-        {% else %}
-            Пример штрихкода
-            {% set user_code_img = "/images/barcode_sample.png"%}
-        {% endif %}
-    {% endif %}
-    ↓
-</h3>
-
 <div class="affiliate row">
     <div class="col-md-4 ways-invitation">
+        <h3>
+            {% if friend_user %}
+                Штрихкод вашего друга ↓
+                {% set user_code_img = friend_user.barcodeImg  %}
+                {% set user_id = friend_user.uid  %}
+                {% set print = "print();return false;" %}
+            {% else %}
+                {% if user_id %}
+                    {% set print = "window.open(this.href).print();return false;" %}
+                {% else %}
+                    Пример штрихкода ↓
+                    {% set user_code_img = "/images/barcode_sample.png"%}
+                {% endif %}
+            {% endif %}
+        </h3>
         <img src="{{ user_code_img }}" alt="" width="230">
         {% if friend_user or user_id %}
             <p class="link-sent">

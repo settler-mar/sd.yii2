@@ -303,6 +303,7 @@ class PaymentsController extends Controller
       }
     }
 
+    d($users);
     //делаем пересчет бланса пользователей
     if (count($users) > 0) {
       Yii::$app->balanceCalc->todo($users, 'cash');

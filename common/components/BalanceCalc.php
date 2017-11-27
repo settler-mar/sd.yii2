@@ -20,6 +20,8 @@ class BalanceCalc extends Component
       $userList=false;
     }
 
+    //d($userList);
+
     if(!is_array($type) && $type!=false){
       $type=explode(',',$type);
     };
