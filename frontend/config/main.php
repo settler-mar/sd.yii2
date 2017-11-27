@@ -204,6 +204,18 @@ $config= [
     ],
   ],
   'params' => $params,
+  //для возврата с авторизации через соц. сети на предыдущую страницу
+  'on beforeAction' => function (yii\base\ActionEvent $e) {
+    if (Yii::$app->user->isGuest) {
+      $request = Yii::$app->request;
+      // исключаем страницу авторизации или ajax-запросы
+      if (!$request->isAjax &&
+        strpos($request->url, 'login') === false &&
+        strpos($request->url, 'verifysocialemail') === false) {
+        Yii::$app->user->setReturnUrl($request->url);
+      }
+    }
+  },
 ];
 
 
