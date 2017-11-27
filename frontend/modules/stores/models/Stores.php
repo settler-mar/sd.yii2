@@ -78,7 +78,7 @@ class Stores extends \yii\db\ActiveRecord
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name'], 'string'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate'], 'integer'],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
       [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
@@ -138,6 +138,7 @@ class Stores extends \yii\db\ActiveRecord
       'cash_number' => 'Номер чека',
       'related_stores' => 'Магазины торговой сети (ID через запятую)',
       'network_name' => 'Название торговой сети',
+      'show_notify' => 'Отображать в задолбашках',
     ];
   }
 

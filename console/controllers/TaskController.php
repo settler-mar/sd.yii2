@@ -183,7 +183,7 @@ class TaskController extends Controller
         ])
       ->where(['>', "substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
         " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0", 0])
-      ->orderBy(['rating' => SORT_DESC])
+      ->orderBy(['show_notify'=> SORT_DESC, 'rating' => SORT_DESC])
       ->asArray()
       ->limit(100)
       ->all();
