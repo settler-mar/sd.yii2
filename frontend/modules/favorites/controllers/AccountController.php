@@ -55,7 +55,8 @@ class AccountController extends \yii\web\Controller
             'error'=>false,
             'msg'=>'Магазин был успешно добавлен в Избранное.',
             'data-state'=>'delete',
-            'data-original-title'=>"Удалить из Избранного"
+            'data-original-title'=>"Удалить из Избранного",
+            'title'=>'Поздравляем!'
           ]);
         }
       }
@@ -69,7 +70,8 @@ class AccountController extends \yii\web\Controller
             'error'=>false,
             'msg'=>'Магазин был успешно удалён из Избранного.',
             'data-state'=>'add',
-            'data-original-title'=>"Добавить в Избранное"
+            'data-original-title'=>"Добавить в Избранное",
+            'title'=>'Поздравляем!'
           ]);
         }
       }

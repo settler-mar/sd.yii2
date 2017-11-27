@@ -291,9 +291,15 @@ $( document ).ready(function() {
       "affiliate_id": affiliate_id
     },function (data) {
       if(data.error){
-        notification.notifi({message:data.error,type:'err'})
+        notification.notifi({message:data.error,type:'err','title':(data.title?data.title:false)});
         return;
       }
+
+      notification.notifi({
+        message:data.msg,
+        type:'success',
+        'title':(data.title?data.title:false)
+      });
 
       if(type == "add") {
         self.find(".fa").addClass("muted");

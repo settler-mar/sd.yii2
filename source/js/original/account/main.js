@@ -424,7 +424,6 @@ $(function() {
     charity.control.events();
     settings.control.events();
     balance.control.events();
-    favorites.control.events();
     header.control.events();
 });
 
