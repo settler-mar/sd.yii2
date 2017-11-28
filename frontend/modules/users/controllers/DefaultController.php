@@ -251,6 +251,10 @@ class DefaultController extends Controller
     }
     if ($user_id = $model->resetPassword()) {
       // Авторизируемся при успешном сбросе пароля
+      Yii::$app->getSession()->setFlash('info',[
+        message=>'Ваш пароль был успешно изменен.',
+        title=>'Поздравляем!'
+      ]);
       Yii::$app->user->login(Users::findIdentity($user_id));
     }
     return $this->redirect(['/account']);

@@ -499,7 +499,7 @@ Intro
     min-height: 150px;
   }
   .intro-feature:before{
-    display: none;
+    display: none!important;
     content: '\EA01';
     left: 70px;
     top: -146px;

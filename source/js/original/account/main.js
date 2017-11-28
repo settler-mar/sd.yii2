@@ -233,118 +233,6 @@ $(function() {
         }
     }
 
-    var favorites = {
-        control: {
-            events: function() {
-                $("#top").find(".favorite-link").click(function() {
-                    var self = $(this);
-                    var type = self.attr("data-state"),
-                          affiliate_id = self.attr("data-affiliate-id");
-
-                    if(type == "add") {
-                        self.find(".fa").removeClass("muted");
-                    }
-
-                    self.find(".fa").removeClass("pulse2").addClass("fa-spin");
-
-                    $.ajax({
-                        method: "post",
-                        url: urlPrefix + "/account/favorites",
-                        data: "type=" + type + "&affiliate_id=" + affiliate_id,
-                        error: function (jqxhr) {
-                            errors.control.log('Favorites Ajax Error', jqxhr);
-
-                            var favErrorAjax = noty({
-                                text: "<b>Технические работы!</b><br>В данный момент времени" + 
-                                        " произведённое действие невозможно. Попробуйте позже." +
-                                        " Приносим свои извинения за неудобство.",
-                                animation: {
-                                    open: 'animated fadeInLeft',
-                                    close: 'animated flipOutX',
-                                    easing: 'swing',
-                                    speed: 300
-                                },
-                                type: 'warning',
-                                theme: 'relax',
-                                layout: 'topRight',
-                                timeout: 10000
-                            });
-
-                            if(type == "add") {
-                                self.find(".fa").addClass("muted");
-                            }
-
-                            self.find(".fa").removeClass("fa-spin").addClass("pulse2");
-                        },
-                        success: function(response) {
-                            var response = $.parseJSON(response);
-
-                            if(response.error) {
-                                for(key in response) {
-                                    if(response[key][0] !== undefined) {
-                                        var favoritesError = noty({
-                                            text: "<b>Ошибка!</b> " + response[key][0],
-                                            animation: {
-                                                open: 'animated fadeInLeft',
-                                                close: 'animated flipOutX',
-                                                easing: 'swing',
-                                                speed: 300
-                                            },
-                                            type: 'error',
-                                            theme: 'relax',
-                                            layout: 'topRight',
-                                            timeout: 7000
-                                        });
-                                    }
-                                }
-
-                                if(type == "add") {
-                                    self.find(".fa").addClass("muted");
-                                }
-
-                                self.find(".fa").removeClass("fa-spin").addClass("pulse2");
-                            } else {
-                                var favoritesSuccess = noty({
-                                    text: response.msg,
-                                    animation: {
-                                        open: 'animated fadeInLeft',
-                                        close: 'animated flipOutX',
-                                        easing: 'swing',
-                                        speed: 300
-                                    },
-                                    type: 'success',
-                                    theme: 'relax',
-                                    layout: 'topRight',
-                                    timeout: 7000
-                                });
-
-                                if(type == "add") {
-                                    self.attr({
-                                        "data-state": "delete",
-                                        "data-original-title": "Удалить из избранного"
-                                    });
-
-                                    // self.find(".fa").removeClass("fa-spin fa-star-o").addClass("pulse2 fa-star");
-                                    self.find(".fa").removeClass("fa-spin fa-heart-o").addClass("pulse2 fa-heart");
-                                } else if(type == "delete") {
-                                    self.attr({
-                                        "data-state": "add",
-                                        "data-original-title" : "Добавить в избранное"
-                                    });                   
-
-                                    // self.find(".fa").removeClass("fa-spin fa-star").addClass("pulse2 fa-star-o muted");
-                                    self.find(".fa").removeClass("fa-spin fa-heart").addClass("pulse2 fa-heart-o muted");
-                                }
-                            }
-                        }
-                    });       
-
-                    return false;                
-                });
-            }
-        }
-    }
-
     var header = {
         control: {
             events: function() {
@@ -536,7 +424,6 @@ $(function() {
     charity.control.events();
     settings.control.events();
     balance.control.events();
-    favorites.control.events();
     header.control.events();
 });
 

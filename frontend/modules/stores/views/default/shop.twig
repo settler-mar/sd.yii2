@@ -24,12 +24,12 @@
                 <div class="favorite">
                     {% if user_id %}
                         {% if current_store.uid in fav_ids %}
-                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить из избранного">
+                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить из Избранного">
                             {#<span class="fa fa-star"></span>#}
                             <span class="fa fa-heart"></span>
                         </a>
                         {% else %}
-                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить в избранное">
+                        <a class="favorite-link ignore-hash ia" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить в Избранное">
                             {#<span class="fa fa-star-o muted"></span>#}
                             <span class="fa fa-heart-o muted"></span>
                         </a>

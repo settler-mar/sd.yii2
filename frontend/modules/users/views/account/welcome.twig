@@ -6,7 +6,7 @@
                     <div class="confirm">Баланс: <span>{{ _nf(this.balance.current) | raw }} <span class="fa fa-rub"></span></span></div>
                     <div class="pending">В ожидании: <span>{{ _nf(this.balance.pending) | raw }} <span class="fa fa-rub"></span></span></div>
                     <div class="charity">Пожертвовано: <span>{{ _nf(this.balance.charity) | raw }}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
-                    <div class="history hpayments"><a href="/account/payments">Посмотреть историю заказов</a></div>
+                    <div class="history hpayments"><a href="/account/payments">Посмотреть историю покупок</a></div>
                 </div>
             </div>
 
@@ -29,6 +29,11 @@
             {% endif %}
 
             <div class="col-md-12">
+                <div class="col-sm-12">
+                    <h3>
+                        Ваш статус лояльности
+                    </h3>
+                </div>
                 {% for key,status in statuses_marafon %}
                     <div class="col-sm-12 col-md-3 circles">
                         <div class="type">{{status.display_name}} Status <span>+{{status.bonus}}%</span></div>

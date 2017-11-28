@@ -66,12 +66,12 @@
 
             {% if user_id %}
                 {% if store.uid in fav_ids %}
-                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из избранного">
+                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
                     {#<span class="fa fa-star"></span>#}
                     <span class="fa fa-heart"></span>
                 </a>
                 {% else %}
-                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в избранное">
+                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
                     {#<span class="fa fa-star-o muted"></span>#}
                     <span class="fa fa-heart-o muted"></span>
                 </a>

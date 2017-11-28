@@ -12,13 +12,23 @@ use yii\base\Component;
  */
 class BalanceCalc extends Component
 {
+  public $no_work=false;
+  public function setNotWork($value=true)
+  {
+    $this->no_work = $value;
+  }
+
   public function todo($userList=false,$type=false){
+    if ($this->no_work)return;
+
     if(!is_array($userList) && $userList!=false){
       $userList=explode(',',$userList);
     };
     if(is_array($userList) && count($userList)==0){
       $userList=false;
     }
+
+    //d($userList);
 
     if(!is_array($type) && $type!=false){
       $type=explode(',',$type);
@@ -94,6 +104,7 @@ class BalanceCalc extends Component
     }
     Yii::$app->db->createCommand($sql)->execute();
     //d($sql);
+    Yii::$app->logger->add($sql);
 
     if($type==false || in_array('cash',$type)){
       $sql="UPDATE cw_users u1
