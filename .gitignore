@@ -56,3 +56,4 @@ log/
 
 /frontend/web/export
 /frontend/web/images/account/funds/
+/frontend/web/js/stores_list.json
