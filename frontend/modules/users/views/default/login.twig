@@ -1,6 +1,6 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
   <h3>Вход на сайт</h3>
-  <p class="sign-up-tagline">Совершая вход на сайт, вы соглашаетесь с нашими <a href="/terms">Правилами</a></p>
+  {#<p class="sign-up-tagline">Совершая вход на сайт, вы соглашаетесь с нашими <a href="/terms">Правилами</a></p>#}
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
@@ -23,14 +23,26 @@
     'template' :
     '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
+  <div style="text-align: right; width:75%; margin: 0 auto 20px;"><a href="#resetpassword" class="ignore-hash" style="text-decoration: underline;">Забыли пароль?</a></div>
 
-  <button type="submit" class="btn-fill sign-up-btn">Войти в личный кабинет</button>
+  <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Войти</button>
   {{ active_form_end() }}
-  <div class="sign-up-buttons"><a href="#registration" class="btn ignore-hash">Зарегистрироваться</a></div>
-  <p class="terms"><a href="#resetpassword" class="ignore-hash">Забыли пароль?</a></p>
 
-  <p class="terms"><b>Войти через социальные сети</b></p>
-  {{ use('frontend/components/socials/EauthWidget') }}
-  {{ eauth_widget_widget() }}
+
+  <div class="terms" style="margin-top:30px; text-transform: uppercase; font-size: 12px; text-transform: uppercase;">
+    <div style="display: inline-block; border-bottom: 2px solid #eee; margin-bottom: 2px;width: 30%;" ></div>
+    <div style="display: inline-block;color: #888;">
+      Или при помощи соцсетей
+    </div>
+    <div style="display: inline-block;border-bottom: 2px solid #eee;margin-bottom: 2px;width: 30%;" ></div>
+  </div>
+  <div style="margin-top: 20px;margin-bottom:20px;">
+      {{ use('frontend/components/socials/EauthWidget') }}
+      {{ use('frontend/components/socials/EauthWidget') }}
+      {{ eauth_widget_widget() }}
+  </div>
+  <div class="sign-up-buttons" style="background-color: #eee; padding-top: 20px; margin-top: 0;"><a href="#registration" class="btn ignore-hash">Зарегистрироваться</a></div>
+  <div style="background-color: #eee; color: #888; text-align: center; padding: 10px; font-size: 12px;">Если вы новый пользователь</div>
+
 
 </div>
