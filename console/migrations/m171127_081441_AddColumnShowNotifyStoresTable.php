@@ -12,7 +12,9 @@ class m171127_081441_AddColumnShowNotifyStoresTable extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $this->addColumn('cw_stores', 'show_notify', $this->boolean()->defaultValue(false));
-        Stores::updateAll(['show_notify' => 1], ['uid' => [93, 55, 678, 198, 596, 184, 1, 679, 546, 1234, 739, 724, 148, 91, 81, 291, 73, 153, 750, 121, 728, 139, 1226, 680, 173, 1247, 1051, 723, 301, 75, 100, 1182, 732, 1181]]);
+        Stores::updateAll(['show_notify' => 1], ['uid' => [93, 55, 678, 198, 596, 184, 1, 679, 546, 1234, 739,
+          724, 148, 91, 81, 291, 73, 153, 750, 121, 728, 139, 1226, 680, 173, 1247, 1051, 723, 301,
+          75, 100, 1182, 732, 1181, 16, 114]]);
 
         ob_start();
         try {
