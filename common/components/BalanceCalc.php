@@ -104,7 +104,7 @@ class BalanceCalc extends Component
     }
     Yii::$app->db->createCommand($sql)->execute();
     //d($sql);
-    Yii::$app->logger->add($sql);
+    //Yii::$app->logger->add($sql);
 
     if($type==false || in_array('cash',$type)){
       $sql="UPDATE cw_users u1
