@@ -100,7 +100,7 @@ class PaymentsController extends Controller
 
     $pay_status = Admitad::getStatus();
 
-    $users = [];
+    $users = array();
     //d($params);
     //ddd($params);
 
@@ -291,10 +291,16 @@ class PaymentsController extends Controller
             $notifi->save();
           }
 
+          //на всякий проверяем на то что б с $users было все нормально
+          if(!$users || !is_array($users)){
+            $users=array();
+          }
+
           if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
           }else{
             Yii::$app->logger->add(-$user->uid);
+            Yii::$app->logger->add($users);
           }
         }
       }
