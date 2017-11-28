@@ -175,7 +175,9 @@ class DefaultController extends Controller
 
           if (!empty($user)) {
             Yii::$app->getUser()->login($user);
-            $this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
+            //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
+            $url = Yii::$app->user->getReturnUrl();
+            $eauth->redirect(!empty($url)? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
           } else {
             $eauth->cancel();
           }
@@ -311,7 +313,9 @@ class DefaultController extends Controller
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
-          $this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
+          $url = Yii::$app->user->getReturnUrl();
+          Yii::$app->response->redirect(!empty($url)? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
+          //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
         } else {
           Yii::$app->session->addFlash('error', 'Ошибка при авторизации');
         }
@@ -362,7 +366,10 @@ class DefaultController extends Controller
         $user = UsersSocial::makeUser($usersSocial);
         if ($user) {
           Yii::$app->getUser()->login($user);
-          return Yii::$app->response->redirect('/')->send();
+          //return Yii::$app->response->redirect('/')->send();
+          $url = Yii::$app->user->getReturnUrl();
+          return Yii::$app->response->redirect(!empty($url)? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
+
         }
       }
 

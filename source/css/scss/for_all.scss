@@ -672,6 +672,7 @@ table .status_bg_1 {
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+  border-radius: 2px;
 }
 
 .notification_close:before {
@@ -691,13 +692,16 @@ table .status_bg_1 {
 }
 
 .notification_content {
-  font-size: 14px;
+  //font-size: 14px;
+  font-size: 11px;
 }
 .notification_title {
-  font-size: 18px;
+  //font-size: 18px;
+  font-size: 12px;
   font-weight: bold;
   padding-bottom: 0;
   color: #fee255;
+  text-transform: none;
 }
 
 .notification_hide {

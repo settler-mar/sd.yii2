@@ -35,6 +35,7 @@
                                     <p><span>Акция</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
                                     <p><span>Рейтинг</span> {{ form.field(model, 'rating').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>
+                                    <p><span>Отображать в задолбашках</span> {{ form.field(model, 'show_notify').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
                                 </div>
                                 <div class="edit_blk">
                                     <p>
