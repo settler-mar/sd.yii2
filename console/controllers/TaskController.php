@@ -173,6 +173,9 @@ class TaskController extends Controller
 
   }
 
+  /**
+   * Сгенерироывать новый список шопов для рекламных банеров
+   */
   public function actionGenerateStoresList()
   {
     $stores = Stores::find()
