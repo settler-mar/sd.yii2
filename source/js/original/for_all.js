@@ -256,6 +256,7 @@ $(function() {
   menu.control.events();
 });
 
+//что б ифреймы и картинки не вылазили
 $( document ).ready(function() {
   /*m_w = $('.text-content').width()
   if (m_w < 50)m_w = screen.width - 40*/
@@ -328,4 +329,19 @@ $( document ).ready(function() {
       self.find(".fa").removeClass("fa-spin");
     })
   });
+});
+
+//если открыто как дочернее
+$(function(){
+  if(!window.opener)return;
+  if(href.indexOf('socials')>0 || href.indexOf('login')>0){
+    return;
+  }
+  href=window.opener.location.href;
+  if(href.indexOf('store')>0 || href.indexOf('coupon')>0 || href.indexOf('settings')>0){
+    window.opener.location.reload();
+  }else{
+    window.opener.location.href=location.href;
+  }
+  window.close();
 });
