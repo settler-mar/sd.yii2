@@ -349,6 +349,7 @@ $functionsList=[
     }
 
     $js = '';
+    $flashes=array_reverse($flashes);
     foreach ($flashes as $type => $flashe) {
       Yii::$app->session->removeFlash($type);
       if (is_array($flashe)){
