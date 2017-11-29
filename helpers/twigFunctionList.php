@@ -211,10 +211,10 @@ $functionsList=[
                               )?';
     $regexp = '/(?: #встроенный PHP, Perl, ASP код
                       <([\?\%]) .*? \\1>  #1
-  
+
                       #блоки CDATA
                     | <\!\[CDATA\[ .*? \]\]>
-  
+
                       #MS Word таги типа "<![if! vml]>...<![endif]>",
                       #условное выполнение кода для IE типа "<!--[if lt IE 7]>...<![endif]-->"
                     | <\! (?>--)?
@@ -223,16 +223,16 @@ $functionsList=[
                           \]
                           (?>--)?
                       >
-  
+
                       #комментарии
                     | <\!-- .*? -->
                     | {.*?}
                       #парные таги вместе с содержимым
                     | <((?i:noindex|script|style|comment|button|map|iframe|frameset|object|applet))' . $re_attrs_fast_safe . '> .*? <\/(?i:\\2)>  #2
-  
+
                       #парные и непарные таги
                     | <[\/\!]?[a-zA-Z][a-zA-Z\d]*' . $re_attrs_fast_safe . '\/?>
-  
+
                       #html сущности (&lt; &gt; &amp;) (+ корректно обрабатываем код типа &amp;amp;nbsp;)
                     | &(?>
                           (?> [a-zA-Z][a-zA-Z\d]+
@@ -241,7 +241,7 @@ $functionsList=[
                                 )
                           );
                        )+
-  
+
                       #не html таги и не сущности
                     | ([^<&]{2,})  #3
                   )
@@ -359,7 +359,7 @@ $functionsList=[
           foreach ($flashe as $txt) {
             $title = false;
             if (is_array($txt)) {
-              if (isset($txt['title'])) $title = $txt['title'];
+              if (isset($txt['title'])) $title = trim($txt['title'],'.');
               $txt = $txt['message'];
             }
             if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
