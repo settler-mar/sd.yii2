@@ -53,9 +53,10 @@
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ eauth_widget_widget() }}
   </div>
-  <div class="sign-up-buttons" style="background-color: #eee; padding-top: 20px; margin-top: 0;"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>
-  <div style="background-color: #eee; color: #888; text-align: center; padding: 10px; font-size: 12px;">Войдите, усли у вас уже есть аккаунт</div>
-
+  <div class="gray-box">
+    <div class="sign-up-buttons"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>
+    <div class="text-dop">Войдите, усли у вас уже есть аккаунт</div>
+  </div>
 
   {#<p class="terms"><b>Или регистрируйтесь при помощи соцсетей</b></p>#}
   {#{{ use('frontend/components/socials/EauthWidget') }}#}

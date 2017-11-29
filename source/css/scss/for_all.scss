@@ -465,8 +465,19 @@ table .status_bg_1 {
     }
 
     .notify_content{
-      //padding: 15px 10px;
-      padding: 0;
+      padding: 15px 10px;
+
+      .gray-box{
+        background-color: #eee;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-top: 0;
+        margin: 0 -10px -10px -10px;
+      }
+
+      .text-dop{
+        text-align: center; padding: 10px; font-size: 12px;
+      }
 
       h1,h2,h3{
         margin-top: 0;
