@@ -689,6 +689,9 @@ Sidebar
 .cd-side-nav > ul > li.settings-icon > a::before {
   content: "\f085";
 }
+.cd-side-nav ul li a.active {
+  background-color: #17333c;
+}
 .cd-side-nav .count {
   /* notification badge */
   position: absolute;
