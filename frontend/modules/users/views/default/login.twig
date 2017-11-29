@@ -1,6 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h3>Вход на сайт</h3>
-  {#<p class="sign-up-tagline">Совершая вход на сайт, вы соглашаетесь с нашими <a href="/terms">Правилами</a></p>#}
+  <h3 style="margin-bottom: 35px;">Вход на сайт</h3>
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
@@ -23,7 +22,7 @@
     'template' :
     '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
-  <div style="text-align: right; width:75%; margin: 0 auto 20px;"><a href="#resetpassword" class="ignore-hash" style="text-decoration: underline;">Забыли пароль?</a></div>
+  <div style="text-align: right; width:75%; margin: 0 auto 20px;"><a href="#resetpassword" class="ignore-hash" style="text-decoration: underline; font-size: 12px;">Забыли пароль?</a></div>
 
   <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Войти</button>
   {{ active_form_end() }}
@@ -43,7 +42,7 @@
   </div>
   <div class="gray-box">
     <div class="sign-up-buttons"><a href="#registration" class="btn ignore-hash">Зарегистрироваться</a></div>
-    <div class="text-dop">Если вы новый пользователь</div>
+    <div class="text-dop"  style="color: #888;">Если вы новый пользователь</div>
   </div>
 
 </div>

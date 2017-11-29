@@ -1,10 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h3>Регистрация</h3>
-  {#<p class="sign-up-tagline">#}
-    {#<center>#}
-      {#Регистрация полностью бесплатна и займёт у вас несколько секунд#}
-    {#</center>#}
-  {#</p>#}
+  <h3 style="margin-bottom: 35px;">Регистрация</h3>
   {% set form = active_form_begin({
     'id' : isAjax?'registration-form-ajax':'registration-form',
     'layout' : 'horizontal',
@@ -23,7 +18,7 @@
   {{ form.field(model, 'email',{
     'template' :
     '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Введите ваш E-mail'}) | raw }}
+  }).textInput({'placeholder':'Введите ваш e-mail'}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
@@ -35,7 +30,8 @@
     '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
 
-  <div style="text-align: center; width:75%; margin: 10px auto 20px; color: #888;">Я принимаю условия <a href="/terms" class="ignore-hash" style="text-decoration: underline;">Клиентского соглашения</a></div>
+  <div style="text-align: center; width:75%; margin: 10px auto 20px; color: #888; font-size: 12px;">Я принимаю условия <a href="/terms" class="ignore-hash" style="text-decoration: underline;">Пользовательского соглашения</a> и
+    <a class="ignore-hash" style="text-decoration: underline;" href="/">политики конфиденциальности</a></div>
 
   <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Зарегистрироваться</button>
   {{ active_form_end() }}
@@ -55,17 +51,8 @@
   </div>
   <div class="gray-box">
     <div class="sign-up-buttons"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>
-    <div class="text-dop">Войдите, усли у вас уже есть аккаунт</div>
+    <div class="text-dop" style="color: #888;">Войдите, усли у вас уже есть аккаунт</div>
   </div>
 
-  {#<p class="terms"><b>Или регистрируйтесь при помощи соцсетей</b></p>#}
-  {#{{ use('frontend/components/socials/EauthWidget') }}#}
-  {#{{ eauth_widget_widget() }}#}
-
-  {#<div class="sign-up-buttons"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>#}
-
-  {#<p class="terms">#}
-    {#Регистрируясь, я соглашаюсь с <a href="/terms">Правилами</a>#}
-  {#</p>#}
 
 </div>
