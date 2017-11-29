@@ -452,15 +452,3 @@ $('body').on('click', '.link-to-clipboard', function(e){
         type: 'success'
     });
 });
-
-//если открыто как дочернее
-$(function(){
-    if(!window.opener)return;
-    href=window.opener.location.href;
-    if(href.indexOf('store')>0 || href.indexOf('coupon')>0){
-        window.opener.location.reload();
-    }else{
-        window.opener.location.href=location.href;
-    }
-    window.close();
-});
