@@ -350,4 +350,4 @@ $(function(){
     window.opener.location.href=location.href;
   }
   window.close();
-});
+})();

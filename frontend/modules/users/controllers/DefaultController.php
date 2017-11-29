@@ -100,6 +100,12 @@ class DefaultController extends Controller
           $location = '/account?new=1';
         };
 
+        Yii::$app->session->setFlash('success', [
+          'title' => 'Успешная авторизация',
+          'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '').'">личный кабинет</a>'.
+            ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
+        ]);
+
         $data['html'] = 'Пользователь успешно зарегистрирован.<script>login_redirect("' . $location . '");</script>';
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
@@ -170,10 +176,15 @@ class DefaultController extends Controller
       //ddd($eauth);
       try {
         if ($eauth->authenticate()) {
+          //ddd($eauth);
           //получаем юсера нашего
           $user = UsersSocial::authenticate($eauth->getAttributes());
-
+          //ddd($user);
           if (!empty($user)) {
+            if(!Yii::$app->user->isGuest){
+              $eauth->redirect('/account/settings');
+            }
+
             Yii::$app->getUser()->login($user);
             //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
             $url = Yii::$app->user->getReturnUrl();
@@ -184,9 +195,10 @@ class DefaultController extends Controller
                 'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '').'">личный кабинет</a>'.
                   ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
               ]);
-
             }
-
+            if($url=='/'){
+              $url=null;
+            }
             $eauth->redirect(!empty($url)? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
           } else {
             $eauth->cancel();

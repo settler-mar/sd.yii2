@@ -69,10 +69,11 @@
         <script src="{{scriptH}}"></script>
     {% endfor %}
 
+
     {{ html.csrfMetaTags | raw }}
     {{   void(this.head) }}
 </head>
-<body>
+<body class=blank>
     {{ content|raw }}
 
     {% for script in minifyJS %}
@@ -81,7 +82,10 @@
     {% for scriptF in exclusionJSfooter %}
     <script src="{{scriptF}}"></script>
     {% endfor %}
+
     {{   void(this.endBody()) }}
+
+    {{ Notification() | raw}}
 </body>
 </html>
 {{   void(this.endPage()) }}

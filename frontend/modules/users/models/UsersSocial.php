@@ -90,23 +90,47 @@ class UsersSocial extends \yii\db\ActiveRecord
      */
     public static function authenticate($attributes)
     {
+      //ddd($attributes);
         //пользователь соц сетей
         $userSocial = self::findByEAuth($attributes);
-
         if (!$userSocial) {
             $userSocial = new self;
             $userSocial->setAttributes($attributes);
             $userSocial->user_id = null;
             if (!$userSocial->validate() || !$userSocial->save()) {
+              //ddd($userSocial);
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
                 return null;
             };
         }
+        //ddd($userSocial);
         //if ($userSocial->email == null || $userSocial->email_verified == 0) {
-        if ($userSocial->email == null) {
-            Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш E-mail.');
-            Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
-            return null;
+        //если пользователь авторизирован то делаем привязку к данному юзеру
+        if(!Yii::$app->user->isGuest){
+          if($userSocial->user_id==null){
+            $userSocial->user_id=Yii::$app->user->id;
+            $userSocial->save();
+            Yii::$app->session->setFlash('info', [
+              'title' => 'Добавления аккаунта',
+              'message' => 'Аккаунт соцсети успешно привязан к вашему аккаунту в SecretDiscounter.',
+            ]);
+          }else if(Yii::$app->user->id==$user->uid){
+            Yii::$app->session->setFlash('err', [
+              'title' => 'Ошибка добавления аккаунта',
+              'message' => 'Данный аккаунт соцсети уже привязан к вашему аккаунту в SecretDiscounter.',
+            ]);
+          }else{
+            Yii::$app->session->setFlash('err', [
+              'title' => 'Ошибка добавления аккаунта',
+              'message' => 'Данный аккаунт соцсети уже привязан к аккаунту одного из наших пользователей.',
+            ]);
+          }
+        }else{
+          if ($userSocial->email == null) {
+              Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш E-mail.');
+              Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
+              return null;
+          }
         }
 
         return self::makeUser($userSocial);
@@ -159,20 +183,25 @@ class UsersSocial extends \yii\db\ActiveRecord
             $user->name = $userSocial->name;//поменять в sd
             $user->sex = $userSocial->sex;
             $user->registration_source = $userSocial->url;
-            //$user->bdate = $userSocial->birthday;//помеять в sd
+            $user->birthday = $userSocial->bdate;//||'0000-00-00';
             $user->setPassword(substr(md5(uniqid()), 0, 15));
-            $user->email_verified = $userSocial->email == $userSocial->email_manual;
+            $user->email_verified = ($userSocial->email == $userSocial->email_manual?1:0);
             if (!$user->save()) {
+              ddd($user);
                 Yii::$app->session->addFlash('error', 'Авторизация через ' . $userSocial->social_name . ' прошла неудачно.');
                 return null;
             };
+
+            //при регистрации отправляем письмо с валидацией
+            ValidateEmail::emailStatusInfo($user);
+
             if ($userSocial->email == null && $userSocial->email_manual != null) {
                 $userSocial->email = $userSocial->email_manual;
                 $userSocial->save();
             }
         }
         //перенос информации к юсеру, заодно ещё кое-что
-        self::fillAttributes($user, $userSocial, ['sex',  'photo']);
+        self::fillAttributes($user, $userSocial, ['sex', 'photo']);
         return $user;
     }
 
