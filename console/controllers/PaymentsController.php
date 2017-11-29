@@ -21,9 +21,10 @@ class PaymentsController extends Controller
 
   //добавляем параметры для запуска
   public $day;
+
   public function options($actionID)
   {
-    if($actionID=='index') {
+    if ($actionID == 'index') {
       return ['day'];
     }
   }
@@ -66,7 +67,7 @@ class PaymentsController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionIndex($options = false, $send_mail = true, $day=false)
+  public function actionIndex($options = false, $send_mail = true, $day = false)
   {
     Yii::$app->balanceCalc->setNotWork(true);
 
@@ -79,23 +80,23 @@ class PaymentsController extends Controller
 //      'subid'=>61690,
     ];
 
-    if($this->day){
-      $days=$this->day;
+    if ($this->day) {
+      $days = $this->day;
     }
 
     if (is_array($options)) {
       $params = array_merge($params, $options);
-    } else if($options) {
-      $options_t=explode(',',$options);
-      foreach ($options_t as $t){
-        $t=explode('=',$t);
-        if($t[0]='days'){
+    } else if ($options) {
+      $options_t = explode(',', $options);
+      foreach ($options_t as $t) {
+        $t = explode('=', $t);
+        if ($t[0] = 'days') {
           $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $t[1]);
         }
       }
-    }else{
+    } else {
       $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $days); //последнии 7 дней
-      //$params['status_updated_end'] = date('d.m.Y H:i:s');
+      //$params['status_updated_end'] = date('d.m.Y 00:00:00');
     }
 
     $pay_status = Admitad::getStatus();
@@ -108,10 +109,13 @@ class PaymentsController extends Controller
     while ($payments) {
       //d($payments['_meta']);
       foreach ($payments['results'] as $payment) {
-        if (!$payment['subid'] || (int)$payment['subid']==0) {
+        if (!$payment['subid'] || (int)$payment['subid'] == 0) {
           continue;
         }
 
+        /*if($payment['subid']==66197){
+          continue;
+        }*/
         //ddd($payment['id']);
         $action_id = $payment['action_id'];
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
@@ -126,13 +130,17 @@ class PaymentsController extends Controller
           continue;
         }
 
-        if($payment['positions'] && $payment['positions'][0] && $payment['positions'][0]['rate_id']){
-          $rate=TariffsRates::find()
-            ->where(['id_rate'=>$payment['positions'][0]['rate_id']])
+        if ($payment['positions'] && $payment['positions'][0] && $payment['positions'][0]['rate_id']) {
+          $rate = TariffsRates::find()
+            ->where(['id_rate' => $payment['positions'][0]['rate_id']])
             ->one();
-          $rate_id=$rate->uid;
-        }else{
-          $rate_id=0;
+          if ($rate) {
+            $rate_id = $rate->uid;
+          } else {
+            $rate_id = 0;
+          }
+        } else {
+          $rate_id = 0;
         }
 
         if (!$db_payment) {
@@ -189,13 +197,13 @@ class PaymentsController extends Controller
             $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
           }
 
-          if(!$db_payment->closing_date){
-            $time=strtotime($payment['action_date']);
-            $time+=$store->hold_time*24*60*60;
-            $db_payment->closing_date=date("Y-m-d H:i:s",$time);
+          if (!$db_payment->closing_date) {
+            $time = strtotime($payment['action_date']);
+            $time += $store->hold_time * 24 * 60 * 60;
+            $db_payment->closing_date = date("Y-m-d H:i:s", $time);
           }
 
-          if(!$db_payment->save()){
+          if (!$db_payment->save()) {
             continue;
           };
 
@@ -236,11 +244,11 @@ class PaymentsController extends Controller
             $kurs = $db_payment->reward / $payment['payment'];
           }
 
-          if(!$kurs){
-            $kurs=Yii::$app->conversion->getRUB(1, $payment['currency']);
+          if (!$kurs) {
+            $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
           }
 
-          $db_payment->kurs=$kurs;
+          $db_payment->kurs = $kurs;
 
           //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
           if ($db_payment->status == 2) {
@@ -249,7 +257,7 @@ class PaymentsController extends Controller
             //через врямя удалить
             $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
             $db_payment->rate_id = $rate_id;
-          }else {
+          } else {
             $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
             $reward = $kurs * $payment['payment'];
 
@@ -292,16 +300,18 @@ class PaymentsController extends Controller
           }
 
           //на всякий проверяем на то что б с $users было все нормально
-          if(!$users || !is_array($users)){
-            $users=array();
+          if (!$users || !is_array($users)) {
+            $users = array();
           }
 
-          if (!in_array($user->uid, $users)) {
+          ///if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
-          }else{
+          /*} else {
             Yii::$app->logger->add(-$user->uid);
             Yii::$app->logger->add($users);
-          }
+            d(-$user->uid);
+            d($users);
+          }*/
         }
       }
 
@@ -326,16 +336,17 @@ class PaymentsController extends Controller
   /**
    * Завершение платежей по close date
    */
-  public function actionAutoComplite(){
+  public function actionAutoComplite()
+  {
     $users = [];
 
     $payments = Payments::find()
-      ->andWhere(['<','closing_date',date("Y-m-d H:i:s")])
-      ->andWhere(['status'=>0])
+      ->andWhere(['<', 'closing_date', date("Y-m-d H:i:s")])
+      ->andWhere(['status' => 0])
       ->all();
 
     foreach ($payments as $payment) {
-      $payment->status=2;
+      $payment->status = 2;
       $payment->save();
       if (!in_array($payment->user_id, $users)) {
         $users[] = $payment->user_id;
@@ -375,7 +386,7 @@ class PaymentsController extends Controller
     $params['date_end'] = date('d.m.Y', strtotime($tot['max']) + 24 * 60 * 60);
 
     Payments::deleteAll(['uid' => $payments]);
-    Notifications::deleteAll(['payment_id'=>$payments]);
+    Notifications::deleteAll(['payment_id' => $payments]);
 
     $this->actionIndex($params, false);
   }
