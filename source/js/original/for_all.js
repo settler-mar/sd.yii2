@@ -338,7 +338,7 @@ $( document ).ready(function() {
 });
 
 //если открыто как дочернее
-$(function(){
+(function(){
   if(!window.opener)return;
   if(href.indexOf('socials')>0 || href.indexOf('login')>0){
     return;
