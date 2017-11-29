@@ -196,14 +196,6 @@ var notification = (function() {
     option.close=close;
     li.append(close);
 
-    if(data.img && data.img.length>0) {
-      var img = $('<div/>', {
-        class: "notification_img"
-      });
-      img.css('background-image','url('+data.img+')');
-      li.append(img);
-    }
-
     var content = $('<div/>',{
       class:"notification_content"
     });
@@ -220,8 +212,22 @@ var notification = (function() {
       class:"notification_text"
     });
     text.html(data.message);
-    content.append(text);
 
+    if(data.img && data.img.length>0) {
+      var img = $('<div/>', {
+        class: "notification_img"
+      });
+      img.css('background-image','url('+data.img+')');
+      var wrap = $('<div/>', {
+        class: "wrap"
+      });
+
+      wrap.append(img);
+      wrap.append(text);
+      content.append(wrap);
+    }else{
+      content.append(text);
+    }
     li.append(content);
 
     //
