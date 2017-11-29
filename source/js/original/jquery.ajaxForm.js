@@ -58,6 +58,7 @@ function ajaxForm(els) {
     var post=form.serializeObject();
     form.addClass('loading');
     form.html('');
+    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>')
 
     $.post(
       data.url,
