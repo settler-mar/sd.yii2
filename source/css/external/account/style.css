@@ -615,8 +615,9 @@ Sidebar
   padding: 1em 5%;
 }
 .cd-side-nav .cd-label {
-  color: #646a6f;
-  font-size: 1.3rem;
+  color: #ACB1B4;
+  font-weight: 700;
+  font-size: 1.7rem;
 }
 .cd-side-nav a {
   position: relative;
@@ -683,7 +684,7 @@ Sidebar
   content: "\f291";
 }
 .cd-side-nav > ul > li.affiliate-icon > a::before {
-  content: "\f0c0";
+  content: "\f155";
 }
 .cd-side-nav > ul > li.settings-icon > a::before {
   content: "\f085";
