@@ -44,7 +44,7 @@ class AccountController extends \yii\web\Controller
 
       if($type=='add'){
         if($fav){
-          return json_encode(['error'=>['Данный магазин уже находится у Вас в Избранном.']]);
+          return json_encode(['error'=>['Данный магазин уже находится у вас в Избранном.']]);
         }else{
           $fav=new UsersFavorites();
           $fav->store_id=$affiliate_id;
@@ -62,7 +62,7 @@ class AccountController extends \yii\web\Controller
       }
       if($type=='delete'){
         if(!$fav){
-          return json_encode(['error'=>['Данного магазина нет у Вас в Избранном.']]);
+          return json_encode(['error'=>['Данного магазина нет у вас в Избранном.']]);
         }else{
           $fav->delete();
           $cache->delete($cash_id);

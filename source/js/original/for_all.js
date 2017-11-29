@@ -280,6 +280,10 @@ $( document ).ready(function() {
     var self = $(this);
     var type = self.attr("data-state"),
       affiliate_id = self.attr("data-affiliate-id");
+    if (self.hasClass('disabled')) {
+      return null;
+    }
+    self.addClass('disabled');
 
     if(type == "add") {
       self.find(".fa").removeClass("muted");
@@ -291,6 +295,7 @@ $( document ).ready(function() {
       "type" : type ,
       "affiliate_id": affiliate_id
     },function (data) {
+      self.removeClass('disabled');
       if(data.error){
         notification.notifi({message:data.error,type:'err','title':(data.title?data.title:false)});
         return;
@@ -319,6 +324,7 @@ $( document ).ready(function() {
       }
 
     },'json').fail(function() {
+      self.removeClass('disabled');
       notification.notifi({message:"<b>Технические работы!</b><br>В данный момент времени" +
       " произведённое действие невозможно. Попробуйте позже." +
       " Приносим свои извинения за неудобство.",type:'err'});
