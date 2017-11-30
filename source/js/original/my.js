@@ -173,3 +173,11 @@ $('#store-recommendation-link-checkbox').click(function(){
     });
   }
 });
+
+$('body').on('click', '.accordeon .accordeon-arrow', function() {
+  $(this).parent().toggleClass('open');
+  var content = $(this).parent().hasClass('open') ?
+      '<i class="fa fa-angle-up" aria-hidden="true"></i>' :
+      '<i class="fa fa-angle-down" aria-hidden="true"></i>';
+  $(this).html(content);
+});

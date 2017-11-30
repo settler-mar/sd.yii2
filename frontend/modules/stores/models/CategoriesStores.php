@@ -256,7 +256,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
         $catURL = "/stores/" . $cat['route'];
 
-        $tree .= "<li>";
+        $tree .= '<li '.($parent_id == 0 ? 'class="root'.(count($cats[$cat['uid']])>0 ? ' accordeon open' : '').'"':'').'>'.
+          ($parent_id == 0 && count($cats[$cat['uid']])>0 ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
+
         if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
