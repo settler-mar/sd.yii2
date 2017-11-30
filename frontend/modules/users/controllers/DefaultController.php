@@ -100,11 +100,7 @@ class DefaultController extends Controller
           $location = '/account?new=1';
         };
 
-        Yii::$app->session->setFlash('success', [
-          'title' => 'Успешная авторизация',
-          'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>' .
-            ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
-        ]);
+
 
         $data['html'] = 'Пользователь успешно зарегистрирован.<script>login_redirect("' . $location . '");</script>';
         //сообщения, если email не подтверждён
@@ -188,14 +184,6 @@ class DefaultController extends Controller
             Yii::$app->getUser()->login($user);
             //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
             $url = Yii::$app->user->getReturnUrl();
-            if ($url) {
-              //есть страница, на которую переход
-              Yii::$app->session->setFlash('success', [
-                'title' => 'Успешная авторизация.',
-                'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>' .
-                  ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
-              ]);
-            }
             if ($url == '/') {
               $url = null;
             }
@@ -337,11 +325,6 @@ class DefaultController extends Controller
           Yii::$app->getUser()->login($user);
           $url = Yii::$app->user->getReturnUrl();
           //есть страница, на которую переход
-          Yii::$app->session->setFlash('success', [
-            'title' => 'Успешная авторизация.',
-            'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>' .
-              ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
-          ]);
 
           Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
           //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
@@ -398,11 +381,6 @@ class DefaultController extends Controller
           //return Yii::$app->response->redirect('/')->send();
           $url = Yii::$app->user->getReturnUrl();
           //есть страница, на которую переход
-          Yii::$app->session->setFlash('success', [
-            'title' => 'Успешная авторизация.',
-            'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>' .
-              ' и прочесть <a href="/recommendations">Правила покупок с кэшбэком</a>',
-          ]);
           return Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
 
         }

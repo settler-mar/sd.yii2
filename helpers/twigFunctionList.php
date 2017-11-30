@@ -360,14 +360,27 @@ $functionsList=[
         } else {
           foreach ($flashe as $txt) {
             $title = false;
+            $no_show_page=fasle;
             if (is_array($txt)) {
               if (isset($txt['title'])) $title = trim($txt['title'],'.');
+              if (isset($txt['no_show_page'])) $no_show_page = $txt['no_show_page'];
               $txt = $txt['message'];
+
             }
             if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
               $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
             }
-            $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
+            $js_t = 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
+            if($no_show_page){
+              $if_ls=[];
+              foreach ($no_show_page as $url){
+                $if_ls[]='href.indexOf(\''.$url.'\')<0';
+              }
+              $js_t='href=location.href;
+              if('.implode(' && ',$if_ls).')
+              {'.$js_t.'}';
+            }
+            $js .=$js_t;
           }
         }
       } elseif (is_string($flashe)) {

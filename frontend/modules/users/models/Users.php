@@ -256,6 +256,16 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         Yii::$app->balanceCalc->todo($this->referrer_id, 'ref');
       }
 
+      //если создание произошло не из под админа(авторизированного пользователя)
+      if(Yii::$app->user->isGuest) {
+        Yii::$app->session->setFlash('success', [
+          'title' => 'Успешная авторизация',
+          'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>,' .
+            ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
+          'no_show_page'=>['account']
+        ]);
+      }
+
       if($this->new_loyalty_status_end>time()) {
         $notify = new Notifications();
         $notify->user_id = $this->uid;

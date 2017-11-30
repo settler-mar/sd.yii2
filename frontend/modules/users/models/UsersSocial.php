@@ -111,7 +111,7 @@ class UsersSocial extends \yii\db\ActiveRecord
             $userSocial->user_id=Yii::$app->user->id;
             $userSocial->save();
             Yii::$app->session->setFlash('info', [
-              'title' => 'Добавления аккаунта',
+              'title' => 'Добавление аккаунта',
               'message' => 'Аккаунт соцсети успешно привязан к вашему аккаунту в SecretDiscounter.',
             ]);
           }else if(Yii::$app->user->id==$user->uid){
