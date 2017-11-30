@@ -260,7 +260,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       if(Yii::$app->user->isGuest) {
         Yii::$app->session->setFlash('success', [
           'title' => 'Успешная авторизация',
-          'message' => 'Рекомендуем посетить <a href="/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '') . '">личный кабинет</a>,' .
+          'message' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>,' .
             ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
           'no_show_page'=>['account']
         ]);
