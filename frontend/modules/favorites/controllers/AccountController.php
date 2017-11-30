@@ -15,10 +15,6 @@ class AccountController extends \yii\web\Controller
    */
   public function beforeAction($action)
   {
-    if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
-    }
     $this->layout = '@app/views/layouts/account.twig';
     return true;
   }
@@ -28,6 +24,12 @@ class AccountController extends \yii\web\Controller
     $request= Yii::$app->request;
 
     if($request->isAjax) {
+      if(Yii::$app->user->isGuest){
+        return json_encode([
+          'error'=>'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="#login">авторизованы</a> на сайте.',
+          'title'=>'Ошибка']);
+      }
+
       $type = $request->post('type');
       $affiliate_id = $request->post('affiliate_id');
       $user_id=Yii::$app->user->id;
@@ -44,7 +46,7 @@ class AccountController extends \yii\web\Controller
 
       if($type=='add'){
         if($fav){
-          return json_encode(['error'=>['Данный магазин уже находится у вас в Избранном.']]);
+          return json_encode(['error'=>'Данный магазин уже находится у вас в Избранном.']);
         }else{
           $fav=new UsersFavorites();
           $fav->store_id=$affiliate_id;
@@ -62,7 +64,7 @@ class AccountController extends \yii\web\Controller
       }
       if($type=='delete'){
         if(!$fav){
-          return json_encode(['error'=>['Данного магазина нет у вас в Избранном.']]);
+          return json_encode(['error'=>'Данного магазина нет у вас в Избранном.']);
         }else{
           $fav->delete();
           $cache->delete($cash_id);
@@ -78,6 +80,11 @@ class AccountController extends \yii\web\Controller
       return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);
     }
 
+
+    if (Yii::$app->user->isGuest) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
 
     $cacheName = 'account_favorites_' . \Yii::$app->user->id;
     $dependency = new yii\caching\DbDependency;
