@@ -360,7 +360,7 @@ $functionsList=[
         } else {
           foreach ($flashe as $txt) {
             $title = false;
-            $no_show_page=fasle;
+            $no_show_page=false;
             if (is_array($txt)) {
               if (isset($txt['title'])) $title = trim($txt['title'],'.');
               if (isset($txt['no_show_page'])) $no_show_page = $txt['no_show_page'];
