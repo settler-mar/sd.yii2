@@ -5,6 +5,7 @@ namespace frontend\modules\stores\models;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\favorites\models\UsersFavorites;
 use common\components\Help;
 use frontend\modules\cache\models\Cache;
 
@@ -142,7 +143,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
         ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid'])
-        ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC']);
+        ->orderBy(['selected' =>  SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
         $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
       }
@@ -183,12 +184,61 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $cats = [];
         }
+        $cats[0] = array_merge(self::newStores(), isset($cats[0])? $cats[0] : []);
+        $cats[0] = array_merge(self::favoriteStores(), isset($cats[0])? $cats[0] : []);
         return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
       },
       $cache->defaultDuration,
       $dependency
     );
     return $tree;
+  }
+
+  /**
+   * для меню - избранные шопы
+   */
+  protected static function favoriteStores()
+  {
+      if (Yii::$app->user->isGuest) {
+        return [];
+      }
+      $count = Stores::find()
+          ->from(Stores::tableName(). ' cws')
+          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+          ->where(["cuf.user_id" => \Yii::$app->user->id, 'cws.is_active' => [0, 1]])
+          ->count();
+      if ($count) {
+        return [[
+          'name' => 'Мои избранные',
+          'parent_id' => 0,
+          'route' => 'favorite',
+          'menu_hidden' => 0,
+          'selected' => 0,
+          'count' => $count,
+        ]];
+      }
+  }
+  /**
+   * для меню - новые шопы
+   */
+  protected static function newStores()
+  {
+      $count = Stores::find()
+          ->where(['is_active' => [0, 1]])
+          ->andWhere(['>', 'added', date('Y-m-d H:i:s', time() - 60*60*24*30*3)])
+          ->count();
+      if ($count) {
+        return [[
+          'name' => 'Новые',
+          'parent_id' => 0,
+          'route' => 'news',
+          'menu_hidden' => 0,
+          'selected' => 0,
+          'count' => $count,
+        ]];
+      } else {
+        return [];
+      }
   }
 
   /**
@@ -248,13 +298,16 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($cat['selected']== 1){
           $c[]="cat_selected";
         }
+        if ($cat['route'] == 'news'){
+          $c[]="cat_news";
+        }
         if(count($c)>0){
           $c='class=\''.implode(' ',$c).'\'';
         }else{
           $c='';
         }
 
-        $catURL = "/stores/" . $cat['route'];
+        $catURL = "/stores" . (strpos($cat['route'], '=') ? '?' . $cat['route'] : '/' . $cat['route']);
 
         $tree .= '<li '.($parent_id == 0 ? 'class="root'.(count($cats[$cat['uid']])>0 ? ' accordeon open' : '').'"':'').'>'.
           ($parent_id == 0 && count($cats[$cat['uid']])>0 ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
