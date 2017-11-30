@@ -473,10 +473,16 @@ table .status_bg_1 {
         padding-bottom: 15px;
         margin-top: 0;
         margin: 0 -10px -15px -10px;
+
+        .sign-up-buttons{
+          margin-top: 0;
+        }
       }
 
       .text-dop{
-        text-align: center; padding: 10px; font-size: 12px;
+        text-align: center;
+        padding: 10px 10px 0 10px;
+        font-size: 12px;
       }
 
       h1,h2,h3{
