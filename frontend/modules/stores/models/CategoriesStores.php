@@ -187,17 +187,26 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $cats = [];
         }
         //избранные шопы
+        $cats[0] = isset($cats[0]) ? $cats[0]: [];
         $favoriteCount = UsersFavorites::userFavoriteCount();
         if ($favoriteCount > 0) {
-          $cats[0] = array_merge([[
+          array_unshift($cats[0], [
             'name' => 'Мои избранные',
             'parent_id' => 0,
             'route' => 'favorite',
             'menu_hidden' => 0,
             'selected' => 0,
             'count' => $favoriteCount,
-          ]], isset($cats[0])? $cats[0] : []);
+          ]);
         }
+        array_unshift($cats[0], [
+          'name' => 'Все магазины',
+          'parent_id' => 0,
+          'route' => '',
+          'menu_hidden' => 0,
+          'selected' => 0,
+          'count' => Stores::activeCount(),
+        ]);
 
         //return self::buildCategoriesTree($cats, 0, $currentCategory);
         return $cats;
@@ -275,12 +284,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $c='';
         }
 
-        $catURL = "/stores" . (strpos($cat['route'], '=') ? '?' . $cat['route'] : '/' . $cat['route']);
+        $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
         $tree .= '<li '.($parent_id == 0 ? 'class="root'.(count($cats[$cat['uid']])>0 ? ' accordeon open' : '').'"':'').'>'.
           ($parent_id == 0 && count($cats[$cat['uid']])>0 ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
 
-        if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId) {
+        if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId ||
+          $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'
+        ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
           $tree .= '<span ' . $class . '">' . $cat['name'] . "</span> <span " . $classCount . ">(" . $cat['count'] . ")</span>";
