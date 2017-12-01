@@ -55,8 +55,8 @@ class SdUrlRule implements UrlRuleInterface
       if(!$ref_href && isset($ref_redirect[$user->uid])){
         $ref_href=$ref_redirect[$user->uid];
       }
-
-      Yii::$app->getResponse()->redirect($ref_href?$ref_href:'/', 301);
+      $ref_href='/'.trim($ref_href?$ref_href:'','/');
+      Yii::$app->getResponse()->redirect($ref_href, 301);
       return ['', $params];
     }
 

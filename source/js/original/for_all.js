@@ -297,6 +297,7 @@ $( document ).ready(function() {
     },function (data) {
       self.removeClass('disabled');
       if(data.error){
+        self.find(".fa").removeClass("fa-spin");
         notification.notifi({message:data.error,type:'err','title':(data.title?data.title:false)});
         return;
       }

@@ -190,7 +190,7 @@ class AccountController extends Controller
       return 'err';
     }
 
-    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключенна.');
+    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключена.');
     $socials->delete();
   }
 
