@@ -41,7 +41,7 @@ class AdminSocialController extends Controller
   {
 
     if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialView')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен');
       return false;
     }
 
@@ -95,7 +95,7 @@ class AdminSocialController extends Controller
   {
 
     if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialEdit')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен');
       return false;
     }
 
@@ -129,7 +129,7 @@ class AdminSocialController extends Controller
   public function actionDelete($id)
   {
     if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UsersSocialDelete')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен');
       return false;
     }
 

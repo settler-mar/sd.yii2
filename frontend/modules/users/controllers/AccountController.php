@@ -175,7 +175,7 @@ class AccountController extends Controller
   public function actionSocialDelete(){
     $request = Yii::$app->request;
     if(!$request->isAjax || !$request->isPost){
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен');
       return false;
     }
 
@@ -190,7 +190,7 @@ class AccountController extends Controller
       return 'err';
     }
 
-    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключена.');
+    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключена');
     $socials->delete();
   }
 
