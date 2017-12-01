@@ -229,9 +229,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
           ->count();
       if ($count) {
         return [[
-          'name' => 'Новые',
+          'name' => 'Новые магазины',
           'parent_id' => 0,
-          'route' => 'news',
+          'route' => 'new',
           'menu_hidden' => 0,
           'selected' => 0,
           'count' => $count,
@@ -298,7 +298,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($cat['selected']== 1){
           $c[]="cat_selected";
         }
-        if ($cat['route'] == 'news'){
+        if ($cat['route'] == 'new'){
           $c[]="cat_news";
         }
         if(count($c)>0){
