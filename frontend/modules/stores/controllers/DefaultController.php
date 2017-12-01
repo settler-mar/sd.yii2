@@ -70,7 +70,7 @@ class DefaultController extends SdController
         echo $this->actionIndex($id, $categoryStore);
         exit;
       };
-      if (in_array($id, ['favorite', 'new'])) {
+      if ($id == 'favorite' && !Yii::$app->user->isGuest) {
         \Yii::$app->params['category_menu_item'] = $id;
         echo $this->actionIndex($id);
         exit;
@@ -152,29 +152,16 @@ class DefaultController extends SdController
       $cacheName .= '_' . $category;
     }
 
-    // дополнительно как категории шопов в меню
+    // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = \Yii::$app->params['category_menu_item'];
-    if (in_array($categoryMenuItem, ['favorite', 'new'])) {
+    if ($categoryMenuItem == 'favorite') {
       $cacheName .= '_' . $categoryMenuItem;
-      if ($categoryMenuItem == 'new') {
-        $dataBaseData->andWhere(['>', 'added', date('Y-m-d H:i:s', time() - 60*60*24*30*3)]);
-        $this->params['breadcrumbs'][] = [
-          'label' => 'Новые магазины',
-          'url' => '/stores/new',
-        ];
-      }
-      if ($categoryMenuItem == 'favorite') {
-        if (Yii::$app->user->isGuest) {
-          throw new yii\web\NotFoundHttpException();
-        }
         $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
         $this->params['breadcrumbs'][] = [
           'label' => 'Мои избранные',
           'url' => '/stores/favorite',
         ];
-      }
-
     }
 
 

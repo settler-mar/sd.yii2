@@ -165,7 +165,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $cacheName = 'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : '') .
-      ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
+      ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
+      .(Yii::$app->user->isGuest ? '' : '_user_'.Yii::$app->user->id);
+
     $tree = $cache->getOrSet(
       $cacheName,
       function () use ($parent_id, $currentCategory, $showHidden, $online) {
@@ -184,7 +186,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $cats = [];
         }
-        $cats[0] = array_merge(self::newStores(), isset($cats[0])? $cats[0] : []);
         $cats[0] = array_merge(self::favoriteStores(), isset($cats[0])? $cats[0] : []);
         return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
       },
@@ -216,28 +217,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
           'selected' => 0,
           'count' => $count,
         ]];
-      }
-  }
-  /**
-   * для меню - новые шопы
-   */
-  protected static function newStores()
-  {
-      $count = Stores::find()
-          ->where(['is_active' => [0, 1]])
-          ->andWhere(['>', 'added', date('Y-m-d H:i:s', time() - 60*60*24*30*3)])
-          ->count();
-      if ($count) {
-        return [[
-          'name' => 'Новые магазины',
-          'parent_id' => 0,
-          'route' => 'new',
-          'menu_hidden' => 0,
-          'selected' => 0,
-          'count' => $count,
-        ]];
-      } else {
-        return [];
       }
   }
 
@@ -298,7 +277,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($cat['selected']== 1){
           $c[]="cat_selected";
         }
-        if ($cat['route'] == 'new'){
+        if ($cat['route'] == 'news_shops'){
           $c[]="cat_news";
         }
         if(count($c)>0){
