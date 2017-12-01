@@ -143,7 +143,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
         ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid'])
-        ->orderBy(['selected' =>  SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
+        ->orderBy(['menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
         $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
       }
@@ -158,19 +158,19 @@ class CategoriesStores extends \yii\db\ActiveRecord
    * @param null $currentCategory
    * @return null|string
    */
-  public static function tree($parent_id = 0, $currentCategory = null, $showHidden = true, $online = null)
+  public static function tree($currentCategory = null, $showHidden = true, $online = null)
   {
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $cacheName = 'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : '') .
+    $cacheName = 'category_tree' . ($showHidden == false ? '_hide_hidden' : '') .
       ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
       .(Yii::$app->user->isGuest ? '' : '_user_'.Yii::$app->user->id);
 
-    $tree = $cache->getOrSet(
+    $cats = $cache->getOrSet(
       $cacheName,
-      function () use ($parent_id, $currentCategory, $showHidden, $online) {
+      function () use ($currentCategory, $showHidden, $online) {
         $categories = self::activeList($online);
         $c = [];
         if (count($categories) > 0) {
@@ -186,38 +186,27 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $cats = [];
         }
-        $cats[0] = array_merge(self::favoriteStores(), isset($cats[0])? $cats[0] : []);
-        return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
+        //избранные шопы
+        $favoriteCount = UsersFavorites::userFavoriteCount();
+        if ($favoriteCount > 0) {
+          $cats[0] = array_merge([[
+            'name' => 'Мои избранные',
+            'parent_id' => 0,
+            'route' => 'favorite',
+            'menu_hidden' => 0,
+            'selected' => 0,
+            'count' => $favoriteCount,
+          ]], isset($cats[0])? $cats[0] : []);
+        }
+
+        //return self::buildCategoriesTree($cats, 0, $currentCategory);
+        return $cats;
       },
       $cache->defaultDuration,
       $dependency
     );
-    return $tree;
-  }
-
-  /**
-   * для меню - избранные шопы
-   */
-  protected static function favoriteStores()
-  {
-      if (Yii::$app->user->isGuest) {
-        return [];
-      }
-      $count = Stores::find()
-          ->from(Stores::tableName(). ' cws')
-          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
-          ->where(["cuf.user_id" => \Yii::$app->user->id, 'cws.is_active' => [0, 1]])
-          ->count();
-      if ($count) {
-        return [[
-          'name' => 'Мои избранные',
-          'parent_id' => 0,
-          'route' => 'favorite',
-          'menu_hidden' => 0,
-          'selected' => 0,
-          'count' => $count,
-        ]];
-      }
+    return self::buildCategoriesTree($cats, 0, $currentCategory);
+    //return $tree;
   }
 
   /**

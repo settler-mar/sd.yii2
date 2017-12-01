@@ -84,6 +84,41 @@ class UsersFavorites extends \yii\db\ActiveRecord
   }
 
   /**
+   * количество шопов у юсера
+   * @param bool $user_id
+   * @return mixed
+   */
+  public static function userFavoriteCount($userId = false)
+  {
+    if (!$userId) {
+      $userId = Yii::$app->user->isGuest ? false : Yii::$app->user->id;
+    }
+    if (!$userId) {
+      return 0;
+    }
+    $dependency = new yii\caching\DbDependency;
+    $cache = Yii::$app->cache;
+    $dependencyName = 'account_favorites_count';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $cacheName = 'account_favorites_count_user_' . $userId;
+
+    return $cache->getOrSet(
+      $cacheName,
+      function () use ($userId) {
+        $count = Stores::find()
+          ->from(Stores::tableName() . ' cws')
+          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+          ->where(["cuf.user_id" => $userId, 'cws.is_active' => [0, 1]])
+          ->count();
+        return $count;
+      },
+      $cache->defaultDuration,
+      $dependency
+    );
+
+  }
+
+  /**
    * получить магазин
    * @return \yii\db\ActiveQuery
    */
@@ -97,10 +132,12 @@ class UsersFavorites extends \yii\db\ActiveRecord
     //ключи
     Cache::deleteName('account_favorite_stores_' . $this->user_id);
     Cache::deleteName('account_favorites_' . $this->user_id);
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id);
   }
   public function afterDelete()
   {
     Cache::deleteName('account_favorite_stores_' . $this->user_id);
     Cache::deleteName('account_favorites_' . $this->user_id);
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id);
   }
 }
