@@ -1065,6 +1065,9 @@ $images: "/images";
         }
       }
     }
+    &__handle.more {
+      font-size: 11px;
+    }
     &.open {
       height: auto;
       @media (min-width: 991px){
