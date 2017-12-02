@@ -186,27 +186,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $cats = [];
         }
-        //избранные шопы
-        $cats[0] = isset($cats[0]) ? $cats[0]: [];
-        $favoriteCount = UsersFavorites::userFavoriteCount();
-        if ($favoriteCount > 0) {
-          array_unshift($cats[0], [
-            'name' => 'Мои избранные',
-            'parent_id' => 0,
-            'route' => 'favorite',
-            'menu_hidden' => 0,
-            'selected' => 0,
-            'count' => $favoriteCount,
-          ]);
-        }
-        array_unshift($cats[0], [
-          'name' => 'Все магазины',
-          'parent_id' => 0,
-          'route' => '',
-          'menu_hidden' => 0,
-          'selected' => 0,
-          'count' => Stores::activeCount(),
-        ]);
 
         //return self::buildCategoriesTree($cats, 0, $currentCategory);
         return $cats;
@@ -214,6 +193,28 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $cache->defaultDuration,
       $dependency
     );
+    //избранные шопы
+    $cats[0] = isset($cats[0]) ? $cats[0]: [];
+    $favoriteCount = UsersFavorites::userFavoriteCount();
+    if ($favoriteCount > 0) {
+      array_unshift($cats[0], [
+        'name' => 'Мои избранные',
+        'parent_id' => 0,
+        'route' => 'favorite',
+        'menu_hidden' => 0,
+        'selected' => 0,
+        'count' => $favoriteCount,
+      ]);
+    }
+    array_unshift($cats[0], [
+      'name' => 'Все магазины',
+      'parent_id' => 0,
+      'route' => '',
+      'menu_hidden' => 0,
+      'selected' => 0,
+      'count' => Stores::activeCount(),
+    ]);
+
     return self::buildCategoriesTree($cats, 0, $currentCategory);
     //return $tree;
   }
@@ -286,8 +287,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
         $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
-        $tree .= '<li '.($parent_id == 0 ? 'class="root'.(isset($cats[$cat['uid']]) && count($cats[$cat['uid']])>0 ? ' accordeon open' : '').'"':'').'>'.
-          ($parent_id == 0 && count($cats[$cat['uid']])>0 ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
+        $childCategory = isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
+        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategory ? ' accordeon open' : '').'"':'').'>'.
+          ($parent_id == 0 && $childCategory ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
 
         if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId ||
           $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'
@@ -298,7 +300,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " <span>(" . $cat['count'] . ")</span></a>";
         }
-        $tree .= self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId);
+        $tree .= ($childCategory ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
         $tree .= "</li>";
       }
       $tree .= "</ul>";

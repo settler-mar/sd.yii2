@@ -22,9 +22,9 @@ class SdUrlRule implements UrlRuleInterface
     $params = $request->get();
     $pathInfo = $request->getPathInfo();
 
-    $ref_cpec=Yii::$app->params['ref_cpec'];
-    $ref_redirect = Yii::$app->params['ref_redirect'];
-    $ref_cpec_redirect = Yii::$app->params['ref_cpec_redirect'];
+    $ref_cpec=isset(Yii::$app->params['ref_cpec']) ? Yii::$app->params['ref_cpec'] : null;
+    $ref_redirect = isset(Yii::$app->params['ref_redirect']) ? Yii::$app->params['ref_redirect'] : null;
+    $ref_cpec_redirect = isset(Yii::$app->params['ref_cpec_redirect']) ? Yii::$app->params['ref_cpec_redirect'] : null;
     $ref_href = false;
 
     if (isset($ref_cpec[$pathInfo])) {
