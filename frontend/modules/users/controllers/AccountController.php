@@ -219,7 +219,11 @@ class AccountController extends Controller
         } else {
 
         }
-        return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
+        //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
+        $url = !empty(Yii::$app->request->referrer) &&
+          strpos(Yii::$app->request->referrer, '/account/sendverifyemail') === false ?
+          Yii::$app->request->referrer : '/account';
+        return $this->redirect($url)->send();
       }
     }
 
