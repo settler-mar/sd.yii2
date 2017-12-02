@@ -296,7 +296,7 @@
                     {% if store_reviews|length > 0 %}
                     <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
                         {% for review in store_reviews %}
-                            <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 6 %}more{% endif %}">
+                            <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 4 %}more{% endif %}">
                                 {% include 'parts/comment.twig' %}
                             </div>
                         {% endfor %}
@@ -313,7 +313,7 @@
                         <p class="ntfnd">На данный момент отзывы о магазине</p>
                         <p>{{current_store.name}} отсутствуют. Будь первым!</p>
                     {% endif %}
-                    {% if store_reviews|length > 6 %}
+                    {% if store_reviews|length > 4 %}
                         <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
                         <a class="btn store-reviews__show-less" href="#" style="display: none;">Скрыть все</a>
                     {% endif %}
