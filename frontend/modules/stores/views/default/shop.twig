@@ -381,10 +381,10 @@
 {% endif %}
 
 {% if current_store.is_offline==0 %}
-    {% if current_store.cpaLink.cpa_id==1 %}
-        {% include 'parts/instruction_online.twig' %}
-    {% else %}
+    {% if current_store.cpaLink.cpa_id==2 %}
         {% include 'parts/instruction_online_offline.twig' %}
+    {% else %}
+        {% include 'parts/instruction_online.twig' %}
     {% endif %}
 {% else %}
     {% include 'parts/instruction_offline.twig' %}

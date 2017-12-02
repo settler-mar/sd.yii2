@@ -19,6 +19,31 @@ function _hyphen_words_wbr(array &$m){
   return _hyphen_words($m,true);
 }
 
+function create_flash($type,$flashe){
+  $title = false;
+  $no_show_page=false;
+  if (is_array($flashe)) {
+    if (isset($flashe['title'])) $title = trim($flashe['title'],'.');
+    if (isset($flashe['no_show_page'])) $no_show_page = $flashe['no_show_page'];
+    $txt = trim($flashe['message'],'.');
+  }else{
+    $txt=$flashe;
+  }
+  if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
+    $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
+  }
+  $js_t = 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
+  if($no_show_page){
+    $if_ls=[];
+    foreach ($no_show_page as $url){
+      $if_ls[]='href.indexOf(\''.$url.'\')<0';
+    }
+    $js_t='href=location.href;
+              if('.implode(' && ',$if_ls).')
+              {'.$js_t.'}';
+  }
+  return $js_t;
+}
 function _hyphen_words(array &$m,$wbr=false)
 {
   if (! array_key_exists(3, $m)) return $m[0];
@@ -320,7 +345,8 @@ $functionsList=[
     return str_replace("\n",'<br>',$txt);
   },
   'Notification'=>function () {
-    $flashes = \Yii::$app->session->getAllFlashes(true);
+    //$flashes = \Yii::$app->session->getAllFlashes(true);
+    $flashes = \Yii::$app->session->getAllFlashes();
 
     if(isset(Yii::$app->params['exception'])){
       $exception=Yii::$app->params['exception'];
@@ -351,43 +377,17 @@ $functionsList=[
     $js = '';
     $flashes=array_reverse($flashes);
     foreach ($flashes as $type => $flashe) {
-      Yii::$app->session->removeFlash($type);
+      //Yii::$app->session->removeFlash($type);
       if (is_array($flashe)){
         if (isset($flashe['title']) && isset($flashe['message'])) {
-          $title=$flashe['title'];
-          $txt=$flashe['message'];
-          $js .= 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
+          $js .= create_flash($type,$flashe);
         } else {
           foreach ($flashe as $txt) {
-            $title = false;
-            $no_show_page=false;
-            if (is_array($txt)) {
-              if (isset($txt['title'])) $title = trim($txt['title'],'.');
-              if (isset($txt['no_show_page'])) $no_show_page = $txt['no_show_page'];
-              $txt = $txt['message'];
-
-            }
-            if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
-              $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
-            }
-            $js_t = 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
-            if($no_show_page){
-              $if_ls=[];
-              foreach ($no_show_page as $url){
-                $if_ls[]='href.indexOf(\''.$url.'\')<0';
-              }
-              $js_t='href=location.href;
-              if('.implode(' && ',$if_ls).')
-              {'.$js_t.'}';
-            }
-            $js .=$js_t;
+            $js .= create_flash($type,$txt);
           }
         }
       } elseif (is_string($flashe)) {
-          if($flashe=='Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest){
-            $flashe='Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
-          }
-          $js .= 'notification.notifi({message:\'' . $flashe . '\',type:\'' . $type . '\'});' . "\n";
+        $js .= create_flash($type,$flashe);
       }
     }
     return '<script type="text/javascript">' . "\n" . $js . '</script>';

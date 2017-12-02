@@ -1,21 +1,22 @@
 <section>
 <div class="sign-up noajax result">
-    <h3>Отправлен E-mail</h3>
-    <p class="message">
+    <h3>E-mail Отправлен</h3>
         {% if new %}
 
         {% else %}
 
         {% endif %}
-        Для завершения регистрации необходимо подтвердить ваш e-mail.
-    </p>
+
     <p class="message">
-        Вам отправлено письмо {{ _if(email,"на <b>"~email~"</b>") |raw }}
-        со ссылкой на его подтверждение. Проверьте почту.
+        {{ _if(email,"На <b>"~email~"</b>") |raw }} отправлено письмо
+        со ссылкой для подтверждения аккаунта.
         Если письмо не пришло в течение 5 минут – проверьте папку «Спам».
     </p>
     <p>
-        Если вы ошиблись при вводе e-mail, пройдите по этой <a href="#" onclick="javascript:history.back(); return false;">ссылке</a>.
+        Если вы ошиблись при вводе e-mail, вернитесь <a href="#" onclick="javascript:history.back(); return false;">назад</a>.
+    </p>
+    <p>
+        Это окно можно закрыть.
     </p>
 </div>
 </section>
