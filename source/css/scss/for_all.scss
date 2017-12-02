@@ -892,6 +892,12 @@ body>.news-index{
   .name-none:after{
     content: '';
   }
+  &_wrapper {
+    margin-bottom: 50px;
+    h3.header {
+      margin-top: 0;
+    }
+  }
 }
 table.table-users{
   .sum_information {
