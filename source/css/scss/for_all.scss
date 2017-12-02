@@ -718,6 +718,9 @@ table .status_bg_1 {
     display: flex;
     flex-wrap: nowrap;
   }
+  a {
+    text-decoration: underline;
+  }
 }
 .notification_title {
   display: block;
