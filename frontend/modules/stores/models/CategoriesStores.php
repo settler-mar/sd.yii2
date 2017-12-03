@@ -204,6 +204,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'menu_hidden' => 0,
         'selected' => 0,
         'count' => $favoriteCount,
+        'uid' => null,
       ]);
     }
     array_unshift($cats[0], [
@@ -213,6 +214,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       'menu_hidden' => 0,
       'selected' => 0,
       'count' => Stores::activeCount(),
+      'uid' => null,
     ]);
 
     return self::buildCategoriesTree($cats, 0, $currentCategory);
@@ -291,7 +293,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategory ? ' accordeon open' : '').'"':'').'>'.
           ($parent_id == 0 && $childCategory ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
 
-        if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId ||
+        if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
           $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'
         ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
