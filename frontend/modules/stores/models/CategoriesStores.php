@@ -194,26 +194,28 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $dependency
     );
     //избранные шопы
-    $cats[0] = isset($cats[0]) ? $cats[0]: [];
-    $favoriteCount = UsersFavorites::userFavoriteCount();
-    if ($favoriteCount > 0) {
-      array_unshift($cats[0], [
-        'name' => 'Мои избранные',
-        'parent_id' => 0,
-        'route' => 'favorite',
-        'menu_hidden' => 0,
-        'selected' => 0,
-        'count' => $favoriteCount,
-      ]);
-    }
-    array_unshift($cats[0], [
-      'name' => 'Все магазины',
-      'parent_id' => 0,
-      'route' => '',
-      'menu_hidden' => 0,
-      'selected' => 0,
-      'count' => Stores::activeCount(),
-    ]);
+//    $cats[0] = isset($cats[0]) ? $cats[0]: [];
+//    $favoriteCount = UsersFavorites::userFavoriteCount();
+//    if ($favoriteCount > 0) {
+//      array_unshift($cats[0], [
+//        'name' => 'Мои избранные',
+//        'parent_id' => 0,
+//        'route' => 'favorite',
+//        'menu_hidden' => 0,
+//        'selected' => 0,
+//        'count' => $favoriteCount,
+//        'uid' => null,
+//      ]);
+//    }
+//    array_unshift($cats[0], [
+//      'name' => 'Все магазины',
+//      'parent_id' => 0,
+//      'route' => '',
+//      'menu_hidden' => 0,
+//      'selected' => 0,
+//      'count' => Stores::activeCount(),
+//      'uid' => null,
+//    ]);
 
     return self::buildCategoriesTree($cats, 0, $currentCategory);
     //return $tree;
@@ -288,8 +290,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
         $childCategory = isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
-        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategory ? ' accordeon open' : '').'"':'').'>'.
-          ($parent_id == 0 && $childCategory ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
+        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategory ? ' accordeon open' : '').'"':'').'>';//.
+          //($parent_id == 0 && $childCategory ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');
 
         if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId ||
           $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'
