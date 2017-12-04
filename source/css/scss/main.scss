@@ -2411,6 +2411,9 @@ $selected_color: #1a2527;
         background-color: $selected_color;
         color: $root_color;
       }
+      span {
+        color: inherit !important;
+      }
     }
 
     > span.active {
@@ -2419,6 +2422,9 @@ $selected_color: #1a2527;
       padding: 10px;
       color: $root_color;
       font-weight: 600 !important;
+      span {
+        color: inherit !important;
+      }
     }
   }
   li.accordeon {
@@ -2441,12 +2447,18 @@ $selected_color: #1a2527;
             color: $background_color;
             text-decoration: none !important;
           }
+          span {
+            color: inherit;
+          }
         }
         span.active {
           display: block;
           padding: 9px 20px;
           background-color: $selected_color;
           color: $root_color;
+          span {
+            color: inherit;
+          }
         }
       }
     }
