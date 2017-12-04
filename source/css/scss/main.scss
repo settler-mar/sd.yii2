@@ -2389,16 +2389,18 @@ ul.withdraw-logo{
 $root_color: #e4c84b;
 $background_color: #eee;
 $font_color: #0f181a;
+$selected_color: #1a2527;
 
 .tree-cat.accordeon {
   background-color: $background_color;
   li.root {
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     > a {
       background-color: $root_color;
       display: block;
-      padding: 15px;
+      padding: 10px;
       color: $font_color;
+      font-weight: 600 !important;
       &:hover {
         text-decoration: none !important;
         background-color: $font_color;
@@ -2407,10 +2409,11 @@ $font_color: #0f181a;
     }
 
     > span.active {
-      background-color: $font_color;
+      background-color: $selected_color;
       display: block;
-      padding: 15px;
+      padding: 10px;
       color: $root_color;
+      font-weight: 600 !important;
     }
   }
   li.accordeon {
@@ -2419,10 +2422,10 @@ $font_color: #0f181a;
       overflow: hidden;
       max-height: 0;
       //transition: max-height 0.4s cubic-bezier(0,1,0,.95);
-      -webkit-transition: height 0.4s ease 0.4s;
-      -moz-transition: height 0.4s ease 0.4s;
-      -o-transition: height 0.4s ease 0.4s;
-      transition: height 0.4s ease 0.4s;
+      -webkit-transition: height 0.4s ease;
+      -moz-transition: height 0.4s ease;
+      -o-transition: height 0.4s ease;
+      transition: height 0.4s ease;
       margin: 0 !important;
       li {
         a {
@@ -2437,7 +2440,7 @@ $font_color: #0f181a;
         span.active {
           display: block;
           padding: 9px 20px;
-          background-color: $font_color;
+          background-color: $selected_color;
           color: $root_color;
         }
       }
@@ -2450,7 +2453,7 @@ $font_color: #0f181a;
         cursor: pointer;
         display: block;
         color: $background_color;
-        padding: 15px 10px;
+        padding: 10px 10px;
     }
     &.open {
       ul {
