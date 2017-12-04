@@ -324,7 +324,7 @@ class PaymentsController extends Controller
     }
 
     d($users);
-    Yii::$app->logger->add($users);
+    //Yii::$app->logger->add($users);
     //делаем пересчет бланса пользователей
     if (count($users) > 0) {
       Yii::$app->balanceCalc->setNotWork(false);
