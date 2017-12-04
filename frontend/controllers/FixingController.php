@@ -24,6 +24,7 @@ class FixingController extends SdController{
   public function actionPayment(){
     $request=Yii::$app->request;
 
+    Yii::$app->logger->add(json_encode($request->post()));
     $task= new Task();
     $task->task=1;
     $task->param=time();
