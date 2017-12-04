@@ -289,20 +289,28 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
         $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
-        $childCategory = isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
-        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategory ? ' accordeon open' : '').'"':'').'>'.
-          ($parent_id == 0 && $childCategory ? '<span class="accordeon-arrow"><i class="fa fa-angle-up" aria-hidden="true"></i></span>' : '');//класс для аккордеона
+        //имеются дочерние категрии
+        $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
+        //open  - если пустая настройка, или (имеются дочерние и имеется текущая категория и (текущая в ключах подкатегории, или текущая как корневая категория)
+        $sectionOpen = (empty(Yii::$app->params['stores_menu_accordeon_collapsed']) ||
+          $childCategories && $currentCategoryId &&
+          (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
+          'open current' : '');
+        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategories ? ' accordeon '.$sectionOpen : '').'"':'').'>'.
+          ($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').
+            '" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
 
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
-          $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'
+          $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||
+          $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores'
         ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
-          $tree .= '<span ' . $class . '">' . $cat['name'] . "</span> <span " . $classCount . ">(" . $cat['count'] . ")</span>";
+          $tree .= '<span ' . $class . '">' . $cat['name'] . " <span " . $classCount . ">(" . $cat['count'] . ")</span></span>";
         } else {
           $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " <span>(" . $cat['count'] . ")</span></a>";
         }
-        $tree .= ($childCategory ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
+        $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
         $tree .= "</li>";
       }
       $tree .= "</ul>";
