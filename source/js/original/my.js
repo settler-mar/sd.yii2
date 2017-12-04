@@ -174,6 +174,12 @@ $('#store-recommendation-link-checkbox').click(function(){
   }
 });
 
+//текущую категорию в меню шопов - открыть
+var currentCategory = $('.tree-cat.accordeon .accordeon.current ul');
+$.each(currentCategory, function(index, item){
+  $(item).height(item.scrollHeight);
+});
+
 $('body').on('click', '.accordeon .accordeon-arrow', function() {
   var parent = $(this).parent();
   parent.toggleClass('open');

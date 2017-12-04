@@ -2421,7 +2421,7 @@ $selected_color: #1a2527;
     ul {
       overflow: hidden;
       max-height: 0;
-      //transition: max-height 0.4s cubic-bezier(0,1,0,.95);
+      height: 0;
       -webkit-transition: height 0.4s ease;
       -moz-transition: height 0.4s ease;
       -o-transition: height 0.4s ease;
@@ -2454,13 +2454,6 @@ $selected_color: #1a2527;
         display: block;
         color: $background_color;
         padding: 10px 10px;
-    }
-    &.open {
-      ul {
-        max-height: 9999px;
-        transition: height 0.4s ease;
-        //transition: max-height 0.4s cubic-bezier(1,.05,1,0);
-      }
     }
     &.current .accordeon-arrow {
       color: $background_color;
