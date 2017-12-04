@@ -2418,7 +2418,11 @@ $font_color: #0f181a;
     ul {
       overflow: hidden;
       max-height: 0;
-      transition: max-height 0.4s cubic-bezier(0,1,0,.95);
+      //transition: max-height 0.4s cubic-bezier(0,1,0,.95);
+      -webkit-transition: height 0.4s ease 0.4s;
+      -moz-transition: height 0.4s ease 0.4s;
+      -o-transition: height 0.4s ease 0.4s;
+      transition: height 0.4s ease 0.4s;
       margin: 0 !important;
       li {
         a {
@@ -2451,7 +2455,8 @@ $font_color: #0f181a;
     &.open {
       ul {
         max-height: 9999px;
-        transition: max-height 0.4s cubic-bezier(1,.05,1,0);
+        transition: height 0.4s ease;
+        //transition: max-height 0.4s cubic-bezier(1,.05,1,0);
       }
     }
     &.current .accordeon-arrow {
