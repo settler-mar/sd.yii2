@@ -25,7 +25,7 @@ class EauthWidget extends \nodge\eauth\Widget
         $options[$service->id] = $service->jsArguments;
       }
       //$js = 'jQuery("#' . $this->getId() . '").eauth(' . json_encode($options) . ');';
-      $js = 'jQuery(".sd-eauth").eauth(' . json_encode($options) . ');';
+      $js = 'jQuery(".sd-eauth").each(' . json_encode($options) . ');';
     }
 
     $dop_class='';
