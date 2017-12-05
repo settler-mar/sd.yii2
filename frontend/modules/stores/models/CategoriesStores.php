@@ -296,7 +296,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($cat['selected']== 1){
           $c[]="cat_selected";
         }
-        if ($cat['route'] == 'news_shops'){
+        if ($cat['route'] == 'news-shops'){
           $c[]="cat_news";
         }
         if(count($c)>0){
