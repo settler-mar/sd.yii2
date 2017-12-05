@@ -52,6 +52,7 @@ class DefaultController extends SdController
     if (!$request->isAjax) {
       $this->redirect('/reviews');
     }
+
     $model=new Reviews();
     $data=[
       'shop'=>$shop
@@ -74,6 +75,8 @@ class DefaultController extends SdController
             опубликован на сайте после модерации.';
         return json_encode($data);
       }
+      var_dump($model->save());
+      exit;
     }
 
     $data['model']=$model;

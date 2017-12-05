@@ -60,7 +60,7 @@ function ajaxForm(els) {
     form.html('');
     wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>')
 
-    data.url+=(data.url.indexOf('?')>0?'&':'?')+'r='+Math.random();
+    data.url+=(data.url.indexOf('?')>0?'&':'?')+'rc='+Math.random();
 
     $.post(
       data.url,
