@@ -35,6 +35,9 @@
               position: relative;
               margin-top: 0;
               margin-left: 0;
+              span.accordeon-arrow {
+                display: none;
+              }
 
               .fa-fa-carett {
                 position: absolute;
@@ -116,6 +119,7 @@
                   &.cat_news {
                     color:  #00862f;
                   }
+
                 }
               }
               span.active {
