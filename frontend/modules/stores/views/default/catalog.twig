@@ -63,7 +63,7 @@
             <div class="col-sm-12 col-md-4">
                 {#<h3 class="cathead">Категории</h3>#}
                 {{ use('frontend/components/CategoryMenu') }}
-                {% set category_tree = category_menu_widget() %}
+                {% set category_tree = category_menu_widget({'ext_items':'favorite,all_shops'}) %}
                 {% if category_tree %}
                 <div class="left-categories">
                     <div class="tree-cat accordeon">

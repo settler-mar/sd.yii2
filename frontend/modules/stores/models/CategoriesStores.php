@@ -143,7 +143,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
         ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid'])
-        ->orderBy(['menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
+        ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
         $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
       }
@@ -158,15 +158,19 @@ class CategoriesStores extends \yii\db\ActiveRecord
    * @param null $currentCategory
    * @return null|string
    */
-  public static function tree($currentCategory = null, $showHidden = true, $online = null)
+  public static function tree($currentCategory = null, $options = [])
   {
+    $showHidden = isset($options['show_hidden']) ? $options['show_hidden'] : true;
+    $online = isset($options['online']) ? $options['online'] : null;
+    $extItems = isset($options['ext_items']) ? $options['ext_items'] : [];
+
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $cacheName = 'category_tree' . ($showHidden == false ? '_hide_hidden' : '') .
       ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
-      .(Yii::$app->user->isGuest ? '' : '_user_'.Yii::$app->user->id);
+      . (Yii::$app->user->isGuest ? '' : '_user_' . Yii::$app->user->id);
 
     $cats = $cache->getOrSet(
       $cacheName,
@@ -187,46 +191,51 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $cats = [];
         }
 
-        //return self::buildCategoriesTree($cats, 0, $currentCategory);
         return $cats;
       },
       $cache->defaultDuration,
       $dependency
     );
     //избранные шопы
-    $cats[0] = isset($cats[0]) ? $cats[0]: [];
-    $favoriteCount = UsersFavorites::userFavoriteCount();
-    if ($favoriteCount > 0) {
+    $cats[0] = isset($cats[0]) ? $cats[0] : [];
+    if (in_array('favorite', $extItems)) {
+      $favoriteCount = UsersFavorites::userFavoriteCount();
+      if ($favoriteCount > 0) {
+        array_unshift($cats[0], [
+          'name' => 'Мои избранные',
+          'parent_id' => 0,
+          'route' => 'favorite',
+          'menu_hidden' => 0,
+          'selected' => '0',
+          'count' => $favoriteCount,
+          'uid' => null,
+          'menu_index' => -1000,
+        ]);
+      }
+    }
+    if (in_array('all_shops', $extItems)) {
       array_unshift($cats[0], [
-        'name' => 'Мои избранные',
+        'name' => 'Все магазины',
         'parent_id' => 0,
-        'route' => 'favorite',
+        'route' => '',
         'menu_hidden' => 0,
         'selected' => '0',
-        'count' => $favoriteCount,
+        'count' => Stores::activeCount(),
         'uid' => null,
-        'menu_index'=> -1000,
+        'menu_index' => -1001,
       ]);
     }
-    array_unshift($cats[0], [
-      'name' => 'Все магазины',
-      'parent_id' => 0,
-      'route' => '',
-      'menu_hidden' => 0,
-      'selected' => '0',
-      'count' => Stores::activeCount(),
-      'uid' => null,
-      'menu_index' => -1001,
-    ]);
+
     //перемещаем выделенные категории вверх
-    //d($cats[0]);
-    usort($cats[0], function($current, $next) {
-      return $current['selected'] < $next['selected'] ? 1 :
-        ($current['selected'] > $next['selected'] ? -1 :
-        ($current['menu_index'] > $next['menu_index'] ? 1 :
-        ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
-    });
-    //ddd($cats[0]);
+    if (!empty($extItems)) {
+      usort($cats[0], function ($current, $next) {
+        return $current['selected'] < $next['selected'] ? 1 :
+          ($current['selected'] > $next['selected'] ? -1 :
+            ($current['menu_index'] > $next['menu_index'] ? 1 :
+              ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
+      });
+    }
+
     return self::buildCategoriesTree($cats, 0, $currentCategory);
   }
 

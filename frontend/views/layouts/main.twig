@@ -98,7 +98,7 @@
                                 <span class="fa fa-search"></span>
                             </form>
                             {{ use('frontend/components/CategoryMenu') }}
-                            {% set category_tree = category_menu_widget({'show_hidden': false}) %}
+                            {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite'}) %}
                             {% if category_tree %}
                                 <div class="submenu">
                                     <span class="fa fa-caret-up"></span>
@@ -118,7 +118,7 @@
                                     <span class="fa fa-search"></span>
                                 </form>
 
-                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 1}) %}
+                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 1, 'ext_items':'favorite'}) %}
                                 {% if category_tree %}
                                     <div class="submenu">
                                         <span class="fa fa-caret-up"></span>
@@ -130,7 +130,7 @@
                             </li>
                             <li class="stores submenu-handl">
                                 {{ get_menu_item({'href': '/stores/offline', 'title': 'Магазины оффлайн'})|raw }}
-                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 0}) %}
+                                {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 0,  'ext_items':'favorite'}) %}
                                 {% if category_tree %}
                                     <div class="submenu">
                                         <span class="fa fa-caret-up"></span>
