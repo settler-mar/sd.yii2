@@ -2390,6 +2390,8 @@ $root_color: #e4c84b;
 $background_color: #eee;
 $font_color: #0f181a;
 $selected_color: #1a2527;
+$item_news_color: #035821;
+$item_selected_color: #ff0000;
 
 .tree-cat.accordeon {
   background-color: $background_color;
@@ -2406,6 +2408,15 @@ $selected_color: #1a2527;
       padding: 10px;
       color: $font_color;
       font-weight: 600 !important;
+      &.cat_news {
+        color: $item_news_color;
+        &:hover {
+          color: $root_color;
+        }
+      }
+      &.cat_selected {
+        color: $item_selected_color;
+      }
       &:hover {
         text-decoration: none !important;
         background-color: $selected_color;

@@ -61,6 +61,14 @@ class Cache extends \yii\db\ActiveRecord
         $cache->last_update = new Expression('NOW()');
         $cache->save();
     }
+    /**
+     * @param $name
+     * В таблице зависимостей cw_cache обновляем записи с указанным 'name' like $name.'%'
+     */
+    public static function clearAllNames($name)
+    {
+        self::updateAll(['last_update' => new Expression('NOW()')], ['like', 'name', $name.'%', false]);
+    }
 
     /**
      * полная очистка кеш и экспорт

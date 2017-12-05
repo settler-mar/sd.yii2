@@ -155,13 +155,14 @@ class DefaultController extends SdController
     // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
     if ($categoryMenuItem == 'favorite') {
-      $cacheName .= '_' . $categoryMenuItem;
-        $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+      $cacheName = 'catalog_storesfavorite'.Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
-        $this->params['breadcrumbs'][] = [
-          'label' => 'Мои избранные',
-          'url' => '/stores/favorite',
-        ];
+
+      $this->params['breadcrumbs'][] = [
+        'label' => 'Мои избранные',
+        'url' => '/stores/favorite',
+      ];
     }
 
 
