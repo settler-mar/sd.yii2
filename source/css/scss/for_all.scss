@@ -1219,6 +1219,12 @@ form > .kv-drp-container{
 .sign-up.noajax {
   margin: 100px auto 150px;
   width: 500px;
+  &.social {
+    margin: 30px auto 20px;
+  }
+}
+.sign-up-tagline {
+  margin: 0 auto 10px;
 }
 
 //кнопка удаления/отключения
