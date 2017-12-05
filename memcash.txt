@@ -8,6 +8,7 @@ categories_stores[_offline][_online] - Список категорий ЗАВИ�
 category_tree_<parent_id>_<currentCategory>[_hide_hidden][_offline][_online] - дерево категорий для меню для родительской категории и текущей категории ([_hide_hidden] не показывать закрытые) ЗАВИСИМОСТЬ: category_tree
 catalog_stores_<page>_<limit>_<sort>_<order> - магазины ЗАВИСИМОСТЬ: catalog_stores
 catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магазины категории ЗАВИСИМОСТЬ: catalog_stores
+catalog_storesfavorites<user_id>_<page>_<limit>_<sort>_<order> - избранные магазины ЗАВИСИМОСТЬ: catalog_storesfavorites<user_id>
 store_by_route_<route> - магазин по route ЗАВИСИМОСТЬ: stores_by_column
 store_byid_<id> - магазин по Id ЗАВИСИМОСТЬ: stores_by_column
 store_category_byid_<category_id> - категория магазина по id ЗАВИСИМОСТЬ: catalog_stores
