@@ -22,6 +22,9 @@ use frontend\modules\cache\models\Cache;
  */
 class CategoriesStores extends \yii\db\ActiveRecord
 {
+  const CATEGORY_STORE_SELECTED_NONE = 0;
+  const CATEGORY_STORE_SELECTED_PROMO = 1;
+  const CATEGORY_STORE_SELECTED_GREEN = 2;
   /**
    * @inheritdoc
    */
@@ -37,8 +40,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
   {
     return [
       [['parent_id', 'name', 'route'], 'required'],
-      [['parent_id', 'is_active', 'menu_index', 'menu_hidden','selected'], 'integer'],
+      [['parent_id', 'is_active', 'menu_index', 'menu_hidden'], 'integer'],
       [['short_description', 'down_description', 'map_icon'], 'string'],
+      [['selected'], 'in', 'range' => [0, 1, 2]],
       [['name', 'route'], 'string', 'max' => 255],
       [['route'], 'unique'],
       [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
@@ -227,14 +231,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
     }
 
     //перемещаем выделенные категории вверх
-    if (!empty($extItems)) {
-      usort($cats[0], function ($current, $next) {
-        return $current['selected'] < $next['selected'] ? 1 :
-          ($current['selected'] > $next['selected'] ? -1 :
-            ($current['menu_index'] > $next['menu_index'] ? 1 :
-              ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
-      });
-    }
+    usort($cats[0], function ($current, $next) {
+      return $next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO && $current['selected'] < $next['selected'] ? 1 :
+        ($next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO && $current['selected'] > $next['selected'] ? -1 :
+          ($current['menu_index'] > $next['menu_index'] ? 1 :
+            ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
+    });
 
     return self::buildCategoriesTree($cats, 0, $currentCategory);
   }
@@ -293,11 +295,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($parent_id == 0){
           $c[]="title";
         }
-        if($cat['selected']== 1){
-          $c[]="cat_selected";
-        }
-        if ($cat['route'] == 'new-shops'){
-          $c[]="cat_news";
+        switch ($cat['selected']) {
+          case self::CATEGORY_STORE_SELECTED_PROMO:
+            $c[] = 'cat_selected';
+            break;
+          case self::CATEGORY_STORE_SELECTED_GREEN:
+            $c[] = 'cat_news';
+            break;
         }
         if(count($c)>0){
           $c='class=\''.implode(' ',$c).'\'';
