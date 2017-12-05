@@ -136,7 +136,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $casheName = 'categories_stores ' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
     $data = $cache->getOrSet($casheName, function () use ($online) {
       $categories = self::find()
-        ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected',
+        ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
           'count(cstc.category_id) as count'])
         ->from([self::tableName() . ' ccs'])
         ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
@@ -202,9 +202,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'parent_id' => 0,
         'route' => 'favorite',
         'menu_hidden' => 0,
-        'selected' => 0,
+        'selected' => '0',
         'count' => $favoriteCount,
         'uid' => null,
+        'menu_index'=> -1000,
       ]);
     }
     array_unshift($cats[0], [
@@ -212,13 +213,21 @@ class CategoriesStores extends \yii\db\ActiveRecord
       'parent_id' => 0,
       'route' => '',
       'menu_hidden' => 0,
-      'selected' => 0,
+      'selected' => '0',
       'count' => Stores::activeCount(),
       'uid' => null,
+      'menu_index' => -1001,
     ]);
-
+    //перемещаем выделенные категории вверх
+    //d($cats[0]);
+    usort($cats[0], function($current, $next) {
+      return $current['selected'] < $next['selected'] ? 1 :
+        ($current['selected'] > $next['selected'] ? -1 :
+        ($current['menu_index'] > $next['menu_index'] ? 1 :
+        ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
+    });
+    //ddd($cats[0]);
     return self::buildCategoriesTree($cats, 0, $currentCategory);
-    //return $tree;
   }
 
   /**
@@ -384,5 +393,11 @@ class CategoriesStores extends \yii\db\ActiveRecord
     }
 
     return $base;
+  }
+
+  protected static function compareSelected($current, $next)
+  {
+    return $current['selected'] == $next['selected'] ?
+      0 : ($current['selected'] > $next['selected'] ? 1 : -1);
   }
 }
