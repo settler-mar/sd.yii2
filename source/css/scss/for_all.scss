@@ -718,6 +718,9 @@ table .status_bg_1 {
     display: flex;
     flex-wrap: nowrap;
   }
+  a {
+    text-decoration: underline;
+  }
 }
 .notification_title {
   display: block;
@@ -891,6 +894,12 @@ body>.news-index{
   }
   .name-none:after{
     content: '';
+  }
+  &_wrapper {
+    margin-bottom: 50px;
+    h3.header {
+      margin-top: 0;
+    }
   }
 }
 table.table-users{

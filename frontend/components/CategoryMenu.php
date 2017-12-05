@@ -20,6 +20,6 @@ class CategoryMenu extends Widget
     {
         $categoryId =
             !empty(\Yii::$app->controller->current_category_id) ? \Yii::$app->controller->current_category_id : null;
-        return CategoriesStores::tree(0, $categoryId, $this->show_hidden, $this->online);
+        return CategoriesStores::tree($categoryId, $this->show_hidden, $this->online);
     }
 }

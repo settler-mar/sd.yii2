@@ -68,11 +68,16 @@ class AccountController extends \yii\web\Controller
       return json_encode(['error' => ['Ошибка выбора фонда.']]);
     }
 
-    if($amount>$balans['current']){
+    if($amount>$balans['max_fundation']){
       return json_encode([
-        'error' => ['Максимальная сумма для пожертвования '.number_format($balans['current'],2,'.',' ').'р.']
+        'error' => ['Максимальная сумма для пожертвования '.number_format($balans['max_fundation'],2,'.',' ').'р.']
       ]);
     }
+//    if($amount>$balans['current']){
+//      return json_encode([
+//        'error' => ['Максимальная сумма для пожертвования '.number_format($balans['current'],2,'.',' ').'р.']
+//      ]);
+//    }
 
     if($amount<1){
       return json_encode(['error' => ['Минимальная сумма для пожертвования 1р.']]);

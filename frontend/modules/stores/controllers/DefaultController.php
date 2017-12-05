@@ -8,6 +8,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\favorites\models\UsersFavorites;
 use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
@@ -69,6 +70,11 @@ class DefaultController extends SdController
         echo $this->actionIndex($id, $categoryStore);
         exit;
       };
+      if ($id == 'favorite' && !Yii::$app->user->isGuest) {
+        \Yii::$app->params['category_menu_item'] = $id;
+        echo $this->actionIndex($id);
+        exit;
+      }
       //если нет категории или магазина
       //найти в удалённых шопах
       $newRoute = RouteChange::getNew($id, RouteChange::ROUTE_TYPE_STORES);
@@ -145,6 +151,19 @@ class DefaultController extends SdController
 
       $cacheName .= '_' . $category;
     }
+
+    // дополнительно как категории шопов в меню - избранные
+    $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
+    if ($categoryMenuItem == 'favorite') {
+      $cacheName .= '_' . $categoryMenuItem;
+        $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+          ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
+        $this->params['breadcrumbs'][] = [
+          'label' => 'Мои избранные',
+          'url' => '/stores/favorite',
+        ];
+    }
+
 
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;

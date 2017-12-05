@@ -289,7 +289,7 @@ class DefaultController extends Controller
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
 
-      Yii::$app->session->addFlash('success', ['title' => 'Спасибо', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
+      Yii::$app->session->addFlash('success', ['title' => 'Спасибо!', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
 
       if ($path && preg_match('/^\d+$/', $path) && $path > 0) {
         //если $path - целое число, то это store.uid

@@ -61,12 +61,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-4">
-                <h3 class="cathead">Категории</h3>
+                {#<h3 class="cathead">Категории</h3>#}
                 {{ use('frontend/components/CategoryMenu') }}
                 {% set category_tree = category_menu_widget() %}
                 {% if category_tree %}
                 <div class="left-categories">
-                    <div class="tree-cat">
+                    <div class="tree-cat accordeon">
                     {{category_tree|raw}}
                     </div>
                 </div>

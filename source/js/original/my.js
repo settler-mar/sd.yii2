@@ -173,3 +173,21 @@ $('#store-recommendation-link-checkbox').click(function(){
     });
   }
 });
+
+//текущую категорию в меню шопов - открыть
+var currentCategory = $('.tree-cat.accordeon .accordeon.current ul');
+$.each(currentCategory, function(index, item){
+  $(item).height(item.scrollHeight);
+});
+
+$('body').on('click', '.accordeon .accordeon-arrow', function() {
+  var parent = $(this).parent();
+  parent.toggleClass('open');
+  var content = parent.hasClass('open') ?
+      '<i class="fa fa-angle-up" aria-hidden="true"></i>' :
+      '<i class="fa fa-angle-down" aria-hidden="true"></i>';
+  var ul = parent.find('ul');
+  ul.css('max-height', 'none');
+  ul.height(parent.hasClass('open') ? ul[0].scrollHeight : 0);
+  $(this).html(content);
+});

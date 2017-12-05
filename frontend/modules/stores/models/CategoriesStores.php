@@ -5,6 +5,7 @@ namespace frontend\modules\stores\models;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\favorites\models\UsersFavorites;
 use common\components\Help;
 use frontend\modules\cache\models\Cache;
 
@@ -142,7 +143,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
         ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid'])
-        ->orderBy(['menu_index' => 'SORT_ASC', 'ccs.uid' => 'SORT_ASC']);
+        ->orderBy(['menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
         $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
       }
@@ -157,17 +158,19 @@ class CategoriesStores extends \yii\db\ActiveRecord
    * @param null $currentCategory
    * @return null|string
    */
-  public static function tree($parent_id = 0, $currentCategory = null, $showHidden = true, $online = null)
+  public static function tree($currentCategory = null, $showHidden = true, $online = null)
   {
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $cacheName = 'category_tree_' . $parent_id . '_' . $currentCategory . ($showHidden == false ? '_hide_hidden' : '') .
-      ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
-    $tree = $cache->getOrSet(
+    $cacheName = 'category_tree' . ($showHidden == false ? '_hide_hidden' : '') .
+      ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
+      .(Yii::$app->user->isGuest ? '' : '_user_'.Yii::$app->user->id);
+
+    $cats = $cache->getOrSet(
       $cacheName,
-      function () use ($parent_id, $currentCategory, $showHidden, $online) {
+      function () use ($currentCategory, $showHidden, $online) {
         $categories = self::activeList($online);
         $c = [];
         if (count($categories) > 0) {
@@ -183,12 +186,39 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $cats = [];
         }
-        return self::buildCategoriesTree($cats, $parent_id, $currentCategory);
+
+        //return self::buildCategoriesTree($cats, 0, $currentCategory);
+        return $cats;
       },
       $cache->defaultDuration,
       $dependency
     );
-    return $tree;
+    //избранные шопы
+    $cats[0] = isset($cats[0]) ? $cats[0]: [];
+    $favoriteCount = UsersFavorites::userFavoriteCount();
+    if ($favoriteCount > 0) {
+      array_unshift($cats[0], [
+        'name' => 'Мои избранные',
+        'parent_id' => 0,
+        'route' => 'favorite',
+        'menu_hidden' => 0,
+        'selected' => 0,
+        'count' => $favoriteCount,
+        'uid' => null,
+      ]);
+    }
+    array_unshift($cats[0], [
+      'name' => 'Все магазины',
+      'parent_id' => 0,
+      'route' => '',
+      'menu_hidden' => 0,
+      'selected' => 0,
+      'count' => Stores::activeCount(),
+      'uid' => null,
+    ]);
+
+    return self::buildCategoriesTree($cats, 0, $currentCategory);
+    //return $tree;
   }
 
   /**
@@ -248,23 +278,39 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if($cat['selected']== 1){
           $c[]="cat_selected";
         }
+        if ($cat['route'] == 'news_shops'){
+          $c[]="cat_news";
+        }
         if(count($c)>0){
           $c='class=\''.implode(' ',$c).'\'';
         }else{
           $c='';
         }
 
-        $catURL = "/stores/" . $cat['route'];
+        $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
-        $tree .= "<li>";
-        if ($currentCategoryId != null && $cat['uid'] == $currentCategoryId) {
+        //имеются дочерние категрии
+        $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
+        //open  - если пустая настройка, или (имеются дочерние и имеется текущая категория и (текущая в ключах подкатегории, или текущая как корневая категория)
+        $sectionOpen = (empty(Yii::$app->params['stores_menu_accordeon_collapsed']) ||
+          $childCategories && $currentCategoryId &&
+          (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
+          'open current' : '');
+        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategories ? ' accordeon '.$sectionOpen : '').'"':'').'>'.
+          ($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').
+            '" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
+
+        if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
+          $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||
+          $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores'
+        ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
-          $tree .= '<span ' . $class . '">' . $cat['name'] . "</span> <span " . $classCount . ">(" . $cat['count'] . ")</span>";
+          $tree .= '<span ' . $class . '">' . $cat['name'] . " <span " . $classCount . ">(" . $cat['count'] . ")</span></span>";
         } else {
           $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " <span>(" . $cat['count'] . ")</span></a>";
         }
-        $tree .= self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId);
+        $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
         $tree .= "</li>";
       }
       $tree .= "</ul>";

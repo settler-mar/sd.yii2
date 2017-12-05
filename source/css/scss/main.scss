@@ -1065,6 +1065,9 @@ $images: "/images";
         }
       }
     }
+    &__handle.more {
+      font-size: 11px;
+    }
     &.open {
       height: auto;
       @media (min-width: 991px){
@@ -2380,6 +2383,100 @@ ul.footer-group,
 ul.withdraw-logo{
   padding: 0;
   list-style: none;
+}
+
+//left menu accordeon
+$root_color: #e4c84b;
+$background_color: #eee;
+$font_color: #0f181a;
+$selected_color: #1a2527;
+
+.tree-cat.accordeon {
+  background-color: $background_color;
+  border-radius: 3px;
+  overflow: hidden;
+  li.root {
+    margin-bottom: 2px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    > a {
+      background-color: $root_color;
+      display: block;
+      padding: 10px;
+      color: $font_color;
+      font-weight: 600 !important;
+      &:hover {
+        text-decoration: none !important;
+        background-color: $selected_color;
+        color: $root_color;
+      }
+      span {
+        color: inherit !important;
+      }
+    }
+
+    > span.active {
+      background-color: $selected_color;
+      display: block;
+      padding: 10px;
+      color: $root_color;
+      font-weight: 600 !important;
+      span {
+        color: inherit !important;
+      }
+    }
+  }
+  li.accordeon {
+    position: relative;
+    ul {
+      overflow: hidden;
+      //max-height: 0;
+      height: 0;
+      -webkit-transition: height 0.4s ease;
+      -moz-transition: height 0.4s ease;
+      -o-transition: height 0.4s ease;
+      transition: height 0.4s ease;
+      margin: 0 !important;
+      li {
+        a {
+          display: block;
+          padding: 9px 20px;
+          &:hover {
+            background-color: $selected_color;
+            color: $background_color;
+            text-decoration: none !important;
+          }
+          span {
+            color: inherit;
+          }
+        }
+        span.active {
+          display: block;
+          padding: 9px 20px;
+          background-color: $selected_color;
+          color: $root_color;
+          span {
+            color: inherit;
+          }
+        }
+      }
+    }
+    .accordeon-arrow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        display: block;
+        color: $background_color;
+        padding: 10px 10px;
+    }
+    &.current .accordeon-arrow {
+      color: $background_color;
+    }
+  }
 }
 
 ul.faq__list{
