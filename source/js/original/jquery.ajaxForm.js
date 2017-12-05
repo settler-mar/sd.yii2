@@ -58,7 +58,7 @@ function ajaxForm(els) {
     var post=form.serializeObject();
     form.addClass('loading');
     form.html('');
-    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>')
+    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
 
     data.url+=(data.url.indexOf('?')>0?'&':'?')+'rc='+Math.random();
 
