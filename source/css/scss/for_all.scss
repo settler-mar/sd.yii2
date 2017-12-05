@@ -65,10 +65,11 @@
               &:hover > ul {
                 position: absolute;
                 //left: 230px;
-                left: 310px;
+                //left: 310px;
+                left: calc(100%);
                 top: -9px;
                 background-color: #282b37;
-                border-left: 2px solid #20232d;
+                //border-left: 2px solid #20232d;
                 padding: 10px 0 10px 0;
                 //width: 320px;
                 width: 380px;
