@@ -883,7 +883,7 @@ $images: "/images";
 /* Paginations
 ------------------------------------*/
 .paginations {
-  padding: 30px 0 40px !important;
+  padding: 30px 0 !important;
 
   ul {
     text-align: center;
@@ -1387,7 +1387,7 @@ $images: "/images";
     .row {
       background: #fafafa;
       padding: 20px;
-      width: 90%;
+      width: 100%;
       margin: auto;
       border: 1px solid #bbb;
     }
