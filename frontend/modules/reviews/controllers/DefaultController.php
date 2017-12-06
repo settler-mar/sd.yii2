@@ -70,9 +70,9 @@ class DefaultController extends SdController
 
     if($request->isPost) {
       if ($model->load($request->post()) && $model->save()) {
-        $data['html']='<b>Спасибо!</b><br>
-            Ваш отзыв успешно добавлен и будет
-            опубликован на сайте после модерации.';
+        $data['html']='<h3 style="text-align: center;">Спасибо!</h3><p>
+            Ваш отзыв успешно добавлен и будет<br>
+            опубликован на сайте после модерации.</p>';
         return json_encode($data);
       }
       var_dump($model->save());
