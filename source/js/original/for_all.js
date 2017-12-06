@@ -341,10 +341,9 @@ $( document ).ready(function() {
 //если открыто как дочернее
 (function(){
   if(!window.opener)return;
+  if(document.referrer.indexOf('secretdiscounter')<0)return;
 
-  if(!window.opener.location.href)return;
   href=window.opener.location.href;
-  if(href.indexOf('secretdiscounter')<0)return;
   if(href.indexOf('socials')>0 || href.indexOf('login')>0){
     return;
   }
