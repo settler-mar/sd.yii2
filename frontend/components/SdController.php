@@ -54,7 +54,7 @@ class SdController extends Controller
             'index' => ['page', 'expired'],
         ],
         'reviews' => [
-            'index' => ['page'],
+            'index' => ['page', 'id'],
         ],
     ];
     //проверяются только эти параметры, остальные игнорируются

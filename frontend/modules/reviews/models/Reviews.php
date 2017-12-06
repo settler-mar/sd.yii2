@@ -36,7 +36,7 @@ class Reviews extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['title', 'text', 'rating'], 'required'],
+      [['title', 'text', 'rating', 'user_id'], 'required'],
       [['user_id', 'rating', 'is_active', 'is_top', 'store_id'], 'integer'],
       [['added'], 'safe'],
       [['title'], 'string', 'max' => 100, 'min' => 5],
@@ -72,7 +72,10 @@ class Reviews extends \yii\db\ActiveRecord
       $this->user_id = Yii::$app->user->id;
       $this->added = date('Y-m-d H:i:s');
     }
-
+    //временно так - если не админ, то не публикуется после изменения
+    if (!$this->isNewRecord && !Yii::$app->user->can('ReviewsEdit')) {
+      $this->is_active = 0;
+    }
     return true;
 
   }
