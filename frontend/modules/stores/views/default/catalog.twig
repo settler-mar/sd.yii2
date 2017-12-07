@@ -69,6 +69,11 @@
                     <div class="tree-cat accordeon">
                     {{category_tree|raw}}
                     </div>
+                    {{ use('frontend/components/Banner') }}
+                    {%  set banners  = banner_widget({'place':'2','options':{'wrapper_class':'banner__wrapper',}}) %}
+                    {% if banners %}
+                        {{ banners|raw }}
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

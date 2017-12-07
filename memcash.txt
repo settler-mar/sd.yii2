@@ -36,3 +36,4 @@ account_favorites_<user_id> - /account/favorites кеширование избр
 account_favorite_stores_<user_id> - account список избранных шопов
 account_favorites_count_user_<user_id> - количество избранных шопов ЗАВИСИМОСТЬ account_favorites_count
 store_store_points_<$storeId> - точки продаж для шопа
+banners[_<place>] - баннеры ЗАВИСИМОСТЬ banners

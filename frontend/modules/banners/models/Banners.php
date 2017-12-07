@@ -4,6 +4,7 @@ namespace frontend\modules\banners\models;
 
 use Yii;
 use yii\web\UploadedFile;
+use frontend\modules\cache\models\Cache;
 //use JBZoo\Image\Image;
 
 /**
@@ -76,15 +77,28 @@ class Banners extends \yii\db\ActiveRecord
             return false;
         }
         if (!$this->isNewRecord) {
-          $this->updated_at = date('Y-m-d H:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
         }
         return true;
     }
 
 
+  /**
+   * @param bool $insert
+   * @param array $changedAttributes
+   */
     public function afterSave($insert, $changedAttributes)
     {
         $this->saveImage();
+        $this->clearCache();
+    }
+
+  /**
+   *
+   */
+    public function afterDelete()
+    {
+        $this->clearCache();
     }
 
   /**
@@ -127,6 +141,62 @@ class Banners extends \yii\db\ActiveRecord
                 unlink($img);
             }
         }
+    }
+
+    /**
+    * вывод баннеров
+    */
+    public static function show($params = [])
+    {
+      //
+        $place = !empty($params['place']) ? $params['place'] : false;
+
+        $cacheName = 'banners'.($place ? '_' . $place : '');
+        $dependencyName = 'banners';
+        $cache = Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+        $banners = $cache->getOrSet(
+            $cacheName,
+            function () use ($place) {
+                $banners = self::find()
+                     ->select(['picture', 'url', 'new_window'])
+                     ->where(['is_active' => 1]);
+                if ($place) {
+                    $orConditions = [
+                        'or',
+                        ['like', 'places', '%'.$place.',%', false],
+                        ['like', 'places', $place.',%', false],
+                        ['like', 'places', '%,'.$place, false],
+                        ['=', 'places', $place],
+                    ];
+                    $banners->andWhere($orConditions);
+                }
+                return $banners->asArray()->all();
+            },
+            $cache->defaultDuration,
+            $dependency
+        );
+        if ($banners) {
+            return Yii::$app->view->render(
+                '@app/views/parts/banner.twig',
+                [
+                    'banners' => $banners,
+                    'wrapper_class' => !empty($params['options']['wrapper_class']) ? $params['options']['wrapper_class'] : null,
+                    'item_class' => !empty($params['options']['item_class']) ? $params['options']['item_class'] : null,
+                    'href_class' => !empty($params['options']['href_class']) ? $params['options']['href_class'] : null,
+                    'image_class' => !empty($params['options']['image_class']) ? $params['options']['image_class'] : null,
+                ]
+            );
+        }
+    }
+
+    /**
+    * очистка кеш
+    */
+    protected function clearCache()
+    {
+        Cache::clearName('banners');
     }
 
 }
