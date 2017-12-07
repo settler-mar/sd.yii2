@@ -38,6 +38,11 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $searchModel = new SearchBanners();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,6 +59,10 @@ class AdminController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         return $this->render('view.twig', [
             'model' => $this->findModel($id),
         ]);
@@ -66,6 +75,11 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerCreate')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = new Banners();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -85,6 +99,10 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -104,6 +122,10 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerDelete')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
