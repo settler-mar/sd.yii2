@@ -1,0 +1,25 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="banners-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'picture').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'new_window').textInput()|raw }}
+
+        {{ form.field(model, 'is_active').textInput()|raw }}
+
+        {{ form.field(model, 'places').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'order').textInput()|raw }}
+
+        {{ form.field(model, 'created_at').textInput()|raw }}
+
+        {{ form.field(model, 'updated_at').textInput()|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
