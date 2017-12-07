@@ -23,6 +23,8 @@
     }) %}
 
 
+        {{ form.field(model, 'uid', {'template': '{input}'}).hiddenInput().label(false) | raw }}
+
         {{ form.field(model, 'title',{
             'template' :
             '{beginWrapper}<i class="fa fa-info"></i>{input}\n{endWrapper}\n{error}'
@@ -37,12 +39,20 @@
         <div class="rating">
             <span class="title">Рейтинг:</span>
             <span class="fa-wrapper">
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                </span>
+                {% if model.rating > 0 %}
+                    {% for i in range(1, model.rating|round()) %}
+                        <span class="fa fa-star"></span>
+                    {% endfor %}
+                {% endif %}
+
+                {% set estar =  5 - model.rating|round() %}
+                {% if estar != 0 %}
+                    {% for i in range(1, estar) %}
+                        <span class="fa fa-star-o"></span>
+                    {% endfor %}
+                {% endif %}
+
+            </span>
         </div>
 
         {{ form.field(model, 'rating',{

@@ -16,7 +16,7 @@
                 {% endfor %}
             {% endif %}
 
-            {% set estar =  5 - this.site_rating.value %}
+            {% set estar =  5 - this.site_rating.value|round() %}
             {% if estar != 0 %}
                 {% for i in range(1, estar) %}
                     <span class="fa fa-star-o"></span>

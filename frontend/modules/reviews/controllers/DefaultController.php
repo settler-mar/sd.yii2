@@ -7,6 +7,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
 use frontend\components\Pagination;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends SdController
 {
@@ -69,12 +70,31 @@ class DefaultController extends SdController
     }
 
     if($request->isPost) {
-      if ($model->load($request->post()) && $model->save()) {
-        $data['html']='<b>Спасибо!</b><br>
-            Ваш отзыв успешно добавлен и будет
-            опубликован на сайте после модерации.';
-        return json_encode($data);
+      if ($model->load($request->post())) {
+        if ($model->store_id == null) {
+          $review = Reviews::findOne(['store_id' => 0, 'user_id' => \Yii::$app->user->id]);
+          if ($review) {
+            $data['html']='<h3 style="text-align: center;">Ошибка!</h3>
+            <p style="text-align: center;">
+              Вы уже оставили отзыв о сайте.<br>
+              Теперь вы можете только 
+              <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">изменить</a> или 
+              <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">дополнить</a><br>
+              ранее оставленный <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">отзыв</a>.
+            </p>';
+            return json_encode($data);          }
+        }
+        if ($model->save()) {
+          $data['html']='<h3 style="text-align: center;">Спасибо!</h3>
+            <p style="text-align: center;">
+              Ваш отзыв успешно добавлен и будет<br>
+              опубликован на сайте после модерации.
+            </p>';
+          return json_encode($data);
+        }
+        \Yii::info(print_r($model->getErrors(), true));
       }
+
       var_dump($model->save());
       exit;
     }
@@ -87,4 +107,44 @@ class DefaultController extends SdController
     ];
     return json_encode($data);
   }
+
+  public function actionEdit($id = null)
+  {
+    $request = \Yii::$app->request;
+    if (!$request->isAjax || \Yii::$app->user->isGuest) {
+      throw new NotFoundHttpException();
+    }
+
+    if($request->isPost) {
+      $model = Reviews::findOne(isset($request->post('Reviews')['uid']) ? $request->post('Reviews')['uid'] : 0);
+      if ($model == null || $model->user_id != \Yii::$app->user->id || $model->store_id != 0) {
+        $data['html']='<h3 style="text-align: center;">Ошибка!</h3>
+          <p style="text-align: center;">Отзыв не найден.</p>';
+        return json_encode($data);
+      }
+      if ($model->load($request->post()) && $model->save()) {
+        $data['html']='<h3 style="text-align: center;">Спасибо!</h3>
+          <p style="text-align: center;">
+            Ваш отзыв успешно изменён и будет<br>
+            опубликован на сайте после модерации.
+          </p>';
+        return json_encode($data);
+
+      }
+      var_dump($model->save());
+      exit;
+    }
+
+    $review = Reviews::findOne(['uid' => $id>0 ? $id : null, 'user_id' => \Yii::$app->user->id]);
+    if(!$review){
+      $data['html']='<h3 style="text-align: center;">Ошибка!</h3>
+          <p style="text-align: center;">Отзыв не найден.</p>';
+      return json_encode($data);
+    }
+    $data=[
+      'html'=>$this->renderAjax('form', ['model' => $review])
+    ];
+    return json_encode($data);
+  }
+
 }

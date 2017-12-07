@@ -67,20 +67,20 @@
                                     {{ stat.cpa_direct }}
                                 </div>
                             </div>
+                            {#<div class="line">#}
+                                {#<div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0">Онлайн (is_offline=0)</a></div>#}
+                                {#<div class="value">#}
+                                    {#{{ stat.online }}#}
+                                {#</div>#}
+                            {#</div>#}
+                            {#<div class="line">#}
+                                {#<div class="name"><a href="/admin/stores?StoresSearch[is_offline]=1">Оффлайн (is_offline=1)</a></div>#}
+                                {#<div class="value">#}
+                                    {#{{ stat.offline }}#}
+                                {#</div>#}
+                            {#</div>#}
                             <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0">Онлайн (is_offline=0)</a></div>
-                                <div class="value">
-                                    {{ stat.online }}
-                                </div>
-                            </div>
-                            <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[is_offline]=1">Оффлайн (is_offline=1)</a></div>
-                                <div class="value">
-                                    {{ stat.offline }}
-                                </div>
-                            </div>
-                            <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0&StoresSearch[cpa_id]=2">Гибрид(offline&cpa_id=2)</a></div>
+                                <div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0&StoresSearch[cpa_id]=2">Гибрид</a></div>
                                 <div class="value">
                                     {{ stat.hubrid }}
                                 </div>
