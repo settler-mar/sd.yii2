@@ -202,6 +202,9 @@ $config= [
     'b2b_content' => [
       'class' => 'frontend\modules\b2b_content\Module',
     ],
+    'banners' => [
+      'class' => 'frontend\modules\banners\Module',
+    ],
   ],
   'params' => $params,
   //для возврата с авторизации через соц. сети на предыдущую страницу

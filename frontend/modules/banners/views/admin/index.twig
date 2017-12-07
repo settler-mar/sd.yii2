@@ -1,0 +1,64 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Баннеры' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="banners-index">
+    <div class="content-wrapper">
+        <section>
+            <h1>{{ html.encode(this.title) }}</h1>
+            {# include('_search.twig', {'model': searchModel}) #}
+            <p>
+                <a href="{{ path(['create']) }}" class="btn btn-success">Создать баннер</a>
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+
+                            'uid',
+                            'picture',
+                            'url:url',
+                            {
+                                'format':'raw',
+                                'attribute':'new_window',
+                                'value' : table_data.new_window,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"В своём окне",
+                                    1:"В новом окне",
+                                },
+                            },
+                            'places',
+                            'order',
+                            {
+                                'format':'raw',
+                                'attribute':'is_active',
+                                'value' : table_data.is_active,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"Выключен",
+                                    1:"Включён",
+                                },
+                            },
+                            'created_at',
+
+                            {'class': '\\yii\\grid\\ActionColumn', 'template':'{update} {delete}'},
+                        ],
+                    })
+                }}
+                </div>
+            </div>
+        </section>
+    </div>
+{#
+'updated_at'
+#}
+</div>
