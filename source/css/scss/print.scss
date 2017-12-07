@@ -6,6 +6,9 @@
     color: #000; /* Черный цвет текста */
   }
 
+  h3{
+    text-align: center;
+  }
   .help_button{
     display:none !important;
 
@@ -49,5 +52,23 @@
   #jivo-iframe-container#jivo-iframe-container#jivo-iframe-container#jivo-iframe-container#jivo-iframe-container
   {
     display: none !important;
+  }
+
+  .intro-feature:before{
+    display: none;
+  }
+
+  .store-intro{
+    .col-md-4{
+      width:100%;
+    }
+  }
+
+  .ways-invitation{
+    width:100%;
+
+    h3,.link-sent{
+      display:none;
+    }
   }
 }
