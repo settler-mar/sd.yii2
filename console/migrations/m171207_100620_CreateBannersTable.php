@@ -11,7 +11,7 @@ class m171207_100620_CreateBannersTable extends Migration
 
       $this->createTable('cw_banners', [
         'uid' => $this->primaryKey(),
-        'picture' =>$this->string()->notNull(),
+        'picture' =>$this->string(),
         'url' => $this->string()->notNull(),
         'new_window' => $this->boolean()->defaultValue(1),
         'is_active' => $this->boolean()->defaultValue(0),

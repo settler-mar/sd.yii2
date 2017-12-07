@@ -26,13 +26,31 @@
                             'uid',
                             'picture',
                             'url:url',
-                            'new_window',
+                            {
+                                'format':'raw',
+                                'attribute':'new_window',
+                                'value' : table_data.new_window,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"В своём окне",
+                                    1:"В новом окне",
+                                },
+                            },
                             'places',
                             'order',
-                            'is_active',
+                            {
+                                'format':'raw',
+                                'attribute':'is_active',
+                                'value' : table_data.is_active,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"Выключен",
+                                    1:"Включён",
+                                },
+                            },
                             'created_at',
 
-                            {'class': '\\yii\\grid\\ActionColumn'},
+                            {'class': '\\yii\\grid\\ActionColumn', 'template':'{update} {delete}'},
                         ],
                     })
                 }}

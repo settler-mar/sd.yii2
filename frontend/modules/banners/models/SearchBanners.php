@@ -19,7 +19,7 @@ class SearchBanners extends Banners
     {
         return [
             [['uid', 'new_window', 'is_active', 'order'], 'integer'],
-            [['picture', 'url', 'places', 'created_at', 'updated_at'], 'safe'],
+            [['url', 'places', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -47,6 +47,17 @@ class SearchBanners extends Banners
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'uid',
+                    'new_window',
+                    'is_active',
+                    'url',
+                    'places',
+                    'created_at',
+                    'order',
+                ],
+            ],
         ]);
 
         $this->load($params);
@@ -64,11 +75,10 @@ class SearchBanners extends Banners
             'is_active' => $this->is_active,
             'order' => $this->order,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            //'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'picture', $this->picture])
-            ->andFilterWhere(['like', 'url', $this->url])
+        $query->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'places', $this->places]);
 
         return $dataProvider;

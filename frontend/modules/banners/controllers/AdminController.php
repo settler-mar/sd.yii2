@@ -49,22 +49,14 @@ class AdminController extends Controller
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Banners model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('BannerView')) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-            return false;
-        }
-        return $this->render('view.twig', [
-            'model' => $this->findModel($id),
+            'table_data' => [
+                'is_active' => function ($model, $value, $index, $column) {
+                    return $model->is_active == 1 ? 'Включён' : 'Выключен';
+                },
+                'new_window' => function ($model, $value, $index, $column) {
+                    return $model->new_window == 1 ? 'В новом окне' : 'В своём окне';
+                }
+            ],
         ]);
     }
 
@@ -83,8 +75,10 @@ class AdminController extends Controller
         $model = new Banners();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+            return $this->redirect(['index', 'id' => $model->uid]);
         } else {
+            $model->order = 0;
+            $model->new_window = 1;
             return $this->render('create.twig', [
                 'model' => $model,
             ]);
@@ -106,7 +100,7 @@ class AdminController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
