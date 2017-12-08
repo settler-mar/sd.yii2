@@ -230,10 +230,21 @@
             <li class="cd-label">Операции</li>
             <li class="action-btn"><a href="/account/withdraw">Вывод денег</a></li>
         </ul>
-        <div>
 
-            <a href="account/affiliate" class="affiliate_block"></a>
-        </div>
+        {#<div>#}
+
+            {#<a href="account/affiliate" class="affiliate_block"></a>#}
+        {#</div>#}
+        {{ use('frontend/components/Banner') }}
+        {%  set banners  = banner_widget({'place':'account-left-menu','options':{
+            'wrapper_class':'account_banner__wrapper',
+            'item_class': 'account_banner__item',
+            'href_class': 'account_banner__href',
+            'image_class': 'account_banner__image',
+        }}) %}
+        {% if banners %}
+            {{ banners|raw }}
+        {% endif %}
     </nav>
     {{ content|raw }}
 </main>

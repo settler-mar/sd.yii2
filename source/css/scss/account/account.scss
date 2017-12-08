@@ -1312,3 +1312,17 @@ input.link:hover{
         background: #efefef;
     }
 }
+.account_banner {
+    &__wrapper {
+        margin-top: 30px;
+    }
+    &__item {
+        margin-bottom: 5px;
+    }
+    &__href {
+        padding: 0 !important;
+    }
+    &__image {
+        max-width: 200px;
+    }
+}

@@ -25,12 +25,9 @@ class Banners extends \yii\db\ActiveRecord
     public $picture_file;
 
     public $places_array = [
-        //пока для примера
-        'left-menu-top' => ['name' => 'Левое меню сверху'],
-        'left-menu-bottom' => ['name' => 'Левое меню снизу'],
-        'top-main' => ['name' => 'Под шапкой'],
-        'bottom-main' => ['name' => 'Над футером'],
-        // и так далее
+        'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
+        'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
+        'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
     ];
     public $banner_places = [];
 
@@ -59,7 +56,6 @@ class Banners extends \yii\db\ActiveRecord
               ],
             [['new_window', 'is_active', 'order'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
-            [['url'], 'url', 'defaultScheme' => 'http'],
             [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
         ];
     }
@@ -88,7 +84,8 @@ class Banners extends \yii\db\ActiveRecord
         if (!parent::beforeValidate()) {
             return false;
         }
-        $this->banner_places = isset(Yii::$app->request->post('Banners')['banner_places']) ?
+        $this->banner_places = method_exists(Yii::$app->request, 'post') &&
+            isset(Yii::$app->request->post('Banners')['banner_places']) ?
                 Yii::$app->request->post('Banners')['banner_places'] : null ;
         if ($this->banner_places) {
             $this->places = implode(',', $this->banner_places);
