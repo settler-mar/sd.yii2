@@ -61,6 +61,23 @@ $config= [
           'class' => 'yii\i18n\PhpMessageSource',
           'basePath' => '@eauth/messages',
         ],
+        'account*' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@app/language',
+        ],
+        'dictionary*' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@app/language',
+        ],
+        /*'common*' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@app/language',
+        ],
+        /*'yii' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'sourceLanguage' => 'en-US',
+          'basePath' => '@app/language'
+        ],*/
       ],
     ],
     'user' => [

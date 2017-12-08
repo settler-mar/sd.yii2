@@ -36,6 +36,12 @@ class SdUrlRule implements UrlRuleInterface
       }
     }
 
+
+    //Определяемся с языком
+    if(defined('LANGUAGE')) {
+      \Yii::$app->language = LANGUAGE;
+    }
+
     //проверка реф ссылки
     if (isset($params['r'])) {
       $params['r'] = str_replace('/','',$params['r']);

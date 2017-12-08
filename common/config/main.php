@@ -7,6 +7,7 @@ $dict=require (__DIR__.'/dictionary.php');
 
 $config = [
   'name'=>'SecretDiscounter',
+  'sourceLanguage' => 'ru-RU',
   'language' => 'ru-RU',
   'timeZone' => 'Europe/Moscow',
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
