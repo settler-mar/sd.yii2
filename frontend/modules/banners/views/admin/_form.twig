@@ -16,7 +16,7 @@
                             <div class="col-sm-6">
                                 {{ form.field(model, 'picture_file').fileInput()|raw }}
                                 {#{{ form.field(model, 'picture').textInput({'maxlength':true})|raw }}#}
-                                <img for="Banners[pictuew]" style="max-height: 180px;" src="images/banners/{{ model.picture }}">
+                                <img for="Banners[pictuew]" style="max-width: 300px;" src="images/banners/{{ model.picture }}">
 
                             </div>
                             <div class="col-sm-6">
@@ -24,9 +24,19 @@
 
                                 {{ form.field(model, 'is_active').dropDownList({0:"Выключен",1:"Включён"})|raw }}
 
-                                {{ form.field(model, 'places').textInput({'maxlength':true})|raw }}
-
                                 {{ form.field(model, 'order').textInput()|raw }}
+
+                                <h4>Позиции</h4>
+                                {% for key, item in model.places_array %}
+                                    <div class="form-group field-banners-places">
+                                        <input type="checkbox" id="banner-banner-places-{{ key }}" name="Banners[banner_places][]" value="{{ key }}"
+                                               {% if item.checked %} checked {% endif %}
+                                        >
+                                        <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
+                                        <div class="help-block"></div>
+                                    </div>
+                                {% endfor %}
+
                             </div>
                         </div>
                     <div class="form-group">
