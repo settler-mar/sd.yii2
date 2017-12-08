@@ -24,6 +24,17 @@ class Banners extends \yii\db\ActiveRecord
 {
     public $picture_file;
 
+    public $places_array = [
+        //пока для примера
+        'left-menu-top' => ['name' => 'Левое меню сверху'],
+        'left-menu-bottom' => ['name' => 'Левое меню снизу'],
+        'top-main' => ['name' => 'Под шапкой'],
+        'bottom-main' => ['name' => 'Над футером'],
+        // и так далее
+    ];
+    public $banner_places = [];
+
+
     protected $image_path = '/images/banners';
     /**
      * @inheritdoc
@@ -49,6 +60,7 @@ class Banners extends \yii\db\ActiveRecord
             [['new_window', 'is_active', 'order'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
             [['url'], 'url', 'defaultScheme' => 'http'],
+            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
         ];
     }
 
@@ -76,10 +88,23 @@ class Banners extends \yii\db\ActiveRecord
         if (!parent::beforeValidate()) {
             return false;
         }
+        $this->banner_places = isset(Yii::$app->request->post('Banners')['banner_places']) ?
+                Yii::$app->request->post('Banners')['banner_places'] : null ;
+        if ($this->banner_places) {
+            $this->places = implode(',', $this->banner_places);
+        }
         if (!$this->isNewRecord) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
         return true;
+    }
+
+    public function afterFind()
+    {
+        $places = !empty($this->places) ? explode(',', $this->places) : [];
+        foreach ($this->places_array as $key => &$value) {
+            $value['checked'] = in_array($key, $places) ?  1 : 0;
+        }
     }
 
 
@@ -163,14 +188,7 @@ class Banners extends \yii\db\ActiveRecord
                      ->select(['picture', 'url', 'new_window'])
                      ->where(['is_active' => 1]);
                 if ($place) {
-                    $orConditions = [
-                        'or',
-                        ['like', 'places', '%'.$place.',%', false],
-                        ['like', 'places', $place.',%', false],
-                        ['like', 'places', '%,'.$place, false],
-                        ['=', 'places', $place],
-                    ];
-                    $banners->andWhere($orConditions);
+                    $banners->andWhere(['like', 'places', $place]);
                 }
                 return $banners->asArray()->all();
             },
