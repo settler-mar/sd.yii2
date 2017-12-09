@@ -58,6 +58,7 @@ class AccountController extends \yii\web\Controller
         if ($pagination->pages() > 1) {
             $data["pagination"] = $pagination->getPagination('transitions/account', []);
         }
+        $data['date_format'] =  \Yii::t('dictionary', 'date_format_long');
 
         return $this->render('index', $data);
     }

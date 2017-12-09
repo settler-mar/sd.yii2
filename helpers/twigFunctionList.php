@@ -306,6 +306,16 @@ $functionsList=[
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
     return strftime("%e " . $currMonth . " %G в ".$format_time, strtotime($date));
   },
+  '_local_date'=>function ($date, $format="%G %B %e %H:%I:%S") use ($month) {
+    $monthRus = strpos($format, '%BRUS');
+    $date = strtotime($date);
+    if (!$monthRus) {
+        return strftime($format, $date);
+    }
+    $m = date('m', $date);
+    $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', $date);
+    return strftime(substr($format, 0, $monthRus), $date).$currMonth.strftime(substr($format, $monthRus + 5), $date);
+  },
   'date'=>function ($date) use ($month) {
     $d = date('d',$date);
     $m = date('m',$date);

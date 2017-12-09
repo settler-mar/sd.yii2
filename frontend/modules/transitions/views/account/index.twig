@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+                    {% include('parts/user_balance.twig') %}
                 </div>
             </div>
         </div>
@@ -13,7 +11,7 @@
     <section class="account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>История переходов в магазины</h3>
+                <h3>{{ t('account', 'history_transitions') }}</h3>
             </div>
 
             {% if visit_history|length > 0 %}
@@ -22,13 +20,13 @@
                     <thead>
                         <tr>
                             <th>Дата перехода</th>
-                            <th>Магазин</th>
+                            <th>{{ t('common', 'shop') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for visit in visit_history %}
                         <tr>
-                            <td>{{_date(visit.visit_date)}}</td>
+                            <td>{{_local_date(visit.visit_date, date_format)}}</td>
                             <td class="store"><a href="/stores/{{visit.route}}{{ _if(visit.is_offline,'-offline') }}">{{visit.name}}</a></td>
                         </tr>
                         {% endfor %}
@@ -37,7 +35,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент Вы ни разу не переходили в интернет-магазины через наш сервис.</div>
+                <div class="not-found">{{ t('account', 'history_transitions_empty') }}</div>
             </div>
             {% endif %}
         </div>

@@ -8,6 +8,7 @@ return [
     'confirm' => 'Подтвердить',
     'logout' => 'Выход',
     'shops' => 'Магазины',
+    'shop' => 'Магазин',
     'coupons' => 'Купоны',
     'discounts' => 'Акции',
     'good_works' => 'Добрые дела',
@@ -18,6 +19,7 @@ return [
     'type' => 'Тип',
     'description' => 'Описание',
     'date' => 'Дата',
+    'date_transition' => 'Дата перехода',
     'amount' => 'Сумма',
 
 ];
