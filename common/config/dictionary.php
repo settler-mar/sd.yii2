@@ -4,11 +4,11 @@ $dict = [
       0 => 'lead',
       1 => 'sale'
     ],
-//    'pay_status'=>[
-//      0=>'В ожидании',//'pending',
-//      1=>'Отменен',//'declined',
-//      2=>'Подтвержден',//'confirmed','approved'
-//    ],
+    'pay_status'=>[
+      0=>'В ожидании',//'pending',
+      1=>'Отменен',//'declined',
+      2=>'Подтвержден',//'confirmed','approved'
+    ],
     'notification_type'=>[
       0=>'Разное',
       1=>'Кэшбэк',

@@ -129,7 +129,7 @@ class AccountController extends \yii\web\Controller
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
-    $payStatus = \Yii::$app->params['dictionary']['pay_status'];
+    $payStatus = \Yii::t('dictionary', 'pay_status');
     foreach ($payments as $key => &$payment) {
       $payment['status_title'] = $payStatus[$payment['status']];
     }
