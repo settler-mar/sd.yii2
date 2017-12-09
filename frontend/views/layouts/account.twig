@@ -82,7 +82,7 @@
         <ul class="account-nav">
             {#<li class="link-head-stores"><a href="/stores"><span>Магазины</span></a></li>#}
             <li class="link-head-stores stores submenu-handl">
-                <a href="/stores"><span class="stores-flash">Магазины</span></a>
+                <a href="/stores"><span class="stores-flash">{{ t('common', 'shops') }}</span></a>
                 {{ use('frontend/components/CategoryMenu') }}
                 {% set category_tree = category_menu_widget({'show_hidden': false}) %}
                 {% if category_tree %}
@@ -95,7 +95,7 @@
                 {% endif %}
             </li>
             <li class="stores submenu-handl">
-                <a href="/coupons">Купоны</a>
+                <a href="/coupons">{{ t('common', 'coupons') }}</a>
                 {{ use('frontend/components/CategoryCouponsMenu') }}
                 {% set category_coupons_list = category_coupons_menu_widget() %}
                 {% if category_coupons_list %}
@@ -108,7 +108,7 @@
                 {% endif %}
             </li>
 
-            <li><a href="/promo">Акции</a></li>
+            <li><a href="/promo">{{ t('common', 'discounts') }}</a></li>
         </ul>
     </div>
     <a href="#0" class="cd-nav-trigger"><span></span></a>
@@ -126,12 +126,12 @@
                         {% endif %}
                     {% endif %}
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    Выход
+                    {{ t('common', 'logout') }}
                 </a>
             </li>
         </ul>
     </nav>
-    <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>Добрые дела</span></a>
+    <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>{{ t('common', 'good_works') }}</span></a>
 </header>
 <main class="cd-main-content">
     <nav class="cd-side-nav">
@@ -149,86 +149,86 @@
                     {% endif %}
                 </div>
                 <div class="info-text">
-                    Текущий баланс:
+                    {{ t('account', 'user_balance_current') }}:
                     <span>{{ _nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span>
                 </div>
             </li>
             <li class="dobro-account">
-                {{ get_menu_item({'href':'/dobro', 'title': 'Делаем добро'})|raw }}
+                {{ get_menu_item({'href':'/dobro', 'title': t('account','menu_make_good')})|raw }}
             </li>
-            <li class="cd-label">Личный кабинет</li>
+            <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
             <li class="overview users">
-                {{ get_menu_item({'href':'/account', 'title': 'Главная'})|raw }}
+                {{ get_menu_item({'href':'/account', 'title': t('account', 'menu_main_page')})|raw }}
             </li>
             <li class="has-children bookmarks">
-                {{ get_menu_item({'href':'/account/payments', 'title': 'История'})|raw }}
+                {{ get_menu_item({'href':'/account/payments', 'title': t('account', 'menu_history')})|raw }}
                 <ul>
                     <li>
-                        {{ get_menu_item({'href':'/account/payments', 'title': 'История покупок'})|raw }}
+                        {{ get_menu_item({'href':'/account/payments', 'title': t('account', 'menu_history_payments')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/account/bonuses', 'title': 'История бонусов'})|raw }}
+                        {{ get_menu_item({'href':'/account/bonuses', 'title': t('account', 'menu_history_bonuses')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/account/transitions', 'title': 'История посещений'})|raw }}
+                        {{ get_menu_item({'href':'/account/transitions', 'title': t('account', 'menu_history_visits')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/account/withdraw/history', 'title': 'История вывода денег'})|raw }}
+                        {{ get_menu_item({'href':'/account/withdraw/history', 'title': t('account', 'menu_history_withdraw')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/account/charity', 'title': 'История добрых дел'})|raw }}
+                        {{ get_menu_item({'href':'/account/charity', 'title': t('account', 'menu_history_charity')})|raw }}
                     </li>
                 </ul>
             </li>
             <li class="notifications">
                 {% set noty_count=noty_novi_count ? '<span class="count">'~noty_novi_count~'</span>' : '' %}
-                {{ get_menu_item({'href':'/account/notification', 'title': 'Уведомления'~noty_count})|raw }}
+                {{ get_menu_item({'href':'/account/notification', 'title': t('account', 'menu_notify')~noty_count})|raw }}
             </li>
         </ul>
         <ul>
-            <li class="cd-label">Дополнительно</li>
+            <li class="cd-label">{{ t('account', 'menu_extends')}}</li>
             <li class="help-icon fasicon has-children">
-                {{ get_menu_item({'href':'/account/support', 'title': 'Помощь'})|raw }}
+                {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help')})|raw }}
                 <ul>
                     <li>
-                        {{ get_menu_item({'href':'/account/support', 'title': 'Служба поддержки'})|raw }}
+                        {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help_support')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/howitworks', 'title': 'Как это работает'})|raw }}
+                        {{ get_menu_item({'href':'/howitworks', 'title': t('account', 'menu_help_howitworks')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/faq', 'title': 'Вопросы и ответы'})|raw }}
+                        {{ get_menu_item({'href':'/faq', 'title': t('account', 'menu_help_faq')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/loyalty', 'title': 'Накопительная система'})|raw }}
+                        {{ get_menu_item({'href':'/loyalty', 'title': t('account', 'menu_help_loyalty')})|raw }}
                     </li>
                     <li>
-                        {{ get_menu_item({'href':'/recommendations', 'title': 'Советы по совершению покупок'})|raw}}
+                        {{ get_menu_item({'href':'/recommendations', 'title': t('account', 'menu_help_recommendations')})|raw}}
                     <li>
-                        {{ get_menu_item({'href':'/reviews', 'title': 'Отзывы'})|raw }}
+                        {{ get_menu_item({'href':'/reviews', 'title': t('account', 'menu_help_reviews')})|raw }}
                     </li>
                 </ul>
             </li>
             <li class="favorite-icon fasicon">
 
-                        {{ get_menu_item({'href':'/account/favorites', 'title': 'Избранные магазины'})|raw }}
+                        {{ get_menu_item({'href':'/account/favorites', 'title': t('account', 'menu_favorites')})|raw }}
 
             </li>
             {% if _can('MetaView') %}
                 <li class="offlineshop-icon fasicon">
-                        {{ get_menu_item({'href':'/account/offline', 'title': 'Кэшбэк в оффлайне'})|raw }}
+                        {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
                 </li>
             {% endif %}
             <li class="affiliate-icon fasicon">
-                        {{ get_menu_item({'href':'/account/affiliate', 'title': 'Приведи друга'})|raw }}
+                        {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
             </li>
             <li class="settings-icon fasicon">
-                        {{ get_menu_item({'href':'/account/settings', 'title': 'Настройки аккаунта'})|raw }}
+                        {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
             </li>
         </ul>
         <ul>
-            <li class="cd-label">Операции</li>
-            <li class="action-btn"><a href="/account/withdraw">Вывод денег</a></li>
+            <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
+            <li class="action-btn"><a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a></li>
         </ul>
 
         {#<div>#}
