@@ -5,10 +5,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{this.balance.current}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{this.balance.pending}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{this.balance.charity}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
-                    <div class="idsystem">Ваш ID в системе: <span>{{this.user_id}}</span></div>
+                    <div class="confirm">{{ t('account', 'user_balance') }}: <span>{{this.balance.current}} <span class="fa fa-rub"></span></span></div>
+                    <div class="pending">{{ t('account', 'user_balance_in_waiting') }}: <span>{{this.balance.pending}} <span class="fa fa-rub"></span></span></div>
+                    <div class="charity">{{ t('account', 'user_balance_charity') }}: <span>{{this.balance.charity}}  <span class="fa fa-rub"></span>
+                        </span> <a href="/account/dobro/transfer" class="btn-fill">{{ t('common', 'charity') }}</a></div>
+                    <div class="idsystem">{{ t('account', 'user_id') }}: <span>{{this.user_id}}</span></div>
                 </div>
             </div>
         </div>
@@ -29,83 +30,83 @@
                 },
             }) %}
                 <div class="col-md-6">
-                    <h3>Настройки аккаунта</h3>
+                    <h3>{{ t('account', 'account_settings') }}</h3>
 
                     {{ form.field(model, 'name',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-user"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':'Имя на сайте'}) | raw }}
+                    }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
 
                     {{ form.field(model, 'email',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':'Email адрес'}) | raw }}
+                    }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
 
 
                     {{ form.field(model, 'birthday',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':'Дата рождения','ref':'date'}) | raw }}
+                    }).textInput({'placeholder':t('account', 'account_user_burthday'),'ref':'date'}) | raw }}
 
                     {% if model.email_verified == 0 %}
                         <p>
-                            <a class="btn btn-yellow-border" href="/account/sendverifyemail">Повторно отправить письмо активации</a>
+                            <a class="btn btn-yellow-border" href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') }}</a>
                         </p>
                     {% endif %}
 
                         <div class="cr-group">
-                            <span class="title">Пол:</span>
+                            <span class="title">{{ t('account', 'sex') }}:</span>
                             <input type="radio" class="radio" id="radio-1" name="UserSetting[sex]" value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
-                            <label for="radio-1"><i class="fa fa-male"></i> Мужской</label>
+                            <label for="radio-1"><i class="fa fa-male"></i> {{ t('account', 'male') }}</label>
                             <input type="radio" class="radio" id="radio-2" name="UserSetting[sex]" value="f" {% if this.user.sex == 'f' %} checked {% endif %}>
-                            <label for="radio-2"><i class="fa fa-female"></i> Женский</label>
+                            <label for="radio-2"><i class="fa fa-female"></i> {{ t('account', 'famale') }}</label>
                         </div>
                         <div class="cr-group topm">
-                            <span class="title">Аватар:</span>
+                            <span class="title">{{ t('account', 'avatar') }}:</span>
                             <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
                             model.photo,
                             model.photo,
                             '/images/templates/avatar-'~_if(model.sex=='f','female','male')~'.jpg'
                             ) | raw }}">
                             <p>
-                                <strong>Ваше фото обновится только после того, <br>как вы нажмете на кнопку "Сохранить настройки"</strong></p>
+                                <strong>{{ t('account','photo_redraw_after_save_settings')|raw }}</strong></p>
                             <div class="upload">
-                                <span class="btn">Загрузить изображение<br><span>максимальный размер 2 МБ</span></span>
+                                <span class="btn">{{ t('account','upload_avatar') }}<br><span>{{ t('account','upload_avatar_max_size') }}</span></span>
                                 <input name="UserSetting[new_photo]" type="file">
                             </div>
                         </div>
                         <div class="cr-group chkbox topm">
-                            <span class="title">Настройка уведомлений:</span>
+                            <span class="title">{{ t('account','notify_settings') }}:</span>
                             <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]" value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
-                            <label class="first" for="checkbox-1">Получать уведомления на почту</label>
+                            <label class="first" for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
                         </div>
                 </div>
                 <div class="col-md-6">
-                    <h3>Изменение пароля</h3>
+                    <h3>{{ t('account','password_change') }}</h3>
 
                     {{ form.field(model, 'old_password',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-unlock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':'Старый пароль'}) | raw }}
+                    }).passwordInput({'placeholder':t('account', 'password_old')}) | raw }}
 
                     {{ form.field(model, 'new_password',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':'Новый пароль'}) | raw }}
+                    }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
 
                     {{ form.field(model, 'r_new_password',{
                         'template' :
                         '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':'Повторите новый пароль'}) | raw }}
+                    }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
 
-                    <h3>Связанные социальные сети</h3>
+                    <h3>{{ t('account', 'social_accounts')}}</h3>
 
                     {% if socials | length >0 %}
                     <table class="table table-payments">
                         <thead>
                         <tr>
-                            <th>Социальная сеть</th>
-                            <th>Имя пользователя</th>
+                            <th>{{ t('account', 'social_account')}}</th>
+                            <th>{{ t('account', 'user_name')}}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -131,9 +132,9 @@
                                                 mode="reload"
                                                 uid="{{ social.uid }}"
                                                 url="/account/users/social-delete"
-                                                data-remove-error="Ошибка удаления социальной сети. Обновите страницу или попробуйте позже."
+                                                data-remove-error="{{ t('account', 'social_account_delete_error') }}"
                                         >
-                                          Удалить
+                                          {{ t('common', 'delete')}}
                                         </span>
                                     </td>
                                 </tr>
@@ -141,16 +142,16 @@
                         </tbody>
                         </table>
                     {% else %}
-                        <p>На данный момент вы еще не связали свой аккаунт в SecretDiscounter со своими соцсетями.</p>
+                        <p>{{ t('account', 'social_accounts_empty') }}</p>
                     {% endif %}
-                    <p>Для привязки соцсети просто нажмите нужную иконку ниже:</p>
+                    <p>{{ t('account', 'social_accounts_add') }}:</p>
                     {{ use('frontend/components/socials/EauthWidget') }}
                     {{ eauth_widget_widget({'float':'left'}) }}
 
                 </div>
 
                 <div class="col-md-12" style="text-align: center;">
-                    <button type="submit" class="btn-fill btn-form" >Сохранить настройки</button>
+                    <button type="submit" class="btn-fill btn-form" >{{ t('account', 'save_settings') }}</button>
                 </div>
             {{ active_form_end() }}
         </div>

@@ -34,7 +34,7 @@ class UserSetting extends Users
 
       [['email', 'name', 'added'], 'required'],
       [['email'], 'email'],
-      [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
+      [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
 
       [['old_password', 'new_password', 'r_new_password'], 'string'],
       [['old_password', 'new_password', 'r_new_password'], 'trim'],
@@ -47,7 +47,7 @@ class UserSetting extends Users
       ['r_new_password',
         'compare',
         'compareAttribute' => 'new_password',
-        'message' => 'Введенные пароли не совпадают.'
+        'message' => Yii::t('account', 'save_settings_password_repeat_not_same')
       ],
 
       //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
@@ -89,16 +89,17 @@ class UserSetting extends Users
     $old = $this->getOldAttributes();
     $passord = $old['password'];
     if (!Yii::$app->security->validatePassword($this->old_password, $passord)) {
-      $this->addError('old_password', 'Старый пароль введен не верно.');
+      $this->addError('old_password', Yii::t('account', 'save_settings_old_password_fail'));
     }
-    Yii::$app->session->addFlash('info', 'Пароль изменен на <b>' . $this->new_password . '</b>');
+    Yii::$app->session->addFlash('info', Yii::t('account', 'save_settings_password_changed_to') . '<b>' . $this->new_password . '</b>');
   }
 
   public function beforeValidate()
   {
     if (!empty($this->getDirtyAttributes(['email']))) {
       $this->email_verified = 0;
-      Yii::$app->session->addFlash(null, 'Вы изменили E-mail.<br>Новый E-mail не подтверждён.<br><a href="/account/sendverifyemail">Подтвердить</a>');
+      Yii::$app->session->addFlash(null, Yii::t('account', 'save_settings_need_verify_email').
+          '<br><a href="/account/sendverifyemail">'.Yii::t('common','confirm').'</a>');
     }
     return parent::beforeValidate();
   }
@@ -106,10 +107,10 @@ class UserSetting extends Users
   public function attributeLabels()
   {
     return array(
-      'name' => 'Имя',
-      'old_password' => 'Старый пароль',
-      'new_password' => 'Новый пароль',
-      'r_new_password' => 'Новый пароль(повторно)',
+      'name' => Yii::t('account', 'user_name'),
+      'old_password' => Yii::t('account', 'password_old'),
+      'new_password' => Yii::t('account', 'password_new'),
+      'r_new_password' => Yii::t('account', 'password_repeat2'),
     );
   }
 

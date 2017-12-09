@@ -65,6 +65,10 @@ $config= [
           'class' => 'yii\i18n\PhpMessageSource',
           'basePath' => '@app/language',
         ],
+        'common*' => [
+          'class' => 'yii\i18n\PhpMessageSource',
+          'basePath' => '@app/language',
+        ],
         'dictionary*' => [
           'class' => 'yii\i18n\PhpMessageSource',
           'basePath' => '@app/language',
