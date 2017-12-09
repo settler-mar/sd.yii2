@@ -3,9 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="balance">
-          <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-          <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}}  <span class="fa fa-rub"></span></span></div>
-          <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+          {% include('parts/user_balance.twig') %}
         </div>
       </div>
     </div>
@@ -13,9 +11,9 @@
   <section class="account-padding">
     <div class="row">
       <div class="col-md-12">
-        <h3>История бонусов</h3>
+        <h3>{{ t('account', 'history_bonuses') }}</h3>
         <p>
-          Ниже представлена информация обо всех бонусах, которые были зачислены на Ваш аккаунт.
+            {{ t('account', 'history_bonuses_text') }}
         </p>
       </div>
       {% if bonuses|length > 0 %}
@@ -23,11 +21,11 @@
         <table class="table table-bonuses">
           <thead>
             <tr>
-              <th>Тип</th>
-              <th>Описание</th>
-              <th>Дата</th>
-              <th>Сумма</th>
-              <th style="width: 140px;">Статус</th>
+              <th>{{ t('common', 'type') }}</th>
+              <th>{{ t('common', 'description') }}</th>
+              <th>{{ t('common', 'date') }}</th>
+              <th>{{ t('common', 'amount') }}</th>
+              <th style="width: 140px;">{{ t('common', 'status') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -46,15 +44,17 @@
               </td>
               <td class="status status_{{bonus.status}}">
                 {% if bonus.status == '0' %}
-                  <span class="fa fa-clock-o"></span> В ожидании
+                  <span class="fa fa-clock-o"></span>
                 {% endif %}
                 {% if bonus.status == '2' %}
-                  <span class="fa fa-check"></span> Подтверждён
+                  <span class="fa fa-check"></span>
                 {% endif %}
                 {% if bonus.status == '1' %}
-                  <span class="fa fa-times"></span> Отклонён
+                  <span class="fa fa-times"></span>
                 {% endif %}
+                  {{bonus.status_title}}
               </td>
+
             </tr>
             {% endfor %}
           </tbody>
@@ -62,7 +62,7 @@
       </div>
       {% else %}
       <div class="col-md-12">
-        <div class="not-found">На данный момент Вам не было начислено никаких бонусов.</div>
+        <div class="not-found">{{ t('account', 'history_bonuses_empty') }}</div>
       </div>
       {% endif %}
     </div>

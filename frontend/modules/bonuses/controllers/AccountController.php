@@ -57,32 +57,38 @@ class AccountController extends \yii\web\Controller
     
     $cacheName = 'account_bonuses' . \Yii::$app->user->id . '_' . $page;
     $sql .= 'limit ' . $pagination->offset() . ',' . $limit;
-    $data['bonuses'] = Yii::$app->cache->getOrSet($cacheName, function () use ($sql) {
-      $bonuses = Yii::$app->db->createCommand($sql)->queryAll();
-      foreach ($bonuses as &$bonus) {
-        $payment = Payments::find()
-          ->from(Payments::tableName() . ' cwp')
-          ->select(['cwp.action_id as action_id', 'cwp.order_price as order_price', 'cwp.user_id as ref_id',
-            'cwp.order_id as order_id', 'cws.name as shop_name', 'cws.route as shop_route',
-            'cws.currency as shop_currency'])
-          ->innerJoin(CpaLink::tableName() .
-            ' cwl', 'cwp.affiliate_id = cwl.affiliate_id AND cwp.cpa_id=cwl.cpa_id')
-          ->innerJoin(Stores::tableName() . ' cws', "cwl.stores_id=cws.uid")
-          ->where(['cwp.uid' => $bonus['payment_id']])
-          ->asArray()
-          ->one();
-        if ($payment) {
-          $bonus = array_merge($bonus, $payment);
-        } else {
-          $bonus = array_merge($bonus, ['order_id' => 0, 'shop_name' => '']);
-        }
-        $bonus['amount'] = number_format($bonus['amount'], 2, '.', '');
-        //$bonus['type']=$notification_type[$bonus['type_id']];
-        $bonus['text'] = Yii::$app->messageParcer->notificationText($bonus);
-        $bonus['title'] = Yii::$app->messageParcer->notificationTitle($bonus);
-      }
-      return $bonuses;
-    }, Yii::$app->cache->defaultDuration, $dependency);
+      $data['bonuses'] = Yii::$app->cache->getOrSet(
+          $cacheName,
+          function () use ($sql) {
+              $payStatus = \Yii::t('dictionary', 'pay_status');
+              $bonuses = Yii::$app->db->createCommand($sql)->queryAll();
+              foreach ($bonuses as &$bonus) {
+                  $payment = Payments::find()
+                      ->from(Payments::tableName() . ' cwp')
+                      ->select(['cwp.action_id as action_id', 'cwp.order_price as order_price', 'cwp.user_id as ref_id',
+                          'cwp.order_id as order_id', 'cws.name as shop_name', 'cws.route as shop_route',
+                          'cws.currency as shop_currency'])
+                      ->innerJoin(CpaLink::tableName() .
+                          ' cwl', 'cwp.affiliate_id = cwl.affiliate_id AND cwp.cpa_id=cwl.cpa_id')
+                      ->innerJoin(Stores::tableName() . ' cws', "cwl.stores_id=cws.uid")
+                      ->where(['cwp.uid' => $bonus['payment_id']])
+                      ->asArray()
+                      ->one();
+                  if ($payment) {
+                      $bonus = array_merge($bonus, $payment);
+                  } else {
+                      $bonus = array_merge($bonus, ['order_id' => 0, 'shop_name' => '']);
+                  }
+                  $bonus['amount'] = number_format($bonus['amount'], 2, '.', '');
+                  //$bonus['type']=$notification_type[$bonus['type_id']];
+                  $bonus['text'] = Yii::$app->messageParcer->notificationText($bonus);
+                  $bonus['title'] = Yii::$app->messageParcer->notificationTitle($bonus);
+                  $bonus['status_title'] = $payStatus[$bonus['status']];
+              }
+              return $bonuses;
+          },
+          Yii::$app->cache->defaultDuration,
+          $dependency);
 
     if ($pagination->pages() > 1) {
       $data["pagination"] = $pagination->getPagination('bonuses/account', []);

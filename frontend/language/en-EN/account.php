@@ -56,6 +56,7 @@ return [
     'menu_history' => 'История',
     'menu_history_payments' => 'История покупок',
     'menu_history_bonuses' => 'История бонусов',
+    'history_bonuses' => 'История бонусов',
     'menu_history_visits' => 'История посещений',
     'menu_history_withdraw' => 'История вывода денег',
     'menu_history_charity' => 'История вывода добрых дел',
@@ -86,6 +87,8 @@ return [
     'confirmed' => 'Подтверждённый',
     'expected' => 'Ожидаемый',
     'revoked' => 'Отклонённый',
+    'history_bonuses_text' => 'Ниже представлена информация обо всех бонусах, которые были зачислены на Ваш аккаунт.',
+    'history_bonuses_empty' => 'На данный момент Вам не было начислено никаких бонусов.',
 
 
 ];

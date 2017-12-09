@@ -15,7 +15,9 @@ return [
     'date_active' => 'Дата действия',
     'cashback' => 'Кэшбэк',
     'status' => 'Статус',
-    'color_status_waiting' => 'В ожидании',
-    'color_status_revoked' => 'Отклонён',
-    'color_status_confirmed' => 'Подтверждён',
+    'type' => 'Тип',
+    'description' => 'Описание',
+    'date' => 'Дата',
+    'amount' => 'Сумма',
+
 ];
