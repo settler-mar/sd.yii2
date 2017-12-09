@@ -401,7 +401,7 @@ $functionsList=[
   '_ddd'=>function ($params) {
     ddd($params);
   },
-
+  't'=>'Yii::t',
 ];
 
 return $functionsList;
