@@ -98,35 +98,36 @@ class UsersSocial extends \yii\db\ActiveRecord
       $userSocial->user_id = null;
       if (!$userSocial->validate() || !$userSocial->save()) {
         //ddd($userSocial);
-        Yii::$app->session->addFlash('error', 'Авторизация через ' . $attributes['social_name'] . ' прошла неудачно.');
+        Yii::$app->session->addFlash(
+            'error',
+            Yii::t('account', 'social_login by {social_name} fails', ['social_name' => $attributes['social_name']])
+        );
         return null;
       };
     }
-    //ddd($userSocial);
-    //if ($userSocial->email == null || $userSocial->email_verified == 0) {
     //если пользователь авторизирован то делаем привязку к данному юзеру
     if(!Yii::$app->user->isGuest){
       if($userSocial->user_id==null){
         $userSocial->user_id=Yii::$app->user->id;
         $userSocial->save();
         Yii::$app->session->setFlash('info', [
-          'title' => 'Добавление аккаунта',
-          'message' => 'Аккаунт соцсети успешно привязан к вашему аккаунту в SecretDiscounter.',
+          'title' => Yii::t('account', 'adding_account'),
+          'message' => Yii::t('account', 'adding_account_social_success'),
         ]);
       }else if(Yii::$app->user->id==$userSocial->user_id){
         Yii::$app->session->setFlash('err', [
-          'title' => 'Ошибка добавления аккаунта',
-          'message' => 'Данный аккаунт соцсети уже привязан к вашему аккаунту в SecretDiscounter.',
+          'title' => Yii::t('account', 'adding_account_error'),
+          'message' => Yii::t('account', 'adding_account_social_allready_add'),
         ]);
       }else{
         Yii::$app->session->setFlash('err', [
-          'title' => 'Ошибка добавления аккаунта',
-          'message' => 'Данный аккаунт соцсети уже привязан к аккаунту одного из наших пользователей.',
+          'title' => Yii::t('account', 'adding_account_error'),
+          'message' => Yii::t('account', 'adding_account_social_allready_exists'),
         ]);
       }
     }else{
       if ($userSocial->email == null) {
-        Yii::$app->session->addFlash('info', 'Для завершения авторизации необходимо ввести ваш E-mail.');
+        Yii::$app->session->addFlash('info', Yii::t('account', 'social_account_need_email'));
         Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
         return null;
       }
@@ -187,7 +188,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       $user->email_verified = ($userSocial->email == $userSocial->email_manual?1:0);
       if (!$user->save()) {
         //ddd($user);
-        Yii::$app->session->addFlash('error', 'Авторизация через ' . $userSocial->social_name . ' прошла неудачно.');
+        Yii::$app->session->addFlash('error', Yii::t('account', 'social_login by {social_name} fails', ['social_name' => $userSocial->social_name]));
         return null;
       };
 
@@ -217,7 +218,10 @@ class UsersSocial extends \yii\db\ActiveRecord
       $userSocial->email_verify_token = null;
       $userSocial->email = $email;
       $userSocial->save();
-      Yii::$app->session->addFlash('success', ['title' => 'Спасибо', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
+      Yii::$app->session->addFlash('success', [
+          'title' => Yii::t('common', 'thank_you'),
+          'message' => Yii::t('account', 'email_confirmed_success'),
+      ]);
       return $userSocial;
     } else {
       Yii::$app->session->addFlash('err', '');
@@ -265,7 +269,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($userSocial->email_manual)
-      ->setSubject('Подтвердите Email на SecretDiscounter.ru при авторизации через соц сети')
+      ->setSubject(Yii::t('account', 'confirm_social_email'))
       ->send();
   }
 

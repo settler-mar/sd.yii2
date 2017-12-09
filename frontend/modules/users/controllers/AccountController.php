@@ -22,8 +22,8 @@ class AccountController extends Controller
 
   function beforeAction($action)
   {
-    if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      if (Yii::$app->user->isGuest) {
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
 
@@ -154,7 +154,7 @@ class AccountController extends Controller
     };
 
     if ($post && $user->load($post) && $user->save()) {
-      Yii::$app->session->addFlash('info', 'Данные успешно обновлены');
+      Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
       return $this->redirect('/account/settings');
     }
 
@@ -175,7 +175,7 @@ class AccountController extends Controller
   public function actionSocialDelete(){
     $request = Yii::$app->request;
     if(!$request->isAjax || !$request->isPost){
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
 
@@ -190,7 +190,7 @@ class AccountController extends Controller
       return 'err';
     }
 
-    Yii::$app->session->addFlash('info', 'Социальная сеть успешно отключена');
+    Yii::$app->session->addFlash('info', Yii::t('account', 'social_account_off'));
     $socials->delete();
   }
 
@@ -215,7 +215,7 @@ class AccountController extends Controller
 
       if($user->load($request->post()) && $user->save()) {
         if (ValidateEmail::validateEmail($user, $request->post('path'))) {
-          Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».');
+          Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_sent'));
         } else {
 
         }
