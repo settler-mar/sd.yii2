@@ -1,0 +1,10 @@
+<div class="confirm">
+    {{ t('account', 'user_balance <span>{value}</span>', {'value':_nf(this.balance.current)})|raw }}
+</div>
+<div class="pending">
+    {{ t('account', 'user_balance_in_waiting <span>{value}</span>', {'value':_nf(this.balance.pending)})|raw }}
+</div>
+<div class="charity">
+    {{ t('account', 'user_balance_charity <span>{value}</span>', {'value':_nf(this.balance.charity)})|raw }}
+    </span> <a href="/account/dobro/transfer" class="btn-fill">{{ t('common', 'charity') }}</a>
+</div>

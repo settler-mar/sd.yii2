@@ -149,8 +149,7 @@
                     {% endif %}
                 </div>
                 <div class="info-text">
-                    {{ t('account', 'user_balance_current') }}:
-                    <span>{{ _nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span>
+                    {{ t('account', 'user_balance_current <span>{value}</span>', {'value':_nf(this.balance.current)})|raw }}
                 </div>
             </li>
             <li class="dobro-account">

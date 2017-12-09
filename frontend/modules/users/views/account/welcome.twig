@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">{{ t('account', 'user_balance') }}: <span>{{ _nf(this.balance.current) | raw }} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">{{ t('account', 'user_balance_in_waiting') }}: <span>{{ _nf(this.balance.pending) | raw }} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">{{ t('account', 'user_balance_charity') }}: <span>{{ _nf(this.balance.charity) | raw }}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">{{ t('common', 'charity') }}</a></div>
+                    {% include('parts/user_balance.twig') %}
                     <div class="history hpayments"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
                 </div>
             </div>

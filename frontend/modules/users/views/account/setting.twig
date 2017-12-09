@@ -5,10 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">{{ t('account', 'user_balance') }}: <span>{{this.balance.current}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">{{ t('account', 'user_balance_in_waiting') }}: <span>{{this.balance.pending}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">{{ t('account', 'user_balance_charity') }}: <span>{{this.balance.charity}}  <span class="fa fa-rub"></span>
-                        </span> <a href="/account/dobro/transfer" class="btn-fill">{{ t('common', 'charity') }}</a></div>
+                    {% include('parts/user_balance.twig') %}
                     <div class="idsystem">{{ t('account', 'user_id') }}: <span>{{this.user_id}}</span></div>
                 </div>
             </div>
