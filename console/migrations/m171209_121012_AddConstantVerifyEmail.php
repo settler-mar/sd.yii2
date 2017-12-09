@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use \frontend\modules\constants\models\Constants;
+use frontend\modules\constants\models\Constants;
 
 class m171209_121012_AddConstantVerifyEmail extends Migration
 {

@@ -85,6 +85,11 @@ class Help extends Component
         'Отклонён',
         'Подтверждён',
       ];
+//      $status_list = [
+//        \Yii::t('common', 'color_status_waiting'),
+//        \Yii::t('common', 'color_status_revoked'),
+//        \Yii::t('common', 'color_status_confirmed'),
+//      ];
     };
     $icon_list = [
       '<span class="fa fa-clock-o"></span>',

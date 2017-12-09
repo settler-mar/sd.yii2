@@ -11,15 +11,7 @@
     <section class="account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h1>История покупок</h1>
-                <p>
-                    Ниже представлена информация о заказах, которые Вы оформили, перейдя через наш <a href="/stores">каталог магазинов</a>.
-                    Данные о таких заказах отобразятся автоматически в течение нескольких часов (за редким исключением — в течение нескольких дней). 
-                    
-                    Если Вы уверены, что <a href="/recommendations">правильно</a> оформили заказ, но он здесь не появился в списке, настоятельно рекомендуем обратиться в нашу <a href="/account/support">службу поддержки</a>. 
-                    <br><br>
-                    Проверить информацию о том, зафиксировался ли Ваш переход в интернет-магазин, можно <a href="/account/transitions">по данной ссылке</a>.
-                </p>
+                {{ _constant('account_payments_history')|raw }}
             </div>
             {% if payments|length > 0 %}
             <div class="col-md-12">
@@ -27,10 +19,10 @@
                     <thead>
                         <tr>
                             <th>ID SD</th>
-                            <th>Магазин/Сервис</th>
-                            <th>Дата действия</th>
-                            <th>Кэшбэк</th>
-                            <th>Статус</th>
+                            <th>{{ t('common', 'shop_or_service') }}</th>
+                            <th>{{ t('common', 'date_active') }}</th>
+                            <th>{{ t('common', 'cashback') }}</th>
+                            <th>{{ t('common', 'status') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,7 +59,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент Вы не совершали никаких заказов.</div>
+                <div class="not-found">{{ t('account', 'payments_no_found') }}</div>
             </div>
             {% endif %}
         </div>
@@ -78,22 +70,22 @@
     <section>
         <div class="row">
             <div class="col-md-12 sum_information_wrapper">
-                <h3 class="header">Итого:</h3>
+                <h3 class="header">{{ t('account', 'summary') }}:</h3>
                 <div class="sum_information">
                     <div class="line">
-                        <div class="name">Подтвержденный</div>
+                        <div class="name">{{ t('account', 'confirmed') }}</div>
                         <div class="value">
                             {{ _nf(user.sum_confirmed) | raw}} руб
                         </div>
                     </div>
                     <div class="line">
-                        <div class="name">Ожидаемый</div>
+                        <div class="name">{{ t('account', 'expected') }}</div>
                         <div class="value">
                             {{ _nf(user.sum_pending) | raw }} руб
                         </div>
                     </div>
                     <div class="line">
-                        <div class="name">Отклоненный</div>
+                        <div class="name">{{ t('account', 'revoked') }}</div>
                         <div class="value">
                             {{ _nf(user.sum_declined) | raw }} руб
                         </div>
