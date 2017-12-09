@@ -73,5 +73,13 @@ return [
     'menu_withdraw' => 'Вывод денег',
     'menu_settings' => 'Настройки аккаунта',
     'menu_tools' => 'Операции',
+    'view_payments_history' => 'Посмотреть историю покупок',
+    'user_loyalty_status' => 'Ваш статус лояльности',
+    'user_loyalty_current_status' => 'Текущий статус',
+    'for_status {desire} left {left}' => 'Для получения статуса <b>{desire}</b> осталось заработать <span>{left}<span class="fa fa-rub"></span></span>',
+    'loyalty_status_min_sum {tariff_min_summ}' => 'Для вашего аккаунта установлен <strong>персональный уровень лояльности</strong>. <br> Это означает, что после каждой покупки ваш кэшбэк будет увеличен на <strong>{tariff_min_summ}%</strong>.',
+    'premium_status_since {user_loyalty_status_end}' => 'Премиум-аккаунт действует до {user_loyalty_status_end}',
+    'loyalty_vip_client' => 'Вы почётный <strong>VIP</strong> клиент кэшбэк сервиса SecretDiscounter.<br> Если у Вас возник какой-либо вопрос связанный с работой нашего сайта, <br>обратитесь к нам напрямую написав на наш официальный skype - <strong>secretdiscounter.official</strong>.',
+
 
 ];
