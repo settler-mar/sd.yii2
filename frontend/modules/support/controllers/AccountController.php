@@ -19,7 +19,7 @@ class AccountController extends \yii\web\Controller
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t( 'common', 'page_is_forbidden'));
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';
@@ -71,7 +71,7 @@ class AccountController extends \yii\web\Controller
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo(Yii::$app->params['supportEmail'])
-          ->setSubject(Yii::$app->name . ': Запрос в техподдержку')
+          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
           ->send();
       } catch (\Exception $e) {
       }

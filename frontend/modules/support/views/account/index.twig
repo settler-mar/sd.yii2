@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+                    {% include('parts/user_balance.twig') %}
                 </div>
             </div>
         </div>
@@ -13,18 +11,15 @@
     <section class="support account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>Служба поддержки</h3>
-                <p>
-                    Отправьте сообщение в нашу службу поддержки, и наши квалифицированные специалисты помогут Вам в течение одного рабочего дня.
-                </p>
+                {{ _constant('account_support')|raw }}
             </div>
             <div class="col-sm-12 col-md-8">
                 <form action="/" method="post" role="form" name="support-form">
                     <div class="form-input-group">
-                        <i class="fa fa-info-circle"></i><input autocomplete="off" name="title" type="text" placeholder="Тема письма" required>
+                        <i class="fa fa-info-circle"></i><input autocomplete="off" name="title" type="text" placeholder="{{ t('account', 'support_mail_topic') }}" required>
                     </div>
-                    <textarea cols="30" rows="10" name="message" placeholder="Текст обращения" required></textarea>
-                    <button type="submit" class="btn-fill btn-form">Отправить сообщение в службу поддержки</button>
+                    <textarea cols="30" rows="10" name="message" placeholder="{{ t('account', 'support_mail_text') }}" required></textarea>
+                    <button type="submit" class="btn-fill btn-form">{{ t('account', 'support_button') }}</button>
                 </form>
             </div>      
         </div>
