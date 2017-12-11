@@ -3,12 +3,13 @@
     <div class="row">
       <div class="col-md-12">
         <div class="balance">
-          <div>Друзей: <b>{{number_referrals}}</b></div>
-          <div class="confirm">Доход от друзей: <span>{{_nf(confirmed_payments_referrals) | raw}} <span class="fa fa-rub"></span></span></div>
-          <div class="pending">Ожидаемый доход: <span>{{_nf(pending_payments_referrals) | raw}} <span class="fa fa-rub"></span></span></div>
+          {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+          <div>{{ t('account', 'affiliate_referrals') }}: <b>{{number_referrals}}</b></div>
+          <div class="confirm">{{ t('account', 'affiliate_referrals_payments_confirmed') }}: <span>{{_nf(confirmed_payments_referrals) | raw}} {{ curr|raw }}</span></div>
+          <div class="pending">{{ t('account', 'affiliate_referrals_payments_expected') }}: <span>{{_nf(pending_payments_referrals) | raw}} {{ curr|raw }}</span></div>
           <br>
           <div class="history hpayments">
-            <a href="/account/users">Подробнее</a>
+            <a href="/account/users">{{ t('common', 'read_more') }}</a>
           </div>
         </div>
       </div>
@@ -21,20 +22,20 @@
           {% if h1 %}
             {{ h1 | raw}}
           {% else %}
-            Принцип работы партнёрской программы
+            {{ t('account', 'affiliate_h1_default') }}
           {% endif %}
         </h1>
       </div>
       {% include 'parts/principle-affiliate.twig' %}
       <div class="col-md-12 ways-to-invite">
-        <h2 class="text-center">А пригласить можно так</h2>
+        <h2 class="text-center">{{ t('account', 'affiliate_how_to_share') }}</h2>
       </div>
       <div class="col-md-4 ways-invitation">
         <div class="intro-icon">
           <span data-icon="&#xe052;" class="icon"></span>
         </div>
         <div class="intro-content">
-          <h5 style="white-space: nowrap;">Расскажите о нас в соцсетях</h5>
+          <h5 style="white-space: nowrap;">{{ t('account', 'affiliate_do_share') }}</h5>
 
           <div
             class="share42init accauntSoc accauntSoc_32"
@@ -54,12 +55,12 @@
           <span data-icon="&#xe021;" class="icon"></span>
         </div>
         <div class="intro-content">
-          <h5>Отправьте друзьям ссылку</h5>
+          <h5>{{ t('account', 'affiliate_do_share_link') }}</h5>
           <p class="link" style="margin-top: -5px; margin-bottom: 0">
             <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{user_id}}">
           </p>
           <p class="link-sent" >
-            <a href="" class="link-to-clipboard" data-link="https://secretdiscounter.ru/?r={{user_id}}">Скопировать в буфер</a>
+            <a href="" class="link-to-clipboard" data-link="https://secretdiscounter.ru/?r={{user_id}}">{{ t('account', 'affiliate_copy_to_clipboard') }}/a>
           </p>
         </div>
       </div>
@@ -68,17 +69,18 @@
           <span data-icon="&#xe028;" class="icon"></span>
         </div>
         <div class="intro-content">
-          <h5>Или по электронной почте</h5>
+          <h5>{{ t('account', 'affiliate_share_by_email') }}</h5>
           <p style="margin-top: -5px;">
-              Отправьте ссылку всем своим друзьям по e-mail
+              {{ t('account', 'affiliate_share_by_email_text') }}
           </p>
         </div>
       </div>
       <div class="col-md-12">
         <p class="warning text-center">
-          <b>Внимание!</b> Для продвижения Вашей реферальной ссылки категорически запрещается использовать СПАМ.
-          <br>
-          Об остальных условиях партнерской программы читайте ниже.
+          {{ t('account', 'affiliate_share_attention')|raw }}
+          {#<b>Внимание!</b> Для продвижения Вашей реферальной ссылки категорически запрещается использовать СПАМ.#}
+          {#<br>#}
+          {#Об остальных условиях партнерской программы читайте ниже.#}
         </p>
       </div>
     </div>

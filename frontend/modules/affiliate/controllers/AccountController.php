@@ -15,7 +15,7 @@ class AccountController extends \yii\web\Controller
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';

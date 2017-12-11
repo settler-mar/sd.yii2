@@ -29,6 +29,7 @@ return [
     'error' => 'Ошибка',
     'congratulations' => 'Поздравляем!',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
+    'read_more' => 'Подробнее',
 
 
 

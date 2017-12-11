@@ -135,5 +135,16 @@ return [
     'offline_pr_code_do_save' => 'Сохранить в телефон или ПК',
     'offline_pr_code_share' => 'Поделиться с родными или друзьями',
     'offline_pr_code_print' => 'Распечатать',
+    'affiliate_referrals' => 'Друзей',
+    'affiliate_referrals_payments_confirmed' => 'Доход от друзей',
+    'affiliate_referrals_payments_expected' => 'Ожидаемый доход',
+    'affiliate_h1_default' => 'Принцип работы партнёрской программы',
+    'affiliate_how_to_share' => 'А пригласить можно так',
+    'affiliate_do_share' => 'Расскажите о нас в соцсетях',
+    'affiliate_do_share_link' => 'Отправьте друзьям ссылку',
+    'affiliate_copy_to_clipboard' => 'Скопировать в буфер',
+    'affiliate_share_by_email' => 'Или по электронной почте',
+    'affiliate_share_by_email_text' => 'Отправьте ссылку всем своим друзьям по e-mail',
+    'affiliate_share_attention' => '<b>Внимание!</b> Для продвижения Вашей реферальной ссылки категорически запрещается использовать СПАМ.<br>Об остальных условиях партнерской программы читайте ниже.',
 
 ];
