@@ -1,35 +1,35 @@
 <div class="content-wrapper">
     <div class="row">
         <div class="col-md-12">
-            <h3>История заказов друга</h3>
+            <h3>{{ t('account', 'users_referral_history') }}</h3>
         </div>
         <div class="col-md-12">
-            Статус друга:
+            {{ t('account', 'users_referral_status') }}:
             <b>
                 {{ref_user.loyalty_status_data.display_name}}
                 ({{ref_user.loyalty_status_data.bonus}}%)
                 {% if ref_user.loyalty_status_data.is_vip==1 %}
-                    <br>VIP клиент
+                    <br>{{ t('account', 'users_vip_client') }}
                 {% endif %}
             </b>
         </div>
         <div class="col-md-12">
-            Количество покупок (подтвержденных/ожидающих):
+            {{ t('account', 'users_payment_confirmed_expected') }}:
             <b>{{ _nf(total.cnt_confirm,0) | raw}}</b> /
             <b>{{ _nf(total.cnt_pending,0) | raw}}</b>
         </div>
         <div class="col-md-12">
-            Кэшбэк друзей (подтвержденный/ожидаемый):
+            {{ t('account', 'users_cashback_confirmed_expected') }}:
             <b>{{ _nf(total.sum_confirm) | raw}} руб</b> /
             <b>{{ _nf(total.sum_pending) | raw}} руб</b>
         </div>
         <div class="col-md-12">
-            Доход от друзей (подтвержденный/ожидаемый):
+            {{ t('account', 'users_summ_confirmed_expected') }}:
             <b>{{ _nf(total.sum_ref_confirm) | raw}} руб</b> /
             <b>{{ _nf(total.sum_ref_pending) | raw}} руб</b>
         </div>
         <form method="get" class="col-md-12">
-            Период:
+            {{ t('common', 'date_range') }}:
             {{ data_ranger | raw }}
         </form>
     </div>
@@ -41,12 +41,12 @@
                     <thead>
                         <tr>
                             <th>ID SD</th>
-                            <th>Магазин/Сервис</th>
-                            <th>Дата действия</th>
-                            <th>Сумма заказа</th>
-                            <th>Кэшбэк</th>
-                            <th>Ваш бонус</th>
-                            <th>Статус</th>
+                            <th>{{ t('common', 'shop_or_service') }}</th>
+                            <th>{{ t('common', 'date_active') }}</th>
+                            <th>{{ t('common', 'amount_order') }}</th>
+                            <th>{{ t('common', 'cashback') }}</th>
+                            <th>{{ t('common', 'your_bonus') }}</th>
+                            <th>{{ t('common', 'status') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,7 +89,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент нет никаких заказов в выбранный период времени.</div>
+                <div class="not-found">{{ t('account', 'users_referral_payments_empty') }}</div>
             </div>
             {% endif %}
         </div>

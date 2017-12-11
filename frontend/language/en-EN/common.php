@@ -14,14 +14,17 @@ return [
     'good_works' => 'Добрые дела',
     'shop_or_service' => 'Магазин/Сервис',
     'date_active' => 'Дата действия',
+    'date_register' => 'Дата регистрации',
     'cashback' => 'Кэшбэк',
     'status' => 'Статус',
+    'status_loyalty' => 'Статус лояльности',
     'type' => 'Тип',
     'description' => 'Описание',
     'date' => 'Дата',
     'date_request' => 'Дата запроса',
     'date_transition' => 'Дата перехода',
     'amount' => 'Сумма',
+    'amount_order' => 'Сумма заказа',
     'method' => 'Способ',
     'cashe_nomber_email' => 'Счёт/Номер/Email',
     'number' => 'Номер',
@@ -30,6 +33,8 @@ return [
     'congratulations' => 'Поздравляем!',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
     'read_more' => 'Подробнее',
+    'date_range' => 'Период',
+    'your_bonus' => 'Ваш бонус',
 
 
 

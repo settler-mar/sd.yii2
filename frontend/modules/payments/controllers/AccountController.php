@@ -26,7 +26,7 @@ class AccountController extends \yii\web\Controller
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('commont', 'page_is_forbidden'));
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';
@@ -43,7 +43,7 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if(!$user){
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('commont', 'page_is_forbidden'));
       return false;
     }
 
@@ -97,7 +97,7 @@ class AccountController extends \yii\web\Controller
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
-    $payStatus = \Yii::$app->params['dictionary']['pay_status'];
+    $payStatus = Yii::t('dictionary', 'pay_status');
     foreach ($payments as $key => &$payment) {
       $payment['status_title'] = $payStatus[$payment['status']];
     }

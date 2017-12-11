@@ -7,6 +7,7 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 
+{% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
 
 <div class="content-wrapper">
   <section>
@@ -15,40 +16,40 @@
         <h3>{{ html.encode(this.title) }}</h3>
       </div>
       <div class="col-md-12">
-        Количество друзей:
+        {{ t('account', 'users_users_total') }}:
         <b>{{ _nf(users_total.total,0)  | raw}}</b>
       </div>
       <div class="col-md-12">
-        Из них активных (совершающих покупки):
+        {{ t('account', 'users_users_active') }}:
         <b>{{ _nf(users_total.active,0) | raw}}</b>
       </div>
       <div class="col-md-12">
-        Ваш статус партнера:
+        {{ t('account', 'users_your_status') }}:
         <b>
           {{ bonus_status.display_name }}
           ({{ bonus_status.bonus }}%)
           {% if bonus_status.is_webmaster==1 %}
-             - веб мастеров
+             - {{ t('account', 'users_your_status_webmaster') }}
           {% endif %}
         </b>
       </div>
       <div class="col-md-12">
-        Количество покупок (подтвержденных/ожидающих):
+        {{ t('account', 'users_payment_confirmed_expected') }}:
         <b>{{ _nf(users_total.cnt_confirmed,0) | raw}}</b> /
         <b>{{ _nf(users_total.cnt_pending,0) | raw}}</b>
       </div>
       <div class="col-md-12">
-        Кэшбэк друзей (подтвержденный/ожидаемый):
-        <b>{{ _nf(users_total.sum_confirmed,0) | raw}} руб</b> /
-        <b>{{ _nf(users_total.sum_pending,0) | raw}} руб</b>
+        {{ t('account', 'users_cashback_confirmed_expected') }}:
+        <b>{{ _nf(users_total.sum_confirmed,0) | raw}} {{ curr }}</b> /
+        <b>{{ _nf(users_total.sum_pending,0) | raw}} {{ curr }}</b>
       </div>
       <div class="col-md-12">
-        Доход от друзей (подтвержденный/ожидаемый):
-        <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} руб</b> /
-        <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} руб</b>
+        {{ t('account', 'users_summ_confirmed_expected') }}:
+        <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} {{ curr }}</b> /
+        <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} {{ curr }}</b>
       </div>
       <form method="get" class="col-md-12">
-        Период:
+        {{ t('common', 'date_range') }}:
         {{ data_ranger | raw }}
       </form>
     </div>
@@ -59,19 +60,16 @@
           <thead>
           <tr>
             <th>ID</th>
-            <th>Дата регистрации</th>
-            <th>Статус лояльности</th>
+            <th>{{ t('common', 'Дата регистрации') }}</th>
+            <th>{{ t('common', 'status_loyalty') }}</th>
             <th>
-              Покупок<br>
-              (подтвержденных/ожидающих)
+              {{ t('account', 'users_payment_confirmed_expected_table_header')|raw }}
             </th>
             <th>
-              Кэшбэк друзей <br>
-              (подтвержденный/ожидаемый)
+              {{ t('account', 'users_cashback_confirmed_expected_table_header')|raw }}
             </th>
             <th>
-              Ваш бонус <br>
-              (подтвержденный/ожидаемый)
+             {{ t('account', 'users_bonus_confirmed_expected_table_header')|raw }}
             </th>
             <th></th>
           </tr>
@@ -85,7 +83,7 @@
                   {{user.loyalty_status_data.display_name}}
                   ({{user.loyalty_status_data.bonus}}%)
                   {% if user.loyalty_status_data.is_vip==1 %}
-                    <br>VIP клиент
+                    <br>{{ t('account', 'users_vip_client') }}
                   {% endif %}
                 </td>
                 <td>
@@ -105,7 +103,7 @@
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}
-                   <a href="/account/payments/ref/id:{{ user.uid }}">Детали покупок</a>
+                   <a href="/account/payments/ref/id:{{ user.uid }}">{{ t('account', 'users_payments_details') }}</a>
                   {% endif %}
                 </td>
 
@@ -117,7 +115,7 @@
 
       {% else %}
           <div class="col-md-12">
-            <div class="not-found">На данный момент у Вас нет зарегистрированных рефералов в выбранный период времени.</div>
+            <div class="not-found">{{ t('accont', 'users_referrals_empty') }}</div>
           </div>
       {% endif %}
     </div>
