@@ -19,7 +19,13 @@ return [
     'type' => 'Тип',
     'description' => 'Описание',
     'date' => 'Дата',
+    'date_request' => 'Дата запроса',
     'date_transition' => 'Дата перехода',
     'amount' => 'Сумма',
+    'method' => 'Способ',
+    'cashe_nomber_email' => 'Счёт/Номер/Email',
+    'number' => 'Номер',
+    'admin_comment' => 'Комментарий администратора',
+
 
 ];

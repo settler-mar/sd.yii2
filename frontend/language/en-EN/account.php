@@ -91,6 +91,22 @@ return [
     'history_bonuses_empty' => 'На данный момент Вам не было начислено никаких бонусов.',
     'history_transitions' => 'История переходов в магазины',
     'history_transitions_empty' => 'На данный момент Вы ни разу не переходили в интернет-магазины через наш сервис.',
-
+    'have_unconfirmed_withdraw_request' => 'У вас имеется неподтверждённая заявка на вывод средств.',
+    'withdraw_history' => 'История запросов на вывод денег',
+    'withdraw_total' => 'Итого выплачено',
+    'withdraw_empty' => 'На данный момент Вы ни разу не делали запрос на вывод денежных средств.',
+    'withdraw_balance_for <span> {balance} </span>' => 'Доступные средства для вывода: <span>{balance} <span class="fa fa-rub"></span></span>',
+    'withdraw_view_history' => 'Посмотреть историю вывода денег',
+    'withrdaw_request_exists' => 'У вас имеется заявка на вывод денежных средств.',
+    'withrdaw_balance_little' => 'У Вас недостаточно средств для вывода денег.',
+    'withrdaw_choose_method' => 'Выберите способ вывода.',
+    'withrdaw_fill_data' => 'Заполните платёжные данные',
+    'withrdaw_fill_cashe_number' => 'Введите номер счёта',
+    'withrdaw_fill_amount' => 'Введите сумму для вывода',
+    'withrdaw_fill_text' => 'Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard).',
+    'withrdaw_form_button' => 'Сделать запрос на вывод денег',
+    'withrdaw_method_wrong' => 'Неправильный способ вывода',
+    'withrdaw_email_wrong' => 'Введите правильный email',
+    'withrdaw_webmoney_wrong' => 'Введите правильный кошелёк webmoney R000000000000',
 
 ];

@@ -22,7 +22,7 @@ class AccountController extends \yii\web\Controller
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';
@@ -38,7 +38,7 @@ class AccountController extends \yii\web\Controller
       $balanse=Yii::$app->user->identity->balance;
       if ($balanse['withdraw_waiting'] > 0){
         return json_encode([
-          'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
+          'error' => [Yii::t('account', 'have_unconfirmed_withdraw_request')]
         ]);
       }
       $withdraw = new UsersWithdraw();
@@ -55,53 +55,6 @@ class AccountController extends \yii\web\Controller
         ]);
       }
 
-//        $amount=$request->post('amount');
-//      ddd($request->post('process_id'), $request->post('amount'), $request->post('bill') );
-//      if(
-//        !$request->post('process_id')!= null ||
-//        (int)$request->post('process_id') == 0
-//      ){
-//        return json_encode(['error' => ['Не выбран способ вывода денег.']]);
-//      }
-//
-//      if(
-//        !$request->post('bill')!= null ||
-//        strlen($request->post('bill')) < 5
-//      ){
-//        return json_encode(['error' => ['Не заполнены реквизиты перевода.']]);
-//      }
-//
-//      if($balans['current']<350){
-//        return json_encode(['error' => ['На балансе недостаточная сумма для вывода.']]);
-//      }
-//      if($amount<350){
-//        return json_encode(['error' => ['Минимальная сумма для вывода 350р.']]);
-//      }
-//      if($amount>$balans['current']){
-//        return json_encode([
-//          'error' => ['Максимальная сумма для вывода '.number_format($balans['current'],2,'.',' ').'р.']
-//        ]);
-//      }
-//      if ($balans['withdraw_waiting'] > 0){
-//        return json_encode([
-//          'error' => ['У вас имеется неподтверждённая заявка на вывод средств.']
-//        ]);
-//      }
-//
-//      $withdraw = new UsersWithdraw();
-//      $withdraw->admin_comment='';
-//      $withdraw->process_id=$request->post('process_id');
-//      $withdraw->bill = $request->post('bill');
-//      $withdraw->amount = number_format($amount, 2, ".", "");
-//      $withdraw->status = 1;
-//      $withdraw->user_comment = $request->post('user_comment');
-//      $withdraw->save();
-//
-//      Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
-//
-//      return json_encode([
-//        'error' => false
-//      ]);
     }
     return $this->render('index', ['model' => new UsersWithdraw()]);
   }
@@ -133,7 +86,10 @@ class AccountController extends \yii\web\Controller
     if ($pagination->pages() > 1) {
       $data["pagination"] = $pagination->getPagination('withdraw/account/history', []);
     }
-
+    $payment_statuses = Yii::t('dictionary', 'pay_status');
+    foreach ($data['withdraw'] as &$withdraw) {
+        $withdraw['status_title'] = isset($payment_statuses[$withdraw['status']]) ? $payment_statuses[$withdraw['status']] : '';
+    }
     return $this->render('history', $data);
   }
 

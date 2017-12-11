@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+                    {% include('parts/user_balance.twig') %}
                 </div>
             </div>
         </div>
@@ -13,19 +11,19 @@
     <section class="account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>История запросов на вывод денег</h3>
+                <h3>{{ t('account', 'withdraw_history') }}</h3>
             </div>
             {% if withdraw|length > 0 %}
             <div class="col-md-12">
                 <table class="table table-wh">
                     <thead>
                         <tr>
-                            <th>Дата запроса</th>
-                            <th>Способ</th>
-                            <th>Счёт/Номер/Email</th>
-                            <th>Сумма</th>
-                            <th>Статус</th>
-                            <th>Комментарий администратора</th>
+                            <th>{{ t('common', 'date_request') }}</th>
+                            <th>{{ t('common', 'method') }}</th>
+                            <th>{{ t('common', 'cashe_nomber_email') }}</th>
+                            <th>{{ t('common', 'amount') }}</th>
+                            <th>{{ t('common', 'status') }}</th>
+                            <th>{{ t('common', 'admin_comment') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,14 +37,15 @@
                             </td>
                             <td class="status {{w.status}}">
                             {% if w.status == 1 %}
-                            <span class="fa fa-clock-o"></span> В ожидании
+                            <span class="fa fa-clock-o"></span>
                             {% endif %}
                             {% if w.status == 2 %}
-                            <span class="fa fa-check"></span> Подтверждён
+                            <span class="fa fa-check"></span>
                             {% endif %}         
                             {% if w.status == 0 %}
-                            <span class="fa fa-times"></span> Отклонён
-                            {% endif %}     
+                            <span class="fa fa-times"></span>
+                            {% endif %}
+                                {{w.status_title}}
                             </td>
                             <td>
                                 {{ _n_to_br(w.admin_comment) | raw}}
@@ -58,7 +57,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент Вы ни разу не делали запрос на вывод денежных средств.</div>
+                <div class="not-found">{{ t('account', 'withdraw_empty') }}</div>
             </div>
             {% endif %}
         </div>
@@ -67,7 +66,7 @@
     <section class="account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>Итого выплачено: {{ _nf(user.sum_withdraw) | raw }} руб</h3>
+                <h3>{{ t('account', 'withdraw_total') }}: {{ _nf(user.sum_withdraw) | raw }} руб</h3>
             </div>
         </div>
     </section>

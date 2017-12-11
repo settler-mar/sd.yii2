@@ -31,6 +31,9 @@ return [
     ],
   ],
   'params'=>[
-    'valuta' => "USD"
-  ]
+      'valuta' => "RUB",
+      'valuta_list' => [
+          'RUB','USD','EUR','KZT','UAH','BYN'
+      ]
+  ],
 ];

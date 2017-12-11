@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Доступные средства для вывода: <span>{{ _nf(balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="history"><a href="/account/withdraw/history">Посмотреть историю вывода денег</a></div>
+                    <div class="confirm">{{ t('account', 'withdraw_balance_for <span> {balance} </span>', {balance: _nf(balance.current)})|raw }}</div>
+                    <div class="history"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>
                 </div>
             </div>
         </div>
@@ -13,24 +13,20 @@
     <section class="account-withdraw account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>Вывод денежных средств</h3>
-                <ul>
-                    <li>Вывод денежных средств доступен только в случае, если Ваш подтверждённый кэшбэк составляет <b>350 и более рублей</b>.</li>
-                    <li>Заявка на вывод обрабатывается в течение 2-4 рабочих дней. О результате вывода Вы будете оповещены через указанный Вами email адрес.</li>
-                </ul>
+                {{ _constant('account_withdraw')|raw }}
             </div>
 
             {% if balance.withdraw_waiting > 0 %}
                 <div class="col-md-12">
-                    <div class="not-found">У вас имеется заявка на вывод денежных средств.</div>
+                    <div class="not-found">{{ t('account', 'withrdaw_request_exists') }}</div>
                 </div>
             {% elseif balance.current < 350 %}
                 <div class="col-md-12">
-                    <div class="not-found">У Вас недостаточно средств для вывода денег.</div>
+                    <div class="not-found">{{ t('account', 'withrdaw_balance_little') }}</div>
                 </div>
             {% else %}
                 <div class="col-md-12">
-                    <h3 class="text-center">Выберите способ вывода денег:</h3>
+                    <h3 class="text-center">{{ t('account', 'withrdaw_choose_method') }}:</h3>
                     <div class="col-md-4">
                         <div class="option" data-option-process="2">
                             <a href="#"><img src="/images/account/webmoney-l.png" at=""></a>
@@ -63,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h3 class="text-center">Заполните платёжные данные</h3>
+                    <h3 class="text-center">{{ t('account', 'withrdaw_fill_data') }}</h3>
                     <div class="payment-info users-withdraw">
                         {% set form = active_form_begin({'action':'/account/withdraw','options':{'name':'withdraw-form', 'role':'form'},}) %}
                         {#{% set form = active_form_begin() %}#}
@@ -75,19 +71,19 @@
                             {{ form.field(model, 'bill', {
                                 'template' :'<div class="form-input-group"><i class="fa fa-info-circle"></i> {input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
-                            }).textInput({'maxlength':true, 'placeholder':'Введите номер счёта'}).label(false)|raw }}
+                            }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_cashe_number')}).label(false)|raw }}
 
                             {{ form.field(model, 'amount', {
                                 'template' :'<div class="form-input-group"><i class="fa fa-money"></i> {input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
-                            }).textInput({'maxlength':true, 'placeholder':'Введите сумму для вывода'}).label(false)|raw }}
+                            }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}
 
                             {{ form.field(model, 'user_comment', {
                                 'template' : '{input}{error}{hint}',
                                 'options': {'class':'form-group'},
                             }).textarea({
                                 'maxlength':true,
-                                'placeholder':'Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard).',
+                                'placeholder':t('account', 'withrdaw_fill_text'),
                                 'rows': '10',
                                 'cols': '30',
                                 'class': ''
@@ -101,7 +97,7 @@
                             {#</div>#}
                             {#<textarea name="additional-info" cols="30" rows="10" placeholder="Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard)."></textarea>#}
                             <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
-                            <button type="submit" class="btn-fill btn-form">Сделать запрос на вывод денег</button>
+                            <button type="submit" class="btn-fill btn-form">{{ t('account', 'withrdaw_form_button') }}</button>
                         {#</form>#}
                         {{ active_form_end() }}
                     </div>
