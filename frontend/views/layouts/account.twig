@@ -149,7 +149,8 @@
                     {% endif %}
                 </div>
                 <div class="info-text">
-                    {{ t('account', 'user_balance_current <span>{value}</span>', {'value':_nf(this.balance.current)})|raw }}
+                    {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+                    {{ t('account', 'user_balance_current')}}: <span> {{ _nf(this.balance.current)|raw }} {{ curr|raw }} </span>
                 </div>
             </li>
             <li class="dobro-account">

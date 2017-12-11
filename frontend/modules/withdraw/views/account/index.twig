@@ -4,7 +4,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">{{ t('account', 'withdraw_balance_for <span> {balance} </span>', {balance: _nf(balance.current)})|raw }}</div>
+                    {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+                    <div class="confirm">{{ t('account', 'withdraw_balance_for')}}: <span> {{ _nf(balance.current)|raw }} {{ curr|raw }}</span></div>
                     <div class="history"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>
                 </div>
             </div>

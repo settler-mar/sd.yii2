@@ -1,10 +1,12 @@
+{% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+
 <div class="confirm">
-    {{ t('account', 'user_balance <span>{value}</span>', {'value':_nf(this.balance.current)})|raw }}
+    {{ t('account', 'user_balance')}}: <span>{{ _nf(this.balance.current)|raw }} {{ curr|raw }}</span>
 </div>
 <div class="pending">
-    {{ t('account', 'user_balance_in_waiting <span>{value}</span>', {'value':_nf(this.balance.pending)})|raw }}
+    {{ t('account', 'user_balance_in_waiting') }}:  <span>{{ _nf(this.balance.pending)|raw }} {{ curr|raw }}</span>
 </div>
 <div class="charity">
-    {{ t('account', 'user_balance_charity <span>{value}</span>', {'value':_nf(this.balance.charity)})|raw }}
+    {{ t('account', 'user_balance_charity')}}:  <span>{{ _nf(this.balance.charity)|raw }} {{ curr|raw }}></span>
     </span> <a href="/account/dobro/transfer" class="btn-fill">{{ t('common', 'charity') }}</a>
 </div>

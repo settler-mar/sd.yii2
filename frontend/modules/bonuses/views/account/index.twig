@@ -29,6 +29,7 @@
             </tr>
           </thead>
           <tbody>
+          {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
             {% for bonus in bonuses %}
             <tr>
               <td>
@@ -39,8 +40,7 @@
               </td>
               <td>{{_date(bonus.added)}}</td>
               <td class="cashback {{bonus.status}}">
-                {{bonus.amount}}
-                <span class="fa fa-rub"></span>
+                {{bonus.amount}} {{ curr_icon|raw }}
               </td>
               <td class="status status_{{bonus.status}}">
                 {% if bonus.status == '0' %}

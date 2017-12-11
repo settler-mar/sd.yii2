@@ -27,13 +27,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].icon : '' %}
                         {% for w in withdraw %}
                         <tr>
                             <td>{{_date(w.request_date)}}</td>
                             <td>{{w.name}}</td>
                             <td>{{w.bill}}</td>
                             <td class="cashback {{w.status}}">
-                                {{ _nf(w.amount) | raw}} <span class="fa fa-rub"></span>
+                                {{ _nf(w.amount) | raw}} {{ curr|raw }}
                             </td>
                             <td class="status {{w.status}}">
                             {% if w.status == 1 %}
@@ -66,7 +67,8 @@
     <section class="account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>{{ t('account', 'withdraw_total') }}: {{ _nf(user.sum_withdraw) | raw }} руб</h3>
+                {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
+                <h3>{{ t('account', 'withdraw_total') }}: {{ _nf(user.sum_withdraw) | raw }} {{ curr }}</h3>
             </div>
         </div>
     </section>

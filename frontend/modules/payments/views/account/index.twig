@@ -26,6 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
                         {% for payment in payments %}
                         <tr>
                             <td>{{payment.action_id}}</td>
@@ -38,7 +39,7 @@
                             </td>
                             <td>{{ _date(payment.action_date)}}</td>
                             <td class="cashback status_{{payment.status}}">
-                                {{ _nf(payment.cashback) | raw }} <span class="fa fa-rub"></span>
+                                {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
                             </td>
                             <td class="status status_{{payment.status}}">
                                 {% if payment.status == '0' %}
@@ -67,6 +68,8 @@
     {% include '/parts/pagination.twig' %}
 
 
+    {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
+
     <section>
         <div class="row">
             <div class="col-md-12 sum_information_wrapper">
@@ -75,19 +78,19 @@
                     <div class="line">
                         <div class="name">{{ t('account', 'confirmed') }}</div>
                         <div class="value">
-                            {{ _nf(user.sum_confirmed) | raw}} руб
+                            {{ _nf(user.sum_confirmed) | raw}} {{ curr }}
                         </div>
                     </div>
                     <div class="line">
                         <div class="name">{{ t('account', 'expected') }}</div>
                         <div class="value">
-                            {{ _nf(user.sum_pending) | raw }} руб
+                            {{ _nf(user.sum_pending) | raw }} {{ curr }}
                         </div>
                     </div>
                     <div class="line">
                         <div class="name">{{ t('account', 'revoked') }}</div>
                         <div class="value">
-                            {{ _nf(user.sum_declined) | raw }} руб
+                            {{ _nf(user.sum_declined) | raw }} {{ curr }}
                         </div>
                     </div>
                 </div>
