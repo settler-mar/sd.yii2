@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+
                 </div>
             </div>
         </div>
@@ -13,7 +11,7 @@
     <section class="shops favorites account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>Избранные магазины</h3>
+                <h3>{{ t('account', 'favorites') }}</h3>
             </div>
             {% if favorites|length > 0 %}
             {% for store in favorites %}
@@ -24,9 +22,9 @@
             {% else %}
             <div class="col-md-12">
                 <p>
-                    После добавления магазинов из <a href="/stores">нашего каталога</a> в избранное  они будут отображаться на данной странице.
+                    {{ t('account', 'favorites_empty_text')|raw }}
                 </p>
-                <div class="not-found">На данный момент у Вас нет избранных магазинов.</div>
+                <div class="not-found">{{ t('account', 'favorites_empty')|raw }}</div>
             </div>
             {% endif %}
         </div>

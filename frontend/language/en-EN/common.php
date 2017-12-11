@@ -26,7 +26,9 @@ return [
     'cashe_nomber_email' => 'Счёт/Номер/Email',
     'number' => 'Номер',
     'admin_comment' => 'Комментарий администратора',
-    'from' => 'От',
+    'error' => 'Ошибка',
+    'congratulations' => 'Поздравляем!',
+    'error_try_again' => 'Ошибка. Попробуйте позже.',
 
 
 

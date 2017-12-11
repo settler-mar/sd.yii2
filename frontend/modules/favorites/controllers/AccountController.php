@@ -26,8 +26,8 @@ class AccountController extends \yii\web\Controller
     if($request->isAjax) {
       if(Yii::$app->user->isGuest){
         return json_encode([
-          'error'=>'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="#login">авторизованы</a> на сайте.',
-          'title'=>'Ошибка']);
+          'error'=>Yii::t('account', 'favorites_login_to_add'),
+          'title'=>Yii::t('common', 'error')]);
       }
 
       $type = $request->post('type');
@@ -38,7 +38,7 @@ class AccountController extends \yii\web\Controller
       $store=Stores::findOne(['uid'=>$affiliate_id,'is_active'=>[0,1]]);
 
       if(!$store){
-        return json_encode(['error'=>['Невозможно найти выбранный магазин.']]);
+        return json_encode(['error'=>[Yii::t('account', 'favorites_add_noshop')]]);
       }
 
       $cash_id='account_favorites_'.Yii::$app->user->id;
@@ -46,7 +46,7 @@ class AccountController extends \yii\web\Controller
 
       if($type=='add'){
         if($fav){
-          return json_encode(['error'=>'Данный магазин уже находится у вас в Избранном.']);
+          return json_encode(['error'=>Yii::t('account', 'favorites_shop_allready')]);
         }else{
           $fav=new UsersFavorites();
           $fav->store_id=$affiliate_id;
@@ -55,34 +55,34 @@ class AccountController extends \yii\web\Controller
           $cache->delete($cash_id);
           return json_encode([
             'error'=>false,
-            'msg'=>'Магазин был успешно добавлен в Избранное.',
+            'msg'=>Yii::t('account', 'favorites_shop_add'),
             'data-state'=>'delete',
-            'data-original-title'=>"Удалить из Избранного",
-            'title'=>'Поздравляем!'
+            'data-original-title'=>Yii::t('account', 'favorites_shop_do_remove'),
+            'title'=>Yii::t('common', 'congratulations')
           ]);
         }
       }
       if($type=='delete'){
         if(!$fav){
-          return json_encode(['error'=>'Данного магазина нет у вас в Избранном.']);
+          return json_encode(['error'=>Yii::t('account', 'favorites_shop_removed_allready')]);
         }else{
           $fav->delete();
           $cache->delete($cash_id);
           return json_encode([
             'error'=>false,
-            'msg'=>'Магазин был успешно удалён из Избранного.',
+            'msg'=>Yii::t('account', 'favorites_shop_removed'),
             'data-state'=>'add',
-            'data-original-title'=>"Добавить в Избранное",
-            'title'=>'Поздравляем!'
+            'data-original-title'=>Yii::t('account', 'favorites_shop_do_add'),
+            'title'=>Yii::t('common', 'congratulations'),
           ]);
         }
       }
-      return json_encode(['error'=>['Ошибка. Попробуйте позже.']]);
+      return json_encode(['error'=>[Yii::t('common', 'error_try_again')]]);
     }
 
 
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
 
