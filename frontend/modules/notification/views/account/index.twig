@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="balance">
-                    <div class="confirm">Баланс: <span>{{_nf(this.balance.current) | raw}} <span class="fa fa-rub"></span></span></div>
-                    <div class="pending">В ожидании: <span>{{_nf(this.balance.pending) | raw}}  <span class="fa fa-rub"></span></span></div>
-                    <div class="charity">Пожертвовано: <span>{{_nf(this.balance.charity) | raw}}  <span class="fa fa-rub"></span></span> <a href="/account/dobro/transfer" class="btn-fill">Благотворительность</a></div>
+                    {% include('parts/user_balance.twig') %}
                 </div>
             </div>
         </div>
@@ -13,16 +11,13 @@
     <section class="notification account-padding">
         <div class="row">
             <div class="col-md-12">
-                <h3>Уведомления</h3>
-                <p>
-                    На данной странице будут отображаться все уведомления, которые связаны с вашим аккаунтом и сайтом в целом.
-                </p>
+                {{ _constant('account_notifications')|raw }}
             </div>
             {% if notifications|length > 0 %}
             <div class="col-md-12">
                 {% for notification in notifications %}
                 <div class="current-notification cashback news_{{notification.name}}">
-                    <div class="date">{{_date(notification.added)}}</div>
+                    <div class="date">{{_local_date(notification.added, t('dictionary', 'date_format_long'))}}</div>
                     <h5>{{notification.title}}</h5>
                     <p>{{notification.text|raw}}</p>
                 </div>
@@ -30,7 +25,7 @@
             </div>
             {% else %}
             <div class="col-md-12">
-                <div class="not-found">На данный момент никаких уведомлений нет.</div>
+                <div class="not-found">{{ t('account', 'notifications_empty') }}</div>
             </div>
             {% endif %}
         </div>

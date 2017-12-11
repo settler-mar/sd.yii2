@@ -26,7 +26,9 @@ class m171209_134029_AddConstantPaymentsHistory extends Migration
     public function safeDown()
     {
         $const = Constants::findOne(['name' => 'account_payments_history']);
-        $const->delete();
+        if ($const) {
+            $const->delete();
+        }
     }
 
     /*

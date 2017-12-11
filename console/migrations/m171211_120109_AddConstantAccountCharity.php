@@ -21,7 +21,9 @@ class m171211_120109_AddConstantAccountCharity extends Migration
     public function safeDown()
     {
         $const = Constants::findOne(['name' => 'account_charity']);
-        $const->delete();
+        if ($const) {
+            $const->delete();
+        }
     }
 
     /*

@@ -28,7 +28,9 @@ class m171209_121012_AddConstantVerifyEmail extends Migration
     public function safeDown()
     {
         $const = Constants::findOne(['name' => 'account_verify_email']);
-        $const->delete();
+        if ($const) {
+            $const->delete();
+        }
     }
 
     /*

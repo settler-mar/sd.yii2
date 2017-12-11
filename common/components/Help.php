@@ -96,7 +96,7 @@ class Help extends Component
       '<span class="fa fa-times"></span>',
       '<span class="fa fa-check"></span>',
     ];
-    if (!isset($status_list[$status])) return '!!! ОЩИБКА !!!';
+    if (!isset($status_list[$status])) return '!!! ОШИБКА !!!';
     $out = '<span class="status_' . $status . '"">';
 
     if ($showIcon && isset($icon_list[$status])) {
@@ -107,7 +107,7 @@ class Help extends Component
     return $out;
   }
 
-  public function dateRanges()
+  public static function dateRanges()
   {
     return [
       'Сегодня' => ["moment().startOf('day')", "moment()"],
@@ -122,7 +122,7 @@ class Help extends Component
     ];
   }
 
-  public function DateRangePicker($Model,$attrName,$option=array()){
+  public static function DateRangePicker($Model,$attrName,$option=array()){
     $option=ArrayHelper::merge([
       'convertFormat'=>true,
       'pluginOptions' => [
@@ -130,7 +130,7 @@ class Help extends Component
         'locale'=>[
           'format'=>'d-m-Y',
         ],
-        'ranges'=>Help::dateRanges(),
+        'ranges'=>self::dateRanges(),
         //'opens'=>'left',
         'showDropdowns'=>true,
         //'autoUpdateInput' => true,

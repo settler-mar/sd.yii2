@@ -22,7 +22,9 @@ class m171211_101739_AddConstantAccountWithdraw extends Migration
     public function safeDown()
     {
         $const = Constants::findOne(['name' => 'account_withdraw']);
-        $const->delete();
+        if ($const) {
+            $const->delete();
+        }
     }
 
     /*
