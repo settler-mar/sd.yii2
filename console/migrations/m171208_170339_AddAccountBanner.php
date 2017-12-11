@@ -18,7 +18,10 @@ class m171208_170339_AddAccountBanner extends Migration
     $banner->is_active = 1;
     $banner->save();
 
-    if (is_readable(Yii::$app->getBasePath() . '/../frontend/web/images/account/tel_friend.png')) {
+    if (
+      is_readable(Yii::$app->getBasePath() . '/../frontend/web/images/account/tel_friend.png') &&
+      !is_readable(Yii::$app->getBasePath() . '/../frontend/web/images/banners/tel_friend.png')
+    ) {
       copy(
         Yii::$app->getBasePath() . '/../frontend/web/images/account/tel_friend.png',
         Yii::$app->getBasePath() . '/../frontend/web/images/banners/tel_friend.png'
