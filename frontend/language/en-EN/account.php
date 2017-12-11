@@ -128,5 +128,12 @@ return [
     'favorites_shop_removed_allready' => 'Данного магазина нет у вас в Избранном.',
     'favorites_shop_removed' => 'Магазин был успешно удалён из Избранного.',
     'favorites_shop_do_add' => 'Добавить в Избранное',
+    'offline_friend_pr_code' => 'Штрихкод вашего друга',
+    'offline_pr_code_example' => 'Пример штрихкода',
+    'offline_pr_code_is_copy' => 'Номер вашего штрихкода успешно скопирован в буфер обмена. Вставьте его в примечание к заказу в интернет-магазине.',
+    'offline_pr_code_do_copy' => 'Скопировать номер штрихкода',
+    'offline_pr_code_do_save' => 'Сохранить в телефон или ПК',
+    'offline_pr_code_share' => 'Поделиться с родными или друзьями',
+    'offline_pr_code_print' => 'Распечатать',
 
 ];

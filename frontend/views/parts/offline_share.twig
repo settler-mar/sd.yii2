@@ -2,7 +2,7 @@
     <div class="col-md-4 ways-invitation">
         <h3>
             {% if friend_user %}
-                Штрихкод вашего друга ↓
+                {{ t('account', 'offline_friend_pr_code') }} ↓
                 {% set user_code_img = friend_user.barcodeImg  %}
                 {% set user_id = friend_user.uid  %}
                 {% set print = "print();return false;" %}
@@ -10,7 +10,7 @@
                 {% if user_id %}
                     {% set print = "window.open(this.href).print();return false;" %}
                 {% else %}
-                    Пример штрихкода ↓
+                    {{ t('account', 'offline_pr_code_example') }} ↓
                     {% set user_code_img = "/images/barcode_sample.png"%}
                 {% endif %}
             {% endif %}
@@ -21,8 +21,8 @@
 
                 <a href="" class="link-to-clipboard"
                    data-link="{{ user_code }}"
-                   data-text="Номер вашего штрихкода успешно скопирован в буфер обмена. Вставьте его в примечание к заказу в интернет-магазине."
-                ><b>Скопировать номер штрихкода</b></a>
+                   data-text="{{ t('account', 'offline_pr_code_is_copy') }}"
+                ><b>{{ t('account', 'offline_pr_code_do_copy') }}</b></a>
             </p>
         {% endif %}
     </div>
@@ -33,7 +33,7 @@
                     <span class="icon icon-download" aria-hidden="true" data-icon=""></span>
                 </div>
                 <div class="intro-content">
-                    <p class="intro-content_header"><a href="{{ user_code_img }}" download>Сохранить в телефон или ПК</a></p>
+                    <p class="intro-content_header"><a href="{{ user_code_img }}" download>{{ t('account', 'offline_pr_code_do_save') }}</a></p>
                 </div>
             </div>
             {% if friend_user or user_id %}
@@ -43,7 +43,7 @@
                     </div>
                     <div class="intro-content">
                         <a name="link-to-clipboard"></a>
-                        <p  class="intro-content_header">Поделиться с родными или друзьями</p>
+                        <p  class="intro-content_header">{{ t('account', 'offline_pr_code_share') }}</p>
 
                         <div
                                 class="share42init accauntSoc accauntSoc_32"
@@ -64,7 +64,7 @@
                         <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
                     </div>
                     <div class="intro-content">
-                        <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>Распечатать</a></p>
+                        <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>
             {% endif %}
