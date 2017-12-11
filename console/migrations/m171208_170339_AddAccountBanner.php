@@ -7,6 +7,9 @@ class m171208_170339_AddAccountBanner extends Migration
 {
     public function safeUp()
     {
+      $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+      $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $banner = new Banners();
         $banner->url = 'account/affiliate';
         $banner->picture = 'tel_friend.png';
