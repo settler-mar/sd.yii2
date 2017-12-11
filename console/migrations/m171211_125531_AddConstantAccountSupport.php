@@ -7,6 +7,9 @@ class m171211_125531_AddConstantAccountSupport extends Migration
 {
     public function safeUp()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $const = new Constants();
         $const->name='account_support';
         $const->title = 'Аккаунт. Текст страницы Служба поддержки';

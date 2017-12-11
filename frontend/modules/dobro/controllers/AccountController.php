@@ -18,7 +18,7 @@ class AccountController extends \yii\web\Controller
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';
@@ -56,7 +56,7 @@ class AccountController extends \yii\web\Controller
       !$request->post('charity-process')!= null ||
       (int)$request->post('charity-process') == 0
     ){
-      return json_encode(['error' => ['Не выбран фонд.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_found_not_choosen')]]);
     }
 
     $funds=Foundations::find()
@@ -65,12 +65,12 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if(!$funds){
-      return json_encode(['error' => ['Ошибка выбора фонда.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_found_choose_error')]]);
     }
 
     if($amount>$balans['max_fundation']){
       return json_encode([
-        'error' => ['Максимальная сумма для пожертвования '.number_format($balans['max_fundation'],2,'.',' ').'р.']
+        'error' => [Yii::t('account','dobro_max_summ').' '.number_format($balans['max_fundation'],2,'.',' ').'р.']
       ]);
     }
 //    if($amount>$balans['current']){
@@ -80,7 +80,7 @@ class AccountController extends \yii\web\Controller
 //    }
 
     if($amount<1){
-      return json_encode(['error' => ['Минимальная сумма для пожертвования 1р.']]);
+      return json_encode(['error' => [Yii::t('account','dobro_max_summ')]]);
     }
 
     $charity = new Charity();
@@ -105,7 +105,7 @@ class AccountController extends \yii\web\Controller
       !$request->post('autopayment-uid')!= null ||
       (int)$request->post('autopayment-uid') == 0
     ){
-      return json_encode(['error' => ['Не выбран фонд.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_found_not_choosen')]]);
     }
 
     $funds=Foundations::find()
@@ -114,7 +114,7 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if(!$funds){
-      return json_encode(['error' => ['Ошибка выбора фонда.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_found_choose_error')]]);
     }
 
     $auto=Autopayments::find()
@@ -123,7 +123,7 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if($auto){
-      return json_encode(['error' => ['Вы уже выбрали фонд для автоперечеслений ранее.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_auto_payment_choosen_already')]]);
     }
 
     $auto=new Autopayments();
@@ -148,7 +148,7 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if(!$auto){
-      return json_encode(['error' => ['У вас нет платежа по умолчанию.']]);
+      return json_encode(['error' => [Yii::t('account', 'dobro_not_payment_default')]]);
     }
 
     $auto->delete();

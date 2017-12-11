@@ -33,6 +33,7 @@ return [
     'congratulations' => 'Поздравляем!',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
     'read_more' => 'Подробнее',
+    'read_more_long' => 'подробная информация',
     'date_range' => 'Период',
     'your_bonus' => 'Ваш бонус',
 
