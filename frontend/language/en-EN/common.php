@@ -6,6 +6,7 @@ return [
     'charity' => 'Благотворительность',
     'delete' => 'Удалить',
     'confirm' => 'Подтвердить',
+    'change' => 'Сменить',
     'logout' => 'Выход',
     'shops' => 'Магазины',
     'shop' => 'Магазин',
@@ -36,6 +37,7 @@ return [
     'read_more_long' => 'подробная информация',
     'date_range' => 'Период',
     'your_bonus' => 'Ваш бонус',
+    'email_address' => 'Email адрес',
 
 
 

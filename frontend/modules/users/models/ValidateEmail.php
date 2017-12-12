@@ -26,21 +26,21 @@ class ValidateEmail extends Model
   {
     if ($token !== false) {
       if (empty($token) || !is_string($token)) {
-        throw new InvalidParamException('Идентификатор подтверждения email не может быть пустым.');
+        throw new InvalidParamException(Yii::t('account', 'email_confirm_token_empty'));
       }
       $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
       if (!$this->_user ) {
         Yii::$app->session->addFlash('err', [
-          'title'=>'Ошибка!',
-          'message'=>'Данная ссылка для активации e-mail уже использована или устарела. Если вы запросили код активации несколько раз – пройдите по ссылке в ПОСЛЕДНЕМ письме.'
+          'title'=>Yii::t('common', 'error').'!',
+          'message'=>Yii::t('account', 'email_confirm_token_used_or_expired')
         ]);
         Yii::$app->response->redirect('/');
         return null;
       }
       if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60*60*24) {
         Yii::$app->session->addFlash('err', [
-          'title'=>'Ошибка!',
-          'message'=>'Данная ссылка для активации e-mail уже устарела. .'
+          'title'=>Yii::t('account', 'error').'!',
+          'message'=>Yii::t('account', 'email_confirm_token_expired'),
         ]);
         Yii::$app->response->redirect('/account/sendverifyemail');
         return null;
@@ -97,22 +97,22 @@ class ValidateEmail extends Model
     $path = !empty($options['path']) ? $options['path'] : false;
 
     $templateName = 'verifyEmailToken';
-    $subject = 'Подтвердите E-mail на  SecretDiscounter.ru';
+    $subject = Yii::t('account', 'email_confirm_email_subject_confirm');
     if ($newUser) {
       $templateName = 'verifyEmailTokenNewUser';
-      $subject = 'Активируйте аккаунт на SecretDiscounter.ru';
+      $subject = Yii::t('account', 'email_confirm_email_subject_activate');
     }
     if ($validateSuccess) {
       $templateName = 'verifyEmailSuccess';
-      $subject = 'Узнайте, как экономить до 40% на покупках';
+      $subject = Yii::t('account', 'email_confirm_email_subject_how_to_save');
     }
     $sessionVar = 'sd_verify_mail_time_'.$user->email;
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
 
     if (!$newUser && !$validateSuccess && $lastMailTime && (time() - $lastMailTime < 60*5)) {
       Yii::$app->session->addFlash('err', [
-        'title'=>'Ошибка!',
-        'message'=>'Повторное письмо для подтверждения электронной почты можно отправить раз в 5 минут. Немного подождите.'
+        'title'=>Yii::t('common', 'error').'!',
+        'message'=>Yii::t('account', 'email_confirm_email_wait')
       ]);
       Yii::$app->response->redirect('/account');
       return null;
@@ -164,11 +164,12 @@ class ValidateEmail extends Model
       self::validateEmail($user);
     }
     if ($user->email_verify_token != null) {
-      Yii::$app->session->addFlash(null, 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».');
+      Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_email_sent'));
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,
-        'Ваш E-mail не подтверждён.<br><a href="/account/sendverifyemail' . ($path ? '?path=' . $path : '') . '">Подтвердить</a> E-mail<br><a href="/account/settings">Cменить</a> E-mail'
+        Yii::t('account', 'email_confirm_not_confirmed') . '<br><a href="/account/sendverifyemail' .
+            ($path ? '?path=' . $path : '') . '">'.Yii::t('common','confirm').'</a> E-mail<br><a href="/account/settings">'.Yii::t('common','change').'</a> E-mail'
       );
     }
   }

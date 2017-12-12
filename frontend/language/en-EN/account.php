@@ -45,7 +45,7 @@ return [
     'social_accounts_add' => 'Для привязки соцсети просто нажмите нужную иконку ниже',
     'save_settings' => 'Сохранить настройки',
     'save_settings_email_exists' => 'Данныей email принадлежит другому пользователю.',
-    'save_settings_password_repeat_not_same' => 'Данныей email принадлежит другому пользователю.',
+    'save_settings_password_repeat_not_same' => 'Введённые пароли не совпадают',
     'save_settings_old_password_fail' => 'Старый пароль введен не верно.',
     'save_settings_password_changed_to' => 'Пароль изменён на',
     'save_settings_need_verify_email' => 'Вы изменили E-mail.<br>Новый E-mail не подтверждён.',
@@ -186,6 +186,18 @@ return [
     'dobro_min_summ' => 'Минимальная сумма для пожертвования 1р.',
     'dobro_auto_payment_choosen_already' => 'Вы уже выбрали фонд для автоперечеслений ранее.',
     'dobro_not_payment_default' => 'У вас нет платежа по умолчанию.',
+    'email_confirm_send_activation_key' => 'Отправить ключ активации',
+    'email_confirm_send_activation_key_repeat' => 'Отправить повторное письмо',
+    'email_confirm_token_empty' => 'Идентификатор подтверждения email не может быть пустым.',
+    'email_confirm_token_used_or_expired' => 'Данная ссылка для активации e-mail уже использована или устарела. Если вы запросили код активации несколько раз – пройдите по ссылке в ПОСЛЕДНЕМ письме.',
+    'email_confirm_token_expired' => 'Данная ссылка для активации e-mail уже устарела.',
+    'email_confirm_email_subject_confirm' => 'Подтвердите E-mail на  SecretDiscounter.ru',
+    'email_confirm_email_subject_activate' => 'Активируйте аккаунт на SecretDiscounter.ru',
+    'email_confirm_email_subject_how_to_save' => 'Узнайте, как экономить до 40% на покупках',
+    'email_confirm_email_wait' => 'Повторное письмо для подтверждения электронной почты можно отправить раз в 5 минут. Немного подождите.',
+    'email_confirm_email_sent' => 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
+    'email_confirm_not_confirmed' => 'Ваш E-mail не подтверждён.',
+
 
 
 ];

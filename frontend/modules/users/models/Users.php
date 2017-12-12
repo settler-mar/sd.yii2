@@ -60,7 +60,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     return [
       [['email', 'name', 'added'], 'required'],
       [['email'], 'email'],
-      [['email'], 'unique', 'message' => 'Данныей email принадлежит другому пользователю.'],
+      [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
       ['new_password', 'trim'],
       [['new_password'], 'string', 'max' => 60],
       [['new_password'], 'string', 'min' => 5],
@@ -95,7 +95,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     return [
       'uid' => 'id',
-      'email' => 'email',
+      'email' => 'Email',
       'name' => Yii::t('account', 'user_name'),
       'password' => 'Пароль',
       'new_password' => 'Новый пароль',
