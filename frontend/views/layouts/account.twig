@@ -1,7 +1,7 @@
 {{ register_asset_bundle('frontend/assets/AppAsset') }}
 {{   void(this.beginPage()) }}
 <!DOCTYPE html>
-<html lang="ru" class="no-js" >
+<html lang="{{ app.language }}" class="no-js" >
 <head>
     <title>{{ html.encode(this.title) }}</title>
     <base href="/">

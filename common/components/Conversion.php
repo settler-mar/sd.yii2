@@ -68,7 +68,7 @@ class Conversion extends Component
     $from = (string)$from;
     $amount = (float)$amount;
 
-    if ($from == 'RUB') {
+    if ($from == Yii::$app->params['valuta']) {
       return $amount;
     }
     return isset($this->data[$from]) ? $this->data[$from] * $amount : null;
