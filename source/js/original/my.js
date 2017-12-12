@@ -197,10 +197,13 @@ $('.shop-panel-search-collapse').click(function(e){
   e.preventDefault();
   var target = $(this).data('target');
   $(target).toggleClass('in');
-  if ($(target).hasClass('in')) {
+  if (!$(target).hasClass('in')) {
     $('.autocomplete-suggestion').fadeOut();
-    $(this).html('<span class="fa fa-times"></span>')
-  } else {
-    $(this).html('<span class="fa fa-search"></span>')
   }
+});
+
+
+$('.shop-search-panel__close').click(function(e){
+  $('#nav-shops-search-panel').removeClass('in');
+  $('.autocomplete-suggestion').fadeOut();
 });

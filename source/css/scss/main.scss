@@ -2909,14 +2909,22 @@ section.store_photos {
 
 }
 .shop-search-panel {
+  position: relative;
   &__input {
-    display: none;
     width: 100%;
     opacity: 0.9;
-    padding: 7px;
+    padding: 8px;
     border-radius: 3px;
-    margin-top: 25px;
+    margin-top: 26px;
     outline: none;
+    border: none;
+  }
+  &__close {
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 11px;
+    right: 10px;
   }
 }
 .autocomplete-suggestion .cashback {
