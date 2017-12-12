@@ -99,6 +99,7 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
+        paths.source.js+'/original/language.js',
         paths.source.js+'/original/my.js'
     ], paths.app.js)
 );
@@ -116,6 +117,7 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/original/account/main.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/admin/ajax_remove.js',
+        paths.source.js+'/original/language.js',
         paths.source.js+'/original/for_all.js'
     ], paths.app.js + '/account')
 );
