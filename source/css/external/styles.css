@@ -249,36 +249,20 @@ Navigation
   -webkit-transition: left 0.5s;
   transition: left 0.5s; }
 
-/*.header-nav nav {*/
-  /*top: 0;*/
-  /*height: 100%;*/
-  /*min-width: 260px;*/
-  /*width: 70%;*/
-  /*background: #fff;*/
-  /*z-index: 1001;*/
-  /*overflow-y: scroll;*/
-  /*-webkit-transition: left .2s ease;*/
-  /*-o-transition: left .2s ease;*/
-  /*-moz-transition: left .2s ease;*/
-  /*transition: left .2s ease;*/
-  /*-moz-transform: translatey(0%);*/
-  /*-ms-transform: translatey(0%);*/
-  /*-o-transform: translatey(0%);*/
-  /*-webkit-transform: translatey(0%);*/
-  /*transform: translatey(0%);*/
-  /*-webkit-box-sizing: border-box;*/
-  /*-moz-box-sizing: border-box;*/
-  /*box-sizing: border-box;*/
-/*}*/
 
 .nav-toggle {
   position: absolute;
-  top: 0;
-  right: 15px;
+  /*top: 0;*/
+  /*right: 15px;*/
+  top: -20px;
+  /*right: 15px;*/
   z-index: 999999;
   padding: 10px 35px 16px 0;
-  cursor: pointer; }
-
+  cursor: pointer;
+}
+.nav-toggle.active {
+  right: 15px;
+}
 .nav-toggle:focus {
   outline: none; }
 
@@ -320,10 +304,11 @@ Navigation
   transform: translatey(-10px) rotate(-45deg); }
 
 .navicon {
-  position: absolute;
-  height: 26px;
-  right: 10px;
-  top: 23px;
+  /*position: absolute;*/
+  position: relative;
+  /*height: 26px;*/
+  /*right: 10px;*/
+  /*top: 23px;*/
   visibility: hidden;
   -webkit-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out; }

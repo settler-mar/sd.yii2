@@ -53,6 +53,21 @@
 
 /* Responsive nav kicks in */
 @media screen and (max-width:991px) {
+
+  header {
+    height: 60px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
+  header .logo {
+    margin-left: 50px;
+  }
+  header.open .logo {
+    margin-left: 0;
+  }
+
+
   .shops .more-shops {
     margin-top: 15px;
   }
@@ -165,7 +180,11 @@
   }
 
   .autocomplete-suggestions {
-    display: none !important;
+    /*display: none !important;*/
+    width: 90% !important;
+    top: 110px !important;
+    left: 5%;
+    opacity: 0.95;
   }
 
   .shops .shop .shop-bottom .cashback-link {
@@ -274,6 +293,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    /*left: 10%;*/
   }
 
 
@@ -520,7 +540,8 @@
   }
 
   .navicon {
-    right: 0px !important;
+    /*right: 0px !important;*/
+    top: 0 !important;
   }
 
   ul.member-actions {

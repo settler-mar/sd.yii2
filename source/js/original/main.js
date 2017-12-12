@@ -221,7 +221,7 @@ $(function() {
 
                 this.passwordRecovery();
 
-                if($(window).width() > 991) {
+                // if($(window).width() > 991) {
                     $(".form-search-dp input").autocomplete({
                         serviceUrl: '/search',
                         noCache: 'true',
@@ -231,7 +231,7 @@ $(function() {
                             location.href = '/stores/' + suggestion.data.route;
                         }
                     });
-                }
+                // }
 
                 $("form[name=search] .fa").click(function() {
                     $(this).closest("form").submit();
