@@ -2919,6 +2919,12 @@ section.store_photos {
     outline: none;
   }
 }
+.autocomplete-suggestion .cashback {
+  display: inline-block;
+  float: right;
+  color: #d62626;
+  font-weight: bold;
+}
 
 
 @media screen and (max-width:991px) {

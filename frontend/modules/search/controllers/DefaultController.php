@@ -42,6 +42,9 @@ class DefaultController extends SdController
       foreach ($stores as $k => $v) {
         $out["suggestions"][] = [
           "value" => $v['name'],
+          "cashback" =>'<div class="cashback">'.$v['displayed_cashback'].
+              (strpos($v['displayed_cashback'], '%') === false && isset(Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon'])?
+                  '  '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon']: '').'</div>',
           "data" => [
             'name' => $v['name'],
             'route' => $v['route_url']

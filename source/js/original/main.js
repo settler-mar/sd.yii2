@@ -229,7 +229,22 @@ $(function() {
                         triggerSelectOnValidInput: false,
                         onSelect: function (suggestion) {
                             location.href = '/stores/' + suggestion.data.route;
+                        },
+                        formatResult: function (suggestion, currentValue){
+                            if (!currentValue) {
+                                return suggestion.value + suggestion.cashback;
+                            }
+                            var pattern = '(' + currentValue.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + ')';
+                            return suggestion.value
+                                .replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>')
+                                .replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(/"/g, '&quot;')
+                                .replace(/&lt;(\/?strong)&gt;/g, '<$1>')
+                                +suggestion.cashback;
                         }
+
                     });
                 // }
 

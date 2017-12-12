@@ -192,6 +192,7 @@ $('body').on('click', '.accordeon .accordeon-arrow', function() {
   $(this).html(content);
 });
 
+
 $('.shop-panel-search-collapse').click(function(e){
   e.preventDefault();
   var target = $(this).data('target');
