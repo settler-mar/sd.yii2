@@ -184,7 +184,7 @@
   .autocomplete-suggestions {
     /*display: none !important;*/
     width: 90% !important;
-    top: 110px !important;
+    top: 100px !important;
     left: 5%;
     opacity: 0.95;
   }

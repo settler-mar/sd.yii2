@@ -523,6 +523,7 @@ $('.store-reviews__show-more').click(function(e){
     $('.store-reviews__show-more').hide();
     $('.store-reviews-item.more').show();
 });
+
 $(function() {
     function parseNum(str){
         return parseFloat(
