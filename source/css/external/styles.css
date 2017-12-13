@@ -261,7 +261,7 @@ Navigation
   cursor: pointer;
 }
 .nav-toggle.active {
-  right: 15px;
+  right: 5px;
 }
 .nav-toggle:focus {
   outline: none; }
@@ -403,6 +403,7 @@ header .logo {
 header .logo a {
   line-height: 0px;
   font-size: 17px;
+  display:block;
 }
 header .logo img {
   width: 200px; }
