@@ -237,13 +237,27 @@ Header
   font-weight: bold;
   margin-bottom: 4px;
 }
+.btn-mobile-menu.disable {
+  background-color: #C0C0C0;
+}
+.btn-mobile-menu.disable:hover {
+  color: #333;
+}
+.btn-mobile-menu.white {
+  background-color: #fff;
+}
+
 .btn-mobile-menu:not(:last-child) {
   margin-right: 2%;
 }
 .btn-mobile-menu:hover {
   text-decoration: none;
-  background-color: #C0C0C0;
-  color: #333;
+  /*background-color: #333;*/
+  color: #fff;
+  /*border-color:#e4c84b;*/
+}
+.btn-mobile-menu.white:hover {
+  color: #e4c84b;
 }
 
 @media only screen and (min-width: 768px) {
