@@ -2893,8 +2893,60 @@ section.store_photos {
   }
 }
 
+.shop-panel-search-collapse {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  padding: 4px 7px;
+ // background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  top: -23px;
+  right: 15px;
+  color: #fff;
+  &:hover {
+    color:#fff;
+  }
+
+}
+.shop-search-panel {
+  position: relative;
+  &__input {
+    width: 100%;
+    opacity: 0.9;
+    padding: 8px;
+    border-radius: 3px;
+    margin-top: 26px;
+    outline: none;
+    border: none;
+  }
+  &__close {
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 11px;
+    right: 10px;
+  }
+}
+.autocomplete-suggestion .cashback {
+  display: inline-block;
+  float: right;
+  color: #d62626;
+  font-weight: bold;
+}
+
+
+@media screen and (max-width:991px) {
+  .shop-panel-search-collapse {
+    display: block;
+  }
+  .shop-search-panel__input {
+    display: block;
+  }
+}
+
 
 
 
 @import "print.scss";
 @import  "../external/queries";
+
