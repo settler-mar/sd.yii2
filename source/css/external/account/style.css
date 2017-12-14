@@ -193,11 +193,22 @@ Header
 .cd-main-header .sub-menu ul li a:hover {
   text-decoration: underline;
 }
+.mobile-menu {
+  display: none;
+  padding: 61px 0 0 110px;
+  text-align: center;
+}
 
 @media only screen and (min-width: 768px) {
   .cd-main-header {
     position: fixed;
     height: 55px;
+  }
+
+}
+@media only screen and (max-width: 767px) {
+  .mobile-menu {
+    padding-left: 0;
   }
 }
 
@@ -211,9 +222,69 @@ Header
   width: 200px;
   margin-top: 10px;
 }
+
+.btn-mobile-menu {
+  display: inline-block;
+  border-radius: 1px;
+  border: 3px solid #333;
+  background-color: #e4c84b;
+  color: #333;
+
+  text-align: center;
+  width: 155px;
+  padding: 4px 0;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.btn-mobile-menu.disable {
+  background-color: #C0C0C0;
+}
+.btn-mobile-menu.disable:hover {
+  color: #333;
+}
+.btn-mobile-menu.white {
+  background-color: #fff;
+}
+
+.btn-mobile-menu:not(:last-child) {
+  margin-right: 2%;
+}
+.btn-mobile-menu:hover {
+  text-decoration: none;
+  /*background-color: #333;*/
+  color: #fff;
+  /*border-color:#e4c84b;*/
+}
+.btn-mobile-menu.white:hover {
+  color: #e4c84b;
+}
+
 @media only screen and (min-width: 768px) {
   .cd-logo {
       margin: 10px 14px 0 45px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .btn-mobile-menu {
+    width: 145px;
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .mobile-menu-buttons {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .btn-mobile-menu {
+    width: 100%;
+    font-size: 13px;
+  }
+  .btn-mobile-menu:not(:last-child) {
+    margin-right: 0;
+  }
+  .cd-main-content .content-wrapper, .cd-side-nav {
+    padding-top: 190px !important;
   }
 }
 
@@ -224,6 +295,9 @@ Header
 }
 
 @media only screen and (max-width: 991px) {
+  .mobile-menu{
+    display: block;
+  }
   .cd-main-content .top-information {
       text-align: center;
   }
@@ -239,7 +313,7 @@ Header
     display: block;
   }
   .cd-main-header {
-    height: 110px !important;
+    /*height: 110px !important;*/
   }
   .cd-search,
   .cd-nav {
@@ -251,10 +325,12 @@ Header
     width: 100%;
     top: 55px;
     margin-left: 0px;
+    display: none;
   }
   .cd-main-content .content-wrapper,
   .cd-side-nav {
-    padding-top: 110px !important;
+    //padding-top: 110px !important;
+    padding-top: 110px;
   }
 
   .cd-main-header .sub-menu .dobrohead {
