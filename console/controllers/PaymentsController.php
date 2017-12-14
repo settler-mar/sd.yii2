@@ -254,6 +254,10 @@ class PaymentsController extends Controller
           if ($db_payment->status == 2) {
             //continue;
 
+            if($db_payment->status!=$status){
+              $db_payment->status=$status;
+              Yii::$app->logger->add($payment,'payment_status_wrong',false);
+            }
             //через врямя удалить
             $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
             $db_payment->rate_id = $rate_id;
