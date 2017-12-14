@@ -101,6 +101,7 @@ class PaymentsController extends Controller
 
     $pay_status = Admitad::getStatus();
 
+    $remove_ref_bonus=[];
     $users = array();
     //d($params);
     //ddd($params);
@@ -254,6 +255,12 @@ class PaymentsController extends Controller
           if ($db_payment->status == 2) {
             //continue;
 
+            if($db_payment->status!=$status){
+              $db_payment->status=$status;
+              Yii::$app->logger->add($payment,'payment_status_wrong',false);
+              $remove_ref_bonus[]=$db_payment->uid;
+            }
+
             //через врямя удалить
             $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
             $db_payment->rate_id = $rate_id;
@@ -323,6 +330,13 @@ class PaymentsController extends Controller
       }
     }
 
+    if(count($remove_ref_bonus)>0){
+      //Чистим нотификации по реф програме
+      Notifications::deleteAll([
+        'payment_id'=>$remove_ref_bonus,
+        'type_id'=>3
+      ]);
+    }
     d($users);
     //Yii::$app->logger->add($users);
     //делаем пересчет бланса пользователей
