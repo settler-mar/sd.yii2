@@ -4,6 +4,7 @@ namespace frontend\modules\payments\controllers;
 
 use common\components\Help;
 use common\models\Admitad;
+use frontend\modules\users\models\Users;
 use Yii;
 use frontend\modules\payments\models\Payments;
 use app\modules\payments\models\PaymentsSearch;
@@ -124,9 +125,11 @@ class AdminController extends Controller
       return $this->redirect(['index']);
     }
 
+    $update=$request->post('update');
+
     $payments = Payments::find()
       ->where(['uid'=>$request->post('ids')])
-      ->asArray()
+      //->asArray()
       ->all();
 
     $user_ids=[];
@@ -135,18 +138,18 @@ class AdminController extends Controller
     $max_date=false;
 
     foreach ($payments as $payment){
-      $data=strtotime($payment['click_date']);
+      $data=strtotime($payment->click_date);
       if(!$min_date || $min_date>$data){
         $min_date=$data;
       }
       if(!$max_date || $max_date<$data){
         $max_date=$data;
       }
-      if(!in_array($payment['user_id'],$user_ids)){
-        $user_ids[]=(int)$payment['user_id'];
+      if(!in_array($payment->user_id,$user_ids)){
+        $user_ids[]=(int)$payment->user_id;
       }
-      if(!in_array($payment['action_id'],$payments_list)){
-        $payments_list[$payment['action_id']]=$payment;
+      if(!in_array($payment->action_id,$payments_list)){
+        $payments_list[$payment->action_id]=$payment;
       }
     }
 
@@ -163,20 +166,37 @@ class AdminController extends Controller
       $params['date_end'] = date('d.m.Y', $max_date + 86400);
     }
 
-    if(count($user_ids)==1){
-      $params['subid']=$user_ids[0];
+    if(count($user_ids)==1) {
+      $params['subid'] = $user_ids[0];
+      $user = Users::find()
+        ->where(['uid' => $user_ids])
+        ->one();
+
+      $ref_bonus_data = false;
+      if ($user->referrer_id > 0) {
+        $ref = Users::find()->where(['uid' => $user->referrer_id])->one();
+        if ($ref) {
+          $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
+          if (isset($loyalty_status_list[$ref->loyalty_status])) {
+            $ref_bonus_data = $ref->loyalty_status;
+          } else {
+            $ref_bonus_data = false;
+          }
+        }
+      }
     }
 
 
     $payments = $admitad->getPayments($params);
     $out=[];
+    $is_update=false;
     foreach ($payments['results'] as $payment) {
       if(!isset($payments_list[$payment['id']]))continue;
 
       $db_payment=$payments_list[$payment['id']];
 
       $status=isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
-      $kurs=$db_payment['kurs'];
+      $kurs=$db_payment->kurs;
 
       $reward=$payment['payment'].' '.$payment['currency'];
       if($kurs>1){
@@ -186,17 +206,68 @@ class AdminController extends Controller
       }
 
       $err='<span class="warning_value"></span>';
-      $wr_st=($status!=$db_payment['status']?$err:'');
-      $wr_pr=($payment['cart']!=$db_payment['order_price']?$err:'');
-      $wr_rf=(number_format($payment['payment']*$kurs,2,'.','')!=$db_payment['reward']?$err:'');
+      $wr_st=($status!=$db_payment->status?$err:'');
+      $wr_pr=($payment['cart']!=$db_payment->order_price?$err:'');
+      $wr_rf=(number_format($payment['payment']*$kurs,2,'.','')!=$db_payment->reward?$err:'');
 
       $item=[
         'status'=>Yii::$app->help->colorStatus($status).$wr_st,
         'order_price'=>$payment['cart'].' '.$payment['currency'].$wr_pr,
         'reward'=>$reward.$wr_rf,
       ];
+
+      if($update && count($user_ids)){
+        $cashback=$db_payment->shop_percent*$payment['payment']*$kurs;
+        //при изменении статуса делаем обновления для реферала(если есть)
+        if(
+          $ref_bonus_data &&
+          (
+            $db_payment->status!=$status ||
+            strlen($wr_rf)>0
+          )
+        ){
+          if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
+            $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+          } else {
+            $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+          }
+          $db_payment->ref_bonus=number_format($db_payment->ref_bonus,2,'.','');
+
+          if($db_payment->status!=$status){
+            if($status==2){
+              //Создаем нотификацию другу
+              $notifi = new Notifications();
+              $notifi->user_id = $user->referrer_id;
+              $notifi->type_id = 3;
+              $notifi->status = $status;
+              $notifi->amount = $db_payment->ref_bonus;
+              $notifi->payment_id = $db_payment->uid;
+              $notifi->save();
+            }
+            if($db_payment->status==2){
+              Notifications::deleteAll([
+                'payment_id'=>$db_payment->uid,
+                'type_id'=>3
+              ]);
+            }
+          }
+        }
+        $db_payment->status=$status;
+        $db_payment->order_price=$payment['cart'];
+        $db_payment->reward=number_format($payment['payment']*$kurs,2,'.','');
+        $db_payment->cashback=number_format($cashback,2,'.','');
+
+        if (count($db_payment->getDirtyAttributes()) > 0) {
+          $is_update = $is_update || $db_payment->save();
+        }
+      }
       $out[$db_payment['uid']]=$item;
     }
+
+    if($is_update){
+      Yii::$app->balanceCalc->todo([$user->uid], 'cash,bonus');
+    }
+    //$user
 
     return json_encode($out);
   }

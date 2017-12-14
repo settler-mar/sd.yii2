@@ -94,6 +94,8 @@ $(function() {
 $(function() {
 	$('.get_admitad').on('click',function(e){
 		e.preventDefault();
+		href=this.href||"";
+
 		ad=$('.admitad_data');
 		ad.addClass('loading');
 		ad.removeClass('normal_load');
@@ -112,7 +114,7 @@ $(function() {
 			return;
 		}
 
-		$.post('/admin/payments/admitad-test',{'ids':ids},function(data){
+		$.post('/admin/payments/admitad-test',{'ids':ids,'update':(href.indexOf('update')>0?1:0)},function(data){
 			ad=$('.admitad_data');
 			ad.text('данные не найдены');
 			ad.removeClass('loading');
