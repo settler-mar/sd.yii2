@@ -4,6 +4,7 @@ namespace frontend\modules\payments\controllers;
 
 use common\components\Help;
 use common\models\Admitad;
+use frontend\modules\notification\models\Notifications;
 use frontend\modules\users\models\Users;
 use Yii;
 use frontend\modules\payments\models\Payments;
@@ -148,7 +149,7 @@ class AdminController extends Controller
       if(!in_array($payment->user_id,$user_ids)){
         $user_ids[]=(int)$payment->user_id;
       }
-      if(!in_array($payment->action_id,$payments_list)){
+      if(!isset($payments_list[$payment->action_id])){
         $payments_list[$payment->action_id]=$payment;
       }
     }
@@ -172,17 +173,10 @@ class AdminController extends Controller
         ->where(['uid' => $user_ids])
         ->one();
 
-      $ref_bonus_data = false;
+      $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
       if ($user->referrer_id > 0) {
         $ref = Users::find()->where(['uid' => $user->referrer_id])->one();
-        if ($ref) {
-          $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
-          if (isset($loyalty_status_list[$ref->loyalty_status])) {
-            $ref_bonus_data = $ref->loyalty_status;
-          } else {
-            $ref_bonus_data = false;
-          }
-        }
+        $bonus_status_list = Yii::$app->params['dictionary']['bonus_status'];
       }
     }
 
@@ -217,15 +211,19 @@ class AdminController extends Controller
       ];
 
       if($update && count($user_ids)){
-        $cashback=$db_payment->shop_percent*$payment['payment']*$kurs;
+        $cashback=$db_payment->shop_percent*$payment['payment']*$kurs/100;
+        if($db_payment->loyalty_status>0){
+          $cashback=$cashback*($loyalty_status_list[$db_payment->loyalty_status]['bonus']/100+1);
+        }
         //при изменении статуса делаем обновления для реферала(если есть)
         if(
-          $ref_bonus_data &&
+          $ref &&
           (
             $db_payment->status!=$status ||
             strlen($wr_rf)>0
           )
         ){
+          $ref_bonus_data=$bonus_status_list[$db_payment->ref_bonus_id];
           if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
             $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
           } else {
@@ -258,7 +256,8 @@ class AdminController extends Controller
         $db_payment->cashback=number_format($cashback,2,'.','');
 
         if (count($db_payment->getDirtyAttributes()) > 0) {
-          $is_update = $is_update || $db_payment->save();
+          $is_update = $db_payment->save() || $is_update;
+          //var_dump($db_payment->uid);
         }
       }
       $out[$db_payment['uid']]=$item;
@@ -266,6 +265,43 @@ class AdminController extends Controller
 
     if($is_update){
       Yii::$app->balanceCalc->todo([$user->uid], 'cash,bonus');
+      $user_data=[
+        'old'=>[
+          'cnt_pending' => $user->cnt_pending,
+          'sum_pending' => $user->sum_pending,
+          'cnt_confirmed' => $user->cnt_confirmed,
+          'sum_confirmed' => $user->sum_confirmed,
+          'sum_declined' => $user->sum_declined,
+          'cnt_declined' => $user->cnt_declined,
+          'sum_to_friend_confirmed' => $user->sum_to_friend_confirmed,
+          'sum_to_friend_pending' => $user->sum_to_friend_pending,
+          'balans'=>number_format($user->sum_confirmed
+            +$user->sum_bonus
+            -$user->sum_foundation
+            -$user->sum_withdraw,2,'.',''),
+        ]
+      ];
+      $user = Users::find()
+        ->where(['uid' => $user_ids])
+        ->one();
+      $user_data['new']=[
+        'cnt_pending' => $user->cnt_pending,
+        'sum_pending' => $user->sum_pending,
+        'cnt_confirmed' => $user->cnt_confirmed,
+        'sum_confirmed' => $user->sum_confirmed,
+        'cnt_declined' => $user->cnt_declined,
+        'sum_declined' => $user->sum_declined,
+        'sum_to_friend_confirmed' => $user->sum_to_friend_confirmed,
+        'sum_to_friend_pending' => $user->sum_to_friend_pending,
+        'balans'=>number_format($user->sum_confirmed
+          +$user->sum_bonus
+          -$user->sum_foundation
+          -$user->sum_withdraw,2,'.',''),
+      ];
+      $user_data['uid']=$user->uid;
+      $user_data['name']=$user->name;
+      $user_data['email']=$user->email;
+      $out['user_data']=$user_data;
     }
     //$user
 
