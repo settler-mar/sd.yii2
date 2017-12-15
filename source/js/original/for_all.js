@@ -348,7 +348,11 @@ $( document ).ready(function() {
   if(document.referrer.indexOf('secretdiscounter')<0)return;
 
   href=window.opener.location.href;
-  if(href.indexOf('socials')>0 || href.indexOf('login')>0){
+  if(
+    href.indexOf('socials')>0 ||
+    href.indexOf('login')>0 ||
+    href.indexOf('admin')>0
+  ){
     return;
   }
   if(href.indexOf('store')>0 || href.indexOf('coupon')>0 || href.indexOf('settings')>0){
