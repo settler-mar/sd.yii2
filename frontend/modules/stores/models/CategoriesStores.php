@@ -232,10 +232,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
     //перемещаем выделенные категории вверх
     usort($cats[0], function ($current, $next) {
-      return $next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO && $current['selected'] < $next['selected'] ? 1 :
-        ($next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO && $current['selected'] > $next['selected'] ? -1 :
-          ($current['menu_index'] > $next['menu_index'] ? 1 :
-            ($current['menu_index'] < $next['menu_index'] ? -1 : 0)));
+      if($next['selected']!=$current['selected']){
+        if($next['selected']==self::CATEGORY_STORE_SELECTED_PROMO)return 1;
+        if($current['selected']==self::CATEGORY_STORE_SELECTED_PROMO)return -1;
+      }
+      if($current['menu_index'] > $next['menu_index'])return 1;
+      if($current['menu_index'] < $next['menu_index'])return -1;
+      return 0;
     });
 
     return self::buildCategoriesTree($cats, 0, $currentCategory);

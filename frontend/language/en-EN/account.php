@@ -58,7 +58,7 @@ return [
     'history_bonuses' => 'История бонусов',
     'menu_history_visits' => 'История посещений',
     'menu_history_withdraw' => 'История вывода денег',
-    'menu_history_charity' => 'История вывода добрых дел',
+    'menu_history_charity' => 'История добрых дел',
     'menu_notify' => 'Уведомления',
     'menu_extends' => 'Дополнительно',
     'menu_help' => 'Помощь',

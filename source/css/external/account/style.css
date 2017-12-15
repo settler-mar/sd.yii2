@@ -330,7 +330,8 @@ Header
   .cd-main-content .content-wrapper,
   .cd-side-nav {
     //padding-top: 110px !important;
-    padding-top: 110px;
+    //padding-top: 110px;
+    padding-top: 140px;
   }
 
   .cd-main-header .sub-menu .dobrohead {
