@@ -351,7 +351,8 @@ $( document ).ready(function() {
   if(
     href.indexOf('socials')>0 ||
     href.indexOf('login')>0 ||
-    href.indexOf('admin')>0
+    href.indexOf('admin')>0 ||
+    href.indexOf('account')>0
   ){
     return;
   }
