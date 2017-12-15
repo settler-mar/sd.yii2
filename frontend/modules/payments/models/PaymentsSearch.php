@@ -128,13 +128,16 @@ class PaymentsSearch extends Payments
       }
 
       if ($this->user_id) {
-        $query->andFilterWhere([
-          'or',[
-            'like', Users::tableName() . '.email', $this->user_id
-          ],[
-            Users::tableName() . '.uid'=>$this->user_id
-          ],
-        ]);
+        if(is_numeric($this->user_id)){
+          $query->andFilterWhere([
+             Users::tableName() . '.uid'=>$this->user_id
+          ]);
+        }else{
+          $query->andFilterWhere([
+              'like', Users::tableName() . '.email', $this->user_id
+          ]);
+        }
+
       }
       if(!empty($this->created_at_range) && strpos($this->created_at_range, '-') !== false) {
         list($start_date, $end_date) = explode(' - ', $this->created_at_range);

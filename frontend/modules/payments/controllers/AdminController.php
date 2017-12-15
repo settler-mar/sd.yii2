@@ -167,16 +167,17 @@ class AdminController extends Controller
       $params['date_end'] = date('d.m.Y', $max_date + 86400);
     }
 
+    $ref=false;
+    $bonus_status_list = Yii::$app->params['dictionary']['bonus_status'];
+    $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
     if(count($user_ids)==1) {
       $params['subid'] = $user_ids[0];
       $user = Users::find()
         ->where(['uid' => $user_ids])
         ->one();
 
-      $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
       if ($user->referrer_id > 0) {
         $ref = Users::find()->where(['uid' => $user->referrer_id])->one();
-        $bonus_status_list = Yii::$app->params['dictionary']['bonus_status'];
       }
     }
 
