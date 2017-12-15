@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{payment.action_id}}</td>
                             <td class="store">
-                            {% if payment.is_active == '1' %}
+                            {% if payment.is_active != -1 %}
                             <a href="/stores/{{payment.route}}{{ _if(payment.is_offline,'-offline') }}">{{payment.name}}</a>
                             {% else %}
                             {{payment.name}}

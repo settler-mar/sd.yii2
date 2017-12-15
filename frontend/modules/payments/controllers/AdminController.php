@@ -193,6 +193,8 @@ class AdminController extends Controller
       $status=isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
       $kurs=$db_payment->kurs;
 
+      $payment['cart']=(float)$payment['cart'];
+
       $reward=$payment['payment'].' '.$payment['currency'];
       if($kurs>1){
         $reward.=' x '.$kurs.' = '.

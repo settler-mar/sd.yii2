@@ -226,16 +226,16 @@ Header
 .btn-mobile-menu {
   display: inline-block;
   border-radius: 1px;
-  border: 3px solid #333;
+  border: 2px solid #333;
   background-color: #e4c84b;
   color: #333;
 
   text-align: center;
-  width: 155px;
-  padding: 4px 0;
+  width: 165px;
+  padding: 8px 0;
   font-size: 13px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 13px;
 }
 .btn-mobile-menu.disable {
   background-color: #C0C0C0;
@@ -331,7 +331,7 @@ Header
   .cd-side-nav {
     //padding-top: 110px !important;
     //padding-top: 110px;
-    padding-top: 140px;
+    padding-top: 150px;
   }
 
   .cd-main-header .sub-menu .dobrohead {
