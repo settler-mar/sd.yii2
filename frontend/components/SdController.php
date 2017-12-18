@@ -74,12 +74,25 @@ class SdController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!parent::beforeAction($action)) {
-            return false;
-        }
-        $actionId = isset($action->id) ? $action->id : false;
-        $this->checkParams($actionId);
-        return true; // or false to not run the action
+      if (!parent::beforeAction($action)) {
+        return false;
+      }
+
+      //редирект между связванными страницами для авторизированных и нет пользователей
+      $pathInfo=Yii::$app->request->getPathInfo();
+      if (!Yii::$app->user->isGuest && isset(Yii::$app->params['auth_page_redirect'][$pathInfo])) {
+        Yii::$app->getResponse()->redirect(Yii::$app->params['auth_page_redirect'][$pathInfo], 301);
+        return false;
+      };
+      if (Yii::$app->user->isGuest && isset(array_flip(Yii::$app->params['auth_page_redirect'])[$pathInfo])) {
+        Yii::$app->getResponse()->redirect(array_flip(Yii::$app->params['auth_page_redirect'])[$pathInfo], 301);
+        return false;
+      };
+
+
+      $actionId = isset($action->id) ? $action->id : false;
+      $this->checkParams($actionId);
+      return true; // or false to not run the action
     }
 
     /**

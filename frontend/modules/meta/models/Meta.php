@@ -65,12 +65,10 @@ class Meta extends \yii\db\ActiveRecord
         $page = preg_replace('/\/$/', '', $url);
       }
 
-      if ($page == 'affiliate-system') {
-        $page = 'account/affiliate';
-      };
-      if ($page == 'offline-system') {
-        $page = 'account/offline';
-      };
+      if(isset(array_flip(Yii::$app->params['auth_page_redirect'])[$page])){
+        $page = array_flip(Yii::$app->params['auth_page_redirect'])[$page];
+      }
+
 
       if ($page == '') $page = 'index';
 

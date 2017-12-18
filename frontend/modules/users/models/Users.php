@@ -281,8 +281,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         ]);
         if($this->waitModeration) {
           Yii::$app->session->setFlash('info', [
-            'title' => 'Ожидайте модерации',
-            'message' => 'Ваша заявка на веб мастера принята. Ожидайте модерации администратором. После модерации вам придет письмо с подтверждением.'
+            'title' => 'Заявка на модерации',
+            'message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.'
           ]);
         };
       }
