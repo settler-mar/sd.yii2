@@ -142,8 +142,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'email_verify_time' => 'Последнее письмо с валидаций',
       'email_verified' => 'Статус валидации',
       'waitModeration' => 'Ожидает модерации',
-      'traffType' => 'Тип траика',
-      'url' => 'Ссылка',
+      'traffType' => 'Источник трафика',
+      'url' => 'Сайт',
     ];
   }
 

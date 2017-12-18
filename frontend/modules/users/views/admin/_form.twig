@@ -77,10 +77,23 @@
 
                 {{ form.field(model, 'added').textInput({'disabled':true})|raw }}
 
+                {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
+
+                {{ form.field(model, 'traffType').dropDownList(traffTypeList)|raw }}
+
                 {{ form.field(model, 'loyalty_status').dropDownList(loyalty_status_list)|raw }}
 
                 {{ form.field(model, 'bonus_status').dropDownList(bonus_status_list)|raw }}
 
+                {{ form.field(model, 'email_verified').dropDownList({
+                    '0' : 'Ожидает валидации',
+                    '1' : 'Подтвержден'
+                })|raw }}
+
+                {{ form.field(model, 'waitModeration').dropDownList({
+                    '0' : 'Подтвержден',
+                    '1' : 'Ожидает подтверждение на Вебмастра'
+                })|raw }}
             </div>
             {% if(not(model.isNewRecord)) %}
                 <div class="col-md-6">
