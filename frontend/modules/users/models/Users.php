@@ -28,6 +28,15 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
+  const trafficTypeList = [
+      0 => 'Веб-сайт/Блог',
+      1 => 'Паблик в соцсетях',
+      2 => 'YouTube-канал',
+      3 => 'Дорвей',
+      4 => 'Email-рассылка',
+      5 => 'Другое'
+    ];
+
   private $balans;
 
   /**
@@ -77,6 +86,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
+      [['waitModeration','traffType'],'number'],
+      ['url','string']
+
     ];
   }
 
@@ -129,6 +141,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'sum_bonus' => 'Бонусы',
       'email_verify_time' => 'Последнее письмо с валидаций',
       'email_verified' => 'Статус валидации',
+      'waitModeration' => 'Ожидает модерации',
+      'traffType' => 'Тип траика',
+      'url' => 'Ссылка',
     ];
   }
 
@@ -264,6 +279,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
             ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
           'no_show_page'=>['account']
         ]);
+        if($this->waitModeration) {
+          Yii::$app->session->setFlash('info', [
+            'title' => 'Ожидайте модерации',
+            'message' => 'Ваша заявка на веб мастера принята. Ожидайте модерации администратором. После модерации вам придет письмо с подтверждением.'
+          ]);
+        };
       }
 
       if($this->new_loyalty_status_end>time()) {

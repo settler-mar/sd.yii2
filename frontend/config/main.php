@@ -115,7 +115,7 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        '<action:(login|logout|registration|resetpassword|reset|verifyemail|verifysocialemail)>' =>
+        '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
         'login/socials-email' => 'users/default/socialemail',
