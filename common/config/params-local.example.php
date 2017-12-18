@@ -24,5 +24,9 @@ return [
       'bonus_status' => null,
       'loyalty_status' => 6,
     ],
+    'platinum' => [
+      'loyalty_status' => 4,
+      'new_loyalty_status_end' => 0,
+    ],
   ],
 ];
