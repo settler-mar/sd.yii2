@@ -141,7 +141,7 @@ $(function() {
 
 			if(data['user_data']){
 				user=data['user_data'];
-				user_data='<H2>Баланс пользователя '+user['email']+' ('+user['uid']+') обновлены</H2>';
+				user_data='<H2>Баланс пользователя '+user['email']+' ('+user['uid']+') обновлен</H2>';
 				user_data+="<table class='table table-sum'>"
 				user_data+="<tr>"
 				user_data+="<th></th>";

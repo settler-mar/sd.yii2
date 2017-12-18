@@ -58,6 +58,18 @@ Main Page Content
 .cd-main-content .dobro-account {
   display: none;
 }
+.cd-main-content .affiliate-account a::before {
+  color: #585c64;
+  font-family: FontAwesome;
+  content: "\f155";
+  font-size: 18px;
+  line-height: 16px;
+}
+@media screen and (max-width:991px) and (min-width:768px) {
+  .cd-main-content .affiliate-account a::before {
+    margin-top: -15px;
+  }
+}
 .cd-main-content .dobro-account a::before {
   color: #f44336;
   font-family: FontAwesome;

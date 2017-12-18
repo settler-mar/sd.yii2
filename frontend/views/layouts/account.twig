@@ -168,6 +168,9 @@
                     {{ t('account', 'user_balance_current')}}: <span> {{ _nf(this.balance.current)|raw }} {{ curr|raw }} </span>
                 </div>
             </li>
+            <li class="affiliate-account">
+                {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
+            </li>
             <li class="dobro-account">
                 {{ get_menu_item({'href':'/dobro', 'title': t('account','menu_make_good')})|raw }}
             </li>
@@ -234,9 +237,6 @@
                         {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
                 </li>
             {% endif %}
-            <li class="affiliate-icon fasicon">
-                        {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
-            </li>
             <li class="settings-icon fasicon">
                         {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
             </li>

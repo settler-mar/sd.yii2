@@ -262,6 +262,7 @@ $( document ).ready(function() {
   if (m_w < 50)m_w = screen.width - 40*/
   mw=screen.width-40;
   p = $('.container img,.container iframe');
+  $('.container img').height('auto');
   for (i = 0; i < p.length; i++) {
     el = p.eq(i);
     var parent = el.parent();
