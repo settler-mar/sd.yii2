@@ -2,6 +2,7 @@
 
 namespace frontend\modules\users\controllers;
 
+use frontend\modules\users\models\RegistrationWebForm;
 use frontend\modules\users\models\ResetPasswordForm;
 use frontend\modules\users\models\Users;
 use frontend\modules\users\models\UsersSocial;
@@ -20,7 +21,6 @@ use yii\helpers\Url;
 
 class DefaultController extends Controller
 {
-
   /**
    * Login action.
    *
@@ -129,7 +129,55 @@ class DefaultController extends Controller
     }
   }
 
+  /**
+   * Creates a new User model.
+   * If creation is successful, the browser will be redirected to the 'view' page.
+   * @return mixed
+   */
+  public function actionRegistrationWeb()
+  {
 
+    if (!Yii::$app->user->isGuest) { // если мы уже залогинены
+      return $this->goHome();
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      return $this->goHome();
+    }
+
+    $model = new RegistrationWebForm();
+    if ($request->isPost) {
+      if ($model->load($request->post()) && $model->validate() && $user = $model->signup()) {   // уже логинимся или только что зашли?
+        Yii::$app->user->login($user);
+
+        $referrer = $_SERVER['HTTP_REFERER'];
+        $referrerArray = explode('/', $_SERVER['HTTP_REFERER']);
+        if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores') {
+          $location = $referrer;
+        } else {
+          $location = '/account?new=1';
+        };
+
+
+        $data['html'] = 'Пользователь успешно зарегистрирован.<script>login_redirect("' . $location . '");</script>';
+        //сообщения, если email не подтверждён
+        ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
+
+        return json_encode($data);
+      }
+    }
+
+
+
+    $data['html'] = $this->renderAjax('registration-web', [      // рисуем форму для ввода имени и пароля
+      'model' => $model,
+      'isAjax' => true,
+      'trafficTypeList' => Users::trafficTypeList
+    ]);
+    return json_encode($data);
+
+  }
   /*  public function actionRegistration()
     {
 

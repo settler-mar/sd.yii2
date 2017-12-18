@@ -262,6 +262,7 @@ $( document ).ready(function() {
   if (m_w < 50)m_w = screen.width - 40*/
   mw=screen.width-40;
   p = $('.container img,.container iframe');
+  $('.container img').height('auto');
   for (i = 0; i < p.length; i++) {
     el = p.eq(i);
     var parent = el.parent();
@@ -348,7 +349,12 @@ $( document ).ready(function() {
   if(document.referrer.indexOf('secretdiscounter')<0)return;
 
   href=window.opener.location.href;
-  if(href.indexOf('socials')>0 || href.indexOf('login')>0){
+  if(
+    href.indexOf('socials')>0 ||
+    href.indexOf('login')>0 ||
+    href.indexOf('admin')>0 ||
+    href.indexOf('account')>0
+  ){
     return;
   }
   if(href.indexOf('store')>0 || href.indexOf('coupon')>0 || href.indexOf('settings')>0){

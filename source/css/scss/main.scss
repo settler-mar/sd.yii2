@@ -2390,7 +2390,7 @@ $root_color: #e4c84b;
 $background_color: #eee;
 $font_color: #0f181a;
 $selected_color: #1a2527;
-$item_news_color: #035821;
+$item_news_color: #0085ff;
 $item_selected_color: #ff0000;
 
 .tree-cat.accordeon {
@@ -2950,6 +2950,17 @@ section.store_photos {
 
 .banner__wrapper{
   margin-top: 20px;
+
+  .banner__href{
+    display: block;
+    margin-bottom: 15px;
+    text-align: center;
+
+    img{
+      display: inline-block;
+      width: 100%;
+    }
+  }
 }
 
 @import "print.scss";

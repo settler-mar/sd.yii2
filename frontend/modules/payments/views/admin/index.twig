@@ -16,6 +16,7 @@
                         <h1>{{ html.encode(this.title) }}</h1>
                         {{ include('_stat.twig') }}
                     </div>
+                    <div class="col-md-12 user_data"></div>
                 </div>
                 <div class="row">
                     <div  class="col-md-12">
@@ -23,6 +24,7 @@
                             <p>
                                 <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Payments' }}</a>
                                 <a href="#get_admitad" class="btn btn-info {{ _if(canAdmitadUpdate,'get_admitad','disabled') }}">{{ 'Получить даные с Admitad' }}</a>
+                                <a href="#update_admitad" class="btn btn-primary {{ _if(canAdmitadUpdate and sub_ids>0,'get_admitad','disabled') }}">{{ 'Перезаписать данные с Admitad' }}</a>
                                 <a href="https://www.admitad.com/ru/webmaster/statistics/actions/?{{ _if(sub_ids>0,'sub_ids='~sub_ids) }}&predefined_range=this_year" class="btn btn-warning" target="_blank">{{ 'Перейти в Admitad' }}</a>
                                 <a href="/admin/payments/delete" class="ajax-action btn btn-danger" ><span class="fa fa-trash"></span> Удалить</a>
                             </p>

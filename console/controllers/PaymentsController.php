@@ -331,7 +331,7 @@ class PaymentsController extends Controller
     }
 
     if(count($remove_ref_bonus)>0){
-      //Чистим нотификации по реф програме
+      //Чистим нотификации по реф программе
       Notifications::deleteAll([
         'payment_id'=>$remove_ref_bonus,
         'type_id'=>3

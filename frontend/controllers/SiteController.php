@@ -238,9 +238,6 @@ class SiteController extends SdController
    */
   public function actionAffiliate()
   {
-    if (!Yii::$app->user->isGuest) {
-      Yii::$app->response->redirect(Url::to('/account/affiliate'));
-    };
     $this->params['breadcrumbs'][] = 'Партнёрская программа';
     return $this->render('affiliate');
   }
@@ -252,9 +249,6 @@ class SiteController extends SdController
    */
   public function actionOfflineSystem()
   {
-    if (!Yii::$app->user->isGuest) {
-      Yii::$app->response->redirect(Url::to('/account/offline'));
-    };
     //$this->params['breadcrumbs'][] = 'Партнёрская программа';
     return $this->actionStaticPage('account/offline');
   }

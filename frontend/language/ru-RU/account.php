@@ -58,7 +58,7 @@ return [
     'history_bonuses' => 'История бонусов',
     'menu_history_visits' => 'История посещений',
     'menu_history_withdraw' => 'История вывода денег',
-    'menu_history_charity' => 'История вывода добрых дел',
+    'menu_history_charity' => 'История добрых дел',
     'menu_notify' => 'Уведомления',
     'menu_extends' => 'Дополнительно',
     'menu_help' => 'Помощь',
@@ -71,9 +71,14 @@ return [
     'menu_favorites' => 'Избранные магазины',
     'menu_offline' => 'Кэшбэк в оффлайне',
     'menu_affiliate' => 'Приведи друга',
+    'menu_web_master' => 'Для вебмастеров',
     'menu_withdraw' => 'Вывод денег',
     'menu_settings' => 'Настройки аккаунта',
     'menu_tools' => 'Операции',
+    'menu_promo' => 'Промокоды',
+    'menu_stores' => 'Интернет-магазины',
+    'menu_offline_stores' => 'Оффлайн магазины',
+    'button_offline_stores_disable' => 'Кэшбэк в оффлайн-магазинах заработает в начале 2018 года',
     'view_payments_history' => 'Посмотреть историю покупок',
     'user_loyalty_status' => 'Ваш статус лояльности',
     'user_loyalty_current_status' => 'Текущий статус',
@@ -197,7 +202,4 @@ return [
     'email_confirm_email_wait' => 'Повторное письмо для подтверждения электронной почты можно отправить раз в 5 минут. Немного подождите.',
     'email_confirm_email_sent' => 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
     'email_confirm_not_confirmed' => 'Ваш E-mail не подтверждён.',
-
-
-
 ];

@@ -76,6 +76,11 @@ class SdUrlRule implements UrlRuleInterface
       return ["site/index", $params];
     }
 
+    if(!Yii::$app->user->isGuest && isset(Yii::$app->params['auth_page_redirect'][$pathInfo])){
+      Yii::$app->getResponse()->redirect(Yii::$app->params['auth_page_redirect'][$pathInfo], 301);
+      return ['', $params];
+    }
+
     $parameters = explode('/', $pathInfo);
     $route = [];
 

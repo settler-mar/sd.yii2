@@ -134,12 +134,17 @@
     <a class="dobrohead" href="/dobro"><i class="fa fa-heart" aria-hidden="true"></i> <span>{{ t('common', 'good_works') }}</span></a>
     <div class="mobile-menu">
         <div class="mobile-menu-buttons">
-        <a class="btn-mobile-menu" href="/stores">Интернет-магазины</a>
-        <a class="btn-mobile-menu" href="/coupons">Промокоды</a>
+        <a class="btn-mobile-menu" href="/stores">{{ t('account', 'menu_stores')}}</a>
+        <a class="btn-mobile-menu" href="/coupons">{{ t('account', 'menu_promo')}}</a>
         </div>
         <div class="mobile-menu-buttons">
-        <a class="btn-mobile-menu disable">Оффлайн магазины</a>
-        <a class="btn-mobile-menu white" href="/account/affiliate">Приведи друга</a>
+        <a
+                class="btn-mobile-menu disable"
+                data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="{{ t('account', 'button_offline_stores_disable')}}"
+        >
+            {{ t('account', 'menu_offline_stores')}}
+        </a>
+        <a class="btn-mobile-menu white" href="/account/affiliate">{{ t('account', 'menu_affiliate')}}</a>
         </div>
     </div>
 </header>
@@ -162,6 +167,13 @@
                     {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
                     {{ t('account', 'user_balance_current')}}: <span> {{ _nf(this.balance.current)|raw }} {{ curr|raw }} </span>
                 </div>
+            </li>
+            <li class="affiliate-account">
+                {% if this.isWebMaster or this.user.waitModeration==1 %}
+                    {{ get_menu_item({'href':'/account/webmaster', 'title': t('account', 'menu_web_master')})|raw }}
+                {% else %}
+                    {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
+                {%  endif %}
             </li>
             <li class="dobro-account">
                 {{ get_menu_item({'href':'/dobro', 'title': t('account','menu_make_good')})|raw }}
@@ -229,9 +241,6 @@
                         {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
                 </li>
             {% endif %}
-            <li class="affiliate-icon fasicon">
-                        {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
-            </li>
             <li class="settings-icon fasicon">
                         {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
             </li>

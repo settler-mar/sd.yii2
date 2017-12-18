@@ -94,6 +94,9 @@ $(function() {
 $(function() {
 	$('.get_admitad').on('click',function(e){
 		e.preventDefault();
+		href=this.href||"";
+
+		$('.user_data').html("");
 		ad=$('.admitad_data');
 		ad.addClass('loading');
 		ad.removeClass('normal_load');
@@ -112,7 +115,7 @@ $(function() {
 			return;
 		}
 
-		$.post('/admin/payments/admitad-test',{'ids':ids},function(data){
+		$.post('/admin/payments/admitad-test',{'ids':ids,'update':(href.indexOf('update')>0?1:0)},function(data){
 			ad=$('.admitad_data');
 			ad.text('данные не найдены');
 			ad.removeClass('loading');
@@ -134,6 +137,62 @@ $(function() {
 						td.addClass('normal_load');
 					}
 				}
+			}
+
+			if(data['user_data']){
+				user=data['user_data'];
+				user_data='<H2>Баланс пользователя '+user['email']+' ('+user['uid']+') обновлен</H2>';
+				user_data+="<table class='table table-sum'>"
+				user_data+="<tr>"
+				user_data+="<th></th>";
+				user_data+="<th>Старые данные</th>";
+				user_data+="<th>Новые данные</th>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>В ожидании (кол-во)</td>";
+				user_data+="<td class='value'>"+user['old']['cnt_pending']+"</td>";
+				user_data+="<td class='value'>"+user['new']['cnt_pending']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>В ожидании (сумма)</td>";
+				user_data+="<td class='value'>"+user['old']['sum_pending']+"</td>";
+				user_data+="<td class='value'>"+user['new']['sum_pending']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>Отклонено (кол-во)</td>";
+				user_data+="<td class='value'>"+user['old']['cnt_declined']+"</td>";
+				user_data+="<td class='value'>"+user['new']['cnt_declined']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>Отклонено (сумма)</td>";
+				user_data+="<td class='value'>"+user['old']['sum_declined']+"</td>";
+				user_data+="<td class='value'>"+user['new']['sum_declined']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>Подтверждено (кол-во)</td>";
+				user_data+="<td class='value'>"+user['old']['cnt_confirmed']+"</td>";
+				user_data+="<td class='value'>"+user['new']['cnt_confirmed']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>Подтверждено (сумма)</td>";
+				user_data+="<td class='value'>"+user['old']['sum_confirmed']+"</td>";
+				user_data+="<td class='value'>"+user['new']['sum_confirmed']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="<tr>"
+				user_data+="<td>Баланс (общий)</td>";
+				user_data+="<td class='value'>"+user['old']['balans']+"</td>";
+				user_data+="<td class='value'>"+user['new']['balans']+"</td>";
+				user_data+="</tr>"
+
+				user_data+="</table>"
+				$('.user_data').html(user_data);
 			}
 		},'json').fail(function () {
 			ad.removeClass('loading');

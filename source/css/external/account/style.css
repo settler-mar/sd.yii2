@@ -58,6 +58,18 @@ Main Page Content
 .cd-main-content .dobro-account {
   display: none;
 }
+.cd-main-content .affiliate-account a::before {
+  color: #585c64;
+  font-family: FontAwesome;
+  content: "\f155";
+  font-size: 18px;
+  line-height: 16px;
+}
+@media screen and (max-width:991px) and (min-width:768px) {
+  .cd-main-content .affiliate-account a::before {
+    margin-top: -15px;
+  }
+}
 .cd-main-content .dobro-account a::before {
   color: #f44336;
   font-family: FontAwesome;
@@ -226,16 +238,16 @@ Header
 .btn-mobile-menu {
   display: inline-block;
   border-radius: 1px;
-  border: 3px solid #333;
+  border: 2px solid #333;
   background-color: #e4c84b;
   color: #333;
 
   text-align: center;
-  width: 155px;
-  padding: 4px 0;
+  width: 165px;
+  padding: 8px 0;
   font-size: 13px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 13px;
 }
 .btn-mobile-menu.disable {
   background-color: #C0C0C0;
@@ -330,7 +342,8 @@ Header
   .cd-main-content .content-wrapper,
   .cd-side-nav {
     //padding-top: 110px !important;
-    padding-top: 110px;
+    //padding-top: 110px;
+    padding-top: 150px;
   }
 
   .cd-main-header .sub-menu .dobrohead {
