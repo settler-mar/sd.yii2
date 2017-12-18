@@ -17,6 +17,16 @@
   </section>
   <section class="affiliate account-padding">
     <div class="row">
+      {% if this.user.waitModeration==1 %}
+        <div class="balance bg_gray col-md-12">
+          <h3>Ожидайте модерации</h3>
+          <p>
+            Ваша заявка на веб мастера принята.
+            Ожидайте модерации администратором. После модерации вам придет письмо с подтверждением.
+          </p>
+        </div>
+      {% endif %}
+
       <div class="col-md-12">
         <h1 class="text-center">
           {% if h1 %}
