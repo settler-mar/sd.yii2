@@ -125,6 +125,7 @@ $config= [
         'account/<action:offline>' => 'account/<action>',
         'account/sendverifyemail' => 'users/account/sendverifyemail',
         'account/email-success' => 'users/account/emailsuccess',
+        'account/webmaster'=>'affiliate/account/index',
 
         'search' => 'search/default/index',
         'search/<action>' => '404',

@@ -169,7 +169,11 @@
                 </div>
             </li>
             <li class="affiliate-account">
-                {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
+                {% if this.isWebMaster or this.user.waitModeration==1 %}
+                    {{ get_menu_item({'href':'/account/webmaster', 'title': t('account', 'menu_web_master')})|raw }}
+                {% else %}
+                    {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
+                {%  endif %}
             </li>
             <li class="dobro-account">
                 {{ get_menu_item({'href':'/dobro', 'title': t('account','menu_make_good')})|raw }}

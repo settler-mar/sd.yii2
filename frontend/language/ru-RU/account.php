@@ -71,6 +71,7 @@ return [
     'menu_favorites' => 'Избранные магазины',
     'menu_offline' => 'Кэшбэк в оффлайне',
     'menu_affiliate' => 'Приведи друга',
+    'menu_web_master' => 'Для вебмастеров',
     'menu_withdraw' => 'Вывод денег',
     'menu_settings' => 'Настройки аккаунта',
     'menu_tools' => 'Операции',

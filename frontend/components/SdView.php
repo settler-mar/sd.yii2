@@ -21,6 +21,7 @@ class SdView extends View
   public $first_init= true;
   public $description;
   public $site_rating;
+  public $isWebMaster=false;
 
   public function init_param()
   {
@@ -37,6 +38,13 @@ class SdView extends View
       $this->all_params['balance']=$user->getBalance();
       $this->all_params['user_id']=Yii::$app->user->id;
 
+      if(!Yii::$app->user->isGuest/* && $user->bonus_status>0*/) {
+        $bonus_list=Yii::$app->params['dictionary']['bonus_status'];
+        if(isset($bonus_list[$user->bonus_status])) {
+          $this->isWebMaster=isset($bonus_list[$user->bonus_status]['is_webmaster'])?
+            $bonus_list[$user->bonus_status]['is_webmaster']:0;
+        }
+      }
       $this->all_params['user_code']=$user->barcode;
       $code_src=$user->barcodeImg;
       $this->all_params['user_code_img']=$code_src;
