@@ -16,7 +16,6 @@ class SdUrlPromo implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
-    //http://blog.neattutorials.com/yii2-routing-urlmanager/
     $validator = new \yii\validators\NumberValidator();
 
     $params = $request->get();
@@ -36,9 +35,14 @@ class SdUrlPromo implements UrlRuleInterface
       }
     }
 
-    if (isset($params['r']) ||isset($params['promo'])) {
+    if(!$ref_href && strlen($pathInfo)>2) {
+       $ref_href = $pathInfo;
+    }
 
-        //проверка реф ссылки
+    if (isset($params['r']) || isset($params['promo'])) {
+        $refEn = false;
+        $promoEn = false;
+       //проверка реф ссылки
         if (isset($params['r'])) {
             $params['r'] = str_replace('/','',$params['r']);
             if (!empty($params['r']) && !$validator->validate($params['r'])) {
@@ -48,32 +52,33 @@ class SdUrlPromo implements UrlRuleInterface
             $user = Users::find()->where(['uid' => $params['r']])->one();
             if (Yii::$app->user->isGuest && $user) {
                 Yii::$app->session->set('referrer_id', $user->uid);
+                $refEn = true;
             };
-
-            if(!$ref_href && strlen($pathInfo)>2) {
-                $ref_href = $pathInfo;
-            }
 
             if(!$ref_href && isset($ref_redirect[$user->uid])){
                 $ref_href=$ref_redirect[$user->uid];
             }
-            $ref_href='/'.trim($ref_href?$ref_href:'','/');
+
+        }
+        //проверка ссылки promo
+        if (!empty(Yii::$app->params['ref_promo'])) {
+          if (isset($params['promo'])) {
+            $promo = trim($params['promo']);
+            $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
+            if ($validatorPromo->validate($promo)) {
+              Yii::$app->session->set('referrer_promo', $promo);
+              $promoEn = true;
+            }
+          }
+        }
+        if ($refEn || $promoEn) {
+            $ref_href='/'.trim($ref_href ? $ref_href : '','/');
             Yii::$app->getResponse()->redirect($ref_href, 301);
             return ['', $params];
         }
     }
+    return false;
 
-
-    //проверка ссылки promo
-    if (!empty(Yii::$app->params['ref_promo'])) {
-      if (isset($params['promo'])) {
-        $promo = trim($params['promo']);
-        $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
-        if ($validatorPromo->validate($promo)) {
-          Yii::$app->session->set('referrer_promo', $promo);
-        }
-      }
-    }
 
   }
 
@@ -87,7 +92,7 @@ class SdUrlPromo implements UrlRuleInterface
    */
   public function createUrl($manager, $route, $params)
   {
-
+     return false;
   }
 
 }

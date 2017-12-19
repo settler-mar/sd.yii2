@@ -112,6 +112,9 @@ $config= [
     'urlManager' => [
       'rules' => [
         'site/<action>'=>'404',
+        [ // обработка реферальных ссылок
+          'class' => 'frontend\components\SdUrlPromo',
+        ],
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
