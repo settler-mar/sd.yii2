@@ -8,8 +8,11 @@ share42 = function (){
     var icon_type=e[k].getAttribute('data-icon-type') != -1?e[k].getAttribute('data-icon-type'):'';
     if (e[k].getAttribute('data-url') != -1)
       u = e[k].getAttribute('data-url');
-    var promo = u.indexOf('?promo=');
-    var self_promo = promo > 0 ? "send_promo('"+u.substr(promo+7)+"');" : "";
+    var key = 'promo=',
+        promoStart = u.indexOf(key),
+        promoEnd = u.indexOf('&', promoStart),
+        promoLength = promoEnd > promoStart ? promoEnd - promoStart - key.length : u.length - promoStart - key.length,
+        self_promo = promoStart > 0 ? "send_promo('"+u.substr(promoStart+key.length, promoLength)+"');" : "";
     if (e[k].getAttribute('data-title') != -1)
       var t = e[k].getAttribute('data-title');
     if (e[k].getAttribute('data-image') != -1)
@@ -85,7 +88,7 @@ share42 = function (){
       '"#" onclick="print();return false" title="Распечатать"',
       '"#" data-count="telegram" onclick="window.open(\'//telegram.me/share/url?url=' + u +'&text=' + t + '\', \'telegram\', \'width=550,height=440,left=100,top=100\');return false" title="Поделиться в Telegram"',
       '"viber://forward?text='+ u +' - ' + t + '" data-count="viber" rel="nofollow noopener" title="Поделиться в Viber"',
-      '"whatsapp://send?text='+ u +' - ' + t + '" data-count="whatsapp" rel="nofollow noopener" title="Поделиться в WhatsApp"',
+      '"whatsapp://send?text='+ u +' - ' + t + '" data-count="whatsapp" rel="nofollow noopener" title="Поделиться в WhatsApp"'
 
     );
 
