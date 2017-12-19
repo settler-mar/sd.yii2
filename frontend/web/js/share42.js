@@ -8,8 +8,8 @@ share42 = function (){
     var icon_type=e[k].getAttribute('data-icon-type') != -1?e[k].getAttribute('data-icon-type'):'';
     if (e[k].getAttribute('data-url') != -1)
       u = e[k].getAttribute('data-url');
-    var promo = u.indexOf('?promo=');
-    var self_promo = promo > 0 ? "send_promo('"+u.substr(promo+7)+"');" : "";
+    var promo = e[k].getAttribute('data-promo');;
+    var self_promo = promo !=-1 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
     if (e[k].getAttribute('data-title') != -1)
       var t = e[k].getAttribute('data-title');
     if (e[k].getAttribute('data-image') != -1)
@@ -151,11 +151,16 @@ function send_promo(promo){
     data: {promo: promo},
       success: function(data) {
         if (data.title != null && data.message != null) {
-          notification.notifi({
-            type: 'success',
-            title: data.title,
-            message: data.message
-          });
+          on_promo=$('.on_promo');
+          if(on_promo.length==0 || !on_promo.is(':visible')) {
+            notification.notifi({
+              type: 'success',
+              title: data.title,
+              message: data.message
+            });
+
+            on_promo.show();
+          }
         }
       }
   });

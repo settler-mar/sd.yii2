@@ -21,6 +21,17 @@ use yii\helpers\Url;
 
 class DefaultController extends Controller
 {
+
+  public function beforeAction($action) {
+
+    if($action->id=='promo'){
+      $this->enableCsrfValidation = false;
+      Yii::$app->request->enableCsrfValidation = false;
+    }
+    parent::beforeAction($action);
+    return true;
+  }
+
   /**
    * Login action.
    *
@@ -449,5 +460,27 @@ class DefaultController extends Controller
       'new' => $new,
       'email' => $email
     ]);
+  }
+
+
+  /**
+   * user фиксирует промо
+   */
+  public function actionPromo()
+  {
+    $request = Yii::$app->request;
+    if (!Yii::$app->user->isGuest || !$request->isAjax) {
+      throw new NotFoundHttpException();
+    }
+    $promo = $request->post('promo');
+    $promo = trim($promo);
+    $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
+    if ($validatorPromo->validate($promo)) {
+      Yii::$app->session->set('referrer_promo', $promo);
+      return json_encode([
+        'title' => Yii::t('common', 'congratulations'),
+        'message' => Yii::t('account', 'user_loyalty_reg_status'),
+      ]);
+    }
   }
 }

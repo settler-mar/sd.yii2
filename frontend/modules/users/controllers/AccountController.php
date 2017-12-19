@@ -243,7 +243,7 @@ class AccountController extends Controller
     /**
      * user по клику присваивает себе статус
      */
-  public function actionPromo()
+/*  public function actionPromo()
   {
     $request = Yii::$app->request;
     if (Yii::$app->user->isGuest || !$request->isAjax) {
@@ -262,5 +262,5 @@ class AccountController extends Controller
     ]);
 
 
-  }
+  }*/
 }
