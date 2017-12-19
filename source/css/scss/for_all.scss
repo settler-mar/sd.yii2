@@ -366,7 +366,9 @@ p em {
 .soc-icon-sd:hover {
   background-color: #FFDC73;
 }
-
+.accauntSoc_32 .soc-icon-sd{
+  text-decoration: none;
+}
 .accauntSoc_32 .soc-icon{
   height: 32px;
   width: 32px;
@@ -1372,3 +1374,26 @@ td{
 
 .btn-margin-right {
   margin-right: 20px; }
+
+
+.neighbors_2{
+  text-align: center;
+  display: flex;
+  clear: both;
+  flex-wrap: wrap;
+
+  &>div{
+    width: 50%;
+    margin: auto auto;
+    min-width: 370px;
+    min-height: 180px;
+  }
+
+  img{
+    width: 100%;
+  }
+  /*
+  h2{
+    text-align: center;
+  }*/
+}
