@@ -29,6 +29,7 @@ class AdminController extends Controller
 
   function beforeAction($action)
   {
+
     $this->layout = '@app/views/layouts/admin.twig';
     return true;
   }
@@ -39,6 +40,11 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('MetaView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
     $searchModel = new MetaSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
