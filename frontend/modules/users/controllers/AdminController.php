@@ -8,6 +8,8 @@ use frontend\modules\users\models\Users;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\users\models\UsersSearch;
+use frontend\modules\b2b_users\models\B2bUsers;
+use frontend\modules\charity\models\Charity;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -67,6 +69,9 @@ class AdminController extends Controller
 
     if(isset($get['email']) && strlen($get['email'])>0){
       $query->andWhere(['like','email',$get['email']]);
+    }
+    if(isset($get['wait-moderation']) && strlen($get['wait-moderation'])>0){
+      $query->andWhere(['waitModeration' => $get['wait-moderation']]);
     }
 
     if (isset( $get['is_active'])) {
@@ -128,6 +133,9 @@ class AdminController extends Controller
     
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
+    $notes['users_charity'] = Charity::waitingCount();
+    $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
+    $notes['users_wait_moderation'] = Users::waitModerationCount();
 
     $models = $query->offset($pages->offset)
       ->limit($pages->limit)

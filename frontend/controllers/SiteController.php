@@ -150,6 +150,7 @@ class SiteController extends SdController
     $notes['users_reviews'] = Reviews::waitingCount();
     $notes['users_charity'] = Charity::waitingCount();
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
+    $notes['users_wait_moderation'] = Users::waitModerationCount();
 
     return $this->render('admin', [
       'users_count' => $usersCount,

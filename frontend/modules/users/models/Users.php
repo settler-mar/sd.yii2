@@ -746,4 +746,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
     return $path.$file;
   }
+
+  public static function waitModerationCount()
+  {
+      return self::find()->where(['waitModeration' => 1])->count();
+  }
 }
