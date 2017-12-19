@@ -240,7 +240,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       //ссылки промо
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
       if ($promo && !empty(Yii::$app->params['ref_promo']) && !empty(Yii::$app->params['ref_promo'][$promo])) {
-        $promos = isset(Yii::$app->params['ref_promo'][$promo]) ? array_diff(Yii::$app->params['ref_promo'][$promo], ['']) : [];
+        $promos = isset(Yii::$app->params['ref_promo'][$promo]) ? Yii::$app->params['ref_promo'][$promo] : [];
         if(isset($promos['time'])){
           if($promos['time']===false){
             $this->new_loyalty_status_end = 0;
