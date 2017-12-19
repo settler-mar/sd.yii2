@@ -13,6 +13,9 @@ return [
   'ref_cpec_redirect' => [
 
   ],
+  /**
+   * ссылка ?r=xxx&promo=premium
+   */
   'ref_promo' => [
     'default' => [
       'bonus_status' => null,
