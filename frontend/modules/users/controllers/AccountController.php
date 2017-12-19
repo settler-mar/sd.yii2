@@ -239,4 +239,28 @@ class AccountController extends Controller
       'success' => Yii::$app->user->identity->email_verified,
     ]);
   }
+
+    /**
+     * user по клику присваивает себе статус
+     */
+  public function actionPromo()
+  {
+    $request = Yii::$app->request;
+    if (Yii::$app->user->isGuest || !$request->isAjax) {
+       throw new NotFoundHttpException();
+    }
+    $promo = $request->post('promo');
+    $refs = Yii::$app->params['ref_promo'];
+    $ref = isset($refs[$promo]) ? array_diff($refs[$promo], ['']) : [];
+    if (empty($ref)) {
+        return '';
+    }
+    Yii::$app->DB->createCommand()->update(Users::tableName(), $ref, ['uid' => Yii::$app->user->id])->execute();
+    return json_encode([
+        'title' => Yii::t('common', 'congratulations'),
+        'message'=> Yii::t('account', 'user_loyalty_status_set').' '.ucfirst($promo),
+    ]);
+
+
+  }
 }

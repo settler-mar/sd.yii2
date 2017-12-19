@@ -1134,6 +1134,9 @@ $images: "/images";
   text-align: center;
   font-size: 40px;
   margin: 10px auto;
+  &.static {
+    color: #e4c84b;
+  }
 }
 .store-recommendation-link{
   text-align: center;

@@ -112,6 +112,9 @@ $config= [
     'urlManager' => [
       'rules' => [
         'site/<action>'=>'404',
+        [ // обработка реферальных ссылок
+          'class' => 'frontend\components\SdUrlPromo',
+        ],
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
@@ -126,6 +129,7 @@ $config= [
         'account/sendverifyemail' => 'users/account/sendverifyemail',
         'account/email-success' => 'users/account/emailsuccess',
         'account/webmaster'=>'affiliate/account/index',
+        'account/promo'=>'users/account/promo',
 
         'search' => 'search/default/index',
         'search/<action>' => '404',

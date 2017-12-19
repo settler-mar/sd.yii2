@@ -46,6 +46,7 @@
                         {% if notes.users_withdraw %}<a href="/admin/withdraw?UsersWithdrawSearch%5Bstatus%5D=1"><span title="Запросов на вывод средств в ожидании" class="notes_users withdraw">{{ notes.users_withdraw }}</span></a>{% endif %}
                         {% if notes.users_charity %}<a href="/admin/charity"><span title="Запросов на благотвроительность в ожидании" class="notes_users charity">{{ notes.users_charity }}</span></a>{% endif %}
                         {% if notes.b2b_users_requests %}<a href="/admin/b2b_users?B2bUsersSearch%5Bis_active%5D=0"><span title="Запросов на регистрацию пользователей B2b" class="notes_users b2b_users">{{ notes.b2b_users_requests }}</span></a>{% endif %}
+                        {% if notes.users_wait_moderation %}<a href="/admin/users?wait-moderation=1"><span title="Пользователей ожидает модерации" class="notes_users wait_moderation">{{ notes.users_wait_moderation }}</span></a>{% endif %}
                     </div>
                 </div>
         {% endif %}

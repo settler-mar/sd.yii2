@@ -150,6 +150,7 @@ class SiteController extends SdController
     $notes['users_reviews'] = Reviews::waitingCount();
     $notes['users_charity'] = Charity::waitingCount();
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
+    $notes['users_wait_moderation'] = Users::waitModerationCount();
 
     return $this->render('admin', [
       'users_count' => $usersCount,
@@ -390,6 +391,7 @@ class SiteController extends SdController
         'html'=>$this->renderAjax('static_page_ajax',$page)
       ]);
     }else{
+      $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
       $this->params['breadcrumbs'][] = $page['title'];
       return $this->render('static_page',$page);
     }
