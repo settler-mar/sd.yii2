@@ -329,7 +329,7 @@ p em {
   display: inline-block;
   padding: 8px 8px;
   width: 40px;
-  margin-right: 5px;
+  margin-right: 9px;
   text-align: center;
   font-size: 17px;
   -webkit-border-radius: 40px;
@@ -354,7 +354,7 @@ p em {
     content: "\f099";
   }
   &.icon-sd-gplus:after {
-    content: "\f067";
+    content: "\f0d5";
   }
   &.icon-sd-mail:after {
     content: "\f003";
@@ -1392,4 +1392,11 @@ td{
     width: 100%;
   }
 
+}
+
+.conteiner .btn-fill.sign-up-btn{
+  margin: auto;
+  text-decoration: none;
+  padding: 15px 40px;
+  font-weight: bold;
 }
