@@ -322,6 +322,51 @@ p em {
   background-image:url(/images/socialicons48.png) ;
   display: inline-block;
 }
+
+.soc-icon-sd {
+  background-color: #e4c84b;
+  color: #0f181a !important;
+  display: inline-block;
+  padding: 8px 8px;
+  width: 40px;
+  margin-right: 5px;
+  text-align: center;
+  font-size: 17px;
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  -moz-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+  &:after {
+    font-family: 'fontawesome';
+  }
+  &.icon-sd-fb:after {
+    content: "\f09a";
+  }
+  &.icon-sd-vk:after {
+    content: "\f189";
+  }
+  &.icon-sd-odkl:after {
+    content: "\f263";
+  }
+  &.icon-sd-twi:after {
+    content: "\f099";
+  }
+  &.icon-sd-gplus:after {
+    content: "\f067";
+  }
+  &.icon-sd-mail:after {
+    content: "\f003";
+  }
+  &.icon-sd-journal:after {
+    content: "\f040";
+  }
+}
+.soc-icon-sd:hover {
+  background-color: #FFDC73;
+}
+
 .accauntSoc_32 .soc-icon{
   height: 32px;
   width: 32px;

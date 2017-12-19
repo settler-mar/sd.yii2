@@ -390,6 +390,7 @@ class SiteController extends SdController
         'html'=>$this->renderAjax('static_page_ajax',$page)
       ]);
     }else{
+      $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
       $this->params['breadcrumbs'][] = $page['title'];
       return $this->render('static_page',$page);
     }

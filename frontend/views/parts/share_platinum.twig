@@ -1,6 +1,9 @@
-<div class="share42init accauntSoc accauntSoc_32"
-     data-url="https://secretdiscounter.ru?promo=platinum"
+{% set ref_link = user_id == 0 ?'?promo=platunum':'?r='~user_id~'&promo=platinum' %}
+<div class="social-block-share share42init accauntSoc accauntSoc_32"
+     data-url="https://secretdiscounter.ru{{ref_link}}"
      data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
      data-title="{{ html.encode(this.title) }}"
-     data-description="{{ this.description }}">
+     data-description="{{ this.description }}"
+     data-icon-type="css"
+>
 </div>
