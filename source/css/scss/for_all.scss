@@ -329,7 +329,7 @@ p em {
   display: inline-block;
   padding: 8px 8px;
   width: 40px;
-  margin-right: 5px;
+  margin-right: 9px;
   text-align: center;
   font-size: 17px;
   -webkit-border-radius: 40px;
@@ -354,7 +354,7 @@ p em {
     content: "\f099";
   }
   &.icon-sd-gplus:after {
-    content: "\f067";
+    content: "\f0d5";
   }
   &.icon-sd-mail:after {
     content: "\f003";
@@ -366,7 +366,9 @@ p em {
 .soc-icon-sd:hover {
   background-color: #FFDC73;
 }
-
+.accauntSoc_32 .soc-icon-sd{
+  text-decoration: none;
+}
 .accauntSoc_32 .soc-icon{
   height: 32px;
   width: 32px;
@@ -1372,3 +1374,30 @@ td{
 
 .btn-margin-right {
   margin-right: 20px; }
+
+
+.neighbors_2{
+  text-align: center;
+  display: flex;
+  clear: both;
+  flex-wrap: wrap;
+
+  &>div{
+    width: 50%;
+    margin: auto auto;
+    min-width: 370px;
+  }
+
+  img{
+    width: 100%;
+  }
+
+}
+
+.container .btn-fill.sign-up-btn{
+  margin: auto;
+  text-decoration: none;
+  padding: 15px 40px;
+  font-weight: bold;
+  border-radius: 2px;
+}
