@@ -94,7 +94,7 @@ share42 = function (){
       '"#" onclick="print();return false" title="Распечатать"',
       '"#" data-count="telegram" onclick="window.open(\'//telegram.me/share/url?url=' + u +'&text=' + t + '\', \'telegram\', \'width=550,height=440,left=100,top=100\');return false" title="Поделиться в Telegram"',
       '"viber://forward?text='+ u +' - ' + t + '" data-count="viber" rel="nofollow noopener" title="Поделиться в Viber"',
-      '"whatsapp://send?text='+ u +' - ' + t + '" data-count="whatsapp" rel="nofollow noopener" title="Поделиться в WhatsApp"',
+      '"whatsapp://send?text='+ u +' - ' + t + '" data-count="whatsapp" rel="nofollow noopener" title="Поделиться в WhatsApp"'
 
     );
 
@@ -158,14 +158,19 @@ function send_promo(promo){
     url: "account/promo",
     dataType: 'json',
     data: {promo: promo},
-      success: function(data) {
-        if (data.title != null && data.message != null) {
+    success: function(data) {
+      if (data.title != null && data.message != null) {
+        on_promo=$('.on_promo');
+        if(on_promo.length==0 || !on_promo.is(':visible')) {
           notification.notifi({
             type: 'success',
             title: data.title,
             message: data.message
           });
+
+          on_promo.show();
         }
       }
+    }
   });
 }
