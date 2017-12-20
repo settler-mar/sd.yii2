@@ -1410,6 +1410,30 @@ td{
   font-weight: bold;
   border-radius: 2px;
 }
+
 .on_promo{
   display: none;
+}
+
+//картинки для скачивания
+.downloads_img{
+  .download{
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #e6ae03;
+
+    img{
+      display: block;
+    }
+
+    a{
+      //display: block;
+    }
+
+    span{
+      color: #999;
+    }
+  }
 }
