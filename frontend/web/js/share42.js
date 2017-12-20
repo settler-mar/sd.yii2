@@ -14,9 +14,11 @@ share42 = function (){
         promoStart = u.indexOf(key),
         promoEnd = u.indexOf('&', promoStart),
         promoLength = promoEnd > promoStart ? promoEnd - promoStart - key.length : u.length - promoStart - key.length;
-      promo = u.substr(promoStart + key.length, promoLength);
+      if(promoStart > 0) {
+        promo = u.substr(promoStart + key.length, promoLength);
+      }
     }
-    var  self_promo = promoStart > 0 ? "send_promo('"+promo+"');" : "";
+    var self_promo = promo !=-1 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
     if (e[k].getAttribute('data-title') != -1)
       var t = e[k].getAttribute('data-title');
     if (e[k].getAttribute('data-image') != -1)
