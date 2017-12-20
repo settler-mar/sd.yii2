@@ -8,8 +8,15 @@ share42 = function (){
     var icon_type=e[k].getAttribute('data-icon-type') != -1?e[k].getAttribute('data-icon-type'):'';
     if (e[k].getAttribute('data-url') != -1)
       u = e[k].getAttribute('data-url');
-    var promo = e[k].getAttribute('data-promo');;
-    var self_promo = promo !=-1 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
+    var promo = e[k].getAttribute('data-promo');
+    if(promo == -1) {
+      var key = 'promo=',
+        promoStart = u.indexOf(key),
+        promoEnd = u.indexOf('&', promoStart),
+        promoLength = promoEnd > promoStart ? promoEnd - promoStart - key.length : u.length - promoStart - key.length;
+      promo = u.substr(promoStart + key.length, promoLength);
+    }
+    var  self_promo = promoStart > 0 ? "send_promo('"+promo+"');" : "";
     if (e[k].getAttribute('data-title') != -1)
       var t = e[k].getAttribute('data-title');
     if (e[k].getAttribute('data-image') != -1)
@@ -151,16 +158,11 @@ function send_promo(promo){
     data: {promo: promo},
       success: function(data) {
         if (data.title != null && data.message != null) {
-          on_promo=$('.on_promo');
-          if(on_promo.length==0 || !on_promo.is(':visible')) {
-            notification.notifi({
-              type: 'success',
-              title: data.title,
-              message: data.message
-            });
-
-            on_promo.show();
-          }
+          notification.notifi({
+            type: 'success',
+            title: data.title,
+            message: data.message
+          });
         }
       }
   });

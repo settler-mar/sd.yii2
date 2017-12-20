@@ -1,4 +1,6 @@
+{% set ref_link = user_id == 0 ?'?promo=platunum':'?r='~user_id~'&promo=platinum' %}
 <div class="social-block-share share42init accauntSoc accauntSoc_32"
+     {#data-url="https://secretdiscounter.ru/new-year{{ref_link}}"#}
      data-url="https://secretdiscounter.ru/new-year"
      data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
      data-title="{{ html.encode(this.title) }}"
