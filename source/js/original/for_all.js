@@ -364,3 +364,32 @@ $( document ).ready(function() {
   }
   window.close();
 })();
+
+(function() {
+
+  function img_load_finish(){
+    var data=this;
+    var img = data.img;
+    img.wrap('<div class="download"></div>');
+    var wrap=img.parent();
+    $('body').append(data.el);
+    size=data.el.width()+"x"+data.el.height();
+    data.el.remove();
+    wrap.append('<span>'+size+'</span> <a href="'+data.src+'" download>Скачать</a>')
+  }
+
+  var imgs = $('.downloads_img img');
+  for(var i=0;i<imgs.length;i++) {
+    var img=imgs.eq(i);
+    var src=img.attr('src');
+    image = $('<img/>', {
+      src: src
+    });
+    data = {
+      src: src,
+      img: img,
+      el:image
+    };
+    image.on('load', img_load_finish.bind(data))
+  }
+})();
