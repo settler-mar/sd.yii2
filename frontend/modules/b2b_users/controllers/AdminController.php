@@ -62,7 +62,8 @@ class AdminController extends Controller
         'login' => function ($url, $model) {
           return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
             'title' => 'Авторизироваться',
-            'target' => '_blank'
+            'target' => '_blank',
+            'rel' => "nofollow noopener"
           ]);
         },
       ]
