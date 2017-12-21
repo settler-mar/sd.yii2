@@ -98,7 +98,7 @@
   </section>
   {% else %}
     <div class="col-md-12">
-      <h1 class="text-center" style="color: #e4c84b;">
+      <h1 class="text-center" style="color: #e4c84b; font-weight: bold;">
         {% if h1 %}
           {{ h1 | raw}}
         {% else %}
@@ -106,6 +106,15 @@
         {% endif %}
       </h1>
     </div>
+    {% if this.user.waitModeration==1 %}
+      <div class="balance bg_gray col-md-12">
+        <h3>Заявка на модерации</h3>
+        <p>
+          Ваша заявка вебмастера принята.
+          Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
+        </p>
+      </div>
+    {% endif %}
   {% endif %}
 
   {% if content %}
