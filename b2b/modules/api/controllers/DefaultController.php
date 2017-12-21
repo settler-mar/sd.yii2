@@ -79,6 +79,7 @@ class DefaultController extends Controller
 
   public function actionSave()
   {
+    Yii::$app->logger->add($_POST,'API_ANDROID_ADD_PAIMENT');
     $store_id = Yii::$app->session->get('store');
 
     if (!$store_id && !$this->actionLogin()) {
