@@ -15,14 +15,15 @@
       </div>
     </div>
   </section>
+  {% if affiliate %}
   <section class="affiliate account-padding">
     <div class="row">
       {% if this.user.waitModeration==1 %}
         <div class="balance bg_gray col-md-12">
-          <h3>Ожидайте модерации</h3>
+          <h3>Заявка на модерации</h3>
           <p>
-            Ваша заявка на веб мастера принята.
-            Ожидайте модерации администратором. После модерации вам придет письмо с подтверждением.
+            Ваша заявка вебмастера принята.
+            Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
           </p>
         </div>
       {% endif %}
@@ -95,6 +96,18 @@
       </div>
     </div>
   </section>
+  {% else %}
+    <div class="col-md-12">
+      <h1 class="text-center" style="color: #e4c84b;">
+        {% if h1 %}
+          {{ h1 | raw}}
+        {% else %}
+          {{ t('account', 'affiliate_h1_default') }}
+        {% endif %}
+      </h1>
+    </div>
+  {% endif %}
+
   {% if content %}
   <section class="section-content section-padding">
     {{ content | raw}}
