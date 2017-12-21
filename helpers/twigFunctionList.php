@@ -25,7 +25,7 @@ function create_flash($type,$flashe){
   if (is_array($flashe)) {
     if (isset($flashe['title'])) $title = trim($flashe['title'],'.');
     if (isset($flashe['no_show_page'])) $no_show_page = $flashe['no_show_page'];
-    $txt = trim($flashe['message'],'.');
+    $txt = $flashe['message'];
   }else{
     $txt=$flashe;
   }
