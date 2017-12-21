@@ -79,7 +79,7 @@ class DefaultController extends Controller
 
   public function actionSave()
   {
-    Yii::$app->logger->add($_POST,'API_ANDROID_ADD_PAIMENT');
+    //Yii::$app->logger->add($_POST,'API_ANDROID_ADD_PAIMENT');
     $store_id = Yii::$app->session->get('store');
 
     if (!$store_id && !$this->actionLogin()) {
@@ -202,6 +202,12 @@ class DefaultController extends Controller
     $pay->kurs = $kurs;
     $pay->action_code = $action->uid;
     $pay->rate_id = $rates->uid;
+    $pay->recalc_json=array(
+      'action'=>(array)$action,
+      'tariff'=>(array)$tariff,
+      'rate'=>(array)$rates,
+    );
+    //Yii::$app->logger->add( $rates->uid,'API_ANDROID_ADD_PAIMENT');
 
     if ($user->referrer_id > 0) {
       $ref = $this->getUserData($user->referrer_id);
