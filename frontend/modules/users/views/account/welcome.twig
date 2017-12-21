@@ -119,7 +119,7 @@
             {% if desire %}
                 <div class="col-md-12">
                     <div class="cashbonus">
-                        {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left':left})|raw }}
+                        {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)})|raw }}
                     </div>
                 </div>
             {% endif %}
