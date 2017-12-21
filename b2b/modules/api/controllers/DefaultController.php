@@ -202,12 +202,6 @@ class DefaultController extends Controller
     $pay->kurs = $kurs;
     $pay->action_code = $action->uid;
     $pay->rate_id = $rates->uid;
-    $pay->recalc_json=array(
-      'action'=>$action->toArray(),
-      'tariff'=>$tariff->toArray(),
-      'rate'=>$rates->toArray(),
-    );
-    //Yii::$app->logger->add( $rates->uid,'API_ANDROID_ADD_PAIMENT');
 
     if ($user->referrer_id > 0) {
       $ref = $this->getUserData($user->referrer_id);
@@ -222,6 +216,23 @@ class DefaultController extends Controller
       }
       $pay->ref_bonus = round($pay->ref_bonus, 2);
     }
+
+    $action=$action->toArray();
+    $tariff=$tariff->toArray();
+    $rates=$rates->toArray();
+
+    $recalc_json=[
+      'action' => [
+        'uid'=>$action['uid'],
+        'name' => $action['name']
+      ],
+      'tariff' => [
+        'uid'=>$tariff['uid'],
+        'name' => $tariff['name']
+      ],
+      'rate' => $rates,
+    ];
+    $pay->recalc_json = json_encode($recalc_json);
 
     if (!$pay->save()) {
       //var_dump($pay->getErrors());
