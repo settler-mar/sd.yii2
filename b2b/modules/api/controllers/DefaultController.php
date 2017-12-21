@@ -203,9 +203,9 @@ class DefaultController extends Controller
     $pay->action_code = $action->uid;
     $pay->rate_id = $rates->uid;
     $pay->recalc_json=array(
-      'action'=>(array)$action,
-      'tariff'=>(array)$tariff,
-      'rate'=>(array)$rates,
+      'action'=>$action->toArray(),
+      'tariff'=>$tariff->toArray(),
+      'rate'=>$rates->toArray(),
     );
     //Yii::$app->logger->add( $rates->uid,'API_ANDROID_ADD_PAIMENT');
 
