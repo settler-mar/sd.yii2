@@ -16,7 +16,10 @@ var gulp        = require('gulp'),
     iconfont = require('gulp-iconfont'),
     runTimestamp = Math.round(Date.now()/1000),
     svgicons2svgfont = require('gulp-svgicons2svgfont'),
-    template = require('gulp-template');
+    template = require('gulp-template'),
+
+    notify = require('gulp-notify'),
+    pxtorem = require('gulp-pxtorem');
 
 var paths = {
     source: {/*пути с исходниками*/
@@ -58,7 +61,7 @@ gulp.task('default',['server']);
 
 gulp.task('js',['jscommon', 'jsaccount', 'jsadmin']);
 
-gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp']);
+gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp', 'css_new']);
 
 gulp.task('csscommon', function(){
   return compileCss('/scss/main.scss', paths.app.css)
@@ -75,6 +78,10 @@ gulp.task('cssnotemp',  function() {
 
 gulp.task('cssb2b', function() {
   return compileCss('/scss/b2b.scss', paths.b2b.css)
+});
+
+gulp.task('css_new', function() {
+  return compileCss('/scss/new/style_main.scss', paths.app.css+'/new')
 });
 
 gulp.task('jscommon', compileJs([
@@ -157,19 +164,28 @@ gulp.task('jsb2b', compileJs([
 function compileCss (source, dest) {
   gulp.src(paths.source.css + source)
     .pipe(sourcemap.init())
-    .pipe(scss())
+    .pipe(scss().on('error', notify.onError({ title: 'Style SASS' })))
     .pipe(plumber())
     .pipe(autoprefixer({
       browsers: ['last 50 versions'],
       cascade: false
     }))
+    .pipe(pxtorem({
+      propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
+        'height',
+        'margin','margin-bottom','margin-top',
+        'padding','padding-bottom','padding-top'
+      ],
+      map:true
+    }))
+    .pipe(replace('PX', 'px'))
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
     .pipe(gcmq())
     .pipe(cleanCSS({compatibility: 'ie9'}))
     .pipe(plugins.rename('styles.min.' + version + '.css'))
-    .pipe(gulp.dest(dest))
+    .pipe(gulp.dest(dest));
 }
 
 function compileJs(sources, dest) {
