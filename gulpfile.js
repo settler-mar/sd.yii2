@@ -13,13 +13,12 @@ var gulp        = require('gulp'),
     gcmq = require('gulp-group-css-media-queries'),
     fs = require('fs'),
 
-    iconfont = require('gulp-iconfont'),
-    runTimestamp = Math.round(Date.now()/1000),
-    svgicons2svgfont = require('gulp-svgicons2svgfont'),
-    template = require('gulp-template'),
-
     notify = require('gulp-notify'),
-    pxtorem = require('gulp-pxtorem');
+    pxtorem = require('gulp-pxtorem'),
+
+    svgmin = require('gulp-svgmin'),
+    cheerio = require('gulp-cheerio'),
+    svgSprite = require('gulp-svg-sprite');
 
 var paths = {
     source: {/*пути с исходниками*/
@@ -36,6 +35,7 @@ var paths = {
         css: './frontend/web/css',
         js: './frontend/web/js',
         fonts: './frontend/web/fonts',
+        images: './frontend/web/images',
     },
     b2b: {
       css: './b2b/web/css',
@@ -201,6 +201,41 @@ function compileJs(sources, dest) {
       .pipe(gulp.dest(dest));
 }
 
+gulp.task('SVGsprite',function() {
+  var svgminConfig = {js2svg: {pretty: true}};
+
+  var cheerioConfig = {
+    run: function ($) {
+      /*$('[fill]').each(function () {
+       if(this.attribs.fill.toUpperCase()!='NONE'){
+       this.attribs.fill='';
+       };
+       });*/
+      $('[fill][fill!="none"]').removeAttr('fill');
+      $('[stroke]').removeAttr('stroke');
+      $('[style]').removeAttr('style');
+    },
+    parserOptions: {xmlMode: true}
+  };
+
+  var svgSpriteConfig = {
+    mode: {
+      symbol: {
+        sprite: "../sprite.svg"
+      }
+    }
+  };
+
+  console.log(paths.source.svg+'/icons/*.svg');
+  console.log(paths.app.images);
+  return gulp.src(paths.source.svg+'/icons/*.svg')
+    .pipe(svgmin(svgminConfig))
+    .pipe(cheerio(cheerioConfig))
+    .pipe(replace('&gt;', '>'))
+    .pipe(svgSprite(svgSpriteConfig))
+    .pipe(gulp.dest(paths.app.images));
+});
+
 // запуск browsersync  и дальнейшее слежение
 gulp.task('server',['css', 'js', 'cssb2b', 'jsb2b'], function() {
     // browserSync.init({
@@ -233,6 +268,7 @@ gulp.task('clear', function(){
             .pipe(rimraf({force: false}));
     });
 });
+
 gulp.task('clearb2b', function(){
    var files = [
        paths.b2b.css+'/styles*.css',
@@ -243,40 +279,4 @@ gulp.task('clearb2b', function(){
         gulp.src(file, { read: true }) // much faster
             .pipe(rimraf({force: false}));
     });
-});
-
-gulp.task('Iconfont', function(){
-  gulp.src([paths.source.svg+'/sd_icon_font/*.svg'])
-    .pipe(iconfont({
-      fontName: 'sd_icon',
-      prependUnicode: true,
-      fixedWidth:true,
-      normalize:true,
-      //fontHeight: 1000,
-      formats: [
-        'svg',
-        'ttf',
-        'eot',
-        'woff',
-        'woff2',
-      ],
-      timestamp: runTimestamp,
-    }))
-    .on('glyphs', function(glyphs) {
-      for(var i=0;i<glyphs.length;i++){
-        glyphs[i].unicode=glyphs[i].unicode[0].charCodeAt(0).toString(16).toUpperCase()
-      }
-      console.log(glyphs);
-
-      gulp.src(paths.source.css+'/template/_icons.scss')
-        .pipe(template({
-          glyphs: glyphs,
-          fontName:'sd_icon',
-          cssClass:'sd_icon',
-          fontPath: '/fonts/icons/',
-          timestamp: runTimestamp
-        }))
-        .pipe(gulp.dest(paths.source.css+'/scss'))
-    })
-    .pipe(gulp.dest(paths.app.fonts+'/icons'));
 });
