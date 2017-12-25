@@ -325,17 +325,18 @@ $functionsList=[
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';
   },
-  '_include'=>function ($part) {
+  '_include'=>function ($part,$params=array()) {
     $path=Yii::getAlias('@app').'/views/parts/'.$part.'.twig';
 
     if(!is_readable($path)){
       return '<pre>Фаил не найден '.$path.'</pre>';
     }
 
+    $params=array_merge($params,Yii::$app->params['all_params']);
     $output=file_get_contents($path);
     $output=Yii::$app->TwigString->render(
       $output,
-      Yii::$app->params['all_params']
+      $params
     );
     return $output;
   },
