@@ -18,7 +18,8 @@ var gulp        = require('gulp'),
 
     svgmin = require('gulp-svgmin'),
     cheerio = require('gulp-cheerio'),
-    svgSprite = require('gulp-svg-sprite');
+    svgSprite = require('gulp-svg-sprite'),
+    svgscaler = require('svg-scaler');
 
 var paths = {
     source: {/*пути с исходниками*/
@@ -36,6 +37,7 @@ var paths = {
         js: './frontend/web/js',
         fonts: './frontend/web/fonts',
         images: './frontend/web/images',
+        views: './frontend/views',
     },
     b2b: {
       css: './b2b/web/css',
@@ -226,14 +228,33 @@ gulp.task('SVGsprite',function() {
     }
   };
 
-  console.log(paths.source.svg+'/icons/*.svg');
-  console.log(paths.app.images);
   return gulp.src(paths.source.svg+'/icons/*.svg')
     .pipe(svgmin(svgminConfig))
     .pipe(cheerio(cheerioConfig))
     .pipe(replace('&gt;', '>'))
     .pipe(svgSprite(svgSpriteConfig))
     .pipe(gulp.dest(paths.app.images));
+});
+
+gulp.task('SVGclean',function() {
+  var svgminConfig = {
+    js2svg: {pretty: false}
+  };
+
+  var cheerioConfig = {
+    run: function ($) {
+      $('[fill][fill!="none"]').removeAttr('fill');
+      $('[stroke]').removeAttr('stroke');
+      $('[style]').removeAttr('style');    },
+    parserOptions: {xmlMode: true}
+  };
+
+  return gulp.src(paths.source.svg+'/icons/*.svg')
+    .pipe(svgscaler({}))
+    .pipe(svgmin(svgminConfig))
+    .pipe(cheerio(cheerioConfig))
+    .pipe(replace('&gt;', '>'))
+    .pipe(gulp.dest(paths.app.views+'/svg'));
 });
 
 // запуск browsersync  и дальнейшее слежение

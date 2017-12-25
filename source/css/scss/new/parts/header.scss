@@ -1,0 +1,131 @@
+.header {
+  &-upline {
+    position: fixed;
+    width: 100%;
+    padding: 10px 0;
+    background: $header_bg_up;
+    z-index: 99;
+  }
+
+  &-secondline {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    margin-top: 50px;
+    background: $header_bg_second;
+    line-height: 50px;
+    height: 50px;
+
+    &-link{
+      color: $header_sub_menu_color;
+      stroke: $header_heart;
+      fill: $header_heart;
+      text-decoration: none;
+      margin-left: 20px;
+      transition: all .25s ease;
+
+      &:hover{
+        color: $header_sub_menu_color_hover;
+        stroke: $header_sub_menu_color_hover;
+        fill: $header_sub_menu_color_hover;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &-item {
+    align-items: center;
+    justify-content: flex-start;
+    margin:auto;
+    margin-right: 5px;
+  }
+
+  &-logo {
+    padding-right: 15px;
+
+    img {
+      width: 205px;
+    }
+  }
+
+
+  &-heart{
+    width: 30px;
+    height: 50px;
+    vertical-align: middle;
+  }
+
+  &-search {
+    position: relative;
+
+    &_form {
+      &-input {
+        padding: 6px 10px;
+        width: 290px;
+        border-radius: 5px;
+        outline: none;
+        border: 0;
+      }
+
+      &-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: calc(100% - 12px);
+        width: 40px;
+        background: $search-btn-bg;
+        color: $search-btn-color;
+        text-align: center;
+        padding: 6px 10px;
+        background: $search-btn-bg;
+        stroke: $search-btn-color;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: all ease 0.2s;
+
+        &:hover{
+          color: $search-btn-color-hover;
+          stroke: $search-btn-color-hover;
+        }
+      }
+    }
+  }
+
+  &-right {
+    flex-grow: 1;
+    text-align: right;
+
+    &_link {
+      color: $header_color_up;
+      text-decoration: none;
+      margin-right: 10px;
+      border-bottom: dotted 1px;
+    }
+  }
+
+  &-authorization {
+    margin-left: 30px;
+    display: inline-block;
+
+    &-btn {
+      text-decoration: none;
+      color: $header_color_up;
+
+      &-enter {
+        color: $header_authorization_color;
+      }
+    }
+
+    &-separate {
+      margin: 0px 0px 0px 3px;
+      display: inline-block;
+      text-align: center;
+      width: 5px;
+
+      &:before {
+        content: '/';
+        color: $header_color_up;
+      }
+    }
+  }
+}

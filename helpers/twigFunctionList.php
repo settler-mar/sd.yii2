@@ -412,6 +412,19 @@ $functionsList=[
     ddd($params);
   },
   't'=>'Yii::t',
+  'svg'=>function ($name,$class=false) {
+    $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
+
+    if(!is_readable($path)){
+      return '<pre>Фаил не найден '.$path.'</pre>';
+    }
+
+    $output=file_get_contents($path);
+    if($class){
+      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
+    }
+    return $output;
+  },
 ];
 
 return $functionsList;

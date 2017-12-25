@@ -1,5 +1,23 @@
+@import 'mixin/clearfix';
+@import 'mixin/media';
+
 @import  "normalize";
 @import  "color";
+
+html{
+  @include media($desktop) {
+    font-size: 16PX;
+  }
+  @include media($laptop){
+    font-size: 16PX;
+  }
+  @include media($tablets){
+    font-size: 14PX;
+  }
+  @include media($phones){
+    font-size: 14PX;
+  }
+}
 
 body{
   font-family: "Open Sans", sans-serif;
@@ -8,30 +26,46 @@ body{
   min-height: 100vh;
   justify-content: flex-start;
   align-items: stretch;
-  color: #1b2527;
-  font-size: 6px;
+  color: $text_color;
+  font-size: 16px;
+}
+
+.clearfix {
+  @include clearfix
 }
 
 h1{
   font-weight: 500;
 }
 
-
 .page-wrap{
-  max-width: 1200px;
+  max-width: 1280px;
   margin: auto;
-}
+  width: 100%;
 
-.header{
-  background: #999;
-  min-height: 50px;
+  &-flex{
+    display: flex;
+  }
 }
 
 .content{
   flex-grow: 1;
 }
 
-.footer{
-  background: #99050f;
-  min-height: 50px;
+.menu_angle{
+  &-down{
+    height: 100%;
+    width: 20px;
+    margin-bottom: -20px;
+  }
+
+  &-right{
+    height: 100%;
+    width: 20px;
+    position: absolute;
+    right: 0;
+    top:0;
+  }
 }
+@import 'parts/header';
+@import 'parts/drop-down-menu';

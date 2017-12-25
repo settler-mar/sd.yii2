@@ -289,9 +289,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
     if (is_array($cats) and isset($cats[$parent_id])) {
       $tree = "";
       if ($parent_id != 0) {
-        $tree .= "<span class=\"fa fa-caret-right fa-fa-carett\" aria-hidden=\"true\"></span>";
+        $tree .= "{{ svg('angle-right','menu_angle-right')|raw }}";
       }
-      $tree .= "<ul data-mcs-theme=\"dark\">";
+      $tree .= "<ul>";
 
       foreach ($cats[$parent_id] as $cat) {
         $c=[];
@@ -321,7 +321,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $childCategories && $currentCategoryId &&
           (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
           'open current' : '');
-        $tree .= '<li '.($parent_id == 0 ? 'class="root'.($childCategories ? ' accordeon '.$sectionOpen : '').'"':'').'>'.
+        $tree .= '<li '.($parent_id == 0 ? 'class="'.($childCategories ? ' menu-group '.$sectionOpen : '').'"':'').'>'.
           ($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').
             '" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
 

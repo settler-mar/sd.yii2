@@ -1,0 +1,65 @@
+<section id="header" class="header">
+  <div class="header-upline">
+    <div class="page-wrap page-wrap-flex">
+      <div class="header-item header-logo">
+        <a href="/">
+          <img src="images/templates/sd_logo.png" alt="secretdiscounter logo">
+        </a>
+      </div>
+      <div class="header-item header-search">
+        <form action="/search" class="header-search_form" name="search" method="get">
+          <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
+          {{ svg('search','header-search_form-button')|raw }}
+        </form>
+      </div>
+      <div class="header-right header-item">
+        <a href="/howitworks" class="header-right_link">Как это работает</a>
+        <a href="/howitworks" class="header-right_link">Помощь</a>
+        <div class="header-authorization">
+          <a href="#login" rel="nofollow" class="login ignore-hash header-authorization-btn header-authorization-btn-enter">Вход</a>
+          <span class="header-authorization-separate">/</span>
+          <a href="#registration" rel="nofollow" class="registration ignore-hash header-authorization-btn">Регистрация</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-secondline">
+    <div class="page-wrap page-wrap-flex">
+      <ul class="page-wrap-flex drop-menu">
+        <li class="drop-menu_group__up">
+          <a href="/stores/s-povyshennym-cashback" class="title">
+            Интернет-магазины
+            {{ svg('angle-down','menu_angle-down')|raw }}
+          </a>
+
+          {{ use('frontend/components/CategoryMenu') }}
+          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite'}) %}
+          {% if category_tree %}
+            {{category_tree|raw}}
+          {% endif %}
+        </li>
+        <li>
+          <a>Промокоды</a>
+        </li>
+        <li>
+          <a>Оффлайн-магазины</a>
+        </li>
+        <li>
+          <a>Двойной кэшбэк</a>
+        </li>
+        <li>
+          <a>Отследить посылку</a>
+        </li>
+      </ul>
+      <div class="header-right header-item">
+        <a class="header-secondline-link" href="#">
+          {{ svg('heart','header-heart')|raw }}
+          Делаем добро
+        </a>
+        <a class="header-secondline-link" href="#">
+          Приведи друга
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+$desktop:1900px;
+$laptop:1200px;
+$tablets:768px;
+$phones:320px;
+
+@mixin media($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
+@mixin media_min($width) {
+  @media (min-width: $width) {
+    @content;
+  }
+}
+@mixin media_retina($width) {
+  @media (min-resolution: 170dpi) AND(max-width: $width) {
+    @content;
+  }
+}
