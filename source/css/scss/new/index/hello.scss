@@ -1,0 +1,106 @@
+.index-hello{
+    min-height: 100px;
+    background: linear-gradient(72deg, transparent 50%, $btn_base_bg 0);
+
+  &_left{
+    //flex-grow: 2;
+  }
+
+  &_center{
+    //flex-grow: 1;
+    min-width: 35%;
+    background: url(/images/index_hello_girl.png) 50% 100% no-repeat;
+    background-size: contain;
+  }
+
+  &_right{
+    //flex-grow: 1;
+    min-width:20%;
+    display: flex;
+
+    &-link{
+      color:$text_color;
+      fill:$header_color_up;
+      stroke: $header_color_up;
+      padding-bottom: 230px;
+      text-align: center;
+      margin: auto;
+      transition: all .25s ease;
+      text-decoration: none;
+
+      span{
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      &:hover{
+        color: $header_color_up;
+
+        .index-hello_right-icon{
+          box-shadow: 0 0 10px 0 $header_color_up;
+
+          &:before{
+            height: 120PX;
+            width: 120PX;
+            border: 1px solid;
+            opacity: 0.0;
+            margin-top: -33px;
+            margin-left: -33px;
+          }
+        }
+      }
+    }
+
+    &-icon{
+      position: relative;
+      border-radius: 100%;
+      width: 56PX;
+      height: 56PX;
+      padding: 5px;
+      box-shadow: 0 0 0 2px $text_color;
+      transition: all .25s ease;
+
+      &:before{
+        content: '';
+        position: absolute;
+        height: 94PX;
+        width: 94PX;
+        border: 1px solid;
+        border-radius: 100%;
+        opacity: 0.48;
+        margin-top: -20px;
+        margin-left: -20px;
+        transition: all .25s ease;
+      }
+    }
+    &-svg {
+      background: $text_color;
+      border-radius: 100%;
+      text-align: center;
+      width: 32px;
+      height: 32px;
+      padding: 12px;
+    }
+  }
+
+  &_counter{
+    font-size: 16px;
+    span{
+      background: $btn_base_bg;
+      margin: 10px 8px 10px 0;
+      font-size: 44px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    &-numbers_space{
+      background:transparent !important;
+    }
+  }
+}

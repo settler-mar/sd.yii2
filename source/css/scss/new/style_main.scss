@@ -3,6 +3,8 @@
 
 @import  "normalize";
 @import  "color";
+@import  "base/lists";
+@import  "base/btn";
 
 html{
   @include media($desktop) {
@@ -20,7 +22,7 @@ html{
 }
 
 body{
-  font-family: "Open Sans", sans-serif;
+  font-family: "Proxima Nova","Open Sans", sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -69,3 +71,4 @@ h1{
 }
 @import 'parts/header';
 @import 'parts/drop-down-menu';
+@import 'index/hello';

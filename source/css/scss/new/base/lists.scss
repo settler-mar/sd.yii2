@@ -1,0 +1,26 @@
+ul{
+  margin: 2em 0 2em 1.5em;
+}
+
+.icons-list{
+  list-style: none;
+  line-height: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 30px;
+
+  li{
+    position: relative;
+    display: block;
+    margin: 18px 0;
+  }
+
+  &_icon{
+    stroke:$btn_base_bg;
+    stroke-width:1.4173;
+    vertical-align: middle;
+    margin-left: -70px;
+    margin-right: 10px;
+    height: 30px;
+  }
+}
