@@ -99,6 +99,7 @@ class SiteController extends SdController
       'stores' => $stores,
       'total_all_stores' => $totalStores,
       'top_reviews' => $reviews,
+      'wrap'=>'index'
     ]);
   }
 

@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('fonts/ProximaNovaRegular.eot');
+    src: url('fonts/ProximaNovaRegular.eot') format('embedded-opentype'),
+    url('fonts/ProximaNovaRegular.woff2') format('woff2'),
+    url('fonts/ProximaNovaRegular.woff') format('woff'),
+    url('fonts/ProximaNovaRegular.ttf') format('truetype'),
+    url('fonts/ProximaNovaRegular.svg#ProximaNovaRegular') format('svg');
+}
+
+
+@font-face {
+    font-family: 'Proxima Nova - Black';
+    src: url('ProximaNovaBlack.eot');
+    src: url('ProximaNovaBlack.eot') format('embedded-opentype'),
+    url('ProximaNovaBlack.woff2') format('woff2'),
+    url('ProximaNovaBlack.woff') format('woff'),
+    url('ProximaNovaBlack.ttf') format('truetype'),
+    url('ProximaNovaBlack.svg#ProximaNovaBlack') format('svg');
+}

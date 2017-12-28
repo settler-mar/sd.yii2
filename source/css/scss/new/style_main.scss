@@ -36,13 +36,54 @@ body{
   @include clearfix
 }
 
+.no_margin{
+  margin: 0;
+}
+
+a{
+  color: $a_color;
+  transition: all .25s ease;
+
+  &:hover{
+    color: $a_color_hover;
+  }
+}
+
 h1{
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 2.5em;
+}
+
+h2{
+  text-align: center;
+  font-size: 2em;
+  position: relative;
+
+  &:before {
+    content: "";
+    background: $h2_line_color;
+    width: 94px;
+    height: 4px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 46px;
+  }
+
+  &:after {
+    content: "";
+    background: $h2_line_color;
+    width: 94px;
+    height: 4px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 46px;
+  }
 }
 
 .page-wrap{
-  max-width: 1280px;
+  max-width: 1160px;
   margin: auto;
+  padding: 0 10px;
   width: 100%;
 
   &-flex{
@@ -69,6 +110,31 @@ h1{
     top:0;
   }
 }
+
+.flex-line{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+section {
+  margin-bottom: 0;
+
+  &.margin {
+    margin-bottom: 47px;
+  }
+}
+
+.align-center{
+  text-align: center;
+}
+
+svg.svg-no-fill{
+  fill: none;
+}
 @import 'parts/header';
 @import 'parts/drop-down-menu';
 @import 'index/hello';
+@import 'index/advantages_line';
+@import 'parts/instruction';
+@import 'parts/shop';

@@ -42,6 +42,7 @@
     "obj-sass": "^0.1.0"
   },
   "dependencies": {
+    "gulp-svgo": "^1.2.5",
     "gulp-util": "^3.0.8",
     "svg-scaler": "^0.1.5"
   }

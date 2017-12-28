@@ -1,0 +1,10 @@
+<section class="margin">
+    <div class="page-wrap">
+        <h2>Популярные интернет-магазины</h2>
+        <div class="shops">
+            {% for store in stores %}
+                {% include 'parts/shop.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>

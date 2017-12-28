@@ -1,6 +1,4 @@
 .header {
-  height: 100px;
-
   &-upline {
     position: fixed;
     width: 100%;
@@ -11,7 +9,6 @@
 
   &-secondline {
     top: 0;
-    position: fixed;
     width: 100%;
     margin-top: 50px;
     background: $header_bg_second;

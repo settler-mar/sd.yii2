@@ -19,7 +19,8 @@ var gulp        = require('gulp'),
     svgmin = require('gulp-svgmin'),
     cheerio = require('gulp-cheerio'),
     svgSprite = require('gulp-svg-sprite'),
-    svgscaler = require('svg-scaler');
+    svgscaler = require('svg-scaler'),
+    svgo = require('gulp-svgo');
 
 var paths = {
     source: {/*пути с исходниками*/
@@ -203,56 +204,37 @@ function compileJs(sources, dest) {
       .pipe(gulp.dest(dest));
 }
 
-gulp.task('SVGsprite',function() {
-  var svgminConfig = {js2svg: {pretty: true}};
+
+gulp.task('SVGclean',function() {
+  var svgminConfig = {
+      plugins: [
+          {
+              cleanupNumericValues: {
+                  floatPrecision: 2
+              }
+          }
+      ],
+      js2svg: {pretty: false}
+  };
 
   var cheerioConfig = {
     run: function ($) {
-      /*$('[fill]').each(function () {
-       if(this.attribs.fill.toUpperCase()!='NONE'){
-       this.attribs.fill='';
-       };
-       });*/
       $('[fill][fill!="none"]').removeAttr('fill');
-      $('[stroke]').removeAttr('stroke');
+      $('[stroke][stroke!="none"]').removeAttr('stroke');
       $('[style]').removeAttr('style');
     },
     parserOptions: {xmlMode: true}
   };
 
-  var svgSpriteConfig = {
-    mode: {
-      symbol: {
-        sprite: "../sprite.svg"
-      }
-    }
+  var svgoConfig = {
+
   };
 
   return gulp.src(paths.source.svg+'/icons/*.svg')
-    .pipe(svgmin(svgminConfig))
+    //.pipe(svgscaler({}))
     .pipe(cheerio(cheerioConfig))
-    .pipe(replace('&gt;', '>'))
-    .pipe(svgSprite(svgSpriteConfig))
-    .pipe(gulp.dest(paths.app.images));
-});
-
-gulp.task('SVGclean',function() {
-  var svgminConfig = {
-    js2svg: {pretty: false}
-  };
-
-  var cheerioConfig = {
-    run: function ($) {
-      $('[fill][fill!="none"]').removeAttr('fill');
-      $('[stroke]').removeAttr('stroke');
-      $('[style]').removeAttr('style');    },
-    parserOptions: {xmlMode: true}
-  };
-
-  return gulp.src(paths.source.svg+'/icons/*.svg')
-    .pipe(svgscaler({}))
-    .pipe(svgmin(svgminConfig))
-    .pipe(cheerio(cheerioConfig))
+    //.pipe(svgmin(svgminConfig))
+    .pipe(svgo(svgoConfig))
     .pipe(replace('&gt;', '>'))
     .pipe(gulp.dest(paths.app.views+'/svg'));
 });

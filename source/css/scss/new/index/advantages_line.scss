@@ -1,0 +1,55 @@
+.advantages_line{
+  background: $advantages_line_bg;
+  color: $advantages_line_color;
+  line-height: 80px;
+
+  &-icon{
+    fill: $btn_base_bg;
+    color: $btn_base_bg;
+    stroke: $btn_base_bg;
+    height: 24PX;
+    width: 24PX;
+    vertical-align: middle;
+    display: inline-block;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    padding-right: 19px;
+  }
+
+  &-item{
+    span{
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  &_second{
+    &-wrap{
+      background: $advantages_line_second_bg;
+      border-radius: 10px;
+      padding: 0 20px;
+    }
+
+    &-item{
+      text-align: center;
+      flex-grow: 1;
+      align-item:flex-start;
+      flex-basis:25%;
+      flex-shrink:10;
+      padding: 10px;
+    }
+
+    &-counter{
+      color:$advantages_line_second_counter_color;
+      text-shadow: 2px 2px 4px rgba($advantages_line_second_color, 0.28);
+      color: $advantages_line_second_counter_color;
+      font-family: "Proxima Nova - Black";
+      font-size: 36px;
+      font-weight: 400;
+    }
+
+    &-label{
+      color:$advantages_line_second_color;
+    }
+  }
+}

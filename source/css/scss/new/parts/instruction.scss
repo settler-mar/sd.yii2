@@ -1,0 +1,39 @@
+.instruction{
+  &-item {
+    margin-top: 81px;
+    text-align: center;
+    flex-grow: 1;
+    align-item: flex-start;
+    flex-basis: 100%;
+    flex-shrink: 10;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+
+  &-icon{
+    fill: $instruction_color;
+    stroke: $instruction_color;
+    height: 130PX;
+    width: 130PX;
+    margin: auto;
+    display: block;
+    stroke-width: 1;
+    stroke-linecap: round;
+    padding-bottom: 28PX;
+  }
+
+  &-title{
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &-content{
+    &-select{
+      font-family: "Proxima Nova - Black";
+      font-weight: 900;
+      background: $instruction_select_color;
+      padding: 0 5px;
+    }
+  }
+}

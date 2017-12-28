@@ -1,0 +1,18 @@
+/* Shops
+------------------------------------*/
+.shops {
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.shop{
+  background: #999;
+  transition: .3s opacity;
+  margin: 0 0 20px 0;
+  position: relative;
+  max-width: 200px;
+  min-width: 165px;
+  text-align: center;
+}

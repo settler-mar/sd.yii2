@@ -1,3 +1,8 @@
+/* Кнопки */
+$btn_base_bg: #f7c714;
+$btn_base_color: #000;
+
+/*общие*/
 $text_color: #1b2527;
 $header_bg_up: #1b2527;
 $header_color_up: #ffffff;
@@ -11,7 +16,17 @@ $header_sub_menu_color: $text_color;
 $header_sub_menu_color_hover: #ffcd16;
 $header_heart: #f00;
 
+$h2_line_color: $btn_base_bg;
+$a_color: $btn_base_bg;
+$a_color_hover: #bf9a14;
 
-/* Кнопки */
-$btn_base_bg: #f7c714;
-$btn_base_color: #000;
+
+/*advantages_line*/
+$advantages_line_bg: #000;
+$advantages_line_color: #fff;
+$advantages_line_second_bg: $btn_base_bg;
+$advantages_line_second_counter_color: #FFF;
+$advantages_line_second_color: #000;
+
+$instruction_color: $btn_base_bg;
+$instruction_select_color: $btn_base_bg;
