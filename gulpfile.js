@@ -13,9 +13,9 @@ var gulp        = require('gulp'),
     gcmq = require('gulp-group-css-media-queries'),
     fs = require('fs'),
 
-    iconfont = require('gulp-iconfont'),
+    //iconfont = require('gulp-iconfont'),
     runTimestamp = Math.round(Date.now()/1000),
-    svgicons2svgfont = require('gulp-svgicons2svgfont'),
+    //svgicons2svgfont = require('gulp-svgicons2svgfont'),
     template = require('gulp-template');
 
 var paths = {
@@ -229,7 +229,7 @@ gulp.task('clearb2b', function(){
     });
 });
 
-gulp.task('Iconfont', function(){
+/*gulp.task('Iconfont', function(){
   gulp.src([paths.source.svg+'/sd_icon_font/*.svg'])
     .pipe(iconfont({
       fontName: 'sd_icon',
@@ -263,4 +263,4 @@ gulp.task('Iconfont', function(){
         .pipe(gulp.dest(paths.source.css+'/scss'))
     })
     .pipe(gulp.dest(paths.app.fonts+'/icons'));
-});
+});*/
