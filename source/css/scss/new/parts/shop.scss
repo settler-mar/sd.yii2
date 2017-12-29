@@ -3,16 +3,143 @@
 .shops {
   display:flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   flex-direction: row;
 }
 
 .shop{
-  background: #999;
-  transition: .3s opacity;
-  margin: 0 0 20px 0;
+  margin: 10PX 5PX;
   position: relative;
   max-width: 200px;
   min-width: 165px;
   text-align: center;
+  background: $shop_bg;
+  border-radius: 5px;
+  transition: all .2s;
+
+  &:hover{
+    box-shadow: 1px 1px 8px rgba($shop_name_color,0.7), 0 2px 0 0px rgba($shop_name_color,0.5);
+  }
+
+  &-logo{
+    text-align: center;
+    padding: 20px 0px;
+    background-color: $shop_logo_bg;
+    border-radius: 5px 5px 0 0;
+    height: 66px;
+
+    &_link{
+      background-color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+
+      &-img{
+        max-width: 130px;
+      }
+    }
+  }
+
+  &_header{
+    padding: 0 5px;
+    display: flex;
+    text-align: center;
+    height: 82px;
+    overflow: hidden;
+    text-decoration: none;
+
+    span{
+      font-weight: 700;
+      font-size: 15px;
+      color: $shop_name_color;
+      margin: auto;
+    }
+  }
+
+  &-cashback {
+    &-link {
+      display: block;
+      text-align: center;
+      height: auto;
+      margin: auto auto 0;
+      text-transform: uppercase;
+      padding: 5px;
+      background: rgba($shop_cashback_link_bg, 0.71);
+      font-size: 15px;
+      font-weight: 400;
+      color: $shop_cashback_link_color;
+      line-height: 20px;
+      text-decoration: none;
+      border-radius: 0 0 5px 5px;
+
+      &:hover {
+        color: $shop_cashback_link_color;
+      }
+
+      &_action{
+        background: $shop_cashback_link_action;
+        color: $shop_cashback_link_bg;
+
+        &:hover{
+          color: $shop_cashback_link_bg;
+        }
+      }
+    }
+
+    &_old{
+      text-decoration: line-through;
+      color: rgba($shop_cashback_old_color,0.7);
+    }
+
+  }
+
+  &_panel{
+    text-align: right;
+    padding: 5px;
+    background: $shop_panel_bg;
+    line-height: 16px;
+    height: 16px;
+
+    &-item{
+      color: $shop_cashback_link_color;
+      fill: $shop_cashback_link_color;
+      stroke: $shop_cashback_link_color;
+      text-decoration: none;
+      stroke-width: 3px;
+
+      &_icon{
+        height: 16px;
+        width: 16px;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+
+      span{
+        font-size: 10px;
+        margin-left: -3px;
+        vertical-align: bottom;
+        line-height: 5px;
+      }
+    }
+  }
+
+  &-empty{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  &_promo-label {
+    height: 77px;
+    width: 75px;
+    display: block;
+    position: absolute;
+    top: -6px;
+    left: -5px;
+
+    &_x2 {
+      background: url("/images/x2-label.png") no-repeat;
+    }
+  }
 }

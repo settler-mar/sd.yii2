@@ -18,8 +18,9 @@ $header_heart: #f00;
 
 $h2_line_color: $btn_base_bg;
 $a_color: $btn_base_bg;
-$a_color_hover: #bf9a14;
+$a_color_hover: #fdca37;
 
+$other_services_title_color: $search-btn-bg;
 
 /*advantages_line*/
 $advantages_line_bg: #000;
@@ -30,3 +31,16 @@ $advantages_line_second_color: #000;
 
 $instruction_color: $btn_base_bg;
 $instruction_select_color: $btn_base_bg;
+
+
+/*shop*/
+$shop_bg: #f8f8f8;
+$shop_logo_bg: #eee;
+$shop_name_color: #283133;
+$shop_cashback_link_bg: $a_color_hover;
+$shop_cashback_link_color: #0f181a;
+$shop_cashback_link_action: #9a0921;
+$shop_cashback_old_action: $shop_name_color;
+$shop_cashback_old_color: #d6d6d6;
+$shop_panel_bg: $shop_cashback_old_color;
+$shop_panel_coor: $shop_cashback_link_color;

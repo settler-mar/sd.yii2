@@ -46,6 +46,8 @@ a{
 
   &:hover{
     color: $a_color_hover;
+    fill: $a_color_hover;
+    stroke: $a_color_hover;
   }
 }
 
@@ -84,7 +86,6 @@ h2{
   max-width: 1160px;
   margin: auto;
   padding: 0 10px;
-  width: 100%;
 
   &-flex{
     display: flex;
@@ -116,6 +117,9 @@ h2{
   flex-direction: row;
   justify-content: space-between;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 
 section {
   margin-bottom: 0;
@@ -138,3 +142,4 @@ svg.svg-no-fill{
 @import 'index/advantages_line';
 @import 'parts/instruction';
 @import 'parts/shop';
+@import 'index/other_services';

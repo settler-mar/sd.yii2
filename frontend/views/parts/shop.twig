@@ -1,87 +1,87 @@
 <div class="shop">
     {% if store.action_id == 1 %}
-        <span class="promo-label x2"></span>
+        <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
-    <div class="logo">
-        <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"><img src="images/logos/{{store.logo}}" alt="{{store.name}}"></a>
+    <div class="shop-logo">
+        <a class="shop-logo_link" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
+            <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{store.name}}">
+        </a>
+    </div>
+    <div class="shop_panel">
+        {% if store.reviews_rating %}
+            <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
+               class="shop_panel-item"
+               data-toggle="tooltip" data-state="delete" data-placement="top"
+               data-original-title="Рейтинг магазина на основании отзывов {{ store.reviews_count }} наших пользователей"
+            >
+                {{ svg('star','shop_panel-item_icon')|raw }}
+                <span>
+                    {{ _nf(store.reviews_rating, 1) }}
+                </span>
+            </a>
+        {% endif %}
+
+        {% if store.is_offline %}
+            <a
+                    class="shop_panel-item ignore-hash"
+                    data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Оффлайн-магазин"
+            >
+                {{ svg('offline','shop_panel-item_icon')|raw }}
+            </a>
+        {% endif %}
+
+        {% if store.related %}
+            {% set s=getShop(store.related) %}
+            {% if s.is_active !=-1 %}
+                <a
+                        class="shop_panel-item" href="/stores/{{ s.route }}{{ _if(s.is_offline,'-offline') }}"
+                        data-toggle="tooltip" data-state="delete" data-placement="top"
+                        data-original-title="{{ _if(store.is_offline,'Есть и интернет-магазин','Данный магазин представлен и в оффлайне') }}"
+                >
+                    {{ svg('link','shop_panel-item_icon')|raw }}
+                </a>
+            {% endif %}
+        {% endif %}
+
+        {% if user_id %}
+            {% if store.uid in fav_ids %}
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
+                    {{ svg('heart','shop_panel-item_icon')|raw }}
+                </a>
+            {% else %}
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
+                    {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
+                </a>
+            {% endif %}
+        {% else %}
+            <a class="shop_panel-item favorite-link" href="#" data-toggle="tooltip" data-placement="top" data-original-title="Добавить в Избранное">
+                {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
+            </a>
+        {% endif %}
     </div>
     <a
-            class="shop__header {{ _if(store.name|length> 35,"small-size") }}"
+            class="shop_header {{ _if(store.name|length> 35,"small-size") }}"
             href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
     >
         <span>
             {{store.name}}
         </span>
     </a>
-    <div class="shop-bottom">
-        <a class="cashback-link {% if store.action_id == 1 %}old-cashback{% endif %}" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
 
-            Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
+    <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
 
-        </a>
-        {% if store.action_id != 0 %}
-        <a class="cashback-link" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
-
-            Кэшбэк <b>{{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}</b>
-
-        </a>
+        Кэшбэк
+        {% if store.action_id == 1 %}
+            <b class="shop-cashback_old">
+                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
+            </b>
+            <b>
+                {{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
+            </b>
+        {% else %}
+            <b>
+                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
+            </b>
         {% endif %}
-        <div class="shop_panel">
-            {% if store.reviews_rating %}
-                <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
-                   class="shop-link workHref"
-                   data-toggle="tooltip" data-state="delete" data-placement="top"
-                   data-original-title="Рейтинг магазина на основании отзывов {{ store.reviews_count }} наших пользователей"
-                >
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <span>
-                        {{ _nf(store.reviews_rating, 1) }}
-                    </span>
-                </a>
-            {% endif %}
-
-            {% if store.is_offline %}
-                <a
-                    class="shop-link ignore-hash ia"
-                    data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Оффлайн-магазин"
-                >
-                    {#<span class="fa fa-star"></span>#}
-                    <span class="fa fa-home"></span>
-                </a>
-            {% endif %}
-
-            {% if store.related %}
-                {% set s=getShop(store.related) %}
-                {% if s.is_active !=-1 %}
-                    <a
-                        class="shop-link workHref" href="/stores/{{ s.route }}{{ _if(s.is_offline,'-offline') }}"
-                        data-toggle="tooltip" data-state="delete" data-placement="top"
-                        data-original-title="{{ _if(store.is_offline,'Есть и интернет-магазин','Данный магазин представлен и в оффлайне') }}"
-                    >
-                        {#<span class="fa fa-star"></span>#}
-                        <span class="fa fa-link"></span>
-                    </a>
-                {% endif %}
-            {% endif %}
-
-            {% if user_id %}
-                {% if store.uid in fav_ids %}
-                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
-                    {#<span class="fa fa-star"></span>#}
-                    <span class="fa fa-heart"></span>
-                </a>
-                {% else %}
-                <a class="shop-link favorite-link ignore-hash ia" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
-                    {#<span class="fa fa-star-o muted"></span>#}
-                    <span class="fa fa-heart-o muted"></span>
-                </a>
-                {% endif %}
-            {% else %}
-                <a class="shop-link favorite-link ignore-hash" href="#" data-toggle="tooltip" data-placement="top" data-original-title="Добавить в Избранное">
-                    {#<span class="fa fa-star-o muted"></span>#}
-                    <span class="fa fa-heart-o muted"></span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
+    </a>
 </div>

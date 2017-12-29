@@ -1,6 +1,5 @@
 .instruction{
   &-item {
-    margin-top: 81px;
     text-align: center;
     flex-grow: 1;
     align-item: flex-start;
@@ -8,6 +7,11 @@
     flex-shrink: 10;
     padding: 10px;
     margin-bottom: 30px;
+
+    &-230{
+      min-width: 220px;
+      max-width: 240px;
+    }
   }
 
   &-icon{
@@ -26,6 +30,7 @@
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
+    height: 46px;
   }
 
   &-content{
