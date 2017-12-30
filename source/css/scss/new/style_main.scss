@@ -136,10 +136,31 @@ section {
 svg.svg-no-fill{
   fill: none;
 }
+
+.gray-box{
+  background: $gray_box_bg;
+  border-radius: 10px;
+  padding: 40px 0;
+}
+
+
+.rating{
+  color: $rating_color;
+  fill: $rating_color;
+  stroke: $rating_color;
+  text-align: center;
+
+  &-star{
+    height: 19PX;
+    width: 19PX;
+  }
+}
+
 @import 'parts/header';
 @import 'parts/drop-down-menu';
 @import 'index/hello';
 @import 'index/advantages_line';
 @import 'parts/instruction';
 @import 'parts/shop';
+@import 'parts/scroll-box';
 @import 'index/other_services';

@@ -1,5 +1,6 @@
 $desktop:1900px;
 $laptop:1200px;
+$laptop_min:1024px; //резервная точка
 $tablets:768px;
 $phones:320px;
 
@@ -14,7 +15,7 @@ $phones:320px;
   }
 }
 @mixin media_retina($width) {
-  @media (min-resolution: 170dpi) AND(max-width: $width) {
+  @media (min-resolution: 170dpi) AND (max-width: $width) {
     @content;
   }
 }

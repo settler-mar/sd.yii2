@@ -1,7 +1,11 @@
 <section class="margin">
     <div class="page-wrap">
         <h2>Популярные интернет-магазины</h2>
-        <div class="shops">
+        <div
+                class="shops scroll_box"
+                data-scroll-width-max="1024"
+                data-scroll-elemet-ignore-class="shop-empty"
+        >
             {% for store in stores %}
                 {% include 'parts/shop.twig' %}
             {% endfor %}

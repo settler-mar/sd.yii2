@@ -15,6 +15,8 @@ $header_sub_menu_bg: $header_bg_second;
 $header_sub_menu_color: $text_color;
 $header_sub_menu_color_hover: #ffcd16;
 $header_heart: #f00;
+$gray_box_bg: #f4f4f4;
+$rating_color: #FF9800;
 
 $h2_line_color: $btn_base_bg;
 $a_color: $btn_base_bg;
@@ -44,3 +46,7 @@ $shop_cashback_old_action: $shop_name_color;
 $shop_cashback_old_color: #d6d6d6;
 $shop_panel_bg: $shop_cashback_old_color;
 $shop_panel_coor: $shop_cashback_link_color;
+
+/*scroll-box*/
+$scroll_box_bg: #fff;
+$scroll_box_shadow: #000;
