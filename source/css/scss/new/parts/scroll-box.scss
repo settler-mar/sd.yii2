@@ -3,15 +3,39 @@
     display: flex;
     flex-wrap: nowrap;
     overflow: hidden;
+    //padding: 30px;
 
-    & + .scroll_box-control{
-      display: block;
-      text-align: center;
+    & + .scroll_box{
+      &-control {
+        display: block;
+        text-align: center;
+      }
     }
 
-    .scroll_box-mover{
-      display: inline-block;
+    .scroll_box{
+
+      &-mover{
+        display: inline-block;
+      }
     }
+  }
+/*
+  &-left_arrow:before{
+    content: '';
+    background-color: red;
+    background: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
+    mask: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
+    height: 100%;
+    position: absolute;
+    width: 40px;
+    top: 0;
+    left: 0;
+    background-size: contain;
+    z-index: 9;
+  }*/
+
+  &-wrap{
+    position: relative;
   }
 
   &-item{

@@ -2,7 +2,8 @@
     var scrolls_block = $('.scroll_box');
 
     if(scrolls_block.length==0) return;
-    $('<div class="scroll_box-wrap"/>').wrapAll(scrolls_block);
+    //$('<div class="scroll_box-wrap"></div>').wrapAll(scrolls_block);
+    $(scrolls_block).wrap('<div class="scroll_box-wrap"></div>');
 
     init_scroll();
     calc_scroll();
@@ -16,6 +17,31 @@
         control=$(control);
         control.insertAfter(scrolls_block);
         control.data('slide-active', 0);
+
+        /*left_arrow=$('<div class="scroll_box-left_arrow"></div>');
+        right_arrow=$('<div class="scroll_box-right_arrow"></div>');
+        right_arrow.insertAfter(control);
+        left_arrow.insertAfter(control);
+
+        left_arrow.on('click',function(){
+            var control=$(this).parent().find('scroll_box-control');
+            var active=control.data('slide-active');
+            var point_cnt=control.find('>*').length;
+            if(!active)active=0;
+            active--;
+            if(active<0)active=point_cnt-1;
+            controls.eq(active).click();
+        });
+
+        right_arrow.on('click',function(){
+            var control=$(this).parent().find('scroll_box-control');
+            var active=control.data('slide-active');
+            var point_cnt=control.find('>*').length;
+            if(!active)active=0;
+            active++;
+            if(active>=point_cnt)active=0;
+            controls.eq(active).click();
+        });*/
 
         scrolls_block.prepend('<div class=scroll_box-mover></div>');
 
@@ -59,7 +85,7 @@
 
     function next_slide() {
         var $this=$(this);
-        $this.data('slide-timeoutId',false)
+        $this.data('slide-timeoutId',false);
         if(!$this.hasClass("scroll_box-active"))return;
 
         var controls=$this.next().find('>*');
