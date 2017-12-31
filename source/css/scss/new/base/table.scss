@@ -1,0 +1,41 @@
+table {
+  border-spacing: 0px;
+  background: $table_bg;
+  text-align: center;
+  font-size: 14px;
+}
+
+tr:first-child{
+  background-color: $table_th_bg;
+}
+
+tr:nth-child(2n){
+  background-color: $table_2n_bg;
+
+  .table-selected{
+    background: $table_select_2n_bg;
+  }
+}
+
+td,th{
+  padding: 5px;
+}
+
+td:first-child,
+th:first-child
+{
+  text-align: left;
+  white-space: nowrap;
+
+  &:before{
+    content: '';
+    height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.table-selected {
+  background: $table_select_bg;
+
+}

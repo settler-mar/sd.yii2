@@ -5,6 +5,7 @@
 @import  "color";
 @import  "base/lists";
 @import  "base/btn";
+@import  "base/table";
 
 html{
   @include media($desktop) {
