@@ -7,10 +7,19 @@
     flex-shrink: 10;
     padding: 10px;
     margin-bottom: 30px;
+    min-height: 34px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 
     &-230{
       min-width: 220px;
       max-width: 240px;
+    }
+
+    &-150{
+      min-width: 140px;
+      max-width: 160px;
     }
   }
 
@@ -34,11 +43,31 @@
   }
 
   &-content{
-    &-select{
+    &-select {
       font-family: "Proxima Nova - Black";
       font-weight: 900;
       background: $instruction_select_color;
       padding: 0 5px;
+    }
+  }
+
+  &-social {
+    &_counter {
+      margin: auto;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 17px;
+
+      span{
+        font-size: 24px;
+        display: block;
+      }
+    }
+
+    &_logo {
+      width: 55px;
+      height: 55px;
     }
   }
 }

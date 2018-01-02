@@ -166,6 +166,11 @@ svg.svg-no-fill{
   padding: 40px 0;
 }
 
+.wrap-round{
+  border-radius: 10px;
+  padding: 20px !important;
+}
+
 @include media($laptop) {
   .laptop_no_padding {
     padding: 0;
@@ -197,3 +202,4 @@ svg.svg-no-fill{
 @import 'parts/scroll-box';
 @import 'index/other_services';
 @import 'parts/accordion';
+@import 'parts/social';

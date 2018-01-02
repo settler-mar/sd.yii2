@@ -1,0 +1,38 @@
+.social-icon{
+  &-color {
+    &-vk {
+      background-image: url(/images/socialicons/vk.png);
+    }
+    &-ok {
+      background-image: url(/images/socialicons/ok.png);
+    }
+    &-fb {
+      background-image: url(/images/socialicons/fb.png);
+    }
+    &-g {
+      background-image: url(/images/socialicons/g.png);
+    }
+  }
+}
+
+.social-btn{
+  margin-top: 20px;
+  display: block;
+  height: 32px;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+  &-vk{
+    background-image: url(/images/socialicons/vk-btn.png);
+  }
+  &-fb{
+    background-image: url(/images/socialicons/fb-btn.png);
+  }
+  &-g{
+    background-image: url(/images/socialicons/g-btn.png);
+  }
+  &-ok{
+    background-image: url(/images/socialicons/ok-btn.png);
+  }
+}
