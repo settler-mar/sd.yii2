@@ -57,7 +57,7 @@ h1{
   font-size: 2.5em;
 }
 
-h2{
+h2 {
   text-align: center;
   font-size: 2em;
   position: relative;
@@ -81,6 +81,16 @@ h2{
     display: inline-block;
     margin-left: 46px;
   }
+
+  &.title-white-line {
+    &:before {
+      background: $h2_white_line_color;
+    }
+
+    &:after {
+      background: $h2_white_line_color;
+    }
+  }
 }
 
 .page-wrap{
@@ -93,6 +103,10 @@ h2{
   }
 }
 
+.mini-wrap{
+  max-width: $tablets;
+  margin: 80px auto;
+}
 .content{
   flex-grow: 1;
 }
@@ -140,10 +154,27 @@ svg.svg-no-fill{
 
 .gray-box{
   background: $gray_box_bg;
+  position: relative;
+}
+
+.yellow-box{
+  background: $yellow_box_bg;
+}
+
+.round-box {
   border-radius: 10px;
   padding: 40px 0;
 }
 
+@include media($laptop) {
+  .laptop_no_padding {
+    padding: 0;
+  }
+
+  .laptop_no_bg {
+    background: transparent;
+  }
+}
 
 .rating{
   color: $rating_color;
@@ -165,3 +196,4 @@ svg.svg-no-fill{
 @import 'parts/shop';
 @import 'parts/scroll-box';
 @import 'index/other_services';
+@import 'parts/accordion';

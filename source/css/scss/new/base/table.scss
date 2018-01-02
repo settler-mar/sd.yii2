@@ -21,6 +21,12 @@ td,th{
   padding: 5px;
 }
 
+tr:first-child th{
+  &.table-selected{
+    border-radius: 5px 5px 0 0 ;
+  }
+}
+
 td:first-child,
 th:first-child
 {

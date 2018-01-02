@@ -1,0 +1,188 @@
+.accordion {
+
+  &-wrap{
+    position: relative;
+    @include media_min($laptop) {
+      padding: 0 40px;
+    }
+  }
+  margin-bottom: 3px;
+  //max-width: 935px;
+  &.accordion-slim {
+    @include media_min($laptop) {
+      .accordion-title {
+        background: transparent;
+        width: 350px;
+
+        h1,h2,h3,h4,h5,h6{
+          font-weight: 600;
+        }
+
+        &:before{
+          content: '';
+          width: 0px;
+          height: 0px;
+          padding: 7PX;
+          //background-color: #fece00;
+          margin: auto 20px auto 0;
+          border-radius: 100%;
+          display: inline-block;
+        }
+
+        &:after {
+          content: '';
+        }
+      }
+    }
+
+    &.open{
+      @include media_min($laptop) {
+        .accordion-title {
+          position: relative;
+
+          h1,h2,h3,h4,h5,h6{
+            font-weight: 900;
+            font-family: "Proxima Nova - Black";
+          }
+
+          &:before{
+            background-color: $accordion_point;
+          }
+
+          &:after {
+            content: '';
+          }
+        }
+      }
+    }
+
+    .accordion-content{
+      @include media_min($laptop) {
+        position: absolute;
+        right: 0;
+        top: 0;
+        border:0;
+        border: 0 !important;
+        width: calc(100% - 420px);
+        padding-top: 3px !important;
+        padding-right: 20px !important;
+        margin-bottom: 0!important;
+      }
+    }
+  }
+
+
+  + p{
+    padding-top: 7px;
+  }
+
+  .accordion-content{
+    color: #000;
+    //max-height: 0;
+    display: none;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .accordion-control{
+    text-align: right;
+
+    a {
+      color: $accordion_control_bg !important;
+      font-size: 14px;
+    }
+
+    /***поправить стили в магазине****/
+    .icon{
+      margin-left: 3px;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      color: $accordion_control_bg;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .angle-down .icon:before {
+      content: "+";
+    }
+    .angle-up .icon:before {
+      content: "-";
+    }
+
+    h1,h2,h3,h4,h5,h6{
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
+    }
+  }
+
+  .accordion-title {
+    text-align: left;
+    background: $accordion_control_bg;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    color: $text_color;
+    border-radius: 3px;
+    display: flex !important;
+    //max-width: 935px;
+
+    //&:before{
+    //  content:"\f067";
+    //  width: 20px;
+    //  display: inline-block;
+    //  text-align: center;
+    //  margin-left: 3px;
+    //  font: normal normal normal 14px/1 FontAwesome;
+    //}
+    &:after{
+      content: "+";
+      width: 20px;
+      display: inline-block;
+      text-align: center;
+      font-weight: bold;
+      font-size: 30px;
+      line-height: 10px;
+      margin: auto 0 auto auto;
+      padding-left: 10px;
+    }
+
+    +.accordion-content{
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid $accordion_content_border;
+      border-top: 0;
+      border-radius: 0 0 3px 3px;
+      font-size: 14px;
+      //max-width: 750px;
+    }
+  }
+
+  .angle-down:before{
+    content: "Подробнее";
+    color: $accordion_angle_color;
+  }
+  .angle-up{
+    display: none;
+    &:before{
+      content: "Скрыть";
+      color: $accordion_angle_color;
+    }
+  }
+  &.open{
+    .accordion-title {
+      border-radius: 3px 3px 0 0;
+
+      &:after{
+        content:"-";
+      }
+    }
+    .angle-down{
+      display: none;
+    }
+    .angle-up{
+      display: inline-block;
+    }
+  }
+}

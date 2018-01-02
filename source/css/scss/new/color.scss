@@ -16,9 +16,11 @@ $header_sub_menu_color: $text_color;
 $header_sub_menu_color_hover: #ffcd16;
 $header_heart: #f00;
 $gray_box_bg: #f4f4f4;
+$yellow_box_bg: #fdec3e;
 $rating_color: #FF9800;
 
 $h2_line_color: $btn_base_bg;
+$h2_white_line_color: #fff;
 $a_color: $btn_base_bg;
 $a_color_hover: #fdca37;
 
@@ -57,3 +59,11 @@ $table_th_bg:#fff;
 $table_2n_bg:#f6f6f5;
 $table_select_bg:#fccb30;
 $table_select_2n_bg:#fde699;
+
+
+/*accordion*/
+$accordion_control_bg: #e6ae03;
+$accordion_point: $accordion_control_bg;
+$accordion_content_border: #D2D6DE;
+$accordion_angle_color: $accordion_control_bg;
+
