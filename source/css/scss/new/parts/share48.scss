@@ -1,0 +1,132 @@
+.soc-icon{
+  height: 48px;
+  width: 48px;
+  margin: 2px;
+  background-image:url(/images/socialicons48.png) ;
+  display: inline-block;
+}
+
+.soc-icon-sd {
+  background-color: #e4c84b;
+  color: #0f181a !important;
+  display: inline-block;
+  padding: 8px 8px;
+  width: 40px;
+  margin-right: 9px;
+  text-align: center;
+  font-size: 17px;
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  -moz-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+  &:after {
+    font-family: 'fontawesome';
+  }
+  &.icon-sd-fb:after {
+    content: "\f09a";
+  }
+  &.icon-sd-vk:after {
+    content: "\f189";
+  }
+  &.icon-sd-odkl:after {
+    content: "\f263";
+  }
+  &.icon-sd-twi:after {
+    content: "\f099";
+  }
+  &.icon-sd-gplus:after {
+    content: "\f0d5";
+  }
+  &.icon-sd-mail:after {
+    content: "\f003";
+  }
+  &.icon-sd-journal:after {
+    content: "\f040";
+  }
+  &.icon-sd-telegram:after {
+    content: "\f2c6";
+  }
+  &.icon-sd-viber:after {
+    content: "\f095";
+  }
+  &.icon-sd-whatsapp:after {
+    content: "\f232";
+  }
+}
+.soc-icon-sd:hover {
+  background-color: #FFDC73;
+}
+.accauntSoc_32 .soc-icon-sd{
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 0;
+  width: 25px;
+  border-radius: 100%;
+}
+.accauntSoc_32 .soc-icon{
+  height: 32px;
+  width: 32px;
+  margin: 2px;
+  background-image:url(/images/socialicons_new_32.png) ;
+  display: inline-block;
+}
+
+.icon-vk{
+  background-position: -19px -75px;
+}
+.icon-twi{
+  background-position: -70px -21px;
+}
+.icon-fb{
+  background-position: -170px -21px;
+}
+.icon-odkl{
+  background-position: -222px -75px;
+}
+.icon-odkl{
+  background-position: -222px -75px;
+}
+.icon-gplus{
+  background-position: -19px -21px;
+}
+.accauntSoc_32 {
+  .icon-vk {
+    background-position: -12px -50px;
+  }
+  .icon-twi {
+    background-position: -47px -14px;
+  }
+  .icon-fb {
+    background-position: -114px -14px;
+  }
+  .icon-odkl {
+    background-position: -148px -50px;
+  }
+  .icon-odkl {
+    background-position: -148px -50px;
+  }
+  .icon-gplus {
+    background-position: -14px -14px;
+  }
+  .icon-mail {
+    background-position: -46px -50px;
+  }
+  .icon-journal {
+    background-position: -115px -50px;
+  }
+  .icon-telegram {
+    background-position: -115px -50px;
+  }
+  .icon-viber {
+    background-position: -148px -14px;
+  }
+  .icon-whatsapp {
+    background-position: -46px -50px;
+  }
+}
+
+.share42_wrap{
+  white-space: nowrap
+}

@@ -92,55 +92,70 @@
                 <div class="footer-withdraws-item footer-withdraws-wm"></div>
                 <div class="footer-withdraws-item footer-withdraws-paypal"></div>
             </div>
-            <div class="footer-docs">
+            <div class="footer-docs  flex-line">
                 <a class="footer-docs-item" href="#">Пользовательское соглашение</a>
                 <a class="footer-docs-item" href="#">Политика конфиденциальности</a>
             </div>
             <div class="footer-copyright">
                 <div class="footer-copyright_logo"></div>
                 <div class="footer-copyright_text">
-                    Secret Discounter Ltd. Зарегистрирована в Англии под №10201982.
+                    Secret Discounter Ltd. Зарегистрирована в Англии под №10201982.<br>
                     © Secret Discounter Ltd., 2016–2017. Все права защищены
                 </div>
             </div>
         </div>
         <div class="footer-right">
-            <div class="share42init accauntSoc accauntSoc_32"
-                 data-url="https://secretdiscounter.ru/"
-                 data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
-                 data-title="{{ html.encode(this.title) }}"
-                 data-description="{{ this.description }}">
+            <div class="footer-share">
+                <div class="footer-share-text">Расскажите о нас друзьям:</div>
+                <div class="share42init accauntSoc accauntSoc_32"
+                     data-url="https://secretdiscounter.ru/"
+                     data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
+                     data-title="{{ html.encode(this.title) }}"
+                     data-description="{{ this.description }}"
+                     data-socials="1,0,2,4,3,5,6"
+                >
+                </div>
+                <script type="text/javascript" src="/js/share42.js?v=3"></script>
             </div>
-            <script type="text/javascript" src="/js/share42.js?v=3"></script>
 
             <div class="footer-social_links">
                 <div class="footer-social_links-title">А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки:</div>
-                <a href="https://www.facebook.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="https://vk.com/secretdiscounter_ru" target="_blank" rel="nofollow noopener"><i class="fa fa-vk" aria-hidden="true"></i></a>
-                <a href="https://ok.ru/group/54392356274401" target="_blank" rel="nofollow noopener"><i class="fa fa-odnoklassniki" aria-hidden="true"></i></a>
-                <a href="https://www.instagram.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                <a href="https://www.youtube.com/channel/UCMF1uzBGkK7BaEvAZ5XZCGg" target="_blank" rel="nofollow noopener"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                <a href="https://twitter.com/secretdiscounte" target="_blank" rel="nofollow noopener"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                <a href="https://plus.google.com/u/0/communities/117885185630720076043" target="_blank" rel="nofollow noopener"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                <a href="https://telegram.me/SecretDiscounter" target="_blank" rel="nofollow noopener"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+                <a class="footer-social_links-item">
+                    {{ svg("color/sd",'footer-social_links-icon')|raw }}
+                    330 000 пользователей
+                </a>
+                <a class="footer-social_links-item" href="https://vk.com/secretdiscounter_ru" target="_blank" rel="nofollow noopener">
+                    {{ svg("color/vk",'footer-social_links-icon')|raw }}
+                    8457 участников
+                </a>
+                <a class="footer-social_links-item" href="https://ok.ru/group/54392356274401" target="_blank" rel="nofollow noopener">
+                    {{ svg("color/ok",'footer-social_links-icon')|raw }}
+                    3750 участников</a>
+                <a class="footer-social_links-item" href="https://www.facebook.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener">
+                    {{ svg("color/fb",'footer-social_links-icon')|raw }}
+                    3172 подписчика
+                </a>
+                <a class="footer-social_links-item" href="https://www.instagram.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener">
+                    {{ svg("color/instogram",'footer-social_links-icon')|raw }}
+                    12000 подписчиков
+                </a>
+                <a class="footer-social_links-item" href="https://www.youtube.com/channel/UCMF1uzBGkK7BaEvAZ5XZCGg" target="_blank" rel="nofollow noopener">
+                    {{ svg("color/y",'footer-social_links-icon')|raw }}
+                    1278 подписчиков
+                </a>
             </div>
 
             <div class="footer-contacts">
                 <p class="footer-contacts_title">Контакты</p>
                 <p class="footer-contacts_description">
-                    Звоните, и мы научим вас экономить на покупках<br>
-                    <span>
-                        ‎<strong>8 (800) 707 66 09</strong>
-                        (по РФ бесплатно)<br>
-                        ‎<strong>+7 (495) 150 66 09</strong> (Пн-Пт, 10:00 – 22:00 по Москве)
-                        <br>
-                        ‎<strong>+44 (20) 38 07 02 08</strong> (главный офис в Лондоне)
-                    </span>
+                    8 (800) 707 66 09 (по РФ бесплатно)<br>
+                    +7 (495) 150 66 09 (10:00 – 22:00 по МСК)<br>
+                    +44 (20) 38 07 02 08 (офис в Лондоне)
                 </p>
             </div>
 
-            <div class="footer-contacts-app">
-                <div class="footer-contacts-app-img"></div>
+            <div class="footer-app">
+                <div class="footer-app-img"></div>
             </div>
 
             {% include 'parts/site_rating_microdata.twig' %}

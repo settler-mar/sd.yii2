@@ -1,7 +1,188 @@
-.footer{
+.footer {
   background: $footer_bg;
+  padding: 24px 0;
 
-  &-text{
-    color: $footer_text_color
+  &-left {
+    max-width: 890px;
   }
+
+  &-right {
+    min-width: 240px;
+    max-width: 240px;
+  }
+
+  &-text {
+    color: $footer_text_color;
+    margin-bottom: 55px;
+  }
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: $footer_link_color;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+
+    &:hover {
+      color: $a_color_hover;
+    }
+  }
+
+  &-menu {
+    margin-bottom: 70px;
+
+    &-col {
+      width: 33%;
+      min-width: 160px;
+      max-width: 210px;
+    }
+
+    &-title {
+      color: $footer_menu_title_color;
+      margin-top: 35px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
+  }
+
+  &-withdraws {
+    margin-bottom: 45px;
+
+    &-item {
+      width: 88px;
+      height: 16px;
+      color: $footer_text2_color;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: contain;
+
+      &:first-child {
+        width: 200px;
+      }
+    }
+
+    &-visa {
+      background-image: url('/images/pays_system/visa.png');
+      width: 50px;
+    }
+
+    &-mastercard{
+      background-image: url('/images/pays_system/mastercard.png');
+      width: 90px;
+    }
+
+    &-qiwi{
+      background-image: url('/images/pays_system/qiwi.png');
+      width: 50px;
+    }
+
+    &-mir{
+      background-image: url('/images/pays_system/mir.png');
+      width: 55px;
+    }
+
+    &-phone{
+      background-image: url('/images/pays_system/phone.png');
+      width: 35px;
+    }
+
+    &-ya{
+      background-image: url('/images/pays_system/ya.png');
+      width: 85px;
+    }
+
+    &-wm{
+      background-image: url('/images/pays_system/wm.png');
+      width: 90px;
+    }
+
+    &-paypal{
+      background-image: url('/images/pays_system/paypal.png');
+      width: 65px;
+    }
+  }
+
+  &-docs{
+    justify-content: center;
+    margin-bottom: 71px;
+
+    &-item{
+      text-decoration: underline !important;
+      margin: 0 28px;
+    }
+  }
+
+  &-copyright{
+    color: $a_color_hover;
+    padding-left: 100px;
+    background: url(/images/templates/footer-logo.png) 0 50% no-repeat;
+    background-size: contain;
+  }
+
+  &-share{
+    color: $footer_text2_color;
+    margin-bottom: 40px;
+
+    &-text{
+      padding-bottom: 3px;
+    }
+  }
+
+  &-social_links{
+    margin-bottom: 60px;
+
+    &-title {
+      color: $footer_text2_color;
+      margin-bottom: 30px;
+    }
+
+    &-item{
+      margin-top: 12px;
+
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+
+    &-icon{
+      height: 32px;
+      width: 32px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 20px;
+    }
+  }
+
+  &-contacts{
+    margin-bottom: 65px;
+
+    &_title{
+      color: $footer_menu_title_color;
+    }
+
+    &_description{
+      font-size: 12px;;
+      color: $footer_link_color;
+      line-height: 22px;
+    }
+  }
+
+  &-app{
+    margin-bottom: 30px;
+
+    &-img{
+      background: url(/images/app.png) no-repeat 0% 50%;
+      height: 50px;
+    }
+  }
+}
+
+.microdata-site-rating{
+  font-size: 11px;
+  color: $footer_text2_color;
 }
