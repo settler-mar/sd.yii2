@@ -423,7 +423,7 @@ class TaskController extends Controller
   }
 
     /**
-     * resize avatars and update files extensions
+     * Оптимизация аватарок по размеру. ФИКС отсутствия расширения
      */
   public function actionAvatars()
   {
@@ -438,30 +438,34 @@ class TaskController extends Controller
             //echo $userDir."\n";
             $files = array_diff(scandir($userDir), ['.', '..']);
             foreach ($files as $file) {
-                $fileName = $userDir.'/'.$file;
+                $fileName = realpath($userDir.'/'.$file);
                 if (is_file($fileName) && strpos($file, 'SD-') === false ) {
                     $fileMimeType = mime_content_type($fileName);
                     if (in_array($fileMimeType, ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'])) {
                         //echo $fileName."\n";
-
                         $fileInfo = pathinfo($fileName);
-
                         try {
-                            if (!isset($img)) {
-                                $img = new Image($fileName);
-                            } else {
-                                $img->loadFile($fileName);
+                            if(exif_imagetype($fileName)==2){
+                                $img = (new Image(imagecreatefromjpeg($fileName)));
+                            }else {
+                                $img = (new Image($fileName));
                             }
+
                             $width = $img->getWidth();
                             $height = $img->getHeight();
                             //echo $width . ' ' . $height . "\n";
                             if ($height > 300 || $width > 300) {
                                 //делаем ресайз, если больше 300
                                 $img->bestFit(300, 300);
-                                $img->save();
+                                if(exif_imagetype($fileName)==2){
+                                    $img->saveAs($fileName);
+                                }else {
+                                    $img->save();
+                                }
                             }
                         } catch (ErrorException $e) {
                             echo $fileName. ' '. $e->getMessage() ."\n";
+                            //ddd($e);
                         }
                         //если нет расширения то пересохраняем и переписываем в базе
                         $fileMimeArr = explode('/', $fileMimeType);
