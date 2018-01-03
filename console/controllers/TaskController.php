@@ -11,6 +11,8 @@ use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
 use yii;
 use frontend\modules\cache\models\Cache;
+use JBZoo\Image\Image;
+use yii\base\ErrorException;
 
 
 class TaskController extends Controller
@@ -418,5 +420,66 @@ class TaskController extends Controller
     Yii::$app->balanceCalc->todo($ref_user['uid'], 'ref');//пересчет кол-ва рефералов
     Yii::$app->balanceCalc->todo($this->list); //пересчет кол-ва баланса
 
+  }
+
+    /**
+     * resize avatars and update files extensions
+     */
+  public function actionAvatars()
+  {
+    echo "Start resizing avatars\n";
+    $pathBase = Yii::$app->basePath.'/../frontend/web';
+    $pathSecond = '/images/account/avatars';
+    $path = $pathBase.$pathSecond;
+    $users = array_diff(scandir($path), ['.', '..']);
+    foreach ($users as $user) {
+        $userDir = $path.'/'.$user;
+        if (is_dir($userDir)) {
+            //echo $userDir."\n";
+            $files = array_diff(scandir($userDir), ['.', '..']);
+            foreach ($files as $file) {
+                $fileName = $userDir.'/'.$file;
+                if (is_file($fileName) && strpos($file, 'SD-') === false ) {
+                    $fileMimeType = mime_content_type($fileName);
+                    if (in_array($fileMimeType, ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'])) {
+                        //echo $fileName."\n";
+
+                        $fileInfo = pathinfo($fileName);
+
+                        try {
+                            if (!isset($img)) {
+                                $img = new Image($fileName);
+                            } else {
+                                $img->loadFile($fileName);
+                            }
+                            $width = $img->getWidth();
+                            $height = $img->getHeight();
+                            //echo $width . ' ' . $height . "\n";
+                            if ($height > 300 || $width > 300) {
+                                //делаем ресайз, если больше 300
+                                $img->bestFit(300, 300);
+                                $img->save();
+                            }
+                        } catch (ErrorException $e) {
+                            echo $fileName. ' '. $e->getMessage() ."\n";
+                        }
+                        //если нет расширения то пересохраняем и переписываем в базе
+                        $fileMimeArr = explode('/', $fileMimeType);
+                        if ((!isset($fileInfo['extension']) || $fileInfo['extension'] == '') && isset($fileMimeArr[1])) {
+                            $ext = $fileMimeArr[1];
+                            //echo $ext . "\n";
+                            rename($fileName, $fileName.'.'.$ext);
+                            $dbFileName = $pathSecond.'/'.$user.'/'.$file.'.'.$ext;
+                            Yii::$app->DB->createCommand()
+                                ->update(Users::tableName(), ['photo' => $dbFileName], ['uid' => $user, 'photo' => $pathSecond.'/'.$user.'/'.$file])
+                                ->execute();
+                            //echo 'renamed '.$dbFileName."\n";
+                        }
+                    }
+                }
+            }
+        }
+    }
+    echo "End resizing avatars\n";
   }
 }
