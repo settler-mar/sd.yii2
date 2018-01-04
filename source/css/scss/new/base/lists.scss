@@ -17,10 +17,12 @@ ul{
 
   &_icon{
     stroke:$btn_base_bg;
+    fill:$btn_base_bg;
     stroke-width:1.4173;
     vertical-align: middle;
     margin-left: -70px;
     margin-right: 10px;
     height: 30px;
+    width: 30px;
   }
 }

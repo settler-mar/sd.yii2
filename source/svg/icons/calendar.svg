@@ -1,66 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Layer_2"
-   x="0px"
-   y="0px"
-   viewBox="0 0 15.3 16.3"
-   style="enable-background:new 0 0 15.3 16.3;"
-   xml:space="preserve"
-   width="15.3"
-   height="16.3"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="calendar.svg"><metadata
-     id="metadata21"><rdf:RDF><cc:Work
-         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-     id="defs19" /><sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="688"
-     id="namedview17"
-     showgrid="false"
-     inkscape:zoom="57.914113"
-     inkscape:cx="2.0333759"
-     inkscape:cy="5.4416145"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g3" /><g stroke="#FCCA37"
-     id="g3"><path
-       fill="none"
-       d="M11.3,15.8H4c-1.9,0-3.5-1.6-3.5-3.5V5.8c0-1.9,1.6-3.5,3.5-3.5h7.3c1.9,0,3.5,1.6,3.5,3.5v6.4   C14.8,14.2,13.2,15.8,11.3,15.8z"
-       id="path5" /><line
-       x1="4"
-       y1="0.8"
-       x2="4"
-       y2="3.7"
-       id="line11" /><line
-       x1="11.2"
-       y1="0.8"
-       x2="11.2"
-       y2="3.7"
-       id="line13" /><path
-       fill="none"
-       d="M12.6,2.5C12.6,2.5,12.6,2.5,12.6,2.5l-0.3,0c0.8,0.9,0.5,2.7-1.1,2.7c-1.6,0-1.9-1.8-1.1-2.7H5   c1,0.8,0.6,2.8-1,2.8c-1.6,0-1.9-2-1-2.8H2.7C2.4,2.7,2.2,2.9,1.9,3.2c-0.6,0.5-0.7,0.7-1,1.3c0,0,0,0,0,0.1v2.3h13.8V4.9   C14,4,13.4,3.2,12.6,2.5z"
-       id="path15" /><path     fill="none"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 5.7671608,10.567372 8.0809318,8.5298725 8.0636649,14.055296"
-       id="path4153"
-       inkscape:connector-curvature="0" /></g></svg>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+<title>A-Calendar-Small</title>
+<g id="Layer_2">
+	<g id="Layer_2-2">
+		<polygon  points="23.6,30.5 23.6,43.3 28.9,43.3 28.9,24 24.5,24 17.7,30.5 20.5,33.7 		"/>
+		<path d="M13.8,13.8c1.3,0,2.4-1.1,2.4-2.4c0,0,0,0,0,0v-9C16.2,1,15,0,13.7,0.1c-1.2,0.1-2.2,1.1-2.3,2.3v9
+			C11.4,12.7,12.5,13.8,13.8,13.8C13.8,13.8,13.8,13.8,13.8,13.8z"/>
+		<path d="M36.2,13.8c1.3,0,2.4-1.1,2.4-2.4c0,0,0,0,0,0v-9C38.5,1,37.4,0,36,0.1c-1.2,0.1-2.2,1.1-2.3,2.3v9
+			C33.8,12.7,34.8,13.8,36.2,13.8C36.2,13.8,36.2,13.8,36.2,13.8z"/>
+		<path d="M41.1,5.6v5.7c0,2.6-2.1,4.8-4.8,4.8h-0.2c-2.6,0-4.7-2.1-4.7-4.8V4.6H18.8v6.6c0,2.6-2.1,4.8-4.8,4.8h-0.2
+			C11.2,16,9,13.9,9,11.2V5.5C4.3,7.5,1.2,12,1.1,17.1v20.3c0.1,6.9,5.6,12.4,12.5,12.5h22.8c7-0.1,12.6-5.8,12.5-12.8v-20
+			C48.8,12,45.7,7.5,41.1,5.6z M45.7,37.1c0.1,5.2-4.1,9.6-9.3,9.6H13.6c-5.1-0.1-9.3-4.2-9.3-9.3V20.6h41.5V37.1z"/>
+	</g>
+</g>
+</svg>

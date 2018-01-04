@@ -222,6 +222,7 @@ gulp.task('SVGclean',function() {
       $('[fill][fill!="none"]').removeAttr('fill');
       $('[stroke][stroke!="none"]').removeAttr('stroke');
       $('[style]').removeAttr('style');
+      $('title').remove();
     },
     parserOptions: {xmlMode: true}
   };
