@@ -126,6 +126,7 @@ h2 {
   max-width: $tablets;
   margin: 80px auto;
 }
+
 .content{
   flex-grow: 1;
 }
@@ -154,6 +155,15 @@ h2 {
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.laptop-min {
+  @include media($laptop_min) {
+    &_flex-wrap {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
 }
 
 section {
