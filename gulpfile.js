@@ -62,7 +62,7 @@ gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
 //сервер и слежение -
 gulp.task('default',['server']);
 
-gulp.task('js',['jscommon', 'jsaccount', 'jsadmin']);
+gulp.task('js',['jscommon', 'jsaccount', 'jsadmin', 'js_new']);
 
 gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp', 'css_new']);
 
@@ -162,6 +162,10 @@ gulp.task('jsb2b', compileJs([
         paths.source.js+'/original/jquery.ajaxForm.js',
         paths.source.js+'/original/b2b.js'
     ], paths.b2b.js)
+);
+gulp.task('js_new', compileJs([
+        paths.source.js+'/original/new/script.js'
+    ], paths.app.js+'/new')
 );
 
 function compileCss (source, dest) {

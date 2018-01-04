@@ -1,0 +1,5 @@
+$('.menu-toggle').click(function(e) {
+    e.preventDefault();
+    $('.header-right').show();
+});
+
