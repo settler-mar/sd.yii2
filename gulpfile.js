@@ -175,7 +175,7 @@ function compileCss (source, dest) {
     }))
     .pipe(pxtorem({
       propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
-        'height',
+        'height','top',
         'margin','margin-bottom','margin-top',
         'padding','padding-bottom','padding-top'
       ],

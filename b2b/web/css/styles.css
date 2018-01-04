@@ -106,7 +106,7 @@ i.sd_icon-vkontakte-round:before {
           display: none; }
         .primary-nav > li.stores .submenu .tree > ul > li .fa-fa-carett, .account-nav > li.stores .submenu .tree > ul > li .fa-fa-carett {
           position: absolute;
-          top: 5px;
+          top: 0.3125rem;
           width: 15px;
           left: inherit;
           right: 5px;
@@ -126,7 +126,7 @@ i.sd_icon-vkontakte-round:before {
           left: -webkit-calc(100%);
           left: -moz-calc(100%);
           left: calc(100%);
-          top: -9px;
+          top: -0.5625rem;
           background-color: #282b37;
           padding: 0.625rem 0 0.625rem 0;
           width: 380px;
@@ -177,7 +177,7 @@ i.sd_icon-vkontakte-round:before {
           color: #e6ae03; }
     .primary-nav > li.stores .submenu .fa, .account-nav > li.stores .submenu .fa {
       position: absolute;
-      top: -25px;
+      top: -1.5625rem;
       padding: 0.625rem 5rem 0.625rem;
       left: 55px;
       font-size: 1.625rem;
@@ -713,7 +713,7 @@ table .status_bg_1 {
   right: 0;
   padding: 0.3125rem;
   z-index: 99999;
-  top: 70px; }
+  top: 4.375rem; }
   .notification_container a {
     text-decoration: underline; }
 
@@ -766,7 +766,7 @@ table .status_bg_1 {
 .notification_close:before {
   content: 'x';
   position: absolute;
-  top: 2px;
+  top: 0.125rem;
   right: 6px;
   cursor: pointer;
   font-family: Verdana, Arial;
@@ -839,7 +839,7 @@ table .status_bg_1 {
     opacity: 1; } }
 
 .blank .notification_container {
-  top: 0px; }
+  top: 0rem; }
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
@@ -885,7 +885,7 @@ body > .news-index {
       content: "\f105";
       font-family: FontAwesome;
       position: absolute;
-      top: 0px;
+      top: 0rem;
       right: 0px;
       width: 34px;
       height: 100%;
@@ -1141,7 +1141,7 @@ form > .kv-drp-container {
     position: relative; }
     .eauth-service.vertical .eauth-service-link_sd:before {
       left: 2px;
-      top: -7px;
+      top: -0.4375rem;
       position: absolute; }
 
 .eauth-service-link_sd {
@@ -1177,7 +1177,7 @@ form > .kv-drp-container {
       position: absolute;
       color: #303030;
       left: 54px;
-      top: -14px; }
+      top: -0.875rem; }
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;

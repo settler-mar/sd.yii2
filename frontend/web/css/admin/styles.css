@@ -259,9 +259,9 @@
   z-index: -1; }
 
 .-top-center- .datepicker--pointer, .-top-left- .datepicker--pointer, .-top-right- .datepicker--pointer {
-  top: -webkit-calc(100% - 4px);
-  top: -moz-calc(100% - 4px);
-  top: calc(100% - 4px);
+  top: -webkit-calc(100% - 0.25rem);
+  top: -moz-calc(100% - 0.25rem);
+  top: calc(100% - 0.25rem);
   -webkit-transform: rotate(135deg);
   -moz-transform: rotate(135deg);
   -ms-transform: rotate(135deg);
@@ -310,15 +310,15 @@
   left: calc(50% - 10px / 2); }
 
 .-left-top- .datepicker--pointer, .-right-top- .datepicker--pointer {
-  top: 10px; }
+  top: 0.625rem; }
 
 .-left-bottom- .datepicker--pointer, .-right-bottom- .datepicker--pointer {
   bottom: 10px; }
 
 .-left-center- .datepicker--pointer, .-right-center- .datepicker--pointer {
-  top: -webkit-calc(50% - 10px / 2);
-  top: -moz-calc(50% - 10px / 2);
-  top: calc(50% - 10px / 2); }
+  top: -webkit-calc(50% - 0.625rem / 2);
+  top: -moz-calc(50% - 0.625rem / 2);
+  top: calc(50% - 0.625rem / 2); }
 
 .datepicker--body.active {
   display: block; }
@@ -713,7 +713,7 @@ td, th {
 
 .glyphicon {
   position: relative;
-  top: 1px;
+  top: 0.0625rem;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
@@ -2635,7 +2635,7 @@ textarea.input-lg, textarea.form-group-lg .form-control, select[multiple].input-
   color: #a94442; }
 
 .has-feedback label ~ .form-control-feedback {
-  top: 25px; }
+  top: 1.5625rem; }
 
 .has-feedback label.sr-only ~ .form-control-feedback {
   top: 0; }
@@ -4160,7 +4160,7 @@ a.label:hover, a.label:focus {
 
 .btn .label {
   position: relative;
-  top: -1px; }
+  top: -0.0625rem; }
 
 .label-default {
   background-color: #777; }
@@ -4218,7 +4218,7 @@ a.label:hover, a.label:focus {
 
 .btn .badge {
   position: relative;
-  top: -1px; }
+  top: -0.0625rem; }
 
 .btn-xs .badge {
   top: 0;
@@ -4325,7 +4325,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 
 .alert-dismissable .close, .alert-dismissible .close {
   position: relative;
-  top: -2px;
+  top: -0.125rem;
   right: -21px;
   color: inherit; }
 
@@ -5094,7 +5094,7 @@ button.close {
 
 .modal-scrollbar-measure {
   position: absolute;
-  top: -9999px;
+  top: -624.9375rem;
   width: 50px;
   height: 3.125rem;
   overflow: scroll; }
@@ -5312,7 +5312,7 @@ button.close {
   border-left-width: 0; }
 
 .popover.bottom > .arrow {
-  top: -11px;
+  top: -0.6875rem;
   left: 50%;
   margin-left: -11px;
   border-top-width: 0;
@@ -5320,7 +5320,7 @@ button.close {
   border-bottom-color: rgba(0, 0, 0, 0.25); }
 
 .popover.bottom > .arrow:after {
-  top: 1px;
+  top: 0.0625rem;
   margin-left: -10px;
   content: " ";
   border-top-width: 0;
@@ -6371,7 +6371,7 @@ Header
     position: absolute;
     text-align: center;
     width: 100%;
-    top: 55px;
+    top: 3.4375rem;
     margin-left: 0px;
     display: none; }
   .cd-main-content .content-wrapper,
@@ -6394,7 +6394,7 @@ Header
     padding-top: 0rem !important;
     z-index: 999;
     width: 85%;
-    top: 0px;
+    top: 0rem;
     height: 100%;
     position: fixed;
     overflow-y: scroll !important; }
@@ -6466,11 +6466,11 @@ Header
 
 .cd-nav-trigger span::before {
   /* menu icon top line */
-  top: -8px; }
+  top: -0.5rem; }
 
 .cd-nav-trigger span::after {
   /* menu icon bottom line */
-  top: 8px; }
+  top: 0.5rem; }
 
 .cd-nav-trigger.nav-is-visible span {
   /* hide line in the center */
@@ -7232,7 +7232,7 @@ Sidebar
 .select2-container--default .select2-selection--single .select2-selection__arrow {
   height: 1.625rem;
   position: absolute;
-  top: 1px;
+  top: 0.0625rem;
   right: 1px;
   width: 20px; }
 
@@ -7451,7 +7451,7 @@ Sidebar
   border-bottom-right-radius: 4px;
   height: 1.625rem;
   position: absolute;
-  top: 1px;
+  top: 0.0625rem;
   right: 1px;
   width: 20px;
   background-image: -webkit-linear-gradient(top, #eee 50%, #ccc 100%);
@@ -7744,7 +7744,7 @@ i.sd_icon-vkontakte-round:before {
           display: none; }
         .primary-nav > li.stores .submenu .tree > ul > li .fa-fa-carett, .account-nav > li.stores .submenu .tree > ul > li .fa-fa-carett {
           position: absolute;
-          top: 5px;
+          top: 0.3125rem;
           width: 15px;
           left: inherit;
           right: 5px;
@@ -7764,7 +7764,7 @@ i.sd_icon-vkontakte-round:before {
           left: -webkit-calc(100%);
           left: -moz-calc(100%);
           left: calc(100%);
-          top: -9px;
+          top: -0.5625rem;
           background-color: #282b37;
           padding: 0.625rem 0 0.625rem 0;
           width: 380px;
@@ -7815,7 +7815,7 @@ i.sd_icon-vkontakte-round:before {
           color: #e6ae03; }
     .primary-nav > li.stores .submenu .fa, .account-nav > li.stores .submenu .fa {
       position: absolute;
-      top: -25px;
+      top: -1.5625rem;
       padding: 0.625rem 5rem 0.625rem;
       left: 55px;
       font-size: 1.625rem;
@@ -8351,7 +8351,7 @@ table .status_bg_1 {
   right: 0;
   padding: 0.3125rem;
   z-index: 99999;
-  top: 70px; }
+  top: 4.375rem; }
   .notification_container a {
     text-decoration: underline; }
 
@@ -8404,7 +8404,7 @@ table .status_bg_1 {
 .notification_close:before {
   content: 'x';
   position: absolute;
-  top: 2px;
+  top: 0.125rem;
   right: 6px;
   cursor: pointer;
   font-family: Verdana, Arial;
@@ -8477,7 +8477,7 @@ table .status_bg_1 {
     opacity: 1; } }
 
 .blank .notification_container {
-  top: 0px; }
+  top: 0rem; }
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
@@ -8523,7 +8523,7 @@ body > .news-index {
       content: "\f105";
       font-family: FontAwesome;
       position: absolute;
-      top: 0px;
+      top: 0rem;
       right: 0px;
       width: 34px;
       height: 100%;
@@ -8779,7 +8779,7 @@ form > .kv-drp-container {
     position: relative; }
     .eauth-service.vertical .eauth-service-link_sd:before {
       left: 2px;
-      top: -7px;
+      top: -0.4375rem;
       position: absolute; }
 
 .eauth-service-link_sd {
@@ -8815,7 +8815,7 @@ form > .kv-drp-container {
       position: absolute;
       color: #303030;
       left: 54px;
-      top: -14px; }
+      top: -0.875rem; }
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;
@@ -9503,7 +9503,7 @@ table {
   *background-color: #aaa; }
 
 .b-upload-group .btn__inp {
-  top: -10px;
+  top: -0.625rem;
   right: -10px;
   cursor: pointer;
   filter: alpha(opacity=0);
@@ -9534,7 +9534,7 @@ table {
   font-size: 1rem; }
 
 .b-upload-group .btn input {
-  top: -10px;
+  top: -0.625rem;
   right: -40px;
   z-index: 2;
   position: absolute;
@@ -9580,7 +9580,7 @@ table {
     position: absolute;
     content: attr(cur);
     right: 5px;
-    top: 25px;
+    top: 1.5625rem;
     color: #999; }
 
 .stores-form__stores-points_table {
