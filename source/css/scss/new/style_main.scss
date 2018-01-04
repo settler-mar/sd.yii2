@@ -1,5 +1,6 @@
 @import 'mixin/clearfix';
 @import 'mixin/media';
+@import 'mixin/flex';
 
 @import  "normalize";
 @import  "color";
@@ -155,14 +156,20 @@ h2 {
 
 .flex-wrap {
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .laptop-min {
   @include media($laptop_min) {
-    &_flex-wrap {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    @include flex;
+    @include text_aling;
+  }
+}
+
+.tablets {
+  @include media($tablets) {
+    @include flex;
+    @include text_aling;
   }
 }
 

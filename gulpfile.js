@@ -182,10 +182,10 @@ function compileCss (source, dest) {
       map:true
     }))
     .pipe(replace('PX', 'px'))
+    .pipe(gcmq())
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
-    .pipe(gcmq())
     .pipe(cleanCSS({compatibility: 'ie9'}))
     .pipe(plugins.rename('styles.min.' + version + '.css'))
     .pipe(gulp.dest(dest));
