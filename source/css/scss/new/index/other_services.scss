@@ -8,7 +8,8 @@
     max-width: 230px;
     //margin: 0 20px;
     position: relative;
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
+    margin-bottom: 0px;
 
     &:hover{
       .other_services-icon {
@@ -40,7 +41,7 @@
       //left: 50%;
       //margin-left: -80px;
       margin: 10px auto;
-      background: url("/images/servicses/coupons.png");
+      background: url("/images/servicses/coupons.jpg");
       background-size: cover;
       border-radius: 100%;
       border: 2px solid $other_services_title_color;
@@ -61,7 +62,7 @@
     border: 1px solid transparent;
 
     span{
-      background: url("/images/servicses/coupons.png");
+      background: url("/images/servicses/coupons.jpg");
       background-size: cover;
       position: absolute;
       left: 0;

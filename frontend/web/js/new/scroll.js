@@ -8,8 +8,13 @@
     init_scroll();
     calc_scroll();
 
+    var t1,t2;
+
     $(window).resize(function () {
-        calc_scroll();
+        clearTimeout(t1);
+        clearTimeout(t2);
+        t1=setTimeout(calc_scroll,300);
+        t2=setTimeout(calc_scroll,800);
     });
 
     function init_scroll() {
@@ -145,8 +150,9 @@
             el.addClass("scroll_box-active");
 
             var point_cnt = children.length - screan_count + 1;
-            //если не надо обновлять контрол то выходим
+            //если не надо обновлять контрол то выходим, не забывая обновить ширину дочерних
             if (control.find('>*').length == point_cnt) {
+                control.data('slide-dx', children_w);
                 continue;
             }
 
