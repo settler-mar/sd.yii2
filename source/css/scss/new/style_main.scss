@@ -62,25 +62,33 @@ h2 {
   text-align: center;
   font-size: 2em;
   position: relative;
+  display: flex;
+  justify-content: center;
 
   &:before {
     content: "";
     background: $h2_line_color;
     width: 94px;
+    min-width: 74px;
     height: 4px;
     vertical-align: middle;
     display: inline-block;
     margin-right: 46px;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   &:after {
     content: "";
     background: $h2_line_color;
     width: 94px;
+    min-width: 74px;
     height: 4px;
     vertical-align: middle;
     display: inline-block;
     margin-left: 46px;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   &.title-white-line {

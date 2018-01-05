@@ -23,8 +23,23 @@
     }
 
     &_end{
-      min-height: 300px;
       background: linear-gradient(120deg, $btn_base_bg 50%, #000 0);
+      position: relative;
+      padding: 0;
+      @include media($laptop_min){
+        background:  $btn_base_bg;
+      }
+
+      &-big_link{
+        text-decoration: none;
+        background: url(/images/index_end.png) no-repeat 100% 50%;
+        padding: 60px 0;
+        min-height: 160px;
+        background-size: contain;
+        @include media($laptop_min){
+          background:  none;
+        }
+      }
 
       &_left{
         width: 50%;
@@ -32,6 +47,9 @@
         font-size: 38px;
         font-weight: 400;
         line-height: 52px;
+        color: $text_color;
+        text-decoration: none;
+        z-index: 1;
 
         b{
           font-weight: 600;
@@ -47,10 +65,14 @@
       &_right{
         margin: auto;
         width: 50%;
-        height: 360px;
-        background: url(/images/index_end.png) no-repeat 50% 100%;
+        height: 100%;
         background-size: contain;
         position: relative;
+        z-index: 0;
+
+        @include media($laptop_min){
+          display: none;
+        }
       }
     }
 
@@ -211,23 +233,24 @@
       span {
         color: $text_color;
         background: $btn_base_bg;
-        margin: 10px 8px 10px 0;
+        margin: 7px 4px 7px 0;
         font-size: 44px;
         font-weight: 700;
-        padding: 3px 7px;
+        padding: 0px 5px;
         border-radius: 4px;
         display: inline-block;
       }
 
       &-numbers_space {
         background: transparent !important;
+        padding: 3px !important;
       }
     }
   }
 
   &-video{
     &_left{
-      min-height: 360px;
+      min-height: 300px;
       min-width: 33%;
       background-position: 50% 100%;
       background-repeat: no-repeat;
