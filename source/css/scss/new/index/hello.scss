@@ -51,6 +51,11 @@
         text-decoration: none;
         z-index: 1;
 
+        @include media($laptop_min){
+          width: 100%;
+          text-align: center;
+        }
+
         b{
           font-weight: 600;
         }
@@ -59,6 +64,11 @@
           color: #fefdfd;
           font-size: 60px;
           font-weight: 700;
+          @include media($tablets){
+            display: block;
+            margin-top: 18px;
+            font-size: 100px;
+          }
         }
       }
 

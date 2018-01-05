@@ -19,8 +19,15 @@ $phones:380px;
     @content;
   }
 }
+
 @mixin text_aling {
   &_text-aling_left {
     text-align: left;
+  }
+}
+
+@mixin other_modification {
+  &_hide{
+    display:none;
   }
 }
