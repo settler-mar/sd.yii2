@@ -30,10 +30,12 @@
     }
   }
 
-  &-wrap{
-    flex-grow: 1;
-    margin-left: 25px;
-    flex-basis: 0;
+  @include media($tablets) {
+    &-wrap {
+      flex-grow: 1;
+      margin-left: 25px;
+      flex-basis: 0;
+    }
   }
 
   &-icon {
@@ -92,8 +94,24 @@
     }
 
     &_logo {
-      width: 55px;
-      height: 55px;
+      width: 55PX;
+      height: 55PX;
+    }
+  }
+
+  &-svg{
+    fill: none;
+    stroke: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &_valing{
+    &:before{
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 100%;
     }
   }
 }

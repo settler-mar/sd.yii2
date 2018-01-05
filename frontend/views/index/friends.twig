@@ -3,45 +3,56 @@
         <h2>С нами дружат:</h2>
         <div class="flex-line flex-wrap">
 
-            <div class="instruction-item instruction-item-230 gray-box wrap-round">
+            <div class="instruction-item instruction-item-230 gray-box">
                 <div class="flex-line">
-                    <div class="instruction-social_logo social-icon-color-vk"></div>
+                    {{ svg('color/vk','instruction-social_logo')|raw }}
                     <div class="instruction-social_counter">
                         <span>18 947</span>
                         подписчиков
                     </div>
                 </div>
-                <a class="social-btn social-btn-vk" href="#"></a>
+                <a class="social-btn social-btn-vk" href="#">
+                    {{ svg('color/vk','social-btn-logo')|raw }}
+                    Вступить в группу
+                </a>
             </div>
-            <div class="instruction-item instruction-item-230 gray-box wrap-round">
+            <div class="instruction-item instruction-item-230 gray-box">
                 <div class="flex-line">
-                    <div class="instruction-social_logo social-icon-color-fb"></div>
+                    {{ svg('color/fb','instruction-social_logo')|raw }}
                     <div class="instruction-social_counter">
                         <span>838</span>
                         нравится
                     </div>
                 </div>
-                <a class="social-btn social-btn-fb" href="#"></a>
+                <a class="social-btn social-btn-fb" href="#">
+                    {{ svg('color/fb_mini','social-btn-logo')|raw }}
+                    Нравится страница
+                </a>
             </div>
-            <div class="instruction-item instruction-item-230 gray-box wrap-round">
+            <div class="instruction-item instruction-item-230 gray-box">
                 <div class="flex-line">
-                    <div class="instruction-social_logo social-icon-color-ok"></div>
+                    {{ svg('color/ok','instruction-social_logo')|raw }}
                     <div class="instruction-social_counter">
                         <span>18 947</span>
                         участников
                     </div>
                 </div>
-                <a class="social-btn social-btn-ok" href="#"></a>
+                <a class="social-btn social-btn-ok" href="#">
+                    + присоединиться
+                </a>
             </div>
-            <div class="instruction-item instruction-item-230 gray-box wrap-round">
+            <div class="instruction-item instruction-item-230 gray-box">
                 <div class="flex-line">
-                    <div class="instruction-social_logo social-icon-color-g"></div>
+                    {{ svg('color/g','instruction-social_logo')|raw }}
                     <div class="instruction-social_counter">
                         <span>18 947</span>
                         подписчиков
                     </div>
                 </div>
-                <a class="social-btn social-btn-g" href="#"></a>
+                <a class="social-btn social-btn-g" href="#">
+                    {{ svg('color/g_mini','social-btn-logo')|raw }}
+                    Подписаться
+                </a>
             </div>
         </div>
     </div>
