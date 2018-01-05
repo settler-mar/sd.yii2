@@ -21,25 +21,52 @@
       min-width: 140px;
       max-width: 160px;
     }
+
+    @include media($tablets) {
+      &-tablets-full{
+        min-width: auto;
+        max-width: none;
+      }
+    }
   }
 
-  &-icon{
+  @include media($tablets) {
+    &-wrap {
+      flex-grow: 1;
+      margin-left: 25px;
+      flex-basis: 0;
+    }
+  }
+
+  &-icon {
     fill: $instruction_color;
     stroke: $instruction_color;
-    height: 130PX;
-    width: 130PX;
+    height: 90PX;
+    width: 90PX;
     margin: auto;
     display: block;
     stroke-width: 1;
     stroke-linecap: round;
-    padding-bottom: 28PX;
+    max-width: 11vw;
+
+    @include media_min($tablets) {
+      padding-bottom: 28PX;
+
+      &-big {
+        height: 130PX;
+        width: 130PX;
+        max-width: none;
+      }
+    }
   }
 
   &-title{
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
-    height: 46px;
+    @include media_min($tablets) {
+      height: 46px;
+    }
   }
 
   &-content{
@@ -48,6 +75,7 @@
       font-weight: 900;
       background: $instruction_select_color;
       padding: 0 5px;
+      white-space: nowrap;
     }
   }
 
@@ -66,8 +94,24 @@
     }
 
     &_logo {
-      width: 55px;
-      height: 55px;
+      width: 55PX;
+      height: 55PX;
+    }
+  }
+
+  &-svg{
+    fill: none;
+    stroke: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &_valing{
+    &:before{
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 100%;
     }
   }
 }

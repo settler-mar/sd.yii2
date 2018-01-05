@@ -1,0 +1,18 @@
+@mixin flex {
+  &_flex-wrap {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &_flex-col{
+    flex-direction: column;
+    flex-wrap: nowrap;
+    display: flex;
+  }
+
+  &_flex-row{
+    flex-direction: row;
+    flex-wrap: nowrap;
+    display: flex;
+  }
+}

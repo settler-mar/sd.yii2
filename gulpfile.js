@@ -179,17 +179,17 @@ function compileCss (source, dest) {
     }))
     .pipe(pxtorem({
       propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
-        'height',
+        'height','top',
         'margin','margin-bottom','margin-top',
         'padding','padding-bottom','padding-top'
       ],
       map:true
     }))
     .pipe(replace('PX', 'px'))
+    .pipe(gcmq())
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
-    .pipe(gcmq())
     .pipe(cleanCSS({compatibility: 'ie9'}))
     .pipe(plugins.rename('styles.min.' + version + '.css'))
     .pipe(gulp.dest(dest));

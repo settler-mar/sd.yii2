@@ -18,35 +18,37 @@
             <p class="index-hello_description">
                 <em>SecretDiscounter</em> – самый умный способ совершать покупки, ведь вы получаете <em>часть денег</em> обратно за все, что покупаете – в онлайне и в реальных магазинах. Это называется кэшбэк и на Западе успешно работает с 1998 года.
             </p>
-            <ul class='icons-list'>
+            <ul class='icons-list index-hello_icons-list'>
                 <li>
                     {{ svg('online','icons-list_icon')|raw }}
-                    Кэшбэк в онлайн-магазинах
+                    <span class="icons-list_title">Кэшбэк в онлайн-магазинах</span>
                 </li>
                 <li>
                     {{ svg('offline','icons-list_icon')|raw }}
-                    Кэшбэк в реальных магазинах
+                    <span class="icons-list_title">Кэшбэк в реальных магазинах</span>
                 </li>
                 <li>
                     {{ svg('gift','icons-list_icon')|raw }}
-                    Бесплатные купоны и промокоды
+                    <span class="icons-list_title">Бесплатные купоны и промокоды</span>
                 </li>
                 <li>
                     {{ svg('look','icons-list_icon')|raw }}
-                    Отслеживание посылок
+                    <span class="icons-list_title">Отслеживание посылок</span>
                 </li>
                 <li>
-                    <a class="btn">Начать экономить</a>
+                    <a class="btn index-hello_margin_btn">Начать экономить</a>
                 </li>
             </ul>
         </div>
         <div class="index-hello_center"></div>
         <div class="index-hello_right">
-            <a href="#" class="index-hello_right-link">
+            <a href="#" class="index-hello_right-link index-hello_right-link-absolute">
                 <span class="index-hello_right-icon">
-                    {{ svg('play','index-hello_right-svg')|raw }}
+                    <span class="index-hello_right-svg_wrap">
+                        {{ svg('play','index-hello_right-svg')|raw }}
+                    </span>
                 </span>
-                <span>Просмотреть видео</span>
+                <span class="index-hello_right-link_text">Просмотреть видео</span>
             </a>
         </div>
     </div>

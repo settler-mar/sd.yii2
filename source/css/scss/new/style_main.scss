@@ -1,5 +1,6 @@
 @import 'mixin/clearfix';
 @import 'mixin/media';
+@import 'mixin/flex';
 
 @import  "normalize";
 @import  "color";
@@ -92,6 +93,16 @@ h2 {
       background: $h2_white_line_color;
     }
   }
+
+  @include media($tablets){
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
 }
 
 .page-wrap{
@@ -101,6 +112,15 @@ h2 {
 
   &-flex{
     display: flex;
+
+    @include media($laptop_min){
+      flex-direction: column;
+      justify-content: space-between;
+
+      &-revers_laptop_min{
+        flex-direction: column-reverse;
+      }
+    }
   }
 }
 
@@ -108,6 +128,7 @@ h2 {
   max-width: $tablets;
   margin: 80px auto;
 }
+
 .content{
   flex-grow: 1;
 }
@@ -133,8 +154,24 @@ h2 {
   flex-direction: row;
   justify-content: space-between;
 }
+
 .flex-wrap {
   flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.laptop-min {
+  @include media($laptop_min) {
+    @include flex;
+    @include text_aling;
+  }
+}
+
+.tablets {
+  @include media($tablets) {
+    @include flex;
+    @include text_aling;
+  }
 }
 
 section {
