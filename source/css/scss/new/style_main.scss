@@ -133,7 +133,7 @@ h2 {
 
 .mini-wrap{
   max-width: $tablets;
-  margin: 80px auto;
+  margin: 48px auto;
 }
 
 .content{
@@ -240,6 +240,19 @@ svg.svg-no-fill{
   }
 }
 
+.notes{
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+
+  &:before{
+    content: "*";
+    color: $a_color;
+    font-size: 34px;
+    line-height: 34px;
+  }
+}
+
 @import 'parts/header';
 @import 'parts/drop-down-menu';
 @import 'index/hello';
@@ -252,3 +265,4 @@ svg.svg-no-fill{
 @import 'parts/social';
 @import 'parts/footer';
 @import 'parts/share48';
+@import 'parts/comments';

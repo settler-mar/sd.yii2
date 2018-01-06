@@ -271,6 +271,11 @@
       min-width: 33%;
       margin: auto;
       display: flex;
+
+      @include media_min($laptop_min) {
+        padding-bottom: 70px;
+      }
+
     }
 
     &_right{
