@@ -1,17 +1,19 @@
 <section id="header" class="header">
   <div class="header-upline">
     <div class="page-wrap page-wrap-flex">
-      <div class="menu-toggle">
-        <a href="/"><i class="fa fa-bars" aria-hidden="true"></i></a>
+
+      <div class="header-logo">
+        <div class="menu-toggle">
+          <a href="/"> {{ svg('bars', 'menu-toggle_button')|raw }}</a>
+        </div>
+        <div class="header-logo-center">
+          <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
+        </div>
+        <div class="search-toggle">
+          <a href="/">{{ svg('search', 'search-toggle_button')|raw }}</a>
+        </div>
       </div>
-      <div class="header-item header-logo">
-        <a href="/">
-          <img src="images/templates/sd_logo.png" alt="secretdiscounter logo">
-        </a>
-      </div>
-      <div class="search-toggle">
-        <a href="/"><i class="fa fa-search" aria-hidden="true"></i></a>
-      </div>
+
       <div class="header-item header-search">
         <form action="/search" class="header-search_form" name="search" method="get">
           <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
@@ -32,7 +34,7 @@
     </div>
   </div>
   <div class="header-secondline">
-    <div class="page-wrap page-wrap-flex">
+    <div class="page-wrap page-wrap-flex header-secondline_inner">
       <ul class="page-wrap-flex drop-menu">
         <li class="drop-menu_group__up">
           <a href="/stores/s-povyshennym-cashback" class="title">

@@ -205,7 +205,7 @@
   font-family: Tahoma,sans-serif;
   font-size: 0.875rem;
   color: #4a4a4a;
-  width: 250px;
+  width: 15.625rem;
   position: absolute;
   left: -100000px;
   opacity: 0;
@@ -294,7 +294,7 @@
   background: #fff;
   border-top: 1px solid #dbdbdb;
   border-right: 1px solid #dbdbdb;
-  width: 10px;
+  width: 0.625rem;
   height: 0.625rem;
   z-index: -1;
 }
@@ -474,7 +474,7 @@
 }
 
 .datepicker--nav-action {
-  width: 32px;
+  width: 2rem;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   -webkit-user-select: none;
@@ -488,7 +488,7 @@
 }
 
 .datepicker--nav-action svg {
-  width: 32px;
+  width: 2rem;
   height: 2rem;
 }
 
@@ -1853,7 +1853,7 @@ hr {
 
 .sr-only {
   position: absolute;
-  width: 1px;
+  width: 0.0625rem;
   height: 0.0625rem;
   padding: 0;
   margin: -0.0625rem;
@@ -3118,7 +3118,7 @@ select[multiple].form-group-lg .form-control {
   right: 0;
   z-index: 2;
   display: block;
-  width: 34px;
+  width: 2.125rem;
   height: 2.125rem;
   line-height: 2.125rem;
   text-align: center;
@@ -3126,13 +3126,13 @@ select[multiple].form-group-lg .form-control {
 }
 
 .input-lg + .form-control-feedback {
-  width: 46px;
+  width: 2.875rem;
   height: 2.875rem;
   line-height: 2.875rem;
 }
 
 .input-sm + .form-control-feedback {
-  width: 30px;
+  width: 1.875rem;
   height: 1.875rem;
   line-height: 1.875rem;
 }
@@ -4628,7 +4628,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-toggle .icon-bar {
   display: block;
-  width: 22px;
+  width: 1.375rem;
   height: 0.125rem;
   -webkit-border-radius: 1px;
   border-radius: 1px;
@@ -6389,7 +6389,7 @@ button.close {
 .modal-scrollbar-measure {
   position: absolute;
   top: -624.9375rem;
-  width: 50px;
+  width: 3.125rem;
   height: 3.125rem;
   overflow: scroll;
 }
@@ -6790,7 +6790,7 @@ button.close {
 
 .carousel-control .icon-prev,
 .carousel-control .icon-next {
-  width: 20px;
+  width: 1.25rem;
   height: 1.25rem;
   margin-top: -0.625rem;
   font-family: serif;
@@ -6818,7 +6818,7 @@ button.close {
 
 .carousel-indicators li {
   display: inline-block;
-  width: 10px;
+  width: 0.625rem;
   height: 0.625rem;
   margin: 0.0625rem;
   text-indent: -999px;
@@ -6831,7 +6831,7 @@ button.close {
 }
 
 .carousel-indicators .active {
-  width: 12px;
+  width: 0.75rem;
   height: 0.75rem;
   margin: 0;
   background-color: #fff;
@@ -7628,7 +7628,7 @@ Main Page Content
 }
 
 .cd-main-content .top-information .logo img {
-  width: 48px;
+  width: 3rem;
   height: 3rem;
   -webkit-border-radius: 24px;
   border-radius: 24px;
@@ -7735,7 +7735,7 @@ Header
 
 .cd-logo img {
   display: block;
-  width: 200px;
+  width: 12.5rem;
   margin-top: 0.625rem;
 }
 
@@ -7747,7 +7747,7 @@ Header
   background-color: #e4c84b;
   color: #333;
   text-align: center;
-  width: 165px;
+  width: 10.3125rem;
   padding: 0.5rem 0;
   font-size: 0.8125rem;
   font-weight: bold;
@@ -7786,7 +7786,7 @@ Header
   float: right;
   position: relative;
   display: block;
-  width: 34px;
+  width: 2.125rem;
   height: 2.75rem;
   margin-right: 5%;
   /* hide text */
@@ -7804,7 +7804,7 @@ Header
   height: 0.1875rem;
   -webkit-border-radius: 1px;
   border-radius: 1px;
-  width: 26px;
+  width: 1.625rem;
   background: #ffffff;
 }
 
@@ -7907,7 +7907,7 @@ Header
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   background: url(/images/account/cd-search.svg) no-repeat 0 0;
 }
 
@@ -7965,7 +7965,7 @@ Top Navigation
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
   height: 1.875rem;
-  width: 30px;
+  width: 1.875rem;
   -webkit-border-radius: 10px;
   border-radius: 10px;
   display: none;
@@ -7978,7 +7978,7 @@ Top Navigation
   font-size: 1.4375rem;
   bottom: auto;
   height: 1.875rem;
-  width: 30px;
+  width: 1.875rem;
   display: none;
 }
 
@@ -8081,7 +8081,7 @@ Sidebar
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   background: url(/images/account/cd-nav-icons.svg) no-repeat 0 0;
 }
 
@@ -8194,7 +8194,7 @@ Sidebar
   position: absolute;
   content: '';
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   right: 5%;
   top: 50%;
   bottom: auto;
@@ -8333,7 +8333,7 @@ i.sd_icon-vkontakte-round:before {
   opacity: 0;
   background-color: #282b37;
   color: #fff;
-  width: 330px;
+  width: 20.625rem;
   z-index: 2;
   font-weight: 500;
   margin-top: 1.25rem;
@@ -8344,7 +8344,7 @@ i.sd_icon-vkontakte-round:before {
 
 .primary-nav > li.stores .submenu.coupons,
 .account-nav > li.stores .submenu.coupons {
-  width: 290px;
+  width: 18.125rem;
 }
 
 .primary-nav > li.stores .submenu .tree,
@@ -8369,7 +8369,7 @@ i.sd_icon-vkontakte-round:before {
 .account-nav > li.stores .submenu .tree > ul > li .fa-fa-carett {
   position: absolute;
   top: 0.3125rem;
-  width: 15px;
+  width: 0.9375rem;
   left: inherit;
   right: 5px;
   padding: 0;
@@ -8400,7 +8400,7 @@ i.sd_icon-vkontakte-round:before {
   top: -0.5625rem;
   background-color: #282b37;
   padding: 0.625rem 0 0.625rem 0;
-  width: 380px;
+  width: 23.75rem;
   display: block;
 }
 
@@ -8499,7 +8499,7 @@ i.sd_icon-vkontakte-round:before {
   background: transparent;
   border: 0px;
   border-bottom: 2px solid #fff;
-  width: 130px;
+  width: 8.125rem;
   text-decoration: none;
   margin-top: -0.125rem;
   color: #fff;
@@ -8612,7 +8612,7 @@ p em {
 
 .accordion .accordion-title:after {
   content: "\f067";
-  width: 20px;
+  width: 1.25rem;
   display: inline-block;
   text-align: center;
   font: normal normal normal 0.875rem/1 FontAwesome;
@@ -8662,7 +8662,7 @@ p em {
 
 .soc-icon {
   height: 3rem;
-  width: 48px;
+  width: 3rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons48.png);
   display: inline-block;
@@ -8673,7 +8673,7 @@ p em {
   color: #0f181a !important;
   display: inline-block;
   padding: 0.5rem 0.5rem;
-  width: 40px;
+  width: 2.5rem;
   margin-right: 9px;
   text-align: center;
   font-size: 1.0625rem;
@@ -8739,7 +8739,7 @@ p em {
 
 .accauntSoc_32 .soc-icon {
   height: 2rem;
-  width: 32px;
+  width: 2rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons_new_32.png);
   display: inline-block;
@@ -9259,7 +9259,7 @@ table .status_bg_1 {
 }
 
 .notification_item {
-  width: 310px;
+  width: 19.375rem;
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
   margin-bottom: 0.3125rem;
@@ -9303,7 +9303,7 @@ table .status_bg_1 {
   height: 3.125rem;
   margin: 0.3125rem 0.625rem 0rem 0rem;
   float: left;
-  width: 50px;
+  width: 3.125rem;
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
@@ -9415,7 +9415,7 @@ table .status_bg_1 {
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
-  width: 530px;
+  width: 33.125rem;
   text-align: center;
   max-width: -webkit-calc(100% - 20px);
   max-width: -moz-calc(100% - 20px);
@@ -9466,7 +9466,7 @@ body > .news-index {
   position: absolute;
   top: 0rem;
   right: 0px;
-  width: 34px;
+  width: 2.125rem;
   height: 100%;
   -o-background-size: 34px, auto;
   background-size: 34px, auto;
@@ -9480,7 +9480,7 @@ body > .news-index {
   content: "";
   background: url(/favicon-16x16.png);
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   display: inline-block;
   vertical-align: middle;
   margin-right: 10px;
@@ -9513,7 +9513,7 @@ body > .news-index {
 }
 
 .sum_information .name {
-  width: 180px;
+  width: 11.25rem;
   vertical-align: top;
   padding-right: 5px;
   text-align: right;
@@ -9527,7 +9527,7 @@ body > .news-index {
 .sum_information .value {
   font-weight: bold;
   text-align: left;
-  width: 110px;
+  width: 6.875rem;
   display: inline-block;
 }
 
@@ -9554,17 +9554,17 @@ body > .news-index {
 }
 
 table.table-users .sum_information.long_value .value {
-  width: 180px;
+  width: 11.25rem;
   text-align: left;
 }
 
 table.table-users .sum_information .value {
-  width: 70px;
+  width: 4.375rem;
   text-align: right;
 }
 
 table.table-users .sum_information .name {
-  width: 90px;
+  width: 5.625rem;
 }
 
 table.table-users td:first-child {
@@ -9847,7 +9847,7 @@ form > .kv-drp-container {
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;
-  width: 500px;
+  width: 31.25rem;
 }
 
 .sign-up.noajax.social {
@@ -10108,7 +10108,7 @@ td .ajax_remove.delete {
 }
 
 .shops .mobile-stores .flex-control-nav li a {
-  width: 8px;
+  width: 0.5rem;
   height: 0.5rem;
   background: #fff;
   border: 1px solid #5c5f6a;
@@ -10268,7 +10268,7 @@ td .ajax_remove.delete {
 
 .shops .shop .promo-label {
   height: 4.8125rem;
-  width: 75px;
+  width: 4.6875rem;
   display: block;
   position: absolute;
   top: -0.375rem;
@@ -10509,7 +10509,7 @@ form .form-input-group i {
 form .form-input-group i:after {
   content: "";
   height: 1.875rem;
-  width: 1px;
+  width: 0.0625rem;
   border-right: solid 1px #E6E9EA;
   position: absolute;
   top: 50%;
@@ -10556,7 +10556,7 @@ form button {
 
 .checkbox {
   vertical-align: top;
-  width: 17px;
+  width: 1.0625rem;
   height: 1.0625rem;
   margin: 0 0.1875rem 0 0;
 }
@@ -10580,7 +10580,7 @@ form button {
   position: absolute;
   top: -0.25rem;
   left: 0;
-  width: 50px;
+  width: 3.125rem;
   height: 1.625rem;
   -webkit-border-radius: 13px;
   border-radius: 13px;
@@ -10594,7 +10594,7 @@ form button {
   position: absolute;
   top: -0.125rem;
   left: 2px;
-  width: 22px;
+  width: 1.375rem;
   height: 1.375rem;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -10617,7 +10617,7 @@ form button {
 
 .radio {
   vertical-align: top;
-  width: 17px;
+  width: 1.0625rem;
   height: 1.0625rem;
   margin: 0 0.1875rem 0 0;
 }
@@ -10641,7 +10641,7 @@ form button {
   position: absolute;
   top: -0.125rem;
   left: 1px;
-  width: 22px;
+  width: 1.375rem;
   height: 1.375rem;
   border: 1px solid #CDD1DA;
   -webkit-border-radius: 50%;
@@ -10654,7 +10654,7 @@ form button {
   position: absolute;
   top: 0.1875rem;
   left: 6px;
-  width: 12px;
+  width: 0.75rem;
   height: 0.75rem;
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -11008,7 +11008,7 @@ table .status.declined {
   display: block;
   font-size: 0.8125rem;
   color: #5D5D5D;
-  width: 300px;
+  width: 18.75rem;
   margin: 0 auto;
 }
 
@@ -11063,7 +11063,7 @@ table .status.declined {
 }
 
 .account-withdraw form {
-  width: 550px;
+  width: 34.375rem;
   margin: 2.5rem auto 3.75rem;
   text-align: center;
 }
@@ -11261,7 +11261,7 @@ table .status.declined {
 
 .affiliate .ways-invitation .ya-share2 .ya-share2__icon {
   height: 3rem !important;
-  width: 48px !important;
+  width: 3rem !important;
   -o-background-size: 48px 48px !important;
   background-size: 48px 48px !important;
 }
@@ -11275,7 +11275,7 @@ table .status.declined {
   margin-top: 0.625rem;
   font-size: 0.875rem !important;
   font-weight: bold;
-  width: 212px;
+  width: 13.25rem;
   outline: 0;
   -webkit-border-radius: 5px !important;
   border-radius: 5px !important;
@@ -11288,7 +11288,7 @@ table .status.declined {
   border-radius: 5px;
   border: 1px solid #bbb;
   outline: 0;
-  width: 215px;
+  width: 13.4375rem;
   font-size: 0.8125rem;
 }
 
@@ -11332,7 +11332,7 @@ table .status.declined {
 .notification .current-notification .date {
   position: absolute;
   border: 3px solid #fff;
-  width: 110px;
+  width: 6.875rem;
   height: 6.875rem;
   padding: 1.5625rem 0.8125rem;
   text-align: center;
@@ -11425,7 +11425,7 @@ table .status.declined {
 .settings form .cr-group .upload {
   position: relative;
   height: 2.5rem;
-  width: 230px;
+  width: 14.375rem;
   cursor: pointer;
 }
 
@@ -11493,7 +11493,7 @@ table .status.declined {
   border-radius: 30px;
   padding: 0.5rem 0.9375rem 0.3125rem;
   height: 2.8125rem;
-  width: 45px;
+  width: 2.8125rem;
   background-color: #fcf8e3;
   color: #e4c84b;
 }
@@ -11506,7 +11506,7 @@ table .status.declined {
 
 .paginations ul li.active {
   padding: 0.5rem 0.9375rem;
-  width: 45px;
+  width: 2.8125rem;
   height: 2.8125rem;
   background-color: #e4c84b;
   -webkit-border-radius: 30px;
@@ -11529,7 +11529,7 @@ table .status.declined {
   background-color: #2D3238;
   color: #fff;
   padding: 0.3125rem 0rem;
-  width: 250px !important;
+  width: 15.625rem !important;
   max-height: 600px !important;
 }
 
@@ -11569,7 +11569,7 @@ input.link:hover {
 
 .affiliate_block {
   background: url(/images/account/tel_friend.png);
-  width: 200px;
+  width: 12.5rem;
   height: 26.625rem;
   display: inline-block;
   margin: 1.875rem 0;
@@ -11618,7 +11618,7 @@ input.link:hover {
 
   .dl-horizontal dt {
     float: left;
-    width: 160px;
+    width: 10rem;
     overflow: hidden;
     clear: left;
     text-align: right;
@@ -11632,7 +11632,7 @@ input.link:hover {
   }
 
   .container {
-    width: 750px;
+    width: 46.875rem;
   }
 
   .col-sm-1,
@@ -12146,7 +12146,7 @@ input.link:hover {
   }
 
   .modal-dialog {
-    width: 600px;
+    width: 37.5rem;
     margin: 1.875rem auto;
   }
 
@@ -12156,7 +12156,7 @@ input.link:hover {
   }
 
   .modal-sm {
-    width: 300px;
+    width: 18.75rem;
   }
 }
 
@@ -12180,7 +12180,7 @@ input.link:hover {
   .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-prev,
   .carousel-control .icon-next {
-    width: 30px;
+    width: 1.875rem;
     height: 1.875rem;
     margin-top: -0.9375rem;
     font-size: 1.875rem;
@@ -12239,7 +12239,7 @@ input.link:hover {
   .cd-search {
     float: left;
     display: inline-block;
-    width: 250px;
+    width: 15.625rem;
     height: 100%;
     margin: 0 0 0 2.5em;
   }
@@ -12326,7 +12326,7 @@ input.link:hover {
     position: relative;
     float: left;
     top: auto;
-    width: 110px;
+    width: 6.875rem;
     min-height: 100vh;
     padding-top: 3.4375rem;
     /* reset style */
@@ -12390,7 +12390,7 @@ input.link:hover {
 
   .cd-side-nav .count {
     height: 0.5rem;
-    width: 8px;
+    width: 0.5rem;
     -webkit-border-radius: 50%;
     border-radius: 50%;
     -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
@@ -12417,7 +12417,7 @@ input.link:hover {
     position: absolute;
     top: 0;
     left: 100%;
-    width: 160px;
+    width: 10rem;
     padding: 0;
     -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -12458,7 +12458,7 @@ input.link:hover {
 
   .cd-top-nav .has-children ul {
     background-color: #1c1f22;
-    width: 185px;
+    width: 11.5625rem;
     top: 100%;
     right: 0;
     left: auto;
@@ -12473,7 +12473,7 @@ input.link:hover {
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 60.625rem;
   }
 
   .col-md-1,
@@ -12696,7 +12696,7 @@ input.link:hover {
   }
 
   .modal-lg {
-    width: 900px;
+    width: 56.25rem;
   }
 }
 
@@ -12714,7 +12714,7 @@ input.link:hover {
   }
 
   .cd-side-nav {
-    width: 200px;
+    width: 12.5rem;
   }
 
   .cd-side-nav > ul {
@@ -12830,7 +12830,7 @@ input.link:hover {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 73.125rem;
   }
 
   .col-lg-1,
@@ -13214,7 +13214,7 @@ input.link:hover {
     display: inline-block !important;
     color: #585c64;
     font-size: 1rem;
-    width: 16px;
+    width: 1rem;
     margin-right: 3px;
     height: 1rem;
   }
@@ -13602,7 +13602,7 @@ input.link:hover {
 
 @media only screen and (max-width: 480px) {
   .btn-mobile-menu {
-    width: 145px;
+    width: 9.0625rem;
     font-size: 0.75rem;
   }
 
@@ -13719,7 +13719,7 @@ input.link:hover {
 @media (min-width: 768px) and (max-width: 1169px) {
   .affiliate_block {
     background: url(/images/account/tel_friend2.png);
-    width: 110px;
+    width: 6.875rem;
     height: 17.75rem;
   }
 }

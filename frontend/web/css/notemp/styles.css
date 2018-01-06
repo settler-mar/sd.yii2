@@ -1157,7 +1157,7 @@ hr {
 
 .sr-only {
   position: absolute;
-  width: 1px;
+  width: 0.0625rem;
   height: 0.0625rem;
   padding: 0;
   margin: -0.0625rem;
@@ -2422,7 +2422,7 @@ select[multiple].form-group-lg .form-control {
   right: 0;
   z-index: 2;
   display: block;
-  width: 34px;
+  width: 2.125rem;
   height: 2.125rem;
   line-height: 2.125rem;
   text-align: center;
@@ -2430,13 +2430,13 @@ select[multiple].form-group-lg .form-control {
 }
 
 .input-lg + .form-control-feedback {
-  width: 46px;
+  width: 2.875rem;
   height: 2.875rem;
   line-height: 2.875rem;
 }
 
 .input-sm + .form-control-feedback {
-  width: 30px;
+  width: 1.875rem;
   height: 1.875rem;
   line-height: 1.875rem;
 }
@@ -3932,7 +3932,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-toggle .icon-bar {
   display: block;
-  width: 22px;
+  width: 1.375rem;
   height: 0.125rem;
   -webkit-border-radius: 1px;
   border-radius: 1px;
@@ -5693,7 +5693,7 @@ button.close {
 .modal-scrollbar-measure {
   position: absolute;
   top: -624.9375rem;
-  width: 50px;
+  width: 3.125rem;
   height: 3.125rem;
   overflow: scroll;
 }
@@ -6094,7 +6094,7 @@ button.close {
 
 .carousel-control .icon-prev,
 .carousel-control .icon-next {
-  width: 20px;
+  width: 1.25rem;
   height: 1.25rem;
   margin-top: -0.625rem;
   font-family: serif;
@@ -6122,7 +6122,7 @@ button.close {
 
 .carousel-indicators li {
   display: inline-block;
-  width: 10px;
+  width: 0.625rem;
   height: 0.625rem;
   margin: 0.0625rem;
   text-indent: -999px;
@@ -6135,7 +6135,7 @@ button.close {
 }
 
 .carousel-indicators .active {
-  width: 12px;
+  width: 0.75rem;
   height: 0.75rem;
   margin: 0;
   background-color: #fff;
@@ -6406,7 +6406,7 @@ i.sd_icon-vkontakte-round:before {
   opacity: 0;
   background-color: #282b37;
   color: #fff;
-  width: 330px;
+  width: 20.625rem;
   z-index: 2;
   font-weight: 500;
   margin-top: 1.25rem;
@@ -6417,7 +6417,7 @@ i.sd_icon-vkontakte-round:before {
 
 .primary-nav > li.stores .submenu.coupons,
 .account-nav > li.stores .submenu.coupons {
-  width: 290px;
+  width: 18.125rem;
 }
 
 .primary-nav > li.stores .submenu .tree,
@@ -6442,7 +6442,7 @@ i.sd_icon-vkontakte-round:before {
 .account-nav > li.stores .submenu .tree > ul > li .fa-fa-carett {
   position: absolute;
   top: 0.3125rem;
-  width: 15px;
+  width: 0.9375rem;
   left: inherit;
   right: 5px;
   padding: 0;
@@ -6473,7 +6473,7 @@ i.sd_icon-vkontakte-round:before {
   top: -0.5625rem;
   background-color: #282b37;
   padding: 0.625rem 0 0.625rem 0;
-  width: 380px;
+  width: 23.75rem;
   display: block;
 }
 
@@ -6572,7 +6572,7 @@ i.sd_icon-vkontakte-round:before {
   background: transparent;
   border: 0px;
   border-bottom: 2px solid #fff;
-  width: 130px;
+  width: 8.125rem;
   text-decoration: none;
   margin-top: -0.125rem;
   color: #fff;
@@ -6685,7 +6685,7 @@ p em {
 
 .accordion .accordion-title:after {
   content: "\f067";
-  width: 20px;
+  width: 1.25rem;
   display: inline-block;
   text-align: center;
   font: normal normal normal 0.875rem/1 FontAwesome;
@@ -6735,7 +6735,7 @@ p em {
 
 .soc-icon {
   height: 3rem;
-  width: 48px;
+  width: 3rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons48.png);
   display: inline-block;
@@ -6746,7 +6746,7 @@ p em {
   color: #0f181a !important;
   display: inline-block;
   padding: 0.5rem 0.5rem;
-  width: 40px;
+  width: 2.5rem;
   margin-right: 9px;
   text-align: center;
   font-size: 1.0625rem;
@@ -6812,7 +6812,7 @@ p em {
 
 .accauntSoc_32 .soc-icon {
   height: 2rem;
-  width: 32px;
+  width: 2rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons_new_32.png);
   display: inline-block;
@@ -7332,7 +7332,7 @@ table .status_bg_1 {
 }
 
 .notification_item {
-  width: 310px;
+  width: 19.375rem;
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
   margin-bottom: 0.3125rem;
@@ -7376,7 +7376,7 @@ table .status_bg_1 {
   height: 3.125rem;
   margin: 0.3125rem 0.625rem 0rem 0rem;
   float: left;
-  width: 50px;
+  width: 3.125rem;
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
@@ -7488,7 +7488,7 @@ table .status_bg_1 {
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
-  width: 530px;
+  width: 33.125rem;
   text-align: center;
   max-width: -webkit-calc(100% - 20px);
   max-width: -moz-calc(100% - 20px);
@@ -7539,7 +7539,7 @@ body > .news-index {
   position: absolute;
   top: 0rem;
   right: 0px;
-  width: 34px;
+  width: 2.125rem;
   height: 100%;
   -o-background-size: 34px, auto;
   background-size: 34px, auto;
@@ -7553,7 +7553,7 @@ body > .news-index {
   content: "";
   background: url(/favicon-16x16.png);
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   display: inline-block;
   vertical-align: middle;
   margin-right: 10px;
@@ -7586,7 +7586,7 @@ body > .news-index {
 }
 
 .sum_information .name {
-  width: 180px;
+  width: 11.25rem;
   vertical-align: top;
   padding-right: 5px;
   text-align: right;
@@ -7600,7 +7600,7 @@ body > .news-index {
 .sum_information .value {
   font-weight: bold;
   text-align: left;
-  width: 110px;
+  width: 6.875rem;
   display: inline-block;
 }
 
@@ -7627,17 +7627,17 @@ body > .news-index {
 }
 
 table.table-users .sum_information.long_value .value {
-  width: 180px;
+  width: 11.25rem;
   text-align: left;
 }
 
 table.table-users .sum_information .value {
-  width: 70px;
+  width: 4.375rem;
   text-align: right;
 }
 
 table.table-users .sum_information .name {
-  width: 90px;
+  width: 5.625rem;
 }
 
 table.table-users td:first-child {
@@ -7920,7 +7920,7 @@ form > .kv-drp-container {
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;
-  width: 500px;
+  width: 31.25rem;
 }
 
 .sign-up.noajax.social {
@@ -16479,7 +16479,7 @@ svg {
   right: 0;
   bottom: 0;
   left: 0;
-  width: 100px;
+  width: 6.25rem;
   height: 6.25rem;
   margin: auto;
   -webkit-animation: rotateAll 4.5s linear infinite both;
@@ -16654,7 +16654,7 @@ body {
 #transition-wrapper .center-block .svg-container {
   overflow: hidden;
   height: 6.25rem;
-  width: 100px;
+  width: 6.25rem;
   margin-left: -50px;
   left: 50%;
   bottom: -50px;
@@ -16671,7 +16671,7 @@ body {
 
   .dl-horizontal dt {
     float: left;
-    width: 160px;
+    width: 10rem;
     overflow: hidden;
     clear: left;
     text-align: right;
@@ -16685,7 +16685,7 @@ body {
   }
 
   .container {
-    width: 750px;
+    width: 46.875rem;
   }
 
   .col-sm-1,
@@ -17199,7 +17199,7 @@ body {
   }
 
   .modal-dialog {
-    width: 600px;
+    width: 37.5rem;
     margin: 1.875rem auto;
   }
 
@@ -17209,7 +17209,7 @@ body {
   }
 
   .modal-sm {
-    width: 300px;
+    width: 18.75rem;
   }
 }
 
@@ -17233,7 +17233,7 @@ body {
   .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-prev,
   .carousel-control .icon-next {
-    width: 30px;
+    width: 1.875rem;
     height: 1.875rem;
     margin-top: -0.9375rem;
     font-size: 1.875rem;
@@ -17262,7 +17262,7 @@ body {
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 60.625rem;
   }
 
   .col-md-1,
@@ -17485,7 +17485,7 @@ body {
   }
 
   .modal-lg {
-    width: 900px;
+    width: 56.25rem;
   }
 }
 
@@ -17503,7 +17503,7 @@ body {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 73.125rem;
   }
 
   .col-lg-1,
