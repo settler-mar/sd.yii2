@@ -8,6 +8,10 @@ $('.search-toggle').click(function(e) {
     $('.header-search').toggleClass('open');
 });
 
+$('.header-secondline').click(function(e){
+    $('.header').removeClass('header_open-menu');
+});
+
 var scrolledDown = false;
 
 window.onscroll = function() {
@@ -29,6 +33,6 @@ $('.menu_angle-down').click(function(e) {
        $(parent).siblings('li').removeClass('open');
        $(parent).toggleClass('open');
    }
-
+   return false;
 });
 
