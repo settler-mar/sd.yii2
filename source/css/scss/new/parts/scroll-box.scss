@@ -39,6 +39,7 @@
 
   &-wrap{
     position: relative;
+    margin-bottom: 30px;
   }
 
   &-item{
@@ -107,6 +108,8 @@
     width: 78PX;
     border-radius: 100%;
     margin-right: 19px;
+    background-size: cover;
+    background-position: 50% 50%;
   }
 
   &-user{
@@ -129,7 +132,7 @@
   }
 
   &-text{
-    margin-top: 20px;
+    //margin-top: 20px;
   }
 
 }

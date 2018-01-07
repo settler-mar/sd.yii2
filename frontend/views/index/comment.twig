@@ -9,7 +9,6 @@
                         <div class="scroll_box-user">
                             <div class="scroll_box-user_name">{{review.name}}</div>
                             <div class="scroll_box-user_cashback">
-                                Выплачено:
                                 <span>
                                     2157 руб. кэшбэка
                                 </span>
@@ -17,7 +16,7 @@
                         </div>
                     </div>
                     <div class="scroll_box-content">
-                        <div class="rating">
+                        <div class="rating comments-rating">
                             {% for i in range(1, review.rating) %}
                                 {{ svg('star','rating-star')|raw }}
                             {% endfor %}
@@ -33,6 +32,9 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <div class="align-center">
+            <a href="#" class="btn btn-transform">Все отзывы ({{71}})</a>
         </div>
     </div>
 </section>
