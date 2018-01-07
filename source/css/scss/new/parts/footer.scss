@@ -119,9 +119,15 @@
 
   &-copyright{
     color: $a_color_hover;
-    padding-left: 100px;
-    background: url(/images/templates/footer-logo.png) 0 50% no-repeat;
-    background-size: contain;
+    //padding-left: 100px;
+    display: flex;
+    flex-direction: row;
+    &_logo {
+      height: 40px;
+      width: 100px;
+      background: url(/images/templates/footer-logo.png) 0 50% no-repeat;
+      background-size: contain;
+    }
   }
 
   &-share{
@@ -185,4 +191,57 @@
 .microdata-site-rating{
   font-size: 11px;
   color: $footer_text2_color;
+}
+
+@include media($laptop_min) {
+  .footer-main {
+    flex-direction: column;
+  }
+  .footer-left {
+    order: 1;
+  }
+  .footer-right {
+    order: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .footer-social_links {
+    text-align: left;
+  }
+}
+
+@include media($tablets) {
+  .footer-menu {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+  }
+  .footer-menu-col {
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+  .footer-text {
+    text-align: center;
+  }
+  .footer-withdraws {
+    flex-direction: column;
+    &-item {
+      margin: 5px auto;
+    }
+  }
+  .footer-copyright {
+    flex-direction: column ;
+    &_logo {
+      order: 1;
+      margin: 10px auto;
+
+    }
+    &_text {
+      order: 0;
+      text-align: center;
+    }
+  }
 }
