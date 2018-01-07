@@ -13,21 +13,21 @@
                                     2157 руб. кэшбэка
                                 </span>
                             </div>
+                            <div class="rating comments-rating">
+                                {% for i in range(1, review.rating) %}
+                                    {{ svg('star','rating-star')|raw }}
+                                {% endfor %}
+
+                                {% set estar =  5 - review.rating %}
+                                {% if estar != 0 %}
+                                    {% for i in range(1, estar) %}
+                                        {{ svg('star','rating-star svg-no-fill')|raw }}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                     <div class="scroll_box-content">
-                        <div class="rating comments-rating">
-                            {% for i in range(1, review.rating) %}
-                                {{ svg('star','rating-star')|raw }}
-                            {% endfor %}
-
-                            {% set estar =  5 - review.rating %}
-                            {% if estar != 0 %}
-                                {% for i in range(1, estar) %}
-                                    {{ svg('star','rating-star svg-no-fill')|raw }}
-                                {% endfor %}
-                            {% endif %}
-                        </div>
                         <div class="scroll_box-text">{{review.text}}</div>
                     </div>
                 </div>

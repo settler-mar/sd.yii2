@@ -173,7 +173,7 @@ function compileCss (source, dest) {
       browsers: ['last 50 versions'],
       cascade: false
     }))
-    /*.pipe(pxtorem({
+    .pipe(pxtorem({
       propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
         'height','top',
         'margin','margin-bottom','margin-top',
@@ -181,7 +181,7 @@ function compileCss (source, dest) {
       ],
       map:true
     }))
-    .pipe(replace('PX', 'px'))*/
+    .pipe(replace('PX', 'px'))
     .pipe(gcmq())
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))

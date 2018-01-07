@@ -1,3 +1,23 @@
+@mixin btn_modification(){
+  &-round{
+    border-radius: 1em;
+  }
+
+  &-transform{
+    background: transparent;
+
+    &:hover{
+      background: $btn_base_bg;
+      color: $btn_base_color;
+    }
+  }
+
+  &-mini{
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+}
+
 .btn{
   padding: 12px 50px;
   background: $btn_base_bg;
@@ -17,21 +37,27 @@
     color: $btn_base_bg;
   }
 
-  &-round{
-    border-radius: 1em;
-  }
+  @include btn_modification;
+}
 
-  &-transform{
-    background: transparent;
-
-    &:hover{
-      background: $btn_base_bg;
-      color: $btn_base_color;
+.laptop-min {
+  @include media($laptop_min) {
+    &-btn {
+      @include btn_modification;
     }
   }
+  @include media_min($laptop_min) {
+    &_min-btn {
+      @include btn_modification;
+    }
+  }
+}
 
-  &-mini{
-    padding: 6px 10px;
-    font-size: 16px;
+
+.tablets {
+  &-btn {
+    @include media($tablets) {
+      @include btn_modification;
+    }
   }
 }

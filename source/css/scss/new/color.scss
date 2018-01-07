@@ -6,7 +6,7 @@ $btn_base_color: #000;
 $text_color: #1b2527;
 $header_bg_up: #1b2527;
 $header_color_up: #ffffff;
-$search-btn-bg: #FFF130;
+$search-btn-bg: $btn_base_bg;
 $search-btn-color: $text_color;
 $search-btn-color-hover: #ffffff;
 $header_authorization_color: $search-btn-bg;
@@ -17,12 +17,12 @@ $header_sub_menu_color_hover: #ffcd16;
 $header_heart: #f00;
 $gray_box_bg: #f4f4f4;
 $yellow_box_bg: #fdec3e;
-$rating_color: #FF9800;
+$rating_color: $btn_base_bg;
 
 $h2_line_color: $btn_base_bg;
 $h2_white_line_color: #fff;
 $a_color: $btn_base_bg;
-$a_color_hover: #fdca37;
+$a_color_hover: $yellow_box_bg;
 
 $other_services_title_color: $btn_base_bg;
 
@@ -57,12 +57,12 @@ $scroll_box_shadow: #000;
 $table_bg:#eaeaea;
 $table_th_bg:#fff;
 $table_2n_bg:#f6f6f5;
-$table_select_bg:#fccb30;
+$table_select_bg:$btn_base_bg;
 $table_select_2n_bg:#fde699;
 
 
 /*accordion*/
-$accordion_control_bg: #e6ae03;
+$accordion_control_bg: $btn_base_bg;
 $accordion_point: $accordion_control_bg;
 $accordion_content_border: #D2D6DE;
 $accordion_angle_color: $accordion_control_bg;
@@ -70,7 +70,7 @@ $accordion_angle_color: $accordion_control_bg;
 
 /*footer*/
 $footer_bg: #121212;
-$footer_text_color: #ffe476;
+$footer_text_color: $table_select_2n_bg;
 $footer_text2_color: #fffefe;
 $footer_menu_title_color: #fffefe;
 $footer_link_color: #b6b6b6;
