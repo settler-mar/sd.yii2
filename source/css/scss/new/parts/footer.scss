@@ -186,6 +186,13 @@
       height: 50px;
     }
   }
+  .site-rating_star-icon {
+    width: 15px;
+    height: 15px;
+    color: $a_color_hover;
+    stroke: $a_color_hover;
+    fill: $a_color_hover;
+  }
 }
 
 .microdata-site-rating{

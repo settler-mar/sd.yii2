@@ -12,14 +12,14 @@
         <a class="site-rating ajaxFormOpen" href="#reviews/send">
             {% if this.site_rating.value > 0 %}
                 {% for i in range(1, this.site_rating.value|round()) %}
-                    <span class="fa fa-star"></span>
+                    {{ svg('star', 'site-rating_star-icon')|raw }}
                 {% endfor %}
             {% endif %}
 
             {% set estar =  5 - this.site_rating.value|round() %}
             {% if estar != 0 %}
                 {% for i in range(1, estar) %}
-                    <span class="fa fa-star-o"></span>
+                    {{ svg('star-o', 'site-rating_star-icon')|raw }}
                 {% endfor %}
             {% endif %}
         </a>
