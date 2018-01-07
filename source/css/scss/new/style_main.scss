@@ -133,7 +133,7 @@ h2 {
 
 .mini-wrap{
   max-width: $tablets;
-  margin: 48px auto;
+  margin: 30px auto;
 }
 
 .content{
@@ -193,10 +193,9 @@ h2 {
 
 section {
   margin-bottom: 0;
-
-  &.margin {
-    margin-bottom: 47px;
-  }
+}
+.margin {
+  margin-bottom: 47px;
 }
 
 .align-center{
