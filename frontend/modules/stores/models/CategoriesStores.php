@@ -322,8 +322,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
           (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
           'open current' : '');
         $tree .= '<li '.($parent_id == 0 ? 'class="'.($childCategories ? ' menu-group '.$sectionOpen : '').'"':'').'>'.
-          ($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').
-            '" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
+          //($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').'" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
+          ($childCategories ? "{{ svg('angle-down','menu_angle-down')|raw }}": '');//стрелка для аккордеона
 
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
           $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||

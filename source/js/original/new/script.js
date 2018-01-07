@@ -22,3 +22,13 @@ window.onscroll = function() {
     }
 };
 
+$('.menu_angle-down').click(function(e) {
+   e.preventDefault();
+   var parent = $(this).closest('.drop-menu_group__up, .menu-group');
+   if (parent) {
+       $(parent).siblings('li').removeClass('open');
+       $(parent).toggleClass('open');
+   }
+
+});
+
