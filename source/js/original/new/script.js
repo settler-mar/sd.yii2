@@ -36,3 +36,8 @@ $('.menu_angle-down').click(function(e) {
    return false;
 });
 
+$('.account-menu-toggle').click(function(e){
+    e.preventDefault();
+    $('.account-menu').toggleClass('hidden');
+});
+

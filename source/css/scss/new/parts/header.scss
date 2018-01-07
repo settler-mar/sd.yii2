@@ -152,6 +152,9 @@
   &-right {
     flex-grow: 1;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+
 
     @include media($laptop_min) {
       display: none;
@@ -227,43 +230,59 @@
     }
 
   }
-  .search-toggle {
-    display: none;
-    margin: auto 6px;
-    background: #fff;
-    border-radius: 50%;
-    padding: 2px 5px;
-
-    &_button {
-      width: $header_button_size;
-      height: $header_button_size;
-    }
-    a {
-      color: $btn_base_bg;
-      stroke: $btn_base_bg;
-      fill: $btn_base_bg;
-    }
-  }
   .btn-header {
-    display: none;
-    margin: auto 6px;
-    background: $header_bg_second;
-    border-radius: 50%;
-    padding: 2px 5px;
+    //display: none;
+    margin: auto 0;
+    padding: 0 35px;
+    //background: $header_bg_second;
+    //border-radius: 50%;
+    //padding: 2px 5px;
+    border-left: 2px solid $header_border_color;
+    @include media($laptop_min) {
+      padding: 0 10px;
+      border: none;
+
+    }
     &_button {
       width: $header_button_size;
       height: $header_button_size;
     }
     a {
-      color: $btn_base_color;
-      stroke: $btn_base_color;
-      fill: $btn_base_color;
+      color: $header_color_up;
+      stroke:$header_color_up;
+      fill: $header_color_up;
+      text-decoration: none;
       &:hover {
         color: $a_color_hover;
         stroke: $a_color_hover;
         fill: $a_color_hover;
       }
     }
+    &.mobile {
+      display: none;
+      @include media($laptop_min) {
+        display: block;
+      }
+    }
+  }
+  &-logo_noty {
+    position: relative;
+    :after {
+      display: block;
+      position: absolute;
+      background-color: $notyfy_icon_color;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      content: "";
+      top: 3px;
+      left: 45px;
+      @include media($laptop_min) {
+        left: 20px;
+      }
+
+    }
+
   }
 
   &.header_open-menu {
@@ -283,6 +302,36 @@
       }
     }
 
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    &_image {
+      max-width: 100%;
+      //max-height: 100%;
+    }
+  }
+  .account-menu {
+    &.hidden {
+      display: none;
+    }
+    position: absolute;
+    top: 55px;
+    background-color: $header_bg_up;
+    border-radius: 5px;
+    >ul {
+      padding-left: 0;
+      margin: 5px;
+      >li {
+        list-style-type: none;
+        >a {
+          padding: 10px;
+        }
+      }
+    }
   }
 }
 
