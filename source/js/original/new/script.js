@@ -36,8 +36,19 @@ $('.menu_angle-down').click(function(e) {
    return false;
 });
 
+var accountMenuTimeOut = null;
 $('.account-menu-toggle').click(function(e){
     e.preventDefault();
-    $('.account-menu').toggleClass('hidden');
+    var menu = $('.account-menu');
+    if (menu) {
+        clearTimeout(accountMenuTimeOut);
+        menu.toggleClass('hidden');
+        if (!menu.hasClass('hidden')) {
+            accountMenuTimeOut = setTimeout(function () {
+                menu.addClass('hidden');
+            }, 7000);
+        }
+    }
+
 });
 

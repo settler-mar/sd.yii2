@@ -315,8 +315,11 @@
     }
   }
   .account-menu {
+    opacity: 1;
+    transition: opacity 0.9s ease 0.1s;
     &.hidden {
-      display: none;
+      //display: none;
+      opacity: 0;
     }
     position: absolute;
     top: 55px;
