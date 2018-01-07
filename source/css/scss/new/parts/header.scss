@@ -1,6 +1,6 @@
 .header {
   margin-bottom: $menu_height_x2;
-  @include media($tablets) {
+  @include media($laptop_min) {
     margin-bottom: $menu_height;
 
   }
@@ -62,6 +62,24 @@
       &_inner {
         width: 70%;
         margin-left: 0;
+      }
+    }
+    &_close {
+      display: none;
+      @include media($laptop-min) {
+        display: block;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      a {
+        color: $header_sub_menu_color_hover;
+        stroke: $header_sub_menu_color_hover;
+        fill: $header_sub_menu_color_hover;
+      }
+      &_button {
+        width: $header_button_size;
+        height: $header_button_size;
       }
     }
 
@@ -135,7 +153,7 @@
     flex-grow: 1;
     text-align: right;
 
-    @include media($tablets) {
+    @include media($laptop_min) {
       display: none;
       //position: absolute;
       //top: $menu_height;
@@ -250,14 +268,14 @@
 
   &.header_open-menu {
     .header-right {
-      @include media($tablets) {
+      @include media($laptop_min) {
         left: 0;
       }
 
     }
     .header-secondline {
 
-      @include media($tablets) {
+      @include media($laptop_min) {
         //margin-left: 0;
         left: 0;
         //transition: margin-left 0.6s ease;
@@ -268,7 +286,7 @@
   }
 }
 
-@include media($tablets) {
+@include media($laptop_min) {
   .header {
     &-search {
       display: none;

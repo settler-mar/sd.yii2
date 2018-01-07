@@ -8,7 +8,7 @@ $('.search-toggle').click(function(e) {
     $('.header-search').toggleClass('open');
 });
 
-$('.header-secondline').click(function(e){
+$('.header-secondline_close').click(function(e){
     $('.header').removeClass('header_open-menu');
 });
 
