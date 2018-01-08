@@ -8,6 +8,7 @@ use yii\helpers\Url;
 use frontend\modules\meta\models\Meta;
 use yii\twig\ViewRenderer;
 use frontend\modules\reviews\models\Reviews;
+use frontend\modules\notification\models\Notifications;
 
 class SdView extends View
 {
@@ -22,6 +23,7 @@ class SdView extends View
   public $description;
   public $site_rating;
   public $isWebMaster=false;
+  public $noty_count=0;//непрочитанных уведомлений
 
   public function init_param()
   {
@@ -32,6 +34,7 @@ class SdView extends View
       $user = Yii::$app->user->identity;
       $this->user = (array)$user->getIterator();
       $this->balance = $user->getBalance();
+      $this->noty_count = Notifications::getUnreadCount($this->user_id);
 
       $this->all_params['bonus_status'] = $user->bonus_status_data;
       $this->all_params['user']=(array)$user->getIterator();
