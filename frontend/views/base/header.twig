@@ -9,12 +9,12 @@
         <div class="header-logo-center">
           <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
         </div>
-        {% if 1==1 %}
-            {#если есть уведомления#}
-          <div class="header-logo_noty  btn-header mobile">
-            <a href="/">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
+
+            {#если есть уведомления добавлен класс#}
+          <div class="header-logo_noty  btn-header mobile {% if this.noty_count > 0 %}has-noty{% endif %}">
+            <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
-        {% endif %}
+
         <div class="search-toggle  btn-header mobile">
           <a href="/">{{ svg('search', 'search-toggle_button btn-header_button')|raw }}</a>
         </div>
@@ -42,26 +42,32 @@
             {#зарегистрирован#}
           <div class="btn-header" title="Баланс">
             <a href="/account">{{ svg('dollar', 'btn-header_button')|raw }}
-              <span class="">{{ _nf(this.balance.current) | raw}} руб </span></span>
+              <span class="ballance-all tooltip"
+                    title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"
+                    data-tooptip="Сумма кэшбека за покупки, которая зачислена на ваш баланс">
+                  {{ _nf(this.balance.total) | raw}} руб </span>
+              <span class="tooltip"
+                    title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"
+                    data-tooptip="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином">
+                / {{ _nf(this.balance.current) | raw}} руб </span>
             </a>
           </div>
           {% if 1==1 %}
               {#если есть избранные#}
-            <div class="btn-header" title="Избранные шопы">
-              <a href="/account/favorites">{{ svg('star-o', 'btn-header_button')|raw }}</a>
+            <div class="btn-header" >
+              <a title="Избранные магазины" href="/account/favorites">{{ svg('star-o', 'btn-header_button')|raw }}</a>
             </div>
           {% endif %}
-          {% if 1==1 %}
-              {#если есть уведомления#}
-            <div class="header-logo_noty btn-header" title="Уведомления">
-              <a href="/">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+              {#если есть уведомления добавлен класс#}
+            <div class="header-logo_noty btn-header {% if this.noty_count > 0 %}has-noty{% endif %}" >
+              <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
-          {% endif %}
-              
-          <div class="avatar account-menu-toggle">
-          <a href="#"><img class="avatar_image" src="/images/account/avatars/8/Sergey_Pavlovich.jpg" alt="avatar"></a>
+
+          <div class="avatar account-menu-toggle" title="{{ this.user.name }}">
+          <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
           </div>
           <div class="account-menu hidden">
+            <h6>{{ this.user.name }}</h6>
             <ul>
               <li><a href="/account">Мой аккаунт</a></li>
               <li><a href="#logout">Выход</a></li>
