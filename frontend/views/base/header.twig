@@ -66,13 +66,7 @@
           <div class="avatar account-menu-toggle" title="{{ this.user.name }}">
           <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
           </div>
-          <div class="account-menu hidden">
-            <h6>{{ this.user.name }}</h6>
-            <ul>
-              <li><a href="/account">Мой аккаунт</a></li>
-              <li><a href="#logout">Выход</a></li>
-            </ul>
-          </div>
+            {% include 'parts/account_menu.twig' %}
         {% endif %}
 
       </div>

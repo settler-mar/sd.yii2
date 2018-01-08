@@ -42,9 +42,9 @@
     background: $header_sub_menu_bg;
     position: absolute;
     width: 300px;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-left: 1px solid $menu_border_color;
+    border-right: 1px solid $menu_border_color;
+    border-bottom: 1px solid $menu_border_color;
 
     opacity: 0;
     transition: opacity .25s ease .1s;
