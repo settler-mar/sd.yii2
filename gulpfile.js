@@ -164,7 +164,11 @@ gulp.task('jsb2b', compileJs([
     ], paths.b2b.js)
 );
 gulp.task('js_new', compileJs([
-        paths.source.js+'/original/new/script.js'
+        paths.source.js+'/original/new/scroll.js',
+        paths.source.js+'/original/new/accordion.js',
+        paths.source.js+'/original/jquery.ajaxForm.js',
+        paths.source.js+'/original/modals.js',
+        paths.source.js+'/original/new/script.js',
     ], paths.app.js+'/new')
 );
 

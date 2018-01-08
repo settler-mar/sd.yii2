@@ -1390,7 +1390,7 @@ hr {
 
 .sr-only {
   position: absolute;
-  width: 1px;
+  width: 0.0625rem;
   height: 0.0625rem;
   padding: 0;
   margin: -0.0625rem;
@@ -2655,7 +2655,7 @@ select[multiple].form-group-lg .form-control {
   right: 0;
   z-index: 2;
   display: block;
-  width: 34px;
+  width: 2.125rem;
   height: 2.125rem;
   line-height: 2.125rem;
   text-align: center;
@@ -2663,13 +2663,13 @@ select[multiple].form-group-lg .form-control {
 }
 
 .input-lg + .form-control-feedback {
-  width: 46px;
+  width: 2.875rem;
   height: 2.875rem;
   line-height: 2.875rem;
 }
 
 .input-sm + .form-control-feedback {
-  width: 30px;
+  width: 1.875rem;
   height: 1.875rem;
   line-height: 1.875rem;
 }
@@ -4165,7 +4165,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-toggle .icon-bar {
   display: block;
-  width: 22px;
+  width: 1.375rem;
   height: 0.125rem;
   -webkit-border-radius: 1px;
   border-radius: 1px;
@@ -5926,7 +5926,7 @@ button.close {
 .modal-scrollbar-measure {
   position: absolute;
   top: -624.9375rem;
-  width: 50px;
+  width: 3.125rem;
   height: 3.125rem;
   overflow: scroll;
 }
@@ -6327,7 +6327,7 @@ button.close {
 
 .carousel-control .icon-prev,
 .carousel-control .icon-next {
-  width: 20px;
+  width: 1.25rem;
   height: 1.25rem;
   margin-top: -0.625rem;
   font-family: serif;
@@ -6355,7 +6355,7 @@ button.close {
 
 .carousel-indicators li {
   display: inline-block;
-  width: 10px;
+  width: 0.625rem;
   height: 0.625rem;
   margin: 0.0625rem;
   text-indent: -999px;
@@ -6368,7 +6368,7 @@ button.close {
 }
 
 .carousel-indicators .active {
-  width: 12px;
+  width: 0.75rem;
   height: 0.75rem;
   margin: 0;
   background-color: #fff;
@@ -6625,7 +6625,7 @@ button.close {
 }
 
 #fancybox-loading div {
-  width: 44px;
+  width: 2.75rem;
   height: 2.75rem;
   background: url("/images/templates/fancybox_loading.gif") center center no-repeat;
 }
@@ -6634,7 +6634,7 @@ button.close {
   position: absolute;
   top: -1.125rem;
   right: -18px;
-  width: 36px;
+  width: 2.25rem;
   height: 2.25rem;
   cursor: pointer;
   z-index: 8040;
@@ -6664,7 +6664,7 @@ button.close {
 .fancybox-nav span {
   position: absolute;
   top: 50%;
-  width: 36px;
+  width: 2.25rem;
   height: 2.125rem;
   margin-top: -1.125rem;
   cursor: pointer;
@@ -6928,7 +6928,7 @@ html[xmlns] .flexslider .slides {
 .flex-direction-nav a {
   text-decoration: none;
   display: block;
-  width: 40px;
+  width: 2.5rem;
   height: 3.75rem;
   margin: -1.875rem 0 0;
   position: absolute;
@@ -6991,7 +6991,7 @@ html[xmlns] .flexslider .slides {
 
 .flex-pauseplay a {
   display: block;
-  width: 20px;
+  width: 1.25rem;
   height: 1.25rem;
   position: absolute;
   bottom: 5px;
@@ -7033,7 +7033,7 @@ html[xmlns] .flexslider .slides {
 }
 
 .flex-control-paging li a {
-  width: 12px;
+  width: 0.75rem;
   height: 0.75rem;
   display: block;
   background: #5C5F6A;
@@ -7827,7 +7827,7 @@ you can use the generic selector below, but it's slower:
   overflow: hidden !important;
   padding: 0 !important;
   position: absolute !important;
-  width: 1px !important;
+  width: 0.0625rem !important;
 }
 
 .select2-container--default .select2-selection--single {
@@ -7857,7 +7857,7 @@ you can use the generic selector below, but it's slower:
   position: absolute;
   top: 0.0625rem;
   right: 1px;
-  width: 20px;
+  width: 1.25rem;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
@@ -8123,7 +8123,7 @@ you can use the generic selector below, but it's slower:
   position: absolute;
   top: 0.0625rem;
   right: 1px;
-  width: 20px;
+  width: 1.25rem;
   background-image: -webkit-linear-gradient(top, #eee 50%, #ccc 100%);
   background-image: -o-linear-gradient(top, #eee 50%, #ccc 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #eee), to(#ccc));
@@ -8880,7 +8880,7 @@ Navigation
   content: "";
   position: absolute;
   display: block;
-  width: 26px;
+  width: 1.625rem;
   height: 0.1875rem;
   -webkit-border-radius: 1px;
   border-radius: 1px;
@@ -9017,7 +9017,7 @@ header {
   height: 4.375rem;
   border-bottom: solid 1px rgba(255, 255, 255, 0.2);
   position: relative;
-  width: 1170px;
+  width: 73.125rem;
   margin: 0 auto;
   -webkit-transition: padding 300ms ease-in-out;
   -o-transition: padding 300ms ease-in-out;
@@ -9062,7 +9062,7 @@ header .logo a {
 }
 
 header .logo img {
-  width: 200px;
+  width: 12.5rem;
 }
 
 header ul.primary-nav {
@@ -9271,7 +9271,7 @@ Features-stack
   vertical-align: top;
   padding: 0.375rem 0 0 0;
   margin-right: 20px;
-  width: 35px;
+  width: 2.1875rem;
 }
 
 .features .feature-content {
@@ -9316,21 +9316,21 @@ Features-stack
 }
 
 .features .ipad-wrap {
-  width: 706px;
+  width: 44.125rem;
   height: 62.625rem;
   background: url("/images/templates/ipad-device.png") no-repeat center center;
   z-index: 1;
 }
 
 .features .nwoman-wrap {
-  width: 613px;
+  width: 38.3125rem;
   height: 62.5rem;
   background: url("/images/templates/woman_1000.png") no-repeat center center;
   z-index: 1;
 }
 
 .features .iphone-wrap {
-  width: 304px;
+  width: 19rem;
   height: 38.75rem;
   background: url("/images/templates/iphone6.png") no-repeat center center;
   position: absolute;
@@ -9396,7 +9396,7 @@ Features-stack
 }
 
 .statistics .logo-placeholder {
-  width: 230px;
+  width: 14.375rem;
   height: 14.375rem;
   position: absolute;
   bottom: -285px;
@@ -9503,7 +9503,7 @@ Features-stack
 
 .testimonial-slider .avatar {
   text-align: center;
-  width: 105px;
+  width: 6.5625rem;
   height: 6.5625rem;
   -webkit-border-radius: 55px;
   border-radius: 55px;
@@ -9627,7 +9627,7 @@ Sign up form
 .popup-content .form-input-group i:after {
   content: "";
   height: 1.875rem;
-  width: 1px;
+  width: 0.0625rem;
   border-right: solid 1px #E6E9EA;
   position: absolute;
   top: 50%;
@@ -9816,7 +9816,7 @@ select:-moz-focusring {
   -moz-transition: all 0.2s;
   transition: all 0.2s;
   margin: 0rem 0.3125rem;
-  width: 45px;
+  width: 2.8125rem;
 }
 
 .sign-up.popup-sign-up .social-login img:hover {
@@ -9824,7 +9824,7 @@ select:-moz-focusring {
 }
 
 .sign-up.popup-sign-up .sign-up-tagline {
-  width: 530px;
+  width: 33.125rem;
 }
 
 .feedback.popup-content .rating {
@@ -9850,7 +9850,7 @@ To top
 
 .to-top .to-top-wrap {
   height: 3.75rem;
-  width: 70px;
+  width: 4.375rem;
   position: absolute;
   right: 0;
   text-align: center;
@@ -9942,7 +9942,7 @@ footer .social-block-share a {
   color: #0f181a !important;
   display: inline-block;
   padding: 0.5rem;
-  width: 40px;
+  width: 2.5rem;
   margin-right: 5px;
   text-align: center;
   font-size: 1.0625rem;
@@ -9963,7 +9963,7 @@ footer .social-block-share a:hover {
 }
 
 footer .footer-logo {
-  width: 65px;
+  width: 4.0625rem;
   float: left;
   margin-right: 15px;
   margin-top: 0.3125rem;
@@ -10050,7 +10050,7 @@ footer .auxiliary-panel p {
 
 footer .auxiliary-panel a.twitter-share {
   height: 3.75rem;
-  width: 60px;
+  width: 3.75rem;
   background-color: #1AB4EF;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -10076,7 +10076,7 @@ footer .auxiliary-panel a.vk-share:focus {
 
 footer .auxiliary-panel a.facebook-share {
   height: 3.75rem;
-  width: 60px;
+  width: 3.75rem;
   background-color: #3B5898;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -10088,7 +10088,7 @@ footer .auxiliary-panel a.facebook-share {
 
 footer .auxiliary-panel a.vk-share {
   height: 3.75rem;
-  width: 60px;
+  width: 3.75rem;
   background-color: #597DA3;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -10156,7 +10156,7 @@ footer .withdraw-logo li img:hover {
 
 footer .ya-share2 .ya-share2__icon {
   height: 3rem !important;
-  width: 48px !important;
+  width: 3rem !important;
   -o-background-size: 48px 48px !important;
   background-size: 48px 48px !important;
 }
@@ -10824,7 +10824,7 @@ i.sd_icon-vkontakte-round:before {
   opacity: 0;
   background-color: #282b37;
   color: #fff;
-  width: 330px;
+  width: 20.625rem;
   z-index: 2;
   font-weight: 500;
   margin-top: 1.25rem;
@@ -10835,7 +10835,7 @@ i.sd_icon-vkontakte-round:before {
 
 .primary-nav > li.stores .submenu.coupons,
 .account-nav > li.stores .submenu.coupons {
-  width: 290px;
+  width: 18.125rem;
 }
 
 .primary-nav > li.stores .submenu .tree,
@@ -10860,7 +10860,7 @@ i.sd_icon-vkontakte-round:before {
 .account-nav > li.stores .submenu .tree > ul > li .fa-fa-carett {
   position: absolute;
   top: 0.3125rem;
-  width: 15px;
+  width: 0.9375rem;
   left: inherit;
   right: 5px;
   padding: 0;
@@ -10891,7 +10891,7 @@ i.sd_icon-vkontakte-round:before {
   top: -0.5625rem;
   background-color: #282b37;
   padding: 0.625rem 0 0.625rem 0;
-  width: 380px;
+  width: 23.75rem;
   display: block;
 }
 
@@ -10990,7 +10990,7 @@ i.sd_icon-vkontakte-round:before {
   background: transparent;
   border: 0px;
   border-bottom: 2px solid #fff;
-  width: 130px;
+  width: 8.125rem;
   text-decoration: none;
   margin-top: -0.125rem;
   color: #fff;
@@ -11103,7 +11103,7 @@ p em {
 
 .accordion .accordion-title:after {
   content: "\f067";
-  width: 20px;
+  width: 1.25rem;
   display: inline-block;
   text-align: center;
   font: normal normal normal 0.875rem/1 FontAwesome;
@@ -11153,7 +11153,7 @@ p em {
 
 .soc-icon {
   height: 3rem;
-  width: 48px;
+  width: 3rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons48.png);
   display: inline-block;
@@ -11164,7 +11164,7 @@ p em {
   color: #0f181a !important;
   display: inline-block;
   padding: 0.5rem 0.5rem;
-  width: 40px;
+  width: 2.5rem;
   margin-right: 9px;
   text-align: center;
   font-size: 1.0625rem;
@@ -11230,7 +11230,7 @@ p em {
 
 .accauntSoc_32 .soc-icon {
   height: 2rem;
-  width: 32px;
+  width: 2rem;
   margin: 0.125rem;
   background-image: url(/images/socialicons_new_32.png);
   display: inline-block;
@@ -11750,7 +11750,7 @@ table .status_bg_1 {
 }
 
 .notification_item {
-  width: 310px;
+  width: 19.375rem;
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
   margin-bottom: 0.3125rem;
@@ -11794,7 +11794,7 @@ table .status_bg_1 {
   height: 3.125rem;
   margin: 0.3125rem 0.625rem 0rem 0rem;
   float: left;
-  width: 50px;
+  width: 3.125rem;
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
@@ -11906,7 +11906,7 @@ table .status_bg_1 {
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
-  width: 530px;
+  width: 33.125rem;
   text-align: center;
   max-width: -webkit-calc(100% - 20px);
   max-width: -moz-calc(100% - 20px);
@@ -11957,7 +11957,7 @@ body > .news-index {
   position: absolute;
   top: 0rem;
   right: 0px;
-  width: 34px;
+  width: 2.125rem;
   height: 100%;
   -o-background-size: 34px, auto;
   background-size: 34px, auto;
@@ -11971,7 +11971,7 @@ body > .news-index {
   content: "";
   background: url(/favicon-16x16.png);
   height: 1rem;
-  width: 16px;
+  width: 1rem;
   display: inline-block;
   vertical-align: middle;
   margin-right: 10px;
@@ -12004,7 +12004,7 @@ body > .news-index {
 }
 
 .sum_information .name {
-  width: 180px;
+  width: 11.25rem;
   vertical-align: top;
   padding-right: 5px;
   text-align: right;
@@ -12018,7 +12018,7 @@ body > .news-index {
 .sum_information .value {
   font-weight: bold;
   text-align: left;
-  width: 110px;
+  width: 6.875rem;
   display: inline-block;
 }
 
@@ -12045,17 +12045,17 @@ body > .news-index {
 }
 
 table.table-users .sum_information.long_value .value {
-  width: 180px;
+  width: 11.25rem;
   text-align: left;
 }
 
 table.table-users .sum_information .value {
-  width: 70px;
+  width: 4.375rem;
   text-align: right;
 }
 
 table.table-users .sum_information .name {
-  width: 90px;
+  width: 5.625rem;
 }
 
 table.table-users td:first-child {
@@ -12338,7 +12338,7 @@ form > .kv-drp-container {
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;
-  width: 500px;
+  width: 31.25rem;
 }
 
 .sign-up.noajax.social {
@@ -12684,7 +12684,7 @@ td .ajax_remove.delete {
 }
 
 .comments .current-comment .comment-photo {
-  width: 80px;
+  width: 5rem;
   height: 5rem;
   margin: 0 auto;
   -webkit-border-radius: 100px;
@@ -12943,7 +12943,7 @@ td .ajax_remove.delete {
 }
 
 .shops .mobile-stores .flex-control-nav li a {
-  width: 8px;
+  width: 0.5rem;
   height: 0.5rem;
   background: #fff;
   border: 1px solid #5c5f6a;
@@ -13103,7 +13103,7 @@ td .ajax_remove.delete {
 
 .shops .shop .promo-label {
   height: 4.8125rem;
-  width: 75px;
+  width: 4.6875rem;
   display: block;
   position: absolute;
   top: -0.375rem;
@@ -13342,7 +13342,7 @@ td .ajax_remove.delete {
 }
 
 .catalog-slider .slides > li .action .logo {
-  width: 190px;
+  width: 11.875rem;
   text-align: center;
   background: #fff;
   padding: 4.75rem 0rem;
@@ -13577,7 +13577,7 @@ td .ajax_remove.delete {
   border-radius: 30px;
   padding-top: 0.625rem;
   height: 2.5rem;
-  width: 40px;
+  width: 2.5rem;
   background-color: #fcf8e3;
 }
 
@@ -13605,7 +13605,7 @@ td .ajax_remove.delete {
 .view-store .logo {
   background-color: #fff;
   text-align: center;
-  width: 215px;
+  width: 13.4375rem;
   margin: -2.5rem auto 0rem;
   padding: 5rem 0rem;
   -webkit-border-radius: 150px;
@@ -13903,7 +13903,7 @@ td .ajax_remove.delete {
 
 .coupons .current-coupon .logo .promo-label {
   height: 4.8125rem;
-  width: 75px;
+  width: 4.6875rem;
   display: block;
   position: absolute;
   top: -0.375rem;
@@ -14196,7 +14196,7 @@ td .ajax_remove.delete {
 }
 
 .affiliate .ways-invitation p.soc img {
-  width: 48px;
+  width: 3rem;
 }
 
 .affiliate .ways-invitation p.mail .btn {
@@ -14215,7 +14215,7 @@ td .ajax_remove.delete {
   border-radius: 5px;
   border: 1px solid #bbb;
   outline: 0;
-  width: 215px;
+  width: 13.4375rem;
   font-size: 0.8125rem;
 }
 
@@ -14351,7 +14351,7 @@ td .ajax_remove.delete {
 .dobro .a-stores {
   display: block;
   margin: 3.125rem auto 1.25rem;
-  width: 300px;
+  width: 18.75rem;
   background: #172325;
   text-align: center;
   font-size: 1.25rem;
@@ -14382,7 +14382,7 @@ td .ajax_remove.delete {
   text-align: center;
   background-color: #fbcf4a;
   padding: 4.6875rem 0;
-  width: 230px;
+  width: 14.375rem;
   -webkit-border-radius: 150px;
   border-radius: 150px;
   font-weight: bold;
@@ -14836,7 +14836,7 @@ td .ajax_remove.delete {
   -webkit-box-shadow: 0 0 7px #1F222B;
   box-shadow: 0 0 7px #1F222B;
   padding: 0.3125rem 0rem;
-  width: 230px !important;
+  width: 14.375rem !important;
   top: 3.3125rem !important;
   max-height: 600px !important;
 }
@@ -15029,7 +15029,7 @@ footer .container a {
 }
 
 .short-calc-cashback input {
-  width: 60px;
+  width: 3.75rem;
   padding: 0 0.1875rem;
 }
 
@@ -15267,7 +15267,7 @@ ul.faq__list {
   top: 0;
   left: 0;
   display: inline-block;
-  width: 18px;
+  width: 1.125rem;
   height: 1.125rem;
   content: '';
   border: 1px solid #c0c0c0;
@@ -15324,7 +15324,7 @@ ul.faq__list {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  width: 6px;
+  width: 0.375rem;
   height: 0.75rem;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
@@ -15448,7 +15448,7 @@ img {
   content: counter(li);
   background: #e4c94c;
   line-height: 1.5rem;
-  width: 24px;
+  width: 1.5rem;
   display: block;
   text-align: center;
   -webkit-border-radius: 100%;
@@ -15508,7 +15508,7 @@ img {
 }
 
 .btn-popup {
-  width: 180px;
+  width: 11.25rem;
   -webkit-border-radius: 20px;
   border-radius: 20px;
   padding: 0.5rem 0.3125rem;
@@ -15735,7 +15735,7 @@ section.store_photos .fotorama {
 
   .dl-horizontal dt {
     float: left;
-    width: 160px;
+    width: 10rem;
     overflow: hidden;
     clear: left;
     text-align: right;
@@ -15749,7 +15749,7 @@ section.store_photos .fotorama {
   }
 
   .container {
-    width: 750px;
+    width: 46.875rem;
   }
 
   .col-sm-1,
@@ -16263,7 +16263,7 @@ section.store_photos .fotorama {
   }
 
   .modal-dialog {
-    width: 600px;
+    width: 37.5rem;
     margin: 1.875rem auto;
   }
 
@@ -16273,7 +16273,7 @@ section.store_photos .fotorama {
   }
 
   .modal-sm {
-    width: 300px;
+    width: 18.75rem;
   }
 }
 
@@ -16297,7 +16297,7 @@ section.store_photos .fotorama {
   .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-prev,
   .carousel-control .icon-next {
-    width: 30px;
+    width: 1.875rem;
     height: 1.875rem;
     margin-top: -0.9375rem;
     font-size: 1.875rem;
@@ -16362,7 +16362,7 @@ section.store_photos .fotorama {
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 60.625rem;
   }
 
   .col-md-1,
@@ -16585,7 +16585,7 @@ section.store_photos .fotorama {
   }
 
   .modal-lg {
-    width: 900px;
+    width: 56.25rem;
   }
 }
 
@@ -16603,7 +16603,7 @@ section.store_photos .fotorama {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 73.125rem;
   }
 
   .col-lg-1,
@@ -16900,7 +16900,7 @@ section.store_photos .fotorama {
   }
 
   .catalog-slider .slides > li .action .logo {
-    width: 190px;
+    width: 11.875rem;
     text-align: center;
     background: #fff;
     padding: 0.9375rem 0;
@@ -16909,7 +16909,7 @@ section.store_photos .fotorama {
   }
 
   .primary-nav > li.search form input {
-    width: 110px;
+    width: 6.875rem;
   }
 }
 
@@ -17511,7 +17511,7 @@ section.store_photos .fotorama {
   .testimonial-slider .flex-control-paging li a {
     background: transparent;
     border: 1px solid #fff;
-    width: 8px;
+    width: 0.5rem;
     height: 0.5rem;
   }
 
@@ -17669,7 +17669,7 @@ section.store_photos .fotorama {
     text-transform: uppercase !important;
     font-weight: 600 !important;
     font-size: 0.875rem !important;
-    width: 150px !important;
+    width: 9.375rem !important;
     color: #151515 !important;
   }
 
@@ -17926,7 +17926,7 @@ section.store_photos .fotorama {
   }
 
   .sign-up.popup-sign-up .sign-up-tagline {
-    width: 420px;
+    width: 26.25rem;
   }
 
   .btn-popup {
@@ -17995,7 +17995,7 @@ section.store_photos .fotorama {
 
   .greeting .btn {
     display: block;
-    width: 240px;
+    width: 15rem;
     margin: 0 auto;
   }
 
@@ -18033,7 +18033,7 @@ section.store_photos .fotorama {
   }
 
   .features .ipad-wrap {
-    width: 706px;
+    width: 44.125rem;
     height: 62.625rem;
     background: url("/images/templates/ipad-device.png") no-repeat center center;
     z-index: 1;
@@ -18042,7 +18042,7 @@ section.store_photos .fotorama {
   }
 
   .features .iphone-wrap {
-    width: 304px;
+    width: 19rem;
     height: 38.5625rem;
     background: url("/images/templates/iphone6.png") no-repeat center center;
     position: absolute;
@@ -18058,11 +18058,11 @@ section.store_photos .fotorama {
   }
 
   .sign-up.popup-sign-up .sign-up-tagline {
-    width: 320px;
+    width: 20rem;
   }
 
   .to-top .to-top-wrap {
-    width: 30px;
+    width: 1.875rem;
   }
 
   .footer-pre-logo .hpemob {
@@ -18134,7 +18134,7 @@ section.store_photos .fotorama {
 
 @media screen and (max-width: 320px) {
   .sign-up.popup-sign-up .sign-up-tagline {
-    width: 305px;
+    width: 19.0625rem;
   }
 
   .sign-up.popup-sign-up h3 {

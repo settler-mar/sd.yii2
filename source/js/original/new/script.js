@@ -49,6 +49,5 @@ $('.account-menu-toggle').click(function(e){
             }, 7000);
         }
     }
-
 });
 

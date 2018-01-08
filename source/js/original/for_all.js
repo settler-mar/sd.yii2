@@ -65,7 +65,7 @@ $( document ).ready(function() {
       continue;
     }
 
-    src=img.css('background-image');
+    var src=img.css('background-image');
     src=src.replace('url("','');
     src=src.replace('")','');
     img.addClass('no_ava');
