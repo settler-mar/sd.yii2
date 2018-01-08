@@ -36,6 +36,7 @@ var headerActions = function () {
             $(parent).siblings('li').removeClass('open');
             $(parent).toggleClass('open');
         }
+
         return false;
     });
 
@@ -55,5 +56,6 @@ var headerActions = function () {
 
     });
 }();
+
 
 
