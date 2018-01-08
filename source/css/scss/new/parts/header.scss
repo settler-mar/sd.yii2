@@ -3,7 +3,7 @@
   perspective: 400px;
   position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: 100;
 
   @include media($laptop_min) {
     margin-bottom: $menu_height;
@@ -19,16 +19,22 @@
   }
 
   &-secondline {
-    //top: 0;
     transition: all 0.6s linear;
     position: fixed;
     top: $menu_height;
     width: 100%;
-    //margin-top: $menu_height;
+    background-color: $header_bg_second;
 
     line-height: 50px;
-    //height: $menu_height;
-    z-index: 10;
+    z-index: 98;
+    //display:flex;
+    //flex-direction: row;
+    //justify-content: space-between;
+    //@include media($laptop_min) {
+    //  flex-direction: column;
+    //  justify-content: flex-start;
+    //}
+
 
     &-link{
       color: $header_sub_menu_color;
@@ -52,8 +58,13 @@
 
 
     &_inner {
-      background: $header_bg_second;
+      //background: $header_bg_second;
+      width: 100%;
     }
+    //
+    //.item-right {
+    //  align-self: flex-end;
+    //}
 
 
     @include media($laptop-min) {
@@ -64,9 +75,10 @@
       top: $mobile_stores_menu_top;
       &.scroll-down {
         opacity: 1;
+        transform: none;
       }
       &_inner {
-        width: 70%;
+        width: 90%;
         margin-left: 0;
       }
     }
@@ -88,6 +100,17 @@
         height: $header_button_size;
       }
     }
+    .menu_angle-right,
+    .menu_angle-down{
+      width: 12px;
+      height: 12px;
+      top: 20px;
+      right: 8px;
+      color: $text_color;
+      stroke: $text_color;
+      fill: $text_color;
+    }
+
 
   }
 
@@ -164,36 +187,8 @@
 
     @include media($laptop_min) {
       display: none;
-      //position: absolute;
-      //top: $menu_height;
-      //background-color: $header_bg_second;
-      //left: -100%;
-      //width: 70%;
     }
 
-
-    //&_link {
-    //  color: $header_color_up;
-    //  text-decoration: none;
-    //  margin-right: 10px;
-    //  border-bottom: dotted 1px;
-    //  &.mobile {
-    //    display: none;
-    //  }
-    //  @include media($tablets) {
-    //    display: block;
-    //    color: $text_color;
-    //    //border: 1px solid #000;
-    //    margin: 5px;
-    //    border: none;
-    //    &.desctop {
-    //      display: none;
-    //    }
-    //    &.mobile {
-    //      display: block;
-    //    }
-    //  }
-    //}
   }
 
   &-authorization {
@@ -237,12 +232,8 @@
 
   }
   .btn-header {
-    //display: none;
     margin: auto 0;
     padding: 0 35px;
-    //background: $header_bg_second;
-    //border-radius: 50%;
-    //padding: 2px 5px;
     border-left: 2px solid $header_border_color;
     @include media($laptop_min) {
       padding: 0 10px;
@@ -302,9 +293,7 @@
     .header-secondline {
 
       @include media($laptop_min) {
-        //margin-left: 0;
         left: 0;
-        //transition: margin-left 0.6s ease;
         transition: left .25s ease .1s;
       }
     }
@@ -318,15 +307,15 @@
     overflow: hidden;
     &_image {
       max-width: 100%;
-      //max-height: 100%;
     }
   }
   .account-menu {
     opacity: 1;
     transition: opacity 0.9s ease 0.1s;
+    //z-index:100;
     &.hidden {
-      //display: none;
       opacity: 0;
+      top: -1000px;
     }
     position: absolute;
     top: 55px;
@@ -347,6 +336,15 @@
 
 @include media($laptop_min) {
   .header {
+    position: static;
+    perspective: none;
+    &-upline {
+      //position: fixed;
+    }
+    &-secondline {
+      //position: relative;
+    }
+
     &-search {
       display: none;
       margin-right: auto;
@@ -366,5 +364,24 @@
     }
   }
 
+}
+
+@include media($phones) {
+  .header {
+    &-secondline {
+      left: -110%;
+      &_inner {
+        width: 100%;
+        padding-right: 3%;
+      }
+      //&_close {
+      //  display: none;
+      //}
+      .menu_angle-down {
+        right: 30px;
+
+      }
+    }
+  }
 }
 
