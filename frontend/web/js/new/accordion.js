@@ -6,19 +6,25 @@ accordionControl.on('click', function (e) {
     $accordion = $this.closest('.accordion');
 
     if ($accordion.hasClass('open')) {
-        if($accordion.hasClass('accordion-slim')){
+        /*if($accordion.hasClass('accordion-slim')){
             return false;
-        }
+        }*/
         $accordion.find('.accordion-content').hide(300);
         $accordion.removeClass('open')
     } else {
         if($accordion.hasClass('accordion-slim')){
             $other=$accordion.parent().find('.accordion-slim');
-            $other.find('.accordion-content').hide(300);
-            $other.removeClass('open')
+            $other.find('.accordion-content')
+                .hide(300)
+                .removeClass('accordion-content_last-open');
+            $other.removeClass('open');
+            $other.removeClass('last-open');
+
+            $accordion.find('.accordion-content').addClass('accordion-content_last-open');
+            $accordion.addClass('last-open');
         }
         $accordion.find('.accordion-content').show(300);
-        $accordion.addClass('open')
+        $accordion.addClass('open');
     }
     return false;
 });
@@ -29,5 +35,8 @@ accordionSlim=$('.accordion.accordion-slim');
 if(accordionSlim.length>0){
     accordionSlim.parent().find('.accordion-slim:first-child')
         .addClass('open')
-        .find('.accordion-content').show(300);
+        .addClass('last-open')
+        .find('.accordion-content')
+            .show(300)
+            .addClass('accordion-content_last-open');
 }
