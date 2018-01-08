@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h3 style="margin-bottom: 35px;">Вход на сайт</h3>
+  <h2>Вход на сайт</h2>
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
@@ -15,33 +15,29 @@
   }) %}
   {{ form.field(model, 'email',{
     'template' :
-    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':'Введите ваш e-mail','required':true}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
-  <div style="text-align: right; width:75%; margin: 0 auto 20px;"><a href="#resetpassword" class="ignore-hash" style="text-decoration: underline; font-size: 12px;">Забыли пароль?</a></div>
+  <div class="form_right_blk">
+    <a href="#resetpassword" class="modals_open">Забыли пароль?</a>
+  </div>
 
-  <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Войти</button>
+  <button type="submit" class="btn block_margin-auto btn-min_width240">Войти</button>
   {{ active_form_end() }}
 
 
-  <div class="terms" style="margin-top:30px; text-transform: uppercase; font-size: 12px; text-transform: uppercase;">
-    <div style="display: inline-block; border-bottom: 2px solid #eee; margin-bottom: 2px;width: 30%;" ></div>
-    <div style="display: inline-block;color: #888;">
-      Или при помощи соцсетей
-    </div>
-    <div style="display: inline-block;border-bottom: 2px solid #eee;margin-bottom: 2px;width: 30%;" ></div>
-  </div>
-  <div style="margin-top: 10px;margin-bottom:5px;">
+  <div class="terms">Или при помощи соцсетей</div>
+  <div>
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <div class="sign-up-buttons"><a href="#registration" class="btn ignore-hash">Зарегистрироваться</a></div>
-    <div class="text-dop"  style="color: #888;">Если вы новый пользователь</div>
+    <a href="#registration" class="btn btn-round btn-transform btn-max_width180 block_margin-auto modals_open">Зарегистрироваться</a>
+    <div class="text-dop text-dop_gray">Если вы новый пользователь</div>
   </div>
 
 </div>

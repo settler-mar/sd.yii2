@@ -10,10 +10,10 @@
 <div class="eauth sd-eauth" id="{{ id }}">
   <ul class="eauth-list{{ dop_class }}">
     {% for name, service in services  %}
-      <li class="eauth-service eauth-service-id-{{ service.id }} {% if vertical %} vertical {% endif %}">
+      <li class="eauth-service {% if vertical %} vertical {% endif %}">
         {% set title = vertical ? service.title : '' %}
         {% set link = action~'?service='~name %}
-        {{ html.a(title, link,{
+        {{ html.a(svg(service.id~'-round','eauth-icon')~title, link,{
           'class': 'eauth-service-link_sd '~name,
           'data-eauth-service': service.id,
         })|raw }}

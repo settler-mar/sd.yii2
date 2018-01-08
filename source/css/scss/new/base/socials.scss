@@ -1,0 +1,73 @@
+//авторизация через соц сети
+.eauth-list {
+  text-align: center;
+
+  &.float_left{
+    text-align: left;
+  }
+}
+
+.eauth-service {
+  //вертикальный вариант
+  &.vertical {
+    display: block;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    .eauth-service-link_sd {
+      display: block;
+      width: auto;
+      padding-top: 5px;
+      padding-left: 70px;
+      text-align: left;
+      position: relative;
+      &:before {
+        left: 2px;
+        top: -7px;
+        position: absolute;
+      }
+    }
+  }
+
+  .eauth-icon{
+    height: 35px;
+    width: 35px;
+  }
+}
+
+//для всех
+.eauth-service-link_sd {
+  text-decoration: none!important;
+  line-height: 36px;
+
+  &:hover{
+    text-decoration: none;
+  }
+}
+
+.sign-up-email {
+  margin-top: 18px;
+  a {
+    padding-left: 120px;
+    position: relative;
+    &:before {
+      font-family: FontAwesome;;
+      content: "\f003";
+      font-size: 33px;
+      display: inline-block;
+      position: absolute;
+      color: #303030;
+      left: 54px;
+      top: -14px
+    }
+  }
+}
+.sign-up.noajax {
+  margin: 100px auto 150px;
+  width: 500px;
+  &.social {
+    margin: 30px auto 20px;
+  }
+}
+.sign-up-tagline {
+  margin: 0 auto 10px;
+}

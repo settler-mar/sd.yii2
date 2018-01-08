@@ -10,6 +10,7 @@ $('body').on('click','a[href=#login],a[href=#registration],a[href=#resetpassword
       popup.hide();
     }
   }
+
   href=this.href.split('#');
   href=href[href.length-1];
 
