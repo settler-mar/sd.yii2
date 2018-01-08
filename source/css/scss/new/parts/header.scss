@@ -88,13 +88,16 @@
     }
     .menu_angle-right,
     .menu_angle-down{
+      margin-top:0;
       width: 12px;
       height: 12px;
-      top: 20px;
+      //top: 6px;
       right: 8px;
+      padding: 10px;
       color: $text_color;
       stroke: $text_color;
       fill: $text_color;
+      cursor: pointer;
     }
 
 
@@ -310,8 +313,6 @@
     &_inner {
       border: 1px solid $menu_border_color;
     }
-
-    //border-radius: 5px;
     ul {
       padding-left: 0;
       margin: 5px;
