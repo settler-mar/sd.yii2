@@ -113,20 +113,36 @@
         <li>
           <a>Двойной кэшбэк</a>
         </li>
-        <li class="desctop">
-          <a>Отследить посылку</a>
-        </li>
       </ul>
-      <div class="header-right header-item">
-        <a class="header-secondline-link" href="#">
-          {{ svg('heart','header-heart')|raw }}
-          Делаем добро
-        </a>
-        <a class="header-secondline-link" href="#">
+      <ul class="header-right header-item page-wrap-flex drop-menu">
+        <li>
+          <a class="header-secondline-link" href="#">
+            {{ svg('heart','header-heart heart-red')|raw }}
+            Делаем добро
+          </a>
+        </li>
+        <li>
+          <a class="header-secondline-link" href="#">
           Приведи друга
         </a>
-      </div>
+        </li>
+        <li class="drop-menu_group__up">
+          <a href="">Помощь
+              {{ svg('angle-down','menu_angle-down')|raw }}
+          </a>
+          <ul>
+            <li>
+              <a href="">Как это работает</a>
+            </li>
+            <li>
+              <a href="">Служба поддержки</a>
+            </li>
+            <li>
+              <a href="">Правила совершения покупок</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <div class="header-secondline_close"><a href="#">{{ svg('close','header-secondline_close_button')|raw }}</a></div>
   </div>
 </section>

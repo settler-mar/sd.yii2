@@ -31,9 +31,11 @@
     <![endif]-->
      {% include 'base/header.twig' %}
 
-    {% if this.all_params.wrap=='index' %}
-      {{ content|raw }}
-    {% endif %}
+      <div class="content-wrap">
+          {% if this.all_params.wrap=='index' %}
+              {{ content|raw }}
+          {% endif %}
+      </div>
 
      {% include 'base/footer.twig' %}
 

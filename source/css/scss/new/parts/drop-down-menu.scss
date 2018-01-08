@@ -29,20 +29,34 @@
     transition: all .25s ease;
   }
 
+  &.header-right {
+    position: relative;
+    ul {
+      right: 0;
+    }
+
+  }
   ul{
     margin: 0;
     padding: 0;
     background: $header_sub_menu_bg;
     position: absolute;
     width: 300px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 
     opacity: 0;
     transition: opacity .25s ease .1s;
     @include media($laptop_min) {
       position: relative;
       width: auto;
+      border: none;
     }
-  }
+    @include media($phones) {
+      padding-right: 3%;
+    }
+   }
 
   li{
     list-style: none;
@@ -53,12 +67,18 @@
       overflow: hidden;
       padding: 0;
       position: relative;
-      line-height: 20px;
+      //line-height: 20px;
+      line-height: 15px;
 
       a{
         padding-left: 15px;
         padding-right: 15px;
         display: block;
+      }
+      span.active {
+        padding: 15px;
+        display: block;
+        color: $header_sub_menu_color_hover;
       }
 
       ul{
