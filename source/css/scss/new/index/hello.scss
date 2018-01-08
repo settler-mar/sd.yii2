@@ -16,9 +16,15 @@
         max-width: 60vw;
       }
 
+      &_fw_li{
+        margin-left: -40px;
+      }
+
       &_margin_btn{
         margin-top: 120px;
         margin-bottom: 20px;
+        transform: translate3d(-50%, 0, 0px);
+        margin-left: 50%;
       }
     }
 
