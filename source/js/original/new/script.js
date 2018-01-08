@@ -19,12 +19,12 @@ var headerActions = function () {
 
     window.onscroll = function() {
         var scrollHeight = 50;
-        if (document.documentElement.scrollTop > scrollHeight && this.scrolledDown === false) {
-            this.scrolledDown = true;
+        if (document.documentElement.scrollTop > scrollHeight && scrolledDown === false) {
+            scrolledDown = true;
             $('.header-secondline').addClass('scroll-down');
         }
-        if (document.documentElement.scrollTop <= scrollHeight && this.scrolledDown === true) {
-            this.scrolledDown = false;
+        if (document.documentElement.scrollTop <= scrollHeight && scrolledDown === true) {
+            scrolledDown = false;
             $('.header-secondline').removeClass('scroll-down');
         }
     };
