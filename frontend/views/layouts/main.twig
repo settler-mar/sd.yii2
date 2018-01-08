@@ -29,16 +29,17 @@
     <!--[if lt IE 9]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    {# include 'base/header.twig' #}
+     {% include 'base/header.twig' %}
 
     {% if this.all_params.wrap=='index' %}
       {{ content|raw }}
     {% endif %}
 
-    {# include 'base/footer.twig' #}
+     {% include 'base/footer.twig' %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="/js/new/scroll.js"></script>
     <script src="/js/new/accordion.js"></script>
+    <script src="/js/new/scripts.js"></script>
   </body>
 </html>

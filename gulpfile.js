@@ -62,7 +62,7 @@ gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
 //сервер и слежение -
 gulp.task('default',['server']);
 
-gulp.task('js',['jscommon', 'jsaccount', 'jsadmin']);
+gulp.task('js',['jscommon', 'jsaccount', 'jsadmin', 'js_new']);
 
 gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp', 'css_new']);
 
@@ -163,6 +163,10 @@ gulp.task('jsb2b', compileJs([
         paths.source.js+'/original/b2b.js'
     ], paths.b2b.js)
 );
+gulp.task('js_new', compileJs([
+        paths.source.js+'/original/new/script.js'
+    ], paths.app.js+'/new')
+);
 
 function compileCss (source, dest) {
   gulp.src(paths.source.css + source)
@@ -175,7 +179,7 @@ function compileCss (source, dest) {
     }))
     .pipe(pxtorem({
       propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
-        'height','top',
+        'height','top', 'width',
         'margin','margin-bottom','margin-top',
         'padding','padding-bottom','padding-top'
       ],
@@ -253,6 +257,20 @@ gulp.task('server',['css', 'js', 'cssb2b', 'jsb2b'], function() {
     // gulp.watch(paths.watch.js).on('change', browserSync.reload);
     // gulp.watch(paths.watch.css).on('change', browserSync.reload);
 
+});
+
+// запуск browsersync  и дальнейшее слежение
+gulp.task('server_new',['css_new', 'js_new'], function() {
+    // browserSync.init({
+    //     server: "./public"
+    // });
+
+    gulp.watch(paths.watch.css, ['css_new']);
+    gulp.watch(paths.watch.scss, ['css_new']);
+    gulp.watch(paths.watch.js, ['js_new']);
+    // gulp.watch(paths.watch.scss).on('change', browserSync.reload);
+    // gulp.watch(paths.watch.js).on('change', browserSync.reload);
+    // gulp.watch(paths.watch.css).on('change', browserSync.reload);
 });
 
 

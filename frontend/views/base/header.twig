@@ -1,31 +1,91 @@
 <section id="header" class="header">
   <div class="header-upline">
     <div class="page-wrap page-wrap-flex">
-      <div class="header-item header-logo">
-        <a href="/">
-          <img src="images/templates/sd_logo.png" alt="secretdiscounter logo">
-        </a>
+
+      <div class="header-logo">
+        <div class="menu-toggle">
+          <a href="/"> {{ svg('bars', 'menu-toggle_button')|raw }}</a>
+        </div>
+        <div class="header-logo-center">
+          <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
+        </div>
+        {% if 1==1 %}
+            {#если есть уведомления#}
+          <div class="header-logo_noty  btn-header mobile">
+            <a href="/">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
+          </div>
+        {% endif %}
+        <div class="search-toggle  btn-header mobile">
+          <a href="/">{{ svg('search', 'search-toggle_button btn-header_button')|raw }}</a>
+        </div>
+
       </div>
+
       <div class="header-item header-search">
         <form action="/search" class="header-search_form" name="search" method="get">
           <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
           {{ svg('search','header-search_form-button')|raw }}
         </form>
       </div>
-      <div class="header-right header-item">
-        <a href="/howitworks" class="header-right_link">Как это работает</a>
-        <a href="/howitworks" class="header-right_link">Помощь</a>
-        <div class="header-authorization">
-          <a href="#login" rel="nofollow" class="login ignore-hash header-authorization-btn header-authorization-btn-enter">Вход</a>
-          <span class="header-authorization-separate">/</span>
-          <a href="#registration" rel="nofollow" class="registration ignore-hash header-authorization-btn">Регистрация</a>
-        </div>
+      <div class="header-right">
+        {#{% if this.user_id %}#}
+        {% if this.user_id == 0 %}
+        {#если не зарегистрирован#}
+          <a href="/howitworks" class="header-right_link">Как это работает</a>
+            {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
+          <div class="header-authorization">
+            <a href="#login" rel="nofollow" class="login ignore-hash header-authorization-btn header-authorization-btn-enter">Вход</a>
+            <span class="header-authorization-separate">/</span>
+            <a href="#registration" rel="nofollow" class="registration ignore-hash header-authorization-btn">Регистрация</a>
+          </div>
+        {% else %}
+            {#зарегистрирован#}
+          <div class="btn-header" title="Баланс">
+            <a href="/account">{{ svg('dollar', 'btn-header_button')|raw }}
+              <span class="">{{ _nf(this.balance.current) | raw}} руб </span></span>
+            </a>
+          </div>
+          {% if 1==1 %}
+              {#если есть избранные#}
+            <div class="btn-header" title="Избранные шопы">
+              <a href="/account/favorites">{{ svg('star-o', 'btn-header_button')|raw }}</a>
+            </div>
+          {% endif %}
+          {% if 1==1 %}
+              {#если есть уведомления#}
+            <div class="header-logo_noty btn-header" title="Уведомления">
+              <a href="/">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+            </div>
+          {% endif %}
+              
+          <div class="avatar account-menu-toggle">
+          <a href="#"><img class="avatar_image" src="/images/account/avatars/8/Sergey_Pavlovich.jpg" alt="avatar"></a>
+          </div>
+          <div class="account-menu hidden">
+            <ul>
+              <li><a href="/account">Мой аккаунт</a></li>
+              <li><a href="#logout">Выход</a></li>
+            </ul>
+          </div>
+        {% endif %}
+
       </div>
     </div>
   </div>
   <div class="header-secondline">
-    <div class="page-wrap page-wrap-flex">
+    <div class="page-wrap page-wrap-flex header-secondline_inner">
       <ul class="page-wrap-flex drop-menu">
+        {% if this.user_id == 0 %}
+          <li class="mobile">
+            <a href="#login" class="header-right_link mobile">Войти</a>
+          </li>
+          <li class="mobile">
+            <a href="#registration" class="header-right_link mobile">Зарегистрироваться</a>
+          </li>
+          <li class="mobile">
+            <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
+          </li>
+        {% endif %}
         <li class="drop-menu_group__up">
           <a href="/stores/s-povyshennym-cashback" class="title">
             Интернет-магазины
@@ -47,7 +107,7 @@
         <li>
           <a>Двойной кэшбэк</a>
         </li>
-        <li>
+        <li class="desctop">
           <a>Отследить посылку</a>
         </li>
       </ul>
@@ -61,5 +121,6 @@
         </a>
       </div>
     </div>
+    <div class="header-secondline_close"><a href="#">{{ svg('close','header-secondline_close_button')|raw }}</a></div>
   </div>
 </section>
