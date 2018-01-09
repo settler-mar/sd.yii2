@@ -190,7 +190,7 @@ $functionsList=[
     }
 
     if ($value == 0) {
-      $out = '{{svg("heart","heart-red")|raw}}';
+      $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
       $out = $cashback . ' ' .
         (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
