@@ -397,4 +397,12 @@ class SiteController extends SdController
       return $this->render('static_page',$page);
     }
   }
+
+  public function actionVideo(){
+    $request=Yii::$app->request;
+
+    return json_encode([
+      'html'=>$this->renderAjax('modal_video',$request->get())
+    ]);
+  }
 }

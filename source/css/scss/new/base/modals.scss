@@ -8,6 +8,7 @@
   height: 0vh;
   width: 100vw;
   z-index: 1999;
+  box-sizing: border-box;
 
   animation-name: notification_box_hide;
   animation-delay: .15s;
@@ -36,6 +37,7 @@
     min-width: 200px;
     min-height: 70px;
     max-width: 700px;
+    box-sizing: border-box;
 
     .notify_title{
       position: relative;
@@ -68,6 +70,8 @@
 
     .notify_content{
       padding: 15px 10px;
+      height: 100%;
+      box-sizing: border-box;
 
       .gray-box{
         background-color: #eee;
@@ -378,4 +382,25 @@
 
 .blank .notification_container{
   top: 0px;
+}
+
+.notification_box {
+  .modals {
+    &-full_screen {
+      width: calc(99vw - 20px);
+      height: calc(98vh - 20px);
+      max-width: 99vw;
+
+      .notify_close{
+        font-size: 30px;
+        color: #fff !important;
+        margin-right: 5px;
+      }
+    }
+
+    &-video {
+      min-width: 100%;
+      min-height: 100%;
+    }
+  }
 }

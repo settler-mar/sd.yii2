@@ -18,7 +18,7 @@
 
         data={
             buttonYes:false,
-            notyfy_class:"notify_white loading",
+            notyfy_class:"loading "+(href.indexOf('video')===0?'modals-full_screen':'notify_white'),
             question:''
         };
         notification.alert(data);
