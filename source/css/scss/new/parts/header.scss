@@ -255,6 +255,10 @@
     &_button {
       width: $header_button_size;
       height: $header_button_size;
+      &_money {
+        width: 14px;
+        height: 14px;
+      }
     }
     a {
       color: $header_color_up;
