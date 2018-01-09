@@ -1,5 +1,5 @@
-<div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h3 style="margin-bottom: 35px;">Регистрация</h3>
+<div class="sign-up popup-sign-up">
+  <h2>Регистрация</h2>
   {% set form = active_form_begin({
     'id' : isAjax?'registration-form-ajax':'registration-form',
     'layout' : 'horizontal',
@@ -17,40 +17,34 @@
 
   {{ form.field(model, 'email',{
     'template' :
-    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':'Введите ваш e-mail'}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Придумайте пароль'}) | raw }}
 
   {{ form.field(model, 'password_repeat',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
 
-  <div style="text-align: center; width:75%; margin: 10px auto 20px; color: #888; font-size: 12px;">Я принимаю условия <a href="/terms" class="ignore-hash" style="text-decoration: underline;">Пользовательского соглашения</a> и
-    <a class="ignore-hash" style="text-decoration: underline;" href="/">политики конфиденциальности</a></div>
+  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">Я принимаю условия <a href="/terms">Пользовательского соглашения</a> и
+    <a class="ignore-hash" href="/">политики конфиденциальности</a></div>
 
-  <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Зарегистрироваться</button>
+  <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">Зарегистрироваться</button>
   {{ active_form_end() }}
 
 
-  <div style="margin-top:30px; text-transform: uppercase; font-size: 12px; text-transform: uppercase;">
-    <div style="display: inline-block; border-bottom: 2px solid #eee; margin-bottom: 2px;width: 30%;" ></div>
-    <div style="display: inline-block; color: #888;">
-      Или при помощи соцсетей
-    </div>
-    <div style="display: inline-block;border-bottom: 2px solid #eee;margin-bottom: 2px;width: 30%;" ></div>
-  </div>
-  <div style="margin-top: 10px;margin-bottom:5px;">
+  <div class="terms">Или при помощи соцсетей</div>
+  <div>
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <div class="sign-up-buttons"><a href="#login" class="btn ignore-hash">Я уже зарегистрирован</a></div>
+    <a href="#login" class="btn btn-round btn-transform btn-max_width180 block_margin-auto modals_open">Я уже зарегистрирован</a>
     <div class="text-dop" style="color: #888;">Войдите, если у вас есть аккаунт</div>
   </div>
 

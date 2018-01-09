@@ -108,12 +108,20 @@
     vertical-align: middle;
   }
 
+  &-post_logo{
+    display: inline-block;
+    vertical-align: middle;
+    max-width: calc(100% - 5PX);
+  }
+
   &_valing{
+    text-align: center;
+
     &:before{
       content: "";
       display: inline-block;
       vertical-align: middle;
-      width: 100%;
+      height: 100%;
     }
   }
 }

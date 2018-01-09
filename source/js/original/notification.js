@@ -44,6 +44,7 @@ var notification = (function() {
 
   function closeModal(){
     $('html').removeClass('show_notifi');
+    $('.notification_box .notify_content').html('')
   }
 
   function closeModalFon(e){
