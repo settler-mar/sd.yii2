@@ -1,10 +1,11 @@
 .header {
   margin-bottom: 100px;
-  perspective: 400px;
+  //perspective: 400px;
   position: fixed;
   &.scrollable {
     position: static;
-    perspective: none;
+    margin-bottom: 0;
+    //perspective: none;
   }
   width: 100%;
   z-index: 100;
@@ -20,11 +21,18 @@
     padding: 10px 0;
     background: $header_bg_up;
     z-index: 99;
+    .header-right {
+      @include media($laptop_min) {
+        display: none;
+      }
+
+    }
   }
 
   &-secondline {
-    transition: all 0.6s linear;
+    transition: all 0.3s linear;
     position: fixed;
+    border-bottom: 1px solid $menu_border_color;
     &.scrollable {
       position: absolute;
     }
@@ -51,8 +59,22 @@
       }
     }
     &.scroll-down {
-      opacity: 0.5;
-      transform: rotate3d(-1,0,0,90deg) translate3d(0,-60px,-40px)
+      //opacity: 0.5;
+      //transform: rotate3d(-1,0,0,90deg) translate3d(0,-60px,-40px)
+      //position: static;
+
+      position: relative;
+      margin-top: -50px;
+      @include media($laptop_min) {
+        position: absolute;
+        margin-top: 0;
+      }
+    }
+    &.shadowed {
+      box-shadow: 0 7px 7px rgba(0,0,0,.2);
+      @include media($laptop_min) {
+        box-shadow: none;
+      }
     }
 
 
@@ -67,30 +89,12 @@
       transition: left .25s ease .1s;
       top: $mobile_stores_menu_top;
       &.scroll-down {
-        opacity: 1;
-        transform: none;
+        //opacity: 1;
+        //transform: none;
       }
       &_inner {
         width: 90%;
         margin-left: 0;
-      }
-    }
-    &_close {
-      display: none;
-      @include media($laptop-min) {
-        display: block;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-      }
-      a {
-        color: $header_sub_menu_color_hover;
-        stroke: $header_sub_menu_color_hover;
-        fill: $header_sub_menu_color_hover;
-      }
-      &_button {
-        width: $header_button_size;
-        height: $header_button_size;
       }
     }
     .menu_angle-right,
@@ -106,8 +110,6 @@
       fill: $text_color;
       cursor: pointer;
     }
-
-
   }
 
   &-item {
@@ -182,7 +184,8 @@
 
 
     @include media($laptop_min) {
-      display: none;
+      //display: none;
+      text-align: left;
     }
 
   }

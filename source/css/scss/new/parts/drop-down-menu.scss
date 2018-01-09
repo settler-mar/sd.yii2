@@ -3,6 +3,17 @@
   margin: 0;
   padding: 0;
 
+  &.header-right {
+    &>li {
+      margin-right: 0;
+      margin-left: 20px;
+      @include media($laptop_min) {
+        margin-right: 20px;
+        margin-left: 0;
+      }
+    }
+  }
+
   &>li{
     margin-right: 20px;
     &.mobile {
