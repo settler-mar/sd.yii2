@@ -21,19 +21,19 @@
 <section class="advantages_line_second margin">
     <div class="page-wrap flex-line laptop-min_flex-wrap advantages_line_second-wrap" >
         <div class="advantages_line_second-item">
-            <div class="advantages_line_second-counter">17 737 703 руб</div>
+            <div class="advantages_line_second-counter">{{ _nf(counter.total_save,0)|raw }} руб</div>
             <div class="advantages_line_second-label">SecretDiscounter уже сэкономил своим пользователям</div>
         </div>
         <div class="advantages_line_second-item">
-            <div class="advantages_line_second-counter">3 420 </div>
+            <div class="advantages_line_second-counter">{{ _nf(counter.count_save,0)|raw }} </div>
             <div class="advantages_line_second-label">покупок совершено за неделю</div>
         </div>
         <div class="advantages_line_second-item">
-            <div class="advantages_line_second-counter">1 850 руб</div>
+            <div class="advantages_line_second-counter">{{ _nf(counter.sum_save,2)|raw }} руб</div>
             <div class="advantages_line_second-label">максимальный кэшбэк за вчера</div>
         </div>
         <div class="advantages_line_second-item">
-            <div class="advantages_line_second-counter">39%</div>
+            <div class="advantages_line_second-counter">{{ _nf(counter.save_persent,0)|raw }}%</div>
             <div class="advantages_line_second-label">столько в среднем экономят наши пользователи при помощи промокодов и кэшбэка</div>
         </div>
     </div>

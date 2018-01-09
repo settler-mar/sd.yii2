@@ -175,23 +175,28 @@ gulp.task('js_new', compileJs([
 );
 
 function compileCss (source, dest) {
-  gulp.src(paths.source.css + source)
+  var css=gulp.src(paths.source.css + source)
     .pipe(sourcemap.init())
     .pipe(scss().on('error', notify.onError({ title: 'Style SASS' })))
     .pipe(plumber())
     .pipe(autoprefixer({
       browsers: ['last 50 versions'],
       cascade: false
-    }))
-    .pipe(pxtorem({
-      propWhiteList:['font', 'font-size', 'line-height', 'letter-spacing',
-        'height','top', 'width',
-        'margin','margin-bottom','margin-top',
-        'padding','padding-bottom','padding-top'
-      ],
-      map:true
-    }))
-    .pipe(replace('PX', 'px'))
+    }));
+
+  if(source.indexOf('main')>0) {
+    css
+      .pipe(pxtorem({
+        propWhiteList: ['font', 'font-size', 'line-height', 'letter-spacing',
+          'height', 'top', 'width',
+          'margin', 'margin-bottom', 'margin-top',
+          'padding', 'padding-bottom', 'padding-top'
+        ],
+        map: true
+      }))
+      .pipe(replace('PX', 'px'));
+  };
+  css
     .pipe(gcmq())
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
