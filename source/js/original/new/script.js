@@ -15,17 +15,26 @@ var headerActions = function () {
         $('.header').removeClass('header_open-menu');
     });
 
-
-
     window.onscroll = function() {
         var scrollHeight = 50;
-        if (document.documentElement.scrollTop > scrollHeight && scrolledDown === false) {
-            scrolledDown = true;
-            $('.header-secondline').addClass('scroll-down');
-        }
-        if (document.documentElement.scrollTop <= scrollHeight && scrolledDown === true) {
-            scrolledDown = false;
-            $('.header-secondline').removeClass('scroll-down');
+        var headerSecondLine = $('.header-secondline');
+        var hovers = headerSecondLine.find(':hover');
+        var header = $('.header');
+
+        if (!hovers.length) {
+            headerSecondLine.removeClass('scrollable');
+            header.removeClass('scrollable');
+            if (document.documentElement.scrollTop > scrollHeight && scrolledDown === false) {
+                scrolledDown = true;
+                headerSecondLine.addClass('scroll-down');
+            }
+            if (document.documentElement.scrollTop <= scrollHeight && scrolledDown === true) {
+                scrolledDown = false;
+                headerSecondLine.removeClass('scroll-down');
+            }
+        } else {
+            headerSecondLine.addClass('scrollable');
+            header.addClass('scrollable');
         }
     };
 
