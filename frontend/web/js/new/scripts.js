@@ -636,6 +636,7 @@ $('[ref=popup]').on('click',function (e){
 
 var headerActions = function () {
     var scrolledDown = false;
+    var shadowedDown = false;
 
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
@@ -652,7 +653,8 @@ var headerActions = function () {
     });
 
     window.onscroll = function() {
-        var scrollHeight = 50;
+        var shadowHeight = 50;
+        var hideHeight = 200;
         var headerSecondLine = $('.header-secondline');
         var hovers = headerSecondLine.find(':hover');
         var header = $('.header');
@@ -660,11 +662,19 @@ var headerActions = function () {
         if (!hovers.length) {
             headerSecondLine.removeClass('scrollable');
             header.removeClass('scrollable');
-            if (document.documentElement.scrollTop > scrollHeight && scrolledDown === false) {
+            if (document.documentElement.scrollTop > shadowHeight && shadowedDown === false) {
+                shadowedDown = true;
+                headerSecondLine.addClass('shadowed');
+            }
+            if (document.documentElement.scrollTop <= shadowHeight && shadowedDown === true) {
+                shadowedDown = false;
+                headerSecondLine.removeClass('shadowed');
+            }
+            if (document.documentElement.scrollTop > hideHeight && scrolledDown === false) {
                 scrolledDown = true;
                 headerSecondLine.addClass('scroll-down');
             }
-            if (document.documentElement.scrollTop <= scrollHeight && scrolledDown === true) {
+            if (document.documentElement.scrollTop <= hideHeight && scrolledDown === true) {
                 scrolledDown = false;
                 headerSecondLine.removeClass('scroll-down');
             }
