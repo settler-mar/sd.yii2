@@ -143,10 +143,22 @@
   &-search {
     position: relative;
 
+
+
     &_form {
       &-input {
         padding: 6px 10px;
         width: 290px;
+
+        @include media($laptop_min) {
+          width: 600px;
+        }
+        @include media($tablets) {
+          width: 350px;
+        }
+        @include media($phones) {
+          width: 250px;
+        }
         border-radius: 5px;
         outline: none;
         border: 0;
@@ -157,7 +169,8 @@
         top: 0;
         right: 0;
         height: calc(100% - 12px);
-        width: 40px;
+        //width: 40px;
+        width: 25px;
         background: $search-btn-bg;
         color: $search-btn-color;
         text-align: center;
