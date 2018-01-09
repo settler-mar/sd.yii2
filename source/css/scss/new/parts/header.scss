@@ -386,6 +386,7 @@
     &-search {
       display: none;
       margin-right: auto;
+      position: relative;
 
       &.open {
         display: block;
@@ -402,6 +403,37 @@
     }
   }
 
+}
+.autocomplete {
+  position: absolute;
+  display: none;
+  top: 40px;
+  left: 0;
+  padding: 5px;
+  background-color: $shop_cashback_link_color;
+  box-shadow: 0 4px 4px rgba(0,0,0,.2);
+  width: 100%;
+  &_list {
+    margin: 0;
+    padding: 0;
+    >li{
+      list-style-type: none;
+      a {
+        display: flex;
+        justify-content: space-between;
+        color: $header_color_up;
+        text-decoration: none;
+        padding: 8px 4px;
+        .cashback {
+          color: $search_item_cashback_color
+        }
+        &:hover {
+          color: $header_sub_menu_color_hover;
+          background-color: $search_list_hover_color;
+        }
+      }
+    }
+  }
 }
 
 @include media($phones) {
