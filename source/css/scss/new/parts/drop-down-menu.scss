@@ -60,7 +60,7 @@
 
     opacity: 0;
     visibility: hidden;
-    transition: opacity .25s ease .1s;
+    transition: all .25s ease .1s;
     @include media($laptop_min) {
       position: relative;
       width: auto;
