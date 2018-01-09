@@ -16,12 +16,14 @@
 
   &>li{
     margin-right: 20px;
+
     &.mobile {
       display:none;
       @include media($laptop_min) {
         display: block;
       }
     }
+
     &.desctop {
       //display: inline-block;
       @include media($laptop_min) {
@@ -32,8 +34,9 @@
 
   a{
     vertical-align: top;
-    //padding: 15px 0;
-    padding: 10px 0;
+    //padding: 10px 0;
+    padding: 8px 0;
+    font-size: 14px;
     color: $header_sub_menu_color;
     stroke: $header_sub_menu_color;
     fill: $header_sub_menu_color;

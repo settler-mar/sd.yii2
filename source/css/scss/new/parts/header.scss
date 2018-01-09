@@ -33,15 +33,15 @@
     transition: all 0.3s linear;
     position: fixed;
     border-bottom: 1px solid $menu_border_color;
-    &.scrollable {
-      position: absolute;
-    }
     top: $menu_height;
     width: 100%;
     background-color: $header_bg_second;
-
     line-height: 50px;
     z-index: 98;
+
+    &.scrollable {
+      position: absolute;
+    }
 
     &-link{
       color: $header_sub_menu_color;
