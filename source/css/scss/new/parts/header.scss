@@ -4,6 +4,7 @@
   position: fixed;
   &.scrollable {
     position: static;
+    margin-bottom: 0;
     //perspective: none;
   }
   width: 100%;
