@@ -286,11 +286,21 @@ $functionsList=[
     $s=implode('@<wbr>',$s);
     return $s;
   },
-  '_nf'=>function($s,$k=2,$minus_test = true){
+  '_nf'=>function($s,$k=2,$minus_test = true,$separate="&nbsp;",$wrap=false){
     if($minus_test && $s<0){
       $s=0;
     }
-    return number_format($s,$k,'.','&nbsp;');
+    $out= number_format($s,$k,'.',"&nbsp;");
+
+    if($separate!="&nbsp;"){
+      $out=str_replace("&nbsp;",$separate,$out);
+    }
+    if($wrap==1){
+      for($i=0;$i<10;$i++){
+        $out=str_replace($i,'<span>'.$i.'</span>',$out);
+      }
+    }
+    return $out;
   },
   '_if'=>function($is,$then=false,$else=false){
     if($is){
