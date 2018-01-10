@@ -48,7 +48,7 @@
                     title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"
                     data-tooptip="Сумма кэшбека за покупки, которая зачислена на ваш баланс">
                   {{ _nf(this.balance.total) | raw}} руб </span>
-              <span class="tooltip"
+              <span class="ballance-confirmed tooltip"
                     title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"
                     data-tooptip="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином">
                 / {{ _nf(this.balance.current) | raw}} руб </span>
@@ -57,11 +57,11 @@
           {% if 1==1 %}
               {#если есть избранные#}
             <div class="btn-header" >
-              <a title="Избранные магазины" href="/account/favorites">{{ svg('star-o', 'btn-header_button')|raw }}</a>
+              <a title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
             </div>
           {% endif %}
               {#если есть уведомления добавлен класс#}
-            <div class="header-logo_noty btn-header {% if this.noty_count > 0 %}has-noty{% endif %}" >
+            <div class="header-logo_noty btn-header last {% if this.noty_count > 0 %}has-noty{% endif %}" >
               <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
