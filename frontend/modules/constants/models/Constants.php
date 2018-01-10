@@ -64,7 +64,9 @@ class Constants extends \yii\db\ActiveRecord
   public function beforeValidate()
     {
       if(isset($this->text)) {
-        $this->ftype = $this->oldAttributes['ftype'];
+        if(isset($this->oldAttributes['ftype'])) {
+          $this->ftype = $this->oldAttributes['ftype'];
+        };
         if ($this->ftype == 'json' && is_array($this->text)) {
           $this->text = json_encode($this->text);
         }
