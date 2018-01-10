@@ -33,7 +33,7 @@
         {#{% if this.user_id %}#}
         {% if this.user_id == 0 %}
         {#если не зарегистрирован#}
-          <a href="/howitworks" class="header-right_link">Как это работает</a>
+          <a href="/howitworks" class="header-right_link header-other-btn">Как это работает</a>
             {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
           <div class="header-authorization">
             <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-btn-enter modals_open">Вход</a>
@@ -109,6 +109,22 @@
         <li>
           <a>Двойной кэшбэк</a>
         </li>
+        <li class="drop-menu_group__up">
+          <a href="">Сервисы
+              {{ svg('angle-down','menu_angle-down')|raw }}
+          </a>
+          <ul>
+            <li>
+              <a href="#">Отследить посылку</a>
+            </li>
+            <li>
+              <a href="#">Таблица размеров</a>
+            </li>
+            <li>
+              <a href="#">Плагин для браузера</a>
+            </li>
+          </ul>
+        </li>
       </ul>
       <ul class="header-right page-wrap-flex drop-menu">
         <li>
@@ -119,14 +135,15 @@
         </li>
         <li>
           <a class="" href="#">
-          Приведи друга
+          Приведи друга ({{ svg('dollar','header-icon-money')|raw }})
         </a>
         </li>
+        {% if this.user_id > 0 %}
         <li class="drop-menu_group__up">
-          <a href="">Помощь
+          <a href="" class="dashed">Помощь
               {{ svg('angle-down','menu_angle-down')|raw }}
           </a>
-          <ul>
+          <ul class="left-">
             <li>
               <a href="">Как это работает</a>
             </li>
@@ -134,10 +151,33 @@
               <a href="">Служба поддержки</a>
             </li>
             <li>
+              <a href="">Сообщить о потерянном кэшбэке</a>
+            </li>
+            <li>
               <a href="">Правила совершения покупок</a>
+            </li>
+            <li>
+              <a href="">Накопительная система</a>
+            </li>
+            <li>
+              <a href="">Вопросы и ответы</a>
+            </li>
+            <li>
+              <a href="">Жалобы и предложения</a>
+            </li>
+            <li>
+              <a href="">Сообщить об ошибке на сайте</a>
+            </li>
+            <li>
+              <a href="">Подключить ваш магазин</a>
             </li>
           </ul>
         </li>
+        {% else %}
+        <li>
+          <a href="/faw">Помощь</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

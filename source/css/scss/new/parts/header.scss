@@ -59,6 +59,7 @@
         fill: $header_sub_menu_color_hover;
         cursor: pointer;
       }
+
     }
     &.scroll-down {
       //opacity: 0.5;
@@ -81,7 +82,7 @@
 
 
     &_inner {
-      width: 100%;
+      //width: 100%;
     }
 
     @include media($laptop-min) {
@@ -101,9 +102,11 @@
     }
     .menu_angle-right,
     .menu_angle-down{
-      margin-top:0;
-      width: 12px;
-      height: 12px;
+      margin-top: 4px;
+      //width: 12px;
+      //height: 12px;
+      width: 9px;
+      height: 9px;
       //top: 6px;
       right: 8px;
       padding: 10px;
@@ -111,6 +114,10 @@
       stroke: $text_color;
       fill: $text_color;
       cursor: pointer;
+    }
+    a.dashed {
+      border-bottom: 1px dashed;
+      padding-bottom: 2px;
     }
   }
 
@@ -124,10 +131,17 @@
   &-logo {
     display: flex;
     padding-right: 15px;
+    @include media($laptop_min) {
+      padding: 0;
+    }
     justify-content: space-between;
     //margin: auto;
     &-center {
       margin: auto;
+      a {
+        display: block;
+        margin-top: 4px;
+      }
     }
 
     img {
@@ -140,6 +154,9 @@
     width: 30px;
     height: 20px;
     vertical-align: middle;
+    @include media($laptop_min) {
+      display: none;
+    }
   }
 
   &-search {
@@ -196,6 +213,7 @@
     text-align: right;
     display: flex;
     justify-content: flex-end;
+    margin: auto;
 
 
     @include media($laptop_min) {
@@ -203,6 +221,13 @@
       text-align: left;
     }
 
+  }
+
+
+  &-other-btn {
+    color: $header_color_up;
+    text-decoration: none;
+    border-bottom: 1px dashed;
   }
 
   &-authorization {
@@ -245,6 +270,7 @@
     }
 
   }
+
   .btn-header {
     margin: auto 0;
     padding: 0 35px;
@@ -279,6 +305,10 @@
         display: block;
       }
     }
+  }
+  .search-toggle {
+    padding-right: 3px !important;
+    margin: auto 0;
   }
   &-logo_noty {
     position: relative;
@@ -362,15 +392,19 @@
     &_header {
       font-weight: bold;
       margin: 10px;
-      text-align: center;
-      border-bottom: 2px solid $menu_border_color;
+      text-align: right;
+      border-bottom: 1px solid $menu_border_color;
       padding-bottom: 10px;
     }
     &_last-item {
-      border-bottom: 2px solid $menu_border_color;
+      border-bottom: 1px solid $menu_border_color;
       padding-bottom: 10px;
       margin-bottom: 10px;
     }
+  }
+  &-icon-money {
+    width: 12px;
+    height: 12px;
   }
 }
 
