@@ -26,19 +26,21 @@ var headerActions = function () {
         if (!hovers.length) {
             headerSecondLine.removeClass('scrollable');
             header.removeClass('scrollable');
-            if (document.documentElement.scrollTop > shadowHeight && shadowedDown === false) {
+            //document.documentElement.scrollTop
+            var scrollTop=$(window).scrollTop();
+            if (scrollTop > shadowHeight && shadowedDown === false) {
                 shadowedDown = true;
                 headerSecondLine.addClass('shadowed');
             }
-            if (document.documentElement.scrollTop <= shadowHeight && shadowedDown === true) {
+            if (scrollTop <= shadowHeight && shadowedDown === true) {
                 shadowedDown = false;
                 headerSecondLine.removeClass('shadowed');
             }
-            if (document.documentElement.scrollTop > hideHeight && scrolledDown === false) {
+            if (scrollTop > hideHeight && scrolledDown === false) {
                 scrolledDown = true;
                 headerSecondLine.addClass('scroll-down');
             }
-            if (document.documentElement.scrollTop <= hideHeight && scrolledDown === true) {
+            if (scrollTop <= hideHeight && scrolledDown === true) {
                 scrolledDown = false;
                 headerSecondLine.removeClass('scroll-down');
             }
