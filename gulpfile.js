@@ -188,7 +188,7 @@ function compileCss (source, dest) {
     css
       .pipe(pxtorem({
         propWhiteList: ['font', 'font-size', 'line-height', 'letter-spacing',
-          'height', 'top', 'width',
+          'height', 'top',
           'margin', 'margin-bottom', 'margin-top',
           'padding', 'padding-bottom', 'padding-top'
         ],

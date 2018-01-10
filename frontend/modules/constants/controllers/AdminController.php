@@ -8,6 +8,7 @@ use frontend\modules\constants\models\ConstantsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use unclead\multipleinput\MultipleInput;
 
 /**
  * AdminController implements the CRUD actions for Constants model.
@@ -75,6 +76,7 @@ class AdminController extends Controller
       }
       return $this->render('update', [
         'model' => $model,
+        'mp_class' =>MultipleInput::className()
       ]);
   }
 

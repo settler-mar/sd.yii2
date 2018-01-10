@@ -154,10 +154,13 @@ $functionsList=[
   '_no_br'=> function ($content) {
     return str_replace('<br>', '', $content);
   },
+  'json_decode'=> function ($content) {
+    return json_decode($content,true);
+  },
   //функция отдать константу по имени
   '_constant'=> function ($name) {
     return Yii::$app->cache->getOrSet($name, function() use($name){
-      $meta = Constants::find()->where(['name'=> $name])->select(['text'])->one();
+      $meta = Constants::find()->where(['name'=> $name])->select(['text','ftype'])->one();
       if ($meta){
         return $meta['text'];
       }else{
@@ -290,6 +293,7 @@ $functionsList=[
     if($minus_test && $s<0){
       $s=0;
     }
+    $s=(float)$s;
     $out= number_format($s,$k,'.',"&nbsp;");
 
     if($separate!="&nbsp;"){

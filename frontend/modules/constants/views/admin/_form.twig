@@ -1,4 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
+{{ use('unclead\multipleinput\MultipleInput') }};
 <div class="constants-form">
     {% set form = active_form_begin() %}
 
@@ -7,11 +8,15 @@
         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
         {% if model.ftype=='textarea' %}
             {{ form.field(model, 'text').textarea({'rows':6})|raw }}
-        {% else  %}
+        {% elseif(model.ftype=='reachtext') %}
             {{ form.field(model, 'text').textarea({'rows':6, 'class':'visual_editor'})|raw }}
+        {% elseif(model.ftype=='json') %}
+            {% set param = include('json/'~model.editor_param~'.json', {
+                'model': model,
+            })
+            %}
+            {{ form.field(model, 'text').widget(mp_class,json_decode(param))|raw}}
         {% endif %}
-
-        {{ form.field(model, 'ftype').dropDownList({'textarea':'textarea','reachtext':'reachtext'})|raw }}
 
         {{ form.field(model, 'updated_at').textInput()|raw }}
 

@@ -16,6 +16,7 @@
                 <h1>{{ html.encode(this.title) }}</h1>
                     {{ include('_form.twig', {
                             'model': model,
+                            'mp_class': mp_class
                         })
                     }}
                 </div>

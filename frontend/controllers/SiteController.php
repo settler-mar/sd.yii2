@@ -95,47 +95,13 @@ class SiteController extends SdController
     Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
-
-    $cache = Yii::$app->cache;
-    //Грузим с кэша. Период очистки 8 часов.
-    $counter = $cache->getOrSet('counter_index', function () {
-      $user_count=Users::find()->orderBy(['uid'=>SORT_DESC])->asArray()->select('uid')->one();
-
-      $query  = new Query();
-
-      $query->select
-      (['max(cashback) as cashback, count(uid) as cnt'])
-          ->from('cw_payments')
-          ->where(['>','action_date',date("Y-m-d",time()-7*24*60*60)]);
-      $command   = $query->createCommand();
-      $result    = $command->queryOne();
-
-      $query->select
-      (['max(cashback) as cashback, count(uid) as cnt'])
-          ->from('cw_payments')
-          ->where(['>','action_date',date("Y-m-d",time()-1*24*60*60)]);
-      $command   = $query->createCommand();
-      $result2    = $command->queryOne();
-
-      $out=[
-          'user_count'=>round($user_count['uid']*5.4),
-          'total_save'=>round($user_count['uid']*106),
-          'count_save'=>round($result['cnt']*5.4),
-          'sum_save'=>round($result2['cashback']*3.4,2),
-          'save_persent'=>39,
-          ];
-
-      return $out;
-    },3600*8);
-
     //ddd($counter);
     return $this->render('index', [
       'time' => time(),
       'stores' => $stores,
       'total_all_stores' => $totalStores,
       'top_reviews' => $reviews,
-      'wrap'=>'index',
-      'counter'=>$counter,
+      'wrap'=>'index'
     ]);
   }
 

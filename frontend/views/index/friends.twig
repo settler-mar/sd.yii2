@@ -2,58 +2,27 @@
     <div class="page-wrap">
         <h2>С нами дружат</h2>
         <div class="flex-line flex-wrap">
-
-            <div class="instruction-item instruction-item-230 gray-box">
-                <div class="flex-line">
-                    {{ svg('color/vk','instruction-social_logo')|raw }}
-                    <div class="instruction-social_counter">
-                        <span>18 947</span>
-                        подписчиков
+            {% set social_list = _constant("social_list") %}
+            {% for item in social_list %}
+                {% if item.on_index==1 %}
+                    <div class="instruction-item instruction-item-230 gray-box">
+                        <div class="flex-line">
+                            {{ svg('color/'~item.code,'instruction-social_logo')|raw }}
+                            <div class="instruction-social_counter">
+                                <span>{{ _nf(item.count,0)|raw }}</span>
+                                {{ item.index_text }}
+                            </div>
+                        </div>
+                        <a class="social-btn social-btn-{{ item.code }}" href="{{ item.url }}">
+                            {% set sub_icon=item.code~_if(item.code=='vk','','_mini') %}
+                            {% if item.code!="ok" %}
+                                {{ svg('color/'~sub_icon,'social-btn-logo')|raw }}
+                            {% endif %}
+                            {{ item.button }}
+                        </a>
                     </div>
-                </div>
-                <a class="social-btn social-btn-vk" href="#">
-                    {{ svg('color/vk','social-btn-logo')|raw }}
-                    Вступить в группу
-                </a>
-            </div>
-            <div class="instruction-item instruction-item-230 gray-box">
-                <div class="flex-line">
-                    {{ svg('color/fb','instruction-social_logo')|raw }}
-                    <div class="instruction-social_counter">
-                        <span>838</span>
-                        нравится
-                    </div>
-                </div>
-                <a class="social-btn social-btn-fb" href="#">
-                    {{ svg('color/fb_mini','social-btn-logo')|raw }}
-                    Нравится страница
-                </a>
-            </div>
-            <div class="instruction-item instruction-item-230 gray-box">
-                <div class="flex-line">
-                    {{ svg('color/ok','instruction-social_logo')|raw }}
-                    <div class="instruction-social_counter">
-                        <span>18 947</span>
-                        участников
-                    </div>
-                </div>
-                <a class="social-btn social-btn-ok" href="#">
-                    + присоединиться
-                </a>
-            </div>
-            <div class="instruction-item instruction-item-230 gray-box">
-                <div class="flex-line">
-                    {{ svg('color/g','instruction-social_logo')|raw }}
-                    <div class="instruction-social_counter">
-                        <span>18 947</span>
-                        подписчиков
-                    </div>
-                </div>
-                <a class="social-btn social-btn-g" href="#">
-                    {{ svg('color/g_mini','social-btn-logo')|raw }}
-                    Подписаться
-                </a>
-            </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </section>

@@ -1,0 +1,42 @@
+{
+  "allowEmptyList":false,
+  "columns": [
+    {
+      "name": "code",
+      "type": "dropDownList",
+      "title": "Код соц сети",
+      "items": {
+        "vk": "VK",
+        "fb": "fb",
+        "ok": "Одноклассники",
+        "g": "Google",
+        "instogram": "instogram",
+        "y": "youtube"
+      }
+    },{
+      "name": "url",
+      "title": "Ссылка"
+    },{
+      "name": "count",
+      "title": "Подписчиков"
+    },{
+      "name": "on_footer",
+      "type": "checkbox",
+      "title": "Вывод подвал"
+    },{
+      "name": "footer_text",
+      "title": "Текст после счетчика(подвал)"
+    },{
+      "name": "on_index",
+      "type": "checkbox",
+      "title": "Вывод на стартовую"
+    },{
+      "name": "button",
+      "title": "Текст кнопки(для стартовой)"
+    },{
+      "name": "index_text",
+      "title": "Текст после счетчика(стартовая)"
+    }
+
+  ]
+}

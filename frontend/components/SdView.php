@@ -2,7 +2,9 @@
 namespace frontend\components;
 
 use frontend\modules\favorites\models\UsersFavorites;
+use frontend\modules\users\models\Users;
 use Yii;
+use yii\db\Query;
 use yii\web\View;
 use yii\helpers\Url;
 use frontend\modules\meta\models\Meta;
@@ -24,6 +26,7 @@ class SdView extends View
   public $site_rating;
   public $isWebMaster=false;
   public $noty_count=0;//непрочитанных уведомлений
+  public $sd_counter;
 
   public function init_param()
   {
@@ -58,6 +61,39 @@ class SdView extends View
     }else{
       $this->all_params['ref_id']='';
     }
+
+    $cache = Yii::$app->cache;
+    //Грузим с кэша. Период очистки 8 часов.
+    $this->all_params['sd_counter']= $cache->getOrSet('counter_index', function () {
+      $user_count=Users::find()->orderBy(['uid'=>SORT_DESC])->asArray()->select('uid')->one();
+
+      $query  = new Query();
+
+      $query->select
+      (['max(cashback) as cashback, count(uid) as cnt'])
+          ->from('cw_payments')
+          ->where(['>','action_date',date("Y-m-d",time()-7*24*60*60)]);
+      $command   = $query->createCommand();
+      $result    = $command->queryOne();
+
+      $query->select
+      (['max(cashback) as cashback, count(uid) as cnt'])
+          ->from('cw_payments')
+          ->where(['>','action_date',date("Y-m-d",time()-1*24*60*60)]);
+      $command   = $query->createCommand();
+      $result2    = $command->queryOne();
+
+      $out=[
+          'user_count'=>round($user_count['uid']*5.4),
+          'total_save'=>round($user_count['uid']*106),
+          'count_save'=>round($result['cnt']*5.4),
+          'sum_save'=>round($result2['cashback']*3.4,2),
+          'save_persent'=>39,
+      ];
+
+      return $out;
+    },3600*8);
+    $this->sd_counter=$this->all_params['sd_counter'];
 
     $request = Yii::$app->request;
 
