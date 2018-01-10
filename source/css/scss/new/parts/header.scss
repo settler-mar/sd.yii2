@@ -390,12 +390,12 @@
     &_header {
       font-weight: bold;
       margin: 10px;
-      text-align: center;
-      border-bottom: 2px solid $menu_border_color;
+      text-align: right;
+      border-bottom: 1px solid $menu_border_color;
       padding-bottom: 10px;
     }
     &_last-item {
-      border-bottom: 2px solid $menu_border_color;
+      border-bottom: 1px solid $menu_border_color;
       padding-bottom: 10px;
       margin-bottom: 10px;
     }
