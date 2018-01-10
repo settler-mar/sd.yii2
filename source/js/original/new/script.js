@@ -16,7 +16,7 @@ var headerActions = function () {
         $('.header').removeClass('header_open-menu');
     });
 
-    window.onscroll = function() {
+    $(window).on('load resize scroll',function() {
         var shadowHeight = 50;
         var hideHeight = 200;
         var headerSecondLine = $('.header-secondline');
@@ -46,7 +46,7 @@ var headerActions = function () {
             headerSecondLine.addClass('scrollable');
             header.addClass('scrollable');
         }
-    };
+    });
 
     $('.menu_angle-down').click(function(e) {
         e.preventDefault();

@@ -655,7 +655,7 @@ th:first-child:before {
 
 .form-group .help-block-error {
   margin: -0.3125rem auto 0.625rem auto;
-  width: 33.125rem;
+  width: 530px;
   text-align: center;
   max-width: -webkit-calc(100% - 20px);
   max-width: -moz-calc(100% - 20px);
@@ -1321,7 +1321,7 @@ td .ajax_remove.delete {
 }
 
 .notification_item {
-  width: 19.375rem;
+  width: 310px;
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
   margin-bottom: 0.3125rem;
@@ -1365,7 +1365,7 @@ td .ajax_remove.delete {
   height: 3.125rem;
   margin: 0.3125rem 0.625rem 0rem 0rem;
   float: left;
-  width: 3.125rem;
+  width: 50px;
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
@@ -1476,9 +1476,9 @@ td .ajax_remove.delete {
 }
 
 .notification_box .modals-full_screen {
-  width: -webkit-calc(99vw - 1.25rem);
-  width: -moz-calc(99vw - 1.25rem);
-  width: calc(99vw - 1.25rem);
+  width: -webkit-calc(99vw - 20px);
+  width: -moz-calc(99vw - 20px);
+  width: calc(99vw - 20px);
   height: -webkit-calc(98vh - 1.25rem);
   height: -moz-calc(98vh - 1.25rem);
   height: calc(98vh - 1.25rem);
@@ -1527,7 +1527,7 @@ td .ajax_remove.delete {
 
 .eauth-service .eauth-icon {
   height: 2.1875rem;
-  width: 2.1875rem;
+  width: 35px;
 }
 
 .eauth-service-link_sd {
@@ -1561,7 +1561,7 @@ td .ajax_remove.delete {
 
 .sign-up.noajax {
   margin: 6.25rem auto 9.375rem;
-  width: 31.25rem;
+  width: 500px;
 }
 
 .sign-up.noajax.social {
@@ -1653,7 +1653,7 @@ h2 {
 h2:before {
   content: "";
   background: #f7c714;
-  width: 5.875rem;
+  width: 94px;
   min-width: 74px;
   height: 0.25rem;
   vertical-align: middle;
@@ -1666,7 +1666,7 @@ h2:before {
 h2:after {
   content: "";
   background: #f7c714;
-  width: 5.875rem;
+  width: 94px;
   min-width: 74px;
   height: 0.25rem;
   vertical-align: middle;
@@ -1713,13 +1713,13 @@ h2.title-white-line:after {
 
 .menu_angle-down {
   height: 100%;
-  width: 1.25rem;
+  width: 20px;
   margin-bottom: -1.25rem;
 }
 
 .menu_angle-right {
   height: 100%;
-  width: 1.25rem;
+  width: 20px;
   position: absolute;
   right: 0;
   top: 0;
@@ -1934,7 +1934,7 @@ svg.svg-no-fill {
 .header-secondline .menu_angle-right,
 .header-secondline .menu_angle-down {
   margin-top: 0;
-  width: 0.75rem;
+  width: 12px;
   height: 0.75rem;
   right: 8px;
   padding: 0.625rem;
@@ -1978,11 +1978,11 @@ svg.svg-no-fill {
 }
 
 .header-logo img {
-  width: 12.8125rem;
+  width: 205px;
 }
 
 .header-heart {
-  width: 1.875rem;
+  width: 30px;
   height: 1.25rem;
   vertical-align: middle;
 }
@@ -1993,7 +1993,7 @@ svg.svg-no-fill {
 
 .header-search_form-input {
   padding: 0.375rem 0.625rem;
-  width: 18.125rem;
+  width: 290px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
   outline: none;
@@ -2007,7 +2007,7 @@ svg.svg-no-fill {
   height: -webkit-calc(100% - 0.75rem);
   height: -moz-calc(100% - 0.75rem);
   height: calc(100% - 0.75rem);
-  width: 1.5625rem;
+  width: 25px;
   background: #f7c714;
   color: #1b2527;
   text-align: center;
@@ -2065,7 +2065,7 @@ svg.svg-no-fill {
   margin: 0rem 0rem 0rem 0.1875rem;
   display: inline-block;
   text-align: center;
-  width: 0.3125rem;
+  width: 5px;
 }
 
 .header-authorization-separate:before {
@@ -2079,7 +2079,7 @@ svg.svg-no-fill {
 }
 
 .header .menu-toggle_button {
-  width: 1.625rem;
+  width: 26px;
   height: 1.625rem;
 }
 
@@ -2096,12 +2096,12 @@ svg.svg-no-fill {
 }
 
 .header .btn-header_button {
-  width: 1.25rem;
+  width: 20px;
   height: 1.25rem;
 }
 
 .header .btn-header_button_money {
-  width: 0.875rem;
+  width: 14px;
   height: 0.875rem;
 }
 
@@ -2130,7 +2130,7 @@ svg.svg-no-fill {
   display: block;
   position: absolute;
   background-color: #1EB1FC;
-  width: 0.5rem;
+  width: 8px;
   height: 0.5rem;
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -2140,7 +2140,7 @@ svg.svg-no-fill {
 }
 
 .header .avatar {
-  width: 1.875rem;
+  width: 30px;
   height: 1.875rem;
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -2298,7 +2298,7 @@ svg.svg-no-fill {
   padding: 0;
   background: #F0F0F0;
   position: absolute;
-  width: 18.75rem;
+  width: 300px;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
@@ -2499,7 +2499,7 @@ svg.svg-no-fill {
   margin-top: 1rem;
   margin-left: -70px;
   position: absolute;
-  width: 8.75rem;
+  width: 140px;
   left: 50%;
   text-align: center;
   white-space: nowrap;
@@ -2583,7 +2583,7 @@ svg.svg-no-fill {
 
 .index-hello_right-svg {
   text-align: center;
-  width: 1.5625rem;
+  width: 25px;
   height: 1.5625rem;
 }
 
@@ -2613,14 +2613,14 @@ svg.svg-no-fill {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   display: inline-block;
-  width: 1.625rem;
+  width: 26px;
   text-align: CENTER;
 }
 
 .index-hello_counter-numbers_space {
   background: transparent !important;
   padding: 0rem !important;
-  width: 0rem !important;
+  width: 0px !important;
 }
 
 .index-video_left {
@@ -3027,7 +3027,7 @@ svg.svg-no-fill {
 
 .shop_panel-item_icon {
   height: 1rem;
-  width: 1rem;
+  width: 16px;
   display: inline-block;
   vertical-align: bottom;
   stroke-width: 4px;
@@ -3053,7 +3053,7 @@ svg.svg-no-fill {
 
 .shop_promo-label {
   height: 4.8125rem;
-  width: 4.6875rem;
+  width: 75px;
   display: block;
   position: absolute;
   top: -0.375rem;
@@ -3118,9 +3118,9 @@ svg.svg-no-fill {
 }
 
 .scroll_box-item {
-  width: -webkit-calc(33.3% - 4.625rem);
-  width: -moz-calc(33.3% - 4.625rem);
-  width: calc(33.3% - 4.625rem);
+  width: -webkit-calc(33.3% - 74px);
+  width: -moz-calc(33.3% - 74px);
+  width: calc(33.3% - 74px);
   min-width: -webkit-calc(33.3% - 74px);
   min-width: -moz-calc(33.3% - 74px);
   min-width: calc(33.3% - 74px);
@@ -3256,7 +3256,7 @@ svg.svg-no-fill {
 
 .other_services-icon span {
   height: 190px;
-  width: 11.875rem;
+  width: 190px;
   margin: 0.625rem auto;
   background: url("/images/servicses/coupons.jpg");
   -o-background-size: cover;
@@ -3393,7 +3393,7 @@ svg.svg-no-fill {
 
 .accordion .accordion-title:after {
   content: "+";
-  width: 1.25rem;
+  width: 20px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
@@ -3476,7 +3476,7 @@ svg.svg-no-fill {
 }
 
 .social-btn-logo {
-  width: 1.25rem;
+  width: 20px;
   height: 1.25rem;
   display: inline-block;
   vertical-align: middle;
@@ -3526,7 +3526,7 @@ svg.svg-no-fill {
   height: 1.9375rem;
   border: 1px solid #e9e9e9;
   background-color: #fff;
-  width: 2rem;
+  width: 32px;
   text-align: center;
   line-height: 1.8125rem;
   font-family: sans-serif;
@@ -3599,7 +3599,7 @@ svg.svg-no-fill {
 }
 
 .footer-withdraws-item {
-  width: 5.5rem;
+  width: 88px;
   height: 1rem;
   color: #fffefe;
   background-position: 50% 50%;
@@ -3609,47 +3609,47 @@ svg.svg-no-fill {
 }
 
 .footer-withdraws-item:first-child {
-  width: 12.5rem;
+  width: 200px;
 }
 
 .footer-withdraws-visa {
   background-image: url("/images/pays_system/visa.png");
-  width: 3.125rem;
+  width: 50px;
 }
 
 .footer-withdraws-mastercard {
   background-image: url("/images/pays_system/mastercard.png");
-  width: 5.625rem;
+  width: 90px;
 }
 
 .footer-withdraws-qiwi {
   background-image: url("/images/pays_system/qiwi.png");
-  width: 3.125rem;
+  width: 50px;
 }
 
 .footer-withdraws-mir {
   background-image: url("/images/pays_system/mir.png");
-  width: 3.4375rem;
+  width: 55px;
 }
 
 .footer-withdraws-phone {
   background-image: url("/images/pays_system/phone.png");
-  width: 2.1875rem;
+  width: 35px;
 }
 
 .footer-withdraws-ya {
   background-image: url("/images/pays_system/ya.png");
-  width: 5.3125rem;
+  width: 85px;
 }
 
 .footer-withdraws-wm {
   background-image: url("/images/pays_system/wm.png");
-  width: 5.625rem;
+  width: 90px;
 }
 
 .footer-withdraws-paypal {
   background-image: url("/images/pays_system/paypal.png");
-  width: 4.0625rem;
+  width: 65px;
 }
 
 .footer-docs {
@@ -3684,7 +3684,7 @@ svg.svg-no-fill {
 
 .footer-copyright_logo {
   height: 2.5rem;
-  width: 6.25rem;
+  width: 100px;
   background: url(/images/templates/footer-logo.png) 0 50% no-repeat;
   -o-background-size: contain;
   background-size: contain;
@@ -3718,7 +3718,7 @@ svg.svg-no-fill {
 
 .footer-social_links-icon {
   height: 2rem;
-  width: 2rem;
+  width: 32px;
   display: inline-block;
   vertical-align: middle;
   margin-right: 20px;
@@ -3748,7 +3748,7 @@ svg.svg-no-fill {
 }
 
 .footer .site-rating_star-icon {
-  width: 0.9375rem;
+  width: 15px;
   height: 0.9375rem;
   color: #fdec3e;
   stroke: #fdec3e;
@@ -3762,7 +3762,7 @@ svg.svg-no-fill {
 
 .soc-icon {
   height: 3rem;
-  width: 3rem;
+  width: 48px;
   margin: 0.125rem;
   background-image: url(/images/socialicons48.png);
   display: inline-block;
@@ -3773,7 +3773,7 @@ svg.svg-no-fill {
   color: #0f181a !important;
   display: inline-block;
   padding: 0.5rem 0.5rem;
-  width: 2.5rem;
+  width: 40px;
   margin-right: 9px;
   text-align: center;
   font-size: 1.0625rem;
@@ -3837,14 +3837,14 @@ svg.svg-no-fill {
   text-decoration: none;
   display: inline-block;
   padding: 0.0625rem 0;
-  width: 1.5625rem;
+  width: 25px;
   -webkit-border-radius: 100%;
   border-radius: 100%;
 }
 
 .accauntSoc_32 .soc-icon {
   height: 2rem;
-  width: 2rem;
+  width: 32px;
   margin: 0.125rem;
   background-image: url(/images/socialicons_new_32.png);
   display: inline-block;
@@ -4035,7 +4035,7 @@ svg.svg-no-fill {
 
   .accordion.accordion-slim .accordion-title {
     background: transparent;
-    width: 21.875rem;
+    width: 350px;
   }
 
   .accordion.accordion-slim .accordion-title h1,
@@ -4049,7 +4049,7 @@ svg.svg-no-fill {
 
   .accordion.accordion-slim .accordion-title:before {
     content: '';
-    width: 0rem;
+    width: 0px;
     height: 0rem;
     padding: 7px;
     margin: auto 1.25rem auto 0;
@@ -4089,9 +4089,9 @@ svg.svg-no-fill {
     top: 0;
     border: 0;
     border: 0 !important;
-    width: -webkit-calc(100% - 26.25rem);
-    width: -moz-calc(100% - 26.25rem);
-    width: calc(100% - 26.25rem);
+    width: -webkit-calc(100% - 420px);
+    width: -moz-calc(100% - 420px);
+    width: calc(100% - 420px);
     padding-top: 0.1875rem !important;
     padding-right: 20px !important;
     margin-bottom: 0 !important;
@@ -4099,9 +4099,9 @@ svg.svg-no-fill {
 
   .accordion.accordion-slim .accordion-content_last-open {
     display: block !important;
-    width: -webkit-calc(100% - 26.25rem) !important;
-    width: -moz-calc(100% - 26.25rem) !important;
-    width: calc(100% - 26.25rem) !important;
+    width: -webkit-calc(100% - 420px) !important;
+    width: -moz-calc(100% - 420px) !important;
+    width: calc(100% - 420px) !important;
     height: 100% !important;
     opacity: 1 !important;
   }
@@ -4301,7 +4301,7 @@ svg.svg-no-fill {
   }
 
   .header-search_form-input {
-    width: 37.5rem;
+    width: 600px;
   }
 
   .header-right {
@@ -4493,7 +4493,7 @@ svg.svg-no-fill {
     padding-top: 0;
     left: 50%;
     margin-left: -170px;
-    width: 17.5rem;
+    width: 280px;
     color: #ffffff;
   }
 
@@ -4532,9 +4532,9 @@ svg.svg-no-fill {
   }
 
   .scroll_box-item {
-    width: -webkit-calc(50% - 4.625rem);
-    width: -moz-calc(50% - 4.625rem);
-    width: calc(50% - 4.625rem);
+    width: -webkit-calc(50% - 74px);
+    width: -moz-calc(50% - 74px);
+    width: calc(50% - 74px);
     min-width: -webkit-calc(50% - 74px);
     min-width: -moz-calc(50% - 74px);
     min-width: calc(50% - 74px);
@@ -4689,7 +4689,7 @@ svg.svg-no-fill {
   }
 
   .header-search_form-input {
-    width: 21.875rem;
+    width: 350px;
   }
 
   .index-hello_end-big_link {
@@ -4737,9 +4737,9 @@ svg.svg-no-fill {
 
   .scroll_box-item {
     margin: 0rem;
-    width: -webkit-calc(100% - 2.25rem);
-    width: -moz-calc(100% - 2.25rem);
-    width: calc(100% - 2.25rem);
+    width: -webkit-calc(100% - 36px);
+    width: -moz-calc(100% - 36px);
+    width: calc(100% - 36px);
     min-width: -webkit-calc(100% - 36px);
     min-width: -moz-calc(100% - 36px);
     min-width: calc(100% - 36px);
@@ -4750,7 +4750,7 @@ svg.svg-no-fill {
 
   .other_services-icon {
     position: relative;
-    width: 7.5rem;
+    width: 120px;
     margin-top: 0;
     max-width: 20vw;
     min-width: 95px;
@@ -4863,7 +4863,7 @@ svg.svg-no-fill {
   }
 
   .header-search_form-input {
-    width: 15.625rem;
+    width: 250px;
   }
 
   .header-secondline {
