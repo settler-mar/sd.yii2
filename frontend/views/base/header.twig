@@ -135,9 +135,10 @@
         </li>
         <li>
           <a class="" href="#">
-          Приведи друга
+          Приведи друга ({{ svg('dollar','header-icon-money')|raw }})
         </a>
         </li>
+        {% if this.user_id > 0 %}
         <li class="drop-menu_group__up">
           <a href="">Помощь
               {{ svg('angle-down','menu_angle-down')|raw }}
@@ -154,6 +155,11 @@
             </li>
           </ul>
         </li>
+        {% else %}
+        <li>
+          <a href="/faw">Помощь</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

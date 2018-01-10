@@ -392,6 +392,10 @@
       margin-bottom: 10px;
     }
   }
+  &-icon-money {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 @include media($laptop_min) {
