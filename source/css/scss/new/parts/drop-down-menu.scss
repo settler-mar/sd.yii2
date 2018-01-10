@@ -104,6 +104,7 @@
     transition-duration: .25s;
     transition-timing-function: ease;
     transition-delay: .1s;
+    //border-bottom: 1px solid rgba(204, 204, 204, 0.76);
 
     li {
       max-height: 0;
@@ -112,8 +113,10 @@
       position: relative;
       //line-height: 20px;
       line-height: 15px;
+      //border-bottom: 1px solid rgba(204, 204, 204, 0.76);
 
       a{
+        //font-size: 18px;
         padding-left: 15px;
         padding-right: 15px;
         display: block;

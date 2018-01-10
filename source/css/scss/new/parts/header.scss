@@ -30,6 +30,7 @@
   }
 
   &-secondline {
+    //font-size: 18px;
     transition: all 0.3s linear;
     position: fixed;
     border-bottom: 1px solid $menu_border_color;
@@ -258,8 +259,16 @@
     display: none;
     margin: auto 12px auto 3px;
     &_button {
-      width: 26px;
-      height: 26px;
+      &.open{
+        width: 26px;
+        height: 26px;
+      }
+      &.close {
+        //margin-top: 0;
+        width: 26px;
+        height: 26px;
+        margin-bottom: 4px;
+      }
     }
     a {
       color: $btn_base_bg;
@@ -354,6 +363,14 @@
   }
 
   &.header_open-menu {
+    //position: fixed;
+    //top: 0;
+    //right: 0;
+    //left: 0;
+    //background: rgba(0,0,0,0.6);
+    //z-index: 99999;
+    //height: 100%;
+
     .header-right {
       @include media($laptop_min) {
         left: 0;
@@ -365,6 +382,15 @@
       @include media($laptop_min) {
         left: 0;
         transition: left .25s ease .1s;
+      }
+
+    }
+    .menu-toggle_button {
+      &.open {
+        display: none;
+      }
+      &.close {
+        display: block;
       }
     }
 
@@ -454,6 +480,9 @@
     }
     .menu-toggle {
       display: block;
+      &_button.close {
+        display: none;
+      }
     }
     .btn-header {
       display: block;

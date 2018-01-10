@@ -7,6 +7,12 @@ var headerActions = function () {
         $('.header').toggleClass('header_open-menu');
     });
 
+    $('#header').click(function (e) {
+        if (e.target.id == 'header') {
+            $(this).removeClass('header_open-menu');
+        }
+    });
+
     $('.search-toggle').click(function(e) {
         e.preventDefault();
         $('.header-search').toggleClass('open');
