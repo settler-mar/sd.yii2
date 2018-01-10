@@ -145,10 +145,22 @@
   &-search {
     position: relative;
 
+
+
     &_form {
       &-input {
         padding: 6px 10px;
         width: 290px;
+
+        @include media($laptop_min) {
+          width: 600px;
+        }
+        @include media($tablets) {
+          width: 350px;
+        }
+        @include media($phones) {
+          width: 250px;
+        }
         border-radius: 5px;
         outline: none;
         border: 0;
@@ -159,7 +171,8 @@
         top: 0;
         right: 0;
         height: calc(100% - 12px);
-        width: 40px;
+        //width: 40px;
+        width: 25px;
         background: $search-btn-bg;
         color: $search-btn-color;
         text-align: center;
@@ -244,6 +257,10 @@
     &_button {
       width: $header_button_size;
       height: $header_button_size;
+      &_money {
+        width: 14px;
+        height: 14px;
+      }
     }
     a {
       color: $header_color_up;
@@ -371,6 +388,7 @@
     &-search {
       display: none;
       margin-right: auto;
+      position: relative;
 
       &.open {
         display: block;
@@ -387,6 +405,37 @@
     }
   }
 
+}
+.autocomplete {
+  position: absolute;
+  display: none;
+  top: 40px;
+  left: 0;
+  padding: 5px;
+  background-color: $shop_cashback_link_color;
+  box-shadow: 0 4px 4px rgba(0,0,0,.2);
+  width: 100%;
+  &_list {
+    margin: 0;
+    padding: 0;
+    >li{
+      list-style-type: none;
+      a {
+        display: flex;
+        justify-content: space-between;
+        color: $header_color_up;
+        text-decoration: none;
+        padding: 8px 4px;
+        .cashback {
+          color: $search_item_cashback_color
+        }
+        &:hover {
+          color: $header_sub_menu_color_hover;
+          background-color: $search_list_hover_color;
+        }
+      }
+    }
+  }
 }
 
 @include media($phones) {

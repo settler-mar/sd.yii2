@@ -63,7 +63,11 @@
 
     opacity: 0;
     visibility: hidden;
-    transition: opacity .25s ease .1s;
+    //transition: all .25s ease .1s;
+    transition-property: opacity,visibility;
+    transition-duration: .25s;
+    transition-timing-function: ease;
+    transition-delay: .1s;
     @include media($laptop_min) {
       position: relative;
       width: auto;
@@ -76,7 +80,11 @@
 
   li{
     list-style: none;
-    transition: all .25s ease .1s;
+//    transition: all .25s ease .1s;
+    transition-property: opacity,visibility;
+    transition-duration: .25s;
+    transition-timing-function: ease;
+    transition-delay: .1s;
 
     li {
       max-height: 0;
@@ -136,6 +144,12 @@
         }
       }
     }
+    //@include media($laptop_min) {
+    //  >ul {
+    //    left: 0;
+    //  }
+    //}
+
     &.open {
       @include media($laptop_min) {
         >ul {

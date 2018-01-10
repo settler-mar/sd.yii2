@@ -46,9 +46,9 @@ class DefaultController extends SdController
         $cashback = preg_replace('/[0-9.,]+/', $cashbackNum, $cashback);
         $out["suggestions"][] = [
           "value" => $v['name'],
-          "cashback" =>'<div class="cashback">'.$cashback.
+          "cashback" =>'<span class="cashback">'.$cashback.
               (strpos($cashback, '%') === false && isset(Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon'])?
-                  '  '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon']: '').'</div>',
+                  '  '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon']: '').'</span>',
           "data" => [
             'name' => $v['name'],
             'route' => $v['route_url']
