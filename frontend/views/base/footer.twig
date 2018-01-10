@@ -122,27 +122,17 @@
                 <div class="footer-social_links-title">А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки:</div>
                 <a class="footer-social_links-item">
                     {{ svg("color/sd",'footer-social_links-icon')|raw }}
-                    330 000 пользователей
+                    {{ _nf(this.sd_counter.user_count,0)|raw }} пользователей
                 </a>
-                <a class="footer-social_links-item" href="https://vk.com/secretdiscounter_ru" target="_blank" rel="nofollow noopener">
-                    {{ svg("color/vk",'footer-social_links-icon')|raw }}
-                    8457 участников
-                </a>
-                <a class="footer-social_links-item" href="https://ok.ru/group/54392356274401" target="_blank" rel="nofollow noopener">
-                    {{ svg("color/ok",'footer-social_links-icon')|raw }}
-                    3750 участников</a>
-                <a class="footer-social_links-item" href="https://www.facebook.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener">
-                    {{ svg("color/fb",'footer-social_links-icon')|raw }}
-                    3172 подписчика
-                </a>
-                <a class="footer-social_links-item" href="https://www.instagram.com/secretdiscounter.ru/" target="_blank" rel="nofollow noopener">
-                    {{ svg("color/instogram",'footer-social_links-icon')|raw }}
-                    12000 подписчиков
-                </a>
-                <a class="footer-social_links-item" href="https://www.youtube.com/channel/UCMF1uzBGkK7BaEvAZ5XZCGg" target="_blank" rel="nofollow noopener">
-                    {{ svg("color/y",'footer-social_links-icon')|raw }}
-                    1278 подписчиков
-                </a>
+                {% set social_list = _constant("social_list") %}
+                {% for item in social_list %}
+                    {% if item.on_footer==1 %}
+                        <a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">
+                            {{ svg('color/'~item.code,'footer-social_links-icon')|raw }}
+                            {{ _nf(item.count,0)|raw }} {{ item.footer_text }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <div class="footer-contacts">

@@ -114,6 +114,11 @@
         width: 16px;
         display: inline-block;
         vertical-align: bottom;
+        stroke-width: 4px;
+
+        &-star{
+          stroke-width: 1px;
+        }
       }
 
       span{
@@ -143,5 +148,11 @@
     &_x2 {
       background: url("/images/x2-label.png") no-repeat;
     }
+  }
+
+  &-heart-red{
+    height: 17px;
+    margin-top: -3px;
+    margin-bottom: -3px;
   }
 }

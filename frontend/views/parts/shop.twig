@@ -14,7 +14,7 @@
                data-toggle="tooltip" data-state="delete" data-placement="top"
                data-original-title="Рейтинг магазина на основании отзывов {{ store.reviews_count }} наших пользователей"
             >
-                {{ svg('star','shop_panel-item_icon')|raw }}
+                {{ svg('star','shop_panel-item_icon shop_panel-item_icon-star')|raw }}
                 <span>
                     {{ _nf(store.reviews_rating, 1) }}
                 </span>
@@ -26,7 +26,7 @@
                     class="shop_panel-item ignore-hash"
                     data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Оффлайн-магазин"
             >
-                {{ svg('offline','shop_panel-item_icon')|raw }}
+                {{ svg('offline_shop','shop_panel-item_icon')|raw }}
             </a>
         {% endif %}
 

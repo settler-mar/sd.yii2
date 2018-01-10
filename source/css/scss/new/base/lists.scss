@@ -14,6 +14,7 @@ ul{
     position: relative;
     display: block;
     margin: 18px 0;
+    display: flex;
   }
 
   &_icon {
@@ -25,11 +26,15 @@ ul{
     margin-right: 35px;
     height: 30PX;
     width: 30PX;
+    flex-shrink: 0;
   }
 
   &_title{
     line-height: 16px;
     display: inline-block;
     vertical-align: middle;
+    white-space: nowrap;
+    flex-grow: 1;
+    margin: auto 0;
   }
 }
