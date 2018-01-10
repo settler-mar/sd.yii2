@@ -11,6 +11,28 @@
         margin-right: 20px;
         margin-left: 0;
       }
+      &>ul {
+        background-color: $header_color_up;
+        margin-top: 2px;
+        width: auto;
+        text-align: center;
+        @include media($laptop_min) {
+          margin-top: 0;
+          border: none;
+          text-align: left;
+          width: inherit;
+          box-shadow: none;
+          background-color: $header_sub_menu_bg;
+        }
+      }
+      &:hover>ul {
+        border: 2px solid $menu_left_border_color;
+        box-shadow: 0 3px 3px rgba(0,0,0,.2);
+        @include media($laptop_min) {
+          border: none;
+          box-shadow: none;
+        }
+      }
     }
   }
 
@@ -147,7 +169,8 @@
       @include media($laptop_min) {
         >ul {
           opacity: 1;
-          border-bottom: 1px solid $menu_border_color;
+          //border-bottom: 1px solid $menu_border_color;
+          border-bottom: none;
           visibility: visible;
           position: relative;
           left: 3%;
