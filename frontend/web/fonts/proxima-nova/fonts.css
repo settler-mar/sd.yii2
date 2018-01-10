@@ -1,18 +1,21 @@
+/*https://webfonts.pro/base-web-fonts/sans-serif-grotesque/13-proxima-nova.html*/
 @font-face {
     font-family: 'Proxima Nova';
-    src: url('ProximaNovaRegular.eot');
-    src: url('ProximaNovaRegular.eot') format('embedded-opentype'),
-    url('ProximaNovaRegular.woff2') format('woff2'),
-    url('ProximaNovaRegular.woff') format('woff'),
-    url('ProximaNovaRegular.ttf') format('truetype')
+    src: url('ProximaNova-Regular.eot');
+    src: url('ProximaNova-Regular.eot?#iefix') format('embedded-opentype'),
+    url('ProximaNova-Regular.woff') format('woff'),
+    url('ProximaNova-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 
 @font-face {
     font-family: 'Proxima Nova - Black';
-    src: url('ProximaNovaBlack.eot');
-    src: url('ProximaNovaBlack.eot') format('embedded-opentype'),
-    url('ProximaNovaBlack.woff2') format('woff2'),
-    url('ProximaNovaBlack.woff') format('woff'),
-    url('ProximaNovaBlack.ttf') format('truetype')
+    src: url('ProximaNova-Black.eot');
+    src: url('ProximaNova-Black.eot?#iefix') format('embedded-opentype'),
+    url('ProximaNova-Black.woff') format('woff'),
+    url('ProximaNova-Black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
