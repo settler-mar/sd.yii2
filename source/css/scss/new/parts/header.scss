@@ -79,7 +79,7 @@
 
 
     &_inner {
-      width: 100%;
+      //width: 100%;
     }
 
     @include media($laptop-min) {
@@ -99,9 +99,11 @@
     }
     .menu_angle-right,
     .menu_angle-down{
-      margin-top:0;
-      width: 12px;
-      height: 12px;
+      margin-top: 4px;
+      //width: 12px;
+      //height: 12px;
+      width: 9px;
+      height: 9px;
       //top: 6px;
       right: 8px;
       padding: 10px;
@@ -122,10 +124,17 @@
   &-logo {
     display: flex;
     padding-right: 15px;
+    @include media($laptop_min) {
+      padding: 0;
+    }
     justify-content: space-between;
     //margin: auto;
     &-center {
       margin: auto;
+      a {
+        display: block;
+        margin-top: 4px;
+      }
     }
 
     img {
@@ -194,6 +203,7 @@
     text-align: right;
     display: flex;
     justify-content: flex-end;
+    margin: auto;
 
 
     @include media($laptop_min) {
@@ -201,6 +211,13 @@
       text-align: left;
     }
 
+  }
+
+
+  &-other-btn {
+    color: $header_color_up;
+    text-decoration: none;
+    border-bottom: 1px dashed;
   }
 
   &-authorization {
@@ -243,6 +260,7 @@
     }
 
   }
+
   .btn-header {
     margin: auto 0;
     padding: 0 35px;
@@ -277,6 +295,10 @@
         display: block;
       }
     }
+  }
+  .search-toggle {
+    padding-right: 3px !important;
+    margin: auto 0;
   }
   &-logo_noty {
     position: relative;

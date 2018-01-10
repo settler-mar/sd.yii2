@@ -60,7 +60,6 @@
 
     opacity: 0;
     visibility: hidden;
-    //transition: all .25s ease .1s;
     transition-property: opacity,visibility;
     transition-duration: .25s;
     transition-timing-function: ease;
@@ -77,7 +76,6 @@
 
   li{
     list-style: none;
-//    transition: all .25s ease .1s;
     transition-property: opacity,visibility;
     transition-duration: .25s;
     transition-timing-function: ease;
@@ -105,7 +103,7 @@
       ul{
         position: absolute;
         left: 100%;
-        top: -4px;
+        top: 0;
       }
     }
 
@@ -141,12 +139,6 @@
         }
       }
     }
-    //@include media($laptop_min) {
-    //  >ul {
-    //    left: 0;
-    //  }
-    //}
-
     &.open {
       @include media($laptop_min) {
         >ul {
@@ -191,7 +183,7 @@
       }
     }
     .drop-menu_group__up>a>.menu_angle-down {
-      margin-top: 6px;
+      margin-top: 12px;
     }
   }
 
