@@ -4,8 +4,7 @@
     src: url('ProximaNovaRegular.eot') format('embedded-opentype'),
     url('ProximaNovaRegular.woff2') format('woff2'),
     url('ProximaNovaRegular.woff') format('woff'),
-    url('ProximaNovaRegular.ttf') format('truetype'),
-    url('ProximaNovaRegular.svg#ProximaNovaRegular') format('svg');
+    url('ProximaNovaRegular.ttf') format('truetype')
 }
 
 
@@ -15,6 +14,5 @@
     src: url('ProximaNovaBlack.eot') format('embedded-opentype'),
     url('ProximaNovaBlack.woff2') format('woff2'),
     url('ProximaNovaBlack.woff') format('woff'),
-    url('ProximaNovaBlack.ttf') format('truetype'),
-    url('ProximaNovaBlack.svg#ProximaNovaBlack') format('svg');
+    url('ProximaNovaBlack.ttf') format('truetype')
 }
