@@ -19,6 +19,8 @@ share42 = function (){
       }
     }
     var self_promo = promo !=-1 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
+    if (e[k].getAttribute('data-icon-size') != -1)
+      var icon_size = e[k].getAttribute('data-icon-size');
     if (e[k].getAttribute('data-title') != -1)
       var t = e[k].getAttribute('data-title');
     if (e[k].getAttribute('data-image') != -1)
@@ -103,11 +105,11 @@ share42 = function (){
     if(socials.length>1){
       for (q = 0; q < socials.length; q++){
         j=socials[q];
-        l += '<a rel="nofollow" '+getIcon(s[j],j,icon_type,f,fn)+' href=' + s[j] + ' target="_blank"></a>';
+        l += '<a rel="nofollow" '+getIcon(s[j],j,icon_type,f,fn,icon_size)+' href=' + s[j] + ' target="_blank"></a>';
       }
     }else{
       for (j = 0; j < s.length; j++) {
-        l += '<a rel="nofollow" '+getIcon(s[j],j,icon_type,f,fn)+' href=' + s[j] + ' target="_blank"></a>';
+        l += '<a rel="nofollow" '+getIcon(s[j],j,icon_type,f,fn,icon_size)+' href=' + s[j] + ' target="_blank"></a>';
       }
     }
     e[k].innerHTML = '<span class="share42_wrap">' + l + '</span>';
@@ -116,8 +118,11 @@ share42 = function (){
 //}, false);
 }();
 
-function getIcon(s,j,t,f,fn) {
+function getIcon(s,j,t,f,fn,size) {
   if(t=='css'){
+    if(!size){
+      size=32;
+    }
     j=s.indexOf('data-count="')+12;
     var l=s.indexOf('"',j)-j;
     var l2=s.indexOf('.',j)-j;
@@ -125,7 +130,7 @@ function getIcon(s,j,t,f,fn) {
     //var icon='class="soc-icon icon-'+s.substr(j,l)+'"';
     var icon='class="soc-icon-sd icon-sd-'+s.substr(j,l)+'"';
   }else{
-    icon='style="display:inline-block;vertical-align:bottom;width:32px;height:32px;margin:0 6px 6px 0;padding:0;outline:none;background:url(' + f + fn + ') -' + 32 * j + 'px 0 no-repeat"'
+    icon='style="display:inline-block;vertical-align:bottom;width:'+size+'px;height:'+size+'px;margin:0 6px 6px 0;padding:0;outline:none;background:url(' + f + fn + ') -' + size * j + 'px 0 no-repeat; background-size: cover;"'
   }
   return icon;
 }

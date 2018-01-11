@@ -6,66 +6,76 @@
             </div>
             <div class="footer-menu flex-line">
                 <div class="footer-menu-col">
-                    <div class="footer-menu-title">Компания</div>
-                    <a href="#">О нас</a>
-                    <a href="#">Контакты</a>
-                    <a href="#">Делаем добро</a>
-                    <a href="#">Отзывы о нас</a>
-                    <a href="#">SD Ukraine</a>
-                    <a href="#">SD Belarus</a>
-                    <a href="#">SD Lithuania</a>
-                    <a href="#">SD Germany</a>
-                    <a href="#">SD Spain</a>
-                    <a href="#">SD United Kingdom</a>
-                    <a href="#">SD United States</a>
+                    <div class="footer-menu-lists">
+                        <div class="footer-menu-title">Компания</div>
+                        <a href="#">О нас</a>
+                        <a href="#">Контакты</a>
+                        <a href="#">Делаем добро</a>
+                        <a href="#">Отзывы о нас</a>
+                        <a href="#">SD Ukraine</a>
+                        <a href="#">SD Belarus</a>
+                        <a href="#">SD Lithuania</a>
+                        <a href="#">SD Germany</a>
+                        <a href="#">SD Spain</a>
+                        <a href="#">SD United Kingdom</a>
+                        <a href="#">SD United States</a>
+                    </div>
 
-                    <div class="footer-menu-title">Сотрудничество</div>
-                    <a href="#">Для СМИ</a>
-                    <a href="#">Для вебмастеров</a>
-                    <a href="#">Инвесторам</a>
-                    <a href="#">Добавить магазин</a>
+                    <div class="footer-menu-lists">
+                        <div class="footer-menu-title">Сотрудничество</div>
+                        <a href="#">Для СМИ</a>
+                        <a href="#">Для вебмастеров</a>
+                        <a href="#">Инвесторам</a>
+                        <a href="#">Добавить магазин</a>
+                    </div>
                 </div>
 
                 <div class="footer-menu-col">
-                    <div class="footer-menu-title">Популярные категории</div>
-                    {{ use('frontend/components/CategoryMenu') }}
-                    {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
-                    {% if category_tree %}
-                        {% for item in category_tree %}
-                            <a href="stores/{{ item.route }}">{{ item.name }}</a>
-                        {% endfor %}
-                    {% else %}
-                        Еще нет ПОПУЛЯРНЫХ категорий
-                    {% endif %}
+                    <div class="footer-menu-lists">
+                        <div class="footer-menu-title">Популярные категории</div>
+                        {{ use('frontend/components/CategoryMenu') }}
+                        {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
+                        {% if category_tree %}
+                            {% for item in category_tree %}
+                                <a href="stores/{{ item.route }}">{{ item.name }}</a>
+                            {% endfor %}
+                        {% else %}
+                            Еще нет ПОПУЛЯРНЫХ категорий
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="footer-menu-col">
-                    <div class="footer-menu-title">Полезные ссылки</div>
-                    <a href="#">Пригласить друга</a>
-                    <a href="#">Отследить посылку</a>
-                    <a href="#">Калькулятор кэшбэка</a>
-                    <a href="#">Таблица размеров</a>
-                    <a href="#">Оффлайн-кэшбэк</a>
-                    <a href="#">Как сэкономить больше?</a>
-                    <a href="#">Мобильное приложение</a>
-                    <a href="#">Плагин для браузера</a>
-                    <a href="#">Блог о покупках</a>
-                    <a href="#">Форум</a>
-                    <a href="#">Наши конкурсы</a>
+                    <div class="footer-menu-lists">
+                        <div class="footer-menu-title">Полезные ссылки</div>
+                        <a href="#">Пригласить друга</a>
+                        <a href="#">Отследить посылку</a>
+                        <a href="#">Калькулятор кэшбэка</a>
+                        <a href="#">Таблица размеров</a>
+                        <a href="#">Оффлайн-кэшбэк</a>
+                        <a href="#">Как сэкономить больше?</a>
+                        <a href="#">Мобильное приложение</a>
+                        <a href="#">Плагин для браузера</a>
+                        <a href="#">Блог о покупках</a>
+                        <a href="#">Форум</a>
+                        <a href="#">Наши конкурсы</a>
+                    </div>
                 </div>
 
                 <div class="footer-menu-col">
-                    <div class="footer-menu-title">Помощь</div>
-                    <a href="#">Что такое кэшбэк?</a>
-                    <a href="#">Кэшбэк в оффлайне</a>
-                    <a href="#">Как вывести деньги?</a>
-                    <a href="#">Правила совершения покупок</a>
-                    <a href="#">Накопительная скидка</a>
-                    <a href="#">Вопросы и ответы</a>
-                    <a href="#">Служба поддержки</a>
-                    <a href="#">Жалобы и предложения</a>
-                    <a href="#">Сообщить об ошибке</a>
-                    <a href="#">Подключить ваш магазин</a>
+                    <div class="footer-menu-lists">
+                        <div class="footer-menu-title">Помощь</div>
+                        <a href="#">Что такое кэшбэк?</a>
+                        <a href="#">Кэшбэк в оффлайне</a>
+                        <a href="#">Как вывести деньги?</a>
+                        <a href="#">Правила совершения покупок</a>
+                        <a href="#">Накопительная скидка</a>
+                        <a href="#">Вопросы и ответы</a>
+                        <a href="#">Служба поддержки</a>
+                        <a href="#">Жалобы и предложения</a>
+                        <a href="#">Сообщить об ошибке</a>
+                        <a href="#">Подключить ваш магазин</a>
+                    </div>
                 </div>
             </div>
             <div class="footer-withdraws flex-line">
@@ -92,7 +102,7 @@
             </div>
         </div>
         <div class="footer-right">
-            <div class="footer-share">
+            <div class="footer-right-item footer-share">
                 <div class="footer-share-text">Расскажите о нас друзьям:</div>
                 <div class="share42init accauntSoc accauntSoc_32"
                      data-url="https://secretdiscounter.ru/"
@@ -100,12 +110,13 @@
                      data-title="{{ html.encode(this.title) }}"
                      data-description="{{ this.description }}"
                      data-socials="1,0,2,4,3,5,6"
+                     data-icon-size="24"
                 >
                 </div>
                 <script type="text/javascript" src="/js/share42.js?v=3"></script>
             </div>
 
-            <div class="footer-social_links">
+            <div class="footer-right-item footer-social_links">
                 <div class="footer-social_links-title">А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки:</div>
                 <a class="footer-social_links-item">
                     {{ svg("color/sd",'footer-social_links-icon')|raw }}
@@ -122,20 +133,26 @@
                 {% endfor %}
             </div>
 
-            <div class="footer-contacts">
+            <div class="footer-right-item footer-contacts">
                 <p class="footer-contacts_title">Контакты</p>
                 <p class="footer-contacts_description">
-                    8 (800) 707 66 09 (по РФ бесплатно)<br>
-                    +7 (495) 150 66 09 (10:00 – 22:00 по МСК)<br>
-                    +44 (20) 38 07 02 08 (офис в Лондоне)
+                    <span class="footer-contacts_description-phone">8 (800) 707 66 09</span> (по РФ бесплатно)
+                </p>
+                <p class="footer-contacts_description">
+                    <span class="footer-contacts_description-phone">+7 (495) 150 66 09</span> (10:00 – 22:00 по МСК)
+                </p>
+                <p class="footer-contacts_description">
+                    <span class="footer-contacts_description-phone">+44 (20) 38 07 02 08</span> (офис в Лондоне)
                 </p>
             </div>
 
-            <div class="footer-app">
+            <div class="footer-right-item footer-app">
                 <div class="footer-app-img"></div>
             </div>
 
-            {% include 'parts/site_rating_microdata.twig' %}
+            <div class="footer-right-item">
+                {% include 'parts/site_rating_microdata.twig' %}
+            </div>
         </div>
     </div>
 </footer>

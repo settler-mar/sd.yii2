@@ -170,6 +170,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/jquery.ajaxForm.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/new/modals.js',
+        paths.source.js+'/original/new/footer_menu.js',
         paths.source.js+'/original/new/script.js',
     ], paths.app.js+'/new')
 );
