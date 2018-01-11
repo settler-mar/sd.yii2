@@ -734,9 +734,25 @@ var headerActions = function () {
     $('.menu_angle-down').click(function(e) {
         e.preventDefault();
         var parent = $(this).closest('.drop-menu_group__up, .menu-group');
+        var parentMenu = $(this).closest('.drop-menu');
+        if (parentMenu) {
+            $(parentMenu).siblings('ul').find('li').removeClass('open');
+        }
         if (parent) {
             $(parent).siblings('li').removeClass('open');
             $(parent).toggleClass('open');
+            if (parent.hasClass('open')) {
+                $(parent).removeClass('close');
+                $(parent).siblings('li').addClass('close');
+                if (parentMenu) {
+                    $(parentMenu).siblings('ul').children('li').addClass('close');
+                }
+            } else {
+                $(parent).siblings('li').removeClass('close');
+                if (parentMenu) {
+                    $(parentMenu).siblings('ul').children('li').removeClass('close');
+                }
+            }
         }
 
         return false;
