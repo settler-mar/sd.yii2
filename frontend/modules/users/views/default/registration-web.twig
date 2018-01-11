@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h3 style="margin-bottom: 35px;">Регистрация</h3>
+  <h2  class="title-no-line">Регистрация</h2>
   {% set form = active_form_begin({
     'id' : 'registration-web-form-ajax',
     'layout' : 'horizontal',
@@ -44,9 +44,9 @@
     '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
 
-  <div style="text-align: center; width:75%; margin: 10px auto 20px; color: #888; font-size: 12px;">Я принимаю условия <a href="/webmaster-terms" class="ignore-hash" style="text-decoration: underline;">Партнерского соглашения</a></div>
+  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">Я принимаю условия <a href="/webmaster-terms" class="ignore-hash" style="text-decoration: underline;">Партнерского соглашения</a></div>
 
-  <button type="submit" class="btn-fill sign-up-btn" style="padding: 10px;">Зарегистрироваться</button>
+  <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">Зарегистрироваться</button>
   {{ active_form_end() }}
 
 </div>

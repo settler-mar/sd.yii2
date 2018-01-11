@@ -50,6 +50,7 @@
     stroke-width: 1;
     stroke-linecap: round;
     max-width: 11vw;
+    max-height: 11vw;
 
     @include media_min($tablets) {
       padding-bottom: 28PX;

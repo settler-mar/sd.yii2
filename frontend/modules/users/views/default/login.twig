@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h2>Вход на сайт</h2>
+  <h2 class="title-no-line">Вход на сайт</h2>
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
@@ -36,7 +36,7 @@
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <a href="#registration" class="btn btn-round btn-transform btn-max_width180 block_margin-auto modals_open">Зарегистрироваться</a>
+    <a href="#registration" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">Зарегистрироваться</a>
     <div class="text-dop text-dop_gray">Если вы новый пользователь</div>
   </div>
 

@@ -1,0 +1,15 @@
+<div class="feedback popup-content">
+  <h2 class="title-no-line">
+    {% if(shop==0) %}
+      Отзыв о сайте
+    {% else %}
+      Отзыв о магазине {{ store_name }}
+    {% endif %}
+  </h2>
+  <p class="align-center"><b>Внимание:</b> отзыв могут оставлять только зарегистрированые пользователи</p>
+
+  <div class="align-center mini-wrap flex-line">
+    <a href="#login" class="btn btn-transform btn-round_ btn-mini modals_open">Я уже зарегистрирован</a>
+    <a href="#registration" class="btn btn-mini btn-round_ modals_open">Зарегистрироваться</a>
+  </div>
+</div>

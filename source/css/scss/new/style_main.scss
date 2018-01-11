@@ -107,6 +107,16 @@ h2 {
     }
   }
 
+  &.title-no-line{
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
   @include media($tablets){
     &:before {
       display: none;
@@ -206,6 +216,7 @@ section {
 
 .align-center{
   text-align: center;
+  justify-content: space-around;
 }
 
 svg.svg-no-fill{
@@ -247,9 +258,27 @@ svg.svg-no-fill{
   stroke: $rating_color;
   text-align: center;
 
+  &-wrapper{
+    cursor: pointer;
+  }
+
+  &-editor{
+    text-align: left;
+    width: 456px;
+    margin: auto;
+  }
+
   &-star{
     height: 19PX;
     width: 19PX;
+
+    &-open{
+      fill: none;
+    }
+  }
+
+  &-title{
+    color: $text_color;
   }
 }
 .site-rating{
@@ -289,6 +318,7 @@ svg.svg-no-fill{
     border-bottom: 2px solid $form_input_border;
     margin-bottom: 2px;
     width: 30%;
+    margin-right: 10px;
   }
 
   &:after{
@@ -297,6 +327,7 @@ svg.svg-no-fill{
     border-bottom: 2px solid $form_input_border;
     margin-bottom: 2px;
     width: 30%;
+    margin-left: 10px;
   }
 }
 
