@@ -33,6 +33,12 @@
                         0:"Показать",
                         1:"Скрыть",
                     })|raw }}
+
+                    {{ form.field(model, 'show_in_footer').dropDownList({
+                        0:"Не отображать",
+                        1:"Показать",
+                    })|raw }}
+
                     {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
                 </div>
                 <div class="col-md-12">

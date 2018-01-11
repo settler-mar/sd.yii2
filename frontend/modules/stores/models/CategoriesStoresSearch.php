@@ -18,7 +18,7 @@ class CategoriesStoresSearch extends CategoriesStores
     public function rules()
     {
         return [
-            [['uid', 'parent_id', 'is_active', 'menu_index', 'menu_hidden'], 'integer'],
+            [[/*'uid',*/ 'parent_id', 'is_active', 'menu_index', 'menu_hidden','show_in_footer'], 'integer'],
             [['name', 'short_description', 'down_description', 'route'], 'safe'],
         ];
     }
@@ -73,6 +73,7 @@ class CategoriesStoresSearch extends CategoriesStores
             'is_active' => $this->is_active,
             'menu_index' => $this->menu_index,
             'menu_hidden' => $this->menu_hidden,
+            'show_in_footer' => $this->show_in_footer,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

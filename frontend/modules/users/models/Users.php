@@ -86,7 +86,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
-      [['waitModeration','traffType'],'number'],
+      [['waitModeration','traffType','show_balance'],'number'],
       ['url','string']
 
     ];
@@ -144,6 +144,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'waitModeration' => 'Ожидает модерации',
       'traffType' => 'Источник трафика',
       'url' => 'Сайт',
+      'show_balance' => 'Отображаемый баланс',
     ];
   }
 

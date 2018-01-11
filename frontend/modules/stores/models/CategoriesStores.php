@@ -40,7 +40,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
   {
     return [
       [['parent_id', 'name', 'route'], 'required'],
-      [['parent_id', 'is_active', 'menu_index', 'menu_hidden'], 'integer'],
+      [['parent_id', 'is_active', 'menu_index', 'menu_hidden','show_in_footer'], 'integer'],
       [['short_description', 'down_description', 'map_icon'], 'string'],
       [['selected'], 'in', 'range' => [0, 1, 2]],
       [['name', 'route'], 'string', 'max' => 255],
@@ -68,6 +68,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       'map_icon' => "Иконка на карте",
       'icon_img' => "Маркер",
       'selected' => "Выделение в меню",
+      'show_in_footer' => "Отображать в подвале",
     ];
   }
 

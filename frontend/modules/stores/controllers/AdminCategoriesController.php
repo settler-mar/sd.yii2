@@ -57,6 +57,9 @@ class AdminCategoriesController extends Controller
         'menu_hidden' => function ($model, $key, $index, $column) {
           return $model->menu_hidden == 1 ? 'Скрыто' : 'Нет';
         },
+        'show_in_footer' => function ($model, $key, $index, $column) {
+          return $model->show_in_footer == 1 ? 'Выводить' : 'Нет';
+        },
       ]
     ]);
   }
