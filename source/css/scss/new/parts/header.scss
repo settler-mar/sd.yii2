@@ -10,6 +10,8 @@
   width: 100%;
   z-index: 100;
 
+
+
   @include media($laptop_min) {
     margin-bottom: $menu_height;
 
@@ -363,13 +365,11 @@
   }
 
   &.header_open-menu {
-    //position: fixed;
-    //top: 0;
-    //right: 0;
-    //left: 0;
-    //background: rgba(0,0,0,0.6);
-    //z-index: 99999;
-    //height: 100%;
+    position: fixed;
+    background: rgba(0,0,0,0.6);
+    z-index: 99999;
+    height: 100%;
+    overflow-y: auto;
 
     .header-right {
       @include media($laptop_min) {
