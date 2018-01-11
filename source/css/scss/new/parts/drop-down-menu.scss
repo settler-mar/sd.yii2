@@ -214,7 +214,19 @@
             max-height: none;
           }
         }
+      }
+    }
 
+    &.close {
+      @include media($laptop_min) {
+        opacity: 0;
+        //border-bottom: 1px solid $menu_border_color;
+        //border-bottom: none;
+        visibility: hidden;
+        //position: relative;
+        //left: 3%;
+        //left: 0;
+        height: 0 !important;
       }
     }
   }
