@@ -289,7 +289,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     if (is_array($cats) and isset($cats[$parent_id])) {
       $tree = "";
       if ($parent_id != 0) {
-        $tree .= "{{ svg('angle-right','menu_angle-right')|raw }}";
+       // $tree .= "{{ svg('angle-right','menu_angle-right')|raw }}";
       }
       $tree .= "<ul>";
 
