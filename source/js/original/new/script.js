@@ -5,6 +5,7 @@ var headerActions = function () {
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
         $('.header').toggleClass('header_open-menu');
+        $('.drop-menu').find('li').removeClass('open').removeClass('close');
     });
 
     $('#header').click(function (e) {
@@ -16,6 +17,7 @@ var headerActions = function () {
     $('.search-toggle').click(function(e) {
         e.preventDefault();
         $('.header-search').toggleClass('open');
+        $('#autocomplete').fadeOut();
     });
 
     $('.header-secondline_close').click(function(e){
