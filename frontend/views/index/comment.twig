@@ -10,7 +10,7 @@
                             <div class="scroll_box-user_name">{{review.name}}</div>
                             <div class="scroll_box-user_cashback">
                                 <span>
-                                    2157 руб. кэшбэка
+                                    {{ _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance))|raw }} руб. кэшбэка
                                 </span>
                             </div>
                             <div class="rating comments-rating">

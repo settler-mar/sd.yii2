@@ -101,7 +101,7 @@ class Reviews extends \yii\db\ActiveRecord
     $data = $cache->getOrSet('reviews_top', function () {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
-        ->select(['r.*', 'u.name', 'u.photo', 'u.email'])
+        ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
         ->where(['r.is_active' => 1, 'is_top' => 1, 'u.is_active' => 1])
         ->asArray()

@@ -426,6 +426,7 @@ $functionsList=[
     ddd($params);
   },
   't'=>'Yii::t',
+  'max'=>'max',
   'svg'=>function ($name,$class=false) {
     $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
 

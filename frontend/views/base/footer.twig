@@ -28,28 +28,15 @@
 
                 <div class="footer-menu-col">
                     <div class="footer-menu-title">Популярные категории</div>
-                    <a href="#">О нас</a>
-                    <a href="#">Контакты</a>
-                    <a href="#">Делаем добро</a>
-                    <a href="#">Отзывы о нас</a>
-                    <a href="#">SD Ukraine</a>
-                    <a href="#">SD Belarus</a>
-                    <a href="#">SD Lithuania</a>
-                    <a href="#">SD Germany</a>
-                    <a href="#">SD Spain</a>
-                    <a href="#">SD United Kingdom</a>
-                    <a href="#">SD United States</a>
-                    <a href="#">О нас</a>
-                    <a href="#">Контакты</a>
-                    <a href="#">Делаем добро</a>
-                    <a href="#">Отзывы о нас</a>
-                    <a href="#">SD Ukraine</a>
-                    <a href="#">SD Belarus</a>
-                    <a href="#">SD Lithuania</a>
-                    <a href="#">SD Germany</a>
-                    <a href="#">SD Spain</a>
-                    <a href="#">SD United Kingdom</a>
-                    <a href="#">SD United States</a>
+                    {{ use('frontend/components/CategoryMenu') }}
+                    {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
+                    {% if category_tree %}
+                        {% for item in category_tree %}
+                            <a href="stores/{{ item.route }}">{{ item.name }}</a>
+                        {% endfor %}
+                    {% else %}
+                        Еще нет ПОПУЛЯРНЫХ категорий
+                    {% endif %}
                 </div>
 
                 <div class="footer-menu-col">

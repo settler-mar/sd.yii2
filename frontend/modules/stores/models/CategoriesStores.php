@@ -131,7 +131,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function activeList($online = null)
+  public static function activeList($online = null,$where=false,$as_array=false)
   {
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
@@ -139,18 +139,30 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $casheName = 'categories_stores ' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
-    $data = $cache->getOrSet($casheName, function () use ($online) {
+
+    if($where){
+      $casheName .= '_'.str_replace(' ','_',$where);
+    }
+
+    $data = $cache->getOrSet($casheName, function () use ($online,$where,$as_array) {
       $categories = self::find()
-        ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
-          'count(cstc.category_id) as count'])
         ->from([self::tableName() . ' ccs'])
         ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
-        ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
-        ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid'])
         ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
         $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
+      }
+      if ($where) {
+        $categories
+            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index'])
+          ->where($where);
+      }else{
+        $categories
+            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
+                'count(cstc.category_id) as count'])
+            ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
+            ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid']);
       }
       $categories = $categories->asArray()->all();
       return $categories;
@@ -168,19 +180,32 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $showHidden = isset($options['show_hidden']) ? $options['show_hidden'] : true;
     $online = isset($options['online']) ? $options['online'] : null;
     $extItems = isset($options['ext_items']) ? $options['ext_items'] : [];
+    $as_array = isset($options['as_array']) ? $options['as_array'] : false;
+    $where = isset($options['where']) ? $options['where'] : false;
 
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
+
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $cacheName = 'category_tree' . ($showHidden == false ? '_hide_hidden' : '') .
-      ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
-      . (Yii::$app->user->isGuest ? '' : '_user_' . Yii::$app->user->id);
+    $cacheName = 'category_tree';
+    if($where){
+      $cacheName .= '_'.str_replace(' ','_',$where);
+    }else{
+      $cacheName .= ($showHidden == false ? '_hide_hidden' : '') .
+          ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
+          . (Yii::$app->user->isGuest ? '' : '_user_' . Yii::$app->user->id);
+    }
 
     $cats = $cache->getOrSet(
       $cacheName,
-      function () use ($currentCategory, $showHidden, $online) {
-        $categories = self::activeList($online);
+      function () use ($currentCategory, $showHidden, $online,$as_array,$where) {
+        $categories = self::activeList($online,$where,$as_array);
+
+        if($as_array){
+          return $categories;
+        };
+
         $c = [];
         if (count($categories) > 0) {
           foreach ($categories as $category) {
@@ -201,6 +226,11 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $cache->defaultDuration,
       $dependency
     );
+
+    if($as_array){
+      return json_encode($cats);
+    }
+
     //избранные шопы
     $cats[0] = isset($cats[0]) ? $cats[0] : [];
     if (in_array('favorite', $extItems)) {
