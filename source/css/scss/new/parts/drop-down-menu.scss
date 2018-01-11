@@ -73,6 +73,7 @@
     @include media($laptop-min) {
       border-bottom: 1px solid $menu_border_color;
     }
+
   }
 
   &.header-right {
@@ -131,6 +132,7 @@
       //line-height: 20px;
       line-height: 15px;
       //border-bottom: 1px solid rgba(204, 204, 204, 0.76);
+      background-color: $drop-menu-color;
 
       a{
         //font-size: 18px;
