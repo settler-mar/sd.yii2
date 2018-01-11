@@ -362,9 +362,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
-          $tree .= '<span ' . $class . '">' . $cat['name'] . " >(" . $cat['count'] . ")</span>";
+          $tree .= '<span ' . $class . '">' . $cat['name'] . "&nbsp;(" . $cat['count'] . ")".
+              ($childCategories ? "{{ svg('angle-down', 'menu_angle-down')|raw }}" : "")."</span>";//стрелка для аккордеона
         } else {
-          $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " (" . $cat['count'] . ") ".
+          $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . "&nbsp;(" . $cat['count'] . ") ".
             ($childCategories ? "{{ svg('angle-down', 'menu_angle-down')|raw }}" : "")."</a>";//стрелка для аккордеона
         }
         $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
