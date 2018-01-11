@@ -321,9 +321,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $childCategories && $currentCategoryId &&
           (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
           'open current' : '');
-        $tree .= '<li '.($parent_id == 0 ? 'class="'.($childCategories ? ' menu-group '.$sectionOpen : '').'"':'').'>'.
+        $tree .= '<li '.($parent_id == 0 ? 'class="'.($childCategories ? ' menu-group '.$sectionOpen : '').'"':'').'>';
           //($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').'" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
-          ($childCategories ? "{{ svg('angle-down','menu_angle-down')|raw }}": '');//стрелка для аккордеона
+          //($childCategories ? "{{ svg('angle-down','menu_angle-down')|raw }}": '');//стрелка для аккордеона
 
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
           $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||
@@ -331,9 +331,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ) {
           $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
           $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
-          $tree .= '<span ' . $class . '">' . $cat['name'] . " <span " . $classCount . ">(" . $cat['count'] . ")</span></span>";
+          $tree .= '<span ' . $class . '">' . $cat['name'] . " >(" . $cat['count'] . ")</span>";
         } else {
-          $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " <span>(" . $cat['count'] . ")</span></a>";
+          $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . " (" . $cat['count'] . ") ".
+            ($childCategories ? "{{ svg('angle-down', 'menu_angle-down')|raw }}" : "")."</a>";//стрелка для аккордеона
         }
         $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
         $tree .= "</li>";
