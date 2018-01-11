@@ -4,7 +4,10 @@
 
       <div class="header-logo">
         <div class="menu-toggle">
-          <a href="/"> {{ svg('bars', 'menu-toggle_button')|raw }}</a>
+          <a href="/">
+              {{ svg('bars', 'menu-toggle_button open')|raw }}
+              {{ svg('close', 'menu-toggle_button close')|raw }}
+          </a>
         </div>
         <div class="header-logo-center">
           <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
@@ -134,7 +137,7 @@
           </a>
         </li>
         <li>
-          <a class="" href="#">
+          <a class="flex-start" href="#">
           Приведи друга ({{ svg('dollar','header-icon-money')|raw }})
         </a>
         </li>

@@ -146,21 +146,21 @@ h2 {
   flex-grow: 1;
 }
 
-.menu_angle{
-  &-down{
-    height: 100%;
-    width: 20px;
-    margin-bottom: -20px;
-  }
-
-  &-right{
-    height: 100%;
-    width: 20px;
-    position: absolute;
-    right: 0;
-    top:0;
-  }
-}
+//.menu_angle{
+//  &-down{
+//    height: 100%;
+//    width: 20px;
+//    margin-bottom: -20px;
+//  }
+//
+//  &-right{
+//    height: 100%;
+//    width: 20px;
+//    position: absolute;
+//    right: 0;
+//    top:0;
+//  }
+//}
 
 .flex-line{
   display: flex;
@@ -301,7 +301,7 @@ svg.svg-no-fill{
 }
 
 .content-wrap {
-  margin-top: 100px;
+  margin-top: 90px;
   @include media($laptop_min) {
     margin-top: 0;
   }
