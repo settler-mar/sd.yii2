@@ -107,6 +107,16 @@ h2 {
     }
   }
 
+  &.title-no-line{
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
   @include media($tablets){
     &:before {
       display: none;
@@ -289,6 +299,7 @@ svg.svg-no-fill{
     border-bottom: 2px solid $form_input_border;
     margin-bottom: 2px;
     width: 30%;
+    margin-right: 10px;
   }
 
   &:after{
@@ -297,6 +308,7 @@ svg.svg-no-fill{
     border-bottom: 2px solid $form_input_border;
     margin-bottom: 2px;
     width: 30%;
+    margin-left: 10px;
   }
 }
 
