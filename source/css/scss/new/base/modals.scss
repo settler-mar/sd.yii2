@@ -386,6 +386,20 @@
   top: 0px;
 }
 
+.popup-content textarea {
+  font-size: 15px;
+  outline: 0;
+  border: solid 1px #E6E9EA;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 0px auto 10px;
+  display: block;
+  height: 150px;
+  width: 426px;
+  resize: none;
+}
+
 .notification_box {
   .modals {
     &-full_screen {

@@ -216,6 +216,7 @@ section {
 
 .align-center{
   text-align: center;
+  justify-content: space-around;
 }
 
 svg.svg-no-fill{
@@ -257,9 +258,27 @@ svg.svg-no-fill{
   stroke: $rating_color;
   text-align: center;
 
+  &-wrapper{
+    cursor: pointer;
+  }
+
+  &-editor{
+    text-align: left;
+    width: 456px;
+    margin: auto;
+  }
+
   &-star{
     height: 19PX;
     width: 19PX;
+
+    &-open{
+      fill: none;
+    }
+  }
+
+  &-title{
+    color: $text_color;
   }
 }
 .site-rating{
