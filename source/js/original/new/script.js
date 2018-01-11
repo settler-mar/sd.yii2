@@ -24,6 +24,12 @@ var headerActions = function () {
         $('.header').removeClass('header_open-menu');
     });
 
+    $('.header-upline').on('mouseover', function(e){
+        $('.header-secondline').removeClass('scroll-down');
+        scrolledDown = false;
+    });
+
+
     $(window).on('load resize scroll',function() {
         var shadowHeight = 50;
         var hideHeight = 200;
