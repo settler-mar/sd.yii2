@@ -13,6 +13,7 @@
 @import  "base/forms";
 @import  "base/modals";
 @import  "base/socials";
+@import  "external/tipso.min";
 
 html{
   @include media($desktop) {

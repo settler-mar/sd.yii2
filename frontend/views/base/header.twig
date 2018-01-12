@@ -14,8 +14,11 @@
         </div>
 
             {#если есть уведомления добавлен класс#}
-          <div class="header-logo_noty  btn-header mobile {% if this.noty_count > 0 %}has-noty{% endif %}">
-            <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
+          <div class="header-logo_noty  btn-header mobile {% if this.noty_count > 0 %}tooltip has-noty{% endif %}"
+                  {#{% if this.notys %} data-type="json" data-tooltip="{{ this.notys }}" {% endif %}#}
+                  {% if this.notys %} data-tooltip="У вас есть непрочитанные уведомления" {% endif %}
+          >
+            <a href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
 
         <div class="search-toggle  btn-header mobile">
@@ -45,15 +48,15 @@
           </div>
         {% else %}
             {#зарегистрирован#}
-          <div class="btn-header " title="Баланс">
+          <div class="btn-header " >
             <a href="/account" class="btn-header-ballance">{{ svg('dollar', 'btn-header_button_money')|raw }}
               <span class="ballance-all tooltip"
-                    title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"
-                    data-tooptip="Сумма кэшбека за покупки, которая зачислена на ваш баланс">
+                    {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
+                    data-tooltip="Сумма кэшбека за покупки, которая зачислена на ваш баланс">
                   {{ _nf(this.balance.total) | raw}} руб </span>
               <span class="ballance-confirmed tooltip"
-                    title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"
-                    data-tooptip="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином">
+                    {#title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"#}
+                    data-tooltip="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином">
                 &nbsp;/&nbsp;{{ _nf(this.balance.current) | raw}} руб </span>
             </a>
           </div>
@@ -64,8 +67,10 @@
             </div>
           {% endif %}
               {#если есть уведомления добавлен класс#}
-            <div class="header-logo_noty btn-header last {% if this.noty_count > 0 %}has-noty{% endif %}" >
-              <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+            <div class="header-logo_noty btn-header last {% if this.notys %} tooltip has-noty{% endif %}"
+                 {#{% if this.notys %} data-type="json" data-tooltip="{{ this.notys }}" {% endif %}#}
+                    {% if this.notys %} data-tooltip="У вас есть непрочитанные уведомления" {% endif %}   >
+              <a href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
           <div class="avatar account-menu-toggle" title="{{ this.user.name }}">
