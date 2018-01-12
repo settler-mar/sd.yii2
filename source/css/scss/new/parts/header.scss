@@ -10,8 +10,6 @@
   width: 100%;
   z-index: 100;
 
-
-
   @include media($laptop_min) {
     margin-bottom: $menu_height;
 
@@ -297,6 +295,7 @@
 
   &-logo_noty {
     position: relative;
+    cursor: pointer;
 
     &.has-noty:after {
       display: block;
@@ -407,12 +406,68 @@
     width: 12px;
     height: 12px;
   }
+
+  &-noty{
+    &-box{
+      position: absolute;
+      z-index: 99;
+      width: 100vw;
+      max-width: 380px;
+      height: 100vw;
+      overflow: hidden;
+      background: $header_color_up;
+      display: flex;
+      flex-direction:column;
+      right: 80px;
+      top: 50px;
+      border-radius: 5px;
+      box-shadow: 0px 1px 10px 0px;
+      opacity: 0;
+      max-height: 0;
+
+      &_open{
+        opacity: 1;
+        max-height: 350px;
+      }
+    }
+
+    &-list{
+      overflow: auto;
+      display: flex;
+      flex-direction:column;
+      margin: 0;
+      padding: 0;
+    }
+
+    &-item{
+      margin: 0;
+      list-style: none;
+      border-bottom: 1px solid $account_notify_item_border;
+      padding: 5px 10px;
+
+      &_new{
+        background: $account_notify_item_new;
+      }
+    }
+
+    &-data{
+      font-size: 10px;
+      text-align: right;
+      opacity: 0.8;
+    }
+
+    &-text{
+      font-size: 14px;
+    }
+  }
+
 }
 
 @include media($laptop_min) {
   .header {
     position: static;
     perspective: none;
+
     &-search {
       display: none;
       margin-right: auto;
@@ -422,21 +477,24 @@
         display: block;
       }
     }
+
     .menu-toggle {
       display: block;
       &_button.close {
         display: none;
       }
     }
+
     .btn-header {
       display: block;
     }
+
     &-authorization{
       display: none;
     }
   }
-
 }
+
 .autocomplete {
   box-sizing: border-box;
   position: absolute;

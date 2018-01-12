@@ -75,6 +75,11 @@ class AccountController extends \yii\web\Controller
     };
 
     if ($is_ajax) {
+      if(Yii::$app->request->isPost){
+        //помечаем выгруженные строки как прочитанные
+        Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));
+        return 'OK';
+      }
       return json_encode($out);
     }
 

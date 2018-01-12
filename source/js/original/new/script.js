@@ -172,6 +172,8 @@ var headerActions = function () {
             }
         }
         return false;
+    }).on('focusout',function(){
+        $('#autocomplete').hide();
     });
 
 

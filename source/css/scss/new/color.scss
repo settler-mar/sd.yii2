@@ -27,6 +27,9 @@ $menu_border_color: #ccc;
 $menu_left_border_color: #b5b5b5;
 $search_item_cashback_color: #f00;
 
+$account_notify_item_border: $menu_left_border_color;
+$account_notify_item_new: rgba($menu_border_color,0.3);
+
 $h2_line_color: $btn_base_bg;
 $h2_white_line_color: #fff;
 $a_color: $btn_base_bg;
