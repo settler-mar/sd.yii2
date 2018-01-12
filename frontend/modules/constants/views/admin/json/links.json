@@ -1,0 +1,20 @@
+{
+  "allowEmptyList":false,
+  "columns": [
+    {
+      "name": "url",
+      "title": "Ссылка"
+    },{
+      "name": "name",
+      "title": "Текст"
+    },{
+      "name": "show",
+      "type": "checkbox",
+      "title": "Выводить"
+    },{
+      "name": "outer",
+      "type": "checkbox",
+      "title": "Внешняя"
+    }
+  ]
+}

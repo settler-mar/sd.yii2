@@ -8,25 +8,22 @@
                 <div class="footer-menu-col">
                     <div class="footer-menu-lists">
                         <div class="footer-menu-title">Компания</div>
-                        <a href="#">О нас</a>
-                        <a href="#">Контакты</a>
-                        <a href="#">Делаем добро</a>
-                        <a href="#">Отзывы о нас</a>
-                        <a href="#">SD Ukraine</a>
-                        <a href="#">SD Belarus</a>
-                        <a href="#">SD Lithuania</a>
-                        <a href="#">SD Germany</a>
-                        <a href="#">SD Spain</a>
-                        <a href="#">SD United Kingdom</a>
-                        <a href="#">SD United States</a>
+                        {% set link_list = _constant("footer_company") %}
+                        {% for item in link_list %}
+                            {% if item.show==1 %}
+                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
 
                     <div class="footer-menu-lists">
                         <div class="footer-menu-title">Сотрудничество</div>
-                        <a href="#">Для СМИ</a>
-                        <a href="#">Для вебмастеров</a>
-                        <a href="#">Инвесторам</a>
-                        <a href="#">Добавить магазин</a>
+                        {% set link_list = _constant("footer_cooperation") %}
+                        {% for item in link_list %}
+                            {% if item.show==1 %}
+                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -48,33 +45,24 @@
                 <div class="footer-menu-col">
                     <div class="footer-menu-lists">
                         <div class="footer-menu-title">Полезные ссылки</div>
-                        <a href="#">Пригласить друга</a>
-                        <a href="#">Отследить посылку</a>
-                        <a href="#">Калькулятор кэшбэка</a>
-                        <a href="#">Таблица размеров</a>
-                        <a href="#">Оффлайн-кэшбэк</a>
-                        <a href="#">Как сэкономить больше?</a>
-                        <a href="#">Мобильное приложение</a>
-                        <a href="#">Плагин для браузера</a>
-                        <a href="#">Блог о покупках</a>
-                        <a href="#">Форум</a>
-                        <a href="#">Наши конкурсы</a>
+                        {% set link_list = _constant("footer_useful_links") %}
+                        {% for item in link_list %}
+                            {% if item.show==1 %}
+                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
 
                 <div class="footer-menu-col">
                     <div class="footer-menu-lists">
                         <div class="footer-menu-title">Помощь</div>
-                        <a href="#">Что такое кэшбэк?</a>
-                        <a href="#">Кэшбэк в оффлайне</a>
-                        <a href="#">Как вывести деньги?</a>
-                        <a href="#">Правила совершения покупок</a>
-                        <a href="#">Накопительная скидка</a>
-                        <a href="#">Вопросы и ответы</a>
-                        <a href="#">Служба поддержки</a>
-                        <a href="#">Жалобы и предложения</a>
-                        <a href="#">Сообщить об ошибке</a>
-                        <a href="#">Подключить ваш магазин</a>
+                        {% set link_list = _constant("footer_help") %}
+                        {% for item in link_list %}
+                            {% if item.show==1 %}
+                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
