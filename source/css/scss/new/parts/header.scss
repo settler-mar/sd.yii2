@@ -290,70 +290,11 @@
 
   }
 
-  .btn-header {
-    margin: auto 0;
-    padding: 0 15px;
-    font-size: 14px;
-    border-left: 2px solid $header_border_color;
-    &.last {
-      border-right: 2px solid $header_border_color;
-    }
-
-    @include media($laptop_min) {
-      padding: 0 10px;
-      border: none;
-
-    }
-    &_button {
-      width: $header_button_size;
-      height: $header_button_size;
-      &_money {
-        width: 18px;
-        height: 18px;
-        color: $header_sub_menu_color_hover;
-        stroke: $header_sub_menu_color_hover;
-        fill: $header_sub_menu_color_hover;
-      }
-
-    }
-    a {
-      color: $header_color_up;
-      stroke: $header_color_up;
-      fill: $header_color_up;
-      text-decoration: none;
-      .ballance-all {
-        color: $header_sub_menu_color_hover;
-        &:hover {
-          color: $a_color_hover;
-        }
-      }
-      .ballance-confirmed {
-        color: $header_color_gray;
-        &:hover {
-          color: $a_color_hover;
-        }
-      }
-      &:hover {
-        color: $a_color_hover;
-        stroke: $a_color_hover;
-        fill: $a_color_hover;
-      }
-    }
-    &.mobile {
-      display: none;
-      @include media($laptop_min) {
-        display: block;
-      }
-    }
-    &-ballance {
-      display: flex;
-      align-items: center;
-    }
-  }
   .search-toggle {
     padding-right: 3px !important;
     margin: auto 0;
   }
+
   &-logo_noty {
     position: relative;
 
