@@ -311,23 +311,23 @@ svg.svg-no-fill{
   font-size: 12px;
   color: rgba($text_color,0.7);
   text-align: center;
+  display: flex;
+  white-space: nowrap;
 
   &:before{
     content: "";
     display: inline-block;
     border-bottom: 2px solid $form_input_border;
-    margin-bottom: 2px;
     width: 30%;
-    margin-right: 10px;
+    margin: auto 10px;
   }
 
   &:after{
     content: "";
     display: inline-block;
     border-bottom: 2px solid $form_input_border;
-    margin-bottom: 2px;
     width: 30%;
-    margin-left: 10px;
+    margin: auto 10px;
   }
 }
 
