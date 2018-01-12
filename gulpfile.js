@@ -173,6 +173,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/modals.js',
         paths.source.js+'/original/new/footer_menu.js',
         paths.source.js+'/original/new/rating.js',
+        paths.source.js+'/original/new/account_notification.js',
         paths.source.js+'/original/new/script.js'
     ], paths.app.js+'/new')
 );
