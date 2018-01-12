@@ -29,6 +29,27 @@ var headerActions = function () {
         scrolledDown = false;
     });
 
+    $('.tooltip').tipso({
+        background : '#4A4A4A',
+        size: 'small',
+        onBeforeShow : function(ele, tipso) {
+            if (ele.data('type')=='json') {
+                var items = ele.data('tooltip');
+                var html = '<ul class="noty-list">';
+                items.forEach(function(item){
+                    html += '<li class="noty-list_item"><span class="noty-list_item-type">'+item.type+
+                        '</span><span class="noty-list_item-text">'+item.text+'</span></li>';
+                });
+                html += '</ul>';
+                this.content = html;
+                this.background = '#ccc';
+            } else {
+                this.content = ele.data('tooltip');
+            }
+        }
+
+    });
+
 
     $(window).on('load resize scroll',function() {
         var shadowHeight = 50;
