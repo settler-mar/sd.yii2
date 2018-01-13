@@ -46,15 +46,15 @@
         {% else %}
             {#зарегистрирован#}
           <div class="btn-header " >
-            <a href="/account" class="btn-header-ballance">{{ svg('dollar', 'btn-header_button_money')|raw }}
-              <span class="ballance-all tooltip"
-                    {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
-                    data-tooltip="Сумма кэшбека за покупки, которая зачислена на ваш баланс">
-                  {{ _nf(this.balance.total) | raw}} руб </span>
+            <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
               <span class="ballance-confirmed tooltip"
+                    {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
+                    data-tooltip="Сумма кэшбэка, уже доступная к выводу">
+                  {{ _nf(this.balance.current) | raw}} руб </span>
+              <span class="ballance-all tooltip"
                     {#title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"#}
-                    data-tooltip="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином">
-                &nbsp;/&nbsp;{{ _nf(this.balance.current) | raw}} руб </span>
+                    data-tooltip="Сумма кэшбэка за еще неподтвержденные магазином покупки">
+                &nbsp;/&nbsp;{{ _nf(this.balance.total - this.balance.charity - this.balance.withdraw) | raw}} руб </span>
             </a>
           </div>
           {% if 1==1 %}
@@ -68,7 +68,7 @@
               <a href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
-          <div class="avatar account-menu-toggle" title="{{ this.user.name }}">
+          <div class="avatar account-menu-toggle" title="Личный кабинет">
           <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
           </div>
             {% include 'parts/account_menu.twig' %}
