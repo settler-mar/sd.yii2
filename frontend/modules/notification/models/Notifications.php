@@ -189,21 +189,5 @@ class Notifications extends \yii\db\ActiveRecord
     return '<a href="/admin/payments/update/id:' . $this->payment_id . '" target="_blank">' . $this->payment_id . '</a>';
   }
 
-  public static function userNoticed($userId)
-  {
-      $notys = self::find()
-          ->where(['user_id' => $userId, 'is_viewed' => 0])
-          ->limit(10)
-          ->orderBy('added')
-          //->asArray()
-          ->all();
-      $result = [];
-      foreach ($notys as $noty) {
-          $result[] = [
-              'type' => $noty->type_id,
-              'text' => $noty->added,
-          ];
-      }
-      return $result;
-  }
+
 }

@@ -14,9 +14,7 @@
         </div>
 
             {#если есть уведомления добавлен класс#}
-          <div class="header-logo_noty  btn-header mobile"
-                 data-tooltip="У вас есть непрочитанные уведомления"
-          >
+          <div class="header-logo_noty  btn-header mobile {% if this.notys %} has-noty {% endif %}">
             <a href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
 
@@ -65,8 +63,8 @@
               <a title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
             </div>
           {% endif %}
-              {#если есть уведомления добавлен класс#}
-            <div class="header-logo_noty btn-header last" data-tooltip="У вас есть непрочитанные уведомления" >
+
+            <div class="header-logo_noty btn-header last {% if this.notys %} has-noty {% endif %}" >
               <a href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
