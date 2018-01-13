@@ -264,17 +264,17 @@
 
   .menu-toggle {
     display: none;
-    margin: auto 12px auto 3px;
+    margin: auto 12PX auto 3PX;
     &_button {
       &.open{
-        width: 26px;
-        height: 26px;
+        width: 26PX;
+        height: 26PX;
       }
       &.close {
         //margin-top: 0;
-        width: 26px;
-        height: 26px;
-        margin-bottom: 4px;
+        width: 26PX;
+        height: 26PX;
+        margin-bottom: 4PX;
       }
     }
     a {
