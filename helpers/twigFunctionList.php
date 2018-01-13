@@ -3,12 +3,18 @@ use frontend\modules\constants\models\Constants;
 use common\components\Help;
 
 $currencyIcon = [
-  'RUB' => '<span class="fa fa-rub"></span>',
-  'EUR' => '<span class="fa fa-eur"></span>',
-  'USD' =>'<span class="fa fa-dollar"></span>',
-  'UAH' => '<span class="uah">&#8372;</span>',
-  'KZT' => '<span class="uah">&#8376;</span>',
+//  'RUB' => '<span class="fa fa-rub"></span>',
+//  'EUR' => '<span class="fa fa-eur"></span>',
+//  'USD' =>'<span class="fa fa-dollar"></span>',
+//  'UAH' => '<span class="uah">&#8372;</span>',
+//  'KZT' => '<span class="uah">&#8376;</span>',
+  'RUB' => 'ruble',
+  'EUR' => 'euro',
+  'USD' => 'dollar',
+  //'UAH' => '<span class="uah">&#8372;</span>',
+  //'KZT' => '<span class="uah">&#8376;</span>',
 ];
+
 $month = [
     '00' => '',
     '01' => 'января', '02' => 'февраля', '03' => 'марта',
@@ -179,7 +185,10 @@ $functionsList=[
     $cur='';
     if(strpos($cashback, '%') === false){
       if ($mode == 0) {
-        $cur = (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
+        $cur = (isset($currencyIcon[$currency]) ? Help::svg(
+            $currencyIcon[$currency],
+            'currency-icon currency-icon-'.$currencyIcon[$currency]
+            ) : $currency);
       }
       if ($mode == 1) {
         $cur = $currency;
@@ -198,7 +207,10 @@ $functionsList=[
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
       $out = $cashback . ' ' .
-        (isset($currencyIcon[$currency]) ? $currencyIcon[$currency] : $currency);
+        (isset($currencyIcon[$currency]) ? Help::svg(
+            $currencyIcon[$currency],
+            'currency-icon currency-icon-'.$currencyIcon[$currency]
+        ) : $currency);
     } else {
       $out = $cashback;
     }
