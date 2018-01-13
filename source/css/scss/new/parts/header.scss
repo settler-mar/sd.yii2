@@ -220,6 +220,7 @@
     display: flex;
     justify-content: flex-end;
     margin: auto;
+    position: relative;
 
 
     @include media($laptop_min) {
@@ -367,7 +368,8 @@
       max-height: 0;
     }
     position: absolute;
-    top: 55px;
+    top: 42px;
+    right: -10px;
     background-color: $drop-menu-color;
     &_inner {
       border: 1px solid $menu_border_color;

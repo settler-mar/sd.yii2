@@ -15,7 +15,7 @@
         background-color: $header_color_up;
         //margin-top: 2px;
         width: auto;
-        text-align: center;
+        text-align: right;
         right: -10px;
         @include media($laptop_min) {
           margin-top: 0;
@@ -24,6 +24,13 @@
           width: inherit;
           box-shadow: none;
           background-color: $header_sub_menu_bg;
+        }
+        &>li {
+          display: flex;
+          justify-content: flex-end;
+          @include media($laptop-min) {
+            justify-content: space-between;
+          }
         }
       }
       &:hover>ul {
@@ -80,9 +87,9 @@
 
   &.header-right {
     position: relative;
-    ul {
-      right: 0;
-    }
+    //ul {
+    //  right: 0;
+    //}
 
   }
   ul{
@@ -90,9 +97,9 @@
     padding: 0;
     background: $header_sub_menu_bg;
     position: absolute;
-    width: 320px;
-    //width: auto;
-    min-width: 300px;
+    //width: 320px;
+    width: auto;
+    min-width: 250px;
     border-left: 1px solid $menu_border_color;
     border-right: 1px solid $menu_border_color;
     //border-bottom: 1px solid $menu_border_color;
