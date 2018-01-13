@@ -2,6 +2,8 @@
     $('body').on('click','.modals_open',function (e) {
         e.preventDefault();
 
+        $('.header').removeClass('header_open-menu');
+
         //при открытии формы регистрации закрыть, если отрыто - попап использования купона без регистрации
         var popup = $("a[href='#showpromocode-noregister']").data('popup');
         if (popup) {
@@ -29,7 +31,7 @@
             ajaxForm($('.notify_box .notify_content'));
         },'json');
 
-        console.log(this);
+        //console.log(this);
         return false;
     })
 }());

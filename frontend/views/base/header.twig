@@ -82,10 +82,10 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-            <a href="#login" class="header-right_link mobile">Войти</a>
+            <a href="#login" class="header-right_link mobile modals_open">Войти</a>
           </li>
           <li class="mobile">
-            <a href="#registration" class="header-right_link mobile">Зарегистрироваться</a>
+            <a href="#registration" class="header-right_link mobile modals_open">Зарегистрироваться</a>
           </li>
           <li class="mobile">
             <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
@@ -175,6 +175,12 @@
               <a href="">Подключить ваш магазин</a>
             </li>
           </ul>
+        </li>
+        <li class="mobile">
+            <a href="/account">Личный кабинет</a>
+        </li>
+        <li class="mobile">
+            <a href="/logout">Выйти</a>
         </li>
         {% else %}
         <li>
