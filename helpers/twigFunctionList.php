@@ -1,5 +1,7 @@
 <?php
 use frontend\modules\constants\models\Constants;
+use common\components\Help;
+
 $currencyIcon = [
   'RUB' => '<span class="fa fa-rub"></span>',
   'EUR' => '<span class="fa fa-eur"></span>',
@@ -428,17 +430,18 @@ $functionsList=[
   't'=>'Yii::t',
   'max'=>'max',
   'svg'=>function ($name,$class=false) {
-    $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
-
-    if(!is_readable($path)){
-      return '<pre>Фаил не найден '.$path.'</pre>';
-    }
-
-    $output=file_get_contents($path);
-    if($class){
-      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
-    }
-    return $output;
+      return Help::svg($name, $class);
+//    $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
+//
+//    if(!is_readable($path)){
+//      return '<pre>Фаил не найден '.$path.'</pre>';
+//    }
+//
+//    $output=file_get_contents($path);
+//    if($class){
+//      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
+//    }
+//    return $output;
   },
 ];
 
