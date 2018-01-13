@@ -29,7 +29,7 @@
       <div class="header-item header-search">
         <form action="/search" class="header-search_form" name="search" method="get">
           <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
-          {{ svg('search','header-search_form-button')|raw }}
+          <a href="#">{{ svg('search','header-search_form-button')|raw }}</a>
         </form>
         <div id="autocomplete" class="autocomplete"><ul class="autocomplete_list"></ul></div>
       </div>
