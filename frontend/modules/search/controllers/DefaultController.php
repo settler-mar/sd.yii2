@@ -5,6 +5,7 @@ namespace frontend\modules\search\controllers;
 use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\components\SdController;
+use common\components\Help;
 //use yii\sphinx\Query;
 //use yii\sphinx\ActiveRecord;
 
@@ -47,8 +48,13 @@ class DefaultController extends SdController
         $out["suggestions"][] = [
           "value" => $v['name'],
           "cashback" =>'<span class="cashback">'.$cashback.
-              (strpos($cashback, '%') === false && isset(Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon'])?
-                  '  '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['icon']: '').'</span>',
+            (strpos($cashback, '%') === false ?
+              (isset(Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg'])?
+              Help::svg(
+                Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg'],
+                'currency-icon '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg']
+              )
+            : Yii::$app->params['valuta']): '').'</span>',
           "data" => [
             'name' => $v['name'],
             'route' => $v['route_url']

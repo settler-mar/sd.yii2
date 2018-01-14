@@ -8,15 +8,19 @@ return [
   'currencies' => [
       'RUB' => [
           'text' => 'руб',
-          'icon' => '<span class="fa fa-rub"></span>',
+          //'icon' => '<span class="fa fa-rub"></span>',
+          //'icon' => "{{ svg('ruble', 'currency-icon-ruble')|raw }}",
+          'svg' => 'ruble'
       ],
       'USD' => [
           'text' => 'usd',
           'icon' => '<span class="fa fa-usd"></span>',
+          'svg' => 'dollar',
       ],
       'EUR' => [
           'text' => 'eur',
           'icon' => '<span class="fa fa-eur"></span>',
+          'svg' => 'euro',
       ],
       'KZT' => [
           'text' => 'kzt',

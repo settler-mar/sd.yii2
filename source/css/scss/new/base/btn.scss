@@ -93,6 +93,18 @@
     font-size: 14px;
     border-left: 2px solid $header_border_color;
     border-bottom: none;
+    &-ballance {
+      position: relative;
+      margin-left: 25px;
+      &:hover {
+        .btn-header_button_money {
+          width: 22PX;
+          height: 22PX;
+          left: -32PX;
+        }
+      }
+
+    }
 
     &.last {
       border-right: 2px solid $header_border_color;
@@ -103,15 +115,28 @@
       border: none;
 
     }
+    .tooltip {
+      cursor: pointer;
+    }
     &_button {
       width: $header_button_size;
       height: $header_button_size;
       &_money {
-        width: 18px;
-        height: 18px;
+        position: absolute;
+        width: 18PX;
+        height: 18PX;
         color: $header_sub_menu_color_hover;
         stroke: $header_sub_menu_color_hover;
         fill: $header_sub_menu_color_hover;
+        transition: all 0.4s ease;
+        //margin-right: 10px;
+        left: -30PX;
+        &:hover {
+          //width: 22PX;
+          //height: 22PX;
+          //left: -32PX;
+          //margin-right: -2px;
+        }
       }
 
     }
@@ -121,13 +146,13 @@
       fill: $header_color_up;
       text-decoration: none;
       .ballance-all {
-        color: $header_sub_menu_color_hover;
+        color: $footer_link_color;
         &:hover {
           color: $a_color_hover;
         }
       }
       .ballance-confirmed {
-        color: $header_color_gray;
+        color: $cahsback_confirmed_color;
         &:hover {
           color: $a_color_hover;
         }

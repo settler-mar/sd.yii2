@@ -6,6 +6,17 @@ var headerActions = function () {
         e.preventDefault();
         $('.header').toggleClass('header_open-menu');
         $('.drop-menu').find('li').removeClass('open').removeClass('close');
+        if ($('.header').hasClass('header_open-menu')) {
+            $('.header').removeClass('header-search-open');
+        }
+    });
+    $('.search-toggle').click(function(e) {
+        e.preventDefault();
+        $('.header').toggleClass('header-search-open');
+        $('#autocomplete').fadeOut();
+        if ($('.header').hasClass('header-search-open')) {
+            $('.header').removeClass('header_open-menu');
+        }
     });
 
     $('#header').click(function (e) {
@@ -14,11 +25,12 @@ var headerActions = function () {
         }
     });
 
-    $('.search-toggle').click(function(e) {
+    $('.header-search_form-button').click(function(e){
         e.preventDefault();
-        $('.header-search').toggleClass('open');
-        $('#autocomplete').fadeOut();
+        $(this).closest('form').submit();
     });
+
+
 
     $('.header-secondline_close').click(function(e){
         $('.header').removeClass('header_open-menu');
@@ -32,22 +44,11 @@ var headerActions = function () {
     $('.tooltip').tipso({
         background : '#4A4A4A',
         size: 'small',
+        delay: 100,
+        speed: 100,
         onBeforeShow : function(ele, tipso) {
-            if (ele.data('type')=='json') {
-                var items = ele.data('tooltip');
-                var html = '<ul class="noty-list">';
-                items.forEach(function(item){
-                    html += '<li class="noty-list_item"><span class="noty-list_item-type">'+item.type+
-                        '</span><span class="noty-list_item-text">'+item.text+'</span></li>';
-                });
-                html += '</ul>';
-                this.content = html;
-                this.background = '#ccc';
-            } else {
-                this.content = ele.data('tooltip');
-            }
+            this.content = ele.data('tooltip');
         }
-
     });
 
 

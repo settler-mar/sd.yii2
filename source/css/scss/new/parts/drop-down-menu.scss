@@ -15,7 +15,7 @@
         background-color: $header_color_up;
         //margin-top: 2px;
         width: auto;
-        text-align: center;
+        //text-align: right;
         right: -10px;
         @include media($laptop_min) {
           margin-top: 0;
@@ -25,6 +25,13 @@
           box-shadow: none;
           background-color: $header_sub_menu_bg;
         }
+        //&>li {
+        //  display: flex;
+        //  justify-content: flex-end;
+        //  @include media($laptop-min) {
+        //    justify-content: space-between;
+        //  }
+        //}
       }
       &:hover>ul {
         border-right:  2px solid $menu_left_border_color;
@@ -56,12 +63,15 @@
     }
   }
 
-  a{
+  a, span{
     font-size: 14px;
     @include media($tablets) {
       font-size: 16px;
     }
     color: $header_sub_menu_color;
+    &.cat_news {
+      color: $header_color_news;
+    }
     stroke: $header_sub_menu_color;
     fill: $header_sub_menu_color;
     text-decoration: none;
@@ -72,17 +82,21 @@
     //word-break: normal;
     white-space: nowrap;
     flex-direction: row;
+    cursor: pointer;
     @include media($laptop-min) {
       border-bottom: 1px solid $menu_border_color;
+      cursor: default;
     }
+
+
 
   }
 
   &.header-right {
     position: relative;
-    ul {
-      right: 0;
-    }
+    //ul {
+    //  right: 0;
+    //}
 
   }
   ul{
@@ -92,7 +106,7 @@
     position: absolute;
     //width: 320px;
     width: auto;
-    min-width: 300px;
+    min-width: 250px;
     border-left: 1px solid $menu_border_color;
     border-right: 1px solid $menu_border_color;
     //border-bottom: 1px solid $menu_border_color;
@@ -110,7 +124,7 @@
       border: none;
     }
     @include media($phones) {
-      padding-right: 3%;
+      //padding-right: 3%;
     }
    }
 
@@ -131,20 +145,12 @@
       //border-bottom: 1px solid rgba(204, 204, 204, 0.76);
       background-color: $drop-menu-color;
 
-      a{
-        //font-size: 18px;
-        //padding-left: 15px;
-        //padding-right: 15px;
-        //display: block;
-        //padding-top: 8px;
-        ///padding-bottom: 8px;
+      a, span{
         padding: 10px 15px;
         @include media($laptop_min) {
           padding: 15px 15px;
         }
-        //word-break: normal;
         white-space: normal;
-
       }
       span.active {
         padding: 10px 15px;
@@ -157,6 +163,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        @include media($tablets) {
+          font-size: 16px;
+        }
 
       }
 

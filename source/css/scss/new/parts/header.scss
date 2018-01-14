@@ -12,7 +12,8 @@
 
   @include media($laptop_min) {
     margin-bottom: $menu_height;
-
+    position: static;
+    //perspective: none;
   }
 
   &-upline {
@@ -126,6 +127,17 @@
     a.flex-start {
       justify-content: flex-start;
     }
+    //@include media($phones) {
+    //  //left: -110%;
+    //  &_inner {
+    //    //width: 100%;
+    //    //padding-right: 3%;
+    //  }
+    //  .menu_angle-down {
+    //    //right: 30px;
+    //  }
+    //}
+
   }
 
   &-item {
@@ -167,6 +179,13 @@
 
   &-search {
     position: relative;
+    @include media($laptop-min) {
+      display: none;
+      margin-right: auto;
+    }
+    &-open .header-search{
+      display: block;
+    }
 
 
 
@@ -220,6 +239,7 @@
     display: flex;
     justify-content: flex-end;
     margin: auto;
+    position: relative;
 
 
     @include media($laptop_min) {
@@ -263,17 +283,17 @@
 
   .menu-toggle {
     display: none;
-    margin: auto 12px auto 3px;
+    margin: auto 12PX auto 3PX;
     &_button {
       &.open{
-        width: 26px;
-        height: 26px;
+        width: 26PX;
+        height: 26PX;
       }
       &.close {
         //margin-top: 0;
-        width: 26px;
-        height: 26px;
-        margin-bottom: 4px;
+        width: 26PX;
+        height: 26PX;
+        margin-bottom: 4PX;
       }
     }
     a {
@@ -315,13 +335,16 @@
 
   }
 
-  &.header_open-menu {
+  &.header_open-menu,
+  &.header-search-open {
     position: fixed;
     background: rgba(0,0,0,0.6);
     z-index: 99999;
     height: 100%;
     overflow-y: auto;
+  }
 
+  &.header_open-menu{
     .header-right {
       @include media($laptop_min) {
         left: 0;
@@ -367,7 +390,8 @@
       max-height: 0;
     }
     position: absolute;
-    top: 55px;
+    top: 42px;
+    right: -10px;
     background-color: $drop-menu-color;
     &_inner {
       border: 1px solid $menu_border_color;
@@ -440,7 +464,13 @@
       &_open{
         opacity: 1;
         max-height: 350px;
+        z-index: 99;
 
+        @include media($laptop_min) {
+          max-height: calc(100vh - 3.125rem);
+          max-width: none;
+          right: 0;
+        }
         @include media($laptop_min) {
           max-height: calc(100vh - 3.125rem);
           max-width: none;
@@ -459,6 +489,8 @@
       & .head-noty-list{
         height: auto;
       }
+
+
     }
 
     &-list{
@@ -493,23 +525,7 @@
       font-size: 14px;
     }
   }
-
-}
-
-@include media($laptop_min) {
-  .header {
-    position: static;
-    perspective: none;
-
-    &-search {
-      display: none;
-      margin-right: auto;
-      position: relative;
-
-      &.open {
-        display: block;
-      }
-    }
+  @include media($laptop_min) {
 
     .menu-toggle {
       display: block;
@@ -518,61 +534,13 @@
       }
     }
 
-    .btn-header {
-      display: block;
-    }
-
     &-authorization{
       display: none;
     }
   }
+
 }
 
-.autocomplete {
-  box-sizing: border-box;
-  position: absolute;
-  display: none;
-  top: 35px;
-  left: 0;
-  padding: 5px;
-  background-color: $shop_cashback_link_color;
-  box-shadow: 0 4px 4px rgba(0,0,0,.2);
-  width: 100%;
-  &_list {
-    margin: 0;
-    padding: 0;
-    >li{
-      list-style-type: none;
-      a {
-        display: flex;
-        justify-content: space-between;
-        color: $header_color_up;
-        text-decoration: none;
-        padding: 8px 4px;
-        .cashback {
-          color: $search_item_cashback_color
-        }
-        &:hover {
-          color: $header_sub_menu_color_hover;
-          background-color: $search_list_hover_color;
-        }
-      }
-    }
-  }
-}
 
-@include media($phones) {
-  .header {
-    &-secondline {
-      left: -110%;
-      &_inner {
-        width: 100%;
-        padding-right: 3%;
-      }
-      .menu_angle-down {
-        right: 30px;
-      }
-    }
-  }
-}
+
 
