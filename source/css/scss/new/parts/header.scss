@@ -441,6 +441,12 @@
         opacity: 1;
         max-height: 350px;
 
+        @include media($laptop_min) {
+          max-height: calc(100vh - 3.125rem);
+          max-width: none;
+          right: 0;
+        }
+
         &:before{
           opacity: 0.7;
           height: 100vh;
@@ -448,10 +454,10 @@
         }
       }
 
-      @include media($laptop_min) {
-        max-height: calc(100vh - 3.125rem);
-        max-width: none;
-        right: 0;
+
+
+      & .head-noty-list{
+        height: auto;
       }
     }
 
@@ -463,6 +469,7 @@
       padding: 0;
       z-index: 99;
       background: $header_color_up;
+      height: 0;
     }
 
     &-item{

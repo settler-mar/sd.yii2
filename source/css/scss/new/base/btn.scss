@@ -3,6 +3,13 @@
     border-radius: 1em;
   }
 
+
+  &-dark{
+    background: $btn_base_dark_bg;
+    border-color: $btn_base_dark_bg;
+    color:$btn_base_dark_color;
+  }
+
   &-transform{
     background: transparent;
 
@@ -20,6 +27,15 @@
   &-margin{
     margin: 0 12px;
     min-width: 140px;
+  }
+
+  &-margin_auto{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &-block{
+    display: block;
   }
 
   &-min_width{
@@ -42,6 +58,11 @@
 
   &-margin_top{
     margin-top: 16px;
+  }
+
+  &-margin_vertical{
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 
