@@ -482,15 +482,11 @@
           height: 100vh;
           transition: opacity .25s ease;
         }
+
+        & .header-noty-list{
+          height: auto;
+        }
       }
-
-
-
-      & .head-noty-list{
-        height: auto;
-      }
-
-
     }
 
     &-list{
