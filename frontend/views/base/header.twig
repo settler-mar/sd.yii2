@@ -94,10 +94,10 @@
           </li>
         {% endif %}
         <li class="drop-menu_group__up">
-          <span>
+          <a href="/srores">
             Интернет-магазины
             {{ svg('angle-down','menu_angle-down')|raw }}
-          </span>
+          </a>
 
           {{ use('frontend/components/CategoryMenu') }}
           {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite'}) %}

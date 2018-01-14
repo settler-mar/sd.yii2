@@ -76,9 +76,11 @@
       margin-left: 25px;
       &:hover {
         .btn-header_button_money {
-          width: 22PX;
-          height: 22PX;
-          left: -32PX;
+
+          //width: 22PX;
+          //height: 22PX;
+          //left: -32PX;
+          transform: scale(1.2);
         }
       }
 
