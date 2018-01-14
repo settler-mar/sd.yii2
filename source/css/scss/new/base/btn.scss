@@ -59,10 +59,11 @@
   cursor: pointer;
   display: inline-block;
   text-align: center;
+  z-index: 1;
 
   &:hover{
-    background: transparent;
     color: $btn_base_bg;
+    background: $header_color_up;
   }
 
   &-header {
