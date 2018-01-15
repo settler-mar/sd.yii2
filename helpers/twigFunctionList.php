@@ -198,10 +198,16 @@ $functionsList=[
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
-    $value = floatval(preg_replace('/[^0-9\.]/', '', $cashback));
+    $value = preg_replace('/[[^.0-9]]/i', '', $cashback);
+    $value=str_replace('%','',$value);
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
+    }else{
+      $v = $value * 1;
+      //$v=$v/10;
+      $cashback=str_replace($value,$v,$cashback);
     }
+
 
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
