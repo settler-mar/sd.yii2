@@ -2,19 +2,9 @@
 
     {% include 'parts/slider.twig' %}
 
-    {{ use('yii\\widgets\\Breadcrumbs') }}
-    {% if app.controller.params['breadcrumbs'] != null %}
-        <section class="breadcrumbs  margin">
+    {% include 'parts/catalog_breadcrumbs.twig' %}
 
 
-            <div class="breadcrumbs">
-                {{ breadcrumbs_widget({
-                    'links': app.controller.params['breadcrumbs'],
-                    'options': {'class': 'breadcrumbs-sd catalog'}
-                }) }}
-            </div>
-        </section>
-    {% endif %}
 
     <!--краткая информация категории-->
     {% if current_category.short_description %}

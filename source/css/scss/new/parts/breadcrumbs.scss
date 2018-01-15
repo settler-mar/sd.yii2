@@ -1,0 +1,39 @@
+.breadcrumbs {
+  &_list {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    >li{
+      display: flex;
+      align-items: center;
+      color: $header_sub_menu_color_hover;
+      font-size: 14px;
+      font-weight: bold;
+      &:not(:last-child) {
+        margin-right: 5px;
+        &:after {
+          color: $text_color;
+          fill: $text_color;
+          stroke: $text_color;
+          background-image: url(/images/svg/angle-double-right.svg);
+          background-size: 12px 12px;
+          background-repeat: no-repeat;
+          display: inline-block;
+          content: " ";
+          width: 12px;
+          height: 12px;
+          margin-left: 5px;
+        }
+      }
+      a {
+        color: $text_color;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
