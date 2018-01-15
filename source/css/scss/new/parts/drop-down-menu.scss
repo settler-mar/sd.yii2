@@ -265,8 +265,10 @@
 
     }
     &>ul>li .menu_angle-down {
-      //transform: rotate(-90deg);
-      display:none;//не показывать в мобильном ссылку на подкатегории
+      transform: rotate(-90deg);
+      @include media($laptop_min) {
+        display: none; //не показывать в мобильном ссылку на подкатегории
+      }
     }
   }
 

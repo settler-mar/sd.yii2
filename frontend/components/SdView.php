@@ -27,6 +27,7 @@ class SdView extends View
   public $isWebMaster=false;
   public $notys=false;//непрочитанных уведомлений
   public $sd_counter;
+  public $favorites=false;//количество изрбанных
 
   public function init_param()
   {
@@ -38,6 +39,7 @@ class SdView extends View
       $this->user = (array)$user->getIterator();
       $this->balance = $user->getBalance();
       $this->notys = $this->user_id ? Notifications::getUnreadCount($this->user_id) : false;
+      $this->favorites = $this->user_id ? UsersFavorites::userFavoriteCount($this->user_id) : false;
 
       $this->all_params['bonus_status'] = $user->bonus_status_data;
       $this->all_params['user']=(array)$user->getIterator();

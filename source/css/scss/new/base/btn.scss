@@ -175,6 +175,11 @@
       display: flex;
       align-items: center;
     }
+    &.btn-header_favorite {
+      @include media($phones) {
+        display: none;
+      }
+    }
   }
 
   @include btn_modification;

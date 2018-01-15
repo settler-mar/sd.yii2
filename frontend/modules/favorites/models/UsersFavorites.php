@@ -3,7 +3,7 @@
 namespace frontend\modules\favorites\models;
 
 use frontend\modules\stores\models\Stores;
-use Yii;
+use yii;
 use frontend\modules\cache\models\Cache;
 
 /**
