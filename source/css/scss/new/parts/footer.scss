@@ -37,9 +37,10 @@
       &-item {
         display: inline-block;
         order: 0;
-        width: 33%;
+        width: 25%;
         margin-bottom: 32px;
         min-width: 210px;
+        text-align: center;
       }
     }
   }
@@ -182,6 +183,7 @@
         width: 200px;
 
         @include media($tablets) {
+          display: none;
           width: 100%;
           margin-bottom: 10px;
         }
@@ -255,6 +257,10 @@
     display: flex;
     flex-direction: row;
 
+    @include media($laptop_min) {
+      justify-content: center;
+    }
+
     &_logo {
       height: 36PX;
       width: 60px;
@@ -287,6 +293,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      text-align: left;
     }
 
     &-title {
@@ -296,6 +303,7 @@
 
       @include media($laptop_min) {
         margin-bottom: 0px;
+        text-align: center;
       }
     }
 
@@ -335,6 +343,10 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+    }
+
+    @include media($laptop_min) {
+      display: none;
     }
 
     &_title {
@@ -380,7 +392,9 @@
       fill: rgba(#fff, 0.6);
       color: rgba(#fff, 0.6);
       position: relative;
-      width: 48%;
+      width: calc(49% - 10px);
+      display: inline-block;
+      margin-right: 10px;
 
       svg {
         width: 100%;

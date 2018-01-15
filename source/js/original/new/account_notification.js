@@ -42,11 +42,17 @@
           })
         }
       }
+      return false;
     });
 
-    $('.content-wrap').on('mousedown',function(e){
-      $('.header-noty-box').removeClass('header-noty-box_open')
+    $('.header-noty-box').on('click',function(e){
+      $('.header-noty-box').removeClass('header-noty-box_open');
       $('html').removeClass('no_scrol_laptop_min');
+    });
+
+    $('.header-noty-list').on('click',function(e){
+      e.preventDefault();
+      return false;
     })
   },'json');
 
