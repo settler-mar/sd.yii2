@@ -14,6 +14,7 @@
 @import  "base/modals";
 @import  "base/socials";
 @import  "external/tipso.min";
+@import  "external/flexslider";
 
 html{
   @include media($desktop) {
@@ -345,6 +346,7 @@ html{
     }
   }
 
+
 @import 'parts/header';
 @import 'parts/drop-down-menu';
 @import 'index/hello';
@@ -360,3 +362,5 @@ html{
 @import 'parts/comments';
 @import 'parts/autocomplete';
 @import 'parts/catalog';
+@import 'parts/slider';
+

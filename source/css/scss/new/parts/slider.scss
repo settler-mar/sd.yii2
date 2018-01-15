@@ -1,0 +1,18 @@
+.slider {
+  &_list {
+  }
+  &_item {
+    list-style-type: none;
+    &-image {
+      background-size:cover;
+      position:relative;
+      &-link {
+        position: absolute;
+        left: 0;
+        top:0;
+        height: 100%;
+        width:100%;
+      }
+    }
+  }
+}
