@@ -23,9 +23,11 @@
                 {% endfor %}
             {% endif %}
         </a>
-        <span>на основании опроса</span>
-        <span property="v:votes">{{ this.site_rating.reviews_count }}</span>
-        <span>наших пользователей</span>
+        <span class="small">
+            <span>на основании опроса</span>
+            <span property="v:votes">{{ this.site_rating.reviews_count }}</span>
+            <span>наших пользователей</span>
+        </span>
     </span>
 </div>
 {% endif %}
