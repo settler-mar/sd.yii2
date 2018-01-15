@@ -1,6 +1,8 @@
 //избранное
 $( document ).ready(function() {
-  $(".shops .favorite-link").on('click',function() {
+  $(".shops .favorite-link").on('click',function(e) {
+    e.preventDefault();
+
     var self = $(this);
     var type = self.attr("data-state"),
       affiliate_id = self.attr("data-affiliate-id");
