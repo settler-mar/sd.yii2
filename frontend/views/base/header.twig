@@ -13,10 +13,16 @@
           <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
         </div>
 
+        {% if this.favorites %}
+            {#если есть избранные#}
+          <div class="btn-header btn-header_favorite mobile" >
+            <a title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
+          </div>
+        {% endif %}
         {% if this.user_id > 0 %}
             {#если есть уведомления добавлен класс#}
           <div class="header-logo_noty  btn-header mobile {% if this.notys %} has-noty {% endif %}">
-            <a href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
+            <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
         {% endif %}
 
@@ -59,15 +65,15 @@
                 &nbsp;/&nbsp;{{ _nf(this.balance.total - this.balance.charity - this.balance.withdraw) | raw}} руб </span>
             </a>
           </div>
-          {% if 1==1 %}
+          {% if this.favorites %}
               {#если есть избранные#}
-            <div class="btn-header" >
+            <div class="btn-header btn-header_favorite" >
               <a title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
             </div>
           {% endif %}
 
             <div class="header-logo_noty btn-header last {% if this.notys %} has-noty {% endif %}" >
-              <a href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+              <a title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
           <div class="avatar account-menu-toggle" title="Личный кабинет">
@@ -92,12 +98,16 @@
           <li class="mobile">
             <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
           </li>
+        {% else %}
+          <li class="mobile">
+            <a href="/account">Личный кабинет</a>
+          </li>
         {% endif %}
         <li class="drop-menu_group__up">
-          <span>
+          <a href="/srores">
             Интернет-магазины
             {{ svg('angle-down','menu_angle-down')|raw }}
-          </span>
+          </a>
 
           {{ use('frontend/components/CategoryMenu') }}
           {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite'}) %}
@@ -105,13 +115,23 @@
             {{category_tree|raw}}
           {% endif %}
         </li>
-        <li>
-          <a>Промокоды</a>
+        <li class="mobile">
+          <a>Двойной кэшбэк</a>
+        </li>
+        <li class="drop-menu_group__up">
+          <a href="/coupons">Промокоды
+              {{ svg('angle-down','menu_angle-down')|raw }}
+          </a>
+            {{ use('frontend/components/CategoryCouponsMenu') }}
+            {% set category_coupons = category_coupons_menu_widget() %}
+            {% if category_coupons %}
+                {{category_coupons|raw}}
+            {% endif %}
         </li>
         <li>
           <a>Оффлайн-магазины</a>
         </li>
-        <li>
+        <li class="desctop">
           <a>Двойной кэшбэк</a>
         </li>
         <li class="drop-menu_group__up">
@@ -150,7 +170,7 @@
           </span>
           <ul class="left-">
             <li>
-              <a href="">Как это работает</a>
+              <a href="">С чего начать</a>
             </li>
             <li>
               <a href="">Служба поддержки</a>
@@ -177,9 +197,6 @@
               <a href="">Подключить ваш магазин</a>
             </li>
           </ul>
-        </li>
-        <li class="mobile">
-            <a href="/account">Личный кабинет</a>
         </li>
         <li class="mobile">
             <a href="/logout">Выйти</a>

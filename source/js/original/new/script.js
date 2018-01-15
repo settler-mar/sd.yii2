@@ -22,6 +22,7 @@ var headerActions = function () {
     $('#header').click(function (e) {
         if (e.target.id == 'header') {
             $(this).removeClass('header_open-menu');
+            $(this).removeClass('header-search-open');
         }
     });
 

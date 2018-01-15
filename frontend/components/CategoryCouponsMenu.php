@@ -31,7 +31,7 @@ class CategoryCouponsMenu extends Widget
           'route' => 'expired',
           'uid' => -1
         ]]);
-        $out = '<ul data-mcs-theme="dark">';
+        $out = '<ul>';
         foreach ($categories as $category) {
             $out .= '<li>';
 
@@ -40,12 +40,12 @@ class CategoryCouponsMenu extends Widget
                 || $category['uid'] == -1 && Yii::$app->request->pathinfo == 'coupons/expired'
             ) {
                 $class = 'class="active title"';
-                $classCount = 'class="active-count title"';
-                $out .=  '<span ' . $class . '">' . $category['name'] . "</span> <span ".$classCount.">(" .
+                //$classCount = 'class="active-count title"';
+                $out .=  '<span ' . $class . '">' . $category['name'] . "&nbsp;(" .
                   $category['count'] . ")</span>";
             } else {
                 $out .=  '<a href="/coupons' . ($category['route']? '/'.$category['route'] : '') .
-                  '" class="title">' . $category['name'] .  ' <span>(' . $category['count'] .')</span></a>';
+                  '" class="title">' . $category['name'] .  '&nbsp;(' . $category['count'] .')</a>';
             }
             $out .='</li>';
         }
