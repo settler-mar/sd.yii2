@@ -45,7 +45,10 @@
           }
         }
         & > ul {
-          display: none;
+          max-height: 0;
+          transition: max-height 0.3s cubic-bezier(0,1,0,.95);
+          overflow: hidden;
+
           >li{
             >a,span {
               background-color: $header_bg_second;
@@ -60,7 +63,8 @@
         }
         &.open {
           > ul {
-            display: block;
+            max-height: 9999px;
+            transition: max-height 0.3s cubic-bezier(1,.05,1,0);
           }
           .menu_angle-down {
             transform: none;
