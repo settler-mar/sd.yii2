@@ -35,7 +35,7 @@ class DefaultController extends SdController
    */
   public function createAction($id)
   {
-    $request = \Yii::$app->request;
+     $request = \Yii::$app->request;
     //здесь могут быть редиректы со старых роутов, поэтому делаем проверку для параметров старых роутов
     //передаваемых в запросе быть не должно
     $this->checkWrongParams(['store', 'expired', 'coupon', 'id']);

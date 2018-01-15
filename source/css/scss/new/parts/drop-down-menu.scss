@@ -272,25 +272,4 @@
     }
   }
 
-  @include media($laptop_min) {
-    .menu_angle-down {
-      transform: rotate(-90deg);
-    }
-    .menu-group,
-    .drop-menu_group__up {
-      &.open {
-        >.menu_angle-down,
-        >a>.menu_angle-down,
-        >span>.menu_angle-down{
-          //transform: rotate(180deg);
-          transform: none;
-        }
-      }
-    }
-    .drop-menu_group__up>a>.menu_angle-down {
-    }
-  }
-
-
-
 }

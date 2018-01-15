@@ -1,71 +1,66 @@
-{% include 'parts/slider.twig' %}
-{{ use('yii\\widgets\\Breadcrumbs') }}
-{% if app.controller.params['breadcrumbs'] != null %}
-<section class="breadcrumbs catalog breadcrumbs-black">
-    <div class="container">
-            <div class="row">
-            <div class="col-md-12">
-                <div class="navigate">
-                    <div class="breadcrumbs">
-                        {{ breadcrumbs_widget({
-                            'links': app.controller.params['breadcrumbs'],
-                            'options': {'class': 'breadcrumbs-sd catalog'}
-                        }) }}
+{#<div class="page-wrap">#}
+
+    {% include 'parts/slider.twig' %}
+    {{ use('yii\\widgets\\Breadcrumbs') }}
+    {% if app.controller.params['breadcrumbs'] != null %}
+        <section class="breadcrumbs  margin">
+
+
+            <div class="breadcrumbs">
+                {{ breadcrumbs_widget({
+                    'links': app.controller.params['breadcrumbs'],
+                    'options': {'class': 'breadcrumbs-sd catalog'}
+                }) }}
+            </div>
+        </section>
+    {% endif %}
+
+    <!--краткая информация категории-->
+    {% if current_category.short_description %}
+        <section class="store-information short-description">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center">{{current_category.name}}</h3>
                     </div>
+                    {#<div class="col-md-12 short-description__description less">#}
+                    <div class="col-md-12 short-description__description">
+                        <div class="description">
+                            {{current_category.short_description|raw}}
+                        </div>
+                    </div>
+                    {#<div >#}
+                        {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
+                        {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
+                    {#</div>#}
                 </div>
             </div>
-        </div>
-        </div>
-</section>
-{% endif %}
+        </section>
+    {% endif %}
 
-<!--краткая информация категории-->
-{% if current_category.short_description %}
+    <!--поле контент из метатегов только для категории-->
+    {% if 1==2 and content and current_category and page == 1 %}
     <section class="store-information short-description">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <h3 class="text-center">{{current_category.name}}</h3>
-                </div>
-                {#<div class="col-md-12 short-description__description less">#}
                 <div class="col-md-12 short-description__description">
                     <div class="description">
-                        {{current_category.short_description|raw}}
+                        {{content|raw}}
                     </div>
                 </div>
-                {#<div >#}
-                    {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
-                    {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
-                {#</div>#}
             </div>
         </div>
     </section>
-{% endif %}
+    {% endif %}
 
-<!--поле контент из метатегов только для категории-->
-{% if 1==2 and content and current_category and page == 1 %}
-<section class="store-information short-description">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 short-description__description">
-                <div class="description">
-                    {{content|raw}}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
+    <section class="catalog margin">
+        <div class="page-wrap page-wrap-flex">
 
-<section class="divide shops section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-4">
+            <div class="catalog-categories">
                 {#<h3 class="cathead">Категории</h3>#}
                 {{ use('frontend/components/CategoryMenu') }}
                 {% set category_tree = category_menu_widget({'ext_items':'favorite,all_shops'}) %}
                 {% if category_tree %}
-                <div class="left-categories">
                     <div class="tree-cat accordeon">
                     {{category_tree|raw}}
                     </div>
@@ -74,11 +69,11 @@
                     {% if banners %}
                         {{ banners|raw }}
                     {% endif %}
-                </div>
+
                 {% endif %}
 
             </div>
-            <div class="col-sm-12 col-md-8 ">
+            <div class="catalog-stores ">
                 <div class="row">
                     <div class="col-sm-12 category-title-wrapper">
                         <h1 class="page_title">
@@ -113,15 +108,16 @@
                     {% include 'parts/dropdown-limit-catalog.twig' %}
                     </div>
                 </div>
-                <div class="row">
+                <div
+                        class="catalog-stores_stores">
 
 
                     {% if stores|length > 0 %}
-                        <div class="shops-list">
+                        <div class="catalog-stores_list page-wrap-flex">
                             {% for store in stores %}
-                                <div class="col-sm-3 col-md-3">
+                                {#<div class="col-sm-3 col-md-3">#}
                                     {% include 'parts/shop.twig' %}
-                                </div>
+                                {#</div>#}
                             {% endfor %}
                         </div>
 
@@ -147,5 +143,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+{#</div>#}
