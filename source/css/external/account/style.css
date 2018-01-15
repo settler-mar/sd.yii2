@@ -767,7 +767,7 @@ Sidebar
   content: "\f1cd";
 }
 .cd-side-nav > ul > li.favorite-icon > a::before {
-  content: "\f005";
+  content: "\f004";
 }
 .cd-side-nav > ul > li.offlineshop-icon > a::before {
   content: "\f291";

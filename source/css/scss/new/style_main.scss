@@ -345,6 +345,29 @@ html{
     }
   }
 
+.spin {
+  animation: spin 2s infinite linear;
+}
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(359deg)
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(359deg)
+  }
+}
+
 @import 'parts/header';
 @import 'parts/drop-down-menu';
 @import 'index/hello';

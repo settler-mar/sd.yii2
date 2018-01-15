@@ -1,24 +1,25 @@
 <div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="shops favorites account-padding">
+    <section class="favorites account-padding">
         <div class="row">
             <div class="col-md-12">
                 <h3>{{ t('account', 'favorites') }}</h3>
             </div>
             {% if favorites|length > 0 %}
-            {% for store in favorites %}
-            <div class="col-sm-3 col-md-2">
-            {% include '/parts/shop.twig' %}
+
+
+            <div class="shops col-md-12">
+                {% for store in favorites %}
+                    {% include 'parts/shop.twig' %}
+                {% endfor %}
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
             </div>
-            {% endfor %}
+
+
             {% else %}
             <div class="col-md-12">
                 <p>

@@ -29,6 +29,7 @@
     background-color: $shop_logo_bg;
     border-radius: 5px 5px 0 0;
     height: 66px;
+    box-sizing: content-box;
 
     &_link{
       background-color: #fff;
@@ -109,6 +110,7 @@
     background: $shop_panel_bg;
     line-height: 16px;
     height: 16px;
+    box-sizing: content-box;
 
     &-item{
       color: $shop_cashback_link_color;

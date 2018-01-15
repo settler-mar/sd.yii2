@@ -128,6 +128,7 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/admin/ajax_remove.js',
         paths.source.js+'/original/language.js',
+        paths.source.js+'/original/new/favorites.js',
         paths.source.js+'/original/for_all.js'
     ], paths.app.js + '/account')
 );
@@ -174,6 +175,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/footer_menu.js',
         paths.source.js+'/original/new/rating.js',
         paths.source.js+'/original/new/account_notification.js',
+        paths.source.js+'/original/new/favorites.js',
         paths.source.js+'/original/new/script.js'
     ], paths.app.js+'/new')
 );
