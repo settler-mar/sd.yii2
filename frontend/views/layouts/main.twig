@@ -30,9 +30,9 @@
     {% include 'base/header.twig' %}
 
       <div class="content-wrap">
-          {% if this.all_params.wrap=='index' %}
+          {#{% if this.all_params.wrap=='index' %}#}
               {{ content|raw }}
-          {% endif %}
+          {#{% endif %}#}
       </div>
     {% include 'base/footer.twig' %}
 
