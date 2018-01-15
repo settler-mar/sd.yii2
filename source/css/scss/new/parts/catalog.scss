@@ -1,13 +1,101 @@
 .catalog {
   &-categories {
+    li {
+      list-style-type: none;
 
+    }
+    ul {
+      color: $text-color;
+      background: $header_color_up;
+      width: 320px;
+      @include media($laptop_min) {
+        width: 100%;
+      }
+      padding: 0;
+      margin: 0;
+      & > li {
+        margin-bottom: 1px;
+        >a {
+          background-color: $header_sub_menu_color_hover;
+          text-decoration: none;
+
+        }
+        >span {
+          background-color: $stores_menu_active_color;
+        }
+        > a, span {
+          padding: 10px 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: nowrap;
+          color: $text_color;
+          &:hover {
+            color: $header_sub_menu_color_hover;
+            background-color: $stores_menu_active_color;
+          }
+          &.active {
+            color: $stores_menu_hover_color;
+          }
+          &.cat_news {
+            color: $header_color_news;
+            &:hover {
+              color: $header_sub_menu_color_hover;
+            }
+          }
+        }
+        & > ul {
+          display: none;
+          >li{
+            >a,span {
+              background-color: $header_bg_second;
+              &:hover {
+                background-color: $stores_menu_active_color;
+              }
+              &.active {
+                background-color: $stores_menu_active_color;
+              }
+            }
+          }
+        }
+        &.open {
+          > ul {
+            display: block;
+          }
+          .menu_angle-down {
+            transform: none;
+          }
+        }
+      }
+    }
+
+    .menu_angle-down {
+      width: 9px;
+      height: 9px;
+      right: 8px;
+      padding: 0 10px;
+      color: $stores_menu_hover_color;
+      stroke:$stores_menu_hover_color;
+      fill: $stores_menu_hover_color;
+      cursor: pointer;
+      transform: rotate(-90deg);
+    }
   }
   &-stores {
+    margin-left: 5%;
+    @include media($laptop_min) {
+      margin-left: inherit;
+    }
     &_stores {
+      @include media($laptop_min) {
+        flex-direction: row;
+      }
 
     }
     &_list {
-
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
     }
 
   }
