@@ -449,6 +449,9 @@
       opacity: 0;
       max-height: 0;
       transition: all .25s ease;
+      a.btn{
+        display: none;
+      }
 
       &:before{
         content: "";
@@ -465,6 +468,9 @@
         opacity: 1;
         max-height: 350px;
         z-index: 99;
+        a.btn {
+          display: block;
+        }
 
         @include media($laptop_min) {
           max-height: calc(100vh - 3.125rem);
