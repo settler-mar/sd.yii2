@@ -7,6 +7,8 @@
 
 @import "../for_all.scss";
 
+@import "../new/color";
+@import "../new/parts/shop";
 /* Common
 ------------------------------------*/
 $images: "/images";
@@ -95,8 +97,57 @@ $images: "/images";
         padding: 8px;
     }
 }
-@import  "../part/shop";
 
+.heart-red{
+    color: $header_heart;
+    fill: $header_heart;
+    stroke: $header_heart;
+    height: 13px;
+    margin-left: 5px;
+}
+
+svg.svg-no-fill{
+    fill: none;
+}
+.spin {
+    animation: spin 2s infinite linear;
+}
+@-webkit-keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(359deg)
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(359deg)
+    }
+}
+
+.shops{
+    .shop a {
+        color: $text_color;
+        text-decoration: none;
+
+
+    }
+
+    .shop_panel {
+        &:hover {
+            color: $a_color_hover;
+            fill: $a_color_hover;
+            stroke: $a_color_hover;
+        }
+    }
+}
 /* Form
 ------------------------------------*/
 form {
