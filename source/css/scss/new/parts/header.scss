@@ -322,14 +322,14 @@
       display: block;
       position: absolute;
       background-color: $notyfy_icon_color;
-      width: 8px;
-      height: 8px;
+      width: 10PX;
+      height: 10PX;
       border-radius: 50%;
       content: "";
-      top: 3px;
-      left: 25px;
+      top: -2PX;
+      left: 17PX;
       @include media($laptop_min) {
-        left: 20px;
+        left: 12PX;
       }
 
     }
