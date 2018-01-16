@@ -43,11 +43,40 @@
           box-shadow: none;
         }
       }
+
     }
   }
 
   &>li{
     margin-right: 20px;
+    &:first-child {
+      @include media($laptop_min) {
+        //в мобиле для первого пункта меню первого уровня
+        padding-top: 20px;
+      }
+    }
+
+    //для первого пункта подменю
+    &>ul>li{
+      &:first-child {
+        a, span {
+          padding-top: 25px;
+        }
+        //для его дочернего
+        &>ul {
+          //чуть опускаем вниз
+          margin-top: 15px;
+          &>li {
+            a, span {
+              //как у всех
+              padding-top: 10px;
+            }
+          }
+        }
+      }
+
+    }
+
 
     &.mobile {
       display:none;
@@ -100,7 +129,8 @@
 
   }
   ul{
-    margin: 1px 0 0;
+    //margin: 1px 0 0;
+    margin: 0;
     padding: 0;
     background: $header_sub_menu_bg;
     position: absolute;
@@ -128,6 +158,12 @@
     }
    }
 
+  //&>li>ul>li:first-child {
+  //  a,span {
+  //    padding-top: 25px;
+  //  }
+  //}
+
   li{
     list-style: none;
     transition-property: opacity,visibility;
@@ -144,7 +180,6 @@
       line-height: 15px;
       //border-bottom: 1px solid rgba(204, 204, 204, 0.76);
       background-color: $drop-menu-color;
-
       a, span{
         padding: 10px 15px;
         @include media($laptop_min) {
@@ -192,14 +227,17 @@
       >ul{
         opacity: 1;
         border-bottom: 1px solid $menu_border_color;
+        border-top: 1px solid $menu_border_color;
         visibility: visible;
         @include media($laptop_min) {
           opacity: 0;
           border-bottom: none;
+          border-top: none;
           visibility: hidden;
           >li {
             max-height: 0;
             overflow: hidden;
+
           }
         }
 
