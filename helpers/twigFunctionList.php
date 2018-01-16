@@ -179,7 +179,7 @@ $functionsList=[
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback'=> function ($cashback, $currency='',$action = 0,$mode = 0) use ($currencyIcon) {
     if($action == 1){
-      $value = preg_replace('/[^0-9\.]/', '', $cashback);
+      $value = preg_replace('/[^0-9\.\,]/', '', $cashback);
       $cashback = str_replace($value,$value*2,$cashback);
     }
     $cur='';
@@ -198,7 +198,7 @@ $functionsList=[
   },
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
-    $value = preg_replace('/[[^.0-9]]/i', '', $cashback);
+    $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
     $value=str_replace('%','',$value);
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
@@ -207,7 +207,6 @@ $functionsList=[
       //$v=$v/10;
       $cashback=str_replace($value,$v,$cashback);
     }
-
 
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';

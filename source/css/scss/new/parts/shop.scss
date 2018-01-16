@@ -63,7 +63,10 @@
 
   &-cashback {
     &-link {
-      display: block;
+      //display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
       height: auto;
       margin: auto auto 0;
@@ -76,6 +79,21 @@
       line-height: 20px;
       text-decoration: none;
       border-radius: 0 0 5px 5px;
+      &_cashback{
+        display: flex;
+        align-items: center;
+        margin-left: 3px;
+        //&.currency-icon {
+        //  margin-left: 4px;
+        //}
+        word-spacing: 1px;
+        &_old {
+          display: flex;
+          align-items: center;
+          margin-left: 3px;
+        }
+      }
+
 
       &:hover {
         color: $shop_cashback_link_color;
@@ -95,6 +113,7 @@
         color: $shop_cashback_link_color;
         fill: $shop_cashback_link_color;
         stroke: $shop_cashback_link_color;
+        margin-left: 1px;
 
       }
     }

@@ -70,18 +70,20 @@
 
     <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
 
-        Кэшбэк&nbsp;
+        {#<span class="shop-cashback-link_title">#}
+            Кэшбэк
+        {#</span>&nbsp;#}
         {% if store.action_id == 1 %}
-            <b class="shop-cashback_old">
+            <span class="shop-cashback-link_cashback_old shop-cashback_old">
                 {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
-            </b>
-            <b>
+            </span>
+            <span class="shop-cashback-link_cashback">
                 {{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
-            </b>
+            </span>
         {% else %}
-            <b>
+            <span class="shop-cashback-link_cashback">
                 {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
-            </b>
+            </span>
         {% endif %}
     </a>
 </div>
