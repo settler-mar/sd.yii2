@@ -12,7 +12,7 @@
             <div class="page-wrap">
 
                 <h3 class="title-center">{{current_category.name}}</h3>
-                <div class="short-description">
+                <div class="catalog_category-short-description">
                     {{current_category.short_description|raw}}
                 </div>
 
@@ -22,22 +22,18 @@
 
     <!--поле контент из метатегов только для категории-->
     {% if 1==2 and content and current_category and page == 1 %}
-    <section class="store-information short-description">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 short-description__description">
-                    <div class="description">
-                        {{content|raw}}
-                    </div>
+        <section class="margin">
+            <div class="page-wrap">
+                <div class="catalog_category-content">
+                    {{content|raw}}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     {% endif %}
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
-
+            {#слева категории#}
             <div class="catalog-categories">
                 {#<h3 class="cathead">Категории</h3>#}
                 {{ use('frontend/components/CategoryMenu') }}
@@ -55,6 +51,7 @@
                 {% endif %}
 
             </div>
+            {#справа шопы#}
             <div class="catalog-stores ">
 
                 <h1 >
@@ -71,31 +68,38 @@
                         <span>({{total_v}})</span>
                     {% endif%}
                 </h1>
-                <div class="margin page-wrap-flex">
-                    <ul class="sort-menu">
-                        <li class="title">Сортировать по:</li>
-                        {% for sortLink in sortlinks%}
-                            <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                    <ul class="sort-menu-mobile">
+                {#выбор и отображение сортировки#}
+                <div class="margin page-wrap-flex catalog-stores_sort">
+                    <div class="catalog-stores_sort-desctop">
+                        <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
+                        <ul >
+                            {% for sortLink in sortlinks%}
+                                <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="catalog-stores_sort-mobile">
+                        <ul>
                         {% for sortLink in sortlinks%}
                             <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
                         {% endfor %}
-                    </ul>
+                        </ul>
+                    </div>
+                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
                 </div>
 
-                        <p class="view-items">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</p>
 
-                    <div class="category-title-wrapper">
+
+                <div class="category-title-wrapper">
                     {% include 'parts/dropdown-limit-catalog.twig' %}
-                    </div>
+                </div>
 
-                <div  class="catalog-stores_stores">
+                <div  class="catalog-stores_stores margin">
 
 
                     {% if stores|length > 0 %}
-                        <div class="catalog-stores_list shops">
+                        <div class="catalog-stores_list shops margin">
                             {% for store in stores %}
                                 {#<div class="col-sm-3 col-md-3">#}
                                     {% include 'parts/shop.twig' %}
@@ -103,26 +107,29 @@
                             {% endfor %}
                         </div>
 
-                        <div class="col-xs-12 col-sm-12 col-md-12 shops-pagination">
+                        <div class="catalog-stores_pagination catalog_pagination">
                             {% include 'parts/pagination.twig' %}
                         </div>
 
-                        {% if current_category.down_description %}
-                            <div class="col-md-12 down-description">
-                                {{current_category.down_description|raw}}
-                            </div>
-                        {% endif %}
 
                     {% else %}
-                        Ничего не найдено.
+                        <p>Ничего не найдено.</p>
                     {% endif %}
-                    {% if content and page==1%}
-                        <div class="col-md-12" style="margin-top: -20px;">
-                            {{ content | raw}}
-                        </div>
-                    {% endif %}
-                    {#</div>#}
                 </div>
+
+                {% if current_category.down_description %}
+                    <div class="catalog_category-down-description margin">
+                        {{current_category.down_description|raw}}
+                    </div>
+                {% endif %}
+
+                {% if content and page==1%}
+                    <div class="catalog_category-content margin">
+                        {{ content | raw}}
+                    </div>
+                {% endif %}
+                    {#</div>#}
+
             </div>
         </div>
     </section>
