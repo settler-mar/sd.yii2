@@ -72,16 +72,10 @@
 
         Кэшбэк&nbsp;
         {% if store.action_id == 1 %}
-            <b class="shop-cashback_old">
-                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
-            </b>
-            <b>
-                {{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
-            </b>
+            <b class="shop-cashback_old">{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
+            <b>{{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}</b>
         {% else %}
-            <b>
-                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
-            </b>
+            <b>{{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}</b>
         {% endif %}
     </a>
 </div>
