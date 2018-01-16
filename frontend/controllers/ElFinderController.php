@@ -10,6 +10,8 @@ class ElFinderController extends Controller
 {
   public function actions()
   {
+
+    if(Yii::$app->user->isGuest || Yii::$app->user->can('FilesEdit'))
     return [
         'connector' => array(
             'class' => ConnectorAction::className(),
