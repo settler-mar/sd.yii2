@@ -7,40 +7,41 @@
             </div>
             {% set form = active_form_begin() %}
 
+            <div class="col-md-6">
                 {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
 
-                {{ form.field(model, 'url').textInput()|raw }}
-
-                {{ form.field(model, 'description').textarea({'rows':6})|raw }}
-
                 {{ form.field(model, 'sort_index').textInput()|raw}}
-
-                {{ form.field(model, 'date_start').textInput()|raw}}
-
-                {{ form.field(model, 'date_end').textInput()|raw }}
-
-                {{ form.field(model, 'type').textInput()|raw }}
-
-                {{ form.field(model, 'html').textarea({'rows':6})|raw }}
-
-                {{ form.field(model, 'image').fileInput()|raw }}
-                <img for="Slider[image]" style="max-height: 150px;" src="/images/slides/{{ model.image }}">
-
-
-                {{ form.field(model, 'show_as').dropDownList({
-                    'text' : 'Название+Описание',
-                    'html' : 'HTML',
-                    'image' : 'Изображение'
-                })|raw }}
 
                 {{ form.field(model, 'is_showed').dropDownList({
                     '0' : 'Отключен',
                     '1' : 'Активен',
                 })|raw }}
+            </div>
+            <div class="col-md-6">
+                {{ form.field(model, 'date_start').textInput()|raw}}
 
-                <div class="form-group">
-                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-                </div>
+                {{ form.field(model, 'date_end').textInput()|raw }}
+            </div>
+
+
+            <link rel="stylesheet" href="/test/slider.css">
+            <link rel="stylesheet" href="/test/animationsKeyFrame.css">
+            <link rel="stylesheet" href="/test/filebrowser.css">
+            <script type="text/javascript" src="/test/slider.js"></script>
+
+            <section id="mega_slider"></section>
+            <section id="mega_slider_controle"></section>
+
+            <script type="application/javascript">
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    data ={{ model.json | raw }};
+                    megaslider.init([data], 'Slider[json]');
+                });
+            </script>
+
+            <div class="form-group col-md-12">
+                <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+            </div>
             {{ active_form_end() }}
         </div>
     </section>

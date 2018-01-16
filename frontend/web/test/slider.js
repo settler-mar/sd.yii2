@@ -104,6 +104,14 @@ var megaslider = (function() {
   var stTable;
   var paralaxTable;
 
+  function initImageServerSelect(el) {
+    if(els.length==0)return;
+    els.wrap('<div class="select_img">');
+    els=els.parent();
+    els.append('<button type="button"><i class="mce-ico mce-i-browse"></i></button>');
+    els.find('button').on('click',openCustomRoxy2);
+  }
+
   function genInput(data){
     var input='<input class="' + (data.inputClass || '') + '" value="' + (data.value || '') + '">';
     if(data.label) {
@@ -283,20 +291,23 @@ var megaslider = (function() {
     el.append('<h2>Управление</h2>');
     el.append($('<textarea/>',{
       text:JSON.stringify(slider_data[0]),
-      id:'slide_data'
+      id:'slide_data',
+      name: editor
     }));
 
     var btn=$('<button class=""/>').text("Активировать слайд");
     btns_box.append(btn);
-    btn.on('click',function(){
-      $('#mega_slider .slide').eq(0).addClass('active');
+    btn.on('click',function(e){
+      e.preventDefault();
+      $('#mega_slider .slide').eq(0).addClass('slider-active');
       $('#mega_slider .slide').eq(0).removeClass('hide');
     });
 
     var btn=$('<button class=""/>').text("Деактивировать слайд");
     btns_box.append(btn);
-    btn.on('click',function(){
-      $('#mega_slider .slide').eq(0).removeClass('active');
+    btn.on('click',function(e){
+      e.preventDefault();
+      $('#mega_slider .slide').eq(0).removeClass('slider-active');
       $('#mega_slider .slide').eq(0).addClass('hide');
     });
     el.append(btns_box);
@@ -307,7 +318,8 @@ var megaslider = (function() {
       value:slider_data[0].mobile,
       label:"Слайд для телефона",
       inputClass:"fileSelect",
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         slider_data[0].mobile=$(this).val()
         $('.mob_bg').eq(0).css('background-image','url('+slider_data[0].mobile+')');
         $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
@@ -318,19 +330,21 @@ var megaslider = (function() {
       value:slider_data[0].fon,
       label:"Осноной фон",
       inputClass:"fileSelect",
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         slider_data[0].fon=$(this).val()
         $('#mega_slider .slide').eq(0).css('background-image','url('+slider_data[0].fon+')')
         $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
       }
     }));
 
-    var btn_ch=$('<div class="btn"/>');
+    var btn_ch=$('<div class="btns"/>');
     btn_ch.append('<h3>Кнопка перехода(для ПК версии)</h3>');
     btn_ch.append(genInput({
       value:slider_data[0].button.text,
       label:"Текст",
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         slider_data[0].button.text=$(this).val();
         $('#mega_slider .slider__href').eq(0).text(slider_data[0].button.text);
         $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
@@ -393,7 +407,8 @@ var megaslider = (function() {
     var addBtn=$('<button/>',{
       text:"Добавить слой"
     });
-    addBtn.on('click',function() {
+    addBtn.on('click',function(e){
+      e.preventDefault();
       data = addTrStatic(false);
       initImageServerSelect(data.editor.find('.fileSelect'));
       $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
@@ -423,7 +438,8 @@ var megaslider = (function() {
     var addBtn=$('<button/>',{
       text:"Добавить слой"
     });
-    addBtn.on('click',function() {
+    addBtn.on('click',function(e){
+      e.preventDefault();
       data = addTrParalax(false);
       initImageServerSelect(data.editor.find('.fileSelect'));
       $('textarea#slide_data').text(JSON.stringify(this.slider_data[0]))
@@ -468,7 +484,8 @@ var megaslider = (function() {
         param:'img',
         obj:$('#mega_slider .fixed_group .fixed__layer').eq(i).find('.animation_layer'),
       },
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         var data=this;
         data.obj.css('background-image','url('+data.input.val()+')');
         slider_data[0].fixed[data.index].img=data.input.val();
@@ -505,7 +522,8 @@ var megaslider = (function() {
     var delBtn=$('<button/>',{
       text:"Удалить"
     });
-    delBtn.on('click',function(){
+    delBtn.on('click',function(e){
+      e.preventDefault();
       var $this=$(this.el);
       i=$this.closest('tr').index()-1;
       $('#mega_slider .fixed_group .fixed__layer').eq(i).remove(); //удаляем слой на слайдере
@@ -549,7 +567,8 @@ var megaslider = (function() {
         param:'img',
         obj:$('#mega_slider .parallax__group .parallax__layer').eq(i).find('span'),
       },
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         var data=this;
         data.obj.css('background-image','url('+data.input.val()+')');
         slider_data[0].paralax[data.index].img=data.input.val();
@@ -576,7 +595,8 @@ var megaslider = (function() {
         param:'img',
         obj:$('#mega_slider .parallax__group .parallax__layer').eq(i),
       },
-      onChange:function(){
+      onChange:function(e){
+        e.preventDefault();
         var data=this;
         data.obj.attr('z',data.input.val());
         slider_data[0].paralax[data.index].z=data.input.val();
@@ -587,7 +607,8 @@ var megaslider = (function() {
     var delBtn=$('<button/>',{
       text:"Удалить"
     });
-    delBtn.on('click',function(){
+    delBtn.on('click',function(e){
+      e.preventDefault();
       var $this=$(this.el);
       i=$this.closest('tr').index()-1;
       $('#mega_slider .fixed_group .fixed__layer').eq(i).remove(); //удаляем слой на слайдере
@@ -716,8 +737,8 @@ var megaslider = (function() {
         if(render_slide_nom==0){
           slides.find('.slide')
             .addClass('first_show')
-            .addClass('active');
-          slide_select_box.find('li').eq(0).addClass('active');
+            .addClass('slider-active');
+          slide_select_box.find('li').eq(0).addClass('slider-active');
 
           if(!editor) {
             setTimeout(function () {
@@ -726,15 +747,13 @@ var megaslider = (function() {
           }
 
           if(mobile_mode===false) {
-            parallax_group = $(container_id + ' .active .parallax__group>*');
+            parallax_group = $(container_id + ' .slider-active .parallax__group>*');
             parallax_counter = 0;
             parallax_timer = setInterval(render, 100);
           }
 
           if(editor){
             init_editor()
-          }else{
-
           }
         }
 
@@ -743,6 +762,8 @@ var megaslider = (function() {
           load_slide_img()
         }
       }
+    }).on('error',function () {
+      tot_img_wait--;
     });
     img.prop('src',src);
   }
@@ -776,7 +797,8 @@ var megaslider = (function() {
     var n = performance.now();
     var img=$('<img/>');
     img.attr('time',n);
-    img.on('load',function(){
+
+    function on_img_load(){
       var n = performance.now();
       img=$(this);
       n=n-parseInt(img.attr('time'));
@@ -795,9 +817,15 @@ var megaslider = (function() {
       }
       render_slide_nom=0;
       load_slide_img();
-    });
-    slider_data[0].mobile=slider_data[0].mobile+'?r='+Math.random();
-    img.prop('src',slider_data[0].mobile);
+    };
+
+    img.on('load',on_img_load());
+    if(slider_data.length>0) {
+      slider_data[0].mobile = slider_data[0].mobile + '?r=' + Math.random();
+      img.prop('src', slider_data[0].mobile);
+    }else{
+      on_img_load().bind(img);
+    }
   }
 
   function init(data,editor_init){
@@ -837,9 +865,9 @@ var megaslider = (function() {
     }
 
     /*slides.find('.slide').eq(0)
-      .addClass('active')
+      .addClass('slider-active')
       .addClass('first_show');
-    slide_control.find('li').eq(0).addClass('active');*/
+    slide_control.find('li').eq(0).addClass('slider-active');*/
 
     container.append(slides);
     slide_control.append(slide_select_box);
