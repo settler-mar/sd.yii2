@@ -105,6 +105,9 @@
           transform: scale(1.2);
         }
       }
+      span {
+        cursor: pointer;
+      }
 
     }
 
@@ -116,10 +119,6 @@
       padding: 0 10px;
       border: none;
 
-    }
-
-    .tooltip {
-      cursor: pointer;
     }
 
     &_button {

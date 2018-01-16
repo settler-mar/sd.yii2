@@ -55,13 +55,13 @@
             {#зарегистрирован#}
           <div class="btn-header " >
             <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
-              <span class="ballance-confirmed tooltip"
+              <span class="ballance-confirmed" data-toggle="tooltip"
                     {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
-                    data-tooltip="Сумма кэшбэка, уже доступная к выводу">
+                    data-original-title="Сумма кэшбэка, уже доступная к выводу">
                   {{ _nf(this.balance.current) | raw}} руб </span>
-              <span class="ballance-all tooltip"
+              <span class="ballance-all" data-toggle="tooltip"
                     {#title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"#}
-                    data-tooltip="Сумма кэшбэка за еще неподтвержденные магазином покупки">
+                    data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">
                 &nbsp;/&nbsp;{{ _nf(this.balance.total - this.balance.charity - this.balance.withdraw) | raw}} руб </span>
             </a>
           </div>
