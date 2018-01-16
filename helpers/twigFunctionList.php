@@ -206,7 +206,7 @@ $functionsList=[
       //$v=$v/10;
       $cashback=str_replace($value,$v,$cashback);
     }
-    
+
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
@@ -457,6 +457,12 @@ $functionsList=[
 //      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
 //    }
 //    return $output;
+  },
+  'params'=>function($name){
+    return Yii::$app->params[$name];
+  },
+  'TinyMce'=>function(){
+    ddd(\zxbodya\yii2\tinymce\TinyMce::className());
   },
 ];
 

@@ -880,3 +880,17 @@ table{
         }
     }
 }
+
+.el-finder-workzone {
+    p {
+        margin: 8px !important;
+    }
+
+    .image p{
+        background-position: 50% 50% !important;
+        background-size: contain !important;
+        height: 64px !important;
+        width: 64px !important;
+        margin: 8px !important;
+    }
+}

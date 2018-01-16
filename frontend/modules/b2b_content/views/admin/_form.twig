@@ -37,7 +37,7 @@
                 {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
 
 
-                {{ form.field(model, 'content').textarea({'rows':6,'class':'visual_editor'})|raw }}
+                {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
 
                 <div class="form-group">

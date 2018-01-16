@@ -6,7 +6,6 @@ use Yii;
 use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 
-
 /**
  * This is the model class for table "cw_promo_stores".
  *

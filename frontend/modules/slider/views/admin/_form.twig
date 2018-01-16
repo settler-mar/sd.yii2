@@ -1,4 +1,6 @@
 {{ use('/yii/widgets/ActiveForm') }}
+{{ use('zxbodya/yii2/elfinder/ElFinderWidget') }}
+
 <div class="content-wrapper">
     <section class="account-padding view-list view-current">
         <div class="row">
@@ -21,6 +23,10 @@
                 {{ form.field(model, 'date_start').textInput()|raw}}
 
                 {{ form.field(model, 'date_end').textInput()|raw }}
+
+                {{ ElFinderWidget_widget({
+                    'connectorRoute' : '/el-finder/connector'
+                }) }}
             </div>
 
 

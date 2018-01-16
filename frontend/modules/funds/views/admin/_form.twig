@@ -9,7 +9,7 @@
 
                         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'description').textarea({'rows':6,'class':'visual_editor'})|raw }}
+                        {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
                         {{ form.field(model, 'is_active').dropDownList({
                             0:"Скрытый",
