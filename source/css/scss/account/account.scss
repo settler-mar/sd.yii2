@@ -133,18 +133,27 @@ svg.svg-no-fill{
 }
 
 .shops{
-    .shop a {
-        color: $text_color;
-        text-decoration: none;
+    .shop {
+        a {
+            text-decoration: none;
+            color: $text_color;
+        }
 
+        .shop-cashback-link_action {
+            background: $shop_cashback_link_action;
+            color: $shop_cashback_link_bg;
 
-    }
+            &:hover {
+                color: $shop_cashback_link_bg;
+            }
+        }
 
-    .shop_panel {
-        &:hover {
-            color: $a_color_hover;
-            fill: $a_color_hover;
-            stroke: $a_color_hover;
+        .shop_panel {
+            &:hover {
+                color: $a_color_hover;
+                fill: $a_color_hover;
+                stroke: $a_color_hover;
+            }
         }
     }
 }

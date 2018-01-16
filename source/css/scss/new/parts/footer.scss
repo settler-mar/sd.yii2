@@ -257,6 +257,7 @@
     //padding-left: 100px;
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
 
     @include media($laptop_min) {
       justify-content: center;
@@ -443,5 +444,9 @@
   .small{
     font-size: 14px;
     opacity: 0.8;
+  }
+
+  .number{
+    font-weight: bold;
   }
 }

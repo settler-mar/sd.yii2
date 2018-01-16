@@ -9,7 +9,7 @@
         {% if model.ftype=='textarea' %}
             {{ form.field(model, 'text').textarea({'rows':6})|raw }}
         {% elseif(model.ftype=='reachtext') %}
-            {{ form.field(model, 'text').textarea({'rows':6, 'class':'visual_editor'})|raw }}
+            {{ form.field(model, 'text').widget(TinyMce.className(),params('TinyMce'))|raw }}
         {% elseif(model.ftype=='json') %}
             {% set param = include('json/'~model.editor_param~'.json', {
                 'model': model,

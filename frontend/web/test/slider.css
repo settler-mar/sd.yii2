@@ -16,7 +16,7 @@
 .slide_select:hover{
   background: #fff;
 }
-.slide_select.active,.slide_select.active:hover{
+.slide_select.slider-active,.slide_select.slider-active:hover{
   background: #000;
   cursor: default;
 }
@@ -158,7 +158,7 @@
   color: #afabab;
 }
 
-#mega_slider .active .parallax__group{
+#mega_slider .slider-active .parallax__group{
   perspective:300px;
   opacity: 1;
 }
@@ -197,39 +197,39 @@
 }
 
 /*для первого появления вносим доп натройки задержки*/
-#mega_slider .first_show.active .show_no_delay{
+#mega_slider .first_show.slider-active .show_no_delay{
   transition-delay: 0s!important;
   animation-delay: 0s!important;
 }
-#mega_slider .first_show.active .show_delay_05{
+#mega_slider .first_show.slider-active .show_delay_05{
   transition-delay: 0.5s!important;
   animation-delay: 0.5s!important;
 }
-#mega_slider .first_show.active .show_delay10{
+#mega_slider .first_show.slider-active .show_delay10{
   transition-delay: 1s!important;
   animation-delay: 1s!important;
 }
-#mega_slider .first_show.active .show_delay15{
+#mega_slider .first_show.slider-active .show_delay15{
   transition-delay: 1.5s!important;
   animation-delay: 1.5s!important;
 }
-#mega_slider .first_show.active .show_delay20{
+#mega_slider .first_show.slider-active .show_delay20{
   transition-delay: 2s!important;
   animation-delay: 2s!important;
 }
-#mega_slider .first_show.active .show_delay25{
+#mega_slider .first_show.slider-active .show_delay25{
   transition-delay: 2.5s!important;
   animation-delay: 2.25s!important;
 }
-#mega_slider .first_show.active .show_delay30{
+#mega_slider .first_show.slider-active .show_delay30{
   transition-delay: 3s!important;
   animation-delay: 3s!important;
 }
 
-#mega_slider .active.first_show .parallax__group{
+#mega_slider .slider-active.first_show .parallax__group{
   transition-delay: 0s!important;
 }
-#mega_slider .slide.active.first_show{
+#mega_slider .slide.slider-active.first_show{
   transition-delay: 0s!important;
 }
 
@@ -237,127 +237,127 @@
 Исчезновение слайда должно пройти за 2,5 сек
 
 */
-#mega_slider .active .parallax__group{
+#mega_slider .slider-active .parallax__group{
   transition-delay: 3s;
 }
-#mega_slider .slide.active{
+#mega_slider .slide.slider-active{
   transition-delay: 2.5s;
   opacity:1;
   z-index: 999;
 }
 
-#mega_slider .active .show_no_delay{
+#mega_slider .slider-active .show_no_delay{
   transition-delay: 2.5s;
   animation-delay: 2.5s;
 }
-#mega_slider .active .show_delay_05{
+#mega_slider .slider-active .show_delay_05{
   transition-delay: 3s;
   animation-delay: 3s;
 }
-#mega_slider .active .show_delay10{
+#mega_slider .slider-active .show_delay10{
   transition-delay: 3.5s;
   animation-delay: 3.5s;
 }
-#mega_slider .active .show_delay15{
+#mega_slider .slider-active .show_delay15{
   transition-delay: 4.0s;
   animation-delay: 4.0s;
 }
-#mega_slider .active .show_delay20{
+#mega_slider .slider-active .show_delay20{
   transition-delay: 4.5s;
   animation-delay: 4.5s;
 }
-#mega_slider .active .show_delay25{
+#mega_slider .slider-active .show_delay25{
   transition-delay: 5.0s;
   animation-delay: 5.0s;
 }
-#mega_slider .active .show_delay30{
+#mega_slider .slider-active .show_delay30{
   transition-delay: 5.5s;
   animation-delay: 5.5s;
 }
 /*
   Анимации появления
 */
-#mega_slider .active .slide_bounceIn {
+#mega_slider .slider-active .slide_bounceIn {
   animation-name: bounceIn;
 }
 
-#mega_slider .active .slide_bounceInDown {
+#mega_slider .slider-active .slide_bounceInDown {
   animation-name: bounceInDown;
 }
 
-#mega_slider .active .slide_bounceInLeft {
+#mega_slider .slider-active .slide_bounceInLeft {
   animation-name: bounceInLeft;
 }
 
-#mega_slider .active .slide_bounceInRight {
+#mega_slider .slider-active .slide_bounceInRight {
   animation-name: bounceInRight;
 }
 
-#mega_slider .active .slide_bounceInUp {
+#mega_slider .slider-active .slide_bounceInUp {
   animation-name: bounceInUp;
 }
 
-#mega_slider .active .slide_fadeIn {
+#mega_slider .slider-active .slide_fadeIn {
   animation-name: fadeIn;
 }
 
-#mega_slider .active .slide_fadeInDown {
+#mega_slider .slider-active .slide_fadeInDown {
   animation-name: fadeInDown;
 }
 
-#mega_slider .active .slide_fadeInLeft {
+#mega_slider .slider-active .slide_fadeInLeft {
   animation-name: fadeInLeft;
 }
 
-#mega_slider .active .slide_fadeInRight {
+#mega_slider .slider-active .slide_fadeInRight {
   animation-name: fadeInRight;
 }
 
-#mega_slider .active .slide_fadeInUp {
+#mega_slider .slider-active .slide_fadeInUp {
   animation-name: fadeInUp;
 }
 
-#mega_slider .active .slide_flipInX {
+#mega_slider .slider-active .slide_flipInX {
   animation-name: flipInX;
 }
 
-#mega_slider .active .slide_flipInY {
+#mega_slider .slider-active .slide_flipInY {
   animation-name: flipInY;
 }
 
-#mega_slider .active .slide_lightSpeedIn {
+#mega_slider .slider-active .slide_lightSpeedIn {
   animation-name: lightSpeedIn;
 }
 
-#mega_slider .active .slide_rotateIn {
+#mega_slider .slider-active .slide_rotateIn {
   animation-name: rotateIn;
 }
 
-#mega_slider .active .slide_rotateInDownLeft {
+#mega_slider .slider-active .slide_rotateInDownLeft {
   animation-name: rotateInDownLeft;
 }
 
-#mega_slider .active .slide_rotateInDownRight {
+#mega_slider .slider-active .slide_rotateInDownRight {
   animation-name: rotateInDownRight;
 }
 
-#mega_slider .active .slide_rotateInUpLeft {
+#mega_slider .slider-active .slide_rotateInUpLeft {
   animation-name: rotateInUpLeft;
 }
 
-#mega_slider .active .slide_rotateInUpRight {
+#mega_slider .slider-active .slide_rotateInUpRight {
   animation-name: rotateInUpRight;
 }
 
-#mega_slider .active .slide_jackInTheBox {
+#mega_slider .slider-active .slide_jackInTheBox {
   animation-name: jackInTheBox;
 }
 
-#mega_slider .active .slide_rollIn {
+#mega_slider .slider-active .slide_rollIn {
   animation-name: rollIn;
 }
 
-#mega_slider .active .slide_zoomIn {
+#mega_slider .slider-active .slide_zoomIn {
   animation-name: zoomIn;
 }
 
@@ -566,7 +566,7 @@
     opacity: 0 !important;
     z-index: 0;
   }
-  #mega_slider .active .mob_bg{
+  #mega_slider .slider-active .mob_bg{
     z-index:9999;
     transform: rotate3d(0,1,0,0deg);
   }

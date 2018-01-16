@@ -7,6 +7,7 @@ $params = array_merge(
 );
 $params['meta']=require (__DIR__.'/meta.php');
 
+use zxbodya\yii2\tinymce\TinyMce;
 
 $config= [
   'id' => 'app-frontend',
@@ -105,6 +106,7 @@ $config= [
           'globals' => [
             'AppAsset'=>'frontend\assets\AppAsset',
             'Fotorama'=>'\kotchuprik\fotorama\Widget',
+            'TinyMce'=>TinyMce::className(),
           ]
         ]
       ]
@@ -118,6 +120,7 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
+        'el-finder/connector'=>'el-finder/connector',
         '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',

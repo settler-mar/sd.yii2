@@ -47,12 +47,13 @@
                 </div>
                 <div class="col-md-12">
                     <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
-                    <p><span>Краткое описание  (Информация о  ...):</span> <br> {{ form.field(model, 'short_description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }} </p>
+                    <p><span>Краткое описание  (Информация о  ...):</span> <br>
+                        {{ form.field(model, 'short_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }} </p>
                     <p>
                         <span>Описание  (Информация о кэшбэк в ...):</span>
-                        <br> {{ form.field(model, 'description').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}
+                        <br> {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                     </p>
-                    <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').textarea({'maxlength':true,'class':'visual_editor'}).label(false)|raw }}</p>
+                    <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
                 </div>
                 <div class="col-md-12">
                     <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

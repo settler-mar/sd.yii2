@@ -17,7 +17,7 @@
 
                         {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'content').textarea({'rows':6,'class':'visual_editor'})|raw }}
+                        {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

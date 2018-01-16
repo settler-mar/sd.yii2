@@ -83,14 +83,13 @@
         display: flex;
         align-items: center;
         margin-left: 3px;
-        //&.currency-icon {
-        //  margin-left: 4px;
-        //}
         word-spacing: 1px;
+        font-weight: bold;
         &_old {
           display: flex;
           align-items: center;
           margin-left: 3px;
+          font-weight: bold;
         }
       }
 

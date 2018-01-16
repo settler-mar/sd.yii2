@@ -199,7 +199,6 @@ $functionsList=[
   //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback'=> function ($cashback, $currency='', $action = 0) use ($currencyIcon) {
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
-    $value=str_replace('%','',$value);
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
     }else{
@@ -211,11 +210,10 @@ $functionsList=[
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
-      $out = $cashback . ' ' .
-        (isset($currencyIcon[$currency]) ? Help::svg(
-            $currencyIcon[$currency],
-            'currency-icon currency-icon-'.$currencyIcon[$currency]
-        ) : $currency);
+      $out = $cashback .
+        (isset($currencyIcon[$currency]) ?
+            '{{svg("'.$currencyIcon[$currency].'","currency-icon currency-icon-'.$currencyIcon[$currency].'")|raw}}':
+            $currency);
     } else {
       $out = $cashback;
     }
@@ -459,6 +457,12 @@ $functionsList=[
 //      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
 //    }
 //    return $output;
+  },
+  'params'=>function($name){
+    return Yii::$app->params[$name];
+  },
+  'TinyMce'=>function(){
+    ddd(\zxbodya\yii2\tinymce\TinyMce::className());
   },
 ];
 

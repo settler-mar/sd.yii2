@@ -18,8 +18,8 @@ class SliderSearch extends Slider
     public function rules()
     {
         return [
-            [['uid', 'type', 'is_showed'], 'integer'],
-            [['title', 'description', 'date_start', 'date_end', 'html', 'image', 'show_as'], 'safe'],
+            [['uid', 'is_showed'], 'integer'],
+            [['title', 'date_start', 'date_end', 'json'], 'safe'],
         ];
     }
 
@@ -62,15 +62,11 @@ class SliderSearch extends Slider
             'uid' => $this->uid,
             'date_start' => $this->date_start,
             'date_end' => $this->date_end,
-            'type' => $this->type,
             'is_showed' => $this->is_showed,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'html', $this->html])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'show_as', $this->show_as]);
+            ->andFilterWhere(['like', 'json', $this->json]);
 
         return $dataProvider;
     }
