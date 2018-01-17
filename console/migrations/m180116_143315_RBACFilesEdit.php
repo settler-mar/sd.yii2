@@ -22,7 +22,6 @@ class m180116_143315_RBACFilesEdit extends Migration
           'Работа с фалйми(для фаилменеджера)',
           [$role]
       );
-
     }
 
 

@@ -104,12 +104,14 @@ var megaslider = (function() {
   var stTable;
   var paralaxTable;
 
-  function initImageServerSelect(el) {
+  function initImageServerSelect(els) {
     if(els.length==0)return;
     els.wrap('<div class="select_img">');
     els=els.parent();
     els.append('<button type="button"><i class="mce-ico mce-i-browse"></i></button>');
-    els.find('button').on('click',openCustomRoxy2);
+    els.find('button').on('click',function () {
+      $('#roxyCustomPanel2').addClass('open')
+    });
   }
 
   function genInput(data){
@@ -451,6 +453,47 @@ var megaslider = (function() {
     el.append(layer);
 
     initImageServerSelect(el.find('.fileSelect'))
+
+    var elfinder=$('#w1').elfinder({
+      rememberLastDir: false,
+      useBrowserHistory: false,
+      resizable: false,
+      defaultView: 'list',
+      height: 300,
+      width: '100%',
+      onlyMimes:["image"],
+      uiOptions: {
+      toolbar: [
+        ['upload'], ['back', 'forward'], ['mkdir'], ['copy', 'paste', 'rm'], ['download'], ['resize']
+      ]
+    },
+  }).elfinder('instance');
+
+    elfinder
+      .on('select', function(e) {
+        e.preventDefault();
+        console.log('select');
+      })
+      .on('dblclick', function(e) {
+        e.preventDefault();
+        console.log('dblclick');
+      })
+      .on('change', function(e) {
+        e.preventDefault();
+        console.log('change');
+      })
+      .on('request', function(e) {
+        e.preventDefault();
+        console.log('request');
+      })
+      .on('fail', function(e) {
+        e.preventDefault();
+        console.log('fail');
+      })
+      .on('done', function(e) {
+        e.preventDefault();
+        console.log('done');
+      })
   }
 
   function addTrStatic(data) {
@@ -469,7 +512,6 @@ var megaslider = (function() {
       var fix = $('#mega_slider .fixed_group');
       addStaticLayer(data, fix,true);
     };
-    console.log(i);
 
     var tr=$('<tr/>');
     tr.append('<td class="td_counter"/>');
