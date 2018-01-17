@@ -1,32 +1,9 @@
-  {{ _ddd(slider) }}
-    <section class="slider  margin">
-        <div class="flexslider">
-            <ul class="slider_list slides">
-             {% for promo_store in slider %}
-              {% if promo_store.show_as == 'text' %}
-              <li class="slider_item slider_item-text">
-                <div class="action">
-                    <div class="logo">
-                        <a href="{{promo_store.url}}"><img src="/images/logos/{{promo_store.logo}}" alt="{{promo_store.name}}"></a>
-                    </div>
-                    <div class="phrase">
-                        <h2>{{promo_store.title|raw}}</h2>
-                        <h3>{{promo_store.promo_desc|raw}}</h3>
-                    </div>
-                </div>
-              </li>
-              {% endif %}
-              {% if promo_store.show_as == 'image' %}
-              <li class="slider_item slider_item-image" style="background:url(/images/slides/{{promo_store.image}}) center center no-repeat;">
-                <a class="slider_item-image-link" href="{{promo_store.url}}" ></a>
-              </li>
-              {% endif %}
-              {% if promo_store.show_as == 'html' %}
-              <li>
-                {{promo_store.html|raw}}
-              </li>
-              {% endif %}
-              {% endfor %}
-            </ul>
-        </div>
-    </section>
+<section class="slider  margin">
+  <section id="mega_slider" class="slider  margin"></section>
+  <script type="application/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+      data =[{{ implode(',',slider) | raw }}];
+      megaslider.init(data);
+    });
+  </script>
+</section>

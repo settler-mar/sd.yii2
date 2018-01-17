@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\slider\models\Slider;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\users\models\RegistrationForm;
 use Yii;
@@ -95,14 +96,20 @@ class SiteController extends SdController
     Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
     Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
+    $data=[
+        'time' => time(),
+        'stores' => $stores,
+        'total_all_stores' => $totalStores,
+        'top_reviews' => $reviews,
+        'wrap'=>'index'
+    ];
+
+    if(!Yii::$app->user->isGuest) {
+      $data['slider'] = Slider::get();
+    }
+
     //ddd($counter);
-    return $this->render('index', [
-      'time' => time(),
-      'stores' => $stores,
-      'total_all_stores' => $totalStores,
-      'top_reviews' => $reviews,
-      'wrap'=>'index'
-    ]);
+    return $this->render('index', $data);
   }
 
   /*  public function actionTests(){

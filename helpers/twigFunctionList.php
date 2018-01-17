@@ -444,6 +444,7 @@ $functionsList=[
   },
   't'=>'Yii::t',
   'max'=>'max',
+  'implode'=>'implode',
   'svg'=>function ($name,$class=false) {
       return Help::svg($name, $class);
 //    $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
