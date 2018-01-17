@@ -18,8 +18,10 @@
   {% include 'index/work_with_us.twig' %}
   {% include 'index/faq.twig' %}
   {% include 'index/any_question.twig' %}
-  {% include 'index/friends.twig' %}
 {% endif %}
 
-{% include 'index/posts_about_us.twig' %}
-{% include 'index/down_page_baner.twig' %}
+{% include 'index/friends.twig' %}
+
+{% if not user_id %}
+  {% include 'index/posts_about_us.twig' %}
+{% endif %}

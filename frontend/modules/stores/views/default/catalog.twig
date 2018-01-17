@@ -1,32 +1,18 @@
-{#<div class="page-wrap">#}
-
-    {% include 'parts/slider.twig' %}
-
-    {% include 'parts/catalog_breadcrumbs.twig' %}
-
-
-
     <!--краткая информация категории-->
     {% if current_category.short_description %}
         <section class="margin">
-            <div class="page-wrap">
-
                 <h3 class="title-center">{{current_category.name}}</h3>
                 <div class="catalog_category-short-description">
                     {{current_category.short_description|raw}}
                 </div>
-
-            </div>
         </section>
     {% endif %}
 
     <!--поле контент из метатегов только для категории-->
     {% if 1==2 and content and current_category and page == 1 %}
         <section class="margin">
-            <div class="page-wrap">
-                <div class="catalog_category-content">
-                    {{content|raw}}
-                </div>
+            <div class="catalog_category-content">
+                {{content|raw}}
             </div>
         </section>
     {% endif %}
@@ -135,4 +121,3 @@
             </div>
         </div>
     </section>
-{#</div>#}

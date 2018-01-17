@@ -11,7 +11,7 @@
     <!-- SEO -->
     <meta name="keywords" content="__________" />
     <meta name="description" content="__________" />
-    <meta name="author" content="Max Matiukhin" />
+
     <!-- favicon -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
@@ -29,15 +29,23 @@
 
     {% include 'base/header.twig' %}
 
-      <div class="content-wrap">
-          {% if this.all_params.wrap=='index' %}
-              {{ content|raw }}
-          {% else %}
-            <div class="content-wrap">
-              {{ content|raw }}
-            </div>
-          {% endif %}
-      </div>
+    {% if slider|length > 0 %}
+      {% include 'parts/slider.twig' %}
+    {% endif %}
+
+    <div class="content-wrap">
+        {% if this.all_params.wrap=='index' %}
+            {{ content|raw }}
+        {% else %}
+
+          {% include 'parts/catalog_breadcrumbs.twig' %}
+
+          <div class="page-wrap">
+            {{ content|raw }}
+          </div>
+        {% endif %}
+    </div>
+    {% include 'index/down_page_baner.twig' %}
     {% include 'base/footer.twig' %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
