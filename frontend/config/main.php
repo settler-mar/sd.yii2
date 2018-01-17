@@ -7,7 +7,8 @@ $params = array_merge(
 );
 $params['meta']=require (__DIR__.'/meta.php');
 
-use zxbodya\yii2\tinymce\TinyMce;
+//use zxbodya\yii2\tinymce\TinyMce;
+use \dominus77\tinymce\TinyMce;
 
 $config= [
   'id' => 'app-frontend',
@@ -111,7 +112,7 @@ $config= [
         ]
       ]
     ],
-    'urlManager' => [
+     'urlManager' => [
       'rules' => [
         'site/<action>'=>'404',
         [ // обработка реферальных ссылок
@@ -120,7 +121,9 @@ $config= [
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
 
-        'el-finder/connector'=>'el-finder/connector',
+        //'el-finder/connector'=>'el-finder/connector',
+        //'connector/el-finder/manager'=>'el-finder/connector/manager',
+
         '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
           'users/default/<action>',
         'login/socials' => 'users/default/socials',
@@ -158,6 +161,9 @@ $config= [
     ],
   ],
   'modules' => [
+    /*'manager'=> [
+        'class' => 'frontend\modules\manager\Module',
+    ],*/
     'users'=> [
       'class' => 'frontend\modules\users\Module',
     ],
@@ -236,6 +242,45 @@ $config= [
     ],
   ],
   'params' => $params,
+
+    'controllerMap' => [
+        'elfinder' => [
+            'class' => 'mihaildev\elfinder\Controller',
+            'access' => ['@'], //глобальный доступ к фаил менеджеру @ - для авторизорованных , ? - для гостей , чтоб открыть всем ['@', '?']
+            'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
+            'roots' => [
+                [
+                    'baseUrl'=>'@web',
+                    'basePath'=>'@webroot',
+                    'path' => 'img',
+                    'name' => 'Пользовательские',
+                    'access' => ['read' => 'FilesEdit', 'write' => 'FilesEdit']
+                ],
+                [
+                    'baseUrl'=>'@web',
+                    'basePath'=>'@webroot',
+                    'path' => 'images',
+                    'name' => 'Системные',
+                    'access' => ['read' => 'FilesEdit', 'write' => false]
+                ],
+                /*[
+                    'class' => 'mihaildev\elfinder\UserPath',
+                    'path'  => 'files/user_{id}',
+                    'name'  => 'My Documents'
+                ],
+                [
+                    'path' => 'files/some',
+                    'name' => ['category' => 'my','message' => 'Some Name'] //перевод Yii::t($category, $message)
+                ],
+                [
+                    'path'   => 'files/some',
+                    'name'   => ['category' => 'my','message' => 'Some Name'], // Yii::t($category, $message)
+                    'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
+                ]*/
+            ],
+        ]
+    ],
+
   //для возврата с авторизации через соц. сети на предыдущую страницу
   'on beforeAction' => function (yii\base\ActionEvent $e) {
     if (Yii::$app->user->isGuest) {

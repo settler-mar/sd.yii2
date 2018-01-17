@@ -1,6 +1,7 @@
 {{ use('/yii/widgets/ActiveForm') }}
 {{ use('zxbodya/yii2/elfinder/ElFinderWidget') }}
-
+{{ use('zxbodya/yii2/elfinder/InputWidget') }}
+{{ use('mihaildev/elfinder/InputFile') }}
 <div class="content-wrapper">
     <section class="account-padding view-list view-current">
         <div class="row">
@@ -24,16 +25,8 @@
 
                 {{ form.field(model, 'date_end').textInput()|raw }}
 
-                {{ ElFinderWidget_widget({
-                    'connectorRoute' : '/el-finder/connector'
-                }) }}
+
             </div>
-
-
-            <link rel="stylesheet" href="/test/slider.css">
-            <link rel="stylesheet" href="/test/animationsKeyFrame.css">
-            <link rel="stylesheet" href="/test/filebrowser.css">
-            <script type="text/javascript" src="/test/slider.js"></script>
 
             <section id="mega_slider"></section>
             <section id="mega_slider_controle"></section>
@@ -42,9 +35,17 @@
                 document.addEventListener("DOMContentLoaded", function(event) {
                     data ={{ model.json | raw }};
                     megaslider.init([data], 'Slider[json]');
+                    $('#roxyCustomPanel2 .close').click(function(){
+                        $('#roxyCustomPanel2').removeClass('open')
+                    })
                 });
             </script>
 
+            {{ InputFile_widget({
+                'name':'myinput',
+                'controller' : 'elfinder',
+                'filter' : 'image'
+            }) }}
             <div class="form-group col-md-12">
                 <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
             </div>

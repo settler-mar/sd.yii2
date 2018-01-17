@@ -123,7 +123,7 @@ function initImageServerSelect(els){
 }
 
 function openCustomRoxy2(){
-  closeCustomRoxy2=closeCustomRoxy.bind(this)
+  closeCustomRoxy2=closeCustomRoxy.bind(this);
   $('#roxyCustomPanel2').addClass('open')
 }
 var closeCustomRoxy2;

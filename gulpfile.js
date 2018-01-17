@@ -146,6 +146,7 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/admin/select2.full.min.js',
     paths.source.js+'/original/admin/main_admin.js',
     //paths.source.js+'/original/admin/editor_init.js',
+    paths.source.js+'/original/new/slider.js',
     paths.source.js+'/original/admin/ajax_save.js',
     paths.source.js+'/original/admin/ajax_remove.js',
     paths.source.js+'/original/for_all.js',

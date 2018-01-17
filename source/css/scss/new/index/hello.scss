@@ -112,7 +112,7 @@
 
     &_right {
       //flex-grow: 1;
-      min-width: 15%;
+      min-width: 240px;
       display: flex;
       position: relative;
 
@@ -120,15 +120,20 @@
         color: $text_color;
         fill: $header_color_up;
         stroke: $header_color_up;
-        padding-bottom: 286px;
+        padding-top: 490px;
         text-align: center;
         margin: auto;
         transition: all .25s ease;
         text-decoration: none;
         position: relative;
+        background: url(/images/header_present.png) no-repeat 50% 20px;
+        height: 100%;
+        min-width: 256px;
 
         @include media($laptop_min) {
           display: flex;
+          background: transparent;
+          min-width: auto;
 
           &-absolute{
             position: absolute;
@@ -148,6 +153,8 @@
 
         &_no_label{
           padding-bottom: 0;
+          padding-top: 0;
+          background: transparent;
 
           @include media($laptop_min){
             padding-bottom: 40px;
@@ -202,7 +209,7 @@
         padding: 6PX;
         //box-shadow: 0 0 0 1px $text_color;
         transition: all .25s ease;
-        display: block;
+        display: inline-block;
 
         &:before {
           content: '';

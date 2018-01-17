@@ -28,14 +28,14 @@
         "jbzoo/image": "^3.0",
         "admitad/api": "dev-master",
         "kartik-v/yii2-date-range": "dev-master",
-        "unclead/yii2-multiple-input": "2.10.*",
+        "unclead/yii2-multiple-input": "~2.0",
         "kotchuprik/yii2-fotorama-widget": "^1.0",
         "picqer/php-barcode-generator": "^0.2.2",
         "himiklab/yii2-recaptcha-widget": "^1.0",
         "dvixi/yii2-icon-select": "^1.0",
         "nodge/yii2-eauth": "^2.5",
-        "zxbodya/yii2-elfinder": "*@dev",
-        "zxbodya/yii2-tinymce": "*@dev"
+        "mihaildev/yii2-elfinder": "*",
+        "dominus77/yii2-tinymce-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -115,7 +115,7 @@ class Slider extends \yii\db\ActiveRecord
     return Yii::$app->cache->getOrSet('slider', function () {
       $queryResult = self::find()
         ->from(self::tableName() . " cwps")
-        ->select(["*", "cwps.description as promo_desc"])
+        ->select(["*"])
         ->where(["cwps.is_showed" => 1])
         ->orderBy(['sort_index'=>SORT_ASC])
         ->asArray()

@@ -1,14 +1,27 @@
-{% include 'index/hello.twig' %}
-{% include 'index/advantages_line.twig' %}
-{% include 'index/instruction.twig' %}
+{% if user_id %}
+
+{% else %}
+  {% include 'index/hello.twig' %}
+  {% include 'index/advantages_line.twig' %}
+  {% include 'index/instruction.twig' %}
+{% endif %}
+
 {% include 'index/popular_shop.twig' %}
-{% include 'index/other_services.twig' %}
-{% include 'index/advantages.twig' %}
-{% include 'index/comment.twig' %}
-{% include 'index/comparison.twig' %}
-{% include 'index/work_with_us.twig' %}
-{% include 'index/faq.twig' %}
-{% include 'index/any_question.twig' %}
+
+{% if user_id %}
+
+{% else %}
+  {% include 'index/other_services.twig' %}
+  {% include 'index/advantages.twig' %}
+  {% include 'index/comment.twig' %}
+  {% include 'index/comparison.twig' %}
+  {% include 'index/work_with_us.twig' %}
+  {% include 'index/faq.twig' %}
+  {% include 'index/any_question.twig' %}
+{% endif %}
+
 {% include 'index/friends.twig' %}
-{% include 'index/posts_about_us.twig' %}
-{% include 'index/down_page_baner.twig' %}
+
+{% if not user_id %}
+  {% include 'index/posts_about_us.twig' %}
+{% endif %}
