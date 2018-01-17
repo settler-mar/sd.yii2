@@ -1,61 +1,39 @@
 {#<div class="page-wrap">#}
 
     {% include 'parts/slider.twig' %}
-    {{ use('yii\\widgets\\Breadcrumbs') }}
-    {% if app.controller.params['breadcrumbs'] != null %}
-        <section class="breadcrumbs  margin">
+
+    {% include 'parts/catalog_breadcrumbs.twig' %}
 
 
-            <div class="breadcrumbs">
-                {{ breadcrumbs_widget({
-                    'links': app.controller.params['breadcrumbs'],
-                    'options': {'class': 'breadcrumbs-sd catalog'}
-                }) }}
-            </div>
-        </section>
-    {% endif %}
 
     <!--краткая информация категории-->
     {% if current_category.short_description %}
-        <section class="store-information short-description">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="text-center">{{current_category.name}}</h3>
-                    </div>
-                    {#<div class="col-md-12 short-description__description less">#}
-                    <div class="col-md-12 short-description__description">
-                        <div class="description">
-                            {{current_category.short_description|raw}}
-                        </div>
-                    </div>
-                    {#<div >#}
-                        {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
-                        {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
-                    {#</div>#}
+        <section class="margin">
+            <div class="page-wrap">
+
+                <h3 class="title-center">{{current_category.name}}</h3>
+                <div class="catalog_category-short-description">
+                    {{current_category.short_description|raw}}
                 </div>
+
             </div>
         </section>
     {% endif %}
 
     <!--поле контент из метатегов только для категории-->
     {% if 1==2 and content and current_category and page == 1 %}
-    <section class="store-information short-description">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 short-description__description">
-                    <div class="description">
-                        {{content|raw}}
-                    </div>
+        <section class="margin">
+            <div class="page-wrap">
+                <div class="catalog_category-content">
+                    {{content|raw}}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     {% endif %}
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
-
+            {#слева категории#}
             <div class="catalog-categories">
                 {#<h3 class="cathead">Категории</h3>#}
                 {{ use('frontend/components/CategoryMenu') }}
@@ -73,47 +51,55 @@
                 {% endif %}
 
             </div>
+            {#справа шопы#}
             <div class="catalog-stores ">
-                <div class="row">
-                    <div class="col-sm-12 category-title-wrapper">
-                        <h1 class="page_title">
-                            {% if h1 %}
-                                <!--h1 из базы-->
-                                {{h1|raw}}
-                            {% else %}
-                                <!--если нет, то -->
-                                {% if current_category.name != '' %}
-                                    {{current_category.name}}: магазины с кэшбэком
-                                {% else %}
-                                    Лучшие магазины с кэшбэком
-                                {% endif %}
-                                <span>({{total_v}})</span>
-                            {% endif%}
-                        </h1>
-                        <ul class="sort-menu">
-                            <li class="title">Сортировать по:</li>
+
+                <h1 >
+                    {% if h1 %}
+                        <!--h1 из базы-->
+                        {{h1|raw}}
+                    {% else %}
+                        <!--если нет, то -->
+                        {% if current_category.name != '' %}
+                            {{current_category.name}}: магазины с кэшбэком
+                        {% else %}
+                            Лучшие магазины с кэшбэком
+                        {% endif %}
+                        <span>({{total_v}})</span>
+                    {% endif%}
+                </h1>
+                {#выбор и отображение сортировки#}
+                <div class="margin page-wrap-flex catalog-stores_sort">
+                    <div class="catalog-stores_sort-desctop">
+                        <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
+                        <ul >
                             {% for sortLink in sortlinks%}
                                 <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
                             {% endfor %}
                         </ul>
-                        <ul class="sort-menu-mobile">
-                            {% for sortLink in sortlinks%}
-                                <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <p class="view-items">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</p>
+                    </div>
 
+                    <div class="catalog-stores_sort-mobile">
+                        <ul>
+                        {% for sortLink in sortlinks%}
+                            <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
+                        {% endfor %}
+                        </ul>
                     </div>
-                    <div class="category-title-wrapper">
-                    {% include 'parts/dropdown-limit-catalog.twig' %}
-                    </div>
+                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
                 </div>
-                <div
-                        class="catalog-stores_stores">
+
+
+
+                <div class="category-title-wrapper">
+                    {% include 'parts/dropdown-limit-catalog.twig' %}
+                </div>
+
+                <div  class="catalog-stores_stores margin">
 
 
                     {% if stores|length > 0 %}
-                        <div class="catalog-stores_list">
+                        <div class="catalog-stores_list shops margin">
                             {% for store in stores %}
                                 {#<div class="col-sm-3 col-md-3">#}
                                     {% include 'parts/shop.twig' %}
@@ -121,26 +107,31 @@
                             {% endfor %}
                         </div>
 
-                        <div class="col-xs-12 col-sm-12 col-md-12 shops-pagination">
-                            {% include 'parts/pagination.twig' %}
+                        <div class="catalog-stores_pagination catalog_pagination">
+                            {% if pagination %}
+                                {{pagination|raw}}
+                            {% endif %}
                         </div>
 
-                        {% if current_category.down_description %}
-                            <div class="col-md-12 down-description">
-                                {{current_category.down_description|raw}}
-                            </div>
-                        {% endif %}
 
                     {% else %}
-                        Ничего не найдено.
+                        <p>Ничего не найдено.</p>
                     {% endif %}
-                    {% if content and page==1%}
-                        <div class="col-md-12" style="margin-top: -20px;">
-                            {{ content | raw}}
-                        </div>
-                    {% endif %}
-                    {#</div>#}
                 </div>
+
+                {% if current_category.down_description %}
+                    <div class="catalog_category-down-description margin">
+                        {{current_category.down_description|raw}}
+                    </div>
+                {% endif %}
+
+                {% if content and page==1%}
+                    <div class="catalog_category-content margin">
+                        {{ content | raw}}
+                    </div>
+                {% endif %}
+                    {#</div>#}
+
             </div>
         </div>
     </section>

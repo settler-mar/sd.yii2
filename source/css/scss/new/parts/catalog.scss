@@ -45,7 +45,10 @@
           }
         }
         & > ul {
-          display: none;
+          max-height: 0;
+          transition: max-height 0.3s cubic-bezier(0,1,0,.95);
+          overflow: hidden;
+
           >li{
             >a,span {
               background-color: $header_bg_second;
@@ -60,7 +63,8 @@
         }
         &.open {
           > ul {
-            display: block;
+            max-height: 9999px;
+            transition: max-height 0.3s cubic-bezier(1,.05,1,0);
           }
           .menu_angle-down {
             transform: none;
@@ -96,7 +100,75 @@
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
+      //justify-content: space-around;
+      justify-content: space-between;
+    }
+    &_sort {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      @include media($laptop_min) {
+        flex-direction: row;
+      }
+      @include media($tablets) {
+        flex-direction: column;
+      }
+      &-desctop,
+      &-mobile {
+        >ul {
+          margin: 0 20px;
+          padding: 0;
+          > li {
+
+            list-style-type: none;
+            @include media($tablets) {
+              text-align: center;
+
+            }
+            > a {
+              padding: 10px;
+              text-decoration: none;
+              &.active {
+                text-decoration: underline;
+              }
+              @include media($tablets) {
+                //width: 100%;
+                line-height: 30px;
+                font-size: 18px;
+              }
+
+            }
+          }
+        }
+      }
+      &-desctop {
+        display: flex;
+        justify-content: flex-start;
+        @include media($tablets) {
+          display: none;
+        }
+        >ul {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+        }
+      }
+      &-mobile {
+        display: none;
+        @include media($tablets) {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      &-info {
+        @include media($tablets) {
+          text-align: center;
+          font-size: 18px;
+          line-height: 30px;
+        }
+      }
     }
 
   }
+
 }

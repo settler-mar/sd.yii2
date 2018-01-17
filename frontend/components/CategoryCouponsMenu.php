@@ -19,7 +19,7 @@ class CategoryCouponsMenu extends Widget
         $currentCategoryId = !empty(\Yii::$app->controller->current_coupon_category_id) ?
               \Yii::$app->controller->current_coupon_category_id : null;
         $categories = [[
-          'name' => 'Все купоны',
+          'name' => 'Все промокоды',
           'count' => Coupons::activeCount(),
           'route' => '',
           'uid' => 0

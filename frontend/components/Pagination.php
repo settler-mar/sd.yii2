@@ -5,6 +5,7 @@ namespace frontend\components;
 use yii;
 use yii\data\Pagination as YiiPagination;
 use yii\helpers\Url;
+use common\components\Help;
 
 /**
  * Class Pagination
@@ -142,7 +143,8 @@ class Pagination
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="Предыдущая" href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
-      '<span class="fa fa fa-caret-left"></span></a></li>' : '';
+      //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
+      Help::svg('caret-left', 'pagination_button pagination_button_left').'</a></li>' : '';
 
     //первая
     $first = $page >= $displayCount && $total > $displayCount ?
@@ -160,7 +162,8 @@ class Pagination
     $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="Следующая" href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
-      '<span class="fa fa fa-caret-right"></span></a>' : '';
+      //'<span class="fa fa fa-caret-right"></span></a>' : '';
+        Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';
 
     $pages = ($page >= $displayCount && $total > $displayCount ? '...' : '');
     $pageStart = floor($page / ($displayCount - 1)) * ($displayCount - 1) == $page ?
@@ -171,7 +174,7 @@ class Pagination
     $pageEnd = ($pageEnd > $total ? $total : $pageEnd);
 
     for ($i = $pageStart; $i <= $pageEnd; $i++) {
-      $pages .= ($i == $page ? '<li class="active">' . $i . '</li>' :
+      $pages .= ($i == $page ? '<li class="active"><span>' . $i . '</span></li>' :
         '<li><a href="' .
         Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
     };

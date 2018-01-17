@@ -56,12 +56,17 @@
       font-size: 15px;
       color: $shop_name_color;
       margin: auto;
+      max-width: 155px;
+
     }
   }
 
   &-cashback {
     &-link {
-      display: block;
+      //display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
       height: auto;
       margin: auto auto 0;
@@ -74,6 +79,20 @@
       line-height: 20px;
       text-decoration: none;
       border-radius: 0 0 5px 5px;
+      &_cashback{
+        display: flex;
+        align-items: center;
+        margin-left: 3px;
+        word-spacing: 1px;
+        font-weight: bold;
+        &_old {
+          display: flex;
+          align-items: center;
+          margin-left: 3px;
+          font-weight: bold;
+        }
+      }
+
 
       &:hover {
         color: $shop_cashback_link_color;
@@ -93,6 +112,7 @@
         color: $shop_cashback_link_color;
         fill: $shop_cashback_link_color;
         stroke: $shop_cashback_link_color;
+        margin-left: 1px;
 
       }
     }

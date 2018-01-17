@@ -14,6 +14,7 @@
 @import  "base/modals";
 @import  "base/socials";
 @import  "external/tipso.min";
+@import  "external/flexslider";
 
 html{
   @include media($desktop) {
@@ -132,6 +133,11 @@ html{
       &:after {
         display: none;
       }
+    }
+  }
+  h3,h4,h5,h6 {
+    &.title-center {
+      text-align: center;
     }
   }
 
@@ -348,6 +354,12 @@ html{
 .spin {
   animation: spin 2s infinite linear;
 }
+
+[data-toggle="tooltip"] {
+  cursor: pointer;
+  border-bottom: none;
+}
+
 @-webkit-keyframes spin {
   0% {
     transform: rotate(0deg)
@@ -384,3 +396,9 @@ html{
 @import 'parts/comments';
 @import 'parts/autocomplete';
 @import 'parts/catalog';
+@import 'parts/slider';
+@import 'parts/breadcrumbs';
+@import 'parts/pagination';
+
+
+
