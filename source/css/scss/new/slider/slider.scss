@@ -1,5 +1,17 @@
 #mega_slider{width: 100%;height: 30vw;background: #dddada;overflow: hidden;position: relative;}
-#mega_slider .slide{overflow: hidden;height: 100%;overflow-y: auto;background-size: cover;transition: all 0.5s;opacity: 0;transition-delay: 2s;z-index: 9;}
+#mega_slider .slide{
+  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
+  background-size: cover;
+  transition: all 0.5s;
+  opacity: 0;
+  transition-delay: 2s;
+  z-index: 7;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
 .slide_control{
   position: absolute;
   bottom: 5px;
@@ -32,7 +44,7 @@
   transition: all 1.5s;
   opacity: 0;
 }
-#mega_slider .slides{height:100%;z-index: 8;position: relative;}
+#mega_slider .slides{height:100%;z-index: 7;position: relative;}
 .parallax__layer {
   position: absolute;
   top: 0;
@@ -238,41 +250,41 @@
 
 */
 #mega_slider .slider-active .parallax__group{
-  transition-delay: 3s;
+  transition-delay: 2.5s;
 }
 #mega_slider .slide.slider-active{
-  transition-delay: 2.5s;
+  transition-delay: 1.5s;
   opacity:1;
   z-index: 9;
 }
 
 #mega_slider .slider-active .show_no_delay{
+  transition-delay: 1.5s;
+  animation-delay: 1.5s;
+}
+#mega_slider .slider-active .show_delay_05{
+  transition-delay: 2.0s;
+  animation-delay: 2.0s;
+}
+#mega_slider .slider-active .show_delay10{
   transition-delay: 2.5s;
   animation-delay: 2.5s;
 }
-#mega_slider .slider-active .show_delay_05{
-  transition-delay: 3s;
-  animation-delay: 3s;
+#mega_slider .slider-active .show_delay15{
+  transition-delay: 3.0s;
+  animation-delay: 3.0s;
 }
-#mega_slider .slider-active .show_delay10{
+#mega_slider .slider-active .show_delay20{
   transition-delay: 3.5s;
   animation-delay: 3.5s;
 }
-#mega_slider .slider-active .show_delay15{
+#mega_slider .slider-active .show_delay25{
   transition-delay: 4.0s;
   animation-delay: 4.0s;
 }
-#mega_slider .slider-active .show_delay20{
+#mega_slider .slider-active .show_delay30{
   transition-delay: 4.5s;
   animation-delay: 4.5s;
-}
-#mega_slider .slider-active .show_delay25{
-  transition-delay: 5.0s;
-  animation-delay: 5.0s;
-}
-#mega_slider .slider-active .show_delay30{
-  transition-delay: 5.5s;
-  animation-delay: 5.5s;
 }
 /*
   Анимации появления

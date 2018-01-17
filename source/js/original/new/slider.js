@@ -15,6 +15,8 @@ var megaslider = (function() {
   var slides;
   var slide_select_box;
   var editor;
+  var timeoutId;
+  var scroll_period = 5000;
 
   var posArr=[
     'slider__text-lt','slider__text-ct','slider__text-rt',
@@ -339,7 +341,6 @@ var megaslider = (function() {
     });
     el.append(btns_box);
 
-
     el.append('<h2>Общие параметры</h2>');
     el.append(genInput({
       value:slider_data[0].mobile,
@@ -477,48 +478,7 @@ var megaslider = (function() {
     layer.append(addBtn);
     el.append(layer);
 
-    initImageServerSelect(el.find('.fileSelect'))
-
-    /*var elfinder=$('#w1').elfinder({
-      rememberLastDir: false,
-      useBrowserHistory: false,
-      resizable: false,
-      defaultView: 'list',
-      height: 300,
-      width: '100%',
-      onlyMimes:["image"],
-      uiOptions: {
-      toolbar: [
-        ['upload'], ['back', 'forward'], ['mkdir'], ['copy', 'paste', 'rm'], ['download'], ['resize']
-      ]
-    },
-  }).elfinder('instance');
-
-    elfinder
-      .on('select', function(e) {
-        e.preventDefault();
-        console.log('select');
-      })
-      .on('dblclick', function(e) {
-        e.preventDefault();
-        console.log('dblclick');
-      })
-      .on('change', function(e) {
-        e.preventDefault();
-        console.log('change');
-      })
-      .on('request', function(e) {
-        e.preventDefault();
-        console.log('request');
-      })
-      .on('fail', function(e) {
-        e.preventDefault();
-        console.log('fail');
-      })
-      .on('done', function(e) {
-        e.preventDefault();
-        console.log('done');
-      })*/
+    initImageServerSelect(el.find('.fileSelect'));
   }
 
   function addTrStatic(data) {
@@ -791,6 +751,18 @@ var megaslider = (function() {
     }
   }
 
+  function next_slide() {
+    if($('#mega_slider').hasClass('stop_slide'))return;
+
+    var slide_points=$('.slide_select_box .slide_select')
+    var slide_cnt=slide_points.length;
+    var active=$('.slide_select_box .slider-active').index()+1;
+    if(active>=slide_cnt)active=0;
+    slide_points.eq(active).click();
+
+    setTimeout(next_slide, scroll_period);
+  }
+
   function img_to_load(src){
     var img=$('<img/>');
     img.on('load',function(){
@@ -821,6 +793,30 @@ var megaslider = (function() {
 
           if(editor){
             init_editor()
+          }else {
+            timeoutId = setTimeout(next_slide, scroll_period);
+
+            $('.slide_select_box').on('click','.slide_select',function(){
+              var $this=$(this);
+              if($this.hasClass('slider-active'))return;
+
+              var index = $this.index();
+              $('.slide_select_box .slider-active').removeClass('slider-active');
+              $this.addClass('slider-active');
+
+              $(container_id+' .slide.slider-active').removeClass('slider-active');
+              $(container_id+' .slide').eq(index).addClass('slider-active');
+
+              parallax_group = $(container_id + ' .slider-active .parallax__group>*');
+            });
+
+            $('#mega_slider').hover(function () {
+              clearTimeout(timeoutId);
+              $('#mega_slider').addClass('stop_slide');
+            }, function () {
+              timeoutId = setTimeout(next_slide, scroll_period);
+              $('#mega_slider').removeClass('stop_slide');
+            });
           }
         }
 
