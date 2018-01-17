@@ -12,17 +12,13 @@ $data= [
 
 
 $data['TinyMce']=[
-  /*'fileManager' => [
-      'class' => TinyMceElFinder::className(),
-      'connectorRoute' => '/manager/elfinder',
-  ],*/
-    'fileManager' => [
-        'class' => \dominus77\tinymce\components\MihaildevElFinder::className(),
-    ],
-    'options' => [
-        'rows' => 6
-    ],
-    'language' => 'ru',
+  'fileManager' => [
+      'class' => \dominus77\tinymce\components\MihaildevElFinder::className(),
+  ],
+  'options' => [
+      'rows' => 6
+  ],
+  'language' => 'ru',
   'clientOptions'=>[
     'height'=>500,
     'theme'=> 'modern',

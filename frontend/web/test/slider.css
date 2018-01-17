@@ -364,86 +364,86 @@
 /*
   Анимации исчезновения
 */
-#mega_slider .hide .slide_bounceOut {
+#mega_slider .hide_slide .slide_bounceOut {
   animation-name: bounceOut;
 }
 
-#mega_slider .hide .slide_bounceOutDown {
+#mega_slider .hide_slide .slide_bounceOutDown {
   animation-name: bounceOutDown;
 }
 
-#mega_slider .hide .slide_bounceOutLeft {
+#mega_slider .hide_slide .slide_bounceOutLeft {
   animation-name: bounceOutLeft;
 }
 
-#mega_slider .hide .slide_bounceOutRight {
+#mega_slider .hide_slide .slide_bounceOutRight {
   animation-name: bounceOutRight;
 }
 
-#mega_slider .hide .slide_bounceOutUp {
+#mega_slider .hide_slide .slide_bounceOutUp {
   animation-name: bounceOutRight;
 }
 
-#mega_slider .hide .slide_fadeOut {
+#mega_slider .hide_slide .slide_fadeOut {
   animation-name: fadeOut;
 }
 
-#mega_slider .hide .slide_fadeOutDown {
+#mega_slider .hide_slide .slide_fadeOutDown {
   animation-name: fadeOutDown;
 }
 
-#mega_slider .hide .slide_fadeOutLeft {
+#mega_slider .hide_slide.slide_fadeOutLeft {
   animation-name: fadeOutLeft;
 }
-#mega_slider .hide .slide_fadeOutRight {
+#mega_slider .hide_slide.slide_fadeOutRight {
   animation-name: fadeOutRight;
 }
 
-#mega_slider .hide .slide_fadeOutUp {
+#mega_slider .hide_slide.slide_fadeOutUp {
   animation-name: fadeOutUp;
 }
 
-#mega_slider .hide .slide_flipOutX {
+#mega_slider .hide_slide.slide_flipOutX {
   animation-name: flipOutX;
 }
 
-#mega_slider .hide .slide_flipOutY {
+#mega_slider .hide_slide.slide_flipOutY {
   animation-name: flipOutY;
 }
 
-#mega_slider .hide .slide_lightSpeedOut {
+#mega_slider .hide_slide.slide_lightSpeedOut {
   animation-name: lightSpeedOut;
 }
 
-#mega_slider .hide .slide_rotateOut {
+#mega_slider .hide_slide.slide_rotateOut {
   animation-name: rotateOut;
 }
 
-#mega_slider .hide .slide_rotateOutDownLeft {
+#mega_slider .hide_slide.slide_rotateOutDownLeft {
   animation-name: rotateOutDownLeft;
 }
 
-#mega_slider .hide .slide_rotateOutDownRight {
+#mega_slider .hide_slide.slide_rotateOutDownRight {
   animation-name: rotateOutDownRight;
 }
 
-#mega_slider .hide .slide_rotateOutUpLeft {
+#mega_slider .hide_slide.slide_rotateOutUpLeft {
   animation-name: rotateOutUpLeft;
 }
 
-#mega_slider .hide .slide_rotateOutUpRight {
+#mega_slider .hide_slide.slide_rotateOutUpRight {
   animation-name: rotateOutUpRight;
 }
 
-#mega_slider .hide .slide_hinge {
+#mega_slider .hide_slide.slide_hinge {
   animation-name: hinge;
 }
 
-#mega_slider .hide .slide_rollOut {
+#mega_slider .hide_slide.slide_rollOut {
   animation-name: rollOut;
 }
 
-#mega_slider .hide .slide_zoomOut {
+#mega_slider .hide_slide.slide_zoomOut {
   animation-name: zoomOut;
 }
 /*
@@ -567,7 +567,7 @@
     z-index: 0;
   }
   #mega_slider .slider-active .mob_bg{
-    z-index:9999;
+    z-index:10;
     transform: rotate3d(0,1,0,0deg);
   }
 
@@ -610,4 +610,8 @@ table{
   height: 100%;
   width: 100%;
   background-size: cover;
+}
+
+#slide_data{
+  display: none;
 }
