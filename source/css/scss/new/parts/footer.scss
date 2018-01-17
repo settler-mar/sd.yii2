@@ -57,6 +57,9 @@
     color: $footer_link_color;
     font-weight: 400;
     font-size: 14px;
+    @include media($tablets) {
+      font-size: 16px;
+    }
     line-height: 10px;
     margin-bottom: 14px;
 
@@ -128,6 +131,8 @@
           & ~ a {
             max-height: 20px !important;
             line-height: 26px;
+            padding-top: 5px;
+            padding-bottom: 5px;
           }
         }
       }
