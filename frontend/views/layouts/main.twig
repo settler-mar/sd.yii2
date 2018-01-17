@@ -29,11 +29,12 @@
 
     {% include 'base/header.twig' %}
 
-    {% if slider|length > 0 %}
-      {% include 'parts/slider.twig' %}
-    {% endif %}
-
     <div class="content-wrap">
+      {% if this.all_params.slider|length > 0 %}
+        {% set slider=this.all_params.slider %}
+        {% include 'parts/slider.twig' %}
+      {% endif %}
+
         {% if this.all_params.wrap=='index' %}
             {{ content|raw }}
         {% else %}

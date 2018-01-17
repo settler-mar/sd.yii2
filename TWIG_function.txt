@@ -28,4 +28,5 @@ _ddd - интерпритирует ddd из php-kint
 svg - импорт svg файла. Передается 2 параметра: имя SVG фала без раздрешения, стиль для SVG. Стиль можно не задавать
 json_decode - проброс ф-и json_decode из PHP
 max - проброс ф-и max из PHP
+implode - проброс ф-и implode из PHP
 params - доступ к параметрам
