@@ -42,8 +42,11 @@
             &:hover {
               color: $header_sub_menu_color_hover;
             }
+
           }
+
         }
+
         & > ul {
           max-height: 0;
           transition: max-height 0.3s cubic-bezier(0,1,0,.95);
@@ -58,6 +61,7 @@
               &.active {
                 background-color: $stores_menu_active_color;
               }
+
             }
           }
         }
@@ -68,6 +72,14 @@
           }
           .menu_angle-down {
             transform: none;
+          }
+        }
+        &.all_shops {
+          border-top: 2px solid $header_border_color;
+          margin-top: -1px;
+          &.active {
+            border-top: none;
+            margin-top: 0;
           }
         }
       }

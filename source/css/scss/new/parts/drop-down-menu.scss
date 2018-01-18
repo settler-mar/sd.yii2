@@ -11,11 +11,15 @@
         margin-right: 20px;
         margin-left: 0;
       }
+      &:last-child {
+        >a,>span {
+          border-bottom: none;
+        }
+      }
       &>ul {
         background-color: $header_color_up;
         //margin-top: 2px;
         width: auto;
-        //text-align: right;
         right: -10px;
         @include media($laptop_min) {
           margin-top: 0;
@@ -25,13 +29,6 @@
           box-shadow: none;
           background-color: $header_sub_menu_bg;
         }
-        //&>li {
-        //  display: flex;
-        //  justify-content: flex-end;
-        //  @include media($laptop-min) {
-        //    justify-content: space-between;
-        //  }
-        //}
       }
       &:hover>ul {
         border-right:  2px solid $menu_left_border_color;
@@ -46,13 +43,41 @@
 
     }
   }
+  &.header-right>li {
+    &.open {
+      padding-top: 20px;
+    }
+    &:first-child {
+      @include media($laptop-min) {
+        padding-top: 0;
+      }
+    }
+  }
 
   &>li{
     margin-right: 20px;
+    &.open {
+      //margin-right: 0;
+    }
     &:first-child {
       @include media($laptop_min) {
         //в мобиле для первого пункта меню первого уровня
         padding-top: 20px;
+      }
+    }
+    >span {
+      @include media($laptop-min) {
+        cursor: pointer;
+
+      }
+    }
+    &.drop-menu_group__up {
+      >a,
+      >span {
+        @include media($laptop-min) {
+          //в мобилке пункты, имеющие подменю
+          color: $shop_cashback_link_action;
+        }
       }
     }
 
@@ -100,6 +125,9 @@
     color: $header_sub_menu_color;
     &.cat_news {
       color: $header_color_news;
+      @include media($laptop-min) {
+        font-weight: bold;
+      }
     }
     stroke: $header_sub_menu_color;
     fill: $header_sub_menu_color;
@@ -115,8 +143,14 @@
     @include media($laptop-min) {
       border-bottom: 1px solid $menu_border_color;
       cursor: default;
-    }
 
+      &.link_mobile_bold {
+        font-weight: bold;
+      }
+      &.link_mobile_pointed {
+        color: $header_color_pointed;
+      }
+    }
 
 
   }
@@ -208,6 +242,11 @@
         position: absolute;
         left: 100%;
         top: -1px;
+      }
+      &:last-child {
+        >a,>span {
+          border-bottom: none;
+        }
       }
     }
 
@@ -309,6 +348,29 @@
         display: none; //не показывать в мобильном ссылку на подкатегории
       }
     }
+  }
+  &_item {
+    &-icon {
+      &-money {
+        width: 26px;
+        height: 26px;
+        color: $dollar_color;
+        stroke: $dollar_color;
+        fill: $dollar_color;
+
+      }
+    }
+
+  }
+  //&_group__up{
+  //  a,span {
+  //    @include media($laptop-min) {
+  //      color: $shop_cashback_link_action;
+  //    }
+  //  }
+  //}
+  &.close {
+    display: none;
   }
 
 }

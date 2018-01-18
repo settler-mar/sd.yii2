@@ -21,7 +21,7 @@
         {% endif %}
         {% if this.user_id > 0 %}
             {#если есть уведомления добавлен класс#}
-          <div class="header-logo_noty  btn-header mobile {% if this.notys %} has-noty {% endif %}">
+          <div class="header-logo_noty  btn-header mobile">
             <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
         {% endif %}
@@ -34,8 +34,12 @@
 
       <div class="header-item header-search">
         <form action="/search" class="header-search_form" name="search" method="get">
-          <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
-          <a href="#">{{ svg('search','header-search_form-button')|raw }}</a>
+          <div class="header-search_form-group">
+            <input type="text" name="query" id="search" class="header-search_form-input" value="" placeholder="Найти магазин" autocomplete="off">
+            {#<a href="#">#}
+                {{ svg('search','header-search_form-button')|raw }}
+            {#</a>#}
+          </div>
         </form>
         <div id="autocomplete" class="autocomplete"><ul class="autocomplete_list"></ul></div>
       </div>
@@ -72,7 +76,7 @@
             </div>
           {% endif %}
 
-            <div class="header-logo_noty btn-header last {% if this.notys %} has-noty {% endif %}" >
+            <div class="header-logo_noty btn-header last" >
               <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
@@ -93,7 +97,7 @@
             <a href="#login" class="header-right_link mobile modals_open">Войти</a>
           </li>
           <li class="mobile">
-            <a href="#registration" class="header-right_link mobile modals_open">Зарегистрироваться</a>
+            <a href="#registration" class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open">Зарегистрироваться (+бонус 30%)</a>
           </li>
           <li class="mobile">
             <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
@@ -116,7 +120,7 @@
           {% endif %}
         </li>
         <li class="mobile">
-          <a>Двойной кэшбэк</a>
+          <a class="link_mobile_bold">Двойной кэшбэк  {{ svg('money', 'drop-menu_item-icon-money')|raw }}</a>
         </li>
         <li class="drop-menu_group__up">
           <a href="/coupons">Промокоды

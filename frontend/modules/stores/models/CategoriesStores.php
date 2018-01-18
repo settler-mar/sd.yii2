@@ -257,7 +257,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'selected' => '0',
         'count' => Stores::activeCount(),
         'uid' => null,
-        'menu_index' => -1001,
+        'menu_index' => 1000,
+        'class' => 'all_shops',
       ]);
     }
 
@@ -318,16 +319,20 @@ class CategoriesStores extends \yii\db\ActiveRecord
   private static function buildCategoriesTree($cats, $parent_id = 0, $currentCategoryId = null)
   {
     if (is_array($cats) and isset($cats[$parent_id])) {
-      $tree = "";
-      if ($parent_id != 0) {
-       // $tree .= "{{ svg('angle-right','menu_angle-right')|raw }}";
-      }
-      $tree .= "<ul>";
+
+      $tree = "<ul>";
 
       foreach ($cats[$parent_id] as $cat) {
         $c=[];
+        $itemClass=[];
+        $title = false;
         if($parent_id == 0){
           $c[]="title";
+        }
+
+        if (!empty(($cat['class']))) {
+            //d($cat['class']);
+            $itemClass[] = $cat['class'];
         }
         switch ($cat['selected']) {
           case self::CATEGORY_STORE_SELECTED_PROMO:
@@ -337,6 +342,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
             $c[] = 'cat_news';
             break;
         }
+        if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
+              $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||
+              $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores'
+          ){
+            $title = true;
+            $c[] = 'active';
+            $itemClass[] = 'active';
+          }
         if(count($c)>0){
           $c='class=\''.implode(' ',$c).'\'';
         }else{
@@ -347,26 +360,27 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
         //имеются дочерние категрии
         $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) &&  count($cats[$cat['uid']])>0;
+        if ($childCategories) {
+            $arrow = "{{ svg('angle-down', 'menu_angle-down')|raw }}";
+        } else {
+            $arrow = '';
+        }
         //open  - если пустая настройка, или (имеются дочерние и имеется текущая категория и (текущая в ключах подкатегории, или текущая как корневая категория)
-        $sectionOpen = (empty(Yii::$app->params['stores_menu_accordeon_collapsed']) ||
-          $childCategories && $currentCategoryId &&
+        $itemClass[] = $childCategories && $currentCategoryId &&
           (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
-          'open current' : '');
-        $tree .= '<li '.($parent_id == 0 ? 'class="'.($childCategories ? ' menu-group '.$sectionOpen : '').'"':'').'>';
-          //($childCategories ? '<span class="accordeon-arrow"><i class="fa fa-angle-'.($sectionOpen==''?'down':'up').'" aria-hidden="true"></i></span>' : '');//стрелка для аккордеона
-          //($childCategories ? "{{ svg('angle-down','menu_angle-down')|raw }}": '');//стрелка для аккордеона
+          'open current' : null;
+        if(count($itemClass)>0){
+          $itemClass='class=\''.implode(' ',$itemClass).'\'';
+        }else{
+          $itemClass='';
+        }
+        $tree .= '<li '.$itemClass . '>';
 
-        if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
-          $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'||
-          $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores'
-        ) {
-          $class = 'class="active' . ($parent_id == 0 ? ' title' : '') . '"';
-          $classCount = 'class="active-count' . ($parent_id == 0 ? ' title ' : '') . '"';
-          $tree .= '<span ' . $class . '">' . $cat['name'] . "&nbsp;(" . $cat['count'] . ")".
-              ($childCategories ? "{{ svg('angle-down', 'menu_angle-down')|raw }}" : "")."</span>";//стрелка для аккордеона
+        if ($title) {
+          $tree .= '<span ' . $c . '">' . $cat['name'] . "&nbsp;(" . $cat['count'] . ")". $arrow . "</span>";
         } else {
           $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . "&nbsp;(" . $cat['count'] . ") ".
-            ($childCategories ? "{{ svg('angle-down', 'menu_angle-down')|raw }}" : "")."</a>";//стрелка для аккордеона
+            $arrow . "</a>";
         }
         $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
         $tree .= "</li>";
