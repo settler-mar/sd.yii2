@@ -88,7 +88,6 @@ var headerActions = function () {
         }
     });
 
-    //клик по стрелочке вниз или рядом по ссылке
     $('.menu_angle-down, .drop-menu_group__up').click(function(e) {
         e.preventDefault();
         var parent = null;
@@ -109,17 +108,20 @@ var headerActions = function () {
                 $(parent).siblings('li').addClass('close');
                 if (parentMenu) {
                     $(parentMenu).siblings('ul').children('li').addClass('close');
+                    $(parentMenu).siblings('ul').addClass('close');
                 }
             } else {
                 $(parent).siblings('li').removeClass('close');
                 if (parentMenu) {
                     $(parentMenu).siblings('ul').children('li').removeClass('close');
+                    $(parentMenu).siblings('ul').removeClass('close');
                 }
             }
         }
 
         return false;
     });
+
 
     var accountMenuTimeOut = null;
     $('.account-menu-toggle').click(function(e){
