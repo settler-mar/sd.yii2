@@ -240,6 +240,9 @@ $config= [
     'banners' => [
       'class' => 'frontend\modules\banners\Module',
     ],
+    'sdblog' => [
+      'class' => 'app\modules\sdblog\Module',
+    ],
   ],
   'params' => $params,
 
