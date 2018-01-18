@@ -88,9 +88,15 @@ var headerActions = function () {
         }
     });
 
-    $('.menu_angle-down').click(function(e) {
+    //клик по стрелочке вниз или рядом по ссылке
+    $('.menu_angle-down, .drop-menu_group__up').click(function(e) {
         e.preventDefault();
-        var parent = $(this).closest('.drop-menu_group__up, .menu-group');
+        var parent = null;
+        if ($(this).hasClass('drop-menu_group__up')) {
+            parent = $(this);
+        } else {
+            parent = $(this).closest('.drop-menu_group__up, .menu-group');
+        }
         var parentMenu = $(this).closest('.drop-menu');
         if (parentMenu) {
             $(parentMenu).siblings('ul').find('li').removeClass('open');

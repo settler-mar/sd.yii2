@@ -55,6 +55,11 @@
         padding-top: 20px;
       }
     }
+    >span {
+      @include media($laptop-min) {
+        cursor: pointer;
+      }
+    }
 
     //для первого пункта подменю
     &>ul>li{
