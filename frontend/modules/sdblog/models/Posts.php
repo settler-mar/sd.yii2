@@ -98,7 +98,7 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getLastPosts(){
+    static function getLastPosts(){
       $cacheName = 'sd_blog_posts';
       return \Yii::$app->cache->getOrSet($cacheName, function ()  {
         $data= self::find()
