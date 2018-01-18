@@ -97,4 +97,65 @@ class Posts extends \yii\db\ActiveRecord
             'comment_count' => 'Comment Count',
         ];
     }
+
+    static function getLastPosts(){
+      $cacheName = 'sd_blog_posts';
+      return \Yii::$app->cache->getOrSet($cacheName, function ()  {
+        $data= self::find()
+            ->alias('p')
+            ->select([
+                'p.post_content',
+                'date'=>'p.post_date',
+                'url'=>'p.post_name',
+                'p.post_title',
+                'img'=>'img.guid',
+                'views'=>'views.meta_value'
+            ])
+            ->innerJoin('wp_postmeta', '`wp_postmeta`.`post_id` = `p`.`ID` AND wp_postmeta.meta_key=\'_thumbnail_id\'')
+            ->innerJoin('wp_posts img', '`wp_postmeta`.`meta_value` = `img`.`ID`')
+            ->innerJoin('wp_postmeta as views', '`views`.`post_id` = `p`.`ID` AND views.meta_key=\'views\'')
+            ->where(['p.post_parent' => 0, 'p.post_status' => 'publish' ,'p.post_type'=>'post'])
+            //->groupBy(['p.ID','img.guid'])
+            ->orderBy(['p.ID'=>SORT_DESC])
+            ->limit(4)
+            ->asArray()
+            ->all();
+
+        $length=300;
+        foreach ($data as &$item) {
+          $str = $item['post_content'];
+          //$str=strip_tags($str,'<p><a>');
+          $str=strip_tags($str);
+          $description=[];
+          /*if (mb_strlen($str) > $length) {
+            $temp = mb_substr($str, 0, $length);
+            $str = mb_substr($temp, 0, mb_strrpos($temp, ' '));
+
+            //проверям что все теги a были закрыты
+            if(substr_count($str,'<a')!=substr_count($str,'</a')){
+              $str.='</a>';
+            }
+
+            $str.='...';
+          }*/
+          $str = explode("\n", $str);
+
+          $t_len=0;
+          foreach ($str as $s) {
+            $s=trim($s);
+            if(mb_strlen(str_replace(' ','',$s))>5){
+              $description[]=$s;
+              $t_len+=mb_strlen($s);
+              if($t_len>$length)break;
+            }
+          }
+
+          $item['description'] = '<p>' . implode(' ', $description) . '</p>';
+          $item['description']=str_replace("&nbsp;",' ',$item['description']);
+        }
+
+        return $data;
+      });
+
+    }
 }

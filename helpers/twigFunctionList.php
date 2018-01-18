@@ -335,7 +335,11 @@ $functionsList=[
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
     $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
-    return strftime("%e " . $currMonth . " %G в ".$format_time, strtotime($date));
+    if($format_time) {
+      return strftime("%e " . $currMonth . " %G в " . $format_time, strtotime($date));
+    }else{
+      return strftime("%e " . $currMonth . " %G", strtotime($date));
+    }
   },
   '_local_date'=>function ($date, $format="%G %B %e %H:%I:%S") use ($month) {
     $monthRus = strpos($format, '%BRUS');
