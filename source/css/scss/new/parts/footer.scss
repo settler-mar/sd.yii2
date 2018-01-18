@@ -57,6 +57,9 @@
     color: $footer_link_color;
     font-weight: 400;
     font-size: 14px;
+    @include media($tablets) {
+      font-size: 16px;
+    }
     line-height: 10px;
     margin-bottom: 14px;
 
@@ -128,6 +131,8 @@
           & ~ a {
             max-height: 20px !important;
             line-height: 26px;
+            padding-top: 5px;
+            padding-bottom: 5px;
           }
         }
       }
@@ -263,17 +268,22 @@
       justify-content: center;
     }
 
-    &_logo {
-      height: 36PX;
-      width: 60px;
-      background: url(/images/svg/mini-logo.svg) 50% 50% no-repeat;
-      background-size: cover;
-      margin-right: 20px;
-    }
 
     &_text {
+      padding-left: 95px;
       line-height: 18px !important;
       margin-bottom: 0 !important;
+      background: url(/images/svg/mini-logo-fit.svg) 0 50% no-repeat;
+      background-size: contain;
+
+      @include media($phones) {
+        padding-left: 0;
+        background-size: auto;
+        background-position: 50% 100%;
+        padding-bottom: 40px;
+        text-align: center;
+      }
+
     }
   }
 
