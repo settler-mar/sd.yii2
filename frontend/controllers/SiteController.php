@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\users\models\RegistrationForm;
@@ -106,6 +107,7 @@ class SiteController extends SdController
 
     if(!Yii::$app->user->isGuest) {
       $data['slider'] = Slider::get();
+      $data['posts'] = Posts::getLastPosts();
     }
 
     //ddd($counter);

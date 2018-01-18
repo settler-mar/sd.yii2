@@ -9,7 +9,7 @@
 {% include 'index/popular_shop.twig' %}
 
 {% if user_id %}
-
+  {% include 'index/blog_posts.twig' %}
 {% else %}
   {% include 'index/other_services.twig' %}
   {% include 'index/advantages.twig' %}

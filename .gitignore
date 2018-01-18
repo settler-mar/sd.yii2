@@ -59,5 +59,5 @@ log/
 /frontend/web/images/banners/
 /frontend/web/js/stores_list.json
 /frontend/config/params-local.php
-/frontend/config/main-local.php
+*-local.php
 *.lock

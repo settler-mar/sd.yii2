@@ -38,3 +38,4 @@ account_favorites_count_user_<user_id> - количество избранных
 store_store_points_<$storeId> - точки продаж для шопа
 banners[_<place>] - баннеры ЗАВИСИМОСТЬ banners
 counter_index - счетчики на стартовой
+sd_blog_posts - последние статьи в блоге

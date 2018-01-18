@@ -1,4 +1,4 @@
-.instruction{
+.instruction {
   &-item {
     text-align: center;
     flex-grow: 1;
@@ -14,29 +14,50 @@
     margin-left: 10px;
     margin-right: 10px;
 
-    &-230{
+    &-230 {
       min-width: 220px;
       max-width: 240px;
     }
 
-    &-150{
+    &-150 {
       min-width: 140px;
       max-width: 160px;
     }
 
+    &-article{
+      margin-bottom: 30px;
+    }
+
     @include media($tablets) {
-      &-tablets-full{
+      &-tablets-full {
         min-width: auto;
         max-width: none;
       }
     }
   }
 
-  @include media($tablets) {
-    &-wrap {
+  &-wrap {
+    @include media($tablets) {
       flex-grow: 1;
       margin-left: 25px;
       flex-basis: 0;
+    }
+
+    &-fixed_height {
+      height: 228px;
+      overflow: hidden;
+    }
+
+    @include media($tablets) {
+      height: auto;
+    }
+  }
+
+  &-article{
+    &-link{
+      display: block;
+      text-align: right;
+      margin: 10px 0;
     }
   }
 
@@ -51,28 +72,31 @@
     stroke-linecap: round;
     max-width: 11vw;
     max-height: 11vw;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 
     @include media_min($tablets) {
-      padding-bottom: 28PX;
-
+      margin-bottom: 28PX;
+      width: 100%;
+      max-width: none;
       &-big {
         height: 130PX;
-        width: 130PX;
-        max-width: none;
       }
     }
   }
 
-  &-title{
+  &-title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
+
     @include media_min($tablets) {
-      height: 46px;
+      min-height: 46px;
     }
   }
 
-  &-content{
+  &-content {
     &-select {
       font-family: "Proxima Nova";
       font-weight: 700;
@@ -90,7 +114,7 @@
       font-weight: 400;
       line-height: 17px;
 
-      span{
+      span {
         font-size: 24px;
         display: block;
       }
@@ -102,27 +126,50 @@
     }
   }
 
-  &-svg{
+  &-svg {
     fill: none;
     stroke: none;
     display: inline-block;
     vertical-align: middle;
   }
 
-  &-post_logo{
+  &-post_logo {
     display: inline-block;
     vertical-align: middle;
     max-width: calc(100% - 5PX);
   }
 
-  &_valing{
+  &_valing {
     text-align: center;
 
-    &:before{
+    &:before {
       content: "";
       display: inline-block;
       vertical-align: middle;
       height: 100%;
+    }
+  }
+
+  &-status_line{
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px -10px -10px -10px;
+    padding: 3px 10px;
+    background: $header_color_gray;
+    border-radius: 0 0 5px 5px;
+
+    &-item{
+      color: $gray_box_bg;
+      fill: $gray_box_bg;
+      stroke: $gray_box_bg;
+    }
+
+    &-icon{
+      height: 16px;
+      width: 16px;
+      margin: 0 3px;
+      vertical-align: middle;
     }
   }
 }
