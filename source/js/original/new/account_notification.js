@@ -10,7 +10,7 @@
     var has_new=false;
     for (var i=0;i<data.notifications.length;i++){
       el=data.notifications[i];
-      var is_new=(el.is_viewed==1);
+      var is_new=(el.is_viewed==0 && el.type_id==2)
       out+='<li class="header-noty-item'+(is_new?' header-noty-item_new':'')+'">';
       out+='<div class=header-noty-data>'+el.data+'</div>';
       out+='<div class=header-noty-text>'+el.text+'</div>';

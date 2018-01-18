@@ -25,7 +25,6 @@ class SdView extends View
   public $description;
   public $site_rating;
   public $isWebMaster=false;
-  public $notys=false;//непрочитанных уведомлений
   public $sd_counter;
   public $favorites=false;//количество изрбанных
 
@@ -38,7 +37,6 @@ class SdView extends View
       $user = Yii::$app->user->identity;
       $this->user = (array)$user->getIterator();
       $this->balance = $user->getBalance();
-      $this->notys = $this->user_id ? Notifications::getUnreadCount($this->user_id) : false;
       $this->favorites = $this->user_id ? UsersFavorites::userFavoriteCount($this->user_id) : false;
 
       $this->all_params['bonus_status'] = $user->bonus_status_data;

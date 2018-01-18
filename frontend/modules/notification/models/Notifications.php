@@ -107,8 +107,8 @@ class Notifications extends \yii\db\ActiveRecord
       $where = ['user_id' => $userId, 'type_id' => 2, 'is_viewed' => 0, 'uid' => $ids];
 
       self::updateAll(['is_viewed' => 1], $where);
-      //чистим кеш - количество непрочитанных для пользователя
-      \Yii::$app->cache->delete('account_notification_unread_count_' . $userId);
+      //чистим кеш - для пользователя
+      self::clearCache($userId);
     }
   }
 
@@ -120,18 +120,14 @@ class Notifications extends \yii\db\ActiveRecord
     }
     Yii::$app->balanceCalc->todo($users, 'bonus');
 
-    //ключ
-    Cache::deleteName('account_notification_unread_count_' . $this->user_id);
-    //зависимость
-    Cache::clearName('account_notifications' . $this->user_id);
+    self::clearCache($this->user_id);
   }
 
   public function afterDelete()
   {
     Yii::$app->balanceCalc->todo($this->user_id, 'bonus');
 
-    Cache::deleteName('account_notification_unread_count_' . $this->user_id);
-    Cache::clearName('account_notifications' . $this->user_id);
+    self::clearCache($this->user_id);
   }
 
   public function getUser()
@@ -187,6 +183,17 @@ class Notifications extends \yii\db\ActiveRecord
       return '-';
     };
     return '<a href="/admin/payments/update/id:' . $this->payment_id . '" target="_blank">' . $this->payment_id . '</a>';
+  }
+
+    /**очистка кеш пользователя
+     * @param $userId
+     */
+  public static function clearCache($userId)
+  {
+      //ключ
+      Cache::deleteName('account_notification_unread_count_' . $userId);
+      //зависимость
+      Cache::clearName('account_notifications' . $userId);
   }
 
 

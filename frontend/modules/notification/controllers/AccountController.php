@@ -66,7 +66,8 @@ class AccountController extends \yii\web\Controller
             'text' => Yii::$app->messageParcer->notificationText($notification),
             'title' => Yii::$app->messageParcer->notificationTitle($notification),
             'data' => date('d-m-Y H:i',$date),
-            'is_viewed'=>(int)$notification['is_viewed']
+            'is_viewed'=>(int)$notification['is_viewed'],
+            'type_id' => (int)$notification['type_id']
             ];
       }else {
         $notification['text'] = Yii::$app->messageParcer->notificationText($notification);
