@@ -114,7 +114,7 @@
           </a>
 
           {{ use('frontend/components/CategoryMenu') }}
-          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite'}) %}
+          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops'}) %}
           {% if category_tree %}
             {{category_tree|raw}}
           {% endif %}
