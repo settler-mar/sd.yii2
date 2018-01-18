@@ -366,9 +366,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
             $arrow = '';
         }
         //open  - если пустая настройка, или (имеются дочерние и имеется текущая категория и (текущая в ключах подкатегории, или текущая как корневая категория)
-        $itemClass[] = $childCategories && $currentCategoryId &&
-          (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])?
-          'open current' : null;
+        if ($childCategories && $currentCategoryId &&
+          (in_array($currentCategoryId, array_keys($cats[$cat['uid']])) || $currentCategoryId == $cat['uid'])){
+            $itemClass[] = 'open current';
+          }
+        if ($childCategories) {
+            $itemClass[] = 'menu-group';
+        }
+
         if(count($itemClass)>0){
           $itemClass='class=\''.implode(' ',$itemClass).'\'';
         }else{
