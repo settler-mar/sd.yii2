@@ -1,25 +1,29 @@
-{% include parts('breadcrumbs') %}
+<section class="search margin">
 
-<section class="divide shops section-padding search">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 text-center">
-                <h1 class="search__header">
-                    Результаты поиска {% if query != '' %} по запросу '{{query}}' {% endif %}
-                </h1>
-            </div>
-            {% if stores|length > 0 %}
+    <h1 class="search__header">
+        Результаты поиска {% if query != '' %} по запросу '{{query}}' {% endif %}
+    </h1>
+    <div  class="search_stores margin">
+
+
+        {% if stores|length > 0 %}
+            <div class="search_stores-list shops">
                 {% for store in stores %}
-                    <div class="col-sm-3 col-md-2">
-                        {% include parts('shop') %}
-                    </div>
+                    {% include 'parts/shop.twig' %}
                 {% endfor %}
-            {% else %}
-                <div class="col-sm-12 col-md-12 text-center">
-                    <span data-icon="&#xe05c;" class="icon"></span>
-                    По Вашему запросу ничего не найдено
-                </div>
-            {% endif %}
-        </div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+                <div class="shop shop-empty"></div>
+            </div>
+
+
+        {% else %}
+            <p>По вашему запросу ничего не найдено.</p>
+        {% endif %}
     </div>
+
+
 </section>

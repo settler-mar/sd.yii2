@@ -72,7 +72,7 @@ class DefaultController extends SdController
       echo json_encode($out);
       exit;
     } else {
-      $this->params['breadcrumbs'][] = ['label' => 'Поиск', 'url' => '/search'];
+      $this->params['breadcrumbs'][] = ['label' => 'Поиск'];
       return $this->render('index', [
         'stores' => $stores,
         "query" => $query,
