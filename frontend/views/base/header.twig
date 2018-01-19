@@ -108,7 +108,7 @@
           </li>
         {% endif %}
         <li class="drop-menu_group__up">
-          <a href="/stores">
+          <a class="drop-menu_group__up-header" href="/stores">
             Интернет-магазины
             {{ svg('angle-down','menu_angle-down')|raw }}
           </a>
@@ -123,7 +123,7 @@
           <a class="link_mobile_bold">Двойной кэшбэк  {{ svg('money', 'drop-menu_item-icon-money')|raw }}</a>
         </li>
         <li class="drop-menu_group__up">
-          <a href="/coupons">Промокоды
+          <a class="drop-menu_group__up-header" href="/coupons">Промокоды
               {{ svg('angle-down','menu_angle-down')|raw }}
           </a>
             {{ use('frontend/components/CategoryCouponsMenu') }}
@@ -139,7 +139,7 @@
           <a>Двойной кэшбэк</a>
         </li>
         <li class="drop-menu_group__up">
-          <span >Сервисы
+          <span class="drop-menu_group__up-header">Сервисы
               {{ svg('angle-down','menu_angle-down')|raw }}
           </span>
           <ul>
@@ -169,7 +169,7 @@
         </li>
         {% if this.user_id > 0 %}
         <li class="drop-menu_group__up">
-          <span class="dashed">Помощь
+          <span class="dashed drop-menu_group__up-header">Помощь
               {{ svg('angle-down','menu_angle-down')|raw }}
           </span>
           <ul class="left-">
