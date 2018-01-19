@@ -30,7 +30,8 @@
 
     {% set slider=this.all_params.slider %}
 
-    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}{% if slider|length == 0 %} margin-top{% endif %}">
+    {#<div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}{% if slider|length == 0 %} margin-top{% endif %}">#}
+    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">
       {% if slider|length > 0 %}
         {% include 'parts/slider.twig' %}
       {% endif %}
