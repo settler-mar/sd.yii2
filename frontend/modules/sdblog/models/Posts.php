@@ -116,7 +116,7 @@ class Posts extends \yii\db\ActiveRecord
             ->innerJoin('wp_postmeta as views', '`views`.`post_id` = `p`.`ID` AND views.meta_key=\'views\'')
             ->where(['p.post_parent' => 0, 'p.post_status' => 'publish' ,'p.post_type'=>'post'])
             //->groupBy(['p.ID','img.guid'])
-            ->orderBy(['p.ID'=>SORT_DESC])
+            ->orderBy(['p.post_date'=>SORT_DESC])
             ->limit(4)
             ->asArray()
             ->all();
