@@ -245,6 +245,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
           'count' => $favoriteCount,
           'uid' => null,
           'menu_index' => -1000,
+          'class' => 'user_favorites',
         ]);
       }
     }
