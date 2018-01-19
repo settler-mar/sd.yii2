@@ -89,7 +89,7 @@ var headerActions = function () {
     });
 
     $('.menu_angle-down, .drop-menu_group__up').click(function(e) {
-        var menuOpen = $(this).closest('.header_open-menu');
+        var menuOpen = $(this).closest('.header_open-menu, .catalog-categories');
         if (!menuOpen.length) {
             return true;
         }

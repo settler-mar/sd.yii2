@@ -309,8 +309,12 @@
 
 
   &>li {
-    &>a>.menu_angle-down {
-
+    &.open>a,&.open>span {
+      &>.menu_angle-down {
+        @include media($laptop-min) {
+          transform: rotate(-180deg);
+        }
+      }
     }
     &>ul>li .menu_angle-down {
       transform: rotate(-90deg);
