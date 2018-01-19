@@ -464,7 +464,11 @@ $functionsList=[
 //    return $output;
   },
   'params'=>function($name){
-    return Yii::$app->params[$name];
+    if(isset(Yii::$app->params[$name])) {
+      return Yii::$app->params[$name];
+    }else{
+      return null;
+    }
   },
 ];
 
