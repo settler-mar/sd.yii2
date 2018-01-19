@@ -29,22 +29,20 @@
 
     {% include 'base/header.twig' %}
 
-    <div class="content-wrap">
+    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">
       {% if this.all_params.slider|length > 0 %}
         {% set slider=this.all_params.slider %}
         {% include 'parts/slider.twig' %}
       {% endif %}
 
-        {% if this.all_params.wrap=='index' %}
-            {{ content|raw }}
-        {% else %}
-
-          {% include 'parts/catalog_breadcrumbs.twig' %}
-
-          <div class="page-wrap">
-            {{ content|raw }}
-          </div>
-        {% endif %}
+      {% if this.all_params.wrap=='index' %}
+          {{ content|raw }}
+      {% else %}
+        {% include 'parts/catalog_breadcrumbs.twig' %}
+        <div class="page-wrap{{ _if(params('global_wrap'),' '~params('global_wrap')) }}">
+          {{ content|raw }}
+        </div>
+      {% endif %}
     </div>
     {% include 'index/down_page_baner.twig' %}
     {% include 'base/footer.twig' %}

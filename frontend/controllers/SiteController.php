@@ -304,7 +304,7 @@ class SiteController extends SdController
   }
 
   /**
-   * Displays 404 error.
+   * Displays goto
    *
    * @return mixed
    */
@@ -396,6 +396,8 @@ class SiteController extends SdController
       ->asArray()
       ->one();
     if(!$page){
+      Yii::$app->params['global_bg']='gray-box';
+      Yii::$app->params['global_wrap']='page-404';
       throw new HttpException(404 ,'User not found');
     }
     if(Yii::$app->request->isAjax){

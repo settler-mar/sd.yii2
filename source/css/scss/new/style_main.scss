@@ -237,7 +237,7 @@ svg.svg-no-fill{
 }
 
 .gray-box{
-  background: $gray_box_bg;
+  background-color: $gray_box_bg;
   position: relative;
 }
 
@@ -402,4 +402,5 @@ svg.svg-no-fill{
 @import "slider/slider";
 @import "slider/animationsKeyFrame";
 @import "parts/banner";
+@import "parts/404";
 

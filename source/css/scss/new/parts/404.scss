@@ -1,0 +1,44 @@
+.page-404{
+  background: url("/images/templates/404_site.png") no-repeat right top;
+  
+  @include media ($laptop_min) {
+    background: none;
+  }
+
+  &__content {
+    padding: 50px 0 230px 30px;
+
+    @include media ($laptop_min) {
+      padding-bottom: 60px;
+    }
+  }
+
+  &__header {
+    color: $page404headColor;
+    font-size: 56px;
+    font-weight: bold;
+    &-h1 {
+      color: $page404headColor;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+
+  & p {
+    color: $page404paragraphColor;
+    font-size: 16px;
+  }
+
+  &__buttons {
+    &_list {
+      margin: 40px -15px 0 0;
+      padding-left: 0;
+    }
+
+    &_item {
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+  }
+}

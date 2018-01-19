@@ -466,9 +466,6 @@ $functionsList=[
   'params'=>function($name){
     return Yii::$app->params[$name];
   },
-  'TinyMce'=>function(){
-    ddd(\zxbodya\yii2\tinymce\TinyMce::className());
-  },
 ];
 
 return $functionsList;
