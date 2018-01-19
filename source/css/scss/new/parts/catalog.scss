@@ -82,6 +82,9 @@
             margin-top: 0;
           }
         }
+        &.user_favorites {
+          font-weight: bold;
+        }
       }
     }
 
@@ -95,6 +98,9 @@
       fill: $stores_menu_hover_color;
       cursor: pointer;
       transform: rotate(-90deg);
+    }
+    &_buttons {
+      text-align: center;
     }
   }
   &-stores {

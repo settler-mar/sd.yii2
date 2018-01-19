@@ -1,11 +1,9 @@
 .header {
   margin-bottom: 100px;
-  //perspective: 400px;
   position: fixed;
   &.scrollable {
     position: static;
     margin-bottom: 0;
-    //perspective: none;
   }
   width: 100%;
   z-index: 100;
@@ -13,7 +11,6 @@
   @include media($laptop_min) {
     margin-bottom: $menu_height;
     position: static;
-    //perspective: none;
   }
 
   &-upline {
@@ -66,9 +63,6 @@
 
     }
     &.scroll-down {
-      //opacity: 0.5;
-      //transform: rotate3d(-1,0,0,90deg) translate3d(0,-60px,-40px)
-      //position: static;
 
       position: relative;
       margin-top: -50px;
@@ -79,20 +73,9 @@
     }
     &.shadowed {
       box-shadow: 0 7px 7px rgba(0,0,0,.2);
-      //border-top: 10px solid ;
-      //&:before {
-      //  content: "";
-      //  display: block;
-      //  height: 9px;
-      //}
       @include media($laptop_min) {
         box-shadow: none;
       }
-    }
-
-
-    &_inner {
-      //width: 100%;
     }
 
     @include media($laptop-min) {
@@ -102,12 +85,7 @@
       width: 80%;
       transition: left .25s ease .1s;
       top: $mobile_stores_menu_top;
-      &.scroll-down {
-        //opacity: 1;
-        //transform: none;
-      }
       &_inner {
-        //width: 90%;
         margin-left: 0;
       }
     }
@@ -128,16 +106,6 @@
     a.flex-start {
       justify-content: flex-start;
     }
-    //@include media($phones) {
-    //  //left: -110%;
-    //  &_inner {
-    //    //width: 100%;
-    //    //padding-right: 3%;
-    //  }
-    //  .menu_angle-down {
-    //    //right: 30px;
-    //  }
-    //}
 
   }
 
@@ -213,7 +181,6 @@
       }
 
       &-button {
-        //height: calc(100% - 12px);
         height: 17PX;
         @include media($laptop_min) {
           height: 24px;
@@ -295,7 +262,6 @@
         height: 26PX;
       }
       &.close {
-        //margin-top: 0;
         width: 26PX;
         height: 26PX;
         margin-bottom: 4PX;
@@ -444,8 +410,6 @@
       width: 100vw;
       max-width: 380px;
       height: 100vh;
-      //overflow: hidden;
-      //background: $header_color_up;
       display: flex;
       flex-direction:column;
       right: 80px;
