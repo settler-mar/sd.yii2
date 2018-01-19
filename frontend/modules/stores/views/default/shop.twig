@@ -4,7 +4,7 @@
       {% if h1%}
         {{ h1|raw }}
       {% else %}
-        Кэшбэк с покупок на {{current_store.name}}
+        Кэшбэк с&nbsp;покупок на&nbsp;{{current_store.name}}
       {% endif %}
     </h1>
     <div class="shop_header_big-wrap">
@@ -28,11 +28,23 @@
                         </a>
                     </span>
           <span class="avg">(среднее время обработки)</span>
-          <a href="#" class="btn">Для получения кэшбэка необходимо</a>
+          <a href="#howgetcashback" class="btn btn-margin_vertical">Для получения кэшбэка необходимо</a>
         </div>
       </div>
 
       <div class="shop_header_big-item shop_header_big-item-logo_box">
+        <div>
+          <div class="footer-share-text">Поделиться:</div>
+          <div class="share42init accauntSoc accauntSoc_32"
+               data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+               data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
+               data-title="{{ html.encode(this.title) }}"
+               data-description="{{ this.description }}"
+               data-socials="1,0,2,4,3,5,6"
+               data-icon-size="24"
+          >
+          </div>
+        </div>
         <div class="shop_header_big-item-logo">
           <div class="favorite">
 
@@ -92,17 +104,20 @@
         </div>
         <div class="shop_header_big-item-body">
           {% if current_store.conditions != '' or current_store.is_active==0 %}
-            <div class="additional-information">
-              <span>Дополнительная информация:</span>
-              <div class="additional-information__content">
+
+            <div class="accordion shop_header_big-accordion">
+              <div class="accordion-control accordion-title">
+                Дополнительная информация:
+              </div>
+              <div class="accordion-content">
                 {% if current_store.is_active==0 %}
                   {{ _constant('shop_not_info')|raw}}
                 {% endif %}
                 {{ _no_br(current_store.conditions)|raw}}
               </div>
-              <div >
-                <div class="additional-information__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>
-                <div class="additional-information__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>
+              <div class="accordion-control tablets_hide">
+                <a class="angle-down" href="#"></a>
+                <a class="angle-up" href="#"></a>
               </div>
             </div>
           {% endif %}
@@ -110,7 +125,279 @@
       </div>
     </div>
   </div>
-  <div class="shop_header_big-end">
-    <a href="#" class="btn btn-round">Перейти к покупкам</a>
+</section>
+
+<section class="shop_header_big-end">
+  {% if current_store.is_offline==0 %}
+    {% if user_id %}
+      {% if current_store.is_active == 1 %}
+        <a href="/goto/store:{{current_store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-round">Перейти к покупкам</a>
+      {% else %}
+        <a href="#shop_not_active" ref="popup" class="btn btn-round">Перейти к покупкам</a>
+      {% endif %}
+    {% else %}
+      <a href="#login" id="gotostore" class="btn btn-round">Перейти к покупкам</a>
+    {% endif %}
+  {% endif %}
+
+
+  {% if current_store.related and current_store.relatedData.is_active in [0, 1] %}
+    <div class="row" style="text-align: center;">
+      <a class="btn btn-relink" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
+        {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="store-recommendation-link">
+    <p>
+      <input id="store-recommendation-link-checkbox" class="checkbox-blue" type="checkbox" checked>
+      <label class="checkbox-blue__label" for="store-recommendation-link-checkbox">
+        Я ознакомлен и согласен с <a href="/recommendations">Правилами покупок с кэшбэком
+        </a>
+      </label>
+    </p>
   </div>
 </section>
+
+{% if current_store.is_active==-1 %}
+  <section class="store-information store-not-active">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 store-not-active__content">
+          <div class="description" style="color:red;text-align: center;">
+            Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if current_store.short_description or content %}
+  <section class="store-information short-description">
+    <div class="container">
+      <div class="row">
+        {% if current_store.short_description %}
+          <div class="col-md-12">
+            <h3 class="text-center">Информация о {{current_store.name}}</h3>
+          </div>
+          {#<div class="col-md-12 short-description__description less">#}
+          <div class="col-md-12 short-description__description">
+            <div class="description">
+              {{ current_store.short_description|raw }}
+            </div>
+          </div>
+          {#<div >#}
+          {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
+          {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
+          {#</div>#}
+        {% else %}
+          <div class="col-md-12 short-description__description">
+            <div class="description">
+              {{ content|raw }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if current_store.is_active==0 %}
+  <section class="store-information store-not-active">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 store-not-active__content">
+          <div class="description">
+            {{ _constant('shop_not_active_description')|raw}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {#блок с похожими шопами для временно неактивных шопов сюда#}
+  {% include 'parts/additional_stores.twig' %}
+{% endif %}
+
+{% if _is_empty(current_store.displayed_cashback) %}
+  <section class="store-information store-not-active">
+    <div class="container">
+      <div class="row no-cashback">
+        <div class="col-md-12 store-not-active__content">
+          <div class="description">
+            {{ _constant('shop_no_cashback')|raw}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% include 'parts/calc_cashback.twig' %}
+
+{% set photos = current_store.photoList %}
+{% set videos = current_store.video %}
+{% if photos | length or  videos | length %}
+  {% include 'parts/photos.twig' %}
+{% endif %}
+
+{% set related_stores = current_store.relatedStores %}
+{% if related_stores and  related_stores | length %}
+  <section class="store-intro shops" style="padding-top: 0px; padding-bottom: 50px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            Все магазины сети {{ current_store.network_name }}
+          </h3>
+        </div>
+        {% for store in related_stores %}
+          <div class="col-sm-3 col-md-2">
+            {% include 'parts/shop.twig' %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+
+{% if current_store.is_offline==1 %}
+  {% if store_points and store_points.points|length > 0 %}
+    {% include 'parts/store_points.twig' %}
+  {% endif %}
+{% endif %}
+
+<section class="store-2line">
+  <div class="container">
+    <div class="row">
+      {#% if current_store.is_active==1 %#}
+      {% set not_active = 1-current_store.is_active %}
+      <div class="col-sm-12 col-md-12">
+        <div class="coupons">
+          <h3>Промокоды, купоны и скидки {{current_store.name}}</h3>
+          {% if store_coupons|length > 0 %}
+            <div class="coupons-list" data-mcs-theme="dark">
+              {% for coupon in store_coupons %}
+                <div class="col-sm-12 col-md-6 coupons-item {% if loop.index > 6 %}more{% endif %}">
+                  {% include 'parts/coupon.twig' %}
+                </div>
+                {% if (loop.index == 6 and (store_coupons|length > 6)) %}
+                  <div class="col-xs-12 store-coupons__buttons more">
+                    <a class="btn store-coupons__show-more" href="#">Показать все ({{ coupons_counts.actual }})</a>
+                  </div>
+                {% endif %}
+
+              {% endfor %}
+              {% if store_coupons|length > 6 or coupons_counts.expired > 0 %}
+                <div class="col-xs-12 store-coupons__buttons {% if store_coupons|length > 6 %}less{% endif %}">
+                  {% if store_coupons|length > 6 %} <a class="btn store-coupons__show-less" href="#">Скрыть</a> {% endif %}
+                  <a class="btn" target="_blank" href="/coupons"><span>Все купоны и акции ({{ all_coupons_counts.actual }})</span></a>
+                  {% if coupons_counts.expired > 0 %}
+                    <a class="btn" target="_blank" href="/coupons/{{ current_store.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <p class="text-center">На данный момент промокоды, купоны или скидки для магазина</p>
+            <p class="text-center">{{current_store.name}} отсутствуют.</p>
+            {% if coupons_counts.expired > 0 %}
+              <div class="col-xs-12 store-coupons__buttons">
+                <a class="btn" target="_blank" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ coupons_counts.expired }})</span></a>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      {#% endif %#}
+      <a name="reviews"></a>
+      <div class="col-sm-12 col-md-12">
+        <div class="comments">
+          <h3>Отзывы о {{current_store.name}}</h3>
+          {% if store_reviews|length > 0 %}
+            <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
+              {% for review in store_reviews %}
+                <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 4 %}more{% endif %}">
+                  {% include 'parts/comment.twig' %}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <div class="comments-handler">
+          {% if store_reviews|length == 0 %}
+            <p class="ntfnd">На данный момент отзывы о магазине</p>
+            <p>{{current_store.name}} отсутствуют. Будь первым!</p>
+          {% endif %}
+          {% if store_reviews|length > 4 %}
+            <a class="btn store-reviews__show-more" href="#">Показать все ({{ store_reviews|length }})</a>
+            <a class="btn store-reviews__show-less" href="#" style="display: none;">Скрыть все</a>
+          {% endif %}
+
+          {% if user_id %}
+            <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-ghost btn-accent btn-revert ignore-hash ajaxFormOpen">Оставить отзыв</a>
+          {% else %}
+            <p>
+              Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+              <a href="#login" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if current_store.is_active != 0 %}
+  {% include 'parts/additional_stores.twig' %}
+{% endif %}
+
+
+{% if current_store.is_offline==0  %}
+  {% include 'parts/tracker.twig' %}
+{% endif %}
+
+{% if current_store.description %}
+  <section class="store-information">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Информация о кэшбэк в {{current_store.name}}</h3>
+        </div>
+        <div class="col-md-12">
+          <div class="description">
+            {{current_store.description|raw}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if current_store.is_offline==0 %}
+  {% if current_store.cpaLink.cpa_id==2 %}
+    {% include 'parts/instruction_online_offline.twig' %}
+  {% else %}
+    {% include 'parts/instruction_online.twig' %}
+  {% endif %}
+{% else %}
+  {% include 'parts/instruction_offline.twig' %}
+{% endif %}
+
+<div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
+{% include 'parts/popups/popup-givefeedback.twig' %}
+
+{% if current_store.is_active==0 %}
+  <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
+    {{ _constant('shop_not_active_message')|raw}}
+  </div>
+{% endif %}
+
+{% include 'parts/store_rating_microdata.twig' %}
