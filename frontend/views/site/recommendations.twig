@@ -1,89 +1,61 @@
-{% include 'parts/breadcrumbs.twig' %}
-<section class="recommendations section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="recommendations__header">Советы по совершению покупок</h1>
-
-                <p>Бывают редкие случаи, когда после совершения покупок кэшбэк не начисляется на Ваш аккаунт в SecretDiscounter. Чтобы этого избежать, просим Вас соблюдать <b>7 простых правил</b>, указанных ниже:</p>
-            </div>
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Блокировщики рекламы</h4>
-                    </div>
-                    <div class="text">
-                        При совершении покупок через наш сервис категорически запрещается использовать любые блокировщики рекламы в браузере (например, <strong>Adblock</strong>), так как они препятствуют отслеживанию Ваших заказов.
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Не закрывайте браузер</h4>
-                    </div>
-                    <div class="text">
-                        Оформляйте заказы и покупки в рамках <strong>одной</strong> сессии, не закрывая окна браузера. Если Ваш компьютер завис/заснул и т.д., перейдите в нужный магазин <strong>с нашего сайта</strong> снова, очистите корзину, наполните её товаром по-новой и оплатите.
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Оформление по телефону</h4>
-                    </div>
-                    <div class="text">
-                        После перехода с нашего сайта в интернет-магазин обязательно совершайте заказ <strong>через корзину</strong> данного сайта. За заказы, оформленные по телефону, кэшбэк начисляться не будет.
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Бонусные программы</h4>
-                    </div>
-                    <div class="text">
-                        При оформлении заказа запрещается пользоваться сторонними бонусными программами (такими как "Малина", "Много.ру" и т.п.)
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Мобильные приложения магазинов</h4>
-                    </div>
-                    <div class="text">
-                        При покупках через мобильные приложения магазинов кэшбэк обычно не начисляется. Совершайте покупки через <strong>сайты</strong> магазинов.
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 recommendations__item">
-                <div class="block">
-                    <div class="title">
-                        <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Расширения для браузеров от других кэшбэк-сервисов</h4>
-                    </div>
-                    <div class="text">
-                        Плагины для браузера от наших конкурентов перехватывают Ваш кэшбэк. Не используйте их!
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-12 recommendations__item">
-                <div class="block last">
-                    <div class="title">
-                         <h4 class="recommendations__item-title"><span class="fa fa-times"></span> Переход в магазин напрямую</h4>
-                    </div>
-                    <div class="text">
-                        Заполнение корзины товаром должно происходить только после перехода в магазин <strong>через наш кэшбэк-сервис</strong>. Если товары были добавлены в корзину ранее – очистите её, совершите переход в магазин через SecretDiscounter и затем производите наполнение.
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 text-center">
-                <p>Если Вы сделали всё правильно, но Ваш кэшбэк по каким-то причинам всё равно не отобразился, сообщите об этом <a href="/account/support">нам</a>.</p>
-            </div>
-        </div>
+<section class="recommendations margin">
+    <h1 class="recommendations-header">Советы по совершению покупок</h1>
+    <div class="recomendations-text">
+        <p>Бывают редкие случаи, когда после совершения покупок кэшбэк не начисляется на Ваш аккаунт в SecretDiscounter. Чтобы этого избежать, просим Вас соблюдать <b>7 простых правил</b>, указанных ниже:</p>
     </div>
+        <div class="reccomendations-items">
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Блокировщики рекламы</h4>
+                <div class="reccomendations-items_item-text">
+                    При совершении покупок через наш сервис категорически запрещается использовать любые блокировщики рекламы в браузере (например, <strong>Adblock</strong>), так как они препятствуют отслеживанию Ваших заказов.
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Не закрывайте браузер</h4>
+                <div class="reccomendations-items_item-text">
+                    Оформляйте заказы и покупки в рамках <strong>одной</strong> сессии, не закрывая окна браузера. Если Ваш компьютер завис/заснул и т.д., перейдите в нужный магазин <strong>с нашего сайта</strong> снова, очистите корзину, наполните её товаром по-новой и оплатите.
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Оформление по телефону</h4>
+                <div class="reccomendations-items_item-text">
+                    После перехода с нашего сайта в интернет-магазин обязательно совершайте заказ <strong>через корзину</strong> данного сайта. За заказы, оформленные по телефону, кэшбэк начисляться не будет.
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Бонусные программы</h4>
+                <div class="reccomendations-items_item-text">
+                    При оформлении заказа запрещается пользоваться сторонними бонусными программами (такими как "Малина", "Много.ру" и т.п.)
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Мобильные приложения магазинов</h4>
+                <div class="reccomendations-items_item-text">
+                    При покупках через мобильные приложения магазинов кэшбэк обычно не начисляется. Совершайте покупки через <strong>сайты</strong> магазинов.
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Расширения для браузеров от других кэшбэк-сервисов</h4>
+                <div class="reccomendations-items_item-text">
+                    Плагины для браузера от наших конкурентов перехватывают Ваш кэшбэк. Не используйте их!
+                </div>
+            </div>
+
+            <div class="reccomendations-items_item reccomendations-items_item-last">
+                <h4 class="reccomendations-items_item-title">{{ svg('close', 'reccomendations-items_item-title-icon')|raw }}Переход в магазин напрямую</h4>
+                <div class="reccomendations-items_item-text">
+                    Заполнение корзины товаром должно происходить только после перехода в магазин <strong>через наш кэшбэк-сервис</strong>. Если товары были добавлены в корзину ранее – очистите её, совершите переход в магазин через SecretDiscounter и затем производите наполнение.
+                </div>
+            </div>
+
+        </div>
+    <div class="recomendations-text align-center">
+        <p>Если Вы сделали всё правильно, но Ваш кэшбэк по каким-то причинам всё равно не отобразился, сообщите об этом <a href="/account/support">нам</a>.</p>
+    </div>
+
 </section>
