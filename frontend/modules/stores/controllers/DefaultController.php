@@ -221,8 +221,8 @@ class DefaultController extends SdController
   private function actionStore($store)
   {
     if (
-      $store->is_active < 0 &&
-      (Yii::$app->user->isGuest ||!Yii::$app->user->can('ShopView'))
+        $store->is_active < 0 &&
+        (Yii::$app->user->isGuest || !Yii::$app->user->can('ShopView'))
     ) {
       $this->redirect('/stores', 301)->send();
       exit();
@@ -243,18 +243,18 @@ class DefaultController extends SdController
     $coupons = $cache->getOrSet('store_coupons_store_' . $store->uid, function () use ($store) {
       $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
       return Coupons::find()
-        ->from(Coupons::tableName() . ' cwc')
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
-          'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-          'cws.action_id as store_action_id', 'cws.logo as store_image'])
-        ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-        ->where(['cws.uid' => $store->uid])
-        ->andWhere($dateRange)
-        ->orderBy(Coupons::$defaultSort . ' ' .
-          (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
-            Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
-        ->asArray()
-        ->all();
+          ->from(Coupons::tableName() . ' cwc')
+          ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
+              'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+              'cws.action_id as store_action_id', 'cws.logo as store_image'])
+          ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+          ->where(['cws.uid' => $store->uid])
+          ->andWhere($dateRange)
+          ->orderBy(Coupons::$defaultSort . ' ' .
+              (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
+                  Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
+          ->asArray()
+          ->all();
     }, $cache->defaultDuration, $dependency);
     $contentData["store_coupons"] = $coupons;
     $contentData["coupons_counts"] = Coupons::counts($store->uid);
@@ -267,8 +267,8 @@ class DefaultController extends SdController
 
     $contentData["curs"] = Yii::$app->conversion->options();
 
-    Yii::$app->view->metaTags[]='<meta property="og:image" content="https://secretdiscounter.ru/images/logos/'. $store->logo.'" />';
-
+    Yii::$app->view->metaTags[] = '<meta property="og:image" content="https://secretdiscounter.ru/images/logos/' . $store->logo . '" />';
+    $contentData['wrap'] = 'index';
     return $this->render('shop', $contentData);
   }
 

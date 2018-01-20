@@ -423,7 +423,6 @@
         stroke: rgba(#AE0404, 0.6);
         fill: rgba(#AE0404, 1);
       }
-    ;
 
       &:after {
         content: "скоро";
@@ -437,13 +436,6 @@
         font-family: Open Sans, sans-serif;
       }
     }
-  }
-  .site-rating_star-icon {
-    width: 15px;
-    height: 15px;
-    color: $a_color_hover;
-    stroke: $a_color_hover;
-    fill: $a_color_hover;
   }
 }
 

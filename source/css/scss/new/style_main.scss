@@ -296,6 +296,15 @@ svg.svg-no-fill{
 }
 .site-rating{
   margin-bottom: 0!important;
+  text-decoration: none;
+
+  &_star-icon {
+    width: 15px;
+    height: 15px;
+    color: $a_color_hover;
+    stroke: $a_color_hover;
+    fill: $a_color_hover;
+  }
 }
 
 .notes{
