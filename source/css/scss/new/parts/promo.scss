@@ -1,0 +1,75 @@
+.promo {
+  &-items {
+    &_item {
+      padding: 20px 40px 10px 40px;
+      border: 10px solid;
+      border-radius: 70px 10px;
+      overflow: hidden;
+      position: relative;
+      z-index: 50;
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
+      &-grey {
+        border-color: $promo_item_border_color_grey;
+        background-color: $promo_item_background_color_grey;
+      }
+      &-bronze {
+        border-color: $promo_item_border_color_bronze;
+        background-color: $promo_item_background_color_bronze;
+      }
+      &-silver {
+        border-color: $promo_item_border_color_silver;
+        background-color: $promo_item_background_color_silver;
+      }
+      &-gold {
+        border-color: $promo_item_border_color_gold;
+        background-color: $promo_item_background_color_gold;
+      }
+      &-title {
+        font-size: 22px;
+        margin-bottom: 30px;
+      }
+      &-background-image {
+        position: absolute;
+        &-money {
+          color: $promo_item_background_image_money_color;
+          stroke: $promo_item_background_image_money_color;
+          fill: $promo_item_background_image_money_color;
+          left: -20px;
+          width: 500px;
+          height: 500px;
+          top: -100px;
+        }
+        &-smile {
+          color: $promo_item_background_image_smile_color;
+          stroke: $promo_item_background_image_smile_color;
+          fill: $promo_item_background_image_smile_color;
+          right: 0;
+          width: 500px;
+          height: 500px;
+          top: -120px;
+        }
+        &-rocket {
+          color: $promo_item_background_image_rocket_color;
+          stroke: $promo_item_background_image_rocket_color;
+          fill: $promo_item_background_image_rocket_color;
+          right: 0;
+          width: 500px;
+          height: 500px;
+          top: -40px;
+        }
+        &-diamond {
+          color: $promo_item_background_image_diamond_color;
+          stroke: $promo_item_background_image_diamond_color;
+          fill: $promo_item_background_image_diamond_color;
+          left: 40px;
+          width: 500px;
+          height: 500px;
+          top: -100px;
+        }
+
+      }
+    }
+  }
+}
