@@ -1,0 +1,15 @@
+.howitworks {
+  &-content{
+    &_items {
+      display: flex;
+      flex-direction: column;
+    }
+    &_item {
+      background-color: $howitworks_item_background_color;
+      margin-bottom: 30px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
