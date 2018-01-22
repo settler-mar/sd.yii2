@@ -191,4 +191,33 @@
       display: inline-block;
     }
   }
+
+
+  &_pc_off{
+    @include media_min($tablets - 1) {
+      .accordion-content{
+        display: block!important;
+        height: auto!important;
+        width: auto!important;
+        max-height: none!important;
+        max-width: none!important;
+        opacity: 1!important;
+      }
+    }
+
+    @include media($tablets) {
+      .accordion-title {
+        text-align: left;
+        background: $accordion_control_bg;
+        -webkit-margin-after: 0;
+        -webkit-margin-before: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+
+        &:after{
+          min-width: auto;
+        }
+      }
+    }
+  }
 }

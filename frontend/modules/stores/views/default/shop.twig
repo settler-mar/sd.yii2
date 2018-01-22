@@ -141,13 +141,11 @@
   {% endif %}
 
 
-  {% if current_store.related and current_store.relatedData.is_active in [0, 1] %}
-    <div class="row" style="text-align: center;">
-      <a class="btn btn-relink" style=";display: inline-block;" href="/stores/{{ current_store.relatedData.routeUrl }}">
+  {#{% if current_store.related and current_store.relatedData.is_active in [0, 1] %}#}
+      <a class="btn btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto" href="/stores/{{ current_store.relatedData.routeUrl }}">
         {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
       </a>
-    </div>
-  {% endif %}
+  {#{% endif %}#}
 
   <div class="store-recommendation-link">
     <p>
@@ -160,49 +158,31 @@
   </div>
 </section>
 
-{% if current_store.is_active==-1 %}
-  <section class="store-information store-not-active">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 store-not-active__content">
-          <div class="description" style="color:red;text-align: center;">
-            Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта
-          </div>
-        </div>
-      </div>
-    </div>
+{#{% if current_store.is_active==-1 %}#}
+  <section class="shop-no_active">
+        Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта
   </section>
-{% endif %}
+{#{% endif %}#}
 
-{% if current_store.short_description or content %}
-  <section class="store-information short-description">
-    <div class="container">
-      <div class="row">
+{#{% if current_store.short_description or content %}#}
+<section class="store-information">
+  <div class="page-wrap">
+    <div class="accordion accordion_pc_off">
+      <h2 class="accordion-control accordion-title">
+        Информация о {{current_store.name}}
+      </h2>
+      <div class="accordion-content">
         {% if current_store.short_description %}
-          <div class="col-md-12">
-            <h3 class="text-center">Информация о {{current_store.name}}</h3>
-          </div>
-          {#<div class="col-md-12 short-description__description less">#}
-          <div class="col-md-12 short-description__description">
-            <div class="description">
-              {{ current_store.short_description|raw }}
-            </div>
-          </div>
-          {#<div >#}
-          {#<div class="short-description__handle more"><a href="#">Подробнее<i class="fa fa-small fa-angle-down"></i></a></div>#}
-          {#<div class="short-description__handle less"><a href="#">Скрыть<i class="fa fa-small fa-angle-up"></i></a></div>#}
-          {#</div>#}
+          {{ current_store.short_description|raw }}
         {% else %}
-          <div class="col-md-12 short-description__description">
-            <div class="description">
-              {{ content|raw }}
-            </div>
-          </div>
+          {{ content|raw }}
         {% endif %}
       </div>
     </div>
-  </section>
-{% endif %}
+  </div>
+
+</section>
+{#{% endif %}#}
 
 {% if current_store.is_active==0 %}
   <section class="store-information store-not-active">
