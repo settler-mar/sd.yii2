@@ -293,21 +293,21 @@
       </div>
       {#% endif %#}
       <a name="reviews"></a>
-      <div class="col-sm-12 col-md-12">
-        <div class="comments">
-          <h3>Отзывы о {{current_store.name}}</h3>
-          {% if store_reviews|length > 0 %}
-            <div class="cm-wrapper reviews-list" data-mcs-theme="dark">
-              {% for review in store_reviews %}
-                <div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 4 %}more{% endif %}">
-                  {% include 'parts/comment.twig' %}
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
+      {#<div class="col-sm-12 col-md-12">#}
+        {#<div class="comments">#}
+          {#<h3>Отзывы о {{current_store.name}}</h3>#}
+          {#{% if store_reviews|length > 0 %}#}
+            {#<div class="cm-wrapper reviews-list" data-mcs-theme="dark">#}
+              {#{% for review in store_reviews %}#}
+                {#<div class="col-sm-12 col-md-6 reviews-item store-reviews-item {% if loop.index > 4 %}more{% endif %}">#}
+                  {#{% include 'parts/comment.twig' %}#}
+                {#</div>#}
+              {#{% endfor %}#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
 
-      </div>
+      {#</div>#}
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-12">
@@ -333,6 +333,29 @@
       </div>
     </div>
   </div>
+</section>
+
+
+<section class="store-reviews margin">
+  <div class="page-wrap">
+    <div class="accordion accordion_pc_off">
+      <h2 class="accordion-control accordion-title">
+        Отзывы о {{current_store.name}}
+      </h2>
+      <div class="accordion-content">
+          {% if store_reviews|length > 0 %}
+            <div class="store-reviews-list">
+                {% for review in store_reviews %}
+                  <div class="store-reviews-list-item {% if loop.index > 4 %}store-reviews-list-item-more{% endif %}">
+                      {% include 'parts/comment.twig' %}
+                  </div>
+                {% endfor %}
+            </div>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+
 </section>
 
 {% if current_store.is_active != 0 %}
