@@ -92,7 +92,7 @@ class AdminController extends Controller
         'route' => function ($model, $key, $index, $column) {
           $out = '<a href="/stores/';
           $out .= $model->routeUrl;
-          $out .= '" target=_blank>';
+          $out .= '" target=_blank rel="nofollow noopener">';
           $out .= $model->routeUrl;
           $out .= '</a>';
           return $out;
@@ -100,7 +100,7 @@ class AdminController extends Controller
         'url' =>  function ($model, $key, $index, $column) {
           $out = '<a href="';
           $out .= $model->url;
-          $out .= '" target=_blank>';
+          $out .= '" target=_blank rel="nofollow noopener">';
           $out .= substr($model->url,0,40);
           if(strlen($model->url)>40){
             $out .= '...';

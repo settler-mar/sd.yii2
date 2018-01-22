@@ -281,7 +281,7 @@ class Payments extends \yii\db\ActiveRecord
       return "err";
     };
     //return $this->store->name;
-    return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+    return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '" rel="nofollow noopener">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
   }
 
   public function getStoreCur()

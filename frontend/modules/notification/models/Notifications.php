@@ -182,7 +182,7 @@ class Notifications extends \yii\db\ActiveRecord
     if ($this->payment_id == 0) {
       return '-';
     };
-    return '<a href="/admin/payments/update/id:' . $this->payment_id . '" target="_blank">' . $this->payment_id . '</a>';
+    return '<a href="/admin/payments/update/id:' . $this->payment_id . '" target="_blank" rel="nofollow noopener">' . $this->payment_id . '</a>';
   }
 
     /**очистка кеш пользователя

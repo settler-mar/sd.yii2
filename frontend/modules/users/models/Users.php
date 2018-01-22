@@ -569,7 +569,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   { //ссылка на источник регистрации
     $value = $this->registration_source;
     if ($value != 'default' && $value != '') {
-      $value = '<a href="' . $value . '" target=_blank>';
+      $value = '<a href="' . $value . '" target=_blank rel="nofollow noopener">';
       $social_name = explode('//', $this->registration_source);
       $social_name = explode('/', $social_name[1]);
       $social_name = str_replace('www.', '', $social_name[0]);

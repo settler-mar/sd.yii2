@@ -51,7 +51,8 @@ class AdminController extends Controller
                 if ($user != null) {
                     $out = '<a href="/admin/users/update?id=';
                     $out .= $user->uid;
-                    $out .= '" target=_blank>';
+                    $out .= '" rel="nofollow noopener"';
+                    $out .= ' target=_blank>';
                     $out .= $user->email;
                     $out .= ' (';
                     $out .= $user->uid;

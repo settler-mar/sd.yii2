@@ -85,11 +85,6 @@
 
                 {{ form.field(model, 'bonus_status').dropDownList(bonus_status_list)|raw }}
 
-                {{ form.field(model, 'email_verified').dropDownList({
-                    '0' : 'Ожидает валидации',
-                    '1' : 'Подтвержден'
-                })|raw }}
-
                 {{ form.field(model, 'waitModeration').dropDownList({
                     '0' : 'Подтвержден',
                     '1' : 'Ожидает подтверждение на Вебмастра'

@@ -53,7 +53,8 @@ phpunit.phar
 log/
 /frontend/web/images/logos/
 *.sql
-
+*.lock
+package-lock.json
 /frontend/web/export
 /frontend/web/images/account/funds/
 /frontend/web/images/banners/
