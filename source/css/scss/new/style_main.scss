@@ -301,7 +301,6 @@ svg.svg-no-fill{
   }
 }
 
-
 .notes{
   display: inline-block;
   height: 1em;
@@ -352,6 +351,12 @@ svg.svg-no-fill{
   margin-top: 90px;
   @include media($laptop_min) {
     margin-top: 0;
+  }
+  &.margin-top {
+    margin-top: calc(120px);
+    @include media($laptop_min) {
+      margin-top: 30px;
+    }
   }
 }
 
@@ -407,4 +412,11 @@ svg.svg-no-fill{
 @import "slider/animationsKeyFrame";
 @import "parts/banner";
 @import "parts/404";
+@import "parts/about";
+@import "parts/faq";
+@import "parts/howitworks";
+@import "parts/loyalty";
+@import "parts/promo";
+@import "parts/recommendations";
+@import "parts/terms";
 

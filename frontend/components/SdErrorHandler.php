@@ -19,6 +19,8 @@ class SdErrorHandler extends ErrorAction
     if ($this->getExceptionCode()==404) {
       //Делаем проверку на удалённую страницу
       $this->checkDeletedPage();
+      Yii::$app->params['global_bg']='gray-box';
+      Yii::$app->params['global_wrap']='page-404';
     }
     return parent::run();
   }

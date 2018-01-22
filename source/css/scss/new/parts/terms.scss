@@ -1,0 +1,24 @@
+.sdterms {
+  &-items {
+    &_item {
+      &-list {
+        margin: 10px 0;
+        padding-left: 0;
+        >li {
+          list-style-type: none;
+        }
+        &-sub {
+          margin: 5px 0;
+          padding-left: 10px;
+          >li {
+            list-style-type: none;
+            &:before {
+              content: '- ';
+
+            }
+          }
+        }
+      }
+    }
+  }
+}

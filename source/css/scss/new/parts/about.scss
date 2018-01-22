@@ -1,0 +1,91 @@
+$width_switch: $tablets;
+
+.about {
+  &-content {
+    display: flex;
+    flex-direction: column;
+    @include media($width_switch) {
+      flex-direction: column;
+    }
+    &_top {
+      display: flex;
+      flex-direction: row;
+      @include media($width_switch) {
+        flex-direction: column;
+      }
+      &-left {
+        margin-right: 20px;
+        @include media($width_switch) {
+          margin-right: 0;
+        }
+      }
+      &-left,
+      &-right {
+        width: 48%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        @include media($width_switch) {
+          width: 100%;
+        }
+      }
+    }
+    &_adress {
+      width: 50%;
+      @include media($width_switch) {
+
+        text-align: center;
+      }
+      @include media($phones) {
+        width: 100%;
+        padding: 2%;
+      }
+      &-head {
+        font-size: 13px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        @include media($width_switch) {
+          justify-content: center;
+        }
+
+        svg {
+          height: 15px;
+          width: 15px;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    &_mobile {
+      display: none;
+      @include media($width_switch) {
+        display: block;
+      }
+    }
+    &_desctop {
+      @include media($width_switch) {
+        display: none;
+      }
+    }
+    &_image-wrap {
+      width: 100%;
+      border: 2px solid $menu_left_border_color;
+      img {
+        width: 100%;
+      }
+      @include media($width_switch) {
+        margin: 2%;
+      }
+
+    }
+    &_text {
+
+      @include media($width_switch) {
+        margin: 2%;
+      }
+    }
+  }
+
+}

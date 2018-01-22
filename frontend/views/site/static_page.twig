@@ -1,15 +1,16 @@
-{% include 'parts/breadcrumbs.twig' %}
-<section class="section-padding">
-    <div class="container content-wrapper">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="store-h1 static">{{ h1 }}</h1>
-                {{ content | raw}}
-            </div>
-        </div>
-    </div>
-</section>
+<section class="static-page margin">
 
-{% if dopline %}
-    {{ dopline | raw }}
-{% endif %}
+    <h1 class="static-page-header">
+        {{ h1 }}
+    </h1>
+    <div  class="static-page-content margin">
+        {{ content | raw}}
+    </div>
+
+    {% if dopline %}
+        <div class="dopline margin">
+            {{ dopline | raw }}
+        </div>
+    {% endif %}
+
+</section>

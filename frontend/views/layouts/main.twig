@@ -28,12 +28,13 @@
     <!--[if lt IE 9]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
     {% include 'base/header.twig' %}
 
-    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">
-      {% if this.all_params.slider|length > 0 %}
-        {% set slider=this.all_params.slider %}
+    {% set slider=this.all_params.slider %}
+
+    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}{% if slider|length == 0 and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
+    {#<div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">#}
+      {% if slider|length > 0 %}
         {% include 'parts/slider.twig' %}
       {% endif %}
 

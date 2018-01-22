@@ -1,0 +1,47 @@
+.reccomendations {
+  &-items {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    @include media($tablets) {
+      flex-direction: column;
+    }
+    &_item {
+      width: 30.2%;
+      //margin: 0 15px 30px;
+      margin: 0 1.5% 30px;
+      //padding: 20px;
+      padding: 2%;
+      border: 3PX solid $reccomendations-item-border-color;
+      border-radius: 10px;
+      box-sizing: border-box;
+      @include media($tablets) {
+        width: 97%;
+      }
+      &-last {
+        width: 97%;
+      }
+      &-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0 0 10px;
+        &-icon {
+          width: 20px;
+          height: 20px;
+          color: $reccomendations-title-icon-color;
+          stroke: $reccomendations-title-icon-color;
+          fill: $reccomendations-title-icon-color;
+          margin-right: 5px;
+          display: inline;
+          vertical-align: middle;
+        }
+      }
+      &-text {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+
+  }
+}

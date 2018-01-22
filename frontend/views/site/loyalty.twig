@@ -1,55 +1,63 @@
-{% include 'parts/breadcrumbs.twig' %}
-<section class="loyalty section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="loayalty__header">Накопительная система</h1>
-
-                <p>Уважаемые пользователи нашего кэшбэк-сервиса! Мы благодарны Вам за проявленное к нам доверие. Для нас это очень ценно и поэтому мы хотим сохранить отношения с Вами как можно дольше. А чтобы от частых покупок через наш сервис Вы почувствовали дополнительную выгоду, мы разработали для Вас накопительную систему лояльности. Она состоит из 4-х уровней, представленных ниже:</p>
+<section class="loyalty margin">
+    <h1 class="loayalty-header">Накопительная система</h1>
+    <div class="loyalty-text margin">
+        <p>Уважаемые пользователи нашего кэшбэк-сервиса! Мы благодарны Вам за проявленное к нам доверие. Для нас это очень ценно и поэтому мы хотим сохранить отношения с Вами как можно дольше. А чтобы от частых покупок через наш сервис Вы почувствовали дополнительную выгоду, мы разработали для Вас накопительную систему лояльности. Она состоит из 4-х уровней, представленных ниже:</p>
+    </div>
+    <div class="loyalty-items">
+        <div class="loyalty-items_item loyalty-items_item-bronze">
+            <div class="loyalty-items_item-title">
+                {{ svg('trophy')|raw }}Bronze Status (+10%)
             </div>
-            <div class="col-md-6">
-                <div class="tile bronze">
-                    <div class="title">
-                        <span class="fa fa-trophy"></span> Bronze Status (+10%)
-                    </div>
-                    <div class="text">
-                        Пользователи, у которых подтверждённый кэшбэк превысил <b>500 <span class="fa fa-rub"></span></b>, при всех своих последующих покупках будут получать увеличенный на <b>10%</b> кэшбэк. <span class="example">Например, если в обычном режиме Вы получили за покупку 1000 <span class="fa fa-rub"></span> кэшбэка, то с <b>Bronze Status</b> Вам достанется <b>1100 <span class="fa fa-rub"></span></b>.</span>
-                    </div>
+            <div class="loyalty-items_item-text">
+                <div class="loyalty-items_item-text-top">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>500</b>{{ svg('ruble')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>10%</b> кэшбэк.
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile silver">
-                    <div class="title">
-                        <span class="fa fa-trophy"></span> Silver Status (+15%)
-                    </div>
-                    <div class="text">
-                        Пользователи, у которых подтверждённый кэшбэк превысил <b>3000 <span class="fa fa-rub"></span></b>, при всех своих последующих покупках будут получать увеличенный на <b>15%</b> кэшбэк. <span class="example">Например, если в обычном режиме Вы получили за покупку 1000 <span class="fa fa-rub"></span> кэшбэка, то с <b>Silver Status</b> Вам достанется <b>1150 <span class="fa fa-rub"></span></b>.</span>
-                    </div>
+                <div class="loyalty-items_item-text-bottom">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg('ruble')|raw }} кэшбэка, то с <b>Bronze Status</b> Вам достанется <b>1100</b>{{ svg('ruble')|raw }}.
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile gold">
-                    <div class="title">
-                        <span class="fa fa-trophy"></span> Gold Status (+20%)
-                    </div>
-                    <div class="text">
-                        Пользователи, у которых подтверждённый кэшбэк превысил <b>7000 <span class="fa fa-rub"></span></b>, при всех своих последующих покупках будут получать увеличенный на <b>20%</b>  кэшбэк. <span class="example">Например, если в обычном режиме Вы получили за покупку 1000 <span class="fa fa-rub"></span> кэшбэка, то с <b>Gold Status</b> Вам достанется <b>1200 <span class="fa fa-rub"></span></b>.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile platinum">
-                    <div class="title">
-                        <span class="fa fa-trophy"></span> Platinum Status (+30%)
-                    </div>
-                    <div class="text">
-                        Пользователи, у которых подтверждённый кэшбэк превысил <b>10000 <span class="fa fa-rub"></span></b>, при всех своих последующих покупках будут получать увеличенный на <b>30%</b>  кэшбэк. <span class="example">Например, если в обычном режиме Вы получили за покупку 1000 <span class="fa fa-rub"></span> кэшбэка, то с <b>Platinum Status</b> Вам достанется <b>1300 <span class="fa fa-rub"></span></b>.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 text-center loyalty-footer">
-                Экономьте с <a href="https://secretdiscounter.ru/">Secret Discounter</a>, и Ваша выгода будет только расти!
             </div>
         </div>
+        <div class="loyalty-items_item loyalty-items_item-silver">
+            <div class="loyalty-items_item-title">
+                {{ svg('trophy')|raw }}Silver Status (+15%)
+            </div>
+            <div class="loyalty-items_item-text">
+                <div class="loyalty-items_item-text-top">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>3000</b>{{ svg('ruble')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>15%</b> кэшбэк.
+                </div>
+                <div class="loyalty-items_item-text-bottom">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg('ruble')|raw }} кэшбэка, то с <b>Silver Status</b> Вам достанется <b>1150</b>{{ svg('ruble')|raw }}.
+                </div>
+            </div>
+        </div>
+        <div class="loyalty-items_item loyalty-items_item-gold">
+            <div class="loyalty-items_item-title">
+                {{ svg('trophy')|raw }}Gold Status (+20%)
+            </div>
+            <div class="loyalty-items_item-text">
+                <div class="loyalty-items_item-text-top">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>7000</b>{{ svg('ruble')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>20%</b>  кэшбэк.
+                </div>
+                <div class="loyalty-items_item-text-bottom">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg('ruble')|raw }} кэшбэка, то с <b>Gold Status</b> Вам достанется <b>1200</b>{{ svg('ruble')|raw }}.
+                </div>
+            </div>
+        </div>
+        <div class="loyalty-items_item loyalty-items_item-platinum">
+            <div class="loyalty-items_item-title">
+                {{ svg('trophy')|raw }}Platinum Status (+30%)
+            </div>
+            <div class="loyalty-items_item-text">
+                <div class="loyalty-items_item-text-top">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>10000</b>{{ svg('ruble')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>30%</b>  кэшбэк.
+                </div>
+                <div class="loyalty-items_item-text-bottom">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg('ruble')|raw }} кэшбэка, то с <b>Platinum Status</b> Вам достанется <b>1300</b>{{ svg('ruble')|raw }}.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loyalty-text align-center">
+        <p>Экономьте с <a href="https://secretdiscounter.ru/">Secret Discounter</a>, и Ваша выгода будет только расти!</p>
     </div>
 </section>

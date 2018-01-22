@@ -1,0 +1,45 @@
+.faq {
+  &-content {
+    display: flex;
+    flex-direction: column;
+    &_center,&_top {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      @include media($tablets) {
+        flex-direction: column;
+      }
+      .faq-content_item {
+        width: 45%;
+        @include media($tablets) {
+          width: 100%;
+        }
+      }
+    }
+    &_item {
+      padding: 0 20px 0 5px;
+
+      &-head {
+        display: flex;
+        font-size: 16px;
+        align-items: center;
+        justify-content: flex-start;
+        text-transform: uppercase;
+      }
+      &-icon {
+        width: 40PX;
+        height: 20PX;
+        margin-right: 10PX;
+        color: $faq_icon_color;
+        stroke: $faq_icon_color;
+        fill: $faq_icon_color;
+      }
+      &-list {
+        padding-left: 5px;
+      }
+    }
+    &_header {
+      width: 100%;
+    }
+  }
+}
