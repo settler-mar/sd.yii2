@@ -79,6 +79,7 @@ class DefaultController extends Controller
 
   public function actionSave()
   {
+    //Yii::$app->logger->add($_POST,'API_ANDROID_ADD_PAIMENT');
     $store_id = Yii::$app->session->get('store');
 
     if (!$store_id && !$this->actionLogin()) {
@@ -215,6 +216,23 @@ class DefaultController extends Controller
       }
       $pay->ref_bonus = round($pay->ref_bonus, 2);
     }
+
+    $action=$action->toArray();
+    $tariff=$tariff->toArray();
+    $rates=$rates->toArray();
+
+    $recalc_json=[
+      'action' => [
+        'uid'=>$action['uid'],
+        'name' => $action['name']
+      ],
+      'tariff' => [
+        'uid'=>$tariff['uid'],
+        'name' => $tariff['name']
+      ],
+      'rate' => $rates,
+    ];
+    $pay->recalc_json = json_encode($recalc_json);
 
     if (!$pay->save()) {
       //var_dump($pay->getErrors());

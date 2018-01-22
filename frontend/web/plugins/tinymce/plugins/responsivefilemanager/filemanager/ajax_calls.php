@@ -304,7 +304,7 @@ if(isset($_GET['action']))
 				</div>
 				<div class="jp-no-solution">
 					<span>Update Required</span>
-					To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+					To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank" rel="nofollow noopener">Flash plugin</a>.
 				</div>
 				</div>
 			</div>

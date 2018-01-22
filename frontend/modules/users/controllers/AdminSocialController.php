@@ -65,7 +65,7 @@ class AdminSocialController extends Controller
           if(!$user)return '-';
           $out = '<a href="/admin/users/update?id=';
           $out .= $user->uid;
-          $out .= '" target=_blank>';
+          $out .= '" target=_blank rel="nofollow noopener">';
           $out .= $user->email;
           $out .= ' (';
           $out .= $user->uid;
@@ -75,7 +75,7 @@ class AdminSocialController extends Controller
         'social' => function ($model, $key, $index, $column) {
           $out = '<a href="';
           $out .= $model->url;
-          $out .= '" target=_blank>';
+          $out .= '" target=_blank rel="nofollow noopener">';
           $out .= $model->social_name;
           $out .= '</a>';
           return $out;

@@ -14,8 +14,17 @@ class AccountController extends \yii\web\Controller
    */
   public function beforeAction($action)
   {
+    //ddd($action);
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
+      //throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
+      $pathInfo = Yii::$app->request->getPathInfo();
+      $auth_page_redirect=array_flip(Yii::$app->params['auth_page_redirect']);
+      if(isset($auth_page_redirect[$pathInfo])){
+        //ddd($auth_page_redirect[$pathInfo]);
+        Yii::$app->response->redirect('/'.$auth_page_redirect[$pathInfo]);
+      }else{
+        throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
+      }
       return false;
     }
     $this->layout = '@app/views/layouts/account.twig';
@@ -40,10 +49,12 @@ class AccountController extends \yii\web\Controller
 
   public function actionIndex()
   {
+    $pathInfo = Yii::$app->request->getPathInfo();
     $user = Users::findOne(\Yii::$app->user->id);
     $contentData["number_referrals"] = $user->ref_total;
     $contentData["pending_payments_referrals"] = $user->sum_from_ref_pending;
     $contentData["confirmed_payments_referrals"] = $user->sum_from_ref_confirmed;
+    $contentData["affiliate"] = strrpos($pathInfo,'affiliate');
     return $this->render('index', $contentData);
   }
 

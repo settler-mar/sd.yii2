@@ -44,7 +44,7 @@ class AdminController extends Controller
                 if ($user != null) {
                     $out = '<a href="/admin/users/update?id=';
                     $out .= $user->uid;
-                    $out .= '" target=_blank>';
+                    $out .= '" target=_blank rel="nofollow noopener">';
                     $out .= $user->email;
                     $out .= ' (';
                     $out .= $user->uid;
@@ -58,7 +58,7 @@ class AdminController extends Controller
                 if ($store != null) {
                     $out = '<a href="/admin/stores/update/id:';
                     $out .= $store->uid;
-                    $out .= '" target=_blank>';
+                    $out .= '" target=_blank rel="nofollow noopener">';
                     $out .= $store->url;
                     $out .= ' (';
                     $out .= $store->uid;

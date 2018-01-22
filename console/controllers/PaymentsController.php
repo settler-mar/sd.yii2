@@ -208,6 +208,10 @@ class PaymentsController extends Controller
             continue;
           };
 
+          if (!in_array($user->uid, $users)) {
+            $users[] = $user->uid;
+          }
+
           //Создаем нотификацию пользователя
           $notifi = new Notifications();
           $notifi->user_id = $payment['subid'];
@@ -307,13 +311,13 @@ class PaymentsController extends Controller
           }
 
           //на всякий проверяем на то что б с $users было все нормально
-          if (!$users || !is_array($users)) {
+          /*if (!$users || !is_array($users)) {
             $users = array();
-          }
+          }*/
 
-          ///if (!in_array($user->uid, $users)) {
+          if (!in_array($user->uid, $users)) {
             $users[] = $user->uid;
-          /*} else {
+          }/* else {
             Yii::$app->logger->add(-$user->uid);
             Yii::$app->logger->add($users);
             d(-$user->uid);

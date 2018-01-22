@@ -74,7 +74,7 @@ class AdminController extends Controller
           $user = $model->getUser();
           $out = '<a href="/admin/users/update?id=';
           $out .= $user->uid;
-          $out .= '" target=_blank>';
+          $out .= '" target=_blank rel="nofollow noopener">';
           $out .= $user->email;
           $out .= ' (';
           $out .= $user->uid;
