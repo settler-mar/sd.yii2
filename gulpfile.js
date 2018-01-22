@@ -179,7 +179,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/account_notification.js',
         paths.source.js+'/original/new/slider.js',
         paths.source.js+'/original/new/favorites.js',
-        paths.source.js+'/original/new/script.js'
+        paths.source.js+'/original/new/script.js',
+        paths.source.js+'/original/new/calc-cashback.js'
     ], paths.app.js+'/new')
 );
 

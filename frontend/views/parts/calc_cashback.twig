@@ -1,21 +1,18 @@
-<section class="store-information short-calc-cashback">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h3 class="text-center">Калькулятор кэшбэка в {{current_store.name}}</h3>
-      </div>
-      <div class="col-md-12 short-description__description less">
-        <label>
-          Стоимость покупки
-        </label>
-        <span class="no_wrap">
-          <input
-              type="text"
-              value="100"
-              data-cashback-currency="{{ current_store.currency }}"
-              data-cashback="{{current_store.displayed_cashback}}"
-              data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
-          >
+<section class="shop-calc-cashback margin short-calc-cashback">
+  <div class="shop-calc-cashback_wrap page-wrap align-center">
+      <div class="shop-calc-cashback_content">
+
+        <h3 class="shop-calc-cashback_content-header">Калькулятор кэшбэка в {{current_store.name}}</h3>
+
+          <div class="shop-calc-cashback_content-form">
+            <label for="shop-calc-summ">Стоимость покупки</label>
+              <input id="shop-calc-summ"
+                  type="text"
+                  value="100"
+                  data-cashback-currency="{{ current_store.currency }}"
+                  data-cashback="{{current_store.displayed_cashback}}"
+                  data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
+              >
           <select>
             {% for item in curs %}
               <option
@@ -29,20 +26,18 @@
               </option>
             {% endfor %}
           </select>
-        </span>
-        <div class="calc-result">
-          Ваш кэшбэк для магазина <strong>{{current_store.name}}</strong> составит
-          <span class="no_wrap">
+        </div>
+        <div class="shop-calc-cashback_content-result">
+          Ваш кэшбэк для магазина <span class="shop-calc-cashback_content-result-store">{{current_store.name}}</span> составит
             до
-            <span class="calc-result_value">0</span>
+            <span class="shop-calc-cashback_content-result-value calc-result_value">0</span>
             рублей
             {% if current_store.displayed_cashback ends with '%' %}
             {% else %}
               (фиксированная ставка)
             {% endif %}
-          </span>
         </div>
       </div>
-    </div>
   </div>
+
 </section>
