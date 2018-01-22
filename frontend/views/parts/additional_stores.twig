@@ -1,22 +1,27 @@
-<section class="store-intro shops">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                {% if additional_stores_category %}
-                    <h3>Популярные магазины из раздела
-                        <a href="/stores/{{additional_stores_category.route}}">
-                            {{ additional_stores_category.name }} с кэшбэком
-                        </a>
-                    </h3>
-                {% else %}
-                    <h3>Популярные магазины из <a href="/stores">нашего каталога</a></h3>
-                {% endif %}
-            </div>
-            {% for store in additional_stores %}
-                <div class="col-sm-3 col-md-2">
-                    {% include 'parts/shop.twig' %}
-                </div>
-            {% endfor %}
-        </div>
+<section class="margin">
+  <div class="page-wrap">
+    {% if additional_stores_category %}
+      <h2>Популярные магазины из раздела
+        <a href="/stores/{{additional_stores_category.route}}">
+          {{ additional_stores_category.name }} с&nbsp;кэшбэком
+        </a>
+      </h2>
+    {% else %}
+      <h2>Популярные магазины из&nbsp;<a href="/stores">нашего каталога</a></h2>
+    {% endif %}
+    <div class="shops">
+      {% for store in additional_stores %}
+        {% include 'parts/shop.twig' %}
+      {% endfor %}
+      <div class="shop shop-empty"></div>
+      <div class="shop shop-empty"></div>
+      <div class="shop shop-empty"></div>
+      <div class="shop shop-empty"></div>
+      <div class="shop shop-empty"></div>
+      <div class="shop shop-empty"></div>
     </div>
+    <div class="align-center">
+      <a href="/stores" class="btn btn-transform">Все магазины с кэшбэком</a>
+    </div>
+  </div>
 </section>

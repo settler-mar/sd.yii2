@@ -269,6 +269,7 @@ class DefaultController extends SdController
 
     Yii::$app->view->metaTags[] = '<meta property="og:image" content="https://secretdiscounter.ru/images/logos/' . $store->logo . '" />';
     $contentData['wrap'] = 'index';
+    Yii::$app->params['global_bg'] = "tablets_flex-col";
     return $this->render('shop', $contentData);
   }
 

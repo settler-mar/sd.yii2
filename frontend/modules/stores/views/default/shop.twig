@@ -1,4 +1,4 @@
-<section class="shop_header_big">
+<section class="shop_header_big tablets_order-2">
   <div class="page-wrap">
     <h1 class="shop_header_big-header">
       {% if h1%}
@@ -28,7 +28,7 @@
                         </a>
                     </span>
           <span class="avg">(среднее время обработки)</span>
-          <a href="#howgetcashback" class="btn btn-margin_vertical">Для получения кэшбэка необходимо</a>
+          <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto">Для получения кэшбэка необходимо</a>
         </div>
       </div>
 
@@ -165,7 +165,7 @@
 {#{% endif %}#}
 
 {#{% if current_store.short_description or content %}#}
-<section class="store-information margin">
+<section class="store-information tablets_order-1">
   <div class="page-wrap">
     <div class="accordion accordion_pc_off">
       <h2 class="accordion-control accordion-title">
@@ -184,35 +184,23 @@
 </section>
 {#{% endif %}#}
 
-{% if current_store.is_active==0 %}
+{#{% if current_store.is_active==0 %}#}
   <section class="store-information store-not-active">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 store-not-active__content">
-          <div class="description">
-            {{ _constant('shop_not_active_description')|raw}}
-          </div>
-        </div>
-      </div>
+    <div class="page-wrap">
+      {{ _constant('shop_not_active_description')|raw}}
     </div>
   </section>
   {#блок с похожими шопами для временно неактивных шопов сюда#}
   {% include 'parts/additional_stores.twig' %}
-{% endif %}
+{#{% endif %}#}
 
-{% if _is_empty(current_store.displayed_cashback) %}
-  <section class="store-information store-not-active">
-    <div class="container">
-      <div class="row no-cashback">
-        <div class="col-md-12 store-not-active__content">
-          <div class="description">
-            {{ _constant('shop_no_cashback')|raw}}
-          </div>
-        </div>
-      </div>
+{#{% if _is_empty(current_store.displayed_cashback) %}#}
+  <section class="margin">
+    <div class="page-wrap red_box">
+      {{ _constant('shop_no_cashback')|raw}}
     </div>
   </section>
-{% endif %}
+{#{% endif %}#}
 
 {% include 'parts/calc_cashback.twig' %}
 
@@ -224,7 +212,7 @@
 
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
-  <section class="store-intro shops" style="padding-top: 0px; padding-bottom: 50px;">
+  <section class="store-intro shops">
     <div class="container">
       <div class="row">
         <div class="col-md-12">

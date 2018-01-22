@@ -28,10 +28,28 @@ $phones:380px;
 
 @mixin other_modification {
   &_hide{
-    display:none;
+    display:none!important;
   }
 
   &_bold{
     font-weight: bold;
+  }
+
+  &_flex-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_order-2{
+    order:-2;
+  }
+  &_order-1{
+    order:-1;
+  }
+  &_order0{
+    order:0;
+  }
+  &_order1{
+    order:1;
   }
 }

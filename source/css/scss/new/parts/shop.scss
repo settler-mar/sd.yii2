@@ -312,6 +312,7 @@
       @include media($tablets) {
         flex-direction: column;
         justify-content: center;
+        text-align: center;
       }
     }
 
@@ -364,6 +365,14 @@
           @include media($tablets) {
             background: $header_border_color;
             order: -1;
+
+            .footer-share-text{
+              color: #fff;
+            }
+
+            .accauntSoc_32{
+              margin-bottom: 30px;
+            }
           }
         }
       }
@@ -382,10 +391,15 @@
     color: $header_heart;
   }
   &-calc-cashback {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+
     &_wrap {
       display: flex;
       flex-direction: column;
     }
+
     &_content {
       background-color: $shop_calculate_cashback_background_color;
       border: 2px solid #ccc;
@@ -395,30 +409,43 @@
       justify-content: center;
       border-radius: 10px;
       padding: 20px;
+
+      .old_price{
+        font-weight: normal;
+        text-decoration: line-through;
+      }
+
+      
       &-form {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         margin: 0 auto ;
+
         label {
           margin-right: 10px;
           font-weight: bold;
         }
+
         input {
           width: 50px;
         }
       }
+
       &-result{
         &-store {
           font-weight: bold;
           //margin-right: 5px;
           //margin-left: 5px;
         }
+
         &-value {
+          font-weight: 700;
           //margin-right: 5px;
           //margin-left: 5px;
         }
       }
+
       &-header {
         margin: 10px 0 20px;
       }
