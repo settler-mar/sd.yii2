@@ -1,18 +1,18 @@
-<div class="current-comment" data-comment-id="{{review.uid}}">
-    <div class="col-sm-12 col-md-4 logo">
+<div class="store-reviews-list-item_inner" data-comment-id="{{review.uid}}">
+    <div class="store-reviews-list-item_inner-logo align-center">
         {% if test_image(review.photo) %}
-            <div class="comment-photo" style="background-image:url({{ review.photo }})"></div>
+            <div class="store-reviews-list-item_inner-logo-photo" style="background-image:url({{ review.photo }})"></div>
         {% else %}
-            <div class="comment-photo no_ava" style="background-image: url(/images/no_ava.png);"></div>
+            <div class="store-reviews-list-item_inner-logo-no_ava" style="background-image: url(/images/no_ava.png);"></div>
         {% endif %}
-        <p class="name">
+        <div class="store-reviews-list-item_inner-logo-name">
             {% if ((review.name) and (review.name|length > 2)) %}
                 {{ review.name }}
             {% else %}
                 {{ email_to_name(review.email)}}
             {% endif %}
-        </p>
-        <p class="rating">
+        </div>
+        <div class="store-reviews-list-item_inner-logo-rating">
             {% for i in range(1, review.rating) %}
             <span class="fa fa-star"></span>
             {% endfor %}
@@ -23,12 +23,12 @@
                 <span class="fa fa-star-o"></span>
                 {% endfor %}
             {% endif %}                   
-        </p>
+        </div>
     </div>
-    <div class="col-sm-12 col-md-8 text">
-        <p class="title">{{review.title}}</p>
-        <p class="date">{{review.added}}</p>
-        <p class="comment list">{{review.text}}</p>
+    <div class="store-reviews-list-item_inner-text align-center">
+        <div class="store-reviews-list-item_inner-text-title">{{review.title}}</div>
+        <div class="store-reviews-list-item_inner-text-date">{{review.added}}</div>
+        <div class="store-reviews-list-item_inner-text-comment">{{review.text}}</div>
 
     </div>
 </div>
