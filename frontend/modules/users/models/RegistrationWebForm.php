@@ -31,7 +31,7 @@ class RegistrationWebForm extends Model
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 6],
-      ['url','url'],
+      ['url','url','message'=>"Ссылка должна быть в формате https://primer.ru"],
       [['traffType'], 'required', 'message' => 'Необходимо выбрать основной тип трафика'],
       [['url'], 'required', 'message' => 'Необходимо ввести адрес'],
     ];

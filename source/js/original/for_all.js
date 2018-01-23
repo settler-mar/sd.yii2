@@ -269,7 +269,7 @@ $( document ).ready(function() {
     if(parent[0].tagName=="A"){
       continue;
     }
-    m_w = parent.width();
+    m_w = parent.width()-30;
     if (m_w > mw)m_w = mw;
     if (el.width() > m_w) {
       k = el.width() / m_w;

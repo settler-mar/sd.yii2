@@ -65,20 +65,23 @@ class Meta extends \yii\db\ActiveRecord
         $page = preg_replace('/\/$/', '', $url);
       }
 
-      if(isset(array_flip(Yii::$app->params['auth_page_redirect'])[$page])){
-        $page = array_flip(Yii::$app->params['auth_page_redirect'])[$page];
-      }
-
-
       if ($page == '') $page = 'index';
 
       $page=str_replace('-offline','/offline',$page);//добавляем поддержку офлайна
 
-      //todo закешировать с этого места
+
       $page_meta = Meta::find()
         ->where(['page' => $page]);
+      $page_meta_count=$page_meta->count();
 
-      if ($page_meta->count()>0) {
+      if($page_meta_count==0 && isset(array_flip(Yii::$app->params['auth_page_redirect'])[$page])){
+        $page = array_flip(Yii::$app->params['auth_page_redirect'])[$page];
+        $page_meta = Meta::find()
+          ->where(['page' => $page]);
+        $page_meta_count=$page_meta->count();
+      }
+
+      if ($page_meta_count>0) {
         if($model){
           return $page_meta->limit(1);
         }

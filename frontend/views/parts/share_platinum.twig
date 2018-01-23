@@ -1,4 +1,8 @@
-{% set ref_link = user_id == 0 ?'?promo=platunum':'?r='~user_id~'&promo=platinum' %}
+{% if not promo_code %}
+    {% set promo_code = "platinum" %}
+{% endif %}
+
+{% set ref_link = user_id == 0 ?'?promo='~promo_code:'?r='~user_id~'&promo='~promo_code %}
 <div class="social-block-share share42init accauntSoc accauntSoc_32"
      {#data-url="https://secretdiscounter.ru/new-year{{ref_link}}"#}
      data-url="https://secretdiscounter.ru/new-year"
@@ -7,6 +11,6 @@
      data-description="{{ this.description }}"
      data-icon-type="css"
      data-socials="1,0,2,4,3"
-     data-promo="platinum"
+     data-promo="{{ promo_code }}"
 >
 </div>

@@ -589,6 +589,29 @@ body {
             position: absolute;
         }
     }
+    //заставка адблок
+    .transition-message {
+      height: auto;
+      background-position: center bottom;
+      width: 100%;
+      color: #fff;
+      padding: 30px;
+      a {
+        color: #E1C935;
+      }
+      &_paragraph {
+        margin-bottom: 0;
+        &-between {
+          margin: 25px auto 0;
+          display: flex;
+          justify-content: space-between;
+          width: 80%;
+        }
+      }
+      &_header-yellow {
+        color: #F0EE3B;
+      }
+    }
 }
 
 /* Queries
