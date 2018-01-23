@@ -292,7 +292,7 @@ svg.svg-no-fill{
     width: 19PX;
 
     &-open{
-      fill: none;
+      fill: none !important;
     }
   }
 
