@@ -18,24 +18,34 @@ class m180123_120301_addConstantAddBlock extends Migration
         $const = new Constants();
         $const->name='goto_adblock';
         $const->title = 'Goto. Сообщение о необходимости включить куки или изменить настройки AdBlock';
-        $const->text = '<h3>ВНИМАНИЕ: <span style="color:red;">Ваш кэшбэк не отслеживается!</span></h3>
+        $const->text = '
                 <div class="transition-message_item">
-                    <p class="transition-message_paragraph">Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить
-                     ваш кэшбэк или использовать промокод, возможны и другие ошибки.
-                    </p>
-                    <p class="transition-message_paragraph">Зайдите в настройки браузера и разрешите использование файлов cookie
-                    </p>
+                    <div class="transition-message_item-alert">
+                    <h3>ВНИМАНИЕ: <span style="color:red;">Ваш кэшбэк не отслеживается!</span></h3>
+                        <p class="transition-message_paragraph">Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить
+                         ваш кэшбэк или использовать промокод, возможны и другие ошибки.
+                        </p>
+                        <p class="transition-message_paragraph">Зайдите в настройки браузера и разрешите использование <a href="https://support.kaspersky.ru/common/windows/2843#block2">файлов cookie</a>.
+                        </p>
+                    </div>
                 </div>
-                <h3 class="transition-message_header-yellow">Проблема может быть вызвана:</h3>
+                <h3 class="transition-message_header-yellow">Как решить проблему:</h3>
                 <div class="transition-message_item">
-                        <h4>1) Настройками вашего браузера</h4>
-                        <p class="transition-message_paragraph">Зайдите в настройки браузера и разрешите использование файлов cookie. </p>
-                        <h4>2) Сторонним расширением типа AdBlock</h4>
-                        <p class="transition-message_paragraph">Добавьте наш сайт в <a href="abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&amp;title=secretdiscounter">белый список AdBlock</a>
-                        </p>
-                        <p class="transition-message_paragraph-between"><a href="/recommendations">Правила совершения покупок</a>
-                            <a id="transition-message-transition-link" href="">Перейти в магазин</a>
-                        </p>
+                    <p class="transition-message_paragraph">
+                        1) Зайдите в настройки браузера и разрешите использование <a href="https://support.kaspersky.ru/common/windows/2843#block2">файлов cookie</a>. 
+                    </p>
+                    <p class="transition-message_paragraph">
+                         2) На время покупки отключите блокировщики рекламы типа AdBlock, AdGuard, uBlock и т.п. Либо добавьте наш сайт в <a href="/adblock">белый список</a>.
+                    </p>
+                    <p class="transition-message_paragraph">
+                         После этого нажмите Перейти в магазин.
+                    </p>
+                    
+                    <p class="transition-message_paragraph-between">
+                        <a href="/adblock">Полная инструкция</a> / 
+                        <a href="/recommendations">Правила совершения покупок</a> / 
+                        <a id="transition-message-transition-link" href="">Перейти в магазин</a>
+                    </p>
                 </div>';
         $const->ftype = 'textarea';
         $const->save();

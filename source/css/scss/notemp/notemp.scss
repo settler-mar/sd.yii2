@@ -597,19 +597,28 @@ body {
       color: #fff;
       padding: 30px;
       a {
-        color: #E1C935;
+        color: #FFC107;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
       }
       &_paragraph {
-        margin-bottom: 0;
+        margin-bottom: 10px;
         &-between {
-          margin: 25px auto 0;
-          display: flex;
-          justify-content: space-between;
-          width: 80%;
+          //margin: 25px auto 0;
+          //display: flex;
+          //justify-content: space-between;
+          //width: 80%;
         }
       }
       &_header-yellow {
         color: #F0EE3B;
+      }
+      &_item-alert {
+        padding-left: 125px;
+        background: url(/images/adblock.jpg) no-repeat 0 50%;
+        background-size: 120px 120px;
       }
     }
 }
