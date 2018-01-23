@@ -7,36 +7,15 @@
         cookiesEnabled: false,
         adblockEnabled: false,
 
-        options: {
-            showPopup: true,
-            allowClose: false,
-            lang: 'ru'
-        },
-
-        href:'abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&title=secretdiscounter',
-        langText: {
-            ru: {
-                title: 'ВНИМАНИЕ: <span style="color:red;">Ваш кэшбэк не отслеживается!</span>',
-                description: 'Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить ваш кэшбэк или использовать промокод, возможны и другие ошибки.',
-                listTitle: 'Проблема может быть вызвана:',
-                button: 'Настроить Adblock',
-                browserSettings: '<h4>Настройками вашего браузера</h4> ' +
-                '<p>Зайдите в настройки браузера и разрешите использование файлов cookie. </p>',
-                adblockSettings: '<h4>Сторонним расширением типа AdBlock</h4> ' +
-                '<p>Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. </p>' +
-                '<p>Ознакомьтесь с <a href="/recommendations">советами</a> по совершению  покупок.</p>'+
-                '<p><a href="'+transitionHref+'">Перейти</a> в магазин</p>'
-            },
-        },
-
         init: function() {
             this.isMobile=!!isMobile.any();
             this.testCookies();
-             if(this.isMobile && !this.cookiesEnabled){
-                 this.showPopup();
-             }else{
-                 this.testAd();
-             }
+                if(this.isMobile && !this.cookiesEnabled){
+                    enabledTransition = false;
+                    this.showPop();
+                } else {
+                    this.testAd();
+                }
             //if(!this.isMobile){
             //    this.testAd();
             //}
@@ -51,39 +30,12 @@
             this.adblockEnabled = ($adDetect>0);
 
             if((!this.adblockEnabled)){
-                this.showPopup();
+                enabledTransition = false;
+                this.showPop();
             }
         },
-        showPopup: function() {
-            setTimeout(this.showPop.bind(this),500);
-        },
         showPop: function() {
-            //if(getCookie('adBlockShow')){
-            //    return;
-            //}
-            //setCookie('adBlockShow','show');
-            enabledTransition = false;
-
-            var lang = this.langText.ru;
-            var text='';
-
-
-            text+='<h3 style="text-align: center;font-weight: bold;">';
-            text+=lang.title;
-            text+='</h3>';
-            text+='<div>';
-            text+=lang.description;
-            text+='</div>';
-            text+='<h3>';
-            text+=lang.listTitle;
-            text+='</h3>';
-            text+='<div class="ad_recomend help-msg">';
-            text+='<div>'+lang.browserSettings+'</div>';
-            text+='<div>'+lang.adblockSettings+'</div>';
-            text+='</div>';
-
-            text=text.replace('___adblockLink___',this.href);
-            showMessage(text);
+            setTimeout(showMessage, 500);
         }
     };
 
@@ -118,8 +70,14 @@
         var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
         document.cookie = cookie_string;
     }
-    function showMessage(html){
-        $('#transition-wrapper').find('.center-block').addClass('center-block-message').html(html);
+    function showMessage(){
+        var messageDiv = $('#transition-message');
+        if (messageDiv) {
+            var html = messageDiv.html();
+            messageDiv.remove();
+            $(html).find('#transition-message-transition-link').attr('href', transitionHref);
+            $('#transition-wrapper').find('.center-block').addClass('transition-message').html(html);
+        }
     }
     function goTransition(){
         if (enabledTransition) {

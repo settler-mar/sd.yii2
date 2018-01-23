@@ -553,13 +553,6 @@ body {
         background-size: cover;
         padding: 80px 30px 10px;
         background: url("/images/templates/polygonal-bg.jpg") repeat-x center -200px;
-        &-message {
-          height: auto;
-          background-position: center bottom;
-          width: 100%;
-          color: #fff;
-          padding-top: 30px
-        }
 
         .phrase {
             font-family: "Open Sans", Arial, Helvetica, sans-serif;
@@ -595,6 +588,29 @@ body {
             bottom: -50px;
             position: absolute;
         }
+    }
+    //заставка адблок
+    .transition-message {
+      height: auto;
+      background-position: center bottom;
+      width: 100%;
+      color: #fff;
+      padding: 30px;
+      a {
+        color: #E1C935;
+      }
+      &_paragraph {
+        margin-bottom: 0;
+        &-between {
+          margin: 25px auto 0;
+          display: flex;
+          justify-content: space-between;
+          width: 80%;
+        }
+      }
+      &_header-yellow {
+        color: #F0EE3B;
+      }
     }
 }
 
