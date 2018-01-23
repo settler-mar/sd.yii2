@@ -553,6 +553,13 @@ body {
         background-size: cover;
         padding: 80px 30px 10px;
         background: url("/images/templates/polygonal-bg.jpg") repeat-x center -200px;
+        &-message {
+          height: auto;
+          background-position: center bottom;
+          width: 100%;
+          color: #fff;
+          padding-top: 30px
+        }
 
         .phrase {
             font-family: "Open Sans", Arial, Helvetica, sans-serif;

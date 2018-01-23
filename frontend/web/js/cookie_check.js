@@ -1,5 +1,8 @@
 (function (window, document) {
 
+    var transitionHref = $('#transition-href').attr('href');
+    var enabledTransition = true;
+
     var Checker = {
         cookiesEnabled: false,
         adblockEnabled: false,
@@ -20,25 +23,27 @@
                 browserSettings: '<h4>Настройками вашего браузера</h4> ' +
                 '<p>Зайдите в настройки браузера и разрешите использование файлов cookie. </p>',
                 adblockSettings: '<h4>Сторонним расширением типа AdBlock</h4> ' +
-                '<p>Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. </p>'
+                '<p>Просто добавьте наш сайт в <a href="___adblockLink___">белый список</a> в настройках AdBlock. </p>' +
+                '<p>Ознакомьтесь с <a href="/recommendations">советами</a> по совершению  покупок.</p>'+
+                '<p><a href="'+transitionHref+'">Перейти</a> в магазин</p>'
             },
         },
 
         init: function() {
             this.isMobile=!!isMobile.any();
-            /*this.testCookies();
-            if(this.isMobile && !this.cookiesEnabled){
-                this.showPopup();
-            }else{
-                this.testAd();
-            }*/
-            if(!this.isMobile){
-                this.testAd();
-            }
+            this.testCookies();
+             if(this.isMobile && !this.cookiesEnabled){
+                 this.showPopup();
+             }else{
+                 this.testAd();
+             }
+            //if(!this.isMobile){
+            //    this.testAd();
+            //}
         },
         testCookies: function () {
             setCookie('testWork','test');
-            this.cookiesEnabled = (getCookie('testWork')==='test'?true:false);
+            this.cookiesEnabled = (getCookie('testWork')==='test' ? true : false);
             eraseCookie('testWork');
         },
         testAd: function () {
@@ -53,10 +58,11 @@
             setTimeout(this.showPop.bind(this),500);
         },
         showPop: function() {
-            if(getCookie('adBlockShow')){
-                return;
-            }
-            setCookie('adBlockShow','show');
+            //if(getCookie('adBlockShow')){
+            //    return;
+            //}
+            //setCookie('adBlockShow','show');
+            enabledTransition = false;
 
             var lang = this.langText.ru;
             var text='';
@@ -65,9 +71,9 @@
             text+='<h3 style="text-align: center;font-weight: bold;">';
             text+=lang.title;
             text+='</h3>';
-            text+='<p>';
+            text+='<div>';
             text+=lang.description;
-            text+='</p>';
+            text+='</div>';
             text+='<h3>';
             text+=lang.listTitle;
             text+='</h3>';
@@ -77,14 +83,7 @@
             text+='</div>';
 
             text=text.replace('___adblockLink___',this.href);
-            notification.alert({
-                buttonYes:lang.button,
-                buttonTag:'a',
-                buttonYesDop:'href="'+this.href+'"',
-                notyfy_class:"notify_white",
-                question: text,
-
-            });
+            showMessage(text);
         }
     };
 
@@ -119,6 +118,14 @@
         var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
         document.cookie = cookie_string;
     }
+    function showMessage(html){
+        $('#transition-wrapper').find('.center-block').addClass('center-block-message').html(html);
+    }
+    function goTransition(){
+        if (enabledTransition) {
+            window.location = transitionHref;
+        }
+    }
     Checker.init();
-    //setTimeout(Checker.init,100);
+    setTimeout(goTransition, 5000);
 }(window, document));
