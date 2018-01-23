@@ -1,36 +1,10 @@
 <section class="margin">
     <div class="page-wrap gray-box round-box">
         <h2>Что говорят о нас клиенты</h2>
-        <div class="scroll_box scroll_box-active">
+        <div class="scroll_box ">
+            {% set not_admin_coment = true %}
             {% for review in top_reviews %}
-                <div class="scroll_box-item">
-                    <div class="scroll_box-title">
-                        <div class="scroll_box-avatar" style="background-image: url({{review.photo|replace({ 'http:':'https:'}) }});"></div>
-                        <div class="scroll_box-user">
-                            <div class="scroll_box-user_name">{{review.name}}</div>
-                            <div class="scroll_box-user_cashback">
-                                <span>
-                                    {{ _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance))|raw }} руб. кэшбэка
-                                </span>
-                            </div>
-                            <div class="rating comments-rating">
-                                {% for i in range(1, review.rating) %}
-                                    {{ svg('star','rating-star')|raw }}
-                                {% endfor %}
-
-                                {% set estar =  5 - review.rating %}
-                                {% if estar != 0 %}
-                                    {% for i in range(1, estar) %}
-                                        {{ svg('star','rating-star svg-no-fill')|raw }}
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="scroll_box-content">
-                        <div class="scroll_box-text">{{review.text}}</div>
-                    </div>
-                </div>
+                {% include 'parts/comment.twig' %}
             {% endfor %}
         </div>
         <div class="align-center">

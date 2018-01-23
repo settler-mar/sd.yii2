@@ -217,8 +217,6 @@
     }
 
     .cashback{
-      font-size: 26px;
-
       .old{
         font-size: 13px;
         text-decoration: line-through;
@@ -297,7 +295,7 @@
     &-header{
       margin: 0;
       text-align: center;
-      padding: 11px 0 5px 0;
+      padding: 21px 0 15px 0;
 
       @include media($tablets) {
         background: $header_border_color;
@@ -324,8 +322,12 @@
         width: 100%;
       }
 
+      &_left{
+        text-align: center;
+      }
+
       &-head{
-        font-size: 35px;
+        font-size: 26px;
         text-align: center;
         font-weight: 600;
         border-bottom: 1px solid;

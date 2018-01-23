@@ -22,23 +22,6 @@
       }
     }
   }
-  &-content{
-    margin-top: 10px;
-  }
-/*
-  &-left_arrow:before{
-    content: '';
-    background-color: red;
-    background: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
-    mask: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
-    height: 100%;
-    position: absolute;
-    width: 40px;
-    top: 0;
-    left: 0;
-    background-size: contain;
-    z-index: 9;
-  }*/
 
   &-wrap{
     position: relative;
@@ -53,6 +36,21 @@
     padding: 18px;
     background: $scroll_box_bg;
     box-shadow: 2px 2px 21px rgba($scroll_box_shadow, 0.21);
+    overflow: hidden;
+    position: relative;
+
+    &-modal{
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-width: 100%;
+      box-shadow: none;
+
+      .max_text_hide-gray{
+        background: transparent;
+        border-top: 1px solid #ccc;
+      }
+    }
 
     @include media($laptop_min){
       width: calc(50% - 74px);
@@ -62,6 +60,7 @@
 
     @include media($tablets){
       margin: 0px;
+      margin-bottom: 19px;
       width: calc(100% - 36px);
       min-width: calc(100% - 36px);
       max-width: calc(100% - 36px);
@@ -134,8 +133,41 @@
     }
   }
 
-  &-text{
-    //margin-top: 20px;
+  &-content{
+    margin: 10px -18px -18px -18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 100%;
   }
 
+  &-text{
+    //margin-top: 20px;
+    padding: 18px;
+  }
+
+  &-answer{
+    background: #CCC;
+    //margin: 10px -18px -18px;
+    padding: 18px;
+
+    &+*{
+      background: #CCC;
+    }
+  }
+
+  &-show_more{
+    /*margin-top: 20px;
+    margin-bottom: -18px;*/
+    display: block;
+    cursor: pointer;
+    text-align: right;
+    text-decoration: underline;
+    /*position: absolute;
+    bottom: 0;*/
+    width: 100%;
+    padding: 5px 18px;
+    left: 0;
+    box-sizing: border-box;
+  }
 }

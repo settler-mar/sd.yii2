@@ -21,7 +21,7 @@ class m171123_115412_fix_withdraw extends Migration
   public function safeDown()
   {
     echo "m171123_115412_fix_withdraw cannot be reverted.\n";
-
+    $this->dropColumn('cw_users_withdraw', 'admin_comment');
     return false;
   }
 

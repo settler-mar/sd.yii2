@@ -246,7 +246,7 @@ svg.svg-no-fill{
   padding: 20px;
   max-width: 950px;
 
-  h3{
+  h3,h2{
     color: $btn_base_bg;
   }
 }
@@ -368,6 +368,39 @@ svg.svg-no-fill{
     margin-top: calc(120px);
     @include media($laptop_min) {
       margin-top: 30px;
+    }
+  }
+}
+
+.max_text_hide{
+  max-height:100px;
+  height: 100%;
+  overflow:hidden;
+  position: relative;
+
+  &:before{
+    content:"";
+    display:block;
+    height:40px;
+    width: 100%;
+    position:absolute;
+    bottom:0px;
+    background-image:linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 75%);
+  }
+
+  &-x2{
+    max-height:200px;
+  }
+
+  &-gray{
+    &:before {
+      background-image: linear-gradient(to bottom, rgba(#CCC, 0), #CCC 75%);
+    }
+  }
+
+  &-hide{
+    &:before {
+      display: none;
     }
   }
 }

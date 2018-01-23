@@ -1,0 +1,26 @@
+<noindex>
+  <section class="margin">
+    <div class="page-wrap gray-box wrap-round">
+      <h2 class="title-no-line">Отследить посылку с {{current_store.name}} по трек-номеру можно здесь</h2>
+      <p>
+        просто вставьте номер отслеживания вашего почтового отправления в форму ниже и нажмите кнопку "Отследить"
+      </p>
+      <div class="widget_1track" data-width="100%"></div>
+      <div class="test_track">Например: RB673410396RU, RM759395483CN</div>
+      <p>
+        {{ _constant('trackers')|raw}}
+      </p>
+    </div>
+  </section>
+</noindex>
+
+<script>
+  (function(e,t,n){
+    if(e.getElementById(n))return;
+    var i=e.getElementsByTagName(t)[0];
+    var r=e.createElement(t);
+    r.id=n;
+    r.src="//1track.ru/public/widget/widget.js";
+    i.parentNode.insertBefore(r,i)
+  })(document,"script","widget-1track-js");
+</script>

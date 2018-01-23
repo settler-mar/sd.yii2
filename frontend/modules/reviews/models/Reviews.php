@@ -41,6 +41,7 @@ class Reviews extends \yii\db\ActiveRecord
       [['added'], 'safe'],
       [['title'], 'string', 'max' => 100, 'min' => 5],
       [['text'], 'string', 'min' => 20],
+      [['answer'], 'string', 'min' => 20],
     ];
   }
 
@@ -59,6 +60,7 @@ class Reviews extends \yii\db\ActiveRecord
       'is_active' => 'Активный',
       'is_top' => 'Топ отзыв',
       'store_id' => 'ID магазина',
+      'answer' => 'Ответ администратора',
     ];
   }
 
@@ -125,7 +127,7 @@ class Reviews extends \yii\db\ActiveRecord
     $data = $cache->getOrSet('reviews_by_store_' . $storeId, function () use ($storeId) {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
-        ->select(['r.*', 'u.name', 'u.photo', 'u.email'])
+        ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
         ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
         ->orderBy('added DESC')

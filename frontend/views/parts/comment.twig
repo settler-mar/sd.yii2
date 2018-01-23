@@ -1,34 +1,48 @@
-<div class="store-reviews-list-item_inner" data-comment-id="{{review.uid}}">
-    <div class="store-reviews-list-item_inner-logo align-center">
-        {% if test_image(review.photo) %}
-            <div class="store-reviews-list-item_inner-logo-photo" style="background-image:url({{ review.photo }})"></div>
-        {% else %}
-            <div class="store-reviews-list-item_inner-logo-no_ava" style="background-image: url(/images/no_ava.png);"></div>
-        {% endif %}
-        <div class="store-reviews-list-item_inner-logo-name">
-            {% if ((review.name) and (review.name|length > 2)) %}
-                {{ review.name }}
-            {% else %}
-                {{ email_to_name(review.email)}}
-            {% endif %}
-        </div>
-        <div class="store-reviews-list-item_inner-logo-rating">
-            {% for i in range(1, review.rating) %}
-            <span class="fa fa-star"></span>
-            {% endfor %}
-
-            {% set estar =  5 - review.rating %}
-            {% if estar != 0 %}
-                {% for i in range(1, estar) %}
-                <span class="fa fa-star-o"></span>
+<div class="scroll_box-item">
+    <div class="scroll_box-title">
+        <div class="scroll_box-avatar" style="background-image: url({{review.photo|replace({ 'http:':'https:'}) }});"></div>
+        <div class="scroll_box-user">
+            <div class="scroll_box-user_name">{{review.name}}</div>
+            <div class="scroll_box-user_cashback">
+                <span>
+                    {{ _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance))|raw }} руб. кэшбэка
+                </span>
+            </div>
+            <div class="rating comments-rating">
+                {% for i in range(1, review.rating) %}
+                    {{ svg('star','rating-star')|raw }}
                 {% endfor %}
-            {% endif %}                   
+
+                {% set estar =  5 - review.rating %}
+                {% if estar != 0 %}
+                    {% for i in range(1, estar) %}
+                        {{ svg('star','rating-star svg-no-fill')|raw }}
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
-    <div class="store-reviews-list-item_inner-text align-center">
-        <div class="store-reviews-list-item_inner-text-title">{{review.title}}</div>
-        <div class="store-reviews-list-item_inner-text-date">{{review.added}}</div>
-        <div class="store-reviews-list-item_inner-text-comment">{{review.text}}</div>
+    <div class="scroll_box-content {{ _if(comments_max_height,'auto_hide_control')}}">
+        <div
+            class="scroll_box-text
+                {{
+                    _if(comments_max_height and not not_admin_coment,
+                        _if(review.answer,'max_text_hide','max_text_hide max_text_hide-x2'),
+                        ''
+                    )
+                }}">
+            {{review.text}}
+        </div>
 
+        {% if not not_admin_coment and review.answer %}
+            <div class="scroll_box-answer {{ _if(comments_max_height,'max_text_hide max_text_hide-gray','') }}">
+                {{review.answer}}
+            </div>
+        {% endif %}
+
+        {% if comments_max_height %}
+            <a class="scroll_box-show_more">Показать полностью</a>
+        {% endif %}
     </div>
+
 </div>

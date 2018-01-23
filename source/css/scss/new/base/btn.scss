@@ -19,6 +19,14 @@
     }
   }
 
+  &-un_color{
+    color: $btn_base_bg;
+
+    &:hover{
+      color: $btn_base_color;
+    }
+  }
+
   &-mini{
     padding: 6px 10px;
     font-size: 16px;
