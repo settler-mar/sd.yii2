@@ -10,12 +10,12 @@
         init: function() {
             this.isMobile=!!isMobile.any();
             this.testCookies();
-                //if(this.isMobile && !this.cookiesEnabled){
+                if(this.isMobile && !this.cookiesEnabled){
                     enabledTransition = false;
                     this.showPop();
-               // } else {
-               //     this.testAd();
-               // }
+                } else {
+                    this.testAd();
+                }
             //if(!this.isMobile){
             //    this.testAd();
             //}
