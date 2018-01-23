@@ -39,6 +39,11 @@
     overflow: hidden;
     position: relative;
 
+
+    &-hide{
+      display: none;
+    }
+
     &-modal{
       margin: 0;
       padding: 0;

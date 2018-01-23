@@ -7,24 +7,30 @@
       <p class="ntfnd">На данный момент отзывы о магазине</p>
       <p>{{current_store.name}} отсутствуют. Будь первым!</p>
     {% endif %}
-    {% if store_reviews|length > 4 %}
-      <a class="btn" href="#">Показать все ({{ store_reviews|length }})</a>
-      <a class="btn" href="#" style="display: none;">Скрыть все</a>
-    {% endif %}
-
-    {% if user_id %}
-      <a href="#reviews/send?shop={{ current_store.uid }}" class="btn modals_open">Оставить отзыв</a>
-    {% else %}
-      <p>
-        Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-        <a href="#registration" class="modals_open">зарегистрироваться</a> или <a href="#login" class="modals_open">войти в свой аккаунт</a>.
-      </p>
-    {% endif %}
 
     <div class="flex-wrap flex-line">
+      {% set i=0 %}
       {% for review in store_reviews %}
+        {% set i=i+1 %}
+        {% set comment_hide = (6 < i) %}
         {% include 'parts/comment.twig' %}
       {% endfor %}
+    </div>
+
+    <div class="comments-handler">
+      {% if store_reviews|length>6 %}
+        <a class="btn show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все ({{ store_reviews|length }})</a>
+        <a class="btn hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
+      {% endif %}
+
+      {% if user_id %}
+        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn modals_open">Оставить отзыв</a>
+      {% else %}
+        <p>
+          Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+          <a href="#registration" class="modals_open">зарегистрироваться</a> или <a href="#login" class="modals_open">войти в свой аккаунт</a>.
+        </p>
+      {% endif %}
     </div>
   </div>
 </section>
