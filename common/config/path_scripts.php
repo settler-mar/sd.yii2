@@ -40,15 +40,16 @@ return  [
       'layout'=>'admin.twig',
       'js'=>[
         //'/js/jquery-2.1.4.js',
-        '/js/admin/scripts{{script_version}}.js',
-        '/js/external/jquery.mCustomScrollbar.concat.min.js',
-        '/js/external/account/modernizr.js'
+          'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
+          '/js/external/jquery.mCustomScrollbar.concat.min.js',
+          '/js/external/account/modernizr.js',
+          '/js/admin/scripts{{script_version}}.js',
       ],
       'css'=>[
         '/css/external/import.fonts.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-        '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
+        'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
         '/css/admin/styles{{script_version}}.css',
       ]
 
