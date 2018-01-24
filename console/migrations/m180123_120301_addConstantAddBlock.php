@@ -18,8 +18,7 @@ class m180123_120301_addConstantAddBlock extends Migration
         $const = new Constants();
         $const->name='goto_adblock';
         $const->title = 'Goto. Сообщение о необходимости включить куки или изменить настройки AdBlock';
-        $const->text = '
-                <div class="transition-message_item">
+        $const->text = '                <div class="transition-message_item">
                     <div class="transition-message_item-alert">
                     <h3><span style="color:red;">Ваш кэшбэк не отслеживается :(</span></h3>
                         <p class="transition-message_paragraph">Настройки вашего браузера не позволяют использовать файлы cookies, без которых невозможно отследить
@@ -39,9 +38,15 @@ class m180123_120301_addConstantAddBlock extends Migration
                          3) После этого нажмите <a id="transition-message-transition-link" href=""  rel="nofollow noopener">Перейти в магазин</a>
                     </p>
                     
-                    <p class="transition-message_paragraph-between">
-                        <a href="/adblock"  target="_blank" rel="nofollow noopener">Полная инструкция</a> / 
-                        <a href="/recommendations"  target="_blank" rel="nofollow noopener">Правила совершения покупок</a> / 
+                    <p class="transition-message_paragraph-between" style="
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -10px;
+    padding: 0 17px;
+    margin-top: 32px;
+">
+                        <a href="/adblock"  target="_blank" rel="nofollow noopener">Полная инструкция</a> 
+                        <a href="/recommendations"  target="_blank" rel="nofollow noopener">Правила совершения покупок</a> 
                         <a id="transition-message-transition-link" href=""  rel="nofollow noopener">Перейти в магазин</a>
                     </p>
                 </div>';
