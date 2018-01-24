@@ -104,8 +104,8 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/original/admin/select2.full.min.js',
         paths.source.js+'/original/main.js',
         paths.source.js+'/original/notification.js',
-        paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
+        paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/language.js',
         paths.source.js+'/original/my.js'
     ], paths.app.js)
@@ -126,6 +126,8 @@ gulp.task('jsaccount', compileJs([
         paths.source.js+'/original/admin/ajax_remove.js',
         paths.source.js+'/original/language.js',
         paths.source.js+'/original/new/favorites.js',
+        paths.source.js+'/external/tipso.min.js',
+        paths.source.js+'/original/new/tooltip.js',
         paths.source.js+'/original/for_all.js'
     ], paths.app.js + '/account')
 );
@@ -146,11 +148,11 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/new/slider.js',
     paths.source.js+'/original/admin/ajax_save.js',
     paths.source.js+'/original/admin/ajax_remove.js',
-    paths.source.js+'/original/for_all.js',
     paths.source.js+'/original/notification.js',
     paths.source.js+'/original/admin/stores.js',
-    paths.source.js+'/original/jquery.ajaxForm.js'
-  ], paths.app.js + '/admin')
+    paths.source.js+'/original/jquery.ajaxForm.js',
+    paths.source.js+'/original/for_all.js'
+    ], paths.app.js + '/admin')
 );
 
 gulp.task('jsb2b', compileJs([
@@ -169,6 +171,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/jquery.ajaxForm.js',
         paths.source.js+'/external/jquery.flexslider-min.js',
         paths.source.js+'/external/tipso.min.js',
+        paths.source.js+'/original/new/tooltip.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/new/modals.js',
         paths.source.js+'/original/new/footer_menu.js',

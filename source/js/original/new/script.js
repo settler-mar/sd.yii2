@@ -42,18 +42,6 @@ var headerActions = function () {
         scrolledDown = false;
     });
 
-
-    $('[data-toggle=tooltip]').tipso({
-        background : '#4A4A4A',
-        size: 'small',
-        delay: 100,
-        speed: 100,
-        onBeforeShow : function(ele, tipso) {
-            this.content = ele.data('original-title');
-        }
-    });
-
-
     $(window).on('load resize scroll',function() {
         var shadowHeight = 50;
         var hideHeight = 200;
