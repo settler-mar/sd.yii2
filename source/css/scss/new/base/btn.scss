@@ -72,6 +72,17 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+  &-black {
+    background: $btn_base_black_bg;
+    border-color: $btn_base_bg;
+    color: $btn_base_bg;
+    //color: $btn_base_black_color;
+    &:hover {
+      background: $btn-base_bg;
+      border-color: $btn_base_dark_bg;
+      color: $btn_base_dark_bg;
+    }
+  }
 }
 
 .btn{

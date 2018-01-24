@@ -449,6 +449,10 @@
     }
   }
   &_information {
+    margin-bottom: 38px;
+    @include media($tablets) {
+      margin-bottom: 0;
+    }
     &-border {
       background: #fafafa;
       padding: 10px;
