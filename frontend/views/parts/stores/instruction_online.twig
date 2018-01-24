@@ -1,41 +1,42 @@
-<section class="store-intro intro section-padding" id="howgetcashback">
-    <div class="container">
-        <div class="row">
-            <h3>
-                {% if infotitle %}
-                    {{ infotitle }}
-                {% else %}
-                    Как получить кэшбэк в этом магазине?
-                {% endif %}
-            </h3>
-            <div class="col-md-4 intro-feature not_arrow">
-                <i class="sd_icon-user_card intro "></i>
-                <div class="intro-content {% if user_id %}through{% endif %}">
-                    <h5>Регистрируйтесь на сайте</h5>
-                    <p>Пройдите {% if not user_id %}<a href="#registration" class="ignore-hash">простую регистрацию</a>{% else %} простую регистрацию {% endif %} в кэшбэк-сервисе SecretDiscounter.</p>
-                </div>
+<div class="flex-line tablets_flex-col">
+    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('user_card','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+            <div class="instruction-title">
+                Регистрируйтесь на сайте
             </div>
-            <div class="col-md-4 intro-feature">
-                <i class="sd_icon-chart_click2 intro"></i>
-                <div class="intro-content">
-                    <h5>Перейдите в магазин</h5>
-                    <p>Нажмите кнопку <a href="#gotostore">"Перейти к покупкам"</a>
-                        и сделайте заказ на сайте.</p>
-                </div>
-            </div>
-            <div class="col-md-4 intro-feature">
-                <i class="sd_icon-save_money intro"></i>
-                <div class="intro-content last">
-                    <h5>Получите деньги</h5>
-                    <p>Кэшбэк за заказ автоматически зачислится на
-                        {% if user_id %}
-                            <a href="/account">ваш счёт</a>
-                        {% else %}
-                            ваш счёт
-                        {% endif %}
-                        в SecretDiscounter.</p>
-                </div>
+            <div class="instruction-content">
+                Пройдите простую <a href="#registration" class="modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
             </div>
         </div>
     </div>
-</section>
+    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('chart_click2','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+            <div class="instruction-title">
+                Перейдите в магазин
+            </div>
+            <div class="instruction-content">
+                Нажмите кнопку <a href="#gotostore" class="scroll_to">"Перейти к покупкам"</a>
+                    и сделайте заказ на сайте.
+            </div>
+        </div>
+    </div>
+    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('save_money','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+            <div class="instruction-title">
+                Получите деньги
+            </div>
+            <div class="instruction-content">
+                Кэшбэк за заказ автоматически зачислится на
+                {% if user_id %}
+                    <a href="/account">ваш счёт</a>
+                {% else %}
+                    ваш счёт
+                {% endif %}
+                в SecretDiscounter.
+            </div>
+        </div>
+    </div>
+</div>

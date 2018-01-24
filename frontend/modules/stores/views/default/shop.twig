@@ -28,7 +28,7 @@
                         </a>
                     </span>
           <span class="avg">(среднее время обработки)</span>
-          <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto btn-transform btn-un_color">
+          <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto btn-transform btn-un_color scroll_to">
             Для получения кэшбэка необходимо →
           </a>
         </div>
@@ -324,23 +324,31 @@
     </section>
   {% endif %}
 
-{#{% if current_store.is_offline==0 %}
-    {% if current_store.cpaLink.cpa_id==2 %}
-      {% include 'parts/instruction_online_offline.twig' %}
-    {% else %}
-      {% include 'parts/instruction_online.twig' %}
-    {% endif %}
-  {% else %}
-    {% include 'parts/instruction_offline.twig' %}
-  {% endif %}#}
+<section class="tablets_order-1" id="howgetcashback">
+  <div class="page-wrap">
+    <h2>
+      {% if infotitle %}
+        {{ infotitle }}
+      {% else %}
+        Как получить кэшбэк в этом магазине?
+      {% endif %}
+    </h2>
+    {#{% if current_store.is_offline==0 %}
+        {% if current_store.cpaLink.cpa_id==2 %}
+          {% include 'parts/stores/instruction_online_offline.twig' %}
+        {% else %}
+          {% include 'parts/stores/instruction_online.twig' %}
+        {% endif %}
+      {% else %}
+        {% include 'parts/stores/instruction_offline.twig' %}
+      {% endif %}#}
 
     {% include 'parts/stores/instruction_online_offline.twig' %}
     {% include 'parts/stores/instruction_online.twig' %}
     {% include 'parts/stores/instruction_offline.twig' %}
-{#
-  <div id="store-information" class="hide" data-store-name="{{current_store.name}}" data-store-id="{{current_store.uid}}"></div>
-  {% include 'parts/popups/popup-givefeedback.twig' %}
-#}
+  </div>
+</section>
+
 
 {#{% if current_store.is_active==0 %}#}
     <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
