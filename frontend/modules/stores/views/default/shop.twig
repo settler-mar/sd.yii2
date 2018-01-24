@@ -144,31 +144,35 @@
 
 
   {#{% if current_store.related and current_store.relatedData.is_active in [0, 1] %}#}
-      <a class="btn btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto" href="/stores/{{ current_store.relatedData.routeUrl }}">
+      <a class="btn btn-black btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto" href="/stores/{{ current_store.relatedData.routeUrl }}">
         {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
       </a>
   {#{% endif %}#}
 </section>
 
 {#{% if current_store.is_active==-1 %}#}
-  <section class="shop-no_active">
-        Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта
+  <section class="shop-no_active margin">
+    <div class="page-wrap black_box align-center">
+      <h2 class="title-no-line">Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта</h2>
+    </div>
   </section>
 {#{% endif %}#}
 
 {#{% if current_store.short_description or content %}#}
-<section class="store-information tablets_order-1">
-  <div class="page-wrap">
+<section class="shop_information tablets_order-1 margin">
+  <div class=" page-wrap">
     <div class="accordion accordion_pc_off">
-      <h2 class="accordion-control accordion-title">
-        Информация о {{current_store.name}}
-      </h2>
-      <div class="accordion-content">
-        {% if current_store.short_description %}
-          {{ current_store.short_description|raw }}
-        {% else %}
-          {{ content|raw }}
-        {% endif %}
+      <div class="shop_information-border">
+        <h2 class="accordion-control accordion-title">
+          Информация краткая о {{current_store.name}}
+        </h2>
+        <div class="accordion-content">
+          {% if current_store.short_description %}
+            {{ current_store.short_description|raw }}
+          {% else %}
+            {{ content|raw }}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -176,8 +180,8 @@
 {#{% endif %}#}
 
 {#{% if current_store.is_active==0 %}#}
-  <section class="store-information store-not-active">
-    <div class="page-wrap">
+  <section class="shop_temporaty-inactive margin">
+    <div class="page-wrap black_box align-center">
       {{ _constant('shop_not_active_description')|raw}}
     </div>
   </section>

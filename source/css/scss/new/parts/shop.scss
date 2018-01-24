@@ -387,11 +387,6 @@
       padding: 20px;
     }
   }
-
-  &-no_active{
-    text-align: center;
-    color: $header_heart;
-  }
   &-calc-cashback {
     max-width: 640px;
     margin-left: auto;
@@ -450,6 +445,18 @@
 
       &-header {
         margin: 10px 0 20px;
+      }
+    }
+  }
+  &_information {
+    &-border {
+      background: #fafafa;
+      padding: 10px;
+      border: 1px solid #bbb;
+      @include media($tablets) {
+        background: inherit;
+        padding: 0;
+        border: none;
       }
     }
   }

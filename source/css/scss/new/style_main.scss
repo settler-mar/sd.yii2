@@ -250,6 +250,19 @@ svg.svg-no-fill{
     color: $btn_base_bg;
   }
 }
+.black_box {
+  background: $black_box_bg;
+  border: 2px dashed $black_box_border;
+  color: $header_heart;
+  padding: 20px;
+  max-width: 950px;
+
+  h3,h2{
+    color: $header_heart;
+  }
+}
+
+
 
 .round-box {
   border-radius: 10px;
