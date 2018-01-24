@@ -107,6 +107,7 @@
       font-size: 14px;
       margin-top: 4px;
     }
+
     .angle-down .icon:before {
       content: "+";
     }
@@ -152,6 +153,11 @@
       line-height: 10px;
       margin: auto 0 auto auto;
       padding-left: 10px;
+
+      @include media($tablets) {
+        content: ">";
+        transform: rotate3d(0,0,1,90deg) translate3d(-6px,0,0 );
+      }
     }
 
     +.accordion-content{
@@ -183,6 +189,11 @@
 
       &:after{
         content:"-";
+
+        @include media($tablets) {
+          content: ">";
+          transform: rotate3d(0,0,1,-90deg) translate3d(-6px,3px,0 );
+        }
       }
     }
     .angle-down{

@@ -29,7 +29,7 @@ class m180123_120301_addConstantAddBlock extends Migration
                 <h3 class="transition-message_header-yellow">Как решить проблему?</h3>
                 <div class="transition-message_item">
                     <p class="transition-message_paragraph">
-                       1) На время покупки <a href="/adblock" target="_blank" rel="nofollow noopener">отключите блокировщики рекламы</a> типа AdBlock, AdGuard, uBlock и т.п. Либо добавьте наш сайт в <a href="/adblock" target="_blank"  rel="nofollow noopener">белый список</a>
+                       1) На время покупки <a href="abp:subscribe?location=https://secretdiscounter.ru/adblock.txt&title=Secretdiscounter" target="_blank" rel="nofollow noopener">отключите блокировщики рекламы</a> типа AdBlock, AdGuard, uBlock и т.п. Либо добавьте наш сайт в <a href="/adblock" target="_blank"  rel="nofollow noopener">белый список</a>
                     </p>
                     <p class="transition-message_paragraph">
                          2) Если это не помогло, зайдите в настройки браузера и разрешите использование <a href="https://support.kaspersky.ru/common/windows/2843#block2">файлов cookie</a>
