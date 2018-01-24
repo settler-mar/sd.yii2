@@ -17,14 +17,14 @@
       {% endfor %}
     </div>
 
-    <div class="comments-handler">
+    <div class="align-center">
       {% if store_reviews|length>6 %}
-        <a class="btn show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все ({{ store_reviews|length }})</a>
-        <a class="btn hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все ({{ store_reviews|length }})</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
       {% endif %}
 
       {% if user_id %}
-        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn modals_open">Оставить отзыв</a>
+        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin modals_open">Оставить отзыв</a>
       {% else %}
         <p>
           Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
