@@ -19,8 +19,8 @@ class AppAsset extends AssetBundle
   ];
   public $depends = [
     'yii\web\YiiAsset',
-    'yii\bootstrap\BootstrapPluginAsset',
-    'yii\bootstrap\BootstrapAsset',
+    //'yii\bootstrap\BootstrapPluginAsset',
+    //'yii\bootstrap\BootstrapAsset',
   ];
 
   public function init()
@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
     parent::init();
 
     $url = Url::current();
-    $script_version = Yii::$app->params['scriptVersion'];
+    $script_version = YII_DEBUG?'':'.min';
     $path_scripts = Yii::$app->params['pathToScript'];
 
     $path = trim($url, '/');

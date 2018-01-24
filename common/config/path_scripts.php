@@ -2,18 +2,11 @@
 return  [
   'default'=>[
     'js'=>[
-      '/js/jquery-1.11.2.min.js',
-      '/js/scripts{{script_version}}.js',
-      '/js/external/jquery.mCustomScrollbar.concat.min.js',
-      '//ulogin.ru/js/ulogin.js',
+      //'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
+      '/js/new/scripts{{script_version}}.js',
     ],
     'css'=>[
-         '/css/external/import.fonts.css',
-         '/css/external/animate.min.css',
-         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-         '/css/external/jquery.mCustomScrollbar.min.css',
-         '/css/external/popup.css',
-         '/css/styles{{script_version}}.css',
+         '/css/new/styles{{script_version}}.css',
     ],
   ],
   'account'=>[
@@ -30,6 +23,7 @@ return  [
         '/css/external/jquery.mCustomScrollbar.min.css',
         '/css/external/popup.css',
         '/css/account/styles{{script_version}}.css',
+        '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
       ]
   ],
   'goto'=>[
@@ -38,6 +32,7 @@ return  [
     'css'=>[
       'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
       'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+      '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
       '/css/notemp/styles{{script_version}}.css',
     ],
   ],
@@ -53,6 +48,7 @@ return  [
         '/css/external/import.fonts.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700',
         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+        '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
         '/css/admin/styles{{script_version}}.css',
       ]
 

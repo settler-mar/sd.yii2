@@ -46,9 +46,6 @@ var paths = {
     }
 };
 
-var version = fs.readFileSync('./common/config/script_version.data');
-version=version.toString();
-
 //компилляция gulp compile (можно запускать поттдельностьи gupl js, gupl css и т.д.)
 //для слежения gulp  (browsersync выключен)
 //production = false - не минифицирует, делает sourcemap
@@ -216,7 +213,7 @@ function compileCss (source, dest) {
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
     .pipe(cleanCSS({compatibility: 'ie9'}))
-    .pipe(plugins.rename('styles.min.' + version + '.css'))
+    .pipe(plugins.rename('styles.min.css'))
     .pipe(gulp.dest(dest));
 }
 
@@ -229,7 +226,7 @@ function compileJs(sources, dest) {
       .pipe(gulp.dest(dest))
 
       .pipe(plugins.uglify())
-      .pipe(plugins.rename('scripts.min.'+version+'.js'))
+      .pipe(plugins.rename('scripts.min.js'))
       .pipe(gulp.dest(dest));
 }
 

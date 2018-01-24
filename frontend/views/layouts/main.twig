@@ -1,3 +1,6 @@
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+
 <!DOCTYPE html>
 <html lang="{{ app.language }}">
   <head>
@@ -11,8 +14,14 @@
     <title>{{ html.encode(this.title) }}</title>
 
     <!-- SEO -->
-    <meta name="keywords" content="__________" />
-    <meta name="description" content="__________" />
+    {{   void(this.head) }}
+    {% if app.controller.pagination_tags.prev_page != null %}
+      <link rel="prev" href="{{site_url}}{{app.controller.pagination_tags.prev_page}}">
+    {% endif %}
+    {% if app.controller.pagination_tags.next_page != null %}
+      <link rel="next" href="{{site_url}}{{app.controller.pagination_tags.next_page}}">
+    {% endif %}
+    {{ html.csrfMetaTags | raw }}
 
     <!-- favicon -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -21,8 +30,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <!--css-->
-    <link rel="stylesheet" href="/css/new/styles.css">
+
+    {% for style in exclusionCSSheader %}
+      <link rel="stylesheet" href="{{style}}">
+    {% endfor %}
+    {% for css_link in minifyCSS %}
+      <link rel="stylesheet" href="{{css_link}}">
+    {% endfor %}
+    {% for scriptH in exclusionJSheader %}
+      <script src="{{scriptH}}" {% if scriptH starts with 'http' %} async="async" {% endif %}></script>
+    {% endfor %}
+
+    {% include 'base/header_include.twig' %}
   </head>
   <body>
     <!--[if lt IE 9]>
@@ -50,7 +69,22 @@
     {% include 'index/down_page_baner.twig' %}
     {% include 'base/footer.twig' %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/new/scripts.js"></script>
+    {% include 'base/footer_include.twig' %}
+    {{   void(this.endBody()) }}
+
+    {% for script in minifyJS %}
+      <script src="{{script}}"></script>
+    {% endfor %}
+
+    {% for scriptF in exclusionJSfooter %}
+      <script src="{{scriptF}}" {% if scriptF starts with 'http' %} async="async" {% endif %}></script>
+    {% endfor %}
+
+    {{ Notification() | raw}}
+
+    {% if not this.user_id %}
+      <script charset="UTF-8" src="/js/msg.js" async></script>
+    {% endif %}
   </body>
 </html>
+{{ void(this.endPage()) }}
