@@ -19,7 +19,7 @@ class Banner extends Widget
     public function run()
     {
         $params = [
-            'place' => trim($this->place),
+            'place' => $this->place,
             'options' => $this->options,
         ];
         return Banners::show($params);

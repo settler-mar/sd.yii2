@@ -2,6 +2,8 @@
 
 namespace frontend\modules\banners\models;
 
+use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\stores\models\CategoriesStores;
 use Yii;
 use yii\web\UploadedFile;
 use frontend\modules\cache\models\Cache;
@@ -24,7 +26,7 @@ class Banners extends \yii\db\ActiveRecord
 {
     public $picture_file;
 
-    public $places_array = [
+    private $places_array = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
         'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
@@ -56,7 +58,7 @@ class Banners extends \yii\db\ActiveRecord
               ],
             [['new_window', 'is_active', 'order'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
-            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
+            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
         ];
     }
 
@@ -171,9 +173,16 @@ class Banners extends \yii\db\ActiveRecord
     public static function show($params = [])
     {
       //
-        $place = !empty($params['place']) ? $params['place'] : false;
+      $place = !empty($params['place']) ? $params['place'] : false;
+      if(is_string($place))
+        $place=explode(',',$place);
 
-        $cacheName = 'banners'.($place ? '_' . $place : '');
+      if(is_array($place)){
+        foreach ($place as &$item) $item=trim($item);
+      }
+
+
+      $cacheName = 'banners'.($place ? '_' . implode(',',$place) : '');
         $dependencyName = 'banners';
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
@@ -182,12 +191,13 @@ class Banners extends \yii\db\ActiveRecord
             $cacheName,
             function () use ($place) {
                 $banners = self::find()
-                     ->select(['picture', 'url', 'new_window'])
-                     ->where(['is_active' => 1]);
+                     ->select(['picture', 'url', 'new_window']);
                 if ($place) {
-                    $banners->andWhere(['like', 'places', $place]);
+                  foreach ($place as $item)
+                    $banners->orWhere(['like', 'places', $item]);
                 }
                 return $banners
+                    ->andWhere(['is_active' => 1])
                     ->orderBy('order')
                     ->asArray()
                     ->all();
@@ -217,4 +227,25 @@ class Banners extends \yii\db\ActiveRecord
         Cache::clearName('banners');
     }
 
+    public function getPlaces_array(){
+      $places_array=$this->places_array;
+
+      $cupons=CategoriesCoupons::find()->asArray()->all();
+      foreach($cupons as $cupon){
+        $places_array['cupons-'.$cupon['uid'].'-left-menu']=[
+            'name'=>'Купоны.Левое меню.'.$cupon['name']
+        ];
+      };
+
+      $stores=CategoriesStores::find()
+          ->where(['parent_id'=>0])
+          ->asArray()
+          ->all();
+      foreach($stores as $store){
+        $places_array['stores-'.$store['uid'].'-left-menu']=[
+            'name'=>'Магазины.Левое меню.'.$store['name']
+        ];
+      };
+      return $places_array;
+    }
 }
