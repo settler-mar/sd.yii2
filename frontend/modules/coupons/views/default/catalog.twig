@@ -84,22 +84,27 @@
                     {% include 'parts/dropdown-limit-catalog.twig' %}
                 </div>
 
-                <div  class="catalog-stores_stores margin">
+                <div  class="catalog-coupons margin">
 
 
-                    {% if stores|length > 0 %}
-                        <div class="catalog-stores_list shops margin">
-                            {% for store in stores %}
-                                {#<div class="col-sm-3 col-md-3">#}
-                                    {% include 'parts/shop.twig' %}
-                                {#</div>#}
+                    {% if coupons|length > 0 %}
+                        <div class="catalog-coupons_list shops margin">
+                          {% if coupons|length > 0 %}
+                            {% for coupon in coupons %}
+                                  {% include 'parts/coupon.twig' %}
                             {% endfor %}
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                            <div class="coupons coupons-empty"></div>
+                          {% else %}
+                            <div class="col-md-12">
+                              Ничего не найдено.
+                            </div>
+                          {% endif %}
+
                         </div>
 
                         <div class="catalog-stores_pagination catalog_pagination">
