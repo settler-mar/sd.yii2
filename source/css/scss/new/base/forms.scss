@@ -1,3 +1,33 @@
+//перебить стили браузера
+input[type=password],
+input[type=text],
+select,
+textarea{
+  background: #fff;
+
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: $placeholder_color;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: $placeholder_color;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    color: $placeholder_color;
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: $placeholder_color;
+  }
+
+  &.ctrl{
+    outline: none;
+    border-radius: 5px;
+    border: solid 1px $form_input_border;
+    color: $text_color;
+    padding: 3px 5px;
+    vertical-align: middle;
+  }
+}
+
 //валидатор форм
 .form-group{
   .help-block-error{

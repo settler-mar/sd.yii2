@@ -8,6 +8,7 @@ $btn_base_black_color: #FFF;
 
 /*общие*/
 $text_color: #1b2527;
+$placeholder_color: #666;
 //$header_bg_up: #1b2527;
 $header_bg_up: #121212;
 
@@ -99,7 +100,7 @@ $table_select_2n_bg:#fde699;
 
 /*accordion*/
 $accordion_control_bg: $btn_base_bg;
-$accordion_control_tablets_bg: $header_color_gray;
+$accordion_control_tablets_bg: #D2D6DE;
 $accordion_point: $accordion_control_bg;
 $accordion_content_border: #D2D6DE;
 $accordion_angle_color: $accordion_control_bg;

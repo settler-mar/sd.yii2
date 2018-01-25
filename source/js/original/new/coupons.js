@@ -14,22 +14,26 @@ $( document ).ready(function() {
       '<a href="#registration" class="btn btn-popup2 btn-revert">Зарегистрироваться</a>' +
       '</div>' +
       '<div>'
-    }
+    };
     notification.alert(data)
   });
+
+  function declOfNum(number, titles) {
+    cases = [2, 0, 1, 1, 1, 2];
+    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
+  }
+
+  function firstZero(v){
+    v=Math.floor(v);
+    if(v<10)
+      return '0'+v;
+    else
+      return v;
+  }
 
   var clocks=$('.clock');
   if(clocks.length>0){
     function updateClock(){
-
-      function firstZero(v){
-        v=Math.floor(v);
-        if(v<10)
-          return '0'+v;
-        else
-          return v;
-      }
-
       var clocks=$(this);
       var now=new Date();
       for(var i=0;i<clocks.length;i++){
@@ -58,7 +62,7 @@ $( document ).ready(function() {
 
         var str=firstZero(h)+":"+firstZero(m)+":"+firstZero(s);
         if(d>0){
-          str=d+" дней  "+str;
+          str=d+" "+declOfNum(d, ['день', 'дня', 'дней'])+"  "+str;
         }
         c.text(str);
       }

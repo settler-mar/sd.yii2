@@ -295,7 +295,7 @@
     &-header{
       margin: 0;
       text-align: center;
-      padding: 21px 0 15px 0;
+      padding: 30px 0 15px 0;
 
       @include media($tablets) {
         background: $header_border_color;
@@ -353,6 +353,7 @@
         padding: 30px 0;
         box-sizing: border-box;
         background: #fff;
+        margin-top: 15px;
 
         @include media($tablets) {
           margin-top: -20px;
@@ -393,6 +394,12 @@
     margin-left: auto;
     margin-right: auto;
 
+    label{
+      vertical-align: middle;
+      display: inline-block;
+      line-height: 31px;
+    }
+
     &_wrap {
       display: flex;
       flex-direction: column;
@@ -419,6 +426,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         margin: 0 auto ;
+        margin-bottom: 10px;
 
         label {
           margin-right: 10px;
@@ -445,7 +453,7 @@
       }
 
       &-header {
-        margin: 10px 0 20px;
+        margin: 10px 0 10px;
       }
     }
   }

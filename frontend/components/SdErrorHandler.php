@@ -21,6 +21,7 @@ class SdErrorHandler extends ErrorAction
       $this->checkDeletedPage();
       Yii::$app->params['global_bg']='gray-box';
       Yii::$app->params['global_wrap']='page-404';
+      Yii::$app->params['pre_footer_hide']=true;
     }
     return parent::run();
   }

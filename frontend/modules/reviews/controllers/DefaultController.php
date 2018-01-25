@@ -69,7 +69,7 @@ class DefaultController extends SdController
     if($shop>0){
       $store=Stores::findOne(['uid'=>$shop]);
       if(!$store){
-        $data['html']='<h2>Ошибка!!! Магазин не найден.</h2>';
+        $data['html']='<h2 class="title-no-line">Ошибка!!! Магазин не найден.</h2>';
         return json_encode($data);
       }
       $model->store_id=$shop;
@@ -81,7 +81,7 @@ class DefaultController extends SdController
         if ($model->store_id == null) {
           $review = Reviews::findOne(['store_id' => 0, 'user_id' => \Yii::$app->user->id]);
           if ($review) {
-            $data['html']='<h2>Ошибка!</h2>
+            $data['html']='<h2 class="title-no-line">Ошибка!</h2>
             <p style="text-align: center;">
               Вы уже оставили отзыв о сайте.<br>
               Теперь вы можете только 
@@ -92,7 +92,7 @@ class DefaultController extends SdController
             return json_encode($data);          }
         }
         if ($model->save()) {
-          $data['html']='<h2>Спасибо!</h2>
+          $data['html']='<h2 class="title-no-line">Спасибо!</h2>
             <p style="text-align: center;">
               Ваш отзыв успешно добавлен и будет<br>
               опубликован на сайте после модерации.
