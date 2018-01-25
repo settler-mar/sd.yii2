@@ -1,13 +1,10 @@
 <div class="current-coupon" data-uid="{{coupon.uid}}">
     {% if not_active %}
-        <div class="expiry col-sm-12" style="display: table-cell;">
-            <div class="expiry-text">Магазин {{coupon.store_name}} временно неактивен</div>
-        </div>
+        <div class="expiry-text">Магазин {{coupon.store_name}} временно неактивен</div>
     {% else %}
-        <div class="expiry col-sm-12">
-            <div class="expiry-text">срок действия купона истёк</div>
-        </div>
+        <div class="expiry-text">срок действия купона истёк</div>
     {% endif %}
+
     <div class="col-sm-12 col-md-4 logo">
         {% if coupon.store_action_id == 1 %}
         <span class="promo-label x2"></span>
