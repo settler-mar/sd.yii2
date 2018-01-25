@@ -42,10 +42,18 @@
             &:hover {
               color: $header_sub_menu_color_hover;
             }
-
+          }
+          &.cat_red {
+            color: $header_color_pointed;
+            &:hover {
+              color: $header_sub_menu_color_hover;
+            }
+          }
+          &.cat_bold {
+            font-weight: bold;
           }
 
-        }
+          }
 
         & > ul {
           max-height: 0;
