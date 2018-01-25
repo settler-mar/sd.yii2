@@ -306,6 +306,7 @@
 
     &-wrap{
       display: flex;
+      justify-content: space-around;
 
       @include media($tablets) {
         flex-direction: column;

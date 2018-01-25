@@ -133,16 +133,11 @@
     color: $text_color;
     border-radius: 3px;
     display: flex !important;
-    //max-width: 935px;
 
-    //&:before{
-    //  content:"\f067";
-    //  width: 20px;
-    //  display: inline-block;
-    //  text-align: center;
-    //  margin-left: 3px;
-    //  font: normal normal normal 14px/1 FontAwesome;
-    //}
+    @include media($tablets) {
+      background: $accordion_control_tablets_bg;
+    }
+
     &:after{
       content: "+";
       width: 20px;
@@ -156,7 +151,8 @@
 
       @include media($tablets) {
         content: ">";
-        transform: rotate3d(0,0,1,90deg) translate3d(-6px,0,0 );
+        transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
+        font-size: 16px;
       }
     }
 
@@ -241,7 +237,7 @@
     @include media($tablets) {
       .accordion-title {
         text-align: left;
-        background: $accordion_control_bg;
+        background: $accordion_control_tablets_bg;
         -webkit-margin-after: 0;
         -webkit-margin-before: 0;
         margin-top: 0;

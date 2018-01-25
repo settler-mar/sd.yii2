@@ -109,7 +109,7 @@
 
             <div class="accordion shop_header_big-accordion">
               <div class="accordion-control accordion-title">
-                Подробнее о тарифах:
+                Подробнее о тарифах
               </div>
               <div class="accordion-content">
                 {% if current_store.is_active==0 %}
@@ -198,7 +198,7 @@
 {% set photos = current_store.photoList %}
 {% set videos = current_store.video %}
 {% if photos | length or  videos | length %}
-  {% include 'parts/photos.twig' %}
+  {% include 'parts/stores/photos.twig' %}
 {% endif %}
 
 {% set related_stores = current_store.relatedStores %}
@@ -312,7 +312,7 @@
   {% endif %}
 
   {% if current_store.description %}
-    <section class="tablets_order-1">
+    <section class="tablets_order-1 tablets_hide">
       <div class="page-wrap">
         <div class="accordion accordion_pc_off">
           <h2 class="accordion-control accordion-title">Подробная информация о {{current_store.name}}</h2>
@@ -336,7 +336,7 @@
         {% endif %}
       </h2>
       <div class="accordion-content">
-        {#{% if current_store.is_offline==0 %}
+        {% if current_store.is_offline==0 %}
             {% if current_store.cpaLink.cpa_id==2 %}
               {% include 'parts/stores/instruction_online_offline.twig' %}
             {% else %}
@@ -344,11 +344,7 @@
             {% endif %}
           {% else %}
             {% include 'parts/stores/instruction_offline.twig' %}
-          {% endif %}#}
-
-        {% include 'parts/stores/instruction_online_offline.twig' %}
-        {% include 'parts/stores/instruction_online.twig' %}
-        {% include 'parts/stores/instruction_offline.twig' %}
+          {% endif %}
       </div>
   </div>
 </section>

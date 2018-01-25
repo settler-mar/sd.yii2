@@ -1,0 +1,25 @@
+{{ use({'Fotorama':'kotchuprik/fotorama/Widget'}) }}
+<section class="margin">
+  <div class="page-wrap">
+    <h2>Фото и видео {{ current_store.name }}</h2>
+    {% set gel=fotorama_begin({
+        'version' : '4.5.2',
+        'options' : {
+            'nav' : 'thumbs',
+            'allowfullscreen':'true',
+            'width':'100%',
+            'height':'70%',
+
+        },
+    }) %}
+        {% for video in videos %}
+            <a href="{{ video }}"></a>
+        {% endfor %}
+
+        {% for photo in photos %}
+            <img src="{{ photo }}" data-fit="contain">
+        {% endfor %}
+
+    {% do gel.end() %}
+  </div>
+</section>

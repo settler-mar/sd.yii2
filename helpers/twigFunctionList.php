@@ -52,6 +52,7 @@ function create_flash($type,$flashe){
   }
   return $js_t;
 }
+
 function _hyphen_words(array &$m,$wbr=false)
 {
   if (! array_key_exists(3, $m)) return $m[0];

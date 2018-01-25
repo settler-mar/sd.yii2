@@ -36,11 +36,12 @@
     top: $menu_height;
     width: 100%;
     background-color: $header_bg_second;
+    line-height: 40px;
+    z-index: 98;
+
     @include media($laptop_min) {
       background-color: $drop-menu-color;
     }
-    line-height: 40px;
-    z-index: 98;
 
     &.scrollable {
       position: absolute;
@@ -62,6 +63,7 @@
       }
 
     }
+
     &.scroll-down {
 
       position: relative;
@@ -71,10 +73,13 @@
         margin-top: 0;
       }
     }
+
     &.shadowed {
-      box-shadow: 0 7px 7px rgba(0,0,0,.2);
+      box-shadow: 0 7px 7px rgba(0,0,0,.2),
+                  0 -7px 0 $header_bg_second;
+
       @include media($laptop_min) {
-        box-shadow: none;
+        box-shadow: 0 -7px 0 $header_bg_second;
       }
     }
 
