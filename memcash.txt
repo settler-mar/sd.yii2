@@ -14,6 +14,7 @@ store_byid_<id> - магазин по Id ЗАВИСИМОСТЬ: stores_by_colum
 store_category_byid_<category_id> - категория магазина по id ЗАВИСИМОСТЬ: catalog_stores
 store_category_byroute_<route> - категория магазина по route ЗАВИСИМОСТЬ: catalog_stores
 store_coupons_store_<store_id> - купоны для магазина ЗАВИСИМОСТЬ: store_coupons_store
+popular_stores_with_promocodes - популярные маганизы с купонами
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
 categories_coupons - Cписок категорий купонов
 categories_coupons_byid_<id> - категория купонов по id

@@ -243,5 +243,6 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::deleteName('total_all_coupons_new');
     Cache::deleteName('stores_coupons');
     Cache::deleteName('categories_coupons');
+    Cache::deleteName('popular_stores_with_promocodes');
   }
 }
