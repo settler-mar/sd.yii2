@@ -1,0 +1,12 @@
+.dobro{
+  &-head {
+    background: url(/images/svg/heart-red.svg) no-repeat 50% 50%;
+    background-size: 150px;
+    min-height: 150px;
+    &_header1 {
+      font-size: 30px;
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+  }
+}
