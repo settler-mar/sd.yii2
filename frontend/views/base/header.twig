@@ -16,13 +16,13 @@
         {% if this.favorites %}
             {#если есть избранные#}
           <div class="btn-header btn-header_favorite mobile" >
-            <a data-toggle="tooltip" data-original-title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
+            <a href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
           </div>
         {% endif %}
         {% if this.user_id > 0 %}
             {#если есть уведомления добавлен класс#}
           <div class="header-logo_noty  btn-header mobile">
-            <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
+            <a  href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
           </div>
         {% endif %}
 
