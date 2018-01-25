@@ -70,6 +70,7 @@
       }
 
     }
+
   }
 
   &-cashback {
@@ -209,7 +210,17 @@
   &_header_big{
     background-size: cover;
     background: url(/images/templates/polygonal-bg.jpg) repeat-x center 100% #999;
-    color: #fff;
+    color: $shop_header_color;
+
+    &-question_icon {
+      width: 20px;
+      height: 20px;
+      color: $shop_header_color;
+      fill: $shop_header_color;
+      stroke: $shop_header_color;
+      display: inline;
+      vertical-align: bottom;
+    }
 
     @include media($tablets) {
       background: none;
