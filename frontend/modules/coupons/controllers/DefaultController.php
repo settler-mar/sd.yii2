@@ -288,7 +288,6 @@ class DefaultController extends SdController
                ->limit(50)
                ->all();
        }, Yii::$app->cache->defaultDuration);
-       dd($stores);
 
       return $stores;
   }
