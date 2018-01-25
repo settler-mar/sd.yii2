@@ -232,7 +232,7 @@ class Banners extends \yii\db\ActiveRecord
 
       $cupons=CategoriesCoupons::find()->asArray()->all();
       foreach($cupons as $cupon){
-        $places_array['cupons-'.$cupon['uid'].'-left-menu']=[
+        $places_array['coupons-'.$cupon['uid'].'-left-menu']=[
             'name'=>'Купоны.Левое меню.'.$cupon['name']
         ];
       };

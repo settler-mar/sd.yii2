@@ -2,12 +2,12 @@
   <div class="page-wrap">
     {% if additional_stores_category %}
       <h2>Популярные магазины из раздела
-        <a href="/stores/{{additional_stores_category.route}}">
+
           {{ additional_stores_category.name }} с&nbsp;кэшбэком
-        </a>
+
       </h2>
     {% else %}
-      <h2>Популярные магазины из&nbsp;<a href="/stores">нашего каталога</a></h2>
+      <h2>Другие популярные&nbsp;интернет-магазины</h2>
     {% endif %}
     <div class="shops">
       {% for store in additional_stores %}

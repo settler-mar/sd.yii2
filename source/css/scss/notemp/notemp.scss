@@ -598,9 +598,9 @@ body {
       padding: 30px;
       a {
         color: #FFC107;
-        text-decoration: none;
+        text-decoration: underline;
         &:hover {
-          text-decoration: underline;
+          text-decoration: none;
         }
       }
       &_paragraph {
@@ -617,8 +617,8 @@ body {
       }
       &_item-alert {
         padding-left: 125px;
-        background: url(/images/commons-emblem-hand.png) no-repeat 0 50%;
-        background-size: contain;
+        background: url(/images/commons-emblem-hand.png) no-repeat 0 -4px;
+        background-size: 110px;
       }
     }
 }

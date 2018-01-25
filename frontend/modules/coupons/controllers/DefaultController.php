@@ -189,7 +189,7 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     $contentData['slider'] = Slider::get();
-    return $this->render('index', $contentData);
+    return $this->render('catalog', $contentData);
   }
 
   /**
