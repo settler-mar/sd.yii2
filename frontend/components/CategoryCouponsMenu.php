@@ -37,7 +37,7 @@ class CategoryCouponsMenu extends Widget
         }
         $categories[] = [
             'name' => 'Новые промокоды',
-            'count' => null,
+            'count' => Coupons::activeCount('new'),
             'route' => 'new',
             'uid' => -4,
             'class' => 'cat_news',
@@ -52,7 +52,7 @@ class CategoryCouponsMenu extends Widget
         $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
         $categories = array_merge($categories, [[
           'name' => 'Завершившиеся акции',
-          'count' => Coupons::activeCount(true),
+          'count' => Coupons::activeCount('expired'),
           'route' => 'expired',
           'uid' => -1
         ]]);

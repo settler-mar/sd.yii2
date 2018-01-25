@@ -19,7 +19,10 @@ use frontend\models\RouteChange;
  */
 class DefaultController extends SdController
 {
-  /**
+    protected $top = false;
+    protected $new = false;
+
+   /**
    * @param string $actionId
    * @return null|string|\yii\base\Action
    * @throws \yii\web\NotFoundHttpException
@@ -46,7 +49,17 @@ class DefaultController extends SdController
         //$this->checkParams();
         echo $this->actionIndex($actionId, $categoryCoupons, $store);
         exit;
-      };
+      }
+      if ($actionId == 'top') {
+          $this->top = true;
+          echo $this->actionIndex($actionId);
+          exit;
+      }
+      if ($actionId == 'new') {
+          $this->new = true;
+          echo $this->actionIndex($actionId);
+          exit;
+      }
       //если нет категории или магазина
       //найти в удалённых шопах или категориях купонов
       $newRoute = RouteChange::getNew(
@@ -151,6 +164,24 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1]])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
+      if ($this->top) {
+          //top 20
+//        $subQuery = Stores::find()
+//          ->select(['cws2.uid', 'sum(cwc2.visit) as sum'])
+//          ->from(Stores::tableName() . ' cws2')
+//          ->leftJoin(Coupons::tableName() . ' cwc2', 'cwc2.store_id = cws2.uid')
+//          ->groupBy('cws2.uid')
+//          ->orderBy('sum DESC')
+//          ->limit(20);
+        $sort = 'cws.visit';
+        $limit = 20;
+        $cacheName .= '_' . $actionId;
+      }
+      if ($this->new) {
+          //новые
+        $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
+        $cacheName .= '_' . $actionId;
+      }
 
     }
     \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
