@@ -21,11 +21,12 @@
           Кэшбэк станет активным для вывода через
           <span>{{current_store.hold_time}} дней
                         <a href="#" class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
-                           title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше.">
-                            <i data-tooltip=""
-                               class="fa fa-question-circle-o" aria-hidden="true">
-                            </i>
-                        </a>
+                           data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+                        >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+                            {#<i data-tooltip=""#}
+                               {#class="fa fa-question-circle-o" aria-hidden="true">#}
+                            {#</i>#}
+
                     </span>
           <span class="avg">(среднее время обработки)</span>
           <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto btn-transform btn-un_color scroll_to">

@@ -26,7 +26,9 @@ use frontend\modules\cache\models\Cache;
  */
 class Coupons extends \yii\db\ActiveRecord
 {
-  /**
+  const NEW_COUPONS_SUB_DAYS = 10;//Новые купоны дней до
+
+    /**
    * @inheritdoc
    */
   public static function tableName()
@@ -165,18 +167,21 @@ class Coupons extends \yii\db\ActiveRecord
     return $stores;
   }
 
-  public static function activeCount($expired = false)
+  public static function activeCount($filter = '')
   {
     $cache = Yii::$app->cache;
-    $cacheName = 'total_all_coupons' . ($expired ? '_expired' : '');
-    $count = $cache->getOrSet($cacheName, function () use ($expired) {
+    $cacheName = 'total_all_coupons' . ($filter ? '_'.$filter : '');
+    $count = $cache->getOrSet($cacheName, function () use ($filter) {
       $result =  self::find()
         ->from(self::tableName() . ' cwc')
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
         ->where(['cws.is_active' => [0, 1]]);
-      if ($expired) {
+      //фильтры
+      if ($filter == 'expired') {
         $result->andWhere(['<=', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
-      } else {
+      } elseif ($filter == 'new') {
+        $result->andWhere(['>', 'cwc.date_start', date('Y-m-d H:i:s', time() - 60*60*24* self::NEW_COUPONS_SUB_DAYS)]);
+      } else  {
         $result->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
       }
       return $result->count();
@@ -235,7 +240,9 @@ class Coupons extends \yii\db\ActiveRecord
     //ключи
     Cache::deleteName('total_all_coupons');
     Cache::deleteName('total_all_coupons_expired');
+    Cache::deleteName('total_all_coupons_new');
     Cache::deleteName('stores_coupons');
     Cache::deleteName('categories_coupons');
+    Cache::deleteName('popular_stores_with_promocodes');
   }
 }

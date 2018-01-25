@@ -21,7 +21,8 @@ class Pagination
   private $options = [
     'page' => 0,
     'limit' => 50,
-    'asArray' => false
+    'asArray' => false,
+    'one_page' => false,//если задано, то без пагинации, просто limit значений
   ];
 
   private $cacheName;
@@ -54,11 +55,11 @@ class Pagination
 
       $cache = \Yii::$app->cache;
       $count = $cache->getOrSet($this->cacheName . '_count', function () {
-        return $this->activeRecord->count();
+        return $this->options['one_page'] ? $this->options['limit'] : $this->activeRecord->count();
       }, $cache->defaultDuration, $dependency);
     } else {
       //нет cacheName - count сразу из базы
-      $count = $this->activeRecord->count();
+      $count = $this->options['one_page'] ? $this->options['limit'] : $this->activeRecord->count();
     }
 
     $page = !empty($options['page']) ? $options['page'] - 1 : 0;

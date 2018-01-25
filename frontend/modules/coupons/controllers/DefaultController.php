@@ -12,6 +12,7 @@ use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 use frontend\modules\reviews\models\Reviews;
 use frontend\models\RouteChange;
+use yii;
 
 /**
  * Class DefaultController
@@ -19,7 +20,10 @@ use frontend\models\RouteChange;
  */
 class DefaultController extends SdController
 {
-  /**
+    protected $top = false;
+    protected $new = false;
+
+   /**
    * @param string $actionId
    * @return null|string|\yii\base\Action
    * @throws \yii\web\NotFoundHttpException
@@ -46,7 +50,17 @@ class DefaultController extends SdController
         //$this->checkParams();
         echo $this->actionIndex($actionId, $categoryCoupons, $store);
         exit;
-      };
+      }
+      if ($actionId == 'top') {
+          $this->top = true;
+          echo $this->actionIndex($actionId);
+          exit;
+      }
+      if ($actionId == 'new') {
+          $this->new = true;
+          echo $this->actionIndex($actionId);
+          exit;
+      }
       //если нет категории или магазина
       //найти в удалённых шопах или категориях купонов
       $newRoute = RouteChange::getNew(
@@ -151,11 +165,29 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1]])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
+      if ($this->top) {
+          //top 20
+//        $subQuery = Stores::find()
+//          ->select(['cws2.uid', 'sum(cwc2.visit) as sum'])
+//          ->from(Stores::tableName() . ' cws2')
+//          ->leftJoin(Coupons::tableName() . ' cwc2', 'cwc2.store_id = cws2.uid')
+//          ->groupBy('cws2.uid')
+//          ->orderBy('sum DESC')
+//          ->limit(20);
+        $sort = 'cws.visit';
+        $limit = 20;
+        $cacheName .= '_' . $actionId;
+      }
+      if ($this->new) {
+          //новые
+        $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
+        $cacheName .= '_' . $actionId;
+      }
 
     }
     \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
     //\Yii::$app->params['url_mask'] .=  ($request->get('all') ? '/all' : '');//на будущее, если нужны будут метатеги для /all/
-    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
+    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true, 'one_page'=> $this->top]);
 
     $contentData["coupons"] = $pagination->data();
     $contentData["total_v"] = $pagination->count();
@@ -165,6 +197,7 @@ class DefaultController extends SdController
     $contentData["page"] = empty($page) ? 1 : $page;
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
     $contentData["expired"] = $request->get('expired') ? 1 : null;
+    $contentData["popular_stores"] = $this->popularStores();
 
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
@@ -220,6 +253,43 @@ class DefaultController extends SdController
     header("Location: /coupons/".$parent->route, TRUE, 301);
     //$this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
+  }
+
+    /**
+     * шопы, имеющие активные купоны, по количеству использованных купонов
+     * @return mixed
+     */
+  protected function popularStores()
+  {
+       $cashe = Yii::$app->cache;
+       $stores = $cashe->getOrSet('popular_stores_with_promocodes', function(){
+           $subQuery = Stores::find()
+               ->select(['cws.uid', 'cws.name', 'cws.route', 'sum(cwc.visit) as visit'])
+               ->from(Stores::tableName() . ' cws')
+               ->leftJoin(Coupons::tableName() . ' cwc', 'cwc.store_id = cws.uid')
+               ->where(['cws.is_active' => [0, 1]])
+               ->groupBy('cws.uid')
+               ->orderBy('visit DESC')
+               ->having(['>', 'visit', 0])
+               ->limit(50);
+
+           return Stores::find()
+               ->select(['cws.uid', 'cws.name', 'cws.route', 'count(*) as count', 'sq.visit'])
+               ->from(Stores::tableName() . ' cws')
+               ->leftJoin(['sq' => $subQuery], 'sq.uid = cws.uid')
+               ->leftJoin(Coupons::tableName() . ' cwc', 'cwc.store_id = cws.uid')
+               ->where(['cws.is_active' => [0, 1]])
+               ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
+               ->andWhere(['>', 'sq.visit', 0])
+               ->groupBy('cws.uid')
+               ->having(['>', 'count', 0])
+               ->orderBy(['visit'=>SORT_DESC, 'count'=>SORT_DESC])
+               ->asArray()
+               ->limit(50)
+               ->all();
+       }, Yii::$app->cache->defaultDuration);
+
+      return $stores;
   }
 
 }
