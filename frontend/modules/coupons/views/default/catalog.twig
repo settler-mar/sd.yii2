@@ -22,8 +22,8 @@
             {#слева категории#}
             <div class="catalog-categories">
                 {#<h3 class="cathead">Категории</h3>#}
-                {{ use('frontend/components/CategoryMenu') }}
-                {% set category_tree = category_menu_widget({'ext_items':'favorite,all_shops'}) %}
+                {{ use('frontend/components/CategoryCouponsMenu') }}
+                {% set category_tree = category_coupons_menu_widget({'search_item':1}) %}
                 {% if category_tree %}
                     <div class="tree-cat accordeon">
                     {{category_tree|raw}}

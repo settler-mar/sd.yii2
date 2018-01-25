@@ -125,6 +125,12 @@
         font-weight: bold;
       }
     }
+    &.cat_red {
+      color: $header_color_pointed;
+      @include media($laptop-min) {
+        font-weight: bold;
+      }
+    }
     stroke: $header_sub_menu_color;
     fill: $header_sub_menu_color;
     text-decoration: none;
