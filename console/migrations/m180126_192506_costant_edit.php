@@ -16,6 +16,13 @@ class m180126_192506_costant_edit extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $constant = Constants::find()->where(['name'=>'shop_not_active_description'])->one();
+
+      if(!$constant){
+        $constant = new Constants();
+        $constant->name = "shop_not_active_description";
+        $constant->title = "Дополнительный текст для временно неактивных магазинов";
+        $constant->ftype = "reachtext";
+      }
         $constant->text = '<h2>Кэшбек в {{current_store.name}} временно неактивен</h2>
               <p>Но вы можете воспользоваться кэшбэком, промокодами или купонами в популярных магазинах, <strong>представленных ниже &darr; &darr; &darr;</strong></p>';
         $constant->save();
