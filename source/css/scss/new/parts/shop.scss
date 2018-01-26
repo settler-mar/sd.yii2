@@ -212,6 +212,10 @@
     background: url(/images/templates/polygonal-bg.jpg) repeat-x center 100% #999;
     color: $shop_header_color;
 
+    &-share{
+      order:-1;
+    }
+
     &-question_icon {
       width: 20px;
       height: 20px;
@@ -220,6 +224,12 @@
       stroke: $shop_header_color;
       display: inline;
       vertical-align: bottom;
+
+      @include media($tablets) {
+        color: $text_color;
+        fill: $text_color;
+        stroke: $text_color;
+      }
     }
 
     @include media($tablets) {
@@ -247,12 +257,10 @@
     @include media_min($tablets - 1) {
       &-accordion {
         & .accordion-control {
-          color: #fff;
-          padding: 0;
-          background: transparent;
-          font-size: 16px;
           z-index: 9;
           position: relative;
+          text-align: center;
+          display: block !important;
 
           &:after{
             display: none;
@@ -264,7 +272,7 @@
           padding: 0 !important;
           border-width: 0px !important;
           color: #fff;
-          max-height: 60px;
+          max-height: 0px;
           height: 60px!important;
           z-index: 9;
           position: relative;
@@ -277,6 +285,7 @@
             padding: 5px !important;
             background: #fff;
             color: $text_color;
+            background: $footer_link_color;
           }
 
           .accordion-content{
@@ -287,6 +296,11 @@
             padding: 5px !important;
             background: #fff;
             margin-bottom: 0!important;
+
+            +.accordion-control{
+              text-align: right;
+              background: #fff;
+            }
           }
 
           &:before{
@@ -354,6 +368,13 @@
           @include media($tablets) {
             margin-top: 0;
           }
+        }
+      }
+
+      &-body{
+        @include media($tablets) {
+          display: flex;
+          flex-direction: column;
         }
       }
 
@@ -488,5 +509,14 @@
         border: none;
       }
     }
+  }
+
+  &-howgetcashback{
+    background: url(/images/60-01.svg) 50% 50% no-repeat;
+    width: 100%;
+    height: 60px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }

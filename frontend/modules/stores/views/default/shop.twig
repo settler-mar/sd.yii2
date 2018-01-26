@@ -26,9 +26,7 @@
                data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
             >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
           </span>
-          <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto btn-transform btn-un_color scroll_to">
-            Для получения кэшбэка необходимо →
-          </a>
+          <a href="#howgetcashback" class="shop-howgetcashback scroll_to"></a>
         </div>
       </div>
 
@@ -104,13 +102,12 @@
                 {{ _no_br(current_store.conditions)|raw}}
               </div>
               <div class="accordion-control tablets_hide">
-                <a class="angle-down" href="#"></a>
                 <a class="angle-up" href="#"></a>
               </div>
             </div>
           {% endif %}
 
-          <div>
+          <div class="shop_header_big-share">
             <div class="footer-share-text">Поделиться:</div>
             <div class="share42init accauntSoc accauntSoc_32"
                  data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
