@@ -1,5 +1,9 @@
 .catalog {
   &-categories {
+    width: 320px;
+    @include media($laptop-min) {
+      width: 100%;
+    }
     li {
       list-style-type: none;
 
@@ -109,6 +113,40 @@
     }
     &_buttons {
       text-align: center;
+    }
+    &_popular-stores {
+      margin: 30px 0;
+      background-color: $coupons_popular_stores_background_color;
+      color: $coupons_popular_stores_color;
+      padding: 0 10px;
+      &-header {
+        margin: 0 0 10px;
+      }
+      &-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        a,span {
+          padding: 10px 5px;
+          margin-bottom: 5px;
+          border-radius: 3px;
+          margin-right: 10px;
+        }
+        a {
+          color: $coupons_popular_stores_color;
+          text-decoration: none;
+          background-color: $coupons_popular_stores_store_background_color;
+          &:hover {
+            background-color: $btn_base_bg;
+            color: $btn_base_color;
+          }
+        }
+        span {
+          color: $btn_base_dark_color;
+          background-color: $btn_base_dark_bg;
+        }
+
+      }
     }
   }
   &-stores {

@@ -205,6 +205,7 @@
 
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
+
 <section class="tablets_order-1">
   <div class="page-wrap">
     <div class="accordion accordion_pc_off">
@@ -212,6 +213,7 @@
       <div class="accordion-content">
         <div class="shops">
           {% for store in related_stores %}
+
             {% include 'parts/shop.twig' %}
           {% endfor %}
           <div class="shop shop-empty"></div>
@@ -222,6 +224,7 @@
           <div class="shop shop-empty"></div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
