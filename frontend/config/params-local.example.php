@@ -1,6 +1,6 @@
 <?php
 return [
-  'stores_menu_separate' => 0,
+  'stores_menu_separate' => 1,
   'ref_cpec' => [
     'ali'=>59914,
     'hotels'=>58326,

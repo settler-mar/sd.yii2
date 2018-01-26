@@ -138,7 +138,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $casheName = 'categories_stores ' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
+    $casheName = 'categories_stores' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
 
     if($where){
       $casheName .= '_'.str_replace(' ','_',$where);
@@ -151,18 +151,18 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
       if ($online !== null) {
-        $categories->andWhere(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
+        $categories->where(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
       }
       if ($where) {
         $categories
-            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index'])
-          ->where($where);
+          ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index'])
+          ->andWhere($where);
       }else{
         $categories
-            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
+          ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
                 'count(cstc.category_id) as count'])
-            ->where(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
-            ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid']);
+          ->andWhere(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
+          ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid']);
       }
       $categories = $categories->asArray()->all();
       return $categories;
@@ -196,7 +196,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
           ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
           . (Yii::$app->user->isGuest ? '' : '_user_' . Yii::$app->user->id);
     }
-
     $cats = $cache->getOrSet(
       $cacheName,
       function () use ($currentCategory, $showHidden, $online,$as_array,$where) {

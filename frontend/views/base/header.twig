@@ -114,7 +114,8 @@
           </a>
 
           {{ use('frontend/components/CategoryMenu') }}
-          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops'}) %}
+          {% set online = app.params.stores_menu_separate ? 1 : null %}
+          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'online': online}) %}
           {% if category_tree %}
             {{category_tree|raw}}
           {% endif %}
@@ -132,9 +133,19 @@
                 {{category_coupons|raw}}
             {% endif %}
         </li>
-        <li>
-          <a>Оффлайн-магазины</a>
-        </li>
+        {#если есть в настройках, выводим меню шопов оффлайн#}
+        {% if app.params.stores_menu_separate %}
+          <li class="drop-menu_group__up">
+            <a class="drop-menu_group__up-header" href="/stores/offline">
+              Оффлайн-магазины
+              {{ svg('angle-down','menu_angle-down')|raw }}
+            </a>
+            {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 0 }) %}
+            {% if category_tree %}
+                {{category_tree|raw}}
+            {% endif %}
+          </li>
+        {% endif %}
         <li class="desctop">
           <a>Двойной кэшбэк</a>
         </li>
