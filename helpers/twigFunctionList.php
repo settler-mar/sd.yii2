@@ -40,6 +40,9 @@ function create_flash($type,$flashe){
   if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
     $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
   }
+  if($txt.length<5){
+    return '';
+  }
   $js_t = 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";
   if($no_show_page){
     $if_ls=[];
@@ -392,7 +395,6 @@ $functionsList=[
     return str_replace("\n",'<br>',$txt);
   },
   'Notification'=>function () {
-    //$flashes = \Yii::$app->session->getAllFlashes(true);
     $flashes = \Yii::$app->session->getAllFlashes();
 
     if(isset(Yii::$app->params['exception'])){
@@ -453,17 +455,6 @@ $functionsList=[
   'implode'=>'implode',
   'svg'=>function ($name,$class=false) {
       return Help::svg($name, $class);
-//    $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
-//
-//    if(!is_readable($path)){
-//      return '<pre>Фаил не найден '.$path.'</pre>';
-//    }
-//
-//    $output=file_get_contents($path);
-//    if($class){
-//      $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
-//    }
-//    return $output;
   },
   'params'=>function($name){
     if(isset(Yii::$app->params[$name])) {

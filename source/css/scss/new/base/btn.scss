@@ -1,6 +1,6 @@
 @mixin btn_modification(){
   &-round{
-    border-radius: 1em;
+    border-radius: 2em;
   }
 
 
@@ -62,6 +62,12 @@
     &180{
       max-width: 180px;
     }
+    &140{
+      max-width: 140px;
+    }
+    &100{
+      max-width: 100px;
+    }
   }
 
   &-margin_top{
@@ -72,6 +78,12 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+
+  &-margin_vertical-mini{
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+
   &-black {
     background: $btn_base_black_bg;
     border-color: $btn_base_bg;

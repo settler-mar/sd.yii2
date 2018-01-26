@@ -20,12 +20,12 @@
 
     <div class="align-center">
       {% if store_reviews|length>6 %}
-        <a class="btn btn-mini btn-round btn-transform btn-margin show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все</a>
-        <a class="btn btn-mini btn-round btn-transform btn-margin hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
       {% endif %}
 
       {% if user_id %}
-        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin modals_open">Оставить отзыв</a>
+        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
       {% else %}
         <p>
           Для того, чтобы иметь возможность оставлять отзывы, Вам нужно

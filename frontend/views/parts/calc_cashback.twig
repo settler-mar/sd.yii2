@@ -7,13 +7,14 @@
         <div class="shop-calc-cashback_content-form">
           <label for="shop-calc-summ">Стоимость покупки</label>
             <input id="shop-calc-summ"
+                   class="ctrl"
                 type="text"
                 value="100"
                 data-cashback-currency="{{ current_store.currency }}"
                 data-cashback="{{current_store.displayed_cashback}}"
                 data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
             >
-        <select>
+        <select class="ctrl">
           {% for item in curs %}
             <option
                 value="{{item.value}}"

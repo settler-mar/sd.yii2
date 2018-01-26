@@ -406,7 +406,7 @@ svg.svg-no-fill{
 
   &-gray{
     &:before {
-      background-image: linear-gradient(to bottom, rgba(#CCC, 0), #CCC 75%);
+      background-image: linear-gradient(to bottom, rgba(#CCC, 0), $gray_box_bg 75%);
     }
   }
 

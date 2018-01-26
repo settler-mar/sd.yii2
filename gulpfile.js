@@ -183,7 +183,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/calc-cashback.js',
         paths.source.js+'/original/new/auto_hide_control.js',
         paths.source.js+'/original/new/scroll_to.js',
-        paths.source.js+'/original/new/hide_show_all.js'
+        paths.source.js+'/original/new/hide_show_all.js',
+        paths.source.js+'/original/new/coupons.js'
     ], paths.app.js+'/new')
 );
 

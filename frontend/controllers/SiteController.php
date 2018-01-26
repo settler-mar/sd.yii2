@@ -114,25 +114,6 @@ class SiteController extends SdController
     return $this->render('index', $data);
   }
 
-  /*  public function actionTests(){
-      try {
-        Yii::$app
-          ->mailer
-          ->compose(
-            ['html' => 'test', 'text' => 'test'],
-            [
-            ]
-          )
-          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('12312321')
-          ->setSubject(Yii::$app->name . ': Регистрация')
-          ->send();
-      } catch (\Exception $e) {
-        return 2;
-      }
-      return 1;
-    }*/
-
   public function actionAdmin(){
     if(
       Yii::$app->session->get('admin_id')!==null &&
@@ -373,17 +354,6 @@ class SiteController extends SdController
   }
 
   /**
-   * Displays 404 error.
-   *
-   * @return mixed
-   */
-//  public function action404()
-//  {
-//    $this->params['breadcrumbs'][] = '404';
-//    return $this->render('404');
-//  }
-
-  /**
    * @param $action - адрес страницы
    * @return string
    * @throws HttpException
@@ -396,8 +366,6 @@ class SiteController extends SdController
       ->asArray()
       ->one();
     if(!$page){
-      Yii::$app->params['global_bg']='gray-box';
-      Yii::$app->params['global_wrap']='page-404';
       throw new HttpException(404 ,'User not found');
     }
     if(Yii::$app->request->isAjax){

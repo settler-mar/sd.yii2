@@ -166,7 +166,7 @@
 
       <div class="shop_information-border">
         <h2 class="accordion-control accordion-title">
-          Краткая информация о {{current_store.name}}
+          Информация о {{current_store.name}}
         </h2>
         <div class="accordion-content">
           {% if current_store.short_description %}
@@ -210,20 +210,42 @@
 
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
-  <section class="store-intro margin">
-    <div class="page-wrap">
-          <h2>
-            Все магазины сети {{ current_store.network_name }}
-          </h2>
-        {% for store in related_stores %}
-          <div class="shops">
+
+<section class="tablets_order-1">
+  <div class="page-wrap">
+    <div class="accordion accordion_pc_off">
+      <h2 class="accordion-control accordion-title">Все магазины сети {{ current_store.network_name }}</h2>
+      <div class="accordion-content">
+        <div class="shops">
+          {% for store in related_stores %}
+
             {% include 'parts/shop.twig' %}
-          </div>
-        {% endfor %}
+          {% endfor %}
+          <div class="shop shop-empty"></div>
+          <div class="shop shop-empty"></div>
+          <div class="shop shop-empty"></div>
+          <div class="shop shop-empty"></div>
+          <div class="shop shop-empty"></div>
+          <div class="shop shop-empty"></div>
+        </div>
       </div>
-  </section>
+
+    </div>
+  </div>
+</section>
+
 {% endif %}
 
+<section class="tablets_order-1 tablets_hide">
+  <div class="page-wrap">
+    <div class="accordion accordion_pc_off">
+      <h2 class="accordion-control accordion-title">Подробная информация о {{current_store.name}}</h2>
+      <div class="accordion-content">
+        {{current_store.description|raw}}
+      </div>
+    </div>
+  </div>
+</section>
 
 {% if current_store.is_offline==1 %}
   {% if store_points and store_points.points|length > 0 %}
@@ -328,7 +350,7 @@
   {% endif %}
 
 
-<section class="tablets_order-1">
+<section class="tablets_order-1 gray-box">
   <div class="page-wrap">
     <div class="accordion accordion_pc_off" id="howgetcashback">
       <h2 class="accordion-control accordion-title">
@@ -349,6 +371,7 @@
             {% include 'parts/stores/instruction_offline.twig' %}
           {% endif %}
       </div>
+    </div>
   </div>
 </section>
 
