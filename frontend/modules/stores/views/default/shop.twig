@@ -19,16 +19,13 @@
         </div>
         <div class="shop_header_big-item-body">
           Кэшбэк станет активным для вывода через
-          <span>{{current_store.hold_time}} дней
-                        <a href="#" class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
-                           data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
-                        >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
-                            {#<i data-tooltip=""#}
-                               {#class="fa fa-question-circle-o" aria-hidden="true">#}
-                            {#</i>#}
-
-                    </span>
-          <span class="avg">(среднее время обработки)</span>
+          <span>{{current_store.hold_time}} дней</span>
+          <span class="avg">
+            (среднее время обработки)
+            <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
+               data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+            >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+          </span>
           <a href="#howgetcashback" class="btn btn-margin_vertical btn-max_width240 tablets-btn-block tablets-btn-margin_auto btn-transform btn-un_color scroll_to">
             Для получения кэшбэка необходимо →
           </a>
@@ -36,18 +33,6 @@
       </div>
 
       <div class="shop_header_big-item shop_header_big-item-logo_box">
-        <div>
-          <div class="footer-share-text">Поделиться:</div>
-          <div class="share42init accauntSoc accauntSoc_32"
-               data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
-               data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
-               data-title="{{ html.encode(this.title) }}"
-               data-description="{{ this.description }}"
-               data-socials="1,0,2,4,3,5,6"
-               data-icon-size="24"
-          >
-          </div>
-        </div>
         <div class="shop_header_big-item-logo">
           <div class="favorite">
 
@@ -124,6 +109,19 @@
               </div>
             </div>
           {% endif %}
+
+          <div>
+            <div class="footer-share-text">Поделиться:</div>
+            <div class="share42init accauntSoc accauntSoc_32"
+                 data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+                 data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
+                 data-title="{{ html.encode(this.title) }}"
+                 data-description="{{ this.description }}"
+                 data-socials="1,0,2,4,3,5,6"
+                 data-icon-size="24"
+            >
+            </div>
+          </div>
         </div>
       </div>
     </div>
