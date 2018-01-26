@@ -8,26 +8,42 @@
       {% endif %}
     </h1>
     <div class="shop_header_big-wrap">
-      <div class="shop_header_big-item shop_header_big-item_left">
-        <div class="shop_header_big-item-head">
-          {{
-            _if(current_store.is_offline,
-          'Оффлайн-магазин',
-          'Интернет-магазин') | raw
-          }}
+      <div class="shop_header_big-item shop_header_big-item_ticket">
 
+        <div class="shop_header_big-item_ticket-wrap">
+          <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
+              <div class="promo">
+                Кэшбэк
+                {% if current_store.action_id != 0 %}
+                  <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+                {% endif %}
+                <span class="promo">{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
+              </div>
+          </div>
+          <div class="shop_header_big-item_ticket-down">
+            {% if current_store.is_offline==0 %}
+              Для получения кэшбэка следуйте
+              <a href="#howgetcashback" class="shop-howgetcashback scroll_to">инструкции</a>
+            {% else %}
+              Для получения кэшбэка покажите кассиру свой
+              <a href="#howgetcashback" class="shop-howgetcashback scroll_to">штрихкод</a>
+            {% endif %}
+          </div>
         </div>
-        <div class="shop_header_big-item-body">
-          Кэшбэк станет активным для вывода через
-          <span>{{current_store.hold_time}} дней</span>
-          <span class="avg">
-            (среднее время обработки)
-            <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
-               data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
-            >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
-          </span>
-          <a href="#howgetcashback" class="shop-howgetcashback scroll_to"></a>
+
+        <div class="shop_header_big-share">
+          <div class="footer-share-text">Поделиться:</div>
+          <div class="share42init accauntSoc accauntSoc_32"
+               data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+               data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
+               data-title="{{ html.encode(this.title) }}"
+               data-description="{{ this.description }}"
+               data-socials="1,0,2,4,3,5,6"
+               data-icon-size="24"
+          >
+          </div>
         </div>
+
       </div>
 
       <div class="shop_header_big-item shop_header_big-item-logo_box">
@@ -76,49 +92,45 @@
       </div>
 
       <div class="shop_header_big-item">
-        <div class="shop_header_big-item-head cashback">
-          <div class="{% if current_store.action_id != 0 %}old{% endif %}">
-            Кэшбэк
-            <span>{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
-          </div>
-          {% if current_store.action_id != 0 %}
-            <div class="promo">
-              Кэшбэк
-              <span>{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
-            </div>
-          {% endif %}
+        <div class="shop_header_big-item-head ">
+
+          {{
+          _if(current_store.is_offline,
+          'Оффлайн-магазин',
+          'Интернет-магазин') | raw
+          }}
         </div>
         <div class="shop_header_big-item-body">
-          {% if current_store.conditions != '' or current_store.is_active==0 %}
+          <div class="accordion shop_header_big-accordion">
+            <div class="accordion-control accordion-title">
+              Подробнее о тарифах
+            </div>
+            <div class="accordion-content">
+              {% if current_store.is_active==0 %}
+                {{ _constant('shop_not_info')|raw}}
+              {% endif %}
 
-            <div class="accordion shop_header_big-accordion">
-              <div class="accordion-control accordion-title">
-                Подробнее о тарифах
-              </div>
-              <div class="accordion-content">
-                {% if current_store.is_active==0 %}
-                  {{ _constant('shop_not_info')|raw}}
-                {% endif %}
+              {% if current_store.conditions != ''%}
                 {{ _no_br(current_store.conditions)|raw}}
-              </div>
+              {% else %}
+                Дополнительные тарифы для магазина {{current_store.name}} отсутствуют.
+                Текущая ставка кэшбэка – {{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}.
+              {% endif %}
+
               <div class="accordion-control tablets_hide">
                 <a class="angle-up" href="#"></a>
               </div>
             </div>
-          {% endif %}
-
-          <div class="shop_header_big-share">
-            <div class="footer-share-text">Поделиться:</div>
-            <div class="share42init accauntSoc accauntSoc_32"
-                 data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
-                 data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
-                 data-title="{{ html.encode(this.title) }}"
-                 data-description="{{ this.description }}"
-                 data-socials="1,0,2,4,3,5,6"
-                 data-icon-size="24"
-            >
-            </div>
           </div>
+
+          Кэшбэк станет активным для вывода через
+          <span>{{current_store.hold_time}}&nbsp;дней</span>
+          <span class="avg">
+              (среднее время обработки)
+              <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
+                 data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+              >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+          </span>
         </div>
       </div>
     </div>
@@ -147,16 +159,15 @@
 </section>
 
 {#{% if current_store.is_active==-1 %}#}
-  <section class="shop-no_active margin">
-    <div class="page-wrap black_box align-center">
+  <section class="shop-no_active margin page-wrap">
+    <div class="black_box align-center">
       <h2 class="title-no-line">Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта</h2>
     </div>
   </section>
 {#{% endif %}#}
 
 {#{% if current_store.short_description or content %}#}
-<section class="shop_information tablets_order-1">
-  <div class=" page-wrap">
+<section class="shop_information tablets_order-1 page-wrap">
     <div class="accordion accordion_pc_off">
 
       <div class="shop_information-border">
@@ -173,13 +184,12 @@
 
       </div>
     </div>
-  </div>
 </section>
 {#{% endif %}#}
 
 {#{% if current_store.is_active==0 %}#}
-  <section class="shop_temporaty-inactive margin">
-    <div class="page-wrap black_box align-center">
+  <section class="shop_temporaty-inactive margin page-wrap">
+    <div class="black_box align-center">
       {{ _constant('shop_not_active_description')|raw}}
     </div>
   </section>
@@ -229,17 +239,6 @@
   </div>
 </section>
 {% endif %}
-
-<section class="tablets_order-1 tablets_hide">
-  <div class="page-wrap">
-    <div class="accordion accordion_pc_off">
-      <h2 class="accordion-control accordion-title">Подробная информация о {{current_store.name}}</h2>
-      <div class="accordion-content">
-        {{current_store.description|raw}}
-      </div>
-    </div>
-  </div>
-</section>
 
 {% if current_store.is_offline==1 %}
   {% if store_points and store_points.points|length > 0 %}
@@ -370,11 +369,11 @@
 </section>
 
 
-{#{% if current_store.is_active==0 %}#}
+{#{% if current_store.is_active==0 %}
     <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
       {{ _constant('shop_not_active_message')|raw}}
     </div>
-{#  {% endif %}#}
+ {% endif %}#}
 
 {#
   {% include 'parts/store_rating_microdata.twig' %}
