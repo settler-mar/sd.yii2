@@ -252,9 +252,9 @@ svg.svg-no-fill{
 .black_box {
   background: $black_box_bg;
   border: 2px dashed $black_box_border;
-  color: $header_heart;
+  color: #fff;
   padding: 20px;
-  max-width: 950px;
+  //max-width: 950px;
 
   h3,h2{
     color: $header_heart;
@@ -477,4 +477,5 @@ svg.svg-no-fill{
 @import "parts/recommendations";
 @import "parts/terms";
 @import "parts/user_reviews";
+@import "parts/dobro";
 
