@@ -227,9 +227,9 @@
     &-question_icon {
       width: 20px;
       height: 20px;
-      color: $shop_header_color;
-      fill: $shop_header_color;
-      stroke: $shop_header_color;
+      color: $footer_link_color;
+      fill: $footer_link_color;
+      stroke: $footer_link_color;
       display: inline;
       vertical-align: bottom;
 
@@ -451,6 +451,7 @@
           padding: 10px 10px 10px 10px;
           background: #f7c714;
           border-radius: 0 0 10px 10px;
+          color: $header_heart;
         }
       }
 
@@ -478,6 +479,10 @@
       }
 
       &-body{
+        @include media_min($tablets - 1) {
+          color: $footer_link_color;
+        }
+
         @include media($tablets) {
           display: flex;
           flex-direction: column;

@@ -15,6 +15,7 @@ class m180124_153236_UpdateConstantsStorePage extends Migration
     {
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $constant = Constants::find()->where(['name'=>'shop_no_cashback'])->one();
         $constant->text = '<h2 class="title-no-line">Магазин {{current_store.name}} перешел в разряд благотворительных</h2>
             <p>К сожалению, магазин {{current_store.name}} <strong>запретил выплачивать кэшбэк</strong>
