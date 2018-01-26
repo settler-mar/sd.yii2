@@ -15,12 +15,24 @@
           //min-width: 70px;
           min-width: 100px;
           text-align: center;
+          @include media($tablets) {
+            min-width: inherit;
+            //width: 0;
+            font-size: 120px;
+            margin-right: 0;
+            color: rgba(48, 136, 207, .7);
+          }
         }
         &-stores {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
+          @include media($tablets) {
+            justify-content: center;
+            margin: 0 auto;
+          }
           a {
+
             display: block;
             min-width: 130px;
             padding: 5px 8px;
@@ -29,6 +41,11 @@
             &:hover {
               color: $coupons_abc_store_color;
               text-decoration: underline;
+            }
+            @include media($tablets) {
+              padding: 8px 12px;
+              min-width: inherit;
+              font-size: 17px;
             }
           }
         }
@@ -40,8 +57,15 @@
       flex-wrap: wrap;
       padding: 0;
       border-top: 1px solid $coupons_abc_border_color;
+      @include media($tablets) {
+        justify-content: center;
+      }
       a,span {
         padding: 10px 8px;
+        @include media($tablets) {
+          padding: 12px 15px;
+          font-size: 17px;
+        }
       }
       &.row-2 {
         border-top: 1px solid $coupons_abc_border_color;
@@ -49,6 +73,10 @@
         margin-bottom: 10px;
         a,span {
           padding: 10px 6px;
+          @include media($tablets) {
+            padding: 12px 15px;
+            font-size: 17px;
+          }
         }
 
       }
