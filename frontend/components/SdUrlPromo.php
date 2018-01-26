@@ -36,7 +36,7 @@ class SdUrlPromo implements UrlRuleInterface
     }
 
     if(!$ref_href && strlen($pathInfo)>2) {
-       $ref_href = $pathInfo;
+      $ref_href = $pathInfo;
     }
 
     if (isset($params['r']) || isset($params['promo'])) {
@@ -53,12 +53,11 @@ class SdUrlPromo implements UrlRuleInterface
             if (Yii::$app->user->isGuest && $user) {
                 Yii::$app->session->set('referrer_id', $user->uid);
                 $refEn = true;
-            };
+            }
 
             if(!$ref_href && isset($ref_redirect[$user->uid])){
                 $ref_href=$ref_redirect[$user->uid];
             }
-
         }
         //проверка ссылки promo
         if (!empty(Yii::$app->params['ref_promo'])) {
@@ -71,15 +70,14 @@ class SdUrlPromo implements UrlRuleInterface
             }
           }
         }
-        if ($refEn || $promoEn) {
+
+        //if ($refEn || $promoEn || $ref_href) {
             $ref_href='/'.trim($ref_href ? $ref_href : '','/');
             Yii::$app->getResponse()->redirect($ref_href, 301);
             return ['', $params];
-        }
+       // }
     }
     return false;
-
-
   }
 
 
