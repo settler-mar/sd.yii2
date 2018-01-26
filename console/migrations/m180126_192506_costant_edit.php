@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-
+use frontend\modules\constants\models\Constants;
 /**
  * Class m180126_192506_costant_edit
  */
