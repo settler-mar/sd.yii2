@@ -187,7 +187,7 @@ class Banners extends \yii\db\ActiveRecord
                 if ($place) {
                     $banners->andWhere(['like', 'places', $place]);
                 }
-                return $banners->asArray()->all();
+                return $banners->orderBy(['order' =>SORT_ASC])->asArray()->all();
             },
             $cache->defaultDuration,
             $dependency
