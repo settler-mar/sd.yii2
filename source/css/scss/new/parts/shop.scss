@@ -596,7 +596,14 @@
       &-header {
         margin: 10px 0 10px;
       }
+
+      &-description{
+        margin-top: 16px;
+        color: $search_item_cashback_color;
+      }
     }
+
+
   }
   &_information {
     margin-bottom: 38px;
