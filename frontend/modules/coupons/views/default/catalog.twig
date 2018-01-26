@@ -30,10 +30,15 @@
                     </div>
                     {% if popular_stores %}
                         <div class="catalog-categories_popular-stores">
-                            <h4 class="catalog-categories_popular-stores-header"></h4>
+                            <h3 class="catalog-categories_popular-stores-header">Самые популярные магазины с промокодами</h3>
                             <div class="catalog-categories_popular-stores-content">
                             {% for store in popular_stores %}
-                                <a href="/coupons/{{ store.route }}">{{ store.name }}</a>
+                                {% if app.request.pathinfo == 'coupons/'~store.route %}
+                                    <span>{{ store.name }}</span>
+                                {% else %}
+                                    <a href="/coupons/{{ store.route }}">{{ store.name }}</a>
+                                {% endif %}
+                                {#<a href="/coupons/{{ store.route }}" {% if app.request.pathinfo == 'coupons/'~store.route %}class="active"{% endif %}>{{ store.name }}</a>#}
                             {% endfor %}
                             </div>
                         </div>
