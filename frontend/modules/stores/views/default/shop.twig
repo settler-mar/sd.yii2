@@ -210,21 +210,17 @@
 
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
-  <section class="store-intro shops">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h3>
+  <section class="store-intro margin">
+    <div class="page-wrap">
+          <h2>
             Все магазины сети {{ current_store.network_name }}
-          </h3>
-        </div>
+          </h2>
         {% for store in related_stores %}
-          <div class="col-sm-3 col-md-2">
+          <div class="shops">
             {% include 'parts/shop.twig' %}
           </div>
         {% endfor %}
       </div>
-    </div>
   </section>
 {% endif %}
 

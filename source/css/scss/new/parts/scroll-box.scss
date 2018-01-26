@@ -149,6 +149,9 @@
   &-text{
     //margin-top: 20px;
     padding: 18px;
+    a {
+      color: $shop_review_link_color;
+    }
   }
 
   &-answer{

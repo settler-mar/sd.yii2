@@ -350,6 +350,11 @@
         flex-direction: column;
         justify-content: center;
         margin-bottom: 12px;
+        &.cashback {
+          @include media($tablets) {
+            margin-top: 0;
+          }
+        }
       }
 
       &-logo{

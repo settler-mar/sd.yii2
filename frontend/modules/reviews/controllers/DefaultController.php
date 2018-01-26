@@ -92,7 +92,7 @@ class DefaultController extends SdController
             return json_encode($data);          }
         }
         if ($model->save()) {
-          $data['html']='<h2>Спасибо!</h2>
+          $data['html']='<h2 class="title-no-line">Спасибо!</h2>
             <p style="text-align: center;">
               Ваш отзыв успешно добавлен и будет<br>
               опубликован на сайте после модерации.
