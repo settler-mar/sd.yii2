@@ -145,7 +145,7 @@ var headerActions = function () {
                         }
                         if (data.suggestions.length) {
                             data.suggestions.forEach(function(item){
-                                var html = '<a href="/stores/'+item.data.route+'"'+'>'+item.value+item.cashback+'</a>';
+                                var html = '<a class="autocomplete_link" href="/stores/'+item.data.route+'"'+'>'+item.value+item.cashback+'</a>';
                                 var li = document.createElement('li');
                                 li.innerHTML = html;
                                 if (autocompleteList) {
@@ -170,8 +170,10 @@ var headerActions = function () {
             }
         }
         return false;
-    }).on('focusout',function(){
-        $('#autocomplete').hide();
+    }).on('focusout',function(e){
+        if (!$(e.relatedTarget).hasClass('autocomplete_link')) {
+            $('#autocomplete').hide();
+        }
     });
 
 
