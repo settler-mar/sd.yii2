@@ -263,7 +263,7 @@ $( document ).ready(function() {
   mw=screen.width-40;
   p = $('.container img,.container iframe');
   $('.container img').height('auto');
-  $('.container img').width('auto');
+  //$('.container img').width('auto');
   for (i = 0; i < p.length; i++) {
     el = p.eq(i);
     var parent = el.parent();
@@ -274,7 +274,7 @@ $( document ).ready(function() {
     if (m_w > mw)m_w = mw;
     if (el.width() > m_w) {
       k = el.width() / m_w;
-      el.height(el.height() / k);
+      //el.height(el.height() / k);
       el.width(m_w)
     }
   }
