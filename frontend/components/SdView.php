@@ -84,17 +84,31 @@ class SdView extends View
         $tags[] = substr($meta, strpos($meta, 'property="') + 10, strpos($meta, '" ') - strpos($meta, 'property="') - 10);
       }
     }
+    Yii::$app->view->metaTags[]='<meta name="twitter:card" value="summary_large_image">';
+    Yii::$app->view->metaTags[]='<meta property="og:type" content="website">';
+    Yii::$app->view->metaTags[]='<meta property="og:site_name" content="SecretDiscounter">';
+    Yii::$app->view->metaTags[]='<meta itemprop="name" content="SecretDiscounter">';
+
     if (!in_array('og:url', $tags)) {
       Yii::$app->view->metaTags[]='<meta property="og:url" content="https://secretdiscounter.ru/'.$request->pathInfo.'" />';
+      Yii::$app->view->metaTags[]='<meta property="twitter:url" content="https://secretdiscounter.ru/'.$request->pathInfo.'" />';
+      Yii::$app->view->metaTags[]='<meta property="twitter:domain" content="https://secretdiscounter.ru/" />';
     }
     if (!in_array('og:title', $tags)) {
       Yii::$app->view->metaTags[]='<meta property="og:title" content="'.$this->title.'" />';
+      Yii::$app->view->metaTags[]='<meta name="twitter:title" content="'.$this->title.'">';
     }
     if (!in_array('og:description', $tags)) {
       Yii::$app->view->metaTags[]='<meta property="og:description" content="'.$this->description.'" />';
+      Yii::$app->view->metaTags[]='<meta property="twitter:description" content="'.$this->description.'" />';
+      Yii::$app->view->metaTags[]='<meta itemprop="description" content="'.$this->description.'" />';
     }
     if (!in_array('og:image', $tags)) {
       Yii::$app->view->metaTags[]='<meta property="og:image" content="https://secretdiscounter.ru/images/templates/woman_600.png" />';
+      Yii::$app->view->metaTags[]='<meta property="twitter:image:src" content="https://secretdiscounter.ru/images/templates/woman_600.png" />';
+      Yii::$app->view->metaTags[]='<meta itemprop="image" content="https://secretdiscounter.ru/images/templates/woman_600.png" />';
+      /*<meta property="og:image:width" content="968">
+<meta property="og:image:height" content="504">*/
     }
 
   }
