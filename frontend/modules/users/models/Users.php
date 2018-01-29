@@ -778,4 +778,19 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     }
     return self::find()->where(['uid' => Yii::$app->user->id])->one();
   }
+
+  public function getAction(){
+    return Users::find()
+        ->alias('user')
+        ->andFilterWhere(['>', 'user.in_action', 0])
+        ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+        ->select([
+            'count(ref.uid) as reg_by_action',
+            'sum(if(ref.sum_confirmed>350,1,0)) as finish_by_action',
+        ])
+        ->groupBy('user.uid')
+        ->where(['user.uid'=>$this->uid])
+        ->asArray()
+        ->one();
+  }
 }
