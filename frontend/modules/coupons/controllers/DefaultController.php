@@ -179,7 +179,7 @@ class DefaultController extends SdController
       }
       if ($this->new) {
           //новые
-        $this->params['breadcrumbs'][] = ['label' => 'Топ 20', 'url'=>'/coupons/new'];
+        $this->params['breadcrumbs'][] = ['label' => 'Новые промокоды', 'url'=>'/coupons/new'];
         $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
         $cacheName .= '_' . $actionId;
       }

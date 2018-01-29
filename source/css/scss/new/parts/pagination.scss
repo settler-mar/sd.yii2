@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 
 
     @include media($tablets) {
@@ -27,10 +28,17 @@
         margin-right: auto;
       }
       &:not(:last-child) {
-        margin-right: 20px;
+        margin-right: 10px;
         @include media($tablets) {
-          margin-bottom: 20px;
+          margin-bottom: 10px;
           margin-right: auto;
+        }
+      }
+      &:not(:first-child) {
+        margin-left: 10px;
+        @include media($tablets) {
+          margin-top: 10px;
+          margin-left: auto;
         }
       }
       &:hover {
