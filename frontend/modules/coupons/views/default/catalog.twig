@@ -96,11 +96,30 @@
                     {% endif %}
                 </div>
 
-                {#{% if current_category.down_description %}#}
-                    {#<div class="catalog_category-down-description margin">#}
-                        {#{{current_category.down_description|raw}}#}
-                    {#</div>#}
-                {#{% endif %}#}
+                {% if show_expired == 1 %}
+                    <div class="coupons_buttons align-center">
+                        {% if counts.actual > 0 %}
+                            {% if current_store %}
+                                <a class="btn btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}"><span>Новые промокоды этого магазина ({{ counts.actual }})</span></a>
+                            {% endif %}
+                            {% if current_category %}
+                                <a class="btn btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}"><span>Новые промокоды этой категории ({{ counts.actual }})</span></a>
+                            {% endif %}
+                        {% endif %}
+                        <a class="btn  btn-round" href="/coupons"><span>Новые промокоды всех магазинов ({{ total_all_coupons }})</span></a>
+                    </div>
+                {% endif %}
+                {% if show_expired == null and counts.expired %}
+                    <div class="coupons_buttons align-center margin">
+                        {% if current_store %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% elseif current_category %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% else %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 {% if content and page==1%}
                     <div class="catalog_category-content margin">
