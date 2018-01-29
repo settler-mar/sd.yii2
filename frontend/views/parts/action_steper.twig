@@ -1,0 +1,33 @@
+{% if not user_id %}
+  {% set step=0 %}
+{% elseif user.loyalty_status==4 and new_loyalty_status_end==0 %}
+  {% set step=4 %}
+{% elseif not user.in_action %}
+  {% set step=1 %}
+{% else %}
+  {% set step=2 %}
+{% endif %}
+
+<ol>
+  <li {{ _if(step>0,'class=do_finish') }}>
+    {% if step==0 %}
+      <a class="registration ignore-hash" href="#registration" rel="nofollow">Зарегистрироваться</a> / <a class="registration ignore-hash" href="#login" rel="nofollow">авторизироваться</a> на сайте
+    {% else %}
+      Зарегистрироваться / авторизироваться на сайте
+    {% endif %}
+  </li>
+  <li {{ _if(step>1,'class=do_finish') }}>
+    {% if step==1 %}
+      <a class="ajaxFormOpen ignore-hash" href="#startaction" rel="nofollow">Подтвердить</a> участие в акции
+    {% else %}
+      Подтвердить участие в акции
+    {% endif %}
+  </li>
+  <li {{ _if(step>2,'class=do_finish') }}>
+    Дождаться, пока у трех ваших приведенных друзей накопится подтвержденный кэшбэк не менее 350 рублей у каждого.
+    {% if step>1 %}
+      За накоплением кэшбэка реффералов можно следить <a target="_blank" href="/account/users">тут</a>.
+    {% endif %}
+  </li>
+  <li {{ _if(step>3,'class=do_finish') }}>Администратор меняет статус вашего личного аккаунта на Platinum и уведомляет вас.</li>
+</ol>

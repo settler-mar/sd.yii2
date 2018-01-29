@@ -371,6 +371,33 @@ class SiteController extends SdController
     return $this->render('404');
   }
 
+  function actionStartaction()
+  {
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      return $this->goHome();
+    }
+
+    if (!($user=Users::this())) { // если мы не залогинены
+      return json_encode([
+          'html'=>$this->renderAjax('login_first')
+      ]);
+    }
+
+    $user=Users::this();
+    if($user->in_action) {
+      return json_encode([
+          'html'=>$this->renderAjax('already_in_action',['user'=>$user])
+      ]);
+    }else{
+      $user->in_action=date('Y-m-d H:i:s');
+      $user->save();
+      return json_encode([
+          'html'=>$this->renderAjax('start_action')
+      ]);
+    }
+  }
+
   /**
    * @param $action - адрес страницы
    * @return string

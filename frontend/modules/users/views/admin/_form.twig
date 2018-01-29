@@ -83,6 +83,12 @@
 
                 {{ form.field(model, 'loyalty_status').dropDownList(loyalty_status_list)|raw }}
 
+                {{ form.field(model, 'new_loyalty_status_end').textInput({
+                    'value':date(model.new_loyalty_status_end,'H:i:s',false)
+                })|raw }}
+
+                {{ form.field(model, 'in_action').textInput()|raw }}
+
                 {{ form.field(model, 'bonus_status').dropDownList(bonus_status_list)|raw }}
 
                 {{ form.field(model, 'waitModeration').dropDownList({
