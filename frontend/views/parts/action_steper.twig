@@ -1,6 +1,6 @@
 {% if not user_id %}
   {% set step=0 %}
-{% elseif user.loyalty_status==4 and new_loyalty_status_end==0 %}
+{% elseif user.loyalty_status==4 and user.new_loyalty_status_end==0 %}
   {% set step=4 %}
 {% elseif not user.in_action %}
   {% set step=1 %}
@@ -26,7 +26,7 @@
   <li {{ _if(step>2,'class=do_finish') }}>
     Дождаться, пока у трех ваших приведенных друзей накопится подтвержденный кэшбэк не менее 350 рублей у каждого.
     {% if step>1 %}
-      За накоплением кэшбэка реффералов можно следить <a target="_blank" href="/account/users">следить тут</a>.
+      За накоплением кэшбэка реффералов можно следить <a target="_blank" rel="nofollow noopener" href="/account/users">следить тут</a>.
     {% endif %}
   </li>
   <li {{ _if(step>3,'class=do_finish') }}>Администратор меняет статус вашего личного аккаунта на Platinum и уведомляет вас.</li>
