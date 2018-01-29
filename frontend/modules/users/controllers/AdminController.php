@@ -136,6 +136,7 @@ class AdminController extends Controller
     $notes['users_charity'] = Charity::waitingCount();
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
     $notes['users_wait_moderation'] = Users::waitModerationCount();
+    $notes['users_on_actions'] = Users::onActionCount();
 
     $models = $query->offset($pages->offset)
       ->limit($pages->limit)

@@ -793,4 +793,16 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         ->asArray()
         ->one();
   }
+
+  public static function onActionCount()
+  {
+      return self::find()
+          ->alias('user')
+          ->andFilterWhere(['>', 'user.in_action', 0])
+          ->andFilterWhere(['>=', 'ref.sum_confirmed', 350])
+          ->andFilterWhere(['<>', 'user.loyalty_status', 4])
+          ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+          ->groupBy('user.uid')
+          ->count();
+  }
 }
