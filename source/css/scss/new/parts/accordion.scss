@@ -204,6 +204,8 @@
 
   &_pc_off{
     @include media_min($tablets - 1) {
+      margin-bottom: 0;
+
       .accordion-content{
         display: block!important;
         height: auto!important;

@@ -92,7 +92,7 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-
+    $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'date_start', 'date_end']]);
@@ -118,7 +118,8 @@ class DefaultController extends SdController
     $contentData['show_expired'] = $request->get('expired');
 
     if (!empty($categoryCoupons)) {
-      \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
+      $this->params['breadcrumbs'][] = ['label' => $categoryCoupons->name, 'url'=>'/coupons/'.$categoryCoupons->route];
+        \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
       $this->current_coupon_category_id = $category;
       $contentData["counts"] = Coupons::counts(false, $category);
@@ -174,9 +175,11 @@ class DefaultController extends SdController
         $sort = 'cws.visit';
         $limit = 20;
         $cacheName .= '_' . $actionId;
+        $this->params['breadcrumbs'][] = ['label' => 'Топ 20'];
       }
       if ($this->new) {
           //новые
+        $this->params['breadcrumbs'][] = ['label' => 'Топ 20', 'url'=>'/coupons/new'];
         $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
         $cacheName .= '_' . $actionId;
       }
@@ -207,6 +210,9 @@ class DefaultController extends SdController
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
 
     $contentData['is_root'] = (!$categoryCoupons && !$store);
+    if ($page>1) {
+        $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
+    }
 
 
     if ($pagination->pages() > 1) {
@@ -219,6 +225,10 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     $contentData['slider'] = Slider::get();
+    //dd($contentData['slider']);
+    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+          $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+    }
     return $this->render('catalog', $contentData);
   }
 
