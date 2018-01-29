@@ -94,4 +94,30 @@
       }
     }
   }
+  &-list {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &_item {
+      width: 33%;
+      padding: 0 2%;
+      box-sizing: border-box;
+      margin-bottom: 3%;
+      @include media($tablets) {
+        width: 49%;
+      }
+      @include media($phones) {
+        width: 99%;
+      }
+      &-name {
+        svg {
+          width: 15px;
+          height: 15px;
+        }
+      }
+
+
+    }
+  }
 }

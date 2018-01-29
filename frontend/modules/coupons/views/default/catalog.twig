@@ -16,7 +16,7 @@
                 {% include('left_menu.twig') %}
             </div>
             {#справа шопы#}
-            <div class="catalog-stores ">
+            <div class="catalog-stores coupons ">
 
                 <h1 >
                     {% if h1 %}
@@ -63,7 +63,7 @@
 
 
                     {% if coupons|length > 0 %}
-                        <div class="catalog-coupons_list shops margin">
+                        <div class="catalog-coupons_list coupons-list margin">
                           {% if coupons|length > 0 %}
                             {% for coupon in coupons %}
                                   {% include 'parts/coupon.twig' %}
