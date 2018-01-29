@@ -26,6 +26,8 @@
                         <!--если нет, то -->
                         {% if current_category.name != '' %}
                             {{current_category.name}}: акции, скидки, распродажи и промкоды - {{ _local_date('', '%BRUS %G', true) }}
+                        {% elseif current_store.name != '' %}
+                            Акции, скидки, распродажи и промкоды {{current_store.name}} - {{ _local_date('', '%BRUS %G', true) }}
                         {% else %}
                             Лучшие акции, скидки, распродажи и промокоды от наших <a href="/stores">интернет-магазинов</a>
                         {% endif %}
