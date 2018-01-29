@@ -271,11 +271,17 @@ $( document ).ready(function() {
       continue;
     }
     m_w = parent.width()-30;
+    var w=el.width();
+    el.width('auto');
+    if(w>el.width())w=el.width();
+
     if (m_w > mw)m_w = mw;
-    if (el.width() > m_w) {
-      k = el.width() / m_w;
+    if (w>m_w > m_w) {
+      //k = w / m_w;
       //el.height(el.height() / k);
       el.width(m_w)
+    }else{
+      el.width(w);
     }
   }
 });
