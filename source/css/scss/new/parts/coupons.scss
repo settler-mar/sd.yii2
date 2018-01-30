@@ -100,16 +100,18 @@
     flex-wrap: wrap;
 
     &_item {
-      width: 33%;
+      width: 100%;
       padding: 0 2%;
       box-sizing: border-box;
       margin-bottom: 3%;
-      @include media($tablets) {
+      display: flex;
+
+      /*@include media($tablets) {
         width: 49%;
       }
       @include media($phones) {
         width: 99%;
-      }
+      }*/
       &-name {
         svg {
           width: 15px;
