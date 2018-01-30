@@ -8,53 +8,15 @@
         </section>
     {% endif %}
 
-    <!--поле контент из метатегов только для категории-->
-    {% if 1==2 and content and current_category and page == 1 %}
-        <section class="margin">
-            <div class="catalog_category-content">
-                {{content|raw}}
-            </div>
-        </section>
-    {% endif %}
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
             {#слева категории#}
             <div class="catalog-categories">
-                {#<h3 class="cathead">Категории</h3>#}
-                {{ use('frontend/components/CategoryCouponsMenu') }}
-                {% set category_tree = category_coupons_menu_widget({'search_item':1}) %}
-                {% if category_tree %}
-                    <div class="tree-cat accordeon">
-                    {{category_tree|raw}}
-                    </div>
-                    {% if popular_stores %}
-                        <div class="catalog-categories_popular-stores">
-                            <h3 class="catalog-categories_popular-stores-header">Самые популярные магазины с промокодами</h3>
-                            <div class="catalog-categories_popular-stores-content">
-                            {% for store in popular_stores %}
-                                {% if app.request.pathinfo == 'coupons/'~store.route %}
-                                    <span>{{ store.name }}</span>
-                                {% else %}
-                                    <a href="/coupons/{{ store.route }}">{{ store.name }}</a>
-                                {% endif %}
-                                {#<a href="/coupons/{{ store.route }}" {% if app.request.pathinfo == 'coupons/'~store.route %}class="active"{% endif %}>{{ store.name }}</a>#}
-                            {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {{ use('frontend/components/Banner') }}
-                    {%  set banners  = banner_widget({'place':['coupons-left-menu','coupons-'~current_category.uid~'-left-menu'],'options':{'wrapper_class':'banner__wrapper',}}) %}
-                    {% if banners %}
-                        {{ banners|raw }}
-                    {% endif %}
-
-                {% endif %}
-
-
+                {% include('left_menu.twig') %}
             </div>
             {#справа шопы#}
-            <div class="catalog-stores ">
+            <div class="catalog-stores coupons ">
 
                 <h1 >
                     {% if h1 %}
@@ -63,9 +25,11 @@
                     {% else %}
                         <!--если нет, то -->
                         {% if current_category.name != '' %}
-                            {{current_category.name}}: магазины с кэшбэком
+                            {{current_category.name}}: акции, скидки, распродажи и промкоды - {{ _local_date('', '%BRUS %G', true) }}
+                        {% elseif current_store.name != '' %}
+                            Акции, скидки, распродажи и промкоды {{current_store.name}} - {{ _local_date('', '%BRUS %G', true) }}
                         {% else %}
-                            Лучшие магазины с кэшбэком
+                            Лучшие акции, скидки, распродажи и промокоды от наших <a href="/stores">интернет-магазинов</a>
                         {% endif %}
                         <span>({{total_v}})</span>
                     {% endif%}
@@ -88,7 +52,7 @@
                         {% endfor %}
                         </ul>
                     </div>
-                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
+                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_coupons + 1}}{% else %}0{% endif %}-{{offset_coupons + show_coupons}} из {{total_v}}</div>
                 </div>
 
 
@@ -101,7 +65,7 @@
 
 
                     {% if coupons|length > 0 %}
-                        <div class="catalog-coupons_list shops margin">
+                        <div class="catalog-coupons_list coupons-list margin">
                           {% if coupons|length > 0 %}
                             {% for coupon in coupons %}
                                   {% include 'parts/coupon.twig' %}
@@ -132,11 +96,30 @@
                     {% endif %}
                 </div>
 
-                {#{% if current_category.down_description %}#}
-                    {#<div class="catalog_category-down-description margin">#}
-                        {#{{current_category.down_description|raw}}#}
-                    {#</div>#}
-                {#{% endif %}#}
+                {% if show_expired == 1 %}
+                    <div class="coupons_buttons align-center">
+                        {% if counts.actual > 0 %}
+                            {% if current_store %}
+                                <a class="btn btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}"><span>Новые промокоды этого магазина ({{ counts.actual }})</span></a>
+                            {% endif %}
+                            {% if current_category %}
+                                <a class="btn btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}"><span>Новые промокоды этой категории ({{ counts.actual }})</span></a>
+                            {% endif %}
+                        {% endif %}
+                        <a class="btn  btn-round" href="/coupons"><span>Новые промокоды всех магазинов ({{ total_all_coupons }})</span></a>
+                    </div>
+                {% endif %}
+                {% if show_expired == null and counts.expired %}
+                    <div class="coupons_buttons align-center margin">
+                        {% if current_store %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% elseif current_category %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% else %}
+                            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 {% if content and page==1%}
                     <div class="catalog_category-content margin">

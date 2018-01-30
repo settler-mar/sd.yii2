@@ -1,4 +1,4 @@
-<div class="coupon" data-uid="{{coupon.uid}}">
+<div class="coupon coupons-list_item" data-uid="{{coupon.uid}}">
     {% if not_active %}
         <div class="expiry-text">Магазин {{coupon.store_name}} временно неактивен</div>
     {% else %}
@@ -15,7 +15,7 @@
         <p class="coupon-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></p>
     </div>
     <div class="coupon-content">
-        <p class="coupon-name">{{coupon.name}}
+        <p class="coupon-name coupons-list_item-name ">{{coupon.name}}
             <span {% if coupon.store_action_id == 1 %} class="old" {% endif %}>
                 + кэшбэк
                 {{ _cashback(coupon.store_cashback, coupon.store_currency)|raw }}
