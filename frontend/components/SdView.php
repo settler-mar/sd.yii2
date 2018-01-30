@@ -103,13 +103,27 @@ class SdView extends View
 
     $this->site_rating = Reviews::storeRating(0);
 
+    $tags = '';
+    foreach (Yii::$app->view->metaTags as $meta) {
+      $tags.=$meta;
+    }
+    preg_match_all('/<[\s]*meta[\s]*(name|property)="?' . '([^>"]*)"?[\s]*' . 'content="?([^>"]*)"?[\s]*[\/]?[\s]*>/si', $tags, $match);
+    $tags=[];
+    foreach ($match[2] as $k=>$name) {
+      $tags[$name]=$match[3][$k];
+    }
+    Yii::$app->view->metaTags=[];
+
+    //ddd(Yii::$app->view);
     $arr = Meta::findByUrl($request->pathInfo);
     if($arr && is_array($arr)) {
       if (isset($arr['description'])) {
-        $this->metaTags[] = '<meta name="description" content="' . $arr['description'] . '">';
+        Yii::$app->view->registerMetaTag(["name"=>"description", "content"=>$arr['description'] ]);
         $this->description = $arr['description'];
       }
-      if (isset($arr['keywords'])) $this->metaTags[] = '<meta name="keywords" content="' . $arr['keywords'] . '">';
+      if (isset($arr['keywords']))
+        Yii::$app->view->registerMetaTag(["name"=>"keywords", "content"=>$arr['keywords'] ]);
+
       if (isset($arr['title'])) $this->title = $arr['title'];
       if (isset($arr['content'])) $this->contentBD = $arr['content'];
       if (isset($arr['h1'])) $this->h1 = $arr['h1'];
@@ -117,24 +131,45 @@ class SdView extends View
       $this->all_params = array_merge($this->all_params, $arr);
     }
 
-    $tags = [];
-    foreach (Yii::$app->view->metaTags as $meta) {
-      if (strpos($meta, 'property="')) {
-        $tags[] = substr($meta, strpos($meta, 'property="') + 10, strpos($meta, '" ') - strpos($meta, 'property="') - 10);
-      }
-    }
-    if (!in_array('og:url', $tags)) {
-      Yii::$app->view->metaTags[]='<meta property="og:url" content="https://secretdiscounter.ru/'.$request->pathInfo.'" />';
-    }
-    if (!in_array('og:title', $tags)) {
-      Yii::$app->view->metaTags[]='<meta property="og:title" content="'.$this->title.'" />';
-    }
-    if (!in_array('og:description', $tags)) {
-      Yii::$app->view->metaTags[]='<meta property="og:description" content="'.$this->description.'" />';
-    }
-    if (!in_array('og:image', $tags)) {
-      Yii::$app->view->metaTags[]='<meta property="og:image" content="https://secretdiscounter.ru/images/templates/woman_600.png" />';
-    }
+    Yii::$app->view->registerMetaTag(["name"=>"twitter:card", "value"=>"summary_large_image"]);
+    Yii::$app->view->registerMetaTag(["property"=>"og:type", "content"=>"website"]);
+    Yii::$app->view->registerMetaTag(["property"=>"og:site_name","content"=>"SecretDiscounter"]);
+    Yii::$app->view->registerMetaTag(["itemprop"=>"name", "content"=>"SecretDiscounter"]);
+
+    $url=isset($tags['og:url'])?$tags['og:url']:"https://secretdiscounter.ru/'".$request->pathInfo;
+    Yii::$app->view->registerMetaTag(["property"=>"og:url" ,"content"=>$url]);
+    Yii::$app->view->registerMetaTag(["property"=>"twitter:url", "content"=>$url]);
+    Yii::$app->view->registerMetaTag(["property"=>"twitter:domain", "content"=>"https://secretdiscounter.ru/"]);
+
+    $title=isset($tags['og:title'])?$tags['og:title']:$this->title;
+    $title=Yii::$app->TwigString->render(
+        $title,
+        $this->all_params
+    );
+    Yii::$app->view->registerMetaTag(["property"=>"og:title", "content"=>$title]);
+    Yii::$app->view->registerMetaTag(["name"=>"twitter:title", "content"=>$title]);
+
+    $description=isset($tags['og:description'])?$tags['og:description']:$this->description;
+    $description=Yii::$app->TwigString->render(
+        $description,
+        $this->all_params
+    );
+    Yii::$app->view->registerMetaTag(["property"=>"og:description", "content"=>$description]);
+    Yii::$app->view->registerMetaTag(["property"=>"twitter:description", "content"=>$description]);
+    Yii::$app->view->registerMetaTag(["itemprop"=>"description", "content"=>$description]);
+
+    $image=isset($tags['og:image'])?$tags['og:image']:"https://secretdiscounter.ru/images/templates/woman_600.png";
+    $image=Yii::$app->TwigString->render(
+        $image,
+        $this->all_params
+    );
+    Yii::$app->view->registerMetaTag(["property"=>"og:image", "content"=>$image]);
+    Yii::$app->view->registerMetaTag(["property"=>"twitter:image:src", "content"=>$image]);
+    Yii::$app->view->registerMetaTag(["itemprop"=>"image", "content"=>$image]);
+    //<meta property="og:image:width" content="968">
+    //<meta property="og:image:height" content="504">
+
+
 
   }
 

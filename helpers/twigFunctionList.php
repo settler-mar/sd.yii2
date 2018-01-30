@@ -334,11 +334,17 @@ $functionsList=[
       return ($else?$else:'');
     }
   },
-  '_date'=>function ($date,$format_time="%H:%M:%S") use ($month) {
+  '_date'=>function ($date,$format_time="%H:%M:%S",$locate_month = true) use ($month) {
     if(!$date){return false;};
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
-    $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
+    if($locate_month) {
+      $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
+      $sep=' ';
+    }else{
+      $currMonth=$m[1];
+      $sep='/';
+    }
     if($format_time) {
       return strftime("%e " . $currMonth . " %G в " . $format_time, strtotime($date));
     }else{
@@ -355,11 +361,20 @@ $functionsList=[
     $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', $date);
     return strftime(substr($format, 0, $monthRus), $date).$currMonth.strftime(substr($format, $monthRus + 5), $date);
   },
-  'date'=>function ($date) use ($month) {
+  'date'=>function ($date,$format_time=false,$locate_month = true) use ($month) {
     $d = date('d',$date);
     $m = date('m',$date);
-    $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', strtotime($date));
-    return $d.' '.$currMonth.' '.date('Y',$date);
+    if($date==0){
+      return '';
+    }
+    if($locate_month) {
+      $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', strtotime($date));
+      $sep=' ';
+    }else{
+      $currMonth=$m;
+      $sep='/';
+    }
+    return $d.$sep.$currMonth.$sep.date('Y',$date).($format_time?' '.date($format_time,$date):'');
   },
   'parts'=>function ($part) {
     return '/parts/'.$part.'.twig';

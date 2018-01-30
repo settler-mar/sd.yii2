@@ -264,6 +264,7 @@ $( document ).ready(function() {
   mw=screen.width-40;
   p = $('.container img,.container iframe');
   $('.container img').height('auto');
+  //$('.container img').width('auto');
   for (i = 0; i < p.length; i++) {
     el = p.eq(i);
     var parent = el.parent();
@@ -271,11 +272,17 @@ $( document ).ready(function() {
       continue;
     }
     m_w = parent.width()-30;
+    var w=el.width();
+    el.width('auto');
+    if(w>el.width())w=el.width();
+
     if (m_w > mw)m_w = mw;
-    if (el.width() > m_w) {
-      k = el.width() / m_w;
-      el.height(el.height() / k);
+    if (w>m_w > m_w) {
+      //k = w / m_w;
+      //el.height(el.height() / k);
       el.width(m_w)
+    }else{
+      el.width(w);
     }
   }
 });

@@ -73,7 +73,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       ['new_password', 'trim'],
       [['new_password'], 'string', 'max' => 60],
       [['new_password'], 'string', 'min' => 5],
-      [['birthday', 'last_login', 'added'], 'safe'],
+      [['birthday', 'last_login', 'added','new_loyalty_status_end','in_action'], 'safe'],
       [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed','email_verified'], 'integer'],
       [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
       [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
@@ -145,6 +145,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       'traffType' => 'Источник трафика',
       'url' => 'Сайт',
       'show_balance' => 'Отображаемый баланс',
+      'in_action' => 'Участвует в акции с ',
     ];
   }
 
@@ -174,6 +175,25 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
   public function beforeValidate()
   {
+    if(!is_numeric($this->new_loyalty_status_end)){
+      if($this->new_loyalty_status_end==''){
+        $this->new_loyalty_status_end=0;
+      }else{
+        $this->new_loyalty_status_end=strtotime($this->new_loyalty_status_end);
+      }
+    }
+    if($this->new_loyalty_status_end<time()){
+      $this->new_loyalty_status_end=0;
+      $tasks=Task::find()->where([
+          'param'=>[$this->uid,-$this->uid],
+          'task'=>2
+      ])->all();
+
+      foreach ($tasks as $task){
+        $task->delete();
+      }
+    }
+
     if (!parent::beforeValidate()) {
       return false;
     }
@@ -751,5 +771,39 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public static function waitModerationCount()
   {
       return self::find()->where(['waitModeration' => 1])->count();
+  }
+
+  public static function this(){
+    if(Yii::$app->user->isGuest){
+      return false;
+    }
+    return self::find()->where(['uid' => Yii::$app->user->id])->one();
+  }
+
+  public function getAction(){
+    return Users::find()
+        ->alias('user')
+        ->andFilterWhere(['>', 'user.in_action', 0])
+        ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+        ->select([
+            'count(ref.uid) as reg_by_action',
+            'sum(if(ref.sum_confirmed>350,1,0)) as finish_by_action',
+        ])
+        ->groupBy('user.uid')
+        ->where(['user.uid'=>$this->uid])
+        ->asArray()
+        ->one();
+  }
+
+  public static function onActionCount()
+  {
+      return self::find()
+          ->alias('user')
+          ->andFilterWhere(['>', 'user.in_action', 0])
+          ->andFilterWhere(['>=', 'ref.sum_confirmed', 350])
+          ->andFilterWhere(['<>', 'user.loyalty_status', 4])
+          ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+          ->groupBy('user.uid')
+          ->count();
   }
 }

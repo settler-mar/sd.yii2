@@ -144,6 +144,7 @@ class SiteController extends SdController
     $notes['users_charity'] = Charity::waitingCount();
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
     $notes['users_wait_moderation'] = Users::waitModerationCount();
+    $notes['users_on_actions'] = Users::onActionCount();
 
     return $this->render('admin', [
       'users_count' => $usersCount,
@@ -351,6 +352,44 @@ class SiteController extends SdController
 
     $this->layout = '@app/views/layouts/blank.twig';
     return $this->render('goto',$data);
+  }
+
+  /**
+   * Displays 404 error.
+   *
+   * @return mixed
+   */
+  public function action404()
+  {
+    $this->params['breadcrumbs'][] = '404';
+    return $this->render('404');
+  }
+
+  function actionStartaction()
+  {
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      return $this->goHome();
+    }
+
+    if (!($user=Users::this())) { // если мы не залогинены
+      return json_encode([
+          'html'=>$this->renderAjax('login_first')
+      ]);
+    }
+
+    $user=Users::this();
+    if($user->in_action) {
+      return json_encode([
+          'html'=>$this->renderAjax('already_in_action',['user'=>$user])
+      ]);
+    }else{
+      $user->in_action=date('Y-m-d H:i:s');
+      $user->save();
+      return json_encode([
+          'html'=>$this->renderAjax('start_action')
+      ]);
+    }
   }
 
   /**

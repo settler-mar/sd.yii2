@@ -136,6 +136,7 @@ class AdminController extends Controller
     $notes['users_charity'] = Charity::waitingCount();
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
     $notes['users_wait_moderation'] = Users::waitModerationCount();
+    $notes['users_on_actions'] = Users::onActionCount();
 
     $models = $query->offset($pages->offset)
       ->limit($pages->limit)
@@ -151,6 +152,31 @@ class AdminController extends Controller
     ]);
   }
 
+  public function actionAction(){
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $users=Users::find()
+        ->alias('user')
+        ->andFilterWhere(['>', 'user.in_action', 0])
+        ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+        ->select([
+            'user.*',
+            'count(ref.uid) as reg_by_action',
+            'sum(if(ref.sum_confirmed>350,1,0)) as finish_by_action',
+
+        ])
+        ->groupBy('user.uid')
+        ->orderBy(['finish_by_action'=>SORT_DESC])
+        //->asArray()
+        ->all();
+
+    return $this->render('action', [
+        'users' => $users,
+    ]);
+  }
   /**
    * Displays a single Users model.
    * @param integer $id
