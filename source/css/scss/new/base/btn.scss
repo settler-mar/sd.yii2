@@ -10,6 +10,12 @@
     color:$btn_base_dark_color;
   }
 
+  &-red{
+    background: $header_color_pointed;
+    border-color: $header_color_pointed;
+    color:$btn_base_dark_color;
+  }
+
   &-transform{
     background: transparent;
 
@@ -30,6 +36,11 @@
   &-mini{
     padding: 6px 10px;
     font-size: 16px;
+  }
+
+  &-big{
+    padding: 14px 50px;
+    font-size: 20px;
   }
 
   &-margin{

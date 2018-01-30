@@ -123,14 +123,16 @@
             </div>
           </div>
 
-          Кэшбэк станет активным для вывода через
-          <span>{{current_store.hold_time}}&nbsp;дней</span>
-          <span class="avg">
-              (среднее время обработки)
-              <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
-                 data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
-              >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
-          </span>
+          <div class="accordion shop_header_big-info_line">
+            Кэшбэк станет активным для вывода через
+            <span>{{current_store.hold_time}}&nbsp;дней</span>
+            <span class="avg">
+                (среднее время обработки)
+                <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
+                   data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+                >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -141,12 +143,12 @@
   {% if current_store.is_offline==0 %}
     {% if user_id %}
       {% if current_store.is_active == 1 %}
-        <a href="/goto/store:{{current_store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-round tablets-btn-dark">Перейти к покупкам</a>
+        <a href="/goto/store:{{current_store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
       {% else %}
-        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-dark">Перейти к покупкам</a>
+        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
       {% endif %}
     {% else %}
-      <a href="#login" id="gotostore" class="btn btn-round tablets-btn-dark">Перейти к покупкам</a>
+      <a href="#login" id="gotostore" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
     {% endif %}
   {% endif %}
 

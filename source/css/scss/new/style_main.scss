@@ -78,17 +78,18 @@ h2 {
   position: relative;
   display: flex;
   justify-content: center;
+  text-align: center;
 
   @include media_min($tablets+1) {
     &:before {
       content: "";
       background: $h2_line_color;
       width: 94px;
-      min-width: 74px;
+      min-width: 70px;
       height: 4px;
       vertical-align: middle;
       display: inline-block;
-      margin-right: 46px;
+      margin-right: 30px;
       margin-top: auto;
       margin-bottom: auto;
     }
@@ -97,11 +98,11 @@ h2 {
       content: "";
       background: $h2_line_color;
       width: 94px;
-      min-width: 74px;
+      min-width: 70px;
       height: 4px;
       vertical-align: middle;
       display: inline-block;
-      margin-left: 46px;
+      margin-left: 30px;
       margin-top: auto;
       margin-bottom: auto;
     }

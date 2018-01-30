@@ -214,6 +214,12 @@
     background: url(/images/templates/polygonal-bg.jpg) repeat-x center 100% #999;
     color: $shop_header_color;
 
+    &-info_line{
+      @include media($tablets) {
+        margin-bottom: 30px;
+      }
+    }
+
     &-share{
       .footer-share-text{
         margin-top: 12px;
@@ -246,7 +252,7 @@
 
       &-accordion {
         order: 2;
-        margin-top: 30px;
+        //margin-top: 30px;
       }
     }
 
@@ -599,7 +605,7 @@
 
       &-description{
         margin-top: 16px;
-        font-size: 0.65em;
+        font-size: 13px;
         color: $search_item_cashback_color;
       }
     }
