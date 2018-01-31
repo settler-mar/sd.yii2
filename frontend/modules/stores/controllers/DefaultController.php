@@ -115,6 +115,11 @@ class DefaultController extends SdController
 
     $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
     if ($offline) {
+      if(!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate']==0){
+        $url=isset(Yii::$app->params['offline_redirect'])?Yii::$app->params['offline_redirect']:"/stores/stores-offline";
+        $this->redirect($url, 307)->send();
+        exit;
+      }
       $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
     }
 

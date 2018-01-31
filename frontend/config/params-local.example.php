@@ -1,6 +1,7 @@
 <?php
 return [
   'stores_menu_separate' => 0,
+  'offline_redirect' => '/', //if stores_menu_separate==0 по умолчанию на /stores/stores-offline
   'ref_cpec' => [
     'ali'=>59914,
     'hotels'=>58326,
