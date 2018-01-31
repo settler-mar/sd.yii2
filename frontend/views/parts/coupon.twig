@@ -12,10 +12,12 @@
         <a class="coupons-list_item-logo-logo" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
             <img class="coupons-list_item-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
         </a>
-        <div class="coupons-list_item-logo-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></div>
-        {% if coupon.visit %}
-            <div class="coupons-list_item-logo-visit">Воспользовались: <span class="coupons-list_item-logo-visit-count">{{ coupon.visit }}</span></div>
-        {% endif %}
+        <div class="coupons-list_item-logo-info">
+            <div class="coupons-list_item-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></div>
+            {% if coupon.visit %}
+                <div class="coupons-list_item-visit">Воспользовались: <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span></div>
+            {% endif %}
+        </div>
     </div>
     <div class="coupons-list_item-content">
         <div class="coupons-list_item-content-name ">{{coupon.name}}
@@ -41,19 +43,26 @@
         {% else %}
 
         {% endif %}
+        <div class="coupons-list_item-content-info">
+            <div class="coupons-list_item-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></div>
+            {% if coupon.visit %}
+                <div class="coupons-list_item-visit">Воспользовались: <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span></div>
+            {% endif %}
+        </div>
+
         <div class="coupons-list_item-content-goto">
             {% if user_id %}
                 <a href="#showpromocode" class="btn coupons-list_item-content-goto-link">Показать промокод</a>
                 <div class="coupons-list_item-content-goto-promocode">
                     <div class="coupons-list_item-content-goto-promocode-title">
-                        Промокод:
+                        <span class="coupons-list_item-content-goto-promocode-title-title">Промокод:</span>
                         <span class="coupons-list_item-content-goto-promocode-title-code code">
-                            <span class="code-text">{{coupon.promocode}}</span>
+                            <span class="coupons-list_item-content-goto-promocode-title-code-text code-text">{{coupon.promocode}}</span>
                             <a class="btn btn-mini btn-round btn-transform " href="#copy">Скопировать</a>
                         </span>
                     </div>
                     <div class="coupons-list_item-content-goto-promocode-link">
-                        <a class="btn" href="/goto/coupon/{{ coupon.id }}">Перейти к покупкам</a>
+                        <a class="btn" href="/goto/coupon:{{ coupon.uid }}">Перейти к покупкам</a>
                     </div>
                 </div>
             {% else %}

@@ -1,3 +1,76 @@
+@mixin narrow {
+  flex-direction: row;
+  flex-wrap: wrap;
+  .coupons-list_item {
+    width: 31%;
+    margin: 0 1% 2%;
+    flex-direction: column;
+    padding: 3px;
+    &-logo {
+      min-width: inherit;
+      border: none;
+      padding: 0;
+      margin: 10px 0;
+      &-logo{
+        padding: 5px 0;
+      }
+      &-info {
+        display: none;
+      }
+    }
+    &-content {
+      text-align: center;
+      height: 100%;
+      &-goto {
+        margin: 0 auto;
+        width: 100%;
+        align-items: center;
+        &-promocode {
+          margin-top: 20px;
+          justify-content: space-between;
+          width: 95%;
+          &-title {
+            width: 100%;
+            &-title {
+              display: none;
+            }
+            &-code {
+              width: 100%;
+              //justify-content: space-between;
+              justify-content: space-around;
+              margin: 0;
+              flex-wrap: wrap;
+              align-items: center;
+              &-text {
+                flex-wrap: nowrap;
+              }
+            }
+          }
+          &-link {
+            a {
+              width: 100%;
+            }
+          }
+        }
+        &.open {
+          .coupons-list_item-content-goto-promocode {
+            align-items: center;
+          }
+        }
+      }
+
+      &-info {
+        display: block;
+        margin-bottom: 5px;
+      }
+      &-visit {
+        padding: 7px 3px;
+      }
+    }
+  }
+
+}
+
 .coupons {
   &-abc {
     &_list{
@@ -97,13 +170,18 @@
   &-list {
     display:flex;
     flex-direction: column;
-    //flex-wrap: wrap;
+    &.narrow {
+        @include narrow;
+    }
+    @include media($tablets) {
+      @include narrow;
+    }
 
     &_item {
       position: relative;
       overflow: hidden;
-      width: 98%;
-      margin: 0 2% 3%;
+      width: 100%;
+      margin: 0 0 2%;
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
@@ -111,10 +189,10 @@
       border: 3px solid $coupons_coupon_border_color;
       border-radius: 5px;
       @include media($tablets) {
-        //width: 49%;
+        width: 48% !important;
       }
       @include media($phones) {
-        width: 99%;
+        width: 100% !important;
       }
       &-content {
         width: 100%;
@@ -160,9 +238,13 @@
         &-goto {
           margin: 0 5px 5px 0;
           //padding: 5px;
-          text-align: right;
+          //text-align: right;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
           &-promocode {
             display: none;
+            //text-aling: right;
             &-title {
               display: flex;
               flex-direction: row;
@@ -195,11 +277,15 @@
             .coupons-list_item-content-goto-promocode {
               display: flex;
               flex-direction: column;
+              align-items: flex-end;
             }
             .coupons-list_item-content-goto-link {
               display:none;
             }
           }
+        }
+        &-info {
+          display: none;
         }
       }
       &-expiry-text {
@@ -213,6 +299,8 @@
         width: 100%;
         height: 100%;
         text-align: center;
+        top: 0;
+        left: 0;
       }
       &-logo {
         min-width: 230px;
@@ -225,17 +313,18 @@
           //min-height: 100px;
           padding: 30px 0;
         }
-        &-time {
-          background: $coupons_coupon_sel_text_bg_color;
-          color: $coupons_coupon_sel_text_color;
-          text-transform: uppercase;
-          padding: 7px 3px;
-          font-weight: bold;
-        }
-        &-visit {
-          padding: 7px 3px 0;
-          font-weight: bold;
-        }
+
+      }
+      &-time {
+        background: $coupons_coupon_sel_text_bg_color;
+        color: $coupons_coupon_sel_text_color;
+        text-transform: uppercase;
+        padding: 7px 3px;
+        font-weight: bold;
+      }
+      &-visit {
+        padding: 7px 3px 0;
+        font-weight: bold;
       }
     }
   }
@@ -245,3 +334,4 @@
     }
   }
 }
+
