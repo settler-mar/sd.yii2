@@ -125,7 +125,8 @@ a{
         }
       }
       button {
-        width: 100%;
+        width: 48%;
+        display: inline-block;
       }
       p.help-block {
         margin-top: 5px;
@@ -134,7 +135,8 @@ a{
     &-buttons {
       margin-top: 35px;
       &-register {
-        width: 100%;
+        width: 50%;
+        display: inline-block;
         text-decoration: none;
         //color: $button_register_font_color;
         &:visited, &:focus, &:hover, &:active {

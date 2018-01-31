@@ -52,7 +52,7 @@
                                 data-title="{{ _constant('affiliate_offline_title')}}"
                                 data-description="{{ _constant('affiliate_offline_description')}}"
                                 data-image="https://secretdiscounter.ru{{ user_code_img }}"
-                                data-url="https://secretdiscounter.ru/offline?r={{user_id}}"
+                                data-url="https://secretdiscounter.ru/offline?ref={{user_id}}"
                         ></div>
                         {% if not friend_user %}
                             <script type="text/javascript" src="/js/share42.js"></script>
@@ -64,7 +64,7 @@
                         <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
                     </div>
                     <div class="intro-content">
-                        <p class="intro-content_header"><a href="/offline?r={{user_id}}" onclick="{{ print }};return false;" download>{{ t('account', 'offline_pr_code_print') }}</a></p>
+                        <p class="intro-content_header"><a href="/offline?ref={{user_id}}" onclick="{{ print }};return false;" download>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>
             {% endif %}
