@@ -1,0 +1,22 @@
+.catalog-stores_switcher {
+  &-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 0 5px 0 0;
+    padding: 0;
+  }
+  &-item {
+    list-style-type: none;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    &-button {
+      cursor: pointer;
+      &.checked {
+        color: black;
+        cursor: default;
+      }
+    }
+  }
+}
