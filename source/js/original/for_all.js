@@ -264,7 +264,7 @@ $( document ).ready(function() {
 
   function optimase(el){
     var parent = el.parent();
-    if(parent[0].tagName=="A"){
+    if(parent.length==0 || parent[0].tagName=="A"){
       return;
     }
     m_w = parent.width()-30;
@@ -297,11 +297,11 @@ $( document ).ready(function() {
     if(el[0].tagName=="IFRAME") {
       optimase(el);
     }else{
-      var src=img.attr('src');
+      var src=el.attr('src');
       image = $('<img/>', {
         src: src
       });
-      image.on('load', img_load_finish.bind(image));
+      image.on('load', img_load_finish.bind(el));
 
     }
   }
