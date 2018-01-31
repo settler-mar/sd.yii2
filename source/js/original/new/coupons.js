@@ -44,6 +44,7 @@ $( document ).ready(function() {
         //если срок прошел
         if(d<=0){
           c.text('Cрок действия истёк');
+          $(c).closest('.coupons-list_item').find('.coupons-list_item-expiry-text').show();
           continue;
         }
 
@@ -71,4 +72,30 @@ $( document ).ready(function() {
     setInterval(updateClock.bind(clocks),1000);
     updateClock.bind(clocks)();
   }
+
+  $("a[href='#showpromocode']").on('click', function (e) {
+    e.preventDefault();
+    $(this).closest('.coupons-list_item-content-goto').addClass('open');
+  });
+
+  $("a[href='#show-coupon-description']").on('click', function (e) {
+    e.preventDefault();
+    $(this).closest('.coupons-list_item-content-additional').addClass('open');
+  });
+
+  $("a[href='#copy']").on('click', function (e) {
+    e.preventDefault();
+    var codeElem = $(this).closest('.code').find('.code-text');
+    copyToClipboard(codeElem);
+  });
+
+  function copyToClipboard(element) {
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val($(element).text()).select();
+      document.execCommand("copy");
+      $temp.remove();
+  }
+
+
 });

@@ -1,21 +1,24 @@
 <div class="coupon coupons-list_item" data-uid="{{coupon.uid}}">
     {% if not_active %}
-        <div class="expiry-text">Магазин {{coupon.store_name}} временно неактивен</div>
+        <div class="coupons-list_item-expiry-text">Магазин {{coupon.store_name}} временно неактивен</div>
     {% else %}
-        <div class="expiry-text">срок действия купона истёк</div>
+        <div class="coupons-list_item-expiry-text">срок действия купона истёк</div>
     {% endif %}
 
-    <div class="coupon-logo">
+    <div class="coupons-list_item-logo align-center">
         {% if coupon.store_action_id == 1 %}
             <span class="promo-label x2"></span>
         {% endif %}
-        <a class="coupon-logo" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
-            <img class="coupon-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
+        <a class="coupons-list_item-logo-logo" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
+            <img class="coupons-list_item-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
         </a>
-        <p class="coupon-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></p>
+        <div class="coupons-list_item-logo-time">Осталось <span class="clock" data-end="{{coupon.date_end}}">00:00:00</span></div>
+        {% if coupon.visit %}
+            <div class="coupons-list_item-logo-visit">Воспользовались: <span class="coupons-list_item-logo-visit-count">{{ coupon.visit }}</span></div>
+        {% endif %}
     </div>
-    <div class="coupon-content">
-        <p class="coupon-name coupons-list_item-name ">{{coupon.name}}
+    <div class="coupons-list_item-content">
+        <div class="coupons-list_item-content-name ">{{coupon.name}}
             <span {% if coupon.store_action_id == 1 %} class="old" {% endif %}>
                 + кэшбэк
                 {{ _cashback(coupon.store_cashback, coupon.store_currency)|raw }}
@@ -25,25 +28,36 @@
                     {{ _cashback(coupon.store_cashback, coupon.store_currency,coupon.store_action_id)|raw }}
                 </span>
             {% endif %}
-        </p>
+        </div>
         {% if coupon.description %}
-            <p class="coupon-additional">
-                <a href="#additional">Показать дополнительную информацию о купоне</a>
-                <span>{{coupon.description}}</span>
-            </p>
+            <div class="coupons-list_item-content-additional">
+                <a class="coupons-list_item-content-additional-link" href="#show-coupon-description">Показать дополнительную информацию о купоне</a>
+                <span class="coupons-list_item-content-additional-text">{{coupon.description}}</span>
+            </div>
         {% endif %}
 
         {% if not store_coupons %}
-            <p class="coupon-links"><a href="/coupons/{{coupon.store_route}}">Показать все купоны <span>{{coupon.store_name}} </span></a></p>
+            <div class="coupons-list_item-content-link-all"><a href="/coupons/{{coupon.store_route}}">Показать все купоны <span>{{coupon.store_name}} </span></a></div>
         {% else %}
 
         {% endif %}
-        <div class="coupon-goto">
+        <div class="coupons-list_item-content-goto">
             {% if user_id %}
-                <a href="#showpromocode" class="btn">Показать промокод</a>
-                <div class="promocode">{{coupon.promocode}}</div>
+                <a href="#showpromocode" class="btn coupons-list_item-content-goto-link">Показать промокод</a>
+                <div class="coupons-list_item-content-goto-promocode">
+                    <div class="coupons-list_item-content-goto-promocode-title">
+                        Промокод:
+                        <span class="coupons-list_item-content-goto-promocode-title-code code">
+                            <span class="code-text">{{coupon.promocode}}</span>
+                            <a class="btn btn-mini btn-round btn-transform " href="#copy">Скопировать</a>
+                        </span>
+                    </div>
+                    <div class="coupons-list_item-content-goto-promocode-link">
+                        <a class="btn" href="/goto/coupon/{{ coupon.id }}">Перейти к покупкам</a>
+                    </div>
+                </div>
             {% else %}
-                <a href="#showpromocode-noregister" data-id="{{ coupon.uid }}" class="btn btn-fill btn-small">Показать промокод</a>
+                <a href="#showpromocode-noregister" data-id="{{ coupon.uid }}" class="btn">Показать промокод</a>
             {% endif %}
         </div>
     </div>
