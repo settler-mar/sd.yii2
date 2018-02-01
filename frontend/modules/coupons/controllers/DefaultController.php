@@ -38,19 +38,38 @@ class DefaultController extends SdController
     
     $category = $request->get('category');
     $store = $request->get('store');
+    $coupon_id=$request->get('params');
+    if($coupon_id && !is_numeric($coupon_id)){
+      throw new \yii\web\NotFoundHttpException;
+    }
+
     if ($category || $store) {
       $this->routeRedirects($category, $store);
       exit;
     }
+
     if ($actionId) {
       //имеется action, который должен быть категорией купонов или магазином, ищем такую
       if ($categoryCoupons = CategoriesCoupons::byRoute($actionId) or
         $store = Stores::byRoute($actionId)){
         //если есть одна из них
-        //$this->checkParams();
-        echo $this->actionIndex($actionId, $categoryCoupons, $store);
+
+        if($coupon_id){
+          $coupon=Coupons::findOne(['uid'=>$coupon_id]);
+          if(!$coupon || $store->uid!=$coupon->store_id){
+            throw new \yii\web\NotFoundHttpException;
+          }
+          echo $this->actionCoupon($store, $coupon);
+        }else{
+          echo $this->actionIndex($actionId, $categoryCoupons, $store);
+        }
         exit;
       }
+
+      if($coupon_id){
+        throw new \yii\web\NotFoundHttpException;
+      }
+
       if ($actionId == 'top') {
           $this->top = true;
           echo $this->actionIndex($actionId);
@@ -65,18 +84,25 @@ class DefaultController extends SdController
           echo $this->actionAbc();
           exit;
       }
+
       //если нет категории или магазина
       //найти в удалённых шопах или категориях купонов
       $newRoute = RouteChange::getNew(
         $actionId,
         [RouteChange::ROUTE_TYPE_CATEGORY_COUPONS, RouteChange::ROUTE_TYPE_STORES]
       );
+
       if ($newRoute){
         //если есть новый роут для удалённого, делаем редирект
         header("Location: /coupons".$newRoute,TRUE,301);
         //$this->redirect('/coupons/'.$newRoute, 301)->send();
         exit;
       };
+
+      throw new \yii\web\NotFoundHttpException;
+    }
+
+    if($coupon_id){
       throw new \yii\web\NotFoundHttpException;
     }
     return parent::createAction($actionId);
@@ -233,6 +259,11 @@ class DefaultController extends SdController
     return $this->render('catalog', $contentData);
   }
 
+
+  public function actionCoupon($store, $coupon){
+    d($coupon);
+    ddd($store);
+  }
   /**
    * @param $coupon
    * @param $store
