@@ -159,6 +159,7 @@ class DefaultController extends SdController
         ->orderBy($sort . ' ' . $order);
     } elseif (!empty($store)) {
       $storeId = $store->uid;
+      $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>'/coupons/'.$store->getRouteUrl()];
       if ($store->is_active == -1) {
         header("Location: /coupons",TRUE,301);
         exit;
@@ -236,10 +237,7 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     $contentData['slider'] = Slider::get();
-    //dd($contentData['slider']);
-    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
-          $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
-    }
+
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
     return $this->render('catalog', $contentData);
   }
@@ -252,7 +250,10 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
     $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>'/coupons/'.$store->getRouteUrl()];
-    $this->params['breadcrumbs'][] = ['label' => $coupon['name']];
+    $this->params['breadcrumbs'][] = [
+        'label' => $coupon['name'],
+        'url' => '/coupons/' . $store->getRouteUrl() . '/' . $coupon['uid']
+    ];
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     //$contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
@@ -313,13 +314,13 @@ class DefaultController extends SdController
     $contentData["popular_stores"] = $this->popularStores();
 
     $paginateParams = [
-        'limit' => $this->defaultLimit == $limit ? null : $limit,
+        //'limit' => $this->defaultLimit == $limit ? null : $limit,
         'sort' => Coupons::$defaultSort == $sort ? null : $sort,
         'page' => $page,
         'expired' => $request->get('expired') ? 1 : null,
         'all' => $request->get('all') ? 1 : null,
     ];
-    $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
+    $paginatePath = '/' . $store->getRouteUrl() . '/coupons/' . $coupon['uid'];
 
     $contentData['is_root'] = false;
     if ($page>1) {

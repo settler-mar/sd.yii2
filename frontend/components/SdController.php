@@ -229,4 +229,12 @@ class SdController extends Controller
         }
         return $result;
     }
+
+    public function render($view, $params = [])
+    {
+        if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+            $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+        }
+        return parent::render($view, $params);
+    }
 }

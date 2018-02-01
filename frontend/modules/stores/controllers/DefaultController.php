@@ -174,9 +174,9 @@ class DefaultController extends SdController
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;
     }
-    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
-      $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
-    }
+//    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+//      $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
+//    }
     if ($offline) {
       $cacheName .= '_offline';
       $dataBaseData->andWhere(['is_offline' => 1]);
