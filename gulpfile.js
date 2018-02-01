@@ -191,7 +191,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/copy_to_clipboard.js',
         paths.source.js+'/original/new/img.js',
         paths.source.js+'/original/new/parents_open_windows.js',
-        paths.source.js+'/original/new/forms.js'
+        paths.source.js+'/original/new/forms.js',
+        paths.source.js+'/original/new/cookie.js'
     ], paths.app.js+'/new')
 );
 

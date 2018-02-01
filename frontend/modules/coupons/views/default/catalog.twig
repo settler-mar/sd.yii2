@@ -64,10 +64,8 @@
                 </div>
 
                 <div  class="catalog-coupons margin">
-
-
                     {% if coupons|length > 0 %}
-                        <div class="catalog_list catalog-coupons_list coupons-list margin">
+                        <div class="catalog_list catalog-coupons_list coupons-list margin {{ _if(coupons_view=='narrow'," narrow",'') }}">
                           {% if coupons|length > 0 %}
                             {% for coupon in coupons %}
                                   {% include 'parts/coupon.twig' %}
