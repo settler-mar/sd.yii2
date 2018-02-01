@@ -20,5 +20,7 @@ var catalogTypeSwitcher = function() {
 
     if(getCookie('coupons_view')=='narrow' && !catalog.hasClass('narrow_off')){
         catalog.addClass('narrow');
+        $('.catalog-stores_switcher-item-button-type-narrow').addClass('checked');
+        $('.catalog-stores_switcher-item-button-type-list').removeClass('checked');
     }
 }();

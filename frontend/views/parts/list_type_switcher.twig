@@ -1,12 +1,12 @@
 <div class="catalog-stores_switcher">
     <ul class="catalog-stores_switcher-list">
         <li class="catalog-stores_switcher-item">
-            <a href="" class="catalog-stores_switcher-item-button catalog-stores_switcher-item-button-type-list checked">
+            <a href="" class="catalog-stores_switcher-item-button catalog-stores_switcher-item-button-type-list {{ _if(coupons_view=='narrow',"",'checked') }}">
                 {{ svg('list')|raw }}
             </a>
         </li>
         <li class="catalog-stores_switcher-item">
-            <a href="" class="catalog-stores_switcher-item-button catalog-stores_switcher-item-button-type-narrow">
+            <a href="" class="catalog-stores_switcher-item-button catalog-stores_switcher-item-button-type-narrow {{ _if(coupons_view=='narrow',"checked",'') }}">
                 {{ svg('th')|raw }}
             </a>
         </li>
