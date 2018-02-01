@@ -34,14 +34,14 @@
         </a>
         {% if coupon.description %}
             <p class="coupons-list_item-content-additional">
-                <a href="#additional" class="coupons-list_item-content-additional-link">Показать дополнительную информацию о купоне</a>
+                <a href="#show-coupon-description" class="coupons-list_item-content-additional-link">Показать дополнительную информацию о купоне</a>
                 <span class="coupons-list_item-content-additional-text">{{coupon.description}}</span>
             </p>
         {% endif %}
 
         {% if not store_coupons %}
             <div class="coupons-list_item-content-link-all">
-                <a class="coupon-links" href="/coupons/{{coupon.store_route}}">Показать все купоны <span>{{coupon.store_name}} </span></a>
+                <a class="coupon-links" href="/coupons/{{coupon.store_route}}">{{ svg('table')|raw }}Показать все купоны <span>{{coupon.store_name}} </span></a>
             </div>
         {% endif %}
 
@@ -68,7 +68,7 @@
                         <div class="btn btn-mini btn-round btn-transform set_clipboard" data-clipboard="{{ coupon.promocode }}" data-clipboard-notify="Промокод успешно скопирован в буфер обмена.">Скопировать</div>
                     {% else %}
                         <div class="coupons-list_item-content-goto-promocode-code">
-                            НЕ ТРЕБУЕТСЯ
+                            НЕ&nbsp;ТРЕБУЕТСЯ
                         </div>
                     {% endif %}
                 </div>
