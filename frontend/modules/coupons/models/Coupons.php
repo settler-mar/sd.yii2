@@ -263,7 +263,22 @@ class Coupons extends \yii\db\ActiveRecord
     
     return $data;
   }
- 
+
+  public static function forList($as_array=true)
+  {
+    $coupons = Coupons::find()
+        ->from(Coupons::tableName() . ' cwc')
+        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route',
+            'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+            'cws.action_id as store_action_id', 'cws.logo as store_image'])
+        ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid');
+    if ($as_array) {
+      return $coupons->asArray();
+    } else {
+      return $coupons;
+    }
+  }
+
   protected function clearCache()
   {
     //зависимости

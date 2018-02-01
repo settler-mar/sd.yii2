@@ -158,6 +158,7 @@ class SdController extends Controller
         $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
         $params = array_merge(['/' . $pageName], $params);
         $page  = $page < 2 ? 1 : $page;
+        //ddd($params);
         $this->pagination_tags = [
             'prev_page' => $page > 1 ? Url::toRoute(array_merge($params, ['page' => $page - 1])): null,
             'next_page' =>

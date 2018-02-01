@@ -1,0 +1,64 @@
+<!--поле контент из метатегов только для категории-->
+{% if content  %}
+  <section class="margin">
+    <div class="catalog_category-content">
+      {{content|raw}}
+    </div>
+  </section>
+{% endif %}
+
+<section class="catalog margin">
+  <div class="page-wrap page-wrap-flex">
+    {#слева категории#}
+
+    <div class="catalog-categories">
+      {% include('left_menu.twig') %}
+    </div>
+    {#справа контент#}
+    <div class="catalog-stores coupons">
+
+      <h1 >
+        {% if h1 %}
+          <!--h1 из базы-->
+          {{h1|raw}}
+        {% else %}
+          <!--если нет, то -->
+          {{ store.name }}: {{coupon.name}}
+        {% endif%}
+      </h1>
+
+      {% include('parts/coupon.twig') %}
+
+      <h2>Еще больше купонов {{ store.name }}</h2>
+      <div  class="catalog-coupons margin">
+        {% if stores_coupon|length > 0 %}
+          <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
+            {% if stores_coupon|length > 0 %}
+              {% for coupon in stores_coupon %}
+                {% include 'parts/coupon.twig' %}
+              {% endfor %}
+              <div class="coupons coupons-empty"></div>
+              <div class="coupons coupons-empty"></div>
+              <div class="coupons coupons-empty"></div>
+              <div class="coupons coupons-empty"></div>
+              <div class="coupons coupons-empty"></div>
+              <div class="coupons coupons-empty"></div>
+            {% else %}
+                Ничего не найдено.
+            {% endif %}
+
+          </div>
+
+          <div class="catalog-stores_pagination catalog_pagination">
+            {% if pagination %}
+              {{pagination|raw}}
+            {% endif %}
+          </div>
+
+
+        {% else %}
+          <p>Ничего не найдено.</p>
+        {% endif %}
+    </div>
+  </div>
+</section>
