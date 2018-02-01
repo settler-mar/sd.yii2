@@ -1,3 +1,76 @@
+@mixin narrow {
+  flex-direction: row;
+  flex-wrap: wrap;
+  .coupons-list_item {
+    width: 31%;
+    margin: 0 1% 2%;
+    flex-direction: column;
+    padding: 3px;
+    &-logo {
+      min-width: inherit;
+      border: none;
+      padding: 0;
+      margin: 10px 0;
+      &-logo{
+        padding: 5px 0;
+      }
+      &-info {
+        display: none;
+      }
+    }
+    &-content {
+      text-align: center;
+      height: 100%;
+      &-goto {
+        margin: 0 auto;
+        width: 100%;
+        align-items: center;
+        &-promocode {
+          margin-top: 20px;
+          justify-content: space-between;
+          width: 95%;
+          &-title {
+            width: 100%;
+            &-title {
+              display: none;
+            }
+            &-code {
+              width: 100%;
+              //justify-content: space-between;
+              justify-content: space-around;
+              margin: 0;
+              flex-wrap: wrap;
+              align-items: center;
+              &-text {
+                flex-wrap: nowrap;
+              }
+            }
+          }
+          &-link {
+            a {
+              width: 100%;
+            }
+          }
+        }
+        &.open {
+          .coupons-list_item-content-goto-promocode {
+            align-items: center;
+          }
+        }
+      }
+
+      &-info {
+        display: block;
+        margin-bottom: 5px;
+      }
+      &-visit {
+        padding: 7px 3px;
+      }
+    }
+  }
+
+}
+
 .coupons {
   &-abc {
     &_list{
@@ -96,30 +169,165 @@
   }
   &-list {
     display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &.narrow {
+        @include narrow;
+    }
+    @include media($tablets) {
+      @include narrow;
+    }
 
     &_item {
+      position: relative;
+      overflow: hidden;
       width: 100%;
-      padding: 0 2%;
+      margin: 0 0 2%;
       box-sizing: border-box;
-      margin-bottom: 3%;
       display: flex;
-
-      /*@include media($tablets) {
-        width: 49%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      border: 3px solid $coupons_coupon_border_color;
+      border-radius: 5px;
+      @include media($tablets) {
+        width: 48% !important;
       }
       @include media($phones) {
-        width: 99%;
-      }*/
-      &-name {
-        svg {
-          width: 15px;
-          height: 15px;
+        width: 100% !important;
+      }
+      &-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &-additional {
+          margin-bottom: 10px;
+          &-text {
+            display: none;
+          }
+          &.open {
+            //margin: 5px 0 5px;
+            .coupons-list_item-content-additional-text {
+              display: block;
+            }
+            .coupons-list_item-content-additional-link {
+              display: none;
+            }
+          }
+        }
+        &-link-all {
+          margin-bottom: 10px;
+        }
+        &-name {
+          background: $coupons_coupon_sel_text_bg_color;
+          color: $coupons_coupon_sel_text_color;
+          text-transform: uppercase;
+          padding: 7px 3px;
+          font-weight: bold;
+          svg {
+            width: 15px;
+            height: 15px;
+          }
+          margin-bottom: 10px;
+          span {
+            color: $coupons_coupon_name_cashback;
+          }
+        }
+        &-link-all {
+          margin-bottom: 10px;
+        }
+        &-goto {
+          margin: 0 5px 5px 0;
+          //padding: 5px;
+          //text-align: right;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          &-promocode {
+            display: none;
+            //text-aling: right;
+            &-title {
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              justify-content: flex-end;
+              align-items: center;
+              margin-bottom: 5px;
+              font-weight: bold;
+              &-code {
+                border: 3px solid $coupons_coupon_promocode_border_color;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px;
+                margin-left: 10px;
+                width: 300px;
+                box-sizing: border-box;
+              }
+            }
+            &-link {
+              a {
+                width: 300px;
+                box-sizing: border-box;
+              }
+            }
+          }
+          &.open {
+            .coupons-list_item-content-goto-promocode {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+            }
+            .coupons-list_item-content-goto-link {
+              display:none;
+            }
+          }
+        }
+        &-info {
+          display: none;
         }
       }
+      &-expiry-text {
+        position: absolute;
+        z-index: 2;
+        background-color: rgba(61, 67, 81, 0.75);
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 2em;
+        padding-top: 70px;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        top: 0;
+        left: 0;
+      }
+      &-logo {
+        min-width: 230px;
+        border-right: 1px solid $coupons_coupon_logo_border_color;
+        margin: 15px 20px 15px 0;
+        padding: 5px 5px 0;
 
+        &-logo {
+          display: block;
+          //min-height: 100px;
+          padding: 30px 0;
+        }
 
+      }
+      &-time {
+        background: $coupons_coupon_sel_text_bg_color;
+        color: $coupons_coupon_sel_text_color;
+        text-transform: uppercase;
+        padding: 7px 3px;
+        font-weight: bold;
+      }
+      &-visit {
+        padding: 7px 3px 0;
+        font-weight: bold;
+      }
     }
   }
   &_buttons {

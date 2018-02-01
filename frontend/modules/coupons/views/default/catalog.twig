@@ -36,6 +36,8 @@
                 </h1>
                 {#выбор и отображение сортировки#}
                 <div class="margin page-wrap-flex catalog-stores_sort">
+                    {% include('parts/list_type_switcher.twig') %}
+
                     <div class="catalog-stores_sort-desctop">
                         <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
                         <ul >
@@ -65,7 +67,7 @@
 
 
                     {% if coupons|length > 0 %}
-                        <div class="catalog-coupons_list coupons-list margin">
+                        <div class="catalog_list catalog-coupons_list coupons-list margin">
                           {% if coupons|length > 0 %}
                             {% for coupon in coupons %}
                                   {% include 'parts/coupon.twig' %}
