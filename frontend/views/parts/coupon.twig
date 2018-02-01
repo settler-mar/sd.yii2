@@ -1,22 +1,27 @@
 <div class="coupon coupons-list_item" data-uid="{{coupon.uid}}">
-    <div class="coupon-logo">
+    <div class="coupons-list_item-logo">
         {% if coupon.store_action_id == 1 %}
             <span class="promo-label x2"></span>
         {% endif %}
-        <a class="coupon-logo" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
-            <img class="coupon-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
+        <a class="coupons-list_item-logo-wrap" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
+            <img class="coupons-list_item-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
         </a>
 
-      {% if not_active %}
-        <div class="coupon-time">Магазин {{coupon.store_name}} временно неактивен</div>
-      {% else %}
-        <div class="coupon-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
-      {% endif %}
-        <div class="coupon-counter">Воспользовались: {{ coupon.visit }}</div>
+        <div class="coupons-list_item-logo-info">
+            {% if not_active %}
+                <div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>
+            {% else %}
+                <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
+            {% endif %}
+            <div class="coupons-list_item-visit">
+                Воспользовались:
+                <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span>
+            </div>
+        </div>
 
     </div>
-    <div class="coupon-content">
-        <a href="/coupons/{{coupon.store_route}}/{{ coupon.uid }}" class="coupon-name coupons-list_item-name ">{{coupon.name}}
+    <div class="coupons-list_item-content">
+        <a href="/coupons/{{coupon.store_route}}/{{ coupon.uid }}" class="coupons-list_item-content-name ">{{coupon.name}}
             <span {% if coupon.store_action_id == 1 %} class="old" {% endif %}>
                 + кэшбэк
                 {{ _cashback(coupon.store_cashback, coupon.store_currency)|raw }}
@@ -28,33 +33,49 @@
             {% endif %}
         </a>
         {% if coupon.description %}
-            <p class="coupon-additional">
-                <a href="#additional">Показать дополнительную информацию о купоне</a>
-                <span>{{coupon.description}}</span>
+            <p class="coupons-list_item-content-additional">
+                <a href="#additional" class="coupons-list_item-content-additional-link">Показать дополнительную информацию о купоне</a>
+                <span class="coupons-list_item-content-additional-text">{{coupon.description}}</span>
             </p>
         {% endif %}
 
         {% if not store_coupons %}
-            <a class="coupon-links" href="/coupons/{{coupon.store_route}}">Показать все купоны <span>{{coupon.store_name}} </span></a>
+            <div class="coupons-list_item-content-link-all">
+                <a class="coupon-links" href="/coupons/{{coupon.store_route}}">Показать все купоны <span>{{coupon.store_name}} </span></a>
+            </div>
         {% endif %}
 
-        <div class="coupon-goto">
-            <div class="coupon-promocode">
-                <div class="coupon-promocode-title">Промокод</div>
-                <div class="coupon-promocode-value">
+        <div class="coupons-list_item-content-info">
+            {% if not_active %}
+                <div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>
+            {% else %}
+                <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
+            {% endif %}
+            <div class="coupons-list_item-visit">
+                Воспользовались:
+                <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span>
+            </div>
+        </div>
+
+        <div class="coupons-list_item-content-goto">
+            <div class="coupons-list_item-content-goto-promocode">
+                <div class="coupons-list_item-content-goto-promocode-title">Промокод</div>
+                <div class="coupons-list_item-content-goto-promocode-value">
                     {% if coupon.promocode!='' %}
-                        <div class="coupon-promocode-value-text">
+                        <div class="coupons-list_item-content-goto-promocode-code">
                             {{coupon.promocode}}
                         </div>
-                        <div class="btn set_clipboard" data-clipboard="{{ coupon.promocode }}" data-clipboard-notify="Промокод успешно скопирован в буфер обмена.">Скопировать</div>
+                        <div class="btn btn-mini btn-round btn-transform set_clipboard" data-clipboard="{{ coupon.promocode }}" data-clipboard-notify="Промокод успешно скопирован в буфер обмена.">Скопировать</div>
                     {% else %}
-                        <div class="coupon-promocode-value-text">
+                        <div class="coupons-list_item-content-goto-promocode-code">
                             НЕ ТРЕБУЕТСЯ
                         </div>
                     {% endif %}
                 </div>
             </div>
-            <a href="/goto/coupon:{{ coupon.uid }}" target="_blank" class="btn" rel="nofollow noopener">Перейти к покупкам</a>
+            <div class="coupons-list_item-content-goto-promocode-link">
+                <a href="/goto/coupon:{{ coupon.uid }}" target="_blank" class="btn" rel="nofollow noopener">Перейти к покупкам</a>
+            </div>
         </div>
     </div>
 </div>
