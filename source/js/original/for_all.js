@@ -261,28 +261,49 @@ $(function() {
 $( document ).ready(function() {
   /*m_w = $('.text-content').width()
   if (m_w < 50)m_w = screen.width - 40*/
-  mw=screen.width-40;
-  p = $('.container img,.container iframe');
-  $('.container img').height('auto');
-  //$('.container img').width('auto');
-  for (i = 0; i < p.length; i++) {
-    el = p.eq(i);
+  var mw=screen.width-40;
+
+  function optimase(el){
     var parent = el.parent();
-    if(parent[0].tagName=="A"){
-      continue;
+    if(parent.length==0 || parent[0].tagName=="A"){
+      return;
     }
     m_w = parent.width()-30;
     var w=el.width();
     el.width('auto');
-    if(w>el.width())w=el.width();
+    if(el[0].tagName=="IMG" && w>el.width())w=el.width();
 
-    if (m_w > mw)m_w = mw;
+    if (mw>50 && m_w > mw)m_w = mw;
     if (w>m_w > m_w) {
-      //k = w / m_w;
-      //el.height(el.height() / k);
+      if(el[0].tagName=="IFRAME"){
+        k = w / m_w;
+        el.height(el.height() / k);
+      }
       el.width(m_w)
     }else{
       el.width(w);
+    }
+  }
+
+  function img_load_finish(){
+    var el=$(this);
+    optimase(el);
+  }
+
+  var p = $('.container img,.container iframe');
+  $('.container img').height('auto');
+  //$('.container img').width('auto');
+  for (i = 0; i < p.length; i++) {
+    el = p.eq(i);
+    if(el[0].tagName=="IFRAME") {
+      optimase(el);
+    }else{
+      var src=el.attr('src');
+      image = $('<img/>', {
+        src: src
+      });
+      image.on('load', img_load_finish.bind(el));
+
     }
   }
 });

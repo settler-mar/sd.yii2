@@ -236,11 +236,9 @@
                         {{ get_menu_item({'href':'/account/favorites', 'title': t('account', 'menu_favorites')})|raw }}
 
             </li>
-            {% if _can('MetaView') %}
                 <li class="offlineshop-icon fasicon">
                         {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
                 </li>
-            {% endif %}
             <li class="settings-icon fasicon">
                         {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
             </li>

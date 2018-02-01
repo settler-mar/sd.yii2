@@ -5,6 +5,7 @@ return [
      *  0 - в шапке Оффлайн-магазины скрыто, с меню Интренет магазины - все шопы
      */
   'stores_menu_separate' => 1,
+  'offline_redirect' => '/', //if stores_menu_separate==0 по умолчанию на /stores/stores-offline
   'ref_cpec' => [
     'ali'=>59914,
     'hotels'=>58326,
