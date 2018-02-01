@@ -1,7 +1,6 @@
 //$(window).load(function() {
-
+//accordion.js
 var accordionControl = $('.accordion .accordion-control');
-
 accordionControl.on('click', function (e) {
     e.preventDefault();
     $this = $(this);
@@ -19,6 +18,8 @@ accordionControl.on('click', function (e) {
 accordionControl.show();
 //})
 
+
+//functions.js
 objects = function (a,b) {
   var c = b,
     key;
@@ -30,6 +31,8 @@ objects = function (a,b) {
   return c;
 };
 
+//Проверка биты картинок.
+// imf.js
 $( document ).ready(function() {
   function img_load_finish(){
     data=this;
@@ -95,6 +98,8 @@ $( document ).ready(function() {
   }
 })();
 
+
+//forms.js
 $('input[type=file]').on('change',function(evt){
   var file = evt.target.files; // FileList object
   var f = file[0];
@@ -216,7 +221,6 @@ $( document ).ready(function() {
 });
 
 $(function() {
-
   var menu = {
     control: {
       headerStoresMenu: $("#top").find(".submenu-handl"),
@@ -258,6 +262,7 @@ $(function() {
 });
 
 //что б ифреймы и картинки не вылазили
+//img.js
 $( document ).ready(function() {
   /*m_w = $('.text-content').width()
   if (m_w < 50)m_w = screen.width - 40*/
@@ -309,6 +314,7 @@ $( document ).ready(function() {
 });
 
 //если открыто как дочернее
+//parents_open_windows.js
 (function(){
   if(!window.opener)return;
   if(document.referrer.indexOf('secretdiscounter')<0)return;
@@ -330,6 +336,7 @@ $( document ).ready(function() {
   window.close();
 })();
 
+//img.js
 (function() {
 
   function img_load_finish(){

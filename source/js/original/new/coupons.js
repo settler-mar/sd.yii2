@@ -57,20 +57,4 @@ $( document ).ready(function() {
     e.preventDefault();
     $(this).closest('.coupons-list_item-content-additional').addClass('open');
   });
-
-  $("a[href='#copy']").on('click', function (e) {
-    e.preventDefault();
-    var codeElem = $(this).closest('.code').find('.code-text');
-    copyToClipboard(codeElem);
-  });
-
-  function copyToClipboard(element) {
-      var $temp = $("<input>");
-      $("body").append($temp);
-      $temp.val($(element).text()).select();
-      document.execCommand("copy");
-      $temp.remove();
-  }
-
-
 });

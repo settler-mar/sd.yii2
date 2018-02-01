@@ -172,20 +172,26 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/external/jquery.flexslider-min.js',
         paths.source.js+'/external/tipso.min.js',
         paths.source.js+'/original/new/tooltip.js',
+        paths.source.js+'/original/new/account_notification.js',
+        paths.source.js+'/original/new/slider.js',
+        paths.source.js+'/original/new/header_menu_and_search.js',
+        paths.source.js+'/original/new/calc-cashback.js',
+        paths.source.js+'/original/new/auto_hide_control.js',
+        paths.source.js+'/original/new/hide_show_all.js',
+        paths.source.js+'/original/new/coupons.js',
+        paths.source.js+'/original/new/list_type_switcher.js',
+
+  //for_all
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/new/modals.js',
         paths.source.js+'/original/new/footer_menu.js',
         paths.source.js+'/original/new/rating.js',
-        paths.source.js+'/original/new/account_notification.js',
-        paths.source.js+'/original/new/slider.js',
         paths.source.js+'/original/new/favorites.js',
-        paths.source.js+'/original/new/script.js',
-        paths.source.js+'/original/new/calc-cashback.js',
-        paths.source.js+'/original/new/auto_hide_control.js',
         paths.source.js+'/original/new/scroll_to.js',
-        paths.source.js+'/original/new/hide_show_all.js',
-        paths.source.js+'/original/new/coupons.js',
-        paths.source.js+'/original/new/list_type_switcher.js'
+        paths.source.js+'/original/new/copy_to_clipboard.js',
+        paths.source.js+'/original/new/img.js',
+        paths.source.js+'/original/new/parents_open_windows.js',
+        paths.source.js+'/original/new/forms.js'
     ], paths.app.js+'/new')
 );
 

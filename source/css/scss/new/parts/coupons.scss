@@ -244,9 +244,19 @@
           display: flex;
           flex-direction: column;
           align-items: flex-end;
+
           &-promocode {
-            display: none;
-            //text-aling: right;
+            border: 3px solid $coupons_coupon_promocode_border_color;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            margin-left: 10px;
+            width: 300px;
+            box-sizing: border-box;
+
             &-title {
               display: flex;
               flex-direction: row;
@@ -255,18 +265,6 @@
               align-items: center;
               margin-bottom: 5px;
               font-weight: bold;
-              &-code {
-                border: 3px solid $coupons_coupon_promocode_border_color;
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                justify-content: space-between;
-                align-items: center;
-                padding: 5px;
-                margin-left: 10px;
-                width: 300px;
-                box-sizing: border-box;
-              }
             }
             &-link {
               a {
