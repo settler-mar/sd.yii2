@@ -288,6 +288,11 @@ class DefaultController extends SdController
         ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
     $contentData['show_expired'] = $request->get('expired');
 
+    $contentData['coupon_ended']=Coupons::find()
+        ->where(['store_id' => $coupon['store_id']])
+        ->asArray()
+        ->limit(10)
+        ->all();
 
     \Yii::$app->params['url_mask'] = 'coupon/'.$actionId.($store->cpaLink->cpa_id == 2 ? '/online' : '');
     $contentData["counts"] = Coupons::counts($storeId);
