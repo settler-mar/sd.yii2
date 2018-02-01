@@ -3,19 +3,48 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    align-items: center;
+    vertical-align: middle;
     margin: 0 5px 0 0;
     padding: 0;
   }
   &-item {
     list-style-type: none;
+    padding-top: 3px;
     &:not(:last-child) {
       margin-right: 10px;
     }
     &-button {
-      cursor: pointer;
+      //vertical-align: middle;
+      svg {
+        width: 16px;
+        height: 16px;
+        color: $btn_base_bg;
+        fill: $btn_base_bg;
+        stroke: $btn_base_bg;
+      }
+      &:hover {
+        svg {
+          color: $coupons_list_type_switcher_hover_color;
+          fill: $coupons_list_type_switcher_hover_color;
+          stroke: $coupons_list_type_switcher_hover_color;
+        }
+      }
+
       &.checked {
-        color: black;
         cursor: default;
+        svg {
+          color: $btn_base_dark_bg;
+          fill: $btn_base_dark_bg;
+          stroke: $btn_base_dark_bg;
+        }
+        &:hover {
+          svg {
+            color: $btn_base_dark_bg;
+            fill: $btn_base_dark_bg;
+            stroke: $btn_base_dark_bg;
+          }
+        }
       }
     }
   }
