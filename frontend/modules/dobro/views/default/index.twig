@@ -1,11 +1,9 @@
-<section class="dobro-head margin align-center">
+<section class="dobro dobro-head margin align-center">
                 <h3 class="dobro-head_header1">SecretDiscounter</h3>
                 <h1 class="dobro-head_header">Делаем Добрые Дела вместе!</h1>
                 {#<i class="fa fa-heart" aria-hidden="true"></i>#}
 </section>
-<section class="dobro-body section-padding">
-    <div class="container">
-        <div class="row">
+<section class="dobro dobro-body margin section-padding">
             <div class="col-md-12 description">
                 <div class="desc-wrapper">
                 <p><strong>10% от всех наших доходов</strong>, заработанных в том числе и с Вашей помощью, мы направляем на благотворительность.</p>
@@ -15,78 +13,65 @@
                 <li>б) передать <strong>часть</strong> сэкономленных денег в любой из 8 представленных у нас благотворительных фондов</li>
                 <li>в) настроить автоплатежи в пользу конкретного Фонда и тогда <strong>весь</strong> ваш кэшбэк в последний день месяца будет автоматически переводиться выбранной вами организации</li>
                 </ul>
-                <p class="mquoute"><strong>Мы нередко слышим:</strong> <br><span class="mq">«Я покупаю только в Aliexpress, на маленькие суммы, и сколько мне там вернется за месяц? Копейки! Зачем мне тогда заморачиваться и покупать на Али через ваш SecretDiscounter, если я могу сразу зайти на сайт Алиэкспресс, а кэшбэк в размере 100 рублей, которые я накоплю за месяц, меня не интересует, у меня и так всё в жизни хорошо».</span></p>
+                <p class="mquoute"><strong>Мы нередко слышим:</strong> <br><span class="dobro_quote">«Я покупаю только в Aliexpress, на маленькие суммы, и сколько мне там вернется за месяц? Копейки! Зачем мне тогда заморачиваться и покупать на Али через ваш SecretDiscounter, если я могу сразу зайти на сайт Алиэкспресс, а кэшбэк в размере 100 рублей, которые я накоплю за месяц, меня не интересует, у меня и так всё в жизни хорошо».</span></p>
                 <p class="mquoute">Согласны, какие-то магазины на нашем сайте дают 40% кэшбэка, но какие-то и 1%. Покупая только в последних, Вы действительно не накопите много, НО: если вам вдруг не нужны эти деньги – отдайте их тем, кому они действительно нужны: брошенным старикам, детям-сиротам, тяжело больным детям, женщинам в сложной жизненной ситуации, бездомным животным, защитникам дикой природы и т.д.
                 Всего одно действие (переход, допустим, в Booking.com не напрямую, а через SecretDiscounter) – и Вы уже помогли!</p>
-                <p class="bigph">Помните: маленькой помощи – не бывает!</p>
+                <h3>Помните: маленькой помощи – не бывает!</h3>
                 <p class="last">
                     {% if user_id %}
                     <a href="/affiliate-system">А рассказав о SecretDiscounter своим друзьям</a>{% else %}А рассказав о SecretDiscounter своим друзьям {% endif %}, Вы сделаете еще больше добрых дел. Человек умеет помогать!</p>
                 </div>
             </div>
-        </div>
-    </div>
 </section>
 {% if funds|length > 0 %}
-<section class="funds section-padding">
-    <div class="container">
-        <div class="row">
-            <h3 class="text-center">Мы поддерживаем следующие благотворительные организации:</h3>
-            {% for fund in funds %}
-            <div class="col-md-6 fund">
-                <div class="title">
-                    {{fund.title}}
-                </div>
-                <div class="parent-desc-wrapper" style="background-image:url(/images/dobro/{{fund.image}});">
-                    <div class="desc-wrapper">
-                        <div class="desc">
-                            {{fund.description|raw}}
-                        </div>
+<section class="dobro-funds margin">
+    <h2 class="align-items">Мы поддерживаем следующие благотворительные организации:</h2>
+    <div class="dobro-funds_list">
+    {% for fund in funds %}
+        <div class="dobro-funds_item">
+            <h3 class="dobro-funds_item-title align-center">{{fund.title}}</h3>
+            <div class="dobro-funds_item-content" style="background-image:url(/images/dobro/{{fund.image}});">
+                {#<div class="dobro-funds_item-content-wrapper">#}
+                    <div class="dobro-funds_item-content-description">
+                        {{fund.description|raw}}
                     </div>
-                </div>
+                {#</div>#}
             </div>
-            {% endfor %}
         </div>
+    {% endfor %}
     </div>
 </section>
 {% endif %}
-<section class="dobro section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 head">
-                <h3 class="text-center">Делаем Добрые Дела вместе!</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 circle">
-                <div class="c">
-                    <img src="/images/templates/logo-bw.png" class="logo-bw" alt="secretdiscounter logo">
+<section class="dobro margin">
+
+        <h2 class="align-center">Делаем Добрые Дела вместе!</h2>
+        <div class="dobro-advantages margin">
+            <div class="dobro-advantages_item align-center">
+                <div class="dobro-advantages_item-logo">
+                    <img src="/images/templates/logo-bw.png"  alt="secretdiscounter logo">
                 </div>
-                <div class="text">
+                <div class="dobro-advantages_item-text">
                     Вы совершаете покупки в интернет-магазинаx <strong>из каталога SecretDiscounter</strong> (переходя по ссылке с нашего сервиса)
                 </div>
             </div>
-            <div class="col-md-4 circle">
-                <div class="c">
-                    <i class="fa fa-ruble" aria-hidden="true"></i>
+            <div class="dobro-advantages_item align-center">
+                <div class="dobro-advantages_item-ruble">
+                    {{ svg('ruble')|raw }}
                 </div>
-                <div class="text">
+                <div class="dobro-advantages_item-text">
                     Часть потраченных денег Вы <strong>получаете обратно</strong> на свой аккаунт в SecretDiscounter (так называемый «кэшбэк»)
                 </div>
             </div>
-            <div class="col-md-4 circle">
-                <div class="c">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
+            <div class="dobro-advantages_item align-center">
+                <div class="dobro-advantages_item-heart">
+                    {{ svg('heart')|raw }}
                 </div>
-                <div class="text">
+                <div class="dobro-advantages_item-text">
                     Нажав всего одну кнопку в своём аккаунтe SecretDiscounter, Вы сможете перевести часть накопленного кэшбэка на счет 8 проверенных благотворительных фондов
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <a href="/stores/" class="a-stores">Перейти к покупкам <span>и начать помогать</span></a>
-            </div>
+        <div class="dobro-advantages_button align-center">
+                <a href="/stores/" class="btn btn-black">Перейти к покупкам <span>и начать помогать</span></a>
         </div>
-    </div>
 </section>
