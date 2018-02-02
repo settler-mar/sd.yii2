@@ -37,7 +37,7 @@
             {% endif %}
             <div class="coupons-list_item-visit">
               Воспользовались:
-              <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span>
+              <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) }}</span>
             </div>
           </div>
             <div class="coupons-list_item-content-goto">

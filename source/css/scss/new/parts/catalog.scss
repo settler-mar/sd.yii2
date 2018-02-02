@@ -118,10 +118,12 @@
       margin: 30px 0;
       background-color: $coupons_popular_stores_background_color;
       color: $coupons_popular_stores_color;
-      padding: 0 10px;
+      padding: 10px;
+
       &-header {
         margin: 0 0 10px;
       }
+
       &-content {
         display: flex;
         flex-direction: row;
