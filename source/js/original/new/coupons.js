@@ -30,7 +30,7 @@ $( document ).ready(function() {
 
         //если срок более 30 дней
         if(d>30*60*60*24){
-          c.text('Осталось более 30 дней');
+          c.text('Осталось: более 30 дней');
           continue;
         }
 
@@ -53,8 +53,4 @@ $( document ).ready(function() {
     updateClock.bind(clocks)();
   }
 
-  $("a[href='#show-coupon-description']").on('click', function (e) {
-    e.preventDefault();
-    $(this).closest('.coupons-list_item-content-additional').addClass('open');
-  });
 });
