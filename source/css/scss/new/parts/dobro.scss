@@ -1,3 +1,15 @@
+@keyframes pulse_animation {
+  0% {
+    //-webkit-transform: scale(1.1);
+    transform: scale(1); }
+  50% {
+    //-webkit-transform: scale(0.8);
+    transform: scale(1.1); }
+  100% {
+    //-webkit-transform: scale(1);
+    transform: scale(1); }
+}
+
 .dobro{
   &-head {
     background: url(/images/svg/heart-red.svg) no-repeat 50% 50%;
@@ -8,5 +20,103 @@
       margin-top: 10px;
       margin-bottom: 0;
     }
+  }
+  &_quote {
+    font-style: italic;
+  }
+  &-funds {
+
+    &_list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    &_item {
+      box-sizing: border-box;
+      width: 48%;
+      @include media($tablets) {
+        width: 100%;
+      }
+      margin: 0 1% 40px;
+      //padding: 10px;
+      &-title {
+        margin: 5px 0 20px;
+      }
+      &-content {
+        //padding: 15px;
+        border: 1px solid $header_color_gray;
+        border-radius: 3px;
+        min-height: 300px;
+        background-size: cover;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        &-description {
+          box-sizing: border-box;
+          padding: 15px;
+          opacity: 0;
+          min-height: 300px;
+          background-color: rgba(0, 0, 0, 0.65);
+          color: #fff;
+          font-size: 18px;
+          line-height: 26px;
+          transition: all 0.2s ease-out;
+          span {
+            color: $link_color;
+          }
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  &-advantages {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    &_item {
+      box-sizing: border-box;
+      margin: 0 1% 20px;
+      width: 31%;
+      @include media($tablets) {
+        width: 80%;
+      }
+      &-logo,
+      &-heart,
+      &-ruble {
+        background-color: #fbcf4a;
+        height: 230PX;
+        width: 230PX;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &-logo img {
+        max-width: 95%;
+        margin-left: 4%;
+      }
+      &-ruble svg{
+        width: 100px;
+        height: 100px;
+      }
+      &-heart svg {
+        width: 100px;
+        height: 100px;
+        color: $header_heart;
+        fill: $header_heart;
+        stroke: $header_heart;
+        animation-name: pulse_animation;
+        animation-duration: 2000ms;
+        //transform-origin:70% 70%;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+
+      }
+    }
+
   }
 }
