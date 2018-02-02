@@ -361,11 +361,11 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function action404()
-  {
-    $this->params['breadcrumbs'][] = '404';
-    return $this->render('404');
-  }
+//  public function action404()
+//  {
+//    $this->params['breadcrumbs'][] = '404';
+//    return $this->render('404');
+//  }
 
   function actionStartaction()
   {
