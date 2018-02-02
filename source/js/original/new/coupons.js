@@ -30,7 +30,7 @@ $( document ).ready(function() {
 
         //если срок более 30 дней
         if(d>30*60*60*24){
-          c.text('Осталось: более 30 дней');
+          c.html('Осталось: <span>более 30 дней</span>');
           continue;
         }
 
@@ -45,7 +45,7 @@ $( document ).ready(function() {
         if(d>0){
           str=d+" "+declOfNum(d, ['день', 'дня', 'дней'])+"  "+str;
         }
-        c.text("Осталось: "+str);
+        c.html("Осталось: <span>"+str+"</span>");
       }
     }
 
