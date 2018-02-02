@@ -1,12 +1,12 @@
 .page-404{
-  background: url("/images/templates/404_site.png") no-repeat right top;
+  background: url("/images/templates/404_site.png") no-repeat right 40px;
   
   @include media ($laptop_min) {
     background: none;
   }
 
   &__content {
-    padding: 50px 0 230px 30px;
+    padding: 90px 0 285px 30px;
 
     @include media ($laptop_min) {
       padding-bottom: 60px;
