@@ -1,12 +1,12 @@
 @keyframes pulse_animation {
   0% {
-    //-webkit-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
     transform: scale(1); }
   50% {
-    //-webkit-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
     transform: scale(1.1); }
   100% {
-    //-webkit-transform: scale(1);
+    -webkit-transform: scale(1);
     transform: scale(1); }
 }
 

@@ -70,6 +70,7 @@ a{
 h1{
   font-weight: 700;
   font-size: 2.5em;
+  margin-top: 0;
 }
 
 h2 {
@@ -164,22 +165,6 @@ h3,h4,h5,h6 {
   flex-grow: 1;
 }
 
-//.menu_angle{
-//  &-down{
-//    height: 100%;
-//    width: 20px;
-//    margin-bottom: -20px;
-//  }
-//
-//  &-right{
-//    height: 100%;
-//    width: 20px;
-//    position: absolute;
-//    right: 0;
-//    top:0;
-//  }
-//}
-
 .flex-line{
   display: flex;
   flex-direction: row;
@@ -197,6 +182,10 @@ h3,h4,h5,h6 {
   stroke: $header_heart;
   height: 13px;
   margin-left: 5px;
+}
+
+.color-red{
+  color: $header_heart;
 }
 
 .laptop-min {
@@ -250,6 +239,7 @@ svg.svg-no-fill{
     color: $btn_base_bg;
   }
 }
+
 .black_box {
   background: $black_box_bg;
   border: 2px dashed $black_box_border;
@@ -262,11 +252,22 @@ svg.svg-no-fill{
   }
 }
 
+.hover-box{
+  transition: all .25s ease;
+  box-shadow: 1px 1px 1px rgba($shop_name_color,0.1), 0 2px 0 0px rgba($shop_name_color,0.3);
 
+  &:hover{
+    box-shadow: 1px 1px 8px rgba($shop_name_color,0.7), 0 2px 0 0px rgba($shop_name_color,0.5);
+  }
+}
 
 .round-box {
   border-radius: 10px;
   padding: 40px 0;
+}
+
+.padding-box {
+  padding: 20px 0;
 }
 
 .wrap-round{
@@ -416,6 +417,10 @@ svg.svg-no-fill{
       display: none;
     }
   }
+}
+
+.set_clipboard{
+  cursor: pointer;
 }
 
 .spin {
