@@ -476,6 +476,25 @@ $functionsList=[
   '_ddd'=>function ($params) {
     ddd($params);
   },
+  '_checkAvatar' => function($avatar, $techAvatar = '/images/no_ava.png') {
+    if (!$avatar) {
+        return $techAvatar;
+    } elseif (strpos($avatar, 'http') !== false) {
+        $avatar =  str_replace('http:', 'https:', $avatar);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $avatar);
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_FAILONERROR, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response !== false ? $avatar : $techAvatar;
+    } elseif (is_readable(Yii::getAlias('@webroot') . $avatar)) {
+        return $avatar;
+    } else {
+        return $techAvatar;
+    }
+  },
   't'=>'Yii::t',
   'max'=>'max',
   'implode'=>'implode',
