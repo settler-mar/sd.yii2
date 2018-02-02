@@ -1,0 +1,34 @@
+.affiliate {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  &-barcode {
+    text-align: center;
+    &_header {
+      @include print {
+        margin-top: 0;
+      }
+    }
+    &_link-sent {
+      @include print {
+        margin-bottom: 0;
+      }
+    }
+  }
+  &-invitation {
+    text-align: center;
+    &_icon-download,
+    &_icon-invitation,
+    &_icon-printer {
+      svg {
+        width: 60px;
+        height: 60px;
+        color: $offline_icon_color;
+        fill: $offline_icon_color;
+        stroke: $offline_icon_color;
+      }
+    }
+  }
+
+}

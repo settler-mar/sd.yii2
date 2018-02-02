@@ -8,7 +8,8 @@
     </div>
 
     {% if dopline %}
-        <div class="dopline margin">
+        <div class="static-page_dopline gray-box">
+            {% if infotitle %} <h3 class="dopline-header align-center">{{ infotitle }} </h3> {% endif %}
             {{ dopline | raw }}
         </div>
     {% endif %}

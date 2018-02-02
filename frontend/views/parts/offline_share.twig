@@ -1,6 +1,6 @@
 <div class="affiliate row">
-    <div class="col-md-4 ways-invitation">
-        <h3>
+    <div class="affiliate-barcode ">
+        <h3 class="affiliate-barcode_header">
             {% if friend_user %}
                 {{ t('account', 'offline_friend_pr_code') }} ↓
                 {% set user_code_img = friend_user.barcodeImg  %}
@@ -17,7 +17,7 @@
         </h3>
         <img src="{{ user_code_img }}" alt="" width="230">
         {% if friend_user or user_id %}
-            <p class="link-sent">
+            <p class="affiliate-barcode_link-sent">
 
                 <a href="" class="link-to-clipboard"
                    data-link="{{ user_code }}"
@@ -27,23 +27,23 @@
         {% endif %}
     </div>
     {% if user_id %}
-        <div class="col-md-4 ways-invitation no_print">
-            <div class="col-md-12">
-                <div class="intro-icon">
-                    <span class="icon icon-download" aria-hidden="true" data-icon=""></span>
+        <div class="affiliate-invitation no_print">
+            <div class="margin">
+                <div class="affiliate-invitation_icon-download">
+                    {{ svg('download')|raw }}
                 </div>
-                <div class="intro-content">
+                <div class="affiliate-invitation_download">
                     <p class="intro-content_header"><a href="{{ user_code_img }}" download>{{ t('account', 'offline_pr_code_do_save') }}</a></p>
                 </div>
             </div>
             {% if friend_user or user_id %}
-                <div class="col-md-12" style="margin-top: 35px">
-                    <div class="intro-icon">
-                        <span data-icon="" class="icon"></span>
+                <div class="margin">
+                    <div class="affiliate-invitation_icon-invitation">
+                        {{ svg('global')|raw }}
                     </div>
-                    <div class="intro-content">
+                    <div class="affiliate-invitation_invitation">
                         <a name="link-to-clipboard"></a>
-                        <p  class="intro-content_header">{{ t('account', 'offline_pr_code_share') }}</p>
+                        <p  class="affiliate-invitation_invitation-header">{{ t('account', 'offline_pr_code_share') }}</p>
 
                         <div
                                 class="share42init accauntSoc accauntSoc_32"
@@ -59,11 +59,11 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-md-12"  style="margin-top: 35px">
-                    <div class="intro-icon">
-                        <span class="icon icon-printer" aria-hidden="true" data-icon=""></span>
+                <div class="margin">
+                    <div class="affiliate-invitation_icon-printer">
+                        {{ svg('printer')|raw }}
                     </div>
-                    <div class="intro-content">
+                    <div class="affiliate-invitation_printer">
                         <p class="intro-content_header"><a href="/offline?ref={{user_id}}" onclick="{{ print }};return false;" download>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>

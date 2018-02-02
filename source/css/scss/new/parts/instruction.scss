@@ -7,6 +7,9 @@
     flex-shrink: 10;
     padding: 10px;
     margin-bottom: 10px;
+    @include print {
+      margin-bottom: 0;
+    }
     min-height: 34px;
     background-size: contain;
     background-repeat: no-repeat;
@@ -90,9 +93,10 @@
       margin-bottom: 28PX;
       width: 100%;
       max-width: none;
-      &-big {
-        height: 130PX;
-      }
+    }
+
+    @include print {
+      margin-bottom: 10px;
     }
   }
 

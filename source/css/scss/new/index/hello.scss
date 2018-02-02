@@ -37,6 +37,10 @@
         background:  $btn_base_bg;
       }
 
+      @include print {
+        display: none;
+      }
+
       &-big_link{
         text-decoration: none;
         background: url(/images/index_end.png) no-repeat 100% 50%;

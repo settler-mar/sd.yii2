@@ -1,0 +1,11 @@
+.static-page {
+
+  &_dopline {
+    margin-bottom: -47px;
+
+    @include print {
+      margin-bottom: 0;
+    }
+
+  }
+}

@@ -1,6 +1,11 @@
 .header {
   margin-bottom: 100px;
   position: fixed;
+
+  @include print {
+    display: none;
+  }
+
   &.scrollable {
     position: static;
     margin-bottom: 0;
