@@ -20,28 +20,26 @@
             <a class="coupons-list_item-logo-wrap" href="/stores/{{coupon.store_route}}{{ _if(coupon.store_is_offline,'-offline') }}">
                 <img class="coupons-list_item-logo-img" src="/images/logos/{{coupon.store_image}}" alt="{{coupon.store_name}}">
             </a>
-
-            <div class="coupons-list_item-logo-info">
-                {% if not_active %}
-                    <div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>
-                {% else %}
-                    <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
-                {% endif %}
-                <div class="coupons-list_item-visit">
-                    Воспользовались:
-                    <span class="coupons-list_item-visit-count">{{ coupon.visit }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="coupons-list_item-content">
-            {% if not store_coupons %}
-                <a class="coupons-list_item-content-link-all" href="/coupons/{{coupon.store_route}}">
+          {% if not store_coupons %}
+            <a class="coupons-list_item-content-link-all" href="/coupons/{{coupon.store_route}}">
                     <span class="coupons-list_item-content-link-all-wrap">
                         {{ svg('table')|raw }}Показать все купоны <span>{{coupon.store_name}} </span>
                     </span>
-                </a>
+            </a>
+          {% endif %}
+        </div>
+        <div class="coupons-list_item-content">
+          <div class="coupons-list_item-logo-info">
+            {% if not_active %}
+              <div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>
+            {% else %}
+              <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
             {% endif %}
-
+            <div class="coupons-list_item-visit">
+              Воспользовались:
+              <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) }}</span>
+            </div>
+          </div>
             <div class="coupons-list_item-content-goto">
                 <div class="coupons-list_item-content-goto-promocode">
                     <div class="coupons-list_item-content-goto-promocode-title">Промокод</div>

@@ -4,13 +4,17 @@
 
   .coupons-empty{
     width: 31%;
-    margin: 0 1% 2%;
+    margin: 0 1% ;
   }
 
   .coupons-list_item {
     width: 31%;
-    margin: 0 1% 2%;
+    margin: 0 1% 25px;
     flex-direction: column;
+
+    &-time{
+      text-transform: inherit;
+    }
 
     &-name{
       flex-grow: 1;
@@ -22,24 +26,29 @@
 
     &-logo {
       min-width: inherit;
-      border: none;
       padding: 0;
       margin: 0;
+      background: #fff;
+      border: 1px solid $shop_bg;
+
+      &-info{
+        text-align: left;
+        padding: 0 10px;
+      }
 
       &-img{
         padding: 5px 0;
       }
     }
 
-    &-visit{
-      background: #fff;
-    }
-
     &-content {
       text-align: center;
       height: 100%;
+      padding-bottom: 0;
 
       &-link-all {
+        display: none;
+
         margin: 10px 0;
         min-height: 50px;
         font-size: 16px;
@@ -68,6 +77,7 @@
 
           &-link {
             width: 100%;
+            padding: 5px;
           }
         }
       }
@@ -199,22 +209,13 @@
       border-radius: 5px;
       background: $shop_bg;
 
-      /*
-      @include media($tablets) {
-        width: 48% !important;
-      }
-      @include media($phones) {
-        width: 100% !important;
-      }
-      */
-
       &-wrap{
         display: flex;
       }
 
       &-name {
         background: $coupons_coupon_sel_text_bg_color;
-        color: $btn_base_bg;
+        color: #fff;
         text-transform: uppercase;
         padding: 7px 3px;
         font-weight: bold;
@@ -236,6 +237,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        padding: 15px 7px 7px 0;
+
         &-additional {
           margin-bottom: 10px;
           &-text {
@@ -252,13 +255,13 @@
         }
 
         &-link-all {
-          margin-bottom: 10px;
+          /*margin-bottom: 10px;*/
           flex-grow: 1;
           text-align: center;
-          font-size: 20px;
+          font-size: 14px;
           display: flex;
           justify-content: center;
-          align-items: center;
+          align-items: flex-end;
 
           &:hover svg {
             color: $coupons_a_hover_color;
@@ -267,8 +270,8 @@
           }
 
           svg {
-            height: 22PX;
-            width: 22PX;
+            height: 16PX;
+            width: 16PX;
             color: $coupons_all_coupons_icon_color;
             fill: $coupons_all_coupons_icon_color;
             stroke: $coupons_all_coupons_icon_color;
@@ -285,7 +288,7 @@
         }
 
         &-goto {
-          margin: 0 5px 5px 0;
+          margin: 5px 5px 5px 0;
           display: flex;
           flex-direction: row;
           align-items: stretch;
@@ -301,7 +304,7 @@
             margin-bottom: 2px;
             box-sizing: border-box;
             width: auto;
-            min-width: 50%;
+            min-width: 58%;
             max-width: 60%;
             flex-wrap: wrap;
             overflow: hidden;
@@ -392,19 +395,27 @@
         }
 
         &-info {
-          text-align: center;
+          //text-align: center;
         }
       }
+
       &-time {
-        background: $coupons_coupon_sel_text_bg_color;
-        color: $btn_base_bg;
-        text-transform: uppercase;
-        padding: 7px 3px;
+        //background: $coupons_coupon_sel_text_bg_color;
+        //color: $btn_base_bg;
+        color: $text_color;
+        //text-transform: uppercase;
+        padding: 0px 3px;
         font-weight: bold;
+
       }
+
       &-visit {
         padding: 7px 3px;
         font-weight: bold;
+
+        &-count{
+          font-weight: 400;
+        }
       }
     }
   }

@@ -498,6 +498,7 @@ $functionsList=[
   't'=>'Yii::t',
   'max'=>'max',
   'implode'=>'implode',
+  'sin'=>'sin',
   'svg'=>function ($name,$class=false) {
       return Help::svg($name, $class);
   },

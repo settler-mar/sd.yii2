@@ -125,8 +125,9 @@
   z-index: 1;
 
   &:hover{
-    color: $btn_base_bg;
-    background: $header_color_up;
+    color: #fff;
+    background: $coupons_a_hover_color;
+    border-color: $coupons_a_hover_color;
   }
 
   &-header {

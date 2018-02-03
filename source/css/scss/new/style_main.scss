@@ -193,6 +193,12 @@ h3,h4,h5,h6 {
   color: $header_heart;
 }
 
+.clock{
+  span{
+    font-weight: 400;
+  }
+}
+
 .laptop-min {
   @include media($laptop_min) {
     @include flex;
