@@ -10,25 +10,23 @@
   background-color: #e4c84b;
   color: #0f181a !important;
   display: inline-block;
-  padding: 8px 8px;
-  width: 40px;
-  //height: 40px;
-  margin-right: 9px;
+  padding: 8PX;
+  width: 20PX;
+  margin-right: 10PX;
   text-align: center;
-  font-size: 17px;
-  -webkit-border-radius: 40px;
-  border-radius: 40px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
   -webkit-transition: all 300ms ease-in-out;
   -o-transition: all 300ms ease-in-out;
   -moz-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out;
   &:after {
-    //font-family: 'fontawesome';
-    content: "\f";
+    content: " ";
     display: block;
     background-position: 50% 50%;
-    background-size: 16px 16px;
+    background-size: 16PX;
     background-repeat: no-repeat;
+    height: 20PX;
   }
   &.icon-sd-fb:after {
     background-image: url(/images/svg/facebook.svg);
@@ -40,25 +38,28 @@
     background-image: url(/images/svg/odnoklassniki.svg);
   }
   &.icon-sd-twi:after {
-    content: "\f099";
+    background-image: url(/images/svg/twitter.svg);
   }
   &.icon-sd-gplus:after {
     background-image: url(/images/svg/google-plus.svg);
   }
   &.icon-sd-mail:after {
-    content: "\f003";
+    background-image: url(/images/svg/mailru.svg);
   }
   &.icon-sd-journal:after {
-    content: "\f040";
+    background-image: url(/images/svg/livejournal.svg);
   }
   &.icon-sd-telegram:after {
     background-image: url(/images/svg/telegram.svg);
   }
   &.icon-sd-viber:after {
-    content: "\f095";
+    background-image: url(/images/svg/viber.svg);
   }
   &.icon-sd-whatsapp:after {
     background-image: url(/images/svg/whatsapp.svg);
+  }
+  &.icon-sd-pin:after {
+    background-image: url(/images/svg/pinterest.svg);
   }
 }
 .soc-icon-sd:hover {
@@ -67,8 +68,8 @@
 .accauntSoc_32 .soc-icon-sd{
   text-decoration: none;
   display: inline-block;
-  padding: 1px 0;
-  width: 25px;
+  padding: 1PX 0;
+  width: 25PX;
   border-radius: 100%;
 }
 .accauntSoc_32 .soc-icon{

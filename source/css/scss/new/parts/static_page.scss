@@ -3,8 +3,9 @@
   &_dopline {
     margin-bottom: -47px;
 
-    @include print {
+    @media print {
       margin-bottom: 0;
+      page-break-inside: avoid;
     }
 
   }

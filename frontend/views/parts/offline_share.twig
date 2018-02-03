@@ -1,6 +1,6 @@
 <div class="affiliate row">
     <div class="affiliate-barcode ">
-        <h3 class="affiliate-barcode_header">
+        <h3 class="affiliate-barcode_header no_print">
             {% if friend_user %}
                 {{ t('account', 'offline_friend_pr_code') }} ↓
                 {% set user_code_img = friend_user.barcodeImg  %}
@@ -17,11 +17,11 @@
         </h3>
         <img src="{{ user_code_img }}" alt="" width="230">
         {% if friend_user or user_id %}
-            <p class="affiliate-barcode_link-sent">
+            <p class="affiliate-barcode_link-sent no_print">
 
-                <a href="" class="link-to-clipboard"
-                   data-link="{{ user_code }}"
-                   data-text="{{ t('account', 'offline_pr_code_is_copy') }}"
+                <a href="" class="set_clipboard"
+                   data-clipboard="{{ user_code }}"
+                   data-clipboard-notify="{{ t('account', 'offline_pr_code_is_copy') }}"
                 ><b>{{ t('account', 'offline_pr_code_do_copy') }}</b></a>
             </p>
         {% endif %}
@@ -46,7 +46,8 @@
                         <p  class="affiliate-invitation_invitation-header">{{ t('account', 'offline_pr_code_share') }}</p>
 
                         <div
-                                class="share42init accauntSoc accauntSoc_32"
+                                {#class="share42init accauntSoc accauntSoc_32"#}
+                                class="share42init"
                                 data-socials="1,0,2,4,10,11,12"
                                 data-icon-type="css"
                                 data-title="{{ _constant('affiliate_offline_title')}}"

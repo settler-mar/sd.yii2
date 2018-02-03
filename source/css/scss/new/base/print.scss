@@ -7,10 +7,14 @@
     font-family: Times, 'Times New Roman', serif; /* Шрифт с засечками */
   }
   h1, h2, p {
-    color: #000; /* Черный цвет текста */
+    color: $print_text_color !important;
   }
 
-  h3{
+  a {
+    color: $print_link_color !important;
+  }
+
+  h1, h2, h3{
     text-align: center;
   }
   .navigation{
@@ -37,10 +41,17 @@
   .notification_container{
     display: none !important;
   }
-}
 
-@mixin print{
-  @media print {
-    @content;
+  a[href]:after {
+    content: " (" attr(href) ")";
   }
+
+  //.content-wrap {
+  //  page-break-inside: avoid;
+  //}
+
+  .yii-debug-toolbar {
+    display: none !important;
+  }
+
 }

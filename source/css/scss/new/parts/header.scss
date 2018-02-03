@@ -2,7 +2,7 @@
   margin-bottom: 100px;
   position: fixed;
 
-  @include print {
+  @media print {
     display: none;
   }
 

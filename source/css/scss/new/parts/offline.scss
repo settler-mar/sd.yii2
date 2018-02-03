@@ -6,12 +6,12 @@
   &-barcode {
     text-align: center;
     &_header {
-      @include print {
+      @media print {
         margin-top: 0;
       }
     }
     &_link-sent {
-      @include print {
+      @media print {
         margin-bottom: 0;
       }
     }

@@ -37,7 +37,7 @@
         background:  $btn_base_bg;
       }
 
-      @include print {
+      @media print {
         display: none;
       }
 

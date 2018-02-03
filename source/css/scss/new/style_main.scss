@@ -72,7 +72,8 @@ h1{
   font-weight: 700;
   font-size: 2.5em;
   margin-top: 0;
-  @include print {
+
+  @media print {
     font-size: 2em;
   }
 }
@@ -213,7 +214,7 @@ section {
 }
 .margin {
   margin-bottom: 47px;
-  @include print {
+  @media print {
     margin-bottom: 25px;
   }
 }
@@ -386,14 +387,18 @@ svg.svg-no-fill{
   @include media($laptop_min) {
     margin-top: 0;
   }
-  @include print {
-     margin-top: 100px;
+  @media print {
+     //margin-top: 100px;
+     margin-top: 0 !important;
   }
 
   &.margin-top {
     margin-top: calc(120px);
     @include media($laptop_min) {
       margin-top: 30px;
+      @media print {
+        margin-top: 0 !important;
+      }
     }
   }
 }
