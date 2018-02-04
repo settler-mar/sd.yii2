@@ -1,5 +1,5 @@
 <div class="affiliate row">
-    <div class="affiliate-barcode ">
+    <div class="affiliate-barcode col-sm-4  ways-invitation">
         <h3 class="affiliate-barcode_header no_print">
             {% if friend_user %}
                 {{ t('account', 'offline_friend_pr_code') }} ↓
@@ -19,7 +19,9 @@
         {% if friend_user or user_id %}
             <p class="affiliate-barcode_link-sent no_print">
 
-                <a href="" class="set_clipboard"
+                <a href="" class="set_clipboard link-to-clipboard"
+                   data-link="{{ user_code }}"
+                   data-text="{{ t('account', 'offline_pr_code_is_copy') }}"
                    data-clipboard="{{ user_code }}"
                    data-clipboard-notify="{{ t('account', 'offline_pr_code_is_copy') }}"
                 ><b>{{ t('account', 'offline_pr_code_do_copy') }}</b></a>
@@ -27,8 +29,8 @@
         {% endif %}
     </div>
     {% if user_id %}
-        <div class="affiliate-invitation no_print">
-            <div class="margin">
+        <div class="affiliate-invitation no_print col-sm-4  ways-invitation">
+            <div class="margin affiliate-margin">
                 <div class="affiliate-invitation_icon-download">
                     {{ svg('download')|raw }}
                 </div>
@@ -37,7 +39,7 @@
                 </div>
             </div>
             {% if friend_user or user_id %}
-                <div class="margin">
+                <div class="margin affiliate-margin">
                     <div class="affiliate-invitation_icon-invitation">
                         {{ svg('global')|raw }}
                     </div>
@@ -60,7 +62,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="margin">
+                <div class="margin affiliate-margin">
                     <div class="affiliate-invitation_icon-printer">
                         {{ svg('printer')|raw }}
                     </div>

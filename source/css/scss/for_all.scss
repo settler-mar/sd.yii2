@@ -338,6 +338,7 @@ p em {
   -o-transition: all 300ms ease-in-out;
   -moz-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out;
+  text-decoration: none !important;
   &:after {
     font-family: 'fontawesome';
   }
