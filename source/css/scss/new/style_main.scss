@@ -450,6 +450,10 @@ svg.svg-no-fill{
   animation: spin 2s infinite linear;
 }
 
+.on_promo {
+  display: none;
+}
+
 [data-toggle="tooltip"] {
   cursor: pointer;
   border-bottom: none;
@@ -511,4 +515,5 @@ svg.svg-no-fill{
 @import "parts/list_type_switcher";
 @import "parts/offline";
 @import "parts/static_page";
+@import "parts/new-year";
 
