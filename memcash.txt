@@ -19,6 +19,7 @@ ip_count_<ip> - количесво пользователей у которых 
 categories_coupons - Cписок категорий купонов
 categories_coupons_byid_<id> - категория купонов по id
 stores_coupon - Список магазинов с купонами
+coupons_top_limit_<limit>[_category_<category>][_store_<store>][_new] - топ купонов ЗАВИСИМОСТЬ: catalog_coupons
 total_all_coupons - Количество активных купонов
 total_all_coupons_expired - Количество завершившихся купонов
 catalog_coupons[_expired][_all][_store_<store>][_category_<category>][_<page>][_<limit>][_<sort>][_<order>] - купоны ЗАВИСИМОСТЬ: catalog_coupons

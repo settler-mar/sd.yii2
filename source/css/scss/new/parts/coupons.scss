@@ -4,11 +4,17 @@
 
   .coupons-empty{
     width: 31%;
+    @include media($phones) {
+      width: 48%;
+    }
     margin: 0 1% ;
   }
 
   .coupons-list_item {
     width: 31%;
+    @include media($phones) {
+      width: 48%;
+    }
     margin: 0 1% 25px;
     flex-direction: column;
 
@@ -88,6 +94,7 @@
     }
   }
 }
+
 
 .coupons {
   &-abc {
@@ -415,6 +422,18 @@
 
         &-count{
           font-weight: 400;
+        }
+      }
+    }
+    &.list-4 {
+      .coupons-list_item,
+      .coupons-empty{
+        width: 23%;
+        @include media($tablets) {
+          width: 31%;
+        }
+        @include media($phones) {
+          width: 48%;
         }
       }
     }

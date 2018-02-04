@@ -279,7 +279,52 @@ class Coupons extends \yii\db\ActiveRecord
     }
   }
 
-  protected function clearCache()
+    /** топ купонов
+     * @param array $options
+     * @return mixed
+     */
+    public static function top($options = [])
+    {
+        $limit = isset($options['limit']) ? $options['limit'] : 8;
+        $new = isset($options['new']) ? $options['new'] : false;
+        $category = isset($options['category']) ? $options['category'] : false;
+        $store = isset($options['store']) ? $options['stor'] : false;
+        $cache = Yii::$app->cache;
+        $cacheName = 'coupons_top_limit_' . $limit . ($category ? '_category_' . $category : '') .
+            ($store ? '_store_' . $store : '').($new ? '_new' : '') ;
+        $dependencyName = 'coupons_counts';
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store, $new) {
+            //$coupons = self::find()
+            $coupons = self::forList()
+                //->select(['cwc.*', 'cws.route as store_route'])
+                //->from(self::tableName().' cwc')
+                //->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => [0, 1]])
+                ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
+
+            if ($store) {
+                $coupons = $coupons->andWhere(['cws.uid' => $store]);
+            }
+            if ($new) {
+                $coupons->andWhere(['>', 'cwc.date_start', date('Y-m-d H:i:s', time() - 60*60*24*30)]);
+            }
+            if ($category) {
+                $coupons = $coupons
+                    ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
+                    ->andWhere(['cctc.category_id' => $category]);
+            }
+            return $coupons->limit($limit)->orderBy(['visit' => SORT_DESC])->all();
+
+        }, $cache->defaultDuration, $dependency);
+        //ddd($data);
+
+        return $data;
+    }
+
+    protected function clearCache()
   {
     //зависимости
     Cache::clearName('catalog_coupons');
@@ -295,4 +340,7 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::deleteName('categories_coupons');
     Cache::deleteName('popular_stores_with_promocodes');
   }
+
+
+
 }

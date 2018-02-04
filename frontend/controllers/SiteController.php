@@ -102,7 +102,8 @@ class SiteController extends SdController
         'stores' => $stores,
         'total_all_stores' => $totalStores,
         'top_reviews' => $reviews,
-        'wrap'=>'index'
+        'wrap'=>'index',
+        'coupons' => Coupons::top(['limit' => 8, 'new' => 1]),
     ];
 
     if(!Yii::$app->user->isGuest) {
