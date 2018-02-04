@@ -239,29 +239,29 @@ class DefaultController extends SdController
     $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
     $contentData["store_rating"] = Reviews::storeRating($store->uid);
 
-    $cache = \Yii::$app->cache;
-
-    $dependency = new yii\caching\DbDependency;
-    $dependencyName = 'store_coupons_store';
-    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
-    $coupons = $cache->getOrSet('store_coupons_store_' . $store->uid, function () use ($store) {
-      $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
-      return Coupons::find()
-          ->from(Coupons::tableName() . ' cwc')
-          ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
-              'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-              'cws.action_id as store_action_id', 'cws.logo as store_image'])
-          ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-          ->where(['cws.uid' => $store->uid])
-          ->andWhere($dateRange)
-          ->orderBy(Coupons::$defaultSort . ' ' .
-              (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
-                  Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
-          ->asArray()
-          ->all();
-    }, $cache->defaultDuration, $dependency);
-    $contentData["store_coupons"] = $coupons;
+//    $cache = \Yii::$app->cache;
+//
+//    $dependency = new yii\caching\DbDependency;
+//    $dependencyName = 'store_coupons_store';
+//    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+//
+//    $coupons = $cache->getOrSet('store_coupons_store_' . $store->uid, function () use ($store) {
+//      $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
+//      return Coupons::find()
+//          ->from(Coupons::tableName() . ' cwc')
+//          ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
+//              'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
+//              'cws.action_id as store_action_id', 'cws.logo as store_image'])
+//          ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+//          ->where(['cws.uid' => $store->uid])
+//          ->andWhere($dateRange)
+//          ->orderBy(Coupons::$defaultSort . ' ' .
+//              (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
+//                  Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
+//          ->asArray()
+//          ->all();
+//    }, $cache->defaultDuration, $dependency);
+    $contentData["coupons"] = Coupons::top(['store' => $store->uid]);
     $contentData["coupons_counts"] = Coupons::counts($store->uid);
     $contentData["all_coupons_counts"] = Coupons::counts();
     $additionalStores = $this->getAdditionals($store);

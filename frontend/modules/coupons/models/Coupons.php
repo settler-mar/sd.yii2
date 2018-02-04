@@ -288,7 +288,7 @@ class Coupons extends \yii\db\ActiveRecord
         $limit = isset($options['limit']) ? $options['limit'] : 8;
         $new = isset($options['new']) ? $options['new'] : false;
         $category = isset($options['category']) ? $options['category'] : false;
-        $store = isset($options['store']) ? $options['stor'] : false;
+        $store = isset($options['store']) ? $options['store'] : false;
         $cache = Yii::$app->cache;
         $cacheName = 'coupons_top_limit_' . $limit . ($category ? '_category_' . $category : '') .
             ($store ? '_store_' . $store : '').($new ? '_new' : '') ;
@@ -297,11 +297,7 @@ class Coupons extends \yii\db\ActiveRecord
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store, $new) {
-            //$coupons = self::find()
             $coupons = self::forList()
-                //->select(['cwc.*', 'cws.route as store_route'])
-                //->from(self::tableName().' cwc')
-                //->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
                 ->where(['cws.is_active' => [0, 1]])
                 ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
 
