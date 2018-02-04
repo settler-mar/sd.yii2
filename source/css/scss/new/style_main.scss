@@ -191,6 +191,11 @@ h3,h4,h5,h6 {
 
 .color-red{
   color: $header_heart;
+  svg {
+    color: $header_heart;
+    fill: $header_heart;
+    stroke: $header_heart;
+  }
 }
 
 .clock{

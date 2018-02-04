@@ -228,14 +228,23 @@
         font-weight: bold;
         text-decoration: none;
         text-align: center;
+        &-cashback {
+          white-space: nowrap;
+        }
 
         svg {
-          width: 15px;
-          height: 15px;
+          width: 16PX;
+          height: 16PX;
+          vertical-align: middle;
         }
 
         &:hover span {
           color:  $coupons_a_hover_color;
+          svg {
+            color:  $coupons_a_hover_color;
+            fill:  $coupons_a_hover_color;
+            stroke:  $coupons_a_hover_color;
+          }
         }
       }
 

@@ -2,11 +2,11 @@
     <a href="/coupons/{{coupon.store_route}}/{{ coupon.uid }}" class="coupons-list_item-name ">
         <span>
             {{coupon.name}}
-                <span class="color-red{% if coupon.store_action_id == 1 %} old {% endif %}">
+                <span class="color-red coupons-list_item-name-cashback{% if coupon.store_action_id == 1 %} old {% endif %}">
                     +&nbsp;кэшбэк&nbsp;{{ _cashback(coupon.store_cashback, coupon.store_currency)|raw }}
                 </span>
             {% if coupon.store_action_id == 1 %}
-                <span class="color-red">&nbsp;
+                <span class="color-red coupons-list_item-name-cashback">&nbsp;
                     +&nbsp;кэшбэк&nbsp;{{ _cashback(coupon.store_cashback, coupon.store_currency,coupon.store_action_id)|raw }}
                 </span>
             {% endif %}
