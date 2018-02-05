@@ -3,20 +3,23 @@
   flex-wrap: wrap;
 
   .coupons-empty{
+    min-width: 240px;
     width: 31%;
+    margin: 0 1% ;
+
     @include media($phones) {
       width: 48%;
     }
-    margin: 0 1% ;
   }
 
   .coupons-list_item {
     width: 31%;
+    margin: 0 1% 25px;
+    flex-direction: column;
+
     @include media($phones) {
       width: 48%;
     }
-    margin: 0 1% 25px;
-    flex-direction: column;
 
     &-time{
       text-transform: inherit;
@@ -54,7 +57,6 @@
 
       &-link-all {
         display: none;
-
         margin: 10px 0;
         min-height: 50px;
         font-size: 16px;
@@ -87,6 +89,7 @@
           }
         }
       }
+
       &-info {
         display: block;
         margin-bottom: 5px;
@@ -104,9 +107,11 @@
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: flex-start;
+
         &:not(:last-child) {
           border-bottom: 1px solid $coupons_abc_border_color;
         }
+
         &-char {
           font-size: 80px;
           //margin-right: 30px;
@@ -114,6 +119,7 @@
           //min-width: 70px;
           min-width: 100px;
           text-align: center;
+
           @include media($tablets) {
             min-width: inherit;
             //width: 0;
@@ -123,14 +129,17 @@
             //color: rgba(48, 136, 207, .7);
           }
         }
+
         &-stores {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
+
           @include media($tablets) {
             justify-content: center;
             margin: 0 auto;
           }
+
           a {
 
             display: block;
@@ -138,10 +147,12 @@
             padding: 5px 8px;
             color: $coupons_abc_store_color;
             text-decoration: none;
+
             &:hover {
               color: $coupons_abc_store_hover_color;
               //text-decoration: underline;
             }
+
             @include media($tablets) {
               padding: 8px 12px;
               min-width: inherit;
@@ -151,57 +162,67 @@
         }
       }
     }
+
     &_chars {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       padding: 0;
       border-top: 1px solid $coupons_abc_border_color;
+
       @include media($tablets) {
         justify-content: center;
       }
+
       a,span {
         padding: 10px 8px;
+
         @include media($tablets) {
           padding: 12px 15px;
           font-size: 17px;
         }
       }
+
       &.row-2 {
         border-top: 1px solid $coupons_abc_border_color;
         border-bottom: 1px solid $coupons_abc_border_color;
         margin-bottom: 10px;
+
         a,span {
           padding: 10px 6px;
+
           @include media($tablets) {
             padding: 12px 15px;
             font-size: 17px;
           }
         }
-
       }
 
       a {
         color: $coupons_abc_store_color;
         text-decoration: none;
+
         &:hover {
           color: $coupons_abc_store_hover_color;
           //text-decoration: underline;
         }
       }
+
       span {
         color: $coupons_abc_border_color;
       }
     }
   }
+
   &-list {
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 
     &.narrow {
         @include narrow;
     }
+
     @include media($tablets) {
       @include narrow;
     }
@@ -217,6 +238,7 @@
       flex-direction:column;
       border-radius: 5px;
       background: $shop_bg;
+      min-width: 240px;
 
       &-wrap{
         display: flex;
@@ -342,6 +364,11 @@
               padding: 2px 5px;
               fill: $btn_base_bg;
               border-left: 1px solid $shop_cashback_old_color;
+
+              svg{
+                height: 20px;
+                width:  20px;
+              }
             }
 
           &-title {
@@ -378,6 +405,7 @@
           display: none;
         }
       }
+
       &-expiry-text {
         position: absolute;
         z-index: 2;
@@ -392,6 +420,7 @@
         top: 0;
         left: 0;
       }
+
       &-logo {
         min-width: 230px;
         border-right: 1px solid $coupons_coupon_logo_border_color;
@@ -436,6 +465,7 @@
         }
       }
     }
+
     &.list-4 {
       .coupons-list_item,
       .coupons-empty{
