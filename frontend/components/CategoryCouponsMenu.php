@@ -20,12 +20,12 @@ class CategoryCouponsMenu extends Widget
     {
         $currentCategoryId = !empty(\Yii::$app->controller->current_coupon_category_id) ?
               \Yii::$app->controller->current_coupon_category_id : null;
-        $categories = [[
-          'name' => 'Все промокоды',
-          'count' => Coupons::activeCount(),
-          'route' => '',
-          'uid' => 0
-        ]];
+//        $categories = [[
+//          'name' => 'Все промокоды',
+//          'count' => Coupons::activeCount(),
+//          'route' => '',
+//          'uid' => 0
+//        ]];
         if ($this->search_item) {
             $categories[] = [
                 'name' => 'АЛФАВИТНЫЙ ПОИСК',
@@ -50,15 +50,22 @@ class CategoryCouponsMenu extends Widget
         ];
 
         $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
+//        $categories = array_merge($categories, [[
+//          'name' => 'Завершившиеся акции',
+//          'count' => Coupons::activeCount('expired'),
+//          'route' => 'expired',
+//          'uid' => -1
+//        ]]);
         $categories = array_merge($categories, [[
-          'name' => 'Завершившиеся акции',
-          'count' => Coupons::activeCount('expired'),
-          'route' => 'expired',
-          'uid' => -1
+            'name' => 'Все промокоды',
+            'count' => Coupons::activeCount(),
+            'route' => '',
+            'uid' => 0,
+            'class' => 'cat_bold cat_upper all_shops'
         ]]);
         $out = '<ul>';
         foreach ($categories as $category) {
-            $out .= '<li>';
+            $out .= '<li '.(isset($category['class']) ? ' class="'.($category['class']).'"' : '').'>';
 
             if ($currentCategoryId != null && $category['uid'] == $currentCategoryId
                 || $category['uid'] == 0 && Yii::$app->request->pathinfo == 'coupons'
