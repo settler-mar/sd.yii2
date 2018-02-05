@@ -5,7 +5,7 @@ var headerActions = function () {
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
         $('.header').toggleClass('header_open-menu');
-        $('.drop-menu').find('li').removeClass('open').removeClass('close');
+        $('.drop-menu').removeClass('open').removeClass('close').find('li').removeClass('open').removeClass('close');
         if ($('.header').hasClass('header_open-menu')) {
             $('.header').removeClass('header-search-open');
         }
