@@ -19,10 +19,13 @@
       margin: 0;
       & > li {
         margin-bottom: 1PX;
+        //&:not(:first-child) {
+        //  border-top: 1PX solid #fff;
+        //}
         >a {
+
           background-color: $header_sub_menu_color_hover;
           text-decoration: none;
-
         }
         >span {
           background-color: $stores_menu_active_color;

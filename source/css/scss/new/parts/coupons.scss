@@ -109,7 +109,8 @@
         }
         &-char {
           font-size: 80px;
-          margin-right: 30px;
+          //margin-right: 30px;
+          margin: auto 30px auto 0;
           //min-width: 70px;
           min-width: 100px;
           text-align: center;
@@ -117,8 +118,9 @@
             min-width: inherit;
             //width: 0;
             font-size: 120px;
-            margin-right: 0;
-            color: rgba(48, 136, 207, .7);
+            //margin-right: 0;
+            margin: auto 0;
+            //color: rgba(48, 136, 207, .7);
           }
         }
         &-stores {
@@ -137,8 +139,8 @@
             color: $coupons_abc_store_color;
             text-decoration: none;
             &:hover {
-              color: $coupons_abc_store_color;
-              text-decoration: underline;
+              color: $coupons_abc_store_hover_color;
+              //text-decoration: underline;
             }
             @include media($tablets) {
               padding: 8px 12px;
@@ -183,8 +185,8 @@
         color: $coupons_abc_store_color;
         text-decoration: none;
         &:hover {
-          color: $coupons_abc_store_color;
-          text-decoration: underline;
+          color: $coupons_abc_store_hover_color;
+          //text-decoration: underline;
         }
       }
       span {
