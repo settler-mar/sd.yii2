@@ -119,6 +119,9 @@ class DefaultController extends SdController
     $limit = $request->get('limit');
     $sort = $request->get('sort');
     $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
+    if ($this->top) {
+        $sort = 'visit';
+    }
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'date_start', 'date_end']]);
@@ -184,7 +187,7 @@ class DefaultController extends SdController
         ->orderBy($sort . ' ' . $order);
       if ($this->top) {
           //top 20
-        $sort = 'cws.visit';
+        //$sort = 'cws.visit';
         $limit = 20;
         $cacheName .= '_' . $actionId;
         $this->params['breadcrumbs'][] = ['label' => 'Топ 20'];
