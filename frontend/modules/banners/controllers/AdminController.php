@@ -53,6 +53,12 @@ class AdminController extends Controller
                 'is_active' => function ($model, $value, $index, $column) {
                     return $model->is_active == 1 ? 'Включён' : 'Выключен';
                 },
+                'show_desctop' => function ($model, $value, $index, $column) {
+                    return $model->show_desctop == 1 ? 'Включён' : 'Выключен';
+                },
+                'show_mobile' => function ($model, $value, $index, $column) {
+                    return $model->show_mobile == 1 ? 'Включён' : 'Выключен';
+                },
                 'new_window' => function ($model, $value, $index, $column) {
                     return $model->new_window == 1 ? 'В новом окне' : 'В своём окне';
                 }

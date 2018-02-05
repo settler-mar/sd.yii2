@@ -56,7 +56,7 @@ class Banners extends \yii\db\ActiveRecord
               'maxWidth' => 1200,
               'maxSize' => 4 * 1024 * 1024,
               ],
-            [['new_window', 'is_active', 'order'], 'integer'],
+            [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
             [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
         ];
@@ -78,6 +78,8 @@ class Banners extends \yii\db\ActiveRecord
             'created_at' => 'Создан',
             'updated_at' => 'Updated At',
             'picture_file' => 'Изображение',
+            'show_desctop' => 'Отображать только на  ПК',
+            'show_mobile' => 'Отображать только в телефоне',
         ];
     }
 
@@ -191,7 +193,7 @@ class Banners extends \yii\db\ActiveRecord
             $cacheName,
             function () use ($place) {
                 $banners = self::find()
-                     ->select(['picture', 'url', 'new_window']);
+                     ->select(['picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
                 if ($place) {
                   foreach ($place as $item)
                     $banners->orWhere(['like', 'places', $item]);

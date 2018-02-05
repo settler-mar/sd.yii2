@@ -18,7 +18,7 @@ class SearchBanners extends Banners
     public function rules()
     {
         return [
-            [['uid', 'new_window', 'is_active', 'order'], 'integer'],
+            [['uid', 'new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['url', 'places', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -56,6 +56,8 @@ class SearchBanners extends Banners
                     'places',
                     'created_at',
                     'order',
+                    'show_desctop',
+                    'show_mobile',
                 ],
             ],
         ]);
@@ -74,6 +76,8 @@ class SearchBanners extends Banners
             'new_window' => $this->new_window,
             'is_active' => $this->is_active,
             'order' => $this->order,
+            'show_mobile' => $this->show_mobile,
+            'show_desctop' => $this->show_desctop,
             'created_at' => $this->created_at,
             //'updated_at' => $this->updated_at,
         ]);

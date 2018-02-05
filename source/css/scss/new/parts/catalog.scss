@@ -18,7 +18,7 @@
       padding: 0;
       margin: 0;
       & > li {
-        margin-bottom: 1px;
+        margin-bottom: 1PX;
         >a {
           background-color: $header_sub_menu_color_hover;
           text-decoration: none;
@@ -28,12 +28,14 @@
           background-color: $stores_menu_active_color;
         }
         > a, span {
-          padding: 10px 10px;
+          padding: 10PX 10PX;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: nowrap;
           color: $text_color;
+          font-size: 16PX;
+          box-sizing: border-box;
           &:hover {
             color: $header_sub_menu_color_hover;
             background-color: $stores_menu_active_color;

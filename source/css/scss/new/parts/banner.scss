@@ -1,8 +1,31 @@
+$banner_mobile_interval: $tablets;
+
 .banner {
+  &__item {
+
+    &.mobile {
+      display: none;
+    }
+
+    @include media($banner_mobile_interval) {
+
+
+      &.mobile {
+
+        display: block;
+      }
+      &.desctop {
+
+        display: none;
+      }
+    }
+  }
   &__wrapper {
+
     margin-bottom: 20px;
   }
   &__image {
+
     width: 100%;
   }
 }

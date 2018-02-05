@@ -1,6 +1,6 @@
 <div class="{% if wrapper_class %}{{ wrapper_class }}{% else %}banner{% endif %}">
     {% for banner in banners  %}
-        <div class="{% if item_class %}{{ item_class }}{% else %}banner__item{% endif %}">
+        <div class="{% if item_class %}{{ item_class }}{% else %}banner__item{% endif %} {% if banner.show_desctop %} desctop{% endif %} {% if banner.show_mobile %} mobile{% endif %}">
             <a class="{% if href_class %}{{ href_class }}{% else %}banner__href{% endif %}" href="{{ banner.url }}" {% if banner.new_window %}target="_blank" rel="nofollow noopener"{% endif %}>
                 <img class="{% if image_class %}{{ image_class }}{% else %}banner__image{% endif %}"  src="/images/banners/{{ banner.picture }}">
             </a>

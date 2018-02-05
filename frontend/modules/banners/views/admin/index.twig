@@ -40,6 +40,25 @@
                             'order',
                             {
                                 'format':'raw',
+                                'attribute':'show_desctop',
+                                'value': table_data.show_desctop,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"Выключен",
+                                    1:"Включён",
+                                },
+                            },
+                            {
+                                'format':'raw',
+                                'attribute':'show_mobile',
+                                'value': table_data.show_mobile,
+                                'filter':{
+                                    '':'Любой',
+                                    0:"Выключен",
+                                    1:"Включён",
+                                },
+                            },                            {
+                                'format':'raw',
                                 'attribute':'is_active',
                                 'value' : table_data.is_active,
                                 'filter':{
