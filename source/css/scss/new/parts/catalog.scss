@@ -128,6 +128,10 @@
       color: $coupons_popular_stores_color;
       padding: 10px;
 
+      @include media($laptop-min) {
+        display: none;
+      }
+
       &-header {
         margin: 0 0 10px;
       }
