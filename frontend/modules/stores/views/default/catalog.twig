@@ -59,22 +59,9 @@
                 </h1>
                 {#выбор и отображение сортировки#}
                 <div class="margin page-wrap-flex catalog-stores_sort">
-                    <div class="catalog-stores_sort-desctop">
-                        <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
-                        <ul >
-                            {% for sortLink in sortlinks%}
-                                <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
 
-                    <div class="catalog-stores_sort-mobile">
-                        <ul>
-                        {% for sortLink in sortlinks%}
-                            <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title_mobile}}</a></li>
-                        {% endfor %}
-                        </ul>
-                    </div>
+                    {% include('parts/sort-links.twig') %}
+
                     <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
                 </div>
 

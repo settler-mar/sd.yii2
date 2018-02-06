@@ -1,0 +1,61 @@
+.sd-select {
+  text-align: center;
+
+  &-selected {
+    margin-top: 10px;
+    //display: block;
+    border-radius: 3px;
+    border: 1px solid $btn_base_bg;
+    background-color: #fff;
+    padding: 10px 30px;
+    color: $btn_base_bg;
+    cursor: pointer;
+    background-position: 290px -145px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    &.active {
+      border-radius: 3px 3px 0 0;
+      border-bottom: none;
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+    svg {
+      width: 15px;
+      height: 15px;
+      color: $btn_base_bg;
+      fill: $btn_base_bg;
+      stroke: $btn_base_bg;
+    }
+  }
+  &-drop {
+    margin: 0;
+    padding: 0;
+    //width: 310px;
+    border: 1px solid $btn_base_bg;
+    border-top: none;
+    display: none;
+    //position: absolute;
+
+    background: #fff;
+    & > li {
+      list-style: none;
+      border-top: 1px solid $menu_border_color;
+      cursor: pointer;
+      display: block;
+      padding: 10px 30px;
+      background-position: 10px -119px;
+      a {
+        color: $btn_base_bg;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+    }
+  }
+}

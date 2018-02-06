@@ -193,6 +193,7 @@
       }
       @include media($tablets) {
         flex-direction: column;
+        align-items: center;
       }
       &-desctop,
       &-mobile {
@@ -220,6 +221,10 @@
 
             }
           }
+        }
+        &-select {
+          min-width: 250px;
+          margin-bottom: 20px;
         }
       }
       &-desctop {
