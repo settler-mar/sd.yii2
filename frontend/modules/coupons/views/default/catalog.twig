@@ -96,10 +96,10 @@
               {% endif %}
 
               <!--краткая информация о магазине для купона-->
-              {% if current_store.short_description and page==1 %}
+              {% if current_store.coupon_description and page==1 %}
                 <div class="catalog_category-content">
                   <div class="catalog_category-short-description">
-                    {{current_store.short_description|raw}}
+                    {{current_store.coupon_description|raw}}
                   </div>
                 </div>
               {% endif %}
