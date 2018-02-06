@@ -19,6 +19,20 @@
                 </div>
             </div>
         {% endif %}
+        {% if coupons_top5 and coupons_top5|length > 0 %}
+            <div  class="catalog-categories_popular-stores">
+                <h3 class="catalog-categories_popular-stores-header">Лучшие промокоды</h3>
+                <div class="catalog-categories_popular-stores-content coupons-list left-menu">
+                    {% for coupon in coupons_top5 %}
+                        {% include 'parts/coupon.twig' %}
+                    {% endfor %}
+                </div>
+                <div class="catalog-categories_popular-stores-links">
+                    <a href="/coupons">Показать все</a>
+                </div>
+            </div>
+
+        {% endif %}
         {{ use('frontend/components/Banner') }}
         {%  set banners  = banner_widget({'place':['coupons-left-menu','coupons-'~current_category.uid~'-left-menu'],'options':{'wrapper_class':'banner__wrapper',}}) %}
         {% if banners %}
