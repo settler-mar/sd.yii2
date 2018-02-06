@@ -1,4 +1,8 @@
 .catalog-stores_switcher {
+
+  @include media($tablets) {
+    display: none;
+  }
   &-list {
     display: flex;
     flex-direction: row;

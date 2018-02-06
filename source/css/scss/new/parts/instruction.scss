@@ -114,7 +114,8 @@
     text-transform: uppercase;
 
     @include media_min($tablets) {
-      min-height: 46px;
+      //min-height: 46px;
+      min-height: 30px;
     }
   }
 

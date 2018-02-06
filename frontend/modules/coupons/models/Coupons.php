@@ -39,7 +39,7 @@ class Coupons extends \yii\db\ActiveRecord
   /**
    * @var string
    */
-  public static $defaultSort = 'date_end';
+  public static $defaultSort = 'visit';
   /**
    * Possible sorting options with titles and default value
    * @var array

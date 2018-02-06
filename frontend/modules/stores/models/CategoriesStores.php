@@ -258,7 +258,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'count' => Stores::activeCount(),
         'uid' => null,
         'menu_index' => 1000,
-        'class' => 'all_shops cat_bold',
+        'class' => 'all_shops cat_bold cat_upper',
       ]);
     }
 
@@ -333,6 +333,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if (!empty(($cat['class']))) {
             //d($cat['class']);
             $itemClass[] = $cat['class'];
+            $c[] = $cat['class'];
         }
         switch ($cat['selected']) {
           case self::CATEGORY_STORE_SELECTED_PROMO:
@@ -350,6 +351,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             $c[] = 'active';
             $itemClass[] = 'active';
           }
+
         if(count($c)>0){
           $c='class=\''.implode(' ',$c).'\'';
         }else{

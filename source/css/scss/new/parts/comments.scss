@@ -3,4 +3,9 @@
     margin-top: 5px;
     text-align: left;
   }
+  &_no-comments {
+    @include media ($tablets) {
+      text-align: center;
+    }
+  }
 }

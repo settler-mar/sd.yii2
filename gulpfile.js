@@ -180,6 +180,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/hide_show_all.js',
         paths.source.js+'/original/new/clock.js',
         paths.source.js+'/original/new/list_type_switcher.js',
+        paths.source.js+'/original/new/select.js',
 
   //for_all
         paths.source.js+'/original/notification.js',
