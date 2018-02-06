@@ -29,6 +29,7 @@ class Cpa extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['auto_close'], 'integer'],
             [['name'], 'string', 'max' => 20],
             [['name'], 'unique'],
         ];
