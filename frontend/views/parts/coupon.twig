@@ -48,13 +48,15 @@
                             class="coupons-list_item-content-goto-promocode-value set_clipboard"
                             data-clipboard="{{ coupon.promocode }}"
                             data-clipboard-notify="Промокод успешно скопирован в буфер обмена."
-                            data-original-title="Скопировать в буфер обмена"
-                            data-toggle="tooltip"
                         >
                             <div class="coupons-list_item-content-goto-promocode-code">
                                 {{coupon.promocode}}
                             </div>
-                            <div class="coupons-list_item-content-goto-promocode-btn">
+                            <div
+                                class="coupons-list_item-content-goto-promocode-btn"
+                                data-original-title="Скопировать в буфер обмена"
+                                data-toggle="tooltip"
+                            >
                               {{ svg('clipboard') | raw}}
                             </div>
                         </div>

@@ -142,7 +142,8 @@ class DefaultController extends SdController
     $cacheName .= $sort ? '_'.$sort : '';
     $cacheName .= $order ? '_'.$order : '';
 
-    $dateRange = $request->get('expired') ? ['<', 'cwc.date_end', date('Y-m-d H:i:s', time())] :
+    $expiredData=['<', 'cwc.date_end', date('Y-m-d H:i:s', time())];
+    $dateRange = $request->get('expired') ? $expiredData :
       ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
     $contentData['show_expired'] = $request->get('expired');
 
@@ -160,6 +161,7 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
+
     } elseif (!empty($store)) {
       $storeId = $store->uid;
       $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>'/coupons/'.$store->getRouteUrl()];
@@ -171,6 +173,15 @@ class DefaultController extends SdController
       \Yii::$app->params['url_mask'] = 'coupons/store/'.$actionId.($store->cpaLink->cpa_id == 2 ? '/online' : '');
       $contentData["counts"] = Coupons::counts($storeId);
       $contentData['current_store'] = $store;
+      if($store){
+        $contentData['coupon_ended']=Coupons::find()
+            ->from(Coupons::tableName() . ' cwc')
+            ->where(['store_id' => $store->uid])
+            ->andWhere($expiredData)
+            ->asArray()
+            ->limit(10)
+            ->all();
+      }
       $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::forList(false)
@@ -178,6 +189,7 @@ class DefaultController extends SdController
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
        $contentData["store_rating"] = Reviews::storeRating($storeId);
+
     } else {
       $contentData["counts"] = Coupons::counts();
       \Yii::$app->params['url_mask'] = 'coupons';
@@ -277,7 +289,7 @@ class DefaultController extends SdController
       throw new \yii\web\NotFoundHttpException;
     };
     $sort = Coupons::$defaultSort;
-    $limit = 5;//(!empty($limit)) ? $limit : $this->defaultLimit;
+    $limit = 10;//(!empty($limit)) ? $limit : $this->defaultLimit;
     $order = 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
@@ -292,8 +304,10 @@ class DefaultController extends SdController
         ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
     $contentData['show_expired'] = $request->get('expired');
 
+    $expiredData=['<', 'date_end', date('Y-m-d H:i:s', time())];
     $contentData['coupon_ended']=Coupons::find()
         ->where(['store_id' => $coupon['store_id']])
+        ->andWhere($expiredData)
         ->asArray()
         ->limit(10)
         ->all();

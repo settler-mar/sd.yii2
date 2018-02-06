@@ -109,10 +109,12 @@
     }
 
     .angle-down .icon:before {
-      content: "+";
+      content: "›";
+      transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
     }
     .angle-up .icon:before {
-      content: "-";
+      content: "›";
+      transform: rotate3d(0, 0, 1, -90deg) translate3d(-6px, 3px, 0);
     }
 
     h1,h2,h3,h4,h5,h6{
@@ -139,7 +141,8 @@
     }
 
     &:after{
-      content: "+";
+      content: "›";
+      transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
       width: 20px;
       display: inline-block;
       text-align: center;
@@ -148,12 +151,10 @@
       line-height: 10px;
       margin: auto 0 auto auto;
       padding-left: 10px;
+      transition: all 0.3s ease-out;
 
       @include media($tablets) {
-        content: "›";
-        transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
         font-size: 20px;
-        transition: all 0.3s ease-out;
       }
     }
 
@@ -185,12 +186,8 @@
       border-radius: 3px 3px 0 0;
 
       &:after{
-        content:"-";
-
-        @include media($tablets) {
-          content: "›";
-          transform: rotate3d(0,0,1,-90deg) translate3d(-6px,3px,0 );
-        }
+        content: "›";
+        transform: rotate3d(0,0,1,-90deg) translate3d(-6px,3px,0 );
       }
     }
     .angle-down{
