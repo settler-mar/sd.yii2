@@ -1,11 +1,13 @@
 {% set comments_max_height = true %}
 
 <section class="margin">
-  <div class="page-wrap">
+  <div class="page-wrap ">
     <h2>Отзывы о {{current_store.name}}</h2>
     {% if store_reviews|length == 0 %}
-      <p class="ntfnd">На данный момент отзывы о магазине</p>
-      <p>{{current_store.name}} отсутствуют. Будь первым!</p>
+      <div class="comments_no-comments">
+        <p class="ntfnd">На данный момент отзывы о магазине</p>
+        <p>{{current_store.name}} отсутствуют. Будь первым!</p>
+      </div>
     {% endif %}
 
     <div class="flex-wrap flex-line">
