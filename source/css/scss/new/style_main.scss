@@ -191,6 +191,7 @@ h3,h4,h5,h6 {
 
 .color-red{
   color: $header_heart;
+
   svg {
     color: $header_heart;
     fill: $header_heart;
@@ -201,6 +202,10 @@ h3,h4,h5,h6 {
 .clock{
   span{
     font-weight: 400;
+  }
+
+  &-expired{
+    color: $header_heart;
   }
 }
 
@@ -395,18 +400,22 @@ svg.svg-no-fill{
 
 .content-wrap {
   margin-top: 90px;
+
   @include media($laptop_min) {
     margin-top: 0;
   }
+
   @media print {
      //margin-top: 100px;
      margin-top: 0 !important;
   }
 
   &.margin-top {
-    margin-top: calc(120px);
+    margin-top: 120px;
+
     @include media($laptop_min) {
       margin-top: 30px;
+
       @media print {
         margin-top: 0 !important;
       }

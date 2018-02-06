@@ -5,6 +5,7 @@ namespace console\controllers;
 use common\models\Admitad;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
@@ -359,8 +360,10 @@ class PaymentsController extends Controller
     $users = [];
 
     $payments = Payments::find()
+      ->leftJoin(Cpa::tableName(),'cw_cpa.id=cw_payments.cpa_id')
       ->andWhere(['<', 'closing_date', date("Y-m-d H:i:s")])
       ->andWhere(['status' => 0])
+      ->andWhere(['auto_close' => 1])
       ->all();
 
     foreach ($payments as $payment) {

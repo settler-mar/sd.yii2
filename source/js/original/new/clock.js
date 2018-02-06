@@ -25,6 +25,7 @@ $( document ).ready(function() {
         //если срок прошел
         if(d<=0){
           c.text('Промокод истек');
+          c.addClass('clock-expired');
           continue;
         }
 

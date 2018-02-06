@@ -67,6 +67,7 @@
                                 <br> {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                             </p>
                             <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
+                            <p><span>Текст для активных купонов:</span> <br> {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
 
                             {{ form.field(model, 'video').widget(MultipleInput.className(), {
                                 'allowEmptyList':true,

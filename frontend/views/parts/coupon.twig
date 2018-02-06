@@ -37,7 +37,7 @@
             {% endif %}
             <div class="coupons-list_item-visit">
               Воспользовались:
-              <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) }}</span>
+              <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) | raw}}</span>
             </div>
           </div>
             <div class="coupons-list_item-content-goto">
@@ -48,13 +48,15 @@
                             class="coupons-list_item-content-goto-promocode-value set_clipboard"
                             data-clipboard="{{ coupon.promocode }}"
                             data-clipboard-notify="Промокод успешно скопирован в буфер обмена."
-                            data-original-title="Скопировать в буфер обмена"
-                            data-toggle="tooltip"
                         >
                             <div class="coupons-list_item-content-goto-promocode-code">
                                 {{coupon.promocode}}
                             </div>
-                            <div class="coupons-list_item-content-goto-promocode-btn">
+                            <div
+                                class="coupons-list_item-content-goto-promocode-btn"
+                                data-original-title="Скопировать в буфер обмена"
+                                data-toggle="tooltip"
+                            >
                               {{ svg('clipboard') | raw}}
                             </div>
                         </div>
@@ -71,7 +73,7 @@
                     target="_blank"
                     class="btn coupons-list_item-content-goto-promocode-link"
                     rel="nofollow noopener"
-                >Перейти в магазин</a>
+                >Использовать промокод</a>
             </div>
         </div>
     </div>

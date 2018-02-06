@@ -136,7 +136,7 @@ class SdView extends View
     Yii::$app->view->registerMetaTag(["property"=>"og:site_name","content"=>"SecretDiscounter"]);
     Yii::$app->view->registerMetaTag(["itemprop"=>"name", "content"=>"SecretDiscounter"]);
 
-    $url=isset($tags['og:url'])?$tags['og:url']:"https://secretdiscounter.ru/'".$request->pathInfo;
+    $url=isset($tags['og:url'])?$tags['og:url']:"https://secretdiscounter.ru/".$request->pathInfo;
     Yii::$app->view->registerMetaTag(["property"=>"og:url" ,"content"=>$url]);
     Yii::$app->view->registerMetaTag(["property"=>"twitter:url", "content"=>$url]);
     Yii::$app->view->registerMetaTag(["property"=>"twitter:domain", "content"=>"https://secretdiscounter.ru/"]);

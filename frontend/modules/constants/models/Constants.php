@@ -33,7 +33,8 @@ class Constants extends \yii\db\ActiveRecord
             [['name', 'title', 'ftype'], 'required'],
             [['text'], 'string'],
             [['updated_at'], 'safe'],
-            [['name', 'title', 'ftype','editor_param'], 'string', 'max' => 255],
+            [['name', 'title', 'ftype'], 'string', 'max' => 255],
+            //[['editor_param'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
     }

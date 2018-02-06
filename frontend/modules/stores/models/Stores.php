@@ -76,7 +76,7 @@ class Stores extends \yii\db\ActiveRecord
   {
     return [
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'string'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
@@ -139,6 +139,7 @@ class Stores extends \yii\db\ActiveRecord
       'related_stores' => 'Магазины торговой сети (ID через запятую)',
       'network_name' => 'Название торговой сети',
       'show_notify' => 'Отображать в задолбашках',
+      'coupon_description' => 'Текст для активных купонов',
     ];
   }
 
