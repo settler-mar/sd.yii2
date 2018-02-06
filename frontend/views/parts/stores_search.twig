@@ -1,0 +1,19 @@
+<section class="margin">
+    <div class="stores-search stores_search">
+        <div class="page-wrap stores-search_main">
+            <div class="stores-search_text">
+                {{ _constant('stores-search-module-text')|raw }}
+            </div>
+            <div class="stores-search_wrap">
+                <form action="/search" method="get" class="stores-search_form">
+                    <input type="text" name="query" class="stores-search_form-input search-form-input" placeholder="Поиск промокодов и магазинов" autocomplete="off">
+                    <input type="submit" value="Искать" class="stores-search_form-button">
+                </form>
+                <div class="stores-search_autocomplete autocomplete-wrap">
+                    <ul class="autocomplete_list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

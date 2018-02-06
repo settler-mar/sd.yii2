@@ -495,6 +495,9 @@ $functionsList=[
         return $techAvatar;
     }
   },
+  '_coupons_news_count' => function() {
+      return frontend\modules\coupons\models\Coupons::activeCount('news');
+  },
   't'=>'Yii::t',
   'max'=>'max',
   'implode'=>'implode',

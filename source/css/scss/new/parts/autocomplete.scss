@@ -1,4 +1,11 @@
-.autocomplete {
+.header-autocomplete {
+
+}
+.stores-search_autocomplete{
+
+}
+
+.autocomplete-wrap {
   box-sizing: border-box;
   position: absolute;
   display: none;
@@ -8,7 +15,9 @@
   background-color: $shop_cashback_link_color;
   box-shadow: 0 4px 4px rgba(0,0,0,.2);
   width: 100%;
-  &_list {
+  z-index: 100;
+
+  .autocomplete_list {
     margin: 0;
     padding: 0;
     >li{
@@ -49,4 +58,5 @@
       }
     }
   }
+
 }
