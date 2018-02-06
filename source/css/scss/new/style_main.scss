@@ -191,6 +191,7 @@ h3,h4,h5,h6 {
 
 .color-red{
   color: $header_heart;
+
   svg {
     color: $header_heart;
     fill: $header_heart;
@@ -201,6 +202,10 @@ h3,h4,h5,h6 {
 .clock{
   span{
     font-weight: 400;
+  }
+
+  &-expired{
+    color: $header_heart;
   }
 }
 

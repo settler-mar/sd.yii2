@@ -27,10 +27,10 @@
 
       {% include('parts/coupon.twig') %}
 
-      <div class="content-wrap">
-        <h2>Еще больше промокодов {{ store.name }}</h2>
-        <div  class="catalog-coupons margin">
-          {% if stores_coupon|length > 0 %}
+      {% if stores_coupon|length > 0 %}
+        <div class="content-wrap">
+          <h2>Еще больше промокодов {{ store.name }}</h2>
+          <div  class="catalog-coupons margin">
             <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
               {% if stores_coupon|length > 0 %}
                 {% for coupon in stores_coupon %}
@@ -53,11 +53,9 @@
                 {{pagination|raw}}
               {% endif %}
             </div>
-          {% else %}
-            <p>Ничего не найдено.</p>
-          {% endif %}
+          </div>
         </div>
-      </div>
+      {% endif %}
 
       {% if coupon_ended|length > 0 %}
         {% include('parts/coupon_ended_list.twig') %}

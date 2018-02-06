@@ -1,11 +1,7 @@
-    <!--поле контент из метатегов только для категории-->
-    {% if content  %}
-        <section class="margin">
-            <div class="catalog_category-content">
-                {{content|raw}}
-            </div>
-        </section>
-    {% endif %}
+    <!--поле контент из метатегов-->
+    <section class="gray-box wrap-round margin">
+      {{ content | raw}}
+    </section>
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
@@ -27,8 +23,6 @@
                         <span>({{total_v}})</span>
                     {% endif%}
                 </h1>
-
-
 
                 <div  class="coupons-abc_chars">
                     {% for char, stores in stores_coupons|slice(0, 27) %}

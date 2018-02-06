@@ -114,7 +114,7 @@
     }
     .angle-up .icon:before {
       content: "›";
-      transform: rotate3d(0, 0, 1, -90deg) translate3d(-6px, 3px, 0);
+      transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
     }
 
     h1,h2,h3,h4,h5,h6{
@@ -142,7 +142,7 @@
 
     &:after{
       content: "›";
-      transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
+      transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
       width: 20px;
       display: inline-block;
       text-align: center;
@@ -187,7 +187,7 @@
 
       &:after{
         content: "›";
-        transform: rotate3d(0,0,1,-90deg) translate3d(-6px,3px,0 );
+        transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
       }
     }
     .angle-down{

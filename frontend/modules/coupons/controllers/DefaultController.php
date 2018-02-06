@@ -120,7 +120,7 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
     if ($this->top) {
-        $sort = 'visit';
+      $sort = 'visit';
     }
 
     $validator = new \yii\validators\NumberValidator();
@@ -236,7 +236,7 @@ class DefaultController extends SdController
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
 
-    $contentData['is_root'] = (!$categoryCoupons && !$store);
+    $contentData['is_root'] = (!$categoryCoupons && !$store && !$this->top && $this->new);
     if ($page>1) {
         $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
     }
@@ -355,6 +355,8 @@ class DefaultController extends SdController
       $contentData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
       $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
     }
+
+    $contentData['expired']=(time()>strtotime($coupon['date_end']));
     return $this->render('card', $contentData);
   }
   /**
