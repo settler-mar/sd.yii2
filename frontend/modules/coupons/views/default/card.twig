@@ -73,20 +73,6 @@
         <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
       </div>
 
-        {% if coupons|length > 0 %}
-          <h2>Лучшие купоны</h2>
-          <div  class="catalog-coupons margin">
-            <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
-                {% for coupon in coupons %}
-                    {% include 'parts/coupon.twig' %}
-                {% endfor %}
-            </div>
-          </div>
-          <div class="coupons_buttons align-center margin">
-            <a class="btn  btn-round coupons_buttons-margin" href="/coupons"><span>Показать все купоны и промокоды</span></a>
-          </div>
-        {% endif %}
-
     </div>
   </div>
 </section>

@@ -335,7 +335,7 @@ class DefaultController extends SdController
     $contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
 
-    $contentData["coupons"] = Coupons::top(['limit' => 5]);
+    $contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
 
     $paginateParams = [
         //'limit' => $this->defaultLimit == $limit ? null : $limit,
@@ -391,6 +391,7 @@ class DefaultController extends SdController
 
   private function actionAbc()
   {
+      \Yii::$app->params['url_mask'] = 'coupons';
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();

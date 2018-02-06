@@ -164,6 +164,16 @@
         }
 
       }
+      &-links {
+        text-align: center;
+        a {
+          color: $coupons_popular_stores_color;
+          text-decoration: none;
+          &:hover {
+            color: $btn_base_bg;
+          }
+        }
+      }
     }
   }
   &-stores {

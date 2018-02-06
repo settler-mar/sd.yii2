@@ -26,7 +26,7 @@ use frontend\modules\cache\models\Cache;
  */
 class Coupons extends \yii\db\ActiveRecord
 {
-  const NEW_COUPONS_SUB_DAYS = 10;//Новые купоны дней до
+  const NEW_COUPONS_SUB_DAYS = 7;//Новые купоны дней до
 
     /**
    * @inheritdoc

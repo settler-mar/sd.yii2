@@ -98,6 +98,71 @@
   }
 }
 
+@mixin left-menu {
+
+  .coupons-list_item {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    &-name {
+
+      text-align: left;
+      order: 1;
+      &:hover {
+        background-color: #fff !important;
+
+        //color: $link_color !important;
+        svg, span {
+          color: $link_color;
+          fill: $link_color;
+          stroke: $link_color;
+        }
+      }
+      span {
+        padding: 0;
+        background-color: #fff;
+        color: $text-color;
+        font-size: 13px;
+        text-transform: none;
+      }
+      svg {
+        color: $text-color;
+        fill: $text-color;
+        stroke: $text-color;
+      }
+    }
+    &-content {
+
+      display: none;
+    }
+    &-logo {
+
+      order: 0;
+      min-width: inherit;
+      margin: 0;
+      &-wrap {
+
+        padding: 0;
+        margin: auto 0;
+        &:hover {
+          background-color: #fff !important;
+        }
+        img {
+
+          max-width: 100px;
+        }
+
+      }
+    }
+    &-content-link-all {
+
+      display: none;
+    }
+  }
+}
+
 
 .coupons {
   &-abc {
@@ -221,6 +286,9 @@
 
     &.narrow {
         @include narrow;
+    }
+    &.left-menu {
+      @include left-menu;
     }
 
     @include media($tablets) {
