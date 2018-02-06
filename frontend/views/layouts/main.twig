@@ -14,7 +14,7 @@
 
     <base href="/">
 
-    <title>{{ html.encode(this.title) }}</title>
+    <title>{{ this.title |raw}}</title>
 
     <!-- SEO -->
     {{   void(this.head) }}

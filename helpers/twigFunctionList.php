@@ -49,7 +49,7 @@ function create_flash($type,$flashe){
   if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
     $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
   }
-  if($txt.length<5){
+  if(mb_strlen($txt)<5){
     return '';
   }
   $js_t = 'notification.notifi({message:\'' . $txt . '\',type:\'' . $type . '\'' . ($title ? ',title:\'' . $title . '\'' : '') . '});' . "\n";

@@ -9,13 +9,13 @@ accordionControl.on('click', function (e) {
         /*if($accordion.hasClass('accordion-only_one')){
             return false;
         }*/
-        $accordion.find('.accordion-content').hide(300);
+        $accordion.find('.accordion-content').slideUp(300);
         $accordion.removeClass('open')
     } else {
         if($accordion.hasClass('accordion-only_one')){
             $other=$('.accordion-only_one');
             $other.find('.accordion-content')
-                .hide(300)
+                .slideUp(300)
                 .removeClass('accordion-content_last-open');
             $other.removeClass('open');
             $other.removeClass('last-open');
@@ -23,7 +23,7 @@ accordionControl.on('click', function (e) {
             $accordion.find('.accordion-content').addClass('accordion-content_last-open');
             $accordion.addClass('last-open');
         }
-        $accordion.find('.accordion-content').show(300);
+        $accordion.find('.accordion-content').slideDown(300);
         $accordion.addClass('open');
     }
     return false;

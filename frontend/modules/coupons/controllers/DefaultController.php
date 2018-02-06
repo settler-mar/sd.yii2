@@ -295,7 +295,7 @@ class DefaultController extends SdController
         ->limit(10)
         ->all();
 
-    \Yii::$app->params['url_mask'] = 'coupon/'.$actionId.($store->cpaLink->cpa_id == 2 ? '/online' : '');
+    \Yii::$app->params['url_mask'] = 'coupon/stores/'.$actionId.'/id/'.$coupon['uid'];
     $contentData["counts"] = Coupons::counts($storeId);
     $contentData['current_store'] = $store;
     $cacheName .= '_' . $storeId;

@@ -116,7 +116,6 @@ class m171221_075041_ADD_CONSTANT_WEB extends Migration
     $const->ftype = 'textarea';
     $const->save();
 
-
     $meta = new Meta();
     $meta->page="account/webmaster";
     $meta->title="Кабинет вебмастера";

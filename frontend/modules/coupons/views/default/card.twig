@@ -1,9 +1,7 @@
-<!--поле контент из метатегов только для категории-->
-{% if content  %}
-  <section class="margin">
-    <div class="catalog_category-content">
-      {{content|raw}}
-    </div>
+<!--поле контент из метатегов -->
+{% if content and page==1%}
+  <section class="gray-box wrap-round margin">
+    {{ content | raw}}
   </section>
 {% endif %}
 
@@ -16,7 +14,6 @@
     </div>
     {#справа контент#}
     <div class="catalog-stores coupons">
-
       <h1 >
         {% if h1 %}
           <!--h1 из базы-->
@@ -29,53 +26,49 @@
 
       {% include('parts/coupon.twig') %}
 
-      <h2>Еще больше купонов {{ store.name }}</h2>
-      <div  class="catalog-coupons margin">
-        {% if stores_coupon|length > 0 %}
-          <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
-            {% if stores_coupon|length > 0 %}
-              {% for coupon in stores_coupon %}
-                {% include 'parts/coupon.twig' %}
-              {% endfor %}
-              <div class="coupons coupons-empty"></div>
-              <div class="coupons coupons-empty"></div>
-              <div class="coupons coupons-empty"></div>
-              <div class="coupons coupons-empty"></div>
-              <div class="coupons coupons-empty"></div>
-              <div class="coupons coupons-empty"></div>
-            {% else %}
+      <div class="content-wrap">
+        <h2>Еще больше промокодов {{ store.name }}</h2>
+        <div  class="catalog-coupons margin">
+          {% if stores_coupon|length > 0 %}
+            <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
+              {% if stores_coupon|length > 0 %}
+                {% for coupon in stores_coupon %}
+                  {% include 'parts/coupon.twig' %}
+                {% endfor %}
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+              {% else %}
                 Ничего не найдено.
-            {% endif %}
+              {% endif %}
 
-          </div>
+            </div>
 
-          <div class="catalog-stores_pagination catalog_pagination">
-            {% if pagination %}
-              {{pagination|raw}}
-            {% endif %}
-          </div>
-        {% else %}
-          <p>Ничего не найдено.</p>
-        {% endif %}
+            <div class="catalog-stores_pagination catalog_pagination">
+              {% if pagination %}
+                {{pagination|raw}}
+              {% endif %}
+            </div>
+          {% else %}
+            <p>Ничего не найдено.</p>
+          {% endif %}
+        </div>
       </div>
 
       {% if coupon_ended|length > 0 %}
-        <h2>Завершившиеся акции, скидки и промокоды</h2>
-        <div  class="catalog-coupons margin">
-          {% for coupon in coupon_ended %}
-            <div class="accordion">
-              <div class="accordion-control accordion-title">{{ coupon.name }}</div>
-              <div class="accordion-content">
-                <b>А что писать если нет описания?</b>
-                {{ coupon.description }}
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-        <div class="coupons_buttons align-center margin">
-            <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды</span></a>
-        </div>
+        {% include('parts/coupon_ended_list.twig') %}
       {% endif %}
+
+      <div class="coupons_buttons align-center margin">
+        {% if coupon_ended|length > 0 %}
+          <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
+        {% endif %}
+        <a class="btn  btn-round coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
+        <a class="btn  btn-round coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+      </div>
 
     </div>
   </div>
