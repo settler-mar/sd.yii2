@@ -170,15 +170,29 @@ h3,h4,h5,h6 {
   flex-grow: 1;
 }
 
-.flex-line{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+.flex {
+  &-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-.flex-wrap {
-  flex-wrap: wrap;
-  justify-content: space-around;
+  &-wrap {
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  &-stretch {
+    justify-content: stretch;
+  }
+
+  &-grow_2 {
+    flex-grow: 2;
+  }
+
+  &-grow_3 {
+    flex-grow: 3;
+  }
 }
 
 .heart-red{
@@ -228,6 +242,7 @@ h3,h4,h5,h6 {
 section {
   margin-bottom: 0;
 }
+
 .margin {
   margin-bottom: 47px;
   @media print {
@@ -239,6 +254,11 @@ section {
 .align-center{
   text-align: center;
   justify-content: space-around;
+}
+
+.slim-text{
+  line-height: 1.1em;
+  font-size: 12px;
 }
 
 svg.svg-no-fill{
@@ -532,4 +552,4 @@ svg.svg-no-fill{
 @import "parts/new-year";
 @import "parts/select";
 @import "parts/stores_search";
-
+@import "parts/mail_subscribe";
