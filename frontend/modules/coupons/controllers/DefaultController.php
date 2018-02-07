@@ -391,7 +391,7 @@ class DefaultController extends SdController
 
   private function actionAbc()
   {
-      \Yii::$app->params['url_mask'] = 'coupons';
+      //\Yii::$app->params['url_mask'] = 'coupons';
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();

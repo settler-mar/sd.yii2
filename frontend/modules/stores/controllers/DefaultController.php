@@ -261,7 +261,7 @@ class DefaultController extends SdController
 //          ->asArray()
 //          ->all();
 //    }, $cache->defaultDuration, $dependency);
-    $contentData["coupons"] = Coupons::top(['store' => $store->uid]);
+    $contentData["coupons"] = Coupons::top(['store' => $store->uid,'limit'=>4]);
     $contentData["coupons_counts"] = Coupons::counts($store->uid);
     $contentData["all_coupons_counts"] = Coupons::counts();
     $additionalStores = $this->getAdditionals($store);
