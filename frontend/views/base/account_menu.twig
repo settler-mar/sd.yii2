@@ -1,32 +1,5 @@
 <div class="catalog-categories">
   <ul class="first">
-    <li class="top-information">
-      <div class="logo">
-        {% if setting.photo %}
-          <img src="{{setting.photo}}" alt="photo_{{setting.email}}">
-        {% else %}
-          {% if setting.sex == 'm' or setting.sex == '' %}
-            <span data-icon="&#xe040;" class="icon no-avatar"></span>
-          {% elseif setting.sex == 'f' %}
-            <span data-icon="&#xe041;" class="icon no-avatar"></span>
-          {% endif %}
-        {% endif %}
-      </div>
-      <div class="info-text">
-        {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-        {{ t('account', 'user_balance_current')}}: <span> {{ _nf(this.balance.current)|raw }} {{ curr|raw }} </span>
-      </div>
-    </li>
-    <li class="affiliate-account">
-      {% if this.isWebMaster or this.user.waitModeration==1 %}
-        {{ get_menu_item({'href':'/account/webmaster', 'title': t('account', 'menu_web_master')})|raw }}
-      {% else %}
-        {{ get_menu_item({'href':'/account/affiliate', 'title': t('account', 'menu_affiliate')})|raw }}
-      {%  endif %}
-    </li>
-    <li class="dobro-account">
-      {{ get_menu_item({'href':'/dobro', 'title': t('account','menu_make_good')})|raw }}
-    </li>
     <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
     <li class="overview users">
       {{ get_menu_item({'href':'/account', 'title': t('account', 'menu_main_page')})|raw }}
@@ -97,10 +70,7 @@
     <li class="action-btn"><a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a></li>
   </ul>
 
-  {#<div>#}
 
-  {#<a href="account/affiliate" class="affiliate_block"></a>#}
-  {#</div>#}
   {{ use('frontend/components/Banner') }}
   {%  set banners  = banner_widget({'place':'account-left-menu','options':{
     'wrapper_class':'account_banner__wrapper',

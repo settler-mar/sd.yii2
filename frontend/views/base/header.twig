@@ -174,9 +174,21 @@
           </a>
         </li>
         <li>
-          <a class="flex-start" href="#">
-          Приведи друга ({{ svg('dollar','header-icon-money')|raw }})
-        </a>
+          {% if this.isWebMaster or this.user.waitModeration==1 %}
+            {% set item= {
+              'href':'/account/webmaster',
+              'title': t('account', 'menu_web_master')~'({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+              'class':'flex-start'
+            } %}
+          {% else %}
+            {% set item= {
+              'href':'/affiliate-system',
+              'title': t('account', 'menu_affiliate')~'({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+              'class':'flex-start'
+            } %}
+          {%  endif %}
+          {{ get_menu_item(item)|raw }}
+
         </li>
         {% if this.user_id > 0 %}
         <li class="drop-menu_group__up">
