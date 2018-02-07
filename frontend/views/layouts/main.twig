@@ -54,16 +54,15 @@
 
     {% set slider=this.all_params.slider %}
 
-    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}{% if slider|length == 0 and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
+    <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
+        {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
     {#<div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">#}
       {% if slider|length > 0 %}
         {% include 'parts/slider.twig' %}
+      {% elseif this.all_params.search_form %}
+          {% include ('parts/stores_search.twig') %}
       {% endif %}
 
-        {#поиск#}
-      {% if 1==2 %}
-        {% include ('parts/stores_search.twig') %}
-      {% endif %}
 
       {% if this.all_params.wrap=='index' %}
           {{ content|raw }}
