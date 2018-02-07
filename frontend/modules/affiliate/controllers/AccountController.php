@@ -27,7 +27,7 @@ class AccountController extends \yii\web\Controller
       }
       return false;
     }
-    $this->layout = '@app/views/layouts/account.twig';
+    $this->view->layout_mode='account';
     return true;
   }
 

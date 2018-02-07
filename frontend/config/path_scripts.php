@@ -9,23 +9,6 @@ return  [
          '/css/new/styles{{script_version}}.css',
     ],
   ],
-  'account'=>[
-      'js'=>[
-        //'/js/jquery-2.1.4.js',
-        '/js/account/scripts{{script_version}}.js',
-        '/js/external/jquery.mCustomScrollbar.concat.min.js',
-        '/js/external/account/modernizr.js'
-      ],
-      'css'=>[
-        '/css/external/import.fonts.css',
-        '/css/external/animate.min.css',
-        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-        '/css/external/jquery.mCustomScrollbar.min.css',
-        '/css/external/popup.css',
-        '/css/account/styles{{script_version}}.css',
-        '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
-      ]
-  ],
   'goto'=>[
     'js'=>[
     ],

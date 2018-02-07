@@ -80,10 +80,10 @@
               <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
-          <div class="avatar account-menu-toggle" data-toggle="tooltip" data-original-title="Личный кабинет" >
+          <div class="avatar account-menu-toggle">
           <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
           </div>
-            {% include 'parts/account_menu.twig' %}
+          {% include 'parts/account_menu.twig' %}
         {% endif %}
 
       </div>

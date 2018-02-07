@@ -27,6 +27,7 @@ class SdView extends View
   public $isWebMaster=false;
   public $sd_counter;
   public $favorites=false;//количество изрбанных
+  public $layout_mode='default';
 
   public function init_param()
   {

@@ -55,8 +55,8 @@
     {% set slider=this.all_params.slider %}
 
     <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
-        {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
-    {#<div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}">#}
+      {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
+
       {% if slider|length > 0 %}
         {% include 'parts/slider.twig' %}
       {% elseif this.all_params.search_form %}
@@ -68,8 +68,18 @@
           {{ content|raw }}
       {% else %}
         {% include 'parts/catalog_breadcrumbs.twig' %}
-        <div class="page-wrap{{ _if(params('global_wrap'),' '~params('global_wrap')) }}">
-          {{ content|raw }}
+        <div class="page-wrap
+          {{ _if(params('global_wrap'),' '~params('global_wrap')) }}
+          {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">
+
+          {% if this.layout_mode=="account" %}
+            {% include 'base/account_menu.twig' %}
+            <div class="catalog-stores">
+              {{ content|raw }}
+            </div>
+          {% else %}
+            {{ content|raw }}
+          {% endif %}
         </div>
       {% endif %}
     </div>
