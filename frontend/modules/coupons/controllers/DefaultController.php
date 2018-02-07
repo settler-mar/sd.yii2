@@ -225,6 +225,7 @@ class DefaultController extends SdController
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
     $contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
+    $contentData['search_form'] = 1;
 
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
@@ -251,8 +252,6 @@ class DefaultController extends SdController
     $contentData['limitlinks'] =
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
-    $contentData['slider'] = Slider::get();
-    
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
     return $this->render('catalog', $contentData);
   }
@@ -272,7 +271,6 @@ class DefaultController extends SdController
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     //$contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
-    $contentData['slider'] = Slider::get();
     $contentData["popular_stores"] = $this->popularStores();
     $contentData["total_v"] = Coupons::activeCount();
     $contentData['store']=$store;
@@ -357,6 +355,7 @@ class DefaultController extends SdController
     }
 
     $contentData['expired']=(time()>strtotime($coupon['date_end']));
+    $contentData['search_form'] = 1;
     return $this->render('card', $contentData);
   }
   /**
@@ -397,10 +396,9 @@ class DefaultController extends SdController
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
       //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
       $contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
-      $contentData['slider'] = Slider::get();
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
-
+      $contentData['search_form'] = 1;
       return $this->render('abc', $contentData);
   }
 

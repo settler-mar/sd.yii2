@@ -15,6 +15,8 @@ class DefaultController extends SdController
   public function actionIndex($query)
   {
 
+    $limit = Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') :
+        (Yii::$app->request->isAjax ? 10 : 1000);
     $stores = Stores::items()
       ->addSelect(["IF(is_offline = 1, concat(cws.route, '-offline'), cws.route) route_url"])
       ->andWhere([
@@ -29,7 +31,7 @@ class DefaultController extends SdController
         ['like', 'alias', '%,'.$query, false],
         ['=', 'alias', $query]]
       )
-      ->limit(Yii::$app->request->isAjax?10:1000)
+      ->limit($limit)
       ->orderBy([
         'added'=> 'DESC',
         'visit'=>'DESC',

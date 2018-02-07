@@ -4,14 +4,15 @@ search = function() {
     $('.search-form-input').on('input', function(e){
         e.preventDefault();
         var query = $(this).val();
+        var data = $(this).closest('form').serialize();
         var autocomplete = $(this).closest('.stores_search').find('.autocomplete-wrap');// $('#autocomplete'),
-            autocompleteList = $(autocomplete).find('ul');
+        var autocompleteList = $(autocomplete).find('ul');
         openAutocomplete  = autocomplete;
         if (query.length>1) {
             $.ajax({
                 url: '/search',
                 type: 'get',
-                data: {query: query},
+                data: data,
                 dataType: 'json',
                 success: function(data){
                     if (data.suggestions) {
