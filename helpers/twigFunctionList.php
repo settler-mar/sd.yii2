@@ -154,10 +154,12 @@ $functionsList=[
     if (!count($item)) {
       return null;
     }
+    $title = (isset($item['left-icon'])? '<span>'.Help::svg($item['left-icon'],'left-icon').$item['title'].'</span>' : $item['title']) .
+        (isset($item['right-icon'])? Help::svg($item['right-icon'],'right-icon') : '');
     return '<a class="'.(empty($item['class']) ? '' : $item['class'] ).
     (($httpQuery == $item['href'])? ' active' : '').'" '
     .(($httpQuery == $item['href'])? '' : 'href="'.$item['href'].'"') .'>'.
-    $item['title'] . '</a>';
+    $title . '</a>';
   },
   //функция or - вывод первого непустого аргумента
   '_or'=> function () {
