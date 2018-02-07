@@ -3,14 +3,16 @@ search = function() {
 
     $('.search-form-input').on('input', function(e){
         e.preventDefault();
-        var query = $(this).val();
-        var data = $(this).closest('form').serialize();
-        var autocomplete = $(this).closest('.stores_search').find('.autocomplete-wrap');// $('#autocomplete'),
+        $this=$(this);
+        var query = $this.val();
+        var data = $this.closest('form').serialize();
+        var autocomplete = $this.closest('.stores_search').find('.autocomplete-wrap');// $('#autocomplete'),
         var autocompleteList = $(autocomplete).find('ul');
         openAutocomplete  = autocomplete;
         if (query.length>1) {
+            url=$this.closest('form').attr('action')||'/search';
             $.ajax({
-                url: '/search',
+                url: url,
                 type: 'get',
                 data: data,
                 dataType: 'json',
@@ -21,7 +23,7 @@ search = function() {
                         }
                         if (data.suggestions.length) {
                             data.suggestions.forEach(function(item){
-                                var html = '<a class="autocomplete_link" href="/stores/'+item.data.route+'"'+'>'+item.value+item.cashback+'</a>';
+                                var html = '<a class="autocomplete_link" href="'+item.data.route+'"'+'>'+item.value+item.cashback+'</a>';
                                 var li = document.createElement('li');
                                 li.innerHTML = html;
                                 if (autocompleteList) {

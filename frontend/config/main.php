@@ -147,6 +147,7 @@ $config= [
         'account/promo'=>'users/default/promo',
 
         'search' => 'search/default/index',
+        'search/coupon' => 'search/default/coupon',
         'search/<action>' => '404',
 
         '<action:(faq|admin|howitworks|terms|promo|loyalty|recommendations|about|offline)>' => 'site/<action>',

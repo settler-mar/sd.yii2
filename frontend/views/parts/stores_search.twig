@@ -5,10 +5,10 @@
                 {{ _constant('stores-search-module-text')|raw }}
             </div>
             <div class="stores-search_wrap">
-                <form action="/search" method="get" class="stores-search_form">
+                <form action="/search/coupon" method="get" class="stores-search_form" onsubmit="return false;">
                     <input type="hidden" name="limit" value="50">
-                    <input type="text" name="query" class="stores-search_form-input search-form-input" placeholder="Поиск промокодов и магазинов" autocomplete="off">
-                    <input type="submit" value="Искать" class="stores-search_form-button">
+                    <input type="text" name="query" class="stores-search_form-input search-form-input" placeholder="Введите название магазина" autocomplete="off">
+                    <input type="submit" value="Найти" class="stores-search_form-button">
                 </form>
                 <div class="stores-search_autocomplete autocomplete-wrap">
                     <ul class="autocomplete_list">
