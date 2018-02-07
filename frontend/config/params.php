@@ -9,6 +9,7 @@ $data= [
     'offline-system'=>'account/offline',
     'webmaster'=>'account/webmaster'
   ],
+  'pathToScript'=>require __DIR__.'/path_scripts.php',
 ];
 
 

@@ -29,7 +29,7 @@ class AccountController extends \yii\web\Controller
       throw new \yii\web\ForbiddenHttpException(Yii::t('commont', 'page_is_forbidden'));
       return false;
     }
-    $this->layout = '@app/views/layouts/account.twig';
+    $this->view->layout_mode='account';
     return true;
   }
 

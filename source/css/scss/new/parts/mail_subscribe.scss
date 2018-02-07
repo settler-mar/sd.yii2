@@ -1,0 +1,67 @@
+.sp-force-hide {
+  display: none;
+}
+
+.sp-form[sp-id="92106"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  text-align: center;
+}
+
+.sp-img{
+  background: url(/images/mail.png) no-repeat 50% 50%;
+  height: 90px;
+  margin-bottom: 20px;
+  background-size: contain;
+  width: 100%;
+}
+
+.sp-full-width{
+  width: 100%;
+}
+
+.sp-form[sp-id="92106"] .sp-field label {
+  padding: 0;
+  height: 0;
+  margin: 0;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.sp-form[sp-id="92106"] .sp-form-control {
+  height: 38px;
+  margin-top: 2px;
+}
+
+.sp-form[sp-id="92106"] .sp-form-control-wrap {
+  min-width: calc( 200px) !important;
+  flex: 100 !important;
+  box-sizing: content-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input{
+    min-width: 100%;
+  }
+}
+
+.sp-form[sp-id="92106"] .sp-buttons {
+  margin: auto 8px !important;
+}
+
+
+/*
+.sp-form[sp-id="92106"] .sp-button-container {
+  text-align: left;
+}
+
+.sp-form[sp-id="92106"] .sp-012637be-7d61-48cf-bcc9-ad4e9c8f3a92-container {
+  text-align: center;
+}*/

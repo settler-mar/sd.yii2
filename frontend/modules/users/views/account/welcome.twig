@@ -1,12 +1,9 @@
+{% include('parts/user_balance.twig') %}
+
+
 <div class="content-wrapper">
     <section class="account-home">
         <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/user_balance.twig') %}
-                    <div class="history hpayments"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
-                </div>
-            </div>
 
             {% if this.user.email_verified == 0 %}
                 <div class="col-md-12">

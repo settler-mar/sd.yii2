@@ -12,11 +12,13 @@ use common\components\Help;
 class DefaultController extends SdController
 {
 
-  public function actionIndex($query)
+  public function actionIndex($query,$params=[])
   {
 
-    $limit = Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') :
-        (Yii::$app->request->isAjax ? 10 : 1000);
+    $baseURL=isset($params['url'])?$params['url']:'/stores/';
+    $limit = isset($params['limit'])?$params['limit']:
+        (Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') :
+        (Yii::$app->request->isAjax ? 10 : 1000));
     $stores = Stores::items()
       ->addSelect(["IF(is_offline = 1, concat(cws.route, '-offline'), cws.route) route_url"])
       ->andWhere([
@@ -59,7 +61,7 @@ class DefaultController extends SdController
             : Yii::$app->params['valuta']): '').'</span>',
           "data" => [
             'name' => $v['name'],
-            'route' => $v['route_url']
+            'route' => $baseURL.$v['route_url']
           ]
         ];
 //        $out["suggestions"][] = [
@@ -82,4 +84,15 @@ class DefaultController extends SdController
     }
   }
 
+  public function actionCoupon($query){
+    if (!Yii::$app->request->isAjax) {
+      return $this->redirect('/coupons/');
+    }
+
+    $param=[
+      'url'=>'/coupons/',
+      'limit'=>100,
+    ];
+   return $this->actionIndex($query,$param);
+  }
 }

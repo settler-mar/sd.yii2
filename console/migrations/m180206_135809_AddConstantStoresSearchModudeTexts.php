@@ -20,8 +20,8 @@ class m180206_135809_AddConstantStoresSearchModudeTexts extends Migration
         $constant->name = "stores-search-module-text";
         $constant->title = "Текст модуля поиска шопов";
         $constant->ftype = "textarea";
-        $constant->text = '<h3 class="stores-search_text-header">Экономь с нами - позволь себе большее!</h3>
-                <p>{{ _coupons_news_count() }} промокодов и предложений добавлено на этой неделе</p>'
+        $constant->text = '<div class="stores-search_text-header">ПОКУПКИ В ИНТЕРНЕТЕ МОГУТ БЫТЬ ЕЩЕ ДЕШЕВЛЕ!</div>
+                <p>{{ _coupons_news_count() }} промокодов и акций добавлено на этой неделе</p>'
                ;
         $constant->save();
     }

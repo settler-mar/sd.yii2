@@ -80,10 +80,10 @@
               <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
-          <div class="avatar account-menu-toggle" data-toggle="tooltip" data-original-title="Личный кабинет" >
+          <div class="avatar account-menu-toggle">
           <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
           </div>
-            {% include 'parts/account_menu.twig' %}
+          {% include 'parts/account_menu.twig' %}
         {% endif %}
 
       </div>
@@ -168,15 +168,27 @@
       </ul>
       <ul class="header-right page-wrap-flex drop-menu">
         <li>
-          <a class="" href="#">
+          <a href="#">
             {{ svg('heart','header-heart heart-red')|raw }}
             Делаем добро
           </a>
         </li>
         <li>
-          <a class="flex-start" href="#">
-          Приведи друга ({{ svg('dollar','header-icon-money')|raw }})
-        </a>
+          {% if this.isWebMaster or this.user.waitModeration==1 %}
+            {% set item= {
+              'href':'/account/webmaster',
+              'title': t('account', 'menu_web_master')~'({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+              'class':'flex-start'
+            } %}
+          {% else %}
+            {% set item= {
+              'href':'/affiliate-system',
+              'title': t('account', 'menu_affiliate')~'({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+              'class':'flex-start'
+            } %}
+          {%  endif %}
+          {{ get_menu_item(item)|raw }}
+
         </li>
         {% if this.user_id > 0 %}
         <li class="drop-menu_group__up">

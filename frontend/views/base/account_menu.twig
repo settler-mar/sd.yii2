@@ -1,0 +1,84 @@
+<div class="catalog-categories">
+  <ul class="first">
+    <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
+    <li class="overview users">
+      {{ get_menu_item({'href':'/account', 'title': t('account', 'menu_main_page')})|raw }}
+    </li>
+    <li class="has-children bookmarks">
+      {{ get_menu_item({'href':'/account/payments', 'title': t('account', 'menu_history')})|raw }}
+      <ul>
+        <li>
+          {{ get_menu_item({'href':'/account/payments', 'title': t('account', 'menu_history_payments')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/account/bonuses', 'title': t('account', 'menu_history_bonuses')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/account/transitions', 'title': t('account', 'menu_history_visits')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/account/withdraw/history', 'title': t('account', 'menu_history_withdraw')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/account/charity', 'title': t('account', 'menu_history_charity')})|raw }}
+        </li>
+      </ul>
+    </li>
+    <li class="notifications">
+      {% set noty_count=noty_novi_count ? '<span class="count">'~noty_novi_count~'</span>' : '' %}
+      {{ get_menu_item({'href':'/account/notification', 'title': t('account', 'menu_notify')~noty_count})|raw }}
+    </li>
+  </ul>
+  <ul>
+    <li class="cd-label">{{ t('account', 'menu_extends')}}</li>
+    <li class="help-icon fasicon has-children">
+      {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help')})|raw }}
+      <ul>
+        <li>
+          {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help_support')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/howitworks', 'title': t('account', 'menu_help_howitworks')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/faq', 'title': t('account', 'menu_help_faq')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/loyalty', 'title': t('account', 'menu_help_loyalty')})|raw }}
+        </li>
+        <li>
+          {{ get_menu_item({'href':'/recommendations', 'title': t('account', 'menu_help_recommendations')})|raw}}
+        <li>
+          {{ get_menu_item({'href':'/reviews', 'title': t('account', 'menu_help_reviews')})|raw }}
+        </li>
+      </ul>
+    </li>
+    <li class="favorite-icon fasicon">
+
+      {{ get_menu_item({'href':'/account/favorites', 'title': t('account', 'menu_favorites')})|raw }}
+
+    </li>
+    <li class="offlineshop-icon fasicon">
+      {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
+    </li>
+    <li class="settings-icon fasicon">
+      {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
+    </li>
+  </ul>
+  <ul>
+    <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
+    <li class="action-btn"><a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a></li>
+  </ul>
+
+
+  {{ use('frontend/components/Banner') }}
+  {%  set banners  = banner_widget({'place':'account-left-menu','options':{
+    'wrapper_class':'account_banner__wrapper',
+    'item_class': 'account_banner__item',
+    'href_class': 'account_banner__href',
+    'image_class': 'account_banner__image',
+  }}) %}
+  {% if banners %}
+    {{ banners|raw }}
+  {% endif %}
+</div>
