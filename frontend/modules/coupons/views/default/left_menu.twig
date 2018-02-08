@@ -34,7 +34,9 @@
         {% endif %}
 
         {% if not hide_menu_subscribe %}
-            {% include('parts/mail_subscribe.twig') %}
+            <div class="catalog-categories_subscribe">
+                {% include('parts/mail_subscribe.twig') %}
+            </div>
         {% endif %}
 
         {{ use('frontend/components/Banner') }}
