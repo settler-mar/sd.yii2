@@ -1,25 +1,17 @@
-<div class="content-wrapper">
-  <section class="account-home">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="balance">
-          {% include('parts/account/user_balance.twig') %}
-        </div>
-      </div>
-    </div>
-  </section>
+{% include('parts/account/user_balance.twig') %}
+
+
   <section class="account-padding">
-    <div class="row">
-      <div class="col-md-12">
+
         <h3>{{ t('account', 'history_bonuses') }}</h3>
         <p>
             {{ t('account', 'history_bonuses_text') }}
         </p>
-      </div>
+
       {% if bonuses|length > 0 %}
-      <div class="col-md-12">
-        <table class="table table-bonuses">
-          <thead>
+
+        <table class="table ta_left">
+
             <tr>
               <th>{{ t('common', 'type') }}</th>
               <th>{{ t('common', 'description') }}</th>
@@ -27,9 +19,8 @@
               <th>{{ t('common', 'amount') }}</th>
               <th style="width: 140px;">{{ t('common', 'status') }}</th>
             </tr>
-          </thead>
-          <tbody>
-          {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+
+          {% set curr_icon = currencyIcon(app.params.valuta) %}
             {% for bonus in bonuses %}
             <tr>
               <td>
@@ -44,28 +35,27 @@
               </td>
               <td class="status status_{{bonus.status}}">
                 {% if bonus.status == '0' %}
-                  <span class="fa fa-clock-o"></span>
+                  {{ svg('clock-o','currency-icon')|raw }}
                 {% endif %}
                 {% if bonus.status == '2' %}
-                  <span class="fa fa-check"></span>
+                  {{ svg('check','currency-icon')|raw }}
                 {% endif %}
                 {% if bonus.status == '1' %}
-                  <span class="fa fa-times"></span>
+                  {{ svg('times','currency-icon')|raw }}
                 {% endif %}
                   {{bonus.status_title}}
               </td>
 
             </tr>
             {% endfor %}
-          </tbody>
+
         </table>
-      </div>
+
       {% else %}
-      <div class="col-md-12">
+
         <div class="not-found">{{ t('account', 'history_bonuses_empty') }}</div>
-      </div>
+
       {% endif %}
-    </div>
+
   </section>
   {% include '/parts/pagination.twig' %}
-</div>

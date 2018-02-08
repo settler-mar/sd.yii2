@@ -356,6 +356,7 @@ $functionsList=[
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
     if($locate_month) {
+      $month=$month[0];
       $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
       $sep=' ';
     }else{
