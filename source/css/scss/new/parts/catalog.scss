@@ -3,6 +3,7 @@
     width: 320px;
     @include media($laptop-min) {
       width: 100%;
+      margin-bottom: 47px;
     }
     li {
       list-style-type: none;
@@ -144,7 +145,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         a,span {
-          padding: 10px 5px;
+          padding: 6px 5px;
           margin-bottom: 5px;
           border-radius: 3px;
           margin-right: 10px;
@@ -173,6 +174,13 @@
             color: $btn_base_bg;
           }
         }
+      }
+    }
+    .sp-form-outer {
+      //форма подписки в левом меню
+
+      @include media($laptop-min) {
+        display: none;
       }
     }
   }

@@ -6,14 +6,14 @@
         {{ get_menu_item({
             'href':'/account',
             'title': t('account', 'menu_main_page'),
-            'left-icon': 'bay',
+            'left-icon': 'user',
         })|raw }}
       </li>
       <li class="has-children bookmarks">
         {{ get_menu_item({
             'href':'/account/payments',
             'title': t('account', 'menu_history'),
-            'left-icon': 'bay',
+            'left-icon': 'history',
             'right-icon': 'angle-right'
         })|raw }}
         <ul>
@@ -36,7 +36,11 @@
       </li>
       <li class="notifications">
         {% set noty_count=noty_novi_count ? '<span class="count">'~noty_novi_count~'</span>' : '' %}
-        {{ get_menu_item({'href':'/account/notification', 'title': t('account', 'menu_notify')~noty_count})|raw }}
+        {{ get_menu_item({
+            'href':'/account/notification',
+            'title': t('account','menu_notify')~noty_count,
+            'left-icon':'bell-o'
+        })|raw }}
       </li>
     </ul>
     <ul>
@@ -45,7 +49,7 @@
         {{ get_menu_item({
             'href':'/account/support',
             'title': t('account', 'menu_help'),
-            'left-icon': 'bell-o',
+            'left-icon': 'question-circle-o',
             'right-icon': 'angle-right'
         })|raw }}
         <ul>
@@ -70,19 +74,38 @@
       </li>
       <li class="favorite-icon fasicon">
 
-        {{ get_menu_item({'href':'/account/favorites', 'title': t('account', 'menu_favorites')})|raw }}
+        {{ get_menu_item({
+            'href':'/account/favorites',
+            'title': t('account', 'menu_favorites'),
+            'left-icon': 'heart-o'
+        })|raw }}
 
       </li>
       <li class="offlineshop-icon fasicon">
-        {{ get_menu_item({'href':'/account/offline', 'title': t('account', 'menu_offline')})|raw }}
+        {{ get_menu_item({
+            'href':'/account/offline',
+            'title': t('account', 'menu_offline'),
+            'left-icon': 'bay'
+        })|raw }}
       </li>
       <li class="settings-icon fasicon">
-        {{ get_menu_item({'href':'/account/settings', 'title': t('account', 'menu_settings')})|raw }}
+        {{ get_menu_item({
+            'href':'/account/settings',
+            'title': t('account', 'menu_settings'),
+            'left-icon': 'cogs'
+        })|raw }}
       </li>
     </ul>
     <ul>
       <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
-      <li class="action-btn"><a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a></li>
+      <li class="action-btn">
+          {{ get_menu_item({
+              'href':'/account/withdraw',
+              'title': t('account', 'menu_withdraw'),
+              'left-icon': 'coins'
+          })|raw }}
+        {#<a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a>#}
+      </li>
     </ul>
   </div>
 

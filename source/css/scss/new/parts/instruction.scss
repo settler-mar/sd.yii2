@@ -1,4 +1,8 @@
 .instruction {
+
+  &-list {
+    margin-bottom: 5px;
+  }
   &-item {
     text-align: center;
     flex-grow: 1;
@@ -46,6 +50,14 @@
       &-tablets-full {
         min-width: auto;
         max-width: none;
+      }
+    }
+
+    &-link {
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        color: inherit;
       }
     }
   }

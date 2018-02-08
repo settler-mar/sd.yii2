@@ -23,6 +23,8 @@ class DefaultController extends SdController
     protected $top = false;
     protected $new = false;
 
+    public $defaultLimit = 30;
+
    /**
    * @param string $actionId
    * @return null|string|\yii\base\Action

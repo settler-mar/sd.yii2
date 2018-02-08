@@ -89,11 +89,7 @@
                           <div class="shop shop-empty"></div>
                         </div>
 
-                        <div class="catalog-stores_pagination catalog_pagination">
-                            {% if pagination %}
-                                {{pagination|raw}}
-                            {% endif %}
-                        </div>
+                        {% include('parts/pagination.twig') %}
 
 
                     {% else %}

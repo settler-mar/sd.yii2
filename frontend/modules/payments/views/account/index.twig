@@ -8,8 +8,8 @@
             </div>
         </div>
     </section>
-    <section class="account-padding">
-        <div class="row">
+    <section class="account-padding margin">
+        <div class="row margin">
             <div class="col-md-12">
                 {{ _constant('account_payments_history')|raw }}
             </div>
@@ -64,8 +64,11 @@
             </div>
             {% endif %}
         </div>
+        {% include '/parts/pagination.twig' %}
     </section>
-    {% include '/parts/pagination.twig' %}
+
+
+
 
 
     {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
