@@ -39,7 +39,7 @@
     min-width: 320px;
 
     @include media($phones) {
-      min-width: 100vw;
+      min-width: 90vw;
       box-sizing: border-box;
     }
 
@@ -67,6 +67,9 @@
       cursor: pointer;
       color: $search-form_text_color;
       background-color: $search-form_form_button_color;
+      @include media($phones) {
+        padding: 10px 5%;
+      }
     }
   }
 
