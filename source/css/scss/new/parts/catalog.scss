@@ -275,14 +275,17 @@
         @include media($tablets) {
           display: flex;
           flex-direction: column;
+          font-size: 18px;
         }
       }
       &-info {
         @include media($tablets) {
-          text-align: center;
-          font-size: 18px;
-          line-height: 30px;
+          display: none;
+          //text-align: center;
+          //font-size: 18px;
+          //line-height: 30px;
         }
+
       }
     }
 
