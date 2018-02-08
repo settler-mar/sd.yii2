@@ -182,6 +182,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/list_type_switcher.js',
         paths.source.js+'/original/new/select.js',
         paths.source.js+'/original/new/search.js',
+        paths.source.js+'/original/new/goto.js',
 
   //for_all
         paths.source.js+'/original/notification.js',
