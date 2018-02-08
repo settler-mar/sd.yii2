@@ -17,5 +17,7 @@
     <div class="account-balance-block">
         <a href="/account/dobro/transfer" class="btn btn-mini btn-red">{{ t('common', 'charity') }}</a>
     </div>
-    <div class="history hpayments"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
+    {% if show_payment_link %}
+        <div class="history hpayments"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
+    {% endif %}
 </section>
