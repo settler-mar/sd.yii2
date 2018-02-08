@@ -64,7 +64,7 @@
 
       <div class="coupons_buttons align-center margin">
         {% if counts.expired > 0 %}
-          <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Все завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
+          <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
         {% endif %}
 
         {% if counts.actual > 0 %}
