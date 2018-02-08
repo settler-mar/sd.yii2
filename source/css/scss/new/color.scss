@@ -116,7 +116,8 @@ $scroll_box_shadow: #000;
 
 /*table*/
 $table_bg:#eaeaea;
-$table_th_bg:#fff;
+$table_th_bg:$search_list_hover_color;
+$table_th_color:#fff;
 $table_2n_bg:#f6f6f5;
 $table_select_bg:$btn_base_bg;
 $table_select_2n_bg:#fde699;
@@ -203,3 +204,17 @@ $search-form_form_border_color: #000;
 $search-form_form_input_color: #fff;
 $search-form_form_input_text_color: $text_color;
 $search-form_form_button_color: $btn_base_bg;
+
+//account
+$confirm_color: #C3D41B;
+$pending_color: #fbc010;
+$declined_color: #f44336;
+$charity_color: #f44336;
+
+$bronze: #87260C;
+$silver: #9D9D9B;
+$gold: #D58417;
+$platinum: #060606;
+$progress_line: #e4c84b;
+$progress_line_padding: rgba($progress_line,0.5);
+$circle_bg: #D6D6D6;

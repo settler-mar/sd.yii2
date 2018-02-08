@@ -31,3 +31,4 @@ max - проброс ф-и max из PHP
 implode - проброс ф-и implode из PHP
 params - доступ к параметрам
 sin - синус
+currencyIcon - иконка по коду валюты

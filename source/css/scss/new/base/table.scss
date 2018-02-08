@@ -3,10 +3,18 @@ table {
   background: $table_bg;
   text-align: center;
   font-size: 14px;
+  width: 100%;
+  margin-bottom: 15px;
+
+  &.ta_left{
+    text-align: left;
+  }
 }
+
 
 tr:first-child{
   background-color: $table_th_bg;
+  color: $table_th_color;
 }
 
 tr:nth-child(2n){

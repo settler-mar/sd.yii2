@@ -1,151 +1,101 @@
-{% include('parts/user_balance.twig') %}
+{% set show_payment_link=true %}
+{% include('parts/account/user_balance.twig') %}
 
-
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-
-            {% if this.user.email_verified == 0 %}
-                <div class="col-md-12">
-                    <div class="balance bg_gray">
-                        {{ _constant('account_verify_email')|raw }}
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="col-md-12">
-                <div class="col-sm-12">
-                    <h3>
-                        {{ t('account', 'user_loyalty_status') }}
-                    </h3>
-                </div>
-                {% for key,status in statuses_marafon %}
-                    <div class="col-sm-12 col-md-3 circles">
-                        <div class="type">{{status.display_name}} Status <span>+{{status.bonus}}%</span></div>
-                        {% if status.bonus <= this_tarif.bonus %}
-                            <div class="trophy {{status.code}}">
-                                <span data-icon="&#xe023;"></span>
-                                {% if key==t_satus_id %}
-                                    <p>{{ t('account', 'user_loyalty_current_status') }}</p>
-                                {% endif %}
-                            </div>
-                        {% else %}
-                            <div class="circle" id="{{status.code}}"></div>
-                            <div class="amount">
-                                {{status.min_sum}} <span class="fa fa-rub"></span>
-                                <span class="desc">
-                                    {{status.description | raw}}
-                                </span>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            {#{% if false %}#}
-                {#<div class="col-md-12">#}
-                    {#<div class="col-sm-12 col-md-3 circles">#}
-                        {#<div class="type">Bronze Status <span>+10%</span></div>#}
-                        {#{% if balance.total > 500 %}#}
-                            {#<div class="trophy bronze">#}
-                                {#<span data-icon="&#xe023;"></span>#}
-                                {#{% if balance.total > 500 and balance.total < 3000 %}#}
-                                    {#<p>{{ t('account', 'user_loyalty_current_status') }}</p>#}
-                                {#{% endif %}#}
-                            {#</div>#}
-                        {#{% else %}#}
-                            {#<div class="circle" id="bronze"></div>#}
-                            {#<div class="amount">#}
-                                {#500 <span class="fa fa-rub"></span>#}
-                                {#<span class="desc">#}
-                                {#накопленного кэшбэка требуется для получения статуса <b>Bronze</b> - и ваш кэшбэк с каждого заказа станет <b>на 10% больше</b></span>#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                    {#</div>#}
-                    {#<div class="col-sm-12 col-md-3 circles">#}
-                        {#<div class="type">Silver Status <span>+15%</span></div>#}
-                        {#{% if balance.total >= 3000 %}#}
-                            {#<div class="trophy silver">#}
-                                {#<span data-icon="&#xe023;"></span>#}
-                                {#{% if balance.total >= 3000 and balance.total < 7000 %}#}
-                                    {#<p>{{ t('account', 'user_loyalty_current_status') }}</p>#}
-                                {#{% endif %}#}
-                            {#</div>#}
-                        {#{% else %}#}
-                            {#<div class="circle" id="silver"></div>#}
-                            {#<div class="amount">#}
-                                {#3000 <span class="fa fa-rub"></span>#}
-                                {#<span class="desc">накопленного кэшбэка требуется для получения статуса <b>Silver</b> - и ваш кэшбэк с каждого заказа станет <b>на 15% больше</b></span>#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                    {#</div>#}
-                    {#<div class="col-sm-12 col-md-3 circles">#}
-                        {#<div class="type">Gold Status <span>+20%</span></div>#}
-                        {#{% if balance.total >= 7000 %}#}
-                            {#<div class="trophy gold">#}
-                                {#<span data-icon="&#xe023;"></span>#}
-                                {#{% if balance.total >= 7000 and balance.total < 10000 %}#}
-                                    {#<p>{{ t('account', 'user_loyalty_current_status') }}</p>#}
-                                {#{% endif %}#}
-                            {#</div>#}
-                        {#{% else %}#}
-                            {#<div class="circle" id="gold"></div>#}
-                            {#<div class="amount">#}
-                                {#7000 <span class="fa fa-rub"></span>#}
-                                {#<span class="desc">накопленного кэшбэка требуется для получения статуса <b>Gold</b> - и ваш кэшбэк с каждого заказа станет <b>на 20% больше</b></span>#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                    {#</div>#}
-                    {#<div class="col-sm-12 col-md-3 circles">#}
-                        {#<div class="type">Platinum Status <span>+30%</span></div>#}
-                        {#{% if balance.total >= 10000 %}#}
-                            {#<div class="trophy platinum">#}
-                                {#<span data-icon="&#xe023;"></span>#}
-                                {#<p>{{ t('account', 'user_loyalty_current_status') }}</p>#}
-                            {#</div>#}
-                        {#{% else %}#}
-                            {#<div class="circle" id="platinum"></div>#}
-                            {#<div class="amount">#}
-                                {#10000 <span class="fa fa-rub"></span>#}
-                                {#<span class="desc">накопленного кэшбэка требуется для получения статуса <b>Platinum</b> - и ваш кэшбэк с каждого заказа станет <b>на 30% больше</b>#}
-                            {#</span>#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                    {#</div>#}
-                {#</div>#}
-            {#{% endif %}#}
-            {% if desire %}
-                <div class="col-md-12">
-                    <div class="cashbonus">
-                        {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)})|raw }}
-                    </div>
-                </div>
-            {% endif %}
-            {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
-                <div class="col-md-12">
-                    <div class="uniq-status">
-                        <i class="fa fa-trophy" aria-hidden="true"></i>
-                        {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus})|raw }}
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if user.new_loyalty_status_end>0 %}
-                <div class="col-md-12">
-                    <div class="cashbonus vip">
-                        {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
-                    </div>
-                </div>
-            {% elseif this_tarif.is_vip==1  %}
-                <div class="col-md-12">
-                    <div class="cashbonus vip">
-                        {{ t('account', 'loyalty_vip_client')|raw }}
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+{% if this.user.email_verified == 0 %}
+    <section class="yellow-box wrap-round">
+        {{ _constant('account_verify_email')|raw }}
     </section>
-</div>
-<div id="uinfo" data-balance="{{balance.total}}" data-status="{{setting.loyalty_status}}"></div>
+{% endif %}
+
+<section>
+    <h2>
+        {{ t('account', 'user_loyalty_status') }}
+    </h2>
+    <div class="account-circles-wrap">
+        {% for key,status in statuses_marafon %}
+            <div class="account-circles-item {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-active') }}">
+                {% if status.total<100 %}
+                    {% if status.total_p>0 %}
+                        <div class="account-circles-item-padding" style="width: {{ status.total_p }}%;height: {{ status.total_p }}%;"></div>
+                    {% endif %}
+
+                    {% if status.total>0 %}
+                        <div class="account-circles-item-confirm" style="width: {{ status.total }}%;height: {{ status.total }}%;"></div>
+                    {% endif %}
+                {% endif %}
+                <div class="account-circles-item-name">
+                    {% if  status.bonus>0 %}
+                        {{status.display_name}}
+                    {% endif %}
+                </div>
+                <div
+                    class="
+                        account-circles-item-percent
+                        account-circles-item-percent-{{ status.code }}
+                        {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-percent-active') }}
+                    "
+                    {% if  status.description %}
+                        data-toggle="tooltip" data-original-title="{{ status.description }}"
+                    {% endif %}
+                    >
+                    <span class="account-circles-item-percent-text">
+                        {% if  status.bonus>0 %}
+                            +{{status.bonus}}%
+                        {% else %}
+                            {{status.display_name}}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="account-circles-item-sum">
+                    {% if  status.min_sum %}
+                        {{_nf(status.min_sum,0) | raw}}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div class="account-circles-item-dop_label">
+                    {% if key==t_satus_id %}
+                        <div class="account-circles-item-dop_label-active">
+                            {{ t('account', 'user_loyalty_current_status') }}
+                        </div>
+                    {% else %}
+                        {% if key==4 %}
+                            <a href="#" data-question="Извините, данная функция находится в разработке" data-button_yes="ОК" data-title="<br>" class="disabled">
+                                Подключить сейчас
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section class="align-center">
+    {% if desire %}
+        <div class="cashbonus">
+            {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw}}
+            <a href="#loyalty" class="modals_open">Подробнее</a>
+        </div>
+    {% endif %}
+    {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
+        <div class="uniq-status">
+            {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'&nbsp;'~currencyIcon(app.params.valuta)})|raw }} | raw }}
+        </div>
+    {% endif %}
+
+    {% if user.new_loyalty_status_end>0 %}
+        <div class="cashbonus vip">
+            {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
+        </div>
+    {% elseif this_tarif.is_vip==1  %}
+        <div class="cashbonus vip">
+            {{ t('account', 'loyalty_vip_client')|raw }}
+        </div>
+    {% endif %}
+</section>
+
 {% if newuser and newuser == '1' %}
     <!-- Google Code for &#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1080; Conversion Page -->
     <script type="text/javascript">

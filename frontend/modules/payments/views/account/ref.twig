@@ -1,9 +1,7 @@
+{% set curr = currencyIcon(app.params.valuta) %}
 <div class="content-wrapper">
-    <div class="row">
-        <div class="col-md-12">
             <h3>{{ t('account', 'users_referral_history') }}</h3>
-        </div>
-        <div class="col-md-12">
+        <div>
             {{ t('account', 'users_referral_status') }}:
             <b>
                 {{ref_user.loyalty_status_data.display_name}}
@@ -13,32 +11,28 @@
                 {% endif %}
             </b>
         </div>
-        <div class="col-md-12">
+        <div>
             {{ t('account', 'users_payment_confirmed_expected') }}:
             <b>{{ _nf(total.cnt_confirm,0) | raw}}</b> /
             <b>{{ _nf(total.cnt_pending,0) | raw}}</b>
         </div>
-        <div class="col-md-12">
+        <div>
             {{ t('account', 'users_cashback_confirmed_expected') }}:
-            <b>{{ _nf(total.sum_confirm) | raw}} руб</b> /
-            <b>{{ _nf(total.sum_pending) | raw}} руб</b>
+            <b>{{ _nf(total.sum_confirm) | raw}} {{ curr | raw}}</b> /
+            <b>{{ _nf(total.sum_pending) | raw}} {{ curr | raw}}</b>
         </div>
-        <div class="col-md-12">
+        <div>
             {{ t('account', 'users_summ_confirmed_expected') }}:
-            <b>{{ _nf(total.sum_ref_confirm) | raw}} руб</b> /
-            <b>{{ _nf(total.sum_ref_pending) | raw}} руб</b>
+            <b>{{ _nf(total.sum_ref_confirm) | raw}} {{ curr | raw}}</b> /
+            <b>{{ _nf(total.sum_ref_pending) | raw}} {{ curr | raw}}</b>
         </div>
         <form method="get" class="col-md-12">
             {{ t('common', 'date_range') }}:
             {{ data_ranger | raw }}
         </form>
-    </div>
     <section class="account-padding">
-        <div class="row">
             {% if payments|length > 0 %}
-            <div class="col-md-12">
-                <table class="table table-payments">
-                    <thead>
+                <table  class="table ta_left">
                         <tr>
                             <th>ID SD</th>
                             <th>{{ t('common', 'shop_or_service') }}</th>
@@ -48,9 +42,8 @@
                             <th>{{ t('common', 'your_bonus') }}</th>
                             <th>{{ t('common', 'status') }}</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for payment in payments %}
+
+                      {% for payment in payments %}
                         <tr>
                             <td>{{payment.action_id}}</td>
                             <td class="store">
@@ -62,37 +55,34 @@
                             </td>
                             <td>{{ _date(payment.action_date)}}</td>
                             <td>
-                                {{ _nf(payment.order_price * payment.kurs) | raw }} <span class="fa fa-rub"></span>
+                                {{ _nf(payment.order_price * payment.kurs) | raw }} {{ curr | raw}}
                             </td>
                             <td>
-                                {{ _nf(payment.cashback) | raw }} <span class="fa fa-rub"></span>
+                                {{ _nf(payment.cashback) | raw }} {{ curr | raw}}
                             </td>
                             <td  class="status status_{{payment.status}}">
-                                {{ _nf(payment.ref_bonus) | raw }} <span class="fa fa-rub"></span>
+                                {{ _nf(payment.ref_bonus) | raw }} {{ curr | raw}}
                             </td>
                             <td class="status status_{{payment.status}}">
-                                {% if payment.status == '0' %}
-                                <span class="fa fa-clock-o"></span>
-                                {% endif %}
-                                {% if payment.status == '2' %}
-                                <span class="fa fa-check"></span>
-                                {% endif %}
-                                {% if payment.status == '1' %}
-                                <span class="fa fa-times"></span>
-                                {% endif %}
-                                    {{payment.status_title}}
+                              {% if payment.status == '0' %}
+                                {{ svg('clock-o','currency-icon')|raw }}
+                              {% endif %}
+                              {% if payment.status == '2' %}
+                                {{ svg('check','currency-icon')|raw }}
+                              {% endif %}
+                              {% if payment.status == '1' %}
+                                {{ svg('times','currency-icon')|raw }}
+                              {% endif %}
+                              {{payment.status_title}}
                             </td>
                         </tr>
-                        {% endfor %}
-                    </tbody>
+                      {% endfor %}
                 </table>
-            </div>
+
             {% else %}
-            <div class="col-md-12">
                 <div class="not-found">{{ t('account', 'users_referral_payments_empty') }}</div>
-            </div>
             {% endif %}
-        </div>
+
     </section>
     {% include '/parts/pagination.twig' %}
 </div>

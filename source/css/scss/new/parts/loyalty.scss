@@ -1,21 +1,26 @@
-.loyalty{
+.loyalty {
   &-items {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin-bottom: 17px;
+    justify-content: space-around;
+
     @include media ($phones) {
       flex-direction: column;
     }
-    &_item{
+
+    &_item {
       margin: 0 15px 30px;
       border-radius: 5px;
       //border: 10px solid #E69D86;
-      width: 45%;
+      width: 42%;
       padding: 10px;
+
       @include media($phones) {
         width: 100%;
       }
+
       &-bronze {
         background-color: $loyalty_status_color_bronze;
         .loyalty-items_item-title {
@@ -85,9 +90,11 @@
           margin-right: 7px;
         }
       }
+
       &-text {
         padding: 15px 35px 20px;
         color: $loyalty_status_text_color;
+
         &-top {
           margin-bottom: 10px;
           padding-bottom: 10px;

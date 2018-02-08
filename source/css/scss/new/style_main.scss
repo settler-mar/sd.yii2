@@ -68,6 +68,26 @@ a{
   }
 }
 
+.status_{
+  &0{
+    color: $pending_color;
+    fill: $pending_color;
+    font-weight: bold;
+  }
+
+  &1{
+    color: $declined_color;
+    fill: $declined_color;
+    font-weight: bold;
+  }
+
+  &2{
+    color: $confirm_color;
+    fill: $confirm_color;
+    font-weight: bold;
+  }
+}
+
 h1{
   font-weight: 700;
   font-size: 2.5em;
@@ -359,6 +379,7 @@ svg.svg-no-fill{
     color: $text_color;
   }
 }
+
 .site-rating{
   margin-bottom: 0!important;
   text-decoration: none;
@@ -513,6 +534,16 @@ svg.svg-no-fill{
   }
 }
 
+.currency-icon{
+  height: 1em;
+  width: 1em;
+  vertical-align: sub;
+}
+
+.status,.cashback{
+  white-space: nowrap ;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
@@ -555,3 +586,5 @@ svg.svg-no-fill{
 @import "parts/mail_subscribe";
 @import "account";
 @import "parts/menu_account";
+@import "external/daterangepicker";
+

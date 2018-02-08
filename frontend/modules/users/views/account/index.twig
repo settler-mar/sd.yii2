@@ -7,23 +7,18 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 
-{% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
-
-<div class="content-wrapper">
+  {% set curr = currencyIcon(app.params.valuta) %}
   <section>
-    <div class="row">
-      <div class="col-md-12">
         <h3>{{ html.encode(this.title) }}</h3>
-      </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_users_total') }}:
         <b>{{ _nf(users_total.total,0)  | raw}}</b>
       </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_users_active') }}:
         <b>{{ _nf(users_total.active,0) | raw}}</b>
       </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_your_status') }}:
         <b>
           {{ bonus_status.display_name }}
@@ -33,31 +28,28 @@
           {% endif %}
         </b>
       </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_payment_confirmed_expected') }}:
         <b>{{ _nf(users_total.cnt_confirmed,0) | raw}}</b> /
         <b>{{ _nf(users_total.cnt_pending,0) | raw}}</b>
       </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_cashback_confirmed_expected') }}:
-        <b>{{ _nf(users_total.sum_confirmed,0) | raw}} {{ curr }}</b> /
-        <b>{{ _nf(users_total.sum_pending,0) | raw}} {{ curr }}</b>
+        <b>{{ _nf(users_total.sum_confirmed,0) | raw}} {{ curr | raw}}</b> /
+        <b>{{ _nf(users_total.sum_pending,0) | raw}} {{ curr | raw}}</b>
       </div>
-      <div class="col-md-12">
+      <div>
         {{ t('account', 'users_summ_confirmed_expected') }}:
-        <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} {{ curr }}</b> /
-        <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} {{ curr }}</b>
+        <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} {{ curr | raw}}</b> /
+        <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} {{ curr | raw}}</b>
       </div>
-      <form method="get" class="col-md-12">
+      <form method="get">
         {{ t('common', 'date_range') }}:
         {{ data_ranger | raw }}
       </form>
-    </div>
 
-    <div class="col-md-12">
       {% if users|length > 0 %}
-        <table class="table table-users">
-          <thead>
+        <table class="table ta_left">
           <tr>
             <th>ID</th>
             <th>{{ t('common', 'Дата регистрации') }}</th>
@@ -73,8 +65,7 @@
             </th>
             <th></th>
           </tr>
-          </thead>
-          <tbody>
+
             {% for user in users %}
               <tr>
                 <td>{{user.uid}}</td>
@@ -92,14 +83,14 @@
                   {{ _nf(user.cnt_pending,0) | raw}}
                 </td>
                 <td>
-                  {{ _nf(user.sum_confirmed) | raw }} р
+                  {{ _nf(user.sum_confirmed) | raw }} {{ curr | raw}}
                   /
-                  {{ _nf(user.sum_pending) | raw }} р
+                  {{ _nf(user.sum_pending) | raw }} {{ curr | raw}}
                 </td>
                 <td>
-                  {{ _nf(user.sum_to_friend_confirmed) | raw }} р
+                  {{ _nf(user.sum_to_friend_confirmed) | raw }} {{ curr | raw}}
                   /
-                  {{ _nf(user.sum_to_friend_pending) | raw }} р
+                  {{ _nf(user.sum_to_friend_pending) | raw }} {{ curr | raw}}
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}
@@ -109,16 +100,11 @@
 
               </tr>
             {% endfor %}
-          </tbody>
         </table>
         {% include '/parts/pagination.twig' %}
 
       {% else %}
-          <div class="col-md-12">
             <div class="not-found">{{ t('account', 'users_referrals_empty') }}</div>
-          </div>
       {% endif %}
-    </div>
-
   </section>
-</div>
+

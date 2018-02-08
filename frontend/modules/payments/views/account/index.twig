@@ -1,103 +1,66 @@
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/user_balance.twig') %}
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="account-padding margin">
-        <div class="row margin">
-            <div class="col-md-12">
-                {{ _constant('account_payments_history')|raw }}
-            </div>
-            {% if payments|length > 0 %}
-            <div class="col-md-12">
-                <table class="table table-payments">
-                    <thead>
-                        <tr>
-                            <th>ID SD</th>
-                            <th>{{ t('common', 'shop_or_service') }}</th>
-                            <th>{{ t('common', 'date_active') }}</th>
-                            <th>{{ t('common', 'cashback') }}</th>
-                            <th>{{ t('common', 'status') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-                        {% for payment in payments %}
-                        <tr>
-                            <td>{{payment.action_id}}</td>
-                            <td class="store">
-                            {% if payment.is_active != -1 %}
+{% include('parts/account/user_balance.twig') %}
+<section>
+        {{ _constant('account_payments_history')|raw }}
+        {% if payments|length > 0 %}
+            <table class="table ta_left">
+                <tr>
+                    <th>ID SD</th>
+                    <th>{{ t('common', 'shop_or_service') }}</th>
+                    <th>{{ t('common', 'date_active') }}</th>
+                    <th>{{ t('common', 'cashback') }}</th>
+                    <th>{{ t('common', 'status') }}</th>
+                </tr>
+
+                {% set curr_icon = currencyIcon(app.params.valuta) %}
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{payment.action_id}}</td>
+                        <td class="store">
+                        {% if payment.is_active != -1 %}
                             <a href="/stores/{{payment.route}}{{ _if(payment.is_offline,'-offline') }}">{{payment.name}}</a>
-                            {% else %}
+                        {% else %}
                             {{payment.name}}
+                        {% endif %}
+                        </td>
+                        <td>{{ _date(payment.action_date)}}</td>
+                        <td class="cashback status_{{payment.status}}">
+                            {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
+                        </td>
+                        <td class="status status_{{payment.status}}">
+                            {% if payment.status == '0' %}
+                                {{ svg('clock-o','currency-icon')|raw }}
                             {% endif %}
-                            </td>
-                            <td>{{ _date(payment.action_date)}}</td>
-                            <td class="cashback status_{{payment.status}}">
-                                {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
-                            </td>
-                            <td class="status status_{{payment.status}}">
-                                {% if payment.status == '0' %}
-                                <span class="fa fa-clock-o"></span>
-                                {% endif %}
-                                {% if payment.status == '2' %}
-                                <span class="fa fa-check"></span>
-                                {% endif %}
-                                {% if payment.status == '1' %}
-                                <span class="fa fa-times"></span>
-                                {% endif %}
-                                    {{payment.status_title}}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="col-md-12">
-                <div class="not-found">{{ t('account', 'payments_no_found') }}</div>
-            </div>
-            {% endif %}
-        </div>
-        {% include '/parts/pagination.twig' %}
-    </section>
+                            {% if payment.status == '2' %}
+                                {{ svg('check','currency-icon')|raw }}
+                            {% endif %}
+                            {% if payment.status == '1' %}
+                                {{ svg('times','currency-icon')|raw }}
+                            {% endif %}
+                            {{payment.status_title}}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="not-found">{{ t('account', 'payments_no_found') }}</div>
+        {% endif %}
+    {% include '/parts/pagination.twig' %}
+</section>
 
 
+{% set curr = currencyIcon(app.params.valuta) %}
 
-
-
-    {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
-
-    <section>
-        <div class="row">
-            <div class="col-md-12 sum_information_wrapper">
-                <h3 class="header">{{ t('account', 'summary') }}:</h3>
-                <div class="sum_information">
-                    <div class="line">
-                        <div class="name">{{ t('account', 'confirmed') }}</div>
-                        <div class="value">
-                            {{ _nf(user.sum_confirmed) | raw}} {{ curr }}
-                        </div>
-                    </div>
-                    <div class="line">
-                        <div class="name">{{ t('account', 'expected') }}</div>
-                        <div class="value">
-                            {{ _nf(user.sum_pending) | raw }} {{ curr }}
-                        </div>
-                    </div>
-                    <div class="line">
-                        <div class="name">{{ t('account', 'revoked') }}</div>
-                        <div class="value">
-                            {{ _nf(user.sum_declined) | raw }} {{ curr }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
+<section class="account-balance">
+    <div class="account-balance-block">
+        {{ t('account', 'confirmed') }}:
+        <span class="account-balance-confirm">{{ _nf(user.sum_confirmed) | raw}}&nbsp;{{ curr | raw }}</span>
+    </div>
+    <div class="account-balance-block">
+        {{ t('account', 'expected') }}:
+        <span class="account-balance-pending">{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</span>
+    </div>
+    <div class="account-balance-block">
+        {{ t('account', 'revoked') }}:
+        <span class="account-balance-charity">{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw}}</span>
+    </div>
+</section>

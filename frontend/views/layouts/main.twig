@@ -73,7 +73,7 @@
           {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">
 
           {% if this.layout_mode=="account" %}
-            {% include 'base/account_menu.twig' %}
+            {% include 'parts/account/menu.twig' %}
             <div class="catalog-stores">
               {{ content|raw }}
             </div>

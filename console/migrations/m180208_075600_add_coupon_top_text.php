@@ -24,7 +24,7 @@ class m180208_075600_add_coupon_top_text extends Migration
     public function safeDown()
     {
         echo "m180208_075600_add_coupon_top_text cannot be reverted.\n";
-      $this->dropColumn('cw_categories_coupons', 'description');
+        $this->dropColumn('cw_categories_coupons', 'description');
         return false;
     }
 
