@@ -191,6 +191,12 @@ $functionsList=[
       }
     });
   },
+  'currencyIcon'=> function ($currency) use ($currencyIcon) {
+    return (isset($currencyIcon[$currency]) ? Help::svg(
+        $currencyIcon[$currency],
+        'currency-icon currency-icon-'.$currencyIcon[$currency]
+    ) : $currency);
+  },
   //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback'=> function ($cashback, $currency='',$action = 0,$mode = 0) use ($currencyIcon) {
     if($action == 1){

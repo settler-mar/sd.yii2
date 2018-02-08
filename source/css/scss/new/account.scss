@@ -1,19 +1,48 @@
 .account{
   &-balance{
-    &-block{
+    margin: 15px 0;
+    display: flex;
+    background-color: $gray_box_bg;
+    padding: 15px;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    align-items: flex-end;
 
+    &-block{
+      min-width: 160px;
+      flex-grow: 2;
+      width: 23%;
+      margin-bottom: 15px;
+
+      @include media($laptop) {
+        width: 50%;
+      }
+
+      span{
+        font-size: 1.5em;
+        font-weight: bold;
+        display: block;
+      }
+    }
+
+    &-confirm{
+      color: $confirm_color;
+      fill: $confirm_color;
     }
 
     &-pending{
+      color: $pending_color;
+      fill: $pending_color;
+    }
 
+    &-declined{
+      color: $declined_color;
+      fill: $declined_color;
     }
 
     &-charity{
-
-    }
-
-    &-waiting{
-
+      color: $charity_color;
+      fill: $charity_color;
     }
   }
 

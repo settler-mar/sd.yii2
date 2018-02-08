@@ -513,6 +513,12 @@ svg.svg-no-fill{
   }
 }
 
+.currency-icon{
+  height: 1em;
+  width: 1em;
+  vertical-align: sub;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
