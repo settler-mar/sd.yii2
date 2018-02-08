@@ -92,7 +92,7 @@
 
               <!--краткая информация категории-->
               {% if current_category.short_description %}
-                <div class="catalog_category-content">
+                <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
                     {{current_category.short_description|raw}}
                   </div>
@@ -101,7 +101,7 @@
 
               <!--краткая информация о магазине для купона-->
               {% if current_store.coupon_description and page==1 %}
-                <div class="catalog_category-content">
+                <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
                     {{current_store.coupon_description|raw}}
                   </div>
