@@ -3,6 +3,7 @@
     width: 320px;
     @include media($laptop-min) {
       width: 100%;
+      margin-bottom: 47px;
     }
     li {
       list-style-type: none;
