@@ -116,7 +116,8 @@ $scroll_box_shadow: #000;
 
 /*table*/
 $table_bg:#eaeaea;
-$table_th_bg:#fff;
+$table_th_bg:$search_list_hover_color;
+$table_th_color:#fff;
 $table_2n_bg:#f6f6f5;
 $table_select_bg:$btn_base_bg;
 $table_select_2n_bg:#fde699;

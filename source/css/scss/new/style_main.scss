@@ -68,6 +68,26 @@ a{
   }
 }
 
+.status_{
+  &0{
+    color: $pending_color;
+    fill: $pending_color;
+    font-weight: bold;
+  }
+
+  &1{
+    color: $declined_color;
+    fill: $declined_color;
+    font-weight: bold;
+  }
+
+  &2{
+    color: $confirm_color;
+    fill: $confirm_color;
+    font-weight: bold;
+  }
+}
+
 h1{
   font-weight: 700;
   font-size: 2.5em;
