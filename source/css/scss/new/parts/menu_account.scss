@@ -1,0 +1,135 @@
+.catalog-categories-account {
+  &_menu {
+    margin-bottom: 15px;
+
+    ul {
+      box-sizing: border-box;
+    }
+    > ul {
+      border-bottom: thin solid #fff;
+
+      > li {
+        position: relative;
+
+        svg {
+          &.left-icon {
+            width: 18px;
+            height: 18px;
+          }
+          &.right-icon {
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        >ul {
+          max-height: inherit;
+          opacity: 0;
+          visibility: hidden;
+          position: absolute;
+          right: -100%;
+          top: 0;
+          border: 1px solid $menu_border_color;
+        }
+        &:hover {
+          >ul {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+        &.cd-label {
+          background-color: $text_color;
+          color: $btn_base_dark_color;
+          padding: 10px;
+        }
+
+
+        > a {
+          background-color: $text_color;
+          color: $header_sub_menu_color_hover;
+          padding-left: 30px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: space-between;
+
+          svg.right-icon {
+            color: $header_sub_menu_color_hover;
+            fill: $header_sub_menu_color_hover;
+            stroke: $header_sub_menu_color_hover;
+          }
+
+          >span {
+            padding: 0;
+            background-color: $text_color;
+            color: $header_sub_menu_color_hover;
+            transition: inherit;
+
+            svg.left-icon {
+              transition: inherit;
+              background-color: $text_color;
+              color: $header_sub_menu_color_hover;
+              fill: $header_sub_menu_color_hover;
+              stroke: $header_sub_menu_color_hover;
+              margin-right: 10px;
+            }
+          }
+          &:hover {
+            color: $text_color;
+            background-color: $header_sub_menu_color_hover;
+
+            svg.right-icon {
+              color: $text_color;
+              fill: $text_color;
+              stroke: $text_color;
+            }
+
+            >span {
+              color: $text_color;
+              background-color: $header_sub_menu_color_hover;
+
+              svg.left-icon {
+                color: $text_color;
+                fill: $text_color;
+                stroke: $text_color;
+                background-color: $header_sub_menu_color_hover;
+              }
+            }
+          }
+
+          &.active {
+            color: $btn_base_dark_color;
+            background-color: $header_color_gray;
+
+            svg.right-icon {
+              color: $btn_base_dark_color;
+              fill: $btn_base_dark_color;
+              stroke: $btn_base_dark_color;
+            }
+
+            >span {
+              color: $btn_base_dark_color;
+              background-color: $header_color_gray;
+
+              svg.left-icon {
+                color: $btn_base_dark_color;
+                fill: $btn_base_dark_color;
+                stroke: $btn_base_dark_color;
+                background-color: $header_color_gray;
+              }
+            }
+            &:hover {
+
+              svg.right-icon {
+                color: $text_color;
+                fill: $text_color;
+                stroke: $text_color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

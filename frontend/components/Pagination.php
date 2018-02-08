@@ -166,7 +166,7 @@ class Pagination
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
         Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';
 
-    $pages = ($page >= $displayCount && $total > $displayCount ? '...' : '');
+    $pages = ($page >= $displayCount && $total > $displayCount  + 1 ? '...' : '');
     $pageStart = floor($page / ($displayCount - 1)) * ($displayCount - 1) == $page ?
       (floor($page / ($displayCount - 1)) - 1) * ($displayCount - 1) + 1 :
       floor($page / ($displayCount - 1)) * ($displayCount - 1) + 1;
@@ -180,7 +180,7 @@ class Pagination
         Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
     };
 
-    $pages .= ($total - $page <= $displayCount - 1 ? '' : '...');
+    $pages .= ($total - $page <= $displayCount - 1 || $total <= $displayCount  + 1 ? '' : '...');
 
     return '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
   }

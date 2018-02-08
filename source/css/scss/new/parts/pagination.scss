@@ -64,7 +64,14 @@
 }
 .pagination {
   &_button {
-    width: 12PX;
-    height: 12PX;
+    width: 18PX;
+    height: 18PX;
+    vertical-align: top;
+    &_left {
+      padding-right: 2px;
+    }
+    &_right {
+      padding-left: 2px;
+    }
   }
 }

@@ -58,7 +58,8 @@
     }
 
     &-fixed_height {
-      height: 228px;
+      //height: 228px;
+      height: 232px;
       overflow: hidden;
     }
 
@@ -71,7 +72,18 @@
     &-link{
       display: block;
       text-align: right;
-      margin: 10px 0;
+      //margin: 10px 0;
+      margin: 5PX 0 10PX;
+      position: relative;
+      &:before {
+        display: block;
+        content: " ";
+        background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
+        height: 60PX;
+        top: -64PX;
+        position: absolute;
+        width: 100%;
+      }
     }
   }
 
@@ -133,6 +145,21 @@
       //line-height: 25px;
       //font-size: 18px;
     }
+    //p {
+    //  max-height: 85px;
+    //  overflow: hidden;
+    //  position: relative;
+    //  display: block;
+    //  &:after {
+    //    display: block;
+    //    content: " ";
+    //    background-color: #000;
+    //    opacity: 0.5;
+    //    height: 20px;
+    //    bottom: 0;
+    //    position: absolute
+    //  }
+    //}
   }
 
   &-social {
