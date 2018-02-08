@@ -540,6 +540,10 @@ svg.svg-no-fill{
   vertical-align: sub;
 }
 
+.status,.cashback{
+  white-space: nowrap ;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
