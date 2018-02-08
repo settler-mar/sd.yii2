@@ -19,7 +19,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if coupons_top5 and coupons_top5|length > 0 %}
+        {% if coupons_top5 and coupons_top5|length > 0 and expired != 1 %}
             <div  class="catalog-categories_popular-stores">
                 <h3 class="catalog-categories_popular-stores-header">Лучшие промокоды</h3>
                 <div class="catalog-categories_popular-stores-content coupons-list left-menu">

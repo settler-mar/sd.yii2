@@ -147,7 +147,7 @@ class DefaultController extends SdController
     $expiredData=['<', 'cwc.date_end', date('Y-m-d H:i:s', time())];
     $dateRange = $request->get('expired') ? $expiredData :
       ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
-    $contentData['show_expired'] = $request->get('expired');
+    //$contentData['show_expired'] = $request->get('expired');
 
     if (!empty($categoryCoupons)) {
       $this->params['breadcrumbs'][] = ['label' => $categoryCoupons->name, 'url'=>'/coupons/'.$categoryCoupons->route];
@@ -226,6 +226,7 @@ class DefaultController extends SdController
     $contentData["page"] = empty($page) ? 1 : $page;
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
     $contentData["expired"] = $request->get('expired') ? 1 : null;
+    //$contentData['show_expired'] = $request->get('expired');
     $contentData["popular_stores"] = $this->popularStores();
     $contentData['search_form'] = 1;
 
@@ -253,6 +254,9 @@ class DefaultController extends SdController
       $this->getSortLinks($paginatePath, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
     $contentData['limitlinks'] =
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
+
+    //непонятно, нужно сюда выводить или не нужно
+    //$contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
 
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
     return $this->render('catalog', $contentData);
@@ -302,7 +306,7 @@ class DefaultController extends SdController
 
     $dateRange = $request->get('expired') ? ['<', 'cwc.date_end', date('Y-m-d H:i:s', time())] :
         ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
-    $contentData['show_expired'] = $request->get('expired');
+    //$contentData['expired'] = $request->get('expired');
 
     $expiredData=['<', 'date_end', date('Y-m-d H:i:s', time())];
     $contentData['coupon_ended']=Coupons::find()
@@ -332,7 +336,7 @@ class DefaultController extends SdController
     $contentData["total_all_coupons"] = Coupons::activeCount();
     $contentData["page"] = empty($page) ? 1 : $page;
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
-    $contentData["expired"] = $request->get('expired') ? 1 : null;
+    //$contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
 
     $contentData["coupons_top5"] = Coupons::top(['limit' => 5]);

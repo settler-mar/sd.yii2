@@ -73,7 +73,7 @@
                     {% endif %}
                 </div>
 
-                {% if show_expired == 1 %}
+                {% if expired == 1 %}
                     <div class="coupons_buttons align-center">
                         {% if counts.actual > 0 %}
                             {% if current_store %}
@@ -105,11 +105,11 @@
                 </div>
               {% endif %}
 
-              {% if current_store and counts.expired>0 %}
+              {% if current_store and counts.expired>0 and expired == null %}
                 {% include('parts/coupon_ended_list.twig') %}
               {% endif %}
 
-              {% if show_expired == null and counts.expired %}
+              {% if expired == null and counts.expired %}
                 <div class="coupons_buttons align-center margin">
                   {% if current_store %}
                     <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>

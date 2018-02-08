@@ -49,28 +49,29 @@
             {% include('parts/pagination.twig') %}
 
 
-        {%  else %}
-          {% include('parts/mail_subscribe.twig') %}
+          {%  else %}
+            {% include('parts/mail_subscribe.twig') %}
+          {% endif %}
+        </div>
+
+
+        {% if coupon_ended|length > 0 %}
+          {% include('parts/coupon_ended_list.twig') %}
         {% endif %}
+
+        <div class="coupons_buttons align-center margin">
+          {% if counts.expired > 0 %}
+            <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
+          {% endif %}
+
+          {% if counts.actual > 0 %}
+            <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
+          {% endif %}
+
+          <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+        </div>
+
       </div>
-
-
-      {% if coupon_ended|length > 0 %}
-        {% include('parts/coupon_ended_list.twig') %}
-      {% endif %}
-
-      <div class="coupons_buttons align-center margin">
-        {% if counts.expired > 0 %}
-          <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
-        {% endif %}
-
-        {% if counts.actual > 0 %}
-          <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
-        {% endif %}
-
-        <a class="btn btn-round btn-transform btn-mini coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
-      </div>
-
     </div>
   </div>
 </section>
