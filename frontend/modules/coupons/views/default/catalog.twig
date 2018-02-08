@@ -1,6 +1,10 @@
-    {% if not expired and content and page==1%}
+    {% if not expired and (content or current_category.description) and page==1%}
       <section class="gray-box wrap-round margin">
-        {{ content | raw}}
+        {% if current_category.description %}
+          {{ current_category.description | raw }}
+        {% else %}
+          {{ content | raw}}
+        {% endif %}
       </section>
     {% endif %}
 

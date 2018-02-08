@@ -12,6 +12,8 @@
 
                 {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
 
+                {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
                 {{ form.field(model, 'short_description').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
                 <div class="form-group">
