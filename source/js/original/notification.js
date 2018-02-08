@@ -281,3 +281,13 @@ $('[ref=popup]').on('click',function (e){
   data.question=el.html();
   notification.alert(data);
 });
+
+
+$('.disabled').on('click',function (e){
+  e.preventDefault();
+  $this=$(this);
+  data=$this.data();
+  if(data['button_yes'])data['buttonYes']=data['button_yes']
+
+  notification.alert(data);
+});

@@ -102,19 +102,31 @@ class AccountController extends Controller
     $next_tarif = false;
     $next_tarif_min_sum = false;
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
-    $status = $statuses[Yii::$app->user->identity->loyalty_status];
+    $status_id=Yii::$app->user->identity->loyalty_status;
+
+    $status_id = 1;
+
+
+    $status = $statuses[$status_id];
 
     $total = Yii::$app->user->identity->balance['total'];
+    $total_p = Yii::$app->user->identity->balance['pending']+$total;
 
     $data = [
       'newuser' => Yii::$app->request->get('new'),
       'this_tarif' => $status,
-      't_satus_id' => Yii::$app->user->identity->loyalty_status,
+      't_satus_id' => $status_id,
     ];
 
+    $prev_min=0;
     foreach ($statuses as $k => $status_k) {
       if (isset($status_k['min_sum'])) {
+        $t_total=$total-$prev_min;
+        $t_total_p=$total_p-$prev_min;
+        $prev_min=$status_k['min_sum'];
         $status_k['id'] = $k;
+        $status_k['total'] = 100*(($status_k['min_sum']<=$t_total)?1:$t_total/$status_k['min_sum']);
+        $status_k['total_p'] = 100*(($status_k['min_sum']<=$t_total_p)?1:$t_total_p/$status_k['min_sum']);
         $statuses_marafon[$k] = $status_k;
         if (
           $total < $status_k['min_sum'] &&

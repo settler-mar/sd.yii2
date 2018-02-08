@@ -18,8 +18,11 @@ $dict = [
     'loyalty_status'=>[
       0=>[
         'name'=>"default",
-        'display_name'=>"default",
+        'display_name'=>"Start",
+        'min_sum'=>0,
+        'valuta'=>'RUB',
         'bonus'=>0,
+        'description'=>'Базовая ставка кэшбэка',
       ],
       1=>[
         'code'=>'bronze',
@@ -27,7 +30,8 @@ $dict = [
         'display_name'=>"Bronze",
         'bonus'=>10,
         'min_sum'=>500,
-        'description'=>'накопленного кэшбэка требуется для получения статуса <b>Bronze</b> - и ваш кэшбэк с каждого заказа станет <b>на 10% больше</b>',
+        'valuta'=>'RUB',
+        'description'=>'+10% к базовой ставке кэшбэка',
         ],
       2=>[
         'code'=>'silver',
@@ -35,7 +39,8 @@ $dict = [
         'display_name'=>"Silver",
         'bonus'=>15,
         'min_sum'=>3000,
-        'description'=>'накопленного кэшбэка требуется для получения статуса <b>Silver</b> - и ваш кэшбэк с каждого заказа станет <b>на 15% больше</b>',
+        'valuta'=>'RUB',
+        'description'=>'+15% к базовой ставке кэшбэка',
       ],
       3=>[
         'code'=>'gold',
@@ -43,7 +48,8 @@ $dict = [
         'display_name'=>"Gold",
         'bonus'=>20,
         'min_sum'=>7000,
-        'description'=>'накопленного кэшбэка требуется для получения статуса <b>Gold</b> - и ваш кэшбэк с каждого заказа станет <b>на 20% больше</b>',
+        'valuta'=>'RUB',
+        'description'=>'+20% к базовой ставке кэшбэка',
         ],
       4=>[
         'code'=>'platinum',
@@ -51,7 +57,8 @@ $dict = [
         'display_name'=>"Platinum",
         'bonus'=>30,
         'min_sum'=>10000,
-        'description'=>'накопленного кэшбэка требуется для получения статуса <b>Platinum</b> - и ваш кэшбэк с каждого заказа станет <b>на 30% больше</b>',
+        'valuta'=>'RUB',
+        'description'=>'+30% к базовой ставке кэшбэка',
         'is_vip'=>0,
         ],
       5=>[
