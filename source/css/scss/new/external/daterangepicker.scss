@@ -1,0 +1,79 @@
+.daterangepicker{
+  display:none;
+  border: 1px solid #ccc;
+
+  th{
+    border-radius: 0;
+  }
+
+  .btn{
+    display: block;
+    width: 100%;
+    margin-bottom: 7px;
+    padding: 3px;
+  }
+
+  .in-range{
+    background: rgba($btn_base_bg,0.3)!important;
+  }
+
+  .end-date{
+    background: #0f181a!important;
+  }
+
+  *{
+    box-sizing: border-box;
+  }
+
+  .available{
+    color: #000;
+  }
+}
+
+.kv-drp-container{
+  display: inline-block;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.glyphicon-calendar{
+  background: url(/images/svg/calendar.svg) no-repeat 50% 50%;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background-size: contain;
+}
+.fa-chevron-right{
+  background: url(/images/svg/angle-right.svg) no-repeat 50% 50%;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background-size: contain;
+}
+
+.fa-chevron-left{
+  background: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background-size: contain;
+}
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  background: url(/images/svg/sort-down.svg) no-repeat 50% 50%;
+  background-size: contain;
+}
