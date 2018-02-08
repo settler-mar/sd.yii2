@@ -142,7 +142,8 @@
 
     &:after{
       content: "›";
-      transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
+      //transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
+      transform: rotate3d(0,0,1,90deg) translate3d(0, 0, 0);
       width: 20px;
       display: inline-block;
       text-align: center;
@@ -187,7 +188,8 @@
 
       &:after{
         content: "›";
-        transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
+        //transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
+        transform: rotate3d(0,0,1,-90deg) translate3d(-10px, -2px, 0);
       }
     }
     .angle-down{
@@ -228,7 +230,6 @@
 
       h2:after{
         content: ''!important;
-        transform: none;
         width: 94px;
         margin-left: 46px;
         margin-top: auto;
