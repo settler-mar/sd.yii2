@@ -46,12 +46,9 @@
 
             {% include('parts/mail_subscribe.twig') %}
 
-            <div class="catalog-stores_pagination catalog_pagination">
-              {% if pagination %}
-                {{pagination|raw}}
-              {% endif %}
-            </div>
-          </div>
+            {% include('parts/pagination.twig') %}
+
+
         {%  else %}
           {% include('parts/mail_subscribe.twig') %}
         {% endif %}
