@@ -176,6 +176,13 @@
         }
       }
     }
+    .sp-form-outer {
+      //форма подписки в левом меню
+
+      @include media($laptop-min) {
+        display: none;
+      }
+    }
   }
   &-stores {
     margin-left: 5%;
