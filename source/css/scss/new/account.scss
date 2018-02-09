@@ -164,8 +164,8 @@
 
   ///account/notification
   &-notification{
-    background: rgba(252, 248, 227, 0.55);
-    border-bottom: 2px solid #f2dede;
+    background: $account_notification_bg;
+    border-bottom: 2px solid $account_notification_border;
     position: relative;
     border-radius: 5px;
     border-bottom-right-radius: 45px;
@@ -182,13 +182,13 @@
       height: 110PX;
       padding: 25px 13px;
       text-align: center;
-      color: #fff;
+      color: $account_notification_date;
       font-size: 13px;
       -webkit-border-radius: 100px;
       border-radius: 100px;
       top: -20px;
       right: -20px;
-      background: #e4c84b;
+      background: $account_notification_date_bg;
       box-sizing: border-box;
     }
 
