@@ -184,6 +184,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/search.js',
         paths.source.js+'/original/new/goto.js',
         paths.source.js+'/original/new/account-withdraw.js',
+        paths.source.js+'/original/new/ajax.js',
+        paths.source.js+'/original/new/dobro.js',
 
   //for_all
         paths.source.js+'/original/notification.js',

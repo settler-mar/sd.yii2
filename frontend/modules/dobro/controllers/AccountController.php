@@ -90,7 +90,7 @@ class AccountController extends \yii\web\Controller
 
     Yii::$app->balanceCalc->todo([$charity->user_id], 'foundation');
 
-    return json_encode(['error' => false]);
+    return json_encode(['error' => false, 'message' => 'Пожертвование успешно отправлено']);
   }
 
   public function actionAutoSend()
