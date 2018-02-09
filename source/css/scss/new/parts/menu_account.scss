@@ -1,6 +1,12 @@
 .catalog-categories-account {
+
+  @include media($laptop_min) {
+    display: none;
+  }
+
   &_menu {
     margin-bottom: 15px;
+
 
     ul {
       box-sizing: border-box;
