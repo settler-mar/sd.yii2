@@ -5,22 +5,31 @@ function ajaxForm(els) {
   };
 
   function onPost(post){
-    console.log(post, this);
+    //console.log(post, this);
     var data=this;
     var form=data.form;
     var wrap=data.wrap;
+
     if (post.render) {
         post.notyfy_class = "notify_white";
         notification.alert(post);
     } else {
         wrap.removeClass('loading');
-        wrap.html(post.html);
-        ajaxForm(wrap);
+        form.removeClass('loading');
+        if(post.html) {
+          wrap.html(post.html);
+          ajaxForm(wrap);
+        }else{
+          if(!post.error) {
+            form.removeClass('loading');
+            form.find('input[type=text],textarea').val('')
+          }
+        }
     }
     notification.notifi({
         'type': post.error === false ? 'success' : 'err',
         'title': post.error === false ? 'Успешно' : 'Ошибка',
-        'message': Array.isArray(post.error) ? post.error[0] : (post.message ? post.message : '')
+        'message': Array.isArray(post.error) ? post.error[0] : (post.message ? post.message : post.error)
     });
   }
 
@@ -94,7 +103,7 @@ function ajaxForm(els) {
     };
     data.url=form.attr('action') || location.href;
     data.method= form.attr('method') || 'post';
-    form.off('submit');
+    form.unbind('submit');
     form.on('submit', onSubmit.bind(data));
   }
 }

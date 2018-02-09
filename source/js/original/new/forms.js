@@ -25,6 +25,8 @@ $( document ).ready(function() {
   });
 
   $('.dublicate_value').on('change',function () {
-    console.log(this.value)
+    var $this=$(this);
+    var sel=$($this.data('selector'));
+    sel.val(this.value);
   })
 });

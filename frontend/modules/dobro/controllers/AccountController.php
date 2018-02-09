@@ -56,7 +56,9 @@ class AccountController extends \yii\web\Controller
       !$request->post('charity-process')!= null ||
       (int)$request->post('charity-process') == 0
     ){
-      return json_encode(['error' => [Yii::t('account', 'dobro_found_not_choosen')]]);
+      return json_encode([
+          'error' => [Yii::t('account', 'dobro_found_not_choosen')
+          ]]);
     }
 
     $funds=Foundations::find()
@@ -65,12 +67,16 @@ class AccountController extends \yii\web\Controller
       ->one();
 
     if(!$funds){
-      return json_encode(['error' => [Yii::t('account', 'dobro_found_choose_error')]]);
+      return json_encode([
+          'error' => [Yii::t('account', 'dobro_found_choose_error')
+          ]]);
     }
 
     if($amount>$balans['max_fundation']){
       return json_encode([
-        'error' => [Yii::t('account','dobro_max_summ').' '.number_format($balans['max_fundation'],2,'.',' ').'р.']
+        'error' => [
+            Yii::t('account','dobro_max_summ').' '.number_format($balans['max_fundation'],2,'.',' ').'р.'
+        ]
       ]);
     }
 //    if($amount>$balans['current']){
@@ -80,7 +86,9 @@ class AccountController extends \yii\web\Controller
 //    }
 
     if($amount<1){
-      return json_encode(['error' => [Yii::t('account','dobro_max_summ')]]);
+      return json_encode([
+          'error' => [Yii::t('account','dobro_max_summ')]
+      ]);
     }
 
     $charity = new Charity();
@@ -130,7 +138,7 @@ class AccountController extends \yii\web\Controller
     $auto->foundation_id=$request->post('autopayment-uid');
     $auto->save();
 
-    return json_encode(['error' => false]);
+    return json_encode(['error' => false,'message' => 'Автоплатёж был установлен']);
   }
 
 
@@ -152,6 +160,6 @@ class AccountController extends \yii\web\Controller
     }
 
     $auto->delete();
-    return json_encode(['error' => false]);
+    return json_encode(['error' => false,'message' => 'Автоплатёж был отменен']);
   }
 }

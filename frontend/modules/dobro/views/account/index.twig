@@ -6,6 +6,10 @@
     <span class="account-balance-confirm">{{ _nf(balance.max_fundation) | raw }}&nbsp{{ curr|raw }}</span>
   </div>
   <div class="account-balance-block"></div>
+  <div class="account-balance-block">
+    {{ t('account', 'user_balance_charity') }}:
+    <span class="account-balance-charity">{{ _nf(this.balance.charity)|raw }}&nbsp;{{ curr|raw }} </span>
+  </div>
   <div class="account-balance-block"></div>
   <div class="account-balance-block">
     <a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a>
@@ -25,9 +29,9 @@
     {% if autopayment %}
       <div class="self-autopayment ajax_form">
         <h3 class="text-center">{{ t('account', 'dobro_autopay') }} <span>{{ autopayment.fond.title }}</span></h3>
-        <form action="/account/dobro/autoSend" method="post" role="form" name="delete-autopayment-form">
+        <form action="/account/dobro/auto-delete" method="post" role="form" name="delete-autopayment-form">
           <input type="hidden" name="type" value="delete-autopayment">
-          <button type="submit" class="btn-fill btn-form">{{ t('account', 'dobro_autopay_remove') }}</button>
+          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_remove') }}</button>
         </form>
         <p class="text-center"><strong>!</strong> {{ t('account', 'dobro_autopay_description') }}</p>
       </div>
@@ -61,14 +65,13 @@
       </div>
     </div>
     {% if not autopayment %}
-      <div class="autopayment-info">
+      <div class="autopayment-info ajax_form">
         <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else') }}:</h3>
-        <h3 class="text-center to-fund">{{ t('account', 'dobro_do_autopay') }} <span></span></h3>
-        <form action="/" method="post" role="form" name="autopayment-form">
+        <form action="/account/dobro/auto-send" method="post" role="form" name="autopayment-form">
           <input type="hidden" name="autopayment-uid" value="0">
           <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button') }}</button>
         </form>
-        <p class="autopayment-terms">{{ t('account', 'dobro_autopay_text') }}<p>
+        <p class="autopayment-terms">{{ t('account', 'dobro_autopay_text') |raw }}<p>
       </div>
     {% endif %}
     <p class="support-fund text-center">{{ t('account', 'dobro_faq')|raw }}.</p>
