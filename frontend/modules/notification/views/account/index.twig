@@ -1,35 +1,20 @@
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/account/user_balance.twig') %}
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="notification account account-padding">
-        <div class="row">
-            <div class="col-md-12">
-                {{ _constant('account_notifications')|raw }}
-            </div>
-            {% if notifications|length > 0 %}
-            <div class="col-md-12">
-                {% for notification in notifications %}
-                <div class="current-notification cashback news_{{notification.name}}">
-                    <div class="date">{{_local_date(notification.added, t('dictionary', 'date_format_long'))}}</div>
-                    <h5>{{notification.title}}</h5>
-                    <p>{{notification.text|raw}}</p>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="col-md-12">
-                <div class="not-found">{{ t('account', 'notifications_empty') }}</div>
-            </div>
-            {% endif %}
-        </div>
-        {% include '/parts/pagination.twig' %}
-    </section>
+{% include('parts/account/user_balance.twig') %}
 
-</div>
+<section>
+  {{ _constant('account_notifications')|raw }}
+
+  {% if notifications|length > 0 %}
+    {% for notification in notifications %}
+      <div class="account-notification cashback news_{{ notification.name }}">
+        <div class="account-notification-date">{{ _local_date(notification.added, t('dictionary', 'date_format_long')) }}</div>
+        <div class="account-notification-title">{{ notification.title }}</div>
+        <div  class="account-notification-text">{{ notification.text|raw }}</div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="not-found">{{ t('account', 'notifications_empty') }}</div>
+  {% endif %}
+
+  {% include '/parts/pagination.twig' %}
+</section>
+

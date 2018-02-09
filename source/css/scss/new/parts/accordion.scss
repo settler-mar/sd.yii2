@@ -146,7 +146,7 @@
       transform: rotate3d(0,0,1,90deg) translate3d(0, 0, 0);
       width: 20px;
       display: inline-block;
-      text-align: center;
+      //text-align: center;
       font-weight: bold;
       font-size: 30px;
       line-height: 10px;
@@ -189,7 +189,7 @@
       &:after{
         content: "›";
         //transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
-        transform: rotate3d(0,0,1,-90deg) translate3d(-10px, -2px, 0);
+        transform: rotate3d(0,0,1,-90deg) translate3d(0px, -2px, 0);
       }
     }
     .angle-down{

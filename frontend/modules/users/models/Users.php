@@ -182,6 +182,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         $this->new_loyalty_status_end=strtotime($this->new_loyalty_status_end);
       }
     }
+
     if($this->new_loyalty_status_end<time()){
       $this->new_loyalty_status_end=0;
       $tasks=Task::find()->where([
@@ -197,6 +198,15 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     if (!parent::beforeValidate()) {
       return false;
     }
+
+    if($this->birthday) {
+      if (strtotime($this->birthday) === FALSE) {
+        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
+      }elseif(strtotime($this->birthday)>time()-5*356*24 * 60 * 60){
+        $this->addError('birthday', Yii::t('account', 'birthday_biggest_error'));
+      }
+    }
+
     if (!$this->name || strlen($this->name) == 0) {
       $this->name = explode('@', $this->email);
       $this->name = $this->name[0];

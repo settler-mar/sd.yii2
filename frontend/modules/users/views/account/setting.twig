@@ -1,156 +1,152 @@
 {{ use('/yii/bootstrap/ActiveForm') }}
 
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/account/user_balance.twig') %}
-                    <div class="idsystem">{{ t('account', 'user_id') }}: <span>{{this.user_id}}</span></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="settings account-padding">
-        <div class="row">
-            {% set form = active_form_begin({
-                'id':'user_setting',
-                'layout' : 'horizontal',
-                'fieldConfig':{
-                    'horizontalCssClasses':{
-                        'wrapper':'form-input-group',
-                    }
-                },
-                'options' : {
-                    'enctype' : 'multipart/form-data',
-                    'role' : 'form'
-                },
-            }) %}
-                <div class="col-md-6">
-                    <h3>{{ t('account', 'account_settings') }}</h3>
-
-                    {{ form.field(model, 'name',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-user"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
-
-                    {{ form.field(model, 'email',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
+{% set show_user_id=true %}
+{% include('parts/account/user_balance.twig') %}
 
 
-                    {{ form.field(model, 'birthday',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-                    }).textInput({'placeholder':t('account', 'account_user_burthday'),'ref':'date'}) | raw }}
+<section class="settings account-padding">
+  {% set form = active_form_begin({
+  'id':'user_setting',
+  'layout' : 'horizontal',
+  'fieldConfig':{
+  'horizontalCssClasses':{
+  'wrapper':'form-input-group',
+  }
+  },
+  'options' : {
+  'enctype' : 'multipart/form-data',
+  'role' : 'form'
+  },
+  }) %}
 
-                    {% if model.email_verified == 0 %}
-                        <p>
-                            <a class="btn btn-yellow-border" href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') }}</a>
-                        </p>
-                    {% endif %}
+  <h3>{{ t('account', 'account_settings') }}</h3>
 
-                        <div class="cr-group">
-                            <span class="title">{{ t('account', 'sex') }}:</span>
-                            <input type="radio" class="radio" id="radio-1" name="UserSetting[sex]" value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
-                            <label for="radio-1"><i class="fa fa-male"></i> {{ t('account', 'male') }}</label>
-                            <input type="radio" class="radio" id="radio-2" name="UserSetting[sex]" value="f" {% if this.user.sex == 'f' %} checked {% endif %}>
-                            <label for="radio-2"><i class="fa fa-female"></i> {{ t('account', 'famale') }}</label>
-                        </div>
-                        <div class="cr-group topm">
-                            <span class="title">{{ t('account', 'avatar') }}:</span>
-                            <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
-                            model.photo,
-                            model.photo,
-                            '/images/templates/avatar-'~_if(model.sex=='f','female','male')~'.jpg'
-                            ) | raw }}">
-                            <p>
-                                <strong>{{ t('account','photo_redraw_after_save_settings')|raw }}</strong></p>
-                            <div class="upload">
-                                <span class="btn">{{ t('account','upload_avatar') }}<br><span>{{ t('account','upload_avatar_max_size') }}</span></span>
-                                <input name="UserSetting[new_photo]" type="file">
-                            </div>
-                        </div>
-                        <div class="cr-group chkbox topm">
-                            <span class="title">{{ t('account','notify_settings') }}:</span>
-                            <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]" value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
-                            <label class="first" for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
-                        </div>
-                </div>
-                <div class="col-md-6">
-                    <h3>{{ t('account','password_change') }}</h3>
+  {{ form.field(model, 'name',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-user"></i>{input}\n{endWrapper}\n{error}'
+  }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
 
-                    {{ form.field(model, 'old_password',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-unlock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':t('account', 'password_old')}) | raw }}
+  {{ form.field(model, 'email',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+  }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
 
-                    {{ form.field(model, 'new_password',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
 
-                    {{ form.field(model, 'r_new_password',{
-                        'template' :
-                        '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
-                    }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
+  {{ form.field(model, 'birthday',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+  }).widget(MaskedInput_class,{
+    'mask': '9999-99-99'
+  }) | raw }}
 
-                    <h3>{{ t('account', 'social_accounts')}}</h3>
+  {% if model.email_verified == 0 %}
+    <p>
+      <a class="btn btn-yellow-border"
+         href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') }}</a>
+    </p>
+  {% endif %}
 
-                    {% if socials | length >0 %}
-                    <table class="table table-payments">
-                        <thead>
-                        <tr>
-                            <th>{{ t('account', 'social_account')}}</th>
-                            <th>{{ t('account', 'user_name')}}</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {% for social in socials %}
-                                <tr>
-                                    <td>
-                                        <center>
-                                            <a
-                                                    class="eauth-service-link_sd {{ social.social_name }}"
-                                                    href="{{ social.url }}"
-                                                    target="_blank"
-                                                    rel="nofollow noopener"
-                                            ></a>
-                                        </center>
-                                    </td>
-                                    <td>
-                                        {{ social.name }}
-                                    </td>
-                                    <td>
+  <div class="cr-group">
+    <span class="title">{{ t('account', 'sex') }}:</span>
+    <input type="radio" class="radio" id="radio-1" name="UserSetting[sex]"
+           value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
+    <label for="radio-1"><i class="fa fa-male"></i> {{ t('account', 'male') }}</label>
+    <input type="radio" class="radio" id="radio-2" name="UserSetting[sex]"
+           value="f" {% if this.user.sex == 'f' %} checked {% endif %}>
+    <label for="radio-2"><i class="fa fa-female"></i> {{ t('account', 'famale') }}</label>
+  </div>
+  <div class="cr-group topm">
+    <span class="title">{{ t('account', 'avatar') }}:</span>
+    <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
+    model.photo,
+    model.photo,
+    '/images/templates/avatar-'~_if(model.sex=='f','female','male')~'.jpg'
+    ) | raw }}">
+    <p>
+      <strong>{{ t('account','photo_redraw_after_save_settings')|raw }}</strong></p>
+    <div class="upload">
+      <span class="btn">{{ t('account','upload_avatar') }}
+        <br><span>{{ t('account','upload_avatar_max_size') }}</span></span>
+      <input name="UserSetting[new_photo]" type="file">
+    </div>
+  </div>
+  <div class="cr-group chkbox topm">
+    <span class="title">{{ t('account','notify_settings') }}:</span>
+    <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
+           value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
+    <label class="first" for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
+  </div>
+
+
+  <h3>{{ t('account','password_change') }}</h3>
+
+  {{ form.field(model, 'old_password',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-unlock"></i>{input}\n{endWrapper}\n{error}'
+  }).passwordInput({'placeholder':t('account', 'password_old')}) | raw }}
+
+  {{ form.field(model, 'new_password',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+  }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
+
+  {{ form.field(model, 'r_new_password',{
+    'template' :
+    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+  }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
+
+  <h3>{{ t('account', 'social_accounts') }}</h3>
+
+  {% if socials | length >0 %}
+    <table class="table table-payments">
+      <thead>
+      <tr>
+        <th>{{ t('account', 'social_account') }}</th>
+        <th>{{ t('account', 'user_name') }}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for social in socials %}
+        <tr>
+          <td>
+            <center>
+              <a
+                  class="eauth-service-link_sd {{ social.social_name }}"
+                  href="{{ social.url }}"
+                  target="_blank"
+                  rel="nofollow noopener"
+              ></a>
+            </center>
+          </td>
+          <td>
+            {{ social.name }}
+          </td>
+          <td>
                                         <span
-                                                class="ajax_remove"
-                                                mode="reload"
-                                                uid="{{ social.uid }}"
-                                                url="/account/users/social-delete"
-                                                data-remove-error="{{ t('account', 'social_account_delete_error') }}"
+                                            class="ajax_remove"
+                                            mode="reload"
+                                            uid="{{ social.uid }}"
+                                            url="/account/users/social-delete"
+                                            data-remove-error="{{ t('account', 'social_account_delete_error') }}"
                                         >
-                                          {{ t('common', 'delete')}}
+                                          {{ t('common', 'delete') }}
                                         </span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                        </table>
-                    {% else %}
-                        <p>{{ t('account', 'social_accounts_empty') }}</p>
-                    {% endif %}
-                    <p>{{ t('account', 'social_accounts_add') }}:</p>
-                    {{ use('frontend/components/socials/EauthWidget') }}
-                    {{ eauth_widget_widget({'float':'left'}) }}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>{{ t('account', 'social_accounts_empty') }}</p>
+  {% endif %}
+  <p>{{ t('account', 'social_accounts_add') }}:</p>
+  {{ use('frontend/components/socials/EauthWidget') }}
+  {{ eauth_widget_widget({'float':'left'}) }}
 
-                </div>
 
-                <div class="col-md-12" style="text-align: center;">
-                    <button type="submit" class="btn-fill btn-form" >{{ t('account', 'save_settings') }}</button>
-                </div>
-            {{ active_form_end() }}
-        </div>
-    </section>
-</div>
+  <button type="submit" class="btn-fill btn-form">{{ t('account', 'save_settings') }}</button>
+
+  {{ active_form_end() }}
+
+</section>

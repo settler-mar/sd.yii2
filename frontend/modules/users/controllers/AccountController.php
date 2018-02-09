@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use frontend\modules\users\models\UserSetting;
 use frontend\modules\users\models\ValidateEmail;
 use common\components\Help;
+use yii\widgets\MaskedInput;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -180,7 +181,8 @@ class AccountController extends Controller
 
     return $this->render('setting.twig', [
       'model' => $user,
-      'socials'=> $socials
+      'socials'=> $socials,
+      'MaskedInput_class'=>MaskedInput::class
     ]);
   }
 

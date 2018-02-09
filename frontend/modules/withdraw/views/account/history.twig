@@ -2,51 +2,51 @@
 {% set curr = currencyIcon(app.params.valuta) %}
 
 <section class="account account-padding">
-    <h3>{{ t('account', 'withdraw_history') }}</h3>
+  <h3>{{ t('account', 'withdraw_history') }}</h3>
 
-        {% if withdraw|length > 0 %}
-            <table class="table ta_left">
+  {% if withdraw|length > 0 %}
+    <table class="table ta_left">
 
-                <tr>
-                    <th>{{ t('common', 'date_request') }}</th>
-                    <th>{{ t('common', 'method') }}</th>
-                    <th>{{ t('common', 'cashe_nomber_email') }}</th>
-                    <th>{{ t('common', 'amount') }}</th>
-                    <th>{{ t('common', 'status') }}</th>
-                    <th>{{ t('common', 'admin_comment') }}</th>
-                </tr>
+      <tr>
+        <th>{{ t('common', 'date_request') }}</th>
+        <th>{{ t('common', 'method') }}</th>
+        <th>{{ t('common', 'cashe_nomber_email') }}</th>
+        <th>{{ t('common', 'amount') }}</th>
+        <th>{{ t('common', 'status') }}</th>
+        <th>{{ t('common', 'admin_comment') }}</th>
+      </tr>
 
-                {% for w in withdraw %}
-                <tr>
-                    <td>{{_date(w.request_date)}}</td>
-                    <td>{{w.name}}</td>
-                    <td>{{w.bill}}</td>
-                    <td class="cashback {{w.status}}">
-                        {{ _nf(w.amount) | raw}}&nbsp;{{ curr|raw }}
-                    </td>
-                    <td class="status {{w.status}}">
-                        {% if w.status == '1' %}
-                            {{ svg('clock-o','currency-icon')|raw }}
-                        {% elseif w.status == '2' %}
-                            {{ svg('check','currency-icon')|raw }}
-                        {% elseif w.status == '0' %}
-                            {{ svg('times','currency-icon')|raw }}
-                        {% endif %}&nbsp;{{w.status_title}}
-                    </td>
-                    <td>
-                        {{ _n_to_br(w.admin_comment) | raw}}
-                    </td>
-                </tr>
-                {% endfor %}
+      {% for w in withdraw %}
+        <tr>
+          <td>{{ _date(w.request_date) }}</td>
+          <td>{{ w.name }}</td>
+          <td>{{ w.bill }}</td>
+          <td class="cashback {{ w.status }}">
+            {{ _nf(w.amount) | raw }}&nbsp;{{ curr|raw }}
+          </td>
+          <td class="status {{ w.status }}">
+            {% if w.status == '1' %}
+              {{ svg('clock-o','currency-icon')|raw }}
+            {% elseif w.status == '2' %}
+              {{ svg('check','currency-icon')|raw }}
+            {% elseif w.status == '0' %}
+              {{ svg('times','currency-icon')|raw }}
+            {% endif %}&nbsp;{{ w.status_title }}
+          </td>
+          <td>
+            {{ _n_to_br(w.admin_comment) | raw }}
+          </td>
+        </tr>
+      {% endfor %}
 
-            </table>
+    </table>
 
-        {% else %}
-            <div class="not-found">{{ t('account', 'withdraw_empty') }}</div>
-        {% endif %}
-    {% include '/parts/pagination.twig' %}
+  {% else %}
+    <div class="not-found">{{ t('account', 'withdraw_empty') }}</div>
+  {% endif %}
+  {% include '/parts/pagination.twig' %}
 </section>
 
 <section class="account-padding">
-    <h3>{{ t('account', 'withdraw_total') }}: {{ _nf(user.sum_withdraw) | raw }} {{ curr | raw }}</h3>
+  <h3>{{ t('account', 'withdraw_total') }}: {{ _nf(user.sum_withdraw) | raw }} {{ curr | raw }}</h3>
 </section>

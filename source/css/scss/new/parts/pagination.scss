@@ -14,8 +14,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 40PX;
-      height: 40PX;
+      width: 2.5em;
+      height: 2.5em;
       border-radius: 50%;
       background-color: $paginate_button_color;
       transition: all 0.3s ease;
@@ -51,6 +51,7 @@
     width: 18PX;
     height: 18PX;
     vertical-align: top;
+
     &_left {
       padding-right: 2px;
     }
