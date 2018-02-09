@@ -1,31 +1,28 @@
-<div class="content-wrapper">
-    <section class="settings account-padding">
+<section class="settings account-padding">
 
-        {{ _constant('account_email_confirm')|raw }}
+  {{ _constant('account_email_confirm')|raw }}
 
-        <div class="col-sm-6">
-            {% set form = active_form_begin({
-                'id':'user_setting',
-                'layout' : 'horizontal',
-                'fieldConfig':{
-                    'horizontalCssClasses':{
-                        'wrapper':'form-input-group',
-                    }
-                },
-            }) %}
+  {% set form = active_form_begin({
+  'id':'user_setting',
+  'layout' : 'horizontal',
+  'fieldConfig':{
+  'horizontalCssClasses':{
+  'wrapper':'form-input-group',
+  }
+  },
+  }) %}
 
-            {{ form.field(model, 'email',{
-                'template' :
-                '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
-            }).textInput({'placeholder':t('common', 'email_address')}) | raw }}
-            <input type="hidden" name="path" value="{{ path }}">
+  {{ form.field(model, 'email',{
+    'template' :
+    '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+  }).textInput({'placeholder':t('common', 'email_address')}) | raw }}
+  <input type="hidden" name="path" value="{{ path }}">
 
-            <div class="form-group">
-                <input type="submit" value="{{  _if(path,t('account', 'email_confirm_send_activation_key'),t('account','email_confirm_send_activation_key_repeat'))}}" class="btn-fill btn-form">
-            </div>
-            {{ active_form_end() }}
-        </div>
+  <div class="form-group">
+    <input type="submit"
+           value="{{ _if(path,t('account', 'email_confirm_send_activation_key'),t('account','email_confirm_send_activation_key_repeat')) }}"
+           class="btn">
+  </div>
+  {{ active_form_end() }}
 
-
-    </section>
-</div>
+</section>

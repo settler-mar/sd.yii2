@@ -23,4 +23,8 @@ $( document ).ready(function() {
     // Read in the image file as a data URL.
     reader.readAsDataURL(f);
   });
+
+  $('.dublicate_value').on('change',function () {
+    console.log(this.value)
+  })
 });
