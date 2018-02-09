@@ -1,68 +1,48 @@
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/account/user_balance.twig') %}
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="account account-padding">
-        <div class="row">
-            <div class="col-md-12">
-                {{ _constant('account_charity')|raw }}
-            </div>
-            {% if charity|length > 0 %}
-            <div class="col-md-12">
-                <table class="table table-charity">
-                    <thead>
-                        <tr>
-                            <th>{{ t('account', 'charity_type') }}</th>
-                            <th>{{ t('common', 'date') }}</th>
-                            <th class="sum">{{ t('common', 'amount') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-                        {% for chty in charity %}
-                        <tr {% if chty.is_listed==1 %}class="status_bg_{{chty.is_listed}}"{% endif %}>
-                            <td>
-                                {% if chty.foundation_id == '9' %}
-                                {{chty.note}}
-                                {% else %}
-                                {{ t('account', 'charity_to') }} {{chty.title}}
-                                {% endif %}
-                            </td>
-                            <td>{{_local_date(chty.added,  t('dictionary', 'date_format_long'))}}</td>
-                            <td class="cashback">
-                                {{_nf(chty.amount) | raw}} {{ curr_icon|raw }}
-                            </td>
-                            <td>
-                                {% if chty.is_listed==1 %}
-                                    {{ t('account', 'charity_blocked') }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+{% include('parts/account/user_balance.twig') %}
+
+<section class="account account-padding">
+
+  {{ _constant('account_charity')|raw }}
+
+  {% if charity|length > 0 %}
+
+    <table class="table table-charity">
+      <tr>
+        <th>{{ t('account', 'charity_type') }}</th>
+        <th>{{ t('common', 'date') }}</th>
+        <th class="sum">{{ t('common', 'amount') }}</th>
+        <th></th>
+      </tr>
+      {% set curr_icon = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+      {% for chty in charity %}
+        <tr {% if chty.is_listed==1 %}class="status_bg_{{ chty.is_listed }}"{% endif %}>
+          <td>
+            {% if chty.foundation_id == '9' %}
+              {{ chty.note }}
             {% else %}
-            <div class="col-md-12">
-                <div class="not-found">{{ t('account', 'charity_empty') }}</div>
-            </div>
+              {{ t('account', 'charity_to') }} {{ chty.title }}
             {% endif %}
-        </div>
-        {% include '/parts/pagination.twig' %}
-    </section>
-    <section class="account-padding">
-        <div class="row">
-            <div class="col-md-12">
-                {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
-                <h3>{{ t('account', 'charity_total') }}: {{ _nf(user.sum_foundation) | raw }} {{ curr|raw }}</h3>
-            </div>
-        </div>
-    </section>
-</div>
+          </td>
+          <td>{{ _local_date(chty.added,  t('dictionary', 'date_format_long')) }}</td>
+          <td class="cashback">
+            {{ _nf(chty.amount) | raw }} {{ curr_icon|raw }}
+          </td>
+          <td>
+            {% if chty.is_listed==1 %}
+              {{ t('account', 'charity_blocked') }}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+    <div class="not-found">{{ t('account', 'charity_empty') }}</div>
+  {% endif %}
+
+  {% include '/parts/pagination.twig' %}
+</section>
+<section class="account-padding">
+  {% set curr = app.params.currencies[app.params.valuta].text ? app.params.currencies[app.params.valuta].text : '' %}
+  <h3>{{ t('account', 'charity_total') }}: {{ _nf(user.sum_foundation) | raw }} {{ curr|raw }}</h3>
+</section>
