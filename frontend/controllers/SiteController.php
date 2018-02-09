@@ -246,7 +246,7 @@ class SiteController extends SdController
   public function actionOfflineSystem()
   {
     //$this->params['breadcrumbs'][] = 'Партнёрская программа';
-    return $this->actionStaticPage('account/offline');
+    return $this->actionStaticPage('offline-system');
   }
 
 
