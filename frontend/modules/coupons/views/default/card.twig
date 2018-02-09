@@ -30,7 +30,7 @@
       </div>
 
 
-      <div class="content-wrap">
+      <div class="content-wrap coupons_mobile-relative">
         {% if stores_coupon|length > 0 %}
           <h2>Еще больше промокодов {{ store.name }}</h2>
           <div  class="catalog-coupons margin">
@@ -44,7 +44,9 @@
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
-              {% include('parts/mail_subscribe.twig') %}
+              <div class="coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+              </div>
             </div>
 
 
@@ -52,7 +54,9 @@
             {% include('parts/pagination.twig') %}
         </div>
         {%  else %}
-            {% include('parts/mail_subscribe.twig') %}
+            <div class="coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+            </div>
         {% endif %}
 
         {% if coupon_ended|length > 0 %}
