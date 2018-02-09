@@ -23,18 +23,18 @@
 
   {{ form.field(model, 'name',{
     'template' :
-    '{beginWrapper}<i class="fa fa-user"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("user",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
 
   {{ form.field(model, 'email',{
     'template' :
-    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
 
 
   {{ form.field(model, 'birthday',{
     'template' :
-    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("calendar_f",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).widget(MaskedInput_class,{
     'mask': '9999-99-99'
   }) | raw }}
@@ -50,11 +50,13 @@
     <span class="title">{{ t('account', 'sex') }}:</span>
     <input type="radio" class="radio" id="radio-1" name="UserSetting[sex]"
            value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
-    <label for="radio-1"><i class="fa fa-male"></i> {{ t('account', 'male') }}</label>
+    <label for="radio-1">{{ svg("men",'form-icon') |raw }} {{ t('account', 'male') }}</label>
+
     <input type="radio" class="radio" id="radio-2" name="UserSetting[sex]"
            value="f" {% if this.user.sex == 'f' %} checked {% endif %}>
-    <label for="radio-2"><i class="fa fa-female"></i> {{ t('account', 'famale') }}</label>
+    <label for="radio-2">{{ svg("women",'form-icon') |raw }} {{ t('account', 'famale') }}</label>
   </div>
+
   <div class="cr-group topm">
     <span class="title">{{ t('account', 'avatar') }}:</span>
     <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
@@ -82,17 +84,17 @@
 
   {{ form.field(model, 'old_password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-unlock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("unlock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':t('account', 'password_old')}) | raw }}
 
   {{ form.field(model, 'new_password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
 
   {{ form.field(model, 'r_new_password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
 
   <h3>{{ t('account', 'social_accounts') }}</h3>

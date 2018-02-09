@@ -71,7 +71,7 @@ class m180206_141454_add_coupons_main_text extends Migration
                 </p>
 
             </div>';
-      $const->ftype = 'textarea';
+      $const->ftype = 'reachtext';
       $const->save();
     }
 

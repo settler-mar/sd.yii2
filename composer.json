@@ -41,7 +41,7 @@
     "nodge/yii2-eauth": "^2.5",
     "mihaildev/yii2-elfinder": "*",
     "dominus77/yii2-tinymce-widget": "*",
-    "yiisoft/yii2-maskedinput": "~1.0.0"
+    "yiisoft/yii2-maskedinput": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
