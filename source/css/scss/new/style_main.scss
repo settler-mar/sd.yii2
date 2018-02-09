@@ -162,6 +162,16 @@ h3,h4,h5,h6 {
   }
 }
 
+.second_line_title{
+  display: block;
+  font-size: 0.7em;
+  font-weight: normal;
+}
+
+.dublicate_value{
+  display: none;
+}
+
 .page-wrap{
   max-width: 1160px;
   margin: auto;

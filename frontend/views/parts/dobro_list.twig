@@ -1,0 +1,28 @@
+<div class="dobro-funds_list">
+  {% for fund in funds %}
+  {% if not dobdo_select or (fund.uid != '9' and fund.title != 'Переговоры с данным Фондом еще не завершены') %}
+    {% if dobdo_select %}
+      <input
+          type="radio"
+          id="fond_{{ fund.uid }}"
+          class="dublicate_value"
+          data-selector="[name=autopayment-uid],[name=charity-process]"
+          value="{{ fund.uid }}"
+      >
+    {% endif %}
+    <div class="dobro-funds_item">
+      <h3 class="dobro-funds_item-title align-center">{{fund.title}}</h3>
+      <div class="dobro-funds_item-content" style="background-image:url(/images/dobro/{{fund.image}});">
+        <div class="dobro-funds_item-content-description">
+          {{fund.description|raw}}
+          {% if dobdo_select %}
+            <div class="align-center">
+              <label for="fond_{{ fund.uid }}" class="btn">Выбрать</label>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% endfor %}
+</div>

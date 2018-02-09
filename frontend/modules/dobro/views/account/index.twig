@@ -1,82 +1,79 @@
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance ftransfer">
-                    {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-                    <div class="confirm">{{ t('account', 'Доступные средства для благотворительности') }}: <span>{{ _nf(balance.max_fundation) | raw}} {{ curr|raw }}</span></div>
-                    <div class="history"><a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="account-fund-transfer account-withdraw account-padding">
-        <div class="row">
-            <div class="col-md-12 head">
-                <h3 class="text-center">SecretDiscounter</h3>
-                <h4 class="text-center">{{ t('account', 'dobro_do_dobro_together') }}</h4>
-                <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long') }}</a></div>
-            </div>
-            {% if autopayment %}
-                <div class="col-md-12">
-                    <div class="self-autopayment">
-                        <h3 class="text-center">{{ t('account', 'dobro_autopay') }} <span>{{autopayment.fond.title}}</span></h3>
-                        <form action="/" method="post" role="form" name="delete-autopayment-form">
-                            <input type="hidden" name="type" value="delete-autopayment">
-                            <button type="submit" class="btn-fill btn-form">{{ t('account', 'dobro_autopay_remove') }}</button>
-                        </form>
-                        <p class="text-center"><strong>!</strong> {{ t('account', 'dobro_autopay_description') }}</p>
-                    </div>
-                </div>
-            {% endif %}
-            {% if funds|length > 0 %}
-                <div class="col-md-12">
-                    <h3 class="text-center fhead">1. {{ t('account', 'dobro_choose_charity') }}:</h3>
-                    {% for fund in funds %}
-                        {% if fund.uid != '9' and fund.title != 'Переговоры с данным Фондом еще не завершены' %}
-                            <div class="col-md-6">
-                                <div class="option" data-option-process="{{fund.uid}}">
-                                    <span class="title">{{fund.title}}</span>
-                                    <a href="#"><img src="/images/dobro/{{fund.image}}" at=""></a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="col-md-12">
-                    <h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>
-                    <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ') }}:</h3>
-                    <div class="payment-info">
-                        <form action="/account/dobro/add" method="post" role="form" name="fund-transfer-form" class="ajax_form">
-                            <div class="form-input-group">
-                                <i class="fa fa-money"></i><input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder') }}" required>
-                            </div>
-                            <input type="hidden" name="charity-process" value="0">
-                            <button type="submit" class="btn-fill btn-form">{{ t('account', 'dobro_button') }}</button>
-                        </form>
-                    </div>
-                </div>
-                {% if not autopayment %}
-                    <div class="col-md-12">
-                        <div class="autopayment-info">
-                            <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else') }}:</h3>
-                            <h3 class="text-center to-fund">{{ t('account', 'dobro_do_autopay') }} <span></span></h3>
-                            <form action="/" method="post" role="form" name="autopayment-form">
-                                <input type="hidden" name="autopayment-uid" value="0">
-                                <button type="submit" class="btn-fill btn-form">{{ t('account', 'dobro_autopay_button') }}</button>
-                            </form>
-                            <p class="autopayment-terms">{{ t('account', 'dobro_autopay_text') }}<p>
-                        </div>
-                    </div>
-                {% endif %}
-                <div class="col-md-12">
-                    <p class="support-fund text-center">{{ t('account', 'dobro_faq')|raw }}.</p>
-                </div>
-            {% else %}
-                <div class="col-md-12">
-                    <div class="not-found">{{ t('account', 'dobro_little_summ') }}</div>
-                </div>
-            {% endif %}
-        </div>
-    </section>
-</div>
+{% set curr = currencyIcon(app.params.valuta) %}
+
+<section class="account-balance">
+  <div class="account-balance-block">
+    {{ t('account', 'Доступные средства для благотворительности') }}:
+    <span class="account-balance-confirm">{{ _nf(balance.max_fundation) | raw }}&nbsp{{ curr|raw }}</span>
+  </div>
+  <div class="account-balance-block"></div>
+  <div class="account-balance-block"></div>
+  <div class="account-balance-block">
+    <a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a>
+  </div>
+</section>
+
+<section class="account-fund-transfer account-withdraw account-padding">
+  <div class="row">
+    <h2 class="head">
+      <span>
+        SecretDiscounter
+        <span class="second_line_title">{{ t('account', 'dobro_do_dobro_together') }}</span>
+      </span>
+    </h2>
+    <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long') }}</a></div>
+
+    {% if autopayment %}
+      <div class="self-autopayment">
+        <h3 class="text-center">{{ t('account', 'dobro_autopay') }} <span>{{ autopayment.fond.title }}</span></h3>
+        <form action="/" method="post" role="form" name="delete-autopayment-form">
+          <input type="hidden" name="type" value="delete-autopayment">
+          <button type="submit" class="btn-fill btn-form">{{ t('account', 'dobro_autopay_remove') }}</button>
+        </form>
+        <p class="text-center"><strong>!</strong> {{ t('account', 'dobro_autopay_description') }}</p>
+      </div>
+    {% endif %}
+    {% if funds|length > 0 %}
+
+
+    <div>
+      <h3 class="text-center fhead">1. {{ t('account', 'dobro_choose_charity') }}:</h3>
+
+      {% set dobdo_select=true %}
+      {% include('parts/dobro_list.twig') %}
+    </div>
+
+    <div>
+      <h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>
+      <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ') }}:</h3>
+      <div class="payment-info">
+        <form action="/account/dobro/add" method="post" role="form" name="fund-transfer-form" class="ajax_form">
+          <div>
+          <div class="form-input-group">
+            <i>{{ svg("money",'form-icon') |raw }}</i>
+            <input name="amount" type="text"
+                                              placeholder="{{ t('account', 'dobro_summ_placeholder') }}" required>
+          </div>
+          <input type="hidden" name="charity-process" value="0">
+          </div>
+          <br>
+          <button type="submit" class="btn">{{ t('account', 'dobro_button') }}</button>
+        </form>
+      </div>
+    </div>
+    {% if not autopayment %}
+      <div class="autopayment-info">
+        <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else') }}:</h3>
+        <h3 class="text-center to-fund">{{ t('account', 'dobro_do_autopay') }} <span></span></h3>
+        <form action="/" method="post" role="form" name="autopayment-form">
+          <input type="hidden" name="autopayment-uid" value="0">
+          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button') }}</button>
+        </form>
+        <p class="autopayment-terms">{{ t('account', 'dobro_autopay_text') }}<p>
+      </div>
+    {% endif %}
+    <p class="support-fund text-center">{{ t('account', 'dobro_faq')|raw }}.</p>
+    {% else %}
+      <div class="not-found">{{ t('account', 'dobro_little_summ') }}</div>
+    {% endif %}
+  </div>
+</section>

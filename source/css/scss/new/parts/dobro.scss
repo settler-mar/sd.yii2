@@ -1,47 +1,55 @@
 @keyframes pulse_animation {
   0% {
     -webkit-transform: scale(1.1);
-    transform: scale(1); }
+    transform: scale(1);
+  }
   50% {
     -webkit-transform: scale(0.8);
-    transform: scale(1.1); }
+    transform: scale(1.1);
+  }
   100% {
     -webkit-transform: scale(1);
-    transform: scale(1); }
+    transform: scale(1);
+  }
 }
 
-.dobro{
+.dobro {
   &-head {
     background: url(/images/svg/heart-red.svg) no-repeat 50% 50%;
     background-size: 150px;
     min-height: 150px;
+
     &_header1 {
       font-size: 30px;
       margin-top: 10px;
       margin-bottom: 0;
     }
   }
+
   &_quote {
     font-style: italic;
   }
-  &-funds {
 
+  &-funds {
     &_list {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
     }
+
     &_item {
       box-sizing: border-box;
       width: 48%;
+      margin: 0 1% 40px;
+
       @include media($tablets) {
         width: 100%;
       }
-      margin: 0 1% 40px;
-      //padding: 10px;
+
       &-title {
         margin: 5px 0 20px;
       }
+
       &-content {
         //padding: 15px;
         border: 1px solid $header_color_gray;
@@ -50,6 +58,7 @@
         background-size: cover;
         background-position: 50%;
         background-repeat: no-repeat;
+
         &-description {
           box-sizing: border-box;
           padding: 15px;
@@ -60,9 +69,11 @@
           font-size: 18px;
           line-height: 26px;
           transition: all 0.2s ease-out;
+
           span {
             color: $link_color;
           }
+
           &:hover {
             opacity: 1;
           }
@@ -70,18 +81,22 @@
       }
     }
   }
+
   &-advantages {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+
     &_item {
       box-sizing: border-box;
       margin: 0 1% 20px;
       width: 31%;
+
       @include media($tablets) {
         width: 80%;
       }
+
       &-logo,
       &-heart,
       &-ruble {
@@ -95,14 +110,17 @@
         align-items: center;
         justify-content: center;
       }
+
       &-logo img {
         max-width: 95%;
         margin-left: 4%;
       }
-      &-ruble svg{
+
+      &-ruble svg {
         width: 100px;
         height: 100px;
       }
+
       &-heart svg {
         width: 100px;
         height: 100px;
@@ -114,9 +132,15 @@
         //transform-origin:70% 70%;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
-
       }
     }
-
   }
+}
+
+.dublicate_value:checked+.dobro-funds_item{
+  .dobro-funds_item-content{
+    box-shadow: 0px 0px 0 5px $btn_base_bg,
+          0px 0px 15px rgba(15, 24, 26, 0.82);
+  }
+
 }
