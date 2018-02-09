@@ -203,6 +203,19 @@ td{
 /*****новые стили*******/
 .form-group{
   text-align: center;
+
+  textarea {
+    border-radius: 5px;
+    border: solid 1px $form_input_border;
+    width: 75%;
+    height: 100%;
+    font-weight: 400;
+    outline: 0;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 15px;
+  }
 }
 
 .form-input-group{

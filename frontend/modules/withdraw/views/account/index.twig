@@ -1,61 +1,43 @@
 {{ use('/yii/widgets/ActiveForm') }}
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-                    <div class="confirm">{{ t('account', 'withdraw_balance_for')}}: <span> {{ _nf(balance.current)|raw }} {{ curr|raw }}</span></div>
-                    <div class="history"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>
-                </div>
-            </div>
+{#<div class="content-wrapper">#}
+    <section class="account-text-block account-margin-top">
+       {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
+        <div class="account-text-block_item">{{ t('account', 'withdraw_balance_for')}}:
+            <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}&nbsp{{ currencyIcon(app.params.valuta)|raw }}</span>
+        </div>
+        <div class="account-text-block_item"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>
+    </section>
+    <section class="account-text-block">
+        <div class="account-text-block_item">
+            {{ _constant('account_withdraw')|raw }}
         </div>
     </section>
-    <section class="account-withdraw account-padding">
-        <div class="row">
-            <div class="col-md-12">
-                {{ _constant('account_withdraw')|raw }}
-            </div>
-
-            {% if balance.withdraw_waiting > 0 %}
-                <div class="col-md-12">
-                    <div class="not-found">{{ t('account', 'withrdaw_request_exists') }}</div>
-                </div>
-            {% elseif balance.current < 350 %}
-                <div class="col-md-12">
-                    <div class="not-found">{{ t('account', 'withrdaw_balance_little') }}</div>
-                </div>
-            {% else %}
-                <div class="col-md-12">
-                    <h3 class="text-center">{{ t('account', 'withrdaw_choose_method') }}:</h3>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="2">
-                            <a href="#"><img src="/images/account/webmoney-l.png" at=""></a>
+    <section class="account-withdraw account-text-block align-center">
+        {% if balance.withdraw_waiting > 0 %}
+                <div class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists') }}</div>
+        {% elseif balance.current < 350 %}
+                <div class="account-text-block_item account-text-block_item-alert">{{ t('account', 'withrdaw_balance_little') }}</div>
+        {% else %}
+                <div class="account-withdraw-methods">
+                    <h3 class="">{{ t('account', 'withrdaw_choose_method') }}:</h3>
+                    <div class="account-withdraw-methods_list">
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="2" ><img src="/images/account/webmoney-l.png" at=""></a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="1">
-                            <a href="#"><img src="/images/account/yandex-l.png" at=""></a>
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="1"><img src="/images/account/yandex-l.png" at=""></a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="3">
-                            <a href="#"><img src="/images/account/qiwi-l.png" at=""></a>
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="3"><img src="/images/account/qiwi-l.png" at=""></a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="4">
-                            <a href="#"><img src="/images/account/cart-l.png" at=""></a>
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="4"><img src="/images/account/cart-l.png" at=""></a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="5">
-                            <a href="#"><img src="/images/account/paypal-l.jpg" at=""></a>
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="5"><img src="/images/account/paypal-l.jpg" at=""></a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="option" data-option-process="6">
-                            <a href="#"><img src="/images/account/sim-l.png" at=""></a>
+                        <div class="account-withdraw-methods_item">
+                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="6"><img src="/images/account/sim-l.png" at=""></a>
                         </div>
                     </div>
                 </div>
@@ -88,12 +70,11 @@
                             })|raw }}
 
                             <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
-                            <button type="submit" class="btn-fill btn-form">{{ t('account', 'withrdaw_form_button') }}</button>
+                            <button type="submit" class="btn ">{{ t('account', 'withrdaw_form_button') }}</button>
 
                         {{ active_form_end() }}
                     </div>
                 </div>
-            {% endif %}
-        </div>
+        {% endif %}
     </section>
-</div>
+{#</div>#}
