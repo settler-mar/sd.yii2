@@ -97,7 +97,7 @@
               {% endif %}
 
               <!--краткая информация о магазине для купона-->
-              {% if current_store.coupon_description and page==1 %}
+              {% if current_store.coupon_description and page==1 and expired != 1 %}
                 <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
                     {{current_store.coupon_description|raw}}
