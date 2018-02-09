@@ -1,5 +1,5 @@
 {% include('parts/account/user_balance.twig') %}
-<section>
+<section class="account">
         {{ _constant('account_payments_history')|raw }}
         {% if payments|length > 0 %}
             <table class="table ta_left">

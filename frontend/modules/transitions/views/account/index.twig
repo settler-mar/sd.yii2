@@ -1,6 +1,6 @@
 {% include('parts/account/user_balance.twig') %}
 
-    <section class="account-padding">
+    <section class="account account-padding">
 
                 <h3>{{ t('account', 'history_transitions') }}</h3>
 
@@ -26,5 +26,6 @@
                 <div class="not-found">{{ t('account', 'history_transitions_empty') }}</div>
             {% endif %}
 
+        {% include '/parts/pagination.twig' %}
     </section>
-    {% include '/parts/pagination.twig' %}
+

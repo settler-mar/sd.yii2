@@ -8,7 +8,7 @@
             </div>
         </div>
     </section>
-    <section class="notification account-padding">
+    <section class="notification account account-padding">
         <div class="row">
             <div class="col-md-12">
                 {{ _constant('account_notifications')|raw }}
@@ -29,6 +29,7 @@
             </div>
             {% endif %}
         </div>
+        {% include '/parts/pagination.twig' %}
     </section>
-    {% include '/parts/pagination.twig' %}
+
 </div>
