@@ -1,27 +1,26 @@
-<div class="content-wrapper">
-    <section class="account-home">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="balance">
-                    {% include('parts/account/user_balance.twig') %}
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="support account-padding">
-        <div class="row">
-            <div class="col-md-12">
-                {{ _constant('account_support')|raw }}
-            </div>
-            <div class="col-sm-12 col-md-8">
-                <form action="/" method="post" role="form" name="support-form">
-                    <div class="form-input-group">
-                        <i class="fa fa-info-circle"></i><input autocomplete="off" name="title" type="text" placeholder="{{ t('account', 'support_mail_topic') }}" required>
-                    </div>
-                    <textarea cols="30" rows="10" name="message" placeholder="{{ t('account', 'support_mail_text') }}" required></textarea>
-                    <button type="submit" class="btn-fill btn-form">{{ t('account', 'support_button') }}</button>
-                </form>
-            </div>      
-        </div>
-    </section>
-</div>
+{% include('parts/account/user_balance.twig') %}
+
+<section class="support account-padding">
+
+  {{ _constant('account_support')|raw }}
+
+  <form action="/" method="post" role="form" name="support-form">
+    <div>
+      <div class="form-input-group">
+        <i>{{ svg("envelope",'form-icon')|raw }}</i>
+        <input autocomplete="off" name="title" type="text"
+               placeholder="{{ t('account', 'support_mail_topic') }}" required>
+      </div>
+
+      <textarea cols="30" rows="10"
+                class="account-textarea"
+                name="message"
+                placeholder="{{ t('account', 'support_mail_text') }}"
+                required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn">{{ t('account', 'support_button') }}</button>
+  </form>
+
+
+</section>

@@ -283,4 +283,17 @@
       border-radius: 5px;
     }
   }
+
+  &-textarea{
+    font-size: 15px;
+    outline: 0;
+    border: solid 1px #E6E9EA;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0px 10px;
+    display: block;
+    height: 200px;
+    width: calc(74% - 22PX);
+    resize: none;
+  }
 }
