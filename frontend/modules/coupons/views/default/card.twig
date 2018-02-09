@@ -25,7 +25,9 @@
         {% endif%}
       </h1>
 
-      {% include('parts/coupon.twig') %}
+      <div class="coupons-list single">
+          {% include('parts/coupon.twig') %}
+      </div>
 
 
       <div class="content-wrap">
@@ -48,13 +50,10 @@
 
 
             {% include('parts/pagination.twig') %}
-
-
-          {%  else %}
-            {% include('parts/mail_subscribe.twig') %}
-          {% endif %}
         </div>
-
+        {%  else %}
+            {% include('parts/mail_subscribe.twig') %}
+        {% endif %}
 
         {% if coupon_ended|length > 0 %}
           {% include('parts/coupon_ended_list.twig') %}

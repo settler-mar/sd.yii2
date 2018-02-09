@@ -193,6 +193,17 @@
   }
 }
 
+@mixin single {
+
+  @include media($tablets) {
+
+    .coupons-list_item {
+      width: 50%;
+    }
+  }
+
+}
+
 
 .coupons {
   &-abc {
@@ -320,6 +331,9 @@
     }
     &.left-menu {
       @include left-menu;
+    }
+    &.single {
+      @include single;
     }
 
     @include media($tablets) {
