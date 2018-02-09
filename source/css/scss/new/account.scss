@@ -204,4 +204,17 @@
       line-height: 24px;
     }
   }
+
+  &-service-link_sd{
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &-avatar{
+    text-align: center;
+
+    img{
+      border-radius: 5px;
+    }
+  }
 }

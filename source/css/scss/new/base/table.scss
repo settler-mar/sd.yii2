@@ -51,5 +51,10 @@ th:first-child
 
 .table-selected {
   background: $table_select_bg;
+}
 
+td.td{
+  &-center{
+    text-align: center;
+  }
 }
