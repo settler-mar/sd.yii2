@@ -204,4 +204,6 @@ return [
     'email_confirm_not_confirmed' => 'Ваш E-mail не подтверждён.',
     'user_loyalty_status_set' => 'Вам присвоен статус',
     'user_loyalty_reg_status' => 'Вам будет присвоен пожизненный премиум аккаунт после <a href="#registration" class="registration">регистрации</a>.',
+    'birthday_format_error'=>'Не верный формат ввода даты.',
+    'birthday_biggest_error'=>'Дата слишком большая.',
 ];
