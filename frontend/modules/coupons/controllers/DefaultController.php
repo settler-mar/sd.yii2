@@ -257,7 +257,7 @@ class DefaultController extends SdController
 
     //непонятно, нужно сюда выводить или не нужно
     //$contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
-
+    $contentData["counts_all"] = Coupons::counts();
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
     return $this->render('catalog', $contentData);
   }
