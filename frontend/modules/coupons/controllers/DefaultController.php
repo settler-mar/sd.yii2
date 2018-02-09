@@ -259,6 +259,9 @@ class DefaultController extends SdController
     //$contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
     $contentData["counts_all"] = Coupons::counts();
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
+
+    $contentData['menu_subscribe'] = 1;
+
     return $this->render('catalog', $contentData);
   }
 
@@ -362,7 +365,7 @@ class DefaultController extends SdController
 
     $contentData['expired']=(time()>strtotime($coupon['date_end']));
     $contentData['search_form'] = 1;
-    $contentData['hide_menu_subscribe']=true;
+    $contentData['menu_subscribe'] = 1;//true;
     return $this->render('card', $contentData);
   }
   /**

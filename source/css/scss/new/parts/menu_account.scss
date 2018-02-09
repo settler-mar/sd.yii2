@@ -1,11 +1,12 @@
 .catalog-categories-account {
 
-  @include media($laptop_min) {
-    display: none;
-  }
 
   &_menu {
     margin-bottom: 15px;
+
+    @include media($laptop_min) {
+      display: none;
+    }
 
 
     ul {
