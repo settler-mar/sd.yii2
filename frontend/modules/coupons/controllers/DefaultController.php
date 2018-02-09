@@ -240,7 +240,7 @@ class DefaultController extends SdController
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
 
-    $contentData['is_root'] = (!$categoryCoupons && !$store && !$this->top && $this->new);
+    $contentData['is_root'] = (!$categoryCoupons && !$store && !$this->top && !$this->new);
     if ($page>1) {
         $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
     }
