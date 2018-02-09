@@ -209,7 +209,7 @@
         width: 30%;
         box-sizing: border-box;
         margin: 0 1% 1%;
-        border: 1px solid $menu_left_border_color;
+//        border: 1px solid $menu_left_border_color;
         padding: 5px;
         border-radius: 3px;
         &-option {
@@ -221,6 +221,9 @@
           display: block;
           margin: auto;
           width: 100%;
+        }
+        &.active {
+          background-color: $header_bg_second;
         }
       }
     }

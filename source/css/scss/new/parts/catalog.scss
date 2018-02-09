@@ -5,6 +5,7 @@
     @include media($laptop-min) {
       width: 100%;
       margin-bottom: 47px;
+      order: 1;
     }
 
     li {
@@ -184,16 +185,23 @@
           }
         }
       }
-    }
-    .sp-form-outer {
-      //форма подписки в левом меню
 
+    }
+    //.sp-form-outer {
+    //  //форма подписки в левом меню
+    //
+    //  @include media($laptop-min) {
+    //    display: none;
+    //  }
+    //}
+    &_subscribe {
+      margin-bottom: 15px;
+    }
+    &_tree-cat {
+      margin-bottom: 15px;
       @include media($laptop-min) {
         display: none;
       }
-    }
-    &_subscribe {
-      margin-bottom: 15px;
     }
   }
 
@@ -203,6 +211,7 @@
 
     @include media($laptop_min) {
       margin-left: inherit;
+      order: 0;
     }
     &_stores {
       @include media($laptop_min) {
@@ -259,6 +268,9 @@
           min-width: 250px;
           margin-bottom: 20px;
         }
+        &-title {
+          font-weight: bold;
+        }
       }
       &-desctop {
         display: flex;
@@ -293,8 +305,5 @@
 
   }
 
-  .tree-cat {
-    margin-bottom: 20px;
-  }
 
 }

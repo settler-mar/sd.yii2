@@ -215,6 +215,8 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Stores::$defaultSort, $paginateParams);
 
     $storesData['slider'] = Slider::get();
+    $storesData['menu_subscribe'] = 1;
+
     return $this->render('catalog', $storesData);
   }
 

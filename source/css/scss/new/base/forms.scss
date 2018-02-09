@@ -262,6 +262,18 @@ td {
     left: 50px;
     border-left: 1px solid $form_input_border;
   }
+  span {
+    svg {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      color: $btn_base_bg;
+      fill: $btn_base_bg;
+      stroke: $btn_base_bg;
+    }
+  }
 }
 
 .form {

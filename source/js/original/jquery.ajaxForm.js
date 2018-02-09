@@ -1,27 +1,33 @@
 function ajaxForm(els) {
   var fileApi = window.File && window.FileReader && window.FileList && window.Blob ? true : false;
   var defaults = {
-    error_class: '.has-error',
+    error_class: '.has-error'
   };
 
   function onPost(post){
+    console.log(post, this);
     var data=this;
-    form=data.form;
-    wrap=data.wrap;
-    if(post.render){
-      post.notyfy_class="notify_white";
-      notification.alert(post);
-    }else{
-      wrap.removeClass('loading');
-      wrap.html(post.html);
-      ajaxForm(wrap);
+    var form=data.form;
+    var wrap=data.wrap;
+    if (post.render) {
+        post.notyfy_class = "notify_white";
+        notification.alert(post);
+    } else {
+        wrap.removeClass('loading');
+        wrap.html(post.html);
+        ajaxForm(wrap);
     }
+    notification.notifi({
+        'type': post.error === false ? 'success' : 'err',
+        'title': post.error === false ? 'Успешно' : 'Ошибка',
+        'message': Array.isArray(post.error) ? post.error[0] : (post.message ? post.message : '')
+    });
   }
 
   function onFail(){
     var data=this;
-    form=data.form;
-    wrap=data.wrap;
+    var form=data.form;
+    var wrap=data.wrap;
     wrap.removeClass('loading');
     wrap.html('<h3>Упс... Возникла непредвиденная ошибка<h3>' +
       '<p>Часто это происходит в случае, если вы несколько раз подряд неверно ввели свои учетные данные. Но возможны и другие причины. В любом случае не расстраивайтесь и просто обратитесь к нашему оператору службы поддержки.</p><br>' +
@@ -33,19 +39,21 @@ function ajaxForm(els) {
   function onSubmit(e){
     e.preventDefault();
     var data=this;
-    form=data.form;
-    wrap=data.wrap;
+    //console.log(data);
+    var form=data.form;
+    var wrap=data.wrap;
 
     if(form.yiiActiveForm){
       form.yiiActiveForm('validate');
     };
 
-    isValid=(form.find(data.param.error_class).length==0);
+    var isValid=(form.find(data.param.error_class).length==0);
+    //console.log(isValid);
 
     if(!isValid){
       return false;
     }else{
-      required=form.find('input.required');
+      var required=form.find('input.required');
       for(i=0;i<required.length;i++){
         if(required.eq(i).val().length<1){
           return false
@@ -57,8 +65,8 @@ function ajaxForm(els) {
 
     var post=form.serializeObject();
     form.addClass('loading');
-    form.html('');
-    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
+    //form.html('');
+    //wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
 
     data.url+=(data.url.indexOf('?')>0?'&':'?')+'rc='+Math.random();
 

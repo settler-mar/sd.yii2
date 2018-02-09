@@ -21,40 +21,40 @@
                 <div class="account-withdraw-methods">
                     <h3 class="">{{ t('account', 'withrdaw_choose_method') }}:</h3>
                     <div class="account-withdraw-methods_list">
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="2" ><img src="/images/account/webmoney-l.png" at=""></a>
                         </div>
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="1"><img src="/images/account/yandex-l.png" at=""></a>
                         </div>
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="3"><img src="/images/account/qiwi-l.png" at=""></a>
                         </div>
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="4"><img src="/images/account/cart-l.png" at=""></a>
                         </div>
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="5"><img src="/images/account/paypal-l.jpg" at=""></a>
                         </div>
-                        <div class="account-withdraw-methods_item">
+                        <div class="account-withdraw-methods_item hover-box">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="6"><img src="/images/account/sim-l.png" at=""></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <h3 class="text-center">{{ t('account', 'withrdaw_fill_data') }}</h3>
-                    <div class="payment-info users-withdraw">
+                    <div class="payment-info users-withdraw ajax_form">
                         {% set form = active_form_begin({'action':'/account/withdraw','options':{'name':'withdraw-form', 'role':'form'},}) %}
 
                             {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
 
                             {{ form.field(model, 'bill', {
-                                'template' :'<div class="form-input-group"><i class="fa fa-info-circle"></i> {input}</div>{error}{hint}',
+                                'template' :'<div class="form-input-group"><span>{{ svg("info-circle")|raw }}</span>{input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
                             }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_cashe_number')}).label(false)|raw }}
 
                             {{ form.field(model, 'amount', {
-                                'template' :'<div class="form-input-group"><i class="fa fa-money"></i> {input}</div>{error}{hint}',
+                                'template' :'<div class="form-input-group"><span>{{ svg("money")|raw }} {input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
                             }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}
 
