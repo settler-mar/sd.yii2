@@ -6,42 +6,40 @@ table {
   width: 100%;
   margin-bottom: 15px;
 
-  &.ta_left{
+  &.ta_left {
     text-align: left;
   }
 }
 
-
-tr:first-child{
+tr:first-child {
   background-color: $table_th_bg;
   color: $table_th_color;
 }
 
-tr:nth-child(2n){
+tr:nth-child(2n) {
   background-color: $table_2n_bg;
 
-  .table-selected{
+  .table-selected {
     background: $table_select_2n_bg;
   }
 }
 
-td,th{
+td, th {
   padding: 5px;
 }
 
-tr:first-child th{
-  &.table-selected{
-    border-radius: 5px 5px 0 0 ;
+tr:first-child th {
+  &.table-selected {
+    border-radius: 5px 5px 0 0;
   }
 }
 
 td:first-child,
-th:first-child
-{
+th:first-child {
   text-align: left;
   white-space: nowrap;
 
-  &:before{
+  &:before {
     content: '';
     height: 32px;
     display: inline-block;
@@ -53,8 +51,8 @@ th:first-child
   background: $table_select_bg;
 }
 
-td.td{
-  &-center{
+td.td {
+  &-center {
     text-align: center;
   }
 }

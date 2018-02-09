@@ -1,5 +1,5 @@
-.account{
-  &-balance{
+.account {
+  &-balance {
     margin: 15px 0;
     display: flex;
     background-color: $gray_box_bg;
@@ -8,7 +8,7 @@
     flex-wrap: wrap;
     align-items: flex-end;
 
-    &-block{
+    &-block {
       min-width: 160px;
       flex-grow: 2;
       width: 23%;
@@ -18,52 +18,51 @@
         width: 50%;
       }
 
-      span{
+      span {
         font-size: 1.5em;
         font-weight: bold;
         display: block;
       }
     }
 
-    &-confirm{
+    &-confirm {
       color: $confirm_color;
       fill: $confirm_color;
     }
 
-    &-pending{
+    &-pending {
       color: $pending_color;
       fill: $pending_color;
     }
 
-    &-declined{
+    &-declined {
       color: $declined_color;
       fill: $declined_color;
     }
 
-    &-charity{
+    &-charity {
       color: $charity_color;
       fill: $charity_color;
     }
   }
 
-
-  &-circles{
-    &-wrap{
-      display:flex;
+  &-circles {
+    &-wrap {
+      display: flex;
       position: relative;
       align-items: flex-start;
       margin-bottom: 24px;
     }
 
-    &-item{
+    &-item {
       width: 25%;
-      display:flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
       flex-direction: column;
       position: relative;
 
-      &-confirm{
+      &-confirm {
         position: absolute;
         height: 12PX !important;
         top: 55PX;
@@ -72,7 +71,7 @@
         z-index: 10;
       }
 
-      &-padding{
+      &-padding {
         display: none;
         position: absolute;
         height: 8PX !important;
@@ -81,51 +80,51 @@
         left: calc(-50% + 25PX);
       }
 
-      &-percent{
+      &-percent {
         height: 45PX;
         width: 45PX;
         border-radius: 100%;
         background: $circle_bg;
         border: 5px $btn_base_bg solid;
-        display:flex;
+        display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
         z-index: 11;
         margin-bottom: 15px;
 
-        &-bronze{
+        &-bronze {
           border-color: $bronze;
         }
 
-        &-silver{
+        &-silver {
           border-color: $silver;
         }
 
-        &-gold{
+        &-gold {
           border-color: $gold;
         }
 
-        &-platinum{
+        &-platinum {
           border-color: $platinum;
         }
 
-        &-active{
+        &-active {
           background: $progress_line;
         }
 
-        &-text{
+        &-text {
           position: relative;
           z-index: 10;
         }
       }
 
-      &-sum{
+      &-sum {
         width: 100%;
         text-align: center;
       }
 
-      &-name{
+      &-name {
         font-size: 1.2em;
         font-weight: bold;
         min-height: 1em;
@@ -133,7 +132,7 @@
         margin-bottom: 15px;
       }
 
-      &:before{
+      &:before {
         content: '';
         position: absolute;
         width: 100%;
@@ -143,15 +142,15 @@
         right: 50%;
       }
 
-      &-active:before{
+      &-active:before {
         background: $progress_line;
       }
 
-      &:first-child:before{
+      &:first-child:before {
         display: none;
       }
 
-      &-dop_label{
+      &-dop_label {
         text-align: center;
 
         &-active {
@@ -166,7 +165,6 @@
     padding: 10px;
     background-color: $gray_box_bg;
     border-radius: 8px;
-
 
     &_item {
       //font-size:
@@ -230,7 +228,7 @@
   }
 
   ///account/notification
-  &-notification{
+  &-notification {
     background: $account_notification_bg;
     border-bottom: 2px solid $account_notification_border;
     position: relative;
@@ -242,7 +240,7 @@
     margin-right: 30px;
     white-space: inherit;
 
-    &-date{
+    &-date {
       position: absolute;
       border: 3px solid #fff;
       width: 110PX;
@@ -259,13 +257,13 @@
       box-sizing: border-box;
     }
 
-    &-title{
+    &-title {
       font-size: 18px;
       margin-bottom: 20px;
       font-weight: bold;
     }
 
-    &-text{
+    &-text {
       margin-bottom: 0px;
       font-size: 14px;
       line-height: 24px;
@@ -273,15 +271,15 @@
 
   }
 
-  &-service-link_sd{
+  &-service-link_sd {
     display: inline-block;
     vertical-align: middle;
   }
 
-  &-avatar{
+  &-avatar {
     text-align: center;
 
-    img{
+    img {
       border-radius: 5px;
     }
   }

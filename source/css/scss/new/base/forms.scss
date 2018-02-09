@@ -29,8 +29,8 @@ textarea {
 }
 
 //валидатор форм
-.form-group{
-  .help-block-error{
+.form-group {
+  .help-block-error {
     margin: 0px auto 10px auto;
     width: 530px;
     text-align: center;
@@ -38,27 +38,28 @@ textarea {
   }
 }
 
-form{
+form {
   margin-bottom: 15px;
 }
 
-form.loading{
+form.loading {
   background: url(/images/preloader.gif) no-repeat 50% 50%;
   min-height: 60px;
   min-width: 60px;
 }
 
 //для data-krajee-daterangepicker
-[data-krajee-daterangepicker],.kv-drp-container{
+[data-krajee-daterangepicker], .kv-drp-container {
   max-width: 420px;
   display: inline-block;
 }
-.payments-search .kv-drp-container{
+
+.payments-search .kv-drp-container {
   display: block;
 }
 
-form > .kv-drp-container{
-  margin-left: 10px ;
+form > .kv-drp-container {
+  margin-left: 10px;
 }
 
 .daterangepicker {
@@ -71,14 +72,14 @@ form > .kv-drp-container{
     }
   }
 
-  .calendar.left,.calendar.right{
+  .calendar.left, .calendar.right {
     display: block;
     @media (max-width: 1199px) {
-      display: none!important;
+      display: none !important;
     }
   }
 
-  table{
+  table {
     margin-top: 0 !important;
     display: table;
   }
@@ -86,12 +87,12 @@ form > .kv-drp-container{
   th {
     background: transparent;
     display: table-cell !important;
-    color:#0f181a !important;
+    color: #0f181a !important;
   }
 
-  td{
+  td {
     display: table-cell !important;
-    color:#0f181a !important;
+    color: #0f181a !important;
   }
 
   td.in-range {
@@ -102,10 +103,10 @@ form > .kv-drp-container{
   td.active, td.active:hover, td.end-date {
     background-color: #0f181a;
     border-color: #0f181a;
-    color: #fff!important;
+    color: #fff !important;
   }
 
-  td.end-date{
+  td.end-date {
     border-radius: 0 4px 4px 0;
   }
 
@@ -113,11 +114,11 @@ form > .kv-drp-container{
     border: 1px solid #0f181a;
   }
 
-  td.weekend{
-    color: #e6ae03!important;
+  td.weekend {
+    color: #e6ae03 !important;
   }
 
-  td.off.available{
+  td.off.available {
     opacity: 0.3;
   }
 
@@ -127,39 +128,39 @@ form > .kv-drp-container{
       border: 1px solid #f5f5f5;
       color: #0f181a;
 
-      &.active, &:hover{
+      &.active, &:hover {
         background: #0f181a;
         border: 1px solid #0f181a;
         color: #fff;
       }
 
-      &:hover{
+      &:hover {
         color: #e6ae03;
       }
     }
 
     @media (max-width: 1199px) {
-      :last-child{
+      :last-child {
         display: none;
       }
     }
   }
 
-  button.btn{
+  button.btn {
     border-radius: 3px !important;
 
-    &.btn-success{
+    &.btn-success {
       background: #e4c84b;
       border-color: #e6ae03;
-      color:#0f181a;
+      color: #0f181a;
     }
   }
 
-  thead{
+  thead {
     display: table-header-group !important;
   }
 
-  tbody{
+  tbody {
     display: table-row-group !important;
   }
 
@@ -168,16 +169,15 @@ form > .kv-drp-container{
   }
 }
 
-
 //кнопка удаления/отключения
-td{
-  .ajax_remove{
+td {
+  .ajax_remove {
     margin: 0;
     width: 100%;
     display: block;
     text-align: center;
 
-    &.delete{
+    &.delete {
       display: inline-block;
       width: auto;
       font-size: 1em;
@@ -186,8 +186,8 @@ td{
   }
 }
 
-.ajax_remove{
-  color:$form_error_color;
+.ajax_remove {
+  color: $form_error_color;
   margin-left: 10px;
   font-size: 0.8em;
   cursor: pointer;
@@ -196,14 +196,14 @@ td{
   transition: all 0.3s;
   text-decoration: none;
 
-  &:hover{
+  &:hover {
     color: #fff;
     background: $form_error_color;
   }
 }
 
 /*****новые стили*******/
-.form-group{
+.form-group {
   text-align: center;
 
   &-s {
@@ -224,7 +224,7 @@ td{
   }
 }
 
-.form-input-group{
+.form-input-group {
   display: inline-block;
   width: 75%;
   height: 55px;
@@ -234,7 +234,7 @@ td{
   text-align: left;
   position: relative;
 
-  input{
+  input {
     padding-left: 68px;
     width: 100%;
     height: 100%;
@@ -246,7 +246,7 @@ td{
     box-sizing: border-box;
   }
 
-  i{
+  i {
     font-size: 14px;
     position: absolute;
     top: 50%;
@@ -264,15 +264,14 @@ td{
   }
 }
 
-
-.form{
-  &_right_blk{
+.form {
+  &_right_blk {
     text-align: right;
-    width:75%;
+    width: 75%;
     margin: 0 auto 20px;
   }
 
-  &-icon{
+  &-icon {
     max-height: 16px;
     max-width: 16px;
     vertical-align: middle;
@@ -288,7 +287,7 @@ td{
 }
 
 .help-block {
-  &-error{
+  &-error {
     color: $form_error_color;
     font-size: 14px;
     //margin-top: -10px;
@@ -333,7 +332,7 @@ input[type=radio] {
 }
 
 input[type=checkbox] {
-  + label{
+  + label {
     position: relative;
     padding-left: 38px;
     line-height: 40px;
@@ -364,7 +363,7 @@ input[type=checkbox] {
     }
   }
 
-  &:checked + label{
+  &:checked + label {
     &:before {
       background: $btn_base_bg;
     }
