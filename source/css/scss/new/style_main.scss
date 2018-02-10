@@ -586,6 +586,9 @@ svg.svg-no-fill{
 .status,.cashback{
   white-space: nowrap ;
 }
+.has-error {
+  color: $header_heart;
+}
 
 @import 'base/error_pages';
 @import 'parts/header';

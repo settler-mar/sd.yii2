@@ -5,7 +5,7 @@ function ajaxForm(els) {
   };
 
   function onPost(post){
-    //console.log(post, this);
+    console.log(post, this);
     var data=this;
     var form=data.form;
     var wrap=data.wrap;
@@ -26,11 +26,35 @@ function ajaxForm(els) {
           }
         }
     }
-    notification.notifi({
-        'type': post.error === false ? 'success' : 'err',
-        'title': post.error === false ? 'Успешно' : 'Ошибка',
-        'message': Array.isArray(post.error) ? post.error[0] : (post.message ? post.message : post.error)
-    });
+    if (typeof post.error === "object") {
+        for (var index in post.error) {
+            notification.notifi({
+                'type':'err',
+                'title': 'Ошибка',
+                'message': post.error[index]
+            });
+        }
+    } else if (Array.isArray(post.error)){
+        for (var i=0; i<post.error.length; i++) {
+            notification.notifi({
+                'type':'err',
+                'title': 'Ошибка',
+                'message': post.error[i]
+            });
+        }
+    } else {
+        notification.notifi({
+            'type': post.error === false ? 'success' : 'err',
+            'title': post.error === false ? 'Успешно' : 'Ошибка',
+            'message': post.message ? post.message : post.error
+        });
+    }
+    //
+    // notification.notifi({
+    //     'type': post.error === false ? 'success' : 'err',
+    //     'title': post.error === false ? 'Успешно' : 'Ошибка',
+    //     'message': Array.isArray(post.error) ? post.error[0] : (post.message ? post.message : post.error)
+    // });
   }
 
   function onFail(){
@@ -47,8 +71,9 @@ function ajaxForm(els) {
 
   function onSubmit(e){
     e.preventDefault();
+    //e.stopImmediatePropagation();
     var data=this;
-    //console.log(data);
+    console.log('submit');
     var form=data.form;
     var wrap=data.wrap;
 
@@ -57,31 +82,43 @@ function ajaxForm(els) {
     };
 
     var isValid=(form.find(data.param.error_class).length==0);
-    //console.log(isValid);
 
-    if(!isValid){
+    if (!isValid) {
       return false;
-    }else{
+
+    } else {
       var required=form.find('input.required');
+
       for(i=0;i<required.length;i++){
+        var helpBlock = required.eq(i).attr('type') == 'hidden' ? required.eq(i).next('.help-block') :
+            required.eq(i).closest('.form-input-group').next('.help-block');
+        var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : 'Необходимо заполнить';
+
         if(required.eq(i).val().length<1){
-          return false
+          helpBlock.html(helpMessage);
+          isValid = false;
+        } else {
+          helpBlock.html('');
         }
+      }
+      if (!isValid) {
+        return false;
       }
     }
 
     if(!form.serializeObject)addSRO();
 
-    var post=form.serializeObject();
+    var postData = form.serializeObject();
     form.addClass('loading');
     //form.html('');
     //wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
 
     data.url+=(data.url.indexOf('?')>0?'&':'?')+'rc='+Math.random();
+    console.log(data.url);
 
     $.post(
       data.url,
-      post,
+      postData,
       onPost.bind(data),
       'json'
     ).fail(onFail.bind(data));
@@ -104,6 +141,7 @@ function ajaxForm(els) {
     data.url=form.attr('action') || location.href;
     data.method= form.attr('method') || 'post';
     form.unbind('submit');
+    //form.off('submit');
     form.on('submit', onSubmit.bind(data));
   }
 }

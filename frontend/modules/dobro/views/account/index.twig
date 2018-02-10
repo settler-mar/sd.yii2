@@ -54,10 +54,11 @@
           <div>
           <div class="form-input-group">
             <i>{{ svg("money",'form-icon') |raw }}</i>
-            <input name="amount" type="text"
-                                              placeholder="{{ t('account', 'dobro_summ_placeholder') }}" required>
+            <input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder') }}" required>
           </div>
-          <input type="hidden" name="charity-process" id="dobro-send-form-charity-process" value="0">
+          <div class="help-block help-block-error" data-message="Необходимо заполнить сумму пожертвования"></div>
+          <input type="hidden" name="charity-process" id="dobro-send-form-charity-process" value="" required>
+          <div class="help-block help-block-error" data-message="Необходимо выбрать фонд"></div>
           </div>
           <br>
           <button type="submit" class="btn">{{ t('account', 'dobro_button') }}</button>

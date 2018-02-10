@@ -47,7 +47,8 @@ class AccountController extends \yii\web\Controller
 
         Yii::$app->balanceCalc->todo([$withdraw->user_id], 'withdraw');
         return json_encode([
-          'error' => false
+          'error' => false,
+          'message' => ['Запрос на вывод средств принят'],
         ]);
       } else {
         return json_encode([
