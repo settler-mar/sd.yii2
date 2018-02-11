@@ -3,9 +3,11 @@ function ajaxForm(els) {
   var defaults = {
     error_class: '.has-error'
   };
+  var last_post=false;
 
   function onPost(post){
-    console.log(post, this);
+    last_post = +new Date();
+    //console.log(post, this);
     var data=this;
     var form=data.form;
     var wrap=data.wrap;
@@ -58,6 +60,7 @@ function ajaxForm(els) {
   }
 
   function onFail(){
+    last_post = +new Date();
     var data=this;
     var form=data.form;
     var wrap=data.wrap;
@@ -71,6 +74,13 @@ function ajaxForm(els) {
 
   function onSubmit(e){
     e.preventDefault();
+
+    var currentTimeMillis = +new Date();
+    if(currentTimeMillis-last_post<1000*2){
+      return false;
+    }
+    last_post = currentTimeMillis;
+
     //e.stopImmediatePropagation();
     var data=this;
     console.log('submit');
@@ -79,7 +89,7 @@ function ajaxForm(els) {
 
     if(form.yiiActiveForm){
       form.yiiActiveForm('validate');
-    };
+    }
 
     var isValid=(form.find(data.param.error_class).length==0);
 
