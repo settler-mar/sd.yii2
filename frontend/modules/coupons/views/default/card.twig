@@ -44,9 +44,9 @@
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
-              {#<div class="catalog-stores_subscribe">#}
-                {#{% include('parts/mail_subscribe.twig') %}#}
-              {#</div>#}
+              <div class="catalog-stores_subscribe coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+              </div>
             </div>
 
 
@@ -54,9 +54,9 @@
             {% include('parts/pagination.twig') %}
         </div>
         {%  else %}
-            {#<div class="catalog-stores_subscribe">#}
-                {#{% include('parts/mail_subscribe.twig') %}#}
-            {#</div>#}
+            <div class="catalog-stores_subscribe coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+            </div>
         {% endif %}
 
         {% if coupon_ended|length > 0 %}
