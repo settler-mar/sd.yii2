@@ -2,12 +2,12 @@
 {% include('parts/account/user_balance.twig') %}
 
 {% if this.user.email_verified == 0 %}
-    <section class="yellow-box wrap-round">
+    <section class="yellow-box wrap-round margin">
         {{ _constant('account_verify_email')|raw }}
     </section>
 {% endif %}
 
-<section>
+<section class="margin">
     <h2>
         {{ t('account', 'user_loyalty_status') }}
     </h2>
