@@ -256,7 +256,8 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     //непонятно, нужно сюда выводить или не нужно
-    //$contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
+    $contentData["coupons_top5"] = $contentData["expired"] == 1 ? Coupons::top(['limit' => 5]) : null;
+
     $contentData["counts_all"] = Coupons::counts();
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
 
@@ -342,8 +343,6 @@ class DefaultController extends SdController
     //$contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
 
-    $contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
-
     $paginateParams = [
         //'limit' => $this->defaultLimit == $limit ? null : $limit,
         'sort' => Coupons::$defaultSort == $sort ? null : $sort,
@@ -364,6 +363,8 @@ class DefaultController extends SdController
     }
 
     $contentData['expired']=(time()>strtotime($coupon['date_end']));
+
+    $contentData["coupons_top5"] = $contentData['expired'] ? null : Coupons::top(['limit' => 5]);
     $contentData['search_form'] = 1;
     $contentData['menu_subscribe'] = 0;//true;
     return $this->render('card', $contentData);
