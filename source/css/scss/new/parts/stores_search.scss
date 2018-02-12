@@ -55,7 +55,7 @@
       flex-grow: 2;
 
       @include media($tablets){
-        min-width: auto;
+        min-width: inherit;
       }
     }
 
@@ -67,6 +67,8 @@
       cursor: pointer;
       color: $search-form_text_color;
       background-color: $search-form_form_button_color;
+      outline: none;
+
       @include media($phones) {
         padding: 10px 5%;
       }

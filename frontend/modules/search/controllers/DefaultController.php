@@ -21,18 +21,7 @@ class DefaultController extends SdController
         (Yii::$app->request->isAjax ? 10 : 1000));
     $stores = Stores::items()
       ->addSelect(["IF(is_offline = 1, concat(cws.route, '-offline'), cws.route) route_url"])
-      ->andWhere([
-        'or',
-        ['like', 'name', $query],
-        ['like', 'alias', ', '.$query.','],
-        ['like', 'alias', ','.$query.','],
-        ['like', 'alias', ','.$query.' ,'],
-        ['like', 'alias', $query.' ,%', false],
-        ['like', 'alias', $query.',%', false],
-        ['like', 'alias', '%, '.$query, false],
-        ['like', 'alias', '%,'.$query, false],
-        ['=', 'alias', $query]]
-      )
+      ->andWhere(Stores::makeQueryArray($query))
       ->limit($limit)
       ->orderBy([
         'added'=> 'DESC',
@@ -85,14 +74,15 @@ class DefaultController extends SdController
   }
 
   public function actionCoupon($query){
-    if (!Yii::$app->request->isAjax) {
-      return $this->redirect('/coupons/');
+    if (Yii::$app->request->isAjax) {
+        $param=[
+            'url'=>'/coupons/',
+            'limit'=>100,
+        ];
+        return $this->actionIndex($query,$param);
+    } else {
+        Yii::$app->params['search_query'] = $query;
+        return \Yii::$app->runAction('coupons/default/search');
     }
-
-    $param=[
-      'url'=>'/coupons/',
-      'limit'=>100,
-    ];
-   return $this->actionIndex($query,$param);
   }
 }

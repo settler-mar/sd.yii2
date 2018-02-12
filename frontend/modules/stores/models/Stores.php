@@ -576,5 +576,25 @@ class Stores extends \yii\db\ActiveRecord
     Cache::deleteName('stores_coupons');
     Cache::deleteName('popular_stores_with_promocodes');
   }
+
+    /**
+     * @param $query
+     * @return array
+     */
+  public static function makeQueryArray($query)
+  {
+    return [
+      'or',
+      ['like', 'cws.name', $query],
+      ['like', 'cws.alias', ', '.$query.','],
+      ['like', 'cws.alias', ','.$query.','],
+      ['like', 'cws.alias', ','.$query.' ,'],
+      ['like', 'cws.alias', $query.' ,%', false],
+      ['like', 'cws.alias', $query.',%', false],
+      ['like', 'cws.alias', '%, '.$query, false],
+      ['like', 'cws.alias', '%,'.$query, false],
+      ['=', 'cws.alias', $query],
+    ];
+  }
   
 }

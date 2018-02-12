@@ -149,6 +149,7 @@ $config= [
         'search' => 'search/default/index',
         'search/coupon' => 'search/default/coupon',
         'search/<action>' => '404',
+        'coupons/search' => '404',
 
         '<action:(faq|admin|howitworks|terms|promo|loyalty|recommendations|about|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
