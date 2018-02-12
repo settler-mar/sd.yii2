@@ -5,13 +5,24 @@
     var img = data.img;
     img.wrap('<div class="download"></div>');
     var wrap = img.parent();
-    $('body').append(data.el);
+    $('.download_test').append(data.el);
     size = data.el.width() + "x" + data.el.height();
+
+    w=data.el.width()*0.8;
+    img
+      .height('auto')
+      //.width(w)
+      .css('max-width','99%');
+
+
     data.el.remove();
-    wrap.append('<span>' + size + '</span> <a href="' + data.src + '" download>Скачать</a>')
+    wrap.append('<span>' + size + '</span> <a href="' + data.src + '" download>Скачать</a>');
   }
 
   var imgs = $('.downloads_img img');
+  if(imgs.length==0)return;
+
+  $('body').append('<div class=download_test></div>');
   for (var i = 0; i < imgs.length; i++) {
     var img = imgs.eq(i);
     var src = img.attr('src');
@@ -41,11 +52,20 @@ $( document ).ready(function() {
     }
     m_w = parent.width()-30;
     var w=el.width();
+
+    //без этого плющит банеры в акардионе
+    if(w<3 || m_w<3){
+      el
+        .height('auto')
+        .css('max-width','99%');
+      return;
+    }
+
     el.width('auto');
     if(el[0].tagName=="IMG" && w>el.width())w=el.width();
 
     if (mw>50 && m_w > mw)m_w = mw;
-    if (w>m_w > m_w) {
+    if (w>m_w) {
       if(el[0].tagName=="IFRAME"){
         k = w / m_w;
         el.height(el.height() / k);
@@ -74,7 +94,6 @@ $( document ).ready(function() {
         src: src
       });
       image.on('load', img_load_finish.bind(el));
-
     }
   }
 });
