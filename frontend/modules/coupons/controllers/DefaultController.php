@@ -365,7 +365,7 @@ class DefaultController extends SdController
 
     $contentData['expired']=(time()>strtotime($coupon['date_end']));
     $contentData['search_form'] = 1;
-    $contentData['menu_subscribe'] = 1;//true;
+    $contentData['menu_subscribe'] = 0;//true;
     return $this->render('card', $contentData);
   }
   /**

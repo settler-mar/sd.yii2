@@ -235,6 +235,10 @@ td {
   text-align: left;
   position: relative;
 
+  @include media($phones) {
+    width: 100%;
+  }
+
   input {
     padding-left: 68px;
     width: 100%;

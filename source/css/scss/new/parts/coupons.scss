@@ -597,18 +597,18 @@
       margin-bottom: 20px;
     }
   }
-  //&_mobile {
-  //  &-bottom {
-  //    @include media($tablets) {
-  //      position: absolute;
-  //      bottom: -370px;
-  //    }
-  //  }
-  //  &-relative {
-  //    @include media($tablets) {
-  //     position: relative;
-  //     margin-bottom: 420px;
-  //    }
-  //  }
-  //}
+  &_mobile {
+    &-bottom {
+      @include media($laptop-min) {
+        position: absolute;
+        bottom: -370px;
+      }
+    }
+    &-relative {
+      @include media($laptop-min) {
+       position: relative;
+       margin-bottom: 420px;
+      }
+    }
+  }
 }

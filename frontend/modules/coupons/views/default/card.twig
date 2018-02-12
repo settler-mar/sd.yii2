@@ -44,9 +44,9 @@
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
               <div class="coupons coupons-empty"></div>
-              {#<div class="catalog-stores_subscribe">#}
-                {#{% include('parts/mail_subscribe.twig') %}#}
-              {#</div>#}
+              <div class="catalog-stores_subscribe coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+              </div>
             </div>
 
 
@@ -54,9 +54,9 @@
             {% include('parts/pagination.twig') %}
         </div>
         {%  else %}
-            {#<div class="catalog-stores_subscribe">#}
-                {#{% include('parts/mail_subscribe.twig') %}#}
-            {#</div>#}
+            <div class="catalog-stores_subscribe coupons_mobile-bottom">
+                {% include('parts/mail_subscribe.twig') %}
+            </div>
         {% endif %}
 
         {% if coupon_ended|length > 0 %}
@@ -65,14 +65,14 @@
 
         <div class="coupons_buttons align-center margin">
           {% if counts.expired > 0 %}
-            <a class="btn btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
+            <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired}})</span></a>
           {% endif %}
 
           {% if counts.actual > 0 %}
-            <a class="btn btn-transform btn-mini coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
+            <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
           {% endif %}
 
-          <a class="btn btn-transform btn-mini coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+          <a class="btn btn-transform coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
         </div>
 
       </div>
