@@ -50,17 +50,18 @@
 
 {% set curr = currencyIcon(app.params.valuta) %}
 
-<section class="account-balance">
-  <div class="account-balance-block">
+<section class="margin">
+  <h3>{{ t('account', 'summary') }}:</h3>
+  <div>
     {{ t('account', 'confirmed') }}:
-    <span class="account-balance-confirm">{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</span>
+    <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
   </div>
-  <div class="account-balance-block">
+  <div>
     {{ t('account', 'expected') }}:
-    <span class="account-balance-pending">{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</span>
+    <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
   </div>
-  <div class="account-balance-block">
+  <div>
     {{ t('account', 'revoked') }}:
-    <span class="account-balance-charity">{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</span>
+    <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
   </div>
 </section>

@@ -74,29 +74,37 @@ function ajaxForm(els) {
 
   function onSubmit(e){
     e.preventDefault();
+    //e.stopImmediatePropagation();
+    //e.stopPropagation();
 
     var currentTimeMillis = +new Date();
     if(currentTimeMillis-last_post<1000*2){
       return false;
     }
-    last_post = currentTimeMillis;
 
-    //e.stopImmediatePropagation();
+    last_post = currentTimeMillis;
     var data=this;
-    console.log('submit');
     var form=data.form;
     var wrap=data.wrap;
+    var isValid=true;
+
+    //init(wrap);
 
     if(form.yiiActiveForm){
       form.yiiActiveForm('validate');
+      var d = form.data('yiiActiveForm');
+      isValid=d.validated;
     }
 
-    var isValid=(form.find(data.param.error_class).length==0);
+    isValid=isValid && (form.find(data.param.error_class).length==0);
 
     if (!isValid) {
       return false;
-
     } else {
+
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+
       var required=form.find('input.required');
 
       for(i=0;i<required.length;i++){
@@ -136,12 +144,7 @@ function ajaxForm(els) {
     return false;
   }
 
-  els.find('[required]')
-    .addClass('required')
-    .removeAttr('required');
-
-  for(var i=0;i<els.length;i++){
-    wrap=els.eq(i);
+  function init(wrap){
     form=wrap.find('form');
     data={
       form:form,
@@ -153,6 +156,15 @@ function ajaxForm(els) {
     form.unbind('submit');
     //form.off('submit');
     form.on('submit', onSubmit.bind(data));
+  }
+
+  els.find('[required]')
+    .addClass('required')
+    .removeAttr('required');
+
+
+  for(var i=0;i<els.length;i++){
+    init(els.eq(i));
   }
 }
 

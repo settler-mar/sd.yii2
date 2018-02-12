@@ -1,10 +1,10 @@
 {% include('parts/account/user_balance.twig') %}
 
-<section class="support account-padding">
+<section class="support account-padding ajax_form">
 
   {{ _constant('account_support')|raw }}
 
-  <form action="/" method="post" role="form" name="support-form">
+  <form action="/account/support" method="post" role="form" name="support-form">
     <div>
       <div class="form-input-group">
         <i>{{ svg("envelope",'form-icon')|raw }}</i>

@@ -17,15 +17,6 @@ class m180112_113620_footer_menu extends Migration
       $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
       $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-
-      $const = new Constants();
-      $const->name='footer_company_';
-      $const->title = 'Ссылки footer. Компания';
-      $const->text = '';
-      $const->editor_param = 'links';
-      $const->ftype = 'json';
-      $const->save();
-
       $const = new Constants();
       $const->name='footer_company';
       $const->title = 'Ссылки footer. Компания';
