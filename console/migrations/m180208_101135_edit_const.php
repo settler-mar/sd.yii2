@@ -50,6 +50,57 @@ class m180208_101135_edit_const extends Migration
                     Отправьте сообщение в нашу службу поддержки, и наши квалифицированные специалисты помогут Вам в течение одного рабочего дня.
                 </p>';
       $constant->save();
+
+      $constant = Constants::find()->where(['name'=>'account_affiliate_principle'])->one();
+      $constant->text = '
+        <p>Мы хотим, чтобы Вы не только экономили при помощи нашего кэшбэк-сервиса, но и зарабатывали вместе с нами. Для этого мы разработали удобную и выгодную <strong>партнерскую программу</strong>, по которой Вы будете зарабатывать 15% от кэшбэка всех приведенных Вами друзей. ПОЖИЗНЕННО!</p>
+        <div class="flex-line tablets_flex-col">
+            <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+                {{ svg(\'live-chat\',\'instruction-icon\') | raw}}
+                <div class="instruction-wrap">
+                    <div class="instruction-title">
+                        Шаг 1:<br> Приглашаем друга
+                    </div>
+                    <div class="instruction-content">
+                        Выберите удобный для Вас способ и отправьте приглашение другу.
+                    </div>
+                </div>
+            </div>
+            <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+                {{ svg(\'user_card\',\'instruction-icon\') | raw}}
+                <div class="instruction-wrap">
+                    <div class="instruction-title">
+                        Шаг 2:<br> Друг регистрируется
+                    </div>
+                    <div class="instruction-content">
+                        Друг, перейдя по Вашей реферальной ссылке, регистрируется в SecretDiscounter.
+                    </div>
+                </div>
+            </div>
+            <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+                {{ svg(\'bay\',\'instruction-icon\') | raw}}
+                <div class="instruction-wrap">
+                    <div class="instruction-title">
+                        Шаг 3:<br>И совершает покупку
+                    </div>
+                    <div class="instruction-content">
+                        Друг совершает в магазине покупки и получает кэшбэк.
+                    </div>
+                </div>
+            </div>
+            <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+                {{ svg(\'wallet\',\'instruction-icon\') | raw}}
+                <div class="instruction-wrap">
+                    <div class="instruction-title">
+                        Шаг 4:<br> Вы получаете деньги
+                    </div>
+                    <div class="instruction-content">
+                        Вы будете получать <b>15%</b> от каждого кэшбэка друга ПОЖИЗНЕННО!
+                    </div>
+                </div>
+            </div>
+        </div>';
+      $constant->save();
     }
 
     /**

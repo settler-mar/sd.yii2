@@ -15,6 +15,10 @@ $( document ).ready(function() {
     if(!msg){
       msg="Данные успешно скопированы в буфер обмена";
     }
-    notification.notifi({'type':'info','message':msg})
+    notification.notifi({'type':'info','message':msg,'title':'Успешно'})
   }
+
+  $("body").on('click',"input.link",function(){	// получение фокуса текстовым полем-ссылкой
+    $(this).select();
+  });
 });

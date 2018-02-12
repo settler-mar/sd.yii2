@@ -590,6 +590,44 @@ svg.svg-no-fill{
   color: $header_heart;
 }
 
+
+//картинки для скачивания
+.downloads_img{
+  .download{
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    text-transform: lowercase;
+    color: #e6ae03;
+
+    img{
+      display: block;
+      margin-bottom: 0 !important;
+    }
+
+    a{
+      //display: block;
+    }
+
+    span{
+      color: #999;
+    }
+  }
+}
+
+input.link {
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
