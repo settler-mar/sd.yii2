@@ -86,6 +86,10 @@ class DefaultController extends SdController
           echo $this->actionAbc();
           exit;
       }
+      if ($actionId == 'search') {
+          echo $this->actionSearch();
+          exit;
+      }
 
       //если нет категории или магазина
       //найти в удалённых шопах или категориях купонов
@@ -256,7 +260,8 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     //непонятно, нужно сюда выводить или не нужно
-    //$contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
+    $contentData["coupons_top5"] = $contentData["expired"] == 1 ? Coupons::top(['limit' => 5]) : null;
+
     $contentData["counts_all"] = Coupons::counts();
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
 
@@ -342,8 +347,6 @@ class DefaultController extends SdController
     //$contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
 
-    $contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
-
     $paginateParams = [
         //'limit' => $this->defaultLimit == $limit ? null : $limit,
         'sort' => Coupons::$defaultSort == $sort ? null : $sort,
@@ -364,6 +367,8 @@ class DefaultController extends SdController
     }
 
     $contentData['expired']=(time()>strtotime($coupon['date_end']));
+
+    $contentData["coupons_top5"] = $contentData['expired'] ? null : Coupons::top(['limit' => 5]);
     $contentData['search_form'] = 1;
     $contentData['menu_subscribe'] = 0;//true;
     return $this->render('card', $contentData);
@@ -396,6 +401,82 @@ class DefaultController extends SdController
     header("Location: /coupons/".$parent->route, TRUE, 301);
     //$this->redirect('/coupons/'.$parent->route, 301)->send();
     exit;
+  }
+
+    /**
+     * поиск в купонах
+     * @return string
+     * @throws yii\web\NotFoundHttpException
+     */
+  public function actionSearch()
+  {
+      $request = \Yii::$app->request;
+      $page = $request->get('page');
+      $limit = $request->get('limit');
+      $sort = $request->get('sort');
+
+
+      $validator = new \yii\validators\NumberValidator();
+      $validatorIn = new \yii\validators\RangeValidator(['range' => ['visit', 'date_start', 'date_end']]);
+      if (!empty($limit) && !$validator->validate($limit) ||
+          !empty($sort) && !$validatorIn->validate($sort)
+      ) {
+          throw new \yii\web\NotFoundHttpException;
+      };
+      $sort = (!empty($sort)) ? $sort : Coupons::$defaultSort;
+      $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
+      $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
+
+      $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;
+
+      $databaseObj = Coupons::forList(true)
+          ->andWhere(['cws.is_active' => [0, 1]])
+          ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
+          ->orderBy($sort . ' ' . $order);
+      if ($query) {
+          $databaseObj->andWhere(Stores::makeQueryArray($query));
+      }
+
+      $pagination = new Pagination($databaseObj, false, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
+      $contentData['coupons'] = $pagination->data();
+      $contentData["total_v"] = $pagination->count();
+      $contentData["show_coupons"] = count($contentData["coupons"]);
+      $contentData["offset_coupons"] = $pagination->offset();
+      $contentData["total_all_coupons"] = Coupons::activeCount();
+      $contentData["page"] = empty($page) ? 1 : $page;
+      $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
+      $contentData['h1'] = 'Промокоды. Результат поиска по запросу "'.$query.'"';
+
+      $contentData['search_form'] = 1;
+      $contentData['is_root'] = false;
+
+      $paginateParams = [
+          'limit' => $this->defaultLimit == $limit ? null : $limit,
+          'sort' => Coupons::$defaultSort == $sort ? null : $sort,
+          'page' => $page,
+          'expired' => $request->get('expired') ? 1 : null,
+          'all' => $request->get('all') ? 1 : null,
+          'query' => $query
+      ];
+      $paginatePath = '/coupon/search';
+
+
+      $this->params['breadcrumbs'][] = ['label' => 'Поиск', 'url'=>'/search/coupon?query='.$query];
+      if ($page>1) {
+          $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
+      }
+
+      if ($pagination->pages() > 1) {
+          $contentData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
+          $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
+      }
+
+      $contentData['sortlinks'] =
+          $this->getSortLinks($paginatePath, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
+      $contentData['limitlinks'] =
+          $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
+
+      return $this->render('catalog', $contentData);
   }
 
   private function actionAbc()

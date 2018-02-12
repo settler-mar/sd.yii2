@@ -34,7 +34,7 @@ return [
     'congratulations' => 'Поздравляем!',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
     'read_more' => 'Подробнее',
-    'read_more_long' => 'подробная информация',
+    'read_more_long' => 'Подробная информация',
     'date_range' => 'Период',
     'your_bonus' => 'Ваш бонус',
     'email_address' => 'Email адрес',

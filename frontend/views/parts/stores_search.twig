@@ -5,8 +5,8 @@
                 {{ _constant('stores-search-module-text')|raw }}
             </div>
             <div class="stores-search_wrap">
-                <form action="/search/coupon" method="get" class="stores-search_form" onsubmit="return false;">
-                    <input type="hidden" name="limit" value="50">
+                <form action="/search/coupon" method="get" class="stores-search_form">
+                    <input type="hidden" name="limit" value="30">
                     <input type="text" name="query" class="stores-search_form-input search-form-input" placeholder="Введите название магазина" autocomplete="off">
                     <input type="submit" value="Найти" class="stores-search_form-button">
                 </form>

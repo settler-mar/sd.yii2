@@ -1,16 +1,25 @@
+@mixin menu-open {
+  max-height: 9999px;
+  transition: max-height 0.3s cubic-bezier(1,.05,1,0);
+}
+@mixin menu-close {
+  max-height: 0;
+  transition: max-height 0.3s cubic-bezier(0,1,0,.95);
+}
+
+
 .catalog {
   &-categories {
     width: 320px;
 
     @include media($laptop-min) {
       width: 100%;
-      margin-bottom: 47px;
+      //margin-bottom: 47px;
       order: 1;
     }
 
     li {
       list-style-type: none;
-
     }
 
     ul {
@@ -75,8 +84,9 @@
         }
 
         & > ul {
-          max-height: 0;
-          transition: max-height 0.3s cubic-bezier(0,1,0,.95);
+          @include menu-close;
+          //max-height: 0;
+          //transition: max-height 0.3s cubic-bezier(0,1,0,.95);
           overflow: hidden;
 
           >li{
@@ -98,8 +108,9 @@
         }
         &.open {
           > ul {
-            max-height: 9999px;
-            transition: max-height 0.3s cubic-bezier(1,.05,1,0);
+            @include menu-open;
+            //max-height: 9999px;
+            //transition: max-height 0.3s cubic-bezier(1,.05,1,0);
           }
 
           .menu_angle-down {
@@ -198,10 +209,56 @@
     &_subscribe {
       margin-bottom: 15px;
     }
-    &_tree-cat {
-      margin-bottom: 15px;
-      @include media($laptop-min) {
+    &_tree {
+      &-cat {
+        margin-bottom: 15px;
+        overflow: hidden;
+        @include menu-open;
+
+        @include media($laptop-min) {
+          @include menu-close;
+        }
+        &-open {
+          @include media($laptop-min) {
+            @include menu-open;
+          }
+        }
+      }
+      &-toggle {
         display: none;
+        cursor: pointer;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+
+        @include media($laptop-min) {
+          display: flex;
+        }
+        &-icon {
+          width: 25px;
+          height: 25px;
+          margin-right: 10px;
+          &-open{
+            display: none;
+          }
+          &-close {
+            display: block;
+          }
+        }
+        &-open {
+          .catalog-categories_tree-toggle-icon-close {
+            display: none;
+          }
+          .catalog-categories_tree-toggle-icon-open {
+            display: block;
+          }
+        }
+        &-tittle {
+          font-size: 24px;
+          font-weight: bold;
+          //display: block;
+          //text-align: center;
+        }
       }
     }
   }

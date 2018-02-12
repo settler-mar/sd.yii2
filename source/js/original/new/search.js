@@ -55,5 +55,12 @@ search = function() {
         }
     });
 
+    $('body').on('submit', '.stores-search_form', function(e) {
+        var val = $(this).find('.search-form-input').val();
+        if (val.length < 2) {
+            return false;
+        }
+    })
+
 
 }();

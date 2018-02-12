@@ -18,12 +18,12 @@
 
 <section class="account-fund-transfer account-withdraw account-padding">
   <div class="row">
-    <h2 class="head">
+    <h1 class="head align-center">
       <span>
         SecretDiscounter
         <span class="second_line_title">{{ t('account', 'dobro_do_dobro_together') }}</span>
       </span>
-    </h2>
+    </h1>
     <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long') }}</a></div>
 
     {% if autopayment %}
@@ -46,8 +46,8 @@
       {% include('parts/dobro_list.twig') %}
     </div>
 
-    <div>
-      <h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>
+    <div class="margin">
+      {#<h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>#}
       <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ') }}:</h3>
       <div class="payment-info ajax_form">
         <form action="/account/dobro/send" method="post" role="form" name="fund-transfer-form" >
@@ -66,16 +66,16 @@
       </div>
     </div>
     {% if not autopayment %}
-      <div class="autopayment-info ajax_form">
+      <div class="autopayment-info ajax_form margin">
         <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else') }}:</h3>
-        <form action="/account/dobro/auto-send" method="post" role="form" name="autopayment-form">
+        <form action="/account/dobro/auto-send" method="post" role="form" name="autopayment-form" class="margin">
           <input type="hidden" name="autopayment-uid" value="0">
           <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button') }}</button>
         </form>
         <p class="autopayment-terms">{{ t('account', 'dobro_autopay_text') |raw }}<p>
       </div>
     {% endif %}
-    <p class="support-fund text-center">{{ t('account', 'dobro_faq')|raw }}.</p>
+    <p class="support-fund text-center margin">{{ t('account', 'dobro_faq')|raw }}.</p>
     {% else %}
       <div class="not-found">{{ t('account', 'dobro_little_summ') }}</div>
     {% endif %}
