@@ -1,8 +1,8 @@
-.soc-icon{
+.soc-icon {
   height: 48px;
   width: 48px;
   margin: 2px;
-  background-image:url(/images/socialicons48.png) ;
+  background-image: url(/images/socialicons48.png);
   display: inline-block;
 }
 
@@ -14,90 +14,110 @@
   width: 20PX;
   margin-right: 10PX;
   text-align: center;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
-  -webkit-transition: all 300ms ease-in-out;
-  -o-transition: all 300ms ease-in-out;
-  -moz-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out;
+
   &:after {
     content: " ";
     display: block;
     background-position: 50% 50%;
     background-size: 16PX;
     background-repeat: no-repeat;
-    height: 20PX;
+    height: 100%;
   }
+
   &.icon-sd-fb:after {
     background-image: url(/images/svg/facebook.svg);
   }
+
   &.icon-sd-vk:after {
     background-image: url(/images/svg/vk.svg);
   }
+
   &.icon-sd-odkl:after {
     background-image: url(/images/svg/odnoklassniki.svg);
   }
+
   &.icon-sd-twi:after {
     background-image: url(/images/svg/twitter.svg);
   }
+
   &.icon-sd-gplus:after {
     background-image: url(/images/svg/google-plus.svg);
   }
+
   &.icon-sd-mail:after {
     background-image: url(/images/svg/mailru.svg);
   }
+
   &.icon-sd-journal:after {
     background-image: url(/images/svg/livejournal.svg);
   }
+
   &.icon-sd-telegram:after {
     background-image: url(/images/svg/telegram.svg);
   }
+
   &.icon-sd-viber:after {
     background-image: url(/images/svg/viber.svg);
   }
+
   &.icon-sd-whatsapp:after {
     background-image: url(/images/svg/whatsapp.svg);
   }
+
   &.icon-sd-pin:after {
     background-image: url(/images/svg/pinterest.svg);
   }
 }
+
 .soc-icon-sd:hover {
   background-color: #FFDC73;
 }
-.accauntSoc_32 .soc-icon-sd{
+
+.accauntSoc_32 .soc-icon-sd {
   text-decoration: none;
   display: inline-block;
-  padding: 1PX 0;
-  width: 25PX;
+  padding: 1px 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
   border-radius: 100%;
+  box-sizing: border-box;
 }
-.accauntSoc_32 .soc-icon{
+
+.accauntSoc_32 .soc-icon {
   height: 32px;
   width: 32px;
   margin: 2px;
-  background-image:url(/images/socialicons_new_32.png) ;
+  background-image: url(/images/socialicons_new_32.png);
   display: inline-block;
 }
 
-.icon-vk{
+.icon-vk {
   background-position: -19px -75px;
 }
-.icon-twi{
+
+.icon-twi {
   background-position: -70px -21px;
 }
-.icon-fb{
+
+.icon-fb {
   background-position: -170px -21px;
 }
-.icon-odkl{
+
+.icon-odkl {
   background-position: -222px -75px;
 }
-.icon-odkl{
+
+.icon-odkl {
   background-position: -222px -75px;
 }
-.icon-gplus{
+
+.icon-gplus {
   background-position: -19px -21px;
 }
+
 .accauntSoc_32 {
   .icon-vk {
     background-position: -12px -50px;
@@ -134,7 +154,7 @@
   }
 }
 
-.share42_wrap{
+.share42_wrap {
   white-space: nowrap;
   margin-right: -6px;
 }
