@@ -29,6 +29,27 @@ class m180208_101135_edit_const extends Migration
                             <a class="btn btn-red" href="/account/sendverifyemail" style="margin-right: 20px;">Повторно отправить письмо</a>
                         </p>';
       $constant->save();
+
+      $constant = Constants::find()->where(['name'=>'account_charity'])->one();
+      $constant->text = '<h1>История добрых дел</h1>
+                <p>
+                    Ниже представлена информация обо всех пожертвованиях, которые Вы сделали.
+                </p>';
+      $constant->save();
+
+      $constant = Constants::find()->where(['name'=>'account_notifications'])->one();
+      $constant->text = '<h1>Уведомления</h1>
+                <p>
+                    На данной странице будут отображаться все уведомления, которые связаны с вашим аккаунтом и сайтом в целом.
+                </p>';
+      $constant->save();
+
+      $constant = Constants::find()->where(['name'=>'account_support'])->one();
+      $constant->text = '<h1>Служба поддержки</h1>
+                <p>
+                    Отправьте сообщение в нашу службу поддержки, и наши квалифицированные специалисты помогут Вам в течение одного рабочего дня.
+                </p>';
+      $constant->save();
     }
 
     /**

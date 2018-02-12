@@ -1,6 +1,13 @@
 <div class="catalog-categories catalog-categories-account">
   <div class="catalog-categories-account_menu">
     <ul class="first">
+      <li>
+        {% if this.isWebMaster or this.user.waitModeration==1 %}
+          {{ get_menu_item({'href':'/account/webmaster', 'left-icon': 'dollar', 'title': t('account', 'menu_web_master')})|raw }}
+        {% else %}
+          {{ get_menu_item({'href':'/account/affiliate', 'left-icon': 'dollar', 'title': t('account', 'menu_affiliate')})|raw }}
+        {%  endif %}
+      </li>
       <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
       <li class="overview users">
         {{ get_menu_item({

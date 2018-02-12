@@ -50,7 +50,7 @@ return [
     'save_settings_password_changed_to' => 'Пароль изменён на',
     'save_settings_need_verify_email' => 'Вы изменили E-mail.<br>Новый E-mail не подтверждён.',
     'menu_personal_cabinet' => 'Личный кабинет',
-    'menu_main_page' => 'Главная',
+    'menu_main_page' => 'Мой кабинет',
     'menu_make_good' => 'Делаем добро',
     'menu_history' => 'История',
     'menu_history_payments' => 'История покупок',

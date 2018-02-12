@@ -235,6 +235,10 @@ td {
   text-align: left;
   position: relative;
 
+  &-fl{
+    width: 100%;
+  }
+
   @include media($phones) {
     width: 100%;
   }

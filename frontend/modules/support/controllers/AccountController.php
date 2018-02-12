@@ -56,7 +56,7 @@ class AccountController extends \yii\web\Controller
       if (!$validatorRequired->validate($title) || !$validatorRequired->validate($message) ||
         !$validator->validate($title) || !$validator->validate($message)
       ) {
-        return json_encode(['error' => true]);
+        return json_encode(['error' => true,'title'=>'Ошибка отправки сообщения','message'=>'Необходимо заполнить все поля формы.']);
       }
       try{
         Yii::$app
@@ -74,9 +74,10 @@ class AccountController extends \yii\web\Controller
           ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
           ->send();
       } catch (\Exception $e) {
+        return json_encode(['error' => True,'title'=>'Ошибка отправки сообщения','message'=>'Сервис временно не доступен. Попробуйте позже.']);
       }
 
-      return json_encode(['error' => false]);
+      return json_encode(['error' => false,'message'=>'Ваше сообщение успешно отправлено администратору.']);
     }
     return $this->render('index');
   }
