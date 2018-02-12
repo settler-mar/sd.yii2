@@ -33,14 +33,14 @@
   &-funds {
     &_list {
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      flex-direction: column;
+      //flex-wrap: wrap;
     }
 
     &_item {
       box-sizing: border-box;
-      width: 48%;
-      margin: 0 1% 40px;
+      width: 80%;
+      margin: 0 0 40px;
 
       @include media($tablets) {
         width: 100%;
@@ -78,6 +78,9 @@
             opacity: 1;
           }
         }
+      }
+      &-button {
+        margin-top: 20px;
       }
     }
   }
