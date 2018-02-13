@@ -366,8 +366,9 @@
   }
   .account-menu {
     transition: all 0.3s ease 0.1s;
-    overflow: hidden;
-    max-width: 220px;
+    overflow: visible;
+    //max-width: 320px;
+    min-width: 260px;
     z-index: 1;
 
     position: absolute;
@@ -376,6 +377,7 @@
     background-color: $drop-menu-color;
     &.hidden {
       max-height: 0;
+      overflow: hidden;
     }
     &_inner {
       border: 1px solid $menu_border_color;

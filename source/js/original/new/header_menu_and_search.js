@@ -1,6 +1,7 @@
 var headerActions = function () {
     var scrolledDown = false;
     var shadowedDown = false;
+    var accountMenuOpenTime = 0;
 
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
@@ -120,15 +121,24 @@ var headerActions = function () {
         e.preventDefault();
         var menu = $('.account-menu');
         if (menu) {
-            clearTimeout(accountMenuTimeOut);
+            clearInterval(accountMenuTimeOut);
             menu.toggleClass('hidden');
+            accountMenuOpenTime = new Date();
             if (!menu.hasClass('hidden')) {
-                accountMenuTimeOut = setTimeout(function () {
-                    menu.addClass('hidden');
-                }, 7000);
+                accountMenuTimeOut = setInterval(function () {
+                    if (((new Date()) - accountMenuOpenTime) > 1000 * 7) {
+                        menu.addClass('hidden');
+                        clearInterval(accountMenuTimeOut);
+                        console.log(accountMenuTimeOut);
+                    }
+                }, 1000);
             }
         }
 
+    });
+
+    $('.catalog-categories-account_menu-header').on('mouseover', function(){
+        accountMenuOpenTime = new Date();
     });
 
 

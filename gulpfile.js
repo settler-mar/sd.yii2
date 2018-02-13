@@ -169,7 +169,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/scroll.js',
         paths.source.js+'/original/new/accordion.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
-        paths.source.js+'/external/jquery.flexslider-min.js',
+        //paths.source.js+'/external/jquery.flexslider-min.js',
         paths.source.js+'/external/tipso.min.js',
         paths.source.js+'/original/new/tooltip.js',
         paths.source.js+'/original/new/account_notification.js',

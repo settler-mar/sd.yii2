@@ -138,5 +138,63 @@
         }
       }
     }
+    &-header {
+      >ul {
+        >li {
+          >a {
+            padding: 4px 5px  4px 5px !important;
+            justify-content: flex-start;
+
+            svg.right-icon {
+              order: 0;
+              transform: rotate(180deg);
+              margin-right: -10px;
+            }
+            span {
+              order: 1;
+              display: flex;
+              align-items: center;
+              margin-left: 20px;
+            }
+            &:hover {
+
+            }
+          }
+
+          >ul {
+            margin: 0 !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            left: calc(-100% - 5PX);
+            top: 0;
+            right: auto;
+            background-color: $header_bg_second;
+
+            >li {
+              padding: 0;
+
+              &:not(:last-child){
+                border-bottom: thin solid $menu_border_color;
+              }
+              >a {
+                display: block;
+                padding: 4px 10px !important;
+                width: 100%;
+                box-sizing: border-box;
+
+                &:hover {
+                  background-color: $text_color;
+
+                }
+
+              }
+
+            }
+          }
+        }
+
+      }
+
+    }
   }
 }
