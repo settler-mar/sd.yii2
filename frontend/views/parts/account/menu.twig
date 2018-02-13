@@ -113,6 +113,12 @@
           })|raw }}
         {#<a href="/account/withdraw">{{ t('account', 'menu_withdraw') }}</a>#}
       </li>
+      <li class="action-btn"> {{ get_menu_item({
+              'href':'/logout',
+              'title': 'Выход',
+              'left-icon': 'sign-out'
+          })|raw }}
+      </li>
     </ul>
   </div>
 
