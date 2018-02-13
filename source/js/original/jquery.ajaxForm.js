@@ -91,9 +91,13 @@ function ajaxForm(els) {
     //init(wrap);
 
     if(form.yiiActiveForm){
-      form.yiiActiveForm('validate');
       var d = form.data('yiiActiveForm');
-      isValid=d.validated;
+      if(d) {
+        d.validated=true;
+        form.data('yiiActiveForm',d);
+        form.yiiActiveForm('validate');
+        isValid = d.validated;
+      }
     }
 
     isValid=isValid && (form.find(data.param.error_class).length==0);
