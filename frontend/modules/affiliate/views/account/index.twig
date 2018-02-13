@@ -1,113 +1,29 @@
-<div class="content-wrapper">
-  <section class="account-home">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="balance">
-          {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-          <div>{{ t('account', 'affiliate_referrals') }}: <b>{{number_referrals}}</b></div>
-          <div class="confirm">{{ t('account', 'affiliate_referrals_payments_confirmed') }}: <span>{{_nf(confirmed_payments_referrals) | raw}} {{ curr|raw }}</span></div>
-          <div class="pending">{{ t('account', 'affiliate_referrals_payments_expected') }}: <span>{{_nf(pending_payments_referrals) | raw}} {{ curr|raw }}</span></div>
-          <br>
-          <div class="history hpayments">
-            <a href="/account/users">{{ t('common', 'read_more') }}</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {% if affiliate %}
-  <section class="affiliate account-padding">
-    <div class="row">
-      {% if this.user.waitModeration==1 %}
-        <div class="balance bg_gray col-md-12">
-          <h3>Заявка на модерации</h3>
-          <p>
-            Ваша заявка вебмастера принята.
-            Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
-          </p>
-        </div>
-      {% endif %}
+{% set curr = currencyIcon(app.params.valuta) %}
 
-      <div class="col-md-12">
-        <h1 class="text-center">
-          {% if h1 %}
-            {{ h1 | raw}}
-          {% else %}
-            {{ t('account', 'affiliate_h1_default') }}
-          {% endif %}
-        </h1>
-      </div>
-      {% include 'parts/principle-affiliate.twig' %}
-      <div class="col-md-12 ways-to-invite">
-        <h2 class="text-center">{{ t('account', 'affiliate_how_to_share') }}</h2>
-      </div>
-      <div class="col-md-4 ways-invitation">
-        <div class="intro-icon">
-          <span data-icon="&#xe052;" class="icon"></span>
-        </div>
-        <div class="intro-content">
-          <h5 style="white-space: nowrap;">{{ t('account', 'affiliate_do_share') }}</h5>
+<section class="account-balance">
+  <div class="account-balance-block">
+    {{ t('account', 'affiliate_referrals') }}:
+    <span>{{ number_referrals }}</span>
+  </div>
+  <div class="account-balance-block">
+    {{ t('account', 'affiliate_referrals_payments_confirmed') }}:
+    <span class="account-balance-confirm">{{ _nf(confirmed_payments_referrals)|raw }}&nbsp{{ curr|raw }}</span>
+  </div>
+  <div class="account-balance-block">
+    {{ t('account', 'affiliate_referrals_payments_expected') }}:
+    <span class="account-balance-pending">{{ _nf(pending_payments_referrals)|raw }}&nbsp{{ curr|raw }}</span>
+  </div>
+  <div class="account-balance-block"></div>
+  <div class="account-balance-block">
+    <a href="/account/users">{{ t('common', 'read_more') }}</a>
+  </div>
+</section>
 
-          <div
-            class="share42init accauntSoc accauntSoc_32"
-            data-socials="1,0,2,4,3"
-            data-icon-type="css"
-            data-title="{{ _constant('affiliate_share_title')}}"
-            data-description="{{ _constant('affiliate_share_description')}}"
-            data-image="https://secretdiscounter.ru{{images_path}}templates/woman_600.png"
-            data-url="https://secretdiscounter.ru/?r={{user_id}}"
-          ></div>
-          <script type="text/javascript" src="/js/share42.js"></script>
 
-        </div>
-      </div>
-      <div class="col-md-4 ways-invitation">
-        <div class="intro-icon">
-          <span data-icon="&#xe021;" class="icon"></span>
-        </div>
-        <div class="intro-content">
-          <h5>{{ t('account', 'affiliate_do_share_link') }}</h5>
-          <p class="link" style="margin-top: -5px; margin-bottom: 0">
-            <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{user_id}}">
-          </p>
-          <p class="link-sent" >
-            <a href="" class="link-to-clipboard" data-link="https://secretdiscounter.ru/?r={{user_id}}">{{ t('account', 'affiliate_copy_to_clipboard') }}</a>
-          </p>
-        </div>
-      </div>
-      <div class="col-md-4 ways-invitation">
-        <div class="intro-icon">
-          <span data-icon="&#xe028;" class="icon"></span>
-        </div>
-        <div class="intro-content">
-          <h5>{{ t('account', 'affiliate_share_by_email') }}</h5>
-          <p style="margin-top: -5px;">
-              {{ t('account', 'affiliate_share_by_email_text') }}
-          </p>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <p class="warning text-center">
-          {{ t('account', 'affiliate_share_attention')|raw }}
-          {#<b>Внимание!</b> Для продвижения Вашей реферальной ссылки категорически запрещается использовать СПАМ.#}
-          {#<br>#}
-          {#Об остальных условиях партнерской программы читайте ниже.#}
-        </p>
-      </div>
-    </div>
-  </section>
-  {% else %}
-    <div class="col-md-12">
-      <h1 class="text-center" style="color: #e4c84b; font-weight: bold;">
-        {% if h1 %}
-          {{ h1 | raw}}
-        {% else %}
-          {{ t('account', 'affiliate_h1_default') }}
-        {% endif %}
-      </h1>
-    </div>
+{% if affiliate %}
+  <section>
     {% if this.user.waitModeration==1 %}
-      <div class="balance bg_gray col-md-12" style="margin-bottom: 20px;">
+      <div class="account-balance">
         <h3>Заявка на модерации</h3>
         <p>
           Ваша заявка вебмастера принята.
@@ -115,11 +31,98 @@
         </p>
       </div>
     {% endif %}
-  {% endif %}
 
-  {% if content %}
-  <section class="section-content section-padding">
-    {{ content | raw}}
+    <h1>
+      {% if h1 %}
+        {{ h1 | raw }}
+      {% else %}
+        {{ t('account', 'affiliate_h1_default') }}
+      {% endif %}
+    </h1>
+
+    {% include 'parts/principle-affiliate.twig' %}
+
+
+    <h2 class="text-center">{{ t('account', 'affiliate_how_to_share') }}</h2>
+
+    <div class="flex-line tablets_flex-col">
+      <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('global','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+          <div class="instruction-title">
+            Расскажите о нас в соцсетях
+          </div>
+          <div class="instruction-content">
+            <div
+                class="share42init accauntSoc accauntSoc_32"
+                data-socials="1,0,2,4,3"
+                data-icon-type="css"
+                data-title="{{ _constant('affiliate_share_title') }}"
+                data-description="{{ _constant('affiliate_share_description') }}"
+                data-image="https://secretdiscounter.ru{{ images_path }}templates/woman_600.png"
+                data-url="https://secretdiscounter.ru/?r={{ user_id }}"
+            ></div>
+            <script type="text/javascript" src="/js/share42.js"></script>
+          </div>
+        </div>
+      </div>
+      <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('megaphone','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+          <div class="instruction-title">
+            Отправьте друзьям ссылку
+          </div>
+          <div class="instruction-content">
+              <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{ user_id }}">
+
+              <a href="" class="set_clipboard"
+                 data-clipboard="https://secretdiscounter.ru/?r={{ user_id }}"
+                 data-clipboard-notify="Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!"
+              >{{ t('account', 'affiliate_copy_to_clipboard') }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="instruction-item tablets_flex-row tablets_text-aling_left">
+        {{ svg('open-mail','instruction-icon instruction-icon-big')|raw }}
+        <div class="instruction-wrap">
+          <div class="instruction-title">
+            Или по электронной почте
+          </div>
+          <div class="instruction-content">
+            Отправьте ссылку всем своим друзьям по e-mail
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p class="align-center">
+      {{ t('account', 'affiliate_share_attention')|raw }}
+    </p>
+
   </section>
+{% else %}
+  <h1>
+    {% if h1 %}
+      {{ h1 | raw }}
+    {% else %}
+      {{ t('account', 'affiliate_h1_default') }}
+    {% endif %}
+  </h1>
+  {% if this.user.waitModeration==1 %}
+    <div class="account-balance">
+      <h3>Заявка на модерации</h3>
+      <p>
+        Ваша заявка вебмастера принята.
+        Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
+      </p>
+    </div>
   {% endif %}
-</div>
+{% endif %}
+
+{% if content %}
+  <section class="section-content section-padding">
+    {{ content | raw }}
+  </section>
+{% endif %}
+
