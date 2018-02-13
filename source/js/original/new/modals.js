@@ -15,12 +15,12 @@
             }
         }
 
-        href=this.href.split('#');
+        var href=this.href.split('#');
         href=href[href.length-1];
-
-        data={
+        var notyClass = $(this).data('notyclass');
+        var data={
             buttonYes:false,
-            notyfy_class:"loading "+(href.indexOf('video')===0?'modals-full_screen':'notify_white'),
+            notyfy_class:"loading "+(href.indexOf('video')===0?'modals-full_screen':'notify_white')+' '+notyClass,
             question:''
         };
         notification.alert(data);
