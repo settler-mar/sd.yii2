@@ -81,7 +81,7 @@
     {% if desire %}
         <div class="cashbonus">
             {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw}}
-            <a href="#loyalty" class="modals_open">Подробнее</a>
+            <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Подробнее</a>
         </div>
     {% endif %}
     {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}

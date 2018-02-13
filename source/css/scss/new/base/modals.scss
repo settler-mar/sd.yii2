@@ -40,6 +40,10 @@
     max-width: 700px;
     box-sizing: border-box;
 
+    &-wide {
+      max-width: 1024px;
+    }
+
     @include media($tablets) {
       min-width:  90%;
     }
