@@ -139,6 +139,11 @@
       }
     }
     &-header {
+
+      @include media($laptop-min) {
+        display: block;
+      }
+
       >ul {
         >li {
           >a {
@@ -149,6 +154,10 @@
               order: 0;
               transform: rotate(180deg);
               margin-right: -10px;
+
+              @include media($laptop-min) {
+                transform: rotate(90deg);
+              }
             }
             span {
               order: 1;
@@ -169,6 +178,14 @@
             top: 0;
             right: auto;
             background-color: $header_bg_second;
+
+            @include media($laptop-min) {
+              position: relative;
+              opacity: 1;
+              visibility: visible;
+              left: auto;
+              top: auto;
+            }
 
             >li {
               padding: 0;
