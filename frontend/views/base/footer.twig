@@ -11,7 +11,7 @@
                         {% set link_list = _constant("footer_company") %}
                         {% for item in link_list %}
                             {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -21,7 +21,7 @@
                         {% set link_list = _constant("footer_cooperation") %}
                         {% for item in link_list %}
                             {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -48,7 +48,7 @@
                         {% set link_list = _constant("footer_useful_links") %}
                         {% for item in link_list %}
                             {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -60,7 +60,7 @@
                         {% set link_list = _constant("footer_help") %}
                         {% for item in link_list %}
                             {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.out==1,'rel="nofollow noopener"') }}>{{ item.name }}</a>
+                                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
