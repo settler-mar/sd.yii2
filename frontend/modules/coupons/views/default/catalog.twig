@@ -33,6 +33,12 @@
                         <span>({{total_v}})</span>
                     {% endif%}
                 </h1>
+                {#кнопка категории#}
+                <div class="catalog-categories_tree-toggle">
+                    {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
+                    {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
+                    <span class="catalog-categories_tree-toggle-tittle">Категории</span>
+                </div>
                 {#выбор и отображение сортировки#}
                 <div class="margin page-wrap-flex catalog-stores_sort">
                     {% include('parts/list_type_switcher.twig') %}

@@ -8,7 +8,7 @@
             notification.alert({
                 'title': title,
                 'question': message,
-                'buttonYes': false,
+                'buttonYes': 'Ok',
                 'buttonNo': false,
                 'notyfy_class': 'notify_box-alert'
             });

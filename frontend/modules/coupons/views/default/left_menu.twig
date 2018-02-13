@@ -7,6 +7,10 @@
             <span class="catalog-categories_tree-toggle-tittle">Категории</span>
         </div>
         <div class="catalog-categories_tree-cat accordeon">
+            <div class="catalog-categories_tree-cat-close">
+                {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}
+                <span class="catalog-categories_tree-cat-close-tittle">Категории</span>
+            </div>
             {{category_tree|raw}}
         </div>
         {% if popular_stores %}
