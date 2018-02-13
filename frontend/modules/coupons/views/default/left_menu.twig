@@ -1,11 +1,6 @@
     {{ use('frontend/components/CategoryCouponsMenu') }}
     {% set category_tree = category_coupons_menu_widget({'search_item':1}) %}
     {% if category_tree %}
-        <div class="catalog-categories_tree-toggle">
-            {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
-            {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-            <span class="catalog-categories_tree-toggle-tittle">Категории</span>
-        </div>
         <div class="catalog-categories_tree-cat accordeon">
             <div class="catalog-categories_tree-cat-close">
                 {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}

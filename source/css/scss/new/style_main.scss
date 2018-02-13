@@ -628,6 +628,10 @@ input.link {
   }
 }
 
+.no_scroll{
+  overflow: hidden;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';

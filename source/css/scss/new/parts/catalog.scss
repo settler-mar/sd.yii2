@@ -1,12 +1,12 @@
 @mixin menu-open {
   max-height: 9999px;
-  transition: max-height 0.3s cubic-bezier(1,.05,1,0);
-}
-@mixin menu-close {
-  max-height: 0;
-  transition: max-height 0.3s cubic-bezier(0,1,0,.95);
+  transition: max-height 0.3s cubic-bezier(1, .05, 1, 0);
 }
 
+@mixin menu-close {
+  max-height: 0;
+  transition: max-height 0.3s cubic-bezier(0, 1, 0, .95);
+}
 
 .catalog {
   &-categories {
@@ -41,12 +41,12 @@
           border-top: thin solid #fff;
         }
 
-        >a {
+        > a {
           background-color: $header_sub_menu_color_hover;
           text-decoration: none;
         }
 
-        >span {
+        > span {
           background-color: $stores_menu_active_color;
         }
 
@@ -89,12 +89,12 @@
           //transition: max-height 0.3s cubic-bezier(0,1,0,.95);
           overflow: hidden;
 
-          >li{
+          > li {
             &:not(:first-child) {
               border-top: thin solid $menu_border_color;
             }
 
-            >a,span {
+            > a, span {
               background-color: $header_bg_second;
               &:hover {
                 background-color: $stores_menu_active_color;
@@ -141,7 +141,7 @@
       right: 8px;
       padding: 0 10px;
       color: $stores_menu_hover_color;
-      stroke:$stores_menu_hover_color;
+      stroke: $stores_menu_hover_color;
       fill: $stores_menu_hover_color;
       cursor: pointer;
       transform: rotate(-90deg);
@@ -167,7 +167,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        a,span {
+        a, span {
           padding: 6px 5px;
           margin-bottom: 5px;
           border-radius: 3px;
@@ -215,7 +215,6 @@
         overflow: hidden;
         //@include menu-open;
 
-
         @include media($laptop-min) {
           //@include menu-close;
           display: none;
@@ -225,22 +224,17 @@
           @include media($laptop-min) {
             //@include menu-open;
             display: block;
-            position: absolute;
+            position: fixed;
             width: 100%;
+            height: calc(100vh - 42px - 48PX);
             left: 0;
-            top: 52PX;
+            top: 50PX;
             z-index: 99;
-            //&:before {
-            //  content: " ";
-            //  background-color: #000;
-            //  opacity: 0.7;
-            //  display: block;
-            //  position: fixed;
-            //  width: 100%;
-            //  height: 100%;
-            //}
+            overflow: auto;
+            padding-top: 42px;
           }
         }
+
         //панелька с крестиком сверху
         &-close {
           display: none;
@@ -256,6 +250,9 @@
           font-size: 20px;
           font-weight: bold;
           border-bottom: thin solid $menu_border_color;
+          position: fixed;
+          top: 48PX;
+
           &-icon {
             width: 25px;
             height: 25px;
@@ -270,35 +267,46 @@
           }
         }
       }
+
       &-toggle {
         display: none;
         cursor: pointer;
         flex-direction: row;
         align-items: center;
-        margin-bottom: 20px;
+        margin: 0 auto 20px auto;
+        width: 200px;
+        padding: 10px;
+        border: 2px solid;
+        border-radius: 5px;
 
         @include media($laptop-min) {
           display: flex;
         }
+
         &-icon {
           width: 25px;
           height: 25px;
           margin-right: 10px;
-          &-open{
+
+          &-open {
             display: none;
           }
+
           &-close {
             display: block;
           }
         }
+
         &-open {
           .catalog-categories_tree-toggle-icon-close {
             display: none;
           }
+
           .catalog-categories_tree-toggle-icon-open {
             display: block;
           }
         }
+
         &-tittle {
           font-size: 24px;
           font-weight: bold;
@@ -343,7 +351,7 @@
       }
       &-desctop,
       &-mobile {
-        >ul {
+        > ul {
           margin: 0 20px;
           padding: 0;
           > li {
@@ -382,7 +390,7 @@
         @include media($tablets) {
           display: none;
         }
-        >ul {
+        > ul {
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
@@ -408,6 +416,5 @@
     }
 
   }
-
 
 }
