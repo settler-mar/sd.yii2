@@ -206,7 +206,9 @@ $search-form_form_input_text_color: $text_color;
 $search-form_form_button_color: $btn_base_bg;
 
 //account
-$confirm_color: #C3D41B;
+//$confirm_color: #C3D41B;
+//$confirm_color: $cahsback_confirmed_color;
+$confirm_color: $dollar-color;
 $pending_color: #fbc010;
 $declined_color: #f44336;
 $charity_color: #f44336;

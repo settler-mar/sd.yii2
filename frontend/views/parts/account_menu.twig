@@ -1,15 +1,17 @@
 <div class="account-menu hidden">
     <div class="account-menu_inner">
-        <div class="account-menu_header">{{ this.user.name }}</div>
-        <ul>
-            <li><a href="/account">Мой кабинет</a></li>
-            <li><a href="/account">Покупки и финансы</a></li>
-            <li><a href="/account">Оффлайн-кэшбэк</a></li>
-            <li><a href="/account">Вывод средств</a></li>
-            <li><a href="/account">Приведи друга</a></li>
-            <li class="account-menu_last-item"><a href="/account">Настройки аккаунта</a></li>
-            <li><a href="/account">Помощь</a></li>
-            <li><a href="/logout">Выход</a></li>
-        </ul>
+        <div class="account-menu_header">
+            <div class="account-menu_header-avatar">
+                <div class="account-menu_header-avatar-image">
+                <img src="{{ this.user.photo }}" alt="{{ this.user.name }}">
+                </div>
+            </div>
+            {{ this.user.name }}
+        </div>
+
+        {% set header = 1 %}
+
+        {% include 'parts/account/account_left_menu.twig' %}
+
     </div>
 </div>

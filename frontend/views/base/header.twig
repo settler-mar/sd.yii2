@@ -2,37 +2,44 @@
   <div class="header-upline">
     <div class="page-wrap page-wrap-flex">
 
-      <div class="header-logo">
-        <div class="menu-toggle">
-          <a href="/">
-              {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
-              {{ svg('close', 'menu-toggle_button close')|raw }}
-          </a>
+      <div class="header-upline_in">
+      {#<div class="header-logo">#}
+        <div class="header-upline_in-left">
+
+          <div class="menu-toggle">
+            <a href="/">
+                {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
+                {{ svg('close', 'menu-toggle_button close')|raw }}
+            </a>
+          </div>
+
+          <div class="search-toggle  btn-header mobile">
+            <a href="/">{{ svg('search', 'search-toggle_button btn-header_button')|raw }}</a>
+          </div>
         </div>
-        <div class="header-logo-center">
+
+        <div class="header-upline_logo">
           <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
         </div>
 
-        {% if this.favorites %}
+        {#{% if this.favorites %}#}
             {#если есть избранные#}
-          <div class="btn-header btn-header_favorite mobile" >
-            <a href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
-          </div>
-        {% endif %}
-        {% if this.user_id > 0 %}
+          {#<div class="btn-header btn-header_favorite mobile" >#}
+            {#<a href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>#}
+          {#</div>#}
+        {#{% endif %}#}
+        {#{% if this.user_id > 0 %}#}
             {#если есть уведомления добавлен класс#}
-          <div class="header-logo_noty  btn-header mobile">
-            <a  href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>
-          </div>
-        {% endif %}
+          {#<div class="header-logo_noty  btn-header mobile">#}
+            {#<a  href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>#}
+          {#</div>#}
+        {#{% endif %}#}
 
-        <div class="search-toggle  btn-header mobile">
-          <a href="/">{{ svg('search', 'search-toggle_button btn-header_button')|raw }}</a>
-        </div>
 
-      </div>
 
-      <div class="header-item header-search stores_search">
+      {#</div>#}
+
+      <div class="header-search stores_search">
         <form action="/search" class="header-search_form" name="search" method="get">
           <div class="header-search_form-group">
             <input type="text" name="query" id="search" class="header-search_form-input search-form-input" value="" placeholder="Найти магазин" autocomplete="off">
@@ -44,7 +51,9 @@
         <div class="header-autocomplete autocomplete-wrap"><ul class="autocomplete_list"></ul></div>
       </div>
 
-      <div class="header-right">
+
+        <div class="header-upline_in-right">
+      {#<div class="header-right">#}
         {#{% if this.user_id %}#}
         {% if this.user_id == 0 %}
         {#если не зарегистрирован#}
@@ -57,7 +66,7 @@
           </div>
         {% else %}
             {#зарегистрирован#}
-          <div class="btn-header " >
+          <div class="btn-header header-upline_ballance" >
             <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
               <span class="ballance-confirmed" data-toggle="tooltip"
                     {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
@@ -85,6 +94,7 @@
           </div>
           {% include 'parts/account_menu.twig' %}
         {% endif %}
+        </div>
 
       </div>
     </div>

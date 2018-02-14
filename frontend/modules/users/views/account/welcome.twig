@@ -77,7 +77,7 @@
 </section>
 
 
-<section class="align-center">
+<section class="align-center margin">
     {% if desire %}
         <div class="cashbonus">
             {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw}}

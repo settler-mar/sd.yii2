@@ -141,6 +141,8 @@
     font-size: 14px;
     border-left: 2px solid $header_border_color;
     border-bottom: none;
+
+
     &-ballance {
       position: relative;
       margin-left: 25px;
@@ -161,10 +163,14 @@
 
     &.last {
       border-right: 2px solid $header_border_color;
+
+      @include media ($laptop-min) {
+        border-right: none;
+      }
     }
 
     @include media($laptop_min) {
-      padding: 0 10px;
+      padding: 0 5px;
       border: none;
     }
 

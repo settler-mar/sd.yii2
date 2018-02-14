@@ -32,7 +32,62 @@
       }
 
     }
+    &_in {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+
+      @include media($laptop-min) {
+        flex-wrap: wrap;
+      }
+
+      &-left {
+        display: none;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        @include media($laptop-min) {
+          display: flex;
+        }
+        @include media($phones) {
+          width: 20%;
+        }
+      }
+      &-right {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        position: relative;
+
+        @include media($phones) {
+          width: 20%;
+        }
+      }
+    }
+    &_logo {
+      //margin-right: 50px;
+      @include media($phones) {
+        width: 60%;
+        overflow: hidden;
+      }
+
+      img {
+        width: 205px;
+        @include media($phones) {
+          width: 100%;
+        }
+      }
+    }
+    &_ballance {
+
+      @include media($laptop-min) {
+        display: none;
+      }
+    }
   }
+
 
   &-secondline {
     transition: all 0.3s linear;
@@ -126,27 +181,41 @@
     margin-right: 5px;
   }
 
-  &-logo {
-    display: flex;
-    padding-right: 15px;
-    @include media($laptop_min) {
-      padding: 0;
-    }
-    justify-content: space-between;
-    align-items: center;
-    &-center {
-      margin: auto;
-      a {
-        display: block;
-        //margin-top: 4px;
-      }
-    }
+  //&-logo {
+  //  display: flex;
+  //  padding-right: 15px;
+  //  @include media($laptop_min) {
+  //    padding: 0;
+  //  }
+  //  justify-content: space-between;
+  //  align-items: center;
+  //  &-center {
+  //    margin: auto;
+  //    a {
+  //      display: block;
+  //      //margin-top: 4px;
+  //    }
+  //  }
+  //
+  //  img {
+  //    width: 205px;
+  //  }
+  //}
 
-    img {
-      width: 205px;
-    }
-  }
-
+  //&-right {
+  //  flex-grow: 1;
+  //  text-align: right;
+  //  display: flex;
+  //  justify-content: flex-end;
+  //  margin: auto;
+  //  position: relative;
+  //
+  //
+  //  @include media($laptop_min) {
+  //    text-align: left;
+  //  }
+  //
+  //}
 
   &-heart{
     width: 30px;
@@ -161,9 +230,12 @@
     position: relative;
     width: 310px;
     @include media($laptop-min) {
+      //flex-grow: 1;
+      order: 4;
       width: 80%;
       display: none;
-      margin-right: auto;
+      margin: 5px auto 0;
+      //page-break-before: always;
     }
     &-open .header-search{
       display: block;
@@ -217,20 +289,7 @@
     }
   }
 
-  &-right {
-    flex-grow: 1;
-    text-align: right;
-    display: flex;
-    justify-content: flex-end;
-    margin: auto;
-    position: relative;
 
-
-    @include media($laptop_min) {
-      text-align: left;
-    }
-
-  }
 
 
   &-other-btn {
@@ -267,7 +326,7 @@
 
   .menu-toggle {
     display: none;
-    margin: auto 12PX auto 3PX;
+    margin: auto 3PX ;
     &_button {
       &.open{
         width: 26PX;
@@ -287,13 +346,9 @@
 
   }
 
-  .avatar {
-
-  }
-
   .search-toggle {
-    padding-right: 3px !important;
-    margin: auto 0;
+    //padding-right: 3px !important;
+    //margin: auto 0;
   }
 
   &-logo_noty {
@@ -354,11 +409,15 @@
   }
 
   .avatar {
-    width: 30px;
-    height: 30px;
+    width: 30PX;
+    height: 30PX;
     border-radius: 50%;
     overflow: hidden;
     margin-left: 15px;
+
+    @include media($laptop-min) {
+      margin-left: 5px;
+    }
 
     &_image {
       max-width: 100%;
@@ -366,16 +425,38 @@
   }
   .account-menu {
     transition: all 0.3s ease 0.1s;
-    overflow: hidden;
-    max-height: 320px;
+    overflow: visible;
+    //min-width: 260px;
+    //max-width: 320px;
+    width: 260px;
     z-index: 1;
-    &.hidden {
-      max-height: 0;
-    }
+
     position: absolute;
     top: 42px;
     right: -10px;
     background-color: $drop-menu-color;
+
+    @include media($laptop-min) {
+      position: fixed;
+      left: auto;
+      width: 100%;
+      //max-width: inherit;
+      height: auto;
+      top: 50px;
+      z-index: 99;
+      overflow: auto;
+      right: 0;
+    }
+    &.hidden {
+      max-height: 0;
+      overflow: hidden;
+      @include media($laptop-min) {
+        max-height: inherit;
+        right: -100%;
+        overflow: auto;
+        //transition: all .3s ease 0.1s;
+      }
+    }
     &_inner {
       border: 1px solid $menu_border_color;
     }
@@ -399,10 +480,40 @@
     }
     &_header {
       font-weight: bold;
-      margin: 10px;
+      margin: 5px 5px 10px;
       text-align: left;
       border-bottom: 1px solid $menu_border_color;
-      padding-bottom: 10px;
+      padding-bottom: 5px;
+      //max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 10px;
+
+      &-avatar {
+        width: 30PX;
+        height: 30PX;
+        margin: 0 5px 0 10px;
+        display: inline-block;
+        vertical-align: middle;
+        //background-color: $header_bg_up;
+
+        &-image {
+          display: block;
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+
+
+      }
     }
     &_last-item {
       border-bottom: 1px solid $menu_border_color;
