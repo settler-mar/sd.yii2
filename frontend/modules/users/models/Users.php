@@ -88,7 +88,6 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       ],
       [['waitModeration','traffType','show_balance'],'number'],
       ['url','string']
-
     ];
   }
 
@@ -642,6 +641,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
   public function getBonus_status_data()
   {
+    if(!$this->bonus_status)$this->bonus_status=0;
     $bs = $this->bonus_status;
     $Bonus_status_list = Yii::$app->params['dictionary']['bonus_status'];
     if (!isset($Bonus_status_list[$bs])) {
