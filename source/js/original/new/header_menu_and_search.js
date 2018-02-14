@@ -126,10 +126,13 @@ var headerActions = function () {
             accountMenuOpenTime = new Date();
             if (!menu.hasClass('hidden')) {
                 accountMenuTimeOut = setInterval(function () {
+                    if (window.innerWidth <= 1024) {
+                        clearInterval(accountMenuTimeOut);
+                    }
                     if (((new Date()) - accountMenuOpenTime) > 1000 * 7) {
                         menu.addClass('hidden');
                         clearInterval(accountMenuTimeOut);
-                        console.log(accountMenuTimeOut);
+                        //console.log(accountMenuTimeOut);
                     }
                 }, 1000);
             }
