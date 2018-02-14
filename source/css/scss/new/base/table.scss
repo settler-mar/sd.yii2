@@ -57,3 +57,52 @@ td.td {
     text-align: center;
   }
 }
+
+table.adaptive {
+  @include media($tablets) {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    tbody{
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .table-header {
+      display: none;
+    }
+
+    tr {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    td{
+      justify-content: stretch;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+
+      &:before{
+        content: attr(label);
+        width: 30%;
+        max-width: 130px;
+        min-width: 100px;
+        background-color: $table_th_bg;
+        color: $table_th_color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 4px;
+        min-height: 1.3rem;
+        margin: -4px;
+        margin-right: 8px;
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.store-points {
+  &__info {
+    width: 90%;
+    margin: 0 5% 20px 5%;
+    text-align: center;
+    padding: 0;
+  }
+
+  &__point-selects {
+    margin: 60px 0 20px;
+    //.select2-selection.select2-selection--single {
+    //  width: 100%;
+    //}
+  }
+
+  &__points {
+    padding: 0;
+
+    &_table {
+      width: 100%;
+      th,
+      td {
+        padding: 5px;
+        text-align: center;
+      }
+    }
+  }
+
+  &__store_time {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    span {
+      color: red;
+    }
+  }
+
+  &__map {
+    width: 90%;
+    margin: 0 5% 20px 5%;
+    height: 600px;
+  }
+}
