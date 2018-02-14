@@ -105,9 +105,6 @@ class AccountController extends Controller
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
     $status_id=Yii::$app->user->identity->loyalty_status;
 
-    $status_id = 1;
-
-
     $status = $statuses[$status_id];
 
     $total = Yii::$app->user->identity->balance['total'];

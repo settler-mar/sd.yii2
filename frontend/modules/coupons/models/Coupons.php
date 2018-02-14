@@ -45,9 +45,9 @@ class Coupons extends \yii\db\ActiveRecord
    * @var array
    */
   public static $sortvars = [
-    'visit' => ["title" => "Популярности", "title_mobile" => "По популярности"],
-    'date_start' => ["title" => "Новизне", "title_mobile" => "По новизне"],
-    'date_end' => ["title" => "Сроку действия", "title_mobile" => "По сроку действия", 'order' => 'DESC'],
+    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности"],
+    'date_start' => ["title" => "Новизне", "title_mobile" => "Новизне"],
+    'date_end' => ["title" => "Сроку действия", "title_mobile" => "Сроку действия", 'order' => 'DESC'],
   ];
 
   /**

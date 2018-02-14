@@ -54,11 +54,11 @@ class Stores extends \yii\db\ActiveRecord
    * @var array
    */
   public static $sortvars = [
-    'rating' => ["title" => "Популярности", "title_mobile" => "По популярности"],
-    'name' => ["title" => "Алфавиту", "title_mobile" => "По алфавиту", 'order' => 'ASC'],
-    'added' => ["title" => "Новизне", "title_mobile" => "По новизне"],
-    'cashback_percent' => ["title" => "%", "title_mobile" => "По % кэшбэка"],
-    'cashback_summ' => ["title" => "$", "title_mobile" => "По $ кэшбэка"],
+    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности"],
+    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
+    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
+    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
+    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
   ];
 
   /**

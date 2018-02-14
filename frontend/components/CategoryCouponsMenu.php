@@ -84,7 +84,7 @@ class CategoryCouponsMenu extends Widget
             }
             $out .='</li>';
         }
-        $out .= '</ul>';
+        $out .= '&nbsp;</ul>';
         return $out;
     }
 }

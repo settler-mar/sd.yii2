@@ -16,9 +16,10 @@
       //border: 10px solid #E69D86;
       width: 42%;
       padding: 10px;
+      box-sizing: border-box;
 
-      @include media($phones) {
-        width: 100%;
+      @include media($tablets) {
+        width: 90%;
       }
 
       &-bronze {
