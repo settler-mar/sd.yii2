@@ -1,10 +1,11 @@
 var headerActions = function () {
     var scrolledDown = false;
     var shadowedDown = false;
-    var accountMenuOpenTime = 0;
 
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
+        $('body').removeClass('no_scroll_account');
+        $('.account-menu').addClass('hidden');
         $('.header').toggleClass('header_open-menu');
         $('.drop-menu').removeClass('open').removeClass('close').find('li').removeClass('open').removeClass('close');
         if ($('.header').hasClass('header_open-menu')) {
@@ -17,6 +18,8 @@ var headerActions = function () {
 
     $('.search-toggle').click(function(e) {
         e.preventDefault();
+        $('body').removeClass('no_scroll_account');
+        $('.account-menu').addClass('hidden');
         $('.header').toggleClass('header-search-open');
         $('#autocomplete').fadeOut();
         if ($('.header').hasClass('header-search-open')) {
@@ -39,7 +42,9 @@ var headerActions = function () {
 
     $('.header-secondline_close').click(function(e){
         $('.header').removeClass('header_open-menu');
+        $('.account-menu').addClass('hidden');
         $('body').removeClass('no_scroll');
+        $('body').removeClass('no_scroll_account');
     });
 
     $('.header-upline').on('mouseover', function(e){
@@ -117,27 +122,37 @@ var headerActions = function () {
 
 
     var accountMenuTimeOut = null;
+    var accountMenuOpenTime = 0;
     $('.account-menu-toggle').click(function(e){
         e.preventDefault();
         var menu = $('.account-menu');
         if (menu) {
             clearInterval(accountMenuTimeOut);
-            menu.toggleClass('hidden');
-            accountMenuOpenTime = new Date();
-            if (!menu.hasClass('hidden')) {
+            if (menu.hasClass('hidden')) {
+                menu.removeClass('hidden');
+                if (window.innerWidth <= 1024) {
+                    $('body').addClass('no_scroll_account');
+                }
+
+                accountMenuOpenTime = new Date();
                 accountMenuTimeOut = setInterval(function () {
+
                     if (window.innerWidth <= 1024) {
                         clearInterval(accountMenuTimeOut);
                     }
-                    if (((new Date()) - accountMenuOpenTime) > 1000 * 7) {
+                    if ((new Date() - accountMenuOpenTime) > 1000 * 7) {
                         menu.addClass('hidden');
                         clearInterval(accountMenuTimeOut);
-                        //console.log(accountMenuTimeOut);
+                        $('body').removeClass('no_scroll_account');
                     }
+
                 }, 1000);
+
+            } else {
+                menu.addClass('hidden');
+                $('body').removeClass('no_scroll_account');
             }
         }
-
     });
 
     $('.catalog-categories-account_menu-header').on('mouseover', function(){

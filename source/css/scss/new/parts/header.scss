@@ -441,7 +441,8 @@
       left: auto;
       width: 100%;
       //max-width: inherit;
-      height: auto;
+      height: calc(100vh - 2.625rem - 3rem);
+      //height: auto;
       top: 50px;
       z-index: 99;
       overflow: auto;

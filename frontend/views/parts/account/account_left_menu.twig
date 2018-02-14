@@ -7,7 +7,9 @@
                 {{ get_menu_item({'href':'/account/affiliate', 'left-icon': 'dollar', 'title': t('account', 'menu_affiliate')})|raw }}
             {%  endif %}
         </li>
-        <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
+        {% if header != 1 %}
+            <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
+        {% endif %}
         <li class="overview users">
             {{ get_menu_item({
                 'href':'/account',
@@ -48,7 +50,9 @@
                 'left-icon':'bell-o'
             })|raw }}
         </li>
-        <li class="cd-label">{{ t('account', 'menu_extends')}}</li>
+        {% if header != 1 %}
+            <li class="cd-label">{{ t('account', 'menu_extends')}}</li>
+        {% endif %}
         <li class="help-icon fasicon has-children">
             {{ get_menu_item({
                 'href':'/account/support',
@@ -99,7 +103,9 @@
                 'left-icon': 'cogs'
             })|raw }}
         </li>
-        <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
+        {% if header != 1 %}
+            <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
+        {% endif %}
         <li class="action-btn">
             {{ get_menu_item({
                 'href':'/account/withdraw',
