@@ -1,158 +1,174 @@
 <?php
-$twigFunction=require (dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
-$twigFunction['translate']='\Yii::t';
+$twigFunction = require(dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
+$twigFunction['translate'] = '\Yii::t';
 
-include_once (__DIR__.'/start_param.php');
-$dict=require (__DIR__.'/dictionary.php');
+include_once(__DIR__ . '/start_param.php');
+$dict = require(__DIR__ . '/dictionary.php');
 
 $config = [
-  'name'=>'SecretDiscounter',
-  'sourceLanguage' => 'ru-dev',
-  'language' => defined('LANGUAGE')?LANGUAGE:'ru-RU',
-  'timeZone' => 'Europe/Moscow',
-  'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-  'components' => [
-    'formatter' => [
-      'dateFormat' => 'dd.MM.yyyy',
-      'decimalSeparator' => ',',
-      'thousandSeparator' => ' ',
-      'currencyCode' => 'RUB',
-    ],
-    'cache'=>[
-      'keyPrefix' => 'sd', // уникальный префикс ключей кэша
-    ],
-    'urlManager' => [
-      'class' => 'yii\web\UrlManager',
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
-      'enableStrictParsing' => true,
-      'rules' => [
-      ],
-    ],
-    'mailer'=>[
-      'viewPath' => '@common/mail',
-      'htmlLayout' => 'layouts/html',
-      'textLayout' => 'layouts/text',
-    ],
-    'authManager' => [
-      'class' => 'yii\rbac\DbManager',
-      //'cache' => 'yii\caching\FileCache',
-    ],
-    'sphinx' => [
-      'class' => 'yii\sphinx\Connection',
-      'dsn' => 'mysql:host=127.0.0.1;port=9306;',
-      'username' => '',
-      'password' => '',
-    ],
-    'assetManager' => [
-      'bundles' => [
-        //'yii\bootstrap\BootstrapAsset' => true,
-        //'yii\validators\ValidationAsset' => false,
-        //'yii\web\YiiAsset' => false,
-        //'yii\widgets\ActiveFormAsset' => false,
-        //'yii\bootstrap\BootstrapPluginAsset' => false,
-        //'yii\web\JqueryAsset' => false,
-        //'yii\authclient\widgets\AuthChoiceAsset' => false, //authchoice.js
-        //'yii\authclient\widgets\AuthChoiceStyleAsset' => false, //authchoice.css
-      ],
-      'linkAssets' => true,
-      'appendTimestamp' => true,
-    ],
-    'TwigString'=>[
-      'class'=>'common\components\TwigString',
-      'params'=>[
-        'cachePath' => '@runtime/Twig/cache',
-        'functions' => $twigFunction,
-      ],
-    ],
-    'help'=>[
-      'class'=>'common\components\Help',
-    ],
-    'view' => [
-      'class' => 'yii\web\View',
-      'defaultExtension' => 'twig',
-      'renderers' => [
-        'twig' => [
-          'class' => 'yii\twig\ViewRenderer',
-          'cachePath' => '@runtime/Twig/cache',
-          // Array of twig options:
-          'options' => YII_DEBUG?[
-            'debug' => true,
-            'auto_reload' => true,
-          ]:[
-            'auto_reload' => true,
-          ],
-          'globals' => [
-            'html' => '\yii\helpers\Html',
-            'url' => 'yii\helpers\Url',
-            'ActiveForm'=>'yii\bootstrap\ActiveForm',
-            'MultipleInput' => 'unclead\multipleinput\MultipleInput',
-            'MaskedInput' => 'yii\widgets\MaskedInput',
-          ],
-          'functions' => $twigFunction,
-          'uses' => ['yii\bootstrap'],
-          'extensions' => YII_DEBUG?[
-            '\Twig_Extension_Debug',
-            ]:[
+    'name' => 'SecretDiscounter',
+    'sourceLanguage' => 'ru-dev',
+    'language' => defined('LANGUAGE') ? LANGUAGE : 'ru-RU',
+    'timeZone' => 'Europe/Moscow',
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'RUB',
+        ],
+        'cache' => [
+            'keyPrefix' => 'sd', // уникальный префикс ключей кэша
+        ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'enableStrictParsing' => true,
+            'rules' => [
+            ],
+        ],
+        'mailer' => [
+            'viewPath' => '@common/mail',
+            'htmlLayout' => 'layouts/html',
+            'textLayout' => 'layouts/text',
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+          //'cache' => 'yii\caching\FileCache',
+        ],
+        'sphinx' => [
+            'class' => 'yii\sphinx\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+            'username' => '',
+            'password' => '',
+        ],
+        'assetManager' => [
+            'bundles' => [
+              //'yii\bootstrap\BootstrapAsset' => true,
+              //'yii\validators\ValidationAsset' => false,
+              //'yii\web\YiiAsset' => false,
+              //'yii\widgets\ActiveFormAsset' => false,
+              //'yii\bootstrap\BootstrapPluginAsset' => false,
+              //'yii\web\JqueryAsset' => false,
+              //'yii\authclient\widgets\AuthChoiceAsset' => false, //authchoice.js
+              //'yii\authclient\widgets\AuthChoiceStyleAsset' => false, //authchoice.css
+            ],
+            'linkAssets' => true,
+            'appendTimestamp' => true,
+        ],
+        'TwigString' => [
+            'class' => 'common\components\TwigString',
+            'params' => [
+                'cachePath' => '@runtime/Twig/cache',
+                'functions' => $twigFunction,
+            ],
+        ],
+        'help' => [
+            'class' => 'common\components\Help',
+        ],
+        'view' => [
+            'class' => 'yii\web\View',
+            'defaultExtension' => 'twig',
+            'renderers' => [
+                'twig' => [
+                    'class' => 'yii\twig\ViewRenderer',
+                    'cachePath' => '@runtime/Twig/cache',
+                  // Array of twig options:
+                    'options' => YII_DEBUG ? [
+                        'debug' => true,
+                        'auto_reload' => true,
+                    ] : [
+                        'auto_reload' => true,
+                    ],
+                    'globals' => [
+                        'html' => '\yii\helpers\Html',
+                        'url' => 'yii\helpers\Url',
+                        'ActiveForm' => 'yii\bootstrap\ActiveForm',
+                        'MultipleInput' => 'unclead\multipleinput\MultipleInput',
+                        'MaskedInput' => 'yii\widgets\MaskedInput',
+                    ],
+                    'functions' => $twigFunction,
+                    'uses' => ['yii\bootstrap'],
+                    'extensions' => YII_DEBUG ? [
+                        '\Twig_Extension_Debug',
+                    ] : [
+                    ]
+                ],
+            ],
+        ],
+        'log' => [
+            'traceLevel' => YII_LOG_LEVEL,
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                    'logFile' => 'log/' . date('Y/m/d') . '.log'
+                ],
+            ],
+        ],
+        'conversion' => [
+            'class' => 'common\components\Conversion',
+            'cache_duration' => 7200,
+            'options' => ["USD", "EUR", "UAH", "KZT"]
+        ],
+        'balanceCalc' => [
+            'class' => 'common\components\BalanceCalc',
+        ],
+        'logger' => [
+            'class' => 'common\components\Logger',
+        ],
+        'messageParcer' => [
+            'class' => 'common\components\MessageParser',
+        ],
+        'i18n' => [
+            'translations' => [
+                'account*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@frontend/language',
+                ],
+                'common*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@frontend/language',
+                ],
+                'dictionary*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@frontend/language',
+                ],
             ]
-        ],
-      ],
+        ]
+      //'db' => require __DIR__.'/db.php'
     ],
-    'log' => [
-      'traceLevel' => YII_LOG_LEVEL,
-      'targets' => [
-        [
-          'class' => 'yii\log\FileTarget',
-          'levels' => ['error', 'warning'],
-          'logFile' => 'log/'.date('Y/m/d').'.log'
-        ],
-      ],
-    ],
-    'conversion' => [
-        'class' => 'common\components\Conversion',
-        'cache_duration' => 7200,
-        'options' => ["USD", "EUR", "UAH", "KZT"]
-     ],
-    'balanceCalc' => [
-        'class' => 'common\components\BalanceCalc',
-     ],
-    'logger' => [
-        'class' => 'common\components\Logger',
-     ],
-    'messageParcer' => [
-        'class' => 'common\components\MessageParser',
-     ],
-    //'db' => require __DIR__.'/db.php'
-  ],
-  'params'=>[
-    'dictionary'=>$dict,
-  ]
+    'params' => [
+        'dictionary' => $dict,
+    ]
 ];
 
 if (YII_DEBUG) {
   // configuration adjustments for 'dev' environment
   $config['bootstrap'][] = 'debug';
   $config['modules']['debug'] = [
-    'class' => 'yii\debug\Module',
-    'allowedIPs' => ['*']
+      'class' => 'yii\debug\Module',
+      'allowedIPs' => ['*']
   ];
   $config['bootstrap'][] = 'gii';
   $config['modules']['gii'] = [
-    'class' => 'aayaresko\gii\Module',
-    'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*','82.202.204.89'],
-    'generators' => [ // здесь
-      /*'crud' => [ // название генератора
-        'class' => 'yii\gii\generators\crud\Generator', // класс генератора
-        'templates' => [ // настройки сторонних шаблонов
-          'myCrud' => '@app/myTemplatesGii/crud/admin', // имя_шаблона => путь_к_шаблону
-        ]
-      ]*/
-    ],
+      'class' => 'aayaresko\gii\Module',
+      'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*', '82.202.204.89'],
+      'generators' => [ // здесь
+        /*'crud' => [ // название генератора
+          'class' => 'yii\gii\generators\crud\Generator', // класс генератора
+          'templates' => [ // настройки сторонних шаблонов
+            'myCrud' => '@app/myTemplatesGii/crud/admin', // имя_шаблона => путь_к_шаблону
+          ]
+        ]*/
+      ],
   ];
   //Add kint
   $config['bootstrap'][] = 'kint';
   $config['modules']['kint'] = [
-    'class' => 'digitv\kint\Module',
+      'class' => 'digitv\kint\Module',
   ];
 }
 

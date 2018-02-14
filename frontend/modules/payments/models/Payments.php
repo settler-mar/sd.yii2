@@ -126,6 +126,8 @@ class Payments extends \yii\db\ActiveRecord
 
   public function beforeValidate()
   {
+    if(!$this->ref_bonus_id)$this->ref_bonus_id=0;
+
     if($this->isNewRecord) {
       //для оффлайн шопов с формы
       if ($this->scenario == 'offline') {

@@ -38,6 +38,7 @@ class TaskController extends Controller
     $pays = \Yii::$app->createController('payments');
 
     while ($period['end_date'] > 0) {
+      d($period['end_date']);
       if ($period['end_date'] - $period['start_date'] > 2592000) {
         $period['end_date'] = $period['start_date'] + 2592000;
       }

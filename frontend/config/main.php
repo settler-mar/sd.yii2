@@ -72,7 +72,7 @@ $config= [
           'class' => 'yii\i18n\PhpMessageSource',
           'basePath' => '@eauth/messages',
         ],
-        'account*' => [
+        /*'account*' => [
           'class' => 'yii\i18n\PhpMessageSource',
           'basePath' => '@app/language',
         ],
