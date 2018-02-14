@@ -203,6 +203,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
       }elseif(strtotime($this->birthday)>time()-5*356*24 * 60 * 60){
         $this->addError('birthday', Yii::t('account', 'birthday_biggest_error'));
+      }elseif (date('Y-m-d',strtotime($this->birthday))!=$this->birthday){
+        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
       }
     }
 
