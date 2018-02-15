@@ -171,6 +171,10 @@
     a.flex-start {
       justify-content: flex-start;
     }
+    &_inner {
+      display: flex;
+      justify-content: space-between;
+    }
 
   }
 
