@@ -37,6 +37,7 @@
           right: -100%;
           top: 0;
           border: 1px solid $menu_border_color;
+          z-index: 100;
         }
         &:hover {
           >ul {
