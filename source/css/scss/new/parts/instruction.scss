@@ -3,6 +3,7 @@
   &-list {
     margin-bottom: 5px;
   }
+
   &-item {
     text-align: center;
     flex-grow: 1;
@@ -11,16 +12,17 @@
     flex-shrink: 10;
     padding: 10px;
     margin-bottom: 10px;
-    @media print {
-      margin-bottom: 0;
-      text-align: center;
-    }
     min-height: 34px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 50% 50%;
     margin-left: 10px;
     margin-right: 10px;
+
+    @media print {
+      margin-bottom: 0;
+      text-align: center;
+    }
 
     &-230 {
       min-width: 220px;
@@ -32,8 +34,7 @@
       max-width: 160px;
     }
 
-
-    &-article{
+    &-article {
       margin-bottom: 30px;
       max-width: 21%;
 
@@ -80,13 +81,14 @@
     }
   }
 
-  &-article{
-    &-link{
+  &-article {
+    &-link {
       display: block;
       text-align: right;
       //margin: 10px 0;
       margin: 5PX 0 10PX;
       position: relative;
+
       &:before {
         display: block;
         content: " ";
@@ -102,12 +104,6 @@
   &-icon {
     fill: $instruction_color;
     stroke: $instruction_color;
-    @media print {
-      color: $print_icon_color  !important;
-      fill: $print_icon_color  !important;
-      stroke: $print_icon_color  !important;
-    }
-
     height: 90PX;
     width: 90PX;
     margin: auto;
@@ -120,6 +116,12 @@
     background-repeat: no-repeat;
     background-position: 50% 50%;
 
+    @media print {
+      color: $print_icon_color !important;
+      fill: $print_icon_color !important;
+      stroke: $print_icon_color !important;
+    }
+
     @include media_min($tablets) {
       margin-bottom: 28PX;
       width: 100%;
@@ -129,10 +131,15 @@
     @media print {
       margin-bottom: 10px;
     }
+
+    &-mini {
+      height: 60PX;
+      width: 60PX;
+    }
   }
 
   &-title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 10px;
     text-transform: uppercase;
@@ -142,7 +149,6 @@
       min-height: 30px;
     }
   }
-
 
   &-content {
     &-select {
@@ -218,7 +224,7 @@
     }
   }
 
-  &-status_line{
+  &-status_line {
     text-align: left;
     display: flex;
     justify-content: space-between;
@@ -227,13 +233,13 @@
     background: $header_color_gray;
     border-radius: 0 0 5px 5px;
 
-    &-item{
+    &-item {
       color: $gray_box_bg;
       fill: $gray_box_bg;
       stroke: $gray_box_bg;
     }
 
-    &-icon{
+    &-icon {
       height: 16px;
       width: 16px;
       margin: 0 3px;

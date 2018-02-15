@@ -2,6 +2,7 @@
 
 namespace frontend\modules\users\controllers;
 
+use frontend\modules\users\models\SetPasswordForm;
 use frontend\modules\users\models\UsersSocial;
 use Yii;
 use frontend\modules\users\models\Users;
@@ -155,6 +156,10 @@ class AccountController extends Controller
       ->where(['uid' => Yii::$app->user->id])
       ->one();
 
+    $user_pass = SetPasswordForm::find()
+        ->where(['uid' => Yii::$app->user->id])
+        ->one();
+
     $post = Yii::$app->request->post();
     if (
       Yii::$app->request->isPost &&
@@ -168,9 +173,14 @@ class AccountController extends Controller
       return $this->redirect('/account/settings');
     }
 
-    $user->old_password='';
-    $user->new_password='';
-    $user->r_new_password='';
+    if ($post && $user_pass->load($post) && $user_pass->save()) {
+      Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
+      return $this->redirect('/account/settings');
+    }
+
+    $user_pass->old_password='';
+    $user_pass->new_password='';
+    $user_pass->r_new_password='';
 
     $socials=UsersSocial::find()
       ->where(['user_id'=>$user->uid])
@@ -178,6 +188,7 @@ class AccountController extends Controller
 
     return $this->render('setting.twig', [
       'model' => $user,
+      'model_pas' => $user_pass,
       'socials'=> $socials,
       'MaskedInput_class'=>MaskedInput::class
     ]);
