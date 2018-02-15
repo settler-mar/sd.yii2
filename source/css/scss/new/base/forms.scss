@@ -212,6 +212,33 @@ td {
     margin-bottom: 36px;
   }
 
+  select {
+    text-indent: 0px;
+    text-overflow: '';
+    appearance: none !important;
+    padding-left: 67px;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    border: none;
+    font-weight: 400;
+    outline: 0;
+    font-size: 15px;
+    background-image: url('/images/arrow-down-select.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+  }
+
+  select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+    outline: 0;
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
+
   textarea {
     border-radius: 5px;
     border: solid 1px $form_input_border;

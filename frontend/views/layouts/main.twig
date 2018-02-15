@@ -84,6 +84,15 @@
       {% endif %}
     </div>
 
+    {%  if this.all_params.pre_footer %}
+      <section class="tablets_order-1 gray-box padding-box laptop_no_padding">
+        <div class="page-wrap">
+
+          {{ this.all_params.pre_footer | raw }}
+        </div>
+      </section>
+    {% endif %}
+
     {% if not params('pre_footer_hide') %}
       {% include 'base/pre_footer.twig' %}
     {% endif %}

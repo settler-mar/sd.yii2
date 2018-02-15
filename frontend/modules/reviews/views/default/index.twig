@@ -1,37 +1,39 @@
-{% include 'parts/breadcrumbs.twig' %}
-<section class="reviews section-padding">
-    <div class="container">
-        <div class="row">
-            <h1 class="reviews__header">Отзывы о нашем сервисе</h1>
-        <div>
-        {% if reviews|length > 0 %}
-        <div class="row reviews-list">
-            {% for review in reviews %}
-            <div class="col-sm-12 col-md-6 reviews-item">
-                <div class="comments">
-                    {% include 'parts/comment.twig' %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-            <div class="row ">
-                На данный момент отзывы о нашем сервисе отсутствуют. Будь первым!
-            </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="give-feedback">
-                    {% if user_id %}
-                    <a href="#reviews/send" class="btn btn-ghost btn-accent btn-revert ignore-hash ajaxFormOpen">Оставить отзыв</a>
-                    {% else %}
-                    Для того, чтобы иметь возможность оставлять отзывы, Вам нужно 
-                    <a href="#registration" rel="nofollow">зарегистрироваться</a> или <a href="#login" rel="nofollow">войти в свой аккаунт</a>. 
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+<section class="margin">
+  <h1 class="reviews__header">Отзывы о нашем сервисе</h1>
+
+  {% if reviews|length > 0 %}
+
+    <div class="flex-wrap flex-line">
+      {% set i=0 %}
+      {% set user_cashbak_hide=true %}
+      {% set comments_max_height=true %}
+      {% for review in reviews %}
+        {% set i=i+1 %}
+        {% set comment_hide = (6 < i) %}
+        {% include 'parts/comment.twig' %}
+      {% endfor %}
     </div>
+
+  {% else %}
+    На данный момент отзывы о нашем сервисе отсутствуют. Будь первым!
+  {% endif %}
+
+  <div class="margin">
+    {% include 'parts/pagination.twig' %}
+  </div>
+
+  <div class="align-center">
+    {% if user_id %}
+      <a href="#reviews/send" class="btn modals_open">Оставить
+        отзыв</a>
+    {% else %}
+      Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
+      <a href="#registration" class="modals_open" rel="nofollow">зарегистрироваться</a> или <a class="modals_open"
+                                                                                               href="#login"
+                                                                                               rel="nofollow">войти
+      в свой аккаунт</a>.
+    {% endif %}
+  </div>
+
+
 </section>
-{% include 'parts/popups/popup-givefeedback.twig' %}
-{% include 'parts/pagination.twig' %}

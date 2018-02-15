@@ -21,7 +21,8 @@ $print_icon_color: #666;
 
 $header_color_up: #ffffff;
 //$drop-menu-color: #fff;
-$drop-menu-color: #ffffF8;;
+$drop-menu-color: #ffffF8;
+;
 
 $header_color_gray: #9B9B9B;
 $header_color_news: #1EB1FC;
@@ -55,7 +56,7 @@ $paginate_button_hover_color: #FFF0F0;
 $paginate_button_active_color: #e6ae03;
 
 $account_notify_item_border: $menu_left_border_color;
-$account_notify_item_new: rgba($menu_border_color,0.3);
+$account_notify_item_new: rgba($menu_border_color, 0.3);
 
 $h2_line_color: $btn_base_bg;
 $h2_white_line_color: #fff;
@@ -76,7 +77,6 @@ $advantages_line_second_color: #000;
 
 $instruction_color: $btn_base_bg;
 $instruction_select_color: $btn_base_bg;
-
 
 /*shop*/
 $shop_bg: #f8f8f8;
@@ -115,13 +115,12 @@ $scroll_box_bg: #fff;
 $scroll_box_shadow: #000;
 
 /*table*/
-$table_bg:#eaeaea;
-$table_th_bg:$search_list_hover_color;
-$table_th_color:#fff;
-$table_2n_bg:#f6f6f5;
-$table_select_bg:$btn_base_bg;
-$table_select_2n_bg:#fde699;
-
+$table_bg: #eaeaea;
+$table_th_bg: $search_list_hover_color;
+$table_th_color: #fff;
+$table_2n_bg: #f6f6f5;
+$table_select_bg: $btn_base_bg;
+$table_select_2n_bg: #fde699;
 
 /*accordion*/
 $accordion_control_bg: $btn_base_bg;
@@ -130,14 +129,12 @@ $accordion_point: $accordion_control_bg;
 $accordion_content_border: #D2D6DE;
 $accordion_angle_color: $accordion_control_bg;
 
-
 /*footer*/
 $footer_bg: #121212;
 $footer_text_color: $table_select_2n_bg;
 $footer_text2_color: #fffefe;
 $footer_menu_title_color: #fffefe;
 $footer_link_color: #b6b6b6;
-
 
 /*form*/
 
@@ -218,7 +215,7 @@ $silver: #9D9D9B;
 $gold: #D58417;
 $platinum: #060606;
 $progress_line: #e4c84b;
-$progress_line_padding: rgba($progress_line,0.5);
+$progress_line_padding: rgba($progress_line, 0.5);
 $circle_bg: #D6D6D6;
 
 //account-notification

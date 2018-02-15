@@ -18,7 +18,7 @@
 
   {{ form.field(model, 'traffType',{
     'template' :
-    '{beginWrapper}<i class="fa fa-exchange"></i>{input}\n{endWrapper}\n{error}',
+    '{beginWrapper}<i>'~svg("exchange",'form-icon')~'</i>{input}\n{endWrapper}\n{error}',
   }).dropDownList(trafficTypeList,{
     'prompt':'Выберите тип трафика',
   }) | raw }}
@@ -26,22 +26,22 @@
 
   {{ form.field(model, 'url',{
     'template' :
-    '{beginWrapper}<i class="fa fa-link"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("link",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':'Ссылка на вашу площадку'}) | raw }}
 
   {{ form.field(model, 'email',{
     'template' :
-    '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).textInput({'placeholder':'Введите ваш e-mail'}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Придумайте пароль'}) | raw }}
 
   {{ form.field(model, 'password_repeat',{
     'template' :
-    '{beginWrapper}<i class="fa fa-lock"></i>{input}\n{endWrapper}\n{error}'
+    '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
 
   <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">Я принимаю условия <a href="/webmaster-terms" class="ignore-hash" style="text-decoration: underline;">Партнерского соглашения</a></div>

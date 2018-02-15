@@ -2,22 +2,32 @@
   &-content {
     display: flex;
     flex-direction: column;
-    &_center,&_top {
+
+    &_center, &_top {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: space-between;
+
       @include media($tablets) {
         flex-direction: column;
       }
+
       .faq-content_item {
         width: 45%;
+
         @include media($tablets) {
           width: 100%;
         }
       }
     }
+
     &_item {
-      padding: 0 20px 0 5px;
+      padding: 0 20px 0 20px;
+      margin: 0 1.5% 1.875rem;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 3px solid $reccomendations-item-border-color;
 
       &-head {
         display: flex;
@@ -26,6 +36,7 @@
         justify-content: flex-start;
         text-transform: uppercase;
       }
+
       &-icon {
         width: 40PX;
         height: 20PX;
@@ -34,10 +45,12 @@
         stroke: $faq_icon_color;
         fill: $faq_icon_color;
       }
+
       &-list {
         padding-left: 5px;
       }
     }
+
     &_header {
       width: 100%;
     }

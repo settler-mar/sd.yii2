@@ -32,6 +32,19 @@ class m180206_100248_meta_personal_coupon extends Migration
       //$meta->h1 = '{{ store.name }}: {{coupon.name}}{% if expired%} (завершившаяся акция){% endif %}';
       //$meta->description='Лучшее предложение – Промокод {{ store.name }} {%if store.local_name %}({{store.local_name}}) {% endif %} {{coupon.name}} + {{_check_charity(store.displayed_cashback)}}. Месяц Год. Успей купить со скидкой!{% if expired%} (завершившаяся акция).{% endif %}';
       $meta->save();
+
+      $meta = \frontend\modules\meta\models\Meta::findOne(['page' => 'webmaster-terms']);
+      $meta->content=str_replace('class="c1 ng-scope"','',$meta->content);
+      $meta->content=str_replace('class="c0 ng-scope"','',$meta->content);
+      $meta->content=str_replace('class="blck_h"','',$meta->content);
+      $meta->content=str_replace('<h2 ','<h2 class="title-no-line"',$meta->content);
+      $meta->save();
+
+
+      $meta = \frontend\modules\meta\models\Meta::findOne(['page' => 'offline']);
+      $meta->content='<h3>Просто покажите его кассиру, чтобы получить кэшбэк.&nbsp;<span style="color: #ff0000;">Код действует во всех партнерах SecretDiscounter.</span></h3>
+{{ _include(\'offline_share\') | raw}}';
+      $meta->save();
     }
 
     /**

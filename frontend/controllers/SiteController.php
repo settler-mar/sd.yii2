@@ -180,7 +180,7 @@ class SiteController extends SdController
       throw new HttpException(404 ,'User not found');
     }
 
-    $page['dopline']='{{_include(\'stores/instruction_offline\') | raw}}';
+    $page['pre_footer']='<h2>Как получить кэшбэк в оффлайне от SecretDiscounter?</h2>{{_include(\'stores/instruction_offline\') | raw}}';
     $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter?';
     $this->params['breadcrumbs'][] = $page['title'];
 
