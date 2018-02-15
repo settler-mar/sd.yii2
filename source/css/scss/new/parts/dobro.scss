@@ -15,9 +15,11 @@
 
 .dobro {
   &-head {
+    padding-top: 30px;
     background: url(/images/svg/heart-red.svg) no-repeat 50% 50%;
-    background-size: 150px;
-    min-height: 150px;
+    background-size: 225px;
+    min-height: 190px;
+    background-position: 50% 0;
 
     &_header1 {
       font-size: 30px;
@@ -115,8 +117,9 @@
       }
 
       &-logo img {
-        max-width: 95%;
-        margin-left: 4%;
+        max-width: 72%;
+        //margin-left: 4%;
+        margin: auto;
       }
 
       &-ruble svg {
