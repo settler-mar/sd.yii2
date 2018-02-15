@@ -30,6 +30,7 @@
 
       @include media($laptop_min) {
         width: 100%;
+
       }
 
       padding: 0;
@@ -275,6 +276,11 @@
 
           @include media($laptop-min) {
             display: flex;
+          }
+        }
+        >ul {
+          @include media($laptop-min) {
+            margin-bottom: 2px;
           }
         }
       }
