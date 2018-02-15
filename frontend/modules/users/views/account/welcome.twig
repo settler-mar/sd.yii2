@@ -86,7 +86,7 @@
     {% endif %}
     {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
         <div class="uniq-status">
-            {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'&nbsp;'~currencyIcon(app.params.valuta)})|raw }}
+            {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'&nbsp;%'})|raw }}
         </div>
     {% endif %}
 
