@@ -20,8 +20,17 @@
     margin: 0;
   }
 
-  .sign-up.popup-sign-up .sign-up-tagline{
-    width: 100%;
+
+  .sign-up.popup-sign-up {
+    width: 530px;
+
+    @include media($tablets) {
+      width: 90vw;
+    }
+
+    .sign-up-tagline {
+      width: 100%;
+    }
   }
 
   .form-group{
@@ -34,8 +43,8 @@
     transform: translate3d(0,-90px,0) rotate3d(0,1,0,90deg);
     transition: all 0.15s linear;
     transition-delay: 0s;
-    //min-width: 200px;
-    min-width: 530px;
+    min-width: 200px;
+    //min-width: 530px;
     min-height: 70px;
     max-width: 700px;
     box-sizing: border-box;
@@ -45,7 +54,7 @@
     }
 
     @include media($tablets) {
-      min-width:  90%;
+      //min-width:  90%;
     }
 
     .notify_title{
