@@ -124,6 +124,9 @@ $config= [
      'urlManager' => [
       'rules' => [
         'site/<action>'=>'404',
+        [ // обработка слэш в конце
+          'class' => 'frontend\components\SdUrlSlashEnd',
+        ],
         [ // обработка реферальных ссылок
           'class' => 'frontend\components\SdUrlPromo',
         ],
