@@ -90,7 +90,8 @@
             </div>
 
           <div class="avatar account-menu-toggle">
-          <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
+          {% set user_avatar = _checkAvatar(this.user.photo) %}
+          <a href="#"><img class="avatar_image" src="{{ user_avatar }}" alt="{{ this.user.name }}"></a>
           </div>
           {% include 'parts/account_menu.twig' %}
         {% endif %}

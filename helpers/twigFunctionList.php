@@ -485,7 +485,7 @@ $functionsList=[
   '_ddd'=>function ($params) {
     ddd($params);
   },
-  '_checkAvatar' => function($avatar, $techAvatar = '/images/no_ava.png') {
+  '_checkAvatar' => function($avatar, $techAvatar = '/images/no_ava_square.png') {
     if (!$avatar) {
         return $techAvatar;
     } elseif (strpos($avatar, 'http') !== false) {
