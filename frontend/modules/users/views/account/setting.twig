@@ -5,22 +5,21 @@
 
 
 <section class="settings margin">
-  {% set form = active_form_begin({
-  'id':'user_setting',
-  'layout' : 'horizontal',
-  'fieldConfig':{
-  'horizontalCssClasses':{
-  'wrapper':'form-input-group form-input-group-fl',
-  }
-  },
-  'options' : {
-  'enctype' : 'multipart/form-data',
-  'role' : 'form'
-  },
-  }) %}
-
   <div class="page-wrap-flex flex-2col">
     <div>
+      {% set form = active_form_begin({
+      'id':'user_setting',
+      'layout' : 'horizontal',
+      'fieldConfig':{
+      'horizontalCssClasses':{
+      'wrapper':'form-input-group form-input-group-fl',
+      }
+      },
+      'options' : {
+      'enctype' : 'multipart/form-data',
+      'role' : 'form'
+      },
+      }) %}
       <h3>{{ t('account', 'account_settings') }}</h3>
 
       <div class="form-group-s">
@@ -40,7 +39,10 @@
           'template' :
           '{beginWrapper}<i>'~svg("calendar_f",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
         }).widget(MaskedInput_class,{
-          'mask': '9999-99-99'
+          'mask': '99-99-9999',
+          'clientOptions' : {
+            'placeholder' : t('account', 'date_mask_text'),
+          },
         }) | raw }}
 
         {% if model.email_verified == 0 %}
@@ -86,24 +88,51 @@
                value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
         <label for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
       </div>
+
+      <div class="align-center">
+        <button type="submit" class="btn">{{ t('account', 'save_settings') }}</button>
+      </div>
+
+      {{ active_form_end() }}
+
     </div>
     <div>
+      {% set form = active_form_begin({
+      'id':'user_setting_password',
+      'layout' : 'horizontal',
+      'fieldConfig':{
+      'horizontalCssClasses':{
+      'wrapper':'form-input-group form-input-group-fl',
+      }
+      },
+      'options' : {
+      'enctype' : 'multipart/form-data',
+      'role' : 'form'
+      },
+      }) %}
       <h3>{{ t('account','password_change') }}</h3>
 
-      {{ form.field(model, 'old_password',{
+      {{ form.field(model_pas, 'old_password',{
         'template' :
         '{beginWrapper}<i>'~svg("unlock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-      }).passwordInput({'placeholder':t('account', 'password_old')}) | raw }}
+      }).passwordInput({
+        'placeholder':t('account', 'password_old'),
+      }) | raw }}
 
-      {{ form.field(model, 'new_password',{
+      {{ form.field(model_pas, 'new_password',{
         'template' :
         '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
       }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
 
-      {{ form.field(model, 'r_new_password',{
+      {{ form.field(model_pas, 'r_new_password',{
         'template' :
         '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
       }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
+      <div class="align-center">
+        <button type="submit" class="btn">{{ t('account', 'save_password') }}</button>
+      </div>
+
+      {{ active_form_end() }}
 
       <h3>{{ t('account', 'social_accounts') }}</h3>
 
@@ -154,11 +183,5 @@
 
     </div>
   </div>
-
-  <div class="align-center">
-    <button type="submit" class="btn">{{ t('account', 'save_settings') }}</button>
-  </div>
-
-  {{ active_form_end() }}
 
 </section>

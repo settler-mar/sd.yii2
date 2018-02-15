@@ -78,14 +78,20 @@ table.adaptive {
       display: flex;
       width: 100%;
       flex-direction: column;
+      margin-top: 5px;
+
+      &:first-child{
+        margin-top: 0px;
+      }
     }
 
     td{
       justify-content: stretch;
-      text-align: center;
+      text-align: left;
       display: flex;
       align-items: center;
-      padding: 4px;
+      padding: 4px 4px 4px 0;
+      white-space: unset;
 
       &:before{
         content: attr(label);
@@ -100,8 +106,11 @@ table.adaptive {
         flex-direction: column;
         padding: 4px;
         min-height: 1.3rem;
-        margin: -4px;
+        margin: -4px 0;
         margin-right: 8px;
+        height: 100%;
+        border-bottom: 6px solid $table_th_bg;
+        border-top: 6px solid $table_th_bg;
       }
     }
   }

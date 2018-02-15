@@ -14,6 +14,7 @@ class m180116_075912_new_slider extends Migration
     {
       $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
       $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+      $this->execute('UPDATE `cw_slider` SET `is_showed` = 0;');
       $this->dropColumn('cw_slider', 'description');
       $this->dropColumn('cw_slider', 'type');
       $this->dropColumn('cw_slider', 'image');
