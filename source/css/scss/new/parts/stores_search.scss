@@ -27,6 +27,9 @@
   &_wrap {
     margin: 0 auto;
     position: relative;
+    @include media($tablets) {
+      width: 90%;
+    }
   }
 
   &_form {
@@ -38,8 +41,12 @@
     border-radius: 4px;
     min-width: 320px;
 
+    @include media($tablets) {
+      min-width: 50px;
+    }
+
     @include media($phones) {
-      min-width: 90vw;
+      //min-width: 90vw;
       box-sizing: border-box;
     }
 
