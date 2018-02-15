@@ -83,16 +83,22 @@
 
                 {% if expired == 1 %}
                     <div class="coupons_buttons align-center">
-                        {% if counts.actual > 0 %}
-                            {% if current_store %}
-                                <a class="btn btn-transform coupons_buttons-margin" href="/coupons/expired"><span>Показать все завершившиеся акции ({{ counts_all.expired }})</span></a>
-                                <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}"><span>Новые промокоды этого магазина ({{ counts.actual }})</span></a>
-                            {% endif %}
-                            {% if current_category %}
-                                <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ current_category.route }}"><span>Новые промокоды этой категории ({{ counts.actual }})</span></a>
-                            {% endif %}
+                        {% if counts.actual > 0 and current_store %}
+                        <div class="coupons_buttons-top">
+                            <a class="btn btn-transform coupons_buttons-margin" href="/coupons/expired"><span>Показать все завершившиеся акции ({{ counts_all.expired }})</span></a>
+                        </div>
                         {% endif %}
-                        <a class="btn btn-transform " href="/coupons"><span>Новые промокоды всех магазинов ({{ total_all_coupons }})</span></a>
+                        <div class="coupons_buttons-bottom">
+                            {% if counts.actual > 0 %}
+                                {% if current_store %}
+                                    <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}"><span>Все промокоды этого магазина ({{ counts.actual }})</span></a>
+                                {% endif %}
+                                {% if current_category %}
+                                    <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}"><span>Все промокоды этой категории ({{ counts.actual }})</span></a>
+                                {% endif %}
+                            {% endif %}
+                            <a class="btn btn-transform  btn-round coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+                        </div>
                     </div>
                 {% endif %}
 
@@ -119,7 +125,7 @@
               {% endif %}
 
               {% if expired == null and counts.expired %}
-                <div class="coupons_buttons align-center margin">
+                <div class="coupons_buttons align-center">
                   {% if current_store %}
                     <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
                   {% elseif current_category %}
