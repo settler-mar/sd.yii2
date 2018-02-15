@@ -90,7 +90,8 @@
             </div>
 
           <div class="avatar account-menu-toggle">
-          <a href="#"><img class="avatar_image" src="{{ this.user.photo }}" alt="{{ this.user.name }}"></a>
+          {% set user_avatar = _checkAvatar(this.user.photo) %}
+          <a href="#"><img class="avatar_image" src="{{ user_avatar }}" alt="{{ this.user.name }}"></a>
           </div>
           {% include 'parts/account_menu.twig' %}
         {% endif %}
@@ -124,8 +125,8 @@
           </a>
 
           {{ use('frontend/components/CategoryMenu') }}
-          {% set online = app.params.stores_menu_separate ? 1 : null %}
-          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'online': online}) %}
+          {% set offline = app.params.stores_menu_separate ? 0 : null %}
+          {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': offline}) %}
           {% if category_tree %}
             {{category_tree|raw}}
           {% endif %}
@@ -150,7 +151,7 @@
               Оффлайн-магазины
               {{ svg('angle-down','menu_angle-down')|raw }}
             </a>
-            {% set category_tree = category_menu_widget({'show_hidden': false, 'online': 0 }) %}
+            {% set category_tree = category_menu_widget({'show_hidden': false, 'offline': 1 }) %}
             {% if category_tree %}
                 {{category_tree|raw}}
             {% endif %}

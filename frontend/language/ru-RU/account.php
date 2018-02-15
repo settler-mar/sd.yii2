@@ -207,7 +207,7 @@ return [
     'email_confirm_email_sent' => 'Вам отправлено письмо со ссылкой на подтверждение E-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
     'email_confirm_not_confirmed' => 'Ваш E-mail не подтверждён.',
     'user_loyalty_status_set' => 'Вам присвоен статус',
-    'user_loyalty_reg_status' => 'Вам будет присвоен пожизненный премиум аккаунт после <a href="#registration" class="registration">регистрации</a>.',
+    'user_loyalty_reg_status' => 'Вам будет присвоен пожизненный премиум аккаунт после <a href="#registration" class="registration modals_open">регистрации</a>.',
     'birthday_format_error'=>'Неверный формат ввода даты',
     'birthday_biggest_error'=>'Дата слишком большая',
 ];

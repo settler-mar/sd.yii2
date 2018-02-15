@@ -131,27 +131,27 @@ class CategoriesStores extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function activeList($online = null,$where=false,$as_array=false)
+  public static function activeList($offline = null,$where=false,$as_array=false)
   {
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $casheName = 'categories_stores' . ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''));
+    $casheName = 'categories_stores' . ($offline == 1 ? '_offline' : ($offline === 0 ? '_offline' : ''));
 
     if($where){
       $casheName .= '_'.str_replace(' ','_',$where);
     }
 
-    $data = $cache->getOrSet($casheName, function () use ($online,$where,$as_array) {
+    $data = $cache->getOrSet($casheName, function () use ($offline,$where,$as_array) {
       $categories = self::find()
         ->from([self::tableName() . ' ccs'])
         ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
         ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
         ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
-      if ($online !== null) {
-        $categories->where(['cws.is_offline' => ($online == 1 ? 0 : 1)]);
+      if ($offline == 1) {
+        $categories->where(['cws.is_offline' => 1]);
       }
       if ($where) {
         $categories
@@ -178,7 +178,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
   public static function tree($currentCategory = null, $options = [])
   {
     $showHidden = isset($options['show_hidden']) ? $options['show_hidden'] : true;
-    $online = isset($options['online']) ? $options['online'] : null;
+    $offline = isset($options['offline']) ? $options['offline'] : null;
     $extItems = isset($options['ext_items']) ? $options['ext_items'] : [];
     $as_array = isset($options['as_array']) ? $options['as_array'] : false;
     $where = isset($options['where']) ? $options['where'] : false;
@@ -193,13 +193,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $cacheName .= '_'.str_replace(' ','_',$where);
     }else{
       $cacheName .= ($showHidden == false ? '_hide_hidden' : '') .
-          ($online == 1 ? '_online' : ($online === 0 ? '_offline' : ''))
+          ($offline == 1 ? '_offline' : ($offline === 0 ? '_online' : ''))
           . (Yii::$app->user->isGuest ? '' : '_user_' . Yii::$app->user->id);
     }
     $cats = $cache->getOrSet(
       $cacheName,
-      function () use ($currentCategory, $showHidden, $online,$as_array,$where) {
-        $categories = self::activeList($online,$where,$as_array);
+      function () use ($currentCategory, $showHidden, $offline, $as_array, $where) {
+        $categories = self::activeList($offline, $where, $as_array);
 
         if($as_array){
           return $categories;
@@ -273,7 +273,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       return 0;
     });
 
-    return self::buildCategoriesTree($cats, 0, $currentCategory);
+    return self::buildCategoriesTree($cats, 0, $currentCategory, $offline);
   }
 
   /**
@@ -316,7 +316,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
    * @param null $currentCategory
    * @return null|string
    */
-  private static function buildCategoriesTree($cats, $parent_id = 0, $currentCategoryId = null)
+  private static function buildCategoriesTree($cats, $parent_id = 0, $currentCategoryId = null, $offline = null)
   {
     if (is_array($cats) and isset($cats[$parent_id])) {
 
@@ -382,14 +382,21 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $itemClass='';
         }
         $tree .= '<li '.$itemClass . '>';
+        if ($offline === 1) {
+            $onlineLink = '/offline';
+        } elseif ($offline === 0) {
+            $onlineLink = '/online';
+        } else {
+            $onlineLink = '';
+        }
 
         if ($title) {
           $tree .= '<span ' . $c . '">' . $cat['name'] . "&nbsp;(" . $cat['count'] . ")". $arrow . "</span>";
         } else {
-          $tree .= "<a href='" . $catURL . "' " . $c . ">" . $cat['name'] . "&nbsp;(" . $cat['count'] . ") ".
+          $tree .= "<a href='" . $catURL . $onlineLink . "' " . $c .  ">" . $cat['name'] . "&nbsp;(" . $cat['count'] . ") ".
             $arrow . "</a>";
         }
-        $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId) : '');
+        $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId, $offline) : '');
         $tree .= "</li>";
       }
       $tree .= "</ul>";

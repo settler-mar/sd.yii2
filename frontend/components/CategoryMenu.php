@@ -9,7 +9,7 @@ use frontend\modules\stores\models\CategoriesStores;
 class CategoryMenu extends Widget
 {
     public $show_hidden = true;//показывать ли в меню скрытые категории
-    public $online = null;//1 онлайн, 0 оффлайн
+    public $offline = null;//1 оффлайн, 0 online, null - все
     public $ext_items = '';//дополнителные пункты меню через запятую 'favorite,all_shops'
     public $as_array = false; //выводить ввиде массива
     public $where = false; //Where для запроса. Если задан то выборка только исходя их него
@@ -27,7 +27,7 @@ class CategoryMenu extends Widget
                 null;
         return CategoriesStores::tree($categoryId, [
           'show_hidden' => $this->show_hidden,
-          'online' => $this->online,
+          'offline' => $this->offline,
           'ext_items' => explode(',', $this->ext_items),
           'as_array' => $this->as_array,
           'where' => $this->where,

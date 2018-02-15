@@ -52,7 +52,7 @@ $( document ).ready(function() {
         self.find("svg").removeClass("spin").addClass("svg-no-fill");
       }
 
-    },'json').item_iconil(function() {
+    },'json').fail(function() {
       self.removeClass('disabled');
       notification.notifi({message:"<b>Технические работы!</b><br>В данный момент времени" +
       " произведённое действие невозможно. Попробуйте позже." +

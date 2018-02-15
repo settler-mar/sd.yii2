@@ -63,16 +63,19 @@
           {% include('parts/coupon_ended_list.twig') %}
         {% endif %}
 
-        <div class="coupons_buttons align-center margin">
+        <div class="coupons_buttons align-center">
           {% if counts.expired > 0 %}
-            <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Показать все завершившиеся акции ({{ counts.expired}})</span></a>
+            <div class="coupons_buttons-top">
+                <a class="btn btn-transform coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}/expired"><span>Показать все завершившиеся акции ({{ counts.expired}})</span></a>
+            </div>
           {% endif %}
+          <div class="coupons_buttons-bottom">
+            {% if counts.actual > 0 %}
+              <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
+            {% endif %}
 
-          {% if counts.actual > 0 %}
-            <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons/{{ store.routeUrl }}"><span>Все промокоды этого магазина ({{ total_v }})</span></a>
-          {% endif %}
-
-          <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+            <a class="btn btn-transform btn-round coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+          </div>
         </div>
 
       </div>
