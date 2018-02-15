@@ -176,6 +176,7 @@ td {
     width: 100%;
     display: block;
     text-align: center;
+    box-sizing: border-box;
 
     &.delete {
       display: inline-block;
@@ -208,7 +209,7 @@ td {
   margin-bottom: 15px;
 
   &-s {
-    margin-bottom: 20px;
+    margin-bottom: 36px;
   }
 
   textarea {
@@ -235,7 +236,7 @@ td {
   text-align: left;
   position: relative;
 
-  &-fl{
+  &-fl {
     width: 100%;
   }
 
@@ -304,7 +305,16 @@ td {
   &-title {
     display: block;
     text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
+}
+
+.radio-opacity {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  position: absolute;
 }
 
 .help-block {
@@ -318,14 +328,14 @@ td {
 input[type=radio] {
   & + label {
     position: relative;
-    padding-left: 10px;
+    padding-left: 27px;
     padding-right: 30px;
 
     &:before {
       content: '';
       position: absolute;
       top: -2PX;
-      left: -17px;
+      left: 0px;
       width: 22px;
       height: 22PX;
       border: 1px solid #CDD1DA;
@@ -337,7 +347,7 @@ input[type=radio] {
       content: '';
       position: absolute;
       top: 4PX;
-      left: -11px;
+      left: 6px;
       width: 12px;
       height: 12PX;
       border-radius: 50%;

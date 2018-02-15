@@ -306,6 +306,9 @@ section {
 svg.svg-no-fill{
   fill: none;
 }
+svg.svg-no-stroke{
+  stroke-width: 0;
+}
 
 .gray-box{
   background-color: $gray_box_bg;
@@ -676,5 +679,4 @@ input.link {
 @import "account";
 @import "parts/menu_account";
 @import "external/daterangepicker";
-
-
+@import "parts/store_points";

@@ -15,6 +15,18 @@
     color: $btn_base_dark_color;
   }
 
+  &-black {
+    background: $btn_base_black_bg;
+    border-color: $btn_base_bg;
+    color: $btn_base_bg;
+    //color: $btn_base_black_color;
+    &:hover {
+      background: $btn-base_bg;
+      border-color: $btn_base_dark_bg;
+      color: $btn_base_dark_bg;
+    }
+  }
+
   &-transform {
     background: transparent;
 
@@ -94,16 +106,9 @@
     margin-bottom: 7px;
   }
 
-  &-black {
-    background: $btn_base_black_bg;
-    border-color: $btn_base_bg;
-    color: $btn_base_bg;
-    //color: $btn_base_black_color;
-    &:hover {
-      background: $btn-base_bg;
-      border-color: $btn_base_dark_bg;
-      color: $btn_base_dark_bg;
-    }
+  &-full_width{
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

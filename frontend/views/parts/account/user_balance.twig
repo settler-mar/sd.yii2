@@ -1,36 +1,36 @@
 {% set curr = currencyIcon(app.params.valuta) %}
 
 <section class="account-balance">
-  <div class="account-balance-top">
-
-      {% if this.user_id %}
-          <div class="account-balance-block">
-            {{ t('account', 'user_id') }}:
-            <span>{{ this.user_id }}</span>
-          </div>
-      {% endif %}
-      <div class="account-balance-block">
-        {{ t('account', 'user_balance') }}:
-        <span class="account-balance-confirm">{{ _nf(this.balance.current)|raw }}&nbsp{{ curr|raw }}</span>
-      </div>
-      <div class="account-balance-block">
-        {{ t('account', 'user_balance_in_waiting') }}:
-        <span class="account-balance-pending">{{ _nf(this.balance.pending)|raw }}&nbsp{{ curr|raw }}</span>
-      </div>
-      <div class="account-balance-block">
-        {{ t('account', 'user_balance_charity') }}:
-        <span class="account-balance-charity">{{ _nf(this.balance.charity)|raw }}&nbsp;{{ curr|raw }} </span>
-      </div>
-  </div>
-  <div class="account-balance-bottom">
 
 
-    {% if show_payment_link %}
-      <div class="history hpayments"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
-    {% endif %}
+  {% if this.user_id %}
     <div class="account-balance-block">
-      <a href="/account/dobro/transfer" class="btn btn-mini btn-red">{{ t('common', 'charity') }}</a>
+      {{ t('account', 'user_id') }}:
+      <span>{{ this.user_id }}</span>
     </div>
+  {% endif %}
+
+  <div class="account-balance-block">
+    {{ t('account', 'user_balance') }}:
+    <span class="account-balance-confirm">{{ _nf(this.balance.current)|raw }}&nbsp{{ curr|raw }}</span>
   </div>
+  <div class="account-balance-block">
+    {{ t('account', 'user_balance_in_waiting') }}:
+    <span class="account-balance-pending">{{ _nf(this.balance.pending)|raw }}&nbsp{{ curr|raw }}</span>
+  </div>
+  <div class="account-balance-block">
+    {{ t('account', 'user_balance_charity') }}:
+    <span class="account-balance-charity">{{ _nf(this.balance.charity)|raw }}&nbsp;{{ curr|raw }} </span>
+  </div>
+
+
+  {% if show_payment_link %}
+    <div class="account-balance-block account-balance-block-link"><a href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
+  {% endif %}
+
+  <div class="account-balance-block account-balance-block-btn">
+    <a href="/account/dobro/transfer" class="btn btn-mini btn-red">{{ t('common', 'charity') }}</a>
+  </div>
+
 
 </section>

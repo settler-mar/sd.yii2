@@ -3,53 +3,55 @@ function ajaxForm(els) {
   var defaults = {
     error_class: '.has-error'
   };
-  var last_post=false;
+  var last_post = false;
 
-  function onPost(post){
+  function onPost(post) {
     last_post = +new Date();
     //console.log(post, this);
-    var data=this;
-    var form=data.form;
-    var wrap=data.wrap;
+    var data = this;
+    var form = data.form;
+    var wrap = data.wrap;
 
     if (post.render) {
-        post.notyfy_class = "notify_white";
-        notification.alert(post);
+      post.notyfy_class = "notify_white";
+      notification.alert(post);
     } else {
-        wrap.removeClass('loading');
-        form.removeClass('loading');
-        if(post.html) {
-          wrap.html(post.html);
-          ajaxForm(wrap);
-        }else{
-          if(!post.error) {
-            form.removeClass('loading');
-            form.find('input[type=text],textarea').val('')
-          }
+      wrap.removeClass('loading');
+      form.removeClass('loading');
+      if (post.html) {
+        wrap.html(post.html);
+        ajaxForm(wrap);
+      } else {
+        if (!post.error) {
+          form.removeClass('loading');
+          form.find('input[type=text],textarea').val('')
         }
+      }
     }
     if (typeof post.error === "object") {
-        for (var index in post.error) {
-            notification.notifi({
-                'type':'err',
-                'title': 'Ошибка',
-                'message': post.error[index]
-            });
-        }
-    } else if (Array.isArray(post.error)){
-        for (var i=0; i<post.error.length; i++) {
-            notification.notifi({
-                'type':'err',
-                'title': 'Ошибка',
-                'message': post.error[i]
-            });
-        }
-    } else {
+      for (var index in post.error) {
         notification.notifi({
-            'type': post.error === false ? 'success' : 'err',
-            'title': post.error === false ? 'Успешно' : 'Ошибка',
-            'message': post.message ? post.message : post.error
+          'type': 'err',
+          'title': 'Ошибка',
+          'message': post.error[index]
         });
+      }
+    } else if (Array.isArray(post.error)) {
+      for (var i = 0; i < post.error.length; i++) {
+        notification.notifi({
+          'type': 'err',
+          'title': 'Ошибка',
+          'message': post.error[i]
+        });
+      }
+    } else {
+      if (post.error || post.message) {
+        notification.notifi({
+          'type': post.error === false ? 'success' : 'err',
+          'title': post.error === false ? 'Успешно' : 'Ошибка',
+          'message': post.message ? post.message : post.error
+        });
+      }
     }
     //
     // notification.notifi({
@@ -59,11 +61,11 @@ function ajaxForm(els) {
     // });
   }
 
-  function onFail(){
+  function onFail() {
     last_post = +new Date();
-    var data=this;
-    var form=data.form;
-    var wrap=data.wrap;
+    var data = this;
+    var form = data.form;
+    var wrap = data.wrap;
     wrap.removeClass('loading');
     wrap.html('<h3>Упс... Возникла непредвиденная ошибка<h3>' +
       '<p>Часто это происходит в случае, если вы несколько раз подряд неверно ввели свои учетные данные. Но возможны и другие причины. В любом случае не расстраивайтесь и просто обратитесь к нашему оператору службы поддержки.</p><br>' +
@@ -72,35 +74,35 @@ function ajaxForm(els) {
 
   }
 
-  function onSubmit(e){
+  function onSubmit(e) {
     e.preventDefault();
     //e.stopImmediatePropagation();
     //e.stopPropagation();
 
     var currentTimeMillis = +new Date();
-    if(currentTimeMillis-last_post<1000*2){
+    if (currentTimeMillis - last_post < 1000 * 2) {
       return false;
     }
 
     last_post = currentTimeMillis;
-    var data=this;
-    var form=data.form;
-    var wrap=data.wrap;
-    var isValid=true;
+    var data = this;
+    var form = data.form;
+    var wrap = data.wrap;
+    var isValid = true;
 
     //init(wrap);
 
-    if(form.yiiActiveForm){
+    if (form.yiiActiveForm) {
       var d = form.data('yiiActiveForm');
-      if(d) {
-        d.validated=true;
-        form.data('yiiActiveForm',d);
+      if (d) {
+        d.validated = true;
+        form.data('yiiActiveForm', d);
         form.yiiActiveForm('validate');
         isValid = d.validated;
       }
     }
 
-    isValid=isValid && (form.find(data.param.error_class).length==0);
+    isValid = isValid && (form.find(data.param.error_class).length == 0);
 
     if (!isValid) {
       return false;
@@ -109,14 +111,14 @@ function ajaxForm(els) {
       e.stopImmediatePropagation();
       e.stopPropagation();
 
-      var required=form.find('input.required');
+      var required = form.find('input.required');
 
-      for(i=0;i<required.length;i++){
+      for (i = 0; i < required.length; i++) {
         var helpBlock = required.eq(i).attr('type') == 'hidden' ? required.eq(i).next('.help-block') :
-            required.eq(i).closest('.form-input-group').next('.help-block');
+          required.eq(i).closest('.form-input-group').next('.help-block');
         var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : 'Необходимо заполнить';
 
-        if(required.eq(i).val().length<1){
+        if (required.eq(i).val().length < 1) {
           helpBlock.html(helpMessage);
           isValid = false;
         } else {
@@ -128,14 +130,14 @@ function ajaxForm(els) {
       }
     }
 
-    if(!form.serializeObject)addSRO();
+    if (!form.serializeObject)addSRO();
 
     var postData = form.serializeObject();
     form.addClass('loading');
     //form.html('');
     //wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
 
-    data.url+=(data.url.indexOf('?')>0?'&':'?')+'rc='+Math.random();
+    data.url += (data.url.indexOf('?') > 0 ? '&' : '?') + 'rc=' + Math.random();
     console.log(data.url);
 
     $.post(
@@ -148,15 +150,15 @@ function ajaxForm(els) {
     return false;
   }
 
-  function init(wrap){
-    form=wrap.find('form');
-    data={
-      form:form,
-      param:defaults,
-      wrap:wrap
+  function init(wrap) {
+    form = wrap.find('form');
+    data = {
+      form: form,
+      param: defaults,
+      wrap: wrap
     };
-    data.url=form.attr('action') || location.href;
-    data.method= form.attr('method') || 'post';
+    data.url = form.attr('action') || location.href;
+    data.method = form.attr('method') || 'post';
     form.unbind('submit');
     //form.off('submit');
     form.on('submit', onSubmit.bind(data));
@@ -167,12 +169,12 @@ function ajaxForm(els) {
     .removeAttr('required');
 
 
-  for(var i=0;i<els.length;i++){
+  for (var i = 0; i < els.length; i++) {
     init(els.eq(i));
   }
 }
 
-function addSRO(){
+function addSRO() {
   $.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();

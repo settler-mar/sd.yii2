@@ -1,11 +1,11 @@
 {% include('parts/account/user_balance.twig') %}
 
-<section class="support account-padding ajax_form">
+<section class="support account-padding ajax_form margin">
 
   {{ _constant('account_support')|raw }}
 
   <form action="/account/support" method="post" role="form" name="support-form">
-    <div>
+    <div class="form-group-s">
       <div class="form-input-group">
         <i>{{ svg("envelope",'form-icon')|raw }}</i>
         <input autocomplete="off" name="title" type="text"

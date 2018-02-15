@@ -59,15 +59,12 @@ gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
 //сервер и слежение -
 gulp.task('default',['server']);
 
-gulp.task('js',['jscommon', 'jsaccount', 'jsadmin', 'js_new']);
+gulp.task('js',['jscommon', 'jsadmin', 'js_new']);
 
-gulp.task('css', ['csscommon', 'cssaccount', 'cssadmin', 'cssnotemp', 'css_new']);
+gulp.task('css', ['csscommon', 'cssadmin', 'cssnotemp', 'css_new']);
 
 gulp.task('csscommon', function(){
   return compileCss('/scss/main.scss', paths.app.css)
-});
-gulp.task('cssaccount',  function(){
-  return compileCss('/scss/account/account.scss', paths.app.css + '/account')
 });
 gulp.task('cssadmin',  function() {
   return compileCss('/scss/admin/admin.scss', paths.app.css + '/admin')
@@ -109,27 +106,6 @@ gulp.task('jscommon', compileJs([
         paths.source.js+'/original/language.js',
         paths.source.js+'/original/my.js'
     ], paths.app.js)
-);
-
-gulp.task('jsaccount', compileJs([
-        //paths.source.js+'/external/account/jquery-2.1.4.js',
-        paths.source.js+'/external/account/jquery.menu-aim.js',
-        paths.source.js+'/external/account/circles.min.js',
-        paths.source.js+'/external/account/datepicker.js',
-        paths.source.js+'/external/jquery.noty.packaged.min.js',
-        paths.source.js+'/external/account/main.js',
-        paths.source.js+'/external/animo.js',
-        paths.source.js+'/external/jquery.mockjax.js',
-        paths.source.js+'/external/jquery.autocomplete.js',
-        paths.source.js+'/original/account/main.js',
-        paths.source.js+'/original/notification.js',
-        paths.source.js+'/original/admin/ajax_remove.js',
-        paths.source.js+'/original/language.js',
-        paths.source.js+'/original/new/favorites.js',
-        paths.source.js+'/external/tipso.min.js',
-        paths.source.js+'/original/new/tooltip.js',
-        paths.source.js+'/original/for_all.js'
-    ], paths.app.js + '/account')
 );
 
 
@@ -199,7 +175,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/img.js',
         paths.source.js+'/original/new/parents_open_windows.js',
         paths.source.js+'/original/new/forms.js',
-        paths.source.js+'/original/new/cookie.js'
+        paths.source.js+'/original/new/cookie.js',
+        paths.source.js+'/original/new/table.js',
     ], paths.app.js+'/new')
 );
 

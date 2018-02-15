@@ -1,8 +1,8 @@
 $desktop:1900px;
 $laptop:1200px;
 $laptop_min:1024px; //резервная точка
-$tablets:768px;
-$phones:380px;
+$tablets: 768px;
+$phones: 380px;
 
 @mixin media($width) {
   @media (max-width: $width) {

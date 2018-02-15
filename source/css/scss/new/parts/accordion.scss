@@ -1,11 +1,12 @@
 .accordion {
 
-  &-wrap{
+  &-wrap {
     position: relative;
     @include media_min($laptop) {
       padding: 0 40px;
     }
   }
+
   margin-bottom: 3px;
   //max-width: 935px;
   &-slim {
@@ -14,11 +15,11 @@
         background: transparent;
         width: 350px;
 
-        h1,h2,h3,h4,h5,h6{
+        h1, h2, h3, h4, h5, h6 {
           font-weight: 600;
         }
 
-        &:before{
+        &:before {
           content: '';
           width: 0px;
           height: 0px;
@@ -35,16 +36,16 @@
       }
     }
 
-    &.last-open{
+    &.last-open {
       @include media_min($laptop) {
         .accordion-title {
           position: relative;
 
-          h1,h2,h3,h4,h5,h6{
+          h1, h2, h3, h4, h5, h6 {
             color: $accordion_point;
           }
 
-          &:before{
+          &:before {
             background-color: $accordion_point;
           }
 
@@ -55,21 +56,21 @@
       }
     }
 
-    .accordion-content{
+    .accordion-content {
       @include media_min($laptop) {
         position: absolute;
         right: 0;
         top: 0;
-        border:0;
+        border: 0;
         border: 0 !important;
         width: calc(100% - 420px);
         padding-top: 3px !important;
         padding-right: 20px !important;
-        margin-bottom: 0!important;
+        margin-bottom: 0 !important;
 
-        &_last-open{
+        &_last-open {
           display: block !important;
-          width: calc(100% - 420px)!important;
+          width: calc(100% - 420px) !important;
           height: 100% !important;
           opacity: 1 !important;
         }
@@ -77,12 +78,11 @@
     }
   }
 
-
-  + p{
+  + p {
     padding-top: 7px;
   }
 
-  &-content{
+  &-content {
     color: #000;
     //max-height: 0;
     display: none;
@@ -90,7 +90,7 @@
     font-size: 16px;
     line-height: 24px;
   }
-  &-control{
+  &-control {
     text-align: right;
 
     a {
@@ -99,7 +99,7 @@
     }
 
     /***поправить стили в магазине****/
-    .icon{
+    .icon {
       margin-left: 3px;
       display: inline-block;
       font: normal normal normal 14px/1 FontAwesome;
@@ -117,7 +117,7 @@
       transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
     }
 
-    h1,h2,h3,h4,h5,h6{
+    h1, h2, h3, h4, h5, h6 {
       display: inline-block;
       margin: 0;
       padding: 0;
@@ -140,10 +140,10 @@
       background: $accordion_control_tablets_bg;
     }
 
-    &:after{
+    &:after {
       content: "›";
       //transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
-      transform: rotate3d(0,0,1,90deg) translate3d(0, 0, 0);
+      transform: rotate3d(0, 0, 1, 90deg) translate3d(0, 0, 0);
       width: 20px;
       display: inline-block;
       //text-align: center;
@@ -159,7 +159,7 @@
       }
     }
 
-    +.accordion-content{
+    + .accordion-content {
       margin-bottom: 20px;
       padding: 10px;
       border: 1px solid $accordion_content_border;
@@ -171,65 +171,70 @@
     }
   }
 
-  .angle-down:before{
+  .angle-down:before {
     content: "Подробнее";
     color: $accordion_angle_color;
   }
-  .angle-up{
+
+  .angle-up {
     display: none;
-    &:before{
+
+    &:before {
       content: "Скрыть";
       color: $accordion_angle_color;
     }
   }
-  &.open{
+
+  &.open {
     .accordion-title {
       border-radius: 3px 3px 0 0;
 
-      &:after{
+      &:after {
         content: "›";
         //transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
-        transform: rotate3d(0,0,1,-90deg) translate3d(0px, -2px, 0);
+        transform: rotate3d(0, 0, 1, -90deg) translate3d(0px, -2px, 0);
       }
     }
-    .angle-down{
+
+    .angle-down {
       display: none;
     }
-    .angle-up{
+
+    .angle-up {
       display: inline-block;
     }
   }
 
-
-  &_pc_off{
+  &_pc_off {
     @include media_min($tablets - 1) {
       margin-bottom: 0;
 
-      .accordion-content{
-        display: block!important;
-        height: auto!important;
-        width: auto!important;
-        max-height: none!important;
-        max-width: none!important;
-        opacity: 1!important;
+      .accordion-content {
+        display: block !important;
+        height: auto !important;
+        width: auto !important;
+        max-height: none !important;
+        max-width: none !important;
+        opacity: 1 !important;
         padding: 0 !important;
         margin-bottom: 0;
         border: 0;
       }
 
-      h2.accordion-title{
+      h2.accordion-title {
         font-size: 2em;
         margin-bottom: 0;
         text-align: center;
       }
 
-      .accordion-title{
+      .accordion-title {
         background: transparent;
         font-size: 1.5em;
       }
 
-      h2:after{
-        content: ''!important;
+      h2:after {
+        content: '' !important;
+        transform: none !important;
         width: 94px;
         margin-left: 46px;
         margin-top: auto;
@@ -246,7 +251,7 @@
         margin-top: 0;
         margin-bottom: 0;
 
-        &:after{
+        &:after {
           min-width: auto;
         }
       }
