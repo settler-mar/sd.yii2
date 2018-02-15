@@ -288,6 +288,14 @@ section {
     margin-bottom: 25px;
   }
 }
+.margin-half {
+  margin-bottom: 25px;
+
+  @media print {
+    margin-bottom: 15px;
+  }
+}
+
 
 .align-center {
   text-align: center;
