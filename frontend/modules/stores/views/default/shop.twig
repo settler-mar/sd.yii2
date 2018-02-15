@@ -51,12 +51,12 @@
           <div class="favorite">
 
             {% if user_id %}
-              {% if store.uid in fav_ids %}
-                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
+              {% if current_store.uid in fav_ids %}
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
                   {{ svg('heart','shop_panel-item_icon')|raw }}
                 </a>
               {% else %}
-                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
                   {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
                 </a>
               {% endif %}

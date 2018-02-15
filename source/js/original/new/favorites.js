@@ -1,11 +1,16 @@
 //избранное
 $( document ).ready(function() {
-  $(".shops .favorite-link").on('click',function(e) {
+  $(".favorite-link").on('click',function(e) {
     e.preventDefault();
 
     var self = $(this);
     var type = self.attr("data-state"),
       affiliate_id = self.attr("data-affiliate-id");
+
+    if(!affiliate_id){
+      return false;
+    }
+
     if (self.hasClass('disabled')) {
       return null;
     }

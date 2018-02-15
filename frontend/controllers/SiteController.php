@@ -201,15 +201,7 @@ class SiteController extends SdController
     $this->params['breadcrumbs'][] = 'FAQ';
     return $this->render('faq');
   }
-  /**
-   * /howitworks
-   * @return string
-   */
-  public function actionHowitworks()
-  {
-    $this->params['breadcrumbs'][] = 'Как это работает';
-    return $this->render('howitworks');
-  }
+
   /**
    * /terms
    * @return string
