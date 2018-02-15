@@ -138,6 +138,13 @@
       }
     }
   }
+
+  &-form {
+    .btn {
+      min-width: 300px;
+    }
+  }
+
 }
 
 .dublicate_value:checked+.dobro-funds_item{
