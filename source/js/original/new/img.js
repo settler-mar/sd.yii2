@@ -50,6 +50,8 @@ $( document ).ready(function() {
     if(parent.length==0 || parent[0].tagName=="A"){
       return;
     }
+    if(el.hasClass('no_optomize'))return;
+
     m_w = parent.width()-30;
     var w=el.width();
 

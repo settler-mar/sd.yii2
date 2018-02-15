@@ -118,48 +118,26 @@ class m180204_110718_UpateNewYearItemMetaTable extends Migration
       $page->save();
 
       $page = Meta::find()->where(['page'=>'account/webmaster'])->one();
-      $page->content = '<p>У вас есть собственный сайт, блог или популярная страница в социальных сетях? Вы можете рассказать своим подписчикам
-  о SecretDiscounter.ru и зарабатывать <strong>60%</strong> от нашего дохода с каждого пользователя! И все это <strong>пожизненно</strong>!
-  К тому же, ваши друзья будут признательны вам за подсказку, поскольку о том, что такое кэшбэк знают всего 10% самых
-  продвинутых покупателей.</p>
+      $page->content = '<p>У вас есть собственный сайт, блог или популярная страница в социальных сетях? Вы можете рассказать своим подписчикам о SecretDiscounter.ru и зарабатывать <strong>60%</strong> от нашего дохода с каждого пользователя! И все это <strong>пожизненно</strong>! К тому же, ваши друзья будут признательны вам за подсказку, поскольку о том, что такое кэшбэк знают всего 10% самых продвинутых покупателей.</p>
 <p>&nbsp;</p>
-
-
-
-  <div>
-    <div class="ways-invitation align-center">
-      <h2>Ваша партнерская ссылка</h2>
-      <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{ user_id }}">
-
-      <a href="" class="set_clipboard"
-         data-clipboard="https://secretdiscounter.ru/?r={{ user_id }}"
-         data-clipboard-notify="Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!"
-      >{{ t(\'account\', \'affiliate_copy_to_clipboard\') }}</a>
-    </div>
-    <p>Если вам нужна ссылка на конкретный магазин или любую другую страницу нашего сайта, то просто допишите в конце
-      ссылки ваш реферальный код, например:
-      <br/>https://secretdiscounter.ru/stores/iherb<strong>?r={{ user_id }}</strong> <br/>https://secretdiscounter.ru/howitworks<strong>?r={{ user_id }}</strong>
-    </p>
-  </div>
-
-
-  <div class="red_box align-center">
-    <h2 class="title-no-line">Внимание! Для продвижения вашей партнерской ссылки категорически запрещено использовать
-      СПАМ.</h2>
-    <p>О разрешенных видах трафика <a href="https://secretdiscounter.ru/webmaster-terms#trafic" target="_blank"
-                                      rel="nofollow noopener">читайте здесь</a></p>
-    <h4 style="text-align: center;"><a style="color: #e4c84b;" href="https://secretdiscounter.ru/webmaster-terms"
-                                       target="_blank" rel="nofollow noopener">Условия использования</a></h4>
-  </div>
-
-
+<div>
+<div class="ways-invitation align-center">
+<h2>Ваша партнерская ссылка</h2>
+<input class="link" readonly="readonly" type="text" value="https://secretdiscounter.ru/?r={{ user_id }}" /> <a class="set_clipboard" data-clipboard="https://secretdiscounter.ru/?r={{ user_id }}" data-clipboard-notify="Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!">{{ t(\'account\', \'affiliate_copy_to_clipboard\') }}</a></div>
+<p>Если вам нужна ссылка на конкретный магазин или любую другую страницу нашего сайта, то просто допишите в конце ссылки ваш реферальный код, например: <br />https://secretdiscounter.ru/stores/iherb<strong>?r={{ user_id }}</strong> <br />https://secretdiscounter.ru/howitworks<strong>?r={{ user_id }}</strong></p>
+</div>
+<div class="red_box align-center wrap-round">
+<h3 class="title-no-line">Внимание! Для продвижения вашей партнерской ссылки категорически запрещено использовать СПАМ.</h3>
+<p>О разрешенных видах трафика <a href="https://secretdiscounter.ru/webmaster-terms#trafic" target="_blank" rel="nofollow noopener">читайте здесь</a></p>
+<h4 style="text-align: center;"><a style="color: #e4c84b;" href="https://secretdiscounter.ru/webmaster-terms" target="_blank" rel="nofollow noopener">Условия использования</a></h4>
+</div>
 <p>&nbsp;</p>
 <h2>Промоматериалы:</h2>
 {{ _constant(\'webmaster_material\')|raw }}
 <p>&nbsp;</p>
 <h2>Ответы на часто задаваемые вопросы по поводу партнерской программы:</h2>
 {{ _constant(\'webmaster_faq\')|raw }}
-<p>&nbsp;</p>';
+';
       $page->save();
     }
 
