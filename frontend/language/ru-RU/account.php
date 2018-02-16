@@ -107,7 +107,7 @@ return [
     'withdraw_view_history' => 'Посмотреть историю вывода денег',
     'withrdaw_request_exists' => 'У вас имеется заявка на вывод денежных средств.',
     'withrdaw_balance_little' => 'У Вас недостаточно средств для вывода денег.',
-    'withrdaw_choose_method' => 'Выберите способ вывода.',
+    'withrdaw_choose_method' => 'Выберите способ вывода',
     'withrdaw_fill_data' => 'Заполните платёжные данные',
     'withrdaw_fill_cashe_number' => 'Введите номер счёта',
     'withrdaw_fill_amount' => 'Введите сумму для вывода',

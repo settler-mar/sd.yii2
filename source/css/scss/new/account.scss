@@ -218,11 +218,17 @@
       //font-size:
       margin-bottom: 10px;
 
+      &-header {
+        font-size: 24px;
+        margin-left: 10%;
+      }
+
       a {
 
       }
       &-money {
         font-size: 18px;
+        font-weight: bold;
       }
       ul {
         margin: 0 0 10px;
@@ -258,18 +264,24 @@
         width: 28%;
         box-sizing: border-box;
         margin: 0 2% 2%;
-        border: 2px solid $gray_box_bg;
+        border: 2px solid $menu_border_color;
         //padding: 25px;
         border-radius: 25px;
-        transition: 0.3s ease 0.05s;
+        transition: 0.4s ease-out;
         min-height: 150px;
+
+
 
         &-inner {
 
         }
         &-option {
           padding: 15px;
-          display: block;
+          //display: block;
+          min-height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           //width: 100%;
           //height: 100%;
         }
@@ -279,11 +291,11 @@
           width: 100%;
         }
         &:hover {
-          border: 2px solid $menu_left_border_color;
+          border-color: $btn_base_dark_bg;
         }
         &.active {
           //background-color: $header_bg_second;
-          border: 2px solid $btn_base_dark_bg;
+          border-color: $btn_base_dark_bg;
         }
 
       }
