@@ -64,6 +64,11 @@
         @include media($phones) {
           width: 20%;
         }
+        &-howitworks {
+          @include media ($laptop-min) {
+            display: none;
+          }
+        }
       }
     }
     &_logo {
@@ -185,41 +190,6 @@
     margin-right: 5px;
   }
 
-  //&-logo {
-  //  display: flex;
-  //  padding-right: 15px;
-  //  @include media($laptop_min) {
-  //    padding: 0;
-  //  }
-  //  justify-content: space-between;
-  //  align-items: center;
-  //  &-center {
-  //    margin: auto;
-  //    a {
-  //      display: block;
-  //      //margin-top: 4px;
-  //    }
-  //  }
-  //
-  //  img {
-  //    width: 205px;
-  //  }
-  //}
-
-  //&-right {
-  //  flex-grow: 1;
-  //  text-align: right;
-  //  display: flex;
-  //  justify-content: flex-end;
-  //  margin: auto;
-  //  position: relative;
-  //
-  //
-  //  @include media($laptop_min) {
-  //    text-align: left;
-  //  }
-  //
-  //}
 
   &-heart{
     width: 30px;
@@ -636,9 +606,6 @@
       }
     }
 
-    &-authorization{
-      display: none;
-    }
   }
 
 }
