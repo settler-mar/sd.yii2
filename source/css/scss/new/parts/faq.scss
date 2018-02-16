@@ -14,10 +14,10 @@
       }
 
       .faq-content_item {
-        width: 45%;
+        width: 47%;
 
         @include media($tablets) {
-          width: 100%;
+          width: 99%;
         }
       }
     }
