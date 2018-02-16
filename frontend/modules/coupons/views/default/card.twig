@@ -34,7 +34,7 @@
         {% if stores_coupon|length > 0 %}
           <h2>Еще больше промокодов {{ store.name }}</h2>
           <div  class="catalog-coupons margin">
-            <div class="catalog_list catalog-coupons_list coupons-list margin narrow_off">
+            <div class="catalog_list catalog-coupons_list coupons-list margin-half narrow_off">
               {% for coupon in stores_coupon %}
                 {% include 'parts/coupon.twig' %}
               {% endfor %}
