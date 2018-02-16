@@ -74,8 +74,9 @@ class DefaultController extends SdController
       $categoryStore = CategoriesStores::byRoute($id);
       if ($categoryStore) {
         //если есть категория
-        \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
-        echo $this->actionIndex($id, $categoryStore);
+          \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
+
+          echo $this->actionIndex($id, $categoryStore);
         exit;
       };
       if ($id == 'favorite' && !Yii::$app->user->isGuest) {
@@ -144,7 +145,6 @@ class DefaultController extends SdController
 
     if ($categoryStore) {
       //категория магазина
-      \Yii::$app->params['url_mask'] = 'stores/category/'.$categoryStore->route;
 
       $category = $categoryStore->uid;
       $storesData['current_category'] = $categoryStore->attributes;//CategoryStores::byId($category);

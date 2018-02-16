@@ -115,8 +115,8 @@ class SdView extends View
     }
     Yii::$app->view->metaTags=[];
 
-    //ddd(Yii::$app->view);
     $arr = Meta::findByUrl($request->pathInfo);
+    //ddd($request->pathInfo, $arr);
     if($arr && is_array($arr)) {
       if (isset($arr['description'])) {
         Yii::$app->view->registerMetaTag(["name"=>"description", "content"=>$arr['description'] ]);
