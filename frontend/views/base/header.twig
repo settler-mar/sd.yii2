@@ -74,7 +74,11 @@
 
           <div class="avatar account-menu-toggle">
           {% set user_avatar = _checkAvatar(this.user.photo) %}
-          <a href="#"><img class="avatar_image" src="{{ user_avatar }}" alt="{{ this.user.name }}"></a>
+              <a href="#">
+                <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}" alt="{{ this.user.name }}">
+                  {{ svg('close', 'account-menu-toggle-close')|raw }}
+              </a>
+
           </div>
           {% include 'parts/account_menu.twig' %}
         {% endif %}

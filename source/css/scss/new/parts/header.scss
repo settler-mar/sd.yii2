@@ -402,27 +402,72 @@
   .account-menu {
     transition: all 0.3s ease 0.1s;
     overflow: visible;
-    //min-width: 260px;
-    //max-width: 320px;
     width: 260px;
-    z-index: 1;
-
     position: absolute;
     top: 42px;
     right: -10px;
-    background-color: $drop-menu-color;
+    background-color: rgba(0,0,0,0.5);
+
+
+
+    &_inner {
+
+      border: 1px solid $menu_border_color;
+      background-color: $drop-menu-color;
+      width: 100%;
+      height: auto;
+      transition: all 0.3s ease 0.1s;
+      a, span {
+        font-size: 14px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+
+        @include media($tablets) {
+          font-size: 16px;
+        }
+      }
+    }
+
+    &-toggle {
+
+      &-close {
+        padding: 3PX;
+        display: none;
+        width: 20px;
+        height: 20px;
+        color: $header_color_up;
+        fill: $header_color_up;
+        stroke: $header_color_up;
+      }
+      &.open {
+        @include media($laptop-min) {
+          .account-menu-toggle-image {
+            display: none;
+          }
+          .account-menu-toggle-close {
+            display: block;
+          }
+        }
+      }
+    }
+
+
 
     @include media($laptop-min) {
+      transition: none;
       position: fixed;
       left: auto;
       width: 100%;
-      //max-width: inherit;
       height: calc(100vh - 2.625rem - 3rem);
-      //height: auto;
-      top: 50px;
-      z-index: 99;
+      //top: $menu_height;
+      top: 53px;
       overflow: auto;
       right: 0;
+      &_inner {
+        width: 80%;
+        right: 0;
+        position: fixed;
+      }
     }
     &.hidden {
       max-height: 0;
@@ -433,10 +478,12 @@
         overflow: auto;
         //transition: all .3s ease 0.1s;
       }
+      .account-menu_inner {
+        position: static;
+        right: -100%;
+      }
     }
-    &_inner {
-      border: 1px solid $menu_border_color;
-    }
+
     ul {
       padding-left: 0;
       margin: 5px;
@@ -462,18 +509,42 @@
       border-bottom: 1px solid $menu_border_color;
       padding-bottom: 5px;
       //max-width: 320px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+
       padding-right: 10px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+
+      &-info {
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        &-name {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-bottom: 2px;
+        }
+        &-id {
+          color: $header_color_gray;
+        }
+      }
+      @include media($laptop_min) {
+        margin-top: 15px;
+      }
 
       &-avatar {
-        width: 30PX;
-        height: 30PX;
-        margin: 0 5px 0 10px;
+        width: 40PX;
+        height: 40PX;
+        margin: 0 15px 0 10px;
         display: inline-block;
         vertical-align: middle;
-        //background-color: $header_bg_up;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: 40PX;
 
         &-image {
           display: block;
@@ -483,13 +554,11 @@
           overflow: hidden;
 
           img {
-            width: 100%;
-            height: 100%;
+            //width: 100%;
+            //height: 100%;
+            max-width: 100%;
           }
         }
-
-
-
       }
     }
     &_last-item {
