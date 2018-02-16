@@ -2,6 +2,10 @@
   display:none;
   border: 1px solid #ccc;
 
+  tr:first-child{
+    background: none;
+  }
+
   th{
     border-radius: 0;
   }
@@ -49,17 +53,19 @@
   width: 16px;
   display: inline-block;
   background-size: contain;
+  vertical-align: middle;
 }
 .fa-chevron-right{
-  background: url(/images/svg/angle-right.svg) no-repeat 50% 50%;
+  background: url(/images/svg/angle-right-black.svg) no-repeat 50% 50%;
   height: 16px;
   width: 16px;
   display: inline-block;
   background-size: contain;
+  vertical-align: middle;
 }
 
 .fa-chevron-left{
-  background: url(/images/svg/angle-left.svg) no-repeat 50% 50%;
+  background: url(/images/svg/angle-left-black.svg) no-repeat 50% 50%;
   height: 16px;
   width: 16px;
   display: inline-block;
