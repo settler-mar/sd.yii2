@@ -13,7 +13,7 @@
                                 {{ item.index_text }}
                             </div>
                         </div>
-                        <a class="social-btn social-btn-{{ item.code }}" href="{{ item.url }}">
+                        <a target="_blank" class="social-btn social-btn-{{ item.code }}" href="{{ item.url }}">
                             {% set sub_icon=item.code~_if(item.code=='vk','','_mini') %}
                             {% if item.code!="ok" %}
                                 {{ svg('color/'~sub_icon,'social-btn-logo')|raw }}

@@ -22,22 +22,6 @@
           <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
         </div>
 
-        {#{% if this.favorites %}#}
-            {#если есть избранные#}
-          {#<div class="btn-header btn-header_favorite mobile" >#}
-            {#<a href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>#}
-          {#</div>#}
-        {#{% endif %}#}
-        {#{% if this.user_id > 0 %}#}
-            {#если есть уведомления добавлен класс#}
-          {#<div class="header-logo_noty  btn-header mobile">#}
-            {#<a  href="/account/notification">{{ svg('bell-o', 'header-logo_noty_button btn-header_button')|raw }}</a>#}
-          {#</div>#}
-        {#{% endif %}#}
-
-
-
-      {#</div>#}
 
       <div class="header-search stores_search">
         <form action="/search" class="header-search_form" name="search" method="get">
@@ -53,11 +37,10 @@
 
 
         <div class="header-upline_in-right">
-      {#<div class="header-right">#}
-        {#{% if this.user_id %}#}
+
         {% if this.user_id == 0 %}
         {#если не зарегистрирован#}
-          <a href="/howitworks" class="header-right_link header-other-btn">Как это работает</a>
+          <a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это работает</a>
             {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
           <div class="header-authorization">
             <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-btn-enter modals_open">Вход</a>
@@ -91,7 +74,11 @@
 
           <div class="avatar account-menu-toggle">
           {% set user_avatar = _checkAvatar(this.user.photo) %}
-          <a href="#"><img class="avatar_image" src="{{ user_avatar }}" alt="{{ this.user.name }}"></a>
+              <a href="#">
+                <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}" alt="{{ this.user.name }}">
+                  {{ svg('close', 'account-menu-toggle-close')|raw }}
+              </a>
+
           </div>
           {% include 'parts/account_menu.twig' %}
         {% endif %}

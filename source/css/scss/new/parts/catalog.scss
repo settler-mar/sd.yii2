@@ -214,6 +214,7 @@
       &-cat {
         margin-bottom: 15px;
         overflow: hidden;
+        border-radius: 3px;
         //@include menu-open;
 
         @include media($laptop-min) {

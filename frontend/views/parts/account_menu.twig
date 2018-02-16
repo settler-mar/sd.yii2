@@ -6,7 +6,14 @@
                 <img src="{{ user_avatar }}" alt="{{ this.user.name }}">
                 </div>
             </div>
-            {{ this.user.name }}
+            <div class="account-menu_header-info">
+                <div class="account-menu_header-info-name">
+                    {{ this.user.name }}
+                </div>
+                <div class="account-menu_header-info-id">
+                    ID:{{ this.user.uid }}
+                </div>
+            </div>
         </div>
 
         {% set header = 1 %}

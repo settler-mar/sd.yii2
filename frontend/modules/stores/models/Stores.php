@@ -46,15 +46,16 @@ class Stores extends \yii\db\ActiveRecord
   public $logoImage;
   public $image_url;
   /**
-   * @var string
+   * @var array
    */
-  public static $defaultSort = 'rating';
+  protected static $defaultSorts = ['rating', 'visit'];
   /**
    * Possible sorting options with titles and default value
    * @var array
    */
   public static $sortvars = [
-    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности"],
+    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
+    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
     'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
     'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
     'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
@@ -545,6 +546,38 @@ class Stores extends \yii\db\ActiveRecord
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
       ->where(['cws.is_active' => [0, 1]])
       ->asArray();
+  }
+
+    /** $sortvars в зависимости от online - offline
+     * @param null $offline
+     * @return array
+     */
+  public static function sortvarItems($offline = null)
+  {
+    $result = [];
+    foreach (self::$sortvars as $key => $sortvar) {
+        if ($offline === null ||
+           (empty($sortvar['no_online']) && empty($sortvar['no_offline'])) ||
+           ($offline === true && !empty($sortvar['no_online'])) ||
+           ($offline === false && !empty($sortvar['no_offline']))) {
+               $result[$key] = $sortvar;
+        }
+    }
+    return $result;
+  }
+
+    /**
+     * возвращает первый попавший ключ, входящий в массив
+     * @param $items
+     * @return int|string
+     */
+  public static function defaultSort($items)
+  {
+      foreach ($items as $key=>$item) {
+          if (in_array($key, self::$defaultSorts)) {
+              return $key;
+          }
+      }
   }
 
   /**

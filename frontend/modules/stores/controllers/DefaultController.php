@@ -74,8 +74,9 @@ class DefaultController extends SdController
       $categoryStore = CategoriesStores::byRoute($id);
       if ($categoryStore) {
         //если есть категория
-        \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
-        echo $this->actionIndex($id, $categoryStore);
+          \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
+
+          echo $this->actionIndex($id, $categoryStore);
         exit;
       };
       if ($id == 'favorite' && !Yii::$app->user->isGuest) {
@@ -109,17 +110,21 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $offline = $request->get('offline') || $this->offline;
 
+    $sortvars = Stores::sortvarItems($offline);
+    $defaultSort = Stores::defaultSort($sortvars);
+
+
     $validator = new \yii\validators\NumberValidator();
-    $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys(Stores::$sortvars)]);
+    $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
     if (!empty($limit) && !$validator->validate($limit) ||
       !empty($sort) && !$validatorIn->validate($sort)
     ) {
       throw new \yii\web\NotFoundHttpException;
     };
 
-    $sort = (!empty($sort)) ? $sort : Stores::$defaultSort;
+    $sort = (!empty($sort)) ? $sort : $defaultSort;
     $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
-    $order = !empty(Stores::$sortvars[$sort]['order']) ? Stores::$sortvars[$sort]['order'] : 'DESC';
+    $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
     $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
     if ($offline) {
@@ -144,7 +149,6 @@ class DefaultController extends SdController
 
     if ($categoryStore) {
       //категория магазина
-      \Yii::$app->params['url_mask'] = 'stores/category/'.$categoryStore->route;
 
       $category = $categoryStore->uid;
       $storesData['current_category'] = $categoryStore->attributes;//CategoryStores::byId($category);
@@ -206,7 +210,7 @@ class DefaultController extends SdController
 
     $paginateParams = [
       'limit' => $this->defaultLimit == $limit ? null : $limit,
-      'sort' => Stores::$defaultSort == $sort ? null : $sort,
+      'sort' => $defaultSort == $sort ? null : $sort,
       'page' => $page,
       'offline' => $offline ? 1 : null,
     ];
@@ -218,9 +222,9 @@ class DefaultController extends SdController
     }
 
     $storesData['sortlinks'] =
-      $this->getSortLinks($paginatePath, Stores::$sortvars, Stores::$defaultSort, $paginateParams);
+      $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams);
     $storesData['limitlinks'] =
-      $this->getLimitLinks($paginatePath, Stores::$defaultSort, $paginateParams);
+      $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
     $storesData['slider'] = Slider::get();
     $storesData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
@@ -249,28 +253,6 @@ class DefaultController extends SdController
     $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
     $contentData["store_rating"] = Reviews::storeRating($store->uid);
 
-//    $cache = \Yii::$app->cache;
-//
-//    $dependency = new yii\caching\DbDependency;
-//    $dependencyName = 'store_coupons_store';
-//    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-//
-//    $coupons = $cache->getOrSet('store_coupons_store_' . $store->uid, function () use ($store) {
-//      $dateRange = ['>', 'cwc.date_end', date('Y-m-d H:i:s', time())];
-//      return Coupons::find()
-//          ->from(Coupons::tableName() . ' cwc')
-//          ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_offline as store_is_offline',
-//              'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
-//              'cws.action_id as store_action_id', 'cws.logo as store_image'])
-//          ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-//          ->where(['cws.uid' => $store->uid])
-//          ->andWhere($dateRange)
-//          ->orderBy(Coupons::$defaultSort . ' ' .
-//              (!empty(Coupons::$sortvars[Coupons::$defaultSort]['order']) ?
-//                  Coupons::$sortvars[Coupons::$defaultSort]['order'] : 'ASC'))
-//          ->asArray()
-//          ->all();
-//    }, $cache->defaultDuration, $dependency);
     $contentData["coupons"] = Coupons::top(['store' => $store->uid,'limit'=>4]);
     $contentData["coupons_counts"] = Coupons::counts($store->uid);
     $contentData["all_coupons_counts"] = Coupons::counts();
@@ -357,6 +339,8 @@ class DefaultController extends SdController
     $this->redirect('/stores/' . $parent->route, 301)->send();
     exit;
   }
+
+
 
 }
 

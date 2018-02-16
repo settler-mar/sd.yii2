@@ -5,6 +5,7 @@ var headerActions = function () {
     $('.menu-toggle').click(function(e) {
         e.preventDefault();
         $('body').removeClass('no_scroll_account');
+        $('.account-menu-toggle').removeClass('open');
         $('.account-menu').addClass('hidden');
         $('.header').toggleClass('header_open-menu');
         $('.drop-menu').removeClass('open').removeClass('close').find('li').removeClass('open').removeClass('close');
@@ -20,6 +21,7 @@ var headerActions = function () {
         e.preventDefault();
         $('body').removeClass('no_scroll_account');
         $('.account-menu').addClass('hidden');
+        $('.account-menu-toggle').removeClass('open');
         $('.header').toggleClass('header-search-open');
         $('#autocomplete').fadeOut();
         if ($('.header').hasClass('header-search-open')) {
@@ -125,10 +127,14 @@ var headerActions = function () {
     var accountMenuOpenTime = 0;
     $('.account-menu-toggle').click(function(e){
         e.preventDefault();
+        $('.header').removeClass('header_open-menu');
+        $('.header').removeClass('header-search-open');
+        var that = $(this);
         var menu = $('.account-menu');
         if (menu) {
             clearInterval(accountMenuTimeOut);
             if (menu.hasClass('hidden')) {
+                that.addClass('open');
                 menu.removeClass('hidden');
                 if (window.innerWidth <= 1024) {
                     $('body').addClass('no_scroll_account');
@@ -142,6 +148,7 @@ var headerActions = function () {
                     }
                     if ((new Date() - accountMenuOpenTime) > 1000 * 7) {
                         menu.addClass('hidden');
+                        that.removeClass('open');
                         clearInterval(accountMenuTimeOut);
                         $('body').removeClass('no_scroll_account');
                     }
@@ -149,6 +156,7 @@ var headerActions = function () {
                 }, 1000);
 
             } else {
+                that.removeClass('open');
                 menu.addClass('hidden');
                 $('body').removeClass('no_scroll_account');
             }
@@ -157,6 +165,12 @@ var headerActions = function () {
 
     $('.catalog-categories-account_menu-header').on('mouseover', function(){
         accountMenuOpenTime = new Date();
+    });
+    $('.account-menu').click(function(e){
+        if ($(e.target).hasClass('account-menu')) {
+            $(e.target).addClass('hidden');
+            $('.account-menu-toggle').removeClass('open');
+        }
     });
 
 

@@ -7,11 +7,21 @@
     border-radius: 8px;
     //flex-wrap: wrap;
     // align-items: flex-end;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    &-row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      &-right {
+        justify-content: flex-end;
+      }
+
+    }
 
     &-block {
       box-sizing: border-box;
@@ -20,7 +30,7 @@
       width: calc(23% - 5px);
       //flex-grow: 2;
       margin-right: 5px;
-      //margin-bottom: 15px;
+      //margin-bottom: 10px;
 
       @include media($tablets) {
         width: calc(50% - 10px);
@@ -208,11 +218,17 @@
       //font-size:
       margin-bottom: 10px;
 
+      &-header {
+        font-size: 24px;
+        margin-left: 10%;
+      }
+
       a {
 
       }
       &-money {
         font-size: 18px;
+        font-weight: bold;
       }
       ul {
         margin: 0 0 10px;
@@ -248,18 +264,24 @@
         width: 28%;
         box-sizing: border-box;
         margin: 0 2% 2%;
-        border: 2px solid $gray_box_bg;
+        border: 2px solid $menu_border_color;
         //padding: 25px;
         border-radius: 25px;
-        transition: 0.3s ease 0.05s;
+        transition: 0.4s ease-out;
         min-height: 150px;
+
+
 
         &-inner {
 
         }
         &-option {
           padding: 15px;
-          display: block;
+          //display: block;
+          min-height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           //width: 100%;
           //height: 100%;
         }
@@ -269,11 +291,11 @@
           width: 100%;
         }
         &:hover {
-          border: 2px solid $menu_left_border_color;
+          border-color: $btn_base_dark_bg;
         }
         &.active {
           //background-color: $header_bg_second;
-          border: 2px solid $btn_base_dark_bg;
+          border-color: $btn_base_dark_bg;
         }
 
       }
@@ -290,7 +312,7 @@
     border-bottom-right-radius: 45px;
     padding: 20px 80px 20px 40px;
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 50PX;
     margin-right: 30px;
     white-space: inherit;
 
