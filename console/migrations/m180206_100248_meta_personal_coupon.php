@@ -69,28 +69,28 @@ class m180206_100248_meta_personal_coupon extends Migration
 <div class="howitworks-content_item">
 <h3>Этап 2. Выбор магазина и переход в него</h3>
 <p>Выбрать нужный интернет-магазин или сервис можно&nbsp;<strong><a href="/stores" target="_blank" rel="noopener">здесь</a></strong>, а оффлайн-магазин, ресторан и т.п. &ndash; <strong><a href="/stores/offline" target="_blank" rel="noopener">здесь</a></strong>.</p>
-<img class="howitworks-img no_optomize" src="/images/howitworks/stores.jpg" alt="stores.jpg (72 KB)" />
+<img class="howitworks-img no_optomize" src="/images/howitworks/stores.png" alt="stores" />
 <p>После нажатия на логотип/название/процент кэшбэка выбранного магазина произойдёт переход на страницу с его подробным описанием. <br />Ознакомившись со всеми условиями и тарифами (многие магазины выплачивают разный процент кэшбэка за разные категории товаров), <br />можете смело нажимать кнопку <strong>&laquo;Перейти к покупкам&raquo;</strong> (для интернет-магазинов).&nbsp;</p>
 <p>При этом перед совершением перехода в конечный магазин настоятельно рекомендуем вам ознакомиться с <strong><a href="/recommendations" target="_blank" rel="noopener">Советами по совершению покупок</a></strong>&nbsp;и<br /> <a href="/adblock" target="_blank" rel="noopener"><strong>отключить блокировщики рекламы типа AdBlock</strong></a> или его аналогов.</p>
-<p><img class="howitworks-img no_optomize" src="/images/howitworks/goto_1.jpg" alt="goto_1.jpg (54 KB)" /></p>
+<p><img class="howitworks-img no_optomize" src="/images/howitworks/goto_1.png" alt="goto_1)" /></p>
 <p>Если всё сделано правильно, то вы увидите информацию о магазине, в который переходите, и сумму кэшбэка за заказ в нём.</p>
-<p><img class="howitworks-img no_optomize" src="/images/howitworks/goto_2.jpg" alt="goto_2.jpg (73 KB)" /></p>
+<p><img class="howitworks-img no_optomize" src="/images/howitworks/goto_2.png" alt="goto_2" /></p>
 <p>Также существует альтернативный способ перехода в интернет-магазин &ndash; использование промокодов. Для этого выберите интересующий вас купон <br />из нашего&nbsp;<strong><a href="/coupons" target="_blank" rel="noopener">Каталога промокодов</a></strong>.</p>
 <p>Если на промокоде написан цифровой или буквенно-цифровой код &ndash; скопируйте его в буфер обмена (нажав соответствующую иконку рядом), после чего нажмите кнопку &laquo;Использовать промокод&raquo;, и перейдете в интернет-магазин (ввод промокода в данном случае потребуется на финальной стадии оформления заказа). <br />Если же написано &laquo;Промокод не требуется&raquo; &ndash; сразу жмите кнопку &laquo;Использовать промокод&raquo; и попадете на конкретную страницу магазина с акционным предложением, где все товары уже со сниженной ценой.</p>
-<p><img class="howitworks-img no_optomize" src="/images/howitworks/coupon.jpg" alt="coupon.jpg (86 KB)" /></p>
+<p><img class="howitworks-img no_optomize" src="/images/howitworks/coupon.png" alt="coupon" /></p>
 </div>
 <div class="howitworks-content_item">
 <h3>Этап 3. Покупка</h3>
 <p>После перехода в выбранный интернет-магазин совершайте покупки так, как вы это обычно делаете.&nbsp;</p>
 <p>Также у нас есть <strong>оффлайн-магазины</strong> (и некоторые онлайн-), перед покупкой в которых вы должны показать/сообщить свой <a href="/offline-system" target="_blank" rel="noopener">штрихкод SecretDiscounter</a>, поэтому внимательно ознакамливайтесь с <strong>инструкцией</strong> к каждому магазину.</p>
-<p><img class="howitworks-img no_optomize" src="/images/howitworks/bay.jpg" alt="bay.jpg (136 KB)" /></p>
+<p><img class="howitworks-img no_optomize" src="/images/howitworks/bay.png" alt="bay" /></p>
 <p>Все просто: перед оплатой покажите кассиру/менеджеру свой штрихкод с экрана телефона (или сообщите его в примечании к интернет-заказу).&nbsp;</p>
-<p><img class="howitworks-img no_optomize" src="/images/howitworks/coupon.jpg" alt="coupon.jpg (86 KB)" /></p>
+<p><img class="howitworks-img no_optomize" src="/images/howitworks/instruction.png" alt="instruction" /></p>
 </div>
 <div class="howitworks-content_item">
 <h3>Этап 4. Получение кэшбэка</h3>
 <p>После покупки информация о ней отобразится в личном кабинете SecretDiscounter<br /> на странице истории заказов (Мой кабинет -&gt; История -&gt; История покупок)</p>
-<img class="howitworks-img no_optomize" src="/images/howitworks/cashback_history.jpg" alt="cashback_history.jpg (88 KB)" />
+<img class="howitworks-img no_optomize" src="/images/howitworks/cashback_history.png" alt="cashback_history" />
 <p>Данные обо всех заказах отображаются автоматически в течение нескольких часов (за редким исключением &mdash; в течение нескольких дней). Если вы уверены, что правильно оформили заказ, но он не появился в списке, настоятельно рекомендуем обратиться в нашу службу поддержки (Мой аккаунт -&gt; Помощь -&gt; Служба поддержки).</p>
 <p>Кэшбэк становится доступным для вывода, когда меняет статус с &laquo;В ожидании&raquo; на <strong>&laquo;Потдтвержден&raquo;</strong>.&nbsp;<br />Время подтверждения кэшбэка указано на странице выбранного вами магазина.</p>
 </div>

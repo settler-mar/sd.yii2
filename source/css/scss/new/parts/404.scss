@@ -1,6 +1,6 @@
-.page-404{
+.page-404 {
   background: url("/images/templates/404_site.png") no-repeat right 40px;
-  
+
   @include media ($laptop_min) {
     background: none;
   }
@@ -17,10 +17,12 @@
     color: $page404headColor;
     font-size: 56px;
     font-weight: bold;
+
     &-h1 {
       color: $page404headColor;
       font-size: 24px;
       font-weight: bold;
+      text-align: left;
     }
   }
 

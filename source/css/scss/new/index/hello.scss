@@ -47,6 +47,7 @@
         padding: 60px 0;
         min-height: 160px;
         background-size: contain;
+
         @include media($laptop_min){
           background:  none;
         }
@@ -79,12 +80,14 @@
           color: #fefdfd;
           font-size: 60px;
           font-weight: 700;
+
           @include media($tablets){
             display: block;
             margin-top: 18px;
             font-size: 100px;
           }
         }
+
         &_btn {
           margin: 40px 0 0 0 ;
         }
@@ -106,6 +109,11 @@
 
     &_left {
       //flex-grow: 2;
+      padding-top: 23px;
+
+      @include media($laptop_min){
+        text-align: center;
+      }
     }
 
     &_center {
@@ -147,8 +155,9 @@
             padding-top: 0;
             left: 50%;
             margin-left: -170px;
-            width: 280px;
+            width: 300px;
             color: $header_color_up;
+            display: block;
 
             &:hover{
               color: $header_sub_menu_color_hover;
@@ -185,6 +194,8 @@
             font-size: 26px;
             width: auto;
             left: 20px;
+            display: inline-block;
+            vertical-align: middle;
           }
         }
 

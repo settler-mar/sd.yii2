@@ -92,6 +92,10 @@ h1 {
   margin-top: 0;
   text-align: left;
 
+  @include media ($laptop_min) {
+    text-align: center;
+  }
+
   @media print {
     font-size: 2em;
   }
@@ -568,6 +572,7 @@ svg.svg-no-stroke {
   height: 1em;
   width: 1em;
   vertical-align: sub;
+  margin-right: 0.2em;
 }
 
 .svg-icon {

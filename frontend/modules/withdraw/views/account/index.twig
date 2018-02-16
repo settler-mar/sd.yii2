@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+
                     <h3 class="text-center">{{ t('account', 'withrdaw_fill_data') }}</h3>
                     <div class="payment-info users-withdraw ajax_form">
                         {% set form = active_form_begin({'action':'/account/withdraw', 'options':{'name':'withdraw-form', 'role':'form'},}) %}
@@ -59,7 +59,7 @@
                             }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}
 
                             {{ form.field(model, 'user_comment', {
-                                'template' : '{input}{error}{hint}',
+                                'template' : '<div class="form-textarea-group">{input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
                             }).textarea({
                                 'maxlength':true,
@@ -74,7 +74,6 @@
 
                         {{ active_form_end() }}
                     </div>
-                </div>
         {% endif %}
     </section>
 {#</div>#}
