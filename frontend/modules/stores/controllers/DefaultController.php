@@ -29,6 +29,9 @@ class DefaultController extends SdController
    */
   public $defaultLimit = 48;
 
+
+  protected $offline = false;
+
   /**
    * @param string $id
    * @return null|yii\base\Action
@@ -50,6 +53,11 @@ class DefaultController extends SdController
     }
     if ($id) {
       //имеется action, который должен быть категорией или магазином, ищем такую
+      if (strpos($id, '-offline') == strlen($id) - strlen('-offline')) {
+          //если в конце категории слово -offline
+          $id = substr($id, 0, strlen($id) - strlen('-offline'));
+          $this->offline = 1;
+      }
       $store = Stores::byRoute($id);
       if ($store) {
         //есть магазин
@@ -99,7 +107,7 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-    $offline = $request->get('offline');
+    $offline = $request->get('offline') || $this->offline;
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys(Stores::$sortvars)]);

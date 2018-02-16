@@ -383,9 +383,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
         }
         $tree .= '<li '.$itemClass . '>';
         if ($offline === 1) {
-            $onlineLink = '/offline';
+            $onlineLink = '-offline';
         } elseif ($offline === 0) {
-            $onlineLink = '/online';
+            $onlineLink = '';//'-online';
         } else {
             $onlineLink = '';
         }
