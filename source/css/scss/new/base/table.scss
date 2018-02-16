@@ -78,10 +78,11 @@ table.adaptive {
       display: flex;
       width: 100%;
       flex-direction: column;
-      margin-top: 5px;
+      margin-bottom: 5px;
 
-      &:first-child{
-        margin-top: 0px;
+      &:last-child{
+        margin-bottom: 0px;
+        margin-bottom: 0px;
       }
     }
 
