@@ -44,6 +44,8 @@
                 <div class="col-md-12">
                     {{ form.field(model, 'short_description').widget(TinyMce.className(),params('TinyMce'))|raw }}
                     {{ form.field(model, 'down_description').widget(TinyMce.className(),params('TinyMce'))|raw }}
+                    {{ form.field(model, 'short_description_offline').widget(TinyMce.className(),params('TinyMce'))|raw }}
+                    {{ form.field(model, 'down_description_offline').widget(TinyMce.className(),params('TinyMce'))|raw }}
                 </div>
 
                 <div class="col-md-12">

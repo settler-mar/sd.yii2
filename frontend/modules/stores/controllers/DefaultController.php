@@ -29,36 +29,44 @@ class DefaultController extends SdController
    */
   public $defaultLimit = 48;
 
+
+  protected $offline = false;
+
   /**
    * @param string $id
    * @return null|yii\base\Action
    */
   public function createAction($id)
   {
-     $request = \Yii::$app->request;
+    $request = \Yii::$app->request;
     //здесь могут быть редиректы со старых роутов, поэтому делаем проверку для параметров старых роутов
     //передаваемых в запросе быть не должно
     $this->checkWrongParams(['store', 'expired', 'coupon', 'id']);
     $category = $request->get('category');
-//        $store = $request->get('store');
-//        if ($store) {
-//            throw new \yii\web\NotFoundHttpException;
-//        }
+
     if ($category) {
       $this->routeRedirects($category);
       exit;
     }
     if ($id) {
       //имеется action, который должен быть категорией или магазином, ищем такую
+
+       //если в конце категории или шопа слово -offline
+      $this->offline = strpos($id, '-offline') == strlen($id) - strlen('-offline');
+
       $store = Stores::byRoute($id);
       if ($store) {
         //есть магазин
         //$this->Params($request->get(), ['page']);
         $cpaLink=$store->cpaLink;
-        if ($cpaLink && $cpaLink->cpa_id == 2) {
-          //online-offline шоп, для поиска мететегов добавляем в url-mask
-          \Yii::$app->params['url_mask'] = $request->pathInfo . '/online';
-        }
+//        if ($cpaLink && $cpaLink->cpa_id == 2) {
+//          //online-offline шоп, для поиска мететегов добавляем в url-mask
+//          \Yii::$app->params['url_mask'] = $request->pathInfo . '/online';
+//        }
+        \Yii::$app->params['url_mask'] = 'stores/*' .
+            ($cpaLink && $cpaLink->cpa_id == 1 ? '/online' : '').
+            ($this->offline ? '/offline' : '');
+
         $this->checkParams('store');
         echo $this->actionStore($store);
         exit;
@@ -66,7 +74,7 @@ class DefaultController extends SdController
       $categoryStore = CategoriesStores::byRoute($id);
       if ($categoryStore) {
         //если есть категория
-        \Yii::$app->params['url_mask'] = 'stores/category/' . $id;
+        \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
         echo $this->actionIndex($id, $categoryStore);
         exit;
       };
@@ -99,7 +107,7 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-    $offline = $request->get('offline');
+    $offline = $request->get('offline') || $this->offline;
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys(Stores::$sortvars)]);

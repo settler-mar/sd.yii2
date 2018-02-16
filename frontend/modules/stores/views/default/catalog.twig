@@ -1,21 +1,14 @@
     <!--краткая информация категории-->
-    {% if current_category.short_description %}
+    {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
+    {% if short_description %}
         <section class="margin">
                 <h3 class="title-center">{{current_category.name}}</h3>
                 <div class="catalog_category-short-description">
-                    {{current_category.short_description|raw}}
+                    {{short_description|raw}}
                 </div>
         </section>
     {% endif %}
 
-    <!--поле контент из метатегов только для категории-->
-    {% if 1==2 and content and current_category and page == 1 %}
-        <section class="margin">
-            <div class="catalog_category-content">
-                {{content|raw}}
-            </div>
-        </section>
-    {% endif %}
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
@@ -109,9 +102,11 @@
                     {% endif %}
                 </div>
 
-                {% if current_category.down_description %}
+
+                {% set down_description = offline and current_category.down_description_offline ? current_category.down_description_offline : current_category.down_description %}
+                {% if down_description %}
                     <div class="catalog_category-down-description margin">
-                        {{current_category.down_description|raw}}
+                        {{down_description|raw}}
                     </div>
                 {% endif %}
 

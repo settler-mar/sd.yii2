@@ -41,7 +41,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     return [
       [['parent_id', 'name', 'route'], 'required'],
       [['parent_id', 'is_active', 'menu_index', 'menu_hidden','show_in_footer'], 'integer'],
-      [['short_description', 'down_description', 'map_icon'], 'string'],
+      [['short_description', 'down_description', 'short_description_offline', 'down_description_offline', 'map_icon'], 'string'],
       [['selected'], 'in', 'range' => [0, 1, 2]],
       [['name', 'route'], 'string', 'max' => 255],
       [['route'], 'unique'],
@@ -60,9 +60,11 @@ class CategoriesStores extends \yii\db\ActiveRecord
       'parent_id' => 'ID родительской категории',
       'name' => 'Имя',
       'is_active' => 'Состояние',
-      'short_description' => 'Краткое описание',
+      'short_description' => 'Краткое описание онлайн',
+      'short_description_offline' => 'Краткое описание оффлайн',
       'menu_index' => 'Позиция меню',
-      'down_description' => 'Нижнее описание',
+      'down_description' => 'Нижнее описание онлайн',
+      'down_description_offline' => 'Нижнее описание оффлайн',
       'route' => 'Route',
       'menu_hidden' => 'Скрыто в верхнем меню',
       'map_icon' => "Иконка на карте",
@@ -298,6 +300,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
    */
   public static function byRoute($route)
   {
+    if (strpos($route, '-offline') == strlen($route) - strlen('-offline')) {
+          //если в конце категории слово -offline
+          $route = substr($route, 0, strlen($route) - strlen('-offline'));
+    }
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_stores';
@@ -383,9 +389,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
         }
         $tree .= '<li '.$itemClass . '>';
         if ($offline === 1) {
-            $onlineLink = '/offline';
+            $onlineLink = '-offline';
         } elseif ($offline === 0) {
-            $onlineLink = '/online';
+            $onlineLink = '';//'-online';
         } else {
             $onlineLink = '';
         }
