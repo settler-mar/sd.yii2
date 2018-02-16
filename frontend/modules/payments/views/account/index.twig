@@ -2,7 +2,7 @@
 <section class="account">
   {{ _constant('account_payments_history')|raw }}
   {% if payments|length > 0 %}
-    <table class="table ta_left">
+    <table class="table ta_left adaptive adaptive-phones">
       <tr>
         <th>ID SD</th>
         <th>{{ t('common', 'shop_or_service') }}</th>
@@ -41,27 +41,30 @@
         </tr>
       {% endfor %}
     </table>
+
+    {% include '/parts/pagination.twig' %}
   {% else %}
-    <div class="not-found">{{ t('account', 'payments_no_found') }}</div>
+    <br>
+    <p class="not-found">{{ t('account', 'payments_no_found') | raw }}</p>
+    <a href="/stores" class="btn">{{ t('account', 'payments_no_found_btn') | raw }}</a>
   {% endif %}
-  {% include '/parts/pagination.twig' %}
 </section>
 
-
-{% set curr = currencyIcon(app.params.valuta) %}
-
-<section class="margin">
-  <h3>{{ t('account', 'summary') }}:</h3>
-  <div>
-    {{ t('account', 'confirmed') }}:
-    <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
-  </div>
-  <div>
-    {{ t('account', 'expected') }}:
-    <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
-  </div>
-  <div>
-    {{ t('account', 'revoked') }}:
-    <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
-  </div>
-</section>
+{% if payments|length > 0 %}
+  {% set curr = currencyIcon(app.params.valuta) %}
+  <section class="margin">
+    <h3>{{ t('account', 'summary') }}:</h3>
+    <div>
+      {{ t('account', 'confirmed') }}:
+      <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
+    </div>
+    <div>
+      {{ t('account', 'expected') }}:
+      <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
+    </div>
+    <div>
+      {{ t('account', 'revoked') }}:
+      <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
+    </div>
+  </section>
+{% endif %}

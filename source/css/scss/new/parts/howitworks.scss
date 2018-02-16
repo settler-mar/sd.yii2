@@ -14,9 +14,10 @@
   }
 
   &-img{
-    width: 50%;
+    width: 70%;
     border-radius: 10px;
-    border: 1px solid #999;
+    border: 3px solid $reccomendations-item-border-color;
     min-width: 300px;
+    max-width: 650px;
   }
 }

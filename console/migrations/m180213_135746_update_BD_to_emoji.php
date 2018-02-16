@@ -20,6 +20,7 @@ class m180213_135746_update_BD_to_emoji extends Migration
       $this->execute('ALTER TABLE `cw_metadata` CHANGE `h1` `h1` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;');
       $this->execute('ALTER TABLE `cw_metadata` CHANGE `keywords` `keywords` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;');
       $this->execute('ALTER TABLE `cw_metadata` CHANGE `title` `title` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;');
+      $this->execute('UPDATE `cw_foundation` SET `is_active` = \'0\' WHERE not `uid` = 1;');
 
       $constant = new Constants();
       $constant->name = "comparison";

@@ -206,6 +206,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       return false;
     }
 
+    if($this->birthday=='00-00-0000'){
+      $this->birthday=null;
+    }
+
     if($this->birthday) {
       $this->birthday=explode('-',$this->birthday);
       $this->birthday=implode('-',array_reverse($this->birthday));

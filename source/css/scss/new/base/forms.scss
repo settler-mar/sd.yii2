@@ -238,19 +238,6 @@ td {
   select::-ms-expand {
     display: none;
   }
-
-  textarea {
-    border-radius: 5px;
-    border: solid 1px $form_input_border;
-    width: 75%;
-    height: 100%;
-    font-weight: 400;
-    outline: 0;
-    font-size: 16px;
-    box-sizing: border-box;
-    resize: vertical;
-    padding: 15px;
-  }
 }
 
 .form-input-group {
@@ -265,6 +252,7 @@ td {
 
   &-fl {
     width: 100%;
+    max-width: 340px;
   }
 
   @include media($phones) {
@@ -299,6 +287,7 @@ td {
     left: 50px;
     border-left: 1px solid $form_input_border;
   }
+
   span {
     svg {
       width: 18px;
@@ -310,6 +299,29 @@ td {
       fill: $btn_base_bg;
       stroke: $btn_base_bg;
     }
+  }
+}
+
+.form-textarea-group {
+  display: inline-block;
+  width: 75%;
+  min-height: 55px;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: solid 1px $form_input_border;
+  text-align: left;
+  position: relative;
+
+  textarea {
+    width: 100%;
+    height: 150px;
+    font-weight: 400;
+    outline: 0;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none;
+    padding: 15px;
+    border: 0;
   }
 }
 

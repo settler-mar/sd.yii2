@@ -10,6 +10,7 @@
 
 {% if user_id %}
   {% include 'index/blog_posts.twig' %}
+  {% include 'parts/stores/coupons.twig' %}
 {% else %}
   {% include 'index/other_services.twig' %}
   {% include 'index/advantages.twig' %}
@@ -19,7 +20,6 @@
   {% include 'index/faq.twig' %}
   {% include 'index/any_question.twig' %}
 {% endif %}
-{% include 'parts/stores/coupons.twig' %}
 
 {% include 'index/friends.twig' %}
 

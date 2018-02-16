@@ -1,34 +1,34 @@
-.scroll_box{
-  &-active{
+.scroll_box {
+  &-active {
     display: flex;
     flex-wrap: nowrap;
     overflow: hidden;
     //padding: 30px;
 
-    & + .scroll_box{
+    & + .scroll_box {
       &-control {
         display: block;
         text-align: center;
-        @include media($tablets){
+        @include media($tablets) {
           margin-top: 20px;
         }
       }
     }
 
-    .scroll_box{
+    .scroll_box {
 
-      &-mover{
+      &-mover {
         display: inline-block;
       }
     }
   }
 
-  &-wrap{
+  &-wrap {
     position: relative;
     margin-bottom: 30px;
   }
 
-  &-item{
+  &-item {
     width: calc(33.3% - 74px);
     min-width: calc(33.3% - 74px);
     max-width: calc(33.3% - 74px);
@@ -39,31 +39,37 @@
     overflow: hidden;
     position: relative;
 
+    &-emty {
+      box-shadow: none;
+      background: none;
+      margin: 0;
+      padding: 0;
+    }
 
-    &-hide{
+    &-hide {
       display: none;
     }
 
-    &-modal{
+    &-modal {
       margin: 0;
       padding: 0;
       width: 100%;
       min-width: 100%;
       box-shadow: none;
 
-      .max_text_hide-gray{
+      .max_text_hide-gray {
         background: transparent;
         border-top: 1px solid #ccc;
       }
     }
 
-    @include media($laptop_min){
+    @include media($laptop_min) {
       width: calc(50% - 74px);
       min-width: calc(50% - 74px);
       max-width: calc(50% - 74px);
     }
 
-    @include media($tablets){
+    @include media($tablets) {
       margin: 0px;
       margin-bottom: 19px;
       width: calc(100% - 36px);
@@ -72,15 +78,15 @@
     }
   }
 
-  &-mover{
+  &-mover {
     display: none;
     transition: all .5s ease;
   }
 
-  &-control{
+  &-control {
     display: none;
 
-    &_point{
+    &_point {
       width: 12PX;
       height: 12PX;
       background: #CCC;
@@ -92,12 +98,12 @@
       margin: 0 5px;
       display: inline-block;
 
-      &:hover{
+      &:hover {
         border: solid 1px #CCC;
         background: #FFF;
       }
 
-      &.active{
+      &.active {
         background: #0f181a;
         line-height: inherit;
         border: solid 1px #5C5F6A;
@@ -106,11 +112,11 @@
     }
   }
 
-  &-title{
+  &-title {
     display: flex;
   }
 
-  &-avatar{
+  &-avatar {
     height: 78PX;
     width: 78PX;
     border-radius: 100%;
@@ -119,26 +125,26 @@
     background-position: 50% 50%;
   }
 
-  &-user{
+  &-user {
     &_name {
       font-size: 20px;
       font-weight: 700;
       padding-bottom: 5px;
     }
 
-    &_cashback{
+    &_cashback {
       color: #b6b6b6;
       font-size: 16px;
       line-height: 14px;
 
-      span{
+      span {
         display: block;
         font-weight: 700;
       }
     }
   }
 
-  &-content{
+  &-content {
     margin: 10px -18px -18px -18px;
     display: flex;
     flex-direction: column;
@@ -146,7 +152,7 @@
     max-height: 100%;
   }
 
-  &-text{
+  &-text {
     //margin-top: 20px;
     padding: 18px;
     a {
@@ -154,17 +160,17 @@
     }
   }
 
-  &-answer{
+  &-answer {
     background: $gray_box_bg;
     //margin: 10px -18px -18px;
     padding: 18px;
 
-    &+*{
+    & + * {
       background: $gray_box_bg;
     }
   }
 
-  &-show_more{
+  &-show_more {
     display: block;
     cursor: pointer;
     text-align: right;

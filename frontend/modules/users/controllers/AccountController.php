@@ -45,7 +45,7 @@ class AccountController extends Controller
 
     $search_range = Yii::$app->request->get('date');
     if (empty($search_range) || strpos($search_range, '-') === false) {
-      $search_range = date('01-01-Y') . ' - ' . date('d-m-Y');
+      $search_range = date('01-01-2017') . ' - ' . date('d-m-Y');
     }
 
 

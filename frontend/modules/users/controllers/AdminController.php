@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use yii\data\Pagination;
 use yii\helpers\Url;
 use frontend\components\Pagination as SdPagination;
+use yii\widgets\MaskedInput;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -25,12 +26,12 @@ class AdminController extends Controller
   public function behaviors()
   {
     return [
-      'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-          'delete' => ['post'],
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'delete' => ['post'],
+            ],
         ],
-      ],
     ];
   }
 
@@ -46,91 +47,91 @@ class AdminController extends Controller
    */
   public function actionIndex()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    $get=Yii::$app->request->get();
+    $get = Yii::$app->request->get();
     $query = Users::find();
 
-    $w=[];
-    if(isset($get['user_id']) && strlen($get['user_id'])>0){
-      $query->andWhere(['uid'=>((int)$get['user_id'])]);
+    $w = [];
+    if (isset($get['user_id']) && strlen($get['user_id']) > 0) {
+      $query->andWhere(['uid' => ((int)$get['user_id'])]);
     }
 
-    if(isset($get['ip']) && strlen($get['ip'])>0){
-      $query->andWhere(['or','last_ip=\''.$get['ip'].'\'','reg_ip=\''.$get['ip'].'\'']);
+    if (isset($get['ip']) && strlen($get['ip']) > 0) {
+      $query->andWhere(['or', 'last_ip=\'' . $get['ip'] . '\'', 'reg_ip=\'' . $get['ip'] . '\'']);
     }
 
-    if(isset($get['ref_id']) && strlen($get['ref_id'])>0){
-      $query->andWhere(['referrer_id'=>((int)$get['ref_id'])]);
+    if (isset($get['ref_id']) && strlen($get['ref_id']) > 0) {
+      $query->andWhere(['referrer_id' => ((int)$get['ref_id'])]);
     }
 
-    if(isset($get['email']) && strlen($get['email'])>0){
-      $query->andWhere(['like','email',$get['email']]);
+    if (isset($get['email']) && strlen($get['email']) > 0) {
+      $query->andWhere(['like', 'email', $get['email']]);
     }
-    if(isset($get['wait-moderation']) && strlen($get['wait-moderation'])>0){
+    if (isset($get['wait-moderation']) && strlen($get['wait-moderation']) > 0) {
       $query->andWhere(['waitModeration' => $get['wait-moderation']]);
     }
 
-    if (isset( $get['is_active'])) {
+    if (isset($get['is_active'])) {
       if ($get['is_active'] == 1) {
         $query->andFilterWhere([
-          'or',
-          ['>', 'sum_pending', 0],
-          ['>', 'sum_confirmed', 0],
-          ['>', 'sum_from_ref_pending', 0],
-          ['>', 'sum_from_ref_confirmed', 0],
+            'or',
+            ['>', 'sum_pending', 0],
+            ['>', 'sum_confirmed', 0],
+            ['>', 'sum_from_ref_pending', 0],
+            ['>', 'sum_from_ref_confirmed', 0],
         ]);
       } elseif ($get['is_active'] === '0') {
         $query->andWhere([
-          'or',
-          ['sum_pending' => null],
-          ['=', 'sum_pending', 0]
+            'or',
+            ['sum_pending' => null],
+            ['=', 'sum_pending', 0]
         ]);
         $query->andWhere([
-          'or',
-          ['sum_confirmed' => null],
-          ['=', 'sum_confirmed', 0]
+            'or',
+            ['sum_confirmed' => null],
+            ['=', 'sum_confirmed', 0]
         ]);
         $query->andWhere([
-          'or',
-          ['sum_from_ref_pending' => null],
-          ['=', 'sum_from_ref_pending', 0]
+            'or',
+            ['sum_from_ref_pending' => null],
+            ['=', 'sum_from_ref_pending', 0]
         ]);
         $query->andWhere([
-          'or',
-          ['sum_from_ref_confirmed' => null],
-          ['=', 'sum_from_ref_confirmed', 0]
+            'or',
+            ['sum_from_ref_confirmed' => null],
+            ['=', 'sum_from_ref_confirmed', 0]
         ]);
 
       }
     }
 
     $totQuery = clone $query;
-    $totQuery=$totQuery
-      ->select([
-        'count(*) as total',
-        'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
-        'SUM(sum_pending) as sum_pending',
-        'SUM(cnt_pending) as cnt_pending',
-        'SUM(sum_confirmed) as sum_confirmed',
-        'SUM(cnt_confirmed) as cnt_confirmed',
-        'SUM(sum_from_ref_pending) as sum_from_ref_pending',
-        'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
-        'SUM(sum_to_friend_pending) as sum_to_ref_pending',
-        'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
-        'SUM(sum_foundation) as sum_foundation',
-        'SUM(sum_withdraw) as sum_withdraw',
-        'SUM(sum_bonus) as sum_bonus',
-      ])
-      ->asArray()
-      ->one();
+    $totQuery = $totQuery
+        ->select([
+            'count(*) as total',
+            'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
+            'SUM(sum_pending) as sum_pending',
+            'SUM(cnt_pending) as cnt_pending',
+            'SUM(sum_confirmed) as sum_confirmed',
+            'SUM(cnt_confirmed) as cnt_confirmed',
+            'SUM(sum_from_ref_pending) as sum_from_ref_pending',
+            'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
+            'SUM(sum_to_friend_pending) as sum_to_ref_pending',
+            'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
+            'SUM(sum_foundation) as sum_foundation',
+            'SUM(sum_withdraw) as sum_withdraw',
+            'SUM(sum_bonus) as sum_bonus',
+        ])
+        ->asArray()
+        ->one();
 
     $countQuery = clone $query;
     $pages = new Pagination(['totalCount' => $countQuery->count()]);
-    
+
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
     $notes['users_charity'] = Charity::waitingCount();
@@ -139,26 +140,27 @@ class AdminController extends Controller
     $notes['users_on_actions'] = Users::onActionCount();
 
     $models = $query->offset($pages->offset)
-      ->limit($pages->limit)
-      ->orderBy('uid DESC')
-      ->all();
+        ->limit($pages->limit)
+        ->orderBy('uid DESC')
+        ->all();
 
     return $this->render('index', [
-      'users' => $models,
-      'pages' => $pages,
-      'get'=>$get,
-      'users_total'=>$totQuery,
-      'notes' => $notes,
+        'users' => $models,
+        'pages' => $pages,
+        'get' => $get,
+        'users_total' => $totQuery,
+        'notes' => $notes,
     ]);
   }
 
-  public function actionAction(){
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserView')) {
+  public function actionAction()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    $users=Users::find()
+    $users = Users::find()
         ->alias('user')
         ->andFilterWhere(['>', 'user.in_action', 0])
         ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
@@ -169,7 +171,7 @@ class AdminController extends Controller
 
         ])
         ->groupBy('user.uid')
-        ->orderBy(['finish_by_action'=>SORT_DESC])
+        ->orderBy(['finish_by_action' => SORT_DESC])
         //->asArray()
         ->all();
 
@@ -177,6 +179,7 @@ class AdminController extends Controller
         'users' => $users,
     ]);
   }
+
   /**
    * Displays a single Users model.
    * @param integer $id
@@ -184,13 +187,13 @@ class AdminController extends Controller
    */
   public function actionLogin($id)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserLogin')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserLogin')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    Yii::$app->session->set('admin_id',Yii::$app->user->id);
-    $user=Users::findOne(['uid'=>$id]);
+    Yii::$app->session->set('admin_id', Yii::$app->user->id);
+    $user = Users::findOne(['uid' => $id]);
     Yii::$app->user->login($user);
     return $this->redirect('/account');
   }
@@ -202,7 +205,7 @@ class AdminController extends Controller
    */
   public function actionCreate()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserCreate')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserCreate')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -231,10 +234,11 @@ class AdminController extends Controller
       $model->notice_email = 1;
       $model->registration_source = '';
       return $this->render('create.twig', [
-        'model' => $model,
-        'loyalty_status_list' => $loyalty_status_list,
-        'bonus_status_list' => $bonus_status_list,
-        'traffTypeList'=>Users::trafficTypeList
+          'model' => $model,
+          'loyalty_status_list' => $loyalty_status_list,
+          'bonus_status_list' => $bonus_status_list,
+          'traffTypeList' => Users::trafficTypeList,
+          'MaskedInput_class' => MaskedInput::class
       ]);
     }
   }
@@ -245,9 +249,9 @@ class AdminController extends Controller
    * @param integer $id
    * @return mixed
    */
-  public function actionUpdate($id, $page=1)
+  public function actionUpdate($id, $page = 1)
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserEdit')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -274,48 +278,49 @@ class AdminController extends Controller
         }
       };
 
-      if(strlen($model->name)<1){
-        $model->name=explode('@',$model->email);
-        $model->name=$model->name[0];
+      if (strlen($model->name) < 1) {
+        $model->name = explode('@', $model->email);
+        $model->name = $model->name[0];
       }
 
-      $fav_store=UsersFavorites::find()
-        ->where(['user_id'=>$id])
-        ->all();
+      $fav_store = UsersFavorites::find()
+          ->where(['user_id' => $id])
+          ->all();
 
-      foreach ($fav_store as $k => &$store){
-        $store=$store->store;
-        if(!$store){
+      foreach ($fav_store as $k => &$store) {
+        $store = $store->store;
+        if (!$store) {
           unset ($fav_store[$k]);
         }
       }
 
       $dataBase = Users::find()
-        ->where(['referrer_id'=>$id])
-        ->orderBy(['uid'=>'desc']);
+          ->where(['referrer_id' => $id])
+          ->orderBy(['uid' => 'desc']);
       $refsActive = clone $dataBase;
       $pagination = new SdPagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
 
       $ref_users = $pagination->data();
       $refsActive = $refsActive
-        ->andWhere([
-          'or',
-          ['>', 'sum_pending', 0],
-          ['>', 'sum_confirmed', 0],
-          ['>', 'sum_from_ref_pending', 0],
-          ['>', 'sum_from_ref_confirmed', 0],
-        ])
-        ->count();
+          ->andWhere([
+              'or',
+              ['>', 'sum_pending', 0],
+              ['>', 'sum_confirmed', 0],
+              ['>', 'sum_from_ref_pending', 0],
+              ['>', 'sum_from_ref_confirmed', 0],
+          ])
+          ->count();
 
       return $this->render('update.twig', [
-        'model' => $model,
-        'loyalty_status_list' => $loyalty_status_list,
-        'bonus_status_list' => $bonus_status_list,
-        'fav_store'=>$fav_store,
-        'ref_users'=>$ref_users,
-        "pagination" => $pagination->getPagination('users/admin/update', ['id'=>$id]),
-        'refs_active' => $refsActive,
-        'traffTypeList'=>Users::trafficTypeList
+          'model' => $model,
+          'loyalty_status_list' => $loyalty_status_list,
+          'bonus_status_list' => $bonus_status_list,
+          'fav_store' => $fav_store,
+          'ref_users' => $ref_users,
+          "pagination" => $pagination->getPagination('users/admin/update', ['id' => $id]),
+          'refs_active' => $refsActive,
+          'traffTypeList' => Users::trafficTypeList,
+          'MaskedInput_class' => MaskedInput::class
       ]);
     }
   }
@@ -328,13 +333,13 @@ class AdminController extends Controller
    */
   public function actionDelete()
   {
-    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('UserDelete')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
 
-    $user_id=Yii::$app->request->post('id');
-    if((int)$user_id==0){
+    $user_id = Yii::$app->request->post('id');
+    if ((int)$user_id == 0) {
       throw new \yii\web\ForbiddenHttpException('Не указан id пользователя.');
       return false;
     }

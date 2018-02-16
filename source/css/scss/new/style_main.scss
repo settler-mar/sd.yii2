@@ -92,6 +92,10 @@ h1 {
   margin-top: 0;
   text-align: left;
 
+  @include media ($laptop_min) {
+    text-align: center;
+  }
+
   @media print {
     font-size: 2em;
   }
@@ -365,9 +369,21 @@ svg.svg-no-stroke {
   padding: 20px 0;
 }
 
+.padding-box-top {
+  padding-top: 20px;
+}
+
 .wrap-round {
   border-radius: 10px;
   padding: 20px !important;
+}
+
+.border-wrap{
+  padding: 0 20px 0 20px;
+  margin: 0 1.5% 1.875rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 3px solid $reccomendations-item-border-color;
 }
 
 @include media($laptop) {
@@ -568,6 +584,7 @@ svg.svg-no-stroke {
   height: 1em;
   width: 1em;
   vertical-align: sub;
+  margin-right: 0.2em;
 }
 
 .svg-icon {
