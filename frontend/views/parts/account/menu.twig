@@ -1,5 +1,7 @@
 <div class="catalog-categories catalog-categories-account">
+
   {% set header = 0 %}
+  {% set user_avatar = _checkAvatar(this.user.photo) %}
   {% include 'parts/account/account_left_menu.twig' %}
 
   {{ use('frontend/components/Banner') }}
