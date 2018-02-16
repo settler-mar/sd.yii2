@@ -11,6 +11,10 @@
     <h2>
         {{ t('account', 'user_loyalty_status') }}
     </h2>
+    <div class="align-center margin">
+        <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
+    </div>
+
     <div class="account-circles-wrap">
         {% for key,status in statuses_marafon %}
             <div class="account-circles-item {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-active') }}">
@@ -81,7 +85,6 @@
     {% if desire %}
         <div class="cashbonus">
             {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw}}
-            <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Подробнее</a>
         </div>
     {% endif %}
     {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
