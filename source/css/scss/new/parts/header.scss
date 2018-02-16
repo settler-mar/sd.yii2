@@ -21,7 +21,7 @@
   &-upline {
     position: fixed;
     width: 100%;
-    padding: 10px 0;
+    padding: 10PX 0;
     background: $header_bg_up;
     z-index: 100;
     font-size: 14px;
@@ -461,7 +461,7 @@
       width: 100%;
       height: calc(100vh - 2.625rem - 3rem);
       //top: $menu_height;
-      top: 53px;
+      top: 50PX;
       overflow: auto;
       right: 0;
       &_inner {
@@ -493,7 +493,7 @@
         line-height: 30px;
         text-align: left;
         >a {
-          padding: 10px;
+          padding: 10PX;
           color: $header_sub_menu_color;
           text-decoration: none;
           &:hover {
