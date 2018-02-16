@@ -5,52 +5,59 @@
 
 
 <section class="settings margin">
+
+  {% set form = active_form_begin({
+  'id':'user_setting',
+  'layout' : 'horizontal',
+  'fieldConfig':{
+  'horizontalCssClasses':{
+  'wrapper':'form-input-group form-input-group-fl',
+  }
+  },
+  'options' : {
+  'enctype' : 'multipart/form-data',
+  'role' : 'form'
+  },
+  }) %}
+
+  <h2>{{ t('account', 'account_settings') }}</h2>
   <div class="page-wrap-flex flex-2col">
     <div>
-      {% set form = active_form_begin({
-      'id':'user_setting',
-      'layout' : 'horizontal',
-      'fieldConfig':{
-      'horizontalCssClasses':{
-      'wrapper':'form-input-group form-input-group-fl',
-      }
-      },
-      'options' : {
-      'enctype' : 'multipart/form-data',
-      'role' : 'form'
-      },
-      }) %}
-      <h3>{{ t('account', 'account_settings') }}</h3>
+    <div class="form-group-s">
+
+      {{ form.field(model, 'name',{
+        'template' :
+        '{beginWrapper}<i>'~svg("user",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+      }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
+
+      {{ form.field(model, 'email',{
+        'template' :
+        '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+      }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
+
+      {{ form.field(model, 'birthday',{
+        'template' :
+        '{beginWrapper}<i>'~svg("calendar_f",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+      }).widget(MaskedInput_class,{
+        'mask': '99-99-9999',
+        'clientOptions' : {
+          'placeholder' : t('account', 'date_mask_text'),
+        },
+      }) | raw }}
+
+      {% if model.email_verified == 0 %}
+        <div class="align-center">
+          <a class="btn"
+             href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') | raw}}</a>
+        </div>
+      {% endif %}
+      </div>
 
       <div class="form-group-s">
-
-        {{ form.field(model, 'name',{
-          'template' :
-          '{beginWrapper}<i>'~svg("user",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-        }).textInput({'placeholder':t('account', 'account_user_name')}) | raw }}
-
-        {{ form.field(model, 'email',{
-          'template' :
-          '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-        }).textInput({'placeholder':t('account', 'account_user_email')}) | raw }}
-
-
-        {{ form.field(model, 'birthday',{
-          'template' :
-          '{beginWrapper}<i>'~svg("calendar_f",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-        }).widget(MaskedInput_class,{
-          'mask': '99-99-9999',
-          'clientOptions' : {
-            'placeholder' : t('account', 'date_mask_text'),
-          },
-        }) | raw }}
-
-        {% if model.email_verified == 0 %}
-          <p>
-            <a class="btn"
-               href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') }}</a>
-          </p>
-        {% endif %}
+        <span class="form-title">{{ t('account','notify_settings') }}:</span>
+        <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
+               value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
+        <label for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
       </div>
 
       <div class="form-group-s">
@@ -64,6 +71,8 @@
         <label for="radio-2">{{ svg("women",'svg-icon svg-icon-women') |raw }} {{ t('account', 'famale') }}</label>
       </div>
 
+      </div>
+    <div>
       <div class="account-avatar form-group-s">
         <span class="form-title">{{ t('account', 'avatar') }}:</span>
         <img for="UserSetting[new_photo]" style="max-height: 150px;" src="{{ _if(
@@ -81,86 +90,82 @@
           </span>
         </div>
       </div>
-
-      <div class="form-group-s">
-        <span class="form-title">{{ t('account','notify_settings') }}:</span>
-        <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
-               value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
-        <label for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
-      </div>
-
-      <div class="align-center">
-        <button type="submit" class="btn">{{ t('account', 'save_settings') }}</button>
-      </div>
-
-      {{ active_form_end() }}
-
     </div>
-    <div>
-      {% set form = active_form_begin({
-      'id':'user_setting_password',
-      'layout' : 'horizontal',
-      'fieldConfig':{
-      'horizontalCssClasses':{
-      'wrapper':'form-input-group form-input-group-fl',
-      }
-      },
-      'options' : {
-      'enctype' : 'multipart/form-data',
-      'role' : 'form'
-      },
-      }) %}
-      <h3>{{ t('account','password_change') }}</h3>
+  </div>
 
-      {{ form.field(model_pas, 'old_password',{
-        'template' :
-        '{beginWrapper}<i>'~svg("unlock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-      }).passwordInput({
-        'placeholder':t('account', 'password_old'),
-      }) | raw }}
+  <div class="align-center">
+    <button type="submit" class="btn">{{ t('account', 'save_settings') }}</button>
+  </div>
 
-      {{ form.field(model_pas, 'new_password',{
-        'template' :
-        '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-      }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
+  {{ active_form_end() }}
 
-      {{ form.field(model_pas, 'r_new_password',{
-        'template' :
-        '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-      }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
-      <div class="align-center">
-        <button type="submit" class="btn">{{ t('account', 'save_password') }}</button>
-      </div>
 
-      {{ active_form_end() }}
+  <div>
+    {% set form = active_form_begin({
+    'id':'user_setting_password',
+    'layout' : 'horizontal',
+    'fieldConfig':{
+    'horizontalCssClasses':{
+    'wrapper':'form-input-group form-input-group-fl',
+    }
+    },
+    'options' : {
+    'enctype' : 'multipart/form-data',
+    'role' : 'form'
+    },
+    }) %}
+    <h2>{{ t('account','password_change') }}</h2>
 
-      <h3>{{ t('account', 'social_accounts') }}</h3>
+    {{ form.field(model_pas, 'old_password',{
+      'template' :
+      '{beginWrapper}<i>'~svg("unlock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+    }).passwordInput({
+      'placeholder':t('account', 'password_old'),
+    }) | raw }}
 
-      {% if socials | length >0 %}
-        <table class="table table-payments">
+    {{ form.field(model_pas, 'new_password',{
+      'template' :
+      '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+    }).passwordInput({'placeholder':t('account', 'password_new')}) | raw }}
 
+    {{ form.field(model_pas, 'r_new_password',{
+      'template' :
+      '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+    }).passwordInput({'placeholder':t('account', 'password_repeat')}) | raw }}
+    <div class="align-center">
+      <button type="submit" class="btn">{{ t('account', 'save_password') }}</button>
+    </div>
+
+    {{ active_form_end() }}
+  </div>
+  <div>
+    <h2>{{ t('account', 'social_accounts') }}</h2>
+
+    {% if socials | length >0 %}
+      <table class="table table-payments">
+
+        <tr>
+          <th>{{ t('account', 'social_account') }}</th>
+          <th>{{ t('account', 'user_name') }}</th>
+          <th></th>
+        </tr>
+
+        {% for social in socials %}
           <tr>
-            <th>{{ t('account', 'social_account') }}</th>
-            <th>{{ t('account', 'user_name') }}</th>
-            <th></th>
-          </tr>
-
-          {% for social in socials %}
-            <tr>
-              <td class="td-center">
-                <a
-                    class="acount-service-link_sd"
-                    href="{{ social.url }}"
-                    target="_blank"
-                    rel="nofollow noopener"
-                >
-                  {{ svg(social.social_name~'-round','svg-icon svg-icon-x2') | raw }}
-                </a>
-              </td>
-              <td>
-                {{ social.name }}
-              </td>
-              <td>
+            <td class="td-center">
+              <a
+                  class="acount-service-link_sd"
+                  href="{{ social.url }}"
+                  target="_blank"
+                  rel="nofollow noopener"
+              >
+                {{ svg(social.social_name~'-round','svg-icon svg-icon-x2') | raw }}
+              </a>
+            </td>
+            <td>
+              {{ social.name }}
+            </td>
+            <td>
                                         <span
                                             class="ajax_remove"
                                             mode="reload"
@@ -170,18 +175,16 @@
                                         >
                                           {{ t('common', 'delete') }}
                                         </span>
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
-      {% else %}
-        <p>{{ t('account', 'social_accounts_empty') }}</p>
-      {% endif %}
-      <p>{{ t('account', 'social_accounts_add') }}:</p>
-      {{ use('frontend/components/socials/EauthWidget') }}
-      {{ eauth_widget_widget({'float':'left'}) }}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>{{ t('account', 'social_accounts_empty') }}</p>
+    {% endif %}
+    <p>{{ t('account', 'social_accounts_add') }}:</p>
+    {{ use('frontend/components/socials/EauthWidget') }}
+    {{ eauth_widget_widget({'float':'left'}) }}
 
-    </div>
   </div>
-
 </section>

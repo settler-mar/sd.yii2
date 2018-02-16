@@ -252,6 +252,7 @@ td {
 
   &-fl {
     width: 100%;
+    max-width: 340px;
   }
 
   @include media($phones) {
