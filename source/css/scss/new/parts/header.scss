@@ -203,7 +203,8 @@
   &-search {
     position: relative;
     width: 310px;
-    margin-right: 5%;
+    //margin-right: 5%;
+    margin-right: 10vw;
 
     @include media($laptop-min) {
       //flex-grow: 1;
