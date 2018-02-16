@@ -10,7 +10,7 @@
 
       {% if bonuses|length > 0 %}
 
-        <table class="table ta_left">
+        <table class="table ta_left adaptive adaptive-tablets">
 
             <tr>
               <th>{{ t('common', 'type') }}</th>
@@ -27,7 +27,9 @@
                 {{bonus.title}}
               </td>
               <td>
-                {{bonus.text | raw}}
+                <div>
+                  {{bonus.text | raw}}
+                </div>
               </td>
               <td>{{_date(bonus.added)}}</td>
               <td class="cashback {{bonus.status}}">
