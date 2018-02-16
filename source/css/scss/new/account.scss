@@ -7,11 +7,21 @@
     border-radius: 8px;
     //flex-wrap: wrap;
     // align-items: flex-end;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    &-row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      &-right {
+        justify-content: flex-end;
+      }
+
+    }
 
     &-block {
       box-sizing: border-box;
@@ -20,7 +30,7 @@
       width: calc(23% - 5px);
       //flex-grow: 2;
       margin-right: 5px;
-      //margin-bottom: 15px;
+      //margin-bottom: 10px;
 
       @include media($tablets) {
         width: calc(50% - 10px);
