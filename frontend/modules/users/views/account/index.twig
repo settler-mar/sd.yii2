@@ -9,7 +9,7 @@
 
   {% set curr = currencyIcon(app.params.valuta) %}
   <section>
-        <h3>{{ html.encode(this.title) }}</h3>
+        <h2>{{ html.encode(this.title) }}</h2>
       <div>
         {{ t('account', 'users_users_total') }}:
         <b>{{ _nf(users_total.total,0)  | raw}}</b>
@@ -49,7 +49,7 @@
       </form>
 
       {% if users|length > 0 %}
-        <table class="table ta_left">
+        <table class="table ta_left  adaptive adaptive-tablets">
           <tr>
             <th>ID</th>
             <th>{{ t('common', 'Дата регистрации') }}</th>

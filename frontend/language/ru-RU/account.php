@@ -163,7 +163,7 @@ return [
     'users_payment_confirmed_expected' => 'Количество покупок (подтвержденных/ожидающих)',
     'users_cashback_confirmed_expected' => 'Кэшбэк друзей (подтвержденный/ожидаемый)',
     'users_summ_confirmed_expected' => 'Доход от друзей (подтвержденный/ожидаемый)',
-    'users_payment_confirmed_expected_table_header' => 'Покупок<br>(подтвержденных/ожидающих)',
+    'users_payment_confirmed_expected_table_header' => 'Покупок <br>(подтвержденных/ожидающих)',
     'users_cashback_confirmed_expected_table_header' => 'Кэшбэк друзей <br>(подтвержденный/ожидаемый)',
     'users_bonus_confirmed_expected_table_header' => 'Ваш бонус <br>(подтвержденный/ожидаемый)',
     'users_vip_client' => 'VIP клиент',
