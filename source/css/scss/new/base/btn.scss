@@ -110,6 +110,10 @@
     width: 100%;
     box-sizing: border-box;
   }
+  &-narrow {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 
 .btn {

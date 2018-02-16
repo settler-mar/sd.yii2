@@ -599,7 +599,12 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: flex-start;
-      justify-content: space-around;
+      justify-content: center;
+      .btn {
+        &:not(:last-child) {
+          margin-right: 3%;
+        }
+      }
     }
 
     &-margin {
