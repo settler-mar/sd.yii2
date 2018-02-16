@@ -228,7 +228,7 @@
             display: block;
             position: fixed;
             width: 100%;
-            height: calc(100vh - 42px - 48PX);
+            height: calc(100vh - 90PX);
             left: 0;
             top: 50PX;
             z-index: 99;
@@ -294,8 +294,18 @@
         margin: 0 auto 20px auto;
         width: 200px;
         padding: 10px;
-        border: 2px solid;
-        border-radius: 5px;
+        background: $btn_base_bg;
+        color: $btn_base_color;
+        border-radius: 4px;
+        border: 2px solid $btn_base_bg;
+        transition: all .25s ease;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1em;
+        text-align: center;
+        z-index: 1;
+        position: relative;
 
         @include media($laptop-min) {
           display: flex;
