@@ -29,7 +29,9 @@ class Banners extends \yii\db\ActiveRecord
     private $places_array = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
+        'shops-catalog-left-menu' => ['name' => 'Шопы. Левое меню. Основной каталог'],
         'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
+        'coupons-catalog-left-menu' => ['name' => 'Купоны. Левое меню. Основной каталог'],
     ];
     public $banner_places = [];
 
@@ -231,11 +233,14 @@ class Banners extends \yii\db\ActiveRecord
 
     public function getPlaces_array(){
       $places_array=$this->places_array;
+      $places = !empty($this->places) ? explode(',', $this->places) : [];
 
       $cupons=CategoriesCoupons::find()->asArray()->all();
       foreach($cupons as $cupon){
-        $places_array['coupons-'.$cupon['uid'].'-left-menu']=[
-            'name'=>'Купоны.Левое меню.'.$cupon['name']
+        $key = 'coupons-'.$cupon['uid'].'-left-menu';
+        $places_array[$key]=[
+          'name'=>'Купоны.Левое меню.'.$cupon['name'],
+          'checked' => in_array($key, $places) ? 1 : 0,
         ];
       };
 
@@ -244,8 +249,10 @@ class Banners extends \yii\db\ActiveRecord
           ->asArray()
           ->all();
       foreach($stores as $store){
-        $places_array['stores-'.$store['uid'].'-left-menu']=[
-            'name'=>'Магазины.Левое меню.'.$store['name']
+        $key = 'stores-'.$store['uid'].'-left-menu';
+        $places_array[$key]=[
+          'name'=>'Магазины.Левое меню.'.$store['name'],
+          'checked' => in_array($key, $places) ? 1 : 0,
         ];
       };
       return $places_array;

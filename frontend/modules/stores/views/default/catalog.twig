@@ -28,8 +28,13 @@
                         {{category_tree|raw}}
                     </div>
                     {{ use('frontend/components/Banner') }}
+
+                    {% set banner_places = current_category ?
+                           ['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'] :
+                           ['shops-left-menu','shops-catalog-left-menu'] %}
+
                     {%  set banners  = banner_widget({
-                        'place':['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'],'options':{'wrapper_class':'banner__wrapper margin',}}) %}
+                        'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
                     {% if banners %}
                         {{ banners|raw }}
                     {% endif %}
