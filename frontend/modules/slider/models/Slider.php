@@ -58,12 +58,23 @@ class Slider extends \yii\db\ActiveRecord
         hide_animation:'hinge',
 			}
 		}";
+
   /**
    * @inheritdoc
    */
   public static function tableName()
   {
     return 'cw_slider';
+  }
+
+  public function behaviors()
+  {
+    return [
+        [
+            'class' => ActiveRecordChangeLogBehavior::className(),
+          //'ignoreAttributes' => ['visit','rating'],
+        ],
+    ];
   }
 
   /**

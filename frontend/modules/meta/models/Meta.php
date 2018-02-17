@@ -17,133 +17,143 @@ use Yii;
  */
 class Meta extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'cw_metadata';
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'cw_metadata';
+  }
+
+  public function behaviors()
+  {
+    return [
+        [
+            'class' => ActiveRecordChangeLogBehavior::className(),
+          //'ignoreAttributes' => ['visit','rating'],
+        ],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+        [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
+        [['description', 'keywords', 'content'], 'string'],
+        [['page', 'title', 'h1'], 'string', 'max' => 255],
+        [['content'], 'string'],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+        'uid' => 'Uid',
+        'page' => 'Page',
+        'title' => 'Title',
+        'description' => 'Description',
+        'keywords' => 'Keywords',
+        'h1' => 'H1',
+        'content' => 'Content',
+    ];
+  }
+
+  public static function findByUrl($url, $model = false)
+  {
+    if (isset(Yii::$app->params['url_mask'])) {
+      $page = Yii::$app->params['url_mask'];
+      $page = str_replace('default/', '', $page);
+      $page = str_replace('/default', '', $page);
+    } elseif (isset(Yii::$app->params['url_no_page'])) {
+      $page = Yii::$app->params['url_no_page'];
+    } else {
+      $page = preg_replace('/\/$/', '', $url);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
-            [['description', 'keywords', 'content'], 'string'],
-            [['page', 'title', 'h1'], 'string', 'max' => 255],
-            [['content'], 'string'],
-        ];
-    }
+    if ($page == '') $page = 'index';
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'uid' => 'Uid',
-            'page' => 'Page',
-            'title' => 'Title',
-            'description' => 'Description',
-            'keywords' => 'Keywords',
-            'h1' => 'H1',
-            'content' => 'Content',
-        ];
-    }
-
-    public static function findByUrl($url,$model=false)
-    {
-      if (isset(Yii::$app->params['url_mask'])) {
-        $page=Yii::$app->params['url_mask'];
-        $page=str_replace('default/','',$page);
-        $page=str_replace('/default','',$page);
-      } elseif (isset(Yii::$app->params['url_no_page'])) {
-        $page = Yii::$app->params['url_no_page'];
-      } else {
-        $page = preg_replace('/\/$/', '', $url);
-      }
-
-      if ($page == '') $page = 'index';
-
-      $page=str_replace('-offline','/offline',$page);//добавляем поддержку офлайна
+    $page = str_replace('-offline', '/offline', $page);//добавляем поддержку офлайна
 
 
-      $page_meta = Meta::find()
+    $page_meta = Meta::find()
         ->where(['page' => $page]);
-      $page_meta_count=$page_meta->count();
+    $page_meta_count = $page_meta->count();
 
-      if($page_meta_count==0 && isset(array_flip(Yii::$app->params['auth_page_redirect'])[$page])){
-        $page = array_flip(Yii::$app->params['auth_page_redirect'])[$page];
-        $page_meta = Meta::find()
+    if ($page_meta_count == 0 && isset(array_flip(Yii::$app->params['auth_page_redirect'])[$page])) {
+      $page = array_flip(Yii::$app->params['auth_page_redirect'])[$page];
+      $page_meta = Meta::find()
           ->where(['page' => $page]);
-        $page_meta_count=$page_meta->count();
+      $page_meta_count = $page_meta->count();
+    }
+
+    if ($page_meta_count > 0) {
+      if ($model) {
+        return $page_meta->limit(1);
       }
 
-      if ($page_meta_count>0) {
-        if($model){
-          return $page_meta->limit(1);
-        }
-
-        return $page_meta
+      return $page_meta
           ->select(['title', 'description', 'keywords', 'h1', 'content'])
           ->asArray()
           ->one();
-      }
+    }
 
-      //прямого совпадения нет ищем по плейсхолдерам
-      //перебираем путь, вместо каждого элемента подставляем '*', и ищем
-      //в каждом цикле затем ещё цикл - уменьшяем длину пути до '*'
-      //Замену производим начиня со 2-го элемента
-      $arr = explode('/', $page);
-      for ($i=count($arr)-1; $i>0; $i--) {
-        $pageArr = $arr;
-        $pageArr[$i] = '*';
-        $page_t = implode('/', $pageArr);
-        $metadataArray = Meta::find()
-          ->where(['like', 'page', $page_t , false]);
+    //прямого совпадения нет ищем по плейсхолдерам
+    //перебираем путь, вместо каждого элемента подставляем '*', и ищем
+    //в каждом цикле затем ещё цикл - уменьшяем длину пути до '*'
+    //Замену производим начиня со 2-го элемента
+    $arr = explode('/', $page);
+    for ($i = count($arr) - 1; $i > 0; $i--) {
+      $pageArr = $arr;
+      $pageArr[$i] = '*';
+      $page_t = implode('/', $pageArr);
+      $metadataArray = Meta::find()
+          ->where(['like', 'page', $page_t, false]);
 
-        if ($metadataArray->count()>0) {
-          if($model){
-            return $metadataArray->limit(1);
-          }
-          return $metadataArray
+      if ($metadataArray->count() > 0) {
+        if ($model) {
+          return $metadataArray->limit(1);
+        }
+        return $metadataArray
             ->select(['title', 'description', 'keywords', 'h1', 'content'])
             ->asArray()
             ->one();
-        }
+      }
 
-        while($pageArr[count($pageArr)-1] != '*' && count($pageArr) > 2) {
-          unset($pageArr[count($pageArr)-1]);
-          $page_t = implode('/', $pageArr);
-          $metadataArray = Meta::find()
-            ->where(['like', 'page', $page_t , false]);
+      while ($pageArr[count($pageArr) - 1] != '*' && count($pageArr) > 2) {
+        unset($pageArr[count($pageArr) - 1]);
+        $page_t = implode('/', $pageArr);
+        $metadataArray = Meta::find()
+            ->where(['like', 'page', $page_t, false]);
 
-          if ($metadataArray->count()>0) {
-            if($model){
-              return $metadataArray->limit(1);
-            }
-            return $metadataArray
+        if ($metadataArray->count() > 0) {
+          if ($model) {
+            return $metadataArray->limit(1);
+          }
+          return $metadataArray
               ->select(['title', 'description', 'keywords', 'h1', 'content'])
               ->asArray()
               ->one();
-          }
         }
       }
-
-      if($model){
-        return $page_meta;
-      }
-
-      //пробуем получить метатеги из параметров
-      $meta=Yii::$app->params['meta'];
-      if(isset($meta[$page])){
-        return $meta[$page];
-      };
-
-      //если ни чего не нашлось подходящего то возвращаем как для index
-      return Yii::$app->params['meta']['index'];
     }
+
+    if ($model) {
+      return $page_meta;
+    }
+
+    //пробуем получить метатеги из параметров
+    $meta = Yii::$app->params['meta'];
+    if (isset($meta[$page])) {
+      return $meta[$page];
+    };
+
+    //если ни чего не нашлось подходящего то возвращаем как для index
+    return Yii::$app->params['meta']['index'];
+  }
 }
