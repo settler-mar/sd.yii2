@@ -258,4 +258,74 @@
 
     }
   }
+  .account-menu_header {
+    font-weight: bold;
+    //margin: 5px 5px 10px;
+    text-align: left;
+    border-bottom: thin solid #fff;
+    background-color: $text-color;
+    color: $btn_base_dark_color;
+    padding: 10px 5px 5px;
+    //padding-bottom: 5px;
+    //max-width: 320px;
+
+    //padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+
+    &-info {
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      &-name {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 2px;
+      }
+      &-id {
+        color: $header_color_gray;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        a {
+          text-decoration: none;
+          font-weight: normal;
+        }
+      }
+    }
+    @include media($laptop_min) {
+      margin-top: 15px;
+    }
+
+    &-avatar {
+      width: 40PX;
+      height: 40PX;
+      margin: 0 15px 0 10px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-grow: 0;
+      flex-shrink: 1;
+      flex-basis: 40PX;
+
+      &-image {
+        display: block;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        img {
+          //width: 100%;
+          //height: 100%;
+          max-width: 100%;
+        }
+      }
+    }
+
+  }
 }

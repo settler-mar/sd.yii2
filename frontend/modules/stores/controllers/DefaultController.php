@@ -52,7 +52,7 @@ class DefaultController extends SdController
       //имеется action, который должен быть категорией или магазином, ищем такую
 
        //если в конце категории или шопа слово -offline
-      $this->offline = strpos($id, '-offline') == strlen($id) - strlen('-offline');
+      $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
 
       $store = Stores::byRoute($id);
       if ($store) {

@@ -45,7 +45,12 @@
         {% endif %}
 
         {{ use('frontend/components/Banner') }}
-        {%  set banners  = banner_widget({'place':['coupons-left-menu','coupons-'~current_category.uid~'-left-menu'],'options':{'wrapper_class':'banner__wrapper',}}) %}
+
+        {% set banner_places = current_category ?
+            ['coupons-left-menu','coupons-'~current_category.uid~'-left-menu'] :
+            ['coupons-left-menu','coupons-catalog-left-menu'] %}
+
+        {%  set banners  = banner_widget({'place':banner_places,'options':{'wrapper_class':'banner__wrapper',}}) %}
         {% if banners %}
             {{ banners|raw }}
         {% endif %}

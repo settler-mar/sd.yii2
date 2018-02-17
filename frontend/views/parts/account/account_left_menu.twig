@@ -1,3 +1,23 @@
+<div class="account-menu_header">
+    <div class="account-menu_header-avatar">
+        <div class="account-menu_header-avatar-image">
+            <img src="{{ user_avatar }}" class="no_optomize" alt="{{ this.user.name }}">
+        </div>
+    </div>
+    <div class="account-menu_header-info">
+        <div class="account-menu_header-info-name">
+            {{ this.user.name }}
+        </div>
+        <div class="account-menu_header-info-id">
+            ID:{{ this.user.uid }} {% if header == 0 %}<a
+                    class="set_clipboard"
+                    data-clipboard="{{ this.user.uid }}"
+                    data-clipboard-notify="Ваш ID скопирован в буфер обмена"
+                    href=""
+            >Скопировать</a> {% endif %}
+        </div>
+    </div>
+</div>
 <div class="catalog-categories-account_menu{% if header == 1 %}-header{% endif %}" >
     <ul>
         {% if header != 1 %}

@@ -1,7 +1,7 @@
     <!--краткая информация категории-->
     {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
-        <section class="margin">
+        <section class="gray-box wrap-round margin">
                 <h3 class="title-center">{{current_category.name}}</h3>
                 <div class="catalog_category-short-description">
                     {{short_description|raw}}
@@ -28,8 +28,13 @@
                         {{category_tree|raw}}
                     </div>
                     {{ use('frontend/components/Banner') }}
+
+                    {% set banner_places = current_category ?
+                           ['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'] :
+                           ['shops-left-menu','shops-catalog-left-menu'] %}
+
                     {%  set banners  = banner_widget({
-                        'place':['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'],'options':{'wrapper_class':'banner__wrapper margin',}}) %}
+                        'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
                     {% if banners %}
                         {{ banners|raw }}
                     {% endif %}
