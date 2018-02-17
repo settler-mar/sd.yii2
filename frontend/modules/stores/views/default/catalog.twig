@@ -1,7 +1,7 @@
     <!--краткая информация категории-->
     {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
-        <section class="margin">
+        <section class="gray-box wrap-round margin">
                 <h3 class="title-center">{{current_category.name}}</h3>
                 <div class="catalog_category-short-description">
                     {{short_description|raw}}
