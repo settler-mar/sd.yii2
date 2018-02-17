@@ -2,6 +2,7 @@
 
 namespace frontend\modules\slider\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;

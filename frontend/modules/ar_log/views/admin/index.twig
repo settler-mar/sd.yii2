@@ -1,0 +1,41 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Active Record Change Logs' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+  {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="active-record-change-log-index">
+  <div class="content-wrapper">
+    <section>
+      <h1>{{ html.encode(this.title) }}</h1>
+      {# include('_search.twig', {'model': searchModel}) #}
+      <div class="row">
+        <div class="col-md-12">
+          {{ grid_view_widget({
+            'dataProvider': dataProvider,
+            'filterModel': searchModel,
+            'columns': [
+            {'class': '\\yii\\grid\\SerialColumn'},
+
+            'id',
+            'event',
+            'route',
+            'model',
+            'pk',
+
+            {'class': '\\yii\\grid\\ActionColumn', 'template':'{delete}'},
+            ],
+          }) }}
+          {#
+          'old_attributes:ntext',
+          'new_attributes:ntext',
+          'log_at'
+          #}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

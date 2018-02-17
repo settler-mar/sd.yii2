@@ -45,14 +45,14 @@ class ActiveRecordChangeLog extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('ar_change_log', 'ID'),
-            'event' => Yii::t('ar_change_log', 'Event Name'),
-            'route' => Yii::t('ar_change_log', 'Route'),
-            'model' => Yii::t('ar_change_log', 'Model Class'),
-            'pk' => Yii::t('ar_change_log', 'Primary Key Condition'),
-            'old_attributes' => Yii::t('ar_change_log', 'Old Attributes Json'),
-            'new_attributes' => Yii::t('ar_change_log', 'New Attributes Json'),
-            'log_at' => Yii::t('ar_change_log', 'Log At'),
+            'id' => 'ID',
+            'event' => 'Event Name',
+            'route' => 'Route',
+            'model' => 'Model Class',
+            'pk' => 'Primary Key Condition',
+            'old_attributes' => 'Old Attributes Json',
+            'new_attributes' => 'New Attributes Json',
+            'log_at' => 'Log At',
         ];
     }
 }

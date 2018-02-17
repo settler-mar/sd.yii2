@@ -2,6 +2,7 @@
 
 namespace frontend\modules\coupons\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;

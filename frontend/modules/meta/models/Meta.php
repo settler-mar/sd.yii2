@@ -2,6 +2,7 @@
 
 namespace frontend\modules\meta\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use Yii;
 
 /**

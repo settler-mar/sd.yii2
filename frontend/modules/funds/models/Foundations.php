@@ -2,6 +2,7 @@
 
 namespace frontend\modules\funds\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use Yii;
 use JBZoo\Image\Image;
 
