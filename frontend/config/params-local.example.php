@@ -6,6 +6,7 @@ return [
      */
   'stores_menu_separate' => 1,
   'offline_redirect' => '/', //if stores_menu_separate==0 по умолчанию на /stores/stores-offline
+  'ActiveRecordLog' => true, //Для запоминания изменения в базе
   'valuta'=>'RUB',
   'ref_cpec' => [
     'ali'=>59914,
