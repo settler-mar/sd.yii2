@@ -129,7 +129,7 @@ class m180204_110718_UpateNewYearItemMetaTable extends Migration
 <div class="red_box align-center wrap-round">
 <h3 class="title-no-line">Внимание! Для продвижения вашей партнерской ссылки категорически запрещено использовать СПАМ.</h3>
 <p>О разрешенных видах трафика <a href="https://secretdiscounter.ru/webmaster-terms#trafic" target="_blank" rel="nofollow noopener">читайте здесь</a></p>
-<h4 style="text-align: center;"><a style="color: #e4c84b;" href="https://secretdiscounter.ru/webmaster-terms" target="_blank" rel="nofollow noopener">Условия использования</a></h4>
+<h4 style="text-align: center;"><a class="btn " href="https://secretdiscounter.ru/webmaster-terms" target="_blank" rel="nofollow noopener">Условия использования</a></h4>
 </div>
 <p>&nbsp;</p>
 <h2>Промоматериалы:</h2>
