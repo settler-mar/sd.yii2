@@ -191,19 +191,19 @@ class m180206_100248_meta_personal_coupon extends Migration
       $meta->content='<p>Если в момент перехода в магазин вы увидели подобное сообщение, это означает, что ваш браузер не позволяет использовать <a href="https://support.kaspersky.ru/common/windows/2843#block2" target="_blank" rel="noopener"><strong>файлы cookie</strong></a>, а без них мы не можем отследить ваш кэшбэк или покупку по промокоду.</p>
 <p>Попробуйте отключить все расширения, блокирующие рекламу (<strong>AdBlock, AdGuad, uBlock и их аналоги</strong>), и повторить попытку перехода в магазин. Также бывает, что кэшбэк <strong>блокируют и сами браузеры</strong>, например, Яндекс.Браузер, и даже <strong>некоторые антивирусы</strong>. Методы решения читайте ниже.</p>
 <h2>Пример возникающей ошибки</h2>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/adblock-2-secretdiscounter.jpg" width="780" height="451" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/adblock-2-secretdiscounter.jpg" width="780" height="451" /></p>
 <p>&nbsp;</p>
 <h2>Примеры других расширений (плагинов) c функцией блокировки рекламы</h2>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/adblocks-other-secretdiscounter.png" alt="" width="780" height="419" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/adblocks-other-secretdiscounter.png" alt="" width="780" height="419" /></p>
 <p>&nbsp;</p>
 <h2>Браузер&nbsp;Opera&nbsp;имеет собственный встроенный блокировщик рекламы</h2>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/opera-secretdiscounter.jpg" alt="" width="780" height="463" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/opera-secretdiscounter.jpg" alt="" width="780" height="463" /></p>
 <p>&nbsp;</p>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/opera-2-secretdiscounter.jpg" alt="" width="780" height="463" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/opera-2-secretdiscounter.jpg" alt="" width="780" height="463" /></p>
 <p>&nbsp;</p>
 <h2>Браузер&nbsp;Yandex&nbsp;по умолчанию имеет несколько установленных блокировщиков рекламы</h2>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/yandex-browser-x-secretdiscounter.jpg" width="780" height="390" />&nbsp;</p>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/yandex-browser-2--secretdiscounter.jpg" alt="" width="780" height="504" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/yandex-browser-x-secretdiscounter.jpg" width="780" height="390" />&nbsp;</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/yandex-browser-2--secretdiscounter.jpg" alt="" width="780" height="504" /></p>
 <p>&nbsp;</p>
 <h2>Еще одной причиной может быть включенная функция &laquo;Анти-Баннер&raquo; в настройках антивируса Kaspersky Internet Security</h2>
 <p>Для того, чтобы выключить данную функцию, необходимо:&nbsp;</p>
@@ -215,10 +215,10 @@ class m180206_100248_meta_personal_coupon extends Migration
 <p>В окне&nbsp;<strong>Настройка</strong>&nbsp;в разделе&nbsp;<strong>Центр</strong>&nbsp;<strong>защиты</strong>&nbsp;выключить&nbsp;<strong>Анти-Баннер</strong>, нажав на переключатель справа от него&nbsp;</p>
 </li>
 </ol>
-<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://secretdiscounter.ru/img/kaspersky-secretdiscounter.png" width="780" height="588" /></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="/img/kaspersky-secretdiscounter.png" width="780" height="588" /></p>
 <p class="wysiwyg-text-align-left">3. Закрыть окно антивируса</p>
 <p>&nbsp;</p>
-<p>Если ничего из вышеперечисленного не помогло,&nbsp;проверьте, включено ли в вашем браузере использование&nbsp;<a href="https://support.kaspersky.ru/common/windows/2843#block2" target="_blank" rel="noopener">файлов cookie</a>, а если и в этом случае переход в магазин не осуществляется &ndash;&nbsp;<strong><span class="wysiwyg-underline"><a href="https://secretdiscounter.ru/account/support" target="_blank" rel="noopener noreferrer">напишите нам</a></span></strong>&nbsp;и мы обязательно поможем!</p>
+<p>Если ничего из вышеперечисленного не помогло,&nbsp;проверьте, включено ли в вашем браузере использование&nbsp;<a href="https://support.kaspersky.ru/common/windows/2843#block2" target="_blank" rel="noopener">файлов cookie</a>, а если и в этом случае переход в магазин не осуществляется &ndash;&nbsp;<strong><span class="wysiwyg-underline"><a href="/account/support" target="_blank" rel="noopener noreferrer">напишите нам</a></span></strong>&nbsp;и мы обязательно поможем!</p>
 <p>&nbsp;</p>';
       $meta->save();
 

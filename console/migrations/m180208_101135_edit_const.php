@@ -43,13 +43,13 @@ class m180208_101135_edit_const extends Migration
 </div>
 <div class="accordion accordion-slim">
 <div class="accordion-control accordion-title">Чем вы лучше всех других кэшбэк-сервисов?</div>
-<div class="accordion-content">У многих топовых кэшбэк-сервисов минимальная сумма для вывода кэшбэка &ndash; 500 рублей, у нас &ndash; <strong>350</strong>. Также у нас <strong>самое большое количество интернет-магазинов</strong>, огромное количество <strong>бесплатных купонов и промокодов</strong>, <strong>очень быстрая техподдержка</strong>, <strong>накопительная программа лояльности</strong> (позволяющая получать на 30% кэшбэка больше), <strong>отличные отзывы</strong> во всем Интернете, <strong>платиновый аккаунт</strong> на 10 дней при регистрации,<strong> партнерская программа</strong>, позволяющая зарабатывать 15% от кэшбэка друга, государственная <strong>регистрация в России и Англии</strong>, <strong>самый быстрый вывод кэшбэка</strong> (из некоторых магазинов и ресторанов можно получить возврат уже на следующий день), а также <a href="https://secretdiscounter.ru/offline-system" target="_blank" rel="noopener"><strong>КЭШБЭК В ОФФЛАЙНЕ</strong></a> &ndash; с реальных магазинов, бутиков, салонов красоты, клиник, автомоек и прочего.
+<div class="accordion-content">У многих топовых кэшбэк-сервисов минимальная сумма для вывода кэшбэка &ndash; 500 рублей, у нас &ndash; <strong>350</strong>. Также у нас <strong>самое большое количество интернет-магазинов</strong>, огромное количество <strong>бесплатных купонов и промокодов</strong>, <strong>очень быстрая техподдержка</strong>, <strong>накопительная программа лояльности</strong> (позволяющая получать на 30% кэшбэка больше), <strong>отличные отзывы</strong> во всем Интернете, <strong>платиновый аккаунт</strong> на 10 дней при регистрации,<strong> партнерская программа</strong>, позволяющая зарабатывать 15% от кэшбэка друга, государственная <strong>регистрация в России и Англии</strong>, <strong>самый быстрый вывод кэшбэка</strong> (из некоторых магазинов и ресторанов можно получить возврат уже на следующий день), а также <a href="/offline-system" target="_blank" rel="noopener"><strong>КЭШБЭК В ОФФЛАЙНЕ</strong></a> &ndash; с реальных магазинов, бутиков, салонов красоты, клиник, автомоек и прочего.
 <p>Сравнительную таблицу по всем топовым кэшбэк-сервисам смотрите <a href="#comparison" class="scroll_to"><strong>выше</strong></a>.</p>
 </div>
 </div>
 <div class="accordion accordion-slim">
 <div class="accordion-control accordion-title">Каковы мои действия, чтобы получить кэшбэк?</div>
-<div class="accordion-content"><strong>Подробная пошаговая инструкция</strong> как получить кэшбэк в любом из наших магазинов находится <strong><a href="https://secretdiscounter.ru/howitworks" target="_blank" rel="noopener">здесь</a></strong>.
+<div class="accordion-content"><strong>Подробная пошаговая инструкция</strong> как получить кэшбэк в любом из наших магазинов находится <strong><a href="/howitworks" target="_blank" rel="noopener">здесь</a></strong>.
 <p><strong>А вообще, смысл ваших действий сводится к 4 простым шагам:</strong></p>
 <ol>
 <li>Выбираете нужный магазин (поиском или в соответствующей категории).<strong><em><br /></em></strong></li>
@@ -62,7 +62,7 @@ class m180208_101135_edit_const extends Migration
 </div>
 <div class="accordion accordion-slim">
 <div class="accordion-control accordion-title">Я не нашел ответа на свой вопрос, помогите...</div>
-<div class="accordion-content">Ответы на любые другие возможные вопросы вы можете получить в разделе <strong><a href="https://secretdiscounter.ru/faq" target="_blank" rel="noopener">Часто задаваемые вопросы</a></strong> либо написать в чат нашей службы поддержки.</div>
+<div class="accordion-content">Ответы на любые другие возможные вопросы вы можете получить в разделе <strong><a href="/faq" target="_blank" rel="noopener">Часто задаваемые вопросы</a></strong> либо написать в чат нашей службы поддержки.</div>
 </div>';
       $constant->save();
 
