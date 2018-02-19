@@ -226,6 +226,7 @@
         //box-shadow: 0 0 0 1px $text_color;
         transition: all .25s ease;
         display: inline-block;
+        vertical-align: middle;
 
         &:before {
           content: '';
