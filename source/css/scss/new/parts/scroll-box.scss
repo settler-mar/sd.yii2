@@ -16,7 +16,6 @@
     }
 
     .scroll_box {
-
       &-mover {
         display: inline-block;
       }
@@ -43,7 +42,7 @@
       box-shadow: none;
       background: none;
       margin: 0 !important;
-      padding: 0;
+      padding: 0 !important;
     }
 
     &-hide {

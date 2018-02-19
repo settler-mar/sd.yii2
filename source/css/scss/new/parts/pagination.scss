@@ -23,14 +23,18 @@
       margin: 0 10px;
 
       @include media($tablets) {
-        margin-bottom: 10px;
+        margin: 0 5px 10px 5px;
+        width: 2em;
+        height: 2em;
       }
+
       &:hover {
         background-color: $paginate_button_hover_color;
         a,svg {
           color: $header_sub_menu_color_hover;
         }
       }
+
       a,span {
         padding: 20PX;
         color: $text_color;

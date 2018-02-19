@@ -209,6 +209,7 @@
       }
     }
   }
+
   &-text-block {
     margin-bottom: 35px;
     padding: 10px;
@@ -249,9 +250,11 @@
 
     }
   }
+
   &-margin-top {
     margin-top: 15px;
   }
+
   &-withdraw {
     &-methods {
       &_list {
@@ -372,6 +375,7 @@
     width: calc(74% - 22PX);
     resize: none;
   }
+
   &-home {
     margin-top: 30px;
   }
@@ -388,5 +392,10 @@
   &-settings {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  &-status-uniq{
+    color: $status_uniq;
+
   }
 }
