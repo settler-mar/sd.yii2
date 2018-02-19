@@ -350,7 +350,7 @@
     flex-grow: 2;
 
     @include media($laptop_min) {
-      margin-left: inherit;
+      margin-left: 0;//inherit;
       order: 0;
     }
     &_stores {

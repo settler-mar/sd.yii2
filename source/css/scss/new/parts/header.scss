@@ -403,7 +403,7 @@
   .account-menu {
     transition: all 0.3s ease 0.1s;
     overflow: visible;
-    width: 260px;
+    width: 220px;
     position: absolute;
     top: 42px;
     right: -10px;
@@ -422,6 +422,7 @@
         font-size: 14px;
         padding-top: 1px;
         padding-bottom: 1px;
+        margin-left: inherit;
 
         @include media($tablets) {
           font-size: 16px;
@@ -552,7 +553,7 @@
           width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
-          white-space: nowrap;
+          //white-space: nowrap;
           margin-bottom: 2px;
         }
         &-id {
@@ -568,11 +569,11 @@
       &-avatar {
         width: 40PX;
         height: 40PX;
-        margin: 0 15px 0 10px;
+        margin: 0 15PX 0 10PX;
         display: inline-block;
         vertical-align: middle;
         flex-grow: 0;
-        flex-shrink: 1;
+        flex-shrink: 0;
         flex-basis: 40PX;
 
         &-image {

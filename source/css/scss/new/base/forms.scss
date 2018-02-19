@@ -311,6 +311,11 @@ td {
   border: solid 1px $form_input_border;
   text-align: left;
   position: relative;
+  overflow: hidden;
+  @include media($phones) {
+    width: 100%;
+  }
+
 
   textarea {
     width: 100%;

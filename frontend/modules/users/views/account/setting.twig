@@ -5,7 +5,7 @@
 
 
 <section class="settings margin">
-  <div class="border-wrap">
+  <div class="border-wrap account-settings">
     {% set form = active_form_begin({
     'id':'user_setting',
     'layout' : 'horizontal',
@@ -99,7 +99,7 @@
 
     {{ active_form_end() }}
   </div>
-  <div class="border-wrap">
+  <div class="border-wrap account-settings">
     {% set form = active_form_begin({
     'id':'user_setting_password',
     'layout' : 'horizontal',
@@ -137,7 +137,7 @@
 
     {{ active_form_end() }}
   </div>
-  <div class="border-wrap">
+  <div class="border-wrap account-settings">
     <h2>{{ t('account', 'social_accounts') }}</h2>
 
     {% if socials | length >0 %}

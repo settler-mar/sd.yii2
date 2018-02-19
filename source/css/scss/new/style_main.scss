@@ -218,6 +218,11 @@ h3, h4, h5, h6 {
     > * {
       width: calc(50% - 30PX);
       margin-left: 30PX;
+
+      @include media($laptop-min) {
+        width: 100%;
+        margin-left: inherit;
+      }
     }
 
     > *:first-child {
