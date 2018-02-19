@@ -158,6 +158,17 @@ helpers/                 вспомогательные библиотеки
 
 Пример миграции для работы с ролями https://github.com/settler-mar/sd.yii2/blob/dev/console/migrations/m170825_064904_RBACuser.php
 
+
+## ActiveRecord logger
+
+* Создаем таблицу через миграцию
+``yii migrate --migrationPath=@/frontend/modules/ar_log/migrations``
+* в frontend/config/params-local.php выставляем
+`'ActiveRecordLog' => true,`
+* логирование работает только при активном режиме DEBUG
+
+Контроль того что попало в лог осуществляется на странице `/admin/ar_log`.
+
 ## Описание таблиц
 
 Часть данных хранится в словаре application/modules/Cwcashback/Dictionary.php
