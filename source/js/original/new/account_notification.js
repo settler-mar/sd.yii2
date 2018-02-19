@@ -1,6 +1,8 @@
 (function () {
   var $notyfi_btn=$('.header-logo_noty');
-  if($notyfi_btn.length==1)return;
+  if ($notyfi_btn.length == 0) {
+    return;
+  }
 
   $.get('/account/notification',function(data){
     if(!data.notifications || data.notifications.length==0) return;
