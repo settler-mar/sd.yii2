@@ -677,6 +677,45 @@
     }
 
   }
+  &-authorization {
+    &-register{
+      @include media($laptop-min) {
+        display: none;
+      }
+
+    }
+    &-separate{
+      @include media($laptop-min) {
+        display: none;
+      }
+
+    }
+    &-enter {
+      &-text {
+        color: $link_color;
+        @include media($laptop-min) {
+          display: none;
+        }
+      }
+      &-icon {
+        display: none;
+        @include media($laptop-min) {
+          display: block;
+          width: 22PX;
+          height: 22PX;
+          padding: 0 5PX;
+          color: $header_color_up;
+          fill: $header_color_up;
+          stroke: $header_color_up;
+        }
+        &:hover {
+          color: $coupons_a_hover_color;
+          fill: $coupons_a_hover_color;
+          stroke: $coupons_a_hover_color;
+        }
+      }
+    }
+  }
 
 }
 

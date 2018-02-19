@@ -43,9 +43,12 @@
           <a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это работает</a>
             {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
           <div class="header-authorization">
-            <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-btn-enter modals_open">Вход</a>
-            <span class="header-authorization-separate">/</span>
-            <a href="#registration" rel="nofollow" class="header-authorization-btn modals_open">Регистрация</a>
+            <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-enter modals_open">
+              <span class="header-authorization-enter-text">Вход</span>
+              {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
+            </a>
+            <span class="header-authorization-separate header-authorization-separate-login">/</span>
+            <a href="#registration" rel="nofollow" class="header-authorization-btn header-authorization-register modals_open">Регистрация</a>
           </div>
         {% else %}
             {#зарегистрирован#}
