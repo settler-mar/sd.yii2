@@ -36,12 +36,12 @@
     &_list {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
     }
 
     &_item {
       box-sizing: border-box;
-      width: 80%;
+      width: 60%;
       margin: 0 0 40px;
 
       @include media($tablets) {
@@ -56,7 +56,7 @@
         //padding: 15px;
         border: 1px solid $header_color_gray;
         border-radius: 3px;
-        height: 500px;
+        //height: 500px;
         max-height: 60vh;
         background-size: cover;
         background-position: 50%;

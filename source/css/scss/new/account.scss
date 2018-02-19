@@ -19,6 +19,13 @@
       }
       &-right {
         justify-content: flex-end;
+
+        //.account-balance-block {
+        //  text-align: right;
+        //  @include media($phones) {
+        //    text-align: left;
+        //  }
+        //}
       }
 
     }
@@ -31,6 +38,27 @@
       //flex-grow: 2;
       margin-right: 5px;
       //margin-bottom: 10px;
+
+      &-2x {
+        width: calc(48% - 5px);
+
+        @include media($tablets) {
+          width: calc(50% - 10px);
+        }
+        @include media($phones) {
+          width: 100%;
+        }
+      }
+      &-3x {
+        width: calc(75% - 5px);
+
+        @include media($tablets) {
+          width: calc(50% - 10px);
+        }
+        @include media($phones) {
+          width: 100%;
+        }
+      }
 
       @include media($tablets) {
         width: calc(50% - 10px);

@@ -1,18 +1,22 @@
 {% set curr = currencyIcon(app.params.valuta) %}
 
 <section class="account-balance">
-  <div class="account-balance-block">
-    {{ t('account', 'Доступные средства для благотворительности') }}:
-    <span class="account-balance-confirm">{{ _nf(balance.max_fundation) | raw }}&nbsp{{ curr|raw }}</span>
+  <div class="account-balance-row">
+    <div class="account-balance-block account-balance-block-3x">
+      {{ t('account', 'Доступные средства для благотворительности') }}:
+      <span class="account-balance-confirm">{{ _nf(balance.max_fundation) | raw }}&nbsp{{ curr|raw }}</span>
+    </div>
+    <div class="account-balance-block account-balance-block">
+      {{ t('account', 'user_balance_charity') }}:
+      <span class="account-balance-charity">{{ _nf(this.balance.charity)|raw }}&nbsp;{{ curr|raw }} </span>
+    </div>
   </div>
-  <div class="account-balance-block"></div>
-  <div class="account-balance-block">
-    {{ t('account', 'user_balance_charity') }}:
-    <span class="account-balance-charity">{{ _nf(this.balance.charity)|raw }}&nbsp;{{ curr|raw }} </span>
-  </div>
-  <div class="account-balance-block"></div>
-  <div class="account-balance-block">
-    <a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a>
+  <div class="account-balance-row">
+
+
+    <div class="account-balance-block account-balance-block-2x">
+      <a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a>
+    </div>
   </div>
 </section>
 
