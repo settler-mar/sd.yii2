@@ -518,9 +518,35 @@
       align-items: center;
       justify-content: flex-start;
 
+      @include media ($laptop-min) {
+        padding: 5px;
+        background-color: $gray_box_bg;
+        border: 1px solid $menu_border_color;
+        border-radius: 5px;
+        //margin-top: 15px;
+      }
+
       &-info {
         flex-grow: 1;
         flex-shrink: 1;
+
+        &-balance {
+          display: none;
+
+          @include media($laptop-min) {
+            display: block;
+          }
+          &-link{
+            text-decoration: none;
+            &-confirmed {
+              color: $cahsback_confirmed_color;
+            }
+            &-all {
+              color: $footer_link_color;
+            }
+
+          }
+        }
 
         &-name {
           width: 100%;
@@ -531,10 +557,12 @@
         }
         &-id {
           color: $header_color_gray;
+
+          @include media($laptop-min) {
+            display: none;
+          }
+
         }
-      }
-      @include media($laptop_min) {
-        margin-top: 15px;
       }
 
       &-avatar {

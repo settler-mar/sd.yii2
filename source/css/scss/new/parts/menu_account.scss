@@ -3,6 +3,9 @@
 
   &_menu {
     margin-bottom: 15px;
+    margin-top: 16px;
+    //border-radius: 3px;
+    //overflow: hidden;
 
     @include media($laptop_min) {
       display: none;
@@ -13,10 +16,15 @@
       box-sizing: border-box;
     }
     > ul {
-      border-bottom: thin solid #fff;
+      //border-bottom: thin solid #fff;
 
       > li {
         position: relative;
+
+        &:last-child {
+          border-radius: 0 0 3px 3px;
+          overflow: hidden;
+        }
 
         svg {
           &.left-icon {
@@ -259,17 +267,16 @@
     }
   }
   .account-menu_header {
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
     font-weight: bold;
-    //margin: 5px 5px 10px;
     text-align: left;
-    border-bottom: thin solid #fff;
-    background-color: $text-color;
-    color: $btn_base_dark_color;
-    padding: 10px 5px 5px;
-    //padding-bottom: 5px;
+    border: 1px solid $menu_border_color;
+    border-bottom-color: #fff;
+    background-color: $drop-menu-color;
+    color: $text_color;
+    padding: 5px;
     //max-width: 320px;
-
-    //padding-right: 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -291,10 +298,32 @@
         color: $header_color_gray;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         a {
-          text-decoration: none;
+          text-decoration: underline;
           font-weight: normal;
+          margin-left: 20px;
+        }
+        @include media($laptop-min) {
+          display: none;
+        }
+
+      }
+      &-balance {
+        display: none;
+
+        @include media($laptop-min) {
+          display: block;
+        }
+        &-link{
+          text-decoration: none;
+          &-confirmed {
+            color: $cahsback_confirmed_color;
+          }
+          &-all {
+            color: $footer_link_color;
+          }
+
         }
       }
     }
@@ -303,14 +332,14 @@
     }
 
     &-avatar {
-      width: 40PX;
-      height: 40PX;
-      margin: 0 15px 0 10px;
+      width: 80PX;
+      height: 80PX;
+      margin-right: 10px;
       display: inline-block;
       vertical-align: middle;
       flex-grow: 0;
       flex-shrink: 1;
-      flex-basis: 40PX;
+      flex-basis: 80PX;
 
       &-image {
         display: block;
