@@ -9,8 +9,8 @@ $config = [
     'name' => 'SecretDiscounter',
     'sourceLanguage' => 'ru-dev',
     'aliases' => [
-        '@bower' => '@vendor/bower',
-        '@npm' => '@vendor/npm',
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'language' => defined('LANGUAGE') ? LANGUAGE : 'ru-RU',
     'timeZone' => 'Europe/Moscow',
