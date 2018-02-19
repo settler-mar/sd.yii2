@@ -51,7 +51,7 @@ search = function() {
     }).on('focusout',function(e){
         if (!$(e.relatedTarget).hasClass('autocomplete_link')) {
             //$('#autocomplete').hide();
-            $(openAutocomplete).hide();
+            $(openAutocomplete).delay( 100 ).slideUp(100)
         }
     });
 
@@ -61,6 +61,5 @@ search = function() {
             return false;
         }
     })
-
 
 }();
