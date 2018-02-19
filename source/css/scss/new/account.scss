@@ -46,7 +46,8 @@
       }
 
       &-link {
-        min-width: 240px;
+        min-width: 300px;
+        font-size: 18px;
 
         @include media($tablets) {
           min-width: 0;
