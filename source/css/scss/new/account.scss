@@ -46,7 +46,8 @@
       }
 
       &-link {
-        min-width: 240px;
+        min-width: 300px;
+        font-size: 18px;
 
         @include media($tablets) {
           min-width: 0;
@@ -220,14 +221,14 @@
 
       &-header {
         font-size: 24px;
-        margin-left: 10%;
+        margin-left: 25px;
       }
 
       a {
 
       }
       &-money {
-        font-size: 18px;
+        font-size: 22px;
         font-weight: bold;
       }
       ul {
@@ -373,5 +374,14 @@
   }
   &-home {
     margin-top: 30px;
+  }
+
+  &-table-social{
+    &_icon {
+      svg {
+        vertical-align: middle;
+        margin-left: 30px;
+      }
+    }
   }
 }

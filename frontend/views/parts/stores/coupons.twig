@@ -6,7 +6,7 @@
             {% else %}
                 <h2>Новые купоны и промокоды</h2>
             {% endif %}
-            <div class="coupons-list narrow list-4 narrow_off">
+            <div class="coupons-list coupons-list-stores  narrow list-4 narrow_off">
                 {% for coupon in coupons %}
                     {% include 'parts/coupon.twig' %}
                 {% endfor %}

@@ -7,14 +7,18 @@ table {
   //margin-bottom: 15px;
   margin-bottom: 35px;
 
+  //border-top: 1px solid  $table_2n_bg;
+
   &.ta_left {
     text-align: left;
   }
 }
 
 tr:first-child {
-  background-color: $table_th_bg;
-  color: $table_th_color;
+  color: $table_th_bg;
+  background-color: $table_th_color;
+  //background-color: $table_th_bg;
+  //color: $table_th_color;
 }
 
 tr:nth-child(2n) {

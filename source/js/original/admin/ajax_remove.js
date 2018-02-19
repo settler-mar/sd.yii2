@@ -43,7 +43,8 @@ $(function() {
   $('body').on('click','.ajax_remove',function(){
     notification.confirm({
       callbackYes:onRemove,
-      obj:$(this)
+      obj:$(this),
+      notyfy_class: "notify_box-alert"
     })
   });
 

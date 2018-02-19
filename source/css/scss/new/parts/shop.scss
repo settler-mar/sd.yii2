@@ -635,4 +635,11 @@
     margin-top: 10px;
     margin-bottom: 10px;*/
   }
+
+  &-comments {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 }
