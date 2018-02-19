@@ -140,7 +140,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $dependencyName = 'category_tree';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $casheName = 'categories_stores' . ($offline == 1 ? '_offline' : ($offline === 0 ? '_offline' : ''));
+    $casheName = 'categories_stores' . ($offline == 1 ? '_offline' : ($offline === 0 ? '_online' : ''));
 
     if($where){
       $casheName .= '_'.str_replace(' ','_',$where);
@@ -227,7 +227,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $cache->defaultDuration,
       $dependency
     );
-
     if($as_array){
       return json_encode($cats);
     }
@@ -388,7 +387,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $itemClass='';
         }
         $tree .= '<li '.$itemClass . '>';
-        if ($offline === 1) {
+
+        if ($cat['route'] == 'favorite') {
+            $onlineLink = '';
+        } elseif ($offline === 1) {
             $onlineLink = '-offline';
         } elseif ($offline === 0) {
             $onlineLink = '';//'-online';
