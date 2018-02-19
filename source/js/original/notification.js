@@ -138,7 +138,13 @@ var notification = (function() {
 
     if(!is_init)init();
 
-    box_html='<div class="notify_box">';
+    //box_html='<div class="notify_box">';
+
+    notyfy_class='notify_box ';
+    if(data.notyfy_class)notyfy_class+=data.notyfy_class;
+
+    box_html='<div class="'+notyfy_class+'">';
+
     box_html+='<div class="notify_title">';
     box_html+=data.title;
     box_html+='<span class="notify_close"></span>';

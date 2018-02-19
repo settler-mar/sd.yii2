@@ -177,6 +177,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/forms.js',
         paths.source.js+'/original/new/cookie.js',
         paths.source.js+'/original/new/table.js',
+        paths.source.js+'/original/admin/ajax_remove.js'
     ], paths.app.js+'/new')
 );
 

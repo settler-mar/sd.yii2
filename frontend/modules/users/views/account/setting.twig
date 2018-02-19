@@ -54,13 +54,6 @@
         </div>
 
         <div class="form-group-s">
-          <span class="form-title">{{ t('account','notify_settings') }}:</span>
-          <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
-                 value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
-          <label for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
-        </div>
-
-        <div class="form-group-s">
           <span class="form-title">{{ t('account', 'sex') }}:</span>
           <input type="radio" class="radio radio-opacity" id="radio-1" name="UserSetting[sex]"
                  value="m" {% if this.user.sex == 'm' %} checked {% endif %}>
@@ -71,7 +64,14 @@
           <label for="radio-2">{{ svg("women",'svg-icon svg-icon-women') |raw }} {{ t('account', 'famale') }}</label>
         </div>
 
+        <div class="form-group-s">
+          <span class="form-title">{{ t('account','notify_settings') }}:</span>
+          <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
+                 value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
+          <label for="checkbox-1">{{ t('account','notify_settings_email') }}</label>
         </div>
+
+      </div>
       <div>
         <div class="account-avatar form-group-s">
           <span class="form-title">{{ t('account', 'avatar') }}:</span>
