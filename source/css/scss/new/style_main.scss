@@ -368,6 +368,9 @@ svg.svg-no-stroke {
 .round-box {
   border-radius: 10px;
   padding: 40px 0;
+  h2,h3 {
+    margin-top: 0;
+  }
 }
 
 .padding-box {
@@ -385,6 +388,9 @@ svg.svg-no-stroke {
 .wrap-round {
   border-radius: 10px;
   padding: 20px !important;
+  h2,h3 {
+    margin-top: 0;
+  }
 }
 
 .border-wrap{
