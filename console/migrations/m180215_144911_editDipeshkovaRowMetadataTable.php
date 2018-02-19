@@ -9,16 +9,18 @@ use frontend\modules\meta\models\Meta;
  */
 class m180215_144911_editDipeshkovaRowMetadataTable extends Migration
 {
-    /**
-     * @inheritdoc
-     */
-    public function safeUp()
-    {
-        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
-        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+  /**
+   * @inheritdoc
+   */
+  public function safeUp()
+  {
+    $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+    $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $page = Meta::find()->where(['page'=>'dipeshkova'])->one();
-        $page->content = '<div class="new-year_text">
+    \frontend\modules\stores\models\CategoriesStores::deleteAll(['uid' => 265]);
+
+    $page = Meta::find()->where(['page' => 'dipeshkova'])->one();
+    $page->content = '<div class="new-year_text">
 <p>Друзья, впереди День всех влюбленных, 23 февраля и 8 марта, все бегают в поисках подарков, и я тоже приготовила для вас подарок: кэшбэк-сервис SecretDiscounter согласился дать всем моим подписчикам <strong>пожизненный платиновый аккаунт</strong>! И если вы еще не знаете, что такое <a href="https://secretdiscounter.ru/howitworks?r=68831" target="_blank" rel="noopener">кэшбэк</a>, то это <strong>возврат части денег с каждой вашей покупки</strong>, в Интернете и не только. Ну а платиновый аккаунт&nbsp;дает <a href="https://secretdiscounter.ru/loyalty?r=68831" target="_blank" rel="noopener"><strong>повышенный кэшбэк</strong></a> (+30% к обычной ставке) <strong>в 1300 лучших магазинах</strong>! Поделитесь новостью у себя в соцсетях и получите&nbsp;возможность покупать в любимых магазинах намного дешевле.&nbsp;</p>
 </div>
 
@@ -50,19 +52,19 @@ class m180215_144911_editDipeshkovaRowMetadataTable extends Migration
 <h2 class="new-year_item-description-header title-no-line">С уважением, Диана и SecretDiscounter!</h2>
 <p>Также не забудьте подписаться на мой <a href="https://www.instagram.com/dipeshkova/" target="_blank" rel="nofollow noopener">Instagram</a> &ndash; там всегда много &laquo;вкусного&raquo; и интересного.</p>
 </div>';
-        $page->save();
-    }
+    $page->save();
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function safeDown()
-    {
-        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
-        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+  /**
+   * @inheritdoc
+   */
+  public function safeDown()
+  {
+    $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+    $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $page = Meta::find()->where(['page'=>'dipeshkova'])->one();
-        $page->content = 'div class="col-sm-12">
+    $page = Meta::find()->where(['page' => 'dipeshkova'])->one();
+    $page->content = 'div class="col-sm-12">
 <p>Друзья, впереди День всех влюбленных, 23 февраля и 8 марта, все бегают в поисках подарков, и я тоже приготовила для вас подарок: кэшбэк-сервис SecretDiscounter согласился дать всем моим подписчикам <strong>пожизненный платиновый аккаунт</strong>! И если вы еще не знаете, что такое <a href="https://secretdiscounter.ru/howitworks?r=68831" target="_blank" rel="noopener">кэшбэк</a>, то это <strong>возврат части денег с каждой вашей покупки</strong>, в Интернете и не только. Ну а платиновый аккаунт&nbsp;дает <a href="https://secretdiscounter.ru/loyalty?r=68831" target="_blank" rel="noopener"><strong>повышенный кэшбэк</strong></a> (+30% к обычной ставке) <strong>в 1300 лучших магазинах</strong>! Поделитесь новостью у себя в соцсетях и получите&nbsp;возможность покупать в любимых магазинах намного дешевле.&nbsp;</p>
 </div>
 <div class="neighbors_2">
@@ -88,21 +90,21 @@ class m180215_144911_editDipeshkovaRowMetadataTable extends Migration
 </div>
 <p>Также не забудьте подписаться на мой <a href="https://www.instagram.com/dipeshkova/" target="_blank" rel="nofollow noopener">Instagram</a> &ndash; там всегда много &laquo;вкусного&raquo; и интересного.</p>
 <p>&nbsp;</p>';
-        $page->save();
-    }
+    $page->save();
+  }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
+  /*
+  // Use up()/down() to run migration code without a transaction.
+  public function up()
+  {
 
-    }
+  }
 
-    public function down()
-    {
-        echo "m180215_144911_editDipeshkovaRowMetadataTable cannot be reverted.\n";
+  public function down()
+  {
+      echo "m180215_144911_editDipeshkovaRowMetadataTable cannot be reverted.\n";
 
-        return false;
-    }
-    */
+      return false;
+  }
+  */
 }
