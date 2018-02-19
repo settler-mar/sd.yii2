@@ -8,6 +8,10 @@ $dict = require(__DIR__ . '/dictionary.php');
 $config = [
     'name' => 'SecretDiscounter',
     'sourceLanguage' => 'ru-dev',
+    'aliases' => [
+        '@bower' => '@vendor/bower',
+        '@npm' => '@vendor/npm',
+    ],
     'language' => defined('LANGUAGE') ? LANGUAGE : 'ru-RU',
     'timeZone' => 'Europe/Moscow',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',

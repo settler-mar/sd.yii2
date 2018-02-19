@@ -67,7 +67,7 @@ helpers/                 вспомогательные библиотеки
 
 ## Устаноновка
 
-0. composer global require "fxp/composer-asset-plugin:~1.1.1"
+0. composer global require "fxp/composer-asset-plugin:^1.2.0" (УСТАРЕЛО. ДОЛЖНО РАБОТАТЬ БЕЗ ЭТОГО)
 1. git clone https://github.com/settler-mar/sd.yii2.git
 2. Настраиваем доступ к базе данных common/config/main-local.php
 3. Устанавливаем библиотеки composer install
@@ -77,7 +77,7 @@ helpers/                 вспомогательные библиотеки
 
 ## Известные баги
 
-### Проект не запускается из за bower
+### Проект не запускается из за bower (УСТАРЕЛО. ДОЛЖНО РАБОТАТЬ БЕЗ ЭТОГО)
 
 Нужно переименовать ```vendor/bower-asset``` в ```vendor/bower```
 
@@ -87,6 +87,29 @@ helpers/                 вспомогательные библиотеки
   cd vendor
   ln -s bower-asset bower
 ```
+
+### Ошибка при обновлении комонентов через композер
+
+Иногда возникает из за ошибок или устаревшего модуля fxp/composer-asset-plugin или какого то мусора в папке VENDOR
+
+УСТАРЕЛО. ДОЛЖНО РАБОТАТЬ БЕЗ ЭТОГО
+```
+composer self-update
+rm -rf ~/.composer/vendor/fxp
+composer global require "fxp/composer-asset-plugin:^1.2.0"
+rm -rf vendor
+composer install
+```
+На замену
+```
+composer self-update
+rm -rf ~/.composer/vendor/fxp
+rm -rf vendor
+composer install
+```
+
+Так же можно попробывать
+``composer update yiisoft/yii2 yiisoft/yii2-composer bower-asset/jquery.inputmask``
 
 ### Ошибка при запуске в базе данных
 
