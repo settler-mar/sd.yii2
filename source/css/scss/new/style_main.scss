@@ -687,6 +687,11 @@ input.link {
   overflow: hidden;
 }
 
+//для живосайта установка фона
+#chat-body{
+  background: #fff;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';

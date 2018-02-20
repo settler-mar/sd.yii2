@@ -128,13 +128,14 @@ class SiteController extends SdController
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+
     $users = Users::find();
     $usersCount = $users->count();
     $users = $users->where(['>=', 'added', date('Y-m-d 00:00:00', time())]);
     $usersToday = $users->count();
     $payments = Payments::find();
     $paymentsCount = $payments->count();
-    $payments = $payments->where(['>=', 'click_date',date('Y-m-d 00:00:00', time())]);
+    $payments = $payments->where(['>=', 'action_date',date('Y-m-d 00:00:00', time())]);
     $paymentsToday = $payments->count();
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
 
