@@ -663,6 +663,10 @@ input.link {
   cursor: pointer;
   margin-bottom: 10px;
 
+  &-big{
+    font-size: 2em;
+  }
+
   &:hover {
     text-decoration: underline;
   }

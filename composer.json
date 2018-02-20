@@ -20,7 +20,6 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=5.4.0",
-    "hirak/prestissimo": "^0.3.7",
     "yiisoft/yii2": "~2.0.6",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
@@ -40,8 +39,7 @@
     "dvixi/yii2-icon-select": "^1.0",
     "nodge/yii2-eauth": "^2.5",
     "mihaildev/yii2-elfinder": "*",
-    "dominus77/yii2-tinymce-widget": "*",
-    "yiisoft/yii2-maskedinput": "dev-master"
+    "dominus77/yii2-tinymce-widget": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

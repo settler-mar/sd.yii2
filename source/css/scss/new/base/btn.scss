@@ -69,6 +69,10 @@
   }
 
   &-min_width {
+    &80 {
+      min-width: 80px;
+    }
+
     &240 {
       min-width: 240px;
     }
