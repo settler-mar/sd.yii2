@@ -80,7 +80,7 @@ class SdView extends View
       $query->select
       (['max(cashback) as cashback, count(uid) as cnt'])
           ->from('cw_payments')
-          ->where(['>','action_date',date("Y-m-d",time()-1*24*60*60)]);
+          ->where(['>','action_date',date("Y-m-d",time()-3*24*60*60)]);
       $command   = $query->createCommand();
       $result2    = $command->queryOne();
 
@@ -88,7 +88,7 @@ class SdView extends View
           'user_count'=>round($user_count['uid']*5.4),
           'total_save'=>round($user_count['uid']*106),
           'count_save'=>round($result['cnt']*5.4),
-          'sum_save'=>round($result2['cashback']*3.4,2),
+          'sum_save'=>round($result2['cashback']*5.4,2),
           'save_persent'=>39,
       ];
 
