@@ -84,7 +84,7 @@ $( document ).ready(function() {
   }
 
   var p = $('.content-wrap img,.content-wrap iframe');
-  $('.content-wrap img').height('auto');
+  $('.content-wrap img:not(.no_optomize)').height('auto');
   //$('.container img').width('auto');
   for (i = 0; i < p.length; i++) {
     el = p.eq(i);
