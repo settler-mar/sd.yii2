@@ -1,0 +1,199 @@
+/* Transition
+------------------------------------*/
+.transition {
+  width: 100%;
+
+  .center-block {
+    position: relative;
+    width: 50%;
+    text-align: center;
+    margin: 100px auto;
+    height: 300px;
+    max-width: 685px;
+    border-radius: 50px;
+    background-size: cover;
+    //padding: 80px 30px 10px;
+    padding: 60px 30px 10px;
+    box-sizing: border-box;
+    background: url("/images/templates/polygonal-bg.jpg") repeat-x center -200px;
+
+    @include media($laptop-min) {
+      width: 70%;
+    }
+    @include media($tablets) {
+      width: 90%;
+      padding-top: 50px;
+    }
+    @include media($phones) {
+      padding-top: 30px;
+    }
+
+
+
+    .phrase {
+      font-family: "Open Sans", Arial, Helvetica, sans-serif;
+      color: #fff;
+      font-size: 20px;
+      line-height: 40px;
+
+      @include media($laptop) {
+        font-size: 16px;
+        line-height: 36px;
+      }
+
+      &_cashback {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        span {
+          font-size: 20px;
+          font-weight: bold;
+          color: $transition-color;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          margin: 0 5px;
+
+          @include media($laptop-min) {
+            font-size: 14px;
+          }
+
+
+          svg {
+            height: 17px;
+            width: 17px;
+            color: $transition-color;
+            fill: $transition-color;
+            stroke: $transition-color;
+            //vertical-align: middle;
+          }
+        }
+      }
+
+      .manual-shift {
+        font-size: 11px;
+
+        @include media($laptop-min) {
+          line-height: 18px;
+        }
+
+        a {
+          // color: #F7778F;
+          color: $transition-color;
+        }
+      }
+
+    }
+
+    .svg-container {
+      overflow: hidden;
+      height: 100px;
+      width: 100px;
+      margin-left: -50px;
+      left: 50%;
+      bottom: -50px;
+      position: absolute;
+
+      svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        animation: rotateAll 4.5s linear infinite both;
+
+      }
+    }
+  }
+  //заставка адблок
+  .transition-message {
+    height: auto;
+    background-position: center bottom;
+    width: 100%;
+    color: #fff;
+    padding: 30px;
+    a {
+      color: $transition-color;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    &_paragraph {
+      margin-bottom: 10px;
+      &-between {
+        //margin: 25px auto 0;
+        //display: flex;
+        //justify-content: space-between;
+        //width: 80%;
+      }
+    }
+    &_header-yellow {
+      color: $transition-header-color;
+    }
+    &_item-alert {
+      padding-left: 125px;
+      background: url(/images/commons-emblem-hand.png) no-repeat 0 -4px;
+      background-size: 110px;
+    }
+  }
+
+
+  .anim-1 {
+    animation: g-move-bottom 4.5s linear infinite both;
+    circle {
+      animation: anim-1-circle 4.5s linear infinite both;
+      transform-origin: 50% 50%;
+    }
+  }
+
+  .anim-2 {
+    animation: g-move-bottom 4.5s linear infinite both;
+    circle {
+      animation: anim-2-circle 4.5s linear infinite both;
+      transform-origin: 50% 50%;
+    }
+
+    line {
+      animation: line-grow-horizontal-1 4.5s linear infinite both;
+      transform-origin: 100% 50%;
+    }
+  }
+
+  .anim-3 {
+    circle {
+      animation: anim-3-circle 4.5s linear infinite both;
+      transform-origin: 50% 50%;
+    }
+
+    line:first-of-type {
+      animation: line-grow-vertical-1 4.5s linear infinite both;
+      transform-origin: 50% 0%;
+    }
+
+    line:last-of-type {
+      animation: line-grow-vertical-2 4.5s linear infinite both;
+      transform-origin: 50% 0%;
+    }
+  }
+
+  .anim-4 {
+    circle {
+      animation: anim-4-circle 4.5s linear infinite both;
+      transform-origin: 50% 50%;
+    }
+
+    line {
+      animation: line-grow-horizontal-2 4.5s linear infinite both;
+      transform-origin: 100% 50%;
+    }
+  }
+
+
+}
