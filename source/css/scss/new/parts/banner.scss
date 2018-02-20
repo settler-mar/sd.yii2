@@ -3,6 +3,10 @@ $banner_mobile_interval: $tablets;
 .banner {
   &__item {
 
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
     &.mobile {
       display: none;
     }
@@ -31,5 +35,6 @@ $banner_mobile_interval: $tablets;
   &__image {
 
     width: 100%;
+    display: block;
   }
 }
