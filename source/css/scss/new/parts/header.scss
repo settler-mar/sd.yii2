@@ -344,6 +344,7 @@
       left: 17PX;
       @include media($laptop_min) {
         left: 12PX;
+        display: none;
       }
 
     }
