@@ -608,7 +608,7 @@
       z-index: 99;
       width: 100vw;
       max-width: 380px;
-      height: 100vh;
+      //height: 100vh;
       display: flex;
       flex-direction:column;
       right: 80px;
@@ -618,6 +618,7 @@
       opacity: 0;
       max-height: 0;
       transition: all .25s ease;
+
       a.btn{
         display: none;
       }
@@ -631,14 +632,18 @@
         background: #000;
         opacity: 0;
         transition: all .25s ease;
+        z-index: 1;
       }
 
       &_open{
         opacity: 1;
         max-height: 350px;
         z-index: 99;
+
         a.btn {
           display: block;
+          position: relative;
+          z-index: 99;
         }
 
         @include media($laptop_min) {
@@ -673,6 +678,7 @@
       z-index: 99;
       background: $header_color_up;
       height: 0;
+      position: relative;
     }
 
     &-item{
