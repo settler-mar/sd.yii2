@@ -36,7 +36,7 @@
     &_list {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
     }
 
     &_item {
@@ -54,15 +54,20 @@
 
       &-content {
         //padding: 15px;
-        border: 1px solid $header_color_gray;
-        border-radius: 3px;
-        //height: 500px;
+        //border: 1px solid $header_color_gray;
+        //border-radius: 3px;
+        height: 440px;
+
         max-height: 60vh;
         background-size: cover;
         background-position: 50%;
         background-repeat: no-repeat;
         max-width: 740px;
         margin: auto;
+
+        border-radius: 10px;
+        border: 3px solid #eee;
+        overflow: hidden;
 
         &-description {
           box-sizing: border-box;
@@ -152,6 +157,16 @@
     }
   }
 
+}
+.account .dobro-funds{
+  &_list {
+    align-items: flex-start;
+  }
+  &_item {
+    &-content {
+      height: auto;
+    }
+  }
 }
 
 .dublicate_value:checked+.dobro-funds_item{
