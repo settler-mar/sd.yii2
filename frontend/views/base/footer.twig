@@ -36,9 +36,13 @@
                             {% for item in category_tree %}
                                 <a href="stores/{{ item.route }}">{{ item.name }}</a>
                             {% endfor %}
-                        {% else %}
-                            Еще нет ПОПУЛЯРНЫХ категорий
                         {% endif %}
+                        {% set link_list = _constant("footer_category") %}
+                        {% for item in link_list %}
+                            {% if item.show==1 %}
+                                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
 
