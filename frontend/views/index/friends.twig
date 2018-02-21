@@ -5,7 +5,7 @@
             {% set social_list = _constant("social_list") %}
             {% for item in social_list %}
                 {% if item.on_index==1 %}
-                    <div class="instruction-item instruction-item-230 gray-box">
+                    <div class="instruction-item instruction-item-margin-mobile  instruction-item-230 gray-box">
                         <div class="flex-line">
                             {{ svg('color/'~item.code,'instruction-social_logo')|raw }}
                             <div class="instruction-social_counter">
