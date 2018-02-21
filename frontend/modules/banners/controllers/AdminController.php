@@ -51,13 +51,13 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
             'table_data' => [
                 'is_active' => function ($model, $value, $index, $column) {
-                    return $model->is_active == 1 ? 'Включён' : 'Выключен';
+                    return $model->is_active == 1 ? 'Отобразить' : 'Скрыть';
                 },
                 'show_desctop' => function ($model, $value, $index, $column) {
-                    return $model->show_desctop == 1 ? 'Включён' : 'Выключен';
+                    return $model->show_desctop == 1 ? 'Отобразить' : 'Скрыть';
                 },
                 'show_mobile' => function ($model, $value, $index, $column) {
-                    return $model->show_mobile == 1 ? 'Включён' : 'Выключен';
+                    return $model->show_mobile == 1 ? 'Отобразить' : 'Скрыть';
                 },
                 'new_window' => function ($model, $value, $index, $column) {
                     return $model->new_window == 1 ? 'В новом окне' : 'В своём окне';

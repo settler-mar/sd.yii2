@@ -80,8 +80,8 @@ class Banners extends \yii\db\ActiveRecord
             'created_at' => 'Создан',
             'updated_at' => 'Updated At',
             'picture_file' => 'Изображение',
-            'show_desctop' => 'Отображать только на  ПК',
-            'show_mobile' => 'Отображать только в телефоне',
+            'show_desctop' => 'Отображать на  ПК',
+            'show_mobile' => 'Отображать в телефоне',
         ];
     }
 
