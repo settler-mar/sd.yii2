@@ -91,6 +91,7 @@ class PaymentsSearch extends Payments
 
         //$this->status = $this->status === null ? 0 : $this->status;//делаем по умолчанию
 
+      //ddd($this);
         // grid filtering conditions
         $query->andFilterWhere([
             'cw_payments.uid' => $this->uid,
@@ -108,7 +109,7 @@ class PaymentsSearch extends Payments
             'closing_date' => $this->closing_date,
             'cpa_id' => $this->cpa_id,
             'additional_id' => $this->additional_id,
-            'ref_bonus_id' => $this->ref_bonus_id,
+            'ref_bonus_id' => is_string($this->ref_bonus_id)?$this->ref_bonus_id:null, // проскакивает как = 0 на /admin/payments
             'ref_bonus' => $this->ref_bonus,
             'ref_id' => $this->ref_id,
             'loyalty_status' => $this->loyalty_status,
