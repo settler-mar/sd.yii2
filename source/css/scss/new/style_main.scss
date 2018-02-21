@@ -372,9 +372,19 @@ svg.svg-no-stroke {
     margin-top: 0;
   }
 }
+.round-box-mini {
+  border-radius: 10px;
+  padding: 20px 0;
+  h2,h3 {
+    margin-top: 0;
+  }
+}
 
 .padding-box {
   padding: 20px 0;
+  h2,h3 {
+    margin-top: 0;
+  }
 }
 
 .padding-box-mini {
@@ -726,3 +736,6 @@ input.link {
 @import "parts/menu_account";
 @import "external/daterangepicker";
 @import "parts/store_points";
+@import "parts/keyframes";
+@import "parts/transition";
+

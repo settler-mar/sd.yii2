@@ -12,6 +12,10 @@ table {
   &.ta_left {
     text-align: left;
   }
+  &.ta_round {
+    border-radius: 10px;
+  }
+
 }
 
 tr:first-child {

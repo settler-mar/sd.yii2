@@ -87,10 +87,13 @@ class AccountController extends Controller
 
     //$pages = new Pagination(['totalCount' => $countQuery->count()]);
     $models = $pagination->data(false);
+    $paginateParams = [
+      'date' => Yii::$app->request->get('date') ? Yii::$app->request->get('date') : null,
+    ];
 
     return $this->render('index', [
       'users' => $models,
-      'pagination' => $pagination->getPagination('users/account', []),
+      'pagination' => $pagination->getPagination('users/account', $paginateParams),
       'users_total' => $totQuery,
       'data_ranger' => $data_ranger,
     ]);

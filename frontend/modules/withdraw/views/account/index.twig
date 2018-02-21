@@ -2,7 +2,7 @@
 {#<div class="content-wrapper">#}
     <section class="account-text-block account-margin-top">
        {% set curr = app.params.currencies[app.params.valuta].icon ? app.params.currencies[app.params.valuta].icon : '' %}
-        <div class="account-text-block_item">{{ t('account', 'withdraw_balance_for')}}:
+        <div class="account-text-block_item account-text-block_item-bold">{{ t('account', 'withdraw_balance_for')}}:&nbsp;
             <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}&nbsp{{ currencyIcon(app.params.valuta)|raw }}</span>
         </div>
         <div class="account-text-block_item"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>

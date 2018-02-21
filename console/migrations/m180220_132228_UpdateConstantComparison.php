@@ -1,0 +1,251 @@
+<?php
+
+use yii\db\Migration;
+use frontend\modules\constants\models\Constants;
+
+/**
+ * Class m180220_132228_UpdateConstantComparison
+ */
+class m180220_132228_UpdateConstantComparison extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+        $constant = Constants::find()->where(['name' => 'comparison'])->one();
+        $constant->text =  '<h2>Сравнение ведущих кэшбэк-сервисов </h2>
+        <table class="ta_round">
+            <tr>
+                <th></th>
+                <th class="table-selected">SecretDiscounter</th>
+                <th><a href="https://katuhus.com/g/7khfs3jtus2071538c788753afd1f1/" rel="nofollow noopener">LetyShops</a></th>
+                <th><a href="http://epngo.bz/cashback_index/899sop?ref_type=hybrid" rel="nofollow noopener">ePN</a></th>
+                <th><a href="https://www.kopikot.ru/?r=3513889" rel="nofollow noopener">Kopikot</a></th>
+                <th><a href="https://cash4brands.ru/?refid=189401" rel="nofollow noopener">Сash4brands</a></th>
+                <th><a href="https://megabonus.com/?u=40513ssssss" rel="nofollow noopener">Megabonus</a></th>
+            </tr>
+            <tr>
+                <td>Кол-во магазинов</td>
+                <td class="table-selected">1191</td>
+                <td>1166</td>
+                <td>253</td>
+                <td>914</td>
+                <td>608</td>
+                <td>326</td>
+            </tr>
+            <tr>
+                <td>Кол-во купонов и промокодов</td>
+                <td class="table-selected">6442</td>
+                <td>-</td>
+                <td>132</td>
+                <td>432</td>
+                <td>4610</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Кэшбэк в оффлайне</td>
+                <td class="table-selected">+</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Скорость подтверждения кэшбэка</td>
+                <td class="table-selected">1 день</td>
+                <td>30 дней</td>
+                <td>30-90 дней</td>
+                <td>60 дней</td>
+                <td>14 дней</td>
+                <td>30 дней</td>
+            </tr>
+            <tr>
+                <td>Минимальная сумма для вывода</td>
+                <td class="table-selected">1 рубль</td>
+                <td>500 рублей</td>
+                <td>11 рублей</td>
+                <td>500 рублей</td>
+                <td>1 рубль</td>
+                <td>90 рублей</td>
+            </tr>
+            <tr>
+                <td>Скорость ответа  техподдержки</td>
+                <td class="table-selected">1 час</td>
+                <td>1-6 часов</td>
+                <td>6 часов</td>
+                <td>1 день</td>
+                <td>1-2 часа</td>
+                <td>1 день</td>
+            </tr>
+            <tr>
+                <td>Накопительная программа</td>
+                <td class="table-selected">+</td>
+                <td>+</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Бонус при регистрации</td>
+                <td class="table-selected">Премиум-аккаунт на 10 дней</td>
+                <td>Премиум-аккаунт на 7 дней</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Партнерская программа</td>
+                <td class="table-selected">15% от кэшбэка друга</td>
+                <td>15% от кэшбэка друга</td>
+                <td>10% от кэшбэка друга</td>
+                <td>200 руб. единоразово за активного покупателя</td>
+                <td>100 руб. единоразово за активного покупателя</td>
+                <td>до 50% от кэшбэка друга, с уменьшением до 0%</td>
+            </tr>
+            <tr>
+                <td>Государственная регистрация</td>
+                <td class="table-selected">Великобритания, Россия</td>
+                <td>Британские Виргинские острова (оффшор)</td>
+                <td>-</td>
+                <td>Финляндия</td>
+                <td>Россия</td>
+                <td>-</td>
+            </tr>
+        </table>';
+        $constant->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+        $constant = Constants::find()->where(['name' => 'comparison'])->one();
+        $constant->text =  '<h2>Сравнение ведущих кэшбэк-сервисов </h2>
+        <table>
+            <tr>
+                <th></th>
+                <th class="table-selected">SecretDiscounter</th>
+                <th><a href="https://katuhus.com/g/7khfs3jtus2071538c788753afd1f1/" rel="nofollow noopener">LetyShops</a></th>
+                <th><a href="http://epngo.bz/cashback_index/899sop?ref_type=hybrid" rel="nofollow noopener">ePN</a></th>
+                <th><a href="https://www.kopikot.ru/?r=3513889" rel="nofollow noopener">Kopikot</a></th>
+                <th><a href="https://cash4brands.ru/?refid=189401" rel="nofollow noopener">Сash4brands</a></th>
+                <th><a href="https://megabonus.com/?u=40513ssssss" rel="nofollow noopener">Megabonus</a></th>
+            </tr>
+            <tr>
+                <td>Кол-во магазинов</td>
+                <td class="table-selected">1191</td>
+                <td>1166</td>
+                <td>253</td>
+                <td>914</td>
+                <td>608</td>
+                <td>326</td>
+            </tr>
+            <tr>
+                <td>Кол-во купонов и промокодов</td>
+                <td class="table-selected">6442</td>
+                <td>-</td>
+                <td>132</td>
+                <td>432</td>
+                <td>4610</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Кэшбэк в оффлайне</td>
+                <td class="table-selected">+</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Скорость подтверждения кэшбэка</td>
+                <td class="table-selected">1 день</td>
+                <td>30 дней</td>
+                <td>30-90 дней</td>
+                <td>60 дней</td>
+                <td>14 дней</td>
+                <td>30 дней</td>
+            </tr>
+            <tr>
+                <td>Минимальная сумма для вывода</td>
+                <td class="table-selected">1 рубль</td>
+                <td>500 рублей</td>
+                <td>11 рублей</td>
+                <td>500 рублей</td>
+                <td>1 рубль</td>
+                <td>90 рублей</td>
+            </tr>
+            <tr>
+                <td>Скорость ответа  техподдержки</td>
+                <td class="table-selected">1 час</td>
+                <td>1-6 часов</td>
+                <td>6 часов</td>
+                <td>1 день</td>
+                <td>1-2 часа</td>
+                <td>1 день</td>
+            </tr>
+            <tr>
+                <td>Накопительная программа</td>
+                <td class="table-selected">+</td>
+                <td>+</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Бонус при регистрации</td>
+                <td class="table-selected">Премиум-аккаунт на 10 дней</td>
+                <td>Премиум-аккаунт на 7 дней</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Партнерская программа</td>
+                <td class="table-selected">15% от кэшбэка друга</td>
+                <td>15% от кэшбэка друга</td>
+                <td>10% от кэшбэка друга</td>
+                <td>200 руб. единоразово за активного покупателя</td>
+                <td>100 руб. единоразово за активного покупателя</td>
+                <td>до 50% от кэшбэка друга, с уменьшением до 0%</td>
+            </tr>
+            <tr>
+                <td>Государственная регистрация</td>
+                <td class="table-selected">Великобритания, Россия</td>
+                <td>Британские Виргинские острова (оффшор)</td>
+                <td>-</td>
+                <td>Финляндия</td>
+                <td>Россия</td>
+                <td>-</td>
+            </tr>
+        </table>';
+        $constant->save();
+    }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m180220_132228_UpdateConstantComparison cannot be reverted.\n";
+
+        return false;
+    }
+    */
+}
