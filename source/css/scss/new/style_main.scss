@@ -692,6 +692,12 @@ input.link {
   background: #fff;
 }
 
+.tipso_bubble {
+  @include media($tablets) {
+    display: none !important;
+  }
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
