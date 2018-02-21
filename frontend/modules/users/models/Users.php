@@ -16,11 +16,12 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use developeruz\db_rbac\interfaces\UserRbacInterface;
 use JBZoo\Image\Image;
+use common\components\DataValidator;
 
 /**
  * This is the model class for table "cw_users".
  */
-class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
+class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 {
 
   public $new_password;
@@ -35,7 +36,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       3 => 'Дорвей',
       4 => 'Email-рассылка',
       5 => 'Другое'
-    ];
+  ];
 
   private $balans;
 
@@ -67,27 +68,28 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function rules()
   {
     return [
-      [['email', 'name', 'added'], 'required'],
-      [['email'], 'email'],
-      [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
-      ['new_password', 'trim'],
-      [['new_password'], 'string', 'max' => 60],
-      [['new_password'], 'string', 'min' => 5],
-      [['birthday', 'last_login', 'added','new_loyalty_status_end','in_action'], 'safe'],
-      [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed','email_verified'], 'integer'],
-      [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
-      [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
-      [['sex'], 'string', 'max' => 1],
-      [['last_ip'], 'string', 'max' => 100],
-      [['reg_ip'], 'string', 'max' => 20],
-      ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
-      [['new_photo'], 'image',
-        'minHeight' => 500,
-        'maxSize' => 2 * 1024 * 1024,
-        'skipOnEmpty' => true
-      ],
-      [['waitModeration','traffType','show_balance'],'number'],
-      ['url','string']
+        [['email', 'name', 'added'], 'required'],
+        [['email'], 'email'],
+        [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
+        ['new_password', 'trim'],
+        [['new_password'], 'string', 'max' => 60],
+        [['new_password'], 'string', 'min' => 5],
+        [['birthday', 'last_login', 'added', 'new_loyalty_status_end', 'in_action'], 'safe'],
+        [['birthday'], DataValidator::className()],
+        [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed', 'email_verified'], 'integer'],
+        [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
+        [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
+        [['sex'], 'string', 'max' => 1],
+        [['last_ip'], 'string', 'max' => 100],
+        [['reg_ip'], 'string', 'max' => 20],
+        ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+        [['new_photo'], 'image',
+            'minHeight' => 500,
+            'maxSize' => 2 * 1024 * 1024,
+            'skipOnEmpty' => true
+        ],
+        [['waitModeration', 'traffType', 'show_balance'], 'number'],
+        ['url', 'string']
     ];
   }
 
@@ -105,46 +107,46 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function attributeLabels()
   {
     return [
-      'uid' => 'id',
-      'email' => 'Email',
-      'name' => Yii::t('account', 'user_name'),
-      'password' => 'Пароль',
-      'new_password' => 'Новый пароль',
-      'birthday' => Yii::t('account', 'account_user_burthday'),
-      'sex' => Yii::t('account', 'sex'),
-      'photo' => 'Фото',
-      'new_photo' => 'Фото',
-      'notice_email' => 'Уведомление на почту',
-      'notice_account' => 'Внутренние уведомления',
-      'referrer_id' => 'Referrer ID',
-      'last_ip' => 'IP последнего входа',
-      'last_login' => 'Дата последнего входа',
-      'registration_source' => 'Источник регистрации',
-      'added' => 'Дата регистрации',
-      'loyalty_status' => 'Статус лояльности',
-      'is_active' => 'Активен',
-      'is_admin' => 'Is Admin',
-      'bonus_status' => 'Бонусы за рефералов',
-      'reg_ip' => 'IP регистрации',
-      'ref_total' => 'Всего рефералов',
-      'sum_pending' => 'Ожидаемый кэшбэк, руб',
-      'cnt_pending' => 'Ожидаемый кэшбэк, шт',
-      'sum_confirmed' => 'Подтвержденный кэшбэк, руб',
-      'cnt_confirmed' => 'Подтвержденный кэшбэк, шт',
-      'sum_from_ref_pending' => 'Ожидаемое вознаграждение от рефералов',
-      'sum_from_ref_confirmed' => 'Подтвержденное вознаграждение от рефералов',
-      'sum_to_friend_pending' => 'Sum To Friend Pending',
-      'sum_to_friend_confirmed' => 'Sum To Friend Confirmed',
-      'sum_foundation' => 'Сумма пожертвований',
-      'sum_withdraw' => 'Выплаченная сумма',
-      'sum_bonus' => 'Бонусы',
-      'email_verify_time' => 'Последнее письмо с валидаций',
-      'email_verified' => 'Статус валидации',
-      'waitModeration' => 'Ожидает модерации',
-      'traffType' => 'Источник трафика',
-      'url' => 'Сайт',
-      'show_balance' => 'Отображаемый баланс',
-      'in_action' => 'Участвует в акции с ',
+        'uid' => 'id',
+        'email' => 'Email',
+        'name' => Yii::t('account', 'user_name'),
+        'password' => 'Пароль',
+        'new_password' => 'Новый пароль',
+        'birthday' => Yii::t('account', 'account_user_burthday'),
+        'sex' => Yii::t('account', 'sex'),
+        'photo' => 'Фото',
+        'new_photo' => 'Фото',
+        'notice_email' => 'Уведомление на почту',
+        'notice_account' => 'Внутренние уведомления',
+        'referrer_id' => 'Referrer ID',
+        'last_ip' => 'IP последнего входа',
+        'last_login' => 'Дата последнего входа',
+        'registration_source' => 'Источник регистрации',
+        'added' => 'Дата регистрации',
+        'loyalty_status' => 'Статус лояльности',
+        'is_active' => 'Активен',
+        'is_admin' => 'Is Admin',
+        'bonus_status' => 'Бонусы за рефералов',
+        'reg_ip' => 'IP регистрации',
+        'ref_total' => 'Всего рефералов',
+        'sum_pending' => 'Ожидаемый кэшбэк, руб',
+        'cnt_pending' => 'Ожидаемый кэшбэк, шт',
+        'sum_confirmed' => 'Подтвержденный кэшбэк, руб',
+        'cnt_confirmed' => 'Подтвержденный кэшбэк, шт',
+        'sum_from_ref_pending' => 'Ожидаемое вознаграждение от рефералов',
+        'sum_from_ref_confirmed' => 'Подтвержденное вознаграждение от рефералов',
+        'sum_to_friend_pending' => 'Sum To Friend Pending',
+        'sum_to_friend_confirmed' => 'Sum To Friend Confirmed',
+        'sum_foundation' => 'Сумма пожертвований',
+        'sum_withdraw' => 'Выплаченная сумма',
+        'sum_bonus' => 'Бонусы',
+        'email_verify_time' => 'Последнее письмо с валидаций',
+        'email_verified' => 'Статус валидации',
+        'waitModeration' => 'Ожидает модерации',
+        'traffType' => 'Источник трафика',
+        'url' => 'Сайт',
+        'show_balance' => 'Отображаемый баланс',
+        'in_action' => 'Участвует в акции с ',
     ];
   }
 
@@ -160,12 +162,12 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public static function afterLogin($id)
   {
     if (
-      !Yii::$app->session->get('admin_id') ||
-      Yii::$app->session->get('admin_id') != Yii::$app->user->id
+        !Yii::$app->session->get('admin_id') ||
+        Yii::$app->session->get('admin_id') != Yii::$app->user->id
     ) {
       self::getDb()->createCommand()->update(self::tableName(), [
-        'last_ip' => $_SERVER["REMOTE_ADDR"],
-        'last_login' => date('Y-m-d H:i:s'),
+          'last_ip' => $_SERVER["REMOTE_ADDR"],
+          'last_login' => date('Y-m-d H:i:s'),
       ], ['uid' => $id])->execute();
     }
 
@@ -174,7 +176,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   public function afterFind()
   {
     parent::afterFind(); // TODO: Change the autogenerated stub
-    if($this->birthday) {
+    if ($this->birthday) {
       $this->birthday = explode('-', $this->birthday);
       $this->birthday = implode('-', array_reverse($this->birthday));
     }
@@ -182,22 +184,22 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
   public function beforeValidate()
   {
-    if(!is_numeric($this->new_loyalty_status_end)){
-      if($this->new_loyalty_status_end==''){
-        $this->new_loyalty_status_end=0;
-      }else{
-        $this->new_loyalty_status_end=strtotime($this->new_loyalty_status_end);
+    if (!is_numeric($this->new_loyalty_status_end)) {
+      if ($this->new_loyalty_status_end == '') {
+        $this->new_loyalty_status_end = 0;
+      } else {
+        $this->new_loyalty_status_end = strtotime($this->new_loyalty_status_end);
       }
     }
 
-    if($this->new_loyalty_status_end<time()){
-      $this->new_loyalty_status_end=0;
-      $tasks=Task::find()->where([
-          'param'=>[$this->uid,-$this->uid],
-          'task'=>2
+    if ($this->new_loyalty_status_end < time()) {
+      $this->new_loyalty_status_end = 0;
+      $tasks = Task::find()->where([
+          'param' => [$this->uid, -$this->uid],
+          'task' => 2
       ])->all();
 
-      foreach ($tasks as $task){
+      foreach ($tasks as $task) {
         $task->delete();
       }
     }
@@ -206,21 +208,21 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       return false;
     }
 
-    if($this->birthday=='00-00-0000'){
+    /*if($this->birthday=='00-00-0000'){
       $this->birthday=null;
-    }
+    }*/
 
-    if($this->birthday) {
-      $this->birthday=explode('-',$this->birthday);
-      $this->birthday=implode('-',array_reverse($this->birthday));
-      if (strtotime($this->birthday) === FALSE) {
-        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
-      }elseif(strtotime($this->birthday)>time()-5*356*24 * 60 * 60){
-        $this->addError('birthday', Yii::t('account', 'birthday_biggest_error'));
-      }elseif (date('Y-m-d',strtotime($this->birthday))!=$this->birthday){
-        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
-      }
-    }
+    /*if($this->birthday) {
+     $this->birthday=explode('-',$this->birthday);
+     $this->birthday=implode('-',array_reverse($this->birthday));
+     if (strtotime($this->birthday) === FALSE) {
+       $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
+     }elseif(strtotime($this->birthday)>time()-5*356*24 * 60 * 60){
+       $this->addError('birthday', Yii::t('account', 'birthday_biggest_error'));
+     }elseif (date('Y-m-d',strtotime($this->birthday))!=$this->birthday){
+       $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
+     }
+   }*/
 
     if (!$this->name || strlen($this->name) == 0) {
       $this->name = explode('@', $this->email);
@@ -252,9 +254,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
     foreach ($statuses as $k => $status_k) {
       if (
-        isset($status_k['min_sum']) && //у статса лояльности есть минимальная сумма назначения
-        $status_k['min_sum'] < $total &&//минимальная сумма ниже заработанной суммы
-        $status_k['bonus'] > $status['bonus'] //новый бонус будет выгоднее клиенту чем текущий
+          isset($status_k['min_sum']) && //у статса лояльности есть минимальная сумма назначения
+          $status_k['min_sum'] < $total &&//минимальная сумма ниже заработанной суммы
+          $status_k['bonus'] > $status['bonus'] //новый бонус будет выгоднее клиенту чем текущий
       ) {
         $status = $status_k;
         $this->loyalty_status = $k;
@@ -287,10 +289,10 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
       if ($promo && !empty(Yii::$app->params['ref_promo']) && !empty(Yii::$app->params['ref_promo'][$promo])) {
         $promos = isset(Yii::$app->params['ref_promo'][$promo]) ? Yii::$app->params['ref_promo'][$promo] : [];
-        if(isset($promos['time'])){
-          if($promos['time']===false){
+        if (isset($promos['time'])) {
+          if ($promos['time'] === false) {
             $this->new_loyalty_status_end = 0;
-          }else{
+          } else {
             $this->new_loyalty_status_end = time() + $promos['time'] * 24 * 60 * 60;
           }
           unset ($promos['time']);
@@ -318,22 +320,22 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       }
 
       //если создание произошло не из под админа(авторизированного пользователя)
-      if(Yii::$app->user->isGuest) {
+      if (Yii::$app->user->isGuest) {
         Yii::$app->session->setFlash('success', [
-          'title' => 'Успешная авторизация',
-          'message' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>,' .
-            ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
-          'no_show_page'=>['account']
+            'title' => 'Успешная авторизация',
+            'message' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>,' .
+                ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
+            'no_show_page' => ['account']
         ]);
-        if($this->waitModeration) {
+        if ($this->waitModeration) {
           Yii::$app->session->setFlash('info', [
-            'title' => 'Заявка на модерации',
-            'message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.'
+              'title' => 'Заявка на модерации',
+              'message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.'
           ]);
         };
       }
 
-      if($this->new_loyalty_status_end>time()) {
+      if ($this->new_loyalty_status_end > time()) {
         $notify = new Notifications();
         $notify->user_id = $this->uid;
         $notify->type_id = 2;
@@ -357,18 +359,18 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
       try {
         Yii::$app
-          ->mailer
-          ->compose(
-            ['html' => 'welcome-html', 'text' => 'welcome-text'],
-            [
-              'user' => $this,
-              'stores' => $store,
-            ]
-          )
-          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo($this->email)
-          ->setSubject(Yii::$app->name . ': Регистрация')
-          ->send();
+            ->mailer
+            ->compose(
+                ['html' => 'welcome-html', 'text' => 'welcome-text'],
+                [
+                    'user' => $this,
+                    'stores' => $store,
+                ]
+            )
+            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+            ->setTo($this->email)
+            ->setSubject(Yii::$app->name . ': Регистрация')
+            ->send();
       } catch (\Exception $e) {
       }
     }
@@ -386,8 +388,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
       $oldImage = $this->photo;
 
-      if(!is_readable($photo->tempName)){
-        Yii::$app->session->addFlash('err','Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
+      if (!is_readable($photo->tempName)) {
+        Yii::$app->session->addFlash('err', 'Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
         return;
       }
 
@@ -401,21 +403,21 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
         mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
       }
 
-      if(exif_imagetype($photo->tempName)==2){
+      if (exif_imagetype($photo->tempName) == 2) {
         $img = (new Image(imagecreatefromjpeg($photo->tempName)));
-      }else {
+      } else {
         $img = (new Image($photo->tempName));
       }
 
       $img
-        ->fitToWidth(500)
-        ->saveAs($bp . $this->photo);
+          ->fitToWidth(500)
+          ->saveAs($bp . $this->photo);
       if ($img) {
         $this->removeImage($bp . $oldImage);   // удаляем старое изображение
         $this::getDb()
-          ->createCommand()
-          ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
-          ->execute();
+            ->createCommand()
+            ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
+            ->execute();
       }
     }
   }
@@ -477,8 +479,8 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     }
 
     return static::findOne([
-      'password_reset_token' => $token,
-      'is_active' => self::STATUS_ACTIVE,
+        'password_reset_token' => $token,
+        'is_active' => self::STATUS_ACTIVE,
     ]);
   }
 
@@ -574,25 +576,25 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     if (!$this->balans) {
       $confirmed_sum =
-        floatval($this->sum_confirmed) +
-        floatval($this->sum_from_ref_confirmed);
+          floatval($this->sum_confirmed) +
+          floatval($this->sum_from_ref_confirmed);
       $pending_sum =
-        floatval($this->sum_pending) +
-        floatval($this->sum_from_ref_pending);
+          floatval($this->sum_pending) +
+          floatval($this->sum_from_ref_pending);
       $sum_bonus =
-        floatval($this->sum_bonus);
+          floatval($this->sum_bonus);
 
       $bl = [
-        'total' => $confirmed_sum + $sum_bonus,
-        'pending' => $pending_sum,
-        'charity' => $this->sum_foundation,
-        'withdraw' => $this->sum_withdraw,
+          'total' => $confirmed_sum + $sum_bonus,
+          'pending' => $pending_sum,
+          'charity' => $this->sum_foundation,
+          'withdraw' => $this->sum_withdraw,
       ];
 
       $bl['current'] = $bl['total'] - $bl['charity'] - $bl['withdraw'];
 
       $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
-        $this->sum_foundation - $this->sum_withdraw;
+          $this->sum_foundation - $this->sum_withdraw;
       if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
         $bl['max_fundation'] = 0;
       } else if ($balance < 0) {
@@ -631,7 +633,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       return '';
     }
     $user = Users::find()
-      ->where(['uid' => $this->referrer_id])->one();
+        ->where(['uid' => $this->referrer_id])->one();
     return $user->email;
   }
 
@@ -657,7 +659,7 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
 
   public function getBonus_status_data()
   {
-    if(!$this->bonus_status)$this->bonus_status=0;
+    if (!$this->bonus_status) $this->bonus_status = 0;
     $bs = $this->bonus_status;
     $Bonus_status_list = Yii::$app->params['dictionary']['bonus_status'];
     if (!isset($Bonus_status_list[$bs])) {
@@ -670,9 +672,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     return Yii::$app->cache->getOrSet('ip_count_' . $this->last_ip, function () {
       $count = Users::find()
-        ->orWhere(['last_ip' => $this->last_ip])
-        ->orWhere(['reg_ip' => $this->last_ip])
-        ->count();
+          ->orWhere(['last_ip' => $this->last_ip])
+          ->orWhere(['reg_ip' => $this->last_ip])
+          ->count();
       return $count;
     });
   }
@@ -681,9 +683,9 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
   {
     return Yii::$app->cache->getOrSet('ip_count_' . $this->reg_ip, function () {
       $count = Users::find()
-        ->orWhere(['last_ip' => $this->reg_ip])
-        ->orWhere(['reg_ip' => $this->reg_ip])
-        ->count();
+          ->orWhere(['last_ip' => $this->reg_ip])
+          ->orWhere(['reg_ip' => $this->reg_ip])
+          ->count();
       return $count;
     });
   }
@@ -722,11 +724,13 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
     parent::afterDelete(); // TODO: Change the autogenerated stub
   }
 
-  public function getBarcode(){
-    return 'SD-'.str_pad($this->uid, 8, "0", STR_PAD_LEFT);
+  public function getBarcode()
+  {
+    return 'SD-' . str_pad($this->uid, 8, "0", STR_PAD_LEFT);
   }
 
-  public function getBarcodeImg($onlyTest=false){
+  public function getBarcodeImg($onlyTest = false)
+  {
     /*
       $code_src='https://barcode.tec-it.com/barcode.ashx?data='.$this->all_params['user_code'].'&code=Code128&dpi=96';
       $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
@@ -734,24 +738,24 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
      */
 
     $centerCode = 160; //центр по горизонтали для вставки кода
-    $insertY=335; //положение кода по вертикали
-    $insertH=100; //высота штрихкода
-    $textY=460; //положение текста по вертикали
-    $fontSize=20; //Размер шрифта текста
-    $font='/phpfont/DejaVuSerif.ttf'; // шрифт
+    $insertY = 335; //положение кода по вертикали
+    $insertH = 100; //высота штрихкода
+    $textY = 460; //положение текста по вертикали
+    $fontSize = 20; //Размер шрифта текста
+    $font = '/phpfont/DejaVuSerif.ttf'; // шрифт
 
-    $code=$this->getBarcode();
-    $file=$code.'.jpg';
-    $path=$this->getUserPath($this->uid);
+    $code = $this->getBarcode();
+    $file = $code . '.jpg';
+    $path = $this->getUserPath($this->uid);
 
     $bp = Yii::$app->getBasePath() . '/web';
     if (!file_exists($bp . $path)) {
-      if($onlyTest)return false;
+      if ($onlyTest) return false;
       mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
     }
 
-    if(!file_exists($bp . $path.$file) || filemtime($bp.'/images/barcode_file.png')>filemtime($bp . $path.$file)){
-      if($onlyTest)return false;
+    if (!file_exists($bp . $path . $file) || filemtime($bp . '/images/barcode_file.png') > filemtime($bp . $path . $file)) {
+      if ($onlyTest) return false;
       $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
       $barcode = imagecreatefromstring($generator->getBarcode($code, $generator::TYPE_CODE_128));
       ImageAlphaBlending($barcode, true);
@@ -759,54 +763,56 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
       $bH = ImageSY($barcode);
 
       //$fon = imageCreateFromJpeg($bp.'/images/barcode_file.jpg');
-      $fon = ImageCreateFromPNG($bp.'/images/barcode_file.png');
+      $fon = ImageCreateFromPNG($bp . '/images/barcode_file.png');
       imagealphablending($fon, true);
       imagecolortransparent($fon, 0xFF00FF);
       imagesavealpha($fon, true);
 
       //вставляем код на подложку
-      $insertX=$centerCode-$bW/2;
-      $insertW=$bW;
+      $insertX = $centerCode - $bW / 2;
+      $insertW = $bW;
 
       imagecopyresized($fon, $barcode,
-        $insertX, $insertY, //insert pos
-        0, 0, //code pos
-        $insertW,$insertH, //insert size
-        $bW, $bH //code size
+          $insertX, $insertY, //insert pos
+          0, 0, //code pos
+          $insertW, $insertH, //insert size
+          $bW, $bH //code size
       );
 
       //добавлеям текст на подложку
       $black = imagecolorallocate($fon, 0, 0, 0);
-      $font = $bp.$font;
+      $font = $bp . $font;
 
-      $textSize=imagettfbbox($fontSize, 0, $font, $code);
+      $textSize = imagettfbbox($fontSize, 0, $font, $code);
 
-      $x=$centerCode-$textSize[2]/2;
+      $x = $centerCode - $textSize[2] / 2;
       imagettftext($fon, $fontSize, 0, $x, $textY, $black, $font, $code);
 
       /*header('Content-Type: image/png');
       ImagePNG($fon);
       exit;*/
 
-      ImageJPEG($fon,$bp . $path.$file); // вывод в браузер
+      ImageJPEG($fon, $bp . $path . $file); // вывод в браузер
     }
 
-    return $path.$file;
+    return $path . $file;
   }
 
   public static function waitModerationCount()
   {
-      return self::find()->where(['waitModeration' => 1])->count();
+    return self::find()->where(['waitModeration' => 1])->count();
   }
 
-  public static function this(){
-    if(Yii::$app->user->isGuest){
+  public static function this()
+  {
+    if (Yii::$app->user->isGuest) {
       return false;
     }
     return self::find()->where(['uid' => Yii::$app->user->id])->one();
   }
 
-  public function getAction(){
+  public function getAction()
+  {
     return Users::find()
         ->alias('user')
         ->andFilterWhere(['>', 'user.in_action', 0])
@@ -816,20 +822,20 @@ class Users extends ActiveRecord implements IdentityInterface,UserRbacInterface
             'sum(if(ref.sum_confirmed>350,1,0)) as finish_by_action',
         ])
         ->groupBy('user.uid')
-        ->where(['user.uid'=>$this->uid])
+        ->where(['user.uid' => $this->uid])
         ->asArray()
         ->one();
   }
 
   public static function onActionCount()
   {
-      return self::find()
-          ->alias('user')
-          ->andFilterWhere(['>', 'user.in_action', 0])
-          ->andFilterWhere(['>=', 'ref.sum_confirmed', 350])
-          ->andFilterWhere(['<>', 'user.loyalty_status', 4])
-          ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
-          ->groupBy('user.uid')
-          ->count();
+    return self::find()
+        ->alias('user')
+        ->andFilterWhere(['>', 'user.in_action', 0])
+        ->andFilterWhere(['>=', 'ref.sum_confirmed', 350])
+        ->andFilterWhere(['<>', 'user.loyalty_status', 4])
+        ->join('LEFT JOIN', 'cw_users ref', 'ref.referrer_id = user.uid and ref.added > user.in_action')
+        ->groupBy('user.uid')
+        ->count();
   }
 }

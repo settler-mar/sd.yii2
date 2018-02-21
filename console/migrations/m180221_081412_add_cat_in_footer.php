@@ -15,7 +15,7 @@ class m180221_081412_add_cat_in_footer extends Migration
 
       $const = new \frontend\modules\constants\models\Constants();
       $const->name='footer_category';
-      $const->title = 'Ссылки footer. Компания';
+      $const->title = 'Ссылки footer. Категории';
       $const->text = '';
       $const->editor_param = 'links';
       $const->ftype = 'json';
