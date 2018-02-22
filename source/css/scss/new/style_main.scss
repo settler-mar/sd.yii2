@@ -688,8 +688,8 @@ input.link {
 }
 
 //для живосайта установка фона
-#chat-body{
-  background: #fff;
+div iframe#jivo_container{
+  position: absolute !important;
 }
 
 @import 'base/error_pages';

@@ -70,9 +70,8 @@ class SdView extends View
 
       $sql="SELECT max(cashback) as cashback, count(uid) as cnt 
       FROM `cw_payments` 
-      WHERE `action_date` > '".date("Y-m-d",time()-2*24*60*60)."'";
+      WHERE `action_date` > '".date("Y-m-d",time()-1.1*24*60*60)."'";
       $result2=Yii::$app->db->createCommand($sql)->queryOne();
-
 
       $query  = new Query();
       $query->select

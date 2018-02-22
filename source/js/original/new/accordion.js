@@ -5,6 +5,9 @@ accordionControl.on('click', function (e) {
     $this = $(this);
     $accordion = $this.closest('.accordion');
 
+
+    if($accordion.find('.accordion-title').hasClass('accordion-title-disabled'))return;
+
     if ($accordion.hasClass('open')) {
         /*if($accordion.hasClass('accordion-only_one')){
             return false;

@@ -138,6 +138,21 @@
     border-radius: 3px;
     display: flex !important;
 
+    &-red{
+      color: $header_heart;
+
+      svg {
+        color: $header_heart;
+        fill: $header_heart;
+        stroke: $header_heart;
+      }
+    }
+
+    &-disabled{
+      background: $accordion_control_tablets_bg;
+      cursor: default;
+    }
+
     @include media($tablets) {
       background: $accordion_control_tablets_bg;
     }

@@ -163,11 +163,14 @@
       }
 
       span{
-        font-size: 12PX;
+        font-size: 10PX;
         margin-left: -3px;
         vertical-align: bottom;
         line-height: 5px;
         font-family: sans-serif;
+        stroke-width: 0;
+        fill: none;
+        stroke: none;
       }
     }
   }

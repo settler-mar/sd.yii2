@@ -1,10 +1,10 @@
 <section class="shop_header_big tablets_order-2">
   <div class="page-wrap">
     <h1 class="shop_header_big-header">
-      {% if h1%}
+      {% if h1 %}
         {{ h1|raw }}
       {% else %}
-        Кэшбэк с&nbsp;покупок на&nbsp;{{current_store.name}}
+        Кэшбэк с&nbsp;покупок на&nbsp;{{ current_store.name }}
       {% endif %}
     </h1>
     <div class="shop_header_big-wrap">
@@ -12,15 +12,16 @@
 
         <div class="shop_header_big-item_ticket-wrap">
           <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
-              <div class="promo">
-                Кэшбэк
-                {% if current_store.action_id != 0 %}
-                  <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
-                {% endif %}
-                <span class="promo">{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
-              </div>
+            <div class="promo">
+              Кэшбэк
+              {% if current_store.action_id != 0 %}
+                <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
+              {% endif %}
+              <span
+                  class="promo">{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
+            </div>
           </div>
-          <div  href="#howgetcashback"  class="shop_header_big-item_ticket-down scroll_to">
+          <div href="#howgetcashback" class="shop_header_big-item_ticket-down scroll_to">
             {% if current_store.is_offline==0 %}
               Для получения кэшбэка следуйте
               <a href="#howgetcashback" class="shop-howgetcashback scroll_to">инструкции</a>
@@ -34,7 +35,7 @@
         <div class="shop_header_big-share">
           <div class="footer-share-text">Поделиться:</div>
           <div class="share42init accauntSoc accauntSoc_32"
-               data-url="https://secretdiscounter.ru/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+               data-url="https://secretdiscounter.ru/stores/{{ store.route }}{{ _if(store.is_offline,'-offline') }}"
                data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
                data-title="{{ html.encode(this.title) }}"
                data-description="{{ this.description }}"
@@ -52,23 +53,28 @@
 
             {% if user_id %}
               {% if current_store.uid in fav_ids %}
-                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="Удалить магазин из Избранного">
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{ current_store.uid }}"
+                   data-toggle="tooltip" data-state="delete" data-placement="top"
+                   data-original-title="Удалить магазин из Избранного">
                   {{ svg('heart','shop_panel-item_icon')|raw }}
                 </a>
               {% else %}
-                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{current_store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="Добавить магазин в Избранное">
+                <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{ current_store.uid }}"
+                   data-toggle="tooltip" data-state="add" data-placement="top"
+                   data-original-title="Добавить магазин в Избранное">
                   {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
                 </a>
               {% endif %}
             {% else %}
-              <a class="shop_panel-item favorite-link" href="#" data-toggle="tooltip" data-placement="top" data-original-title="Добавить в Избранное">
+              <a class="shop_panel-item favorite-link" href="#" data-toggle="tooltip" data-placement="top"
+                 data-original-title="Добавить в Избранное">
                 {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
               </a>
             {% endif %}
 
           </div>
           <div class="logo">
-            <img src="/images/logos/{{current_store.logo}}" alt="{{current_store.name}}" height="59px">
+            <img src="/images/logos/{{ current_store.logo }}" alt="{{ current_store.name }}" height="59px">
           </div>
           <div class="rating">
             {% if store_rating.value > 0 %}
@@ -94,26 +100,32 @@
       <div class="shop_header_big-item">
         <div class="shop_header_big-item-head ">
 
-          {{
-          _if(current_store.is_offline,
+          {{ _if(current_store.is_offline,
           'Оффлайн-магазин',
-          'Интернет-магазин') | raw
-          }}
+          'Интернет-магазин') | raw }}
         </div>
         <div class="shop_header_big-item-body">
-          <div class="accordion accordion-only_one shop_header_big-accordion {{ _if(current_store.is_active!=0 and current_store.conditions=='','tablets_hide') }}">
-            <div class="accordion-control accordion-title">
-              Все тарифы
-            </div>
-            <div class="accordion-content">
-              {% if current_store.is_active==0 %}
-                {{ _constant('shop_not_info')|raw}}
-              {% endif %}
+          <div
+              class="accordion accordion-only_one shop_header_big-accordion {{ _if(current_store.is_active!=0 and current_store.conditions=='','tablets_hide') }}">
+            {% if _is_empty(current_store.displayed_cashback) %}
+              <div class="accordion-control accordion-title accordion-title-red">
+                {{ _constant('shop_offline_text','title_dop_blog')|raw }}
+              </div>
+            {% elseif current_store.is_active==0 %}
+              <div class="accordion-control accordion-title accordion-title-red accordion-title-disabled">
+                {{ _constant('shop_offline_text','title_dop')|raw }}
+              </div>
+            {% else %}
+              <div class="accordion-control accordion-title">
+                Все тарифы
+              </div>
+            {% endif %}
 
-              {% if current_store.conditions != ''%}
-                {{ _no_br(current_store.conditions)|raw}}
+            <div class="accordion-content">
+              {% if current_store.conditions != '' %}
+                {{ _no_br(current_store.conditions)|raw }}
               {% else %}
-                Дополнительные тарифы для магазина {{current_store.name}} отсутствуют.
+                Дополнительные тарифы для магазина {{ current_store.name }} отсутствуют.
                 Текущая ставка кэшбэка – {{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}.
               {% endif %}
 
@@ -125,7 +137,7 @@
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
             Кэшбэк станет активным для вывода через
-            <span>{{current_store.hold_time}}&nbsp;дней</span>
+            <span>{{ current_store.hold_time }}&nbsp;дней</span>
             <span class="avg">
                 (среднее время обработки)
                 <a class="shop-name-question" data-placement="bottom" data-toggle="tooltip"
@@ -140,23 +152,31 @@
 </section>
 
 <section class="shop_header_big-end">
+  {% if current_store.is_active==0 %}
+    {% set btn_text =  _constant('shop_offline_text','goto') %}
+  {% else %}
+    {% set btn_text = 'Перейти к покупкам' %}
+  {% endif %}
+
   {% if current_store.is_offline==0 %}
     {% if user_id %}
       {% if current_store.is_active == 1 %}
-        <a href="/goto/store:{{current_store.uid}}" target="_blank" rel="nofollow noopener" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
+        <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
+           class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% else %}
-        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
+        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% endif %}
     {% else %}
-      <a href="#login" id="gotostore" class="btn btn-round tablets-btn-red tablets-btn-big">Перейти к покупкам</a>
+      <a href="#login" id="gotostore" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
     {% endif %}
   {% endif %}
 
 
   {% if current_store.related and current_store.relatedData.is_active in [0, 1] %}
-      <a class="btn btn-black btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto" href="/stores/{{ current_store.relatedData.routeUrl }}">
-        {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
-      </a>
+    <a class="btn btn-black btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto"
+       href="/stores/{{ current_store.relatedData.routeUrl }}">
+      {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
+    </a>
   {% endif %}
 </section>
 
@@ -169,12 +189,12 @@
 {% endif %}
 
 {% if current_store.short_description or content %}
-<section class="shop_information tablets_order-1 page-wrap">
+  <section class="shop_information tablets_order-1 page-wrap">
     <div class="accordion accordion-only_one accordion_pc_off">
 
       <div class="shop_information-border">
         <h2 class="accordion-control accordion-title">
-          Информация о {{current_store.name}}
+          Информация о {{ current_store.name }}
         </h2>
         <div class="accordion-content">
           {% if current_store.short_description %}
@@ -186,13 +206,13 @@
 
       </div>
     </div>
-</section>
+  </section>
 {% endif %}
 
 {% if current_store.is_active==0 %}
   <section class="shop_temporaty-inactive margin page-wrap">
     <div class="black_box align-center">
-      {{ _constant('shop_not_active_description')|raw}}
+      {{ _constant('shop_not_active_description')|raw }}
     </div>
   </section>
   {#блок с похожими шопами для временно неактивных шопов сюда#}
@@ -202,7 +222,7 @@
 {% if _is_empty(current_store.displayed_cashback) %}
   <section class="margin">
     <div class="page-wrap red_box">
-      {{ _constant('shop_no_cashback')|raw}}
+      {{ _constant('shop_no_cashback')|raw }}
     </div>
   </section>
 {% endif %}
@@ -218,28 +238,28 @@
 {% set related_stores = current_store.relatedStores %}
 {% if related_stores and  related_stores | length %}
 
-<section class="tablets_order-1">
-  <div class="page-wrap">
-    <div class="accordion accordion-only_one accordion_pc_off">
-      <h2 class="accordion-control accordion-title">Все магазины сети {{ current_store.network_name }}</h2>
-      <div class="accordion-content">
-        <div class="shops">
-          {% for store in related_stores %}
+  <section class="tablets_order-1">
+    <div class="page-wrap">
+      <div class="accordion accordion-only_one accordion_pc_off">
+        <h2 class="accordion-control accordion-title">Все магазины сети {{ current_store.network_name }}</h2>
+        <div class="accordion-content">
+          <div class="shops">
+            {% for store in related_stores %}
 
-            {% include 'parts/shop.twig' %}
-          {% endfor %}
-          <div class="shop shop-empty"></div>
-          <div class="shop shop-empty"></div>
-          <div class="shop shop-empty"></div>
-          <div class="shop shop-empty"></div>
-          <div class="shop shop-empty"></div>
-          <div class="shop shop-empty"></div>
+              {% include 'parts/shop.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endif %}
 
 {% if current_store.is_offline==1 %}
@@ -253,11 +273,11 @@
 {% include 'parts/stores/coupons.twig' %}
 
 {% if current_store.is_active != 0 %}
-    {% include 'parts/stores/additional_stores.twig' %}
+  {% include 'parts/stores/additional_stores.twig' %}
 {% endif %}
 
 
-  {% if current_store.is_offline==0  %}
+  {% if current_store.is_offline==0 %}
     {% include 'parts/stores/tracker.twig' %}
   {% endif %}
 
@@ -265,9 +285,9 @@
     <section class="tablets_order-1 tablets_hide">
       <div class="page-wrap margin">
         <div class="accordion accordion-only_one accordion_pc_off">
-          <h2 class="accordion-control accordion-title">Подробная информация о {{current_store.name}}</h2>
+          <h2 class="accordion-control accordion-title">Подробная информация о {{ current_store.name }}</h2>
           <div class="accordion-content">
-            {{current_store.description|raw}}
+            {{ current_store.description|raw }}
           </div>
         </div>
       </div>
@@ -288,25 +308,25 @@
       </h2>
       <div class="accordion-content">
         {% if current_store.is_offline==0 %}
-            {% if current_store.cpaLink.cpa_id==2 %}
-              {% include 'parts/stores/instruction_online_offline.twig' %}
-            {% else %}
-              {% include 'parts/stores/instruction_online.twig' %}
-            {% endif %}
+          {% if current_store.cpaLink.cpa_id==2 %}
+            {% include 'parts/stores/instruction_online_offline.twig' %}
           {% else %}
-            {% include 'parts/stores/instruction_offline.twig' %}
+            {% include 'parts/stores/instruction_online.twig' %}
           {% endif %}
+        {% else %}
+          {% include 'parts/stores/instruction_offline.twig' %}
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
 
 
-{#{% if current_store.is_active==0 %}
-    <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
-      {{ _constant('shop_not_active_message')|raw}}
-    </div>
- {% endif %}#}
+{% if current_store.is_active==0 %}
+  <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
+    {{ _constant('shop_not_active_message')|raw }}
+  </div>
+{% endif %}
 
 {#
   {% include 'parts/store_rating_microdata.twig' %}

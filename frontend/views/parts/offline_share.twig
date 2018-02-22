@@ -5,10 +5,10 @@
                 {{ t('account', 'offline_friend_pr_code') }} ↓
                 {% set user_code_img = friend_user.barcodeImg  %}
                 {% set user_id = friend_user.uid  %}
-                {% set print = "print();return false;" %}
+                {% set print = "onclick='print();return false;'" %}
             {% else %}
                 {% if user_id %}
-                    {% set print = "window.open(this.href).print();return false;" %}
+                    {% set print = "target=_blank" %}
                 {% else %}
                     {{ t('account', 'offline_pr_code_example') }} ↓
                     {% set user_code_img = "/images/barcode_sample.png"%}
@@ -67,7 +67,7 @@
                         {{ svg('printer')|raw }}
                     </div>
                     <div class="affiliate-invitation_printer">
-                        <p class="intro-content_header"><a href="/offline?ref={{user_id}}" onclick="{{ print }};return false;" download>{{ t('account', 'offline_pr_code_print') }}</a></p>
+                        <p class="intro-content_header"><a href="/offline?ref={{user_id}}" {{ print | raw }}>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>
             {% endif %}
