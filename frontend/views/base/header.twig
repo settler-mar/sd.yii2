@@ -3,13 +3,13 @@
     <div class="page-wrap page-wrap-flex">
 
       <div class="header-upline_in">
-      {#<div class="header-logo">#}
+        {#<div class="header-logo">#}
         <div class="header-upline_in-left">
 
           <div class="menu-toggle">
             <a href="/">
-                {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
-                {{ svg('close', 'menu-toggle_button close')|raw }}
+              {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
+              {{ svg('close', 'menu-toggle_button close')|raw }}
             </a>
           </div>
 
@@ -23,68 +23,75 @@
         </div>
 
 
-      <div class="header-search stores_search">
-        <form action="/search" class="header-search_form" name="search" method="get">
-          <div class="header-search_form-group">
-            <input type="text" name="query" id="search" class="header-search_form-input search-form-input" value="" placeholder="Найти магазин" autocomplete="off">
-            {#<a href="#">#}
-                {{ svg('search','header-search_form-button')|raw }}
-            {#</a>#}
+        <div class="header-search stores_search">
+          <form action="/search" class="header-search_form" name="search" method="get">
+            <div class="header-search_form-group">
+              <input type="text" name="query" id="search" class="header-search_form-input search-form-input" value=""
+                     placeholder="Найти магазин" autocomplete="off">
+              {#<a href="#">#}
+              {{ svg('search','header-search_form-button')|raw }}
+              {#</a>#}
+            </div>
+          </form>
+          <div class="header-autocomplete autocomplete-wrap">
+            <ul class="autocomplete_list"></ul>
           </div>
-        </form>
-        <div class="header-autocomplete autocomplete-wrap"><ul class="autocomplete_list"></ul></div>
-      </div>
+        </div>
 
 
         <div class="header-upline_in-right">
 
-        {% if this.user_id == 0 %}
-        {#если не зарегистрирован#}
-          <a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это работает</a>
+          {% if this.user_id == 0 %}
+            {#если не зарегистрирован#}
+            <a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это
+              работает</a>
             {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
-          <div class="header-authorization">
-            <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-enter modals_open">
-              <span class="header-authorization-enter-text">Вход</span>
-              {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
-            </a>
-            <span class="header-authorization-separate header-authorization-separate-login">/</span>
-            <a href="#registration" rel="nofollow" class="header-authorization-btn header-authorization-register modals_open">Регистрация</a>
-          </div>
-        {% else %}
+            <div class="header-authorization">
+              <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-enter modals_open">
+                <span class="header-authorization-enter-text">Вход</span>
+                {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
+              </a>
+              <span class="header-authorization-separate header-authorization-separate-login">/</span>
+              <a href="#registration" rel="nofollow"
+                 class="header-authorization-btn header-authorization-register modals_open">Регистрация</a>
+            </div>
+          {% else %}
             {#зарегистрирован#}
-          <div class="btn-header header-upline_ballance" >
-            <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
-              <span class="ballance-confirmed" data-toggle="tooltip"
+            <div class="btn-header header-upline_ballance">
+              <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
+                <span class="ballance-confirmed" data-toggle="tooltip"
                     {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
-                    data-original-title="Сумма кэшбэка, уже доступная к выводу">
-                  {{ _nf(this.balance.current) | raw}} руб </span>
-              <span class="ballance-all" data-toggle="tooltip"
+                      data-original-title="Сумма кэшбэка, уже доступная к выводу">
+                  {{ _nf(this.balance.current) | raw }} руб </span>
+                <span class="ballance-all" data-toggle="tooltip"
                     {#title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"#}
-                    data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">
-                &nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw}} руб </span>
-            </a>
-          </div>
-          {% if this.favorites %}
+                      data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">
+                &nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw }} руб </span>
+              </a>
+            </div>
+            {% if this.favorites %}
               {#если есть избранные#}
-            <div class="btn-header btn-header_favorite" >
-              <a data-toggle="tooltip"  data-original-title="Избранные магазины" href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
-            </div>
-          {% endif %}
+              <div class="btn-header btn-header_favorite">
+                <a data-toggle="tooltip" data-original-title="Избранные магазины"
+                   href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
+              </div>
+            {% endif %}
 
-            <div class="header-logo_noty btn-header last" >
-              <a data-toggle="tooltip" data-original-title="Уведомления" href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+            <div class="header-logo_noty btn-header last">
+              <a data-toggle="tooltip" data-original-title="Уведомления"
+                 href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
             </div>
 
-          <div class="avatar account-menu-toggle">
-          {% set user_avatar = _checkAvatar(this.user.photo) %}
+            <div class="avatar account-menu-toggle">
+              {% set user_avatar = _checkAvatar(this.user.photo) %}
               <a href="#">
                 <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}" alt="{{ this.user.name }}">
-                  {{ svg('close', 'account-menu-toggle-close')|raw }}
+                {{ svg('close', 'account-menu-toggle-close')|raw }}
               </a>
 
-          </div>
-          {% include 'parts/account_menu.twig' %}
-        {% endif %}
+            </div>
+            {% include 'parts/account_menu.twig' %}
+          {% endif %}
         </div>
 
       </div>
@@ -98,7 +105,8 @@
             <a href="#login" class="header-right_link mobile modals_open">Войти</a>
           </li>
           <li class="mobile">
-            <a href="#registration" class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open">Зарегистрироваться (+30% к кэшбэку)</a>
+            <a href="#registration" class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open">Зарегистрироваться
+              (+30% к кэшбэку)</a>
           </li>
           <li class="mobile">
             <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
@@ -118,21 +126,21 @@
           {% set offline = app.params.stores_menu_separate ? 0 : null %}
           {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': offline}) %}
           {% if category_tree %}
-            {{category_tree|raw}}
+            {{ category_tree|raw }}
           {% endif %}
         </li>
         <li class="mobile">
-          <a class="link_mobile_bold">Двойной кэшбэк  {{ svg('money', 'drop-menu_item-icon-money')|raw }}</a>
+          <a class="link_mobile_bold">Двойной кэшбэк {{ svg('money', 'drop-menu_item-icon-money')|raw }}</a>
         </li>
         <li class="drop-menu_group__up">
           <a class="drop-menu_group__up-header" href="/coupons">Промокоды
-              {{ svg('angle-down','menu_angle-down')|raw }}
+            {{ svg('angle-down','menu_angle-down')|raw }}
           </a>
-            {{ use('frontend/components/CategoryCouponsMenu') }}
-            {% set category_coupons = category_coupons_menu_widget() %}
-            {% if category_coupons %}
-                {{category_coupons|raw}}
-            {% endif %}
+          {{ use('frontend/components/CategoryCouponsMenu') }}
+          {% set category_coupons = category_coupons_menu_widget() %}
+          {% if category_coupons %}
+            {{ category_coupons|raw }}
+          {% endif %}
         </li>
         {#если есть в настройках, выводим меню шопов оффлайн#}
         {% if app.params.stores_menu_separate %}
@@ -143,7 +151,7 @@
             </a>
             {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite', 'offline': 1 }) %}
             {% if category_tree %}
-                {{category_tree|raw}}
+              {{ category_tree|raw }}
             {% endif %}
           </li>
         {% endif %}
@@ -152,18 +160,17 @@
         </li>
         <li class="drop-menu_group__up">
           <span class="drop-menu_group__up-header">Сервисы
-              {{ svg('angle-down','menu_angle-down')|raw }}
+            {{ svg('angle-down','menu_angle-down')|raw }}
           </span>
           <ul>
-            <li>
-              <a href="https://gdeposylka.secretdiscounter.ru" rel="nofollow noopener">Отследить посылку</a>
-            </li>
-            <li>
-              <a href="/tablitsa-razmerov">Таблица размеров</a>
-            </li>
-            <li>
-              <a href="/plugin">Плагин для браузера</a>
-            </li>
+            {% set link_list = _constant("main_menu_service") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <li>
+                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+              {% endif %}
+              </li>
+            {% endfor %}
           </ul>
         </li>
       </ul>
@@ -177,62 +184,43 @@
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
-              'href':'/account/webmaster',
-              'title': t('account', 'menu_web_master')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
-              'class':'flex-start'
+            'href':'/account/webmaster',
+            'title': t('account', 'menu_web_master')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+            'class':'flex-start'
             } %}
           {% else %}
             {% set item= {
-              'href':'/affiliate-system',
-              'title': t('account', 'menu_affiliate')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
-              'class':'flex-start'
+            'href':'/affiliate-system',
+            'title': t('account', 'menu_affiliate')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
+            'class':'flex-start'
             } %}
-          {%  endif %}
+          {% endif %}
           {{ get_menu_item(item)|raw }}
 
         </li>
         {% if this.user_id > 0 %}
-        <li class="drop-menu_group__up">
+          <li class="drop-menu_group__up">
           <span class="dashed drop-menu_group__up-header">Помощь
-              {{ svg('angle-down','menu_angle-down')|raw }}
+            {{ svg('angle-down','menu_angle-down')|raw }}
           </span>
-          <ul class="left-">
-            <li>
-              <a href="/howitworks">С чего начать</a>
-            </li>
-            <li>
-              <a href="/account/support">Служба поддержки</a>
-            </li>
-            <li>
-              <a href="/account/support">Сообщить о потерянном кэшбэке</a>
-            </li>
-            <li>
-              <a href="/recommendations">Правила совершения покупок</a>
-            </li>
-            <li>
-              <a href="/loyalty">Накопительная система</a>
-            </li>
-            <li>
-              <a href="/faq">Вопросы и ответы</a>
-            </li>
-            <li>
-              <a href="/account/support">Жалобы и предложения</a>
-            </li>
-            <li>
-              <a href="/account/support">Сообщить об ошибке на сайте</a>
-            </li>
-            <li>
-              <a href="https://b2b.secretdiscounter.ru">Подключить ваш магазин</a>
-            </li>
-          </ul>
-        </li>
-        <li class="mobile">
+            <ul class="left-">
+              {% set link_list = _constant("main_menu_help") %}
+              {% for item in link_list %}
+                {% if item.show==1 %}
+                  <li>
+                  <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+                {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="mobile">
             <a href="/logout">Выйти</a>
-        </li>
+          </li>
         {% else %}
-        <li>
-          <a href="/help-center">Помощь</a>
-        </li>
+          <li>
+            <a href="/help-center">Помощь</a>
+          </li>
         {% endif %}
       </ul>
     </div>
