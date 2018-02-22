@@ -645,4 +645,9 @@
     justify-content: flex-start;
     flex-wrap: wrap;
   }
+  &-tracker {
+    &_example {
+      color: #f00;
+    }
+  }
 }

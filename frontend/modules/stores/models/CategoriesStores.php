@@ -299,7 +299,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
    */
   public static function byRoute($route)
   {
-    if (strpos($route, '-offline') == strlen($route) - strlen('-offline')) {
+    if (strpos($route, '-offline') === strlen($route) - strlen('-offline')) {
           //если в конце категории слово -offline
           $route = substr($route, 0, strlen($route) - strlen('-offline'));
     }

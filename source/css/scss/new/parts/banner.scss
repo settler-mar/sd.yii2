@@ -1,28 +1,27 @@
-$banner_mobile_interval: $tablets;
+$banner_mobile_interval: $laptop-min;
 
 .banner {
   &__item {
 
-    &.mobile {
-      display: none;
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
+    display: none;
 
-    @include media($banner_mobile_interval) {
+    @include media-min($banner_mobile_interval) {
 
-
-      &.mobile {
-
+      &.desctop {
         display: block;
       }
-      &.desctop {
+    }
+    @include media($banner_mobile_interval) {
 
-        display: none;
+      &.mobile {
+        display: block;
       }
     }
   }
   &__wrapper {
-
-    //margin-bottom: 20px;
 
     @include media($laptop_min) {
       margin-top: 47px;
@@ -31,5 +30,6 @@ $banner_mobile_interval: $tablets;
   &__image {
 
     width: 100%;
+    display: block;
   }
 }

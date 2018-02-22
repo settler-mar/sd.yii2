@@ -53,8 +53,7 @@
                 <div class="category-title-wrapper">
                     {% include 'parts/dropdown-limit-catalog.twig' %}
                 </div>
-
-                <div  class="catalog-coupons margin">
+                <div  class="catalog-coupons {% if pagination|length == 0 %}margin-half{% else %}margin{% endif %}">
                     {% if coupons|length > 0 %}
                         <div class="catalog_list catalog-coupons_list coupons-list {{ _if(coupons_view=='narrow'," narrow",'') }}">
                           {% if coupons|length > 0 %}

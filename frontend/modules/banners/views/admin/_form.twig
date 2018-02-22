@@ -15,9 +15,9 @@
                         <div class="row">
                             <div class="col-sm-6">
 
-                                {{ form.field(model, 'show_desctop').dropDownList({0:"Выключен",1:"Включён"})|raw }}
+                                {{ form.field(model, 'show_desctop').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
-                                {{ form.field(model, 'show_mobile').dropDownList({0:"Выключен",1:"Включён"})|raw }}
+                                {{ form.field(model, 'show_mobile').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
                                 {{ form.field(model, 'picture_file').fileInput()|raw }}
                                 {#{{ form.field(model, 'picture').textInput({'maxlength':true})|raw }}#}
@@ -26,7 +26,7 @@
                             <div class="col-sm-6">
                                 {{ form.field(model, 'new_window').dropDownList({0:"В текущем окне",1:"В новом окне"})|raw }}
 
-                                {{ form.field(model, 'is_active').dropDownList({0:"Выключен",1:"Включён"})|raw }}
+                                {{ form.field(model, 'is_active').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
                                 {{ form.field(model, 'order').textInput()|raw }}
 

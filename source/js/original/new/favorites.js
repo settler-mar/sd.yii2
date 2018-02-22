@@ -8,7 +8,14 @@ $( document ).ready(function() {
       affiliate_id = self.attr("data-affiliate-id");
 
     if(!affiliate_id){
+      notification.notifi({
+          title:"Необходимо авторизоваться",
+          message:'Добавить в избранное может только авторизованный пользователь.</br>'+
+            '<a href="#login" class="modals_open">Вход</a>  / <a href="#registration" class="modals_open">Регистрация</a>',
+          type:'info'
+      });
       return false;
+
     }
 
     if (self.hasClass('disabled')) {
