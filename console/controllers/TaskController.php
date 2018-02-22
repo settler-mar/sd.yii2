@@ -17,11 +17,12 @@ use yii\base\ErrorException;
 
 class TaskController extends Controller
 {
-  public $ref_id,$day,$start_date,$count,$list,$end_date;
+  public $ref_id, $day, $start_date, $count, $list, $end_date;
+
   public function options($actionID)
   {
-    if($actionID=='change-ref') {
-      return ['ref_id','day','start_date','count','list','end_date'];
+    if ($actionID == 'change-ref') {
+      return ['ref_id', 'day', 'start_date', 'count', 'list', 'end_date'];
     }
     return [];
   }
@@ -43,8 +44,8 @@ class TaskController extends Controller
         $period['end_date'] = $period['start_date'] + 2592000;
       }
       $options = array(
-        'status_updated_start' => date('d.m.Y H:i:s', $period['start_date'] - 120),
-        'status_updated_end' => date('d.m.Y H:i:s', $period['end_date'] + 120),
+          'status_updated_start' => date('d.m.Y H:i:s', $period['start_date'] - 120),
+          'status_updated_end' => date('d.m.Y H:i:s', $period['end_date'] + 120),
       );
 
       $pays[0]->actionIndex($options);
@@ -62,17 +63,17 @@ class TaskController extends Controller
 
     //Отключение премиум аккаунта
     $tasks = Task::find()
-      ->andWhere(['task' => 2])
-      ->andWhere(['<', 'add_time', time()])
-      ->all();
+        ->andWhere(['task' => 2])
+        ->andWhere(['<', 'add_time', time()])
+        ->all();
     foreach ($tasks as $task) {
       //ddd($task);
       $user = Users::find()
-        ->where(['uid' => abs($task->param)])
-        ->one();
+          ->where(['uid' => abs($task->param)])
+          ->one();
 
       //вдруг удалил пользователя
-      if(!$user){
+      if (!$user) {
         $task->delete();
         continue;
       };
@@ -114,10 +115,10 @@ class TaskController extends Controller
   public function actionUserRefBalance(array $users)
   {
     $users = Users::find()
-      ->select('uid')
-      ->where(['referrer_id' => $users])
-      ->asArray()
-      ->all();
+        ->select('uid')
+        ->where(['referrer_id' => $users])
+        ->asArray()
+        ->all();
 
     $ref_id = [];
     foreach ($users as $user) {
@@ -143,14 +144,14 @@ class TaskController extends Controller
   public function actionGenerateUserList()
   {
     $users = Users::find()
-      ->select(['name', 'photo'])
-      ->andWhere('registration_source!=\'\'')
-      ->andWhere('registration_source!=\'default\'')
-      ->andWhere('name!=\'\'')
-      ->orderBy('last_login')
-      ->asArray()
-      ->limit(300)
-      ->all();
+        ->select(['name', 'photo'])
+        ->andWhere('registration_source!=\'\'')
+        ->andWhere('registration_source!=\'default\'')
+        ->andWhere('name!=\'\'')
+        ->orderBy('last_login')
+        ->asArray()
+        ->limit(300)
+        ->all();
 
     $i = 0;
     foreach ($users as &$user) {
@@ -182,24 +183,24 @@ class TaskController extends Controller
   public function actionGenerateStoresList()
   {
     $stores = Stores::find()
-      ->select([
-        'name',
-        "concat('/stores/', route) as href",
-        'displayed_cashback',
+        ->select([
+            'name',
+            "concat('/stores/', route) as href",
+            'displayed_cashback',
         ])
-      ->where(['>', "substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
-        " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0", 0])
-      ->orderBy(['show_notify'=> SORT_DESC, 'rating' => SORT_DESC])
-      ->asArray()
-      ->limit(100)
-      ->all();
+        ->where(['>', "substr(displayed_cashback, locate(' ', displayed_cashback)+1," .
+            " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0", 0])
+        ->orderBy(['show_notify' => SORT_DESC, 'rating' => SORT_DESC])
+        ->asArray()
+        ->limit(100)
+        ->all();
     if (count($stores)) {
       foreach ($stores as &$store) {
         $cashback = preg_replace('/[^0-9\.\,]/', '', $store['displayed_cashback']);
         if (strpos($store['displayed_cashback'], '%') !== false) {
           $store['discount'] = $cashback;
         } else {
-          $store['discount'] = floatval($cashback).' руб';
+          $store['discount'] = floatval($cashback) . ' руб';
         }
       }
     }
@@ -220,7 +221,7 @@ class TaskController extends Controller
         `added` = FROM_UNIXTIME(RAND() * ' . $range . '+' . $start . '),
         `rating` = 4.1+RAND()
         WHERE store_id>0'
-      . 'AND added>' . date('Y-m-d H:i:s', $start);
+        . 'AND added>' . date('Y-m-d H:i:s', $start);
     \Yii::$app->db->createCommand($sql)->execute();
 
     //2) делаем сортирову по дате и перепрописываем uid
@@ -235,14 +236,14 @@ class TaskController extends Controller
     $interval = Yii::$app->params['rating_calculate_interval'];
     $dateStart = date('Y-m-d H:i:s', strtotime("-" . ($interval ? $interval : 3) . " months", time()));
     $reviewsCount = Reviews::find()
-      ->where([
-        '>', 'added', $dateStart])
-      ->andWhere(['is_active' => 1])
-      ->count();
+        ->where([
+            '>', 'added', $dateStart])
+        ->andWhere(['is_active' => 1])
+        ->count();
     $paymentsCount = Payments::find()
-      ->where(['>', 'action_date', $dateStart])
-      ->andWhere(['status' => [0, 2]])
-      ->count();
+        ->where(['>', 'action_date', $dateStart])
+        ->andWhere(['status' => [0, 2]])
+        ->count();
 
     $sql = 'UPDATE `cw_stores` `cws`
        LEFT JOIN
@@ -267,9 +268,9 @@ class TaskController extends Controller
          SET 
          rating = ifnull(`store_rating`.`rating_geometr`, 0)
          ' .
-      ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '') .
-      ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /' . $paymentsCount . ')' : '')
-      . 'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)';
+        ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '') .
+        ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /' . $paymentsCount . ')' : '')
+        . 'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)';
     //алгоритм
     \Yii::$app->db->createCommand($sql)->execute();
 
@@ -290,22 +291,22 @@ class TaskController extends Controller
     try {
       $xml = simplexml_load_file('http://www.cbr.ru/scripts/XML_daily.asp');
       $data2 = [];
-      $data = ['RUB'=>1.0];
+      $data = ['RUB' => 1.0];
       $valuta_list = Yii::$app->params['valuta_list'];
       if (isset($xml->Valute)) {
         foreach ($xml->Valute as $valute) {
           $data[strval($valute->CharCode)] =
-            (floatval(str_replace(",", ".", strval($valute->Value))) / intval($valute->Nominal));
+              (floatval(str_replace(",", ".", strval($valute->Value))) / intval($valute->Nominal));
         }
-        $k=$data[Yii::$app->params['valuta']];
+        $k = $data[Yii::$app->params['valuta']];
         foreach ($data as $key => &$valute) {
-          $valute=$valute/$k;
-          if(in_array($key,$valuta_list)) {
+          $valute = $valute / $k;
+          if (in_array($key, $valuta_list)) {
             $data2[] = [
-              'code' => $key,
-              'value' => $valute,
+                'code' => $key,
+                'value' => $valute,
             ];
-          }else{
+          } else {
             unset($data[$key]);
           };
         }
@@ -314,9 +315,9 @@ class TaskController extends Controller
       ddd('Ошибка обработки');
     }
 
-    $out=['data' => $data, 'dataOptions' => $data2];
-    $path=Yii::$app->basePath.'/../common/config';
-    $path=realpath($path).'/curs.php';
+    $out = ['data' => $data, 'dataOptions' => $data2];
+    $path = Yii::$app->basePath . '/../common/config';
+    $path = realpath($path) . '/curs.php';
     file_put_contents($path, '<?php return ' . var_export($out, true) . ';');
   }
 
@@ -324,98 +325,99 @@ class TaskController extends Controller
   /**
    * Перенести пользователей и его покупки к рефералу
    */
-  function actionChangeRef(){
-    if(!$this->ref_id){
-      echo 'ref_id нужно обязательно задать'."\n";
+  function actionChangeRef()
+  {
+    if (!$this->ref_id) {
+      echo 'ref_id нужно обязательно задать' . "\n";
       exit;
     }
 
-    if($this->list){
-      $this->list=explode(',',$this->list);
-    }else{
-      $this->list=[];
+    if ($this->list) {
+      $this->list = explode(',', $this->list);
+    } else {
+      $this->list = [];
     }
 
-    if($this->start_date){
-      $this->start_date=strtotime($this->start_date.' 00:00:00');
-      if(!$this->end_date){
-        $this->end_date=time();
-      }else{
-        $this->end_date=strtotime($this->end_date.' 23:00:00');
+    if ($this->start_date) {
+      $this->start_date = strtotime($this->start_date . ' 00:00:00');
+      if (!$this->end_date) {
+        $this->end_date = time();
+      } else {
+        $this->end_date = strtotime($this->end_date . ' 23:00:00');
       }
 
-      if($this->start_date>$this->end_date){
-        echo 'end_date не может быть меньше start_date'."\n";
+      if ($this->start_date > $this->end_date) {
+        echo 'end_date не может быть меньше start_date' . "\n";
         exit;
       }
 
-      $start_date=date('Y-m-d',$this->start_date);
-      $end_date=date('Y-m-d',$this->end_date);
-      $user=Users::find()
-        ->select(['uid'])
-        ->andFilterWhere(['referrer_id'=>0])
-        ->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59'])
-        ->asArray()
-        ->all();
+      $start_date = date('Y-m-d', $this->start_date);
+      $end_date = date('Y-m-d', $this->end_date);
+      $user = Users::find()
+          ->select(['uid'])
+          ->andFilterWhere(['referrer_id' => 0])
+          ->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59'])
+          ->asArray()
+          ->all();
 
-      if(!$user){
-        echo 'В выбранный промежуток времени пользователей не найдено'."\n";
+      if (!$user) {
+        echo 'В выбранный промежуток времени пользователей не найдено' . "\n";
         exit;
       }
 
-      if(isset($this->count) && $this->count>count($user)){
-        echo 'В заданный период всего '.count($user)." пользователей. Что не достаточно для выборки\n";
+      if (isset($this->count) && $this->count > count($user)) {
+        echo 'В заданный период всего ' . count($user) . " пользователей. Что не достаточно для выборки\n";
         exit;
       }
 
-      if(isset($this->count)){
-        $this->list=array_rand($user,$this->count);
+      if (isset($this->count)) {
+        $this->list = array_rand($user, $this->count);
       }
 
-      foreach ($this->list as &$u){
-        $u=$user[$u]['uid'];
+      foreach ($this->list as &$u) {
+        $u = $user[$u]['uid'];
       }
-    }else{
-      if($this->end_date){
-        echo 'end_date используется только в паре с start_date'."\n";
+    } else {
+      if ($this->end_date) {
+        echo 'end_date используется только в паре с start_date' . "\n";
         exit;
       }
     }
 
-    if(count($this->list)==0){
-      echo 'Нет пользователей для выполнения операции'."\n";
+    if (count($this->list) == 0) {
+      echo 'Нет пользователей для выполнения операции' . "\n";
       exit;
     }
 
-    $ref_user=Users::find()->where(['uid'=>$this->ref_id])->asArray()->one();
-    if(!$ref_user){
-      echo 'ref_id не найден в базе'."\n";
+    $ref_user = Users::find()->where(['uid' => $this->ref_id])->asArray()->one();
+    if (!$ref_user) {
+      echo 'ref_id не найден в базе' . "\n";
       exit;
     }
-    $bonus_status=Yii::$app->params['dictionary']['bonus_status'];
-    if(!isset($bonus_status[$ref_user['bonus_status']])){
-      echo 'ref_id имеет неопределенный статус реф лояльности'."\n";
+    $bonus_status = Yii::$app->params['dictionary']['bonus_status'];
+    if (!isset($bonus_status[$ref_user['bonus_status']])) {
+      echo 'ref_id имеет неопределенный статус реф лояльности' . "\n";
       exit;
     }
 
-    $bonus_status=$bonus_status[$ref_user['bonus_status']];
-    echo 'ref_id имеет статус реф лояльности '.$bonus_status['name']."\n";
+    $bonus_status = $bonus_status[$ref_user['bonus_status']];
+    echo 'ref_id имеет статус реф лояльности ' . $bonus_status['name'] . "\n";
 
-    $bonus_k=$bonus_status['bonus']/100;
-    if($bonus_status['is_webmaster']){
-      $ref_bonus='ROUND((`reward`-`cashback`)*'.$bonus_k.',2)';;
-    }else{
-      $ref_bonus='ROUND(`cashback`*'.$bonus_k.',2)';
+    $bonus_k = $bonus_status['bonus'] / 100;
+    if ($bonus_status['is_webmaster']) {
+      $ref_bonus = 'ROUND((`reward`-`cashback`)*' . $bonus_k . ',2)';;
+    } else {
+      $ref_bonus = 'ROUND(`cashback`*' . $bonus_k . ',2)';
     }
 
-    $sql='UPDATE `cw_users` SET `referrer_id` = '.$ref_user['uid'].' WHERE `uid` in ('.implode(',',$this->list).')';
+    $sql = 'UPDATE `cw_users` SET `referrer_id` = ' . $ref_user['uid'] . ' WHERE `uid` in (' . implode(',', $this->list) . ')';
     Yii::$app->db->createCommand($sql)->execute();
 
-    $sql='UPDATE `cw_payments` SET 
-        `ref_bonus_id` = '.$ref_user['bonus_status'].',
-        `ref_id` = '.$ref_user['uid'].',
-        `ref_bonus` = '.$ref_bonus.'
-      WHERE `user_id` in ('.implode(',',$this->list).')';
+    $sql = 'UPDATE `cw_payments` SET 
+        `ref_bonus_id` = ' . $ref_user['bonus_status'] . ',
+        `ref_id` = ' . $ref_user['uid'] . ',
+        `ref_bonus` = ' . $ref_bonus . '
+      WHERE `user_id` in (' . implode(',', $this->list) . ')';
     Yii::$app->db->createCommand($sql)->execute();
 
     Yii::$app->balanceCalc->todo($ref_user['uid'], 'ref');//пересчет кол-ва рефералов
@@ -423,68 +425,106 @@ class TaskController extends Controller
 
   }
 
-    /**
-     * Оптимизация аватарок по размеру. ФИКС отсутствия расширения
-     */
+  /**
+   * Оптимизация аватарок по размеру. ФИКС отсутствия расширения
+   */
   public function actionAvatars()
   {
     echo "Start resizing avatars\n";
-    $pathBase = Yii::$app->basePath.'/../frontend/web';
+    $pathBase = Yii::$app->basePath . '/../frontend/web';
     $pathSecond = '/images/account/avatars';
-    $path = $pathBase.$pathSecond;
+    $path = $pathBase . $pathSecond;
     $users = array_diff(scandir($path), ['.', '..']);
     foreach ($users as $user) {
-        $userDir = $path.'/'.$user;
-        if (is_dir($userDir)) {
-            //echo $userDir."\n";
-            $files = array_diff(scandir($userDir), ['.', '..']);
-            foreach ($files as $file) {
-                $fileName = realpath($userDir.'/'.$file);
-                if (is_file($fileName) && strpos($file, 'SD-') === false ) {
-                    $fileMimeType = mime_content_type($fileName);
-                    if (in_array($fileMimeType, ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'])) {
-                        //echo $fileName."\n";
-                        $fileInfo = pathinfo($fileName);
-                        try {
-                            if(exif_imagetype($fileName)==2){
-                                $img = (new Image(imagecreatefromjpeg($fileName)));
-                            }else {
-                                $img = (new Image($fileName));
-                            }
-
-                            $width = $img->getWidth();
-                            $height = $img->getHeight();
-                            //echo $width . ' ' . $height . "\n";
-                            if ($height > 300 || $width > 300) {
-                                //делаем ресайз, если больше 300
-                                $img->bestFit(300, 300);
-                                if(exif_imagetype($fileName)==2){
-                                    $img->saveAs($fileName);
-                                }else {
-                                    $img->save();
-                                }
-                            }
-                        } catch (ErrorException $e) {
-                            echo $fileName. ' '. $e->getMessage() ."\n";
-                            //ddd($e);
-                        }
-                        //если нет расширения то пересохраняем и переписываем в базе
-                        $fileMimeArr = explode('/', $fileMimeType);
-                        if ((!isset($fileInfo['extension']) || $fileInfo['extension'] == '') && isset($fileMimeArr[1])) {
-                            $ext = $fileMimeArr[1];
-                            //echo $ext . "\n";
-                            rename($fileName, $fileName.'.'.$ext);
-                            $dbFileName = $pathSecond.'/'.$user.'/'.$file.'.'.$ext;
-                            Yii::$app->DB->createCommand()
-                                ->update(Users::tableName(), ['photo' => $dbFileName], ['uid' => $user, 'photo' => $pathSecond.'/'.$user.'/'.$file])
-                                ->execute();
-                            //echo 'renamed '.$dbFileName."\n";
-                        }
-                    }
+      $userDir = $path . '/' . $user;
+      if (is_dir($userDir)) {
+        //echo $userDir."\n";
+        $files = array_diff(scandir($userDir), ['.', '..']);
+        foreach ($files as $file) {
+          $fileName = realpath($userDir . '/' . $file);
+          if (is_file($fileName) && strpos($file, 'SD-') === false) {
+            $fileMimeType = mime_content_type($fileName);
+            if (in_array($fileMimeType, ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'])) {
+              //echo $fileName."\n";
+              $fileInfo = pathinfo($fileName);
+              try {
+                if (exif_imagetype($fileName) == 2) {
+                  $img = (new Image(imagecreatefromjpeg($fileName)));
+                } else {
+                  $img = (new Image($fileName));
                 }
+
+                $width = $img->getWidth();
+                $height = $img->getHeight();
+                //echo $width . ' ' . $height . "\n";
+                if ($height > 300 || $width > 300) {
+                  //делаем ресайз, если больше 300
+                  $img->bestFit(300, 300);
+                  if (exif_imagetype($fileName) == 2) {
+                    $img->saveAs($fileName);
+                  } else {
+                    $img->save();
+                  }
+                }
+              } catch (ErrorException $e) {
+                echo $fileName . ' ' . $e->getMessage() . "\n";
+                //ddd($e);
+              }
+              //если нет расширения то пересохраняем и переписываем в базе
+              $fileMimeArr = explode('/', $fileMimeType);
+              if ((!isset($fileInfo['extension']) || $fileInfo['extension'] == '') && isset($fileMimeArr[1])) {
+                $ext = $fileMimeArr[1];
+                //echo $ext . "\n";
+                rename($fileName, $fileName . '.' . $ext);
+                $dbFileName = $pathSecond . '/' . $user . '/' . $file . '.' . $ext;
+                Yii::$app->DB->createCommand()
+                    ->update(Users::tableName(), ['photo' => $dbFileName], ['uid' => $user, 'photo' => $pathSecond . '/' . $user . '/' . $file])
+                    ->execute();
+                //echo 'renamed '.$dbFileName."\n";
+              }
             }
+          }
         }
+      }
     }
     echo "End resizing avatars\n";
+  }
+
+  public function actionFixStartUserStatus()
+  {
+    //$this->execute('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;');
+    //Yii::$app->db->createCommand('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;')->queryAll();
+
+    $task=Task::find()
+        ->andWhere(['task' => 2])
+        ->andWhere(['<', 'param', 0])
+        ->all();
+    foreach ($task as $t) {
+      $t->delete();
+    }
+
+    $users = \frontend\modules\users\models\Users::find()
+        ->andWhere(['>', 'new_loyalty_status_end', 0])
+        ->all();
+
+    $dt=10*24*60*60;
+    $time=time();
+    foreach ($users as $user) {
+      $d = strtotime($user->added)+$dt;
+      if($d>$time){
+        $user->loyalty_status=$user->old_loyalty_status;
+        $user->new_loyalty_status_end=0;
+        $user->old_loyalty_status=0;
+      }else{
+        $user->new_loyalty_status_end=$d;
+
+        $task=new Task();
+        $task->task=2;
+        $task->param=-$user->uid;
+        $task->add_time = $d;
+        $task->save();
+      }
+      $user->save();
+    }
   }
 }
