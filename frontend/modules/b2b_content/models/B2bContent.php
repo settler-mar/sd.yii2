@@ -37,6 +37,7 @@ class B2bContent extends \yii\db\ActiveRecord
             [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
             [['page'], 'unique'],
             [['description', 'keywords', 'content'], 'string'],
+            [['description', 'keywords', 'content'], 'trim'],
             [['menu_index'], 'filter', 'filter' => function ($value) {
                 if ($value == 0) {
                     $maxIndex = self::find()->select('max(menu_index) as max')->asArray()->one();

@@ -40,8 +40,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
   {
     return [
       [['parent_id', 'name', 'route'], 'required'],
+      [['parent_id', 'name', 'route'], 'trim'],
       [['parent_id', 'is_active', 'menu_index', 'menu_hidden','show_in_footer'], 'integer'],
       [['short_description', 'down_description', 'short_description_offline', 'down_description_offline', 'map_icon'], 'string'],
+      [['short_description', 'down_description', 'short_description_offline', 'down_description_offline', 'map_icon'], 'trim'],
       [['selected'], 'in', 'range' => [0, 1, 2]],
       [['name', 'route'], 'string', 'max' => 255],
       [['route'], 'unique'],

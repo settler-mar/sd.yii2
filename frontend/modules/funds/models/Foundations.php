@@ -37,6 +37,7 @@ class Foundations extends \yii\db\ActiveRecord
     return [
       [['title', 'description', 'is_active'], 'required'],
       [['title', 'description', 'image'], 'string'],
+      [['title', 'description', 'image'], 'trim'],
       [['title', 'image'], 'string', 'max' => 255],
       [['is_active'], 'integer'],
       ['!imageImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],

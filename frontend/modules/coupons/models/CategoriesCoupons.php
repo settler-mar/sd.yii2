@@ -32,8 +32,11 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'route'], 'required'],
+            [['name', 'route'], 'trim'],
             [['short_description'], 'string'],
+            [['short_description'], 'trim'],
             [['description'], 'string'],
+            [['description'], 'trim'],
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
             [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],

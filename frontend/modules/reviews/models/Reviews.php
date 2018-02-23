@@ -37,6 +37,7 @@ class Reviews extends \yii\db\ActiveRecord
   {
     return [
       [['title', 'text', 'rating', 'user_id'], 'required'],
+      [['title', 'text'], 'trim'],
       [['user_id', 'rating', 'is_active', 'is_top', 'store_id'], 'integer'],
       [['added'], 'safe'],
       [['title'], 'string', 'max' => 100, 'min' => 5],

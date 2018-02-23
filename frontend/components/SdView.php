@@ -91,8 +91,8 @@ class SdView extends View
 */
       $out=[
           'user_count'=>round($user_count['uid']*5.4),
-          'total_save'=>round($user_count['uid']*106),
-          'count_save'=>round($result['cnt']*5.4),
+          'total_save'=>round($user_count['uid']* 302.4,2),
+          'count_save'=>round($result['cnt']*112.4),
           'sum_save'=>round($result2['cashback']*5.4,2),
           'save_persent'=>39,
       ];

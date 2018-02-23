@@ -77,7 +77,9 @@ class Stores extends \yii\db\ActiveRecord
   {
     return [
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
+      [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'trim'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'trim'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],

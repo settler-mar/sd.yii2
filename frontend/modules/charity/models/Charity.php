@@ -40,6 +40,7 @@ class Charity extends \yii\db\ActiveRecord
       [['amount'], 'number'],
       [['added'], 'safe'],
       [['note'], 'string', 'max' => 255],
+      [['note'], 'trim'],
     ];
   }
 
