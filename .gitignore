@@ -62,3 +62,4 @@ package-lock.json
 /frontend/config/params-local.php
 *-local.php
 *.lock
+common/config/socials.php

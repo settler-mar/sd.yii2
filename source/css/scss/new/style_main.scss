@@ -687,15 +687,19 @@ input.link {
   overflow: hidden;
 }
 
+.tipso_bubble {
+  @include media($tablets) {
+    display: none !important;
+  }
+}
+
 //для живосайта установка фона
 div iframe#jivo_container{
   position: absolute !important;
 }
 
-.tipso_bubble {
-  @include media($tablets) {
-    display: none !important;
-  }
+[id^="widget-1track-container"]{
+  z-index: 1 !important;
 }
 
 @import 'base/error_pages';

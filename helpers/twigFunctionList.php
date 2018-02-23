@@ -397,13 +397,15 @@ $functionsList = [
       return strftime(substr($format, 0, $monthRus), $date) . $currMonth . strftime(substr($format, $monthRus + 5), $date);
     },
     'date' => function ($date, $format_time = false, $locate_month = true) use ($month) {
-      $d = date('d', $date);
-      $m = date('m', $date);
       if ($date == 0) {
         return '';
       }
+      $d = date('d', $date);
+      $m = date('m', $date);
+
       if ($locate_month) {
-        $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', strtotime($date));
+        $month = $month[0];
+        $currMonth = (isset($month[$m])) ? $month[$m] : date('F', $date);
         $sep = ' ';
       } else {
         $currMonth = $m;
