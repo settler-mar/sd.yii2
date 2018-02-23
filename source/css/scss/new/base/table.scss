@@ -6,14 +6,14 @@ table {
   width: 100%;
   //margin-bottom: 15px;
   margin-bottom: 35px;
-
   //border-top: 1px solid  $table_2n_bg;
 
   &.ta_left {
     text-align: left;
   }
+
   &.ta_round {
-    border-radius: 10px;
+    border-radius: 5px;
   }
 
 }
@@ -72,7 +72,7 @@ td.td {
   flex-direction: column;
   background: none;
 
-  tbody{
+  tbody {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -92,12 +92,12 @@ td.td {
     flex-direction: column;
     margin-bottom: 5px;
 
-    &:last-child{
+    &:last-child {
       margin-bottom: 0px;
     }
   }
 
-  td{
+  td {
     justify-content: stretch;
     text-align: left;
     display: flex;
@@ -105,7 +105,7 @@ td.td {
     padding: 4px 4px 4px 0;
     white-space: unset;
 
-    &:before{
+    &:before {
       content: attr(label);
       width: 120px;
       max-width: 120px;
@@ -129,20 +129,19 @@ td.td {
 }
 
 table.adaptive {
-
-  &-phones{
+  &-phones {
     @include media($phones) {
       @include adaptive_table
     }
   }
 
-  &-tablets{
+  &-tablets {
     @include media($tablets) {
       @include adaptive_table
     }
   }
 
-  &-laptop_min{
+  &-laptop_min {
     @include media($laptop_min) {
       @include adaptive_table
     }

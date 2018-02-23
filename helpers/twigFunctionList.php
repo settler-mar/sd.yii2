@@ -505,16 +505,18 @@ $functionsList = [
     '_checkAvatar' => function ($avatar, $techAvatar = '/images/no_ava_square.png') {
       if (!$avatar) {
         return $techAvatar;
-      } elseif (strpos($avatar, 'http') !== false) {
+      } elseif (strpos($avatar, 'http') !== false or strpos($avatar, '//') !== false) {
         $avatar = str_replace('http:', 'https:', $avatar);
-        $curl = curl_init();
+        //Это только на стороне клиента. При большом кол-ве картинок на странице тупо повесишь сервер
+        /*$curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $avatar);
         curl_setopt($curl, CURLOPT_NOBODY, 1);
         curl_setopt($curl, CURLOPT_FAILONERROR, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($curl);
         curl_close($curl);
-        return $response !== false ? $avatar : $techAvatar;
+        return $response !== false ? $avatar : $techAvatar;*/
+        return $avatar;
       } elseif (is_readable(Yii::getAlias('@webroot') . $avatar)) {
         return $avatar;
       } else {

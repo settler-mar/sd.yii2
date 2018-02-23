@@ -10,7 +10,7 @@
                 </div>
             </div>
             <p class="index-hello_description">
-                SecretDiscounter – самый умный способ совершать покупки, ведь вы получаете <b>часть денег обратно</b> за все, что покупаете – в онлайне и в реальных магазинах. Это называется <b>кэшбэк</b> и на Западе успешно работает с 1998 года.
+                {{ _constant('welcome') | raw}}
             </p>
             <ul class='icons-list index-hello_icons-list'>
                 <li class="index-hello_fw_li">
@@ -37,14 +37,17 @@
         </div>
         <div class="index-hello_center"></div>
         <div class="index-hello_right">
-            <a href="#video?v=RlV3PyIYTqU" class="index-hello_right-link index-hello_right-link-absolute modals_open">
+            <div class="index-hello_right-link index-hello_right-link-absolute">
+                <a href="#video?v=RlV3PyIYTqU" class="modals_open">
                 <span class="index-hello_right-icon">
                     <span class="index-hello_right-svg_wrap">
                         {{ svg('play','index-hello_right-svg')|raw }}
                     </span>
                 </span>
-                <span class="index-hello_right-link_text">Посмотреть видео</span>
-            </a>
+                    <span class="index-hello_right-link_text">Посмотреть видео</span>
+                </a>
+            </div>
+
         </div>
     </div>
 </section>

@@ -302,9 +302,9 @@ class Coupons extends \yii\db\ActiveRecord
         $coupons = self::find()
             ->alias('cwc')
             ->groupBy('store_id')
-            ->select(['store_id','visit'=>'max(visit)'])
+            ->select(['store_id', 'visit' => 'max(visit)'])
             ->orderBy(['visit' => SORT_DESC]);
-      }else{
+      } else {
         $coupons = self::forList()
             ->where(['cws.is_active' => [0, 1]]);
         if ($store) {
@@ -326,7 +326,7 @@ class Coupons extends \yii\db\ActiveRecord
       if ($unique_store) {
         $coupons = self::forList()
             ->where(['cws.is_active' => [0, 1]])
-            ->rightJoin(['cwc_top'=>$coupons],'cwc_top.store_id=cwc.store_id AND cwc_top.visit = cwc.visit');
+            ->rightJoin(['cwc_top' => $coupons], 'cwc_top.store_id=cwc.store_id AND cwc_top.visit = cwc.visit');
       }
       return $coupons->limit($limit)->orderBy(['cwc.visit' => SORT_DESC])->all();
 

@@ -2,31 +2,33 @@ $banner_mobile_interval: $laptop-min;
 
 .banner {
   &__item {
+    display: none;
 
     &:not(:last-child) {
       margin-bottom: 10px;
     }
-    display: none;
 
     @include media-min($banner_mobile_interval) {
-
       &.desctop {
         display: block;
       }
     }
-    @include media($banner_mobile_interval) {
 
+    @include media($banner_mobile_interval) {
       &.mobile {
         display: block;
       }
     }
   }
+
   &__wrapper {
+    margin-top: 28px;
 
     @include media($laptop_min) {
       margin-top: 47px;
     }
   }
+
   &__image {
 
     width: 100%;
