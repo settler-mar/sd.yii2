@@ -74,7 +74,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         ['new_password', 'trim'],
         [['new_password'], 'string', 'max' => 60],
         [['new_password'], 'string', 'min' => 5],
-        [['birthday', 'last_login', 'added', 'new_loyalty_status_end', 'in_action'], 'safe'],
+        [['last_login', 'added', 'new_loyalty_status_end', 'in_action'], 'safe'],
         [['birthday'], DataValidator::className()],
         [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed', 'email_verified'], 'integer'],
         [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
@@ -208,19 +208,22 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       return false;
     }
 
+    //НЕ РАБОТАЕТ DATA VALIDATOR
     /*if($this->birthday=='00-00-0000'){
       $this->birthday=null;
-    }*/
+    }
 
-    /*if($this->birthday) {
-     $this->birthday=explode('-',$this->birthday);
-     $this->birthday=implode('-',array_reverse($this->birthday));
+    if($this->birthday) {
+     $birthday=explode('-',$this->birthday);
+     $birthday=implode('-',array_reverse($birthday));
      if (strtotime($this->birthday) === FALSE) {
        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
      }elseif(strtotime($this->birthday)>time()-5*356*24 * 60 * 60){
        $this->addError('birthday', Yii::t('account', 'birthday_biggest_error'));
      }elseif (date('Y-m-d',strtotime($this->birthday))!=$this->birthday){
        $this->addError('birthday', Yii::t('account', 'birthday_format_error'));
+     }else{
+       $this->birthday=$birthday;
      }
    }*/
 

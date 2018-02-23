@@ -1,6 +1,7 @@
 <?php
 namespace frontend\modules\users\models;
 
+use common\components\DataValidator;
 use yii\base\Model;
 use yii\base\InvalidParamException;
 use frontend\modules\users\models\Users;
@@ -26,61 +27,61 @@ class UserSetting extends Users
   {
 
     return [
-      ['name', 'trim'],
-      [['email', 'name'], 'string', 'max' => 60],
-      [['birthday'], 'safe'],
-      [['sex'], 'string', 'max' => 1],
-      [['notice_email'], 'integer'],
+        ['name', 'trim'],
+        [['email', 'name'], 'string', 'max' => 60],
+        [['birthday'], DataValidator::className()],
+        [['sex'], 'string', 'max' => 1],
+        [['notice_email'], 'integer'],
 
-      [['email', 'name', 'added'], 'required'],
-      [['email'], 'email'],
-      [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
+        [['email', 'name', 'added'], 'required'],
+        [['email'], 'email'],
+        [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
 
-      [['old_password', 'new_password', 'r_new_password'], 'string'],
-      [['old_password', 'new_password', 'r_new_password'], 'trim'],
-      [['old_password', 'new_password', 'r_new_password'], 'string', 'max' => 60],
-      [['new_password', 'r_new_password'], 'string', 'min' => 6],
-      [['old_password'], 'string', 'min' => 5],
+        [['old_password', 'new_password', 'r_new_password'], 'string'],
+        [['old_password', 'new_password', 'r_new_password'], 'trim'],
+        [['old_password', 'new_password', 'r_new_password'], 'string', 'max' => 60],
+        [['new_password', 'r_new_password'], 'string', 'min' => 6],
+        [['old_password'], 'string', 'min' => 5],
 
-      ['old_password', 'validatePassword'],
+        ['old_password', 'validatePassword'],
 
-      ['r_new_password',
-        'compare',
-        'compareAttribute' => 'new_password',
-        'message' => Yii::t('account', 'save_settings_password_repeat_not_same')
-      ],
+        ['r_new_password',
+            'compare',
+            'compareAttribute' => 'new_password',
+            'message' => Yii::t('account', 'save_settings_password_repeat_not_same')
+        ],
 
       //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
-      ['new_password', 'required', 'when' => function ($model) {
-        return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
-      }, 'whenClient' => "function (attribute, value) {
+        ['new_password', 'required', 'when' => function ($model) {
+          return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-old_password').val().length >0 ||
           $('#usersetting-r_new_password').val().length >0;
       }"],
 
-      ['old_password', 'required', 'when' => function ($model) {
-        return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
-      }, 'whenClient' => "function (attribute, value) {
+        ['old_password', 'required', 'when' => function ($model) {
+          return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-new_password').val().length >0 ||
           $('#usersetting-r_new_password').val().length >0;
       }"],
 
-      ['r_new_password', 'required', 'when' => function ($model) {
-        return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
-      }, 'whenClient' => "function (attribute, value) {
+        ['r_new_password', 'required', 'when' => function ($model) {
+          return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
         return 
           $('#usersetting-old_password').val().length >0 ||
           $('#usersetting-new_password').val().length >0;
       }"],
 
-      ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
-      [['new_photo'], 'image',
-        'minHeight' => 500,
-        'maxSize' => 2 * 1024 * 1024,
-        'skipOnEmpty' => true
-      ],
+        ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+        [['new_photo'], 'image',
+            'minHeight' => 500,
+            'maxSize' => 2 * 1024 * 1024,
+            'skipOnEmpty' => true
+        ],
     ];
   }
 
@@ -98,8 +99,8 @@ class UserSetting extends Users
   {
     if (!empty($this->getDirtyAttributes(['email']))) {
       $this->email_verified = 0;
-      Yii::$app->session->addFlash(null, Yii::t('account', 'save_settings_need_verify_email').
-          '<br><a href="/account/sendverifyemail">'.Yii::t('common','confirm').'</a>');
+      Yii::$app->session->addFlash(null, Yii::t('account', 'save_settings_need_verify_email') .
+          '<br><a href="/account/sendverifyemail">' . Yii::t('common', 'confirm') . '</a>');
     }
     return parent::beforeValidate();
   }
@@ -107,10 +108,10 @@ class UserSetting extends Users
   public function attributeLabels()
   {
     return array(
-      'name' => Yii::t('account', 'user_name'),
-      'old_password' => Yii::t('account', 'password_old'),
-      'new_password' => Yii::t('account', 'password_new'),
-      'r_new_password' => Yii::t('account', 'password_repeat2'),
+        'name' => Yii::t('account', 'user_name'),
+        'old_password' => Yii::t('account', 'password_old'),
+        'new_password' => Yii::t('account', 'password_new'),
+        'r_new_password' => Yii::t('account', 'password_repeat2'),
     );
   }
 
