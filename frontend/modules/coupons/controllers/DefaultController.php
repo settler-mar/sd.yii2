@@ -260,7 +260,7 @@ class DefaultController extends SdController
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
     //непонятно, нужно сюда выводить или не нужно
-    $contentData["coupons_top5"] =  Coupons::top(['limit' => 5]);
+    $contentData["coupons_top5"] =  Coupons::top(['limit' => 5,'unique_store'=>true]);
 
     $contentData["counts_all"] = Coupons::counts();
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
