@@ -11,18 +11,20 @@ use frontend\components\SdController;
 /**
  * Site controller
  */
-class AccountController extends SdController{
-  public function beforeAction($action) {
+class AccountController extends SdController
+{
+  public function beforeAction($action)
+  {
     if (Yii::$app->user->isGuest) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    $this->view->layout_mode='account';
+    $this->view->layout_mode = 'account';
     return true;
   }
 
-  public function actionOffline(){
-    return $this->render('static_page',[]);
+  public function actionOffline()
+  {
+    return $this->render('static_page', []);
   }
-
 }

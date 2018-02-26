@@ -131,14 +131,6 @@ class SdUrlRule implements UrlRuleInterface
     if (count($parameters) > 1) {
       $route[] = $parameters[1];
       $route[] = $parameters[0];
-      if (
-        $parameters[0] == 'admin' AND
-        Yii::$app->session->get('admin_id') !== null &&
-        Yii::$app->session->get('admin_id') != Yii::$app->user->id
-      ) {
-        $user = Users::findOne(['uid' => (int)Yii::$app->session->get('admin_id')]);
-        Yii::$app->user->login($user);
-      }
 
       if (isset($parameters[2])) {
         if ($parameters[2] == 'index') {

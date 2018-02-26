@@ -4,7 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 
-class SdUrlSlashEnd implements UrlRuleInterface
+class SdUrlSlash implements UrlRuleInterface
 {
   /**
    * Parses the given request and returns the corresponding route and parameters.
@@ -16,13 +16,19 @@ class SdUrlSlashEnd implements UrlRuleInterface
   public function parseRequest($manager, $request)
   {
     $pathArray = explode('/', $request->getPathInfo());
-    if (count($pathArray) > 1 && $pathArray[count($pathArray) - 1] == '') {
-        array_pop($pathArray);
-      $newPath = '/' . implode('/', $pathArray);
-      Yii::$app->response->redirect($newPath, 301)->send();
+    $newPath = array_diff($pathArray, array(''));
+
+    if (count($pathArray) > count($newPath)) {
+      array_pop($pathArray);
+      $newPath = '/' . implode('/', $newPath);
+
+      $get = explode('?', $request->absoluteUrl);
+      $get[0] = '';
+      $get = implode('?', $get);
+
+      Yii::$app->response->redirect($newPath . $get, 301)->send();
       exit();
     }
-
     return false;
   }
 
@@ -36,7 +42,7 @@ class SdUrlSlashEnd implements UrlRuleInterface
    */
   public function createUrl($manager, $route, $params)
   {
-     return false;
+    return false;
   }
 
 }

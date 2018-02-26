@@ -5,12 +5,12 @@ $params = array_merge(
   require(__DIR__ . '/params.php'),
   require(__DIR__ . '/params-local.php')
 );
-$params['meta']=require (__DIR__.'/meta.php');
+$params['meta'] = require(__DIR__ . '/meta.php');
 
 //use zxbodya\yii2\tinymce\TinyMce;
 use \dominus77\tinymce\TinyMce;
 
-$config= [
+$config = [
   'id' => 'app-frontend',
   'basePath' => dirname(__DIR__),
   'bootstrap' => ['log'],
@@ -19,21 +19,21 @@ $config= [
     'request' => [
       'csrfParam' => '_csrf-frontend',
     ],
-    'assetManager'=>[
-      'bundles'=>[
+    'assetManager' => [
+      'bundles' => [
         'yii\bootstrap\BootstrapAsset' => [
           'sourcePath' => null,   // не опубликовывать комплект
           'js' => [],
           'css' => [],
         ],
         'yii\web\JqueryAsset' => [
-            'sourcePath' => null,   // не опубликовывать комплект
-            'js' => [
-                '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
-            ]
+          'sourcePath' => null,   // не опубликовывать комплект
+          'js' => [
+            '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
+          ]
         ],
-        'bootstrap.js'=>false,
-        'bootstrap.css'=>false,
+        'bootstrap.js' => false,
+        'bootstrap.css' => false,
       ]
     ],
     'session' => [
@@ -73,25 +73,25 @@ $config= [
           'basePath' => '@eauth/messages',
         ],
         /*'account*' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'basePath' => '@app/language',
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/language',
         ],
         'common*' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'basePath' => '@app/language',
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/language',
         ],
         'dictionary*' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'basePath' => '@app/language',
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/language',
         ],
         /*'common*' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'basePath' => '@app/language',
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/language',
         ],
         /*'yii' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'sourceLanguage' => 'en-US',
-          'basePath' => '@app/language'
+        'class' => 'yii\i18n\PhpMessageSource',
+        'sourceLanguage' => 'en-US',
+        'basePath' => '@app/language'
         ],*/
       ],
     ],
@@ -102,33 +102,36 @@ $config= [
         'name' => '_identity-frontend',
         'httpOnly' => true
       ],
-      'on afterLogin' => function($event) {
+      'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
       }
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
     ],
-    'view'=>[
+    'view' => [
       'class' => 'frontend\components\SdView',
       'renderers' => [
         'twig' => [
           'globals' => [
-            'AppAsset'=>'frontend\assets\AppAsset',
-            'Fotorama'=>'\kotchuprik\fotorama\Widget',
-            'TinyMce'=>TinyMce::className(),
+            'AppAsset' => 'frontend\assets\AppAsset',
+            'Fotorama' => '\kotchuprik\fotorama\Widget',
+            'TinyMce' => TinyMce::className(),
           ]
         ]
       ]
     ],
-     'urlManager' => [
+    'urlManager' => [
       'rules' => [
-        'site/<action>'=>'404',
-        [ // обработка слэш в конце
-          'class' => 'frontend\components\SdUrlSlashEnd',
+        'site/<action>' => '404',
+        [ // обработка слэш в конце и двойных слэшэй
+          'class' => 'frontend\components\SdUrlSlash',
         ],
         [ // обработка реферальных ссылок
           'class' => 'frontend\components\SdUrlPromo',
+        ],
+        [ // обработка перехода после авторизации из админки под пользователем обратно в админку
+            'class' => 'frontend\components\SdUrlAdmin',
         ],
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
@@ -146,8 +149,8 @@ $config= [
         'account/<action:offline>' => 'account/<action>',
         'account/sendverifyemail' => 'users/account/sendverifyemail',
         'account/email-success' => 'users/account/emailsuccess',
-        'account/webmaster'=>'affiliate/account/index',
-        'account/promo'=>'users/default/promo',
+        'account/webmaster' => 'affiliate/account/index',
+        'account/promo' => 'users/default/promo',
 
         'search' => 'search/default/index',
         'search/coupon' => 'search/default/coupon',
@@ -159,7 +162,7 @@ $config= [
         'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
 
-        'fixing/<action:payment|stores>'=> 'fixing/<action>',
+        'fixing/<action:payment|stores>' => 'fixing/<action>',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
@@ -176,13 +179,13 @@ $config= [
   ],
   'modules' => [
     /*'manager'=> [
-        'class' => 'frontend\modules\manager\Module',
+      'class' => 'frontend\modules\manager\Module',
     ],*/
-    'users'=> [
+    'users' => [
       'class' => 'frontend\modules\users\Module',
     ],
     'stores' => [
-        'class' => 'frontend\modules\stores\Module',
+      'class' => 'frontend\modules\stores\Module',
     ],
     'reviews' => [
       'class' => 'frontend\modules\reviews\Module',
@@ -260,54 +263,55 @@ $config= [
   ],
   'params' => $params,
 
-    'controllerMap' => [
-        'elfinder' => [
-            'class' => 'mihaildev\elfinder\Controller',
-            'access' => ['@'], //глобальный доступ к фаил менеджеру @ - для авторизорованных , ? - для гостей , чтоб открыть всем ['@', '?']
-            'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
-            'roots' => [
-                [
-                    'baseUrl'=>'@web',
-                    'basePath'=>'@webroot',
-                    'path' => 'img',
-                    'name' => 'Пользовательские',
-                    'access' => ['read' => 'FilesEdit', 'write' => 'FilesEdit']
-                ],
-                [
-                    'baseUrl'=>'@web',
-                    'basePath'=>'@webroot',
-                    'path' => 'images',
-                    'name' => 'Системные',
-                    'access' => ['read' => 'FilesEdit', 'write' => false]
-                ],
-                /*[
-                    'class' => 'mihaildev\elfinder\UserPath',
-                    'path'  => 'files/user_{id}',
-                    'name'  => 'My Documents'
-                ],
-                [
-                    'path' => 'files/some',
-                    'name' => ['category' => 'my','message' => 'Some Name'] //перевод Yii::t($category, $message)
-                ],
-                [
-                    'path'   => 'files/some',
-                    'name'   => ['category' => 'my','message' => 'Some Name'], // Yii::t($category, $message)
-                    'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
-                ]*/
-            ],
-        ]
-    ],
+  'controllerMap' => [
+    'elfinder' => [
+      'class' => 'mihaildev\elfinder\Controller',
+      'access' => ['@'], //глобальный доступ к фаил менеджеру @ - для авторизорованных , ? - для гостей , чтоб открыть всем ['@', '?']
+      'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
+      'roots' => [
+        [
+          'baseUrl' => '@web',
+          'basePath' => '@webroot',
+          'path' => 'img',
+          'name' => 'Пользовательские',
+          'access' => ['read' => 'FilesEdit', 'write' => 'FilesEdit']
+        ],
+        [
+          'baseUrl' => '@web',
+          'basePath' => '@webroot',
+          'path' => 'images',
+          'name' => 'Системные',
+          'access' => ['read' => 'FilesEdit', 'write' => false]
+        ],
+        /*[
+          'class' => 'mihaildev\elfinder\UserPath',
+          'path'  => 'files/user_{id}',
+          'name'  => 'My Documents'
+        ],
+        [
+          'path' => 'files/some',
+          'name' => ['category' => 'my','message' => 'Some Name'] //перевод Yii::t($category, $message)
+        ],
+        [
+          'path'   => 'files/some',
+          'name'   => ['category' => 'my','message' => 'Some Name'], // Yii::t($category, $message)
+          'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
+        ]*/
+      ],
+    ]
+  ],
 
   //для возврата с авторизации через соц. сети на предыдущую страницу
   'on beforeAction' => function (yii\base\ActionEvent $e) {
     if (Yii::$app->user->isGuest) {
-      $request = Yii::$app->request;
-      // исключаем страницу авторизации или ajax-запросы
-      if (!$request->isAjax &&
-        strpos($request->url, 'login') === false &&
-        strpos($request->url, 'verifysocialemail') === false) {
-        Yii::$app->user->setReturnUrl($request->url);
-      }
+    $request = Yii::$app->request;
+    // исключаем страницу авторизации или ajax-запросы
+    if (!$request->isAjax &&
+      strpos($request->url, 'login') === false &&
+      strpos($request->url, 'verifysocialemail') === false
+    ) {
+      Yii::$app->user->setReturnUrl($request->url);
+    }
     }
   },
 ];

@@ -37,28 +37,28 @@ class SiteController extends SdController
   public function behaviors()
   {
     return [
-      'access' => [
-        'class' => AccessControl::className(),
-        'only' => ['logout', 'signup'],
-        'rules' => [
-          [
-            'actions' => ['signup'],
-            'allow' => true,
-            'roles' => ['?'],
-          ],
-          [
-            'actions' => ['logout'],
-            'allow' => true,
-            'roles' => ['@'],
-          ],
+        'access' => [
+            'class' => AccessControl::className(),
+            'only' => ['logout', 'signup'],
+            'rules' => [
+                [
+                    'actions' => ['signup'],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['logout'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
         ],
-      ],
-      'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-          'logout' => ['post'],
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'logout' => ['post'],
+            ],
         ],
-      ],
     ];
   }
 
@@ -68,14 +68,14 @@ class SiteController extends SdController
   public function actions()
   {
     return [
-      'error' => [
-        //'class' => 'yii\web\ErrorAction',
-        'class' => 'frontend\components\SdErrorHandler',
-      ],
-      'captcha' => [
-        'class' => 'yii\captcha\CaptchaAction',
-        'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-      ],
+        'error' => [
+          //'class' => 'yii\web\ErrorAction',
+            'class' => 'frontend\components\SdErrorHandler',
+        ],
+        'captcha' => [
+            'class' => 'yii\captcha\CaptchaAction',
+            'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+        ],
     ];
   }
 
@@ -92,21 +92,21 @@ class SiteController extends SdController
     $reviews = Reviews::top();
 
     //$reg_form = new RegistrationForm();
-    Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
-    $data=[
+    $data = [
         'time' => time(),
         'stores' => $stores,
         'total_all_stores' => $totalStores,
         'top_reviews' => $reviews,
-        'wrap'=>'index',
+        'wrap' => 'index',
         'coupons' => Coupons::top(['limit' => 8, 'new' => 1]),
     ];
 
-    if(!Yii::$app->user->isGuest) {
+    if (!Yii::$app->user->isGuest) {
       $data['slider'] = Slider::get();
       $data['posts'] = Posts::getLastPosts();
     }
@@ -115,15 +115,8 @@ class SiteController extends SdController
     return $this->render('index', $data);
   }
 
-  public function actionAdmin(){
-    if(
-      Yii::$app->session->get('admin_id')!==null &&
-      Yii::$app->session->get('admin_id')!=Yii::$app->user->id
-    ){
-      $user=Users::findOne(['uid'=>(int)Yii::$app->session->get('admin_id')]);
-      Yii::$app->user->login($user);
-    }
-
+  public function actionAdmin()
+  {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('adminIndex')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
@@ -135,11 +128,11 @@ class SiteController extends SdController
     $usersToday = $users->count();
     $payments = Payments::find();
     $paymentsCount = $payments->count();
-    $payments = $payments->where(['>=', 'action_date',date('Y-m-d 00:00:00', time())]);
+    $payments = $payments->where(['>=', 'action_date', date('Y-m-d 00:00:00', time())]);
     $paymentsToday = $payments->count();
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
 
-    $this->layout='@app/views/layouts/admin.twig';
+    $this->layout = '@app/views/layouts/admin.twig';
 
     $notes['users_withdraw'] = UsersWithdraw::waitingCount();
     $notes['users_reviews'] = Reviews::waitingCount();
@@ -149,50 +142,52 @@ class SiteController extends SdController
     $notes['users_on_actions'] = Users::onActionCount();
 
     return $this->render('admin', [
-      'users_count' => $usersCount,
-      'users_today_count' => $usersToday,
-      'payments_count' => $paymentsCount,
-      'payments_today_count' => $paymentsToday,
-      'total_cashback' => $totalCashback['summ'],
-      'notes' => $notes,
+        'users_count' => $usersCount,
+        'users_today_count' => $usersToday,
+        'payments_count' => $paymentsCount,
+        'payments_today_count' => $paymentsToday,
+        'total_cashback' => $totalCashback['summ'],
+        'notes' => $notes,
     ]);
   }
 
-  public function actionOffline($ref=0){
-    $page='offline';
+  public function actionOffline($ref = 0)
+  {
+    $page = 'offline';
 
-    $user=Users::find()
-      ->where(['uid'=>$ref])
-      ->one();
-    if(!$user || !$user->getBarcodeImg(true)){
-      throw new HttpException(404 ,'User not found');
+    $user = Users::find()
+        ->where(['uid' => $ref])
+        ->one();
+    if (!$user || !$user->getBarcodeImg(true)) {
+      throw new HttpException(404, 'User not found');
     }
 
-    $page=Meta::find()
-      ->where(['page'=>$page])
-      ->asArray()
-      ->one();
-    if(!$page){
-      throw new HttpException(404 ,'User not found');
+    $page = Meta::find()
+        ->where(['page' => $page])
+        ->asArray()
+        ->one();
+    if (!$page) {
+      throw new HttpException(404, 'User not found');
     }
 
-    $page['friend_user']=$user;
-    if(Yii::$app->request->isAjax){
-      throw new HttpException(404 ,'User not found');
+    $page['friend_user'] = $user;
+    if (Yii::$app->request->isAjax) {
+      throw new HttpException(404, 'User not found');
     }
 
-    $page['pre_footer']='<h2>Как получить кэшбэк в оффлайне от SecretDiscounter?</h2>{{_include(\'stores/instruction_offline\') | raw}}';
-    $page['infotitle']='Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $page['pre_footer'] = '<h2>Как получить кэшбэк в оффлайне от SecretDiscounter?</h2>{{_include(\'stores/instruction_offline\') | raw}}';
+    $page['infotitle'] = 'Как получить кэшбэк в оффлайне от SecretDiscounter?';
     $this->params['breadcrumbs'][] = $page['title'];
 
-    Yii::$app->view->metaTags[]="<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=".$user->uid."\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
-    Yii::$app->view->metaTags[]="<meta property=\"og:image\" content=\"https://secretdiscounter.ru".$user->getBarcodeImg()."\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.ru" . $user->getBarcodeImg() . "\" />";
 
-    return $this->render('static_page',$page);
+    return $this->render('static_page', $page);
 
   }
+
   /**
    * /faq
    * @return string
@@ -212,6 +207,7 @@ class SiteController extends SdController
     $this->params['breadcrumbs'][] = 'Правила сайта';
     return $this->render('terms');
   }
+
   /**
    * /promo
    * @return string
@@ -221,6 +217,7 @@ class SiteController extends SdController
     $this->params['breadcrumbs'][] = 'Акции';
     return $this->render('promo');
   }
+
   /**
    * /affiliate
    * @return string
@@ -250,12 +247,13 @@ class SiteController extends SdController
   public function actionLoyalty()
   {
     $this->params['breadcrumbs'][] = 'Накопительная система';
-    if(Yii::$app->request->isAjax){
-      return json_encode(['html'=>$this->renderAjax('loyalty')]);
-    }else {
+    if (Yii::$app->request->isAjax) {
+      return json_encode(['html' => $this->renderAjax('loyalty')]);
+    } else {
       return $this->render('loyalty');
     }
   }
+
   /**
    * /recommendations
    * @return string
@@ -265,6 +263,7 @@ class SiteController extends SdController
     $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
     return $this->render('recommendations');
   }
+
   /**
    * /about
    * @return string
@@ -275,6 +274,7 @@ class SiteController extends SdController
     return $this->render('about');
     //todo сделать просмотр сертификата с помощью photoswipe
   }
+
   /**
    * /account-blocked
    * @return string
@@ -290,52 +290,52 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function actionGoto($store=0, $coupon=0)
+  public function actionGoto($store = 0, $coupon = 0)
   {
-    if((Yii::$app->user->isGuest || $store == 0) && $coupon == 0){
+    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0) {
       return $this->redirect('/stores');
     }
 
-    if ($store>0 && !Yii::$app->user->isGuest && empty(Yii::$app->user->identity->email_verified)) {
+    if ($store > 0 && !Yii::$app->user->isGuest && empty(Yii::$app->user->identity->email_verified)) {
       //переход на страницу магазина, у пользователя не веритифицирован email
       //$store = Stores::findOne($store);
       //ValidateEmail::emailStatusInfo(Yii::$app->user->identity, $store);
       //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/stores');
-      $this->redirect(Url::to('/account/sendverifyemail?path='.$store))->send();
+      $this->redirect(Url::to('/account/sendverifyemail?path=' . $store))->send();
     }
 
-    $visit=new UsersVisits();
+    $visit = new UsersVisits();
 
-    $data['link']='';
-    if($coupon>0){
-      $visit->source=1;
-      $coupon=Coupons::findOne(['uid'=>$coupon]);
-      if(!$coupon){
+    $data['link'] = '';
+    if ($coupon > 0) {
+      $visit->source = 1;
+      $coupon = Coupons::findOne(['uid' => $coupon]);
+      if (!$coupon) {
         return $this->redirect('/coupons');
       }
-      $data['link']=$coupon->goto_link;
-      $store=$coupon->store_id;
+      $data['link'] = $coupon->goto_link;
+      $store = $coupon->store_id;
       $coupon->visit++;
       $coupon->save();
     }
 
-    $store=Stores::findOne(['uid'=>$store]);
-    if(!$store){
+    $store = Stores::findOne(['uid' => $store]);
+    if (!$store) {
       return $this->redirect('/stores');
     }
 
-    if($store->is_active==0){
-      return $this->redirect('/store/'.$store->routeUrl);
+    if ($store->is_active == 0) {
+      return $this->redirect('/store/' . $store->routeUrl);
     }
 
-    if($data['link']=='') {
-      $data['link']=$store->cpaLink->affiliate_link;
+    if ($data['link'] == '') {
+      $data['link'] = $store->cpaLink->affiliate_link;
     }
 
-    $data['store']=$store;
+    $data['store'] = $store;
 
-    if($data['link']=='') {
-      $data['link']=$store->url;
+    if ($data['link'] == '') {
+      $data['link'] = $store->url;
     }
 
     if (strripos($data['link'], "?") === false) {
@@ -343,15 +343,15 @@ class SiteController extends SdController
     } else {
       $data['link'] .= "&";
     }
-    $data['link'].='subid=' . (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+    $data['link'] .= 'subid=' . (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
 
-    $visit->store_id=$store->uid;
+    $visit->store_id = $store->uid;
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);
 
     $this->layout = '@app/views/layouts/blank.twig';
-    return $this->render('goto',$data);
+    return $this->render('goto', $data);
   }
 
   /**
@@ -372,22 +372,22 @@ class SiteController extends SdController
       return $this->goHome();
     }
 
-    if (!($user=Users::this())) { // если мы не залогинены
+    if (!($user = Users::this())) { // если мы не залогинены
       return json_encode([
-          'html'=>$this->renderAjax('login_first')
+          'html' => $this->renderAjax('login_first')
       ]);
     }
 
-    $user=Users::this();
-    if($user->in_action) {
+    $user = Users::this();
+    if ($user->in_action) {
       return json_encode([
-          'html'=>$this->renderAjax('already_in_action',['user'=>$user])
+          'html' => $this->renderAjax('already_in_action', ['user' => $user])
       ]);
-    }else{
-      $user->in_action=date('Y-m-d H:i:s');
+    } else {
+      $user->in_action = date('Y-m-d H:i:s');
       $user->save();
       return json_encode([
-          'html'=>$this->renderAjax('start_action')
+          'html' => $this->renderAjax('start_action')
       ]);
     }
   }
@@ -399,30 +399,32 @@ class SiteController extends SdController
    *
    * для адресов 1-го уровня проверяет их наличие в таблице META и дает возможность их вывести не прописывая роут
    */
-  public function actionStaticPage($action){
-    $page=Meta::find()
-      ->where(['page'=>$action])
-      ->asArray()
-      ->one();
-    if(!$page){
-      throw new HttpException(404 ,'User not found');
+  public function actionStaticPage($action)
+  {
+    $page = Meta::find()
+        ->where(['page' => $action])
+        ->asArray()
+        ->one();
+    if (!$page) {
+      throw new HttpException(404, 'User not found');
     }
-    if(Yii::$app->request->isAjax){
+    if (Yii::$app->request->isAjax) {
       return json_encode([
-        'html'=>$this->renderAjax('static_page_ajax',$page)
+          'html' => $this->renderAjax('static_page_ajax', $page)
       ]);
-    }else{
+    } else {
       $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
       $this->params['breadcrumbs'][] = $page['title'];
-      return $this->render('static_page',$page);
+      return $this->render('static_page', $page);
     }
   }
 
-  public function actionVideo(){
-    $request=Yii::$app->request;
+  public function actionVideo()
+  {
+    $request = Yii::$app->request;
 
     return json_encode([
-      'html'=>$this->renderAjax('modal_video',$request->get())
+        'html' => $this->renderAjax('modal_video', $request->get())
     ]);
   }
 }
