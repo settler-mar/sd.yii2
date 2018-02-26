@@ -18,7 +18,7 @@ class SdUrlSlash implements UrlRuleInterface
     $pathArray = explode('/', $request->getPathInfo());
     $newPath = array_diff($pathArray, array(''));
 
-    if (count($pathArray) > count($newPath)) {
+    if (count($pathArray) > 1 AND count($pathArray) > count($newPath)) {
       array_pop($pathArray);
       $newPath = '/' . implode('/', $newPath);
 

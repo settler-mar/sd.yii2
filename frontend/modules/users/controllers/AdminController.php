@@ -259,9 +259,9 @@ class AdminController extends Controller
     $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      Yii::$app->session->addFlash('info', 'Данные пользователя обновлены');
       return $this->redirect('/admin/users/update?id=' . $model->uid);
     } else {
-
       $loyalty_status_list = [];
       foreach (Yii::$app->params['dictionary']['loyalty_status'] as $k => $v) {
         $loyalty_status_list[$k] = $v['display_name'] . ' (' . $v['bonus'] . ')';
@@ -310,6 +310,11 @@ class AdminController extends Controller
               ['>', 'sum_from_ref_confirmed', 0],
           ])
           ->count();
+
+
+      if (count($model->errors) > 0) {
+        Yii::$app->session->addFlash('err', 'Есть ошибки при сохранении. Проверьте заполнение полей.');
+      }
 
       return $this->render('update.twig', [
           'model' => $model,

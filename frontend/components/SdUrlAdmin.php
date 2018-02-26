@@ -16,8 +16,7 @@ class SdUrlAdmin implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
-
-    if(!Yii::$app->user->isGuest) {
+    if (!Yii::$app->user->isGuest) {
       $pathArray = explode('/', $request->getPathInfo());
       if (
           $pathArray[0] == 'admin' AND
