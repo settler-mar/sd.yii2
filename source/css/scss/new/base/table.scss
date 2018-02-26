@@ -15,14 +15,18 @@ table {
   &.ta_round {
     border-radius: 5px;
   }
-
 }
 
 tr:first-child {
+  //color: $table_th_bg;
+  //background-color: $table_th_color;
+  background-color: $table_th_bg;
+  color: $table_th_color;
+}
+
+tr.white_line {
   color: $table_th_bg;
   background-color: $table_th_color;
-  //background-color: $table_th_bg;
-  //color: $table_th_color;
 }
 
 tr:nth-child(2n) {

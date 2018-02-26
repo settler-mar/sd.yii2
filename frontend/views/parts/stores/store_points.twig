@@ -5,16 +5,16 @@
       {#шапка от условий#}
       {% if store_points.points|length == 1 %}
         {#одна точка#}
-        <h3>Адрес торговой точки {{ current_store.name }} в {{ store_points.cities[0] }}</h3>
+        <h2>Адрес торговой точки {{ current_store.name }} в {{ store_points.cities[0] }}</h2>
 
       {% elseif store_points.countries|length == 1 and store_points.cities|length == 1 %}
         {#несколько точек в одном городе #}
-        <h3>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}
-          , {{ store_points.cities[0] }}</h3>
+        <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}
+          , {{ store_points.cities[0] }}</h2>
 
       {% elseif store_points.countries|length == 1 %}
         {#несколько точек в одной стpане #}
-        <h3>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}</h3>
+        <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}</h2>
         <div class="row store-points__point-selects">
           <select class="hidden" name="store_point_country" id="store_point_country">
             <option value=""></option>
@@ -38,7 +38,7 @@
 
       {% else %}
         {#точки в разных странах#}
-        <h3>Адреса торговых точек {{ current_store.name }}</h3>
+        <h2>Адреса торговых точек {{ current_store.name }}</h2>
         <div class="row store-points__point-selects">
           <div class="col-sm-2">
             <label for="store_point_country">Выберите страну</label>

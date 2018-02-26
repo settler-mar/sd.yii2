@@ -16,9 +16,11 @@ class SdUrlSlash implements UrlRuleInterface
   public function parseRequest($manager, $request)
   {
     $pathArray = explode('/', $request->getPathInfo());
+    if(count($pathArray)<2) return false; //если в адресе всего 1 элемент то проверять не чего
+
     $newPath = array_diff($pathArray, array(''));
 
-    if (count($pathArray) > 1 AND count($pathArray) > count($newPath)) {
+    if (count($pathArray) > count($newPath)) {
       array_pop($pathArray);
       $newPath = '/' . implode('/', $newPath);
 

@@ -36,6 +36,7 @@ class Meta extends \yii\db\ActiveRecord
             [['description', 'keywords', 'content'], 'string'],
             [['description', 'keywords', 'content'], 'trim'],
             [['page', 'title', 'h1'], 'string', 'max' => 255],
+            ['page','unique'],
             [['content'], 'string'],
         ];
     }
