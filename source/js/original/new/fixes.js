@@ -14,3 +14,44 @@
   }
 });
 
+
+// https://stackoverflow.com/questions/46339063/ios-11-safari-bootstrap-modal-text-area-outside-of-cursor
+//еще вариант фикса
+(function() {
+  if (!/(iPhone|iPad|iPod).*(OS 11_[0-2]_[0-5])/.test(navigator.userAgent)) return
+
+  document.addEventListener('focusin', function(e) {
+    if (!e.target.tagName == 'INPUT' && !e.target.tagName != 'TEXTAREA') return
+    var container = getFixedContainer(e.target)
+    if (!container) return
+    var org_styles = {};
+    ['position', 'top', 'height'].forEach(function(key) {
+      org_styles[key] = container.style[key]
+    })
+    toAbsolute(container)
+    e.target.addEventListener('blur', function(v) {
+      restoreStyles(container, org_styles)
+      v.target.removeEventListener(v.type, arguments.callee)
+    })
+  })
+
+  function toAbsolute(modal) {
+    var rect = modal.getBoundingClientRect()
+    modal.style.position = 'absolute'
+    modal.style.top = (document.body.scrollTop + rect.y) + 'px'
+    modal.style.height = (rect.height) + 'px'
+  }
+
+  function restoreStyles(modal, styles) {
+    for (var key in styles) {
+      modal.style[key] = styles[key]
+    }
+  }
+
+  function getFixedContainer(elem) {
+    for (; elem && elem !== document; elem = elem.parentNode) {
+      if (window.getComputedStyle(elem).getPropertyValue('position') === 'fixed') return elem
+    }
+    return null
+  }
+})()
