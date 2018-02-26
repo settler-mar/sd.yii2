@@ -693,15 +693,6 @@ input.link {
   }
 }
 
-//для живосайта установка фона
-div iframe#jivo_container{
-  position: absolute !important;
-}
-
-[id^="widget-1track-container"]{
-  z-index: 1 !important;
-}
-
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
@@ -748,4 +739,5 @@ div iframe#jivo_container{
 @import "parts/store_points";
 @import "parts/keyframes";
 @import "parts/transition";
+@import "fixes";
 

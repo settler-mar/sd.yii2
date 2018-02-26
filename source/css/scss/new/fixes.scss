@@ -1,0 +1,13 @@
+//для живосайта установка фона
+div iframe#jivo_container{
+  position: absolute !important;
+}
+
+//для трекера фиксим то что он вылазит над всем
+[id^="widget-1track-container"]{
+  z-index: 1 !important;
+}
+
+//для айфона фиксим съехавший курсор
+/* Apply CSS to iOS affected versions only */
+body.iosBugFixCaret.modal-open { position: fixed; width: 100%; }
