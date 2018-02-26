@@ -7,7 +7,3 @@ div iframe#jivo_container{
 [id^="widget-1track-container"]{
   z-index: 1 !important;
 }
-
-//для айфона фиксим съехавший курсор
-/* Apply CSS to iOS affected versions only */
-body.iosBugFixCaret.modal-open { position: fixed; width: 100%; }
