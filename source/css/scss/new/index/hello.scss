@@ -21,8 +21,8 @@
       }
 
       &_margin_btn{
-        margin-top: 120px;
-        margin-bottom: 20px;
+        margin-top: 3px;
+        margin-bottom: 26px;
         transform: translate3d(-50%, 0, 0px);
         margin-left: 50%;
       }
@@ -211,19 +211,6 @@
 
         &:hover {
           color: $btn_base_color;
-
-          .index-hello_right-icon {
-            /*box-shadow: 0 0 10px 0 $header_color_up;
-
-            &:before {
-              height: 120PX;
-              width: 120PX;
-              border: 1px solid;
-              opacity: 0.0;
-              margin-top: -33px;
-              margin-left: -33px;
-            }*/
-          }
         }
       }
 

@@ -128,7 +128,7 @@
       stroke: $print_icon_color !important;
     }
 
-    @include media_min($tablets) {
+    @include media_min($tablets+1) {
       margin-bottom: 28PX;
       width: 100%;
       max-width: none;
@@ -150,7 +150,7 @@
     margin-bottom: 10px;
     text-transform: uppercase;
 
-    @include media_min($tablets) {
+    @include media_min($tablets+1) {
       //min-height: 46px;
       min-height: 30px;
     }
@@ -165,25 +165,6 @@
       white-space: nowrap;
 
     }
-    @media print {
-      //line-height: 25px;
-      //font-size: 18px;
-    }
-    //p {
-    //  max-height: 85px;
-    //  overflow: hidden;
-    //  position: relative;
-    //  display: block;
-    //  &:after {
-    //    display: block;
-    //    content: " ";
-    //    background-color: #000;
-    //    opacity: 0.5;
-    //    height: 20px;
-    //    bottom: 0;
-    //    position: absolute
-    //  }
-    //}
   }
 
   &-social {

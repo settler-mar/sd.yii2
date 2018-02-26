@@ -1,5 +1,5 @@
-ul{
-  margin: 2em 0 2em 1.5em;
+ul {
+  margin: 1em 0 1em 1.5em;
 }
 
 .icons-list {
@@ -12,7 +12,6 @@ ul{
 
   li {
     position: relative;
-    display: block;
     margin: 18px 0;
     display: flex;
   }
@@ -29,7 +28,7 @@ ul{
     flex-shrink: 0;
   }
 
-  &_title{
+  &_title {
     line-height: 16px;
     display: inline-block;
     vertical-align: middle;

@@ -249,6 +249,7 @@ td {
   border: solid 1px $form_input_border;
   text-align: left;
   position: relative;
+  overflow: hidden;
 
   &-fl {
     width: 100%;
