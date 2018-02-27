@@ -30,7 +30,7 @@ class DefaultController extends SdController
   public $defaultLimit = 48;
 
 
-  protected $offline = false;
+  public $offline = false;
 
   /**
    * @param string $id
@@ -71,6 +71,7 @@ class DefaultController extends SdController
         echo $this->actionStore($store);
         exit;
       }
+
       $categoryStore = CategoriesStores::byRoute($id);
       if ($categoryStore) {
         //если есть категория
@@ -79,11 +80,15 @@ class DefaultController extends SdController
           echo $this->actionIndex($id, $categoryStore);
         exit;
       };
-      if ($id == 'favorite' && !Yii::$app->user->isGuest) {
+
+      /*ddd($id);
+      ddd($this->offline);*/
+      if (($id == 'favorite' || $id=="favorite-offline") && !Yii::$app->user->isGuest) {
         \Yii::$app->params['category_menu_item'] = $id;
-        echo $this->actionIndex($id);
+        echo $this->actionIndex(str_replace('-offline','',$id));
         exit;
       }
+
       //если нет категории или магазина
       //найти в удалённых шопах
       $newRoute = RouteChange::getNew($id, RouteChange::ROUTE_TYPE_STORES);
@@ -126,14 +131,20 @@ class DefaultController extends SdController
     $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
     $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
-    $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
+    if (Yii::$app->params['stores_menu_separate'] == 1) {
+      $this->params['breadcrumbs'][] = ['label' => ($offline?'Оффлайн-магазины':'Магазины'), 'url' => '/stores'.($offline?'/offline':'')];
+    }else{
+      $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
+    }
+
+
     if ($offline) {
       if(!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate']==0){
         $url=isset(Yii::$app->params['offline_redirect'])?Yii::$app->params['offline_redirect']:"/stores/stores-offline";
         $this->redirect($url, 307)->send();
         exit;
       }
-      $this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
+      //$this->params['breadcrumbs'][] = ['label' => 'Оффлайн', 'url' => '/stores/offline'];
     }
 
     $storesData = [];
@@ -156,6 +167,7 @@ class DefaultController extends SdController
         $this->redirect('/stores', 301)->send();
         exit;
       }
+
       //чтобы виджет мог получить current_category_id в main.twig
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
@@ -171,17 +183,23 @@ class DefaultController extends SdController
 
     // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
-    if ($categoryMenuItem == 'favorite') {
+    if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ) {
       $cacheName = 'catalog_storesfavorite'.Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $url='/stores/favorite';
+      if (Yii::$app->params['stores_menu_separate'] == 1) {
+        $cacheName .= $offline?'_offline':'_online';
+        $url .= $offline?'-offline':'';
+        $dataBaseData->andWhere(['cws.is_offline' => $offline?1:0]);
+      }
+
       $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
 
       $this->params['breadcrumbs'][] = [
         'label' => 'Мои избранные',
-        'url' => '/stores/favorite',
+        'url' => $url,
       ];
     }
-
 
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;
@@ -189,9 +207,14 @@ class DefaultController extends SdController
 //    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
 //      $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
 //    }
-    if ($offline) {
+    /*if ($offline) {
       $cacheName .= '_offline';
       $dataBaseData->andWhere(['is_offline' => 1]);
+    }*/
+
+    if (Yii::$app->params['stores_menu_separate'] == 1) {
+      $cacheName .= $offline?'_offline':'_online';
+      $dataBaseData->andWhere(['cws.is_offline' => $offline?1:0]);
     }
 
     $pagination = new Pagination(

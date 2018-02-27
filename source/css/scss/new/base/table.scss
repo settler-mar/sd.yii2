@@ -8,6 +8,7 @@ table {
   margin-bottom: 35px;
   //border-top: 1px solid  $table_2n_bg;
   border-radius: 5px;
+  overflow: hidden;
 
   &.ta_left {
     text-align: left;
@@ -23,10 +24,6 @@ tr:first-child {
   //background-color: $table_th_color;
   background-color: $table_th_bg;
   color: $table_th_color;
-
-  &.align-center{
-    text-align: center;
-  }
 }
 
 tr.white_line {
@@ -62,6 +59,10 @@ th:first-child {
     height: 32px;
     display: inline-block;
     vertical-align: middle;
+  }
+
+  &.align-center{
+    text-align: center;
   }
 }
 

@@ -59,21 +59,26 @@
           flex-wrap: nowrap;
           color: $text_color;
           font-size: 16PX;
+
           &:hover {
             color: $header_sub_menu_color_hover;
             background-color: $stores_menu_active_color;
           }
+
           &.active {
             color: $stores_menu_hover_color;
           }
+
           &.cat_news {
             color: $header_color_news;
             &:hover {
               color: $header_sub_menu_color_hover;
             }
           }
-          &.cat_red {
+
+          &.cat_promo {
             color: $header_color_pointed;
+
             &:hover {
               color: $header_sub_menu_color_hover;
             }
