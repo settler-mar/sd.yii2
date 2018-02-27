@@ -51,17 +51,10 @@ $data['TinyMce'] = [
                     ['title' => 'h5', 'block' => 'h5'],
                     ['title' => 'h6', 'block' => 'h6']
                 ],
-                ['title' => 'Blocks',
-                    'items' => [
-                        ['title' => 'p', 'block' => 'p'],
-                        ['title' => 'div', 'block' => 'div'],
-                        ['title' => 'pre', 'block' => 'pre']
-                    ]
-                ],
             ],
             [
                 'title' => 'Blocks',
-                'item' => [
+                'items' => [
                     ['title' => 'p', 'block' => 'p'],
                     ['title' => 'div', 'block' => 'div'],
                     ['title' => 'pre', 'block' => 'pre']

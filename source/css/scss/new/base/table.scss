@@ -7,13 +7,14 @@ table {
   //margin-bottom: 15px;
   margin-bottom: 35px;
   //border-top: 1px solid  $table_2n_bg;
+  border-radius: 5px;
 
   &.ta_left {
     text-align: left;
   }
 
   &.ta_round {
-    border-radius: 5px;
+
   }
 }
 
@@ -22,6 +23,10 @@ tr:first-child {
   //background-color: $table_th_color;
   background-color: $table_th_bg;
   color: $table_th_color;
+
+  &.align-center{
+    text-align: center;
+  }
 }
 
 tr.white_line {
