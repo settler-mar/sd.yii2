@@ -17,8 +17,8 @@ class MetaSearch extends Meta
   public function rules()
   {
     return [
-      [['uid'], 'integer'],
-      [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'safe'],
+        [['uid'], 'integer'],
+        [['page', 'title', 'description', 'keywords', 'h1', 'content'], 'safe'],
     ];
   }
 
@@ -40,7 +40,7 @@ class MetaSearch extends Meta
    */
   public function search($params)
   {
-    if($params && isset($params['MetaSearch']) && isset($params['MetaSearch']['page'])){
+    /*if($params && isset($params['MetaSearch']) && isset($params['MetaSearch']['page'])){
       $page=str_replace('https:','',$params['MetaSearch']['page']);
       $page=str_replace('http:','',$page);
       $page=str_replace($_SERVER['HTTP_HOST'],'',$page);
@@ -49,12 +49,13 @@ class MetaSearch extends Meta
       $query = Meta::findByUrl($page,true);
     }else{
       $query = Meta::find();
-    };
+    };*/
 
+    $query = Meta::find();
     // add conditions that should always apply here
 
     $dataProvider = new ActiveDataProvider([
-      'query' => $query,
+        'query' => $query,
     ]);
 
     $this->load($params);
@@ -67,16 +68,16 @@ class MetaSearch extends Meta
 
     // grid filtering conditions
     $query->andFilterWhere([
-      'uid' => $this->uid,
+        'uid' => $this->uid,
     ]);
 
     $query
-      //->andFilterWhere(['like', 'page', $this->page])
-      ->andFilterWhere(['like', 'title', $this->title])
-      ->andFilterWhere(['like', 'description', $this->description])
-      ->andFilterWhere(['like', 'keywords', $this->keywords])
-      ->andFilterWhere(['like', 'h1', $this->h1])
-      ->andFilterWhere(['like', 'content', $this->content]);
+        ->andFilterWhere(['like', 'page', $this->page])
+        ->andFilterWhere(['like', 'title', $this->title])
+        ->andFilterWhere(['like', 'description', $this->description])
+        ->andFilterWhere(['like', 'keywords', $this->keywords])
+        ->andFilterWhere(['like', 'h1', $this->h1])
+        ->andFilterWhere(['like', 'content', $this->content]);
 
     return $dataProvider;
   }

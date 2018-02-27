@@ -199,16 +199,6 @@ class SiteController extends SdController
   }
 
   /**
-   * /terms
-   * @return string
-   */
-  public function actionTerms()
-  {
-    $this->params['breadcrumbs'][] = 'Правила сайта';
-    return $this->render('terms');
-  }
-
-  /**
    * /promo
    * @return string
    */

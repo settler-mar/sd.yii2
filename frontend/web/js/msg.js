@@ -160,12 +160,15 @@
 
   function showMSG() {
     var f = this.showMSG.bind(this);
-    var user = randomUser();
-    notification.notifi({
-      message: this.randomMSG(user),
-      img: user.photo,
-      title: 'Новый кэшбэк',
-    });
+
+    if(window.innerWidth>700) {
+      var user = randomUser();
+      notification.notifi({
+        message: this.randomMSG(user),
+        img: user.photo,
+        title: 'Новый кэшбэк',
+      });
+    }
     setTimeout(f, 60000 + Math.round(Math.random() * 120000));
   }
 
