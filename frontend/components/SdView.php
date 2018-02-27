@@ -147,35 +147,35 @@ class SdView extends View
     Yii::$app->view->registerMetaTag(["property" => "twitter:url", "content" => $url]);
     Yii::$app->view->registerMetaTag(["property" => "twitter:domain", "content" => "https://secretdiscounter.ru/"]);
 
+    //d($this->title);
+    //ddd($tags);
     $title = isset($tags['og:title']) ? $tags['og:title'] : $this->title;
-    $title = Yii::$app->TwigString->render(
+    /*$title = Yii::$app->TwigString->render(
         $title,
         $this->all_params
-    );
+    );*/
     Yii::$app->view->registerMetaTag(["property" => "og:title", "content" => $title]);
     Yii::$app->view->registerMetaTag(["name" => "twitter:title", "content" => $title]);
 
     $description = isset($tags['og:description']) ? $tags['og:description'] : $this->description;
-    $description = Yii::$app->TwigString->render(
+    /*$description = Yii::$app->TwigString->render(
         $description,
         $this->all_params
-    );
+    );*/
     Yii::$app->view->registerMetaTag(["property" => "og:description", "content" => $description]);
     Yii::$app->view->registerMetaTag(["property" => "twitter:description", "content" => $description]);
     Yii::$app->view->registerMetaTag(["itemprop" => "description", "content" => $description]);
 
     $image = isset($tags['og:image']) ? $tags['og:image'] : "https://secretdiscounter.ru/images/templates/woman_600.png";
-    $image = Yii::$app->TwigString->render(
+    /*$image = Yii::$app->TwigString->render(
         $image,
         $this->all_params
-    );
+    );*/
     Yii::$app->view->registerMetaTag(["property" => "og:image", "content" => $image]);
     Yii::$app->view->registerMetaTag(["property" => "twitter:image:src", "content" => $image]);
     Yii::$app->view->registerMetaTag(["itemprop" => "image", "content" => $image]);
     //<meta property="og:image:width" content="968">
     //<meta property="og:image:height" content="504">
-
-
   }
 
   public function render($view, $params = [], $context = null)
