@@ -167,7 +167,7 @@
             {% for item in link_list %}
               {% if item.show==1 %}
                 <li>
-                <a target="_blank" href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+                <a href="{{ item.url }}"{{ _if(item.outer==1,'target="_blank" rel="noopener noreferrer nofollow"') | raw }}>{{ item.name }}</a>
               {% endif %}
               </li>
             {% endfor %}
