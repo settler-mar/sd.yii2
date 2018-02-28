@@ -158,7 +158,7 @@
         <li class="desctop">
           <a href="/stores/s-povyshennym-cashback">Двойной кэшбэк</a>
         </li>
-        <li class="drop-menu_group__up">
+        <li class="drop-menu_group__up drop-menu_group__up-pointed">
           <span class="drop-menu_group__up-header">Сервисы
             {{ svg('angle-down','menu_angle-down')|raw }}
           </span>
@@ -167,7 +167,7 @@
             {% for item in link_list %}
               {% if item.show==1 %}
                 <li>
-                <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+                <a target="_blank" href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
               {% endif %}
               </li>
             {% endfor %}
