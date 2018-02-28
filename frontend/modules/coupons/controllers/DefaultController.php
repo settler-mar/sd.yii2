@@ -206,9 +206,9 @@ class DefaultController extends SdController
       if ($this->top) {
           //top 20
         //$sort = 'cws.visit';
-        $limit = 20;
+        $limit = 50;
         $cacheName .= '_' . $actionId;
-        $this->params['breadcrumbs'][] = ['label' => 'Топ 20'];
+        $this->params['breadcrumbs'][] = ['label' => 'Топ 50'];
       }
       if ($this->new) {
           //новые
@@ -235,7 +235,7 @@ class DefaultController extends SdController
     $contentData['search_form'] = 1;
 
     $paginateParams = [
-      'limit' => $this->defaultLimit == $limit ? null : $limit,
+      'limit' => $this->defaultLimit == $limit || $this->top ? null : $limit,
       'sort' => Coupons::$defaultSort == $sort ? null : $sort,
       'page' => $page,
       'expired' => $request->get('expired') ? 1 : null,

@@ -36,7 +36,7 @@ class CategoryCouponsMenu extends Widget
             ];
         }
         $categories[] = [
-            'name' => 'Top-20',
+            'name' => 'Top-50',
             'count' => null,
             'route' => 'top',
             'uid' => -3,
