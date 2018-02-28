@@ -53,6 +53,8 @@ $('body').on('click',function () {
 });
 
 $('.accordion-content').on('click',function (e) {
-  e.preventDefault();
-  return false;
+  if (e.target.tagName != 'A') {
+      e.preventDefault();
+      return false;
+  }
 });

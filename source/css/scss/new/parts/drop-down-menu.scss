@@ -77,6 +77,7 @@
       }
     }
 
+
     //для первого пункта подменю
     &>ul>li{
       &:first-child {
@@ -363,6 +364,15 @@
   }
   .cat_bold {
     font-weight: bold;
+  }
+
+  &_group__up-pointed {
+    >a,>span {
+      color: $header_color_pointed !important;
+      svg {
+        //color: $header_color_pointed;
+      }
+    }
   }
 
 }
