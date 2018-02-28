@@ -32,21 +32,22 @@ class CategoryCouponsMenu extends Widget
                 'count' => null,
                 'route' => 'abc',
                 'uid' => -2,
-                'class' => 'cat_red cat_bold'
+                'class' => 'cat_bold'
             ];
         }
+        $categories[] = [
+            'name' => 'Top-20',
+            'count' => null,
+            'route' => 'top',
+            'uid' => -3,
+            'class' => 'cat_promo'
+        ];
         $categories[] = [
             'name' => 'Новые промокоды',
             'count' => Coupons::activeCount('new'),
             'route' => 'new',
             'uid' => -4,
             'class' => 'cat_news',
-        ];
-        $categories[] = [
-            'name' => 'Top-20',
-            'count' => null,
-            'route' => 'top',
-            'uid' => -3,
         ];
 
         $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
