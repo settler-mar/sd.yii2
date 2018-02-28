@@ -57,7 +57,11 @@ class AccountController extends Controller
         "apply.daterangepicker" => "function(ev, picker) { 
             picker.element.closest('form').submit(); 
           }",
-      ]
+        "show.daterangepicker" => "function(ev, picker) {".
+            " picker.element.closest('form').attr('action','/account/users/');}"
+      ],
+
+
     ]);
 
     $start_date = date('Y-m-d', strtotime($start_date));
