@@ -59,8 +59,5 @@ $('.accordion-content').on('click',function (e) {
       e.preventDefault();
       return false;
   }
-  // } else if(e.target.tagName == 'A' && $(e.target).attr('href').indexOf('#') > -1) {
-  //     e.preventDefault();
-  //     return false;
-  // }
+
 });
