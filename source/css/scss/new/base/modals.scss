@@ -272,28 +272,32 @@
       flex-wrap: nowrap;
       align-items: stretch;
       justify-content: space-around;
+
       @include media($phones) {
         flex-direction: column;
         //align-items: center;
       }
+
       .btn {
         @include media($tablets) {
           //width: 40%;
           padding-left: 20px;
           padding-right: 20px;
         }
+
         @include media($phones) {
          // width: auto;
         }
+
         &:not(:last-child) {
           margin-right: 1%;
+
           @include media($phones) {
             margin-right: inherit;
             margin-bottom: 10px;
           }
         }
       }
-
     }
 
   }

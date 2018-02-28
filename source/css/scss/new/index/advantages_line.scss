@@ -65,9 +65,9 @@
     }
 
     &-counter{
-      color:$advantages_line_second_counter_color;
       text-shadow: 2px 2px 4px rgba($advantages_line_second_color, 0.28);
       color: $advantages_line_second_counter_color;
+      fill: $advantages_line_second_counter_color;
       font-family: "Proxima Nova - Black";
       font-size: 36px;
       font-weight: 400;
