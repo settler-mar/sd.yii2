@@ -1,0 +1,41 @@
+.tipso {
+  &_bubble {
+    border: 1px solid #c5ccd6;
+    padding: 10px;
+    box-shadow: 0 2px 15px rgba(15, 112, 155, .22);
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    border-radius: 0;
+    line-height: 19px;
+
+    & > .tipso_arrow {
+      border: 9.5PX solid;
+      border-bottom-color: #c5ccd6 !important;
+      bottom: 9.5PX;
+      left: 50%;
+      margin-left: -9.5PX;
+
+      &:after {
+        content: " ";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 8PX solid;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        bottom: -9.5PX;
+        left: 50%;
+        margin-left: -8PX;
+      }
+    }
+  }
+
+  &_title {
+    display: none;
+  }
+  &_content {
+    padding: 0;
+  }
+}
