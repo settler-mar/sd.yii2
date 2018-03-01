@@ -8,15 +8,6 @@
                 </div>
         </section>
     {% endif %}
-    {#контент метаданных #}
-    {% if content and page==1 %}
-        <section class="gray-box wrap-round margin">
-            <div class="catalog_category-content">
-                {{ content | raw}}
-            </div>
-        </section>
-    {% endif %}
-
 
     <section class="catalog margin">
         <div class="page-wrap page-wrap-flex">
@@ -123,11 +114,11 @@
                     </div>
                 {% endif %}
 
-                {#{% if content and page==1% and current_category == null}#}
-                    {#<div class="catalog_category-content margin">#}
-                        {#{{ content | raw}}#}
-                    {#</div>#}
-                {#{% endif %}#}
+              {% if content and page==1%}
+                <div class="catalog_category-content margin">
+                  {{ content | raw}}
+                </div>
+              {% endif %}
             </div>
         </div>
     </section>
