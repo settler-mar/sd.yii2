@@ -21,19 +21,19 @@
 <section class="advantages_line_second margin">
     <div class="page-wrap flex-line laptop-min_flex-wrap advantages_line_second-wrap" >
         <div class="advantages_line_second-item">
-            <span class="advantages_line_second-counter">{{ _nf(sd_counter.total_save,0)|raw }} руб</span>
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.total_save,0,true,'<span>&nbsp;</span>')|raw }} руб</span>
             <span class="advantages_line_second-label">SecretDiscounter уже сэкономил своим пользователям</span>
         </div>
         <div class="advantages_line_second-item">
-            <span class="advantages_line_second-counter">{{ _nf(sd_counter.count_save,0)|raw }} </span>
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.count_save,0,true,'<span>&nbsp;</span>')|raw }} </span>
             <span class="advantages_line_second-label">покупок совершено за неделю</span>
         </div>
         <div class="advantages_line_second-item">
-            <span class="advantages_line_second-counter">{{ _nf(sd_counter.sum_save,2)|raw }} руб</span>
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.sum_save,2,true,'<span>&nbsp;</span>')|raw }} руб</span>
             <span class="advantages_line_second-label">максимальный кэшбэк за вчера</span>
         </div>
         <div class="advantages_line_second-item">
-            <span class="advantages_line_second-counter">{{ _nf(sd_counter.save_persent,0)|raw }}%</span>
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.save_persent,0,true,'<span>&nbsp;</span>')|raw }}%</span>
             <span class="advantages_line_second-label">столько в среднем экономят наши пользователи при помощи промокодов и кэшбэка</span>
         </div>
     </div>
