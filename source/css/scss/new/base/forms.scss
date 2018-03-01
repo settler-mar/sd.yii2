@@ -285,6 +285,7 @@ td {
     top: 50%;
     transform: translateY(-50%);
     margin-left: 20px;
+    z-index: 1;
   }
 
   &:before {
@@ -294,6 +295,7 @@ td {
     top: 5px;
     left: 50px;
     border-left: 1px solid $form_input_border;
+    z-index: 1;
   }
 
   span {
