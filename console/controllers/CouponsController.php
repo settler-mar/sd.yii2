@@ -106,7 +106,7 @@ class CouponsController extends Controller
           $db_coupons->promocode = $coupon['promocode'];
           $db_coupons->species = 0;
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          $db_coupons->save();
+          if(!$db_coupons->save())continue;
 
           //Добавляем категорию в массив
           foreach ($coupon['categories'] as $k => $categorie) {
