@@ -5,7 +5,7 @@ $banner_mobile_interval: $laptop-min;
     display: none;
 
     &:not(:last-child) {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     @include media-min($banner_mobile_interval) {
@@ -22,7 +22,7 @@ $banner_mobile_interval: $laptop-min;
   }
 
   &__wrapper {
-    margin-top: 28px;
+    margin-top: 20px;
 
     @include media($laptop_min) {
       margin-top: 47px;

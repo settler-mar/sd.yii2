@@ -217,7 +217,7 @@
     }
     &_tree {
       &-cat {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         overflow: hidden;
         border-radius: 3px;
         //@include menu-open;
@@ -263,8 +263,8 @@
           top: 48PX;
 
           &-icon {
-            width: 25px;
-            height: 25px;
+            width: 26PX;
+            height: 25PX;
             margin-right: 10px;
             color: $btn_base_color;
             fill: $btn_base_color;

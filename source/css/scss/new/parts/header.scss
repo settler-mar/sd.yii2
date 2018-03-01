@@ -60,6 +60,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         position: relative;
+        align-items: center;
 
         @include media($phones) {
           width: 20%;
@@ -439,10 +440,10 @@
     &-toggle {
 
       &-close {
-        padding: 3PX;
+        padding: 0 3PX;
         display: none;
-        width: 20px;
-        height: 20px;
+        width: 26PX;
+        height: 26PX;
         color: $header_color_up;
         fill: $header_color_up;
         stroke: $header_color_up;
