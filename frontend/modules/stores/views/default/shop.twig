@@ -279,7 +279,7 @@
 {% endif %}
 
 
-  {% if current_store.is_offline==0 %}
+  {% if current_store.is_offline==0 and current_store.show_tracking==1 %}
     {% include 'parts/stores/tracker.twig' %}
   {% endif %}
 

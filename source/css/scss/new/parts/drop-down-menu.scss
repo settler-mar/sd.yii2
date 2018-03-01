@@ -369,8 +369,11 @@
   &_group__up-pointed {
     >a,>span {
       color: $header_color_pointed !important;
+
       svg {
-        //color: $header_color_pointed;
+        color: $header_color_pointed !important;
+        fill: $header_color_pointed !important;
+        stroke: $header_color_pointed !important;
       }
     }
   }
