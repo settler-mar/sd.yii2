@@ -10,6 +10,7 @@ var myTooltip = function() {
         showArrow: true,
         onBeforeShow: function (ele, tipso) {
             this.content = ele.data('original-title');
+            this.position = ele.data('placement') ? ele.data('placement') : 'top';
         }
     });
 }();

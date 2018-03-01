@@ -1,18 +1,18 @@
+$tipso_border_color: #c5ccd6;
+$tipso_bg_color: #fff;
+$tipso_shadow_color: rgba(15, 112, 155, .22);
+
 .tipso {
   &_bubble {
-    border: 1px solid #c5ccd6;
+    border: 1px solid $tipso_border_color;
     padding: 10px;
-    box-shadow: 0 2px 15px rgba(15, 112, 155, .22);
+    box-shadow: 0 2px 15px $tipso_shadow_color;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     border-radius: 0;
     line-height: 19px;
 
     & > .tipso_arrow {
       border: 9.5PX solid;
-      border-bottom-color: #c5ccd6 !important;
-      bottom: 9.5PX;
-      left: 50%;
-      margin-left: -9.5PX;
 
       &:after {
         content: " ";
@@ -21,13 +21,58 @@
         height: 0;
         border: 8PX solid;
         pointer-events: none;
-        border-bottom-color: #fff;
+      }
+    }
+    &.bottom .tipso_arrow {
+      border-bottom-color: $tipso_border_color !important;
+
+      &:after {
+        border-bottom-color: $tipso_bg_color;
         border-right-color: transparent;
         border-left-color: transparent;
         border-top-color: transparent;
         bottom: -9.5PX;
         left: 50%;
         margin-left: -8PX;
+      }
+    }
+    &.top .tipso_arrow {
+      border-top-color: $tipso_border_color !important;
+
+      &:after {
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: $tipso_bg_color;
+        top: -9.5PX;
+        left: 50%;
+        margin-left: -8PX;
+      }
+    }
+    &.left .tipso_arrow {
+      border-left-color: $tipso_border_color !important;
+
+      &:after {
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-left-color: $tipso_bg_color;
+        border-top-color: transparent;
+        left: -9.5PX;
+        top: 50%;
+        margin-top: -8PX;
+      }
+    }
+    &.right .tipso_arrow {
+      border-right-color: $tipso_border_color !important;
+
+      &:after {
+        border-bottom-color: transparent;
+        border-right-color: $tipso_bg_color;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        right: -9.5PX;
+        top: 50%;
+        margin-top: -8PX;
       }
     }
   }
