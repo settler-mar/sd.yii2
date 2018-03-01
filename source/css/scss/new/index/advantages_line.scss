@@ -68,7 +68,9 @@
       text-shadow: 2px 2px 4px rgba($advantages_line_second_color, 0.28);
       color: $advantages_line_second_counter_color;
       fill: $advantages_line_second_counter_color;
-      font-family: "Proxima Nova - Black";
+      -webkit-text-fill-color: rgba($advantages_line_second_counter_color, 1);
+      opacity: 1;
+      font-family: "Proxima Nova - Black", Arial, Helvetica, "Open Sans", sans-serif;;
       font-size: 36px;
       font-weight: 400;
       white-space: nowrap;
