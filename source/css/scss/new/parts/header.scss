@@ -408,13 +408,16 @@
     }
   }
   .account-menu {
-    transition: all 0.3s ease 0.1s;
-    overflow: visible;
+    transition: opacity 0.3s ease 0.1s;
+    overflow: hidden;
     width: 220px;
     position: absolute;
-    top: 42px;
+    top: 40PX;
     right: -10px;
     background-color: rgba(0,0,0,0.5);
+    //max-height: none;
+    opacity: 1;
+    visibility: visible;
 
 
 
@@ -479,12 +482,14 @@
       }
     }
     &.hidden {
-      max-height: 0;
-      overflow: hidden;
+      //max-height: 0;
+      opacity: 0;
+      visibility: hidden;
+      //overflow: hidden;
       @include media($laptop-min) {
         max-height: inherit;
         right: -100%;
-        overflow: auto;
+        //overflow: auto;
         //transition: all .3s ease 0.1s;
       }
       .account-menu_inner {
@@ -606,6 +611,19 @@
       padding-bottom: 10px;
       margin-bottom: 10px;
     }
+    &-wrap {
+      cursor: pointer;
+
+      &:hover {
+
+        .account-menu {
+          //max-height: none;
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+
   }
   &-icon-money {
     width: 12px;

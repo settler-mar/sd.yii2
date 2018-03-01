@@ -125,43 +125,55 @@ var headerActions = function () {
 
     var accountMenuTimeOut = null;
     var accountMenuOpenTime = 0;
+    var accountMenu = $('.account-menu');
+
     $('.account-menu-toggle').click(function(e){
         e.preventDefault();
+        if (window.innerWidth > 1024) {
+            return null;
+        }
         $('.header').removeClass('header_open-menu');
         $('.header').removeClass('header-search-open');
         var that = $(this);
-        var menu = $('.account-menu');
-        if (menu) {
-            clearInterval(accountMenuTimeOut);
-            if (menu.hasClass('hidden')) {
-                that.addClass('open');
-                menu.removeClass('hidden');
-                if (window.innerWidth <= 1024) {
-                    $('body').addClass('no_scroll_account');
-                }
 
-                accountMenuOpenTime = new Date();
-                accountMenuTimeOut = setInterval(function () {
+        clearInterval(accountMenuTimeOut);
 
-                    if (window.innerWidth <= 1024) {
-                        clearInterval(accountMenuTimeOut);
-                    }
-                    if ((new Date() - accountMenuOpenTime) > 1000 * 7) {
-                        menu.addClass('hidden');
-                        that.removeClass('open');
-                        clearInterval(accountMenuTimeOut);
-                        $('body').removeClass('no_scroll_account');
-                    }
+         if (accountMenu.hasClass('hidden')) {
+             menuAccountUp(that);
 
-                }, 1000);
+        } else {
+            that.removeClass('open');
+            accountMenu.addClass('hidden');
+            $('body').removeClass('no_scroll_account');
+        }
 
-            } else {
-                that.removeClass('open');
-                menu.addClass('hidden');
+    });
+
+    //показ меню аккаунт
+    function menuAccountUp(toggleButton)
+    {
+        clearInterval(accountMenuTimeOut);
+        toggleButton.addClass('open');
+        accountMenu.removeClass('hidden');
+        if (window.innerWidth <= 1024) {
+            $('body').addClass('no_scroll_account');
+        }
+
+        accountMenuOpenTime = new Date();
+        accountMenuTimeOut = setInterval(function () {
+
+            if (window.innerWidth <= 1024) {
+                clearInterval(accountMenuTimeOut);
+            }
+            if ((new Date() - accountMenuOpenTime) > 1000 * 7) {
+                accountMenu.addClass('hidden');
+                toggleButton.removeClass('open');
+                clearInterval(accountMenuTimeOut);
                 $('body').removeClass('no_scroll_account');
             }
-        }
-    });
+
+        }, 1000);
+    }
 
     $('.catalog-categories-account_menu-header').on('mouseover', function(){
         accountMenuOpenTime = new Date();
