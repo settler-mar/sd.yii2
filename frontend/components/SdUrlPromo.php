@@ -33,6 +33,8 @@ class SdUrlPromo implements UrlRuleInterface
       } else {
         $ref_href = '/';
       }
+      Yii::$app->getResponse()->redirect($ref_href, 301);
+      return ['', $params];
     }
 
     if (!$ref_href && strlen($pathInfo) > 2) {
