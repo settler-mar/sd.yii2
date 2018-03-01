@@ -53,8 +53,11 @@ $('body').on('click',function () {
 });
 
 $('.accordion-content').on('click',function (e) {
+
   if (e.target.tagName != 'A') {
+      $(this).closest('.accordion').find('.accordion-control.accordion-title').click();
       e.preventDefault();
       return false;
   }
+
 });

@@ -28,15 +28,6 @@ textarea {
   }
 }
 
-//валидатор форм
-.form-group {
-  .help-block-error {
-    margin: 0px auto 10px auto;
-    width: 100%;
-    text-align: center;
-    max-width: calc(100% - 20px);
-  }
-}
 
 form {
   margin-bottom: 15px;
@@ -208,6 +199,10 @@ td {
   text-align: center;
   margin-bottom: 15px;
 
+
+  &_align-left {
+
+  }
   &-s {
     margin-bottom: 36px;
   }
@@ -237,6 +232,18 @@ td {
 
   select::-ms-expand {
     display: none;
+  }
+  .help-block-error {
+    margin: 0px auto 10px auto;
+    width: 100%;
+    text-align: center;
+    max-width: calc(100% - 20px);
+  }
+}
+
+.form-horizontal_aling-left {
+  .form-group {
+    text-align: left;
   }
 }
 

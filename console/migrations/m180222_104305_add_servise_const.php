@@ -18,7 +18,7 @@ class m180222_104305_add_servise_const extends Migration
       $const = new \frontend\modules\constants\models\Constants();
       $const->name='main_menu_service';
       $const->title = 'Ссылки top. Сервис';
-      $const->text = '[{"url":"https:\/\/gdeposylka.secretdiscounter.ru\/","name":"\u041e\u0442\u0441\u043b\u0435\u0434\u0438\u0442\u044c \u043f\u043e\u0441\u044b\u043b\u043a\u0443","show":"1","outer":"1"},{"url":"https:\/\/secretdiscounter.ru\/tablitsa-razmerov","name":"\u0422\u0430\u0431\u043b\u0438\u0446\u0430 \u0440\u0430\u0437\u043c\u0435\u0440\u043e\u0432","show":"1","outer":"0"},{"url":"https:\/\/secretdiscounter.ru\/plugin","name":"\u041f\u043b\u0430\u0433\u0438\u043d \u0434\u043b\u044f \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430","show":"1","outer":"0"}]';
+      $const->text = '[{"url":"https:\/\/gdeposylka.secretdiscounter.ru\/","name":"\u041e\u0442\u0441\u043b\u0435\u0434\u0438\u0442\u044c \u043f\u043e\u0441\u044b\u043b\u043a\u0443","show":"1","outer":"1"},{"url":"https:\/\/secretdiscounter.ru\/tablitsa-razmerov","name":"\u0422\u0430\u0431\u043b\u0438\u0446\u0430 \u0440\u0430\u0437\u043c\u0435\u0440\u043e\u0432","show":"1","outer":"1"},{"url":"https:\/\/secretdiscounter.ru\/plugin","name":"\u041f\u043b\u0430\u0433\u0438\u043d \u0434\u043b\u044f \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430","show":"1","outer":"1"}]';
       $const->editor_param = 'links';
       $const->ftype = 'json';
       $const->save();

@@ -5,9 +5,16 @@
             <div class="instruction-title">
                 Регистрируйтесь на сайте
             </div>
-            <div class="instruction-content">
-                Пройдите простую <a href="#registration" class="modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
-            </div>
+            {% if not user_id %}
+                <div class="instruction-content">
+                    Пройдите простую <a href="#registration" class="modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
+                </div>
+            {% else %}
+                <div class="instruction-content">
+                    Пройдите простую регистрацию в кэшбэк-сервисе SecretDiscounter.
+                </div>
+            {% endif %}
+
         </div>
     </div>
     <div class="instruction-item tablets_flex-row tablets_text-aling_left">

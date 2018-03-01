@@ -121,18 +121,20 @@
               </div>
             {% endif %}
 
-            <div class="accordion-content">
-              {% if current_store.conditions != '' %}
-                {{ _no_br(current_store.conditions)|raw }}
-              {% else %}
-                Дополнительные тарифы для магазина {{ current_store.name }} отсутствуют.
-                Текущая ставка кэшбэка – {{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}.
-              {% endif %}
+            <noindex>
+              <div class="accordion-content">
+                {% if current_store.conditions != '' %}
+                  {{ _no_br(current_store.conditions)|raw }}
+                {% else %}
+                  Дополнительные тарифы для магазина {{ current_store.name }} отсутствуют.
+                  Текущая ставка кэшбэка – {{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}.
+                {% endif %}
 
-              <div class="accordion-control tablets_hide">
-                <a class="angle-up" href="#"></a>
+                <div class="accordion-control tablets_hide">
+                  <a class="angle-up" href="#"></a>
+                </div>
               </div>
-            </div>
+            </noindex>
           </div>
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
@@ -151,7 +153,7 @@
   </div>
 </section>
 
-<section class="shop_header_big-end">
+<section class="shop_header_big-end" id="gotostore">
   {% if current_store.is_active==0 %}
     {% set btn_text =  _constant('shop_offline_text','goto') %}
   {% else %}
