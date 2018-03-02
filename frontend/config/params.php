@@ -46,6 +46,8 @@ $data['TinyMce'] = [
                 'items' => [
                     ['title' => 'h1', 'block' => 'h1'],
                     ['title' => 'h2', 'block' => 'h2'],
+                    ['title' => 'h2 title-no-line', 'block' => 'h2', 'classes'=>'title-no-line'],
+                    ['title' => 'h2 title-no-line align-left', 'block' => 'h2', 'classes'=>'title-no-line align-left'],
                     ['title' => 'h3', 'block' => 'h3'],
                     ['title' => 'h4', 'block' => 'h4'],
                     ['title' => 'h5', 'block' => 'h5'],
