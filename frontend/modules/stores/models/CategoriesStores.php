@@ -241,7 +241,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     //избранные шопы
     $cats[0] = isset($cats[0]) ? $cats[0] : [];
     if (in_array('favorite', $extItems)) {
-      $favoriteCount = UsersFavorites::userFavoriteCount(false,$offline);
+      $favoriteCount = UsersFavorites::userFavoriteCount(false, $offline);
       if ($favoriteCount > 0) {
         array_unshift($cats[0], [
             'name' => 'Мои избранные',
@@ -257,18 +257,26 @@ class CategoriesStores extends \yii\db\ActiveRecord
       }
     }
 
+
     if (in_array('all_shops', $extItems)) {
-      array_unshift($cats[0], [
-          'name' => 'Все магазины',
+        if ($offline == 1) {
+            $filterCount = ['is_offline' => 1];
+        }  else if ($offline === 0) {
+            $filterCount = [];
+        } else {
+            $filterCount = [];
+        }
+        array_unshift($cats[0], [
+          'name' => $offline == 1 ? 'Все компании' : 'Все магазины',
           'parent_id' => 0,
           'route' => '',
           'menu_hidden' => 0,
           'selected' => '0',
-          'count' => Stores::activeCount(),
+          'count' => Stores::activeCount($filterCount),
           'uid' => null,
           'menu_index' => 1000,
           'class' => 'all_shops cat_bold cat_upper',
-      ]);
+        ]);
     }
 
     //перемещаем выделенные категории вверх
@@ -399,10 +407,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         }
         $tree .= '<li ' . $itemClass . '>';
 
-        /*if ($cat['route'] == 'favorite') {
-          $onlineLink = '';
-        } else */if ($offline === 1) {
-          $onlineLink = '-offline';
+        if ($offline === 1) {
+          $onlineLink = ($cat['uid'] == null ? '/' : '-') . 'offline';
         } elseif ($offline === 0) {
           $onlineLink = '';//'-online';
         } else {
@@ -456,8 +462,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
     Cache::clearName('additional_stores');
     Cache::clearName('category_tree');
     Cache::clearName('coupons_counts');
-    //ключи
-    Cache::deleteName('total_all_stores');
+    Cache::clearName('total_all_stores');
+      //ключи
     Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');
     if ($id) {

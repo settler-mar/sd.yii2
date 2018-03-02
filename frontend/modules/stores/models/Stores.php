@@ -239,14 +239,23 @@ class Stores extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function activeCount()
+  public static function activeCount($filters = [])
   {
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('total_all_stores', function () {
+    $cache_name = 'total_all_stores';
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'total_all_stores';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    foreach ($filters as $key => $filter) {
+        $cache_name .= '_'.$key.'_'.$filter;
+    }
+    $data = $cache->getOrSet($cache_name, function () use ($filters) {
       return self::find()
-        ->where(['is_active' => [0, 1]])
+        ->where(array_merge(['is_active' => [0, 1]], $filters))
         ->count();
-    });
+    }, $cache->defaultDuration, $dependency);
+
     return $data;
   }
 
@@ -596,10 +605,11 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('coupons_counts');
     Cache::clearName('account_favorites');
     Cache::clearName('account_favorites_count');
+    Cache::clearName('total_all_stores');
     //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');
     //ключи
-    Cache::deleteName('total_all_stores');
+    //Cache::deleteName('total_all_stores');
     Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');
     if ($id) {
