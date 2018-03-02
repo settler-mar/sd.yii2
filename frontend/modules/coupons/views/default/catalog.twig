@@ -135,13 +135,20 @@
                 </div>
               {% endif %}
 
-              {% if is_root and page==1 and expired == null %}
+              {% if (is_root or new or top) and page==1 and expired == null %}
                 <div class="catalog_category-content">
                   <div class="catalog_category-short-description">
-                    {{ _constant('coupons_main') | raw}}
+                    {% if is_root %}
+                        {{ _constant('coupons_main') | raw}}
+                    {% elseif new %}
+                        {{ _constant('coupons_new') | raw}}
+                    {% elseif top %}
+                        {{ _constant('coupons_top') | raw}}
+                    {% endif %}
                   </div>
                 </div>
               {% endif %}
+
             </div>
         </div>
     </section>

@@ -209,12 +209,14 @@ class DefaultController extends SdController
         $limit = 50;
         $cacheName .= '_' . $actionId;
         $this->params['breadcrumbs'][] = ['label' => 'Топ 50'];
+        \Yii::$app->params['url_mask'] = 'coupons/top';
       }
       if ($this->new) {
           //новые
         $this->params['breadcrumbs'][] = ['label' => 'Новые промокоды', 'url'=>'/coupons/new'];
         $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
         $cacheName .= '_' . $actionId;
+        \Yii::$app->params['url_mask'] = 'coupons/new';
       }
     }
 
@@ -245,6 +247,8 @@ class DefaultController extends SdController
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
 
     $contentData['is_root'] = (!$categoryCoupons && !$store && !$this->top && !$this->new);
+    $contentData['top'] = $this->top;
+    $contentData['new'] = $this->new;
     if ($page>1) {
         $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
     }

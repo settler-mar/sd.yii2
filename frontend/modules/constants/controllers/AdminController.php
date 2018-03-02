@@ -61,6 +61,7 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'categories' => Constants::categoryList(),
     ]);
   }
 

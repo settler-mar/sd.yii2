@@ -152,7 +152,7 @@
               Оффлайн-магазины
               {{ svg('angle-down','menu_angle-down')|raw }}
             </a>
-            {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite', 'offline': 1 }) %}
+            {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': 1 }) %}
             {% if category_tree %}
               {{ category_tree|raw }}
             {% endif %}

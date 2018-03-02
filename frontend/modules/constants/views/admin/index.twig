@@ -13,6 +13,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+                <div class="col-md-12" style="margin-bottom: 10px;">
+                    {% for category in categories %}
+                        <a class="btn btn-primary" href="{{ category.link }}">{{ category.name }} ({{ category.count }})</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
                     {# include('_search.twig', {'model': searchModel}) #}
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,

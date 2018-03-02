@@ -5,9 +5,16 @@
                 в будущее магазинов!</h1>
             <div class="index-hello_counter laptop-min_bold">
                 к нам присоединились:
-                <div class="index-hello_counter-numbers">
-                    {{ _nf(sd_counter.user_count,0,true,'<span class="index-hello_counter-numbers_space"></span>',1)|raw }}
+                <div class="index-hello_counter-numbers-out">
+                    <div class="index-hello_counter-numbers">
+                        {{ _nf(sd_counter.user_count,0,true,'<span class="index-hello_counter-numbers_space"></span>',1)|raw }}
+                    </div>
+                    <a class="index-hello_counter-numbers-compare blue scroll_to" href="#comparison">
+                        <span>Сравнить лучшие<br>кэшбэк сервисы</span>
+                        {{ svg('long-arrow-down', 'index-hello_counter-numbers-compare-arrow')|raw }}
+                    </a>
                 </div>
+
             </div>
             <p class="index-hello_description">
                 {{ _constant('welcome') | raw}}
