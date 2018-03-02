@@ -411,11 +411,25 @@ svg.svg-no-stroke {
 
 .padding-box-mini {
   padding: 7px 0;
+  h2,h3 {
+    margin-top: 0;
+  }
 }
 
 .padding-box-top {
   padding-top: 20px;
+  h2,h3 {
+    margin-top: 0;
+  }
 }
+.padding-box-bottom {
+  padding-bottom: 20px;
+  padding-top: 10px;
+  h2,h3 {
+    margin-top: 0;
+  }
+}
+
 
 .wrap-round {
   border-radius: 10px;
