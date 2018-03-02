@@ -428,6 +428,8 @@
       width: 100%;
       height: auto;
       transition: all 0.3s ease 0.1s;
+      box-sizing: border-box;
+
       a, span {
         font-size: 14px;
         padding-top: 1px;
