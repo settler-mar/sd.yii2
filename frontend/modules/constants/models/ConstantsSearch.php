@@ -12,13 +12,14 @@ use frontend\modules\constants\models\Constants;
  */
 class ConstantsSearch extends Constants
 {
+    public $category;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid'], 'integer'],
+            [['uid', 'category'], 'integer'],
             [['name', 'title', 'text', 'ftype', 'updated_at'], 'safe'],
         ];
     }
@@ -61,6 +62,7 @@ class ConstantsSearch extends Constants
         $query->andFilterWhere([
             'uid' => $this->uid,
             'updated_at' => $this->updated_at,
+            'category' => $this->category,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
