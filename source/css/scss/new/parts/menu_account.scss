@@ -12,14 +12,22 @@
     }
 
 
-    ul {
+    ul, li {
       box-sizing: border-box;
     }
     > ul {
-      //border-bottom: thin solid #fff;
+      //box-sizing: border-box;
+      border-bottom: thin solid $menu_border_color;
+      border-left: thin solid $menu_border_color;
+      border-right: thin solid $menu_border_color;
 
       > li {
         position: relative;
+        border-top: none !important;
+
+        &:not(:last-child) {
+          border-bottom: thin solid $menu_border_color;
+        }
 
         &:last-child {
           border-radius: 0 0 3px 3px;
@@ -38,14 +46,20 @@
         }
 
         >ul {
+          //box-sizing: border-box;
           max-height: inherit;
           opacity: 0;
           visibility: hidden;
           position: absolute;
-          right: -100%;
-          top: 0;
+          //right: -100%;
+          left: 100%;
+          top: -1px;
           border: 1px solid $menu_border_color;
           z-index: 100;
+          >li>a:hover {
+            color: $yellow_box_bg;
+            background-color: $header_bg_second;
+          }
         }
         &:hover {
           >ul {
@@ -54,15 +68,19 @@
           }
         }
         &.cd-label {
-          background-color: $text_color;
-          color: $btn_base_dark_color;
+          //background-color: $text_color;
+          //color: $btn_base_dark_color;
+          color: $text_color;
+          background-color: $btn_base_dark_color;
           padding: 10px;
         }
 
 
         > a {
-          background-color: $text_color;
-          color: $header_sub_menu_color_hover;
+          //background-color: $text_color;
+          background-color: $header_bg_second;
+          //color: $header_sub_menu_color_hover;
+          color: $text_color;
           padding-left: 30px;
           display: flex;
           flex-direction: row;
@@ -71,45 +89,65 @@
           justify-content: space-between;
 
           svg.right-icon {
-            color: $header_sub_menu_color_hover;
-            fill: $header_sub_menu_color_hover;
-            stroke: $header_sub_menu_color_hover;
+            //color: $header_sub_menu_color_hover;
+            //fill: $header_sub_menu_color_hover;
+            //stroke: $header_sub_menu_color_hover;
+            color: $text_color;
+            fill: $text_color;
+            stroke: $text_color;
           }
 
           >span {
             padding: 0;
-            background-color: $text_color;
-            color: $header_sub_menu_color_hover;
+            //background-color: $text_color;
+            background-color: $header_bg_second;
+            //color: $header_sub_menu_color_hover;
+            color: $text_color;
             transition: inherit;
 
             svg.left-icon {
               transition: inherit;
-              background-color: $text_color;
-              color: $header_sub_menu_color_hover;
-              fill: $header_sub_menu_color_hover;
-              stroke: $header_sub_menu_color_hover;
+              //background-color: $text_color;
+              background-color: $header_bg_second;
+              //color: $header_sub_menu_color_hover;
+              //fill: $header_sub_menu_color_hover;
+              //stroke: $header_sub_menu_color_hover;
+              color: $text_color;
+              fill: $text_color;
+              stroke: $text_color;
               margin-right: 10px;
             }
           }
           &:hover {
-            color: $text_color;
-            background-color: $header_sub_menu_color_hover;
+            //color: $text_color;
+            color: $yellow_box_bg;
+            //background-color: $header_sub_menu_color_hover;
+            background-color: $header_bg_second;
 
             svg.right-icon {
-              color: $text_color;
-              fill: $text_color;
-              stroke: $text_color;
+              //color: $text_color;
+              //fill: $text_color;
+              //stroke: $text_color;
+              color: $yellow_box_bg;
+              fill: $yellow_box_bg;
+              stroke: $yellow_box_bg;
             }
 
             >span {
-              color: $text_color;
-              background-color: $header_sub_menu_color_hover;
+              //color: $text_color;
+              color: $yellow_box_bg;
+              //background-color: $header_sub_menu_color_hover;
+              background-color: $header_bg_second;
 
               svg.left-icon {
-                color: $text_color;
-                fill: $text_color;
-                stroke: $text_color;
-                background-color: $header_sub_menu_color_hover;
+                //color: $text_color;
+                //fill: $text_color;
+                //stroke: $text;
+                color: $yellow_box_bg;
+                fill: $yellow_box_bg;
+                stroke: $yellow_box_bg;
+                //background-color: $header_sub_menu_color_hover;
+                background-color: $header_bg_second;
               }
             }
           }
@@ -273,7 +311,8 @@
     text-align: left;
     border: 1px solid $menu_border_color;
     border-bottom-color: #fff;
-    background-color: $drop-menu-color;
+    //background-color: $drop-menu-color;
+    background-color: $btn_base_bg;
     color: $text_color;
     padding: 5px;
     //max-width: 320px;
@@ -305,6 +344,10 @@
           text-decoration: underline;
           font-weight: normal;
           margin-left: 20px;
+          color: $text_color;
+          &:hover {
+            color: $coupons_a_hover_color;
+          }
         }
         @include media($laptop-min) {
           display: none;
