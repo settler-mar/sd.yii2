@@ -709,12 +709,6 @@ input.link {
   overflow: hidden;
 }
 
-.tipso_bubble {
-  @include media($tablets) {
-    display: none !important;
-  }
-}
-
 .scroll_to{
   cursor: pointer;
 }
