@@ -33,8 +33,8 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         return [
             [['name', 'route'], 'required'],
             [['name', 'route'], 'trim'],
-            [['short_description'], 'string'],
-            [['short_description'], 'trim'],
+            [['short_description', 'short_description_offline'], 'string'],
+            [['short_description', 'short_description_offline'], 'trim'],
             [['description'], 'string'],
             [['description'], 'trim'],
             [['name', 'route'], 'string', 'max' => 255],
@@ -52,6 +52,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             'uid' => 'Uid',
             'name' => 'Name',
             'short_description' => 'Нижнее описание',
+            'short_description_offline' => 'Нижнее описание оффлайн',
             'route' => 'Route',
             'description' => 'Верхнее описание',
         ];
