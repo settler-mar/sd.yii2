@@ -59,10 +59,28 @@ a {
   color: $a_color;
   transition: all .25s ease;
 
+  &.blue {
+    color: $link_color_blue;
+    svg {
+      color: $link_color_blue;
+      fill: $link_color_blue;
+      stroke: $link_color_blue;
+    }
+  }
+
   &:hover {
     color: $a_color_hover;
     fill: $a_color_hover;
     stroke: $a_color_hover;
+
+    &.blue {
+      color: $link_color_blue_hover;
+      svg {
+        color: $link_color_blue_hover;
+        fill: $link_color_blue_hover;
+        stroke: $link_color_blue_hover;
+      }    }
+
   }
 }
 
