@@ -26,6 +26,10 @@ ul {
     height: 30PX;
     width: 30PX;
     flex-shrink: 0;
+
+    @include media($phones) {
+      margin-right: 10px;
+    }
   }
 
   &_title {

@@ -17,14 +17,14 @@
       }
 
       &_fw_li{
-        margin-left: -40px !important;
+        //margin-left: -40px !important;
       }
 
       &_margin_btn{
         margin-top: 3px;
         margin-bottom: 26px;
-        transform: translate3d(-50%, 0, 0px);
-        margin-left: 50%;
+        //transform: translate3d(-50%, 0, 0px);
+        //margin-left: 50%;
       }
     }
 
@@ -285,9 +285,11 @@
           flex-direction: row;
           flex-wrap: nowrap;
           align-items: center;
-          justify-content: center;
-          @include media($tablets) {
+          justify-content: space-between;
+
+          @include media($laptop-min) {
             flex-direction: column;
+            justify-content: center;
           }
         }
 
@@ -315,6 +317,10 @@
           flex-wrap: nowrap;
           align-items: center;
           justify-content: center;
+
+          @include media($laptop-min) {
+            display: none;
+          }
 
           &-arrow {
             width: 20px;
