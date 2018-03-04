@@ -649,6 +649,10 @@
       max-height: 0;
       transition: all .25s ease;
 
+      @include media($laptop-min) {
+        right: 0;
+      }
+
       a.btn{
         display: none;
       }
@@ -679,12 +683,12 @@
         @include media($laptop_min) {
           max-height: calc(100vh - 3.125rem);
           max-width: none;
-          right: 0;
+          //right: 0;
         }
         @include media($laptop_min) {
           max-height: calc(100vh - 3.125rem);
           max-width: none;
-          right: 0;
+          //right: 0;
         }
 
         &:before{
