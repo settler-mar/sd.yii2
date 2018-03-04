@@ -383,11 +383,12 @@
 .notification_container {
   position: fixed;
   transform: translate3d(0,0,0);
-  top: 0;
+  //top: 0;
   right: 0;
   padding: 5px;
   z-index: 99999;
-  top: 20px;
+  //top: 20px;
+  top: 35PX;
 
   a{
     text-decoration: underline;
