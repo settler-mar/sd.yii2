@@ -89,8 +89,6 @@ class SiteController extends SdController
     $stores = Stores::top12();
     $totalStores = Stores::activeCount();
 
-    $reviews = Reviews::top();
-
     //$reg_form = new RegistrationForm();
     Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
@@ -101,14 +99,16 @@ class SiteController extends SdController
         'time' => time(),
         'stores' => $stores,
         'total_all_stores' => $totalStores,
-        'top_reviews' => $reviews,
         'wrap' => 'index',
-        'coupons' => Coupons::top(['limit' => 8, 'new' => 1]),
     ];
 
     if (!Yii::$app->user->isGuest) {
       $data['slider'] = Slider::get();
       $data['posts'] = Posts::getLastPosts();
+      $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1,'unique_store'=>true]);
+    }else{
+      $reviews = Reviews::top();
+      $data['top_reviews'] = $reviews;
     }
 
     //ddd($counter);

@@ -5,6 +5,10 @@
                 <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
                 <div class="meta-form">
+                    
+                    <p>
+                        В метотегах можно использовать <a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank" rel="noreferrer nofollow">emoji</a>
+                    </p>
                     {% set form = active_form_begin() %}
 
                         {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
