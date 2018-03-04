@@ -30,16 +30,31 @@
         </div>
         <div class="coupons-list_item-content">
           <div class="coupons-list_item-logo-info">
-            {% if not_active %}
-              {#<div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>#}
-              <div class="coupons-list_item-time">Промокод неактивен</div>
-            {% else %}
-              <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
-            {% endif %}
-            <div class="coupons-list_item-visit">
-              Воспользовались:
-              <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) | raw}}</span>
-            </div>
+              <div class="coupons-list_item-logo-info-left">
+                  {% if not_active %}
+                      {#<div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>#}
+                      <div class="coupons-list_item-time">Промокод неактивен</div>
+                  {% else %}
+                      <div class="coupons-list_item-time"><span class="clock" data-end="{{coupon.date_end}}"></span></div>
+                  {% endif %}
+                  <div class="coupons-list_item-visit">
+                      Воспользовались:
+                      <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) | raw}}</span>
+                  </div>
+              </div>
+              <div class="coupons-list_item-logo-info-share">
+                  {% set coupon_name = coupon.name ~ " +&nbsp;кэшбэк&nbsp;" ~ _cashback(coupon.store_cashback, '',coupon.store_action_id)~"&nbsp;"~coupon.store_currency %}
+                  <div class="">Поделиться:</div>
+                  <div class="share42init accauntSoc accauntSoc_32"
+                       data-url="https://secretdiscounter.ru//coupons/{{coupon.store_route}}/{{ coupon.uid }} }}"
+                       data-image="https://secretdiscounter.ru/images/logos/{{ coupon.store_image }}"
+                       data-title="{{ coupon_name|raw }}"
+                       data-description="{{ this.description }}"
+                       data-socials="1,0,2,4,3,5,6"
+                       data-icon-size="24"
+                  >
+                  </div>
+              </div>
           </div>
             <div class="coupons-list_item-content-goto">
                 <div class="coupons-list_item-content-goto-promocode">

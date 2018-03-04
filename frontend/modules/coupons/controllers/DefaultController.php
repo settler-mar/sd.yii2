@@ -194,7 +194,8 @@ class DefaultController extends SdController
         ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
-       $contentData["store_rating"] = Reviews::storeRating($storeId);
+      $contentData["store_rating"] = Reviews::storeRating($storeId);
+      Yii::$app->view->metaTags[] = '<meta property="og:image" content="https://secretdiscounter.ru/images/logos/'.$store->logo.'" />';
 
     } else {
       $contentData["counts"] = Coupons::counts();

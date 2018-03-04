@@ -43,6 +43,7 @@
       &-info{
         text-align: left;
         padding: 0 10px;
+        flex-direction: column;
       }
 
       &-img{
@@ -266,6 +267,7 @@
             }
           }
         }
+
       }
     }
 
@@ -556,9 +558,15 @@
           justify-content: center;
           padding: 5px;
         }
+        &-info{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-between;
 
-        &-info {
-          //text-align: center;
+          &-share {
+            text-align: center;
+          }
         }
       }
 
