@@ -350,6 +350,12 @@ svg.svg-no-stroke {
 .gray-box {
   background-color: $gray_box_bg;
   position: relative;
+
+  &-accordeon {
+    @include media($tablets) {
+      background-color: inherit;
+    }
+  }
 }
 
 .yellow-box {
@@ -432,6 +438,12 @@ svg.svg-no-stroke {
   padding-top: 10px;
   h2,h3 {
     margin-top: 0;
+  }
+  &-accordeon {
+    @include media($tablets) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 }
 
