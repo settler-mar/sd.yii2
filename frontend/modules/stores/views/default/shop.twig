@@ -211,23 +211,25 @@
   </section>
 {% endif %}
 
-{% if current_store.is_active==0 %}
-  <section class="shop_temporaty-inactive margin page-wrap">
-    <div class="black_box align-center">
-      {{ _constant('shop_not_active_description')|raw }}
+{% if _is_empty(current_store.displayed_cashback) %}
+  <section class="margin page-wrap">
+    <div class="red_box red_box-border">
+        {{ _constant('shop_no_cashback')|raw }}
     </div>
   </section>
+{% endif %}
+
+{% if current_store.is_active==0 %}
+  {#<section class="shop_temporaty-inactive margin page-wrap">#}
+    {#<div class="black_box align-center">#}
+      {#{{ _constant('shop_not_active_description')|raw }}#}
+    {#</div>#}
+  {#</section>#}
   {#блок с похожими шопами для временно неактивных шопов сюда#}
   {% include 'parts/stores/additional_stores.twig' %}
 {% endif %}
 
-{% if _is_empty(current_store.displayed_cashback) %}
-  <section class="margin">
-    <div class="page-wrap red_box">
-      {{ _constant('shop_no_cashback')|raw }}
-    </div>
-  </section>
-{% endif %}
+
 
 {% include 'parts/calc_cashback.twig' %}
 

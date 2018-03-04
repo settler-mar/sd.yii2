@@ -7,6 +7,7 @@
                 <h2>Новые купоны и промокоды</h2>
             {% endif %}
             <div class="coupons-list coupons-list-stores  narrow list-4 narrow_off">
+                {% set not_active = current_store.is_active == 0 %}
                 {% for coupon in coupons %}
                     {% include 'parts/coupon.twig' %}
                 {% endfor %}

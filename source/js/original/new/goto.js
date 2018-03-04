@@ -4,7 +4,21 @@
         var that = $(this);
         var expired = that.closest('.coupons-list_item').find('.clock-expired');
         var userId = $(that).data('user');
-        if (expired.length > 0) {
+        var inactive = $(that).data('inactive');
+        var data_message = $(that).data('message');
+
+        if (inactive) {
+            var title = data_message ? data_message : 'К сожалению, промокод неактивен';
+            var message = 'Все действующие промокоды вы можете <a href="/coupons">посмотреть здесь</a>';
+            notification.alert({
+                'title': title,
+                'question': message,
+                'buttonYes': 'Ok',
+                'buttonNo': false,
+                'notyfy_class': 'notify_box-alert'
+            });
+            return false;
+        }  else if (expired.length > 0) {
             var title = 'К сожалению, срок действия данного промокода истек';
             var message = 'Все действующие промокоды вы можете <a href="/coupons">посмотреть здесь</a>';
             notification.alert({
@@ -15,8 +29,7 @@
                 'notyfy_class': 'notify_box-alert'
             });
             return false;
-        }
-        if (!userId) {
+        } else if (!userId) {
             var data={
                 'buttonYes':false,
                 'notyfy_class': "notify_box-alert",

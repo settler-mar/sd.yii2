@@ -363,7 +363,12 @@ svg.svg-no-stroke {
 
   h3, h2 {
     color: $btn_base_bg;
+    margin-top: 0;
   }
+}
+
+.red_box-border {
+  border: 2px dashed $red_box_border;
 }
 
 .black_box {
