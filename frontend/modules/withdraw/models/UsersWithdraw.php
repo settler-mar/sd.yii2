@@ -88,7 +88,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
     if ($this->isNewRecord) {
       $this->user_id = Yii::$app->user->id;
       $this->request_date = date('Y-m-d H:i:s');
-      $this->status = 1;
+      $this->status = 0;
     }
     return true;
   }
@@ -131,7 +131,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
    */
   public static function waitingCount($userId = false)
   {
-    $count = self::find()->where(['status' => 1]);
+    $count = self::find()->where(['status' => 0]);
     if ($userId) {
       $count = $count->andWhere(['user_id' => $userId]);
     }

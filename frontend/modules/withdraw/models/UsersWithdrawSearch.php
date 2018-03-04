@@ -69,7 +69,7 @@ class UsersWithdrawSearch extends UsersWithdraw
     }
 
     //по умолчанию - в ожидании
-    $this->status = $this->status === null ? 1 : $this->status;
+    $this->status = $this->status === null ? 0 : $this->status;
     // grid filtering conditions
     $query->andFilterWhere([
       'uid' => $this->uid,

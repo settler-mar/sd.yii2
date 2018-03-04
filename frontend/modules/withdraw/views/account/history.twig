@@ -25,13 +25,13 @@
             {{ _nf(w.amount) | raw }}&nbsp;{{ curr|raw }}
           </td>
           <td class="status {{ w.status }}">
-            {% if w.status == '1' %}
-              {{ svg('clock-o','currency-icon')|raw }}
+            {% if w.status == '0' %}
+              {{ svg('clock-o','currency-icon')|raw }}{{ w.status_title }}
+            {% elseif w.status == '1' %}
+              {{ svg('close','currency-icon')|raw }}{{ w.status_title }}
             {% elseif w.status == '2' %}
-              {{ svg('check','currency-icon')|raw }}
-            {% elseif w.status == '0' %}
-              {{ svg('times','currency-icon')|raw }}
-            {% endif %}&nbsp;{{ w.status_title }}
+              {{ svg('check','currency-icon')|raw }}{{ w.status_title }}
+            {% endif %}
           </td>
           <td>
             {{ _n_to_br(w.admin_comment) | raw }}
