@@ -65,6 +65,12 @@
           >ul {
             opacity: 1;
             visibility: visible;
+            >li {
+              a.active {
+                color: $btn_base_dark_color;
+                background-color: $header_color_gray;
+              }
+            }
           }
         }
         &.cd-label {
