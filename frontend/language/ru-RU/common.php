@@ -31,6 +31,7 @@ return [
     'number' => 'Номер',
     'admin_comment' => 'Комментарий администратора',
     'error' => 'Ошибка',
+    'info' => 'Информация',
     'congratulations' => 'Поздравляем!',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
     'read_more' => 'Подробнее',

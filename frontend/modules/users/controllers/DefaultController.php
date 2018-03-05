@@ -357,7 +357,7 @@ class DefaultController extends Controller
 
       return $this->redirect(['/email-success/account']);
     } else {
-      return $this->redirect(['/']);
+      return false;
     }
 
   }

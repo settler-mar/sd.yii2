@@ -26,24 +26,62 @@ class ValidateEmail extends Model
   {
     if ($token !== false) {
       if (empty($token) || !is_string($token)) {
+        Yii::$app->response->redirect('/404');
         throw new InvalidParamException(Yii::t('account', 'email_confirm_token_empty'));
       }
-      $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
-      if (!$this->_user ) {
-        Yii::$app->session->addFlash('err', [
-          'title'=>Yii::t('common', 'error').'!',
-          'message'=>Yii::t('account', 'email_confirm_token_used_or_expired')
-        ]);
-        Yii::$app->response->redirect('/');
-        return null;
-      }
-      if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60*60*24) {
-        Yii::$app->session->addFlash('err', [
-          'title'=>Yii::t('account', 'error').'!',
-          'message'=>Yii::t('account', 'email_confirm_token_expired'),
-        ]);
-        Yii::$app->response->redirect('/account/sendverifyemail');
-        return null;
+
+      if(Yii::$app->user->isGuest) {
+        //для неавторизированных юзеров
+        $this->_user = Users::findOne(['email_verify_token' => $token, 'email' => $email]);
+        if (!$this->_user) {
+          Yii::$app->session->addFlash('err', [
+              'title' => Yii::t('common', 'error') . '!',
+              'message' => Yii::t('account', 'email_confirm_token_used_or_expired')
+          ]);
+          Yii::$app->response->redirect('/404');
+          return false;
+        }
+        if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60 * 60 * 24) {
+          Yii::$app->session->addFlash('err', [
+              'title' => Yii::t('account', 'error') . '!',
+              'message' => Yii::t('account', 'email_confirm_token_expired'),
+          ]);
+          Yii::$app->response->redirect('/account/sendverifyemail');
+          return false;
+        }
+      }else{
+        //$this->_user =
+        $user = Yii::$app->user->identity;
+
+        if($user->email_verified==1){
+          Yii::$app->session->addFlash('info', [
+              'title' => Yii::t('common', 'info') . '!',
+              'message' => Yii::t('account', 'email_confirmed')
+          ]);
+          Yii::$app->response->redirect('/account');
+          return false;
+        }
+
+        if($user->email!=$email){
+          Yii::$app->session->addFlash('err', [
+              'title' => Yii::t('common', 'error') . '!',
+              'message' => Yii::t('account', 'email_confirm_email_error')
+          ]);
+          Yii::$app->response->redirect('/404');
+          return false;
+        }
+
+
+        if($user->email_verify_token!=$token){
+          Yii::$app->session->addFlash('err', [
+              'title' => Yii::t('common', 'error') . '!',
+              'message' => Yii::t('account', 'email_confirm_token_expired')
+          ]);
+          Yii::$app->response->redirect('/404');
+          return false;
+        }
+
+        $this->_user=$user;
       }
     }
     parent::__construct();
@@ -70,12 +108,13 @@ class ValidateEmail extends Model
   {
     $user = $this->_user;
 
+    if(!$user) return false;
+
     $user->email_verified = 1;
     $user->email_verify_token = null;
     $user->email_verify_time = null;
 
     if ($user->save()){
-      //отправляем письмо о валидации
       static::sentEmailValidation($user, ['validate_success' => true]);
       return $user->uid;
     }else{
