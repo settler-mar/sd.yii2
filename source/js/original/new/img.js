@@ -134,7 +134,7 @@ $( document ).ready(function() {
   }
 
   //тест аватарок в коментариях
-  imgs=$('.comment-photo');
+  imgs=$('.comment-photo,.scroll_box-avatar');
   for (var i=0;i<imgs.length;i++){
     img=imgs.eq(i);
     if(img.hasClass('no_ava')){
@@ -146,7 +146,7 @@ $( document ).ready(function() {
     src=src.replace('")','');
     img.addClass('no_ava');
 
-    img.css('background-image','url(/images/no_ava.png)');
+    img.css('background-image','url(/images/no_ava_square.png)');
     data={
       src:src,
       img:img,

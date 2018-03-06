@@ -340,18 +340,8 @@
 
         @include media($laptop-min) {
           text-align: center;
-          padding-right: 36px;
-          padding-left: 0;
-          display: block;
-          width: 225px;
-          margin: auto;
-        }
-
-        @include media($phones) {
-          text-align: left;
           padding-right: 0;
-          padding-left: 48px;
-          width: 100%;
+          padding-left: 0;
         }
       }
     }
