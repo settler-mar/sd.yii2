@@ -11,6 +11,7 @@ function ajaxForm(els) {
     var data = this;
     var form = data.form;
     var wrap = data.wrap;
+    var wrap_html = data.wrap_html;
 
     if (post.render) {
       post.notyfy_class = "notify_white";
@@ -24,10 +25,13 @@ function ajaxForm(els) {
       } else {
         if (!post.error) {
           form.removeClass('loading');
+          wrap.html(wrap_html);
           form.find('input[type=text],textarea').val('')
+          ajaxForm(wrap);
         }
       }
     }
+
     if (typeof post.error === "object") {
       for (var index in post.error) {
         notification.notifi({
@@ -88,6 +92,7 @@ function ajaxForm(els) {
     var data = this;
     var form = data.form;
     var wrap = data.wrap;
+    data.wrap_html=wrap.html();
     var isValid = true;
 
     //init(wrap);
@@ -110,9 +115,7 @@ function ajaxForm(els) {
 
       e.stopImmediatePropagation();
       e.stopPropagation();
-
       var required = form.find('input.required');
-
       for (i = 0; i < required.length; i++) {
         var helpBlock = required.eq(i).attr('type') == 'hidden' ? required.eq(i).next('.help-block') :
           required.eq(i).closest('.form-input-group').next('.help-block');
@@ -134,11 +137,11 @@ function ajaxForm(els) {
 
     var postData = form.serializeObject();
     form.addClass('loading');
-    //form.html('');
-    //wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
+    form.html('');
+    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
 
     data.url += (data.url.indexOf('?') > 0 ? '&' : '?') + 'rc=' + Math.random();
-    console.log(data.url);
+    //console.log(data.url);
 
     $.post(
       data.url,

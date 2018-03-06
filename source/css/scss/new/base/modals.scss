@@ -156,9 +156,15 @@
 
         .notify_close {
           padding: 3px 8px;
+          z-index: 9;
 
           &:before {
             content: "×";
+            font-size: 1.2rem;
+
+            @include media($tablets) {
+              font-size: 2rem;
+            }
           }
         }
       }
