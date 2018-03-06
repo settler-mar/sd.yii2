@@ -106,7 +106,16 @@
     z-index: 98;
 
     @include media($laptop_min) {
-      background-color: $drop-menu-color;
+      width: 320px;
+      min-height: calc(100vh - 52px);
+      background-color: $header_bg_up;
+      padding-bottom: 40px;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    @include media($tablets) {
+      width: 100%;
     }
 
     &.scrollable {

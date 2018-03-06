@@ -12,7 +12,7 @@ $( document ).ready(function() {
           title:"Необходимо авторизоваться",
           message:'Добавить в избранное может только авторизованный пользователь.</br>'+
             '<a href="#login" class="modals_open">Вход</a>  / <a href="#registration" class="modals_open">Регистрация</a>',
-          type:'info'
+          type:'err'
       });
       return false;
 

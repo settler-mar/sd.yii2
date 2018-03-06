@@ -7,19 +7,23 @@
     &>li {
       margin-right: 0;
       margin-left: 20px;
+
       @include media($laptop_min) {
         margin-right: 20px;
         margin-left: 0;
       }
+
       &:last-child {
         >a,>span {
           border-bottom: none;
         }
       }
+
       &>ul {
         background-color: $header_color_up;
         width: auto;
         right: -10px;
+
         @include media($laptop_min) {
           margin-top: 0;
           border: none;
@@ -29,11 +33,13 @@
           background-color: $header_sub_menu_bg;
         }
       }
+
       &:hover>ul {
         border-right:  2px solid $menu_left_border_color;
         border-left:  2px solid $menu_left_border_color;
         border-bottom:  2px solid $menu_left_border_color;
         box-shadow: 0 3px 3px rgba(0,0,0,.2);
+
         @include media($laptop_min) {
           border: none;
           box-shadow: none;
@@ -42,10 +48,12 @@
 
     }
   }
+
   &.header-right>li {
     &.open {
       padding-top: 20px;
     }
+
     &:first-child {
       @include media($laptop-min) {
         padding-top: 0;
@@ -55,31 +63,38 @@
 
   &>li{
     margin-right: 20px;
+
     &:first-child {
       @include media($laptop_min) {
         //в мобиле для первого пункта меню первого уровня
         padding-top: 20px;
       }
     }
+
     >span {
       @include media($laptop-min) {
         cursor: pointer;
 
       }
     }
+
     &.drop-menu_group__up {
       >a,
       >span {
         @include media($laptop-min) {
           //в мобилке пункты, имеющие подменю
-          color: $shop_cashback_link_action;
+          color: $drop-menu-color_parents-mobile;
         }
       }
     }
 
 
-    //для первого пункта подменю
     &>ul>li{
+      @include media($laptop-min) {
+        background-color: $footer_bg;
+      }
+
+      //для первого пункта подменю
       &:first-child {
         a, span {
           padding-top: 25px;
@@ -150,16 +165,20 @@
     }
 
     @include media($tablets) {
-      font-size: 16px;
+      font-size: 1.2rem;
     }
 
     @include media($laptop-min) {
-      border-bottom: 1px solid $menu_border_color;
+      border-bottom: 1px solid $header_border_color;
       cursor: default;
+      color: $drop-menu-color-mobile;
+      font-size: 1.2rem;
+      padding: 16PX 0;
 
       &.link_mobile_bold {
         font-weight: bold;
       }
+
       &.link_mobile_pointed {
         color: $header_color_pointed;
       }
@@ -169,6 +188,7 @@
   &.header-right {
     position: relative;
   }
+
   ul{
     margin: 0;
     padding: 0;
@@ -179,14 +199,13 @@
     border-left: 1px solid $menu_border_color;
     border-right: 1px solid $menu_border_color;
     border-bottom: none;
-
     opacity: 0;
-
     visibility: hidden;
     transition-property: opacity,visibility;
     transition-duration: .25s;
     transition-timing-function: ease;
     transition-delay: .1s;
+
     @include media($laptop_min) {
       position: relative;
       width: auto;
@@ -212,12 +231,15 @@
       position: relative;
       line-height: 15px;
       background-color: $drop-menu-color;
+
       a, span{
+
         padding: 10px 15px;
-        @include media($laptop_min) {
-          padding: 15px 15px;
-        }
         white-space: normal;
+
+        @include media($laptop_min) {
+          padding: 16PX 0;
+        }
       }
       span.active {
         padding: 10px 15px;
@@ -325,6 +347,10 @@
     stroke: $text_color;
     fill: $text_color;
     cursor: pointer;
+
+    @include media($laptop-min) {
+      fill: $share_color;
+    }
   }
 
 
@@ -370,10 +396,20 @@
     >a,>span {
       color: $header_color_pointed !important;
 
+      @include media($laptop-min) {
+        color: $share_color!important;
+      }
+
       svg {
         color: $header_color_pointed !important;
         fill: $header_color_pointed !important;
         stroke: $header_color_pointed !important;
+
+        @include media($laptop-min) {
+          color: $share_color !important;
+          fill: $share_color !important;
+          stroke: $share_color !important;
+        }
       }
     }
   }

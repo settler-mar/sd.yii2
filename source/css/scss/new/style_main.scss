@@ -200,6 +200,10 @@ h3, h4, h5, h6 {
   &-flex {
     display: flex;
 
+    @include media($laptop-min) {
+      padding: 0px 0 0 10px;
+    }
+
     @include media($laptop_min) {
       flex-direction: column;
       justify-content: space-between;

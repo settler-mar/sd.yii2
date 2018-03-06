@@ -133,7 +133,7 @@
           {% endif %}
         </li>
         <li class="mobile">
-          <a href="/stores/s-povyshennym-cashback" class="link_mobile_bold">Двойной кэшбэк {{ svg('money', 'drop-menu_item-icon-money')|raw }}</a>
+          <a href="/stores/s-povyshennym-cashback" class="link_mobile_bold">Двойной кэшбэк</a>
         </li>
         <li class="drop-menu_group__up">
           <a class="drop-menu_group__up-header" href="/coupons">Промокоды
@@ -188,14 +188,12 @@
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
             'href':'/account/webmaster',
-            'title': t('account', 'menu_web_master')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
-            'class':'flex-start'
+            'title': t('account', 'menu_web_master')~' {{ svg(\'money\', \'drop-menu_item-icon-money\')|raw }}',
             } %}
           {% else %}
             {% set item= {
             'href':'/affiliate-system',
-            'title': t('account', 'menu_affiliate')~' ({{ svg(\'dollar\',\'header-icon-money\')|raw }})',
-            'class':'flex-start'
+            'title': t('account', 'menu_affiliate')~' {{ svg(\'money\', \'drop-menu_item-icon-money\')|raw }}',
             } %}
           {% endif %}
           {{ get_menu_item(item)|raw }}
