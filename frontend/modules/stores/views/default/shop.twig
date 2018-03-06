@@ -40,7 +40,8 @@
                data-title="{{ html.encode(this.title) }}"
                data-description="{{ this.description }}"
                data-socials="1,0,2,4,3,5,6"
-               data-icon-size="24"
+               data-icon-type="svg"
+               data-icon-size=28
           >
           </div>
         </div>
@@ -138,14 +139,16 @@
           </div>
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
-            Кэшбэк станет активным для вывода через
-            <span>{{ current_store.hold_time }}&nbsp;дней</span>
-            <span class="avg">
-                (среднее время обработки)
-                <a class="shop-name-question" data-placement="top" data-toggle="tooltip"
-                   data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
-                >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
-            </span>
+            <div class="align-center">
+              Кэшбэк станет активным для вывода через
+              <span>{{ current_store.hold_time }}&nbsp;дней</span>
+              <span class="avg">
+                  (среднее время обработки)
+                  <a class="shop-name-question" data-placement="top" data-toggle="tooltip"
+                     data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+                  >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+              </span>
+            </div>
           </div>
         </div>
       </div>

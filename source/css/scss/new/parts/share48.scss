@@ -7,13 +7,13 @@
 }
 
 .soc-icon-sd {
-  background-color: #e4c84b;
-  color: #0f181a !important;
+  background-color: $share_color;
+  color: $btn_base_color !important;
   display: inline-block;
   padding: 8PX;
   width: 20PX;
   height: 20PX;
-  margin-right: 10PX;
+  margin-right: 5PX;
   text-align: center;
   border-radius: 50%;
   transition: all 300ms ease-in-out;
@@ -73,7 +73,8 @@
 }
 
 .soc-icon-sd:hover {
-  background-color: #FFDC73;
+  color: $share_color;
+  background-color: $btn_base_color !important;
 }
 
 .accauntSoc_32 .soc-icon-sd {

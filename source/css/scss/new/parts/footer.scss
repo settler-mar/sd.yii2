@@ -51,7 +51,15 @@
     margin-bottom: 55px;
   }
 
+  .share42_wrap{
+    a{
+      display: inline-block;
+    }
+  }
+
   a {
+    line-height: 10px;
+    margin-bottom: 14px;
     display: block;
     text-decoration: none;
     color: $footer_link_color;
@@ -60,8 +68,6 @@
     @include media($tablets) {
       font-size: 16px;
     }
-    line-height: 10px;
-    margin-bottom: 14px;
 
     &:hover {
       color: $a_color_hover;
@@ -289,7 +295,7 @@
 
   &-share {
     color: $footer_text2_color;
-    margin-bottom: 42px;
+    margin-bottom: 36px;
 
     &-text {
       padding-bottom: 3px;

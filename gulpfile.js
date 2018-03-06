@@ -163,6 +163,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/ajax.js',
         paths.source.js+'/original/new/dobro.js',
         paths.source.js+'/original/new/left-menu-toggle.js',
+        paths.source.js+'/original/share42.js',
 
   //for_all
         paths.source.js+'/original/notification.js',
