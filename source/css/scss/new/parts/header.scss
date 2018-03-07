@@ -26,6 +26,12 @@
     z-index: 100;
     font-size: 14px;
 
+    &_inner{
+      max-width: 1160px;
+      margin: auto;
+      padding: 0 5px;
+    }
+
     .header-right {
       @include media($laptop_min) {
         display: none;
@@ -165,12 +171,14 @@
       width: 80%;
       transition: left .25s ease .1s;
       top: $mobile_stores_menu_top;
+
       &_inner {
         margin-left: 0;
       }
     }
     a.dashed {
       position: relative;
+
       &:after {
         content: " ";
         border-bottom: 1px dashed;
@@ -183,12 +191,17 @@
         }
       }
     }
+
     a.flex-start {
       justify-content: flex-start;
     }
+
     &_inner {
       display: flex;
       justify-content: space-between;
+      max-width: 1160px;
+      margin: auto;
+      padding: 0 5px;
     }
 
   }
@@ -428,10 +441,7 @@
     opacity: 1;
     visibility: visible;
 
-
-
     &_inner {
-
       border: 1px solid $menu_border_color;
       background-color: $drop-menu-color;
       width: 100%;
@@ -452,7 +462,6 @@
     }
 
     &-toggle {
-
       &-close {
         padding: 0 3PX;
         display: none;
@@ -462,19 +471,19 @@
         fill: $header_color_up;
         stroke: $header_color_up;
       }
+
       &.open {
         @include media($laptop-min) {
           .account-menu-toggle-image {
             display: none;
           }
+
           .account-menu-toggle-close {
             display: block;
           }
         }
       }
     }
-
-
 
     @include media($laptop-min) {
       transition: none;
@@ -486,6 +495,7 @@
       top: 50PX;
       overflow: auto;
       right: 0;
+
       &_inner {
         width: 80%;
         right: 0;
@@ -497,12 +507,14 @@
       opacity: 0;
       visibility: hidden;
       //overflow: hidden;
+
       @include media($laptop-min) {
         max-height: inherit;
         right: -100%;
         //overflow: auto;
         //transition: all .3s ease 0.1s;
       }
+
       .account-menu_inner {
         position: static;
         right: -100%;
