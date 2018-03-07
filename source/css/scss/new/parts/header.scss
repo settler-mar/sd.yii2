@@ -112,6 +112,7 @@
       padding-bottom: 40px;
       box-sizing: border-box;
       -webkit-overflow-scrolling:touch;
+      overflow-y: scroll;
     }
 
     @include media($tablets) {
