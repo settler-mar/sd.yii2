@@ -434,16 +434,20 @@ svg.svg-no-stroke {
 
 .padding-box-top {
   padding-top: 20px;
+
   h2,h3 {
     margin-top: 0;
   }
 }
+
 .padding-box-bottom {
   padding-bottom: 20px;
   padding-top: 10px;
+
   h2,h3 {
     margin-top: 0;
   }
+
   &-accordeon {
     @include media($tablets) {
       padding-top: 0;
@@ -452,10 +456,10 @@ svg.svg-no-stroke {
   }
 }
 
-
 .wrap-round {
   border-radius: 10px;
   padding: 20px !important;
+
   h2,h3 {
     margin-top: 0;
   }
@@ -747,6 +751,10 @@ input.link {
 
 .scroll_to{
   cursor: pointer;
+}
+
+.can-overflow{
+  overflow: unset;
 }
 
 @import 'base/error_pages';

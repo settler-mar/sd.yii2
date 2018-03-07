@@ -205,6 +205,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     }
 
     if (!parent::beforeValidate()) {
+      Yii::$app->logger->add($this,'user_validate_error',false);
       return false;
     }
 
