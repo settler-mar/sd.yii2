@@ -2,6 +2,24 @@
 $twigFunction = require(dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
 $twigFunction['translate'] = '\Yii::t';
 
+if (!function_exists('get_ip')) {
+  function get_ip()
+  {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+      $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+      if (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+      } else {
+        $ip = "0.0.0.0";
+      }
+    }
+    return $ip;
+  }
+}
+
 include_once(__DIR__ . '/start_param.php');
 $dict = require(__DIR__ . '/dictionary.php');
 

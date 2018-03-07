@@ -166,7 +166,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         Yii::$app->session->get('admin_id') != Yii::$app->user->id
     ) {
       self::getDb()->createCommand()->update(self::tableName(), [
-          'last_ip' => $_SERVER["REMOTE_ADDR"],
+          'last_ip' => get_ip(),
           'last_login' => date('Y-m-d H:i:s'),
       ], ['uid' => $id])->execute();
     }
@@ -233,7 +233,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     }
 
     if ($this->isNewRecord) {
-      $this->reg_ip = $_SERVER["REMOTE_ADDR"];
+      $this->reg_ip = get_ip();
       $this->referrer_id = (int)Yii::$app->session->get('referrer_id');
       $this->added = date('Y-m-d H:i:s');
 
