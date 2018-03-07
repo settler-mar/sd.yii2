@@ -8,9 +8,9 @@ $currencyIcon = [
 //  'USD' =>'<span class="fa fa-dollar"></span>',
 //  'UAH' => '<span class="uah">&#8372;</span>',
 //  'KZT' => '<span class="uah">&#8376;</span>',
-    'RUB' => 'ruble',
+/*    'RUB' => 'ruble',
     'EUR' => 'euro',
-    'USD' => 'dollar',
+    'USD' => 'dollar',*/
   //'UAH' => '<span class="uah">&#8372;</span>',
   //'KZT' => '<span class="uah">&#8376;</span>',
 ];
@@ -201,7 +201,7 @@ $functionsList = [
     return (isset($currencyIcon[$currency]) ? Help::svg(
         $currencyIcon[$currency],
         'currency-icon currency-icon-' . $currencyIcon[$currency]
-    ) : $currency);
+    ) : ' '.$currency);
   },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {
@@ -215,10 +215,10 @@ $functionsList = [
         $cur = (isset($currencyIcon[$currency]) ? Help::svg(
             $currencyIcon[$currency],
             'currency-icon currency-icon-' . $currencyIcon[$currency]
-        ) : $currency);
+        ) : ' '.$currency);
       }
       if ($mode == 1) {
-        $cur = $currency;
+        $cur = ' '.$currency;
       }
     }
     return trim($cashback . $cur);
@@ -240,9 +240,9 @@ $functionsList = [
       $out = $cashback .
           (isset($currencyIcon[$currency]) ?
               '{{svg("' . $currencyIcon[$currency] . '","currency-icon currency-icon-' . $currencyIcon[$currency] . '")|raw}}' :
-              $currency);
+              ' '.$currency);
     } else {
-      $out = $cashback;
+      $out = ' '.$cashback;
     }
     return trim($out);
   },

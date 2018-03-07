@@ -41,13 +41,7 @@ class DefaultController extends SdController
         $out["suggestions"][] = [
           "value" => $v['name'],
           "cashback" =>'<span class="cashback">'.$cashback.
-            (strpos($cashback, '%') === false ?
-              (isset(Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg'])?
-              Help::svg(
-                Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg'],
-                'currency-icon '.Yii::$app->params['currencies'][Yii::$app->params['valuta']]['svg']
-              )
-            : Yii::$app->params['valuta']): '').'</span>',
+            (strpos($cashback, '%') === false ? ' '.$v['currency']: '').'</span>',
           "data" => [
             'name' => $v['name'],
             'route' => $baseURL.$v['route_url']
