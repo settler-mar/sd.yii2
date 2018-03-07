@@ -2,6 +2,10 @@
 $twigFunction = require(dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
 $twigFunction['translate'] = '\Yii::t';
 
+include_once(__DIR__ . '/start_param.php');
+$dict = require(__DIR__ . '/dictionary.php');
+
+
 if (!function_exists('get_ip')) {
   function get_ip()
   {
@@ -19,9 +23,6 @@ if (!function_exists('get_ip')) {
     return $ip;
   }
 }
-
-include_once(__DIR__ . '/start_param.php');
-$dict = require(__DIR__ . '/dictionary.php');
 
 $config = [
     'name' => 'SecretDiscounter',
