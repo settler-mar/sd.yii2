@@ -253,10 +253,11 @@ td {
   height: 55px;
   margin: 0 auto;
   border-radius: 5px;
-  border: solid 1px $form_input_border;
+  border: solid 1px #fff; //в хроме не отрабатывало
+  box-shadow: 0 0 0 1px $form_input_border;
   text-align: left;
   position: relative;
-  overflow: hidden;
+  //overflow: hidden;
 
   &-fl {
     width: 100%;

@@ -249,6 +249,22 @@ gulp.task('SVGclean',function() {
       $('[stroke][stroke!="none"]').removeAttr('stroke');
       $('[style]').removeAttr('style');
       $('title').remove();
+      var viewBox=$('[viewBox]').attr('viewBox');
+      var h;
+      var w;
+      if(!viewBox){
+        h=$('[height]').attr('height');
+        w=$('[width]').attr('width');
+        viewBox='0 0 '+h+' '+w;
+      }else{
+        var t=viewBox.split(' ');
+        h=t[2];
+        w=t[3];
+      }
+      $('svg')
+        .attr('viewBox',viewBox)
+        .attr('height',h)
+        .attr('width',w)
     },
     parserOptions: {xmlMode: true}
   };
@@ -259,10 +275,11 @@ gulp.task('SVGclean',function() {
 
   return gulp.src(paths.source.svg+'/icons/*.svg')
     //.pipe(svgscaler({}))
-    .pipe(cheerio(cheerioConfig))
+    //.pipe(cheerio(cheerioConfig))
     //.pipe(svgmin(svgminConfig))
     .pipe(svgo(svgoConfig))
     .pipe(replace('&gt;', '>'))
+    .pipe(cheerio(cheerioConfig))
     .pipe(gulp.dest(paths.app.views+'/svg'));
 });
 
