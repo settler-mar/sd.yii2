@@ -189,12 +189,12 @@
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
             'href':'/account/webmaster',
-            'title': t('account', 'menu_web_master')~' {{ svg(\'money\', \'drop-menu_item-icon-money\')|raw }}',
+            'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
             } %}
           {% else %}
             {% set item= {
             'href':'/affiliate-system',
-            'title': t('account', 'menu_affiliate')~' {{ svg(\'money\', \'drop-menu_item-icon-money\')|raw }}',
+            'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_affiliate'),
             } %}
           {% endif %}
           {{ get_menu_item(item)|raw }}

@@ -1,171 +1,173 @@
 <footer class="footer">
-    <div class="page-wrap flex-line footer-main">
-        <div class="footer-left">
-            <div class="footer-text">
-                SecretDiscounter – первый кэшбэк-сервис, возвращаюший деньги за покупки не только в онлайне, но и в реальных магазинах. Мы экономим ваши деньги!
+  <div class="page-wrap flex-line footer-main">
+    <div class="footer-left">
+      <div class="footer-text">
+        SecretDiscounter – первый кэшбэк-сервис, возвращаюший деньги за покупки не только в онлайне, но и в реальных
+        магазинах. Мы экономим ваши деньги!
+      </div>
+      <div class="footer-menu flex-line">
+        <div class="footer-menu-col">
+          {% set link_list = _constant("footer_best_shop") %}
+          {% if link_list %}
+            <div class="footer-menu-lists">
+              <div class="footer-menu-title">Лучшие магазины</div>
+              {% for item in link_list %}
+                {% if item.show==1 %}
+                  <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+                {% endif %}
+              {% endfor %}
             </div>
-            <div class="footer-menu flex-line">
-                <div class="footer-menu-col">
-                    {% set link_list = _constant("footer_best_shop") %}
-                    {% if link_list %}
-                        <div class="footer-menu-lists">
-                            <div class="footer-menu-title">Лучшие магазины</div>
-                            {% for item in link_list %}
-                                {% if item.show==1 %}
-                                    <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+          {% endif %}
 
-                    <div class="footer-menu-lists">
-                        <div class="footer-menu-title">Компания</div>
-                        {% set link_list = _constant("footer_company") %}
-                        {% for item in link_list %}
-                            {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+          <div class="footer-menu-lists">
+            <div class="footer-menu-title">Компания</div>
+            {% set link_list = _constant("footer_company") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
 
-                    <div class="footer-menu-lists">
-                        <div class="footer-menu-title">Сотрудничество</div>
-                        {% set link_list = _constant("footer_cooperation") %}
-                        {% for item in link_list %}
-                            {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="footer-menu-col">
-                    <div class="footer-menu-lists">
-                        <div class="footer-menu-title">Популярные категории</div>
-                        {{ use('frontend/components/CategoryMenu') }}
-                        {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
-                        {% if category_tree %}
-                            {% for item in category_tree %}
-                                <a href="stores/{{ item.route }}">{{ item.name }}</a>
-                            {% endfor %}
-                        {% endif %}
-                        {% set link_list = _constant("footer_category") %}
-                        {% for item in link_list %}
-                            {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="footer-menu-col">
-                    <div class="footer-menu-lists">
-                        <div class="footer-menu-title">Полезные ссылки</div>
-                        {% set link_list = _constant("footer_useful_links") %}
-                        {% for item in link_list %}
-                            {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="footer-menu-col">
-                    <div class="footer-menu-lists">
-                        <div class="footer-menu-title">Помощь</div>
-                        {% set link_list = _constant("footer_help") %}
-                        {% for item in link_list %}
-                            {% if item.show==1 %}
-                                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"')}}>{{ item.name }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="footer-withdraws flex-line">
-                <div class="footer-withdraws-item">Способы вывода кэшбэка:</div>
-                <div class="footer-withdraws-item footer-withdraws-visa"></div>
-                <div class="footer-withdraws-item footer-withdraws-mastercard"></div>
-                <div class="footer-withdraws-item footer-withdraws-qiwi"></div>
-                <div class="footer-withdraws-item footer-withdraws-mir"></div>
-                <div class="footer-withdraws-item footer-withdraws-phone"></div>
-                <div class="footer-withdraws-item footer-withdraws-ya"></div>
-                <div class="footer-withdraws-item footer-withdraws-wm"></div>
-                <div class="footer-withdraws-item footer-withdraws-paypal"></div>
-            </div>
-            <div class="footer-docs  flex-line">
-                <a class="footer-docs-item" href="/privacy-policy">Политика конфиденциальности</a>
-                <a class="footer-docs-item" href="/terms">Условия использования</a>
-            </div>
-            <div class="footer-copyright">
-                <a href="/about" class="footer-copyright_text">
-                    © Secret Discounter Ltd., 2016-{{ year() }}.<br>
-                    Зарегистрирована в Англии под №10201982.
-                </a>
-            </div>
+          <div class="footer-menu-lists">
+            <div class="footer-menu-title">Сотрудничество</div>
+            {% set link_list = _constant("footer_cooperation") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        <div class="footer-right">
-            <div class="footer-right-item footer-share">
-                <div class="footer-share-text">Расскажите о нас друзьям:</div>
-                <div class="share42init accauntSoc accauntSoc_32"
-                     data-url="https://secretdiscounter.ru/"
-                     data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
-                     data-title="{{ html.encode(this.title) }}"
-                     data-description="{{ this.description }}"
-                     data-socials="1,0,2,4,3,5,6"
-                     data-icon-size="24"
-                     data-icon-type="svg"
-                >
-                </div>
-            </div>
 
-            <div class="footer-right-item footer-social_links">
-                <div class="footer-social_links-title">А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки:</div>
-                <a class="footer-social_links-item">
-                    {{ svg("color/sd",'footer-social_links-icon')|raw }}
-                    {{ _nf(this.sd_counter.user_count,0)|raw }} пользователей
-                </a>
-                {% set social_list = _constant("social_list") %}
-                {% for item in social_list %}
-                    {% if item.on_footer==1 %}
-                        <a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">
-                            {{ svg('color/'~item.code,'footer-social_links-icon')|raw }}
-                            {{ _nf(item.count,0)|raw }} {{ item.footer_text }}
-                        </a>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div class="footer-right-item footer-contacts">
-                <p class="footer-contacts_title">Контакты:</p>
-                <p class="footer-contacts_description">
-                    <span class="footer-contacts_description-phone">8 (800) 707 66 09</span>
-                    звонки по РФ бесплатно
-                </p>
-                <p class="footer-contacts_description">
-                    <span class="footer-contacts_description-phone">+7 (495) 150 66 09</span>
-                    10:00 – 22:00 по Мск
-                </p>
-                <p class="footer-contacts_description">
-                    <span class="footer-contacts_description-phone">+44 (20) 38 07 02 08</span>
-                    главный офис в Лондоне
-                </p>
-            </div>
-
-            <div class="footer-right-item footer-app">
-                <div class="footer-app-img footer-app-waiting">
-                    {{ svg('app_store')|raw }}
-                    {{ svg('app_w','footer-app-waiting-label')|raw }}
-                </div>
-                <div class="footer-app-img footer-app-waiting">
-                    {{ svg('play_market')|raw }}
-                    {{ svg('app_w','footer-app-waiting-label')|raw }}
-                </div>
-            </div>
-
-            <div class="footer-right-item">
-                {% include 'parts/site_rating_microdata.twig' %}
-            </div>
+        <div class="footer-menu-col">
+          <div class="footer-menu-lists">
+            <div class="footer-menu-title">Популярные категории</div>
+            {{ use('frontend/components/CategoryMenu') }}
+            {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
+            {% if category_tree %}
+              {% for item in category_tree %}
+                <a href="stores/{{ item.route }}">{{ item.name }}</a>
+              {% endfor %}
+            {% endif %}
+            {% set link_list = _constant("footer_category") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
+
+        <div class="footer-menu-col">
+          <div class="footer-menu-lists">
+            <div class="footer-menu-title">Полезные ссылки</div>
+            {% set link_list = _constant("footer_useful_links") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="footer-menu-col">
+          <div class="footer-menu-lists">
+            <div class="footer-menu-title">Помощь</div>
+            {% set link_list = _constant("footer_help") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="footer-withdraws flex-line">
+        <div class="footer-withdraws-item">Способы вывода кэшбэка:</div>
+        <div class="footer-withdraws-item footer-withdraws-visa"></div>
+        <div class="footer-withdraws-item footer-withdraws-mastercard"></div>
+        <div class="footer-withdraws-item footer-withdraws-qiwi"></div>
+        <div class="footer-withdraws-item footer-withdraws-mir"></div>
+        <div class="footer-withdraws-item footer-withdraws-phone"></div>
+        <div class="footer-withdraws-item footer-withdraws-ya"></div>
+        <div class="footer-withdraws-item footer-withdraws-wm"></div>
+        <div class="footer-withdraws-item footer-withdraws-paypal"></div>
+      </div>
+      <div class="footer-docs  flex-line">
+        <a class="footer-docs-item" href="/privacy-policy">Политика конфиденциальности</a>
+        <a class="footer-docs-item" href="/terms">Условия использования</a>
+      </div>
+      <div class="footer-copyright">
+        <a href="/about" class="footer-copyright_text">
+          © Secret Discounter Ltd., 2016-{{ year() }}.<br>
+          Зарегистрирована в Англии под №10201982.
+        </a>
+      </div>
     </div>
+    <div class="footer-right">
+      <div class="footer-right-item footer-share">
+        <div class="footer-share-text">Расскажите о нас друзьям:</div>
+        <div class="share42init accauntSoc accauntSoc_32"
+             data-url="https://secretdiscounter.ru/"
+             data-image="https://secretdiscounter.ru/images/templates/woman_600.png"
+             data-title="{{ html.encode(this.title) }}"
+             data-description="{{ this.description }}"
+             data-socials="1,0,2,4,3,5,6"
+             data-icon-size="24"
+             data-icon-type="svg"
+        >
+        </div>
+      </div>
+
+      <div class="footer-right-item footer-social_links">
+        <div class="footer-social_links-title">А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки:
+        </div>
+        <a class="footer-social_links-item">
+          {{ svg("color/sd",'footer-social_links-icon')|raw }}
+          {{ _nf(this.sd_counter.user_count,0)|raw }} пользователей
+        </a>
+        {% set social_list = _constant("social_list") %}
+        {% for item in social_list %}
+          {% if item.on_footer==1 %}
+            <a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">
+              {{ svg('color/'~item.code,'footer-social_links-icon')|raw }}
+              {{ _nf(item.count,0)|raw }} {{ item.footer_text }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="footer-right-item footer-contacts">
+        <p class="footer-contacts_title">Контакты:</p>
+        <p class="footer-contacts_description">
+          <span class="footer-contacts_description-phone">8 (800) 707 66 09</span>
+          звонки по РФ бесплатно
+        </p>
+        <p class="footer-contacts_description">
+          <span class="footer-contacts_description-phone">+7 (495) 150 66 09</span>
+          10:00 – 22:00 по Мск
+        </p>
+        <p class="footer-contacts_description">
+          <span class="footer-contacts_description-phone">+44 (20) 38 07 02 08</span>
+          главный офис в Лондоне
+        </p>
+      </div>
+
+      <div class="footer-right-item footer-app">
+        <div class="footer-app-img footer-app-waiting">
+          {{ svg('app_store')|raw }}
+          {{ svg('app_w','footer-app-waiting-label')|raw }}
+        </div>
+        <div class="footer-app-img footer-app-waiting">
+          {{ svg('play_market')|raw }}
+          {{ svg('app_w','footer-app-waiting-label')|raw }}
+        </div>
+      </div>
+
+      <div class="footer-right-item">
+        {% include 'parts/site_rating_microdata.twig' %}
+      </div>
+    </div>
+  </div>
 </footer>

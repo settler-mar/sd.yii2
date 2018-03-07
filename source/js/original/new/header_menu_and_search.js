@@ -50,6 +50,11 @@ var headerActions = function () {
     });
 
     $('.header-upline').on('mouseover', function(e){
+        if(!scrolledDown)return;
+        if (window.innerWidth < 1024) {
+            return null;
+        }
+
         $('.header-secondline').removeClass('scroll-down');
         $('body').removeClass('no_scroll');
         scrolledDown = false;

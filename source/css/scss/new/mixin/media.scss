@@ -53,4 +53,11 @@ $phones: 380px;
   &_order1{
     order:1;
   }
+  &_order2{
+    order:2;
+  }
+  &-horizontal-margin-off{
+    margin-right: 0;
+    margin-left: 0;
+  }
 }

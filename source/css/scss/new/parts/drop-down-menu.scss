@@ -377,7 +377,11 @@
         color: $dollar_color;
         stroke: $dollar_color;
         fill: $dollar_color;
+        margin-right: 8px;
 
+        @include media($laptop_min) {
+          margin-right: 0px;
+        }
       }
     }
 
