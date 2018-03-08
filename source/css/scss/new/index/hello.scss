@@ -50,9 +50,6 @@
 
         @include media($laptop_min){
           background:  none;
-        }
-
-        @include media($tablets) {
           padding: 40px 0;
         }
       }

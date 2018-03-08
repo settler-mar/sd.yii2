@@ -295,7 +295,7 @@
 
   &-share {
     color: $footer_text2_color;
-    margin-bottom: 36px;
+    margin-bottom: 34px;
 
     &-text {
       padding-bottom: 3px;
@@ -416,6 +416,7 @@
 
       svg {
         width: 100%;
+        height: auto;
       }
     }
 
@@ -440,6 +441,11 @@
         font-weight: 700;
         color: #fff;
         font-family: Open Sans, sans-serif;
+
+        @include media($tablets) {
+          left: -4px;
+          top: 6px;
+        }
       }
     }
   }

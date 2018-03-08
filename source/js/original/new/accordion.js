@@ -61,6 +61,8 @@ $('.accordion-content').on('click',function (e) {
 });
 
 $('.accordion-content a').on('click',function (e) {
+  $this=$(this);
+  if($this.hasClass('angle-up'))return;
   e.stopPropagation()
 });
 

@@ -256,11 +256,11 @@ gulp.task('SVGclean',function() {
       if(!viewBox){
         h=$('[height]').attr('height');
         w=$('[width]').attr('width');
-        viewBox='0 0 '+h+' '+w;
+        viewBox='0 0 '+w+' '+h;
       }else{
         var t=viewBox.split(' ');
-        h=t[2];
-        w=t[3];
+        h=t[3];
+        w=t[2];
       }
       $('svg')
         .attr('viewBox',viewBox)

@@ -19,7 +19,10 @@
         </div>
 
         <div class="header-upline_logo">
-          <a href="/"><img src="images/templates/sd_logo.png" alt="secretdiscounter logo"></a>
+          <a href="/">
+            <img class="header-upline_logo-pc" src="/images/templates/sd_logo.png" alt="secretdiscounter logo">
+            <img class="header-upline_logo-mobile" src="/images/svg/mini-logo.svg" alt="secretdiscounter logo">
+          </a>
         </div>
 
 
@@ -85,11 +88,12 @@
             <div class="account-menu-wrap">
               <div class="avatar account-menu-toggle">
                 {% set user_avatar = _checkAvatar(this.user.photo) %}
-                <a href="#">
+                <span class="avatar-wrap">
                   <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}"
                        alt="{{ this.user.name }}">
-                  {{ svg('close', 'account-menu-toggle-close')|raw }}
-                </a>
+                </span>
+                {{ svg('angle-down','avatar_angle-down')|raw }}
+                {{ svg('close', 'account-menu-toggle-close')|raw }}
 
               </div>
               {% include 'parts/account_menu.twig' %}

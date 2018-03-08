@@ -160,6 +160,7 @@
       background-color: $coupons_popular_stores_background_color;
       color: $coupons_popular_stores_color;
       padding: 10px;
+      border-radius: 3px;
 
       @include media($laptop-min) {
         display: none;

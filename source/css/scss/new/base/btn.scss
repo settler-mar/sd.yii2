@@ -193,13 +193,14 @@
     }
 
     @include media($laptop_min) {
-      padding: 0 5px;
+      padding: 0 0px 0 15px;
       border: none;
     }
 
     &_button {
       width: $header_button_size;
       height: $header_button_size;
+
       &_money {
         position: absolute;
         width: 18PX;
@@ -210,6 +211,7 @@
         transition: all 0.4s ease;
         //margin-right: 10px;
         left: -30PX;
+
         &:hover {
           //width: 22PX;
           //height: 22PX;
@@ -217,7 +219,6 @@
           //margin-right: -2px;
         }
       }
-
     }
 
     a {

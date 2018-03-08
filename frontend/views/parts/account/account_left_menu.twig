@@ -40,10 +40,6 @@
             </li>
         {% endif %}
 
-        {% if header != 1 %}
-            <li class="cd-label">{{ t('account', 'menu_personal_cabinet') }}</li>
-        {% endif %}
-
         <li class="overview users">
             {{ get_menu_item({
                 'href':'/account',
@@ -98,11 +94,6 @@
                 })|raw }}
             </li>
         {% endif %}
-
-        {% if header != 1 %}
-            <li class="cd-label">{{ t('account', 'menu_extends')}}</li>
-        {% endif %}
-
         {% if header == 1 %}
             <li>
                 {{ get_menu_item({
@@ -165,10 +156,6 @@
                 'left-icon': 'cogs'
             })|raw }}
         </li>
-
-        {% if header != 1 %}
-            <li class="cd-label">{{ t('account', 'menu_tools') }}</li>
-        {% endif %}
 
         <li class="action-btn">
             {{ get_menu_item({

@@ -81,14 +81,25 @@
     &_logo {
       //margin-right: 50px;
       @include media($phones) {
-        width: 60%;
+        width: 40%;
         overflow: hidden;
       }
 
-      img {
+      &-pc{
         width: 205px;
-        @include media($phones) {
-          width: 100%;
+
+        @include media($tablets) {
+          display: none;
+        }
+      }
+
+      &-mobile{
+        height: 50PX;
+        margin-top: -12PX;
+        margin-bottom: -12PX;
+
+        @include media_min($tablets+1) {
+          display: none;
         }
       }
     }
@@ -412,13 +423,31 @@
   }
 
   .avatar {
-    width: 30PX;
-    height: 30PX;
-    border-radius: 50%;
-    overflow: hidden;
     margin-left: 15px;
+    color: $header_color_up;
+    stroke: $header_color_up;
+    fill: $header_color_up;
+    text-decoration: none;
 
-    @include media($laptop-min) {
+    &-wrap{
+      width: 30PX;
+      height: 30PX;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    &:hover {
+      color: $a_color_hover;
+      stroke: $a_color_hover;
+      fill: $a_color_hover;
+    }
+
+    &_angle-down{
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      vertical-align: super;
       margin-left: 5px;
     }
 
@@ -428,7 +457,16 @@
       height: 100%;
       object-fit: cover;
     }
+
+    &.open{
+      .avatar {
+        &_angle-down,&-wrap {
+          display: none;
+        }
+      }
+    }
   }
+
   .account-menu {
     transition: opacity 0.3s ease 0.1s;
     overflow: hidden;

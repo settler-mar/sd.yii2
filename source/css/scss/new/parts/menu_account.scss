@@ -4,22 +4,24 @@
   &_menu {
     margin-bottom: 15px;
     margin-top: 16px;
-    //border-radius: 3px;
-    //overflow: hidden;
+    /*border-radius: 3px;
+    overflow: hidden;*/
 
     @include media($laptop_min) {
       display: none;
     }
 
-
     ul, li {
       box-sizing: border-box;
     }
+
     > ul {
       //box-sizing: border-box;
       border-bottom: thin solid $menu_border_color;
       border-left: thin solid $menu_border_color;
       border-right: thin solid $menu_border_color;
+      border-radius: 0 0 3px 3px;
+      overflow: hidden;
 
       > li {
         position: relative;

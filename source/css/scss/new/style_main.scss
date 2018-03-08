@@ -202,7 +202,7 @@ h3, h4, h5, h6 {
     display: flex;
 
     @include media($laptop-min) {
-      padding: 0px 0 0 10px;
+      padding: 0px 10px 0 10px;
     }
 
     @include media($laptop_min) {
@@ -453,6 +453,10 @@ svg.svg-no-stroke {
       padding-top: 0;
       padding-bottom: 0;
     }
+  }
+
+  &-none{
+    margin-bottom: 0;
   }
 }
 
