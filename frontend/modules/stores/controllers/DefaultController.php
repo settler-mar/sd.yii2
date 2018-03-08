@@ -118,7 +118,6 @@ class DefaultController extends SdController
     $sortvars = Stores::sortvarItems($offline);
     $defaultSort = Stores::defaultSort($sortvars);
 
-
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
     if (!empty($limit) && !$validator->validate($limit) ||
@@ -136,7 +135,6 @@ class DefaultController extends SdController
     }else{
       $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
     }
-
 
     if ($offline) {
       if(!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate']==0){
@@ -207,7 +205,7 @@ class DefaultController extends SdController
       ];
     }
 
-    if(!$categoryMenuItem){
+    if($actionId==""){
       $storesData['current_category'] = CategoriesStores::find()
           ->where(['route'=>'/'])
           ->asArray()
