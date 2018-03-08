@@ -42,11 +42,10 @@
                     {#</div>#}
 
                 {% endif %}
-
             </div>
+
             {#справа шопы#}
             <div class="catalog-stores ">
-
                 <h1 >
                     {% if h1 %}
                         <!--h1 из базы-->
@@ -61,29 +60,25 @@
                         <span>({{total_v}})</span>
                     {% endif%}
                 </h1>
+
                 <div class="catalog-categories_tree-toggle">
                     {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
                     {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
                     <span class="catalog-categories_tree-toggle-tittle">Категории</span>
                 </div>
+
                 {#выбор и отображение сортировки#}
                 <div class="margin-half page-wrap-flex catalog-stores_sort">
-
                     {% include('parts/sort-links.twig') %}
-
                     <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
                 </div>
-
-
 
                 <div class="category-title-wrapper">
                     {% include 'parts/dropdown-limit-catalog.twig' %}
                 </div>
 
                 <div  class="catalog-stores_stores margin">
-
-
-                    {% if stores|length > 0 %}
+                   {% if stores|length > 0 %}
                         <div class="catalog-stores_list shops margin">
                             {% for store in stores %}
                                 {#<div class="col-sm-3 col-md-3">#}

@@ -2,11 +2,11 @@
 
 <section class="support account-padding  margin">
   <div class="border-wrap account-settings ajax_form">
-
+  <br>
   {{ _constant('account_support')|raw }}
 
   <form action="/account/support" method="post" role="form" name="support-form">
-      <div class="form-group">
+      <div class="form-group form-group-left">
         <div class="form-input-group">
           <i>{{ svg("envelope",'form-icon')|raw }}</i>
           <input autocomplete="off" name="title" type="text"
@@ -14,7 +14,7 @@
         </div>
         <div class="help-block help-block-error"></div>
       </div>
-    <div class="form-group">
+    <div class="form-group form-group-left">
       <div class="form-textarea-group">
 
         <textarea cols="30" rows="10"
@@ -25,9 +25,11 @@
         ></textarea>
       </div>
     </div>
-    <div class="align-center">
+
+    <div class="align-center width_75">
       <button type="submit" class="btn">{{ t('account', 'support_button') }}</button>
     </div>
+
   </form>
   </div>
 

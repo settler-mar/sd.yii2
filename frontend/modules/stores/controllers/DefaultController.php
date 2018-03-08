@@ -48,9 +48,9 @@ class DefaultController extends SdController
       $this->routeRedirects($category);
       exit;
     }
+
     if ($id) {
       //имеется action, который должен быть категорией или магазином, ищем такую
-
        //если в конце категории или шопа слово -offline
       $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
 
@@ -72,22 +72,22 @@ class DefaultController extends SdController
         exit;
       }
 
-      $categoryStore = CategoriesStores::byRoute($id);
-      if ($categoryStore) {
-        //если есть категория
-          \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
-
-          echo $this->actionIndex($id, $categoryStore);
-        exit;
-      };
-
       /*ddd($id);
       ddd($this->offline);*/
       if (($id == 'favorite' || $id=="favorite-offline") && !Yii::$app->user->isGuest) {
         \Yii::$app->params['category_menu_item'] = $id;
+        //ddd($id);
         echo $this->actionIndex(str_replace('-offline','',$id));
         exit;
       }
+
+      $categoryStore = CategoriesStores::byRoute($id);
+      if ($categoryStore) {
+        //если есть категория
+          \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
+          echo $this->actionIndex($id, $categoryStore);
+        exit;
+      };
 
       //если нет категории или магазина
       //найти в удалённых шопах
@@ -160,7 +160,6 @@ class DefaultController extends SdController
 
     if ($categoryStore) {
       //категория магазина
-
       $category = $categoryStore->uid;
       $storesData['current_category'] = $categoryStore->attributes;//CategoryStores::byId($category);
       if ($categoryStore->is_active == 0) {
@@ -183,7 +182,14 @@ class DefaultController extends SdController
 
     // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
+    //ddd($categoryMenuItem);
     if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ) {
+      $storesData['current_category'] = CategoriesStores::find()
+        ->where(['route'=>'favorite'])
+        ->asArray()
+        ->one();
+      //ddd($storesData['current_category']);
+
       $cacheName = 'catalog_storesfavorite'.Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
       $url='/stores/favorite';
       if (Yii::$app->params['stores_menu_separate'] == 1) {
@@ -200,6 +206,13 @@ class DefaultController extends SdController
         'url' => $url,
       ];
     }
+
+    if(!$categoryMenuItem){
+      $storesData['current_category'] = CategoriesStores::find()
+          ->where(['route'=>'/'])
+          ->asArray()
+          ->one();
+    };
 
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;

@@ -121,7 +121,7 @@ return [
     'charity_blocked' => 'Отказано администратором',
     'notifications_empty' => 'На данный момент никаких уведомлений нет.',
     'support_subject' => 'Запрос в техподдержку',
-    'support_button' => 'Отправить сообщение в службу поддержки',
+    'support_button' => 'Отправить сообщение',
     'support_mail_topic' => 'Тема письма',
     'support_mail_text' => 'Текст обращения',
     'favorites' => 'Избранные магазины',

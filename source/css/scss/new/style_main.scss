@@ -79,7 +79,8 @@ a {
         color: $link_color_blue_hover;
         fill: $link_color_blue_hover;
         stroke: $link_color_blue_hover;
-      }    }
+      }
+    }
 
   }
 }
@@ -321,6 +322,7 @@ section {
     margin-bottom: 25px;
   }
 }
+
 .margin-half {
   margin-bottom: 25px;
 
@@ -406,28 +408,29 @@ svg.svg-no-stroke {
 .round-box {
   border-radius: 10px;
   padding: 40px 0;
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
+
 .round-box-mini {
   border-radius: 10px;
   padding: 20px 0;
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
 
 .padding-box {
   padding: 20px 0;
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
 
 .padding-box-mini {
   padding: 7px 0;
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
@@ -435,7 +438,7 @@ svg.svg-no-stroke {
 .padding-box-top {
   padding-top: 20px;
 
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
@@ -444,7 +447,7 @@ svg.svg-no-stroke {
   padding-bottom: 20px;
   padding-top: 10px;
 
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 
@@ -455,8 +458,8 @@ svg.svg-no-stroke {
     }
   }
 
-  &-none{
-    margin-bottom: 0;
+  &-none {
+    padding-bottom: 0;
   }
 }
 
@@ -464,12 +467,12 @@ svg.svg-no-stroke {
   border-radius: 10px;
   padding: 20px !important;
 
-  h2,h3 {
+  h2, h3 {
     margin-top: 0;
   }
 }
 
-.border-wrap{
+.border-wrap {
   padding: 0 20px 0 20px;
   margin: 0 1.5% 1.875rem;
   box-sizing: border-box;
@@ -739,7 +742,7 @@ input.link {
   cursor: pointer;
   margin-bottom: 10px;
 
-  &-big{
+  &-big {
     font-size: 2em;
   }
 
@@ -753,12 +756,18 @@ input.link {
   overflow: hidden;
 }
 
-.scroll_to{
+.scroll_to {
   cursor: pointer;
 }
 
-.can-overflow{
+.can-overflow {
   overflow: unset;
+}
+
+.width_ {
+  &75 {
+    width: 75%;
+  }
 }
 
 @import 'base/error_pages';
