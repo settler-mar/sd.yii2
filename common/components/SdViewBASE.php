@@ -24,12 +24,12 @@ class SdViewBASE extends View
   private $def_meta=array(
       'frontend'=>array(
           'url'=>'https://secretdiscounter.ru/',
-          'image'=>'https://secretdiscounter.ru/images/index_hello_girl.png'
+          'image'=>'https://secretdiscounter.ru/images/share_img.png'
           //"https://secretdiscounter.ru/images/templates/woman_600.png"
       ),
       'b2b'=>array(
           'url'=>'https://b2b.secretdiscounter.ru/',
-          'image'=>'https://secretdiscounter.ru/images/index_hello_girl.png'
+          'image'=>'https://secretdiscounter.ru/images/share_img.png'
       )
   );
 
