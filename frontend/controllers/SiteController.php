@@ -93,7 +93,6 @@ class SiteController extends SdController
     Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
-    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.ru/images/templates/woman_600.png\" />";
 
     $data = [
         'time' => time(),

@@ -85,7 +85,7 @@ class SdViewBASE extends View
     $url = isset($tags['og:url']) ? $tags['og:url'] : $def_meta['url'] . $request->pathInfo;
     Yii::$app->view->registerMetaTag(["property" => "og:url", "content" => $url]);
     Yii::$app->view->registerMetaTag(["property" => "twitter:url", "content" => $url]);
-    Yii::$app->view->registerMetaTag(["property" => "twitter:domain", "content" => "https://secretdiscounter.ru/"]);
+    Yii::$app->view->registerMetaTag(["property" => "twitter:domain", "content" => $def_meta['url']]);
 
     //d($this->title);
     //ddd($tags);
