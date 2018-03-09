@@ -234,6 +234,7 @@ class DefaultController extends SdController
     $storesData["show_stores"] = count($storesData['stores']);
     $storesData["offset_stores"] = $pagination->offset();
     $storesData["total_all_stores"] = Stores::activeCount();
+    $storesData["total_all_coupon"] = Coupons::activeCount();
     $storesData["page"] = empty($page) ? 1 : $page;
     $storesData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
 

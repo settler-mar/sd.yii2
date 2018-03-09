@@ -27,7 +27,7 @@
           <a href="/coupons/{{ current_store.route }}" class="btn btn-transform">Все
             промокоды {{ current_store.name }}</a>
         {% else %}
-          <a href="/coupons" class="btn btn-transform">Все промокоды →</a>
+          <a href="/coupons" class="btn btn-transform">Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}→</a>
         {% endif %}
       </div>
     </div>
