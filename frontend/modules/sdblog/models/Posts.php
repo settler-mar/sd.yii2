@@ -99,7 +99,7 @@ class Posts extends \yii\db\ActiveRecord
     }
 
     static function getLastPosts($params=array()){
-      $limit=$params['limit']?$params['limit']:4;
+      $limit=isset($params['limit'])?$params['limit']:4;
       $cacheName = 'sd_blog_posts_'.$limit;
       return \Yii::$app->cache->getOrSet($cacheName, function () use ($limit) {
         $data= self::find()
