@@ -1,120 +1,136 @@
-    <!--краткая информация категории-->
-    {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
+<!--краткая информация категории-->
+{% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
-        <section class="gray-box wrap-round margin">
-                <h3 class="title-center">{{current_category.name}}</h3>
-                <div class="catalog_category-short-description">
-                    {{short_description|raw}}
-                </div>
-        </section>
+      <section class="gray-box wrap-round margin">
+        <h3 class="title-center">{{ current_category.name }}</h3>
+        <div class="catalog_category-short-description">
+          {{ short_description|raw }}
+        </div>
+      </section>
     {% endif %}
 
-    <section class="catalog margin">
-        <div class="page-wrap page-wrap-flex">
-            {#слева категории#}
-            <div class="catalog-categories">
-                {#<h3 class="cathead">Категории</h3>#}
-                {{ use('frontend/components/CategoryMenu') }}
-                {% set ext_menu_items = offline == 1 ? 'favorite,all_shops' : 'favorite,all_shops' %}
-                {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items': ext_menu_items, 'offline': offline}) %}
-                {% if category_tree %}
+<section class="catalog margin">
+  <div class="page-wrap page-wrap-flex">
+    {#слева категории#}
+    <div class="catalog-categories">
+      {#<h3 class="cathead">Категории</h3>#}
+      {{ use('frontend/components/CategoryMenu') }}
+      {% set ext_menu_items = offline == 1 ? 'favorite,all_shops' : 'favorite,all_shops' %}
+      {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items': ext_menu_items, 'offline': offline}) %}
+      {% if category_tree %}
 
-                    <div class="catalog-categories_tree-cat accordeon">
-                        <div class="catalog-categories_tree-cat-close">
-                            {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}
-                            <span class="catalog-categories_tree-cat-close-tittle">Категории</span>
-                        </div>
-                        {{category_tree|raw}}
-                    </div>
-                    {{ use('frontend/components/Banner') }}
-
-                    {% set banner_places = current_category ?
-                           ['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'] :
-                           ['shops-left-menu','shops-catalog-left-menu'] %}
-
-                    {%  set banners  = banner_widget({
-                        'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
-                    {% if banners %}
-                        {{ banners|raw }}
-                    {% endif %}
-                    {#<div class="catalog-categories_buttons">#}
-                        {#<a href="/account/affiliate" class="btn btn-transform">Приведи друга</a>#}
-                    {#</div>#}
-
-                {% endif %}
-            </div>
-
-            {#справа шопы#}
-            <div class="catalog-stores ">
-                <h1 >
-                    {% if h1 %}
-                        <!--h1 из базы-->
-                        {{h1|raw}}
-                    {% else %}
-                        <!--если нет, то -->
-                        {% if current_category.name != '' %}
-                            {{current_category.name}}: магазины с кэшбэком
-                        {% else %}
-                            Лучшие магазины с кэшбэком
-                        {% endif %}
-                        <span>({{total_v}})</span>
-                    {% endif%}
-                </h1>
-
-                <div class="catalog-categories_tree-toggle">
-                    {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
-                    {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-                    <span class="catalog-categories_tree-toggle-tittle">Категории</span>
-                </div>
-
-                {#выбор и отображение сортировки#}
-                <div class="margin-half page-wrap-flex catalog-stores_sort">
-                    {% include('parts/sort-links.twig') %}
-                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_stores + 1}}{% else %}0{% endif %}-{{offset_stores + show_stores}} из {{total_v}}</div>
-                </div>
-
-                <div class="category-title-wrapper">
-                    {% include 'parts/dropdown-limit-catalog.twig' %}
-                </div>
-
-                <div  class="catalog-stores_stores margin">
-                   {% if stores|length > 0 %}
-                        <div class="catalog-stores_list shops margin">
-                            {% for store in stores %}
-                                {#<div class="col-sm-3 col-md-3">#}
-                                    {% include 'parts/shop.twig' %}
-                                {#</div>#}
-                            {% endfor %}
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                          <div class="shop shop-empty"></div>
-                        </div>
-
-                        {% include('parts/pagination.twig') %}
-
-
-                    {% else %}
-                        <p>Ничего не найдено.</p>
-                    {% endif %}
-                </div>
-
-
-                {% set down_description = offline and current_category.down_description_offline ? current_category.down_description_offline : current_category.down_description %}
-                {% if down_description %}
-                    <div class="catalog_category-down-description margin">
-                        {{down_description|raw}}
-                    </div>
-                {% endif %}
-
-              {% if content and page==1%}
-                <div class="catalog_category-content margin">
-                  {{ content | raw}}
-                </div>
-              {% endif %}
-            </div>
+        <div class="catalog-categories_tree-cat accordeon">
+          <div class="catalog-categories_tree-cat-close">
+            {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}
+            <span class="catalog-categories_tree-cat-close-tittle">Категории</span>
+          </div>
+          {{ category_tree|raw }}
         </div>
-    </section>
+        {{ use('frontend/components/Banner') }}
+
+        {% set banner_places = current_category ?
+        ['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'] :
+        ['shops-left-menu','shops-catalog-left-menu'] %}
+
+        {% set banners  = banner_widget({
+        'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
+        {% if banners %}
+          {{ banners|raw }}
+        {% endif %}
+        {#<div class="catalog-categories_buttons">#}
+        {#<a href="/account/affiliate" class="btn btn-transform">Приведи друга</a>#}
+        {#</div>#}
+
+      {% endif %}
+    </div>
+
+    {#справа шопы#}
+    <div class="catalog-stores ">
+      <h1>
+        {% if h1 %}
+          <!--h1 из базы-->
+          {{ h1|raw }}
+        {% else %}
+          <!--если нет, то -->
+          {% if current_category.name != '' %}
+            {{ current_category.name }}: магазины с кэшбэком
+          {% else %}
+            Лучшие магазины с кэшбэком
+          {% endif %}
+          <span>({{ total_v }})</span>
+        {% endif %}
+      </h1>
+
+      <div class="catalog-categories_tree-toggle">
+        {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
+        {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
+        <span class="catalog-categories_tree-toggle-tittle">Категории</span>
+      </div>
+
+      {#выбор и отображение сортировки#}
+      <div class="margin-half page-wrap-flex catalog-stores_sort">
+        {% include('parts/sort-links.twig') %}
+        <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{ offset_stores + 1 }}{% else %}0{% endif %}
+          -{{ offset_stores + show_stores }} из {{ total_v }}</div>
+      </div>
+
+      <div class="category-title-wrapper">
+        {% include 'parts/dropdown-limit-catalog.twig' %}
+      </div>
+
+      <div class="catalog-stores_stores margin">
+        {% if stores|length > 0 %}
+          <div class="catalog-stores_list shops margin">
+            {% for store in stores %}
+              {#<div class="col-sm-3 col-md-3">#}
+              {% include 'parts/shop.twig' %}
+              {#</div>#}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+          </div>
+
+          {% include('parts/pagination.twig') %}
+
+
+        {% else %}
+          <p>Ничего не найдено.</p>
+        {% endif %}
+      </div>
+
+
+      {% set down_description = offline and current_category.down_description_offline ? current_category.down_description_offline : current_category.down_description %}
+      {% if down_description %}
+        <div class="catalog_category-down-description margin">
+          {{ down_description|raw }}
+        </div>
+      {% endif %}
+
+      {% if content and page==1 %}
+        <div class="catalog_category-content margin">
+          {{ content | raw }}
+        </div>
+      {% endif %}
+
+      {% if coupons and page==1 %}
+        {% include 'parts/stores/coupons.twig' %}
+      {% endif %}
+
+      {% if posts and page==1 %}
+        <h2 class="">Новое в нашем блоге</h2>
+        <div class="flex-line flex-wrap tablets_flex-col instruction-list instruction-list-x3">
+          {% set post_in_line=3 %}
+          {% include 'parts/blog_posts.twig' %}
+        </div>
+        <div class="align-center">
+          <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform">Больше статей</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 

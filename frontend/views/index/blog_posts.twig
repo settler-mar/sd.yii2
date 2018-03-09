@@ -2,32 +2,7 @@
   <div class="page-wrap">
     <h2 class="">Новое в нашем блоге</h2>
     <div class="flex-line flex-wrap tablets_flex-col instruction-list">
-      {% for post in posts %}
-        <div class="instruction-item instruction-item-article tablets_text-aling_left gray-box round-box">
-          <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-item-link">
-            <div class="instruction-item-tablets-full tablets_flex-row">
-              <div class="instruction-icon instruction-icon-big" style="background-image: url({{ post.img }})"></div>
-              <div class="instruction-wrap instruction-wrap-fixed_height">
-                <div class="instruction-title">
-                  {{ post.post_title }}
-                </div>
-                <div class="instruction-content">
-                  {{ post.description | raw}}
-                </div>
-              </div>
-            </div>
-          </a>
-          <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-article-link">Читать полностью</a>
-          <div class="instruction-status_line">
-            <div class="instruction-status_line-item">
-              {{ _date(post.date,false) }}
-            </div>
-            <div class="instruction-status_line-item">
-              {{ svg('eye','instruction-status_line-icon')|raw }}{{ post.views }}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
+      {% include 'parts/blog_posts.twig' %}
     </div>
     <div class="align-center">
       <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform">Больше статей</a>

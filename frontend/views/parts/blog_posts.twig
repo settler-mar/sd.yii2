@@ -1,0 +1,26 @@
+{% for post in posts %}
+  <div class="instruction-item instruction-item-article{{ _if(post_in_line==3,'_'~post_in_line,'') }} tablets_text-aling_left gray-box round-box">
+    <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-item-link">
+      <div class="instruction-item-tablets-full tablets_flex-row">
+        <div class="instruction-icon instruction-icon-big" style="background-image: url({{ post.img }})"></div>
+        <div class="instruction-wrap instruction-wrap-fixed_height">
+          <div class="instruction-title">
+            {{ post.post_title }}
+          </div>
+          <div class="instruction-content">
+            {{ post.description | raw}}
+          </div>
+        </div>
+      </div>
+    </a>
+    <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-article-link">Читать полностью</a>
+    <div class="instruction-status_line">
+      <div class="instruction-status_line-item">
+        {{ _date(post.date,false) }}
+      </div>
+      <div class="instruction-status_line-item">
+        {{ svg('eye','instruction-status_line-icon')|raw }}{{ post.views }}
+      </div>
+    </div>
+  </div>
+{% endfor %}

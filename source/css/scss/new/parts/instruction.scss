@@ -51,6 +51,19 @@
       @include media($tablets) {
         max-width: 100%;
       }
+
+      &_3 {
+        margin-bottom: 30px;
+        max-width: calc(33% - 40px);
+
+        @include media($laptop_min) {
+          max-width: calc(50% - 40px);
+        }
+
+        @include media($tablets) {
+          max-width: 100%;
+        }
+      }
     }
 
     @include media($tablets) {

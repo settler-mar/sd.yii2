@@ -98,7 +98,7 @@ class Reviews extends \yii\db\ActiveRecord
   /**
    * @return array
    */
-  public static function top()
+  public static function top($params=[])
   {
     $cache = Yii::$app->cache;
     $data = $cache->getOrSet('reviews_top', function () {

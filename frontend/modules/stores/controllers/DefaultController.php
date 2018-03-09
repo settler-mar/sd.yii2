@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\controllers;
 
+use frontend\modules\sdblog\models\Posts;
 use yii;
 use frontend\components\SdController;
 use frontend\modules\stores\models\Stores;
@@ -51,20 +52,20 @@ class DefaultController extends SdController
 
     if ($id) {
       //имеется action, который должен быть категорией или магазином, ищем такую
-       //если в конце категории или шопа слово -offline
+      //если в конце категории или шопа слово -offline
       $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
 
       $store = Stores::byRoute($id);
       if ($store) {
         //есть магазин
         //$this->Params($request->get(), ['page']);
-        $cpaLink=$store->cpaLink;
+        $cpaLink = $store->cpaLink;
 //        if ($cpaLink && $cpaLink->cpa_id == 2) {
 //          //online-offline шоп, для поиска мететегов добавляем в url-mask
 //          \Yii::$app->params['url_mask'] = $request->pathInfo . '/online';
 //        }
         \Yii::$app->params['url_mask'] = 'stores/*' .
-            ($cpaLink && $cpaLink->cpa_id == 1 ? '/online' : '').
+            ($cpaLink && $cpaLink->cpa_id == 1 ? '/online' : '') .
             ($this->offline ? '/offline' : '');
 
         $this->checkParams('store');
@@ -74,18 +75,18 @@ class DefaultController extends SdController
 
       /*ddd($id);
       ddd($this->offline);*/
-      if (($id == 'favorite' || $id=="favorite-offline") && !Yii::$app->user->isGuest) {
+      if (($id == 'favorite' || $id == "favorite-offline") && !Yii::$app->user->isGuest) {
         \Yii::$app->params['category_menu_item'] = $id;
         //ddd($id);
-        echo $this->actionIndex(str_replace('-offline','',$id));
+        echo $this->actionIndex(str_replace('-offline', '', $id));
         exit;
       }
 
       $categoryStore = CategoriesStores::byRoute($id);
       if ($categoryStore) {
         //если есть категория
-          \Yii::$app->params['url_mask'] = 'stores/category/*' .($this->offline ? '/offline' : '');
-          echo $this->actionIndex($id, $categoryStore);
+        \Yii::$app->params['url_mask'] = 'stores/category/*' . ($this->offline ? '/offline' : '');
+        echo $this->actionIndex($id, $categoryStore);
         exit;
       };
 
@@ -121,7 +122,7 @@ class DefaultController extends SdController
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
     if (!empty($limit) && !$validator->validate($limit) ||
-      !empty($sort) && !$validatorIn->validate($sort)
+        !empty($sort) && !$validatorIn->validate($sort)
     ) {
       throw new \yii\web\NotFoundHttpException;
     };
@@ -131,14 +132,14 @@ class DefaultController extends SdController
     $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
-      $this->params['breadcrumbs'][] = ['label' => ($offline?'Оффлайн-магазины':'Магазины'), 'url' => '/stores'.($offline?'/offline':'')];
-    }else{
+      $this->params['breadcrumbs'][] = ['label' => ($offline ? 'Оффлайн-магазины' : 'Магазины'), 'url' => '/stores' . ($offline ? '/offline' : '')];
+    } else {
       $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
     }
 
     if ($offline) {
-      if(!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate']==0){
-        $url=isset(Yii::$app->params['offline_redirect'])?Yii::$app->params['offline_redirect']:"/stores/stores-offline";
+      if (!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate'] == 0) {
+        $url = isset(Yii::$app->params['offline_redirect']) ? Yii::$app->params['offline_redirect'] : "/stores/stores-offline";
         $this->redirect($url, 307)->send();
         exit;
       }
@@ -147,13 +148,13 @@ class DefaultController extends SdController
 
     $storesData = [];
     $dataBaseData = Stores::items()
-      ->addSelect([
-        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
-          " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
-        "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
-          " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
-      ])
-      ->orderBy($sort . ' ' . $order);
+        ->addSelect([
+            "substr(displayed_cashback, locate(' ', displayed_cashback)+1, locate('%', displayed_cashback)" .
+            " - locate(' ', displayed_cashback) -1) + 0 as  cashback_percent",
+            "substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)" .
+            " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
+        ])
+        ->orderBy($sort . ' ' . $order);
     $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
 
     if ($categoryStore) {
@@ -168,12 +169,12 @@ class DefaultController extends SdController
       //чтобы виджет мог получить current_category_id в main.twig
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
-        'label' => $categoryStore['name'],
-        'url' => '/stores/' . $categoryStore->route,
+          'label' => $categoryStore['name'],
+          'url' => '/stores/' . $categoryStore->route,
       ];
 
       $dataBaseData->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
-        ->andWhere(['cstc.category_id' => $category]);
+          ->andWhere(['cstc.category_id' => $category]);
 
       $cacheName .= '_' . $category;
     }
@@ -181,33 +182,33 @@ class DefaultController extends SdController
     // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
     //ddd($categoryMenuItem);
-    if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ) {
+    if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline') {
       $storesData['current_category'] = CategoriesStores::find()
-        ->where(['route'=>'favorite'])
-        ->asArray()
-        ->one();
+          ->where(['route' => 'favorite'])
+          ->asArray()
+          ->one();
       //ddd($storesData['current_category']);
 
-      $cacheName = 'catalog_storesfavorite'.Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
-      $url='/stores/favorite';
+      $cacheName = 'catalog_storesfavorite' . Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $url = '/stores/favorite';
       if (Yii::$app->params['stores_menu_separate'] == 1) {
-        $cacheName .= $offline?'_offline':'_online';
-        $url .= $offline?'-offline':'';
-        $dataBaseData->andWhere(['cws.is_offline' => $offline?1:0]);
+        $cacheName .= $offline ? '_offline' : '_online';
+        $url .= $offline ? '-offline' : '';
+        $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
       }
 
       $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
 
       $this->params['breadcrumbs'][] = [
-        'label' => 'Мои избранные',
-        'url' => $url,
+          'label' => 'Мои избранные',
+          'url' => $url,
       ];
     }
 
-    if($actionId==""){
+    if ($actionId == "") {
       $storesData['current_category'] = CategoriesStores::find()
-          ->where(['route'=>'/'])
+          ->where(['route' => '/'])
           ->asArray()
           ->one();
     };
@@ -215,23 +216,17 @@ class DefaultController extends SdController
     if ($page > 1) {
       $this->params['breadcrumbs'][] = 'Страница ' . $page;
     }
-//    if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
-//      $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
-//    }
-    /*if ($offline) {
-      $cacheName .= '_offline';
-      $dataBaseData->andWhere(['is_offline' => 1]);
-    }*/
+
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
-      $cacheName .= $offline?'_offline':'_online';
-      $dataBaseData->andWhere(['cws.is_offline' => $offline?1:0]);
+      $cacheName .= $offline ? '_offline' : '_online';
+      $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
     }
 
     $pagination = new Pagination(
-      $dataBaseData,
-      $cacheName,
-      ['limit' => $limit, 'page' => $page]
+        $dataBaseData,
+        $cacheName,
+        ['limit' => $limit, 'page' => $page]
     );
 
     $storesData['stores'] = $pagination->data();
@@ -243,10 +238,10 @@ class DefaultController extends SdController
     $storesData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
 
     $paginateParams = [
-      'limit' => $this->defaultLimit == $limit ? null : $limit,
-      'sort' => $defaultSort == $sort ? null : $sort,
-      'page' => $page,
-      'offline' => $offline ? 1 : null,
+        'limit' => $this->defaultLimit == $limit ? null : $limit,
+        'sort' => $defaultSort == $sort ? null : $sort,
+        'page' => $page,
+        'offline' => $offline ? 1 : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'stores';
@@ -256,12 +251,25 @@ class DefaultController extends SdController
     }
 
     $storesData['sortlinks'] =
-      $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams);
+        $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams);
     $storesData['limitlinks'] =
-      $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
+        $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
     $storesData['slider'] = Slider::get();
     $storesData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
+
+    if ($storesData['current_category'] && $storesData['current_category']['route'] != '/') {
+      $storesData['coupons'] = Coupons::top([
+          'store_category' => $storesData['current_category']['uid'],
+          'offline' => $this->offline ? 1 : 0,
+          'limit' => 4
+          //'unique_store' => true,
+      ]);
+      //d($storesData['current_category']);
+      //ddd($cupons);
+    }
+
+    $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
 
     return $this->render('catalog', $storesData);
   }
@@ -287,7 +295,7 @@ class DefaultController extends SdController
     $contentData["store_reviews"] = Reviews::byStoreId($store->uid);
     $contentData["store_rating"] = Reviews::storeRating($store->uid);
 
-    $contentData["coupons"] = Coupons::top(['store' => $store->uid,'limit'=>4]);
+    $contentData["coupons"] = Coupons::top(['store' => $store->uid, 'limit' => 4]);
     $contentData["coupons_counts"] = Coupons::counts($store->uid);
     $contentData["all_coupons_counts"] = Coupons::counts();
     $additionalStores = $this->getAdditionals($store);
@@ -330,32 +338,32 @@ class DefaultController extends SdController
       //если нет категории
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
         return Stores::items()
-          ->andWhere(['<>', 'cws.uid', $store->uid])
-          ->orderBy('rating DESC')
-          ->limit(6)
-          ->all();
+            ->andWhere(['<>', 'cws.uid', $store->uid])
+            ->orderBy('rating DESC')
+            ->limit(6)
+            ->all();
       }, $cache->defaultDuration, $dependency);
     } else {
       //категория есть
       $additional_stores = $cache->getOrSet(
-        'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
-        function () use ($category, $store
-        ) {
-          return Stores::items()
-            ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
-            ->andWhere(['<>', 'cws.uid', $store->uid])
-            ->andWhere(['cwstc.category_id' => $category->uid])
-            ->orderBy('rating DESC')
-            ->limit(6)
-            ->all();
-        },
-        $cache->defaultDuration,
-        $dependency
+          'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
+          function () use ($category, $store
+          ) {
+            return Stores::items()
+                ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
+                ->andWhere(['<>', 'cws.uid', $store->uid])
+                ->andWhere(['cwstc.category_id' => $category->uid])
+                ->orderBy('rating DESC')
+                ->limit(6)
+                ->all();
+          },
+          $cache->defaultDuration,
+          $dependency
       );
     };
     return [
-      'additional_stores' => $additional_stores,
-      'additional_stores_category' => $category,
+        'additional_stores' => $additional_stores,
+        'additional_stores_category' => $category,
     ];
   }
 
@@ -373,7 +381,6 @@ class DefaultController extends SdController
     $this->redirect('/stores/' . $parent->route, 301)->send();
     exit;
   }
-
 
 
 }

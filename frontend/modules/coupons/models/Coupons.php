@@ -321,22 +321,30 @@ class Coupons extends \yii\db\ActiveRecord
   {
     $limit = isset($options['limit']) ? $options['limit'] : 8;
     $new = isset($options['new']) ? $options['new'] : false;
+    $offline = isset($options['offline']) ? $options['offline'] : false;
     $category = isset($options['category']) ? $options['category'] : false;
+    $store_category = isset($options['store_category']) ? $options['store_category'] : false;
     $store = isset($options['store']) ? $options['store'] : false;
     $unique_store = isset($options['unique_store']) ? $options['unique_store'] : false;
+
     $cache = Yii::$app->cache;
-    $cacheName = 'coupons_top_limit_' . $limit . ($category ? '_category_' . $category : '') .
-        ($store ? '_store_' . $store : '') . ($new ? '_new' : '') . ($unique_store ? '_unique_store' : '');
+    $cacheName = 'coupons_top_limit_' . $limit .
+        ($category ? '_category_' . $category : '') .
+        ($store_category ? '_store_category_' . $store_category : '') .
+        ($store ? '_store_' . $store : '') .
+        ($new ? '_new' : '') .
+        ($offline ? '_offline' : '') .
+        ($unique_store ? '_unique_store' : '');
     $dependencyName = 'coupons_counts';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store, $new, $unique_store) {
+    $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store_category, $store, $new, $unique_store,$offline) {
       if ($unique_store) {
         $coupons = self::find()
             ->alias('cwc')
-            ->groupBy('store_id')
-            ->select(['store_id', 'visit' => 'max(visit)'])
+            ->groupBy('cwc.store_id')
+            ->select(['cwc.store_id', 'visit' => 'max(visit)'])
             ->orderBy(['visit' => SORT_DESC]);
       } else {
         $coupons = self::forList()
@@ -355,6 +363,17 @@ class Coupons extends \yii\db\ActiveRecord
         $coupons = $coupons
             ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
             ->andWhere(['cctc.category_id' => $category]);
+      }
+
+      if ($store_category) {
+        $coupons = $coupons
+            ->innerJoin('cw_stores_to_categories cstc', 'cstc.store_id = cwc.store_id')
+            ->andWhere(['cstc.category_id' => $store_category]);
+      }
+
+      if ($offline!==false) {
+        $coupons = $coupons
+            ->andWhere(['cws.is_offline' => $offline]);
       }
 
       if ($unique_store) {
