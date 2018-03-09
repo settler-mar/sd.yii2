@@ -1,6 +1,11 @@
 {% for post in posts %}
   <div class="instruction-item instruction-item-article{{ _if(post_in_line==3,'_'~post_in_line,'') }} tablets_text-aling_left gray-box round-box">
-    <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-item-link">
+    <a
+        href="https://blog.secretdiscounter.ru/{{ post.url}}"
+        class="instruction-item-link"
+        target="_blank"
+        rel="nofollow noopener"
+    >
       <div class="instruction-item-tablets-full tablets_flex-row">
         <div class="instruction-icon instruction-icon-big" style="background-image: url({{ post.img }})"></div>
         <div class="instruction-wrap instruction-wrap-fixed_height">
@@ -13,7 +18,12 @@
         </div>
       </div>
     </a>
-    <a href="https://blog.secretdiscounter.ru/{{ post.url}}" class="instruction-article-link">Читать полностью</a>
+    <a
+        href="https://blog.secretdiscounter.ru/{{ post.url}}"
+        class="instruction-article-link"
+        target="_blank"
+        rel="nofollow noopener"
+    >Читать полностью</a>
     <div class="instruction-status_line">
       <div class="instruction-status_line-item">
         {{ _date(post.date,false) }}

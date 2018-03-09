@@ -1,5 +1,5 @@
 <div class="coupon coupons-list_item hover-box" data-uid="{{ coupon.uid }}">
-  <a href="/coupons/{{ coupon.store_route }}/{{ coupon.uid }}" class="coupons-list_item-name ">
+  <a href="/coupons/{{ coupon.store_route }}/{{ coupon.uid }}" class="coupons-list_item-name "  {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>
         <span>
             {{ coupon.name }}
             <span class="color-red coupons-list_item-name-cashback{% if coupon.store_action_id == 1 %} old {% endif %}">
@@ -18,12 +18,14 @@
         <span class="promo-label x2"></span>
       {% endif %}
       <a class="coupons-list_item-logo-wrap"
-         href="/stores/{{ coupon.store_route }}{{ _if(coupon.store_is_offline,'-offline') }}">
+         href="/stores/{{ coupon.store_route }}{{ _if(coupon.store_is_offline,'-offline') }}"
+          {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}
+      >
         <img class="coupons-list_item-logo-img" src="/images/logos/{{ coupon.store_image }}"
              alt="{{ coupon.store_name }}">
       </a>
       {% if not store_coupons %}
-        <a class="coupons-list_item-content-link-all" href="/coupons/{{ coupon.store_route }}">
+        <a class="coupons-list_item-content-link-all" href="/coupons/{{ coupon.store_route }}" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>
                     <span class="coupons-list_item-content-link-all-wrap">
                         {{ svg('table')|raw }}Показать все купоны <span>{{ coupon.store_name }} </span>
                     </span>
@@ -92,8 +94,8 @@
         </div>
         <a
             href="/goto/coupon:{{ coupon.uid }}"
-            target="_blank"
             class="btn coupons-list_item-content-goto-promocode-link"
+            target="_blank"
             rel="nofollow noopener"
             data-user="{{ user_id }}"
             data-inactive="{{ not_active }}"

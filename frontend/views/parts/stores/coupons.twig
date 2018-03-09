@@ -1,35 +1,40 @@
 {% if coupons %}
-  <section class="margin">
+  {% if not current_category %}
+    <section class="margin">
     <div class="page-wrap">
-      {% if current_store.name %}
-        <h2>Купоны и промокоды {{ current_store.name }}</h2>
+  {% endif %}
+  {% if current_store.name %}
+    <h2>Купоны и промокоды {{ current_store.name }}</h2>
+  {% else %}
+    {% if current_category %}
+      {% if current_category.name != '' %}
+        <h2>Популярные промокоды в категории «{{ current_category.name }}»</h2>
       {% else %}
-        {% if current_category %}
-          {% if current_category.name != '' %}
-            <h2>Популярные промокоды в категории «{{ current_category.name }}»</h2>
-          {% else %}
-            <h2>Популярные промокоды в категории</h2>
-          {% endif %}
-        {% else %}
-          <h2>Новые купоны и промокоды</h2>
-        {% endif %}
+        <h2>Популярные промокоды в категории</h2>
       {% endif %}
-      <div class="coupons-list coupons-list-stores {{ _if(current_category.name,'','narrow list-4 ') }}narrow_off">
-        {% for coupon in coupons %}
-          {% include 'parts/coupon.twig' %}
-        {% endfor %}
-        <div class="coupons coupons-empty"></div>
-        <div class="coupons coupons-empty"></div>
-        <div class="coupons coupons-empty"></div>
-      </div>
-      <div class="align-center">
-        {% if current_store.name and current_store.route %}
-          <a href="/coupons/{{ current_store.route }}" class="btn btn-transform">Все
-            промокоды {{ current_store.name }}</a>
-        {% else %}
-          <a href="/coupons" class="btn btn-transform">Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}→</a>
-        {% endif %}
-      </div>
+    {% else %}
+      <h2>Новые купоны и промокоды</h2>
+    {% endif %}
+  {% endif %}
+  <div class="coupons-list coupons-list-stores {{ _if(current_category.name,'','narrow list-4 ') }}narrow_off">
+    {% for coupon in coupons %}
+      {% include 'parts/coupon.twig' %}
+    {% endfor %}
+    <div class="coupons coupons-empty"></div>
+    <div class="coupons coupons-empty"></div>
+    <div class="coupons coupons-empty"></div>
+  </div>
+  <div class="align-center">
+    {% if current_store.name and current_store.route %}
+      <a href="/coupons/{{ current_store.route }}" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все
+        промокоды {{ current_store.name }}</a>
+    {% else %}
+      <a href="/coupons" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}
+        →</a>
+    {% endif %}
+  </div>
+  {% if not current_category %}
     </div>
-  </section>
+    </section>
+  {% endif %}
 {% endif %}

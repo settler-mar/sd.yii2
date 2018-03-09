@@ -117,6 +117,7 @@
       {% endif %}
 
       {% if coupons and page==1 %}
+        {% set coupons_target_blank = true %}
         {% include 'parts/stores/coupons.twig' %}
       {% endif %}
 
@@ -127,7 +128,7 @@
           {% include 'parts/blog_posts.twig' %}
         </div>
         <div class="align-center">
-          <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform">Больше статей</a>
+          <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform">Больше статей →</a>
         </div>
       {% endif %}
     </div>
