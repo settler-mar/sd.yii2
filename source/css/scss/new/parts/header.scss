@@ -94,9 +94,10 @@
       }
 
       &-mobile{
-        height: 50PX;
+        height: 26PX;
+        /*height: 50PX;
         margin-top: -12PX;
-        margin-bottom: -12PX;
+        margin-bottom: -12PX;*/
         margin-left: 36px;
 
         @include media_min($tablets+1) {
