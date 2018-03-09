@@ -36,8 +36,8 @@
       @include media($laptop_min) {
         display: none;
       }
-
     }
+
     &_in {
       width: 100%;
       display: flex;
@@ -54,13 +54,16 @@
         display: none;
         flex-direction: row;
         flex-wrap: nowrap;
+
         @include media($laptop-min) {
           display: flex;
         }
+
         @include media($phones) {
           width: 20%;
         }
       }
+
       &-right {
         display: flex;
         flex-direction: row;
@@ -68,9 +71,6 @@
         position: relative;
         align-items: center;
 
-        @include media($phones) {
-          width: 20%;
-        }
         &-howitworks {
           @include media ($laptop-min) {
             display: none;
@@ -80,10 +80,10 @@
     }
     &_logo {
       //margin-right: 50px;
-      @include media($phones) {
+      /*@include media($phones) {
         width: 40%;
         overflow: hidden;
-      }
+      }*/
 
       &-pc{
         width: 205px;
@@ -97,14 +97,15 @@
         height: 50PX;
         margin-top: -12PX;
         margin-bottom: -12PX;
+        margin-left: 36px;
 
         @include media_min($tablets+1) {
           display: none;
         }
       }
     }
-    &_ballance {
 
+    &_ballance {
       @include media($laptop-min) {
         display: none;
       }
@@ -153,13 +154,12 @@
         fill: $header_sub_menu_color_hover;
         cursor: pointer;
       }
-
     }
 
     &.scroll-down {
-
       position: relative;
       margin-top: -50px;
+
       @include media($laptop_min) {
         position: absolute;
         margin-top: 0;
@@ -419,7 +419,6 @@
         display: block;
       }
     }
-
   }
 
   .avatar {
@@ -428,6 +427,7 @@
     stroke: $header_color_up;
     fill: $header_color_up;
     text-decoration: none;
+    white-space: nowrap;
 
     &-wrap{
       width: 30PX;

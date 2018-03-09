@@ -19,6 +19,10 @@
       "name": "blank",
       "type": "checkbox",
       "title": "В новом окне"
+    },{
+      "name": "bold",
+      "type": "checkbox",
+      "title": "Жирным"
     }
   ]
 }
