@@ -114,7 +114,7 @@
             </thead>
             <tbody>
               {% for user in users %}
-                <tr>
+                <tr class="table-users-user{% if user.is_active == 0 %} table-users-user-deleted{% endif %}">
                   <td>
                     <div class="sum_information long_value">
                       <div class="line">
