@@ -19,6 +19,7 @@
   ){
     return;
   }
+
   if(href.indexOf('store')>0 || href.indexOf('coupon')>0 || href.indexOf('settings')>0){
     window.opener.location.reload();
   }else{
