@@ -92,6 +92,10 @@
     &>ul>li{
       @include media($laptop-min) {
         background-color: $footer_bg;
+
+        &.hide_mobile {
+          display: none;
+        }
       }
 
       //для первого пункта подменю

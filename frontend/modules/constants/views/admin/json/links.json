@@ -12,6 +12,10 @@
       "type": "checkbox",
       "title": "Выводить"
     },{
+      "name": "hide_mobile",
+      "type": "checkbox",
+      "title": "Скрывать в моб. версии"
+    },{
       "name": "outer",
       "type": "checkbox",
       "title": "Внешняя"
