@@ -1,5 +1,5 @@
     {% if (content or current_category.description) and page==1%}
-      <section class="gray-box wrap-round margin">
+      <section class="gray-box wrap-round margin laptop_hide">
         {% if current_category.description %}
           {{ current_category.description | raw }}
         {% else %}
@@ -38,7 +38,7 @@
                 <div class="catalog-categories_tree-toggle">
                     {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
                     {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-                    <span class="catalog-categories_tree-toggle-tittle">Категории</span>
+                    <span class="catalog-categories_tree-toggle-tittle">Выбрать категорию</span>
                 </div>
 
                 {#выбор и отображение сортировки#}

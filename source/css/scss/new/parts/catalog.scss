@@ -301,7 +301,7 @@
         flex-direction: row;
         align-items: center;
         margin: 0 auto 20px auto;
-        width: 200px;
+        width: 240px;
         padding: 10px;
         background: $btn_base_bg;
         color: $btn_base_color;
@@ -349,6 +349,7 @@
           font-weight: bold;
           //display: block;
           //text-align: center;
+          width: 100%;
         }
       }
     }
@@ -414,7 +415,7 @@
           }
         }
         &-select {
-          width: 222px;
+          width: 264px;
           margin-bottom: 20px;
         }
         &-title {
