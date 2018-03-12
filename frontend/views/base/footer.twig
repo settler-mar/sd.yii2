@@ -67,9 +67,9 @@
             {% for item in link_list %}
               {% if item.show==1 %}
                 <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>
-                  {{ _if(item.bold==1,'<b>') }}
+                  {{ _if(item.bold==1,'<b>')|raw }}
                   {{ item.name }}
-                  {{ _if(item.bold==1,'</b>') }}
+                  {{ _if(item.bold==1,'</b>')|raw }}
                 </a>
               {% endif %}
             {% endfor %}
