@@ -236,6 +236,12 @@
       line-height: 15px;
       background-color: $drop-menu-color;
 
+      &.menu_hidden {
+        @include media_min($laptop-min) {
+          display: none;
+        }
+      }
+
       a, span{
 
         padding: 10px 15px;
