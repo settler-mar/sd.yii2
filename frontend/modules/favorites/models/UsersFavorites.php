@@ -142,6 +142,8 @@ class UsersFavorites extends \yii\db\ActiveRecord
     Cache::deleteName('account_favorite_stores_' . $this->user_id);
     Cache::deleteName('account_favorites_' . $this->user_id);
     Cache::deleteName('account_favorites_count_user_' . $this->user_id);
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
     //зависимости
     Cache::clearName('catalog_storesfavorite' . $this->user_id);
 
@@ -151,6 +153,8 @@ class UsersFavorites extends \yii\db\ActiveRecord
     Cache::deleteName('account_favorite_stores_' . $this->user_id);
     Cache::deleteName('account_favorites_' . $this->user_id);
     Cache::deleteName('account_favorites_count_user_' . $this->user_id);
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
+    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
     //зависимости
     Cache::clearName('catalog_storesfavorite' . $this->user_id);
   }

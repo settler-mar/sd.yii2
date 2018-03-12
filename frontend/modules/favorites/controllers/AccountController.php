@@ -41,8 +41,6 @@ class AccountController extends \yii\web\Controller
         return json_encode(['error'=>[Yii::t('account', 'favorites_add_noshop')]]);
       }
 
-      $cash_id='account_favorites_'.Yii::$app->user->id;
-      $cache = Yii::$app->cache;
 
       if($type=='add'){
         if($fav){
@@ -52,7 +50,6 @@ class AccountController extends \yii\web\Controller
           $fav->store_id=$affiliate_id;
           $fav->save();
 
-          $cache->delete($cash_id);
           return json_encode([
             'error'=>false,
             'msg'=>Yii::t('account', 'favorites_shop_add'),
@@ -67,7 +64,6 @@ class AccountController extends \yii\web\Controller
           return json_encode(['error'=>Yii::t('account', 'favorites_shop_removed_allready')]);
         }else{
           $fav->delete();
-          $cache->delete($cash_id);
           return json_encode([
             'error'=>false,
             'msg'=>Yii::t('account', 'favorites_shop_removed'),
