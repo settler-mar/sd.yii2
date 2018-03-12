@@ -292,4 +292,42 @@ class AccountController extends Controller
 
 
   }*/
+
+  public function actionDelete()
+  {
+
+      if (Yii::$app->user->isGuest) {
+          return $this->goHome();
+      }
+
+      $request = Yii::$app->request;
+      if (!$request->isAjax) {
+          return $this->goHome();
+      }
+      $errors=[];
+      if ($request->isPost) {
+        //удаление оккаунта
+          if ($request->post('user_comment') == '') {
+            $errors['user_comment']='Необходимо заполнить';
+          } else {
+              $user = Users::findOne(Yii::$app->user->id);
+              if ($user) {
+                  $user->is_active = 0;
+                  $user->delete_comment = $request->post('user_comment');
+                  $user->save();
+                  Yii::$app->session->remove('admin_id');
+                  Yii::$app->user->logout();
+                  $data['html'] = 'Аккаунт успешно удалён!<script>login_redirect("/");</script>';
+                  return json_encode($data);
+              }
+          }
+      }
+      //вывод формы
+      $data['html'] = $this->renderAjax('delete', [
+          'isAjax' => true,
+          'errors' => $errors,
+      ]);
+      return json_encode($data);
+
+  }
 }
