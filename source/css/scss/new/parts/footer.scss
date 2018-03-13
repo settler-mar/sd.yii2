@@ -283,14 +283,15 @@
       padding-left: 75PX;
       line-height: 18px !important;
       margin-bottom: 0 !important;
-      background: url(/images/svg/mini-logo.svg) 0 50% no-repeat;
+      background: url(/images/svg/mini-logo-2.svg) 0 50% no-repeat;
       background-size: contain;
 
       @include media($phones) {
         padding-left: 0;
-        background-size: auto;
+        //background-size: auto;
+        background-size: 80PX;
         background-position: 50% 100%;
-        padding-bottom: 40px;
+        padding-bottom: 40PX;
         text-align: center;
       }
 
