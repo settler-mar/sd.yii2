@@ -1,33 +1,33 @@
 $(function () {
-    $('.sd-select-selected').click(function(){
-        var parent = $(this).parent();
-        var dropBlock = $(parent).find('.sd-select-drop');
+  $('.sd-select-selected').click(function () {
+    var parent = $(this).parent();
+    var dropBlock = $(parent).find('.sd-select-drop');
 
-        if( dropBlock.is(':hidden') ) {
-            dropBlock.slideDown();
+    if (dropBlock.is(':hidden')) {
+      dropBlock.slideDown();
 
-            $(this).addClass('active');
+      $(this).addClass('active');
 
-            if (!parent.hasClass('linked')) {
+      if (!parent.hasClass('linked')) {
 
-                $('.sd-select-drop').find('a').click(function (e) {
+        $('.sd-select-drop').find('a').click(function (e) {
 
-                    e.preventDefault();
-                    var selectResult = $(this).html();
+          e.preventDefault();
+          var selectResult = $(this).html();
 
-                    $(parent).find('input').val(selectResult);
+          $(parent).find('input').val(selectResult);
 
-                    $(parent).find('.sd-select-selected').removeClass('active').html(selectResult);
+          $(parent).find('.sd-select-selected').removeClass('active').html(selectResult);
 
-                    dropBlock.slideUp();
-                });
-            }
+          dropBlock.slideUp();
+        });
+      }
 
-        } else {
-            $(this).removeClass('active');
-            dropBlock.slideUp();
-        }
-        return false;
-    });
+    } else {
+      $(this).removeClass('active');
+      dropBlock.slideUp();
+    }
+    return false;
+  });
 
 });

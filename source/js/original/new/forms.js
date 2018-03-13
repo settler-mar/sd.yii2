@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function () {
   $('input[type=file]').on('change', function (evt) {
     var file = evt.target.files; // FileList object
     var f = file[0];
@@ -24,9 +24,9 @@ $( document ).ready(function() {
     reader.readAsDataURL(f);
   });
 
-  $('.dublicate_value').on('change',function () {
-    var $this=$(this);
-    var sel=$($this.data('selector'));
+  $('.dublicate_value').on('change', function () {
+    var $this = $(this);
+    var sel = $($this.data('selector'));
     sel.val(this.value);
   })
 });

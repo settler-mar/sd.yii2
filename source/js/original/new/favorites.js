@@ -1,18 +1,18 @@
 //избранное
-$( document ).ready(function() {
-  $(".favorite-link").on('click',function(e) {
+$(document).ready(function () {
+  $(".favorite-link").on('click', function (e) {
     e.preventDefault();
 
     var self = $(this);
     var type = self.attr("data-state"),
       affiliate_id = self.attr("data-affiliate-id");
 
-    if(!affiliate_id){
+    if (!affiliate_id) {
       notification.notifi({
-          title:"Необходимо авторизоваться",
-          message:'Добавить в избранное может только авторизованный пользователь.</br>'+
-            '<a href="#login" class="modals_open">Вход</a>  / <a href="#registration" class="modals_open">Регистрация</a>',
-          type:'err'
+        title: "Необходимо авторизоваться",
+        message: 'Добавить в избранное может только авторизованный пользователь.</br>' +
+        '<a href="#login" class="modals_open">Вход</a>  / <a href="#registration" class="modals_open">Регистрация</a>',
+        type: 'err'
       });
       return false;
 
@@ -24,27 +24,27 @@ $( document ).ready(function() {
     self.addClass('disabled');
 
     /*if(type == "add") {
-      self.find(".item_icon").removeClass("muted");
-    }*/
+     self.find(".item_icon").removeClass("muted");
+     }*/
 
-    $.post("/account/favorites",{
-      "type" : type ,
+    $.post("/account/favorites", {
+      "type": type,
       "affiliate_id": affiliate_id
-    },function (data) {
+    }, function (data) {
       self.removeClass('disabled');
-      if(data.error){
+      if (data.error) {
         self.find('svg').removeClass("spin");
-        notification.notifi({message:data.error,type:'err','title':(data.title?data.title:false)});
+        notification.notifi({message: data.error, type: 'err', 'title': (data.title ? data.title : false)});
         return;
       }
 
       notification.notifi({
-        message:data.msg,
-        type:'success',
-        'title':(data.title?data.title:false)
+        message: data.msg,
+        type: 'success',
+        'title': (data.title ? data.title : false)
       });
 
-      if(type == "add") {
+      if (type == "add") {
         self.find(".item_icon").addClass("svg-no-fill");
       }
 
@@ -53,19 +53,21 @@ $( document ).ready(function() {
         "data-original-title": data['data-original-title']
       });
 
-      if(type == "add") {
+      if (type == "add") {
         self.find("svg").removeClass("spin svg-no-fill");
-      } else if(type == "delete") {
+      } else if (type == "delete") {
         self.find("svg").removeClass("spin").addClass("svg-no-fill");
       }
 
-    },'json').fail(function() {
+    }, 'json').fail(function () {
       self.removeClass('disabled');
-      notification.notifi({message:"<b>Технические работы!</b><br>В данный момент времени" +
-      " произведённое действие невозможно. Попробуйте позже." +
-      " Приносим свои извинения за неудобство.",type:'err'});
+      notification.notifi({
+        message: "<b>Технические работы!</b><br>В данный момент времени" +
+        " произведённое действие невозможно. Попробуйте позже." +
+        " Приносим свои извинения за неудобство.", type: 'err'
+      });
 
-      if(type == "add") {
+      if (type == "add") {
         self.find("svg").addClass("svg-no-fill");
       }
       self.find("svg").removeClass("spin");
