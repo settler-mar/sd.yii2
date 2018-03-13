@@ -399,6 +399,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if ($childCategories) {
           $itemClass[] = 'menu-group';
         }
+        if ($cat['menu_hidden']) {
+            $itemClass[] = 'menu_hidden';
+        }
 
         if (count($itemClass) > 0) {
           $itemClass = 'class=\'' . implode(' ', $itemClass) . '\'';

@@ -94,7 +94,8 @@
       }
 
       &-mobile{
-        height: 26PX;
+        //height: 26PX;
+        height: 24PX;
         /*height: 50PX;
         margin-top: -12PX;
         margin-bottom: -12PX;*/
@@ -470,15 +471,34 @@
 
   .account-menu {
     transition: opacity 0.3s ease 0.1s;
-    overflow: hidden;
+    //overflow: hidden;
     width: 220px;
     position: absolute;
-    top: 40PX;
+    top: 47PX;
     right: -10px;
     background-color: rgba(0,0,0,0.5);
     //max-height: none;
     opacity: 1;
     visibility: visible;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 9PX solid;
+      pointer-events: none;
+      border-bottom-color: $menu_border_color;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      border-top-color: transparent;
+      top: -18PX;
+      right: 33PX;
+
+      @include media($laptop-min) {
+        border: none;
+      }
+    }
 
     &_inner {
       border: 1px solid $menu_border_color;
@@ -487,6 +507,25 @@
       height: auto;
       transition: all 0.3s ease 0.1s;
       box-sizing: border-box;
+
+      &:before {
+        content: " ";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 9PX solid;
+        pointer-events: none;
+        border-bottom-color: $drop-menu-color;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        top: -16.5PX;
+        right: 33PX;
+
+        @include media($laptop-min) {
+          border: none;
+        }
+      }
 
       a, span {
         font-size: 14px;

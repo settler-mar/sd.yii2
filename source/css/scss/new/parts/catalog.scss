@@ -39,7 +39,7 @@
       & > li {
         //margin-bottom: 1PX;
         &:not(:first-child) {
-          border-top: thin solid #fff;
+          border-top: thin solid $left_menu_item_border_color;
         }
 
         > a {
@@ -52,13 +52,15 @@
         }
 
         > a, span {
-          padding: 10px 10px;
+          //padding: 10px 0 10px 10px;
+          padding: 0 0 0 10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: nowrap;
           color: $text_color;
           font-size: 16PX;
+          min-height: 40px;
 
           &:hover {
             color: $header_sub_menu_color_hover;
@@ -120,12 +122,12 @@
           }
 
           .menu_angle-down {
-            transform: none;
+            transform: rotate(-180deg);
           }
         }
 
         &.all_shops {
-          border-top: 2px solid $header_border_color;
+          border-top: 2px solid $left_menu_item_border_color;
           margin-top: -1px;
           &.active {
             border-top: none;
@@ -145,12 +147,12 @@
       width: 9px;
       height: 9px;
       right: 8px;
-      padding: 0 10px;
+      padding: 15px;
       color: $stores_menu_hover_color;
       stroke: $stores_menu_hover_color;
       fill: $stores_menu_hover_color;
       cursor: pointer;
-      transform: rotate(-90deg);
+      //transform: rotate(-90deg);
     }
     &_buttons {
       text-align: center;
@@ -260,7 +262,7 @@
           align-items: center;
           font-size: 20px;
           font-weight: bold;
-          border-bottom: thin solid #fff;
+          border-bottom: thin solid $left_menu_item_border_color;
           position: fixed;
           top: 48PX;
 
@@ -299,7 +301,7 @@
         flex-direction: row;
         align-items: center;
         margin: 0 auto 20px auto;
-        width: 200px;
+        width: 240px;
         padding: 10px;
         background: $btn_base_bg;
         color: $btn_base_color;
@@ -347,6 +349,29 @@
           font-weight: bold;
           //display: block;
           //text-align: center;
+          width: 100%;
+        }
+      }
+    }
+    &_blogposts {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .instruction-item-article {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+
+        @include media($laptop-min) {
+          max-width: calc(50% - 40px);
+          margin-left: 10PX;
+          margin-right: 10PX;
+        }
+        @include media($tablets) {
+          max-width: 100%;
+          margin-left: 0;
+          margin-right: 0;
         }
       }
     }
@@ -412,7 +437,7 @@
           }
         }
         &-select {
-          width: 222px;
+          width: 264px;
           margin-bottom: 20px;
         }
         &-title {

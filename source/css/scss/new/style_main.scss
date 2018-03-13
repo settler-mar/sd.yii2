@@ -113,6 +113,8 @@ h1 {
 
   @include media ($laptop_min) {
     text-align: center;
+    font-size: 1.8em;
+    line-height: 1.1;
   }
 
   @media print {
@@ -215,7 +217,11 @@ h3, h4, h5, h6 {
       }
     }
   }
+  &-overflow {
+    overflow: visible;
+  }
 }
+
 
 .mini-wrap {
   max-width: $tablets;
@@ -710,6 +716,12 @@ svg.svg-no-stroke {
   color: $header_heart;
 }
 
+.laptop_hide {
+  @include media($laptop-min) {
+    display: none;
+  }
+}
+
 //картинки для скачивания
 .downloads_img {
   .download {
@@ -767,6 +779,14 @@ input.link {
 .width_ {
   &75 {
     width: 75%;
+  }
+}
+
+.breadcrumbs {
+  margin-bottom: 47px;
+
+  @include media($laptop_min) {
+    margin-bottom: 25px;
   }
 }
 

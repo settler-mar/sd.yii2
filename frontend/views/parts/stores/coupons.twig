@@ -27,7 +27,7 @@
   <div class="align-center">
     {% if current_store.name and current_store.route %}
       <a href="/coupons/{{ current_store.route }}" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все
-        промокоды {{ current_store.name }}</a>
+        промокоды {{ current_store.name }} →</a>
     {% else %}
       <a href="/coupons" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}
         →</a>

@@ -12,6 +12,7 @@ use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 use frontend\modules\reviews\models\Reviews;
 use frontend\models\RouteChange;
+use frontend\modules\sdblog\models\Posts;
 use yii;
 
 /**
@@ -271,6 +272,7 @@ class DefaultController extends SdController
     $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
 
     $contentData['menu_subscribe'] = 1;
+    $contentData['posts'] = Posts::getLastPosts();
 
     return $this->render('catalog', $contentData);
   }
@@ -376,6 +378,8 @@ class DefaultController extends SdController
     $contentData["coupons_top5"] = Coupons::top(['limit' => 5]);
     $contentData['search_form'] = 1;
     $contentData['menu_subscribe'] = 0;//true;
+    $contentData['posts'] = Posts::getLastPosts();
+
     return $this->render('card', $contentData);
   }
   /**
@@ -495,6 +499,8 @@ class DefaultController extends SdController
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
       $contentData['search_form'] = 1;
+      $contentData['posts'] = Posts::getLastPosts();
+
       return $this->render('abc', $contentData);
   }
 

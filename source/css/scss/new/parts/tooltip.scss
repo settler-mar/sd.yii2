@@ -11,6 +11,10 @@ $tipso_shadow_color: rgba(15, 112, 155, .22);
     border-radius: 0;
     line-height: 19px;
 
+    @include media($laptop-min) {
+      opacity: 0;
+    }
+
     & > .tipso_arrow {
       border: 9.5PX solid;
 

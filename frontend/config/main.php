@@ -151,6 +151,7 @@ $config = [
         'account/email-success' => 'users/account/emailsuccess',
         'account/webmaster' => 'affiliate/account/index',
         'account/promo' => 'users/default/promo',
+        'deleteaccount' => 'users/account/delete',
 
         'search' => 'search/default/index',
         'search/coupon' => 'search/default/coupon',

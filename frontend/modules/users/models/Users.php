@@ -89,7 +89,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
             'skipOnEmpty' => true
         ],
         [['waitModeration', 'traffType', 'show_balance'], 'number'],
-        ['url', 'string']
+        [['url', 'delete_comment'], 'string'],
+
     ];
   }
 
@@ -147,6 +148,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         'url' => 'Сайт',
         'show_balance' => 'Отображаемый баланс',
         'in_action' => 'Участвует в акции с ',
+        'delete_comment' => 'Причина удаления',
     ];
   }
 

@@ -36,6 +36,7 @@
     padding: 0;
     //width: 310px;
     border: 1px solid $btn_base_bg;
+    border-radius: 0 0 3px 3px;
     border-top: none;
     display: none;
     //position: absolute;
@@ -44,16 +45,22 @@
     & > li {
       list-style: none;
       border-top: 1px solid $menu_border_color;
-      cursor: pointer;
-      display: block;
-      padding: 10px 30px;
+      //cursor: pointer;
+      //display: block;
+      //padding: 10px 30px;
       background-position: 10px -119px;
       a {
         color: $btn_base_bg;
         text-decoration: none;
+        display: block;
+        padding: 10px 30px;
         &:hover {
           text-decoration: underline;
         }
+      }
+      span {
+        display: block;
+        padding: 10px 30px;
       }
 
     }

@@ -55,5 +55,11 @@
             {{ banners|raw }}
         {% endif %}
 
+        {% if posts %}
+            <div class="catalog-categories_blogposts">
+                {% include('parts/blog_posts.twig') %}
+            </div>
+        {% endif %}
+
     {% endif %}
 

@@ -1,7 +1,7 @@
 <!--краткая информация категории-->
 {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
-      <section class="gray-box wrap-round margin">
+      <section class="gray-box wrap-round margin laptop_hide">
         <h3 class="title-center">{{ current_category.name }}</h3>
         <div class="catalog_category-short-description">
           {{ short_description|raw }}
@@ -16,7 +16,7 @@
       {#<h3 class="cathead">Категории</h3>#}
       {{ use('frontend/components/CategoryMenu') }}
       {% set ext_menu_items = offline == 1 ? 'favorite,all_shops' : 'favorite,all_shops' %}
-      {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items': ext_menu_items, 'offline': offline}) %}
+      {% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items': ext_menu_items, 'offline': offline}) %}
       {% if category_tree %}
 
         <div class="catalog-categories_tree-cat accordeon">
@@ -64,7 +64,7 @@
       <div class="catalog-categories_tree-toggle">
         {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
         {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-        <span class="catalog-categories_tree-toggle-tittle">Категории</span>
+        <span class="catalog-categories_tree-toggle-tittle">Выбрать категорию</span>
       </div>
 
       {#выбор и отображение сортировки#}
