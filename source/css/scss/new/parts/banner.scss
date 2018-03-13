@@ -23,6 +23,7 @@ $banner_mobile_interval: $laptop-min;
 
   &__wrapper {
     margin-top: 20px;
+    margin-bottom: 20px;
 
     @include media($laptop_min) {
       margin-top: 47px;

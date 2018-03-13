@@ -353,6 +353,28 @@
         }
       }
     }
+    &_blogposts {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .instruction-item-article {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+
+        @include media($laptop-min) {
+          max-width: calc(50% - 40px);
+          margin-left: 10PX;
+          margin-right: 10PX;
+        }
+        @include media($tablets) {
+          max-width: 100%;
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   &-stores {
