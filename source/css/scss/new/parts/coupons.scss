@@ -371,16 +371,19 @@
         color: #fff;
         text-transform: uppercase;
         padding: 7px 3px;
-        font-weight: bold;
+        //font-weight: bold;
+        font-size: 14px;
         text-decoration: none;
         text-align: center;
+
         &-cashback {
           white-space: nowrap;
+          color: $coupons_coupon_name_cashback;
         }
 
         svg {
-          width: 16PX;
-          height: 16PX;
+          width: 1em;
+          height: 1em;
           vertical-align: middle;
         }
 
