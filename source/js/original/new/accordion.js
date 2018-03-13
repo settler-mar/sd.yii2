@@ -48,21 +48,21 @@ if (accordionSlim.length > 0) {
     .addClass('accordion-content_last-open');
 }
 
-$('body').on('click',function () {
+$('body').on('click', function () {
   $('.accordion_fullscrean_close.open .accordion-control:first-child').click()
 });
 
-$('.accordion-content').on('click',function (e) {
+$('.accordion-content').on('click', function (e) {
   if (e.target.tagName != 'A') {
-      $(this).closest('.accordion').find('.accordion-control.accordion-title').click();
-      e.preventDefault();
-      return false;
+    $(this).closest('.accordion').find('.accordion-control.accordion-title').click();
+    e.preventDefault();
+    return false;
   }
 });
 
-$('.accordion-content a').on('click',function (e) {
-  $this=$(this);
-  if($this.hasClass('angle-up'))return;
+$('.accordion-content a').on('click', function (e) {
+  $this = $(this);
+  if ($this.hasClass('angle-up'))return;
   e.stopPropagation()
 });
 

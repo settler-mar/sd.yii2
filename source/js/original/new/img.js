@@ -38,7 +38,6 @@
   }
 })();
 
-
 //что б ифреймы и картинки не вылазили
 $( document ).ready(function() {
   /*m_w = $('.text-content').width()
@@ -134,7 +133,7 @@ $( document ).ready(function() {
 
     image=$('<img/>',{
       src:src
-    }).on('load',img_load_finish.bind(data))
+    }).on('load',img_load_finish.bind(data));
     image.data('data',data);
   }
 
@@ -159,7 +158,7 @@ $( document ).ready(function() {
     };
     image=$('<img/>',{
       src:src
-    }).on('load',img_load_finish.bind(data))
+    }).on('load',img_load_finish.bind(data));
     image.data('data',data);
   }
 });

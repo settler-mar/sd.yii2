@@ -1,5 +1,5 @@
 if (!Function.prototype.bind) {
-  Function.prototype.bind = function(oThis) {
+  Function.prototype.bind = function (oThis) {
     if (typeof this !== 'function') {
       // ближайший аналог внутренней функции
       // IsCallable в ECMAScript 5
@@ -8,8 +8,9 @@ if (!Function.prototype.bind) {
 
     var aArgs = Array.prototype.slice.call(arguments, 1),
       fToBind = this,
-      fNOP    = function() {},
-      fBound  = function() {
+      fNOP = function () {
+      },
+      fBound = function () {
         return fToBind.apply(this instanceof fNOP && oThis
             ? this
             : oThis,

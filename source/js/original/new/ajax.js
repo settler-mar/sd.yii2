@@ -1,5 +1,3 @@
-(function(){
-
-    ajaxForm($('.ajax_form'));
-
+(function () {
+  ajaxForm($('.ajax_form'));
 })();

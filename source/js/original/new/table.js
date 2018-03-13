@@ -18,9 +18,9 @@
     var tr = table.find('tr').not('.table-header');
 
     for (var j = 0; j < th.length; j++) {
-      var k=j+1;
-      var td = tr.find('td:nth-child('+k+')');
-      td.attr('label',th.eq(j).text());
+      var k = j + 1;
+      var td = tr.find('td:nth-child(' + k + ')');
+      td.attr('label', th.eq(j).text());
     }
   }
 
