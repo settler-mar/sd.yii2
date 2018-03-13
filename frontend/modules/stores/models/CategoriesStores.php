@@ -133,6 +133,16 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->viaTable('cw_stores_to_categories', ['category_id' => 'uid']);
   }
 
+    /**
+     * связанные категории купонов
+     * @return $this
+     */
+  public function getCouponCategories()
+  {
+    return $this->hasMany(CategoriesCoupons::className(), ['uid' => 'coupon_category_id'])
+       ->viaTable('cw_stores_category_to_coupons_category', ['store_category_id' => 'uid']);
+  }
+
   /**
    * @return mixed
    */

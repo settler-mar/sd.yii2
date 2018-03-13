@@ -114,6 +114,10 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         self::clearCache($this->uid, $this->route);
     }
 
+    /**
+     * связанные категории шопов
+     * @return $this
+     */
     public function getStoresCategories()
     {
         return $this->hasMany(CategoriesStores::className(), ['uid' => 'store_category_id'])

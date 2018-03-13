@@ -28,7 +28,9 @@
     {% if stores_categories|length > 0 %}
     <section  class="account-padding view-list view-current">
         <div class="row">
-            <h3>Категории магазинов</h3>
+            <div class="col-md-12">
+                <p class="title">Категории магазинов</p>
+            </div>
             <div class="col-md-12">
                     <form method="post" action="/admin-categories/coupons/update-stores-categories?id={{ model.uid }}">
                         <ul class="ch_tree">

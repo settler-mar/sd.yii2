@@ -54,5 +54,29 @@
                 {{ active_form_end() }}
             </div>
         </section>
+        {% if model.isNewRecord == null and coupons_categories|length > 0 %}
+            <section  class="account-padding view-list view-current">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="title">Категории купонов</p>
+                    </div>
+                    <div class="col-md-12">
+                        <form method="post" action="/admin-categories/stores/update-coupon-categories?id={{ model.uid }}">
+                            <ul class="ch_tree">
+                                {% for category in coupons_categories %}
+                                    <li>
+                                        <label>
+                                            <input {% if category.uid in model_coupon_categories %} checked {% endif %} data-uid="{{category.uid}}" type="checkbox" name="coupon_category_id[]" value="{{category.uid}}"><span>{{category.name}}</span>
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                                <input type="hidden" name="id" value="{{model.uid}}">
+                                <button type="submit">Изменить</button>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
     </div>
 </div>
