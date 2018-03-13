@@ -109,6 +109,9 @@ $( document ).ready(function() {
 $( document ).ready(function() {
   function img_load_finish(){
     data=this;
+    if(data.tagName){
+      data=$(data).data('data');
+    }
     if(data.type==0) {
       data.img.attr('src', data.src);
     }else{
@@ -128,9 +131,11 @@ $( document ).ready(function() {
       img:img,
       type:0 // для img[src]
     };
+
     image=$('<img/>',{
       src:src
     }).on('load',img_load_finish.bind(data))
+    image.data('data',data);
   }
 
   //тест аватарок в коментариях
@@ -155,5 +160,6 @@ $( document ).ready(function() {
     image=$('<img/>',{
       src:src
     }).on('load',img_load_finish.bind(data))
+    image.data('data',data);
   }
 });
