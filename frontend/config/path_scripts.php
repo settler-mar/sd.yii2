@@ -2,18 +2,17 @@
 return  [
   'default'=>[
     'js'=>[
-      //'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
-      '/js/new/scripts{{script_version}}.js',
+      '/js/scripts{{script_version}}.js',
     ],
     'css'=>[
-         '/css/new/styles{{script_version}}.css',
+         '/css/styles{{script_version}}.css',
     ],
   ],
   'goto'=>[
     'js'=>[
     ],
     'css'=>[
-      '/css/new/styles{{script_version}}.css',
+      '/css/styles{{script_version}}.css',
     ],
   ],
   'admin'=>[
