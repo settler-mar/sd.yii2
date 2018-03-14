@@ -68,6 +68,9 @@
     @include media($tablets) {
       font-size: 16px;
     }
+    @include media($phones) {
+      line-height: 1.2;
+    }
 
     &:hover {
       color: $a_color_hover;
@@ -248,7 +251,7 @@
   }
 
   &-docs {
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 60px;
 
     @include media($laptop_min) {
@@ -262,7 +265,7 @@
 
     &-item {
       text-decoration: underline !important;
-      margin: 0 28px;
+      margin-right: 58px;
       //min-width: 200px;
     }
   }
