@@ -51,6 +51,11 @@ class DefaultController extends SdController
     }
 
     if ($id) {
+      if ($id == 'abc') {
+        \Yii::$app->params['url_mask'] = 'stores/abc';
+        echo $this->actionAbc();
+        exit;
+      }
       //имеется action, который должен быть категорией или магазином, ищем такую
       //если в конце категории или шопа слово -offline
       $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
@@ -266,8 +271,6 @@ class DefaultController extends SdController
           'limit' => 4
           //'unique_store' => true,
       ]);
-      //d($storesData['current_category']);
-      //ddd($cupons);
     }
 
     $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
@@ -311,6 +314,18 @@ class DefaultController extends SdController
     $contentData['wrap'] = 'index';
     Yii::$app->params['global_bg'] = "tablets_flex-col";
     return $this->render('shop', $contentData);
+  }
+
+  private function actionAbc()
+  {
+    $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url'=>'/stores'];
+    $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
+
+    $contentData["stores_abc"] = Stores::getActiveStoresByAbc();
+    $contentData["total_v"] = Stores::activeCount();
+    $contentData['posts'] = Posts::getLastPosts();
+
+    return $this->render('abc', $contentData);
   }
 
   /**

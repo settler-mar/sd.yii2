@@ -24,6 +24,12 @@
                     {% endif%}
                 </h1>
 
+                <div class="catalog-categories_tree-toggle">
+                    {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
+                    {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
+                    <span class="catalog-categories_tree-toggle-tittle">Выбрать категорию</span>
+                </div>
+
                 <div  class="coupons-abc_chars">
                     {% for char, stores in stores_coupons|slice(0, 27) %}
                         {% if stores|length %}

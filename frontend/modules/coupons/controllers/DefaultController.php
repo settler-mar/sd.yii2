@@ -494,8 +494,7 @@ class DefaultController extends SdController
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-      //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
-      $contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
+      $contentData["stores_coupons"] = Stores::getActiveStoresByAbc(Coupons::getActiveStoresCoupons());
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
       $contentData['search_form'] = 1;

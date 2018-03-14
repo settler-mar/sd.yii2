@@ -1,0 +1,30 @@
+{{ use('frontend/components/CategoryMenu') }}
+
+{% set ext_menu_items = offline == 1 ? 'favorite,all_shops' : 'favorite,all_shops,abc' %}
+{% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items': ext_menu_items, 'offline': offline}) %}
+{% if category_tree %}
+
+    <div class="catalog-categories_tree-cat accordeon">
+        <div class="catalog-categories_tree-cat-close">
+            {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}
+            <span class="catalog-categories_tree-cat-close-tittle">Категории</span>
+        </div>
+        {{ category_tree|raw }}
+    </div>
+    {{ use('frontend/components/Banner') }}
+
+    {% set banner_places = current_category ?
+    ['shops-left-menu','stores-'~current_category.parent_id~'-left-menu','stores-'~current_category.uid~'-left-menu'] :
+    ['shops-left-menu','shops-catalog-left-menu'] %}
+
+    {% set banners  = banner_widget({
+    'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
+    {% if banners %}
+        {{ banners|raw }}
+    {% endif %}
+    {% if posts %}
+        <div class="catalog-categories_blogposts">
+            {% include('parts/blog_posts.twig') %}
+        </div>
+    {% endif %}
+{% endif %}
