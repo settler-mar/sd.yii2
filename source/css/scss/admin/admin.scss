@@ -302,10 +302,14 @@ body {
         }
 
         textarea {
-            //width: 100%;
-            width: 300px;
+            width: 100%;
+            //width: 300px;
             height: 100px;
             padding: 5px 7px;
+
+            &.width_300 {
+                width: 300px;
+            }
         }
 
         select,
