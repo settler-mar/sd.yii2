@@ -1,7 +1,6 @@
 (function () {
   $('.hidden-link').replaceWith(function () {
-    $this = $(this)
-    console.log($this);
-    return '<a href="' + $(this).data('link') + '" class="' + $this[0].className + '">' + $(this).text() + '</a>';
+    $this = $(this);
+    return '<a href="' + $this.data('link') + '" rel="'+ $this.data('rel') +'" class="' + $this.attr('class') + '">' + $this.text() + '</a>';
   })
 })();
