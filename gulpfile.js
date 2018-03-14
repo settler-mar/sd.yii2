@@ -226,7 +226,7 @@ function compileJs(sources, dest) {
       .pipe(sourcemap.write())
       .pipe(gulp.dest(dest))
 
-      .pipe(plugins.uglify())
+      .pipe(plugins.uglify({ie8: true}))
       .pipe(plugins.rename('scripts.min.js'))
       .pipe(gulp.dest(dest));
 }

@@ -107,58 +107,63 @@ $( document ).ready(function() {
 // !!!!!!
 $( document ).ready(function() {
   function img_load_finish(){
-    data=this;
+    var data=this;
     if(data.tagName){
       data=$(data).data('data');
     }
+    var img=data.img;
     if(data.type==0) {
-      data.img.attr('src', data.src);
+      img.attr('src', data.src);
     }else{
-      data.img.css('background-image', 'url('+data.src+')');
-      data.img.removeClass('no_ava');
+      img.css('background-image', 'url('+data.src+')');
+      img.removeClass('no_ava');
     }
   }
 
   //тест лого магазина
-  imgs=$('section:not(.navigation)').find('.logo img');
+  var imgs=$('section:not(.navigation)')
+  imgs=imgs.find('.logo img');
+  if(imgs)
   for (var i=0;i<imgs.length;i++){
-    img=imgs.eq(i);
-    src=img.attr('src');
+    var img=imgs.eq(i);
+    var src=img.attr('src');
     img.attr('src','/images/template-logo.jpg');
-    data={
+    var data={
       src:src,
       img:img,
       type:0 // для img[src]
     };
 
-    image=$('<img/>',{
+    var image=$('<img/>',{
       src:src
     }).on('load',img_load_finish.bind(data));
     image.data('data',data);
   }
 
+  imgs=null;
   //тест аватарок в коментариях
   imgs=$('.comment-photo,.scroll_box-avatar');
+  if(imgs)
   for (var i=0;i<imgs.length;i++){
-    img=imgs.eq(i);
+    var img=imgs.eq(i);
     if(img.hasClass('no_ava')){
       continue;
     }
 
     var src=img.css('background-image');
+    if(!src)continue;
     src=src.replace('url("','');
     src=src.replace('")','');
     img.addClass('no_ava');
-
     img.css('background-image','url(/images/no_ava_square.png)');
-    data={
+    var data={
       src:src,
       img:img,
       type:1 // для фоновых картинок
     };
-    image=$('<img/>',{
-      src:src
-    }).on('load',img_load_finish.bind(data));
-    image.data('data',data);
+    var im=document.createElement('img');
+    im.src=src;
+    var im=$(im);
+    im.on('load',img_load_finish.bind(data));
   }
 });
