@@ -5,6 +5,8 @@ namespace frontend\modules\coupons\controllers;
 use Yii;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\CategoriesCouponsSearch;
+use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -92,10 +94,43 @@ class AdminCategoriesController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
+      $model_stores_categories = [];
+      foreach ($model->storesCategories as $category) {
+          $model_stores_categories[] = $category->uid;
+      }
       return $this->render('update.twig', [
         'model' => $model,
+        'model_stores_categories' => $model_stores_categories,
+        'stores_categories' => CategoriesStores::find()->where(['parent_id' => 0])->all(),
       ]);
     }
+  }
+
+    /**
+     * Изменение связанных категорий шопов
+     * @param $id
+     * @return bool|\yii\web\Response
+     * @throws \yii\web\ForbiddenHttpException
+     */
+  public function actionUpdateStoresCategories($id)
+  {
+      if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesEdit')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+
+      $model = $this->findModel($id);
+      $storeCategories = Yii::$app->request->post('stores_category_id');
+      StoresCategoriesToCouponsCategories::deleteAll(['coupon_category_id' => $model->uid]);
+      foreach ($storeCategories as $storeCategoryId) {
+          $newCategory = new StoresCategoriesToCouponsCategories();
+          $newCategory->store_category_id = $storeCategoryId;
+          $newCategory->coupon_category_id = $model->uid;
+          $newCategory->save();
+      }
+
+      Yii::$app->session->addFlash('success', ['title'=>'Успешно', 'message' => 'Категории магазинов для категории купонов обновлены']);
+      return $this->redirect(['update', 'id' => $model->uid]);
   }
 
   /**

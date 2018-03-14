@@ -25,4 +25,40 @@
             {{ active_form_end() }}
         </div>
     </section>
+    {% if stores_categories|length > 0 %}
+    <section  class="account-padding view-list view-current">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="title">Категории магазинов</p>
+            </div>
+            <div class="col-md-12">
+                    <form method="post" action="/admin-categories/coupons/update-stores-categories?id={{ model.uid }}">
+                        <ul class="ch_tree">
+                            {% for category in stores_categories %}
+                                <li>
+                                    <label>
+                                        <input {% if category.uid in model_stores_categories %} checked {% endif %} data-uid="{{category.uid}}" data-parent-id="{{category.parent_id}}" type="checkbox" name="stores_category_id[]" value="{{category.uid}}"><span>{{category.name}}</span>
+                                    </label>
+                                    {% if category.childrens|length > 0 %}
+                                        <ul>
+                                            {% for category_ch in category.childrens %}
+                                                <li>
+                                                    <label>
+                                                        <input {% if category_ch.uid in model_stores_categories %} checked {% endif %} data-uid="{{category_ch.uid}}" data-parent-id="{{category_ch.parent_id}}" type="checkbox" name="stores_category_id[]" value="{{category_ch.uid}}"><span>{{category_ch.name}}</span>
+                                                    </label>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                            <input type="hidden" name="id" value="{{model.uid}}">
+                            {#<input type="hidden" name="type" value="update_categories">#}
+                            <button type="submit">Изменить</button>
+                        </ul>
+                    </form>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 </div>

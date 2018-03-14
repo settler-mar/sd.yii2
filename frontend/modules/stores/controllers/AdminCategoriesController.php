@@ -5,6 +5,8 @@ namespace frontend\modules\stores\controllers;
 use Yii;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\CategoriesStoresSearch;
+use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
+use frontend\modules\coupons\models\CategoriesCoupons;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -102,7 +104,11 @@ class AdminCategoriesController extends Controller
       return false;
     }
     $model = $this->findModel($id);
-
+    $model_coupon_categories = [];
+    foreach ($model->couponCategories as $category) {
+          $model_coupon_categories[] = $category->uid;
+    }
+    //ddd($model->couponCategories, $model_coupon_categories);
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
@@ -111,8 +117,37 @@ class AdminCategoriesController extends Controller
         'parentsList' => CategoriesStores::getParentsList(),
         'iconSelectClass' => \dvixi\IconSelectWidget::className(),
         'iconSelectParam' => $this->getIconsParam(),
+        'model_coupon_categories' => $model_coupon_categories,
+        'coupons_categories' => CategoriesCoupons::find()->all(),
       ]);
     }
+  }
+
+    /**
+     * редактирование связанных категорий купонов
+     * @param $id
+     * @return bool|\yii\web\Response
+     * @throws \yii\web\ForbiddenHttpException
+     */
+  public function actionUpdateCouponCategories($id)
+  {
+    if (Yii::$app->user->isGuest ||  !Yii::$app->user->can('CategoriesEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    $model = $this->findModel($id);
+    $couponCategories = Yii::$app->request->post('coupon_category_id');
+    StoresCategoriesToCouponsCategories::deleteAll(['store_category_id' => $model->uid]);
+    foreach ($couponCategories as $couponCategoryId) {
+      $newCategory = new StoresCategoriesToCouponsCategories();
+      $newCategory->coupon_category_id = $couponCategoryId;
+      $newCategory->store_category_id = $model->uid;
+      $newCategory->save();
+    }
+
+    Yii::$app->session->addFlash('success', ['title'=>'Успешно', 'message' => 'Категории купонов для категории магазинов обновлены']);
+    return $this->redirect(['update', 'id' => $model->uid]);
   }
 
   /**

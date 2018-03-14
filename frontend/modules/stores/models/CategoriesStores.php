@@ -133,6 +133,16 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->viaTable('cw_stores_to_categories', ['category_id' => 'uid']);
   }
 
+    /**
+     * связанные категории купонов
+     * @return $this
+     */
+  public function getCouponCategories()
+  {
+    return $this->hasMany(CategoriesCoupons::className(), ['uid' => 'coupon_category_id'])
+       ->viaTable('cw_stores_category_to_coupons_category', ['store_category_id' => 'uid']);
+  }
+
   /**
    * @return mixed
    */
@@ -256,6 +266,20 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ]);
       }
     }
+    //алфавитный поиск
+    if (in_array('abc', $extItems)) {
+        array_unshift($cats[0], [
+            'name' => 'АЛФАВИТНЫЙ ПОИСК',
+            'parent_id' => 0,
+            'route' => 'abc',
+            'menu_hidden' => 0,
+            'selected' => '0',
+            'count' => null,
+            'uid' => null,
+            'menu_index' => -1001,
+            'class' => 'cat_bold',
+        ]);
+    }
 
 
     if (in_array('all_shops', $extItems)) {
@@ -367,7 +391,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
             $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'.($offline?'-offline':'') ||
-            $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores'
+            $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores' ||
+            $cat['route'] == 'abc' && Yii::$app->request->pathInfo == 'stores/abc'
         ) {
           $title = true;
           $c[] = 'active';
@@ -417,12 +442,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $onlineLink = '';
         }
+        $count = $cat['count'] !== null ? "&nbsp;(" . $cat['count'] . ")" : "";
 
         if ($title) {
-          $tree .= '<span ' . $c . '">' . $cat['name'] . "&nbsp;(" . $cat['count'] . ")" . $arrow . "</span>";
+          $tree .= '<span ' . $c . '">' . $cat['name'] . $count . $arrow . "</span>";
         } else {
-          $tree .= "<a href='" . $catURL . $onlineLink . "' " . $c . ">" . $cat['name'] . "&nbsp;(" . $cat['count'] . ") " .
-              $arrow . "</a>";
+          $tree .= "<a href='" . $catURL . $onlineLink . "' " . $c . ">" . $cat['name'] . $count . $arrow . "</a>";
         }
         $tree .= ($childCategories ? self::buildCategoriesTree($cats, $cat['uid'], $currentCategoryId, $offline) : '');
         $tree .= "</li>";

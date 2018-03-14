@@ -33,7 +33,7 @@
       {% endif %}
     </div>
 
-    {% set not_active = (coupon.store_is_active==-1) %}
+    {% set not_active = (coupon.store_is_active != 1) %}
 
     <div class="coupons-list_item-content">
       <div class="coupons-list_item-logo-info">
@@ -51,7 +51,7 @@
         </div>
         <div class="coupons-list_item-logo-info-share">
           {% set coupon_name = coupon.name ~ " +&nbsp;кэшбэк&nbsp;" ~ _cashback(coupon.store_cashback, '',coupon.store_action_id)~"&nbsp;"~coupon.store_currency %}
-          <div class="">Поделиться:</div>
+          <div class="coupons-list_item-logo-info-share-header">Поделиться c друзьями:</div>
           <div class="share42init accauntSoc accauntSoc_32"
                data-url="https://secretdiscounter.ru//coupons/{{ coupon.store_route }}/{{ coupon.uid }} }}"
                data-image="https://secretdiscounter.ru/images/logos/{{ coupon.store_image }}"

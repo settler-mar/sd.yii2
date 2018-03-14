@@ -4,6 +4,7 @@ namespace frontend\modules\coupons\models;
 
 use yii;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\cache\models\Cache;
 use common\components\Help;
 
@@ -111,6 +112,16 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     public function afterDelete()
     {
         self::clearCache($this->uid, $this->route);
+    }
+
+    /**
+     * связанные категории шопов
+     * @return $this
+     */
+    public function getStoresCategories()
+    {
+        return $this->hasMany(CategoriesStores::className(), ['uid' => 'store_category_id'])
+            ->viaTable('cw_stores_category_to_coupons_category', ['coupon_category_id' => 'uid']);
     }
 
     /**

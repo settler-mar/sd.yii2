@@ -4,6 +4,8 @@ namespace frontend\modules\coupons\models;
 
 use yii;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use frontend\modules\cache\models\Cache;
 
 
@@ -211,31 +213,6 @@ class Coupons extends \yii\db\ActiveRecord
     return $stores;
   }
 
-  /**
-   * шопы с купонами разнесены по первым буквам названия
-   * @return array
-   */
-  public static function getActiveStoresCouponsByAbc()
-  {
-    $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-        'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
-        'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
-    $stores = self::getActiveStoresCoupons();
-    $storesByAbc = [];
-    foreach ($charList as $list) {
-      $storesByAbc[$list] = [];
-    }
-    foreach ($stores as $store) {
-      $char = mb_substr(mb_strtoupper($store['name']), 0, 1);
-      if (preg_match('/\d/', $char)) {
-        $storesByAbc['0&#8209;9'][] = $store;
-      } else {
-        $storesByAbc[$char][] = $store;
-      }
-    }
-    return $storesByAbc;
-  }
-
   public static function activeCount($filter = '')
   {
     $cache = Yii::$app->cache;
@@ -340,7 +317,20 @@ class Coupons extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store_category, $store, $new, $unique_store,$offline) {
-      if ($unique_store) {
+
+        if ($store_category && !$category) {
+            //есть категория шопов и нет категорий купонов - тащим второе из первого
+            $categoryCoupons = StoresCategoriesToCouponsCategories::find()
+                ->where(['store_category_id' => $store_category])
+                ->select('coupon_category_id')
+                ->asArray()
+                ->all();
+            if (!empty($categoryCoupons)) {
+                $category = array_column($categoryCoupons, 'coupon_category_id');
+            }
+        }
+
+        if ($unique_store) {
         $coupons = self::find()
             ->alias('cwc')
             ->groupBy('cwc.store_id')
@@ -360,12 +350,12 @@ class Coupons extends \yii\db\ActiveRecord
       $coupons = $coupons->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
 
       if ($category) {
+          //или по категории купонов
         $coupons = $coupons
             ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
             ->andWhere(['cctc.category_id' => $category]);
-      }
-
-      if ($store_category) {
+      } elseif ($store_category) {
+          //если нет, то по категории шопов
         $coupons = $coupons
             ->innerJoin('cw_stores_to_categories cstc', 'cstc.store_id = cwc.store_id')
             ->andWhere(['cstc.category_id' => $store_category]);
@@ -381,12 +371,14 @@ class Coupons extends \yii\db\ActiveRecord
             ->where(['cws.is_active' => [0, 1]])
             ->rightJoin(['cwc_top' => $coupons], 'cwc_top.store_id=cwc.store_id AND cwc_top.visit = cwc.visit');
       }
+        //ddd($category, $store_category, $coupons);
       return $coupons->limit($limit)->orderBy(['cwc.visit' => SORT_DESC])->all();
 
     }, $cache->defaultDuration, $dependency);
 
     return $data;
   }
+
 
   protected function clearCache()
   {

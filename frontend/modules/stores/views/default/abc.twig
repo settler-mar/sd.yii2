@@ -1,0 +1,77 @@
+<!--контент-->
+
+    {% if content %}
+      <section class="gray-box wrap-round margin laptop_hide">
+        <h3 class="title-center">{{ current_category.name }}</h3>
+        <div class="catalog_category-short-description">
+          {{ content|raw }}
+        </div>
+      </section>
+    {% endif %}
+
+
+<section class="catalog margin">
+  <div class="page-wrap page-wrap-flex">
+    {#слева категории#}
+    <div class="catalog-categories">
+      {% include('left_menu.twig') %}
+    </div>
+
+    {#справа шопы#}
+    <div class="catalog-stores coupons">
+      <h1>
+          {% if h1 %}
+            <!--h1 из базы-->
+              {{ h1|raw }}
+          {% else %}
+            <!--если нет, то -->
+            Магазины - алфавитный поиск <span>({{ total_v }})</span>
+          {% endif %}
+      </h1>
+
+      <div class="catalog-categories_tree-toggle">
+          {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
+          {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
+        <span class="catalog-categories_tree-toggle-tittle">Выбрать категорию</span>
+      </div>
+
+      <div  class="coupons-abc_chars">
+          {% for char, stores in stores_abc|slice(0, 27) %}
+              {% if stores|length %}
+                <a href="#store{{ char|raw }}" class="scroll_to">{{ char|raw }} </a>
+              {% else %}
+                <span>{{ char }}</span>
+              {% endif %}
+          {% endfor %}
+      </div>
+      <div  class="coupons-abc_chars row-2">
+          {% for char, stores in stores_abc|slice(27) %}
+              {% if stores|length %}
+                <a href="#store{{ char|raw }}"  class="scroll_to">{{ char|raw }}</a>
+              {% else %}
+                <span>{{ char }}</span>
+              {% endif %}
+          {% endfor %}
+      </div>
+
+      <div  class="coupons-abc_list">
+          {% for char, stores in stores_abc %}
+              {% if stores|length %}
+                <div id="store{{ char|raw }}" class="coupons-abc_list-item">
+                  <div class="coupons-abc_list-item-char">{{ char|raw }}</div>
+                  <div class="coupons-abc_list-item-stores">
+                      {% for store in stores %}
+                        <a href="/stores/{{ store.route }}">{{ store.name}}</a>
+                      {% endfor %}
+                  </div>
+                </div>
+
+              {% endif %}
+          {% endfor %}
+      </div>
+
+
+    </div>
+  </div>
+</section>
+

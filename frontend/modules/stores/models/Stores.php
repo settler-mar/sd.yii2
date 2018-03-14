@@ -578,6 +578,40 @@ class Stores extends \yii\db\ActiveRecord
   }
 
     /**
+     * шопы разнесены по первым буквам названия
+     * @return array
+     */
+  public static function getActiveStoresByAbc($stores = false)
+  {
+    $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
+        'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
+    if (!$stores) {
+        $stores = self::find()
+            ->from(self::tableName() . ' cws')
+            ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline'])
+            ->where(['cws.is_active' => [0, 1]])
+            ->asArray()
+            ->all();
+    }
+    $storesByAbc = [];
+    foreach ($charList as $list) {
+        $storesByAbc[$list] = [];
+    }
+    foreach ($stores as $store) {
+        $char = mb_substr(mb_strtoupper($store['name']), 0, 1);
+        if (preg_match('/\d/', $char)) {
+            $storesByAbc['0&#8209;9'][] = $store;
+        } else {
+            $storesByAbc[$char][] = $store;
+        }
+    }
+    return $storesByAbc;
+  }
+
+
+
+    /**
      * возвращает первый попавший ключ, входящий в массив
      * @param $items
      * @return int|string
