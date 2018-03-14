@@ -577,11 +577,13 @@ class Stores extends \yii\db\ActiveRecord
     return $result;
   }
 
-    /**
-     * шопы разнесены по первым буквам названия
+
+    /**шопы разнесены по первым буквам названия
+     * @param bool $stores
+     * @param bool $charListOnly - только список
      * @return array
      */
-  public static function getActiveStoresByAbc($stores = false)
+  public static function getActiveStoresByAbc($stores = false, $charListOnly = false)
   {
     $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
         'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
@@ -601,9 +603,17 @@ class Stores extends \yii\db\ActiveRecord
     foreach ($stores as $store) {
         $char = mb_substr(mb_strtoupper($store['name']), 0, 1);
         if (preg_match('/\d/', $char)) {
-            $storesByAbc['0&#8209;9'][] = $store;
+            if ($charListOnly) {
+                $storesByAbc['0&#8209;9'] = true;
+            } else {
+                $storesByAbc['0&#8209;9'][] = $store;
+            }
         } else {
-            $storesByAbc[$char][] = $store;
+            if ($charListOnly) {
+                $storesByAbc[$char] = true;
+            } else {
+                $storesByAbc[$char][] = $store;
+            }
         }
     }
     return $storesByAbc;

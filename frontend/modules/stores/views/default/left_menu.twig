@@ -11,6 +11,19 @@
         </div>
         {{ category_tree|raw }}
     </div>
+
+    {% if stores_abc %}
+        <div  class="catalog-categories_abc">
+            {% for char, stores in stores_abc %}
+                {% if stores == true or stores|length > 0  %}
+                    <a href="/stores?w={{ char|raw }}">{{ char|raw }} </a>
+                {% else %}
+                    <span>{{ char }}</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     {{ use('frontend/components/Banner') }}
 
     {% set banner_places = current_category ?

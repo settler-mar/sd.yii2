@@ -120,6 +120,7 @@ class DefaultController extends SdController
     $limit = $request->get('limit');
     $sort = $request->get('sort');
     $offline = $request->get('offline') || $this->offline;
+    $storeFrom = $request->get('w');
 
     $sortvars = Stores::sortvarItems($offline);
     $defaultSort = Stores::defaultSort($sortvars);
@@ -160,7 +161,7 @@ class DefaultController extends SdController
             " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
         ])
         ->orderBy($sort . ' ' . $order);
-    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order .($storeFrom ? '_from_'.$storeFrom : '') ;
 
     if ($categoryStore) {
       //категория магазина
@@ -227,6 +228,9 @@ class DefaultController extends SdController
       $cacheName .= $offline ? '_offline' : '_online';
       $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
     }
+    if ($storeFrom) {
+      $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
+    }
 
     $pagination = new Pagination(
         $dataBaseData,
@@ -248,6 +252,7 @@ class DefaultController extends SdController
         'sort' => $defaultSort == $sort ? null : $sort,
         'page' => $page,
         'offline' => $offline ? 1 : null,
+        'w' => $storeFrom ? $storeFrom : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'stores';
@@ -274,6 +279,7 @@ class DefaultController extends SdController
     }
 
     $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
+    $storesData["stores_abc"] = Stores::getActiveStoresByAbc(false, true);
 
     return $this->render('catalog', $storesData);
   }
