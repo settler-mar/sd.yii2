@@ -229,7 +229,23 @@ class DefaultController extends SdController
       $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
     }
     if ($storeFrom) {
-      $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
+        //алфавитный поиск
+        if ($storeFrom == '0‑9') {
+            $dataBaseData->andWhere(['or',
+                ['like', 'cws.name', '0%', false],
+                ['like', 'cws.name', '1%', false],
+                ['like', 'cws.name', '2%', false],
+                ['like', 'cws.name', '3%', false],
+                ['like', 'cws.name', '4%', false],
+                ['like', 'cws.name', '5%', false],
+                ['like', 'cws.name', '6%', false],
+                ['like', 'cws.name', '7%', false],
+                ['like', 'cws.name', '8%', false],
+                ['like', 'cws.name', '9%', false],
+            ]);
+        } else {
+            $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
+        }
     }
 
     $pagination = new Pagination(
