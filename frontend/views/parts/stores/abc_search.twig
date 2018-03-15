@@ -2,16 +2,16 @@
     {% for char, stores in stores_abc|slice(0, 27) %}
 
         {% if offline %}
-            {% set href = '/stores'~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+            {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
         {% else %}
-            {% set href = '/stores'~(current_category ? '/'~current_category.route:'')~'?w='~char %}
+            {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route:'')~'?w='~char %}
         {% endif %}
 
-        {% if stores|length %}
+        {% if stores|length and stores_abc_w != char %}
             {#<a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }} </a>#}
             <a href="{{ href|raw }}">{{ char|raw }} </a>
         {% else %}
-            <span>{{ char|raw }}</span>
+            <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
         {% endif %}
     {% endfor %}
 </div>
@@ -19,15 +19,15 @@
     {% for char, stores in stores_abc|slice(27) %}
 
         {% if offline %}
-            {% set href = '/stores'~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+            {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
         {% else %}
-            {% set href = '/stores'~(current_category ? '/'~current_category.route:'')~'?w='~char %}
+            {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route:'')~'?w='~char %}
         {% endif %}
 
-        {% if stores|length %}
+        {% if stores|length and stores_abc_w != char %}
             <a href="{{ href|raw }}">{{ char|raw }}</a>
         {% else %}
-            <span>{{ char|raw }}</span>
+            <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
         {% endif %}
     {% endfor %}
 </div>
