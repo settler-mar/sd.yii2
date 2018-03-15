@@ -12,18 +12,18 @@
         {{ category_tree|raw }}
     </div>
 
-    {% if stores_abc %}
-        <div  class="catalog-categories_abc">
-            <h5 class="catalog-categories_abc-header">Поиск по алфавиту</h5>
-            {% for char, stores in stores_abc %}
-                {% if stores == true or stores|length > 0  %}
-                    <a href="/stores?w={{ char|raw }}">{{ char|raw }} </a>
-                {% else %}
-                    <span>{{ char }}</span>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
+    {#{% if stores_abc %}#}
+        {#<div  class="catalog-categories_abc">#}
+            {#<h5 class="catalog-categories_abc-header">Поиск по алфавиту</h5>#}
+            {#{% for char, stores in stores_abc %}#}
+                {#{% if stores == true or stores|length > 0  %}#}
+                    {#<a href="/stores?w={{ char|raw }}">{{ char|raw }} </a>#}
+                {#{% else %}#}
+                    {#<span>{{ char }}</span>#}
+                {#{% endif %}#}
+            {#{% endfor %}#}
+        {#</div>#}
+    {#{% endif %}#}
 
     {{ use('frontend/components/Banner') }}
 

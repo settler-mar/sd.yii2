@@ -11,6 +11,7 @@ catalog_stores_category_<category>_<page>_<limit>_<sort>_<order> - магази�
 catalog_storesfavorites<user_id>_<page>_<limit>_<sort>_<order> - избранные магазины ЗАВИСИМОСТЬ: catalog_storesfavorites<user_id>
 store_by_route_<route> - магазин по route ЗАВИСИМОСТЬ: stores_by_column
 store_byid_<id> - магазин по Id ЗАВИСИМОСТЬ: stores_by_column
+stores_abc_[...] - список шопов для алфавитного поиска ЗАВИСИМОСТЬ: stores_abc
 store_category_byid_<category_id> - категория магазина по id ЗАВИСИМОСТЬ: catalog_stores
 store_category_byroute_<route> - категория магазина по route ЗАВИСИМОСТЬ: catalog_stores
 store_coupons_store_<store_id> - купоны для магазина ЗАВИСИМОСТЬ: store_coupons_store
@@ -18,7 +19,7 @@ popular_stores_with_promocodes - популярные маганизы с куп
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
 categories_coupons - Cписок категорий купонов
 categories_coupons_byid_<id> - категория купонов по id
-stores_coupon - Список магазинов с купонами
+stores_coupon[_category_id] - Список магазинов с купонами ЗАВИСИМОСТЬ catalog_coupons
 coupons_top_limit_<limit>[_category_<category>][_store_<store>][_new] - топ купонов ЗАВИСИМОСТЬ: catalog_coupons
 total_all_coupons - Количество активных купонов
 total_all_coupons_expired - Количество завершившихся купонов

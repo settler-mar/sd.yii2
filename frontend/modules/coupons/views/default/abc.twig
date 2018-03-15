@@ -31,7 +31,7 @@
                 </div>
 
                 <div  class="coupons-abc_chars">
-                    {% for char, stores in stores_coupons|slice(0, 27) %}
+                    {% for char, stores in stores_abc|slice(0, 27) %}
                         {% if stores|length %}
                             <a href="#store{{ char|raw }}" class="scroll_to">{{ char|raw }} </a>
                         {% else %}
@@ -40,7 +40,7 @@
                     {% endfor %}
                 </div>
                 <div  class="coupons-abc_chars row-2">
-                    {% for char, stores in stores_coupons|slice(27) %}
+                    {% for char, stores in stores_abc|slice(27) %}
                         {% if stores|length %}
                             <a href="#store{{ char|raw }}"  class="scroll_to">{{ char|raw }}</a>
                         {% else %}
@@ -50,7 +50,7 @@
                 </div>
 
                 <div  class="coupons-abc_list">
-                    {% for char, stores in stores_coupons %}
+                    {% for char, stores in stores_abc %}
                         {% if stores|length %}
                             <div id="store{{ char|raw }}" class="coupons-abc_list-item">
                                 <div class="coupons-abc_list-item-char">{{ char|raw }}</div>

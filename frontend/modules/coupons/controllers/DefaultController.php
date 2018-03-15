@@ -125,7 +125,9 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-    $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
+    $storeFrom = $request->get('w');
+
+      $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
     if ($this->top) {
       $sort = 'visit';
     }
@@ -142,12 +144,12 @@ class DefaultController extends SdController
     $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
     $cacheName .= $page ? '_'.$page : '';
     $cacheName .= $limit ? '_'.$limit : '';
     $cacheName .= $sort ? '_'.$sort : '';
     $cacheName .= $order ? '_'.$order : '';
+    $cacheName .= $storeFrom ? '_'.$storeFrom : '';
 
     $expiredData=['<', 'cwc.date_end', date('Y-m-d H:i:s', time())];
     $dateRange = $request->get('expired') ? $expiredData :
@@ -222,6 +224,30 @@ class DefaultController extends SdController
       }
     }
 
+    if ($storeFrom) {
+       //алфавитный поиск
+        if ($storeFrom == '0‑9') {
+            $databaseObj->andWhere(['or',
+                  ['like', 'cws.name', '0%', false],
+                  ['like', 'cws.name', '1%', false],
+                  ['like', 'cws.name', '2%', false],
+                  ['like', 'cws.name', '3%', false],
+                  ['like', 'cws.name', '4%', false],
+                  ['like', 'cws.name', '5%', false],
+                  ['like', 'cws.name', '6%', false],
+                  ['like', 'cws.name', '7%', false],
+                  ['like', 'cws.name', '8%', false],
+                  ['like', 'cws.name', '9%', false],
+            ]);
+        } else {
+            $databaseObj->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
+        }
+        $this->params['breadcrumbs'][] = [
+            'label' => $storeFrom,
+            'url' => '/coupons'. ($categoryCoupons ? '/' . $categoryCoupons->route : '') .'?w=' .  $storeFrom,
+        ];
+    }
+
     \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
     //\Yii::$app->params['url_mask'] .=  ($request->get('all') ? '/all' : '');//на будущее, если нужны будут метатеги для /all/
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true, 'one_page'=> $this->top]);
@@ -244,6 +270,7 @@ class DefaultController extends SdController
       'page' => $page,
       'expired' => $request->get('expired') ? 1 : null,
       'all' => $request->get('all') ? 1 : null,
+      'w' => $storeFrom ? $storeFrom : null,
     ];
 
     $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
@@ -273,6 +300,11 @@ class DefaultController extends SdController
 
     $contentData['menu_subscribe'] = 1;
     $contentData['posts'] = Posts::getLastPosts();
+    $contentData["stores_abc"] = Stores::getActiveStoresByAbc([
+        'for_stores' => false,
+        'char_list_only'=> true,
+        'category_id' => isset($category) ? $category : false
+    ]);
 
     return $this->render('catalog', $contentData);
   }
@@ -290,8 +322,6 @@ class DefaultController extends SdController
         'url' => '/coupons/' . $store->getRouteUrl() . '/' . $coupon['uid']
     ];
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
-    //$contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
     $contentData["popular_stores"] = $this->popularStores();
     $contentData["total_v"] = Coupons::activeCount();
     $contentData['store']=$store;
@@ -312,7 +342,6 @@ class DefaultController extends SdController
     $order = 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
     $cacheName .= $page ? '_'.$page : '';
     $cacheName .= $limit ? '_'.$limit : '';
@@ -494,7 +523,7 @@ class DefaultController extends SdController
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-      $contentData["stores_coupons"] = Stores::getActiveStoresByAbc(Coupons::getActiveStoresCoupons());
+      $contentData["stores_abc"] = Stores::getActiveStoresByAbc(['for_stores' => false]);
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
       $contentData['search_form'] = 1;

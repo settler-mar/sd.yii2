@@ -339,7 +339,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
    */
   public static function byRoute($route)
   {
-    if (strpos($route, '-offline') === strlen($route) - strlen('-offline')) {
+    if (substr($route, strlen($route) - strlen('-offline')) == '-offline') {
       //если в конце категории слово -offline
       $route = substr($route, 0, strlen($route) - strlen('-offline'));
     }
@@ -491,6 +491,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     Cache::clearName('category_tree');
     Cache::clearName('coupons_counts');
     Cache::clearName('total_all_stores');
+    Cache::clearName('stores_abc');
       //ключи
     Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');

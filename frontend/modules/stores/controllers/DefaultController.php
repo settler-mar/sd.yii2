@@ -58,7 +58,8 @@ class DefaultController extends SdController
       }
       //имеется action, который должен быть категорией или магазином, ищем такую
       //если в конце категории или шопа слово -offline
-      $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
+      $this->offline = substr($id, strlen($id) - strlen('-offline')) == '-offline';
+
 
       $store = Stores::byRoute($id);
       if ($store) {
@@ -219,9 +220,6 @@ class DefaultController extends SdController
           ->one();
     };
 
-    if ($page > 1) {
-      $this->params['breadcrumbs'][] = 'Страница ' . $page;
-    }
 
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
@@ -246,7 +244,15 @@ class DefaultController extends SdController
         } else {
             $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
         }
+        $this->params['breadcrumbs'][] = [
+            'label' => $storeFrom,
+            'url' => '/stores'. ($categoryStore ? '/' . $categoryStore->route : '') .'?w=' .  $storeFrom,
+        ];
     }
+    if ($page > 1) {
+       $this->params['breadcrumbs'][] = 'Страница ' . $page;
+    }
+
 
     $pagination = new Pagination(
         $dataBaseData,
@@ -295,7 +301,11 @@ class DefaultController extends SdController
     }
 
     $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
-    $storesData["stores_abc"] = Stores::getActiveStoresByAbc(false, true);
+    $storesData["stores_abc"] = Stores::getActiveStoresByAbc([
+        'char_list_only'=> true,
+        'category_id' => isset($category) ? $category : false,
+        'offline' => $offline,
+    ]);
 
     return $this->render('catalog', $storesData);
   }
