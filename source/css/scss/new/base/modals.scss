@@ -115,9 +115,16 @@
           color: rgba($text_color,0.7);;
         }
       }
+      .text-center {
+        text-align: center;
+      }
 
       h1,h2,h3{
         margin-top: 0;
+
+        &.margin-light {
+          margin-bottom: 10px;
+        }
       }
 
       .container{
