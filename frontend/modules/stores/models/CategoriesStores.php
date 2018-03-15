@@ -491,6 +491,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     Cache::clearName('category_tree');
     Cache::clearName('coupons_counts');
     Cache::clearName('total_all_stores');
+    Cache::clearName('stores_abc');
       //ключи
     Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');

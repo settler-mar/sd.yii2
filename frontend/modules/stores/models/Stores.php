@@ -578,49 +578,79 @@ class Stores extends \yii\db\ActiveRecord
   }
 
     /**шопы разнесены по первым буквам названия
-     * @param bool $stores
-     * @param bool $charListOnly
-     * @param bool $categoryId
+     * @param bool $forStores для шопов или для купонов
+     * @param bool $charListOnly - только список или список с массивами шопов
+     * @param bool $categoryId - категория шопа или купона
      * @return array
      */
-  public static function getActiveStoresByAbc($stores = false, $charListOnly = false, $categoryId = false)
+  public static function getActiveStoresByAbc($forStores = true, $charListOnly = false, $categoryId = false)
   {
-    $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-        'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
-        'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
-    if (!$stores) {
-        $stores = self::find()
-            ->from(self::tableName() . ' cws')
-            ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline'])
-            ->where(['cws.is_active' => [0, 1]])
-            ->asArray();
-        if ($categoryId) {
-            $stores->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
-                ->andWhere(['cstc.category_id' => $categoryId]);
-        }
-        $stores = $stores->all();
-    }
-    $storesByAbc = [];
-    foreach ($charList as $list) {
-        $storesByAbc[$list] = [];
-    }
-    foreach ($stores as $store) {
-        $char = mb_substr(mb_strtoupper($store['name']), 0, 1);
-        if (preg_match('/\d/', $char)) {
-            if ($charListOnly) {
-                $storesByAbc['0&#8209;9'] = true;
-            } else {
-                $storesByAbc['0&#8209;9'][] = $store;
+    $cache = Yii::$app->cache;
+    $cacheName = 'stores_abc_' . ($forStores ? 'stores' : 'coupons') . ($charListOnly ? '_list' : '') .
+        ($categoryId ? '_'.$categoryId : '');
+    $dependencyName = 'stores_abc';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    //d($forStores, $charListOnly, $categoryId);
+
+    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId) {
+        $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+            'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
+            'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
+        if ($forStores) {
+            //list for stores page
+            $storesObj = self::find()
+                ->from(self::tableName() . ' cws')
+                ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline'])
+                ->where(['cws.is_active' => [0, 1]])
+                ->asArray();
+            if ($categoryId) {
+                $storesObj->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
+                    ->andWhere(['cstc.category_id' => $categoryId]);
             }
+            $stores = $storesObj->all();
         } else {
-            if ($charListOnly) {
-                $storesByAbc[$char] = true;
+            //list for coupons page
+            $storesObj =  Coupons::find()
+                ->from(Coupons::tableName() . ' cwc')
+                ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline', 'count(cwc.uid) as count'])
+                ->innerJoin(self::tableName() . ' cws', 'cwc.store_id = cws.uid')
+                ->where(['cws.is_active' => [0, 1]])
+                ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
+                ->groupBy('cwc.store_id')
+                ->asArray();
+            if ($categoryId) {
+                $storesObj->innerJoin('cw_coupons_to_categories cctc', 'cwc.coupon_id = cctc.coupon_id')
+                    ->andWhere(['cctc.category_id' => $categoryId]);
+            }
+            $stores =  $storesObj->all();
+        }
+
+        $storesByAbc = [];
+        foreach ($charList as $list) {
+            $storesByAbc[$list] = [];
+        }
+        foreach ($stores as $store) {
+            $char = mb_substr(mb_strtoupper($store['name']), 0, 1);
+            if (preg_match('/\d/', $char)) {
+                if ($charListOnly) {
+                    $storesByAbc['0&#8209;9'] = true;
+                } else {
+                    $storesByAbc['0&#8209;9'][] = $store;
+                }
             } else {
-                $storesByAbc[$char][] = $store;
+                if ($charListOnly) {
+                    $storesByAbc[$char] = true;
+                } else {
+                    $storesByAbc[$char][] = $store;
+                }
             }
         }
-    }
-    return $storesByAbc;
+        return $storesByAbc;
+    }, $cache->defaultDuration, $dependency);
+    //ddd($stores);
+
+    return $stores;
   }
 
 
@@ -654,7 +684,10 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('account_favorites');
     Cache::clearName('account_favorites_count');
     Cache::clearName('total_all_stores');
-    //много зависимостей сразу
+    Cache::clearName('stores_abc');
+    Cache::clearName('catalog_coupons');
+
+      //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');
     //ключи
     //Cache::deleteName('total_all_stores');
@@ -666,7 +699,6 @@ class Stores extends \yii\db\ActiveRecord
     if ($route) {
       Cache::deleteName('store_by_route_' . $route);
     }
-    //Cache::deleteName('stores_coupons');
     Cache::deleteName('popular_stores_with_promocodes');
   }
 

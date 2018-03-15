@@ -144,7 +144,6 @@ class DefaultController extends SdController
     $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
     $cacheName .= $page ? '_'.$page : '';
     $cacheName .= $limit ? '_'.$limit : '';
@@ -297,11 +296,7 @@ class DefaultController extends SdController
 
     $contentData['menu_subscribe'] = 1;
     $contentData['posts'] = Posts::getLastPosts();
-    $contentData["stores_abc"] = Stores::getActiveStoresByAbc(
-        Coupons::getActiveStoresCoupons(isset($category) ? $category : false),
-        false
-    );
-    //ddd($contentData["stores_abc"]);
+    $contentData["stores_abc"] = Stores::getActiveStoresByAbc(false, true, isset($category) ? $category : false);
 
     return $this->render('catalog', $contentData);
   }
@@ -319,8 +314,6 @@ class DefaultController extends SdController
         'url' => '/coupons/' . $store->getRouteUrl() . '/' . $coupon['uid']
     ];
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    //$contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
-    //$contentData["stores_coupons"] = Coupons::getActiveStoresCouponsByAbc();
     $contentData["popular_stores"] = $this->popularStores();
     $contentData["total_v"] = Coupons::activeCount();
     $contentData['store']=$store;
@@ -341,7 +334,6 @@ class DefaultController extends SdController
     $order = 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-    $contentData["stores_coupons"] = Coupons::getActiveStoresCoupons();
     $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
     $cacheName .= $page ? '_'.$page : '';
     $cacheName .= $limit ? '_'.$limit : '';
@@ -523,7 +515,7 @@ class DefaultController extends SdController
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-      $contentData["stores_coupons"] = Stores::getActiveStoresByAbc(Coupons::getActiveStoresCoupons());
+      $contentData["stores_abc"] = Stores::getActiveStoresByAbc(false);
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
       $contentData['search_form'] = 1;

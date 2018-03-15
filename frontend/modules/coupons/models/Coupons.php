@@ -395,6 +395,7 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::clearName('catalog_coupons_count');
     Cache::clearName('store_coupons_store');
     Cache::clearName('coupons_counts');
+    Cache::clearName('stores_abc');
 
     //ключи
     Cache::deleteName('total_all_coupons');
