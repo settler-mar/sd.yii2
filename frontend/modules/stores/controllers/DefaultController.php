@@ -219,9 +219,6 @@ class DefaultController extends SdController
           ->one();
     };
 
-    if ($page > 1) {
-      $this->params['breadcrumbs'][] = 'Страница ' . $page;
-    }
 
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
@@ -246,7 +243,15 @@ class DefaultController extends SdController
         } else {
             $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
         }
+        $this->params['breadcrumbs'][] = [
+            'label' => $storeFrom,
+            'url' => '/stores'. ($categoryStore ? '/' . $categoryStore->route : '') .'?w=' .  $storeFrom,
+        ];
     }
+    if ($page > 1) {
+       $this->params['breadcrumbs'][] = 'Страница ' . $page;
+    }
+
 
     $pagination = new Pagination(
         $dataBaseData,

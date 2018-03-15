@@ -242,6 +242,10 @@ class DefaultController extends SdController
         } else {
             $databaseObj->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
         }
+        $this->params['breadcrumbs'][] = [
+            'label' => $storeFrom,
+            'url' => '/coupons'. ($categoryCoupons ? '/' . $categoryCoupons->route : '') .'?w=' .  $storeFrom,
+        ];
     }
 
     \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
