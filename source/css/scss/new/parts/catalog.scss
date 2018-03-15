@@ -375,6 +375,32 @@
         }
       }
     }
+    &_abc {
+      padding: 10px;
+      border-radius: 5px;
+      background-color:  $gray_box_bg;
+
+      &-header {
+        font-size: 18px;
+        margin-top:0;
+        margin-bottom: 10px;
+      }
+
+      a, span {
+        margin-right: 10px;
+      }
+      a {
+        color: $coupons_abc_store_color;
+        text-decoration: none;
+
+        &:hover {
+          color: $coupons_abc_store_hover_color;
+          //text-decoration: underline;
+        }
+
+
+      }
+    }
   }
 
   &-stores {
