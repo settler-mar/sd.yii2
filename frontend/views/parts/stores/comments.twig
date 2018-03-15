@@ -5,8 +5,10 @@
     <h2>Отзывы о {{current_store.name}}</h2>
     {% if store_reviews|length == 0 %}
       <div class="comments_no-comments align-center">
-        <p class="ntfnd">На данный момент отзывы о магазине</p>
-        <p>{{current_store.name}} отсутствуют. Будь первым!</p>
+        <p class="ntfnd">
+          На данный момент отзывы о магазине
+          {{current_store.name}} отсутствуют. Будь первым!
+        </p>
       </div>
     {% endif %}
 
