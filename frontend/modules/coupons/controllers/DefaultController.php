@@ -300,7 +300,11 @@ class DefaultController extends SdController
 
     $contentData['menu_subscribe'] = 1;
     $contentData['posts'] = Posts::getLastPosts();
-    $contentData["stores_abc"] = Stores::getActiveStoresByAbc(false, true, isset($category) ? $category : false);
+    $contentData["stores_abc"] = Stores::getActiveStoresByAbc([
+        'for_stores' => false,
+        'char_list_only'=> true,
+        'category_id' => isset($category) ? $category : false
+    ]);
 
     return $this->render('catalog', $contentData);
   }
@@ -519,7 +523,7 @@ class DefaultController extends SdController
       $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
       $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
-      $contentData["stores_abc"] = Stores::getActiveStoresByAbc(false);
+      $contentData["stores_abc"] = Stores::getActiveStoresByAbc(['for_stores' => false]);
       $contentData["popular_stores"] = $this->popularStores();
       $contentData["total_v"] = Coupons::activeCount();
       $contentData['search_form'] = 1;

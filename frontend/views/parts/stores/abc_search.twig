@@ -1,7 +1,15 @@
 <div  class="coupons-abc_chars">
     {% for char, stores in stores_abc|slice(0, 27) %}
+
+        {% if offline %}
+            {% set href = '/stores'~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+        {% else %}
+            {% set href = '/stores'~(current_category ? '/'~current_category.route:'')~'?w='~char %}
+        {% endif %}
+
         {% if stores|length %}
-            <a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }} </a>
+            {#<a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }} </a>#}
+            <a href="{{ href|raw }}">{{ char|raw }} </a>
         {% else %}
             <span>{{ char|raw }}</span>
         {% endif %}
@@ -9,8 +17,15 @@
 </div>
 <div  class="coupons-abc_chars row-2">
     {% for char, stores in stores_abc|slice(27) %}
+
+        {% if offline %}
+            {% set href = '/stores'~(current_category ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+        {% else %}
+            {% set href = '/stores'~(current_category ? '/'~current_category.route:'')~'?w='~char %}
+        {% endif %}
+
         {% if stores|length %}
-            <a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }}</a>
+            <a href="{{ href|raw }}">{{ char|raw }}</a>
         {% else %}
             <span>{{ char|raw }}</span>
         {% endif %}

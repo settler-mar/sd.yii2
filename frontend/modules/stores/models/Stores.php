@@ -583,17 +583,21 @@ class Stores extends \yii\db\ActiveRecord
      * @param bool $categoryId - категория шопа или купона
      * @return array
      */
-  public static function getActiveStoresByAbc($forStores = true, $charListOnly = false, $categoryId = false)
+  public static function getActiveStoresByAbc($options = [])
   {
+    $forStores = isset($options['for_stores']) && $options['for_stores'] === false ? false : true;
+    $charListOnly = !empty($options['char_list_only']) && $options['char_list_only'] == true ? true : false;
+    $categoryId = !empty($options['category_id']) && $options['category_id'] > 0 ? $options['category_id'] : false;
+    $offline = isset($options['offline']) && $options['offline'] !== null ? $options['offline'] : null;
+
     $cache = Yii::$app->cache;
     $cacheName = 'stores_abc_' . ($forStores ? 'stores' : 'coupons') . ($charListOnly ? '_list' : '') .
-        ($categoryId ? '_'.$categoryId : '');
+        ($categoryId ? '_'.$categoryId : '').($offline !== null ? '_offline'.$offline : '');
     $dependencyName = 'stores_abc';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    //d($forStores, $charListOnly, $categoryId);
 
-    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId) {
+    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline) {
         $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
             'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
@@ -607,6 +611,9 @@ class Stores extends \yii\db\ActiveRecord
             if ($categoryId) {
                 $storesObj->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
                     ->andWhere(['cstc.category_id' => $categoryId]);
+            }
+            if ($offline !== null) {
+                $storesObj->andWhere(['is_offline'=>$offline]);
             }
             $stores = $storesObj->all();
         } else {
@@ -648,7 +655,6 @@ class Stores extends \yii\db\ActiveRecord
         }
         return $storesByAbc;
     }, $cache->defaultDuration, $dependency);
-    //ddd($stores);
 
     return $stores;
   }

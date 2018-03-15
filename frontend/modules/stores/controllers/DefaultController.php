@@ -58,7 +58,8 @@ class DefaultController extends SdController
       }
       //имеется action, который должен быть категорией или магазином, ищем такую
       //если в конце категории или шопа слово -offline
-      $this->offline = strpos($id, '-offline') === strlen($id) - strlen('-offline');
+      $this->offline = substr($id, strlen($id) - strlen('-offline')) == '-offline';
+
 
       $store = Stores::byRoute($id);
       if ($store) {
@@ -300,7 +301,11 @@ class DefaultController extends SdController
     }
 
     $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
-    $storesData["stores_abc"] = Stores::getActiveStoresByAbc(true, true, isset($category) ? $category : false);
+    $storesData["stores_abc"] = Stores::getActiveStoresByAbc([
+        'char_list_only'=> true,
+        'category_id' => isset($category) ? $category : false,
+        'offline' => $offline,
+    ]);
 
     return $this->render('catalog', $storesData);
   }
