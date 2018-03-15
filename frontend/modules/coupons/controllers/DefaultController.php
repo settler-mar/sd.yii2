@@ -305,6 +305,7 @@ class DefaultController extends SdController
         'char_list_only'=> true,
         'category_id' => isset($category) ? $category : false
     ]);
+    $contentData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
 
     return $this->render('catalog', $contentData);
   }

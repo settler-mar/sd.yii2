@@ -188,21 +188,15 @@ class DefaultController extends SdController
 
     // дополнительно как категории шопов в меню - избранные
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
-    //ddd($categoryMenuItem);
+
     if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline') {
       $storesData['current_category'] = CategoriesStores::find()
           ->where(['route' => 'favorite'])
           ->asArray()
           ->one();
-      //ddd($storesData['current_category']);
 
       $cacheName .= '_favorites_' . Yii::$app->user->id;
       $url = '/stores/favorite';
-//      if (Yii::$app->params['stores_menu_separate'] == 1) {
-//        $cacheName .= $offline ? '_offline' : '_online';
-//        $url .= $offline ? '-offline' : '';
-//        $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
-//      }
 
       $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
@@ -308,6 +302,8 @@ class DefaultController extends SdController
         'offline' => $offline,
         'favorites' => $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline',
     ]);
+    $storesData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
+
     $storesData["favorites_link"] = $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ?
         '/favorite' : '';
 

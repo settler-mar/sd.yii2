@@ -7,11 +7,11 @@
             {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route:'')~'?w='~char %}
         {% endif %}
 
-        {% if stores|length %}
+        {% if stores|length and stores_abc_w != char %}
             {#<a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }} </a>#}
             <a href="{{ href|raw }}">{{ char|raw }} </a>
         {% else %}
-            <span>{{ char|raw }}</span>
+            <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
         {% endif %}
     {% endfor %}
 </div>
@@ -24,10 +24,10 @@
             {% set href = '/stores'~favorites_link~(current_category ? '/'~current_category.route:'')~'?w='~char %}
         {% endif %}
 
-        {% if stores|length %}
+        {% if stores|length and stores_abc_w != char %}
             <a href="{{ href|raw }}">{{ char|raw }}</a>
         {% else %}
-            <span>{{ char|raw }}</span>
+            <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
         {% endif %}
     {% endfor %}
 </div>
