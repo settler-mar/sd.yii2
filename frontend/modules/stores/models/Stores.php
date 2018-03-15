@@ -7,6 +7,7 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
+use frontend\modules\favorites\models\UsersFavorites;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -589,15 +590,17 @@ class Stores extends \yii\db\ActiveRecord
     $charListOnly = !empty($options['char_list_only']) && $options['char_list_only'] == true ? true : false;
     $categoryId = !empty($options['category_id']) && $options['category_id'] > 0 ? $options['category_id'] : false;
     $offline = isset($options['offline']) && $options['offline'] !== null ? $options['offline'] : null;
+    $favorites = !empty($options['favorites']) ? true : false;
 
     $cache = Yii::$app->cache;
     $cacheName = 'stores_abc_' . ($forStores ? 'stores' : 'coupons') . ($charListOnly ? '_list' : '') .
-        ($categoryId ? '_'.$categoryId : '').($offline !== null ? '_offline'.$offline : '');
+        ($categoryId ? '_' . $categoryId : '') . ($offline !== null ? '_offline' . $offline : '') .
+        ($favorites? '_favorites' : '');
     $dependencyName = 'stores_abc';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline) {
+    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline, $favorites) {
         $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
             'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
@@ -615,6 +618,11 @@ class Stores extends \yii\db\ActiveRecord
             if ($offline !== null) {
                 $storesObj->andWhere(['is_offline'=>$offline]);
             }
+            if ($favorites) {
+                $storesObj->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+                    ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
+            }
+
             $stores = $storesObj->all();
         } else {
             //list for coupons page

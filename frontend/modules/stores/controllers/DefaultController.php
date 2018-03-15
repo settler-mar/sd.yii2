@@ -196,13 +196,13 @@ class DefaultController extends SdController
           ->one();
       //ddd($storesData['current_category']);
 
-      $cacheName = 'catalog_storesfavorite' . Yii::$app->user->id . '_' . $page . '_' . $limit . '_' . $sort . '_' . $order;
+      $cacheName .= '_favorites_' . Yii::$app->user->id;
       $url = '/stores/favorite';
-      if (Yii::$app->params['stores_menu_separate'] == 1) {
-        $cacheName .= $offline ? '_offline' : '_online';
-        $url .= $offline ? '-offline' : '';
-        $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
-      }
+//      if (Yii::$app->params['stores_menu_separate'] == 1) {
+//        $cacheName .= $offline ? '_offline' : '_online';
+//        $url .= $offline ? '-offline' : '';
+//        $dataBaseData->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
+//      }
 
       $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
@@ -212,6 +212,7 @@ class DefaultController extends SdController
           'url' => $url,
       ];
     }
+
 
     if ($actionId == "") {
       $storesData['current_category'] = CategoriesStores::find()
@@ -305,7 +306,10 @@ class DefaultController extends SdController
         'char_list_only'=> true,
         'category_id' => isset($category) ? $category : false,
         'offline' => $offline,
+        'favorites' => $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline',
     ]);
+    $storesData["favorites_link"] = $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ?
+        '/favorite' : '';
 
     return $this->render('catalog', $storesData);
   }
