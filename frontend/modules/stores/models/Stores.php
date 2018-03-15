@@ -577,13 +577,13 @@ class Stores extends \yii\db\ActiveRecord
     return $result;
   }
 
-
     /**шопы разнесены по первым буквам названия
      * @param bool $stores
-     * @param bool $charListOnly - только список
+     * @param bool $charListOnly
+     * @param bool $categoryId
      * @return array
      */
-  public static function getActiveStoresByAbc($stores = false, $charListOnly = false)
+  public static function getActiveStoresByAbc($stores = false, $charListOnly = false, $categoryId = false)
   {
     $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
         'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
@@ -593,8 +593,12 @@ class Stores extends \yii\db\ActiveRecord
             ->from(self::tableName() . ' cws')
             ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline'])
             ->where(['cws.is_active' => [0, 1]])
-            ->asArray()
-            ->all();
+            ->asArray();
+        if ($categoryId) {
+            $stores->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
+                ->andWhere(['cstc.category_id' => $categoryId]);
+        }
+        $stores = $stores->all();
     }
     $storesByAbc = [];
     foreach ($charList as $list) {

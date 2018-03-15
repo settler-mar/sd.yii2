@@ -1,0 +1,18 @@
+<div  class="coupons-abc_chars">
+    {% for char, stores in stores_abc|slice(0, 27) %}
+        {% if stores|length %}
+            <a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}" class="scroll_to">{{ char|raw }} </a>
+        {% else %}
+            <span>{{ char }}</span>
+        {% endif %}
+    {% endfor %}
+</div>
+<div  class="coupons-abc_chars row-2">
+    {% for char, stores in stores_abc|slice(27) %}
+        {% if stores|length %}
+            <a href="/stores{% if current_category %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}"  class="scroll_to">{{ char|raw }}</a>
+        {% else %}
+            <span>{{ char }}</span>
+        {% endif %}
+    {% endfor %}
+</div>

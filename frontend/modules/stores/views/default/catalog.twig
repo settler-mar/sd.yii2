@@ -13,7 +13,7 @@
   <div class="page-wrap page-wrap-flex">
     {#слева категории#}
     <div class="catalog-categories">
-      {% include('left_menu.twig') %}
+      {% include('parts/stores/left_menu.twig') %}
     </div>
 
     {#справа шопы#}
@@ -32,6 +32,8 @@
           <span>({{ total_v }})</span>
         {% endif %}
       </h1>
+        {% include('parts/stores/abc_search.twig') %}
+
 
       <div class="catalog-categories_tree-toggle">
         {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}

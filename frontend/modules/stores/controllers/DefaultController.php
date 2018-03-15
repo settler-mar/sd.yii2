@@ -295,7 +295,7 @@ class DefaultController extends SdController
     }
 
     $storesData['posts'] = Posts::getLastPosts(['limit'=>3]);
-    $storesData["stores_abc"] = Stores::getActiveStoresByAbc(false, true);
+    $storesData["stores_abc"] = Stores::getActiveStoresByAbc(false, true, isset($category) ? $category : false);
 
     return $this->render('catalog', $storesData);
   }
