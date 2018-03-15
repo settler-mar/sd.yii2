@@ -136,7 +136,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         //ключи
         Cache::deleteName('total_all_coupons');
         Cache::deleteName('total_all_coupons_expired');
-        Cache::deleteName('stores_coupons');
+        //Cache::deleteName('stores_coupons');
         Cache::deleteName('categories_coupons');
         if ($id) {
             Cache::deleteName('categories_coupons_byid_' . $id);

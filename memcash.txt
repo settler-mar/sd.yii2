@@ -18,7 +18,7 @@ popular_stores_with_promocodes - популярные маганизы с куп
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
 categories_coupons - Cписок категорий купонов
 categories_coupons_byid_<id> - категория купонов по id
-stores_coupon - Список магазинов с купонами
+stores_coupon[_category_id] - Список магазинов с купонами ЗАВИСИМОСТЬ catalog_coupons
 coupons_top_limit_<limit>[_category_<category>][_store_<store>][_new] - топ купонов ЗАВИСИМОСТЬ: catalog_coupons
 total_all_coupons - Количество активных купонов
 total_all_coupons_expired - Количество завершившихся купонов

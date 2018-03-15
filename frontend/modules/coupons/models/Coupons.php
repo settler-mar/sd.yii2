@@ -194,11 +194,16 @@ class Coupons extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function getActiveStoresCoupons()
+  public static function getActiveStoresCoupons($categoryId = false)
   {
     $cache = Yii::$app->cache;
-    $stores = $cache->getOrSet('stores_coupons', function () {
-      return self::find()
+    $cacheName = 'stores_coupons'.($categoryId ? '_'.$categoryId : '');
+    $dependencyName = 'catalog_coupons';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $stores = $cache->getOrSet($cacheName, function () use ($categoryId) {
+      $stores =  self::find()
           ->from(self::tableName() . ' cwc')
           ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline', 'count(cwc.uid) as count'])
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
@@ -206,10 +211,13 @@ class Coupons extends \yii\db\ActiveRecord
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
           ->groupBy('cwc.store_id')
           ->orderBy('cws.name ASC')
-          ->asArray()
-          ->all();
-
-    });
+          ->asArray();
+      if ($categoryId) {
+          $stores->innerJoin('cw_coupons_to_categories cctc', 'cwc.coupon_id = cctc.coupon_id')
+              ->andWhere(['cctc.category_id' => $categoryId]);
+      }
+      return $stores->all();
+    }, $cache->defaultDuration, $dependency);
     return $stores;
   }
 
@@ -392,7 +400,7 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::deleteName('total_all_coupons');
     Cache::deleteName('total_all_coupons_expired');
     Cache::deleteName('total_all_coupons_new');
-    Cache::deleteName('stores_coupons');
+    //Cache::deleteName('stores_coupons');
     Cache::deleteName('categories_coupons');
     Cache::deleteName('popular_stores_with_promocodes');
   }
