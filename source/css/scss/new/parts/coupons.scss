@@ -279,6 +279,7 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: space-around;
       padding: 0;
       border-top: 1px solid $coupons_abc_border_color;
 
@@ -287,12 +288,8 @@
       }
 
       a,span {
-        padding: 10px 8px;
+        padding: 8px 4px;
 
-        @include media($tablets) {
-          padding: 12px 15px;
-          font-size: 17px;
-        }
         &.active {
           background-color: $text_color;
           color: $header_color_up;
@@ -303,15 +300,6 @@
         border-top: 1px solid $coupons_abc_border_color;
         border-bottom: 1px solid $coupons_abc_border_color;
         margin-bottom: 10px;
-
-        a,span {
-          padding: 10px 6px;
-
-          @include media($tablets) {
-            padding: 12px 15px;
-            font-size: 17px;
-          }
-        }
       }
 
       a {
