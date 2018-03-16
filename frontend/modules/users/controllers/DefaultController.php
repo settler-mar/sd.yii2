@@ -113,7 +113,8 @@ class DefaultController extends Controller
 
 
 
-        $data['html'] = 'Пользователь успешно зарегистрирован.<script>login_redirect("' . $location . '");</script>';
+        $data['html'] = '<div><p>Пользователь успешно зарегистрирован</p></div><script>login_redirect("' . $location . '");</script>';
+
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
 

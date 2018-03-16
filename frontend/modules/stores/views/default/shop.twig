@@ -168,7 +168,7 @@
         <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% else %}
-        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
+        <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% endif %}
     {% else %}
       <a href="#login" class="btn btn-round tablets-btn-red tablets-btn-big modals_open">{{ btn_text }}</a>
@@ -328,7 +328,13 @@
 
 
 {% if current_store.is_active==0 %}
-  <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
+  <div id="shop_not_active"
+      class="notification_data"
+      data-title=""
+      data-button-no=""
+      data-notyfy_class="notify_white"
+      data-button-yes="Выбрать другой магазин"
+       >
     {{ _constant('shop_not_active_message')|raw }}
   </div>
 {% endif %}
