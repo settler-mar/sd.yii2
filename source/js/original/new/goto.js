@@ -48,4 +48,18 @@
     }
   });
 
+  $('#shop_header-goto-checkbox').click(function(){
+     if (!$(this).is(':checked')) {
+         notification.alert({
+             'title': 'Внимание',
+             'question': 'Не рекомендуется совершать покупки без ознакомления<br> с <a href="/recommendations">Правилами</a> покупок с кэшбэком',
+             'buttonYes': 'Закрыть',
+             'buttonNo': false,
+             'notyfy_class': 'notify_box-alert'
+         });
+     }
+  });
+
+
+
 }());

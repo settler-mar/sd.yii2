@@ -66,6 +66,17 @@
       }
 
     }
+    &-goto-agree {
+      margin: 0 auto;
+      text-align: center;
+      &-label {
+        cursor: pointer;
+      }
+      &-checkbox {
+        cursor: pointer;
+      }
+
+    }
 
   }
 

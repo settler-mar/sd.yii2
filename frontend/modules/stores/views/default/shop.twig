@@ -167,6 +167,9 @@
       {% if current_store.is_active == 1 %}
         <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
+        <div class="shop_header-goto-agree">
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a href="/recommendations">Правилами</a> покупок с кэшбэком</label>
+        </div>
       {% else %}
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% endif %}
