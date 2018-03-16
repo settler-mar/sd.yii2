@@ -142,6 +142,10 @@ var notification = (function () {
   function confirm(data) {
     if (!data)data = {};
     data = objects(confirm_opt, data);
+    if (typeof(data.callbackYes) == 'string') {
+      var code = 'data.callbackYes = function(){'+data.callbackYes+'}';
+      eval(code);
+    }
 
     if (!is_init)init();
     testIphone();
@@ -293,6 +297,15 @@ $('[ref=popup]').on('click', function (e) {
 
   data.question = el.html();
   notification.alert(data);
+});
+
+$('[ref=confirm]').on('click', function (e) {
+  e.preventDefault();
+  $this = $(this);
+  el = $($this.attr('href'));
+  data = el.data();
+  data.question = el.html();
+  notification.confirm(data);
 });
 
 
