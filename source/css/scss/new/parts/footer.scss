@@ -272,29 +272,36 @@
 
   &-copyright {
     color: $a_color_hover;
-    //padding-left: 100px;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: flex-start;
+    justify-content: flex-start;
 
     @include media($laptop_min) {
       justify-content: center;
     }
+    @include media($phones) {
+      flex-direction: column;
+      align-items: center;
+    }
 
-
-    &_text {
-      padding-left: 75PX;
-      line-height: 18px !important;
-      margin-bottom: 0 !important;
-      background: url(/images/svg/mini-logo-2.svg) 0 50% no-repeat;
-      background-size: contain;
+    &_logo {
+      margin-right: 15px;
+      max-height: 28PX;
 
       @include media($phones) {
-        padding-left: 0;
-        //background-size: auto;
-        background-size: 80PX;
-        background-position: 50% 100%;
-        padding-bottom: 40PX;
+        order: 1;
+      }
+    }
+
+    &_text {
+      line-height: 18PX !important;
+      margin-top: -3PX;
+      margin-bottom: 0 !important;
+
+      @include media($phones) {
+        order: 0;
+        margin-bottom: 10px !important;
         text-align: center;
       }
 
