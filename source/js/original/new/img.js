@@ -101,9 +101,8 @@ $( document ).ready(function() {
 
 
 //Проверка биты картинок.
-
 // !!!!!!
-// Нужно проверить
+// Нужно проверить. Вызывало глюки при авторзации через ФБ на сафари
 // !!!!!!
 $( document ).ready(function() {
   function img_load_finish(){
@@ -120,50 +119,48 @@ $( document ).ready(function() {
     }
   }
 
-  //тест лого магазина
-  var imgs=$('section:not(.navigation)')
-  imgs=imgs.find('.logo img');
-  if(imgs)
-  for (var i=0;i<imgs.length;i++){
-    var img=imgs.eq(i);
-    var src=img.attr('src');
-    img.attr('src','/images/template-logo.jpg');
-    var data={
-      src:src,
-      img:img,
-      type:0 // для img[src]
-    };
+  function testImg(imgs,no_img){
+    if(!imgs || imgs.length==0)return;
 
-    var image=$('<img/>',{
-      src:src
-    }).on('load',img_load_finish.bind(data));
-    image.data('data',data);
+    if(!no_img)no_img='/images/template-logo.jpg';
+
+    for (var i=0;i<imgs.length;i++){
+      var img=imgs.eq(i);
+      if(img.hasClass('no_ava')){
+        continue;
+      }
+
+      var data={
+        img:img
+      };
+      var src;
+      if([0].tagName=="IMG"){
+        data.type=0;
+        src=img.attr('src');
+        img.attr('src',no_img);
+      }else{
+        data.type=1;
+        src=img.css('background-image');
+        if(!src)continue;
+        src=src.replace('url("','');
+        src=src.replace('")','');
+        img.addClass('no_ava');
+        img.css('background-image','url('+no_img+')');
+      }
+      data.src=src;
+      var image=$('<img/>',{
+        src:src
+      }).on('load',img_load_finish.bind(data));
+      image.data('data',data);
+    }
   }
 
-  imgs=null;
+  //тест лого магазина
+  var imgs=$('section:not(.navigation)');
+  imgs=imgs.find('.logo img');
+  testImg(imgs,'/images/template-logo.jpg');
+
   //тест аватарок в коментариях
   imgs=$('.comment-photo,.scroll_box-avatar');
-  if(imgs)
-  for (var i=0;i<imgs.length;i++){
-    var img=imgs.eq(i);
-    if(img.hasClass('no_ava')){
-      continue;
-    }
-
-    var src=img.css('background-image');
-    if(!src)continue;
-    src=src.replace('url("','');
-    src=src.replace('")','');
-    img.addClass('no_ava');
-    img.css('background-image','url(/images/no_ava_square.png)');
-    var data={
-      src:src,
-      img:img,
-      type:1 // для фоновых картинок
-    };
-    var im=document.createElement('img');
-    im.src=src;
-    var im=$(im);
-    im.on('load',img_load_finish.bind(data));
-  }
+  testImg(imgs,'/images/no_ava_square.png');
 });
