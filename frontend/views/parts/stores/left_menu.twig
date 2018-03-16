@@ -1,6 +1,6 @@
 {{ use('frontend/components/CategoryMenu') }}
 
-{% set ext_menu_items = offline == 1 ? 'favorite,all_shops' : 'favorite,all_shops,abc' %}
+{% set ext_menu_items = 'favorite,all_shops,abc' %}
 {% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items': ext_menu_items, 'offline': offline}) %}
 {% if category_tree %}
 
@@ -15,13 +15,7 @@
     {#{% if stores_abc %}#}
         {#<div  class="catalog-categories_abc">#}
             {#<h5 class="catalog-categories_abc-header">Поиск по алфавиту</h5>#}
-            {#{% for char, stores in stores_abc %}#}
-                {#{% if stores == true or stores|length > 0  %}#}
-                    {#<a href="/stores?w={{ char|raw }}">{{ char|raw }} </a>#}
-                {#{% else %}#}
-                    {#<span>{{ char }}</span>#}
-                {#{% endif %}#}
-            {#{% endfor %}#}
+            {#{% include('parts/stores/abc_search.twig') %}#}
         {#</div>#}
     {#{% endif %}#}
 
