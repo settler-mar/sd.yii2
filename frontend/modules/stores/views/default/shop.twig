@@ -328,13 +328,14 @@
 
 
 {% if current_store.is_active==0 %}
+  {% set current_category = current_store.categories|length ? current_store.categories[0] : null %}
   <div id="shop_not_active"
       class="notification_data"
       data-title=""
       data-button-no=""
       data-notyfy_class="notify_white"
       data-button-yes="Выбрать другой магазин"
-      data-callback-yes="window.location='/stores';"
+      data-callback-yes="window.location='/stores{% if current_category %}/{{ current_category.route }}{% endif %}';"
        >
     {{ _constant('shop_not_active_message')|raw }}
   </div>
