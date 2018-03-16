@@ -40,7 +40,7 @@
         <div class="coupons-list_item-logo-info-left">
           {% if not_active %}
             {#<div class="coupons-list_item-time">Магазин {{coupon.store_name}} временно неактивен</div>#}
-            <div class="coupons-list_item-time">Промокод неактивен</div>
+            <div class="coupons-list_item-time coupons-list_item-time-inactive">Промокод неактивен</div>
           {% else %}
             <div class="coupons-list_item-time"><span class="clock" data-end="{{ coupon.date_end }}"></span></div>
           {% endif %}

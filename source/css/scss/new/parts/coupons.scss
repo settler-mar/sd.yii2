@@ -577,12 +577,13 @@
       }
 
       &-time {
-        //background: $coupons_coupon_sel_text_bg_color;
-        //color: $btn_base_bg;
         color: $text_color;
-        //text-transform: uppercase;
         padding: 0px 3px;
         font-weight: bold;
+
+        &-inactive {
+          color: $header_color_pointed
+        }
 
       }
 
