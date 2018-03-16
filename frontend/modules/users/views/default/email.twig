@@ -1,6 +1,6 @@
 <div class="sign-up popup-sign-up {% if isAjax == false %} noajax {% endif %} social" style="opacity: 1;">
-    <h2 class="title-no-line">Введите E-mail</h2>
-    <p class="sign-up-tagline">Для завершения регистрации необходимо ввести e-mail</p>
+    <h2 class="title-no-line margin-bottom-light">Введите E-mail</h2>
+    <p class="sign-up-tagline align-center">Для завершения регистрации необходимо ввести e-mail</p>
     {% set form = active_form_begin({
     'id' : isAjax?'email-form-ajax':'email-form',
     'layout' : 'horizontal',
@@ -18,8 +18,9 @@
         'template' :
         '{beginWrapper}<i class="fa fa-envelope"></i>{input}\n{endWrapper}\n{error}'
     }).textInput({'placeholder':'Введите ваш e-mail','required':true})|raw }}
-
-    <button type="submit btn" class="btn sign-up-btn">Отправить</button>
+    <div class="align-center">
+        <button type="submit btn" class="btn sign-up-btn">Отправить</button>
+    </div>
     {{ form.field(model, 'social_name', {
         'template' :
         '{input}{error}'

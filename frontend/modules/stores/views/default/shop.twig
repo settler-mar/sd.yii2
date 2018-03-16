@@ -121,8 +121,8 @@
               </div>
             {% endif %}
 
-            <noindex>
-              <div class="accordion-content">
+            <div class="accordion-content">
+              <noindex>
                 {% if current_store.conditions != '' %}
                   {{ _no_br(current_store.conditions)|raw }}
                 {% else %}
@@ -133,8 +133,9 @@
                 <div class="accordion-control tablets_hide">
                   <a class="angle-up" href="#"></a>
                 </div>
-              </div>
-            </noindex>
+              </noindex>
+            </div>
+
           </div>
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
@@ -167,8 +168,11 @@
       {% if current_store.is_active == 1 %}
         <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
+        <div class="shop_header-goto-agree">
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a href="/recommendations">Правилами</a> покупок с кэшбэком</label>
+        </div>
       {% else %}
-        <a href="#shop_not_active" ref="popup" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
+        <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% endif %}
     {% else %}
       <a href="#login" class="btn btn-round tablets-btn-red tablets-btn-big modals_open">{{ btn_text }}</a>
@@ -328,7 +332,15 @@
 
 
 {% if current_store.is_active==0 %}
-  <div id="shop_not_active" class="notification_data" data-notyfy_class="notify_white" data-button-yes="Продолжить">
+  {% set current_category = current_store.categories|length ? current_store.categories[0] : null %}
+  <div id="shop_not_active"
+      class="notification_data"
+      data-title=""
+      data-button-no=""
+      data-notyfy_class="notify_white"
+      data-button-yes="Выбрать другой магазин"
+      data-callback-yes="window.location='/stores{% if current_category %}/{{ current_category.route }}{% endif %}';"
+       >
     {{ _constant('shop_not_active_message')|raw }}
   </div>
 {% endif %}

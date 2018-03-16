@@ -73,13 +73,16 @@
         cursor: pointer;
         right: 0;
         top:0;
-        padding: 10px;
+        padding: 10PX;
         background: transparent;
         color: #333;
         opacity: 1;
 
         &:before{
           content: '\00D7';
+          font-size: 35PX;
+          font-weight: bold;
+          line-height: 1;
         }
 
         &:hover{
@@ -115,9 +118,16 @@
           color: rgba($text_color,0.7);;
         }
       }
+      .text-center {
+        text-align: center;
+      }
 
       h1,h2,h3{
         margin-top: 0;
+
+        &.margin-light {
+          margin-bottom: 10px;
+        }
       }
 
       .container{
@@ -157,13 +167,14 @@
         .notify_close {
           padding: 3px 8px;
           z-index: 9;
+          top: -2PX;
 
           &:before {
-            content: "×";
-            font-size: 1.2rem;
+            //content: "×";
+            //font-size: 1.2rem;
 
             @include media($tablets) {
-              font-size: 2rem;
+              //font-size: 2rem;
             }
           }
         }
@@ -209,7 +220,7 @@
           right: 5px;
           color: $header_bg_second;
           opacity: 1;
-          top: 8px;
+          //top: 8px;
           padding: 2px 7px !important;
           border-radius: 50%;
         }

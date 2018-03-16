@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up">
-    <h2 class="title-no-line"> {{ t('account', 'delete_account') }}</h2>
+    <h2 class="title-no-line margin-light"> {{ t('account', 'delete_account') }}</h2>
     {% set form = active_form_begin({
     'id' : 'delete-account-form-ajax',
     'layout' : 'horizontal',
@@ -14,9 +14,8 @@
     'role' : 'form'
     },
     }) %}
-    <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto margin-half">{{ t('account', 'delete_account_text') }}</div>
+    <div class="text-center text-dop_gray btn-max_width400 block_margin-auto margin-half">{{ t('account', 'delete_account_text') }}</div>
     <div class="form-group">
-        <label for="user_comment">{{ t('account', 'delete_account_reason') }}</label>
         <div class="form-textarea-group">
 
             <textarea id="user_comment" class="" name="user_comment" rows="10" cols="30" placeholder="{{ t('account', 'delete_account_reason') }}" required></textarea>
@@ -24,7 +23,7 @@
         <div class="help-block help-block-error">{{ errors.user_comment }}</div>
     </div>
 
-    <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">{{ t('account', 'delete_account_confirm') }}</div>
+    <div class="text-center text-dop_gray btn-max_width400 block_margin-auto">{{ t('account', 'delete_account_confirm') }}</div>
 
     <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('common', 'delete') }}</button>
     {{ active_form_end() }}

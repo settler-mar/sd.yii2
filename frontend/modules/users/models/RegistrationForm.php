@@ -26,7 +26,7 @@ class RegistrationForm extends Model
       [['password_repeat'], 'required', 'message' => 'Необходимо повторить пароль'],
       [['email'], 'email'],
       ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Введенные пароли не совпадают.', 'operator' => '=='],
-      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
+      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким e-mail уже зарегистрирован'],
       ['email', DomainValidator::className()],
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
