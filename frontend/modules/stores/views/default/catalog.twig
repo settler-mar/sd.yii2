@@ -32,13 +32,12 @@
           <span>({{ total_v }})</span>
         {% endif %}
       </h1>
-        {% include('parts/stores/abc_search.twig') %}
 
 
       <div class="catalog-categories_tree-toggle">
         {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
         {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-        <span class="catalog-categories_tree-toggle-tittle">Выбрать категорию</span>
+        <span class="catalog-categories_tree-toggle-tittle">Сменить категорию</span>
       </div>
 
       {#выбор и отображение сортировки#}
@@ -47,6 +46,8 @@
         <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{ offset_stores + 1 }}{% else %}0{% endif %}
           -{{ offset_stores + show_stores }} из {{ total_v }}</div>
       </div>
+
+      {% include('parts/stores/abc_search.twig') %}
 
       <div class="category-title-wrapper">
         {% include 'parts/dropdown-limit-catalog.twig' %}

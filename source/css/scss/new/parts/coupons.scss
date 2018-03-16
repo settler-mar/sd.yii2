@@ -212,6 +212,9 @@
 
 .coupons {
   &-abc {
+    margin-bottom: 10px;
+    overflow: auto;
+
     &_list{
       &-item {
         display: flex;
@@ -232,7 +235,7 @@
           text-align: center;
 
           @include media($tablets) {
-            min-width: inherit;
+            //min-width: inherit;
             //width: 0;
             font-size: 120px;
             //margin-right: 0;
@@ -247,17 +250,19 @@
           flex-wrap: wrap;
 
           @include media($tablets) {
-            justify-content: center;
-            margin: 0 auto;
+            //justify-content: center;
+            //margin: 0 auto;
           }
 
           a {
 
             display: block;
-            min-width: 130px;
+            //min-width: 130px;
+            width: 130px;
             padding: 5px 8px;
             color: $coupons_abc_store_color;
             text-decoration: none;
+            word-wrap: normal;
 
             &:hover {
               color: $coupons_abc_store_hover_color;
@@ -266,7 +271,7 @@
 
             @include media($tablets) {
               padding: 8px 12px;
-              min-width: inherit;
+              //min-width: inherit;
               font-size: 17px;
             }
           }
@@ -278,17 +283,18 @@
     &_chars {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-around;
       padding: 0;
       border-top: 1px solid $coupons_abc_border_color;
 
-      @include media($tablets) {
-        justify-content: center;
+      @include media($laptop-min) {
+        min-width: 700px;
       }
 
       a,span {
-        padding: 8px 4px;
+        padding: 6PX 4PX;
+        font-size: 16PX;
 
         &.active {
           background-color: $text_color;
@@ -299,7 +305,7 @@
       &.row-2 {
         border-top: 1px solid $coupons_abc_border_color;
         border-bottom: 1px solid $coupons_abc_border_color;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
 
       a {

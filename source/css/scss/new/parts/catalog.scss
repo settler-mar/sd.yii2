@@ -301,7 +301,7 @@
         flex-direction: row;
         align-items: center;
         margin: 0 auto 20px auto;
-        width: 240px;
+        width: 250px;
         padding: 10px;
         background: $btn_base_bg;
         color: $btn_base_color;
@@ -318,6 +318,9 @@
 
         @include media($laptop-min) {
           display: flex;
+        }
+        @include media($phones) {
+          width: 90%;
         }
 
         &-icon {
@@ -463,8 +466,12 @@
           }
         }
         &-select {
-          width: 264px;
+          width: 274px;
           margin-bottom: 20px;
+
+          @include media($phones) {
+            width: calc(80vw);
+          }
         }
         &-title {
           font-weight: bold;
