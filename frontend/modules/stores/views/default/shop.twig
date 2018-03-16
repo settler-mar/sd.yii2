@@ -121,8 +121,8 @@
               </div>
             {% endif %}
 
-            <noindex>
-              <div class="accordion-content">
+            <div class="accordion-content">
+              <noindex>
                 {% if current_store.conditions != '' %}
                   {{ _no_br(current_store.conditions)|raw }}
                 {% else %}
@@ -133,8 +133,9 @@
                 <div class="accordion-control tablets_hide">
                   <a class="angle-up" href="#"></a>
                 </div>
-              </div>
-            </noindex>
+              </noindex>
+            </div>
+
           </div>
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
