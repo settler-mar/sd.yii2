@@ -392,7 +392,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
             $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'.($offline?'-offline':'') ||
             $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores' ||
-            $cat['route'] == 'abc' && Yii::$app->request->pathInfo == 'stores/abc'
+            $cat['route'] == 'abc' && in_array(Yii::$app->request->pathInfo, ['stores/abc', 'stores/abc/offline'])
         ) {
           $title = true;
           $c[] = 'active';

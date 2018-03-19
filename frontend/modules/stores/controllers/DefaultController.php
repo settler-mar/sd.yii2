@@ -350,11 +350,15 @@ class DefaultController extends SdController
 
   private function actionAbc()
   {
-    $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url'=>'/stores'];
-    $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
+    $offline = Yii::$app->request->get('offline') || $this->offline;
 
-    $contentData["stores_abc"] = Stores::getActiveStoresByAbc();
-    $contentData["total_v"] = Stores::activeCount();
+    //$this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url'=>'/stores'];
+    $this->params['breadcrumbs'][] = ['label' => ($offline ? 'Оффлайн-магазины' : 'Магазины'), 'url' => '/stores' . ($offline ? '/offline' : '')];
+    $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
+    $contentData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
+
+    $contentData["stores_abc"] = Stores::getActiveStoresByAbc(['offline' => $offline]);
+    $contentData["total_v"] = Stores::activeCount(['is_offline' => $offline]);
     $contentData['posts'] = Posts::getLastPosts();
 
     return $this->render('abc', $contentData);
