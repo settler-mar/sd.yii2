@@ -197,15 +197,15 @@ class SiteController extends SdController
     return $this->render('faq');
   }
 
-  /**
-   * /promo
-   * @return string
-   */
-  public function actionPromo()
-  {
-    $this->params['breadcrumbs'][] = 'Акции';
-    return $this->render('promo');
-  }
+//  /**
+//   * /promo
+//   * @return string
+//   */
+//  public function actionPromo()
+//  {
+//    $this->params['breadcrumbs'][] = 'Акции';
+//    return $this->render('promo');
+//  }
 
   /**
    * /affiliate
@@ -253,16 +253,16 @@ class SiteController extends SdController
     return $this->render('recommendations');
   }
 
-  /**
-   * /about
-   * @return string
-   */
-  public function actionAbout()
-  {
-    $this->params['breadcrumbs'][] = 'О нас';
-    return $this->render('about');
-    //todo сделать просмотр сертификата с помощью photoswipe
-  }
+//  /**
+//   * /about
+//   * @return string
+//   */
+//  public function actionAbout()
+//  {
+//    $this->params['breadcrumbs'][] = 'О нас';
+//    return $this->render('about');
+//    //todo сделать просмотр сертификата с помощью photoswipe
+//  }
 
   /**
    * /account-blocked
