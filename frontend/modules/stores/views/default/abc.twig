@@ -1,3 +1,5 @@
+
+
 <section class="catalog margin">
   <div class="page-wrap page-wrap-flex">
     {#слева категории#}
@@ -9,10 +11,10 @@
     <div class="catalog-stores coupons">
       <h1>
           {% if h1 %}
-            <!--h1 из базы-->
+            {#h1 из базы#}
               {{ h1|raw }}
           {% else %}
-            <!--если нет, то -->
+            {#если нет, то#}
             Магазины - алфавитный поиск <span>({{ total_v }})</span>
           {% endif %}
       </h1>
@@ -60,7 +62,7 @@
           {% endfor %}
       </div>
 
-        <!--контент-->
+        {#контент#}
       {% if content %}
           <div class="catalog_category-content margin">
               {{ content | raw }}
