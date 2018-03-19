@@ -241,7 +241,6 @@ class AccountController extends Controller
     $user = Users::findOne(Yii::$app->user->id);
 
     if ($request->getIsPost()) {
-
       if($user->load($request->post()) && $user->save()) {
         if (ValidateEmail::validateEmail($user, $request->post('path'))) {
           Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_sent'));

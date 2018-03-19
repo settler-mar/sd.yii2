@@ -71,7 +71,6 @@ class ValidateEmail extends Model
           return false;
         }
 
-
         if($user->email_verify_token!=$token){
           Yii::$app->session->addFlash('err', [
               'title' => Yii::t('common', 'error') . '!',
@@ -80,7 +79,6 @@ class ValidateEmail extends Model
           Yii::$app->response->redirect('/404');
           return false;
         }
-
         $this->_user=$user;
       }
     }
@@ -183,10 +181,10 @@ class ValidateEmail extends Model
     if ($user) {
       $user->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
       $user->email_verify_time = date('Y-m-d H:i:s');
-      if (self::sentEmailValidation($user, ['path' => $path])) {
-        $user->save();
+      if ($user->save() && self::sentEmailValidation($user, ['path' => $path])) {
         return true;
       }
+      ddd($user);
     }
     return false;
   }
