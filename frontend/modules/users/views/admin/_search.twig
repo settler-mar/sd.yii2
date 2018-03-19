@@ -22,28 +22,9 @@
         <label for="select_loaylty_status">Статус лояльности</label>
         <select name="loyalty_status" id="select_loaylty_status">
             <option value="" {% if (get.loyalty_status == null) %}selected{% endif %}>Выберить статус</option>
-            <option value="0" {% if (get.loyalty_status == '0') %}selected{% endif %}>Start</option>
-            <option value="1" {% if (get.loyalty_status == '1') %}selected{% endif %}>Bronze</option>
-            <option value="2" {% if (get.loyalty_status == '2') %}selected{% endif %}>Silver</option>
-            <option value="3" {% if (get.loyalty_status == '3') %}selected{% endif %}>Gold</option>
-            <option value="4" {% if (get.loyalty_status == '4') %}selected{% endif %}>Platinum</option>
-            <option value="5" {% if (get.loyalty_status == '5') %}selected{% endif %}>Personal 5%</option>
-            <option value="6" {% if (get.loyalty_status == '6') %}selected{% endif %}>Personal 10%</option>
-            <option value="7" {% if (get.loyalty_status == '7') %}selected{% endif %}>Personal 15%</option>
-            <option value="8" {% if (get.loyalty_status == '8') %}selected{% endif %}>Personal 20%</option>
-            <option value="9" {% if (get.loyalty_status == '9') %}selected{% endif %}>Personal 25%</option>
-            <option value="10" {% if (get.loyalty_status == '10') %}selected{% endif %}>Personal 30%</option>
-            <option value="11" {% if (get.loyalty_status == '11') %}selected{% endif %}>Personal 35%</option>
-            <option value="12" {% if (get.loyalty_status == '12') %}selected{% endif %}>Personal 40%</option>
-            <option value="13" {% if (get.loyalty_status == '13') %}selected{% endif %}>Personal 45%</option>
-            <option value="14" {% if (get.loyalty_status == '14') %}selected{% endif %}>Personal 50%</option>
-            <option value="15" {% if (get.loyalty_status == '15') %}selected{% endif %}>Personal 55%</option>
-            <option value="16" {% if (get.loyalty_status == '16') %}selected{% endif %}>Personal 60%</option>
-            <option value="17" {% if (get.loyalty_status == '17') %}selected{% endif %}>Personal 65%</option>
-            <option value="18" {% if (get.loyalty_status == '18') %}selected{% endif %}>Personal 70%</option>
-            <option value="19" {% if (get.loyalty_status == '19') %}selected{% endif %}>Personal 75%</option>
-            <option value="20" {% if (get.loyalty_status == '20') %}selected{% endif %}>Personal 80%</option>
-            <option value="21" {% if (get.loyalty_status == '21') %}selected{% endif %}>Personal 95%</option>
+            {% for status_key, loyalty_status in app.params.dictionary.loyalty_status %}
+                <option value="{{ status_key }}" {% if (get.loyalty_status !='' and get.loyalty_status == status_key) %}selected{% endif %}>{{ loyalty_status.display_name }}</option>
+            {% endfor %}
         </select>
     </div>
     <div class="form-group">

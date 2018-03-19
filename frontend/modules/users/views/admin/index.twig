@@ -94,6 +94,14 @@
               {{ _nf(users_total.sum_bonus) | raw }} р
             </div>
           </div>
+          {% for loyalty_status in loyalty_statuses %}
+            <div class="line">
+              <div class="name">Статус&nbsp;{{ app.params.dictionary.loyalty_status[loyalty_status.loyalty_status].display_name }}</div>
+              <div class="value">
+                  {{ loyalty_status.count }}
+              </div>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <div class="col-md-6">

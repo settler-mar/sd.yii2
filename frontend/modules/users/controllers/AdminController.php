@@ -152,6 +152,13 @@ class AdminController extends Controller
     $models = $query->offset($pages->offset)
         ->limit($pages->limit)
         ->all();
+    $loyaltyStatuses = clone $query;
+    $loyaltyStatuses = $loyaltyStatuses
+        ->select(['loyalty_status', 'count(*) as count'])
+        ->groupBy('loyalty_status')
+        ->orderBy(['loyalty_status' => SORT_ASC])
+        ->asArray()
+        ->all();
 
     return $this->render('index', [
         'users' => $models,
@@ -159,6 +166,7 @@ class AdminController extends Controller
         'get' => $get,
         'users_total' => $totQuery,
         'notes' => $notes,
+        'loyalty_statuses' => $loyaltyStatuses,
     ]);
   }
 
