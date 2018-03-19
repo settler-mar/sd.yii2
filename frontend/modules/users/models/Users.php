@@ -268,6 +268,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         $this->loyalty_status = $k;
       }
     }
+    $this->save();
   }
 
   public function beforeSave($insert)

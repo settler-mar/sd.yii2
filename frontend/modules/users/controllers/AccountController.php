@@ -111,6 +111,9 @@ class AccountController extends Controller
     $next_tarif = false;
     $next_tarif_min_sum = false;
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
+
+    Yii::$app->user->identity->testLoyality();
+
     $status_id=Yii::$app->user->identity->loyalty_status;
 
     $status = $statuses[$status_id];
