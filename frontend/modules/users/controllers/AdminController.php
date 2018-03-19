@@ -74,6 +74,9 @@ class AdminController extends Controller
     if (isset($get['wait-moderation']) && strlen($get['wait-moderation']) > 0) {
       $query->andWhere(['waitModeration' => $get['wait-moderation']]);
     }
+    if (isset($get['loyalty_status']) && strlen($get['loyalty_status']) > 0) {
+      $query->andWhere(['loyalty_status' => $get['loyalty_status']]);
+    }
 
     if (isset($get['is_active'])) {
       if ($get['is_active'] == 1) {
@@ -139,9 +142,15 @@ class AdminController extends Controller
     $notes['users_wait_moderation'] = Users::waitModerationCount();
     $notes['users_on_actions'] = Users::onActionCount();
 
+    if (!empty($get['sort'])) {
+        $query->orderBy([$get['sort'] => SORT_DESC]);
+    } else {
+        $query->orderBy(['uid' => SORT_DESC]);
+    }
+
+    Yii::info('query');
     $models = $query->offset($pages->offset)
         ->limit($pages->limit)
-        ->orderBy('uid DESC')
         ->all();
 
     return $this->render('index', [
