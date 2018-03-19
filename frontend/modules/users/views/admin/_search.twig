@@ -25,6 +25,7 @@
             {% for status_key, loyalty_status in app.params.dictionary.loyalty_status %}
                 <option value="{{ status_key }}" {% if (get.loyalty_status !='' and get.loyalty_status == status_key) %}selected{% endif %}>{{ loyalty_status.display_name }}</option>
             {% endfor %}
+            <option value="personal" {% if get.loyalty_status == 'personal' %}selected{% endif %}>Персонал</option>
         </select>
     </div>
     <div class="form-group">
@@ -35,6 +36,10 @@
             <option {% if get.sort == 'sum_from_ref_confirmed' %}selected{% endif %} value="sum_from_ref_confirmed">По накопленному за рефералов</option>
             <option {% if get.sort == 'sum_withdraw' %}selected{% endif %} value="sum_withdraw">По выплаченной сумме</option>
             <option {% if get.sort == 'sum_foundation' %}selected{% endif %} value="sum_foundation">По благотворительности</option>
+        </select>
+        <select name="order" id="search_sort_order">
+            <option value="DESC" {% if get.order == 'DESC' %}selected{% endif %}>По убыванию</option>
+            <option value="ASC" {% if get.order == 'ASC' %}selected{% endif %}>По возрастанию</option>
         </select>
     </div>
     <div class="form-group">
