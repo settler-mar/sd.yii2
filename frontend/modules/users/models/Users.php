@@ -268,6 +268,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         $this->loyalty_status = $k;
       }
     }
+    $this->save();
   }
 
   public function beforeSave($insert)
@@ -381,6 +382,10 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       }
     }
     $this->saveImage();
+    if ($this->birthday) {
+      $this->birthday = explode('-', $this->birthday);
+      $this->birthday = implode('-', array_reverse($this->birthday));
+    }
   }
 
   /**
