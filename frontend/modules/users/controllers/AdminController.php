@@ -75,7 +75,11 @@ class AdminController extends Controller
       $query->andWhere(['waitModeration' => $get['wait-moderation']]);
     }
     if (isset($get['loyalty_status']) && strlen($get['loyalty_status']) > 0) {
-      $query->andWhere(['loyalty_status' => $get['loyalty_status']]);
+        if ($get['loyalty_status'] == 'personal') {
+            $query->andWhere(['>', 'loyalty_status', 4]);
+        } else {
+            $query->andWhere(['loyalty_status' => $get['loyalty_status']]);
+        }
     }
 
     if (isset($get['is_active'])) {
@@ -142,15 +146,23 @@ class AdminController extends Controller
     $notes['users_wait_moderation'] = Users::waitModerationCount();
     $notes['users_on_actions'] = Users::onActionCount();
 
+    $sortOrder = isset($get['order']) && $get['order'] == 'ASC' ? SORT_ASC : SORT_DESC;
     if (!empty($get['sort'])) {
-        $query->orderBy([$get['sort'] => SORT_DESC]);
+        $query->orderBy([$get['sort'] => $sortOrder]);
     } else {
-        $query->orderBy(['uid' => SORT_DESC]);
+        $query->orderBy(['uid' => $sortOrder]);
     }
 
     Yii::info('query');
     $models = $query->offset($pages->offset)
         ->limit($pages->limit)
+        ->all();
+    $loyaltyStatuses = clone $query;
+    $loyaltyStatuses = $loyaltyStatuses
+        ->select(['loyalty_status', 'count(*) as count'])
+        ->groupBy('loyalty_status')
+        ->orderBy(['loyalty_status' => SORT_ASC])
+        ->asArray()
         ->all();
 
     return $this->render('index', [
@@ -159,6 +171,7 @@ class AdminController extends Controller
         'get' => $get,
         'users_total' => $totQuery,
         'notes' => $notes,
+        'loyalty_statuses' => $loyaltyStatuses,
     ]);
   }
 

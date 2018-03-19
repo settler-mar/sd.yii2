@@ -2,11 +2,11 @@ $width_switch: $tablets;
 
 .about {
   &-content {
-    display: flex;
-    flex-direction: column;
-    @include media($width_switch) {
-      flex-direction: column;
-    }
+    //display: flex;
+    //flex-direction: column;
+    //@include media($width_switch) {
+    //  flex-direction: column;
+    //}
     &_top {
       display: flex;
       flex-direction: row;
