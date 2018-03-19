@@ -110,6 +110,7 @@ h1 {
   font-size: 2.5em;
   margin-top: 0;
   text-align: left;
+  margin-bottom: 25px;
 
   @include media ($laptop_min) {
     text-align: center;

@@ -7,78 +7,37 @@
       </div>
       <div class="footer-menu flex-line">
         <div class="footer-menu-col">
-          {% set link_list = _constant("footer_best_shop") %}
-          {% if link_list %}
-            <div class="footer-menu-lists">
-              <div class="footer-menu-title">Лучшие магазины</div>
-              {% for item in link_list %}
-                {% if item.show==1 %}
-                  <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }} {% if item.hide_mobile %}class="hide_mobile"{% endif %}>
-                    {{ _if(item.bold==1,'<b>') }}
-                    {{ item.name }}
-                    {{ _if(item.bold==1,'</b>') }}
-                  </a>
-                {% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
+          {% set footer_links_list = _constant("footer_best_shop") %}
+          {% set links_title = 'Лучшие магазины' %}
+          {% set class_menu = 'laptop-min_hide' %}
+          {% include('parts/footer_links_list.twig') %}
 
-          <div class="footer-menu-lists">
-            <div class="footer-menu-title">Компания</div>
-            {% set link_list = _constant("footer_company") %}
-            {% for item in link_list %}
-              {% if item.show==1 %}
-                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }} {% if item.hide_mobile %}class="hide_mobile"{% endif %}>
-                  {{ _if(item.bold==1,'<b>') }}
-                  {{ item.name }}
-                  {{ _if(item.bold==1,'</b>') }}
-                </a>
-              {% endif %}
-            {% endfor %}
-          </div>
 
-          <div class="footer-menu-lists">
-            <div class="footer-menu-title">Сотрудничество</div>
-            {% set link_list = _constant("footer_cooperation") %}
-            {% for item in link_list %}
-              {% if item.show==1 %}
-                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }} {% if item.hide_mobile %}class="hide_mobile"{% endif %}>
-                  {{ _if(item.bold==1,'<b>') }}
-                  {{ item.name }}
-                  {{ _if(item.bold==1,'</b>') }}
-                </a>
-              {% endif %}
-            {% endfor %}
-          </div>
+          {% set footer_links_list = _constant("footer_company") %}
+          {% set links_title = 'Компания' %}
+          {% set class_menu = '' %}
+          {% include('parts/footer_links_list.twig') %}
+
+          {% set footer_links_list = _constant("footer_cooperation") %}
+          {% set links_title = 'Сотрудничество' %}
+          {% set class_menu = '' %}
+          {% include('parts/footer_links_list.twig') %}
+
           {% set footer_links_list = _constant("footer_links_1") %}
           {% set links_title = 'Колонка 1' %}
+          {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
         </div>
 
         <div class="footer-menu-col">
-          <div class="footer-menu-lists">
-            <div class="footer-menu-title">Популярные категории</div>
-            {{ use('frontend/components/CategoryMenu') }}
-            {% set category_tree = json_decode(category_menu_widget({'as_array':true,'where':'show_in_footer=1'})) %}
-            {% if category_tree %}
-              {% for item in category_tree %}
-                <a href="stores/{{ item.route }}">{{ item.name }}</a>
-              {% endfor %}
-            {% endif %}
+          {% set footer_links_list = _constant("footer_category") %}
+          {% set links_title = 'Популярные категории' %}
+          {% set class_menu = '' %}
+          {% include('parts/footer_links_list.twig') %}
 
-            {% set link_list = _constant("footer_category") %}
-            {% for item in link_list %}
-              {% if item.show==1 %}
-                <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="nofollow noopener"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }} {% if item.hide_mobile %}class="hide_mobile"{% endif %}>
-                  {{ _if(item.bold==1,'<b>')|raw }}
-                  {{ item.name }}
-                  {{ _if(item.bold==1,'</b>')|raw }}
-                </a>
-              {% endif %}
-            {% endfor %}
-          </div>
           {% set footer_links_list = _constant("footer_links_2") %}
           {% set links_title = 'Колонка 2' %}
+          {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
         </div>
 
@@ -96,8 +55,10 @@
               {% endif %}
             {% endfor %}
           </div>
+
           {% set footer_links_list = _constant("footer_links_3") %}
           {% set links_title = 'Промокоды' %}
+          {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
         </div>
 
@@ -117,6 +78,7 @@
           </div>
           {% set footer_links_list = _constant("footer_links_4") %}
           {% set links_title = 'Колонка 4' %}
+          {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
         </div>
       </div>

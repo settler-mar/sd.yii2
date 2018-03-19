@@ -6,7 +6,7 @@
         {% endif %}
     {% endfor %}
     {% if footer_links_text %}
-        <div class="footer-menu-lists">
+        <div class="footer-menu-lists {{ class_menu }}">
             <div class="footer-menu-title">{{ links_title }}</div>
             {{ footer_links_text|raw }}
         </div>
