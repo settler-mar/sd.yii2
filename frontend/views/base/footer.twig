@@ -50,6 +50,9 @@
               {% endif %}
             {% endfor %}
           </div>
+          {% set footer_links_list = _constant("footer_links_1") %}
+          {% set links_title = 'Колонка 1' %}
+          {% include('parts/footer_links_list.twig') %}
         </div>
 
         <div class="footer-menu-col">
@@ -74,6 +77,9 @@
               {% endif %}
             {% endfor %}
           </div>
+          {% set footer_links_list = _constant("footer_links_2") %}
+          {% set links_title = 'Колонка 2' %}
+          {% include('parts/footer_links_list.twig') %}
         </div>
 
         <div class="footer-menu-col">
@@ -90,6 +96,9 @@
               {% endif %}
             {% endfor %}
           </div>
+          {% set footer_links_list = _constant("footer_links_3") %}
+          {% set links_title = 'Колонка 3' %}
+          {% include('parts/footer_links_list.twig') %}
         </div>
 
         <div class="footer-menu-col">
@@ -106,6 +115,9 @@
               {% endif %}
             {% endfor %}
           </div>
+          {% set footer_links_list = _constant("footer_links_4") %}
+          {% set links_title = 'Колонка 4' %}
+          {% include('parts/footer_links_list.twig') %}
         </div>
       </div>
       <div class="footer-withdraws flex-line">
