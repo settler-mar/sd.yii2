@@ -1,39 +1,98 @@
-var myTooltip = function () {
+var sdTooltip = function () {
 
-  var tooltipClickTime;
-  var tooltipTimeOut = null;
+    var tooltipTimeOut = null;
+    var displayTime = 3000;
+    var arrow = 10;
+    var arrowWidth = 8;
+    var tooltip;
+    var size = 'small';
+    var hideClass = 'hidden';
+    var tooltipElements = $('[data-toggle=tooltip]');
 
-  $('[data-toggle=tooltip]').tipso({
-    background: '#fff',
-    color: '#434a54',
-    size: 'small',
-    delay: 10,
-    speed: 10,
-    width: 200,
-    //maxWidth: 258,
-    showArrow: true,
-    onBeforeShow: function (ele, tipso) {
-      this.content = ele.data('original-title');
-      this.position = ele.data('placement') ? ele.data('placement') : 'top';
+    var tooltipInit = function () {
+        tooltip = document.createElement('div');
+        $(tooltip).addClass('tipso_bubble').addClass(size).addClass(hideClass)
+            .html('<div class="tipso_arrow"></div><div class="titso_title"></div><div class="tipso_content"></div>');
+        $('body').append(tooltip);
+    };
+
+    function tooltipShow(elem) {
+
+        var title = $(elem).data('original-title');
+        var position = $(elem).data('placement') || 'bottom';
+        $(tooltip).removeClass("top_right_corner bottom_right_corner top_left_corner bottom_left_corner");
+        $(tooltip).find('.titso_title').html(title);
+        setPositon(elem, position);
+        $(tooltip).removeClass(hideClass);
+        clearTimeout(tooltipTimeOut);
+        tooltipTimeOut = setTimeout(tooltipHide, displayTime)
+
     }
-  });
+    function tooltipHide() {
+        $(tooltip).addClass(hideClass);
+    }
 
-  $('[data-toggle=tooltip]').on('click', function (e) {
-    tooltipClickTime = new Date();
-    //убираем таймаут
-    clearInterval(tooltipTimeOut);
-    //закрывавем все тултипы
-    $('[data-toggle=tooltip]').tipso('hide');
-    //данный показывем
-    $(this).tipso('show');
-    //новый интервал
-    tooltipTimeOut = setInterval(function () {
-      if (new Date() - tooltipClickTime > 1000 * 5) {
-        clearInterval(tooltipTimeOut);
-        //закрываем все тултипы
-        $('[data-toggle=tooltip]').tipso('hide');
+    function setPositon(elem, position){
+        var $e = $(elem);
+        var $win = $(window);
+        switch(position) {
+            case 'top':
+                pos_left = $e.offset().left + ($e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
+                pos_top = $e.offset().top - $(tooltip).outerHeight() - arrow;
+                $(tooltip).find('.tipso_arrow').css({
+                    marginLeft: -arrowWidth,
+                    marginTop: ''
+                });
+                if (pos_top < $win.scrollTop()) {
+                    pos_top = $e.offset().top + $e.outerHeight() + arrow;
+                    $(tooltip).removeClass('top bottom left right');
+                    $(tooltip).addClass('bottom');
+                }
+                else {
+                    $(tooltip).removeClass('top bottom left right');
+                    $(tooltip).addClass('top');
+                }
+                break;
+            case 'bottom':
+                pos_left = $e.offset().left + ($e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
+                pos_top = $e.offset().top + $e.outerHeight() + arrow;
+                $(tooltip).find('.tipso_arrow').css({
+                    marginLeft: -arrowWidth,
+                    marginTop: ''
+                });
+                if (pos_top + $(tooltip).height() > $win.scrollTop() + $win.outerHeight()) {
+                    pos_top = $e.offset().top - $(tooltip).height() - arrow;
+                    $(tooltip).removeClass('top bottom left right');
+                    $(tooltip).addClass('top');
+                }
+                else {
+                    $(tooltip).removeClass('top bottom left right');
+                    $(tooltip).addClass('bottom');
+                }
+                break;
+        }
+        $(tooltip).css({
+            left: pos_left,
+            top: pos_top
+        });
+    }
+
+
+    tooltipElements.on('click', function (e) {
+      if ($(this).data('clickable')) {
+          tooltipShow(this);
       }
-    }, 1000);
-  });
+    });
+
+    tooltipElements.on('mouseover', function (e) {
+        if (window.innerWidth >= 1024) {
+            tooltipShow(this);
+        }
+    });
+
+    $(document).ready(function () {
+        tooltipInit();
+    });
+
 
 }();
