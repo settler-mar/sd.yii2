@@ -251,15 +251,16 @@
   }
 
   &-docs {
+    display: flex;
     justify-content: flex-start;
     margin-bottom: 60px;
 
     @include media($laptop_min) {
       margin-bottom: 32px;
+      justify-content: center;
     }
 
     @include media($tablets) {
-      display: flex;
       flex-wrap: wrap;
     }
 
