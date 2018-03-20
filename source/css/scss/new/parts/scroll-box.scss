@@ -167,6 +167,10 @@
     & + * {
       background: $gray_box_bg;
     }
+    &-header {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
   }
 
   &-show_more {

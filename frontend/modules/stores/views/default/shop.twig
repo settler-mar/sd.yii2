@@ -144,7 +144,7 @@
               <span>{{ current_store.hold_time }}&nbsp;дней</span>
               <span class="avg">
                   (среднее время обработки)
-                  <a class="shop-name-question" data-placement="top" data-toggle="tooltip"
+                  <a class="shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
                      data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
                   >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
               </span>
@@ -167,9 +167,9 @@
     {% if user_id %}
       {% if current_store.is_active == 1 %}
         <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
-           class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
+           class="btn btn-round tablets-btn-red tablets-btn-big shop_header-goto-button">{{ btn_text }}</a>
         <div class="shop_header-goto-agree">
-          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a href="/recommendations">Правилами</a> покупок с кэшбэком</label>
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок&nbsp;с&nbsp;кэшбэком</a></label>
         </div>
       {% else %}
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
@@ -332,14 +332,13 @@
 
 
 {% if current_store.is_active==0 %}
-  {% set current_category = current_store.categories|length ? current_store.categories[0] : null %}
   <div id="shop_not_active"
       class="notification_data"
       data-title=""
       data-button-no=""
       data-notyfy_class="notify_white"
       data-button-yes="Выбрать другой магазин"
-      data-callback-yes="window.location='/stores{% if current_category %}/{{ current_category.route }}{% endif %}';"
+      data-callback-yes="window.location='/stores{% if referrer_category and referrer_category.route %}/{{ referrer_category.route }}{% endif %}';"
        >
     {{ _constant('shop_not_active_message')|raw }}
   </div>
