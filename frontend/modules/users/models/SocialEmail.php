@@ -37,7 +37,7 @@ class SocialEmail extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['social_name', 'social_id', 'email_manual'], 'required'],
+      [['social_name', 'social_id', 'email_manual'], 'required', 'message' => html_entity_decode('Необходимо заполнить поле &laquo;{attribute}&raquo;')],
       [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
       [['social_name', 'social_id'], 'string', 'max' => 255],
       [['email_manual'], 'email'],
@@ -56,8 +56,8 @@ class SocialEmail extends \yii\db\ActiveRecord
       'social_name' => 'Social Name',
       'social_id' => 'Social ID',
       'name' => 'Name',
-      'email' => 'Email',
-      'email_manual' => 'Email',
+      'email' => 'E-mail',
+      'email_manual' => 'E-mail',
       'url' => 'Url',
       'photo' => 'Photo',
       'status' => 'Status',
