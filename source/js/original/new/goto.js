@@ -52,7 +52,7 @@
      if (!$(this).is(':checked')) {
          notification.alert({
              'title': 'Внимание',
-             'question': 'Не рекомендуется совершать покупки без ознакомления<br> с <a href="/recommendations">Правилами</a> покупок с кэшбэком',
+             'question': 'Не рекомендуется совершать покупки без ознакомления<br> с <a target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок с кэшбэком</a>',
              'buttonYes': 'Закрыть',
              'buttonNo': false,
              'notyfy_class': 'notify_box-alert'
