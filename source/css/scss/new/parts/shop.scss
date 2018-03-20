@@ -66,16 +66,25 @@
       }
 
     }
-    &-goto-agree {
-      margin: 0 auto;
-      text-align: center;
-      &-label {
-        cursor: pointer;
-      }
-      &-checkbox {
-        cursor: pointer;
+    &-goto {
+      &-button {
+        margin-bottom: 10px;
       }
 
+      &-agree {
+        margin: 0 auto;
+        text-align: center;
+        &-label {
+          cursor: pointer;
+        }
+        &-checkbox {
+          cursor: pointer;
+        }
+        input[type=checkbox] + label {
+          line-height: 1.6;
+        }
+
+      }
     }
 
   }
