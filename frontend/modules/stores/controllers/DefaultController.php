@@ -345,6 +345,8 @@ class DefaultController extends SdController
     Yii::$app->view->metaTags[] = '<meta property="og:image" content="https://secretdiscounter.ru/images/logos/' . $store->logo . '" />';
     $contentData['wrap'] = 'index';
     Yii::$app->params['global_bg'] = "tablets_flex-col";
+    $contentData['referrer_category'] = $this->referrerCategory();
+
     return $this->render('shop', $contentData);
   }
 
@@ -432,6 +434,23 @@ class DefaultController extends SdController
     }
     $this->redirect('/stores/' . $parent->route, 301)->send();
     exit;
+  }
+
+    /**
+     * не пришли ли в шоп из категории?
+     * @return mixed|null
+     */
+  private function referrerCategory()
+  {
+     $referrer  = Yii::$app->request->referrer;
+     if (empty($referrer)) {
+         return null;
+     }
+     preg_match('/\/stores\/(.+)\?/', $referrer, $m);
+     if (!empty($m[1])) {
+         return CategoriesStores::byRoute($m[1]);
+     }
+     return null;
   }
 
 
