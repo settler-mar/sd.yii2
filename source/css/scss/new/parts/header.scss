@@ -239,8 +239,6 @@
   &-search {
     position: relative;
     width: 310px;
-    //margin-right: 5%;
-    //margin-right: 10vw;
     margin-right: auto;
     margin-left: 15px;
 
@@ -250,7 +248,9 @@
       width: 80%;
       display: none;
       margin: 5px auto 0;
-      //page-break-before: always;
+    }
+    @include media($phones) {
+      width: 100%;
     }
 
     &-open .header-search{
