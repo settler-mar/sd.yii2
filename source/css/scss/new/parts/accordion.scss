@@ -113,11 +113,15 @@
 
     .angle-down .icon:before {
       content: "›";
-      transform: rotate3d(0, 0, 1, 0deg) translate3d(-4px, 0, 0);
+      display: inline-block;
+      margin-left: 5px;
+      transform: rotate3d(0, 0, 1, 90deg);
     }
     .angle-up .icon:before {
       content: "›";
-      transform: rotate3d(0, 0, 1, 90deg) translate3d(-4px, 0, 0);
+      display: inline-block;
+      margin-left: 5px;
+      transform: rotate3d(0, 0, 1, -90deg);
     }
 
     h1, h2, h3, h4, h5, h6 {
