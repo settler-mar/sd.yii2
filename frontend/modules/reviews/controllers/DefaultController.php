@@ -85,8 +85,8 @@ class DefaultController extends SdController
             <p style="text-align: center;">
               Вы уже оставили отзыв о сайте.<br>
               Теперь вы можете только 
-              <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">изменить</a> или 
-              <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">дополнить</a><br>
+              <a href="#reviews/edit?id='.$review->uid.'" class="modals_open">изменить</a> или 
+              <a href="#reviews/edit?id='.$review->uid.'" class="modals_open">дополнить</a><br>
               ранее оставленный <a href="#reviews/edit?id='.$review->uid.'" class="ajaxFormOpen">отзыв</a>.
             </p>';
             return json_encode($data);          }
