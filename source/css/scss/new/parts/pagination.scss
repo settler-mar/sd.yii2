@@ -1,3 +1,11 @@
+$paginate_button_color: #fcf8e3;
+$paginate_button_hover_color: #FFF0F0;
+$paginate_button_active_color: #e6ae03;
+$paginate_text_color:  #1b2527;
+$paginate_color_hover: #ffcd16;
+$paginate_mobile_width: 768px;
+
+
 .catalog_pagination {
   ul {
     margin: 0 ;
@@ -22,7 +30,7 @@
       overflow: hidden;
       margin: 0 10px;
 
-      @include media($tablets) {
+      @media (max-width: $paginate_mobile_width){
         margin: 0 5px 10px 5px;
         width: 2em;
         height: 2em;
@@ -31,19 +39,20 @@
       &:hover {
         background-color: $paginate_button_hover_color;
         a,svg {
-          color: $header_sub_menu_color_hover;
+          color: $paginate_color_hover;
         }
       }
 
       a,span {
         padding: 20PX;
-        color: $text_color;
+        color: $paginate_text_color;
         text-decoration: none;
+        line-height: 1.25;
       }
       &.active {
         span {
           background-color: $paginate_button_active_color;
-          color: $text-color;
+          color: $paginate_text_color;
         }
       }
 

@@ -832,7 +832,6 @@ table{
         opacity: 0;
         filter: alpha(opacity=0);
         font-size: 50px;
-        cursor: pointer;
     }
 
     .btn-success.btn-small[aria-disabled],
@@ -922,3 +921,4 @@ table{
 
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";
+@import "../new/parts/pagination";
