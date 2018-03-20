@@ -1,5 +1,5 @@
     {{ use('frontend/components/CategoryCouponsMenu') }}
-    {% set category_tree = category_coupons_menu_widget({'search_item':1}) %}
+    {% set category_tree = category_coupons_menu_widget({'search_item':app.params.coupons_menu_abc}) %}
     {% if category_tree %}
         <div class="catalog-categories_tree-cat accordeon">
             <div class="catalog-categories_tree-cat-close">
