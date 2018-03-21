@@ -143,7 +143,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/table.js',
         paths.source.js+'/original/admin/ajax_remove.js',
         paths.source.js+'/original/new/fixes.js',
-        paths.source.js+'/original/new/links.js'
+        paths.source.js+'/original/new/links.js',
+        paths.source.js+'/original/new/store_points.js'
     ], paths.app.js)
 );
 

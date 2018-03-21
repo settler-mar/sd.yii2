@@ -13,25 +13,28 @@
           , {{ store_points.cities[0] }}</h2>
 
       {% elseif store_points.countries|length == 1 %}
-        {#несколько точек в одной стpане #}
+        несколько точек в одной стpане
         <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}</h2>
         <div class="row store-points__point-selects">
-          <select class="hidden" name="store_point_country" id="store_point_country">
-            <option value=""></option>
+          <select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_country" id="store_point_country">
             <option value="{{ store_points.points[0].country }}" selected>{{ store_points.points[0].country }}</option>
           </select>
-          <div class="col-sm-2">
-            <label for="store_point_city">Выберите город</label>
+          <div class="store-points__point-selects-item">
+            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите город</label>
+            <div class="form-group">
+              <div class="form-input-group">
+                <i>{{ svg('city-hall','form-icon')|raw }}</i>
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city"
+                        id="store_point_city">
+                  <option value=""></option>
+                    {% for city in store_points.cities %}
+                      <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-6">
-            <select class="form-control select2-select" data-placeholder="Город" name="store_point_city"
-                    id="store_point_city">
-              <option value=""></option>
-              {% for city in store_points.cities %}
-                <option value="{{ city }}">{{ city }}</option>
-              {% endfor %}
-            </select>
-          </div>
+
         </div>
         {% set no_visible = 1 %}
 
@@ -40,38 +43,44 @@
         {#точки в разных странах#}
         <h2>Адреса торговых точек {{ current_store.name }}</h2>
         <div class="row store-points__point-selects">
-          <div class="col-sm-2">
-            <label for="store_point_country">Выберите страну</label>
+          <div class="store-points__point-selects-item">
+            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите страну</label>
+            <div class="form-group">
+              <div class="form-input-group">
+                <i>{{ svg('globe','form-icon')|raw }}</i>
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Страна" name="store_point_country"
+                        id="store_point_country">
+                  <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
+                    {% for country, country_arr in store_points.countries %}
+                      <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-3">
-            <select class="form-control select2-select" data-placeholder="Страна" name="store_point_country"
-                    id="store_point_country">
-              <option data-cities="{{ store_points.cities|join(',') }}" value=""></option>
-              {% for country, country_arr in store_points.countries %}
-                <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
-              {% endfor %}
-            </select>
+
+          <div class="store-points__point-selects-item">
+            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите город</label>
+            <div class="form-group">
+              <div class="form-input-group">
+                <i>{{ svg('city-hall','form-icon')|raw }}</i>
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city"
+                        id="store_point_city">
+                  <option value=""></option>
+                    {% for city in store_points.cities %}
+                      <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-2 col-sm-offset-1">
-            <label for="store_point_">Выберите город</label>
-          </div>
-          <div class="col-sm-3">
-            <select class="form-control select2-select" data-placeholder="Город" name="store_point_city"
-                    id="store_point_city">
-              <option value=""></option>
-              {% for city in store_points.cities %}
-                <option value="{{ city }}">{{ city }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
 
         {% set no_visible = 1 %}
 
       {% endif %}
       {#вывод точек для всех условий #}
       <div
-          class="store-points__points {% if store_points.points|length == 1 %}single{% endif %} {% if no_visible == 1 %}hidden{% endif %}"
+          class="store-points__points{% if store_points.points|length == 1 %} single{% endif %} {% if no_visible == 1 %} store-points__points-hidden{% endif %}"
           id="store-points">
         <table class="store-points__points_table adaptive adaptive-tablets">
           <tr class="store-points__points_head">
@@ -82,10 +91,9 @@
           </tr>
 
           {% for store_point in store_points.points %}
-            <tr {% if no_visible == 1 %}hidden{% endif %}
-                data-city="{{ store_point.city }}"
+            <tr data-city="{{ store_point.city }}"
                 data-country="{{ store_point.country }}"
-                class="store-points__points_row">
+                class="store-points__points_row{% if no_visible == 1 %} store-points__points_row-hidden{% endif %}">
               <td>{{ store_point.name }}</td>
               <td>{{ store_point.address }}</td>
               <td>
