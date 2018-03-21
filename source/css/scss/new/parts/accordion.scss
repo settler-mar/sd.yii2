@@ -119,13 +119,13 @@
       content: "›";
       display: inline-block;
       margin-left: 5px;
-      transform: rotate3d(0, 0, 1, 90deg);
+      transform: scale(1.5) rotate3d(0, 0, 1, 90deg) translate3d(0, -2px, 0);
     }
     .angle-up .icon:before {
       content: "›";
       display: inline-block;
       margin-left: 5px;
-      transform: rotate3d(0, 0, 1, -90deg);
+      transform: scale(1.5) rotate3d(0, 0, 1, -90deg) translate3d(0, 0, 0);
     }
 
     h1, h2, h3, h4, h5, h6 {
