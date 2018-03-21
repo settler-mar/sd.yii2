@@ -267,7 +267,11 @@
     &-item {
       text-decoration: underline !important;
       margin-right: 58px;
-      //min-width: 200px;
+
+      @include media($laptop_min) {
+        margin-left: 30px;
+        margin-right: 30px;
+      }
     }
   }
 
