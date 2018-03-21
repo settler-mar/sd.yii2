@@ -35,7 +35,7 @@ class Help extends Component
    * @param string $string
    * @return string
    */
-  private function rus2translit($string)
+  private static function rus2translit($string)
   {
     $converter = [
       'а' => 'a', 'б' => 'b', 'в' => 'v',
@@ -69,7 +69,7 @@ class Help extends Component
    * @param string $str
    * @return string
    */
-  public function str2url($str)
+  public static function str2url($str)
   {
     $str = self::rus2translit($str);
     $str = strtolower($str);

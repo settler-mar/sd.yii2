@@ -65,7 +65,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
                 }
                 return $value;
             }, 'skipOnArray' => true],
-            [['store_id', 'name', 'address'], 'required'],
+            [['store_id', 'name', 'address', 'country', 'city'], 'required'],
             [['store_id'], 'integer', 'message' => 'Неправильный магазин'],
             [['store_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Stores::className()],
             [['created_at'], 'safe'],
