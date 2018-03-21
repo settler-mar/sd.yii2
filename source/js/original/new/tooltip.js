@@ -3,7 +3,7 @@ var sdTooltip = function () {
     var tooltipTimeOut = null;
     var displayTimeOver = 500;
     var displayTimeClick = 3000;
-    var displayTime = displayTimeOver;
+    var displayTime = 0;
     var arrow = 10;
     var arrowWidth = 8;
     var tooltip;
@@ -27,7 +27,9 @@ var sdTooltip = function () {
         setPositon(elem, position);
         $(tooltip).removeClass(hideClass);
         clearTimeout(tooltipTimeOut);
-        tooltipTimeOut = setTimeout(tooltipHide, displayTime)
+        if (displayTime > 0) {
+            tooltipTimeOut = setTimeout(tooltipHide, displayTime);
+        }
 
     }
     function tooltipHide() {
@@ -94,8 +96,13 @@ var sdTooltip = function () {
 
     tooltipElements.on('mouseover', function (e) {
         if (window.innerWidth >= 1024) {
-            displayTime = displayTimeOver;
+            displayTime = 0;
             tooltipShow(this);
+        }
+    });
+    tooltipElements.on('mouseleave', function (){
+        if (window.innerWidth >= 1024) {
+            tooltipHide();
         }
     });
 
