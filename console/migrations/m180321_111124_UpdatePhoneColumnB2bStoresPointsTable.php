@@ -13,6 +13,9 @@ class m180321_111124_UpdatePhoneColumnB2bStoresPointsTable extends Migration
      */
     public function safeUp()
     {
+      $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+      $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+      
         $this->alterColumn('b2b_stores_points', 'phone', $this->text()->null());
         $points = B2bStoresPoints::find()->all();
         foreach ($points as $point) {
