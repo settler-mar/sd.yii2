@@ -31,10 +31,20 @@
 
                     'name': 'operator',
                     'title': 'Код оператора',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '9',
+                        'clientOptions':{'repeat': 3, 'greedy': false}
+                    }
                 },
                 {
                     'name': 'number',
                     'title': 'Телефон',
+                    'type': MaskedInput.className(),
+                    'options': {
+                        'mask': '9',
+                        'clientOptions':{'repeat': 7, 'greedy': false}
+                    }
                 }
             ]
         })|raw }}
