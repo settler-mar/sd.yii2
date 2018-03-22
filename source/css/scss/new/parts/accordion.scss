@@ -114,19 +114,33 @@
       font-size: 16px;
       margin-top: 4px;
     }
-
-    .angle-down .icon:before {
-      content: "›";
-      display: inline-block;
-      margin-left: 5px;
-      transform: scale(1.5) rotate3d(0, 0, 1, 90deg) translate3d(0, -2px, 0);
+    .angle-down, .angle-up {
+      .icon:before {
+        content: " ";
+        display: inline-block;
+        background-image: url(/images/svg/angle-down-yellow.svg);
+        background-size: cover;
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+      }
     }
     .angle-up .icon:before {
-      content: "›";
-      display: inline-block;
-      margin-left: 5px;
-      transform: scale(1.5) rotate3d(0, 0, 1, -90deg) translate3d(0, 0, 0);
+      transform: rotate(180deg);
     }
+
+    //.angle-down .icon:before {
+    //  content: "›";
+    //  display: inline-block;
+    //  margin-left: 5px;
+    //  transform: scale(1.5) rotate3d(0, 0, 1, 90deg) translate3d(0, -1px, 0);
+    //}
+    //.angle-up .icon:before {
+    //  content: "›";
+    //  display: inline-block;
+    //  margin-left: 5px;
+    //  transform: scale(1.5) rotate3d(0, 0, 1, -90deg) translate3d(0, 1px , 0);;
+    //}
 
     h1, h2, h3, h4, h5, h6 {
       display: inline-block;
