@@ -99,7 +99,6 @@
 
     {% include 'base/footer.twig' %}
 
-    {% include 'base/footer_include.twig' %}
     {{   void(this.endBody()) }}
 
     {% for script in minifyJS %}
@@ -115,6 +114,8 @@
     {% if not this.user_id %}
       <script charset="UTF-8" src="/js/msg.js" async></script>
     {% endif %}
+
+    {% include 'base/footer_include.twig' %}
   </body>
 </html>
 {{ void(this.endPage()) }}
