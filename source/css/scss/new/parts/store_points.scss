@@ -84,5 +84,9 @@
     width: 90%;
     margin: 0 5% 20px 5%;
     height: 600px;
+
+    &-hidden {
+      display: none;
+    }
   }
 }

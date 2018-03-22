@@ -112,7 +112,7 @@
 
     </div>
 
-    <div id="map" class="{% if no_visible == 1 %}hidden{% endif %} store-points__map"></div>
+    <div id="map" class="store-points__map{% if no_visible == 1 %} store-points__map-hidden{% endif %} "></div>
   </div>
 
 </section>
@@ -202,11 +202,11 @@
       if (this.map === null) {
         this.initMap();
       }
-      this.mapElement.classList.remove('hidden');
+      this.mapElement.classList.remove('store-points__map-hidden');
       this.cluster.redraw();
     },
     hideMap: function () {
-      this.mapElement.classList.add('hidden');
+      this.mapElement.classList.add('store-points__map-hidden');
     },
     setMapPosition: function (markers) {
       var minX = 0, maxX = 0, minY = 0, maxY = 0;
