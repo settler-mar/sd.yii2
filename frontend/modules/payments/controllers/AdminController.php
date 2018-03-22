@@ -228,7 +228,7 @@ class AdminController extends Controller
         ){
           $ref_bonus_data=$bonus_status_list[$db_payment->ref_bonus_id];
           if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-            $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+            $db_payment->ref_bonus = ($payment['payment']*$kurs - $cashback) * $ref_bonus_data['bonus'] / 100;
           } else {
             $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
           }

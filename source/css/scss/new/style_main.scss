@@ -178,6 +178,7 @@ h2 {
   }
 
 }
+
 h3 {
   margin-top: 25px;
   margin-bottom: 8px;
@@ -188,6 +189,7 @@ h3, h4, h5, h6 {
     text-align: center;
   }
 }
+
 h2, h3, h4 {
   &.margin-bottom-light {
     margin-bottom: 10px;
@@ -230,7 +232,6 @@ h2, h3, h4 {
     overflow: visible;
   }
 }
-
 
 .mini-wrap {
   max-width: $tablets;
@@ -576,6 +577,7 @@ svg.svg-no-stroke {
   text-align: center;
   display: flex;
   white-space: nowrap;
+  justify-content: space-around;
 
   &:before {
     content: "";
