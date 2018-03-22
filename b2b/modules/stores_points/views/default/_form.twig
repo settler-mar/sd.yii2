@@ -11,7 +11,16 @@
 
         {#{{ form.field(model, 'country').textInput({'maxlength':true})|raw }}#}
 
-        {{ form.field(model, 'country').dropDownList({'Россия':'Россия', 'Беларусь':'Беларусь', 'Украина':'Украина', 'Англия':'Англия'},{})|raw }}
+        <div class="form-group field-b2bstorespoints-country required">
+            <label class="control-label" for="b2bstorespoints-country">Страна</label>
+            <select id="b2bstorespoints-country" class="form-control" name="B2bStoresPoints[country]" aria-required="true">
+                {% for country in country_codes %}
+                    <option data-code="{{ country.prefix_country }}" value="{{ country.full_rus}}" {% if country.full_rus == model.country  %}selected{% endif %}>{{ country.full_rus}}</option>
+                {% endfor %}
+            </select>
+            <div class="help-block"></div>
+        </div>
+
 
         {{ form.field(model, 'city').textInput({'maxlength':true})|raw }}
 
@@ -245,15 +254,13 @@
     var countries = JSON.parse('{{ json_encode(app.params.phone_countries)|raw }}');
 
     function setPhoneCodesTemplates(select){
-        var value = select.value;
-        if (countries[value]) {
-            console.log(countries[value]);
+        var selectedNode = select.options[select.selectedIndex];
+        var code = selectedNode ? selectedNode.getAttribute('data-code'): false;
+        if (code) {
             var countryInputs = document.getElementsByClassName('phone_details_country');
-            console.log(countryInputs);
             for (var i = 0; i < countryInputs.length; i++) {
-                countryInputs[i].value = countries[value].code;
+                countryInputs[i].value = code;
             }
-
         }
     }
 
