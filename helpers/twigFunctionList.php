@@ -1,6 +1,7 @@
 <?php
 use frontend\modules\constants\models\Constants;
 use common\components\Help;
+use yii\db\Query;
 
 $currencyIcon = [
 //  'RUB' => '<span class="fa fa-rub"></span>',
@@ -542,6 +543,19 @@ $functionsList = [
   },
   'year' => function () {
     return date('Y');
+  },
+  'getOperatorLogo' => function ($data) {
+    $cash_name = 'mobile_'.$data['country'] . '_' . $data['operator'];
+    return Yii::$app->cache->getOrSet($cash_name, function () use ($data) {
+      $sql='SELECT * FROM opsos_prefix 
+              LEFT JOIN opsos ON opsos.opsos_id=opsos_prefix.prefix_opsos_id 
+              WHERE prefix_country="'.$data['country'].'" AND prefix_def="'.$data['operator'].'"';
+      $query = Yii::$app->db->createCommand($sql)->queryOne();
+
+      if(!$query)return '';
+
+      return '<img class="mobile_operator_logo" alt="'.$query['opsos_name'].'" src="/images/mobile_operator/'.$query['opsos_image'].'.gif">';
+    });
   },
 ];
 
