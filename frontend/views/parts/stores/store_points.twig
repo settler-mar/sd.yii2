@@ -101,9 +101,7 @@
                 {% include('parts/work_time.twig') %}
               </td>
               <td>
-                  {% for phone_detail in store_point.phone_details %}
-                    +{{ phone_detail.country }}({{ phone_detail.operator }}){{ phone_detail.number }}
-                  {% endfor %}
+                {{ store_point.phones }}
               </td>
             </tr>
           {% endfor %}
@@ -141,7 +139,7 @@
         content: '<div class="google-map-point-content">' +
         '<h5 class="google-map-point-content__header">{{ store_point.name }}</h5>' +
         '<div class="google-map-point-content__address">Адрес: {{ store_point.address }}</div>' +
-        '<div class="google-map-point-content__phone">Телефон: {{ store_point.phone }}</div>' +
+        '<div class="google-map-point-content__phone">Телефон: {{ store_point.phones }}</div>' +
         {% if store_point.work_time_details %}
         '<h6 class="google-map-point-content__work_time_header">Время работы:</h5>' +
         '<div class="google-map-point-content__work_time">' +
