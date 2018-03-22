@@ -27,6 +27,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
      */
     public $store_name;
     public $work_time_details;
+    public $phone_details;
     public $password_no_hash;
     public $password_repeat;
 
@@ -95,7 +96,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             [['access_code'], 'string', 'max' => 150],
             [['coordinate_y'], 'number', 'max'=> 90, 'min' => -90],
             [['coordinate_x'], 'number', 'max'=> 180, 'min' => -180],
-            [['work_time_details', 'store_name'], 'safe'],
+            [['work_time_details', 'store_name', 'phone_details'], 'safe'],
             [['work_time_json'], 'string'],
             [['category_id'], 'integer'],
             [['category_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => CategoriesStores::className()]
@@ -114,6 +115,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             'country' => 'Страна',
             'city' => 'Город',
             'phone' => 'Телефон',
+            'phone_details' => 'Телефоны',
             'address' => 'Адрес',
             'access_code' => 'Access Code',
             'created_at' => 'Created At',
@@ -150,6 +152,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public function afterFind()
     {
         $this->work_time_details = json_decode($this->work_time_json, true);
+        $this->phone_details = json_decode($this->phone, true);
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -207,6 +210,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
             }
             $this->work_time_json = json_encode($workDays);
         }
+        $this->phone = json_encode($this->phone_details);
         return true;
     }
 

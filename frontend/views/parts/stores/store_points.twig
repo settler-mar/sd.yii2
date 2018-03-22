@@ -101,7 +101,9 @@
                 {% include('parts/work_time.twig') %}
               </td>
               <td>
-                {{ store_point.phone }}
+                  {% for phone_detail in store_point.phone_details %}
+                    +{{ phone_detail.country }}({{ phone_detail.operator }}){{ phone_detail.number }}
+                  {% endfor %}
               </td>
             </tr>
           {% endfor %}

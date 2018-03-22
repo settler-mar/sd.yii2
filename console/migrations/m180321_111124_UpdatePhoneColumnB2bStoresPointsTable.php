@@ -17,7 +17,7 @@ class m180321_111124_UpdatePhoneColumnB2bStoresPointsTable extends Migration
         $points = B2bStoresPoints::find()->all();
         foreach ($points as $point) {
             $phone  = $point->phone;
-            if ($phone == '') {
+            if (empty($phone)) {
                 continue;
             }
             $phonesArr = explode(',', $phone);
@@ -26,10 +26,11 @@ class m180321_111124_UpdatePhoneColumnB2bStoresPointsTable extends Migration
                 if ($phoneItem == '') {
                     continue;
                 }
-                $phoneItem = preg_replace('/[()]/', '', $phoneItem);
+                $phoneItem = preg_replace('/[()\+]/', '', $phoneItem);
+                $phoneItem = preg_replace('/^8/', '7', $phoneItem);
                 $phoneArr = explode(' ', $phoneItem);
                 if (count($phoneArr) == 1) {
-                    $codeLen = substr($phoneItem, 0, 4) == '+375' ? 2 : 3;
+                    $codeLen = in_array(substr($phoneItem, 0, 3), ['375', '380']) ? 2 : 3;
                     $phoneArr[2] = substr($phoneItem, -7);
                     $phoneArr[1] = substr($phoneItem, strlen($phoneItem) - 7 - $codeLen, $codeLen);
                     $phoneArr[0] = substr($phoneItem, 0, strlen($phoneItem) - 7 - $codeLen);
@@ -37,7 +38,7 @@ class m180321_111124_UpdatePhoneColumnB2bStoresPointsTable extends Migration
                 //echo $phoneItem.' '.print_r($phoneArr, 1)."\n";
                 $phoneItem = [
                     'country' => $phoneArr[0],
-                    'operator' => $phoneArr[1],
+                    'operator' =>$phoneArr[1],
                     'number' => $phoneArr[2]
                 ];
             }
@@ -56,12 +57,12 @@ class m180321_111124_UpdatePhoneColumnB2bStoresPointsTable extends Migration
         $points = B2bStoresPoints::find()->all();
         foreach ($points as $point) {
                 $phones  = json_decode($point->phone);
+                if (count($phones) == 0) {
+                    continue;
+                }
                 $phoneString = '';
                 foreach ($phones as $phone) {
-                    $phoneString .= $phone->country.' '.$phone->operator.' '.$phone->number.',';
-                }
-                if ($phoneString == '') {
-                    continue;
+                    $phoneString .= !empty($phone->number) ? $phone->country.' '.$phone->operator.' '.$phone->number.',' : '';
                 }
                 \Yii::$app->db->createCommand("update `b2b_stores_points` set `phone` = '".$phoneString."' where `id`=".$point->id)->execute();
             }

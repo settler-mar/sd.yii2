@@ -178,6 +178,9 @@ $functionsList = [
   'json_decode' => function ($content) {
     return json_decode($content, true);
   },
+  'json_encode' => function ($content) {
+    return json_encode($content);
+  },
 //функция отдать константу по имени
   '_constant' => function ($name, $json_col = false, $json_index = 0) {
     $cash_name = $name . '_' . $json_col . '_' . $json_index;

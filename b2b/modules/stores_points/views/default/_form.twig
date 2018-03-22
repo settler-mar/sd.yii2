@@ -1,4 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
+{{ use('/common/components/Phones') }}
 <div class="b2b-stores-points-form">
     {% set form = active_form_begin() %}
 
@@ -8,11 +9,35 @@
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'country').textInput({'maxlength':true})|raw }}
+        {#{{ form.field(model, 'country').textInput({'maxlength':true})|raw }}#}
+
+        {{ form.field(model, 'country').dropDownList({'Россия':'Россия', 'Беларусь':'Беларусь', 'Украина':'Украина', 'Англия':'Англия'},{})|raw }}
 
         {{ form.field(model, 'city').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}
+        {#{{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}#}
+
+        {{ form.field(model, 'phone_details').widget(MultipleInput.className(),{
+            'columns': [
+                {
+                    'name': 'country',
+                    'title': 'Код страны',
+                    'options': {
+                        'readOnly':true,
+                        'class': 'form-control phone_details_country'
+                    }
+                },
+                {
+
+                    'name': 'operator',
+                    'title': 'Код оператора',
+                },
+                {
+                    'name': 'number',
+                    'title': 'Телефон',
+                }
+            ]
+        })|raw }}
 
         <div class="row">
             <div class="col-sm-10">
@@ -206,6 +231,31 @@
             +(input3 ? ' '+input3.value : '')
         );
     };
+
+    var countries = JSON.parse('{{ json_encode(app.params.phone_countries)|raw }}');
+
+    function setPhoneCodesTemplates(select){
+        var value = select.value;
+        if (countries[value]) {
+            console.log(countries[value]);
+            var countryInputs = document.getElementsByClassName('phone_details_country');
+            console.log(countryInputs);
+            for (var i = 0; i < countryInputs.length; i++) {
+                countryInputs[i].value = countries[value].code;
+            }
+
+        }
+    }
+
+    document.getElementById('b2bstorespoints-country').onchange = function(e){
+        setPhoneCodesTemplates(this);
+    };
+
+    window.onload = function(){
+        var select = document.getElementById('b2bstorespoints-country');
+        setPhoneCodesTemplates(select);
+    };
+
 </script>
 <script>
    var googleMap = {
