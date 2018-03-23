@@ -111,6 +111,8 @@ $( document ).ready(function() {
       data=$(data).data('data');
     }
     var img=data.img;
+    //var tn=img[0].tagName;
+    //if (tn!='IMG'||tn!='DIV'||tn!='SPAN')return;
     if(data.type==0) {
       img.attr('src', data.src);
     }else{
@@ -134,7 +136,7 @@ $( document ).ready(function() {
         img:img
       };
       var src;
-      if([0].tagName=="IMG"){
+      if(img[0].tagName=="IMG"){
         data.type=0;
         src=img.attr('src');
         img.attr('src',no_img);
@@ -144,6 +146,9 @@ $( document ).ready(function() {
         if(!src)continue;
         src=src.replace('url("','');
         src=src.replace('")','');
+        //в сффари в мак ос без ковычек. везде с кавычками
+        src=src.replace('url(','');
+        src=src.replace(')','');
         img.addClass('no_ava');
         img.css('background-image','url('+no_img+')');
       }
