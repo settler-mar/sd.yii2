@@ -184,22 +184,7 @@ $functionsList = [
   },
 //функция отдать константу по имени
   '_constant' => function ($name, $json_col = false, $json_index = 0) {
-    $cash_name = $name . '_' . $json_col . '_' . $json_index;
-    return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index) {
-      $meta = Constants::find()->where(['name' => $name])->select(['text', 'ftype'])->one();
-      if ($meta) {
-        if ($json_col) {
-          if (isset($meta['text'][$json_index]) && isset($meta['text'][$json_index][$json_col])) {
-            return $meta['text'][$json_index][$json_col];
-          } else {
-            return false;
-          }
-        }
-        return $meta['text'];
-      } else {
-        return false;
-      }
-    });
+     return Constants::byName($name, $json_col, $json_index);
   },
   'currencyIcon' => function ($currency) use ($currencyIcon) {
     return (isset($currencyIcon[$currency]) ? Help::svg(
@@ -477,6 +462,7 @@ $functionsList = [
     }
 
     $js = '';
+    $html = '';
     $flashes = array_reverse($flashes);
     foreach ($flashes as $type => $flashe) {
       //Yii::$app->session->removeFlash($type);
@@ -485,14 +471,22 @@ $functionsList = [
           $js .= create_flash($type, $flashe);
         } else {
           foreach ($flashe as $txt) {
-            $js .= create_flash($type, $txt);
+            if ($type == 'constant') {
+                $html .= Constants::byName($txt);
+            } else {
+                $js .= create_flash($type, $txt);
+            }
           }
         }
       } elseif (is_string($flashe)) {
-        $js .= create_flash($type, $flashe);
+        if ($type == 'constant') {
+            $html .= Constants::byName($flashe);
+        } else {
+            $js .= create_flash($type, $flashe);
+        }
       }
     }
-    return '<script type="text/javascript">' . "\n" . $js . '</script>';
+    return $html . ($js ? '<script type="text/javascript">' . "\n" . $js . "\n". '</script>' : '');
   },
   'getShop' => function ($id) {
     return \frontend\modules\stores\models\Stores::findOne(['uid' => $id]);

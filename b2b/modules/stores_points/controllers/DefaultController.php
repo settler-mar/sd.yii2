@@ -265,13 +265,16 @@ class DefaultController extends Controller
     }
     private function countryCodes()
     {
-        $query  = (new \yii\db\Query())
-            ->select(['opsos_country', 'prefix_country', 'full_rus'])
-            ->from('opsos_prefix')
-            ->leftJoin('opsos', 'opsos.opsos_id=opsos_prefix.prefix_opsos_id')
-            ->leftJoin('countries', 'countries.short = opsos.opsos_country')
-            ->groupBy('opsos_country')
-            ->orderBy('full_rus');
-        return $query->all();
+        $cash_name = 'mobile_country_list';
+        return Yii::$app->cache->getOrSet($cash_name, function () {
+            $query = (new \yii\db\Query())
+                ->select(['opsos_country', 'prefix_country', 'full_rus'])
+                ->from('opsos_prefix')
+                ->leftJoin('opsos', 'opsos.opsos_id=opsos_prefix.prefix_opsos_id')
+                ->leftJoin('countries', 'countries.short = opsos.opsos_country')
+                ->groupBy('opsos_country')
+                ->orderBy('full_rus');
+            return $query->all();
+        });
     }
 }

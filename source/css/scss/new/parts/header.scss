@@ -25,6 +25,7 @@
     background: $header_bg_up;
     z-index: 100;
     font-size: 14px;
+    height: 30PX;
 
     &_inner{
       max-width: 1160px;
@@ -84,6 +85,10 @@
         width: 40%;
         overflow: hidden;
       }*/
+      a {
+        display: flex;
+        align-items: center;
+      }
 
       &-pc{
         width: 205px;
@@ -271,7 +276,7 @@
       &-input {
         padding: 6PX 10PX;
         width: 100%;
-        height: 17PX;
+        height: 18PX;
         border-radius: 5px;
         outline: none;
         border: 0;
@@ -282,7 +287,7 @@
       }
 
       &-button {
-        height: 17PX;
+        height: 18PX;
         margin-left: -5PX;
         width: 25PX;
         background: $search-btn-bg;
@@ -474,7 +479,7 @@
     //overflow: hidden;
     width: 220px;
     position: absolute;
-    top: 47PX;
+    top: 43PX;
     right: -10px;
     background-color: rgba(0,0,0,0.5);
     //max-height: none;
@@ -540,6 +545,10 @@
     }
 
     &-toggle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
       &-close {
         padding: 0 3PX;
         display: none;
@@ -741,7 +750,7 @@
       display: flex;
       flex-direction:column;
       right: 80px;
-      top: 50px;
+      top: 50PX;
       border-radius: 5px;
       box-shadow: 0px 1px 10px 0px;
       opacity: 0;
@@ -797,7 +806,36 @@
         }
 
         & .header-noty-list{
-          height: auto;
+          //height: auto;
+          height: 305PX;
+          @include media($laptop-min) {
+            height: auto;
+          }
+        }
+        & .header-noty-box-inner{
+          height: 400PX;
+          overflow: hidden;
+
+          @include media($laptop_min) {
+            height: auto;
+            overflow: auto;
+          }
+        }
+
+      }
+      &-inner {
+        //overflow: auto;
+        z-index: 99;
+        background: $btn_base_black_bg;
+        height: auto;
+        position: relative;
+        @include media($laptop-min) {
+          overflow: auto;
+        }
+      }
+      &-btn {
+        @include media($laptop_min) {
+          margin-bottom: 40px;
         }
       }
     }
@@ -808,11 +846,12 @@
       flex-direction:column;
       margin: 0;
       padding: 0;
-      z-index: 99;
+      //z-index: 99;
       background: $header_color_up;
       height: 0;
-      position: relative;
+      //position: relative;
     }
+
 
     &-item{
       margin: 0;
