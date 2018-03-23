@@ -99,6 +99,7 @@ class DefaultController extends Controller
             return $this->render('create.twig', [
                 'model' => $model,
                 'categories' => $this->categoriesStores(),
+                'country_codes' => $this->countryCodes(),
             ]);
         }
     }
@@ -122,6 +123,7 @@ class DefaultController extends Controller
             return $this->render('update.twig', [
                 'model' => $model,
                 'categories' => $this->categoriesStores(),
+                'country_codes' => $this->countryCodes(),
             ]);
         }
     }
@@ -260,5 +262,16 @@ class DefaultController extends Controller
             'uid',
             'name'
         );
+    }
+    private function countryCodes()
+    {
+        $query  = (new \yii\db\Query())
+            ->select(['opsos_country', 'prefix_country', 'full_rus'])
+            ->from('opsos_prefix')
+            ->leftJoin('opsos', 'opsos.opsos_id=opsos_prefix.prefix_opsos_id')
+            ->leftJoin('countries', 'countries.short = opsos.opsos_country')
+            ->groupBy('opsos_country')
+            ->orderBy('full_rus');
+        return $query->all();
     }
 }

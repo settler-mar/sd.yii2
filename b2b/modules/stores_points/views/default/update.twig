@@ -9,7 +9,7 @@
 {% set breadcrumbs = breadcrumbs|merge(['Изменение точки продаж '~ model.name]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="b2b-stores-points-update">
-    <h1>{{ html.encode(this.title) }}</h1>
+    <h1>{{ this.title }}</h1>
         {{ include('_form.twig', {
                 'model': model,
             })

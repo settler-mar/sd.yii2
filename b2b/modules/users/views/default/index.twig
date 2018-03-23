@@ -77,9 +77,7 @@
                                             <th>{{ point.country }}, {{ point.city }}, {{ point.address }}</th>
                                             <th>{% include('parts/work_time.twig') %}</th>
                                             <th>
-                                                {% for phone_detail in point.phone_details %}
-                                                    +{{ phone_detail.country }}({{ phone_detail.operator }}){{ phone_detail.number }}
-                                                {% endfor %}
+                                                {{ point.phones }}
                                             </th>
                                             <th class="users-stores__stores-points_qrcode">
                                                 <img src="https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl={{ point.access_code }}" alt="qr code">

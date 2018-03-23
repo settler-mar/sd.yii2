@@ -28,6 +28,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     public $store_name;
     public $work_time_details;
     public $phone_details;
+    public $phones;
     public $password_no_hash;
     public $password_repeat;
 
@@ -153,6 +154,13 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
     {
         $this->work_time_details = json_decode($this->work_time_json, true);
         $this->phone_details = json_decode($this->phone, true);
+        $this->phones = '';
+        if (count($this->phone_details)) {
+            foreach ($this->phone_details as $key => $phoneDetail) {
+                $this->phones .= ('+'.$phoneDetail['country'].'('.$phoneDetail['operator'].')'.$phoneDetail['number']
+                    .($key < count($this->phone_details)-1 ? ', ' : ''));
+            }
+        }
     }
 
     public function afterSave($insert, $changedAttributes)

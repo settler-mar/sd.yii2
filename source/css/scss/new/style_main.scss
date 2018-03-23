@@ -115,6 +115,13 @@ h1 {
     text-align: center;
     font-size: 1.8em;
     line-height: 1.1;
+
+  }
+  &.laptop-no-margin-bottom {
+
+    @include media ($laptop_min) {
+      margin-bottom: 0;
+    }
   }
 
   @media print {
