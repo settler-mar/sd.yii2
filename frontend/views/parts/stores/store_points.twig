@@ -101,7 +101,14 @@
                 {% include('parts/work_time.twig') %}
               </td>
               <td>
-                {{ store_point.phones }}
+                {#{{ store_point.phones }}#}
+                {% set store_point_phones = '<div class="store-points__points_row-phones">'  %}
+                  {% for phone in store_point.phone_details  %}
+                     {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'('~phone.operator~')'~phone.number~'</span>' %}
+                  {% endfor %}
+                {% set store_point_phones = store_point_phones~'</div>' %}
+
+                {{ store_point_phones|raw }}
               </td>
             </tr>
           {% endfor %}
@@ -132,14 +139,20 @@
       var infowindow = new google.maps.InfoWindow();
       {% for store_point in store_points.points %}
       {% if store_point.coordinate_x and store_point.coordinate_y %}
-      var marker = new google.maps.Marker({
+        {% set store_point_phones = '<div class="store-points__points_row-phones">'  %}
+          {% for phone in store_point.phone_details  %}
+            {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'('~phone.operator~')'~phone.number~'</span>' %}
+          {% endfor %}
+        {% set store_point_phones = store_point_phones~'</div>' %}
+
+        var marker = new google.maps.Marker({
         position: {lat: {{ store_point.coordinate_y }}, lng: {{ store_point.coordinate_x }} },
         map: map,
         title: '{{ store_point.name }}',
         content: '<div class="google-map-point-content">' +
         '<h5 class="google-map-point-content__header">{{ store_point.name }}</h5>' +
         '<div class="google-map-point-content__address">Адрес: {{ store_point.address }}</div>' +
-        '<div class="google-map-point-content__phone">Телефон: {{ store_point.phones }}</div>' +
+        '<div class="google-map-point-content__phone">Телефон: {{ store_point_phones|raw }}</div>' +
         {% if store_point.work_time_details %}
         '<h6 class="google-map-point-content__work_time_header">Время работы:</h5>' +
         '<div class="google-map-point-content__work_time">' +
