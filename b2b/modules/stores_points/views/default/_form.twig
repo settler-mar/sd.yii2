@@ -14,6 +14,7 @@
         <div class="form-group field-b2bstorespoints-country required">
             <label class="control-label" for="b2bstorespoints-country">Страна</label>
             <select id="b2bstorespoints-country" class="form-control" name="B2bStoresPoints[country]" aria-required="true">
+                <option value="">Выберите страну</option>
                 {% for country in country_codes %}
                     <option data-code="{{ country.prefix_country }}" value="{{ country.full_rus}}" {% if country.full_rus == model.country  %}selected{% endif %}>{{ country.full_rus}}</option>
                 {% endfor %}
@@ -55,7 +56,9 @@
                         'clientOptions':{'repeat': 7, 'greedy': false}
                     }
                 }
-            ]
+            ],
+            'id':'muntiple_input_phones'
+
         })|raw }}
 
         <div class="row">
@@ -271,6 +274,12 @@
     window.onload = function(){
         var select = document.getElementById('b2bstorespoints-country');
         setPhoneCodesTemplates(select);
+    };
+
+    document.getElementById('muntiple_input_phones').onafterAddRow = function(){
+        var countryInputs = document.getElementsByClassName('phone_details_country');
+        var select =  document.getElementById('b2bstorespoints-country');
+        countryInputs[countryInputs.length - 1].value = select.options[select.selectedIndex].getAttribute('data-code');
     };
 
 </script>
