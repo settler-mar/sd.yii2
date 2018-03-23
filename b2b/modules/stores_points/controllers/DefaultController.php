@@ -272,7 +272,7 @@ class DefaultController extends Controller
                 ->from('opsos_prefix')
                 ->leftJoin('opsos', 'opsos.opsos_id=opsos_prefix.prefix_opsos_id')
                 ->leftJoin('countries', 'countries.short = opsos.opsos_country')
-                ->groupBy('opsos_country')
+                ->groupBy(['opsos_country','prefix_country', 'full_rus'])
                 ->orderBy('full_rus');
             return $query->all();
         });
