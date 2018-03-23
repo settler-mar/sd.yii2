@@ -7,7 +7,7 @@
   $.get('/account/notification', function (data) {
     if (!data.notifications || data.notifications.length == 0) return;
 
-    var out = '<div class=header-noty-box><ul class="header-noty-list">';
+    var out = '<div class=header-noty-box><div class=header-noty-box-inner><ul class="header-noty-list">';
     $notyfi_btn.find('a').removeAttr('href');
     var has_new = false;
     for (var i = 0; i < data.notifications.length; i++) {
@@ -21,8 +21,8 @@
     }
 
     out += '</ul>';
-    out += '<a class="btn" href="/account/notification">' + data.btn + '</a>';
-    out += '</div>';
+    out += '<a class="btn header-noty-box-btn" href="/account/notification">' + data.btn + '</a>';
+    out += '</div></div>';
     $('.header').append(out);
 
     if (has_new) {
