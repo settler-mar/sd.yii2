@@ -157,6 +157,11 @@ class AccountController extends Controller
       $data["left"] = "";
     }
 
+    if (\Yii::$app->request->get('new') ==  1) {
+        //на страницу выводятся скрипты из константы
+        Yii::$app->session->addFlash('constant','account_new_1');
+    }
+
     return $this->render('welcome.twig', $data);
   }
 

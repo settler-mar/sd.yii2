@@ -24,6 +24,7 @@ class Constants extends \yii\db\ActiveRecord
         4 => 'Купоны',
         5 => 'Списки',
         6 => 'Ссылки',
+        7 => 'Системные',
     ];
 
     /**
@@ -114,5 +115,31 @@ class Constants extends \yii\db\ActiveRecord
             'count' => self::find()->count(),
         ];
         return $result;
+    }
+
+    /**
+     * @param $name
+     * @param bool $json_col
+     * @param int $json_index
+     * @return mixed
+     */
+    public static function byName($name, $json_col = false, $json_index = 0)
+    {
+        $cash_name = $name . '_' . $json_col . '_' . $json_index;
+        return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index) {
+            $meta = self::find()->where(['name' => $name])->select(['text', 'ftype'])->one();
+            if ($meta) {
+                if ($json_col) {
+                    if (isset($meta['text'][$json_index]) && isset($meta['text'][$json_index][$json_col])) {
+                        return $meta['text'][$json_index][$json_col];
+                    } else {
+                        return false;
+                    }
+                }
+                return $meta['text'];
+            } else {
+                return false;
+            }
+        });
     }
 }
