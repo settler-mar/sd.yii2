@@ -26,10 +26,10 @@
   </div>
   <div class="align-center">
     {% if current_store.name and current_store.route %}
-      <a href="/coupons/{{ current_store.route }}" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все
+      <a href="/coupons/{{ current_store.route }}" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все
         промокоды {{ current_store.name }} →</a>
     {% else %}
-      <a href="/coupons" class="btn btn-transform" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}
+      <a href="/coupons" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}
         →</a>
     {% endif %}
   </div>
