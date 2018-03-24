@@ -157,7 +157,7 @@ class B2bStoresPoints extends \yii\db\ActiveRecord
         $this->phones = '';
         if (count($this->phone_details)) {
             foreach ($this->phone_details as $key => $phoneDetail) {
-                $this->phones .= ('+'.$phoneDetail['country'].'('.$phoneDetail['operator'].')'.$phoneDetail['number']
+                $this->phones .= ('+'.$phoneDetail['country'].'&nbsp;('.$phoneDetail['operator'].')&nbsp;'.$phoneDetail['number']
                     .($key < count($this->phone_details)-1 ? ', ' : ''));
             }
         }

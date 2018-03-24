@@ -104,7 +104,7 @@
                 {#{{ store_point.phones }}#}
                 {% set store_point_phones = '<div class="store-points__points_row-phones">'  %}
                   {% for phone in store_point.phone_details  %}
-                     {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'('~phone.operator~')'~phone.number~'</span>' %}
+                     {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'&nbsp;('~phone.operator~')&nbsp;'~phone.number~'</span>' %}
                   {% endfor %}
                 {% set store_point_phones = store_point_phones~'</div>' %}
 
@@ -141,7 +141,7 @@
       {% if store_point.coordinate_x and store_point.coordinate_y %}
         {% set store_point_phones = '<div class="store-points__points_row-phones">'  %}
           {% for phone in store_point.phone_details  %}
-            {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'('~phone.operator~')'~phone.number~'</span>' %}
+            {% set store_point_phones = store_point_phones~'<span class="store-points__points_row-phones-item">'~getOperatorLogo({'country':phone.country,'operator':phone.operator})~'&nbsp;+'~phone.country~'&nbsp;('~phone.operator~')&nbsp;'~phone.number~'</span>' %}
           {% endfor %}
         {% set store_point_phones = store_point_phones~'</div>' %}
 
