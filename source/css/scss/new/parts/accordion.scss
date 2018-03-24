@@ -115,13 +115,20 @@
       margin-top: 4px;
     }
     .angle-down, .angle-up {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      flex-direction: row;
+
       .icon:before {
         content: " ";
         display: inline-block;
         background-image: url(/images/svg/angle-down-yellow.svg);
-        background-size: cover;
-        width: 12px;
-        height: 12px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 9PX;
+        height: 9PX;
         margin-left: 5px;
       }
     }
