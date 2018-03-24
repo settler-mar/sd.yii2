@@ -111,22 +111,23 @@
           &:after {
             @include media($tablets) {
               display:block;
-              top: -28px !important;
+              top: -18PX !important;
+              //left: calc(50%) !important;
               left: calc(50%) !important;
             }
           }
           &:before {
             @include media($tablets) {
               display:block;
-              top: -30px !important;
-              left: calc(50% - 26px) !important;
+              top: -20PX !important;
+              left: calc(50% - 16PX) !important;
             }
 
           }
         }
         input[type=checkbox]:checked + label:after {
           @include media($tablets) {
-            left: calc(50% - 24px) !important;
+            left: calc(50% - 14PX) !important;
           }
         }
 
