@@ -393,6 +393,7 @@ class DefaultController extends SdController
       $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
         return Stores::items()
             ->andWhere(['<>', 'cws.uid', $store->uid])
+            ->andWhere(['cws.is_offline' => $store->is_offline])
             ->orderBy('rating DESC')
             ->limit(6)
             ->all();
