@@ -8,7 +8,7 @@ var store_points = (function(){
         data = data.split(',');
         if (data.length > 0) {
             var select = document.getElementById('store_point_city');
-            var options = '<option value=""></option>';
+            var options = '<option value="">Выберите город</option>';
             data.forEach(function(item){
                 options += '<option value="'+item+'">'+item+'</option>';
             });
