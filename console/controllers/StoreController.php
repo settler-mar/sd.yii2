@@ -52,7 +52,7 @@ class StoreController extends Controller
 
           //переходим от ссылки СПА на магазин
           $db_store=$cpa_link->store;
-          if($db_store && $db_store->logo==$logo){
+          if ($db_store && ($db_store->logo == $logo || !$db_store->logo)) {
             $test_logo=true;
           }else {
             $test_logo = false;
@@ -113,6 +113,9 @@ class StoreController extends Controller
           $db_store->hold_time=$store['max_hold_time']?(int)$store['max_hold_time']:30;
           $db_store->percent=50;
           $db_store->save();
+        } elseif ($test_logo && !empty($logo)) {
+            //если нашли, но лого нужно обновить, то обновляем
+          $db_store->logo = $logo;
         }
 
         $store_id=$db_store->uid;
