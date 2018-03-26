@@ -1,28 +1,33 @@
 var store_points = (function(){
 
-    //для точек продаж, события на выбор селектов
-    $('body').on('change', '#store_point_country', function(e) {
-        var data = $('option:selected', this).data('cities'),
+
+    function changeCountry(){
+        var that = $('#store_point_country');
+        var selectOptions = $(that).find('option');
+        var data = $('option:selected', that).data('cities'),
             points= $('#store-points'),
-            country = $('option:selected', this).attr('value');
-        data = data.split(',');
-        if (data.length > 0) {
-            var select = document.getElementById('store_point_city');
-            var options = '<option value="">Выберите город</option>';
-            data.forEach(function(item){
-                options += '<option value="'+item+'">'+item+'</option>';
-            });
-            select.innerHTML = options;
+            country = $('option:selected', that).attr('value');
+        if (selectOptions.length > 1 && data) {
+            data = data.split(',');
+            if (data.length > 0) {
+                var select = document.getElementById('store_point_city');
+                //var options = '<option value="">Выберите город</option>';
+                var options = '';
+                data.forEach(function (item) {
+                    options += '<option value="' + item + '">' + item + '</option>';
+                });
+                select.innerHTML = options;
+            }
         }
         $(points).addClass('hidden');
         googleMap.showMap();
         googleMap.showMarker(country, '');
 
-        //googleMap.hideMap();
-    });
+    }
 
-    $('body').on('change', '#store_point_city', function(e) {
-        var city = $('option:selected', this).attr('value'),
+    function changeCity(){
+        var that = $('#store_point_city');
+        var city = $('option:selected', that).attr('value'),
             country = $('option:selected', $('#store_point_country')).attr('value'),
             points= $('#store-points');
         if (country && city) {
@@ -53,8 +58,25 @@ var store_points = (function(){
             $(points).addClass('store-points__points-hidden');
             googleMap.hideMap();
         }
+    }
+
+    //для точек продаж, события на выбор селектов
+    var body = $('body');
+
+    $(body).on('change', '#store_point_country', function(e) {
+        changeCountry();
+    });
+
+
+    $(body).on('change', '#store_point_city', function(e) {
+        changeCity();
 
     });
+
+    window.onload = function() {
+        changeCountry();
+        changeCity()
+    }
 
 
 })();
