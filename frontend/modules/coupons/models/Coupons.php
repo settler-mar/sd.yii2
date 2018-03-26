@@ -182,7 +182,8 @@ class Coupons extends \yii\db\ActiveRecord
           ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
           ->innerJoin(self::tableName() . ' cwc', 'cct.coupon_id = cwc.coupon_id')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-          ->where(['cws.is_active' => [0, 1]])
+          //->where(['cws.is_active' => [0, 1]])
+          ->where(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
           ->groupBy('cct.category_id')
           ->asArray()
@@ -229,7 +230,8 @@ class Coupons extends \yii\db\ActiveRecord
       $result = self::find()
           ->from(self::tableName() . ' cwc')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-          ->where(['cws.is_active' => [0, 1]]);
+          //->where(['cws.is_active' => [0, 1]]);
+          ->where(['cws.is_active' => [1]]);
       //фильтры
       if ($filter == 'expired') {
         $result->andWhere(['<=', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
@@ -259,7 +261,8 @@ class Coupons extends \yii\db\ActiveRecord
       $coupons = self::find()
           ->from(self::tableName() . ' cwc')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
-          ->where(['cws.is_active' => [0, 1]]);
+          //->where(['cws.is_active' => [0, 1]]);
+          ->where(['cws.is_active' => [1]]);
       if ($store) {
         $coupons = $coupons->andWhere(['cws.uid' => $store]);
       }
@@ -326,33 +329,36 @@ class Coupons extends \yii\db\ActiveRecord
 
     $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store_category, $store, $new, $unique_store,$offline) {
 
-        if ($store_category && !$category) {
-            //есть категория шопов и нет категорий купонов - тащим второе из первого
-            $categoryCoupons = StoresCategoriesToCouponsCategories::find()
-                ->where(['store_category_id' => $store_category])
-                ->select('coupon_category_id')
-                ->asArray()
-                ->all();
-            if (!empty($categoryCoupons)) {
-                $category = array_column($categoryCoupons, 'coupon_category_id');
-            }
+      if ($store_category && !$category) {
+        //есть категория шопов и нет категорий купонов - тащим второе из первого
+        $categoryCoupons = StoresCategoriesToCouponsCategories::find()
+            ->where(['store_category_id' => $store_category])
+            ->select('coupon_category_id')
+            ->asArray()
+            ->all();
+        if (!empty($categoryCoupons)) {
+            $category = array_column($categoryCoupons, 'coupon_category_id');
         }
+      }
 
-        if ($unique_store) {
+      if ($unique_store) {
         $coupons = self::find()
             ->alias('cwc')
+            ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
+            ->where(['cws.is_active' => [1]])
             ->groupBy('cwc.store_id')
-            ->select(['cwc.store_id', 'visit' => 'max(visit)'])
+            ->select(['cwc.store_id', 'visit' => 'max(cwc.visit)'])
             ->orderBy(['visit' => SORT_DESC]);
       } else {
-        $coupons = self::forList()
-            ->where(['cws.is_active' => [0, 1]]);
-        if ($store) {
-          $coupons = $coupons->andWhere(['cws.uid' => $store]);
-        }
-        if ($new) {
-          $coupons->andWhere(['>', 'cwc.date_start', date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 30)]);
-        }
+          $coupons = self::forList()
+              //->where(['cws.is_active' => [0, 1]]);
+              ->where(['cws.is_active' => [1]]);
+          if ($store) {
+              $coupons = $coupons->andWhere(['cws.uid' => $store]);
+          }
+          if ($new) {
+              $coupons->andWhere(['>', 'cwc.date_start', date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 30)]);
+          }
       }
 
       $coupons = $coupons->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
@@ -376,10 +382,11 @@ class Coupons extends \yii\db\ActiveRecord
 
       if ($unique_store) {
         $coupons = self::forList()
-            ->where(['cws.is_active' => [0, 1]])
+            //->where(['cws.is_active' => [0, 1]])
+            ->where(['cws.is_active' => [1]])
             ->rightJoin(['cwc_top' => $coupons], 'cwc_top.store_id=cwc.store_id AND cwc_top.visit = cwc.visit');
       }
-        //ddd($category, $store_category, $coupons);
+
       return $coupons->limit($limit)->orderBy(['cwc.visit' => SORT_DESC])->all();
 
     }, $cache->defaultDuration, $dependency);

@@ -539,7 +539,7 @@ class Stores extends \yii\db\ActiveRecord
    * ->orderBy(...)
    * ->all()
    */
-  public static function items()
+  public static function items($active = [0, 1])
   {
     $ratingQuery = (new Query())
       ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
@@ -556,7 +556,7 @@ class Stores extends \yii\db\ActiveRecord
         'store_rating.reviews_count as reviews_count',
       ])
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-      ->where(['cws.is_active' => [0, 1]])
+      ->where(['cws.is_active' => $active])
       ->asArray();
   }
 

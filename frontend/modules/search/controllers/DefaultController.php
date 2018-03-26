@@ -16,10 +16,11 @@ class DefaultController extends SdController
   {
 
     $baseURL=isset($params['url'])?$params['url']:'/stores/';
+    $storeActive = isset($params['store_active']) ? $params['store_active'] : [0, 1];
     $limit = isset($params['limit'])?$params['limit']:
         (Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') :
         (Yii::$app->request->isAjax ? 10 : 1000));
-    $stores = Stores::items()
+    $stores = Stores::items($storeActive)
       ->addSelect(["IF(is_offline = 1, concat(cws.route, '-offline'), cws.route) route_url"])
       ->andWhere(Stores::makeQueryArray($query))
       ->limit($limit)
@@ -72,6 +73,7 @@ class DefaultController extends SdController
         $param=[
             'url'=>'/coupons/',
             'limit'=>100,
+            'store_active' => [1]
         ];
         return $this->actionIndex($query,$param);
     } else {

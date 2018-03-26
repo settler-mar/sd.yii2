@@ -127,7 +127,7 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $storeFrom = $request->get('w');
 
-      $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
+    $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
     if ($this->top) {
       $sort = 'visit';
     }
@@ -167,7 +167,8 @@ class DefaultController extends SdController
       $contentData['current_category'] = $categoryCoupons;
       $databaseObj = Coupons::forList(false)
         ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
-        ->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
+        //->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
+        ->where(['cws.is_active' => [1], 'cctc.category_id' => $category])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
 
@@ -194,7 +195,8 @@ class DefaultController extends SdController
       $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::forList(false)
-        ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
+        //->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
+        ->where(['cws.is_active' => [1], 'cwc.store_id' => $storeId])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
       $contentData["store_rating"] = Reviews::storeRating($storeId);
@@ -204,7 +206,8 @@ class DefaultController extends SdController
       $contentData["counts"] = Coupons::counts();
       \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::forList(false)
-        ->where(['cws.is_active' => [0, 1]])
+        //->where(['cws.is_active' => [0, 1]])
+        ->where(['cws.is_active' => [1]])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
       if ($this->top) {
@@ -469,7 +472,8 @@ class DefaultController extends SdController
       $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;
 
       $databaseObj = Coupons::forList(true)
-          ->andWhere(['cws.is_active' => [0, 1]])
+          //->andWhere(['cws.is_active' => [0, 1]])
+          ->andWhere(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
           ->orderBy($sort . ' ' . $order);
       if ($query) {
