@@ -57,7 +57,7 @@
                     <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_coupons + 1}}{% else %}0{% endif %}-{{offset_coupons + show_coupons}} из {{total_v}}</div>
                 </div>
 
-                {% if current_store == null %}
+                {% if current_store == null and search_result == null %}
                     {#алфавитный поиск при отсутствии шопа#}
                     <div class="coupons-abc">
                         <div  class="coupons-abc_chars">
