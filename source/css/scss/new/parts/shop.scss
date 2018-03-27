@@ -113,7 +113,7 @@
               display:block;
               top: -18PX !important;
               //left: calc(50%) !important;
-              left: calc(50%) !important;
+              left: calc(50% + 1PX) !important;
             }
           }
           &:before {
