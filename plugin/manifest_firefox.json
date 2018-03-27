@@ -1,0 +1,14 @@
+{
+	"applications": {
+		"gecko": {
+			"id": "{35d6291e-1d4b-f9b4-c52f-77e6410d1326}",
+			"strict_min_version": "51.0"
+		}
+	},
+	"web_accessible_resources" : [
+		"css/*.css",
+		"fonts/*.woff",
+		"fonts/*.woff2",
+		"fonts/*.otf"
+	]
+}
