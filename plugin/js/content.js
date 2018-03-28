@@ -188,14 +188,14 @@ window.onload = function() {
     if (locationHref[1] == 'google') {
         onGoogleSearchUpdated();
     }
-    //
+
     // window.addEventListener('message', function(e) {
     //     console.log(e.data);
     //     if (typeof e.data === 'object' && e.data.type === 'sr') {
     //         onGoogleSearchUpdated(e);
     //     }
-    //})
-    // ;
+    // })
+    //;
 };
 
 
@@ -222,7 +222,7 @@ window.onload = function() {
             action: 'xhttp',
             url: siteUrl + dataUrl
         }, function (responseData) {
-            console.log('data from server', responseData);
+            //console.log('data from server', responseData);
             //оохраняем данные в хранилице
             Storage.load(function () {
                 // set a storage key
@@ -233,14 +233,14 @@ window.onload = function() {
                 });
             });
             //выполним операции
-            findShop(responseData);
-            checkSearch(storageData.response);
+            //findShop(responseData);
+            //checkSearch(storageData.response);
         });
 
     }
 
     function findShop(data) {
-        console.log('find_shop', data);
+        //console.log('find_shop');
 
         //найти магазин, если на нем находимся
         if (data != null && data.stores != null) {
@@ -248,12 +248,13 @@ window.onload = function() {
             var url;
             var div = null;
             data.stores.forEach(function (item) {
-                console.log(item, here);
+                //console.log(item, here);
 
                 currentUrl = item.url.split('//')[1].replace('www.', '');
                 //currentUrl = siteUrl + item.store_route;
+                //console.log(here, currentUrl);
 
-                if ((here == currentUrl || here.indexOf('.' + currentUrl) > -1) && !div) {
+                if ((here == currentUrl || currentUrl.indexOf(here) > -1) && !div) {
                     //нашли, мы находимся здесь
                     //console.log('here', item);
                     var url = siteUrl + (item.category_id != null ? 'stores/' + item.store_route : '');
@@ -274,7 +275,7 @@ window.onload = function() {
                     div.appendChild(closeDiv);
 
                     document.body.insertBefore(div, document.body.firstChild);
-                    return null;
+                    return false;
                 }
             });
 
@@ -283,20 +284,21 @@ window.onload = function() {
 
     //изменение поиска
     function checkSearch(data) {
-        console.log('google_search', data);
+        //console.log('google_search');
         if (data == null || data.searchtext == null || data.stores.length == 0) {
             return null;
         }
-        console.log(data);
+        //console.log(data);
         var div = document.createElement('div');
         var searchInput = document.getElementById('lst-ib');
         var searchString = searchInput == null ? null : searchInput.value;
-        if (searchString != null) {
+        if (searchString !== null) {
+            var message = false;
             data.stores.forEach(function (item) {
-                console.log(item);
+                //console.log(item);
                 //проверка, что строка поиска включена в название или урл магазина
-                if (item.name.indexOf(searchString) >= 0 || item.url.indexOf(searchString) >= 0) {
-                    var message = data.searchtext.replace('{{cashback}}', item.displayed_cashback)
+                if ((item.name.indexOf(searchString) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
+                    message = data.searchtext.replace('{{cashback}}', item.displayed_cashback)
                         .replace('{{storename}}', item.name);
                     div.innerHTML = '<a href="' + siteUrl + '" class=""><img src="' + serachFormImage + '" >' + message + '</a>';
                     div.id = 'secretdiscounter-search';
@@ -304,6 +306,7 @@ window.onload = function() {
                     if (searchResult && !document.querySelector('#secretdiscounter-search')) {
                         searchResult.parentElement.insertBefore(div, searchResult.parentElement.childNodes[0]);
                     }
+                    return false;
                 }
             })
 
@@ -318,23 +321,26 @@ window.onload = function() {
     });
 
     Storage.load(function () {
+        //console.log('storage.load');
         // get a storage key
         storageData = Storage.get("secretdiscounter_local");
         if (!storageData || !storageData.response || !storageData.response.stores || !storageData.date
-            //|| storageData.date + 1000 * 60 * 60 * 24 < new Date().getTime()) {
-                ||storageData.date + 1000 < new Date().getTime() ) {
+            || storageData.date + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+            //    ||storageData.date + 1000 < new Date().getTime() ) {
             getData();
         } else {
             //выполним операции
-            findShop(storageData.response);
+            //findShop(storageData.response);
         }
+        findShop(storageData.response);
         //Storage.clear();
     });
 
 
     function onGoogleSearchUpdated() {
+        //console.log('on google search updated');
         storageData = Storage.get("secretdiscounter_local");
-        console.log(storageData);
+        //console.log(storageData);
 
         if (!storageData || !storageData.response || !storageData.response.stores || !storageData.date
             || storageData.date + 1000 * 60 * 60 * 24 < new Date().getTime()) {
