@@ -481,7 +481,8 @@ class DefaultController extends SdController
               //->limit(10)
               ->all();
           $data = [
-              "text" => "Сэкономьте {{cashback}} в {{currentUrl}} с SecretDiscounter",
+              //"text" => "Сэкономьте {{cashback}} в {{currentUrl}} с SecretDiscounter",
+              "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
               "searchtext" => "{{cashback}} cashback on {{storename}}",
               "stores" => $stores,
           ];
