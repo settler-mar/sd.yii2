@@ -465,66 +465,29 @@ class DefaultController extends SdController
 
       $data = $cache->getOrSet($cacheName, function(){
 
-          $storeCategories = CategoriesStores::find()
-              ->from(CategoriesStores::tableName().' cwcs')
-              ->select(['cwstc.store_id', 'cwcs.route'])
-              ->innerJoin('cw_stores_to_categories cwstc', 'cwstc.category_id = cwcs.uid')
-              ->groupBy(['cwstc.store_id']);
+//          $storeCategories = CategoriesStores::find()
+//              ->from(CategoriesStores::tableName().' cwcs')
+//              ->select(['cwstc.store_id', 'cwcs.route'])
+//              ->innerJoin('cw_stores_to_categories cwstc', 'cwstc.category_id = cwcs.uid')
+//              ->groupBy(['cwstc.store_id']);
 
           $stores = Stores::find()
-              ->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cwsc.route as category_route'])
+              //->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cwsc.route as category_route'])
+              ->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback'])
               ->from(Stores::tableName(). ' cws')
-              ->leftJoin(['cwsc' => $storeCategories], 'cwsc.store_id = cws.uid')
+              //->leftJoin(['cwsc' => $storeCategories], 'cwsc.store_id = cws.uid')
               ->where(['cws.is_active'=> '1'])
               ->asArray()
               //->limit(10)
               ->all();
           $data = [
               "text" => "Сэкономьте {{cashback}} в {{currentUrl}} с SecretDiscounter",
-              "searchtext" => "{{cashback}} Cashback on {{storename}}",
+              "searchtext" => "{{cashback}} cashback on {{storename}}",
               "stores" => $stores,
           ];
           return $data;
 
       });
-//          //d($_SERVER);
-//          $dir = $_SERVER["YII_PATH"].'/frontend/web/';
-////        if(!file_exists($dir)){
-////            mkdir($dir,0777,true);
-////        }
-//          //$dir = \Yii::$app->
-//          //file_put_contents($dir.'/shop.json', json_encode($data));
-//          //$dir = \Yii::getAlias('@yii');
-//          d($dir);
-//          file_put_contents($dir.'shop.json', json_encode($data));
-//          //$fp = fopen( $dir.'/shop.csv', "w" );
-//          $fp = fopen( $dir.'shop.csv', "w" );
-//          foreach ($stores as $store){
-//              //fwrite($fp, $pieces[$i]);
-//              $out=$store['route'].';';
-//              if(strpos($store['displayed_cashback'],'%')>0){
-//                  $suf="%";
-//              }else{
-//                  $suf=$store['currency'];
-//              }
-//              /*if($store['url']=="http://aliexpress.com/"){
-//                d(mb_strpos(' '.$store['displayed_cashback'],'до'));
-//                ddd($store);
-//              }*/
-//              if(mb_strpos(' '.$store['displayed_cashback'],'до')>0){
-//                  $out.="0".$suf.'-';
-//              }
-//              $val = (float)preg_replace('/[^\d.]/','',$store['displayed_cashback']);
-//              if($store['action_id']==1) {
-//                  $val=$val*2;
-//              };
-//              if($val<=0){
-//                  continue;
-//              }
-//              $out.=$val.$suf."\n";
-//              fwrite($fp, $out);
-//          }
-//          fclose($fp);
       //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       header('Access-Control-Allow-Origin: *');
       header('Content-Type: application/json');

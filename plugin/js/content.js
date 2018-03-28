@@ -239,6 +239,19 @@ window.onload = function() {
 
     }
 
+    function cashback(displayedCashback, currency, action){
+        //console.log(displayedCashback, currency, action);
+        var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
+        //console.log(cashbackNum);
+        if (action == 1) {
+            cashbackNum = cashbackNum * 2;
+        }
+        var result = displayedCashback.replace(/[\d.]+/, cashbackNum)+
+            (displayedCashback.match(/\%/) ? "" : " "+currency);
+        //console.log(result);
+        return result;
+    }
+
     function findShop(data) {
         //console.log('find_shop');
 
@@ -265,7 +278,7 @@ window.onload = function() {
                     currentUrl = currentUrl.split('/')[0];
                     var message = data.text.replace('{{currentUrl}}',
                         '<span class="secretdiscounter-extension__here">' +
-                        ucfirst(currentUrl) + '</span>').replace('{{cashback}}', item.displayed_cashback);
+                        ucfirst(currentUrl) + '</span>').replace('{{cashback}}', cashback(item.displayed_cashback, item.currency, item.action_id));
                     var text = '<a href="' + siteUrl + '" class="cd-logo"><img src="' + logoImage + '" width="170" alt="secretdiscounter logo"></a>' +
                         '<div class="secretdiscounter-extension__text">' + message + '</div>' +
                         '<a class="secretdiscounter-extension__link" href="' + url + '">Получить кэшбэк</a>';
@@ -297,8 +310,8 @@ window.onload = function() {
             data.stores.forEach(function (item) {
                 //console.log(item);
                 //проверка, что строка поиска включена в название или урл магазина
-                if ((item.name.indexOf(searchString) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
-                    message = data.searchtext.replace('{{cashback}}', item.displayed_cashback)
+                if ((item.name.toUpperCase().indexOf(searchString.toUpperCase()) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
+                    message = data.searchtext.replace('{{cashback}}', cashback(item.displayed_cashback, item.currency, item.action_id))
                         .replace('{{storename}}', item.name);
                     div.innerHTML = '<a href="' + siteUrl + '" class=""><img src="' + serachFormImage + '" >' + message + '</a>';
                     div.id = 'secretdiscounter-search';
