@@ -483,7 +483,7 @@ class DefaultController extends SdController
           $data = [
               //"text" => "Сэкономьте {{cashback}} в {{currentUrl}} с SecretDiscounter",
               "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
-              "searchtext" => "{{cashback}} cashback on {{storename}}",
+              "searchtext" => "Кэшбэк {{cashback}}",
               "stores" => $stores,
           ];
           return $data;

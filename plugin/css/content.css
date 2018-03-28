@@ -1,15 +1,24 @@
 .secretdiscounter-extension {
-    padding: 20px 2%;
+    padding: 10px 2%;
     color: #fff;
     font-size: 16px;
     position: relative;
-    display: block;
+    /*display: block;*/
     font-family: "Open Sans", sans-serif;
     z-index: 999999999;
     top: 0;
     left: 0;
     width: 100%;
     background: #333 !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.secretdiscounter-extension .cd-logo_small {
+    display: none;
 }
 
 .secretdiscounter-extension__here {
@@ -35,37 +44,49 @@
 }
 
 .secretdiscounter-extension__button_close {
-    float: right;
+    /*float: right;*/
     margin-right: 40px;
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     box-sizing: border-box;
     cursor: pointer;
     background: rgb(250, 54, 28) !important;
-    border-radius: 123px !important;
-    margin-top: -4px;
+    /*border-radius: 123px !important;*/
+    border-radius: 50% !important;
+    /*margin-top: -4px;*/
 }
 
 .secretdiscounter-extension__button_icon {
-    padding-top: 13px;
+    padding-top: 15px;
     line-height: 0;
     color: rgb(255, 255, 255);
     text-align: center;
-    font-size: 18px;
+    font-size: 27px;
 }
 
 .secretdiscounter-extension__text {
-    margin: 0 3%;
-    display: inline-block;
+    margin: 0 1%;
+    /*display: inline-block;*/
 }
 
-@media (max-width: 979px) {
+@media (max-width: 768px) {
     .secretdiscounter-extension__text {
         display: none;
     }
 
     .secretdiscounter-extension__link {
         margin-left: 5%;
+    }
+    .secretdiscounter-extension .cd-logo_small {
+        display: inline;
+    }
+    .secretdiscounter-extension .cd-logo_big {
+        display: none;
+    }
+}
+@media (max-width: 380px) {
+    .secretdiscounter-extension__button_close {
+        margin-right: 20px;
     }
 }
 
