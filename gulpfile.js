@@ -145,7 +145,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/fixes.js',
         paths.source.js+'/original/new/links.js',
         paths.source.js+'/original/new/store_points.js',
-        paths.source.js+'/original/new/hashtags.js'
+        paths.source.js+'/original/new/hashtags.js',
+        paths.source.js+'/original/new/plugins.js'
     ], paths.app.js)
 );
 

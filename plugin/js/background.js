@@ -1,7 +1,9 @@
 chrome.runtime.onMessage.addListener(function(request, sender, callback) {
+    //console.log('background.js', request, sender, callback);
+
     if (request.action == "xhttp") {
 
-        console.log(request, sender, callback);
+        //console.log(request, sender, callback);
 
         var xhr = new XMLHttpRequest();
         xhr.open(request.method, request.url, true); //  ГЕТ
@@ -18,6 +20,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
         return true; // prevents the callback from being called too early on return
     }
 });
+
+// chrome.runtime.onMessageExternal.addListener(function(request, sender, callback) {
+//     console.log('background.js', request, sender, callback);
+//     if (request.action == 'chrome_plugin_installed') {
+//         callback({'foo':'bar'});
+//     }
+// });
 
 
 

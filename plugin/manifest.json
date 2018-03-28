@@ -37,5 +37,31 @@
    "update_url": "https://clients2.google.com/service/update2/crx",
    "web_accessible_resources": [ "css/*.css", "fonts/*.woff", "fonts/*.woff2", "fonts/*.ttf", "fonts/*.otf" ]
    //,"default_locale": "ru"
+   //"externally_connectable": {
+      // Extension and app IDs. If this field is not specified, no
+      // extensions or apps can connect.
+     // "ids": "sd_chrome_extension_125689",
+         // Alternatively, to match all extensions and apps, specify only
+         // "*".
+
+      // Match patterns for web pages. Does not affect content scripts.
+      // If this field is not specified, no webpages can connect.
+     // "matches": [
+       //  "http://*/*"
+         //"https://*", "http://*"
+         //"https://*/*"
+         //"*://*.chromium.org/*",
+        // "*://*.*/*"
+         //"<all_urls>"
+         //"*://*/"
+         //""
+      //]
+      // Indicates that the extension would like to make use of the TLS
+      // channel ID of the web page connecting to it. The web page must
+      // also opt to send the TLS channel ID to the extension via setting
+      // includeTlsChannelId to true in runtime.connect's connectInfo
+      // or runtime.sendMessage's options.
+      //"accepts_tls_channel_id": false
+  //}
 
 }
