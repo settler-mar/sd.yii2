@@ -1,0 +1,26 @@
+.install-plugin {
+  background-color: $header_bg_up;
+
+  &_inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &_text {
+    color: $header_color_up;
+    padding: 10px;
+  }
+  &_close {
+    font-size: 20px;
+    padding: 0 6px;
+  }
+  &_hidden {
+    display: none;
+  }
+
+
+
+}

@@ -305,7 +305,6 @@ Storage.clear = function(callback) {
                     'storename': ucfirst(item.name)
                 }, storageData.response.searchtext);
                 div.innerHTML = "<a href='" + siteUrl +"stores/"+item.store_route+"#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
-
                 div.id = 'secretdiscounter-search';
                 var searchResult = document.querySelector(engine.result_selector);
                 //console.log(searchResult, div);
