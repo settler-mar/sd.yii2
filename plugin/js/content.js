@@ -183,7 +183,7 @@ Storage.clear = function(callback) {
     Storage._do("clear", [callback]);
 };
 
-
+    var storageData = false;
 
     function ucfirst(str) {   // Make a string&#039;s first character uppercase
         var f = str.charAt(0).toUpperCase();
@@ -288,26 +288,26 @@ Storage.clear = function(callback) {
     }
 
     //изменение поиска
-    function checkSearch(data) {
+    function checkSearch(searchString) {
         //console.log('google_search');
-        if (data == null || data.searchtext == null || data.stores.length == 0) {
+        if (storageData.response == null || storageData.response == null || storageData.response.stores.length == 0) {
             return null;
         }
         //console.log(data);
         var div = document.createElement('div');
-        var searchInput = document.getElementById('lst-ib');
-        var searchString = searchInput == null ? null : searchInput.value;
-        if (searchString !== null) {
+     //   var searchInput = document.getElementById('lst-ib');
+    //    var searchString = searchInput == null ? null : searchInput.value;
+    //    if (searchString !== null) {
             var message = false;
-            data.stores.forEach(function (item) {
+            storageData.response.stores.forEach(function (item) {
                 //console.log(item);
                 //проверка, что строка поиска включена в название или урл магазина
-                if ((item.name.toUpperCase().indexOf(searchString.toUpperCase()) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
+                if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
                     message = replaceTemplate({
                         'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
                         'currentUrl': siteUrl + item.url,
                         'storename': ucfirst(item.name)
-                    }, data.searchtext);
+                    }, storageData.response.searchtext);
                     div.innerHTML = "<a href='" + siteUrl + "#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
                     div.id = 'secretdiscounter-search';
                     var searchResult = document.querySelector('#res');
@@ -318,7 +318,7 @@ Storage.clear = function(callback) {
                 }
             })
 
-        }
+      //  }
     }
 
     function setAppId(){
@@ -327,7 +327,7 @@ Storage.clear = function(callback) {
         document.body.appendChild(div);
     }
 
-var storageData = false;
+
 
 Storage.configure({
     scope: "local" //or sync
@@ -344,12 +344,33 @@ Storage.load(function () {
 });
 
 
+var searchEngines = [
+    {
+        'search_id': 'lst-ib',
+        'location_href': 'google',
+        'location_href_index': 1
+    }
+];
 
 
 window.onload = function() {
     setAppId();
 
     var locationHref = location.hostname.split('.');
+
+    for (var i = 0 ; i < searchEngines.length ; i++) {
+        var engine = searchEngines[i];
+        console.log(engine);
+        var input = document.getElementById(engine.search_id);
+        if (input && locationHref[engine.location_href_index] == engine.location_href) {
+            var value = input.value;
+            console.log(input, value.toUpperCase);
+            if (value !== '') {
+                checkSearch(value.toUpperCase());
+            }
+        }
+    }
+
     //console.log(locationHref);
     if (locationHref[1] == 'google') {
         checkSearch(storageData.response);
