@@ -298,7 +298,7 @@ Storage.clear = function(callback) {
             //console.log(item, searchString);
             //проверка, что строка поиска включена в название или урл магазина
             if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0)&& !message) {
-                console.log(item.name, item.url);
+                //console.log(item.name, item.url);
                 message = replaceTemplate({
                     'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
                     'currentUrl': siteUrl + item.url,
@@ -306,9 +306,11 @@ Storage.clear = function(callback) {
                 }, storageData.response.searchtext);
                 div.innerHTML = "<a href='" + siteUrl + "#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
                 div.id = 'secretdiscounter-search';
-                var searchResult = document.querySelector('#'+engine.result_id);
+                var searchResult = document.querySelector(engine.result_selector);
+                //console.log(searchResult, div);
                 if (searchResult && !document.querySelector('#secretdiscounter-search')) {
-                    searchResult.parentElement.insertBefore(div, searchResult);
+                    var nextElement = engine.result_first_item ? searchResult.parentNode.childNodes[0] : searchResult;
+                    searchResult.parentElement.insertBefore(div, nextElement);
                 }
                 return false;
             }
@@ -343,22 +345,42 @@ var searchEngines = [
         'search_id': 'lst-ib',
         'location_href': 'google',
         'location_href_index': 1,
-        'result_id': 'res'
+        'result_selector': '#res',
+        'result_first_item': 1
     },
     {
         'search_id': 'sb_form_q',
         'location_href': 'bing',
         'location_href_index': 1,
-        'result_id': 'b_results'
+        'result_selector': '#b_results',
+        'result_first_item': 0
     }
 ];
-
+var yandexEngine = {
+    'result_selector': '.serp-list',
+    'result_first_item': 0
+};
 
 window.onload = function() {
     setAppId();
 
-    var locationHref = location.hostname.split('.');
+    //событие для яндекса
+    var yandexSearchResult = document.querySelector('.main .main__content');
+    var yandexInput = document.querySelector('div.serp-header__main input.input__control');
+    if (yandexSearchResult && yandexInput) {
+        var yandexSearchTimeOut = null;
+        yandexSearchResult.addEventListener('DOMSubtreeModified', function(){
+            clearTimeout(yandexSearchTimeOut);
+            yandexSearchTimeOut = setTimeout(function(){
+                if (yandexInput.value != ''){
+                    checkSearch(yandexInput.value.toUpperCase(), yandexEngine);
+                }
+            }, 1000);
+        });
+    }
 
+    //для гугл и бинг
+    var locationHref = location.hostname.split('.');
     for (var i = 0 ; i < searchEngines.length ; i++) {
         var engine = searchEngines[i];
         var input = document.getElementById(engine.search_id);
@@ -374,6 +396,8 @@ window.onload = function() {
     findShop(storageData.response);
     //Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 };
+
+
 
 
 
