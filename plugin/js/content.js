@@ -288,37 +288,31 @@ Storage.clear = function(callback) {
     }
 
     //изменение поиска
-    function checkSearch(searchString) {
-        //console.log('google_search');
+    function checkSearch(searchString, engine) {
         if (storageData.response == null || storageData.response == null || storageData.response.stores.length == 0) {
             return null;
         }
-        //console.log(data);
         var div = document.createElement('div');
-     //   var searchInput = document.getElementById('lst-ib');
-    //    var searchString = searchInput == null ? null : searchInput.value;
-    //    if (searchString !== null) {
-            var message = false;
-            storageData.response.stores.forEach(function (item) {
-                //console.log(item);
-                //проверка, что строка поиска включена в название или урл магазина
-                if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.indexOf(searchString) >= 0)&& !message) {
-                    message = replaceTemplate({
-                        'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
-                        'currentUrl': siteUrl + item.url,
-                        'storename': ucfirst(item.name)
-                    }, storageData.response.searchtext);
-                    div.innerHTML = "<a href='" + siteUrl + "#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
-                    div.id = 'secretdiscounter-search';
-                    var searchResult = document.querySelector('#res');
-                    if (searchResult && !document.querySelector('#secretdiscounter-search')) {
-                        searchResult.parentElement.insertBefore(div, searchResult.parentElement.childNodes[0]);
-                    }
-                    return false;
+        var message = false;
+        storageData.response.stores.forEach(function (item) {
+            //console.log(item, searchString);
+            //проверка, что строка поиска включена в название или урл магазина
+            if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0)&& !message) {
+                console.log(item.name, item.url);
+                message = replaceTemplate({
+                    'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
+                    'currentUrl': siteUrl + item.url,
+                    'storename': ucfirst(item.name)
+                }, storageData.response.searchtext);
+                div.innerHTML = "<a href='" + siteUrl + "#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
+                div.id = 'secretdiscounter-search';
+                var searchResult = document.querySelector('#'+engine.result_id);
+                if (searchResult && !document.querySelector('#secretdiscounter-search')) {
+                    searchResult.parentElement.insertBefore(div, searchResult);
                 }
-            })
-
-      //  }
+                return false;
+            }
+        })
     }
 
     function setAppId(){
@@ -348,7 +342,14 @@ var searchEngines = [
     {
         'search_id': 'lst-ib',
         'location_href': 'google',
-        'location_href_index': 1
+        'location_href_index': 1,
+        'result_id': 'res'
+    },
+    {
+        'search_id': 'sb_form_q',
+        'location_href': 'bing',
+        'location_href_index': 1,
+        'result_id': 'b_results'
     }
 ];
 
@@ -360,25 +361,18 @@ window.onload = function() {
 
     for (var i = 0 ; i < searchEngines.length ; i++) {
         var engine = searchEngines[i];
-        console.log(engine);
         var input = document.getElementById(engine.search_id);
         if (input && locationHref[engine.location_href_index] == engine.location_href) {
             var value = input.value;
-            console.log(input, value.toUpperCase);
             if (value !== '') {
-                checkSearch(value.toUpperCase());
+                checkSearch(value.toUpperCase(), engine);
             }
+            break;
         }
     }
 
-    //console.log(locationHref);
-    if (locationHref[1] == 'google') {
-        checkSearch(storageData.response);
-    } else {
-        findShop(storageData.response);
-    }
+    findShop(storageData.response);
     //Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
-
 };
 
 
