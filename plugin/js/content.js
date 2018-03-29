@@ -248,11 +248,11 @@ Storage.clear = function(callback) {
         var url;
         var div = null;
         data.stores.forEach(function (item) {
-            //console.log(item, here);
 
-            currentUrl = item.url.split('//')[1].replace('www.', '');
+            currentUrl = item.url.split('//')[1].replace('www.', '').split('/')[0];
+            //console.log(item.url, currentUrl, here);
 
-            if ((here == currentUrl || currentUrl.indexOf(here) > -1) && !div) {
+            if ((here == currentUrl || here.indexOf(currentUrl) > -1) && !div) {
                 //нашли, мы находимся здесь
                 //console.log('here', item);
                 var url = siteUrl + (item.category_id != null ? 'stores/' + item.store_route : '');
