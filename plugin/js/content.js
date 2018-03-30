@@ -4,10 +4,16 @@ var logoImage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"
 
  var logoImageWhite = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="78.095078mm" height="37.885025mm" viewBox="0 0 78.095077 37.885025" version="1.1" id="svg3775"><defs id="defs3769" /><g id="layer1" transform="translate(67.419495,10.624447)"><path d="m -21.917776,-10.624447 h 13.6525 c 10.421276,0 18.940859,8.5195826 18.940859,18.9441666 0,10.4212764 -8.519583,18.9408594 -18.940859,18.9408594 h -13.6525 -0.128985 -0.0033 -0.12237 -0.0033 c -2.728516,0 -4.964245,-2.235729 -4.964245,-4.964245 V 10.343782 h 14.297422 c 0.780521,1.769401 2.553229,3.006328 4.610365,3.006328 2.778125,0 5.033698,-2.252265 5.033698,-5.0303904 0,-2.781433 -2.255573,-5.033698 -5.033698,-5.033698 -2.057136,0 -3.829844,1.236927 -4.607058,3.006328 H -27.13999 v -11.952552 c 0,-2.728516 2.235729,-4.9642446 4.964245,-4.9642446 h 0.0033 l 0.12237,0.0033 h 0.0033 l 0.128985,-0.0033" style="fill:#dbc335;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.03307291" id="path18"/><path d="m -67.419495,8.3197196 v -13.979922 c 0,-2.731823 2.233745,-4.9642446 4.964245,-4.9642446 h 27.956536 c 2.728516,0 4.964245,2.2324216 4.964245,4.9642446 v 0 c 0,2.731823 -2.235729,4.96424498 -4.964245,4.96424498 h -13.354843 c -0.777214,-1.76940098 -2.546615,-3.00632898 -4.607058,-3.00632898 -2.778125,0 -5.03039,2.252266 -5.03039,5.030391 0,2.781432 2.252265,5.033698 5.03039,5.033698 2.060443,0 3.829844,-1.236927 4.610365,-3.009635 h 13.351536 v 0.0033 h 0.128985 v 0 l 0.125677,0.0033 v 0.0033 l 0.125677,0.0066 v 0 l 0.125677,0.0099 v 0.0033 l 0.12237,0.0099 v 0.0033 l 0.125677,0.01654 v 0 l 0.12237,0.01984 v 0 l 0.122369,0.02315 v 0 l 0.119063,0.02646 v 0 l 0.119062,0.02977 v 0 l 0.119063,0.03307 v 0 l 0.115755,0.03307 v 0.0033 l 0.115755,0.03638 v 0 l 0.115756,0.03969 v 0 l 0.112447,0.043 v 0 l 0.109141,0.0463 v 0 l 0.112448,0.0463 v 0.0033 l 0.109141,0.04961 v 0 l 0.10914,0.05292 v 0.0033 l 0.105834,0.05292 v 0.0033 l 0.102526,0.05622 v 0 l 0.105833,0.05953 v 0.0033 l 0.09922,0.06284 v 0 l 0.09922,0.06615 v 0 l 0.09922,0.06615 v 0 l 0.09922,0.07276 v 0 l 0.0926,0.07276 v 0 l 0.0926,0.07276 v 0.0033 l 0.0926,0.07607 v 0 l 0.0893,0.07607 v 0.0033 l 0.08599,0.07938 v 0 l 0.08599,0.08268 v 0.0033 l 0.08268,0.08268 v 0 l 0.08268,0.08599 v 0.0033 l 0.07607,0.08599 v 0.0033 l 0.07938,0.0893 v 0 l 0.07607,0.0926 v 0.0033 l 0.07276,0.0926 v 0 l 0.06945,0.09591 v 0 l 0.06615,0.09922 v 0 l 0.06615,0.09922 v 0 l 0.06615,0.102526 v 0 l 0.05953,0.102526 v 0 l 0.05953,0.102526 v 0.0033 l 0.05622,0.102526 v 0.0033 l 0.05292,0.105833 v 0 l 0.05292,0.109141 v 0.0033 l 0.0463,0.109141 v 0 l 0.0463,0.10914 v 0.0033 l 0.04299,0.10914 v 0.0033 l 0.03969,0.112448 v 0.0033 l 0.03969,0.112448 v 0 l 0.03307,0.119062 v 0 l 0.03307,0.115755 v 0.0033 l 0.02977,0.115755 v 0.0033 l 0.02646,0.119063 v 0 l 0.02315,0.119062 v 0.0033 l 0.01984,0.12237 v 0 l 0.01984,0.12237 v 0 l 0.01323,0.12237 v 0 l 0.0099,0.125677 v 0 l 0.0099,0.125677 v 0.0033 l 0.0033,0.125677 v 0 l 0.0033,0.125677 V 22.2961 c 0,2.731823 -2.235729,4.964245 -4.964245,4.964245 H -62.45525 c -2.7305,0 -4.964245,-2.232422 -4.964245,-4.964245 v 0 c 0,-2.731823 2.233745,-4.964245 4.964245,-4.964245 h 13.331693 c 0.757369,1.825625 2.553229,3.108855 4.653359,3.108855 2.778125,0 5.030391,-2.252266 5.030391,-5.033698 0,-2.778125 -2.252266,-5.030391 -5.030391,-5.030391 -2.020755,0 -3.760391,1.190625 -4.564063,2.907109 H -62.45525 v -0.0033 h -0.128984 v 0 l -0.125678,-0.0033 v -0.0033 l -0.125677,-0.0066 v 0 l -0.125677,-0.0099 v -0.0033 l -0.125677,-0.0099 v -0.0033 l -0.12237,-0.01654 v 0 l -0.122369,-0.01984 v 0 l -0.12237,-0.02315 v 0 l -0.119063,-0.02646 v 0 l -0.119062,-0.02977 v 0 L -63.810578,13.092 v 0 l -0.117078,-0.03307 v -0.0033 l -0.115094,-0.03625 v 0 l -0.115094,-0.03969 v 0 l -0.112778,-0.04299 v 0 l -0.111787,-0.0463 v 0 l -0.111125,-0.0463 v -0.0033 l -0.10881,-0.04961 v 0 l -0.10881,-0.05293 v 0 l -0.105502,-0.05622 v -0.0033 l -0.104511,-0.05622 v 0 l -0.102856,-0.05953 v -0.0033 l -0.102527,-0.06284 v 0 l -0.09922,-0.06615 v 0 l -0.0979,-0.06615 v 0 l -0.0969,-0.06945 v -0.0033 l -0.09459,-0.07276 v 0 l -0.0936,-0.07276 v -0.0033 l -0.09095,-0.07607 v 0 l -0.08897,-0.07607 v -0.0033 l -0.08764,-0.07937 v 0 l -0.08467,-0.08268 v -0.0033 l -0.084,-0.08268 v 0 l -0.0807,-0.08599 v -0.0033 l -0.07904,-0.08599 v -0.0033 l -0.07706,-0.0893 v 0 l -0.07541,-0.09261 v -0.0033 l -0.07276,-0.0926 v 0 l -0.07045,-0.09591 v 0 l -0.06747,-0.09922 v 0 l -0.06615,-0.09922 v 0 l -0.06416,-0.102526 v 0 l -0.06119,-0.09922 v -0.0033 l -0.05788,-0.102526 v -0.0033 l -0.05722,-0.102526 v -0.0033 L -66.9277,10.46624 v 0 l -0.05159,-0.109229 v 0 l -0.04763,-0.112448 v 0 l -0.04729,-0.10914 v -0.0033 l -0.043,-0.10914 v -0.0033 L -67.1569,9.9072346 v -0.0033 l -0.03803,-0.112448 v 0 l -0.03506,-0.119062 v 0 l -0.03241,-0.115755 v -0.0033 l -0.0291,-0.115755 v -0.0033 l -0.02613,-0.119063 v 0 l -0.02414,-0.119062 v -0.0033 l -0.0205,-0.12237 v 0 l -0.01654,-0.12237 v 0 l -0.01455,-0.12237 v 0 l -0.01091,-0.125677 v 0 l -0.0083,-0.125677 v -0.0033 l -0.0056,-0.125677 v 0 l -0.0013,-0.125677" style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.03307291" id="path20"/></g></svg>';
 
-var siteUrl = 'https://secretdiscounter.ru/';
-//var siteUrl = 'http://sdyii/';
-var dataUrl = 'stores/data';
+//var siteUrl = 'https://secretdiscounter.ru/';
+var siteUrl = 'http://sdyii/';
+var storesUrl = 'stores/data';
+var userUrl = 'account/notification';
+var storageDataKeyStores = 'secretdiscounter_local_stores';
+var storageDataKeyDate = 'secretdiscounter_local_date';
 var appId = 'sd_chrome_app';
+var usersData = false;
+var storageDataStores = false;
+var storageDataDate = false;
 
 
 
@@ -183,8 +189,6 @@ Storage.clear = function(callback) {
     Storage._do("clear", [callback]);
 };
 
-    var storageData = false;
-
     function ucfirst(str) {   // Make a string&#039;s first character uppercase
         var f = str.charAt(0).toUpperCase();
         return f + str.substr(1, str.length - 1);
@@ -194,29 +198,41 @@ Storage.clear = function(callback) {
         document.querySelector('.secretdiscounter-extension').style.display = 'none';
     }
 
-
-    function getData() {
+    function getRequest(url, dataKey, callback){
         //вызываем событие для запроса из background.js
-        console.log('получаем данные');
+        //console.log('получаем данные', url, dataKey);
         chrome.runtime.sendMessage({
-            method: 'GET',
             action: 'xhttp',
-            url: siteUrl + dataUrl
+            url: siteUrl + url
         }, function (responseData) {
 
-            console.log(responseData);
-
-            //cохраняем данные в хранилице
             //console.log(responseData);
-            Storage.load(function () {
                 // set a storage key
-                Storage.set("secretdiscounter_local", {
-                    "date": new Date().getTime(),
-                    "response": responseData
-                });
-            });
+            Storage.set(dataKey, responseData, callback);
         });
+    }
 
+    function getUsers(){
+        chrome.runtime.sendMessage({
+            action: 'xhttp',
+            url: siteUrl + userUrl
+        }, function (responseData) {
+            usersData = responseData;
+        });
+    }
+
+
+    function getData() {
+        //console.log('get data');
+        getRequest(storesUrl, storageDataKeyStores);
+        // getRequest(storesUrl, storageDataKeyStores, function(){
+        //     setTimeout(function(){
+        //         console.log('после таймаута');
+        //         findShop();
+        //     }, 2000);
+        // });
+        //getRequest(userUrl, storageDataKeyUsers, null);
+        Storage.set(storageDataKeyDate, new Date().getTime());
     }
 
     function makeCashback(displayedCashback, currency, action){
@@ -242,15 +258,18 @@ Storage.clear = function(callback) {
         return template;
     }
 
-    function findShop(data) {
-        if (data == null || data.text == null || data.stores.length == 0) {
+    function findShop() {
+        //console.log('функция поиска шопов');
+        if (storageDataStores == null || storageDataStores.length == 0) {
             return null;
         }
         //найти магазин, если на нем находимся
+        //console.log('сам поиск шопов');
+
         var here = (window.location.host).replace('www.', '');
         var url;
         var div = null;
-        data.stores.forEach(function (item) {
+        storageDataStores.stores.forEach(function (item) {
 
             currentUrl = item.url.split('//')[1].replace('www.', '').split('/')[0];
             //console.log(item.url, currentUrl, here);
@@ -258,7 +277,12 @@ Storage.clear = function(callback) {
             if ((here == currentUrl || here.indexOf(currentUrl) > -1) && !div) {
                 //нашли, мы находимся здесь
                 //console.log('here', item);
-                var url = siteUrl + 'stores/' + item.store_route;
+                var url = '';
+                if (usersData && usersData.user) {
+                    url = siteUrl + 'goto/store:' + item.uid;
+                } else {
+                    url = siteUrl + 'stores/' + item.store_route+'#login';
+                }
                 var closeDiv = document.createElement('div');
                 closeDiv.innerHTML = '<div class="secretdiscounter-extension__button_icon">&times;</div>';
                 closeDiv.className = 'secretdiscounter-extension__button_close';
@@ -268,13 +292,13 @@ Storage.clear = function(callback) {
                     'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
                     'currentUrl': siteUrl+item.url,
                     'storename': ucfirst(item.name)
-                }, data.text);
+                }, storageDataStores.text);
                 var text = '<a href="' + siteUrl + '#login" class="cd-logo" target="_blank">'+
                     "<img class='cd-logo_big' src='" + logoImage + "' width='170' alt='secretdiscounter logo'>"+
                     "<img class='cd-logo_small' src='" + logoImageWhite + "' width='32' alt='sd logo'>"+
                     '</a>' +
                     '<div class="secretdiscounter-extension__text">' + message + '</div>' +
-                    '<a class="secretdiscounter-extension__link" href="' + url + '#login" target="_blank">Получить&nbsp;кэшбэк</a>';
+                    '<a class="secretdiscounter-extension__link" href="' + url + '" target="_blank">Получить&nbsp;кэшбэк</a>';
                 div = document.createElement('div');
                 div.className = 'secretdiscounter-extension';
                 div.innerHTML = text;
@@ -289,12 +313,12 @@ Storage.clear = function(callback) {
 
     //изменение поиска
     function checkSearch(searchString, engine) {
-        if (storageData.response == null || storageData.response == null || storageData.response.stores.length == 0) {
+        if (storageDataStores == null || storageDataStores.stores.length == 0) {
             return null;
         }
         var div = document.createElement('div');
         var message = false;
-        storageData.response.stores.forEach(function (item) {
+        storageDataStores.stores.forEach(function (item) {
             //console.log(item, searchString);
             //проверка, что строка поиска включена в название или урл магазина
             if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0)&& !message) {
@@ -303,8 +327,14 @@ Storage.clear = function(callback) {
                     'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
                     'currentUrl': siteUrl + item.url,
                     'storename': ucfirst(item.name)
-                }, storageData.response.searchtext);
-                div.innerHTML = "<a href='" + siteUrl +"stores/"+item.store_route+"#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
+                }, storageDataStores.searchtext);
+                var url = '';
+                if (usersData && usersData.user) {
+                    url = siteUrl + 'goto/store:' + item.uid;
+                } else {
+                    url = siteUrl + 'stores/' + item.store_route+'#login';
+                }
+                div.innerHTML = "<a href='" + url+"' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
                 div.id = 'secretdiscounter-search';
                 var searchResult = document.querySelector(engine.result_selector);
                 //console.log(searchResult, div);
@@ -331,9 +361,12 @@ Storage.configure({
 
 Storage.load(function () {
     // get a storage key
-    storageData = Storage.get("secretdiscounter_local");
-    if (!storageData || !storageData.response || !storageData.response.stores || !storageData.date
-        || storageData.date + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+    storageDataDate = Storage.get(storageDataKeyDate);
+    //storageDataUsers = Storage.get(storageDataKeyUsers);
+    storageDataStores = Storage.get(storageDataKeyStores);
+    //console.log('проверка ',storageDataDate, storageDataUsers, storageDataStores);
+    if (!storageDataDate || !storageDataStores
+        || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
         //||storageData.date + 100 < new Date().getTime() ) {
         getData();
     }
@@ -360,6 +393,9 @@ var yandexEngine = {
     'result_selector': '.serp-list',
     'result_first_item': 0
 };
+
+//получаем пользователя
+getUsers();
 
 window.onload = function() {
     setAppId();
@@ -393,7 +429,7 @@ window.onload = function() {
         }
     }
 
-    findShop(storageData.response);
+    findShop();
     //Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 };
 
