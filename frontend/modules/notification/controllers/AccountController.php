@@ -29,6 +29,7 @@ class AccountController extends \yii\web\Controller
     $request = Yii::$app->request;
     $page = $request->get('page');
     $type = $request->get('type');
+    $plugin = $request->get('g') == 'plugin';
 
     $validator = new \yii\validators\NumberValidator();
     if (!empty($page) && !$validator->validate($page) ||
@@ -53,8 +54,8 @@ class AccountController extends \yii\web\Controller
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
     $data['notifications'] = $pagination->data();
 
-    if($is_ajax){
-      $user = Users::findOne(\Yii::$app->user->id);
+    if ($is_ajax || $plugin) {
+      $user = \Yii::$app->user->identity;
       $out = [
         'btn' => 'Смотреть еще',
         'notifications'=>[],
@@ -72,7 +73,7 @@ class AccountController extends \yii\web\Controller
     }
 
     foreach ($data['notifications'] as &$notification) {
-      if($is_ajax){
+      if ($is_ajax || $plugin) {
         $date = strtotime($notification['added']);
         $out['notifications'][]=[
             'text' => Yii::$app->messageParcer->notificationText($notification),
@@ -87,7 +88,7 @@ class AccountController extends \yii\web\Controller
       }
     };
 
-    if ($is_ajax) {
+    if ($is_ajax || $plugin) {
       if(Yii::$app->request->isPost){
         //помечаем выгруженные строки как прочитанные
         Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));
