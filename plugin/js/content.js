@@ -4,8 +4,8 @@ var logoImage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"
 
  var logoImageWhite = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="78.095078mm" height="37.885025mm" viewBox="0 0 78.095077 37.885025" version="1.1" id="svg3775"><defs id="defs3769" /><g id="layer1" transform="translate(67.419495,10.624447)"><path d="m -21.917776,-10.624447 h 13.6525 c 10.421276,0 18.940859,8.5195826 18.940859,18.9441666 0,10.4212764 -8.519583,18.9408594 -18.940859,18.9408594 h -13.6525 -0.128985 -0.0033 -0.12237 -0.0033 c -2.728516,0 -4.964245,-2.235729 -4.964245,-4.964245 V 10.343782 h 14.297422 c 0.780521,1.769401 2.553229,3.006328 4.610365,3.006328 2.778125,0 5.033698,-2.252265 5.033698,-5.0303904 0,-2.781433 -2.255573,-5.033698 -5.033698,-5.033698 -2.057136,0 -3.829844,1.236927 -4.607058,3.006328 H -27.13999 v -11.952552 c 0,-2.728516 2.235729,-4.9642446 4.964245,-4.9642446 h 0.0033 l 0.12237,0.0033 h 0.0033 l 0.128985,-0.0033" style="fill:#dbc335;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.03307291" id="path18"/><path d="m -67.419495,8.3197196 v -13.979922 c 0,-2.731823 2.233745,-4.9642446 4.964245,-4.9642446 h 27.956536 c 2.728516,0 4.964245,2.2324216 4.964245,4.9642446 v 0 c 0,2.731823 -2.235729,4.96424498 -4.964245,4.96424498 h -13.354843 c -0.777214,-1.76940098 -2.546615,-3.00632898 -4.607058,-3.00632898 -2.778125,0 -5.03039,2.252266 -5.03039,5.030391 0,2.781432 2.252265,5.033698 5.03039,5.033698 2.060443,0 3.829844,-1.236927 4.610365,-3.009635 h 13.351536 v 0.0033 h 0.128985 v 0 l 0.125677,0.0033 v 0.0033 l 0.125677,0.0066 v 0 l 0.125677,0.0099 v 0.0033 l 0.12237,0.0099 v 0.0033 l 0.125677,0.01654 v 0 l 0.12237,0.01984 v 0 l 0.122369,0.02315 v 0 l 0.119063,0.02646 v 0 l 0.119062,0.02977 v 0 l 0.119063,0.03307 v 0 l 0.115755,0.03307 v 0.0033 l 0.115755,0.03638 v 0 l 0.115756,0.03969 v 0 l 0.112447,0.043 v 0 l 0.109141,0.0463 v 0 l 0.112448,0.0463 v 0.0033 l 0.109141,0.04961 v 0 l 0.10914,0.05292 v 0.0033 l 0.105834,0.05292 v 0.0033 l 0.102526,0.05622 v 0 l 0.105833,0.05953 v 0.0033 l 0.09922,0.06284 v 0 l 0.09922,0.06615 v 0 l 0.09922,0.06615 v 0 l 0.09922,0.07276 v 0 l 0.0926,0.07276 v 0 l 0.0926,0.07276 v 0.0033 l 0.0926,0.07607 v 0 l 0.0893,0.07607 v 0.0033 l 0.08599,0.07938 v 0 l 0.08599,0.08268 v 0.0033 l 0.08268,0.08268 v 0 l 0.08268,0.08599 v 0.0033 l 0.07607,0.08599 v 0.0033 l 0.07938,0.0893 v 0 l 0.07607,0.0926 v 0.0033 l 0.07276,0.0926 v 0 l 0.06945,0.09591 v 0 l 0.06615,0.09922 v 0 l 0.06615,0.09922 v 0 l 0.06615,0.102526 v 0 l 0.05953,0.102526 v 0 l 0.05953,0.102526 v 0.0033 l 0.05622,0.102526 v 0.0033 l 0.05292,0.105833 v 0 l 0.05292,0.109141 v 0.0033 l 0.0463,0.109141 v 0 l 0.0463,0.10914 v 0.0033 l 0.04299,0.10914 v 0.0033 l 0.03969,0.112448 v 0.0033 l 0.03969,0.112448 v 0 l 0.03307,0.119062 v 0 l 0.03307,0.115755 v 0.0033 l 0.02977,0.115755 v 0.0033 l 0.02646,0.119063 v 0 l 0.02315,0.119062 v 0.0033 l 0.01984,0.12237 v 0 l 0.01984,0.12237 v 0 l 0.01323,0.12237 v 0 l 0.0099,0.125677 v 0 l 0.0099,0.125677 v 0.0033 l 0.0033,0.125677 v 0 l 0.0033,0.125677 V 22.2961 c 0,2.731823 -2.235729,4.964245 -4.964245,4.964245 H -62.45525 c -2.7305,0 -4.964245,-2.232422 -4.964245,-4.964245 v 0 c 0,-2.731823 2.233745,-4.964245 4.964245,-4.964245 h 13.331693 c 0.757369,1.825625 2.553229,3.108855 4.653359,3.108855 2.778125,0 5.030391,-2.252266 5.030391,-5.033698 0,-2.778125 -2.252266,-5.030391 -5.030391,-5.030391 -2.020755,0 -3.760391,1.190625 -4.564063,2.907109 H -62.45525 v -0.0033 h -0.128984 v 0 l -0.125678,-0.0033 v -0.0033 l -0.125677,-0.0066 v 0 l -0.125677,-0.0099 v -0.0033 l -0.125677,-0.0099 v -0.0033 l -0.12237,-0.01654 v 0 l -0.122369,-0.01984 v 0 l -0.12237,-0.02315 v 0 l -0.119063,-0.02646 v 0 l -0.119062,-0.02977 v 0 L -63.810578,13.092 v 0 l -0.117078,-0.03307 v -0.0033 l -0.115094,-0.03625 v 0 l -0.115094,-0.03969 v 0 l -0.112778,-0.04299 v 0 l -0.111787,-0.0463 v 0 l -0.111125,-0.0463 v -0.0033 l -0.10881,-0.04961 v 0 l -0.10881,-0.05293 v 0 l -0.105502,-0.05622 v -0.0033 l -0.104511,-0.05622 v 0 l -0.102856,-0.05953 v -0.0033 l -0.102527,-0.06284 v 0 l -0.09922,-0.06615 v 0 l -0.0979,-0.06615 v 0 l -0.0969,-0.06945 v -0.0033 l -0.09459,-0.07276 v 0 l -0.0936,-0.07276 v -0.0033 l -0.09095,-0.07607 v 0 l -0.08897,-0.07607 v -0.0033 l -0.08764,-0.07937 v 0 l -0.08467,-0.08268 v -0.0033 l -0.084,-0.08268 v 0 l -0.0807,-0.08599 v -0.0033 l -0.07904,-0.08599 v -0.0033 l -0.07706,-0.0893 v 0 l -0.07541,-0.09261 v -0.0033 l -0.07276,-0.0926 v 0 l -0.07045,-0.09591 v 0 l -0.06747,-0.09922 v 0 l -0.06615,-0.09922 v 0 l -0.06416,-0.102526 v 0 l -0.06119,-0.09922 v -0.0033 l -0.05788,-0.102526 v -0.0033 l -0.05722,-0.102526 v -0.0033 L -66.9277,10.46624 v 0 l -0.05159,-0.109229 v 0 l -0.04763,-0.112448 v 0 l -0.04729,-0.10914 v -0.0033 l -0.043,-0.10914 v -0.0033 L -67.1569,9.9072346 v -0.0033 l -0.03803,-0.112448 v 0 l -0.03506,-0.119062 v 0 l -0.03241,-0.115755 v -0.0033 l -0.0291,-0.115755 v -0.0033 l -0.02613,-0.119063 v 0 l -0.02414,-0.119062 v -0.0033 l -0.0205,-0.12237 v 0 l -0.01654,-0.12237 v 0 l -0.01455,-0.12237 v 0 l -0.01091,-0.125677 v 0 l -0.0083,-0.125677 v -0.0033 l -0.0056,-0.125677 v 0 l -0.0013,-0.125677" style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.03307291" id="path20"/></g></svg>';
 
-//var siteUrl = 'https://secretdiscounter.ru/';
-var siteUrl = 'http://sdyii/';
+var siteUrl = 'https://secretdiscounter.ru/';
+//var siteUrl = 'http://sdyii/';
 var storesUrl = 'stores/data';
 var userUrl = 'account/notification';
 var storageDataKeyStores = 'secretdiscounter_local_stores';
@@ -319,7 +319,6 @@ Storage.clear = function(callback) {
         var div = document.createElement('div');
         var message = false;
         storageDataStores.stores.forEach(function (item) {
-            //console.log(item, searchString);
             //проверка, что строка поиска включена в название или урл магазина
             if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0)&& !message) {
                 //console.log(item.name, item.url);
@@ -336,11 +335,30 @@ Storage.clear = function(callback) {
                 }
                 div.innerHTML = "<a href='" + url+"' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
                 div.id = 'secretdiscounter-search';
-                var searchResult = document.querySelector(engine.result_selector);
-                //console.log(searchResult, div);
-                if (searchResult && !document.querySelector('#secretdiscounter-search')) {
-                    var nextElement = engine.result_first_item ? searchResult.parentNode.childNodes[0] : searchResult;
-                    searchResult.parentElement.insertBefore(div, nextElement);
+
+                if (engine.repeat < 2) {
+                    //просто положить
+                    var searchResult = document.querySelector(engine.result_selector);
+                    if (searchResult && !document.querySelector('#secretdiscounter-search')) {
+                        //имеется блок, куда есть выкладывать и нет нашего блока
+                        var nextElement = engine.result_first_item ? searchResult.parentNode.childNodes[0] : searchResult;
+                        searchResult.parentElement.insertBefore(div, nextElement);
+                    }
+                } else {
+                    //делаем повторы, если нет нашего блока
+                    var repeatTimes = engine.repeat;
+                    var searchResultInterval = setInterval(function(){
+                        var searchResult = document.querySelector(engine.result_selector);
+                        if (searchResult && !document.querySelector('#secretdiscounter-search')) {
+                            //имеется блок, куда есть выкладывать и нет нашего блока
+                            var nextElement = engine.result_first_item ? searchResult.parentNode.childNodes[0] : searchResult;
+                            searchResult.parentElement.insertBefore(div, nextElement);
+                        }
+                        repeatTimes--;
+                        if (repeatTimes < 1) {
+                            clearInterval(searchResultInterval);
+                        }
+                    }, 1000);
                 }
                 return false;
             }
@@ -353,6 +371,19 @@ Storage.clear = function(callback) {
         document.body.appendChild(div);
     }
 
+    function checkLocation(href, index, key){
+        if (index instanceof Array) {
+            for (var i=0; i<index.length; i++) {
+                if (href[index[i]] === key) {
+                    return true;
+                }
+            }
+        } else if (typeof(index) === 'number') {
+            return href[index] === key
+        }
+        return false;
+    }
+
 
 
 Storage.configure({
@@ -360,11 +391,8 @@ Storage.configure({
 });
 
 Storage.load(function () {
-    // get a storage key
     storageDataDate = Storage.get(storageDataKeyDate);
-    //storageDataUsers = Storage.get(storageDataKeyUsers);
     storageDataStores = Storage.get(storageDataKeyStores);
-    //console.log('проверка ',storageDataDate, storageDataUsers, storageDataStores);
     if (!storageDataDate || !storageDataStores
         || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
         //||storageData.date + 100 < new Date().getTime() ) {
@@ -373,25 +401,32 @@ Storage.load(function () {
 });
 
 
-var searchEngines = [
-    {
-        'search_id': 'lst-ib',
+var searchEngines = {
+    'google': {
+        'search_selector': '#lst-ib',
         'location_href': 'google',
         'location_href_index': 1,
         'result_selector': '#res',
-        'result_first_item': 1
+        'result_first_item': 1,
+        'repeat': 0
     },
-    {
-        'search_id': 'sb_form_q',
+    'bing': {
+        'search_selector': '#sb_form_q',
         'location_href': 'bing',
         'location_href_index': 1,
         'result_selector': '#b_results',
-        'result_first_item': 0
+        'result_first_item': 0,
+        'repeat': 0
+    },
+    'yandex': {
+        'search_selector': 'div.serp-header__main input.input__control',
+        'location_href': 'yandex',
+        'location_href_index': [0, 1],
+        'result_selector': '.serp-list',
+        'result_first_item': 0,
+        'dom_change_selector': '.main .main__center .main__content',
+        'repeat': 5 //повтор вывода
     }
-];
-var yandexEngine = {
-    'result_selector': '.serp-list',
-    'result_first_item': 0
 };
 
 //получаем пользователя
@@ -400,29 +435,32 @@ getUsers();
 window.onload = function() {
     setAppId();
 
-    //событие для яндекса
-    var yandexSearchResult = document.querySelector('.main .main__content');
-    var yandexInput = document.querySelector('div.serp-header__main input.input__control');
-    if (yandexSearchResult && yandexInput) {
+    //событие для яндекса при повторном поиске
+    var yandexDomElementChange = document.querySelector(searchEngines.yandex.dom_change_selector);
+    var yandexInput = document.querySelector(searchEngines.yandex.search_selector);
+    if (yandexDomElementChange && yandexInput) {
         var yandexSearchTimeOut = null;
-        yandexSearchResult.addEventListener('DOMSubtreeModified', function(){
-            clearTimeout(yandexSearchTimeOut);
-            yandexSearchTimeOut = setTimeout(function(){
-                if (yandexInput.value != ''){
-                    checkSearch(yandexInput.value.toUpperCase(), yandexEngine);
-                }
-            }, 1000);
+        yandexDomElementChange.addEventListener('DOMSubtreeModified', function(){
+            if (yandexSearchTimeOut === null) {
+                yandexSearchTimeOut = setTimeout(function(){
+                    clearTimeout(yandexSearchTimeOut);
+                    yandexSearchTimeOut = null;
+                }, 8000);
+                checkSearch(yandexInput.value.toUpperCase(), searchEngines.yandex);
+                //запускаем, после этого XX сек. запуск невозможен
+            }
+
         });
     }
 
-    //для гугл и бинг
+    //для гугл,  бинг, яндекс(первый запрос)
     var locationHref = location.hostname.split('.');
-    for (var i = 0 ; i < searchEngines.length ; i++) {
-        var engine = searchEngines[i];
-        var input = document.getElementById(engine.search_id);
-        if (input && locationHref[engine.location_href_index] == engine.location_href) {
+    for (key in searchEngines) {
+        var engine = searchEngines[key];
+        var input = document.querySelector(engine.search_selector);
+        if (input && checkLocation(locationHref, engine.location_href_index, engine.location_href)) {// locationHref[engine.location_href_index] == engine.location_href) {
             var value = input.value;
-            if (value !== '') {
+            if (value != null && value !== '') {
                 checkSearch(value.toUpperCase(), engine);
             }
             break;

@@ -4,8 +4,8 @@ function logoClick() {
     chrome.tabs.create({url: 'http://secretdiscounter.ru'});
 }
 
-//var siteUrl = 'https://secretdiscounter.ru/';
-var siteUrl = 'http://sdyii/';
+var siteUrl = 'https://secretdiscounter.ru/';
+//var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var usersData;
 
