@@ -75,3 +75,18 @@ button {
   background: #333;
   padding: 10px;
 }
+.secretdiscounter-pupup__info-logo {
+  text-align: center;
+  margin-top: 10px;
+}
+.secretdiscounter-pupup__info-logo img {
+  width: 100px;
+}
+.secretdiscounter-pupup__info-name {
+  text-align: center;
+  font-size: 15px;
+}
+.secretdiscounter-pupup__info-balance {
+  text-align: center;
+  font-size: 14px;
+}

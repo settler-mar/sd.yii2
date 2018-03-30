@@ -9,9 +9,11 @@ var siteUrl = 'http://sdyii/';
 var storesUrl = 'stores/data';
 var userUrl = 'account/notification';
 var storageDataKeyStores = 'secretdiscounter_local_stores';
-var storageDataKeyUsers = 'secretdiscounter_local_users';
 var storageDataKeyDate = 'secretdiscounter_local_date';
 var appId = 'sd_chrome_app';
+var usersData = false;
+var storageDataStores = false;
+var storageDataDate = false;
 
 
 
@@ -187,10 +189,6 @@ Storage.clear = function(callback) {
     Storage._do("clear", [callback]);
 };
 
-    var storageDataStores = false;
-    var storageDataDate = false;
-    var storageDataUsers = false;
-
     function ucfirst(str) {   // Make a string&#039;s first character uppercase
         var f = str.charAt(0).toUpperCase();
         return f + str.substr(1, str.length - 1);
@@ -214,6 +212,15 @@ Storage.clear = function(callback) {
         });
     }
 
+    function getUsers(){
+        chrome.runtime.sendMessage({
+            action: 'xhttp',
+            url: siteUrl + userUrl
+        }, function (responseData) {
+            usersData = responseData;
+        });
+    }
+
 
     function getData() {
         //console.log('get data');
@@ -224,7 +231,7 @@ Storage.clear = function(callback) {
         //         findShop();
         //     }, 2000);
         // });
-        getRequest(userUrl, storageDataKeyUsers, null);
+        //getRequest(userUrl, storageDataKeyUsers, null);
         Storage.set(storageDataKeyDate, new Date().getTime());
     }
 
@@ -270,7 +277,12 @@ Storage.clear = function(callback) {
             if ((here == currentUrl || here.indexOf(currentUrl) > -1) && !div) {
                 //нашли, мы находимся здесь
                 //console.log('here', item);
-                var url = siteUrl + 'stores/' + item.store_route;
+                var url = '';
+                if (usersData && usersData.user) {
+                    url = siteUrl + 'goto/store:' + item.uid;
+                } else {
+                    url = siteUrl + 'stores/' + item.store_route+'#login';
+                }
                 var closeDiv = document.createElement('div');
                 closeDiv.innerHTML = '<div class="secretdiscounter-extension__button_icon">&times;</div>';
                 closeDiv.className = 'secretdiscounter-extension__button_close';
@@ -286,7 +298,7 @@ Storage.clear = function(callback) {
                     "<img class='cd-logo_small' src='" + logoImageWhite + "' width='32' alt='sd logo'>"+
                     '</a>' +
                     '<div class="secretdiscounter-extension__text">' + message + '</div>' +
-                    '<a class="secretdiscounter-extension__link" href="' + url + '#login" target="_blank">Получить&nbsp;кэшбэк</a>';
+                    '<a class="secretdiscounter-extension__link" href="' + url + '" target="_blank">Получить&nbsp;кэшбэк</a>';
                 div = document.createElement('div');
                 div.className = 'secretdiscounter-extension';
                 div.innerHTML = text;
@@ -316,7 +328,13 @@ Storage.clear = function(callback) {
                     'currentUrl': siteUrl + item.url,
                     'storename': ucfirst(item.name)
                 }, storageDataStores.searchtext);
-                div.innerHTML = "<a href='" + siteUrl +"stores/"+item.store_route+"#login' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
+                var url = '';
+                if (usersData && usersData.user) {
+                    url = siteUrl + 'goto/store:' + item.uid;
+                } else {
+                    url = siteUrl + 'stores/' + item.store_route+'#login';
+                }
+                div.innerHTML = "<a href='" + url+"' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
                 div.id = 'secretdiscounter-search';
                 var searchResult = document.querySelector(engine.result_selector);
                 //console.log(searchResult, div);
@@ -344,10 +362,10 @@ Storage.configure({
 Storage.load(function () {
     // get a storage key
     storageDataDate = Storage.get(storageDataKeyDate);
-    storageDataUsers = Storage.get(storageDataKeyUsers);
+    //storageDataUsers = Storage.get(storageDataKeyUsers);
     storageDataStores = Storage.get(storageDataKeyStores);
     //console.log('проверка ',storageDataDate, storageDataUsers, storageDataStores);
-    if (!storageDataDate || !storageDataUsers || !storageDataStores
+    if (!storageDataDate || !storageDataStores
         || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
         //||storageData.date + 100 < new Date().getTime() ) {
         getData();
@@ -376,8 +394,8 @@ var yandexEngine = {
     'result_first_item': 0
 };
 
-
-
+//получаем пользователя
+getUsers();
 
 window.onload = function() {
     setAppId();
