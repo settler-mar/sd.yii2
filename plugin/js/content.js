@@ -333,8 +333,10 @@ Storage.clear = function(callback) {
                 } else {
                     url = siteUrl + 'stores/' + item.store_route+'#login';
                 }
-                div.innerHTML = "<a href='" + url+"' target='_blank'><img width='32' src='" + searchFormImage + "' >" + message + "</a>";
+                div.innerHTML = "<a href='" + url+"'target='_blank'>"+
+                    "<img style='margin-right:5px;height:18px;vertical-align:middle' src='" + searchFormImage + "' >" + message + "</a>";
                 div.id = 'secretdiscounter-search';
+                div.setAttribute('style', engine.styles);
 
                 if (engine.repeat < 2) {
                     //просто положить
@@ -408,7 +410,8 @@ var searchEngines = {
         'location_href_index': 1,
         'result_selector': '#res',
         'result_first_item': 1,
-        'repeat': 0
+        'repeat': 0,
+        'styles':''
     },
     'bing': {
         'search_selector': '#sb_form_q',
@@ -416,7 +419,8 @@ var searchEngines = {
         'location_href_index': 1,
         'result_selector': '#b_results',
         'result_first_item': 0,
-        'repeat': 0
+        'repeat': 0,
+        'styles':'margin-left:5px;'
     },
     'yandex': {
         'search_selector': 'div.serp-header__main input.input__control',
@@ -425,7 +429,8 @@ var searchEngines = {
         'result_selector': '.serp-list',
         'result_first_item': 0,
         'dom_change_selector': '.main .main__center .main__content',
-        'repeat': 5 //повтор вывода
+        'repeat': 5, //повтор вывода
+        'styles':'margin-left:-40px;'
     }
 };
 
