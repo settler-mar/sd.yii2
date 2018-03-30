@@ -5,6 +5,7 @@ namespace frontend\modules\notification\controllers;
 use yii;
 use frontend\modules\notification\models\Notifications;
 use frontend\components\Pagination;
+use frontend\modules\users\models\Users;
 
 class AccountController extends \yii\web\Controller
 {
@@ -53,9 +54,20 @@ class AccountController extends \yii\web\Controller
     $data['notifications'] = $pagination->data();
 
     if($is_ajax){
+      $user = Users::findOne(\Yii::$app->user->id);
       $out = [
         'btn' => 'Смотреть еще',
-        'notifications'=>[]
+        'notifications'=>[],
+        'user' => [
+            'balance' => $user->balance,
+            'name' => $user->name,
+            'id' => $user->uid,
+            'email' => $user->email,
+            'photo' => $user->photo,
+            'birthday' => $user->birthday,
+            'sex' => $user->sex,
+        ],
+
       ];
     }
 
