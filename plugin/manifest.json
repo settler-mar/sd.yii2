@@ -3,7 +3,7 @@
    "name": "SecretDiscount Cash Back",
    "version": "1.0",
    "description": "Hot Deals, Top Stores, Your Account Information and Cash Back are all just one click away.",
-   "homepage_url": "http://secretdiscount.ru/",
+   "homepage_url": "http://secretdiscounter.ru/",
    "permissions": [
       "tabs",// Разрешить расширению работать с вкладками
       "webNavigation", "webRequest", "storage", "cookies", "unlimitedStorage", "webNavigation",
