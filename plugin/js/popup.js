@@ -4,8 +4,8 @@ function logoClick() {
     chrome.tabs.create({url: 'http://secretdiscounter.ru'});
 }
 
-var siteUrl = 'https://secretdiscounter.ru/';
-//var siteUrl = 'http://sdyii/';
+//var siteUrl = 'https://secretdiscounter.ru/';
+var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var usersData;
 
@@ -21,7 +21,7 @@ function getUser(callback){
     });
 }
 var displayUser = function(){
-    console.log(usersData);
+    //console.log(usersData);
     if (usersData && usersData.user) {
         document.querySelector('.secretdiscounter-pupup__info-logo').innerHTML = '<img src="'+siteUrl+usersData.user.photo+'"/>';
         document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;

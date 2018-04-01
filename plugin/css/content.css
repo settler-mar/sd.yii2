@@ -46,6 +46,7 @@
 .secretdiscounter-extension__button_close {
     /*float: right;*/
     margin-right: 40px;
+    margin-left: 10px;
     min-width: 30px;
     height: 30px;
     box-sizing: border-box;
