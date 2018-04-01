@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
         xhr.open('GET', request.url+'?g=plugin', true); //  ГЕТ
         xhr.responseType='json';
         xhr.onreadystatechange = function() {
-            //console.log(xhr.readyState, xhr.response);
+            console.log(xhr.readyState, xhr.response);
 
             if (xhr.readyState == 4) // если всё прошло хорошо, выполняем, что в скобках
             {

@@ -7,7 +7,7 @@
    "permissions": [
       "tabs",// Разрешить расширению работать с вкладками
       "webNavigation", "webRequest", "storage", "cookies", "unlimitedStorage", "webNavigation",
-   //   "http://sdyii/stores/data", "http://sdyii/accout/notification", "http://sdyii/fonts"  // Разрешить расширению обращаться к указанному адресу
+     // "http://sdyii/stores/data", "http://sdyii/accout/notification", "http://sdyii/fonts/proxima-nova"  // Разрешить расширению обращаться к указанному адресу
       "https://secretdiscounter.ru/stores/data", "http://secretdiscounter.ru/accout/notification", "http://sdyii/fonts"   // Разрешить расширению обращаться к указанному адресу
    ],
    "background": {
@@ -24,7 +24,7 @@
    "content_scripts": [ {
       "all_frames": false,
       "js": [ "js/content.js" ],
-      "matches": [ "\u003Call_urls>" ],
+      "matches": [ "<all_urls>" ],
       "run_at": "document_start",
       "css": ["css/content.css"]
    } ],

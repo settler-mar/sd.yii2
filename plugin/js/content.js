@@ -17,17 +17,28 @@ var appIds = {
     'chrome': {
         'id': 'sd_chrome_app',
         //'used': !!window.chrome && !!window.chrome.webstore
-        'used': window.chrome !== null && window.chrome.webstore !== null && !isOpera
+        //'used': window.chrome !== null && window.chrome.webstore !== null && !isOpera,
+        'search_delay': 0
     },
     'firefox': {
         'id': 'sd_firefox_app',
-        'used':  typeof InstallTrigger !== 'undefined'
+        //'used':  typeof InstallTrigger !== 'undefined',
+        'search_delay': 0
     },
     'opera': {
         'id': 'sd_opera_app',
-        'used': isOpera
+        //'used': isOpera,
+        'search_delay': 100
     }
 };
+var currentBrowser = 'chrome';
+if (navigator.userAgent.indexOf(' OPR/') >= 0) {
+    currentBrowser = 'opera';
+} else if (!!window.chrome && !!window.chrome.webstore) {
+    currentBrowser = 'chrome';
+} else if (typeof InstallTrigger !== 'undefined') {
+    currentBrowser = 'firefox';
+}
 
 
 
@@ -227,11 +238,14 @@ Storage.clear = function(callback) {
     }
 
     function getUsers(){
+        console.log('getusers');
         chrome.runtime.sendMessage({
             action: 'xhttp',
             url: siteUrl + userUrl
         }, function (responseData) {
+            console.log('getusers success', responseData);
             usersData = responseData;
+
         });
     }
 
@@ -336,7 +350,7 @@ Storage.clear = function(callback) {
         storageDataStores.stores.forEach(function (item) {
             //проверка, что строка поиска включена в название или урл магазина
             if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0)&& !message) {
-                //console.log(item.name, item.url);
+                console.log(item, usersData);
                 message = replaceTemplate({
                     'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
                     'currentUrl': siteUrl + item.url,
@@ -384,14 +398,12 @@ Storage.clear = function(callback) {
     }
 
     function setAppId(){
-        for (key in appIds) {
-            if (appIds[key].used) {
-                var div = document.createElement('div');
-                div.id = appIds[key].id;
-                div.style = 'display:none;';
-                document.body.appendChild(div);
-            }
-        }
+
+        var div = document.createElement('div');
+        div.id = appIds[currentBrowser].id;
+        div.style = 'display:none;';
+        document.body.appendChild(div);
+        console.log(appIds[currentBrowser]);
     }
 
     function checkLocation(href, index, key){
@@ -455,6 +467,8 @@ var searchEngines = {
     }
 };
 
+
+console.log('start');
 //получаем пользователя
 getUsers();
 
@@ -487,7 +501,13 @@ window.onload = function() {
         if (input && checkLocation(locationHref, engine.location_href_index, engine.location_href)) {// locationHref[engine.location_href_index] == engine.location_href) {
             var value = input.value;
             if (value != null && value !== '') {
-                checkSearch(value.toUpperCase(), engine);
+                if (appIds[currentBrowser].search_delay) {
+                    setTimeout(function(){
+                        checkSearch(value.toUpperCase(), engine);
+                    }, appIds[currentBrowser].search_delay);
+                } else {
+                    checkSearch(value.toUpperCase(), engine);
+                }
             }
             break;
         }
