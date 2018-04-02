@@ -310,6 +310,7 @@ class DefaultController extends SdController
 
     $storesData["favorites_link"] = $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ?
         '/favorite' : '';
+    $storesData["users_reviews"] = Reviews::top();
 
     return $this->render('catalog', $storesData);
   }

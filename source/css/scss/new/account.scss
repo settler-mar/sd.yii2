@@ -430,4 +430,15 @@
     margin: 15px 0 45px;
     padding: 15px;
   }
+
+  &-welcome_share {
+    &-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .share42init a:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
 }

@@ -309,6 +309,7 @@ class DefaultController extends SdController
         'category_id' => isset($category) ? $category : false
     ]);
     $contentData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
+    $contentData["users_reviews"] = Reviews::top();
 
     return $this->render('catalog', $contentData);
   }

@@ -400,8 +400,17 @@
           color: $coupons_abc_store_hover_color;
           //text-decoration: underline;
         }
-
-
+      }
+    }
+    &_comments.scroll_box {
+      .scroll_box-item {
+        width: 92%;
+        box-sizing: border-box;
+        max-width: 100%;
+        padding: 4%;
+        margin-left: 4%;
+        margin-right: 4%;
+        min-width: 92%;
       }
     }
   }

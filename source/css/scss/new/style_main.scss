@@ -336,6 +336,10 @@ h2, h3, h4 {
 
 section {
   margin-bottom: 0;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .margin {
