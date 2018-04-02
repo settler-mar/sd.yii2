@@ -39,16 +39,19 @@ var sdTooltip = function () {
     function setPositon(elem, position){
         var $e = $(elem);
         var $win = $(window);
+        var customTop = $(elem).data('top');//задана позиция внутри элемента
+        var customLeft = $(elem).data('left');//задана позиция внутри элемента
+        var norevert = $(elem).data('norevert');//не переворачивать
         switch(position) {
             case 'top':
-                pos_left = $e.offset().left + ($e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
-                pos_top = $e.offset().top - $(tooltip).outerHeight() - arrow;
+                pos_left = $e.offset().left + (customLeft ? customLeft : $e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
+                pos_top = $e.offset().top - $(tooltip).outerHeight() + (customTop ? customTop : 0) - arrow;
                 $(tooltip).find('.tipso_arrow').css({
                     marginLeft: -arrowWidth,
                     marginTop: ''
                 });
-                if (pos_top < $win.scrollTop()) {
-                    pos_top = $e.offset().top + $e.outerHeight() + arrow;
+                if ((pos_top < $win.scrollTop()) && !norevert) {
+                    pos_top = $e.offset().top +(customTop ? customTop : $e.outerHeight()) + arrow;
                     $(tooltip).removeClass('top bottom left right');
                     $(tooltip).addClass('bottom');
                 }
@@ -58,14 +61,14 @@ var sdTooltip = function () {
                 }
                 break;
             case 'bottom':
-                pos_left = $e.offset().left + ($e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
-                pos_top = $e.offset().top + $e.outerHeight() + arrow;
+                pos_left = $e.offset().left + (customLeft ? customLeft : $e.outerWidth() / 2) - $(tooltip).outerWidth() / 2;
+                pos_top = $e.offset().top + (customTop ? customTop : $e.outerHeight()) + arrow;
                 $(tooltip).find('.tipso_arrow').css({
                     marginLeft: -arrowWidth,
                     marginTop: ''
                 });
-                if (pos_top + $(tooltip).height() > $win.scrollTop() + $win.outerHeight()) {
-                    pos_top = $e.offset().top - $(tooltip).height() - arrow;
+                if ((pos_top + $(tooltip).height() > $win.scrollTop() + $win.outerHeight()) && !norevert) {
+                    pos_top = $e.offset().top - $(tooltip).height() + (customTop ? customTop : 0) - arrow;
                     $(tooltip).removeClass('top bottom left right');
                     $(tooltip).addClass('top');
                 }
@@ -76,7 +79,7 @@ var sdTooltip = function () {
                 break;
         }
         $(tooltip).css({
-            left: pos_left,
+            left:  pos_left,
             top: pos_top
         });
     }
