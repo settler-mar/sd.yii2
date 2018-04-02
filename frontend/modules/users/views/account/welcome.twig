@@ -7,79 +7,97 @@
   </section>
 {% endif %}
 
-<section class="margin">
-  <h2>
-    {{ t('account', 'user_loyalty_status') }}
-  </h2>
-  <div class="align-center margin">
-    <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
-  </div>
-
-  <div class="account-circles-wrap">
-    {% for key,status in statuses_marafon %}
-      <div class="account-circles-item {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-active') }}">
-        {% if status.total<100 %}
-          {% if status.total_p>0 %}
-            <div class="account-circles-item-padding"
-                 style="width: {{ status.total_p }}%;height: {{ status.total_p }}%;"></div>
-          {% endif %}
-
-          {% if status.total>0 %}
-            <div class="account-circles-item-confirm"
-                 style="width: {{ status.total }}%;height: {{ status.total }}%;"></div>
-          {% endif %}
-        {% endif %}
-        <div class="account-circles-item-name">
-          {% if  status.bonus>0 %}
-            {{ status.display_name }}
-          {% endif %}
-        </div>
-        <div
-            class="
-                        account-circles-item-percent
-                        account-circles-item-percent-{{ status.code }}
-                        {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-percent-active') }}
-                    "
-            {% if  status.description %}
-              data-toggle="tooltip" data-original-title="{{ status.description }}"
-            {% endif %}
-        >
-                    <span class="account-circles-item-percent-text">
-                        {% if  status.bonus>0 %}
-                          +{{ status.bonus }}%
-                        {% else %}
-                          {{ status.display_name }}
-                        {% endif %}
-                    </span>
-        </div>
-        <div class="account-circles-item-sum">
-          {% if  status.min_sum %}
-            {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
-          {% else %}
-
-          {% endif %}
-        </div>
-        <div class="account-circles-item-dop_label">
-          {% if key==t_satus_id %}
-            <div class="account-circles-item-dop_label-active">
-              {{ t('account', 'user_loyalty_current_status') }}
-            </div>
-          {% else %}
-            {% if key==4 %}
-              <a href="#"
-                 data-question="Извините, данная функция находится в разработке"
-                 data-button_yes="ОК"
-                 data-notyfy_class="notify_box-alert"
-                 data-title="<br>"
-                 class="disabled">
-                Подключить сейчас
-              </a>
-            {% endif %}
-          {% endif %}
-        </div>
+{% if newuser and newuser == '1' %}
+    <section class="margin account-welcome_share">
+      <div class="align-center">
+          <p class="account-welcome_share-text">Для того, чтобы активировать платиновый статус лояльности и получить +30% к ставке кэшбэка в подарок, расскажите о нас в своих соцсетях:</p>
+          <div class="share42init accauntSoc accauntSoc_32"
+               data-url="https://secretdiscounter.ru?r={{ user_id }}"
+               data-title="Друзья! Вот сервис, который возвращает до 40% с каждой покупки, в интернете и оффлайне. Регистрируйтесь и не переплачивайте!"
+               data-description="Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира."
+               data-socials="1,0,2,4,3,5,6"
+               data-icon-size="40"
+               data-icon-type="svg"
+               data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'Успешно','message':'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован и внизу уже появляется блок про его статус.'});"
+          >
+          </div>
+          <p>Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!</p>
       </div>
-    {% endfor %}
-  </div>
+    </section>
+{% endif %}
+<section id="account_circles_items" class="margin {% if newuser and newuser == '1' %}hidden{% endif %}">
+    <h2>
+        {{ t('account', 'user_loyalty_status') }}
+    </h2>
+    <div class="align-center margin">
+      <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
+    </div>
+
+    <div class="account-circles-wrap">
+        {% for key,status in statuses_marafon %}
+          <div class="account-circles-item {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-active') }}">
+              {% if status.total<100 %}
+                  {% if status.total_p>0 %}
+                    <div class="account-circles-item-padding"
+                         style="width: {{ status.total_p }}%;height: {{ status.total_p }}%;"></div>
+                  {% endif %}
+
+                  {% if status.total>0 %}
+                    <div class="account-circles-item-confirm"
+                         style="width: {{ status.total }}%;height: {{ status.total }}%;"></div>
+                  {% endif %}
+              {% endif %}
+            <div class="account-circles-item-name">
+                {% if  status.bonus>0 %}
+                    {{ status.display_name }}
+                {% endif %}
+            </div>
+            <div
+                    class="
+                          account-circles-item-percent
+                          account-circles-item-percent-{{ status.code }}
+                          {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-percent-active') }}
+                      "
+                    {% if  status.description %}
+                      data-toggle="tooltip" data-original-title="{{ status.description }}"
+                    {% endif %}
+            >
+                      <span class="account-circles-item-percent-text">
+                          {% if  status.bonus>0 %}
+                            +{{ status.bonus }}%
+                          {% else %}
+                              {{ status.display_name }}
+                          {% endif %}
+                      </span>
+            </div>
+            <div class="account-circles-item-sum">
+                {% if  status.min_sum %}
+                    {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+                {% else %}
+
+                {% endif %}
+            </div>
+            <div class="account-circles-item-dop_label">
+                {% if key==t_satus_id %}
+                  <div class="account-circles-item-dop_label-active">
+                      {{ t('account', 'user_loyalty_current_status') }}
+                  </div>
+                {% else %}
+                    {% if key==4 %}
+                      <a href="#"
+                         data-question="Извините, данная функция находится в разработке"
+                         data-button_yes="ОК"
+                         data-notyfy_class="notify_box-alert"
+                         data-title="<br>"
+                         class="disabled">
+                        Подключить сейчас
+                      </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+    </div>
 </section>
 
 
@@ -107,7 +125,7 @@
 </section>
 
 {% if newuser and newuser == '1' %}
-  <div class="align-center">
+  <div class="align-center margin">
     <a href="/stores" class="btn">Перейти к покупкам с кэшбэком &#8594;</a>
   </div>
 {% endif %}

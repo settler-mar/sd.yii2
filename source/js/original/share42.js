@@ -9,7 +9,7 @@ share42 = function (){
     if (e[k].getAttribute('data-url') != -1)
       u = e[k].getAttribute('data-url');
     var promo = e[k].getAttribute('data-promo');
-    if(promo == -1) {
+    if(promo && promo.length>0) {
       var key = 'promo=',
         promoStart = u.indexOf(key),
         promoEnd = u.indexOf('&', promoStart),
@@ -18,7 +18,7 @@ share42 = function (){
         promo = u.substr(promoStart + key.length, promoLength);
       }
     }
-    var self_promo = promo !=-1 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
+    var self_promo = promo && promo.length > 0 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
     if (e[k].getAttribute('data-icon-size') != -1)
       var icon_size = e[k].getAttribute('data-icon-size');
     if (e[k].getAttribute('data-title') != -1)
@@ -31,6 +31,10 @@ share42 = function (){
       var f = e[k].getAttribute('data-path');
     if (e[k].getAttribute('data-icons-file') != -1)
       var fn = e[k].getAttribute('data-icons-file');
+    if (e[k].getAttribute('data-script-after')) {
+      self_promo += "setTimeout(function(){"+e[k].getAttribute('data-script-after')+"},3000);";
+    }
+
     if (!f) {
       function path(name) {
         var sc = document.getElementsByTagName('script')
