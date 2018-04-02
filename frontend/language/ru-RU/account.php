@@ -207,7 +207,7 @@ return [
     'email_confirmed' => 'Ваш E-mail подтверждён ранее и не требует повторной активации.',
     'email_confirm_email_error' => 'Данная ссылка активации принадлежит другому пользователю..',
     'user_loyalty_status_set' => 'Вам присвоен статус',
-    'user_loyalty_reg_status' => 'Вам будет присвоен пожизненный премиум аккаунт после <a href="#registration" class="registration modals_open">регистрации</a>.',
+    'user_loyalty_reg_status' => 'Вам будет присвоен пожизненный премиум-аккаунт после <a href="#registration" class="registration modals_open">регистрации</a>',
     'birthday_format_error'=>'Неверный формат ввода даты',
     'birthday_biggest_error'=>'Дата слишком большая',
     'delete_account'=>'Удаление аккаунта',

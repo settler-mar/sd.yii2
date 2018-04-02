@@ -1,5 +1,7 @@
 .static-page {
 
+
+
   &_dopline {
     margin-bottom: -47px;
 
@@ -8,5 +10,52 @@
       page-break-inside: avoid;
     }
 
+  }
+
+  .mail-ru {
+    position: relative;
+
+    &_image {
+      background-image: url(https://secretdiscounter.ru/img/bonus.mail.ru/secretdiscounter-mailbonus.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50%;
+      position: fixed;
+      width: 1160PX;
+      height: 520PX;
+      top: 160px;
+      z-index: -100;
+      border-radius: 5px;
+      overflow: hidden;
+      @include media($laptop-min) {
+        width: 1024PX;
+        height: 500PX;
+        top: 100PX;
+      }
+      @include media($tablets) {
+        width: 768PX;
+        top: 100PX;
+        height: 480PX;
+      }
+      @include media($phones) {
+        width: 380PX;
+        height: 460PX;
+      }
+    }
+    h2.white {
+      color: #fff;
+      margin-top: 280PX;
+      @include media($tablets) {
+        margin-top: 210PX;
+      }
+      @include media($phones) {
+        margin-top: 140PX;
+      }
+    }
+  }
+
+  h1.white {
+    color: #fff;
+    margin-top: 80px;
   }
 }
