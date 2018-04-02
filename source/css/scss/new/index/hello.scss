@@ -272,6 +272,7 @@
     &_counter {
       font-size: 16px;
       /*font-weight: bold;*/
+      margin-bottom: 15px;
 
       &-numbers {
         display: flex;
@@ -333,9 +334,13 @@
 
       &-in {
         width: 100%;
-        text-align: center;
-        //text-align: left;
+        //text-align: center;
+        text-align: left;
         //padding-left: 70px;
+
+        a:not(:last-child) {
+          margin-right: 15px;
+        }
 
         @include media($laptop-min) {
           text-align: center;
@@ -346,9 +351,15 @@
     }
     &_description {
       font-size: 17px;
+      //font-weight: 600;
+      b {
+        //font-weight: 700;
+        //  font-size: 19px;
+      }
     }
     h1 {
       margin-bottom: 17px;
+      font-weight: bold;
     }
   }
 
