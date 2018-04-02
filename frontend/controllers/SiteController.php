@@ -403,10 +403,12 @@ class SiteController extends SdController
       ]);
     } else {
       $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
-      $this->params['breadcrumbs'][] = $page['title'];
 
+      if (!in_array($action, ['mail-ru-level-1'])) {
+          $this->params['breadcrumbs'][] = $page['title'];
+      }
       $page['h1_white'] = in_array($action, ['mail-ru-level-1']);
-      //ddd($action, $page);
+
       return $this->render('static_page', $page);
     }
   }
