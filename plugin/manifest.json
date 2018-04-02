@@ -7,12 +7,14 @@
    "permissions": [
       "tabs",// Разрешить расширению работать с вкладками
       "webNavigation", "webRequest", "storage", "cookies", "unlimitedStorage", "webNavigation",
-      "http://secretdiscounter/plugin-data" // Разрешить расширению обращаться к указанному адресу
+     // "http://sdyii/stores/data", "http://sdyii/accout/notification", "http://sdyii/fonts/proxima-nova"  // Разрешить расширению обращаться к указанному адресу
+      "https://secretdiscounter.ru/stores/data", "http://secretdiscounter.ru/accout/notification", "http://sdyii/fonts"   // Разрешить расширению обращаться к указанному адресу
    ],
    "background": {
       //"page": "background.html"   ,
       "scripts": ["js/background.js"]
-      ,"persistent": true
+      //,"persistent": true
+      //,"persistent": false
    },
    "browser_action": {
       "default_icon": "img/logo_mini.png",
@@ -22,11 +24,12 @@
    "content_scripts": [ {
       "all_frames": false,
       "js": [ "js/content.js" ],
-      "matches": [ "\u003Call_urls>" ],
+      "matches": [ "<all_urls>" ],
       "run_at": "document_start",
       "css": ["css/content.css"]
    } ],
-   "content_security_policy": "script-src 'self' https://cloudfront.loggly.com/; object-src 'self'",
+   //"content_security_policy": "script-src 'self' https://cloudfront.loggly.com/; object-src 'self'",
+   "content_security_policy": "script-src 'self'; object-src 'self'",
    "icons": {
       "128": "img/logo_mini_128.png",
       "16": "img/logo_mini_16.png",
@@ -34,7 +37,7 @@
       "64": "img/logo_mini_64.png"
    },
   // "key": "",
-   "update_url": "https://clients2.google.com/service/update2/crx",
+   //"update_url": "https://clients2.google.com/service/update2/crx",
    "web_accessible_resources": [ "css/*.css", "fonts/*.woff", "fonts/*.woff2", "fonts/*.ttf", "fonts/*.otf" ]
    //,"default_locale": "ru"
    //"externally_connectable": {

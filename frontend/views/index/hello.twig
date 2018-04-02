@@ -1,8 +1,10 @@
 <section class="index-hello">
     <div class="page-wrap page-wrap-flex" >
         <div class="index-hello_left">
-            <h1>Добро пожаловать
-                в будущее магазинов!</h1>
+            <h1>Здесь возвращают деньги с покупок!</h1>
+            <p class="index-hello_description">
+                {{ _constant('welcome') | raw}}
+            </p>
             <div class="index-hello_counter laptop-min_bold">
                 к нам присоединились:
                 <div class="index-hello_counter-numbers-out">
@@ -16,11 +18,10 @@
                 </div>
 
             </div>
-            <p class="index-hello_description">
-                {{ _constant('welcome') | raw}}
-            </p>
+
             <div class="index-hello_fw_li-in">
                 <a href="#registration" class="btn  btn-red btn-narrow index-hello_margin_btn modals_open">Зарегистрироваться бесплатно</a>
+                <a href="/affiliate-system" class="btn btn-transform btn-narrow">Рассказать друзьям</a>
             </div>
             <ul class='icons-list index-hello_icons-list'>
                 {#<li class="index-hello_fw_li">#}
@@ -47,7 +48,8 @@
 
             </ul>
         </div>
-        <div class="index-hello_center"></div>
+        <div class="index-hello_center" data-toggle="tooltip"
+             data-original-title="Добро пожаловать в будущее магазинов!" data-top="200" data-left="190" data-placement="bottom" data-norevert="1"></div>
         <div class="index-hello_right">
             <div class="index-hello_right-link index-hello_right-link-absolute">
                 <a href="#video?v=RlV3PyIYTqU" class="modals_open">
