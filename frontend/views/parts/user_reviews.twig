@@ -1,0 +1,11 @@
+{% if users_reviews %}
+        <div class="catalog-categories_comments scroll_box">
+            {% for review in users_reviews %}
+                {% set not_admin_coment = true %}
+                {% include 'parts/comment.twig' %}
+            {% endfor %}
+        </div>
+        <div class="align-center">
+            <a href="/reviews" class="btn btn-transform">Все отзывы →</a>
+        </div>
+{% endif %}
