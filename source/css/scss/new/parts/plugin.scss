@@ -1,6 +1,6 @@
 .install-plugin {
   background-color: $header_bg_up;
-  display:none;
+  display: none;
 
   &_inner {
     display: flex;
@@ -21,7 +21,4 @@
   &_hidden {
     display: none;
   }
-
-
-
 }
