@@ -118,6 +118,7 @@
       min-width: 38%;
       background: url(/images/index_hello_girl.png) 50% 100% no-repeat;
       background-size: contain;
+      cursor: pointer;
     }
 
     &_right {
@@ -332,8 +333,9 @@
 
       &-in {
         width: 100%;
-        text-align: left;
-        padding-left: 70px;
+        text-align: center;
+        //text-align: left;
+        //padding-left: 70px;
 
         @include media($laptop-min) {
           text-align: center;
@@ -341,6 +343,12 @@
           padding-left: 0;
         }
       }
+    }
+    &_description {
+      font-size: 17px;
+    }
+    h1 {
+      margin-bottom: 17px;
     }
   }
 
