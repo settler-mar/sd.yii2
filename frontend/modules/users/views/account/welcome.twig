@@ -18,7 +18,7 @@
            data-socials="1,0,2,4,3,5,6"
            data-icon-size="40"
            data-icon-type="svg"
-           data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'Успешно','message':'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован и внизу уже появляется блок про его статус'});"
+           data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'Успешно','message':'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.'});"
       >
       </div>
       <p>Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!</p>
@@ -99,8 +99,13 @@
       </div>
     {% endfor %}
   </div>
+  <div class="border-wrap account-settings align-center">
+    <div class="margin-half account-margin-top">
+      Также к нам можно приводить друзей и зарабатывать с их покупкой
+    </div>
+    <a class="btn btn-transform margin-half" href="account/affiliate">Узнать подробнее</a>
+  </div>
 </section>
-
 
 <section class="align-center margin">
   {% if desire %}
