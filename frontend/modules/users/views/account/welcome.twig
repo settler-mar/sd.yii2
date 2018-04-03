@@ -73,7 +73,9 @@
         </div>
         <div class="account-circles-item-sum">
           {% if  status.min_sum %}
-            {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+            {% if status.bonus > this_tarif.bonus %}
+              {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+            {% endif %}
           {% else %}
 
           {% endif %}
