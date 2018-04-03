@@ -73,7 +73,9 @@
         </div>
         <div class="account-circles-item-sum">
           {% if  status.min_sum %}
-            {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+            {% if status.bonus > this_tarif.bonus %}
+              {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+            {% endif %}
           {% else %}
 
           {% endif %}
@@ -120,9 +122,11 @@
   {% endif %}
 
   {% if user.new_loyalty_status_end>0 %}
-    <div class="cashbonus vip">
-      {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
-    </div>
+    {% if newuser and newuser == '1'  %}
+      <div class="cashbonus vip">
+        {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
+      </div>
+    {% endif %}
   {% elseif this_tarif.is_vip==1 %}
     <div class="cashbonus vip">
       {{ t('account', 'loyalty_vip_client')|raw }}
