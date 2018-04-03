@@ -1,13 +1,15 @@
+{% set ref_link = ref_link == 0 ? '' : (promo_code !='' ? '?promo='~promo_code~(ref_id != '' ? '&r='~ref_id : '') : (ref_id !='' ? '&r='~ref_id : '')) %}
+{% set current_title = current_title ? current_title : html.encode(this.title) %}
+{% set current_description = current_description ? current_description : this.description %}
 
-{% set ref_link = ref_link~'?r='~user_id %}
-<div class="social-block-share share42init accauntSoc accauntSoc_32"
-     {#data-url="https://secretdiscounter.ru/new-year{{ref_link}}"#}
-     data-url="https://secretdiscounter.ru/{{ ref_link }}"
-     data-title="{{ html.encode(this.title) }}"
-     data-description="{{ this.description }}"
+
+
+<div class="social-block-share share42init accauntSoc"
+     data-url="https://secretdiscounter.ru{{ref_link}}"
+     data-title="{{ current_title }}"
+     data-description="{{ current_description }}"
      data-icon-type="svg"
      data-icon-size=28
      data-socials="1,0,2,4,3"
-     data-promo="{{ promo_code }}"
->
+     data-promo="{{ promo_code }}">
 </div>

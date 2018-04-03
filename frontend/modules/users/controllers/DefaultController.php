@@ -482,6 +482,8 @@ class DefaultController extends Controller
         'title' => Yii::t('common', 'congratulations'),
         'message' => Yii::t('account', 'user_loyalty_reg_status'),
       ]);
+    } else {
+        //return json_encode(['validator' => $validatorPromo]);
     }
   }
 }

@@ -22,18 +22,37 @@ return [
   /**
    * ссылка ?r=xxx&promo=premium
    */
-  'ref_promo' => [
-    'default' => [
-      'bonus_status' => null,
-      'loyalty_status' => 5,
+    'ref_promo' => [
+        'default' => [
+            'bonus_status' => null,
+            'loyalty_status' => 5,
+        ],
+        'premium' => [
+            'bonus_status' => null,
+            'loyalty_status' => 6,
+        ],
+        'platinum' => [
+            'loyalty_status' => 4,
+            'time' => false,
+        ],
+        'platinum-vk' => [
+            'loyalty_status' => 4,
+            'time' => false,
+        ],
+        'platinum0418' => [
+            'loyalty_status' => 4,
+            'new_loyalty_status_end' => 0,
+            'referrer_id' => 72884
+        ],
+        'gold0418' => [
+            'loyalty_status' => 3,
+            'new_loyalty_status_end' => 0,
+            'referrer_id' => 72883
+        ],
+        'silver0418' => [
+            'loyalty_status' => 2,
+            'new_loyalty_status_end' => 0,
+            'referrer_id' => 72882
+        ],
     ],
-    'premium' => [
-      'bonus_status' => null,
-      'loyalty_status' => 6,
-    ],
-    'platinum' => [
-      'loyalty_status' => 4,
-      'time' => false,
-    ],
-  ],
 ];

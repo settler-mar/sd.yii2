@@ -18,7 +18,7 @@ share42 = function (){
         promo = u.substr(promoStart + key.length, promoLength);
       }
     }
-    var self_promo = promo && promo.length > 0 ? "setTimeout(function(){send_promo('"+promo+"')},2000);" : "";
+    var self_promo = (promo && promo.length > 0)? "setTimeout(function(){send_promo('"+promo+"');},2000);" : "";
     if (e[k].getAttribute('data-icon-size') != -1)
       var icon_size = e[k].getAttribute('data-icon-size');
     if (e[k].getAttribute('data-title') != -1)
@@ -185,7 +185,7 @@ function fav(a) {
 function send_promo(promo){
   $.ajax({
     method: "post",
-    url: "account/promo",
+    url: "/account/promo",
     dataType: 'json',
     data: {promo: promo},
     success: function(data) {
