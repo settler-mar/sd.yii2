@@ -192,13 +192,14 @@ function send_promo(promo){
       if (data.title != null && data.message != null) {
         on_promo=$('.on_promo');
         if(on_promo.length==0 || !on_promo.is(':visible')) {
-          notification.notifi({
-            type: 'success',
-            title: data.title,
-            message: data.message
-          });
-
-          on_promo.show();
+          setTimeout(function(){
+              notification.notifi({
+                  type: 'success',
+                  title: data.title,
+                  message: data.message
+              });
+              on_promo.show();
+          }, 2000);
         }
       }
     }

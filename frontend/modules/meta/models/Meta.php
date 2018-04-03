@@ -32,11 +32,12 @@ class Meta extends \yii\db\ActiveRecord
     {
         return [
             [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
-            [['page', 'title', 'description', 'keywords', 'h1'], 'trim'],
-            [['description', 'keywords', 'content'], 'string'],
+            [['page', 'title', 'description', 'keywords', 'h1', 'h1_class'], 'trim'],
+            [['description', 'keywords', 'content', 'h1_class'], 'string'],
             [['description', 'keywords', 'content'], 'trim'],
-            [['page', 'title', 'h1'], 'string', 'max' => 255],
+            [['page', 'title', 'h1', 'h1_class'], 'string', 'max' => 255],
             ['page','unique'],
+            ['show_breadcrumbs', 'boolean'],
             [['content'], 'string'],
         ];
     }
@@ -53,7 +54,9 @@ class Meta extends \yii\db\ActiveRecord
             'description' => 'Description',
             'keywords' => 'Keywords',
             'h1' => 'H1',
+            'h1_class' => 'Класс H1',
             'content' => 'Content',
+            'show_breadcrumbs' => 'Показывать крошки',
         ];
     }
 
@@ -91,7 +94,7 @@ class Meta extends \yii\db\ActiveRecord
         }
 
         return $page_meta
-          ->select(['title', 'description', 'keywords', 'h1', 'content'])
+          ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
           ->asArray()
           ->one();
       }
@@ -113,7 +116,7 @@ class Meta extends \yii\db\ActiveRecord
             return $metadataArray->limit(1);
           }
           return $metadataArray
-            ->select(['title', 'description', 'keywords', 'h1', 'content'])
+            ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
             ->asArray()
             ->one();
         }
@@ -129,7 +132,7 @@ class Meta extends \yii\db\ActiveRecord
               return $metadataArray->limit(1);
             }
             return $metadataArray
-              ->select(['title', 'description', 'keywords', 'h1', 'content'])
+              ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
               ->asArray()
               ->one();
           }
