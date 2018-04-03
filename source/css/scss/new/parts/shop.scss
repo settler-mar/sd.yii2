@@ -75,8 +75,8 @@
         margin: 0 auto;
         text-align: center;
 
-        @include media($tablets) {
-          margin-top: 30px;
+        @include media($laptop-min) {
+          margin-top: 20px;
         }
         &-label {
           cursor: pointer;
@@ -84,51 +84,13 @@
         &-checkbox {
           cursor: pointer;
         }
-        input[type=checkbox] + label {
-          line-height: 1.8;
-
-          @include media($tablets) {
-            padding-left: 0;
-          }
-
-        }
         input {
           display: none;
         }
         label {
-          //display: flex;
-          //flex-direction: row;
-          //align-items: center;
-          //justify-content: center;
-          //width: 365px;
 
           margin: auto;
 
-          @include media($tablets) {
-            display: block;
-          }
-
-          &:after {
-            @include media($tablets) {
-              display:block;
-              top: -18PX !important;
-              //left: calc(50%) !important;
-              left: calc(50% + 1PX) !important;
-            }
-          }
-          &:before {
-            @include media($tablets) {
-              display:block;
-              top: -20PX !important;
-              left: calc(50% - 16PX) !important;
-            }
-
-          }
-        }
-        input[type=checkbox]:checked + label:after {
-          @include media($tablets) {
-            left: calc(50% - 14PX) !important;
-          }
         }
 
       }

@@ -420,6 +420,8 @@
   &-settings {
     margin-left: 0;
     margin-right: 0;
+
+
   }
 
   &-status-uniq {
@@ -439,6 +441,17 @@
 
     .share42init a:not(:last-child) {
       margin-right: 15px;
+    }
+  }
+  .settings {
+    input[type=checkbox] + label {
+      display: block;
+      width: 200%;
+      line-height: 1.3;
+      @include media($laptop-min) {
+        width: auto;
+      }
+
     }
   }
 }

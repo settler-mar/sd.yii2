@@ -206,6 +206,9 @@ td {
 
   &-s {
     margin-bottom: 36px;
+    @include media($laptop-min) {
+      text-align: center;
+    }
   }
 
   select {
@@ -362,6 +365,9 @@ td {
     text-align: left;
     font-weight: bold;
     margin-bottom: 5px;
+    @include media($laptop-min) {
+      text-align: center;
+    }
   }
 }
 
@@ -423,20 +429,22 @@ input[type=checkbox] {
   + label {
     position: relative;
     padding-left: 38px;
-    line-height: 40px;
+   // line-height: 40px;
+    line-height: 1.8;
+    @include media($laptop-min) {
+      padding-left: 0;
+      margin-top: 10px;
+      display: block;
+    }
+
 
     &:before {
       content: '';
       position: absolute;
-      //top: -4px;
       top: 0;
-      //left: -20PX;
       left: -10PX;
-//      width: 50px;
-//      height: 26PX;
       width: 33PX;
       height: 18PX;
- //     border-radius: 13px;
       border-radius: 9PX;
       background: #CDD1DA;
       box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
@@ -445,30 +453,42 @@ input[type=checkbox] {
     &:after {
       content: '';
       position: absolute;
-      //top: -2PX;
       top: 2PX;
-      //left: -18PX;
       left: -8PX;
-      //width: 22px;
-      //height: 22PX;
       width: 14PX;
       height: 14PX;
-//      border-radius: 10PX;
       border-radius: 7PX;
       background: #FFF;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       transition: all .2s;
     }
+    &:after {
+      @include media($laptop-min) {
+        display:block;
+        top: -18PX;
+        left: calc(50% + 1PX);
+      }
+    }
+    &:before {
+      @include media($laptop-min) {
+        display:block;
+        top: -20PX;
+        left: calc(50% - 16PX);
+      }
+
+    }
+
   }
 
   &:checked + label {
     &:before {
       background: $btn_base_bg;
     }
-
     &:after {
-      //left: 6px;
       left: 7PX;
+      @include media($laptop-min) {
+        left: calc(50% - 14PX);
+      }
     }
   }
 }
