@@ -1,39 +1,59 @@
 var sdTooltip = function () {
 
     var tooltipTimeOut = null;
-    var displayTimeOver = 500;
+    var displayTimeOver = 0;
     var displayTimeClick = 3000;
-    var displayTime = 0;
+    var hideTime = 100;
     var arrow = 10;
     var arrowWidth = 8;
     var tooltip;
     var size = 'small';
     var hideClass = 'hidden';
     var tooltipElements = $('[data-toggle=tooltip]');
+    var currentElement;
 
     var tooltipInit = function () {
         tooltip = document.createElement('div');
         $(tooltip).addClass('tipso_bubble').addClass(size).addClass(hideClass)
             .html('<div class="tipso_arrow"></div><div class="titso_title"></div><div class="tipso_content"></div>');
+        $(tooltip).on('mouseover', function (e) {
+            checkMousePos(e);
+        });
+        $(tooltip).on('mousemove', function (e) {
+            checkMousePos(e);
+        });
         $('body').append(tooltip);
     };
 
-    function tooltipShow(elem) {
-
-        var title = $(elem).data('original-title');
-        var position = $(elem).data('placement') || 'bottom';
-        $(tooltip).removeClass("top_right_corner bottom_right_corner top_left_corner bottom_left_corner");
-        $(tooltip).find('.titso_title').html(title);
-        setPositon(elem, position);
-        $(tooltip).removeClass(hideClass);
-        clearTimeout(tooltipTimeOut);
-        if (displayTime > 0) {
-            tooltipTimeOut = setTimeout(tooltipHide, displayTime);
+    function checkMousePos(e) {
+        if (e.clientX > $(currentElement).offset().left && e.clientX < $(currentElement).offset().left + $(currentElement).outerWidth()
+            && e.clientY > $(currentElement).offset().top && e.clientY < $(currentElement).offset().top + $(currentElement).outerHeight()) {
+            tooltipShow(currentElement, displayTimeOver);
         }
+    }
+
+    function tooltipShow(elem, displayTime) {
+        clearTimeout(tooltipTimeOut);
+        //if ($(tooltip).hasClass(hideClass)) {
+            var title = $(elem).data('original-title');
+            var position = $(elem).data('placement') || 'bottom';
+            $(tooltip).removeClass("top_right_corner bottom_right_corner top_left_corner bottom_left_corner");
+            $(tooltip).find('.titso_title').html(title);
+            setPositon(elem, position);
+            $(tooltip).removeClass(hideClass);
+            currentElement = elem;
+
+            if (displayTime > 0) {
+                tooltipTimeOut = setTimeout(tooltipHide, displayTime);
+            }
+       // }
 
     }
     function tooltipHide() {
-        $(tooltip).addClass(hideClass);
+        clearTimeout(tooltipTimeOut);
+        tooltipTimeOut = setTimeout(function(){
+            $(tooltip).addClass(hideClass);
+        }, hideTime);
     }
 
     function setPositon(elem, position){
@@ -87,9 +107,8 @@ var sdTooltip = function () {
 
     tooltipElements.on('click', function (e) {
       if ($(this).data('clickable')) {
-          displayTime = displayTimeClick;
           if ($(tooltip).hasClass(hideClass)) {
-              tooltipShow(this);
+              tooltipShow(this, displayTimeClick);
           } else {
               tooltipHide();
           }
@@ -99,8 +118,12 @@ var sdTooltip = function () {
 
     tooltipElements.on('mouseover', function (e) {
         if (window.innerWidth >= 1024) {
-            displayTime = 0;
-            tooltipShow(this);
+            tooltipShow(this, displayTimeOver);
+        }
+    });
+    tooltipElements.on('mousemove', function (e) {
+        if (window.innerWidth >= 1024) {
+            tooltipShow(this, displayTimeOver);
         }
     });
     tooltipElements.on('mouseleave', function (){
