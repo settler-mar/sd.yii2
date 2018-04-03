@@ -115,9 +115,11 @@
   {% endif %}
 
   {% if user.new_loyalty_status_end>0 %}
-    <div class="cashbonus vip">
-      {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
-    </div>
+    {% if newuser and newuser == '1'  %}
+      <div class="cashbonus vip">
+        {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
+      </div>
+    {% endif %}
   {% elseif this_tarif.is_vip==1 %}
     <div class="cashbonus vip">
       {{ t('account', 'loyalty_vip_client')|raw }}
