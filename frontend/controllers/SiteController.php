@@ -404,10 +404,10 @@ class SiteController extends SdController
     } else {
       $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
 
-      if (!in_array($action, ['mail-ru-level-1'])) {
+      if (!in_array($action, ['mail-ru-level-1','mail-ru-level-2','mail-ru-level-3'])) {
           $this->params['breadcrumbs'][] = $page['title'];
       }
-      $page['h1_white'] = in_array($action, ['mail-ru-level-1']);
+      $page['h1_white'] = in_array($action, ['mail-ru-level-1','mail-ru-level-2','mail-ru-level-3']);
 
       return $this->render('static_page', $page);
     }
