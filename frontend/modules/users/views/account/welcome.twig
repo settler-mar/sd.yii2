@@ -30,7 +30,7 @@
   <h2>
     {{ t('account', 'user_loyalty_status') }}
   </h2>
-  <div class="align-center margin">
+  <div class="align-center margin" style="margin-top: -20px;">
     <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
   </div>
 
@@ -99,31 +99,32 @@
       </div>
     {% endfor %}
   </div>
-</section>
 
-<section class="align-center margin border-wrap">
   {% if desire %}
-    <div class="cashbonus account-cashbonus account-margin-top">
+    <div class="cashbonus account-margin-top align-center">
       {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw }}
     </div>
   {% endif %}
   {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
-    <div class="account-status-uniq account-margin-top">
+    <div class="account-status-uniq account-margin-top align-center">
       {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'%'})|raw }}
     </div>
   {% endif %}
 
   {% if user.new_loyalty_status_end>0 %}
-    <div class="cashbonus vip account-cashbonus account-margin-top">
+    <div class="cashbonus vip account-margin-top align-center">
       {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
     </div>
   {% elseif this_tarif.is_vip==1 %}
-    <div class="cashbonus vip account-cashbonus account-margin-top">
+    <div class="cashbonus vip account-margin-top align-center">
       {{ t('account', 'loyalty_vip_client')|raw }}
     </div>
   {% endif %}
-  <div class="margin-half account-margin-top">
-    Также к нам можно приводить друзей и зарабатывать с их покупкой
+</section>
+
+<section class="align-center margin border-wrap">
+  <div class="margin-half account-margin-top account-cashbonus">
+    Также к нам можно приводить друзей и зарабатывать с их покупок
   </div>
   <a class="btn btn-transform margin-half" href="account/affiliate">Узнать подробнее</a>
 </section>
