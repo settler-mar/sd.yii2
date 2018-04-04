@@ -551,6 +551,9 @@ $functionsList = [
       return '<img class="mobile_operator_logo" alt="'.$query['opsos_name'].'" src="/images/mobile_operator/'.$query['opsos_image'].'.gif">';
     });
   },
+    '_ucfirst' => function($value) {
+        return ucfirst($value);
+    }
 ];
 
 return $functionsList;

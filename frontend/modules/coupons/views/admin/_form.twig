@@ -26,6 +26,16 @@
 
         {{ form.field(model, 'species').textInput()|raw }}
 
+        <div class="form-group field-coupons-language">
+            <label class="control-label" for="coupons-language">Язык</label>
+            <select id="coupons-language" class="form-control" name="Coupons[language]">
+                {% for language in languages %}
+                   <option value="{{ language }}" {% if model.language == language %}selected{% endif %}>{{ _ucfirst(language) }}</option>
+                {% endfor %}
+            </select>
+            <div class="help-block"></div>
+        </div>
+
         <p><span>Посещений:</span> {{model.visit}}</p>
 
     <div class="form-group">

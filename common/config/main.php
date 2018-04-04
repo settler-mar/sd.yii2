@@ -160,7 +160,10 @@ $config = [
                     'basePath' => '@frontend/language',
                 ],
             ]
-        ]
+        ],
+        'languageDetector' => [
+            'class' => 'common\components\LanguageDetect',
+        ],
       //'db' => require __DIR__.'/db.php'
     ],
     'params' => [

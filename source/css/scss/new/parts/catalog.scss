@@ -403,7 +403,8 @@
       }
     }
     &_comments.scroll_box {
-      .scroll_box-item {
+      .scroll_box{
+        &-item {
         width: 92%;
         box-sizing: border-box;
         max-width: 100%;
@@ -411,7 +412,23 @@
         margin-left: 4%;
         margin-right: 4%;
         min-width: 92%;
+        }
+        &-text {
+          //height: 100px;
+          //overflow: hidden;
+          //margin-bottom: 20px;
+          //&:after {
+          //  content: " ";
+          //  display: block;
+          //  background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
+          //  height: 30PX;
+          //  bottom: 20px;
+          //  position: absolute;
+          //  width: 100%;
+          //}
+        }
       }
+
     }
   }
 

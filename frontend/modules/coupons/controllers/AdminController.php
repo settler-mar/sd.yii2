@@ -102,6 +102,7 @@ class AdminController extends Controller
                 'coupon' => $model,
                 'coupon_categories' => array_column($model->categories, 'uid'),
                 'categories' => $categories,
+                'languages' => Yii::$app->languageDetector->getLanguages(),
             ]);
         }
     }

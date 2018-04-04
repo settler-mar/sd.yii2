@@ -17,7 +17,7 @@
     "irc": "irc://irc.freenode.net/yii",
     "source": "https://github.com/yiisoft/yii2"
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
     "yiisoft/yii2": "~2.0.6",
@@ -39,7 +39,8 @@
     "dvixi/yii2-icon-select": "^1.0",
     "nodge/yii2-eauth": "^2.5",
     "mihaildev/yii2-elfinder": "*",
-    "dominus77/yii2-tinymce-widget": "*"
+    "dominus77/yii2-tinymce-widget": "*",
+    "webmil/text-language-detect": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
