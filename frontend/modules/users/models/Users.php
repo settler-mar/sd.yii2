@@ -190,6 +190,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       if ($this->new_loyalty_status_end == '') {
         $this->new_loyalty_status_end = 0;
       } else {
+        $t = explode(' ', $this->new_loyalty_status_end);
+        $t[0] = explode('/', $t[0]);
+        $t1 = $t[0][0];
+        $t[0][0] = $t[0][1];
+        $t[0][1] = $t1;
+
+        $t[0] = implode('/', $t[0]);
+        $this->new_loyalty_status_end = implode(' ', $t);
         $this->new_loyalty_status_end = strtotime($this->new_loyalty_status_end);
       }
     }
@@ -207,7 +215,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     }
 
     if (!parent::beforeValidate()) {
-      Yii::$app->logger->add($this,'user_validate_error',false);
+      Yii::$app->logger->add($this, 'user_validate_error', false);
       return false;
     }
 
@@ -382,6 +390,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       }
     }
     $this->saveImage();
+
     if ($this->birthday) {
       $this->birthday = explode('-', $this->birthday);
       $this->birthday = implode('-', array_reverse($this->birthday));
