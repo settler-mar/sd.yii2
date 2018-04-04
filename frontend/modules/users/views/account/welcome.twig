@@ -73,9 +73,7 @@
         </div>
         <div class="account-circles-item-sum">
           {% if  status.min_sum %}
-            {% if status.bonus > this_tarif.bonus %}
-              {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
-            {% endif %}
+            {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
           {% else %}
 
           {% endif %}
@@ -101,38 +99,36 @@
       </div>
     {% endfor %}
   </div>
-  <div class="border-wrap account-settings align-center">
-    <div class="margin-half account-margin-top">
-      Также к нам можно приводить друзей и зарабатывать с их покупкой
-    </div>
-    <a class="btn btn-transform margin-half" href="account/affiliate">Узнать подробнее</a>
-  </div>
 </section>
 
-<section class="align-center margin">
+<section class="align-center margin border-wrap">
   {% if desire %}
-    <div class="cashbonus">
+    <div class="cashbonus account-cashbonus account-margin-top">
       {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw }}
     </div>
   {% endif %}
   {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
-    <div class="account-status-uniq">
+    <div class="account-status-uniq account-margin-top">
       {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'%'})|raw }}
     </div>
   {% endif %}
 
   {% if user.new_loyalty_status_end>0 %}
-    {% if newuser and newuser == '1'  %}
-      <div class="cashbonus vip">
-        {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
-      </div>
-    {% endif %}
+    <div class="cashbonus vip account-cashbonus account-margin-top">
+      {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
+    </div>
   {% elseif this_tarif.is_vip==1 %}
-    <div class="cashbonus vip">
+    <div class="cashbonus vip account-cashbonus account-margin-top">
       {{ t('account', 'loyalty_vip_client')|raw }}
     </div>
   {% endif %}
+  <div class="margin-half account-margin-top">
+    Также к нам можно приводить друзей и зарабатывать с их покупкой
+  </div>
+  <a class="btn btn-transform margin-half" href="account/affiliate">Узнать подробнее</a>
 </section>
+
+
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
   <div class="align-center margin">
