@@ -1,7 +1,8 @@
-document.querySelector('.secretdiscounter-pupup__logo').onclick = logoClick;
+document.querySelector('.secretdiscounter-pupup__logo-link').onclick = doClick;
+document.querySelector('.secretdiscounter-pupup__info').onclick = doClick;
 
-function logoClick() {
-    chrome.tabs.create({url: 'http://secretdiscounter.ru'});
+function doClick() {
+    chrome.tabs.create({url: this.getAttribute('href')});
 }
 
 var siteUrl = 'https://secretdiscounter.ru/';
@@ -23,9 +24,10 @@ function getUser(callback){
 var displayUser = function(){
     //console.log(usersData);
     if (usersData && usersData.user) {
-        document.querySelector('.secretdiscounter-pupup__info-logo').innerHTML = '<img src="'+siteUrl+usersData.user.photo+'"/>';
+        document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="'+siteUrl+usersData.user.photo+'"/>';
         document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;
-        document.querySelector('.secretdiscounter-pupup__info-balance').innerHTML = 'Баланс '+usersData.user.balance.current;
+        document.querySelector('.secretdiscounter-pupup__info-balance-current').innerHTML = usersData.user.balance.current;
+        document.querySelector('.secretdiscounter-pupup__info-balance-pending').innerHTML = '&nbsp;/&nbsp;'+usersData.user.balance.pending;
     }
 };
 
