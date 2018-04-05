@@ -338,14 +338,41 @@
         text-align: left;
         //padding-left: 70px;
 
-        a:not(:last-child) {
-          margin-right: 15px;
+        a {
+          @include media($tablets) {
+            width: 220px;
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+          }
+          @include media($phones) {
+            width: 60%;
+          }
+          &:not(:last-child) {
+            margin-right: 15px;
+            margin-bottom: 26px;
+
+            @include media($tablets) {
+              margin-right: auto;
+            }
+          }
         }
 
         @include media($laptop-min) {
           text-align: center;
           padding-right: 0;
           padding-left: 0;
+        }
+        .btn-share {
+          @include media($laptop-min) {
+            color: #fff;
+            border-color: #fff;
+
+          }
+          @include media($phones) {
+
+          }
+
         }
       }
     }
