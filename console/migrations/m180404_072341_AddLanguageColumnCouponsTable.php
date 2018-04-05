@@ -2,8 +2,8 @@
 
 use yii\db\Migration;
 use frontend\modules\coupons\models\Coupons;
-use TextLanguageDetect\TextLanguageDetect;
-use TextLanguageDetect\LanguageDetect\TextLanguageDetectException;
+//use TextLanguageDetect\TextLanguageDetect;
+//use TextLanguageDetect\LanguageDetect\TextLanguageDetectException;
 
 /**
  * Class m180404_072341_AddLanguageColumnCouponsTable
@@ -19,9 +19,10 @@ class m180404_072341_AddLanguageColumnCouponsTable extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $this->addColumn('cw_coupons', 'language', $this->string()->null());
+        $this->addColumn('cw_coupons', 'language', $this->string(2)->null());
 
-        $lang = new TextLanguageDetect();
+        //$lang = new TextLanguageDetect();
+        //$lang->setNameMode(2);
         $coupons = Coupons::find()->select(['uid', 'name', 'description'])->asArray()->all();
         $language = null;
 
@@ -31,6 +32,18 @@ class m180404_072341_AddLanguageColumnCouponsTable extends Migration
                 'update `cw_coupons` set `language` ="'.$language.'" where `uid` = '.$coupon['uid']
             )->execute();
         }
+
+//        этот код работает очень долго и потом вылетает нехватка памяти
+//        $count = Coupons::find()->count();
+//        $offset = 0;
+//        while ($offset < $count) {
+//            $coupons = Coupons::find()->limit(200)->offset($offset);
+//            $offset += 200;
+//            $coupons = $coupons->all();
+//            foreach ($coupons as $coupon) {
+//                $coupon->save();
+//            }
+//        }
     }
 
     /**
