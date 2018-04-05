@@ -405,28 +405,61 @@
     &_comments.scroll_box {
       .scroll_box{
         &-item {
-        width: 92%;
-        box-sizing: border-box;
-        max-width: 100%;
-        padding: 4%;
-        margin-left: 4%;
-        margin-right: 4%;
-        min-width: 92%;
+          width: 92%;
+          box-sizing: border-box;
+          max-width: 100%;
+          padding: 4%;
+          margin-left: 4%;
+          margin-right: 4%;
+          min-width: 92%;
+          &-low {
+            .scroll_box-text {
+              height: 100px;
+              overflow: hidden;
+              margin-bottom: 20px;
+              &:before {
+                content: "";
+                display: block;
+                background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
+                height: 30px;
+                left: -10px;
+                margin: 10px;
+                bottom: 15px;
+                position: absolute;
+                width: 100%;
+                box-sizing: border-box;
+              }
+              &:after {
+                content: "Показать больше";
+                display: block;
+                height: 20px;
+                left: -10px;
+                margin: 10px;
+                bottom: 0;
+                position: absolute;
+                width: 100%;
+                box-sizing: border-box;
+                cursor: pointer;
+                color: #f7c714;
+                text-align: right;
+                padding: 0 10px 10px;
+                background: $gray_box_bg;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
         }
-        &-text {
-          //height: 100px;
-          //overflow: hidden;
-          //margin-bottom: 20px;
-          //&:after {
-          //  content: " ";
-          //  display: block;
-          //  background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
-          //  height: 30PX;
-          //  bottom: 20px;
-          //  position: absolute;
-          //  width: 100%;
-          //}
-        }
+        //&-text {
+        //
+        //  &:before {
+        //
+        //  }
+        //  &:after {
+        //
+        //  }
+        //}
       }
 
     }

@@ -1,4 +1,4 @@
-<div class="scroll_box-item {{ _if(comment_hide,'scroll_box-item-hide') }}">
+<div class="scroll_box-item {{ _if(comment_hide,'scroll_box-item-hide') }} {{ _if(item_low, 'scroll_box-item-low') }}">
     <div class="scroll_box-title">
         <div class="scroll_box-avatar" style="background-image: url({{ _checkAvatar(review.photo) }});"></div>
         <div class="scroll_box-user">
