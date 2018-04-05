@@ -179,9 +179,14 @@ class Coupons extends \yii\db\ActiveRecord
    */
   public static function getActiveCategoriesCoupons()
   {
+    $languages = self::languagesArray();
     $cache = Yii::$app->cache;
-    $categories = $cache->getOrSet('categories_coupons', function () {
-      return CategoriesCoupons::find()
+    $cacheName = 'categories_coupons';
+    $dependencyName = 'catalog_coupons';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $categories = $cache->getOrSet($cacheName, function () use ($languages) {
+      $categories =  CategoriesCoupons::find()
           ->from(CategoriesCoupons::tableName() . ' ccc')
           ->select(['ccc.name', 'ccc.uid', 'ccc.route', 'count(cct.coupon_id) as count'])
           ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
@@ -191,9 +196,12 @@ class Coupons extends \yii\db\ActiveRecord
           ->where(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
           ->groupBy('cct.category_id')
-          ->asArray()
-          ->all();
-    });
+          ->asArray();
+      if (!empty($languages)) {
+          $categories->andWhere(['language' => $languages]);
+      }
+      return $categories->all();
+    }, $cache->defaultDuration, $dependency);
     return $categories;
   }
 
@@ -202,13 +210,14 @@ class Coupons extends \yii\db\ActiveRecord
    */
   public static function getActiveStoresCoupons($categoryId = false)
   {
+    $languages = self::languagesArray();
     $cache = Yii::$app->cache;
     $cacheName = 'stores_coupons'.($categoryId ? '_'.$categoryId : '');
     $dependencyName = 'catalog_coupons';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $stores = $cache->getOrSet($cacheName, function () use ($categoryId) {
+    $stores = $cache->getOrSet($cacheName, function () use ($categoryId, $languages) {
       $stores =  self::find()
           ->from(self::tableName() . ' cwc')
           ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline', 'count(cwc.uid) as count'])
@@ -222,6 +231,9 @@ class Coupons extends \yii\db\ActiveRecord
           $stores->innerJoin('cw_coupons_to_categories cctc', 'cwc.coupon_id = cctc.coupon_id')
               ->andWhere(['cctc.category_id' => $categoryId]);
       }
+      if (!empty($languages)) {
+            $stores->andWhere(['cwc.language' => $languages]);
+      }
       return $stores->all();
     }, $cache->defaultDuration, $dependency);
     return $stores;
@@ -229,9 +241,14 @@ class Coupons extends \yii\db\ActiveRecord
 
   public static function activeCount($filter = '')
   {
+    $languages = self::languagesArray();
     $cache = Yii::$app->cache;
     $cacheName = 'total_all_coupons' . ($filter ? '_' . $filter : '');
-    $count = $cache->getOrSet($cacheName, function () use ($filter) {
+    $dependencyName = 'catalog_coupons';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $count = $cache->getOrSet($cacheName, function () use ($filter, $languages) {
       $result = self::find()
           ->from(self::tableName() . ' cwc')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
@@ -245,8 +262,11 @@ class Coupons extends \yii\db\ActiveRecord
       } else {
         $result->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())]);
       }
+      if (!empty($languages)) {
+          $result->andWhere(['cwc.language' => $languages]);
+      }
       return $result->count();
-    });
+    }, $cache->defaultDuration, $dependency);
     return $count;
   }
 
@@ -257,12 +277,13 @@ class Coupons extends \yii\db\ActiveRecord
 
   public static function counts($store = false, $category = false)
   {
+    $languages = self::languagesArray();
     $cache = \Yii::$app->cache;
     $cacheName = 'coupons_counts' . ($store ? '_' . $store : '') . ($category ? '_' . $category : '');
     $dependencyName = 'coupons_counts';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $data = $cache->getOrSet($cacheName, function () use ($store, $category) {
+    $data = $cache->getOrSet($cacheName, function () use ($store, $category, $languages) {
       $coupons = self::find()
           ->from(self::tableName() . ' cwc')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
@@ -275,6 +296,9 @@ class Coupons extends \yii\db\ActiveRecord
         $coupons = $coupons
             ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
             ->andWhere(['cctc.category_id' => $category]);
+      }
+      if (!empty($languages)) {
+            $coupons->andWhere(['cwc.language' => $languages]);
       }
       $all = $coupons->count();
       $coupons2 = clone $coupons;
@@ -293,12 +317,17 @@ class Coupons extends \yii\db\ActiveRecord
 
   public static function forList($as_array = true)
   {
+    $languages = self::languagesArray();
     $coupons = Coupons::find()
         ->from(Coupons::tableName() . ' cwc')
         ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_active as store_is_active',
             'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
             'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid');
+    if (!empty($languages)) {
+          $coupons->andWhere(['cwc.language' => $languages]);
+    }
+
     if ($as_array) {
       return $coupons->asArray();
     } else {
@@ -312,6 +341,7 @@ class Coupons extends \yii\db\ActiveRecord
    */
   public static function top($options = [])
   {
+    $languages = self::languagesArray();
     $limit = isset($options['limit']) ? $options['limit'] : 8;
     $new = isset($options['new']) ? $options['new'] : false;
     $offline = isset($options['offline']) ? $options['offline'] : false;
@@ -332,7 +362,7 @@ class Coupons extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store_category, $store, $new, $unique_store,$offline) {
+    $data = $cache->getOrSet($cacheName, function () use ($limit, $category, $store_category, $store, $new, $unique_store, $offline, $languages) {
 
       if ($store_category && !$category) {
         //есть категория шопов и нет категорий купонов - тащим второе из первого
@@ -354,10 +384,13 @@ class Coupons extends \yii\db\ActiveRecord
             ->groupBy('cwc.store_id')
             ->select(['cwc.store_id', 'visit' => 'max(cwc.visit)'])
             ->orderBy(['visit' => SORT_DESC]);
+          if (!empty($languages)) {
+              $coupons->andWhere(['cwc.language' => $languages]);
+          }
       } else {
           $coupons = self::forList()
               //->where(['cws.is_active' => [0, 1]]);
-              ->where(['cws.is_active' => [1]]);
+              ->andWhere(['cws.is_active' => [1]]);
           if ($store) {
               $coupons = $coupons->andWhere(['cws.uid' => $store]);
           }
@@ -388,7 +421,7 @@ class Coupons extends \yii\db\ActiveRecord
       if ($unique_store) {
         $coupons = self::forList()
             //->where(['cws.is_active' => [0, 1]])
-            ->where(['cws.is_active' => [1]])
+            ->andWhere(['cws.is_active' => [1]])
             ->rightJoin(['cwc_top' => $coupons], 'cwc_top.store_id=cwc.store_id AND cwc_top.visit = cwc.visit');
       }
 
@@ -399,6 +432,24 @@ class Coupons extends \yii\db\ActiveRecord
     return $data;
   }
 
+
+    /** все возможные языки для запроса
+     * @param $languages
+     * @return array
+     */
+  protected static function languagesArray()
+  {
+      if (empty(\Yii::$app->params['coupons_languages'])) {
+          return [];
+      }
+      $result = [];
+      foreach (\Yii::$app->params['coupons_languages'] as $language) {
+          if (!empty(Yii::$app->params['coupons_languages_arrays'][$language])) {
+              $result = array_merge($result, Yii::$app->params['coupons_languages_arrays'][$language]);
+          }
+      }
+      return $result;
+  }
 
   protected function clearCache()
   {

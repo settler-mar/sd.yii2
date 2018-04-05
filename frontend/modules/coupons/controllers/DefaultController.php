@@ -58,7 +58,7 @@ class DefaultController extends SdController
         //если есть одна из них
 
         if($coupon_id){
-          $coupon=Coupons::forList()->where(['cwc.uid'=>$coupon_id])->one();
+          $coupon=Coupons::forList()->andWhere(['cwc.uid'=>$coupon_id])->one();
           if(!$coupon || $store->uid!=$coupon['store_id']){
             throw new \yii\web\NotFoundHttpException;
           }
@@ -168,7 +168,7 @@ class DefaultController extends SdController
       $databaseObj = Coupons::forList(false)
         ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
         //->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
-        ->where(['cws.is_active' => [1], 'cctc.category_id' => $category])
+        ->andWhere(['cws.is_active' => [1], 'cctc.category_id' => $category])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
 
@@ -196,7 +196,7 @@ class DefaultController extends SdController
       $contentData['affiliate_id'] = $storeId;
       $databaseObj = Coupons::forList(false)
         //->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
-        ->where(['cws.is_active' => [1], 'cwc.store_id' => $storeId])
+        ->andWhere(['cws.is_active' => [1], 'cwc.store_id' => $storeId])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
       $contentData["store_rating"] = Reviews::storeRating($storeId);
@@ -207,7 +207,7 @@ class DefaultController extends SdController
       \Yii::$app->params['url_mask'] = 'coupons';
       $databaseObj = Coupons::forList(false)
         //->where(['cws.is_active' => [0, 1]])
-        ->where(['cws.is_active' => [1]])
+        ->andWhere(['cws.is_active' => [1]])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order);
       if ($this->top) {
@@ -371,7 +371,7 @@ class DefaultController extends SdController
     $cacheName .= '_' . $storeId;
     $contentData['affiliate_id'] = $storeId;
     $databaseObj = Coupons::forList(false)
-        ->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
+        ->andWhere(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
         ->andWhere($dateRange)
         ->orderBy($sort . ' ' . $order)
         ->andWhere(['!=','cwc.uid',$coupon['uid']]);
