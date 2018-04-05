@@ -12,6 +12,10 @@ $data = [
         'webmaster' => 'account/webmaster'
     ],
     'pathToScript' => require __DIR__ . '/path_scripts.php',
+    'coupons_languages_arrays' => [
+        'ru' => ['ru', 'bg', 'sr', 'uk', 'mk', 'ro'],//русский болгарский и т.д.
+        'en' => ['en', 'la'],//английский латинский
+    ],
 ];
 
 
