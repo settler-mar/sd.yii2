@@ -1,8 +1,4 @@
-var storageDataKeyStores = 'secretdiscounter_local_stores';
-var storageDataKeyDate = 'secretdiscounter_local_date';
 var usersData = false;
-var storageDataStores = false;
-var storageDataDate = false;
 var appCookieName = 'secretdiscounter-extension-window';
 var appCookieValue = 'hidden';
 var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -70,20 +66,6 @@ var searchEngines = {
         document.cookie = appCookieName + '='+ appCookieValue;
     }
 
-    function getRequest(url, dataKey, callback){
-        //вызываем событие для запроса из background.js
-        //console.log('получаем данные', url, dataKey);
-        chrome.runtime.sendMessage({
-            action: 'xhttp',
-            url: siteUrl + url
-        }, function (responseData) {
-
-            console.log(responseData);
-                // set a storage key
-            Storage.set(dataKey, responseData, callback);
-        });
-    }
-
     function getUsers(){
         console.log('getusers');
         chrome.runtime.sendMessage({
@@ -123,13 +105,6 @@ var searchEngines = {
         });
     }
 
-
-    function getData() {
-        //console.log('get data');
-        getRequest(storesUrl, storageDataKeyStores);
-        Storage.set(storageDataKeyDate, new Date().getTime());
-    }
-
     function displayFavoriteLinks(storeId) {
         if (!usersData || !usersData.user) {
             document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_add"]').className ='sd_hidden';
@@ -146,7 +121,7 @@ var searchEngines = {
 
     }
 
-    function findShop() {
+    function findShop222() {
         //console.log('поиск шопа', storageDataStores);
         if (storageDataStores == null || storageDataStores.length == 0) {
             return null;
@@ -199,6 +174,46 @@ var searchEngines = {
         });
 
     }
+
+    function findShop() {
+        //находим в данных текущий шоп, если нашли то коллбэк
+        storeUtil.findShop(storageDataStores.stores, false, function(item){
+            div = document.querySelector('.secretdiscounter-extension');
+            if (item && !div) {
+
+                var url = '', pluginSiteUrl = '', favoritesLink = '';
+                if (usersData && usersData.user) {
+                    url = siteUrl + 'goto/store:' + item.uid;
+                    pluginSiteUrl = siteUrl;
+                    favoritesLink = '<a title="Добавить в избранное" data-id="'+item.uid+'" data-type="add" class="" href="#vaforite_add">'+iconFavoriteClose+'</a>'+
+                        '<a title="Убрать из избранных" data-id="'+item.uid+'" data-type="delete" class="sd_hidden" href="#vaforite_remove">'+iconFavoriteOpen+'</a>';
+                } else {
+                    url = siteUrl + 'stores/' + item.store_route+'#login';
+                    pluginSiteUrl = siteUrl+'#login';
+                }
+                var message = utils.makeCashback(item.displayed_cashback, item.currency, item.action_id);
+                var shopDiv = utils.replaceTemplate(storePluginHtml, {
+                    'storeLogo': siteUrl+'images/logos/'+item.logo,
+                    'storeUrl': url,
+                    'storeText': message,
+                    'siteUrl': pluginSiteUrl,
+                    'favoritesLink': favoritesLink
+                });
+                div = document.createElement('div');
+                div.className = 'secretdiscounter-extension';
+                div.innerHTML = shopDiv;
+
+                document.body.insertBefore(div, document.body.firstChild);
+                document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
+                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
+                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
+
+                displayFavoriteLinks(item.uid);
+
+            }
+        });
+    }
+
 
     //изменение поиска
     function checkSearch(searchString, engine) {
@@ -288,22 +303,22 @@ var searchEngines = {
 
 
 
-    Storage.configure({
-        scope: "local" //or sync
-    });
-
-    Storage.load(function () {
-        storageDataDate = Storage.get(storageDataKeyDate);
-        storageDataStores = Storage.get(storageDataKeyStores);
-        if (!storageDataDate || !storageDataStores
-            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
-            //||storageData.date + 100 < new Date().getTime() ) {
-            getData();
-        }
-    });
+//console.log('start');
 
 
-console.log('start');
+Storage.load(function () {
+    storageDataDate = Storage.get(storageDataKeyDate);
+    storageDataStores = Storage.get(storageDataKeyStores);
+    console.log('storage load');
+    if (!storageDataDate || !storageDataStores
+        || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+        //||storageData.date + 100 < new Date().getTime() ) {
+        getData();
+    }
+});
+
+
+
 //получаем пользователя
 getUsers();
 

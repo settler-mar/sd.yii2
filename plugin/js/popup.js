@@ -92,14 +92,43 @@ function makeNotifications(){
     return result;
 }
 
-function getShop(callback) {
-    callback();
-}
 
-var displayShop = function(){
-    document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML = storeHtml;
+var displayShop = function(shop){
+    console.log('вывод шопа', shop);
+    document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
+        utils.replaceTemplate(storeHtml, {
+            'storeLogo': siteUrl + 'images/logos/'+ shop.logo,
+            'storeText': utils.makeCashback(
+                shop.displayed_cashback,
+                shop.currency,
+                shop.action_id
+            ),
+            'storeUrl': siteUrl + 'goto/store:' + shop.uid
+        });
 };
 
 getUser(displayUser);
 
-getShop(displayShop);
+chrome.tabs.getSelected(null,function(tab) {
+    //получить юрл текущей вкладки
+    //затем грузим данные, после - поиск шопа и вывод
+    //console.log(tab, tab.url);
+    Storage.load(function () {
+        storageDataDate = Storage.get(storageDataKeyDate);
+        storageDataStores = Storage.get(storageDataKeyStores);
+        console.log('storage load');
+        if (!storageDataDate || !storageDataStores
+            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+            getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
+            //поиск шопа или после загрузки данных
+        } else {
+            storeUtil.findShop(storageDataStores.stores, tab.url, displayShop);
+            //или сразу
+        }
+    });
+
+});
+
+
+
+
