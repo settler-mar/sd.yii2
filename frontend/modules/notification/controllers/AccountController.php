@@ -6,6 +6,7 @@ use yii;
 use frontend\modules\notification\models\Notifications;
 use frontend\components\Pagination;
 use frontend\modules\users\models\Users;
+use frontend\modules\favorites\models\UsersFavorites;
 
 class AccountController extends \yii\web\Controller
 {
@@ -67,8 +68,8 @@ class AccountController extends \yii\web\Controller
             'photo' => $user->photo,
             'birthday' => $user->birthday,
             'sex' => $user->sex,
+            'favorites' => UsersFavorites::getUserFav($user->uid),
         ],
-
       ];
     }
 
