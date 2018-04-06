@@ -23,7 +23,7 @@ class AccountController extends \yii\web\Controller
   {
     $request= Yii::$app->request;
 
-    if($request->isAjax) {
+    if($request->isAjax || $request->post('g') == 'plugin') {
       if(Yii::$app->user->isGuest){
         return json_encode([
           'error'=>Yii::t('account', 'favorites_login_to_add'),
@@ -82,18 +82,19 @@ class AccountController extends \yii\web\Controller
       return false;
     }
 
-    $cacheName = 'account_favorites_' . \Yii::$app->user->id;
-    $dependency = new yii\caching\DbDependency;
-    $dependencyName = 'account_favorites';
-    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    
-    $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
-        return Stores::items()
-          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
-          ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
-          ->orderBy('cuf.added DESC')
-          ->all();
-    }, \Yii::$app->cache->defaultDuration, $dependency);
+//    $cacheName = 'account_favorites_' . \Yii::$app->user->id;
+//    $dependency = new yii\caching\DbDependency;
+//    $dependencyName = 'account_favorites';
+//    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+//
+//    $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
+//        return Stores::items()
+//          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+//          ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
+//          ->orderBy('cuf.added DESC')
+//          ->all();
+//    }, \Yii::$app->cache->defaultDuration, $dependency);
+    $contentData["favorites"] = UsersFavorites::userFavorites();
     
     $contentData["favids"] = array_column($contentData["favorites"], 'uid');
 

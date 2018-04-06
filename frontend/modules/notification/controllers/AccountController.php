@@ -6,6 +6,7 @@ use yii;
 use frontend\modules\notification\models\Notifications;
 use frontend\components\Pagination;
 use frontend\modules\users\models\Users;
+use frontend\modules\favorites\models\UsersFavorites;
 
 class AccountController extends \yii\web\Controller
 {
@@ -56,6 +57,7 @@ class AccountController extends \yii\web\Controller
 
     if ($is_ajax || $plugin) {
       $user = \Yii::$app->user->identity;
+      $favorites = UsersFavorites::userFavorites();
       $out = [
         'btn' => 'Смотреть еще',
         'notifications'=>[],
@@ -67,8 +69,9 @@ class AccountController extends \yii\web\Controller
             'photo' => $user->photo,
             'birthday' => $user->birthday,
             'sex' => $user->sex,
+            'favorites_full' => $favorites,
+            'favorites' =>array_column($favorites, 'uid'),
         ],
-
       ];
     }
 

@@ -88,7 +88,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
    * @param bool $user_id
    * @return mixed
    */
-  public static function userFavoriteCount($userId = false,$offline=null)
+  public static function userFavoriteCount($userId = false, $offline=null)
   {
     if (!$userId) {
       $userId = Yii::$app->user->isGuest ? false : Yii::$app->user->id;
@@ -125,6 +125,22 @@ class UsersFavorites extends \yii\db\ActiveRecord
       $dependency
     );
 
+  }
+
+  public static function userFavorites()
+  {
+      $cacheName = 'account_favorites_' . \Yii::$app->user->id;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'account_favorites';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+      return \Yii::$app->cache->getOrSet($cacheName, function () {
+          return Stores::items()
+              ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
+              ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
+              ->orderBy('cuf.added DESC')
+              ->all();
+      }, \Yii::$app->cache->defaultDuration, $dependency);
   }
 
   /**
