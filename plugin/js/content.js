@@ -12,7 +12,7 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '</div>'+
     '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
     '<div class="secretdiscounter-extension__shop-text">{{storeText}}</div>'+
-    '{{favoritesLink}}'+
+    '<div class="secretdiscounter-extension__shop-favorites">{{favoritesLink}}</div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__buttons">'+
     '<a class="secretdiscounter-extension__link" href="{{storeUrl}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
@@ -23,8 +23,7 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
 var siteUrl = 'http://sdyii/';
 var storesUrl = 'stores/data';
 var userUrl = 'account/notification';
-var userFavoriteAddUrl = '';
-var userFavoriteRemoveUrl = '';
+var userFavoriteUrl = 'account/favorites';
 var storageDataKeyStores = 'secretdiscounter_local_stores';
 var storageDataKeyDate = 'secretdiscounter_local_date';
 var usersData = false;
@@ -267,6 +266,33 @@ Storage.clear = function(callback) {
 
         });
     }
+    function changeFavorite(e) {
+        e.preventDefault();
+        var that = this;
+        var storeId = that.getAttribute('data-id');
+        var type = that.getAttribute('data-type');
+        that.onclick = null;
+        chrome.runtime.sendMessage({
+            action: 'xhttp',
+            method: 'POST',
+            url: siteUrl + userFavoriteUrl,
+            data: {'affiliate_id': storeId, 'type': type}
+        }, function (responseData) {
+            //console.log('changeFavorites success', responseData);
+            that.onclick = changeFavorite;
+            if (!responseData.error) {
+                if (type === 'add') {
+                    usersData.user.favorites.push(storeId);
+                } else {
+                    var index = usersData.user.favorites.indexOf(storeId);
+                    if (index > -1) {
+                        usersData.user.favorites.splice(index, 1);
+                    }
+                }
+                displayFavoriteLinks(storeId);
+            }
+        });
+    }
 
 
     function getData() {
@@ -344,8 +370,8 @@ Storage.clear = function(callback) {
                 if (usersData && usersData.user) {
                     url = siteUrl + 'goto/store:' + item.uid;
                     pluginSiteUrl = siteUrl;
-                    favoritesLink = '<a title="Добавить в избранное" class="" href="#vaforite_add">'+iconFavoriteClose+'</a>'+
-                        '<a title="Убрать из избранных" class="sd_hidden" href="#vaforite_remove">'+iconFavoriteOpen+'</a>';
+                    favoritesLink = '<a title="Добавить в избранное" data-id="'+item.uid+'" data-type="add" class="" href="#vaforite_add">'+iconFavoriteClose+'</a>'+
+                        '<a title="Убрать из избранных" data-id="'+item.uid+'" data-type="delete" class="sd_hidden" href="#vaforite_remove">'+iconFavoriteOpen+'</a>';
                 } else {
                     url = siteUrl + 'stores/' + item.store_route+'#login';
                     pluginSiteUrl = siteUrl+'#login';
@@ -369,6 +395,8 @@ Storage.clear = function(callback) {
 
                 document.body.insertBefore(div, document.body.firstChild);
                 document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
+                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
+                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
 
                 displayFavoriteLinks(item.uid);
 

@@ -23,7 +23,7 @@ class AccountController extends \yii\web\Controller
   {
     $request= Yii::$app->request;
 
-    if($request->isAjax) {
+    if($request->isAjax || $request->post('g') == 'plugin') {
       if(Yii::$app->user->isGuest){
         return json_encode([
           'error'=>Yii::t('account', 'favorites_login_to_add'),
