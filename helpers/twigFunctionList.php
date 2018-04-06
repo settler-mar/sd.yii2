@@ -222,7 +222,6 @@ $functionsList = [
       //$v=$v/10;
       $cashback = str_replace($value, $v, $cashback);
     }
-
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
