@@ -7,8 +7,8 @@ function doClick() {
     chrome.tabs.create({url: this.getAttribute('href')});
 }
 
-//var siteUrl = 'https://secretdiscounter.ru/';
-var siteUrl = 'http://sdyii/';
+var siteUrl = 'https://secretdiscounter.ru/';
+//var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var usersData;
 var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+

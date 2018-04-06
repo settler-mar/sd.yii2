@@ -19,8 +19,8 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<span class="secretdiscounter-extension__buttons-message">Вы остаётесь на текущей странице</span>'+
     '</div>';
 
-//var siteUrl = 'https://secretdiscounter.ru/';
-var siteUrl = 'http://sdyii/';
+var siteUrl = 'https://secretdiscounter.ru/';
+//var siteUrl = 'http://sdyii/';
 var storesUrl = 'stores/data';
 var userUrl = 'account/notification';
 var userFavoriteUrl = 'account/favorites';
