@@ -376,11 +376,6 @@ Storage.clear = function(callback) {
                     url = siteUrl + 'stores/' + item.store_route+'#login';
                     pluginSiteUrl = siteUrl+'#login';
                 }
-                // var message = replaceTemplate({
-                //     'cashback': makeCashback(item.displayed_cashback, item.currency, item.action_id),
-                //     'currentUrl': siteUrl+item.url,
-                //     'storename': ucfirst(item.name)
-                // }, storageDataStores.text);
                 var message = makeCashback(item.displayed_cashback, item.currency, item.action_id);
                 var shopDiv = replaceTemplate({
                     'storeLogo': siteUrl+'images/logos/'+item.logo,
