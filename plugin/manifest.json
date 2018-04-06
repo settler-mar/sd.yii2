@@ -23,7 +23,7 @@
    },
    "content_scripts": [ {
       "all_frames": false,
-      "js": [ "js/content.js" ],
+      "js": [ "js/common/utils.js", "js/common/config.js", "js/common/icons.js", "js/common/templates.js", "js/common/storage.js", "js/content.js"],
       "matches": [ "<all_urls>" ],
       "run_at": "document_start",
       "css": ["css/content.css"]
