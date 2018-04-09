@@ -111,7 +111,10 @@ return [
       if (Yii::$app->user->isGuest) {
         $request = Yii::$app->request;
         // исключаем страницу авторизации или ajax-запросы
-        if (!($request->isAjax || strpos($request->url, 'login') !== false)) {
+        if (!($request->isAjax ||
+            strpos($request->url, 'login') !== false ||
+            strpos($request->url, 'g=plugin') !== false
+        )) {
           Yii::$app->user->setReturnUrl($request->url);
         }
       }
