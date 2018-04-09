@@ -458,4 +458,10 @@
     font-size: 2em;
     font-weight: bold;
   }
+  &-image {
+    &-height-250 {
+      max-height: 250px;
+
+    }
+  }
 }
