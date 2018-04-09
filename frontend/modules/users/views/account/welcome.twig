@@ -102,22 +102,22 @@
   </div>
 
   {% if desire %}
-    <div class="cashbonus account-margin-top align-center">
+    <div class="cashbonus account-margin-top align-center margin-half">
       {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw }}
     </div>
   {% endif %}
   {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}
-    <div class="account-status-uniq account-margin-top align-center">
+    <div class="account-status-uniq account-margin-top align-center  margin-half">
       {{ t('account', 'loyalty_status_min_sum {tariff_min_summ}', {'tariff_min_summ': this_tarif.bonus~'%'})|raw }}
     </div>
   {% endif %}
 
   {% if user.new_loyalty_status_end>0 %}
-    <div class="cashbonus vip account-margin-top align-center">
+    <div class="cashbonus vip account-margin-top align-center  margin-half">
       {{ t('account', 'premium_status_since {user_loyalty_status_end}', {'user_loyalty_status_end':date(user.new_loyalty_status_end)})|raw }}
     </div>
   {% elseif this_tarif.is_vip==1 %}
-    <div class="cashbonus vip account-margin-top align-center">
+    <div class="cashbonus vip account-margin-top align-center  margin-half">
       {{ t('account', 'loyalty_vip_client')|raw }}
     </div>
   {% endif %}
