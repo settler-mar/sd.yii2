@@ -260,6 +260,9 @@ h2, h3, h4 {
     flex-wrap: wrap;
     justify-content: space-around;
   }
+  &-align-center {
+    align-items: center;
+  }
 
   &-2col {
     > * {

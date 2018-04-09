@@ -8,7 +8,8 @@
 {% endif %}
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
-  <section class="margin account-welcome_share">
+  <section class="margin account-welcome_share border-wrap flex-line flex-align-center">
+    <img class="account-image-height-200" src="/images/templates/secretdiscounter-platinum.jpg" alt="поделиться с друзьями">
     <div class="align-center">
       <p class="account-welcome_share-text">Для того, чтобы активировать платиновый статус лояльности и получить +30% к ставке кэшбэка в подарок, расскажите о нас в своих соцсетях:</p>
       <div class="share42init accauntSoc accauntSoc_32"
@@ -26,7 +27,7 @@
   </section>
 {% endif %}
 
-<section id="account_circles_items" class="margin {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}hidden{% endif %}">
+<section id="account_circles_items" class="margin border-wrap {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}hidden{% endif %}">
   <h2>
     {{ t('account', 'user_loyalty_status') }}
   </h2>
@@ -122,8 +123,8 @@
   {% endif %}
 </section>
 
-<section class="align-center margin border-wrap flex-line">
-  <img class="account-image-height-250" src="/images/templates/shutterstock_322090571.jpg" alt="пригласить друзей">
+<section class="align-center margin border-wrap flex-line flex-align-center">
+  <img class="account-image-height-200" src="/images/templates/shutterstock_322090571.jpg" alt="пригласить друзей">
   <div>
     <div class="margin-half account-margin-top account-cashbonus">
       Также к нам можно приводить друзей и зарабатывать с их покупок

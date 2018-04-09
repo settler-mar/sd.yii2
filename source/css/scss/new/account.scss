@@ -461,7 +461,9 @@
   &-image {
     &-height-250 {
       max-height: 250px;
-
+    }
+    &-height-200 {
+      max-height: 200px;
     }
   }
 }
