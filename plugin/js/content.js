@@ -121,60 +121,6 @@ var searchEngines = {
 
     }
 
-    function findShop222() {
-        //console.log('поиск шопа', storageDataStores);
-        if (storageDataStores == null || storageDataStores.length == 0) {
-            return null;
-        }
-        //найти магазин, если на нем находимся
-        //console.log('сам поиск шопов');
-
-        var here = (window.location.host).replace('www.', '');
-        var url;
-        var div = null;
-        storageDataStores.stores.forEach(function (item) {
-
-            currentUrl = item.url.split('//')[1].replace('www.', '').split('/')[0];
-            //console.log(item.url, currentUrl, here);
-
-            if ((here == currentUrl || here.indexOf(currentUrl) > -1) && !div) {
-                //нашли, мы находимся здесь
-                //console.log('here', item);
-                var url = '', pluginSiteUrl = '', favoritesLink = '';
-                if (usersData && usersData.user) {
-                    url = siteUrl + 'goto/store:' + item.uid;
-                    pluginSiteUrl = siteUrl;
-                    favoritesLink = '<a title="Добавить в избранное" data-id="'+item.uid+'" data-type="add" class="" href="#vaforite_add">'+iconFavoriteClose+'</a>'+
-                        '<a title="Убрать из избранных" data-id="'+item.uid+'" data-type="delete" class="sd_hidden" href="#vaforite_remove">'+iconFavoriteOpen+'</a>';
-                } else {
-                    url = siteUrl + 'stores/' + item.store_route+'#login';
-                    pluginSiteUrl = siteUrl+'#login';
-                }
-                var message = utils.makeCashback(item.displayed_cashback, item.currency, item.action_id);
-                var shopDiv = utils.replaceTemplate(storePluginHtml, {
-                    'storeLogo': siteUrl+'images/logos/'+item.logo,
-                    'storeUrl': url,
-                    'storeText': message,
-                    'siteUrl': pluginSiteUrl,
-                    'favoritesLink': favoritesLink
-                });
-                div = document.createElement('div');
-                div.className = 'secretdiscounter-extension';
-                div.innerHTML = shopDiv;
-
-                document.body.insertBefore(div, document.body.firstChild);
-                document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
-                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
-                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
-
-                displayFavoriteLinks(item.uid);
-
-                return false;
-            }
-        });
-
-    }
-
     function findShop() {
         //находим в данных текущий шоп, если нашли то коллбэк
         storeUtil.findShop(storageDataStores.stores, false, function(item){
@@ -191,7 +137,7 @@ var searchEngines = {
                     url = siteUrl + 'stores/' + item.store_route+'#login';
                     pluginSiteUrl = siteUrl+'#login';
                 }
-                var message = utils.makeCashback(item.displayed_cashback, item.currency, item.action_id);
+                var message =  utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
                 var shopDiv = utils.replaceTemplate(storePluginHtml, {
                     'storeLogo': siteUrl+'images/logos/'+item.logo,
                     'storeUrl': url,
@@ -241,6 +187,7 @@ var searchEngines = {
                     // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
                     searchFormImage+message;
                 div.id = 'secretdiscounter-search';
+                div.className = 'secretdiscounter-search';
                 div.setAttribute('style', engine.styles);
 
                 if (engine.repeat < 2) {
@@ -309,7 +256,6 @@ var searchEngines = {
 Storage.load(function () {
     storageDataDate = Storage.get(storageDataKeyDate);
     storageDataStores = Storage.get(storageDataKeyStores);
-    console.log('storage load');
     if (!storageDataDate || !storageDataStores
         || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
         //||storageData.date + 100 < new Date().getTime() ) {

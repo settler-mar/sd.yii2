@@ -134,34 +134,23 @@
     /*display: inline-block;*/
 }
 
-/*@media (max-width: 768px) {*/
-    /*.secretdiscounter-extension__text {*/
-        /*display: none;*/
-    /*}*/
 
-    /*.secretdiscounter-extension__link {*/
-        /*margin-left: 5%;*/
-    /*}*/
-    /*.secretdiscounter-extension .cd-logo_small {*/
-        /*display: inline;*/
-    /*}*/
-    /*.secretdiscounter-extension .cd-logo_big {*/
-        /*display: none;*/
-    /*}*/
-/*}*/
-/*@media (max-width: 380px) {*/
-    /*.secretdiscounter-extension__button_close {*/
-        /*margin-right: 20px;*/
-    /*}*/
-/*}*/
-
-#secretdiscounter-search {
+.secretdiscounter-search {
     padding: 4px 18px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
-#secretdiscounter-search img {
+.secretdiscounter-search img {
     margin-right: 12px;
 }
-#secretdiscounter-search a {
-    color: red;
+.secretdiscounter-search a {
+    color: red !important;
     font-size: 18px;
+}
+.secretdiscounter-search .cashback_old {
+    text-decoration: line-through;
+    margin-left: 5px;
 }

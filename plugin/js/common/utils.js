@@ -10,7 +10,7 @@ var utils = (function(){
         return template;
     }
     function makeCashback(displayedCashback, currency, action){
-        var result = 'Кэшбэк<span class="cashback">';
+        var result = '<span class="cashback">';
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
         if (!cashbackNum) {
@@ -20,7 +20,10 @@ var utils = (function(){
                 (displayedCashback.match(/\%/) ? "" : " " + currency);
         }
         result +='</span>';
-        result +=  (action == 1 && cashbackNum ? '<span class="cashback_old">'+cashbackNum+'</span>':'');
+        if (action == 1) {
+            var cashbackOld = displayedCashback + (displayedCashback.match(/\%/) ? "" : " " + currency);
+            result +=  '<span class="cashback_old">'+cashbackOld+'</span>';
+        }
         return result;
     }
 
