@@ -21,8 +21,8 @@
 
     <div class="form-group">
       <input type="submit"
-             value="{{ _if(path,t('account', 'email_confirm_send_activation_key'),t('account','email_confirm_send_activation_key_repeat')) }}"
-             class="btn">
+             value="{{ _if(path,t('account', 'email_confirm_send_activation_key'),t('account','email_confirm_send_activation_key_repeat'))|raw }}"
+             class="btn btn-narrow">
     </div>
   {{ active_form_end() }}
   </div>

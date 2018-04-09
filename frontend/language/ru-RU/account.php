@@ -194,7 +194,7 @@ return [
     'dobro_auto_payment_choosen_already' => 'Вы уже выбрали фонд для автоперечеслений ранее.',
     'dobro_not_payment_default' => 'У вас нет платежа по умолчанию.',
     'email_confirm_send_activation_key' => 'Отправить ключ активации',
-    'email_confirm_send_activation_key_repeat' => 'Отправить повторное письмо',
+    'email_confirm_send_activation_key_repeat' => 'Повторно отправить письмо (если не пришло) &rarr;',
     'email_confirm_token_empty' => 'Идентификатор подтверждения email не может быть пустым.',
     'email_confirm_token_used_or_expired' => 'Данная ссылка для активации e-mail уже использована или устарела. Если вы запросили код активации несколько раз – пройдите по ссылке в ПОСЛЕДНЕМ письме.',
     'email_confirm_token_expired' => 'Данная ссылка для активации e-mail уже устарела.',
