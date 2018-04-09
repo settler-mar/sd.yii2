@@ -122,44 +122,56 @@ var searchEngines = {
     }
 
     function findShop() {
-        //находим в данных текущий шоп, если нашли то коллбэк
-        storeUtil.findShop(storageDataStores.stores, false, function(item){
-            div = document.querySelector('.secretdiscounter-extension');
-            if (item && !div) {
+        if (getCookie(appCookieName) !== appCookieValue) {
+            //находим в данных текущий шоп, если нашли то коллбэк
+            storeUtil.findShop(storageDataStores.stores, false, function (item) {
+                div = document.querySelector('.secretdiscounter-extension');
+                if (item && !div) {
 
-                var url = '', pluginSiteUrl = '', favoritesLink = '';
-                if (usersData && usersData.user) {
-                    url = siteUrl + 'goto/store:' + item.uid;
-                    pluginSiteUrl = siteUrl;
-                    favoritesLink = '<a title="Добавить в избранное" data-id="'+item.uid+'" data-type="add" class="" href="#vaforite_add">'+iconFavoriteClose+'</a>'+
-                        '<a title="Убрать из избранных" data-id="'+item.uid+'" data-type="delete" class="sd_hidden" href="#vaforite_remove">'+iconFavoriteOpen+'</a>';
-                } else {
-                    url = siteUrl + 'stores/' + item.store_route+'#login';
-                    pluginSiteUrl = siteUrl+'#login';
+                    var url = '', pluginSiteUrl = '', favoritesLink = '';
+                    if (usersData && usersData.user) {
+                        url = siteUrl + 'goto/store:' + item.uid;
+                        pluginSiteUrl = siteUrl;
+                        favoritesLink = '<a title="Добавить в избранное" data-id="' + item.uid + '" data-type="add" class="" href="#vaforite_add">' + iconFavoriteClose + '</a>' +
+                            '<a title="Убрать из избранных" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="#vaforite_remove">' + iconFavoriteOpen + '</a>';
+                    } else {
+                        url = siteUrl + 'stores/' + item.store_route + '#login';
+                        pluginSiteUrl = siteUrl + '#login';
+                    }
+                    var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
+                    var shopDiv = utils.replaceTemplate(storePluginHtml, {
+                        'storeLogo': siteUrl + 'images/logos/' + item.logo,
+                        'storeUrl': url,
+                        'storeText': message,
+                        'siteUrl': pluginSiteUrl,
+                        'favoritesLink': favoritesLink
+                    });
+                    div = document.createElement('div');
+                    div.className = 'secretdiscounter-extension';
+                    div.innerHTML = shopDiv;
+
+                    var tryCount = 10;
+                    var divInsertInterval = setInterval(function(){
+                        tryCount--;
+                        var body = document.body;
+                        if (body) {
+                            clearInterval(divInsertInterval);
+                            body.insertBefore(div, body.firstChild);
+                            document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
+                            document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
+                            document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
+                            displayFavoriteLinks(item.uid);
+                        }
+                        if (tryCount < 0) {
+                            clearInterval(divInsertInterval);
+                        }
+                    }, 1000);
+
+
                 }
-                var message =  utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
-                var shopDiv = utils.replaceTemplate(storePluginHtml, {
-                    'storeLogo': siteUrl+'images/logos/'+item.logo,
-                    'storeUrl': url,
-                    'storeText': message,
-                    'siteUrl': pluginSiteUrl,
-                    'favoritesLink': favoritesLink
-                });
-                div = document.createElement('div');
-                div.className = 'secretdiscounter-extension';
-                div.innerHTML = shopDiv;
-
-                document.body.insertBefore(div, document.body.firstChild);
-                document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
-                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
-                document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
-
-                displayFavoriteLinks(item.uid);
-
-            }
-        });
+            });
+        }
     }
-
 
     //изменение поиска
     function checkSearch(searchString, engine) {
@@ -259,10 +271,12 @@ Storage.load(function () {
     if (!storageDataDate || !storageDataStores
         || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
         //||storageData.date + 100 < new Date().getTime() ) {
-        getData();
-    }
-});
-
+        getData(findShop());
+        //поиск шопа или после загрузки данных
+    } else {
+        findShop();
+        //или сразу
+    }});
 
 
 //получаем пользователя
@@ -309,9 +323,6 @@ window.onload = function() {
         }
     }
 
-    if (getCookie(appCookieName) !== appCookieValue) {
-        findShop();
-    }
     //Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 };
 

@@ -95,6 +95,9 @@ button {
   opacity: 1;
   transform: scale(1);
 }
+.secretdiscounter-pupup {
+  background-color: #FFFFF0;
+}
 
 .secretdiscounter-pupup__header {
   display: flex;
@@ -104,6 +107,7 @@ button {
   justify-content: center;
   background: #121213;
   margin-bottom: 0;
+  min-width: 300px;
 
 }
 .secretdiscounter-pupup__logo {
@@ -141,7 +145,7 @@ button {
   line-height: 1em;
   cursor: pointer;
   text-align: center;
-  margin: 5px 10px;
+  margin: 12px 10px;
 }
 .secretdiscounter-pupup__login:hover {
    color: #fff;
@@ -183,6 +187,7 @@ button {
   justify-content: center;
 
 }
+
 .secretdiscounter-pupup__info-balance-current {
   color: #5aac44;
 }
@@ -195,9 +200,16 @@ button {
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: left;
-  height: 200px;
+  height: 240px;
   padding: 2px 5px 5px;
-  }
+  margin: 0 3px 3px ;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+}
+.secretdiscounter-pupup__tabs.logout {
+  height: 212px;
+}
 .secretdiscounter-pupup__tab-checkboxtab {
   display: none;
 }
@@ -207,7 +219,8 @@ button {
   left: 0;
   width: 100%;
   border-top: 1px solid #aaa;
-  padding: 5px;
+  margin: 0 5px 5px;
+  /*padding: 5px;*/
 }
 
 .secretdiscounter-pupup__tab-checkboxtab ~ label {
@@ -233,16 +246,40 @@ button {
 .secretdiscounter-pupup__tab-notifications {
  display: none;
 }
-.secretdiscounter-pupup__tab-notifications  .secretdiscounter-pupup__tab-content {
-  width: calc(100vw - 8px);
-  height: 160px;
+.secretdiscounter-pupup__tab-content {
+  width: calc(100vw - 10px);
+  height: 213px;
   overflow: auto;
 }
-.secretdiscounter-pupup__tab-favorites  .secretdiscounter-pupup__tab-content {
-  width: calc(100vw - 8px);
-  height: 160px;
-  overflow: auto;
+.secretdiscounter-popup__copy {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 5px;
 }
+.secretdiscounter-popup__copy-help {
+  display: block;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  background-color: #aaa;
+  border-radius: 50%;
+  color: #fff;
+  padding-left: 6px;
+  text-decoration: none;
+}
+/*.secretdiscounter-pupup__tab-notifications  .secretdiscounter-pupup__tab-content {*/
+  /*width: calc(100vw - 8px);*/
+  /*height: 160px;*/
+  /*overflow: auto;*/
+/*}*/
+/*.secretdiscounter-pupup__tab-favorites  .secretdiscounter-pupup__tab-content {*/
+  /*width: calc(100vw - 8px);*/
+  /*height: 160px;*/
+  /*overflow: auto;*/
+/*}*/
 
 
 
@@ -279,6 +316,13 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 10px 10px 8px;
+  justify-content: flex-end;
+  /*margin-top: 30px;*/
+  text-align: center;
+  min-height: 110px;
+}
+.secretdiscounter-extension__buttons-tariffs {
+  padding: 5px;
 }
 .secretdiscounter-extension__buttons-message {
   color: #d6d6d6;
@@ -294,21 +338,25 @@ button {
 
 .secretdiscounter-extension__notificaton {
   border-bottom: 1px solid #aaa;
-  margin-bottom: 5px;
+  /*margin-bottom: 5px;*/
+  padding: 3px;
 }
 .secretdiscounter-extension__notification-button {
   margin-top: 5px;
-  width: 100%;
+  width: calc(100vw - 35px);
   text-align: center;
+  padding: 3px;
 }
 .secretdiscounter-extension__notificaton-link {
   display: block;
   color: #000;
   text-decoration: none;
   padding: 0.25rem 0.75rem;
+  margin: auto;
 }
 .secretdiscounter-extension__notificaton-link:hover {
   color: #fff;
 }
+
 
 

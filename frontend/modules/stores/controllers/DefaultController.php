@@ -474,7 +474,7 @@ class DefaultController extends SdController
 
           $stores = Stores::find()
               //->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cwsc.route as category_route'])
-              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo'])
+              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo', 'cws.conditions'])
               ->from(Stores::tableName(). ' cws')
               //->leftJoin(['cwsc' => $storeCategories], 'cwsc.store_id = cws.uid')
               ->where(['cws.is_active'=> '1'])
@@ -482,8 +482,7 @@ class DefaultController extends SdController
               //->limit(10)
               ->all();
           $data = [
-              //"text" => "Сэкономьте {{cashback}} в {{currentUrl}} с SecretDiscounter",
-              "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
+             // "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
               "searchtext" => "Кэшбэк {{cashback}}",
               "stores" => $stores,
           ];

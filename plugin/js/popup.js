@@ -11,7 +11,7 @@ function getUser(callback){
         url: siteUrl + userUrl
     }, function (responseData) {
         usersData = responseData;
-        console.log(usersData);
+        //console.log(usersData);
         callback()
     });
 }
@@ -19,6 +19,7 @@ function getUser(callback){
 var displayUser = function(){
     //console.log(usersData);
     if (usersData && usersData.user) {
+        document.querySelector('.secretdiscounter-pupup__tabs').classList.remove('logout');
         document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="'+siteUrl+usersData.user.photo+'"/>';
         document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;
         document.querySelector('.secretdiscounter-pupup__info-balance-current').innerHTML = usersData.user.balance.current;
@@ -36,6 +37,7 @@ var displayUser = function(){
         tabFavorites.innerHTML = makeFavorites();
         utils.makeHrefs(tabFavorites)
     } else {
+        document.querySelector('.secretdiscounter-pupup__tabs').classList.add('logout');
         document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl+'#login');
         document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
         document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
@@ -51,7 +53,7 @@ var displayUser = function(){
 
 
 function makeFavorites(){
-    console.log(usersData.user);
+    //console.log(usersData.user);
     if (!usersData || !usersData.user.favorites_full) {
         return '';
     }
@@ -71,7 +73,7 @@ function makeFavorites(){
 
 }
 function makeNotifications(){
-    console.log(usersData);
+    //console.log(usersData);
     if (!usersData || !usersData.notifications) {
         return '';
     }
@@ -100,7 +102,9 @@ var displayShop = function(shop){
                 shop.currency,
                 shop.action_id
             ),
-            'storeUrl': siteUrl + 'goto/store:' + shop.uid
+            'storeUrl': siteUrl + 'goto/store:' + shop.uid,
+            'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
+            'storeTariffs': shop.conditions ? shop.conditions : ''
         });
 };
 
