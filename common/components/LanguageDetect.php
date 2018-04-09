@@ -16,7 +16,7 @@ class LanguageDetect extends Component
     {
         $this->languageDetector = new TextLanguageDetect();
         $this->languageDetector->setNameMode(2);
-        $this->languageArray = $this->makeLanguageArray(array_flip(array_diff(TextLanguageDetectISO639::$nameToCode2, [null])));
+        $this->languageArray = $this->makeLanguagesArray(TextLanguageDetectISO639::$nameToCode2);
     }
 
 
@@ -35,8 +35,9 @@ class LanguageDetect extends Component
         return $this->languageArray;
     }
 
-    private function makeLanguageArray($languages)
+    private function makeLanguagesArray($isoLanguages)
     {
+        $languages = array_flip(array_diff($isoLanguages, [null]));
         foreach ($languages as &$language) {
             $language = ucfirst($language);
         }
