@@ -17,8 +17,8 @@ var favoriteHTML ='<div class="secretdiscounter-extension__shop"><img class="sec
     '</div>';
 
 var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
-    '<a href="{{siteUrl}}" class="secretdiscounter-extension__logo">'+logoImage+logoImageWhite+'</a>'+
-    '<div class="secretdiscounter-extension__button_close"><div class="secretdiscounter-extension__button_icon">&times;</div></div>'+
+    '<a href="{{siteUrl}}" class="secretdiscounter-extension__logo"><img class="secretdiscounter-extension__logo-img" src="{{logoImage}}"/></a>'+
+    '<div class="secretdiscounter-extension__button_close"><span class="secretdiscounter-extension__button_icon">&times;</span></div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
     '<div class="secretdiscounter-extension__shop-text">Кэшбэк{{storeText}}</div>'+

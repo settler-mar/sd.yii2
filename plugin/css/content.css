@@ -33,6 +33,14 @@
     padding: 10px;
     box-sizing: border-box;
 }
+.secretdiscounter-extension__logo {
+    vertical-align: middle;
+}
+.secretdiscounter-extension__logo-img {
+    width: 170px;
+    display: block;
+    margin: auto;
+}
 .secretdiscounter-extension__shop {
     display: flex;
     flex-direction: row;
@@ -57,19 +65,22 @@
 }
 
 .secretdiscounter-extension__button_close {
-    min-width: 27px;
-    height: 27px;
-    box-sizing: border-box;
+    min-width: 27px !important;
+    height: 27px !important;
+    box-sizing: border-box !important;
     cursor: pointer;
     background: rgb(250, 54, 28) !important;
     border-radius: 50% !important;
+    text-align: center !important;
 }
 .secretdiscounter-extension__button_icon {
-    padding-top: 13px;
-    line-height: 0;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    font-size: 27px;
+    line-height: 27px !important;
+    color: #fff !important;
+    font-size: 25px !important;
+    font-family: "Open Sans", sans-serif !important;
+    margin-top: 0 !important;
+    display: block !important;
+    font-weight: 400 !important;
 }
 .secretdiscounter-extension__shop {
     border-bottom: 1px solid #b5b5b5;
@@ -99,10 +110,10 @@
     padding: 10px 10px 8px;
 }
 .secretdiscounter-extension__buttons-message {
-    color: #d6d6d6;
+    color: #666;
     font-size: 11px;
 }
-.secretdiscounter-extension__link {
+.secretdiscounter-extension__buttons .secretdiscounter-extension__link {
     margin-bottom: 3px;
     padding: 0.75rem;
     background: #f7c714;
@@ -120,11 +131,13 @@
     line-height: 1em;
     cursor: pointer;
     text-align: center;
+    box-shadow: none;
 }
-.secretdiscounter-extension__link:hover {
+.secretdiscounter-extension__buttons .secretdiscounter-extension__link:hover {
     color: #fff;
     background: #fdec3e;
-    border-color: #fdec3e;
+    box-shadow: none;
+    border: 2px solid #fdec3e;
 }
 
 
