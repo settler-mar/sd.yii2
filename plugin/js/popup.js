@@ -1,11 +1,5 @@
-document.querySelector('.secretdiscounter-pupup__logo-link').onclick = doClick;
-document.querySelector('.secretdiscounter-pupup__info').onclick = doClick;
-document.querySelector('.secretdiscounter-pupup__login').onclick = doClick;
 
-
-function doClick() {
-    chrome.tabs.create({url: this.getAttribute('href')});
-}
+utils.makeHrefs(document);//события для ссылок на форме
 
 var usersData;
 
@@ -35,9 +29,12 @@ var displayUser = function(){
         document.querySelector('.secretdiscounter-pupup__login').style.display = 'none';
         document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl);
         document.querySelector('.secretdiscounter-pupup__info').style.display = 'flex';
-        document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content').innerHTML = makeNotifications();
-        document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = makeFavorites();
-
+        var tabNotifications = document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content');
+        tabNotifications.innerHTML = makeNotifications();
+        utils.makeHrefs(tabNotifications);
+        var tabFavorites = document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content');
+        tabFavorites.innerHTML = makeFavorites();
+        utils.makeHrefs(tabFavorites)
     } else {
         document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl+'#login');
         document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
@@ -87,7 +84,7 @@ function makeNotifications(){
         });
     }
     if (usersData.btn) {
-        result += '<div class=""><a href="'+siteUrl + userUrl+'">'+usersData.btn+'</a></div>';
+        result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__notificaton-link btn" href="'+siteUrl + userUrl+'">'+usersData.btn+'</a></div>';
     }
     return result;
 }

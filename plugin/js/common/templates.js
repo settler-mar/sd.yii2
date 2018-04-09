@@ -2,7 +2,7 @@ var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secre
     '<div class="secretdiscounter-extension__shop-text">{{storeText}}</div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__buttons">'+
-    '<a class="secretdiscounter-extension__link" href="{{storeUrl}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
+    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
     '</div>';
 var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '<div class="secretdiscounter-extension__notificaton-date">{{notyDate}}</div>'+
@@ -11,7 +11,7 @@ var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '</div>';
 var favoriteHTML ='<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
     '<div class="secretdiscounter-extension__shop-text">{{storeText}}</div>'+
-    '<a class="secretdiscounter-extension__link" href="{{storeUrl}}" target="_blank">Активировать<br>кэшбэк</a>'+
+    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">Активировать<br>кэшбэк</a>'+
     '</div>';
 
 var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
@@ -23,6 +23,6 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<div class="secretdiscounter-extension__shop-favorites">{{favoritesLink}}</div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__buttons">'+
-    '<a class="secretdiscounter-extension__link" href="{{storeUrl}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
+    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
     '<span class="secretdiscounter-extension__buttons-message">Вы остаётесь на текущей странице</span>'+
     '</div>';

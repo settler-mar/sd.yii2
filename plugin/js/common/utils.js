@@ -29,10 +29,21 @@ var utils = (function(){
         return f + str.substr(1, str.length - 1);
     }
 
+    function doClick(){
+        chrome.tabs.create({url: this.getAttribute('href')});
+    }
+    function makeHrefs(elem){
+        elements = elem.getElementsByTagName('a');
+        for (var i = 0; i < elements.length; i++){
+            elements[i].onclick = doClick;
+        }
+    }
+
     return {
         replaceTemplate: replaceTemplate,
         makeCashback: makeCashback,
-        ucfirst: ucfirst
+        ucfirst: ucfirst,
+        makeHrefs: makeHrefs
     }
 
 })();
