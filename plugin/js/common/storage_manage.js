@@ -9,7 +9,7 @@ function getData(callback) {
     //getRequest(storesUrl, storageDataKeyStores);
 
     chrome.runtime.sendMessage({
-        action: 'xhttp',
+        action: 'sd_xhttp',
         url: siteUrl + storesUrl
     }, function (responseData) {
 

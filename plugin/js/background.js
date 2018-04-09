@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
 
     //console.log('request', request);
 
-    if (request.action == "xhttp") {
+    if (request.action == "sd_xhttp") {
 
         var xhr = new XMLHttpRequest();
         var method = request.method || 'GET';

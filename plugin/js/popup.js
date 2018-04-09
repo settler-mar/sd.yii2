@@ -7,7 +7,7 @@ var usersData;
 function getUser(callback){
     //вызываем событие для запроса из background.js
     chrome.runtime.sendMessage({
-        action: 'xhttp',
+        action: 'sd_xhttp',
         url: siteUrl + userUrl
     }, function (responseData) {
         usersData = responseData;

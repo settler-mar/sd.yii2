@@ -69,7 +69,7 @@ var searchEngines = {
     function getUsers(){
         console.log('getusers');
         chrome.runtime.sendMessage({
-            action: 'xhttp',
+            action: 'sd_xhttp',
             url: siteUrl + userUrl
         }, function (responseData) {
             console.log('getusers success', responseData);
@@ -84,7 +84,7 @@ var searchEngines = {
         var type = that.getAttribute('data-type');
         that.onclick = null;
         chrome.runtime.sendMessage({
-            action: 'xhttp',
+            action: 'sd_xhttp',
             method: 'POST',
             url: siteUrl + userFavoriteUrl,
             data: {'affiliate_id': storeId, 'type': type}
