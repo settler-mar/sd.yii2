@@ -10,17 +10,12 @@ var utils = (function(){
         return template;
     }
     function makeCashback(displayedCashback, currency, action){
-        var result = '<span class="cashback">';
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
-        if (!cashbackNum) {
-            result += '10%';
-        } else {
-            result += displayedCashback.replace(/[\d.]+/, cashbackNumFinal) +
-                (displayedCashback.match(/\%/) ? "" : " " + currency);
-        }
-        result +='</span>';
-        if (action == 1) {
+
+        result = '<span class="cashback">'+displayedCashback.replace(/[\d.]+/, cashbackNumFinal) +
+            (displayedCashback.match(/\%/) ? "" : " " + currency) +'</span>';
+        if (action == 1 && cashbackNum > 0) {
             var cashbackOld = displayedCashback + (displayedCashback.match(/\%/) ? "" : " " + currency);
             result +=  '<span class="cashback_old">'+cashbackOld+'</span>';
         }
