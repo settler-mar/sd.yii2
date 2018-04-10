@@ -474,7 +474,7 @@ class DefaultController extends SdController
 
           $stores = Stores::find()
               //->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cwsc.route as category_route'])
-              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo', 'cws.conditions'])
+              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo', 'cws.conditions','cws.url_alternative'])
               ->from(Stores::tableName(). ' cws')
               //->leftJoin(['cwsc' => $storeCategories], 'cwsc.store_id = cws.uid')
               ->where(['cws.is_active'=> '1'])

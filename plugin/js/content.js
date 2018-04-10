@@ -38,7 +38,10 @@ var searchEngines = {
     'result_selector': '#res',
     'result_first_item': 1,
     'repeat': 0,
-    'styles': ''
+    'styles': '',
+
+    'analiseHREF':'#res h3 a[href]',
+    'closest':'div.g'
   },
   'bing': {
     'search_selector': '#sb_form_q',
@@ -47,7 +50,10 @@ var searchEngines = {
     'result_selector': '#b_results',
     'result_first_item': 0,
     'repeat': 0,
-    'styles': 'margin-left:5px;'
+    'styles': 'margin-left:5px;',
+
+    'analiseHREF':'#b_results h2 a[href]',
+    'closest':'li.b_algo'
   },
   'yandex': {
     'search_selector': 'div.serp-header__main input.input__control',
@@ -57,7 +63,11 @@ var searchEngines = {
     'result_first_item': 0,
     'dom_change_selector': '.main .main__center .main__content',
     'repeat': 5, //повтор вывода
-    'styles': 'margin-left:-40px;'
+    'styles': 'margin-left:-40px;',
+
+    'analiseHREF':'.serp-list .serp-item .path a[href] b',
+    'byText': true,
+    'closest':'li.serp-item'
   }
 };
 
@@ -78,6 +88,7 @@ function getUsers() {
 
   });
 }
+
 function changeFavorite(e) {
   e.preventDefault();
   var that = this;
@@ -123,8 +134,8 @@ function displayFavoriteLinks(storeId) {
 }
 
 function findShop() {
-  console.log(findShop);
-  if (!debug && getCookie(appCookieName) !== appCookieValue) {
+  console.log('findShop');
+  if (debug || getCookie(appCookieName) !== appCookieValue) {
     //надо дождаться, когда будут пользователи
     if (usersData !== false) {
       //находим в данных текущий шоп, если нашли то коллбэк
@@ -311,7 +322,7 @@ window.onload = function () {
   setAppId();
 
   //событие для яндекса при повторном поиске
-  var yandexDomElementChange = document.querySelector(searchEngines.yandex.dom_change_selector);
+  /*var yandexDomElementChange = document.querySelector(searchEngines.yandex.dom_change_selector);
   var yandexInput = document.querySelector(searchEngines.yandex.search_selector);
   if (yandexDomElementChange && yandexInput) {
     var yandexSearchTimeOut = null;
@@ -326,13 +337,64 @@ window.onload = function () {
       }
 
     });
+  }*/
+
+  function generateSearchLink(item,el){
+    var div = document.createElement('div');
+    message = utils.replaceTemplate(storageDataStores.searchtext, {
+      'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
+      'currentUrl': siteUrl + item.url,
+      'storename': utils.ucfirst(item.name)
+    });
+    var url = '';
+    if (usersData && usersData.user) {
+      url = siteUrl + 'goto/store:' + item.uid;
+    } else {
+      url = siteUrl + 'stores/' + item.store_route + '#login';
+    }
+    div.innerHTML = "<a href='" + url + "'target='_blank'>" +
+      // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
+      searchFormImage + message;
+    div.id = 'secretdiscounter-search';
+    div.className = 'secretdiscounter-search';
+    div.setAttribute('style', engine.styles);
+
+    el.prepend(div);
+  }
+
+  function displayShopFinders(item){
+    var data = this;
+    var engine = data.engine;
+    var el = data.el;
+
+    generateSearchLink(item,el);
   }
 
   //для гугл,  бинг, яндекс(первый запрос)
   var locationHref = location.hostname.split('.');
   for (key in searchEngines) {
     var engine = searchEngines[key];
-    var input = document.querySelector(engine.search_selector);
+    if(!checkLocation(locationHref, engine.location_href_index, engine.location_href))continue;
+
+    var els=document.querySelectorAll(engine.analiseHREF);
+    if(els.length==0)return;
+    var el=els[0];
+
+    var url;
+    if(engine.byText){
+      url = el.innerText;
+    }else{
+      url = el.href.split('//');
+      if(url.length==2){url=url[1]};
+      url=url.split('/');
+      url=url[0].split('?');
+      url=url[0];
+    }
+    storeUtil.findShop(storageDataStores.stores, url, displayShopFinders.bind({
+      engine:engine,
+      el:el.closest(engine.closest)
+    }));
+    /*var input = document.querySelector(engine.search_selector);
     if (input && checkLocation(locationHref, engine.location_href_index, engine.location_href)) {// locationHref[engine.location_href_index] == engine.location_href) {
       var value = input.value;
       if (value != null && value !== '') {
@@ -345,10 +407,10 @@ window.onload = function () {
         }
       }
       break;
-    }
+    }*/
   }
 
-  //Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
+  if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 };
 
 
