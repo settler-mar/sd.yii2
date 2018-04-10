@@ -19,9 +19,9 @@ function getUser(callback){
 var displayUser = function(){
     //console.log(usersData);
     if (usersData && usersData.user) {
-        document.querySelector('.secretdiscounter-pupup__tabs').classList.remove('logout');
+        document.querySelector('.secretdiscounter-pupup').classList.remove('logout');
         document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="'+siteUrl+usersData.user.photo+'"/>';
-        document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;
+        //document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;
         document.querySelector('.secretdiscounter-pupup__info-balance-current').innerHTML = usersData.user.balance.current;
         document.querySelector('.secretdiscounter-pupup__info-balance-pending').innerHTML = '&nbsp;/&nbsp;'+usersData.user.balance.pending;
         document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'block';
@@ -37,7 +37,7 @@ var displayUser = function(){
         tabFavorites.innerHTML = makeFavorites();
         utils.makeHrefs(tabFavorites)
     } else {
-        document.querySelector('.secretdiscounter-pupup__tabs').classList.add('logout');
+        document.querySelector('.secretdiscounter-pupup').classList.add('logout');
         document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl+'#login');
         document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
         document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
@@ -104,7 +104,8 @@ var displayShop = function(shop){
             ),
             'storeUrl': siteUrl + 'goto/store:' + shop.uid,
             'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
-            'storeTariffs': shop.conditions ? shop.conditions : ''
+            'storeTariffs': shop.conditions ?
+                '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>'+shop.conditions : ''
         });
 };
 

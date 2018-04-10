@@ -104,11 +104,14 @@ button {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background: #121213;
   margin-bottom: 0;
-  min-width: 300px;
+  min-width: 420px;
 
+}
+.secretdiscounter-pupup.logout .secretdiscounter-pupup__header {
+  min-width: 300px;
 }
 .secretdiscounter-pupup__logo {
   padding: 10px;
@@ -157,8 +160,8 @@ button {
   margin: 4px;
 }
 .secretdiscounter-pupup__info-logo-circle {
-  width: 60px;
-  height: 60px;
+  width: 44px;
+  height: 44px;
   -webkit-border-radius: 50%;
   border-radius: 50%;
   overflow: hidden;
@@ -207,7 +210,7 @@ button {
   border-top: none;
   border-radius: 0 0 3px 3px;
 }
-.secretdiscounter-pupup__tabs.logout {
+.secretdiscounter-pupup.logout .secretdiscounter-pupup__tabs {
   height: 212px;
 }
 .secretdiscounter-pupup__tab-checkboxtab {
@@ -322,7 +325,11 @@ button {
   min-height: 110px;
 }
 .secretdiscounter-extension__buttons-tariffs {
-  padding: 5px;
+  padding: 0 5px 5px;
+}
+.secretdiscounter-extension__buttons-tariffs-header {
+  font-weight: bold;
+  font-size: 14px;
 }
 .secretdiscounter-extension__buttons-message {
   color: #d6d6d6;
