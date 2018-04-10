@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>popup</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" href="popup.css" />
+	<script src="../lib/angular.min.js"></script>
+	<script src="../lib/markdown.js"></script>
+	<script src="../lib/angular-ui-router.min.js"></script>
+
+	<!-- outside angular utils -->
+	<script src="../scripts/extensionConfig.js"></script>
+	<script src="../scripts/utils.js"></script>
+
+	<!-- App scripts -->
+	<script src="app.js"></script>
+
+	<!-- Services -->
+	<script src="./services/config.js"></script>
+	<script src="./services/utils.js"></script>
+	<script src="./services/api.js"></script>
+	<script src="./services/inbox.js"></script>
+
+	<!-- Controllers -->
+	<script src="./controllers/popup.js"></script>
+	<script src="./controllers/login.js"></script>
+	<script src="./controllers/shops.js"></script>
+	<script src="./controllers/inbox.js"></script>
+	<script src="./controllers/messageDetail.js"></script>
+</head>
+
+<body ng-app="starter" ng-controller="PopupCtrl">
+	<div class="header">
+		<img ng-click="openMainSite()" class="logo" src="../img/artiway_nega.png" ng-if="showALogo" />
+		<img ng-click="openMainSite()" class="logo" src="../img/bonusbay_nega.png" ng-if="showBLogo" />
+		<img ng-click="openMainSite()" class="logo" src="../img/kopikot_nega.png" ng-if="showKLogo" />
+		<img ng-click="openMainSite()" class="logo" src="../img/cashout-bonusway_nega.png" ng-if="showRLogo" />
+	</div>
+	<ui-view></ui-view>
+</body>
+
+</html>

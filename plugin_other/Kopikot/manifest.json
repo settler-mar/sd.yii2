@@ -1,0 +1,28 @@
+{
+   "background": {
+      "scripts": [ "scripts/extensionConfig.js", "scripts/utils.js", "scripts/tracer.js", "scripts/backgroundEventListeners.js", "scripts/background.js" ]
+   },
+   "browser_action": {
+      "default_icon": "img/k1.png",
+      "default_popup": "popup/popup.html",
+      "default_title": "Kopikot"
+   },
+   "content_scripts": [ {
+      "css": [ "css/content.css" ],
+      "js": [ "lib/jquery.js", "lib/underscore.js", "scripts/utils.js", "scripts/contentVars.js", "scripts/contentDelegator.js", "scripts/content.js" ],
+      "matches": [ "*://*/*" ]
+   } ],
+   "default_locale": "ru",
+   "icons": {
+      "128": "img/k2.png",
+      "48": "img/k2.png",
+      "96": "img/k2.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk1D8/5iz5mmeOTL5+MR/9axmzYzFKfQkUzcuLOAv0pRWZIhhn/wW2uctVV3FN5VAUY8SP2+pxUIjmRCVpgGTn+HPxvWK7enmwyuLE2qspApA5pB17M5OvPwAnsxJsWHMrAIW72XaGysHnu37wLm6aKrRYqNPl2JkyNcshcTHdxoRJrrQ9Cui9/MYzNL6136c/OLWirii2Wn1x2ur2S/pOG7uyaxZmws9Y223ji4AydAuCgVZrdDCiReJUFFYXV81NqY/AtzXAAstSCKc4ZYUcj/Sw8w6LR9jkBAAshHd9pQyB4orPhoYb3tbxwyltwRs2J59/7lQNsPsPrP3je3zZwIDAQAB",
+   "manifest_version": 2,
+   "name": "Kopikot",
+   "permissions": [ "notifications", "cookies", "\u003Call_urls>", "tabs", "storage", "webNavigation", "webRequest" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "6.1.21",
+   "web_accessible_resources": [ "css/content.css", "img/*.png" ]
+}

@@ -1,0 +1,59 @@
+{
+   "activated": {
+      "message": "Кэшбек активирован"
+   },
+   "activated_hint": {
+      "message": "Нажмите на иконку расширения, чтобы вспомнить условия."
+   },
+   "activated_sub": {
+      "message": "Приятных покупок!"
+   },
+   "btn_label": {
+      "message": "Активировать кэшбэк"
+   },
+   "cashback": {
+      "message": "Кэшбек"
+   },
+   "conditions": {
+      "message": "Условия"
+   },
+   "content_msg_header": {
+      "message": "Для этого сайта доступен кэшбек."
+   },
+   "days": {
+      "message": "дней"
+   },
+   "deactivated": {
+      "message": "Кэшбек отключен"
+   },
+   "deactivated_sub": {
+      "message": "Активируйте снова, что бы получить кешбек."
+   },
+   "goto_site": {
+      "message": "Перейдите на "
+   },
+   "goto_site_sub": {
+      "message": "\u003Cbr/>, чтобы получить кешбек"
+   },
+   "host_name": {
+      "message": "Besmarty.ru"
+   },
+   "host_url": {
+      "message": "http://besmarty.ru"
+   },
+   "not_activated": {
+      "message": "Кэшбек не активирован"
+   },
+   "popup_empty": {
+      "message": "Кэшбек не доступен для этого сайта"
+   },
+   "popup_empty_sub": {
+      "message": "Посмотрите магазины с доступным кэшбеком на "
+   },
+   "withdrawal": {
+      "message": "Вывод средств"
+   },
+   "withdrawal_after_pay": {
+      "message": "Средства будут начислены после оплаты заказа."
+   }
+}

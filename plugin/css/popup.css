@@ -120,6 +120,7 @@ button {
   max-width: 170px;
   display: block;
   margin: auto;
+  height: 30px;
 }
 .secretdiscounter-pupup__info {
   display: none;
@@ -239,9 +240,6 @@ button {
 .secretdiscounter-pupup__tab-checkboxtab:checked ~ .secretdiscounter-pupup__tab-content
 {
   display: block;
-}
-.secretdiscounter-pupup__tab-shop label {
-  display: none;
 }
 .secretdiscounter-pupup__tab-favorites {
  display: none;
@@ -365,8 +363,43 @@ button {
   color: #fff;
 }
 
-.
 
+.secretdiscounter-extension__coupon{
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.secretdiscounter-extension__coupon-href{
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  background: #000;
+  text-align: center;
+  padding: 2px 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+.secretdiscounter-extension__coupon-left{
+  width: 50%;
+}
 
+.secretdiscounter-extension__coupon-info_line {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 5px;
+}
+
+.secretdiscounter-extension__coupon-promocode-link{
+  vertical-align: middle;
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.secretdiscounter-extension__coupon-promocode-link:before {
+  content: '';
+  vertical-align: middle;
+  height: 100%;
+  display: inline-block;
+}

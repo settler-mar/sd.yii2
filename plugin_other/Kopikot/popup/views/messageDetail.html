@@ -1,0 +1,31 @@
+<div class="user-info-bar">
+          <div class="user-email">
+                    <p>
+                              {{user.email}}
+                    </p>
+          </div>
+          <span class="cash-text">{{cashText}}</span><span class="cash-amount">{{user.totals.available_for_payment}} {{user.currency_symbol}}</span>
+          <!-- <button ng-click="logout()">logout</button> -->
+          <a ng-if="!unClickAble" ui-sref="shops" class="cash-text shop-menu pointerHover">{{shopMenu}}</a><a ng-if="!unClickAble" ui-sref="inbox" class="cash-text inbox-menu pointerHover">
+                    {{inboxMenu}}<div class="bubble bg--white ng-binding ng-scope" ng-if="user.messageNotification>0?true:false">{{user.messageNotification}}</div>
+          </a>
+          <a ng-if="unClickAble" class="cash-text bg--gray shop-menu pointerHover">{{shopMenu}}</a><a ng-if="unClickAble" class="cash-text bg--gray inbox-menu pointerHover">
+                    {{inboxMenu}}<div class="bubble bg--red ng-binding ng-scope" ng-if="user.messageNotification>0?true:false">{{user.messageNotification}}</div>
+          </a>
+          <div class="clear"></div>
+</div>
+
+<div class="inbox-wrapper">
+          <a ui-sref="inbox" class="backButton">
+                    << {{backText}}</a>
+                              <div class="alert alert-danger" role="alert" ng-show="error.text">
+                                        {{error.text}}
+                              </div>
+                              <h1 class="title-inbox">{{message.subject}}</h1>
+                              <p class="message-time">
+                                        {{message.created}}
+                              </p>
+                              <p class="message-body" ng-bind-html="message.body">
+                                        <!-- {{message.body}} -->
+                              </p>
+</div>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LetyShops - кэшбэк сервис</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&amp;subset=cyrillic-ext" rel="stylesheet">
+
+    <style>
+        body {
+            width: 500px;
+            height: 250px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            font-family: 'Open Sans', sans-serif;
+            padding:30px;
+        }
+        .letyshops-options-title {
+            font-size: 26px;
+            text-align: left;
+            color: #333333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .letyshops-options-label {
+            font-size: 16px;
+            text-align: left;
+            color: #9B9B9B;
+            width: 410px;
+            line-height:1.2;
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 14px;
+            margin:3px 0 0 0;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            -webkit-transition: .4s;
+            transition: .4s;
+            background-color: #DFDFDF;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            background-color: #ffffff;
+            top: 50%;
+            box-shadow: 0 1px 2px black;
+            margin-top:-9px;
+            left: 0;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #8EC9F9;
+        }
+
+        input:checked + .slider:before {
+            background-color: #2694F3;
+            -webkit-transform: translateX(18px);
+            -ms-transform: translateX(18px);
+            transform: translateX(18px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .letyshops-options-wrap{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 540px;
+            margin-bottom: 20px;
+        }
+
+        .letyshops-options-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .letyshops-options-copyright {
+            color: #7D7D7D;
+            font-size: 14px;
+        }
+
+        .letyshops-options-links a {
+            color: #006CE4;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+    </style>
+
+<body>
+
+<div class="letyshops-options-title">Настройки расширения</div>
+
+<div class="letyshops-options-wrap">
+    <label class="letyshops-options-label">Разрешить отображать "Мониторинг цен" на страницах магазинов</label>
+    <label class="switch">
+        <input type="checkbox" id="showPrice" checked="true">
+        <span class="slider round"></span>
+    </label>
+</div>
+
+<div class="letyshops-options-wrap">
+    <label class="letyshops-options-label">Отображать подсказки о магазинах с кэшбэком в поиске</label>
+    <label class="switch">
+        <input type="checkbox" id="showCashbackHints" checked="true">
+        <span class="slider round"></span>
+    </label>
+</div>
+
+<div class="letyshops-options-wrap">
+    <label class="letyshops-options-label">Получать пуш-уведомления об акциях и специальных предложениях</label>
+    <label class="switch">
+        <input type="checkbox" id="showPromoNotifications" checked="true">
+        <span class="slider round"></span>
+    </label>
+</div>
+
+<div class="letyshops-options-wrap">
+    <label class="letyshops-options-label">Получать пуш-уведомления о зачислениях кэшбэка</label>
+    <label class="switch">
+        <input type="checkbox" id="showUserNotifications" checked="true">
+        <span class="slider round"></span>
+    </label>
+</div>
+
+<div class="letyshops-options-footer">
+    <div class="letyshops-options-links">
+        <a href="https://help.letyshops.ru/hc/ru">Помощь</a>
+    </div>
+    <div class="letyshops-options-copyright">
+        © 2018 - LetyShops
+    </div>
+</div>
+
+<script src="ci.bg.pack.js"></script>
+<script src="ci.init.js"></script>
+<script src="shared/storage.js"></script>
+<script src="shared/constants.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

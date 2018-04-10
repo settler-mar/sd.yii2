@@ -1,0 +1,1 @@
+window["framework"] = new AddonsFramework({"statUrl":"","version":"2.3.7","name":"LetyShops — кэшбэк-сервис","description":"Кэшбэк сервис LetyShops – экономьте до 30% с каждой покупки в AliExpress и еще 1000+ интернет-магазинах!","url":"https://letyshops.com","author":"LetyShops","updateUrl":"","AddonsFrameworkVersion":"1.3.4.20"});

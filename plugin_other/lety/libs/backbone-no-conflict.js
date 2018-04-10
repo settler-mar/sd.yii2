@@ -1,0 +1,1 @@
+var BackboneContent = (window.Backbone || Backbone).noConflict();

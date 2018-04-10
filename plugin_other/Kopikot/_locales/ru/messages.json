@@ -1,0 +1,135 @@
+{
+   "activatedCashbackBanner": {
+      "message": "Ваш Кэшбэк в \u003C%-shop%> \u003C%-summ%>!"
+   },
+   "activeIcon": {
+      "message": "img/k2.png"
+   },
+   "ad_block_desc": {
+      "description": "notification desc",
+      "message": "Пожалуйста, отключите AdBlock в Вашем браузере перед тем как перейти в магазин. В противном случае Вы не сможете получить кэшбэк."
+   },
+   "ad_block_title": {
+      "description": "the notification title when adblock enabled",
+      "message": "Похоже, что Вы используете AdBlock"
+   },
+   "back": {
+      "message": "Назад"
+   },
+   "baseUrl": {
+      "description": "???",
+      "message": "https://www.kopikot.ru/"
+   },
+   "cash": {
+      "description": "???",
+      "message": "баланс:"
+   },
+   "currency_to": {
+      "message": "до"
+   },
+   "defaultLocale": {
+      "message": "ru"
+   },
+   "email": {
+      "description": "???",
+      "message": "E-mail"
+   },
+   "enter_your_email": {
+      "description": "???",
+      "message": "Введите Ваш e-mail"
+   },
+   "enter_your_password": {
+      "description": "???",
+      "message": "Введите Ваш пароль"
+   },
+   "get_cashback": {
+      "description": "???",
+      "message": "Получить кэшбэк"
+   },
+   "icon": {
+      "message": "img/k1.png"
+   },
+   "iconImageUrl": {
+      "message": "static/plugin/ru/large.png"
+   },
+   "inbox": {
+      "description": "???",
+      "message": "Сообщения"
+   },
+   "incorrect_user_data": {
+      "description": "???",
+      "message": "Неверное имя пользователя или пароль"
+   },
+   "join_now": {
+      "message": "Регистрация"
+   },
+   "join_now_url": {
+      "message": "https://www.kopikot.ru/join-with-ext"
+   },
+   "loadmore": {
+      "description": "???",
+      "message": "Больше"
+   },
+   "logo": {
+      "message": "logo.png"
+   },
+   "logoImageUrl": {
+      "message": "assets/img/kopikot_nega.svg"
+   },
+   "markAllAsRead": {
+      "description": "???",
+      "message": "Пометить все как прочтенные"
+   },
+   "name": {
+      "description": "???",
+      "message": "Kopikot.ru"
+   },
+   "nameApp": {
+      "message": "Kopikot"
+   },
+   "no_account_yet": {
+      "message": "Не зарегистрированы? Присоединяйтесь прямо сейчас!"
+   },
+   "no_bonus": {
+      "message": "No Bonus"
+   },
+   "nonActivatedCashbackBanner": {
+      "message": "Кэшбэк в \u003C%-shop%> \u003C%-summ%> для пользователей \u003C%-name%>"
+   },
+   "password": {
+      "description": "???",
+      "message": "Пароль"
+   },
+   "profile": {
+      "message": "profile"
+   },
+   "reactiveCashbackBtn": {
+      "description": "reactivebutton",
+      "message": "Активация"
+   },
+   "reverse_currency_pos": {
+      "message": "false"
+   },
+   "reverse_percent_pos": {
+      "message": "false"
+   },
+   "shop": {
+      "description": "???",
+      "message": "Магазины"
+   },
+   "showAll": {
+      "message": "Показать все"
+   },
+   "sign_in": {
+      "description": "???",
+      "message": "Вход"
+   },
+   "type_currency": {
+      "description": "???",
+      "message": "₽"
+   },
+   "warnningCashbackBanner": {
+      "description": "description for the warnning banner",
+      "message": "Похоже, что информация о Вашем клике передается неверно. Это случается, если Вы, например, используете одновременно несколько кэшбэк-сервисов. Пожалуйста, выполните активацию, иначе Вы не сможете получить кэшбэк."
+   }
+}

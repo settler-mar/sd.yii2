@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charSet="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  </head>
+  <body style="margin:0;">
+    <style>
+  html, body {
+    margin: 0;
+    font-size: 16px;
+    min-width: 400px;
+    min-height: 130px;
+  }
+  .service {
+    height: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    animation: show .5s ease-in-out .25s forwards;
+    opacity: 0;
+  }
+  .service-header {
+    font-size: 2rem;
+    line-height: 2rem;
+    color: #2a2e38;
+    margin-bottom: 1rem;
+  }
+  .service-msg {
+    color: #ff5874;
+    font-size: .9rem;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  @keyframes show {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+<div class="service">
+  <span class="service-header">Что-то пошло не так...</span>
+  <span class="service-msg">Пожалуйста, обратитесь в службу поддержки по почте info@besmarty.ru</span>
+  </a>
+</div>
+
+    <script src="/popup/index.js" async defer></script>
+  </body>
+</html>

@@ -1,0 +1,439 @@
+html {
+          overflow: auto;
+}
+
+.bg--white {
+          background-color: white !important;
+}
+
+.bg--gray {
+          background-color: gray !important;
+}
+
+body {
+          padding: 0;
+          margin: 0;
+          font-family: 'ProximaNova-Regular', sans-serif;
+          min-height: 520px;
+          width: 350px;
+}
+
+a, a:focus {
+          outline: none;
+}
+
+.header {
+          background: #21292F;
+          width: 100%;
+          text-align: center;
+          padding-top: 10px;
+}
+
+.header img.logo {
+          padding-bottom: 10px;
+          width: 138px;
+}
+
+
+/* ======== Login Page ========= */
+
+.loginUpper {
+          width: 100%;
+          text-align: center;
+}
+
+
+/* ========= Shops Page ========= */
+
+.user-info-bar {
+          background-color: #21292f;
+          color: white;
+          width: 100%;
+}
+
+.user-info-bar .user-email {
+          width: 100%;
+          line-height: 20px;
+          color: white;
+          /*padding: 10px;*/
+          font-size: 12px;
+          /*text-decoration: underline;*/
+          text-align: center;
+}
+
+.user-email {
+          padding: 0;
+}
+
+.user-email p {
+          margin: 0;
+          padding: 0;
+}
+
+.user-info-bar>span, .user-info-bar>a {
+          width: 50%;
+          display: inline-block;
+          font-size: 12px;
+          padding: 10px;
+          text-align: center;
+          color: white;
+}
+
+.user-info-bar>span.cash-text {
+          text-align: right;
+          font-size: 15px;
+}
+
+.user-info-bar>a.cash-text {
+          margin-top: 5px;
+          font-size: 16px;
+}
+
+.user-info-bar>span.cash-amount {
+          font-size: 15px;
+          text-align: left;
+}
+
+.search-box {
+          box-sizing: border-box;
+          padding: 5px;
+          width: 100%;
+          position: relative;
+          border-bottom: 1px solid #ddd;
+          margin-bottom: -1px;
+}
+
+.search-box .search {
+          width: 100%;
+          margin: 0;
+          height: 30px;
+          border-radius: 5px;
+          border: 0px solid #DDD;
+          box-sizing: border-box;
+          padding-left: 30px;
+          font-weight: 100;
+          color: #555;
+          font-family: helvetica;
+          font-size: 16px;
+}
+
+.search-box:after {
+          background-image: url("../img/search.png");
+          content: "";
+          position: absolute;
+          height: 20px;
+          width: 20px;
+          left: 11px;
+          top: 11px;
+          background-size: cover;
+}
+
+.container {
+          position: relative;
+          min-height: 420px;
+          /*max-height: 0px;*/
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          /*overflow-y: scroll;*/
+}
+
+.container::-webkit-scrollbar {
+          display: none;
+}
+
+.container {
+          display: block;
+          margin: 0 auto;
+          padding: 0 10px 0 10px;
+          /*margin-top: 50px;*/
+}
+
+img.loader {
+          display: block;
+          margin: 10px auto 20px auto !important;
+}
+
+.container>.item {
+          height: 40px;
+          position: relative;
+          width: 100%;
+          display: block;
+          color: #555;
+          border-bottom: 1px solid #ddd;
+}
+
+.container>.item:hover {
+          background-color: #e3e3e3;
+          cursor: pointer;
+}
+
+.container>.item .commission {
+          float: right;
+          color: #FF3B1E;
+          line-height: 40px;
+          font-size: 12px;
+          margin-right: 20px;
+          font-family: "Georgia", serif;
+          font-style: italic;
+}
+
+.container>.item .img {
+          width: 40px;
+          left: 10px;
+          top: 3px;
+          position: absolute;
+          margin-right: 10px;
+          background-blend-mode: darken;
+}
+
+.container>.item .title {
+          font-size: 12px;
+          line-height: 40px;
+          margin-left: 60px;
+          color: black;
+}
+
+.container .info {
+          margin-top: 20px;
+}
+
+.container .info img {
+          margin: 0 auto;
+          display: block;
+          margin-bottom: 15px;
+          max-width: 95%;
+}
+
+.container .commission-info {
+          font-size: 30px;
+          box-sizing: border-box;
+          margin-bottom: 30px;
+          width: 100%;
+          text-align: center;
+          color: #FF3B1E;
+          font-family: "Georgia", serif;
+          font-style: italic;
+          box-sizing: border-box;
+}
+
+
+/* ========= Utils Styles ======== */
+
+.btn-facebook {
+          display: block;
+          border-radius: 0;
+          width: 60%;
+          margin: 0 auto;
+          color: white;
+          background-color: #3b5998;
+}
+
+.clear {
+          clear: both;
+}
+
+.btn-bonusway-red-full {
+          width: 100%;
+          background-color: #F7341A;
+          border-radius: 0;
+          color: white;
+}
+
+.but:before {
+          background: url("../img/social-aut.png") top left no-repeat;
+          width: 24px;
+          height: 24px;
+          top: 8px;
+          left: 7px;
+}
+
+.but.vk:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -10px;
+}
+
+.but.ok:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -44px;
+}
+
+.but.mail:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -112px;
+}
+
+.but.fb:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -78px;
+}
+
+.but.yandex:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -179px;
+}
+
+.but.google:before {
+          content: '';
+          position: absolute;
+          background-position: -10px -146px;
+}
+
+.but {
+          height: 40px;
+          width: 40px;
+          border: 0px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          display: inline-block;
+          position: relative;
+          color: #FFF;
+          font-size: 1.02em;
+          border-radius: 2px;
+          text-align: center;
+          text-decoration: none !important;
+          color: #FFF !important;
+          padding-top: 9px;
+          cursor: pointer;
+}
+
+.but.vk {
+          background: #4E80CD;
+          border-bottom: 3px solid #213E6C !important;
+}
+
+.but.ok {
+          background: #F99F54;
+          border-bottom: 3px solid #8D4000 !important;
+}
+
+.but.mail {
+          background: #4E87EF;
+          border-bottom: 3px solid #2F5190 !important;
+}
+
+.but.fb {
+          background: #4A60A8;
+          border-bottom: 3px solid #1B3179 !important;
+}
+
+.but.yandex {
+          background: #FFDB4D;
+          border-bottom: 3px solid #DCB51A !important;
+}
+
+.but.google {
+          background: #DC4A38;
+          border-bottom: 3px solid #820E00 !important;
+}
+
+.logo-wrapper {
+          display: inline-block;
+          margin-right: 10px;
+}
+
+a.but.fb-all {
+          width: 170px;
+          font-size: 16px;
+}
+
+
+/* ======== Inbox Page ========= */
+
+.inbox-wrapper {
+          margin-bottom: 10px;
+          margin-top: 16px;
+          padding: 0 10px 0 10px;
+}
+
+.inbox-message-header {
+          border-top: 1px solid #f2f2f2 !important;
+          margin: 0 10px 0 10px;
+}
+
+.inbox-message-header:hover {
+          background: #f7f7f7;
+}
+
+.inbox-message-header h4 {
+          font-size: 1em;
+          font-weight: bold;
+}
+
+.unread {
+          color: gray !important;
+}
+
+.read {
+          color: black !important;
+}
+
+.inbox-menu {
+          border-top: 1px solid white;
+          border-left: 1px solid white;
+          background-color: #ff3c1f;
+          text-align: center;
+}
+
+.shop-menu {
+          border-top: 1px solid white;
+          border-right: 1px solid white;
+          background-color: #ff3c1f;
+}
+
+h1.title-inbox {
+          font-family: ProximaNova-Black, sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 1.5em;
+          margin-top: 5px;
+          letter-spacing: -.06em;
+          color: #263035;
+          margin-left: 10px;
+          margin-bottom: 0;
+}
+
+.pointerHover:hover {
+          cursor: pointer;
+          text-decoration: underline;
+}
+
+.message-body {
+          padding: 10px;
+}
+
+.message-time {
+          padding: 0 0 0 10px;
+          margin-bottom: 10px;
+          margin: 0;
+          font-size: 13px;
+          font-style: italic;
+}
+
+.backButton {
+          padding-left: 10px;
+          color: #62d6ef;
+          text-decoration: underline;
+          font-size: 1em;
+}
+
+
+/* ======== Bubble Notification ========= */
+
+.bubble {
+          color: #ff3c1f;
+          font-size: 1em;
+          width: 20px;
+          text-align: center;
+          border-radius: 50%;
+          height: 20px;
+          margin-left: 5px;
+          display: inline-block;
+          position: absolute;
+          top: 134px;
+}

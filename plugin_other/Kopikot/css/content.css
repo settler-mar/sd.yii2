@@ -1,0 +1,318 @@
+.inj-cont {
+    background: rgb(241, 241, 241);
+    border-radius: 2px;
+    padding: 4px;
+    color: rgb(85, 85, 85);
+}
+
+.inj-cont img {
+    width: 23px;
+    position: relative;
+    top: 2px;
+}
+.kopikot-extension  {
+    font-weight: 500;
+    line-height: 0;
+    font-family: helvetica, sans-serif !important;
+    background: #212A2F !important; 
+    padding: 5px;
+    z-index: 999999999 !important;
+    position: relative;
+    top:0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    display:block;
+}
+
+
+
+.kopikot-extension  .kopikot-extension-icon {
+    line-height: 0;
+    position: absolute !important;
+    line-height: 0;
+    right: 10px !important;
+    top: 14px !important;
+    color: #fff !important;
+    text-align: center !important;
+    font-size: 18px !important;
+}
+
+.kopikot-extension .kopikot-extension-logo img {
+    display: inline;
+    max-width: 167px !important;
+}
+.kopikot-extension .kopikot-extension-logo {
+    display:table-cell;
+    width: 200px;
+    vertical-align:middle;
+    padding-left: 10px;
+}
+
+.kopikot-extension .kopikot-extension-content {
+    color: #fff;
+    text-align: left;
+    display:table-cell;
+    vertical-align:middle;
+    line-height: 20px;
+    font-family: helvetica, sans-serif !important;
+    font-size: 14px;
+    padding: 10px;
+    max-width: 70%;
+    width: auto;
+    padding-right: 30px;
+}
+
+
+
+.kopikot-extension .kopikot-extension-get {
+    display:table-cell;
+    vertical-align:middle;
+    min-width: 200px;
+}
+
+.kopikot-extension .kopikot-extension-btn {
+    background: -webkit-linear-gradient(#FF3D23 0%, #F23118 100%);
+    color: #FFF !important;
+    background: #FF3D23;
+    border: 0px solid #8D1100;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    min-height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+.kopikot-extension .kopikot-extension-close {
+    line-height: 0;
+    position: absolute;
+    display: inline-block;
+    height: 30px !important;
+    width: 30px !important;
+    right: 30px;
+    top: 12px;
+    background: #fa361c !important;
+    box-sizing: border-box !important;
+    border-radius: 123px !important;
+    cursor: pointer !important;
+}
+
+
+.kopikot-extension .kopikot-extension-btn:hover {
+    border: 0px solid #8D1100;
+    border-bottom: 3px solid #8D1100;
+}
+
+.kopikot-extension .kopikot-extension-btn:active {
+    border: 0px solid #8D1100;
+    border-bottom: 1px solid #8D1100;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
+    
+}
+
+@media (min-width: 1045px) {
+
+}
+
+@media (max-width: 1044px) {
+    
+}
+
+@media (max-width: 1300px) {
+    .kopikot-extension .kopikot-extension-logo {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 0;
+        line-height: 20px;
+    }
+    .kopikot-extension .kopikot-extension-content {
+        width: 100%;
+        max-width: 100%;
+        display: block;
+        text-align: center;
+        padding: 0;
+        line-height: 20px;
+    }
+    .kopikot-extension .kopikot-extension-get {
+        width: 100%;
+        display: block;
+        text-align: center;
+        line-height: 25px;
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .kopikot-extension  {
+        text-align: center;
+    }
+}
+
+/*BLACK FRIDAY STUFF*/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+
+.google-search-box{
+    background-color: rgb(245, 245, 245);
+    margin-bottom: 25px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.17);
+    border: 1px solid rgba(151,151,151,.39);
+    border-radius: 3px;
+}
+
+.google-search-box p{
+    margin: 0 !important;
+}
+
+.google-search-box-bw{
+    padding: 14px;
+    justify-content: space-between;
+}
+
+.google-search-bw-content{
+    display: flex;
+}
+
+.google-search-bw-banner{
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.google-search-bw-banner a{
+    height: 50px;
+    width: 20%;
+}
+
+.google-search-bw-banner a img{
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+
+.google-search-bw-banner p {
+    width: 80%;
+    text-align: center;
+    font-size: 25px;
+    line-height: 50px;
+    font-weight: bold;
+}
+
+.google-search-bw-banner .kopikot-extension-close{
+    width: 20%;
+    font-size: 25px;
+    line-height: 50px;
+    font-weight: bold;
+}
+
+.google-search-bw-banner .kopikot-extension-close p{
+    text-align: right;
+}
+
+.google-search-bw-banner .kopikot-extension-close:hover{
+    cursor: pointer;
+}
+
+.google-search-offer-item {
+    width: 30%;
+    margin-right: 3%;
+    background-color: white;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.17);
+    border: 1px solid rgba(151,151,151,.39);
+    border-radius: 3px;
+}
+
+.google-search-offer-item:hover {
+    cursor: pointer;
+}
+
+.google-search-offer-item img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.google-search-store-wrap{
+    display: flex;
+}
+
+.google-search-store-info, .google-search-store-logo {
+    width: 50%;
+}
+
+.google-search-store-logo img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: auto;
+}
+
+.google-search-store-info p{
+    font-size: 14px;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    top: 45%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.google-search-offer-item-wrap{
+    padding: 7px;
+    font-size: 14px;
+}
+
+.google-search-offer-name{
+    font-family: ProximaNova,Montserrat,sans-serif;
+    color: #333;
+    font-weight: bold;
+    border-top: 2px solid rgba(211,211,211,0.8);
+    font-size: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.google-search-offer-name:hover{
+    text-decoration: underline;
+}
+
+p.google-search-offer-desc{
+    display: block;
+    display: -webkit-box;
+    height: 66px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    padding-bottom: 0;
+    line-height: 1.2;
+}
+
+.google-search-box-bw-footer{
+    width: 100%;
+    background-color: rgba(220, 220, 220,0.5);
+    height: 50px;
+    text-align: center;
+}
+
+.google-search-box-bw-footer a{
+    line-height: 50px;
+    font-size: 14px;
+    text-decoration: none;
+    color: #62d6ef !important;
+}
+
+.google-search-box-bw-footer a:hover{
+    text-decoration: underline;
+}

@@ -1,0 +1,39 @@
+<div class="loginWrappr">
+	<div class="loginUpper">
+		<h2>{{loginInfoText.sign_in}}</h2>
+		<div ng-repeat="btn in socialBtns" class="logo-wrapper">
+			<a class="{{btn.class}}" href="{{btn.url}}" target="_blank">
+				{{btn.text}}
+			</a>
+		</div>
+	</div>
+	<hr>
+	<div class="loginBottom">
+		<div class="alert alert-danger" role="alert" ng-show="error.text">
+			{{error.text}}
+		</div>
+		<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">{{loginInfoText.email}}</label>
+			<div class="col-sm-10">
+				<input type="email" class="form-control" placeholder="{{loginInfoText.email}}" ng-model="email">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="password" class="col-sm-2 control-label">{{loginInfoText.password}}</label>
+			<div class="col-sm-10">
+				<input type="password" class="form-control" id="password" placeholder="{{loginInfoText.password}}" ng-model="password">
+			</div>
+		</div>
+		<img class="loader" src="../img/loader.gif" ng-show="loading" />
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-bonusway-red-full" ng-click="login(email,password)">{{loginInfoText.sign_in}}</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10 text-center">
+				<p>{{promoSignUp.no_account_yet}} <a href="{{promoSignUp.join_now_url}}" target="_blank" style="text-decoration:underline;">{{promoSignUp.join_now}}</a></p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,59 @@
+{
+   "activated": {
+      "message": "Cash Back activated"
+   },
+   "activated_hint": {
+      "message": "To remember conditions press on extention action button."
+   },
+   "activated_sub": {
+      "message": "Enjoy your shopping!"
+   },
+   "btn_label": {
+      "message": "Activate Cash Back"
+   },
+   "cashback": {
+      "message": "Cashback"
+   },
+   "conditions": {
+      "message": "Conditions"
+   },
+   "content_msg_header": {
+      "message": "Cash Back available for this site."
+   },
+   "days": {
+      "message": "days"
+   },
+   "deactivated": {
+      "message": "Cash Back disabled"
+   },
+   "deactivated_sub": {
+      "message": "Please, reactivate this shop."
+   },
+   "goto_site": {
+      "message": "Go to "
+   },
+   "goto_site_sub": {
+      "message": "\u003Cbr/>and get your cash back"
+   },
+   "host_name": {
+      "message": "Besmarty.ru"
+   },
+   "host_url": {
+      "message": "http://besmarty.ru"
+   },
+   "not_activated": {
+      "message": "Cash Back not activated"
+   },
+   "popup_empty": {
+      "message": "Cash Back is not available for this site"
+   },
+   "popup_empty_sub": {
+      "message": "See another shops on "
+   },
+   "withdrawal": {
+      "message": "Withdrawal"
+   },
+   "withdrawal_after_pay": {
+      "message": "Withdrawal will be charge after pay."
+   }
+}

@@ -112,6 +112,7 @@
 .secretdiscounter-extension__buttons-message {
     color: #666;
     font-size: 11px;
+    text-align: center;
 }
 .secretdiscounter-extension__buttons .secretdiscounter-extension__link {
     margin-bottom: 3px;

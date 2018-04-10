@@ -1,0 +1,31 @@
+{
+   "background": {
+      "persistent": true,
+      "scripts": [ "background/background.js" ]
+   },
+   "browser_action": {
+      "default_icon": "$assets/webpack-16.png",
+      "default_popup": "popup/index.html",
+      "default_title": "Besmarty cashback"
+   },
+   "content_scripts": [ {
+      "css": [ "content/content.css" ],
+      "js": [ "content/content.js" ],
+      "matches": [ "\u003Call_urls>" ]
+   } ],
+   "default_locale": "ru",
+   "description": "Besmarty cashback chrome plugin",
+   "homepage_url": "http://besmarty.ru",
+   "icons": {
+      "128": "$assets/webpack-128.png",
+      "16": "$assets/webpack-16.png",
+      "48": "$assets/webpack-48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5nr5LHS6BxckT5kHSg3O0kNo5kUU8SBCxWgTKwHcdO8ttHaNhJ2A5KH9MmBqyC6jOMO457YV2/WSj4awVy1AXgZWM9kGnB+/JWTMR+W/9EbpD929bKbDIok31qxfqKGOb9fWxva9P8Z7cqoJQ9JfCMVGVxz8P5yQasq6njK8lUVL3P6FKmh4B/aCnZRGeXb77MWcQiSOCsUgvYCPoOeC1emevL0r6grU3ScPVeZ78jMoO0f69oO+Pkehrvavof/qMc7TOplVJT2SJHaTs8GIPKZ7cm6KyAdyxIjh/faGkvkoB9HXbMCyQhebz+Rb2uW3P3idGulhC2tUvAjApPedQIDAQAB",
+   "manifest_version": 2,
+   "name": "Besmarty.ru",
+   "permissions": [ "tabs", "cookies", "storage", "alarms" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "3.0.0",
+   "web_accessible_resources": [ "content/images/content-logo.png", "content/images/content-bg.png", "content/images/i-warn.svg", "content/images/i-close-gray.svg", "content/images/i-close-pink.svg", "content/content.css" ]
+}
