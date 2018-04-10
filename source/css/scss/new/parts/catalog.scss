@@ -412,54 +412,46 @@
           margin-left: 4%;
           margin-right: 4%;
           min-width: 92%;
+
           &-low {
             .scroll_box-text {
               height: 160px;
               overflow: hidden;
               margin-bottom: 20px;
-              &:before {
-                content: "";
-                display: block;
-                background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
-                height: 30PX;
-                left: -10PX;
-                margin: 10PX;
-                bottom: 20PX;
-                position: absolute;
-                width: 100%;
-                box-sizing: border-box;
-              }
-              &:after {
-                content: "Читать полностью";
-                display: block;
-                height: 20PX;
-                left: -10PX;
-                margin: 10PX;
-                bottom: 0;
-                position: absolute;
-                width: 100%;
-                box-sizing: border-box;
-                cursor: pointer;
-                color: #f7c714;
-                text-align: right;
-                padding: 0 10PX 10PX;
-                background: $gray_box_bg;
-                &:hover {
-                  text-decoration: underline;
-                }
-              }
+          //    &:before {
+          //      content: "";
+          //      display: block;
+          //      background: linear-gradient(to top, $gray_box_bg, rgba(249, 249, 249, 0));
+          //      height: 30PX;
+          //      left: -10PX;
+          //      margin: 10PX;
+          //      bottom: 20PX;
+          //      position: absolute;
+          //      width: 100%;
+          //      box-sizing: border-box;
+          //    }
+          //    &:after {
+          //      content: "Читать полностью";
+          //      display: block;
+          //      height: 20PX;
+          //      left: -10PX;
+          //      margin: 10PX;
+          //      bottom: 0;
+          //      position: absolute;
+          //      width: 100%;
+          //      box-sizing: border-box;
+          //      cursor: pointer;
+          //      color: #f7c714;
+          //      text-align: right;
+          //      padding: 0 10PX 10PX;
+          //      background: $gray_box_bg;
+          //      &:hover {
+          //        text-decoration: underline;
+          //      }
+          //    }
             }
           }
         }
-        //&-text {
-        //
-        //  &:before {
-        //
-        //  }
-        //  &:after {
-        //
-        //  }
-        //}
       }
 
     }
