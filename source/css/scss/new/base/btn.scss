@@ -134,6 +134,11 @@
     padding-left: 10px;
     padding-right: 10px;
   }
+  &-hover-border-red {
+    &:hover {
+      border-color: $header_color_pointed;
+    }
+  }
 }
 
 .btn {
