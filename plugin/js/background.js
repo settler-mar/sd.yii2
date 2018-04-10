@@ -22,8 +22,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
         xhr.responseType='json';
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
-            //console.log(xhr.readyState, xhr.response);
-
+            //console.log(request.url, xhr.readyState, xhr.response);
             if (xhr.readyState == 4) // если всё прошло хорошо, выполняем, что в скобках
             {
                 callback(xhr.response);

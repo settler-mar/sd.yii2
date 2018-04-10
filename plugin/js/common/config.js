@@ -3,3 +3,4 @@ var siteUrl = 'https://secretdiscounter.ru/';
 var userUrl = 'account/notification';
 var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
+var couponUrl = 'coupons';

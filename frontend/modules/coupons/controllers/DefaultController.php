@@ -311,6 +311,19 @@ class DefaultController extends SdController
     $contentData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
     $contentData["users_reviews"] = Reviews::top();
 
+    if ($request->isAjax || $request->get('g') == 'plugin') {
+      return json_encode([
+        'coupons' => $contentData["coupons"],
+        'coupon_ended' => $contentData["coupon_ended"],
+        'counts' => $contentData["counts"],
+        'counts_all' => $contentData["counts_all"],
+        'page' => $contentData["page"],
+        'total_v' => $contentData["total_v"],
+        'offset_coupons' => $contentData["offset_coupons"],
+        'total_all_coupons' => $contentData["total_all_coupons"],
+      ]);
+    }
+
     return $this->render('catalog', $contentData);
   }
 

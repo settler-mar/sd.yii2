@@ -15,6 +15,22 @@ function getUser(callback){
         callback()
     });
 }
+function getCoupons(shop, callback){
+    //вызываем событие для запроса из background.js
+    if (!shop || !shop.store_route) {
+        return null;
+    }
+    chrome.runtime.sendMessage({
+        action: 'sd_xhttp',
+        url: siteUrl + couponUrl + '/'+shop.store_route
+    }, function (responseData) {
+        //console.log(usersData);
+        callback(responseData);
+    });
+}
+
+
+
 
 var displayUser = function(){
     //console.log(usersData);
@@ -37,18 +53,23 @@ var displayUser = function(){
         tabFavorites.innerHTML = makeFavorites();
         utils.makeHrefs(tabFavorites)
     } else {
-        document.querySelector('.secretdiscounter-pupup').classList.add('logout');
-        document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl+'#login');
-        document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
-        document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
-        document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'none';
-        document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'none';
-        document.querySelector('.secretdiscounter-pupup__tab-shop label').style.display = 'none';
-        document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content').innerHTML = '';
-        document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = '';
+        resetStyles();
     }
 
 };
+
+function resetStyles(){
+    document.querySelector('.secretdiscounter-pupup').classList.add('logout');
+    document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl+'#login');
+    document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
+    document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
+    document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'none';
+    document.querySelector('.secretdiscounter-pupup__tab-coupons').style.display = 'none';
+    document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'none';
+    document.querySelector('.secretdiscounter-pupup__tab-shop label').style.display = 'none';
+    document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content').innerHTML = '';
+    document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = '';
+}
 
 
 
@@ -107,7 +128,33 @@ var displayShop = function(shop){
             'storeTariffs': shop.conditions ?
                 '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>'+shop.conditions : ''
         });
+    getCoupons(shop, displayCoupons);//запрос на купоны для шопа
 };
+
+var displayCoupons = function(response) {
+    console.log(response);
+    if (response.coupons && response.coupons.length) {
+        var html = '';
+        for (var i = 0; i < response.coupons.length; i++) {
+            //console.log(response.coupons[i]);
+            html += utils.replaceTemplate(couponHtml, {
+                'couponName' : response.coupons[i].name,
+                'couponDateEnd' : response.coupons[i].date_end,
+                'couponUsed' : response.coupons[i].visit,
+                'couponPromocode' : response.coupons[i].promocode ? response.coupons[i].promocode : 'Не требуется',
+                'couponUseLink' : siteUrl+'goto/coupons/' + response.coupons[i].uid,
+                'couponUrl' : siteUrl + 'coupons/'+ response.coupons[i].store_route + '/' + response.coupons[i].uid
+            });
+        }
+        var tabCoupons = document.querySelector('.secretdiscounter-pupup__tab-coupons .secretdiscounter-pupup__tab-content');
+        tabCoupons.innerHTML = html;
+        utils.makeHrefs(tabCoupons);
+        document.querySelector('.secretdiscounter-pupup__tab-coupons').style.display = 'block';
+    }
+
+};
+
+resetStyles();
 
 getUser(displayUser);
 
