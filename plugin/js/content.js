@@ -172,6 +172,7 @@ var searchEngines = {
             div = document.createElement('div');
             div.className = 'secretdiscounter-extension';
             div.innerHTML = shopDiv;
+            div.style.right = document.body.clientWidth > 1200 ? (document.body.clientWidth - 1200)/ 2 +'px' : 0;
 
             var tryCount = 10;
             var divInsertInterval = setInterval(function(){
