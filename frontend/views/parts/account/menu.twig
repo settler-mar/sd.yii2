@@ -6,10 +6,10 @@
 
   {{ use('frontend/components/Banner') }}
   {%  set banners  = banner_widget({'place':'account-left-menu','options':{
-    'wrapper_class':'account_banner__wrapper margin',
-    'item_class': 'account_banner__item',
-    'href_class': 'account_banner__href',
-    'image_class': 'banner__image account_banner__image',
+    'wrapper_class':'banner__wrapper banner__wrapper-account margin',
+    'item_class': 'banner__item banner__item-account',
+    'href_class': 'banner__href banner__href-account',
+    'image_class': 'banner__image banner__image-account',
   }}) %}
   {% if banners %}
     {{ banners|raw }}
