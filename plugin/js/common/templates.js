@@ -29,10 +29,11 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<span class="secretdiscounter-extension__buttons-message">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
     '</div>';
 var couponHtml = '<div class="secretdiscounter-extension__coupon">'+
-  '<div class="secretdiscounter-extension__coupon-left">'+
   '<a href="{{couponUrl}}" class="secretdiscounter-extension__coupon-href">{{couponName}}</a>'+
-  '<div class="secretdiscounter-extension__coupon-date">Осталось: <span>{{couponDateEnd}}</span></div>'+
-  '<div class="secretdiscounter-extension__coupon-used">Воспользовались: <span>{{couponUsed}}</span></div>'+
+  '<div class="secretdiscounter-extension__coupon-left">'+
+  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-date">Осталось: <span>{{couponDateEnd}}</span></div>'+
+  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-used">Воспользовались: <span>{{couponUsed}}</span></div>'+
+  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-promocode">Промокод: <span>{{couponPromocode}}</span></div>'+
   '</div>'+
   '<div class="secretdiscounter-extension__coupon-right">'+
 
