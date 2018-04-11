@@ -3,6 +3,7 @@ var debug = true;
 var appCookieName = 'secretdiscounter-extension-window';
 var appCookieValue = 'hidden';
 var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
+var repeatTimes=false;
 var appIds = {
   'chrome': {
     'id': 'sd_chrome_app',
@@ -37,7 +38,7 @@ var searchEngines = {
     'location_href_index': 1,
     'result_selector': '#res',
     'result_first_item': 1,
-    'repeat': 0,
+    'repeat': 1,
     'styles': '',
 
     'analiseHREF':'#res h3 a[href]',
@@ -49,8 +50,8 @@ var searchEngines = {
     'location_href_index': 1,
     'result_selector': '#b_results',
     'result_first_item': 0,
-    'repeat': 0,
-    'styles': 'margin-left:5px;',
+    'repeat': 1,
+    'styles': '',
 
     'analiseHREF':'#b_results h2 a[href]',
     'closest':'li.b_algo'
@@ -63,11 +64,31 @@ var searchEngines = {
     'result_first_item': 0,
     'dom_change_selector': '.main .main__center .main__content',
     'repeat': 5, //повтор вывода
-    'styles': 'margin-left:-40px;',
+    'styles': 'margin-left:-23px;',
 
     'analiseHREF':'.serp-list .serp-item .path a[href] b',
     'byText': true,
-    'closest':'li.serp-item'
+    'closest':'li.serp-item',
+    'adcDetect':function(wrap){
+      //return (wrap.getAttribute('data-lxgv')!=null) || (wrap.getAttribute('data-qjey')!=null);
+      /*var els=wrap.querySelectorAll('.organic__subtitle span');
+
+      for(var i=0;i<els.length;i++){
+        //if(els[i].innerText.toLocaleLowerCase()=='реклама') return true;
+        console.log(els[i].shadowRoot.querySelector("span"))
+      }*/
+      for(var i=0;i<wrap.attributes.length;i++) {
+        var d=wrap.attributes[i].name.toLocaleLowerCase();
+        if(d.indexOf('data-')<0)continue;
+
+        d=d.replace('data-','');
+        if(d=='cid'||d=='lognode')continue;
+        if(d.length<4)continue;
+        if(d.length>6)continue;
+        return true;
+      }
+      return false;
+    }
   }
 };
 
@@ -318,7 +339,9 @@ Storage.load(function () {
 });
 
 
-window.onload = function () {
+window.onload = analizPage;
+
+function analizPage() {
   setAppId();
 
   //событие для яндекса при повторном поиске
@@ -339,6 +362,17 @@ window.onload = function () {
     });
   }*/
 
+  function checkSearchLink(){
+    repeatTimes--;
+    if(repeatTimes<=0) return;
+
+    if(document.querySelectorAll('.sd_link_finder').length>0){
+      setTimeout(checkSearchLink,1000);
+      return;
+    }
+    analizPage();
+  }
+
   function generateSearchLink(item,el){
     var div = document.createElement('div');
     message = utils.replaceTemplate(storageDataStores.searchtext, {
@@ -352,7 +386,7 @@ window.onload = function () {
     } else {
       url = siteUrl + 'stores/' + item.store_route + '#login';
     }
-    div.innerHTML = "<a href='" + url + "'target='_blank'>" +
+    div.innerHTML = "<a href='" + url + "'target='_blank' class='sd_link_finder'>" +
       // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
       searchFormImage + message;
     div.id = 'secretdiscounter-search';
@@ -360,6 +394,8 @@ window.onload = function () {
     div.setAttribute('style', engine.styles);
 
     el.prepend(div);
+
+
   }
 
   function displayShopFinders(item){
@@ -378,22 +414,35 @@ window.onload = function () {
 
     var els=document.querySelectorAll(engine.analiseHREF);
     if(els.length==0)return;
-    var el=els[0];
+    for(var k=0;k<els.length;k++) {
+      var el=els[k];
+      var url;
+      var wrap = el.closest(engine.closest);
 
-    var url;
-    if(engine.byText){
-      url = el.innerText;
-    }else{
-      url = el.href.split('//');
-      if(url.length==2){url=url[1]};
-      url=url.split('/');
-      url=url[0].split('?');
-      url=url[0];
+      //если есть алгоритм детекции рекламы то проверяем на рекламу
+      if(engine.adcDetect && engine.adcDetect(wrap)) continue;
+
+      if (engine.byText) {
+        url = el.innerText;
+      } else {
+        url = el.href.split('//');
+        if (url.length == 2) {
+          url = url[1]
+        }
+
+        url = url.split('/');
+        url = url[0].split('?');
+        url = url[0];
+      }
+
+      storeUtil.findShop(storageDataStores.stores, url, displayShopFinders.bind({
+        engine: engine,
+        el: wrap
+      }));
     }
-    storeUtil.findShop(storageDataStores.stores, url, displayShopFinders.bind({
-      engine:engine,
-      el:el.closest(engine.closest)
-    }));
+
+    if(repeatTimes===false)repeatTimes=engine.repeat;
+    setTimeout(checkSearchLink,1000);
     /*var input = document.querySelector(engine.search_selector);
     if (input && checkLocation(locationHref, engine.location_href_index, engine.location_href)) {// locationHref[engine.location_href_index] == engine.location_href) {
       var value = input.value;
@@ -410,7 +459,7 @@ window.onload = function () {
     }*/
   }
 
-  if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
+  //if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 };
 
 
