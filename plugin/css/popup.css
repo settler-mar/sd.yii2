@@ -29,6 +29,9 @@ form {
   transition: transform 0.25s ease;
   width: 563px;
 }
+.sd_hidden {
+  display: none;
+}
 
 button {
   display: block;

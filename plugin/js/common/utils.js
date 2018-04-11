@@ -5,7 +5,8 @@ var utils = (function(){
     function replaceTemplate(template, items){
         items = items || {};
         for (var key in items) {
-            template = template.replace('{{'+key+'}}', items[key]);
+            //template = template.replace('{{'+key+'}}', items[key]);
+            template = template.replace(new RegExp('{{'+key+'}}', 'g'), items[key]);
         }
         return template;
     }
@@ -27,9 +28,27 @@ var utils = (function(){
         return f + str.substr(1, str.length - 1);
     }
 
-    function doClick(){
+    function doClick(e){
+        //e.preventDefault();
+        var store = this.getAttribute('data-store');
+        if (store) {
+            Storage.set(storeActiveStorageName+store, new Date().getTime());
+            // if (debug) {
+            //     console.log(store, Storage.get(storeActiveStorageName+store));
+            // }
+        }
         chrome.tabs.create({url: this.getAttribute('href')});
     }
+
+    function storeIsActivate(storeRoute){
+        var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
+        var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
+        if (debug) {
+            //console.log(storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
+        }
+        return isActive;
+    }
+
     function makeHrefs(elem){
         elements = elem.getElementsByTagName('a');
         for (var i = 0; i < elements.length; i++){
@@ -41,7 +60,8 @@ var utils = (function(){
         replaceTemplate: replaceTemplate,
         makeCashback: makeCashback,
         ucfirst: ucfirst,
-        makeHrefs: makeHrefs
+        makeHrefs: makeHrefs,
+        storeIsActivate: storeIsActivate
     }
 
 })();

@@ -81,6 +81,7 @@ function makeFavorites() {
   }
   result = '';
   for (var i = 0; i < usersData.user.favorites_full.length; i++) {
+    var storeIsActivate = utils.storeIsActivate(usersData.user.favorites_full[i].route);
     result += utils.replaceTemplate(favoriteHTML, {
       'storeLogo': siteUrl + 'images/logos/' + usersData.user.favorites_full[i].logo,
       'storeText': utils.makeCashback(
@@ -88,7 +89,9 @@ function makeFavorites() {
         usersData.user.favorites_full[i].currency,
         usersData.user.favorites_full[i].action_id
       ),
-      'storeUrl': siteUrl + 'goto/store:' + usersData.user.favorites_full[i].uid
+      'storeUrl': siteUrl + 'goto/store:' + usersData.user.favorites_full[i].uid,
+      'storeRoute' : usersData.user.favorites_full[i].route,
+      'buttonClass' : storeIsActivate ? 'sd_hidden' : ''
     });
   }
   return result;
@@ -118,7 +121,12 @@ var displayShop = function (shop) {
   if (debug) {
     console.log('вывод шопа', shop);
   }
-  document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'block';
+  var storeIsActivate = utils.storeIsActivate(shop.store_route);
+  if (debug) {
+        console.log('шоп активирован ', storeIsActivate);
+  }
+  var tabShop = document.querySelector('.secretdiscounter-pupup__tab-shop');
+  tabShop.style.display = 'block';
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-checkboxtab').checked = true;
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
     utils.replaceTemplate(storeHtml, {
@@ -131,8 +139,12 @@ var displayShop = function (shop) {
       'storeUrl': siteUrl + 'goto/store:' + shop.uid,
       'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
       'storeTariffs': shop.conditions ?
-      '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : ''
+        '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
+      'storeRoute' : shop.store_route,
+      'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
+
     });
+  utils.makeHrefs(tabShop);
   getCoupons(shop, displayCoupons);//запрос на купоны для шопа
 };
 

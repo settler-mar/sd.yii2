@@ -202,13 +202,16 @@ function displayShop(item) {
       pluginSiteUrl = siteUrl + '#login';
     }
     var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
+    var storeIsActivate = utils.storeIsActivate(item.store_route);
     var shopDiv = utils.replaceTemplate(storePluginHtml, {
       'storeLogo': siteUrl + 'images/logos/' + item.logo,
       'storeUrl': url,
       'storeText': message,
       'siteUrl': pluginSiteUrl,
       'favoritesLink': favoritesLink,
-      'logoImage': siteUrl + 'images/templates/logo_sd_horizontal_white_thin.svg'
+      'logoImage': siteUrl + 'images/templates/logo_sd_horizontal_white_thin.svg',
+      'storeRoute' : item.store_route,
+      'buttonsClass' : storeIsActivate ? 'sd_hidden' : ''
     });
     div = document.createElement('div');
     div.className = 'secretdiscounter-extension';
@@ -228,6 +231,8 @@ function displayShop(item) {
           document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
         }
         displayFavoriteLinks(item.uid);
+        utils.makeHrefs(document.querySelector('.secretdiscounter-extension__buttons'));//меняем отработчик ссылки не активацию на свой
+
       }
       if (tryCount < 0) {
         clearInterval(divInsertInterval);

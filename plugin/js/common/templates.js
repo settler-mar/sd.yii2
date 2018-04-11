@@ -3,8 +3,8 @@ var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secre
     '</div>'+
     '<div class="secretdiscounter-extension__buttons">'+
     '<div class="secretdiscounter-extension__buttons-tariffs">{{storeTariffs}}</div>'+
-    '<a class="secretdiscounter-extension__buttons-link secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">{{btnText}}</a>'+
-    '<span class="secretdiscounter-extension__buttons-title">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
+    '<a class="secretdiscounter-extension__buttons-link secretdiscounter-extension__link btn {{buttonsClass}}" data-store="{{storeRoute}}" href="{{storeUrl}}" target="_blank">{{btnText}}</a>'+
+    '<span class="secretdiscounter-extension__buttons-title {{buttonsClass}}">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
     '</div>';
 var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '<div class="secretdiscounter-extension__notificaton-date">{{notyDate}}</div>'+
@@ -13,7 +13,7 @@ var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '</div>';
 var favoriteHTML ='<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
     '<div class="secretdiscounter-extension__shop-text">Кэшбэк{{storeText}}</div>'+
-    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}">Активировать<br>кэшбэк</a>'+
+    '<a class="secretdiscounter-extension__link btn {{buttonClass}}" data-store="{{storeRoute}}" href="{{storeUrl}}">Активировать<br>кэшбэк</a>'+
     '</div>';
 
 var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
@@ -24,8 +24,8 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<div class="secretdiscounter-extension__shop-text">{{storeText}}</div>'+
     '<div class="secretdiscounter-extension__shop-favorites">{{favoritesLink}}</div>'+
     '</div>'+
-    '<div class="secretdiscounter-extension__buttons">'+
-    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}"  target="_blank">Активировать&nbsp;кэшбэк</a>'+
+    '<div class="secretdiscounter-extension__buttons {{buttonsClass}}">'+
+    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}" data-store="{{storeRoute}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
     '<span class="secretdiscounter-extension__buttons-message">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
     '</div>';
 var couponHtml = '<div class="secretdiscounter-extension__coupon">'+
