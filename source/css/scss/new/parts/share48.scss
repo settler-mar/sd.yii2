@@ -160,3 +160,15 @@
   white-space: nowrap;
   margin-right: -6px;
 }
+.wrap-tablets .share42_wrap {
+  @include media($tablets) {
+    white-space: normal;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    a {
+      margin: 0 7px 7px !important;
+    }
+  }
+}
