@@ -116,6 +116,10 @@ button {
 .secretdiscounter-pupup__logo {
   padding: 10px;
 }
+.secretdiscounter-pupup__logo a{
+  outline: none !important;
+}
+
 .secretdiscounter-pupup__logo img{
   max-width: 170px;
   display: block;
@@ -384,7 +388,7 @@ button {
   width: 50%;
 }
 
-.secretdiscounter-extension__coupon-info_line {
+.secretdiscounter-extension__coupon-item {
   display: flex;
   justify-content: space-between;
   padding: 1px 5px;
