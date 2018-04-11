@@ -393,6 +393,8 @@ function analizPage() {
   }
 
   function generateSearchLink(item,el){
+    if(el.querySelectorAll('.sd_link_finder').length>0) return;
+
     var div = document.createElement('div');
     message = utils.replaceTemplate(storageDataStores.searchtext, {
       'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
