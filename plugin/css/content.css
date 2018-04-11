@@ -97,6 +97,9 @@
     font-size: 14px;
     font-weight: bold;
 }
+.secretdiscounter-extension__shop-text .cashback.cashback-charity {
+    color: #f00;
+}
 .secretdiscounter-extension__shop-text .cashback_old {
     font-size: 11px;
     text-decoration: line-through;

@@ -14,8 +14,13 @@ var utils = (function(){
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
 
-        result = '<span class="cashback">'+displayedCashback.replace(/[\d.]+/, cashbackNumFinal) +
-            (displayedCashback.match(/\%/) ? "" : " " + currency) +'</span>';
+        if (cashbackNum > 0) {
+            result = '<span class="cashback">'+displayedCashback.replace(/[\d.]+/, cashbackNumFinal) +
+                (displayedCashback.match(/\%/) ? "" : " " + currency) +'</span>';
+        } else {
+            result = '<span class="cashback cashback-charity">&#x2764;</span>';
+
+        }
         if (action == 1 && cashbackNum > 0) {
             var cashbackOld = displayedCashback + (displayedCashback.match(/\%/) ? "" : " " + currency);
             result +=  '<span class="cashback_old">'+cashbackOld+'</span>';
