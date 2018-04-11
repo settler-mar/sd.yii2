@@ -334,6 +334,96 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : false;
 }
 
+function displayShopFinders(item){
+    var data = this;
+    var engine = data.engine;
+    var el = data.el;
+
+    generateSearchLink(item, el, engine);
+}
+
+function generateSearchLink(item, el, engine){
+    var div = document.createElement('div');
+    message = utils.replaceTemplate(storageDataStores.searchtext, {
+        'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
+        'currentUrl': siteUrl + item.url,
+        'storename': utils.ucfirst(item.name)
+    });
+    var url = '';
+    if (usersData && usersData.user) {
+        url = siteUrl + 'goto/store:' + item.uid;
+    } else {
+        url = siteUrl + 'stores/' + item.store_route + '#login';
+    }
+    div.innerHTML = "<a href='" + url + "'target='_blank' class='sd_link_finder'>" +
+        // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
+        searchFormImage + message;
+    div.id = 'secretdiscounter-search';
+    div.className = 'secretdiscounter-search';
+    div.setAttribute('style', engine.styles);
+
+    el.prepend(div);
+
+
+}
+
+function checkSearchLink(){
+    repeatTimes--;
+    if(repeatTimes<=0) return;
+
+    if(document.querySelectorAll('.sd_link_finder').length>0){
+        setTimeout(checkSearchLink,1000);
+        return;
+    }
+    analizPage();
+}
+
+function analizeSearch(){
+    //для гугл,  бинг, яндекс
+    var locationHref = location.hostname.split('.');
+
+    for (key in searchEngines) {
+        var engine = searchEngines[key];
+        if(!checkLocation(locationHref, engine.location_href_index, engine.location_href))continue;
+
+        var els=document.querySelectorAll(engine.analiseHREF);
+        if(els.length==0)return;
+        if (debug) {
+            console.log(els);
+        }
+        for(var k=0;k<els.length;k++) {
+            var el=els[k];
+            var url;
+            var wrap = el.closest(engine.closest);
+
+            //если есть алгоритм детекции рекламы то проверяем на рекламу
+            if(engine.adcDetect && engine.adcDetect(wrap)) continue;
+
+            if (engine.byText) {
+                url = el.innerText;
+            } else {
+                url = el.href.split('//');
+                if (url.length == 2) {
+                    url = url[1]
+                }
+
+                url = url.split('/');
+                url = url[0].split('?');
+                url = url[0];
+            }
+
+            storeUtil.findShop(storageDataStores.stores, url, displayShopFinders.bind({
+                engine: engine,
+                el: wrap
+            }));
+        }
+
+        if(repeatTimes===false)repeatTimes=engine.repeat;
+        setTimeout(checkSearchLink,1000);
+    }
+}
+
+
 
 //console.log('start');
 
@@ -357,125 +447,41 @@ Storage.load(function () {
   }
 });
 
+var yandexDomElementChangeCheckTimeOut = null;
+var yandexDomElementResultChangeTimeOut = null;
+var yandexSearchResultChangeHandler = function(){
+    //console.log('yandex search content change');
+    clearTimeout(yandexDomElementChangeCheckTimeOut);
+    yandexDomElementChangeCheckTimeOut = setTimeout(function(){
+        //пока меняется содержимое результата поиска и не успокоится -  500 запуск невозможен
+        //теперь запускаем, и 8000  не отслеживаем, чтобы было время нам поменять содержимое, не запуская поиск
+        if (yandexDomElementResultChangeTimeOut === null) {
+            yandexDomElementResultChangeTimeOut = setTimeout(function () {
+                clearTimeout(yandexDomElementResultChangeTimeOut);
+                yandexDomElementResultChangeTimeOut = null;
+            }, 8000);
+            //запускаем проверку поиска, после этого 8000 запуск невозможен
+            //console.log('yandex run search');
+            analizeSearch();
+        }
+
+    }, 500);
+};
+
 
 window.onload = analizPage;
 
 function analizPage() {
+
   setAppId();
 
-  //событие для яндекса при повторном поиске
-  /*var yandexDomElementChange = document.querySelector(searchEngines.yandex.dom_change_selector);
+  analizeSearch();//проверка поиска
+
+  //событие для яндекса при повторном поиске айаксом
+  var yandexDomElementChange = document.querySelector(searchEngines.yandex.dom_change_selector);
   var yandexInput = document.querySelector(searchEngines.yandex.search_selector);
   if (yandexDomElementChange && yandexInput) {
-    var yandexSearchTimeOut = null;
-    yandexDomElementChange.addEventListener('DOMSubtreeModified', function () {
-      if (yandexSearchTimeOut === null) {
-        yandexSearchTimeOut = setTimeout(function () {
-          clearTimeout(yandexSearchTimeOut);
-          yandexSearchTimeOut = null;
-        }, 8000);
-        checkSearch(yandexInput.value.toUpperCase(), searchEngines.yandex);
-        //запускаем, после этого XX сек. запуск невозможен
-      }
-
-    });
-  }*/
-
-  function checkSearchLink(){
-    repeatTimes--;
-    if(repeatTimes<=0) return;
-
-    if(document.querySelectorAll('.sd_link_finder').length>0){
-      setTimeout(checkSearchLink,1000);
-      return;
-    }
-    analizPage();
-  }
-
-  function generateSearchLink(item,el){
-    var div = document.createElement('div');
-    message = utils.replaceTemplate(storageDataStores.searchtext, {
-      'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
-      'currentUrl': siteUrl + item.url,
-      'storename': utils.ucfirst(item.name)
-    });
-    var url = '';
-    if (usersData && usersData.user) {
-      url = siteUrl + 'goto/store:' + item.uid;
-    } else {
-      url = siteUrl + 'stores/' + item.store_route + '#login';
-    }
-    div.innerHTML = "<a href='" + url + "'target='_blank' class='sd_link_finder'>" +
-      // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
-      searchFormImage + message;
-    div.id = 'secretdiscounter-search';
-    div.className = 'secretdiscounter-search';
-    div.setAttribute('style', engine.styles);
-
-    el.prepend(div);
-
-
-  }
-
-  function displayShopFinders(item){
-    var data = this;
-    var engine = data.engine;
-    var el = data.el;
-
-    generateSearchLink(item,el);
-  }
-
-  //для гугл,  бинг, яндекс(первый запрос)
-  var locationHref = location.hostname.split('.');
-  for (key in searchEngines) {
-    var engine = searchEngines[key];
-    if(!checkLocation(locationHref, engine.location_href_index, engine.location_href))continue;
-
-    var els=document.querySelectorAll(engine.analiseHREF);
-    if(els.length==0)return;
-    for(var k=0;k<els.length;k++) {
-      var el=els[k];
-      var url;
-      var wrap = el.closest(engine.closest);
-
-      //если есть алгоритм детекции рекламы то проверяем на рекламу
-      if(engine.adcDetect && engine.adcDetect(wrap)) continue;
-
-      if (engine.byText) {
-        url = el.innerText;
-      } else {
-        url = el.href.split('//');
-        if (url.length == 2) {
-          url = url[1]
-        }
-
-        url = url.split('/');
-        url = url[0].split('?');
-        url = url[0];
-      }
-
-      storeUtil.findShop(storageDataStores.stores, url, displayShopFinders.bind({
-        engine: engine,
-        el: wrap
-      }));
-    }
-
-    if(repeatTimes===false)repeatTimes=engine.repeat;
-    setTimeout(checkSearchLink,1000);
-    /*var input = document.querySelector(engine.search_selector);
-    if (input && checkLocation(locationHref, engine.location_href_index, engine.location_href)) {// locationHref[engine.location_href_index] == engine.location_href) {
-      var value = input.value;
-      if (value != null && value !== '') {
-        if (appIds[currentBrowser].search_delay) {
-          setTimeout(function () {
-            checkSearch(value.toUpperCase(), engine);
-          }, appIds[currentBrowser].search_delay);
-        } else {
-          checkSearch(value.toUpperCase(), engine);
-        }
-      }
-      break;
-    }*/
+      yandexDomElementChange.addEventListener('DOMSubtreeModified', yandexSearchResultChangeHandler);
   }
 
   //if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
