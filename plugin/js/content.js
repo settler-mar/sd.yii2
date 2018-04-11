@@ -1,5 +1,4 @@
 var usersData = false;
-var debug = true;
 var appCookieName = 'secretdiscounter-extension-window';
 var appCookieValue = 'hidden';
 var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -99,13 +98,17 @@ function closeClick() {
 }
 
 function getUsers() {
-  console.log('getusers');
+  if (debug) {
+     console.log('getusers');
+  }
   chrome.runtime.sendMessage({
     action: 'sd_xhttp',
     url: siteUrl + userUrl
   }, function (responseData) {
-    console.log('getusers success', responseData);
-    usersData = responseData;
+      if (debug) {
+        console.log('getusers success', responseData);
+      }
+      usersData = responseData;
 
   });
 }
@@ -155,7 +158,9 @@ function displayFavoriteLinks(storeId) {
 }
 
 function findShop() {
-  console.log('findShop');
+  if (debug) {
+    console.log('findShop');
+  }
   if (debug || getCookie(appCookieName) !== appCookieValue) {
     //надо дождаться, когда будут пользователи
     if (usersData !== false) {
@@ -166,7 +171,9 @@ function findShop() {
       var tryCount = 10;
       var findShopInterval = setInterval(function () {
         tryCount--;
-        console.log(usersData);
+        if (debug) {
+            console.log(usersData);
+        }
         if (usersData !== false) {
           //находим в данных текущий шоп, если нашли то коллбэк
           storeUtil.findShop(storageDataStores.stores, false, displayShop);
@@ -241,7 +248,9 @@ function checkSearch(searchString, engine) {
   storageDataStores.stores.forEach(function (item) {
     //проверка, что строка поиска включена в название или урл магазина
     if ((item.name.toUpperCase().indexOf(searchString) >= 0 || item.url.toUpperCase().indexOf(searchString) >= 0) && !message) {
-      console.log(item, usersData);
+      if (debug) {
+        console.log(item, usersData);
+      }
       message = utils.replaceTemplate(storageDataStores.searchtext, {
         'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
         'currentUrl': siteUrl + item.url,
@@ -295,7 +304,9 @@ function setAppId() {
   div.id = appIds[currentBrowser].id;
   div.style = 'display:none;';
   document.body.appendChild(div);
-  console.log(appIds[currentBrowser]);
+  if (debug) {
+    console.log(appIds[currentBrowser]);
+  }
 }
 
 function checkLocation(href, index, key) {
@@ -327,6 +338,9 @@ getUsers();
 Storage.load(function () {
   storageDataDate = Storage.get(storageDataKeyDate);
   storageDataStores = Storage.get(storageDataKeyStores);
+  if (debug) {
+    console.log('storage load', storageDataStores, storageDataDate)
+  }
   if (!storageDataDate || !storageDataStores
     || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
     //||storageData.date + 100 < new Date().getTime() ) {
@@ -460,7 +474,7 @@ function analizPage() {
   }
 
   //if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
-};
+}
 
 
 

@@ -3,8 +3,8 @@ var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secre
     '</div>'+
     '<div class="secretdiscounter-extension__buttons">'+
     '<div class="secretdiscounter-extension__buttons-tariffs">{{storeTariffs}}</div>'+
-    '<a class="secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">{{btnText}}</a>'+
-    'Магазин с активированным кэшбэком<br> откроется в новом окне'+
+    '<a class="secretdiscounter-extension__buttons-link secretdiscounter-extension__link btn" href="{{storeUrl}}" target="_blank">{{btnText}}</a>'+
+    '<span class="secretdiscounter-extension__buttons-title">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
     '</div>';
 var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '<div class="secretdiscounter-extension__notificaton-date">{{notyDate}}</div>'+

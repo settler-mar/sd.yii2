@@ -4,3 +4,4 @@ var userUrl = 'account/notification';
 var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
 var couponUrl = 'coupons';
+var debug = true;

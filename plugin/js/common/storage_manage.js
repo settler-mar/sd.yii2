@@ -12,8 +12,9 @@ function getData(callback) {
         action: 'sd_xhttp',
         url: siteUrl + storesUrl
     }, function (responseData) {
-
-        //console.log('data is ready', responseData);
+        if (debug) {
+            console.log(siteUrl+storesUrl, 'data is ready', responseData);
+        }
         // set a storage key
         Storage.set(storageDataKeyStores, responseData);
         Storage.set(storageDataKeyDate, new Date().getTime());

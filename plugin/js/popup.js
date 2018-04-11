@@ -115,7 +115,9 @@ function makeNotifications() {
 
 
 var displayShop = function (shop) {
-  console.log('вывод шопа', shop);
+  if (debug) {
+    console.log('вывод шопа', shop);
+  }
   document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'block';
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-checkboxtab').checked = true;
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
@@ -135,7 +137,9 @@ var displayShop = function (shop) {
 };
 
 var displayCoupons = function (response) {
-  console.log(response);
+  if (debug) {
+    console.log(response);
+  }
   if (response.coupons && response.coupons.length) {
     var html = '';
     for (var i = 0; i < response.coupons.length; i++) {
@@ -168,7 +172,9 @@ chrome.tabs.getSelected(null, function (tab) {
   Storage.load(function () {
     storageDataDate = Storage.get(storageDataKeyDate);
     storageDataStores = Storage.get(storageDataKeyStores);
-    console.log('storage load');
+    if (debug) {
+      console.log('storage load');
+    }
     if (!storageDataDate || !storageDataStores
       || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
       getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));

@@ -264,6 +264,9 @@ button {
   justify-content: space-between;
   padding: 3px 5px;
 }
+.secretdiscounter-popup__copy-ltd {
+  color: #aaa;
+}
 .secretdiscounter-popup__copy-help {
   display: block;
   box-sizing: border-box;
@@ -325,6 +328,12 @@ button {
   /*margin-top: 30px;*/
   text-align: center;
   min-height: 110px;
+}
+.secretdiscounter-extension__buttons-title {
+ color: #aaa;
+}
+.secretdiscounter-extension__buttons-link {
+ margin-top: 10px;
 }
 .secretdiscounter-extension__buttons-tariffs {
   padding: 0 5px 5px;
