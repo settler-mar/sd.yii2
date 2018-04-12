@@ -18,11 +18,8 @@ var favoriteHTML ='<div class="secretdiscounter-extension__shop"><img class="sec
 
 var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<a href="{{siteUrl}}" class="secretdiscounter-extension__logo"><img class="secretdiscounter-extension__logo-img" src="{{logoImage}}"/></a>'+
-    '<div class="secretdiscounter-extension__button_close">'+
+    '<div class="secretdiscounter-extension__button_close">'+iconClose+
     //'<span class="secretdiscounter-extension__button_icon">&times;</span>'+
-    '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" width="12px" height="12px" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357;" xml:space="preserve"><g>'+
-        '<g id="close"><polygon points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3     214.2,178.5   " fill="#FFFFFF"/>'+
-    '</svg>'+
     '</div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
@@ -36,9 +33,10 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
 var couponHtml = '<div class="secretdiscounter-extension__coupon">'+
   '<a href="{{couponUrl}}" class="secretdiscounter-extension__coupon-href">{{couponName}}</a>'+
   '<div class="secretdiscounter-extension__coupon-left">'+
-  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-date">Осталось: <span>{{couponDateEnd}}</span></div>'+
+  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-date">Дата окончания: <span>{{couponDateEnd}}</span></div>'+
   '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-used">Воспользовались: <span>{{couponUsed}}</span></div>'+
-  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-promocode">Промокод: <span>{{couponPromocode}}</span></div>'+
+  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-promocode">' +
+    'Промокод: <span class="secretdiscounter-extension__coupon-promocode-text copy-content">{{couponPromocode}}</span></div>'+
   '</div>'+
   '<div class="secretdiscounter-extension__coupon-right">'+
   '<a class="secretdiscounter-extension__coupon-promocode-link sd_button" href="{{couponUseLink}}">Использовать промокод</a>'+

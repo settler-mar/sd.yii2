@@ -61,12 +61,32 @@ var utils = (function(){
         }
     }
 
+    function copyToClipboard() {
+        var code = this.getAttribute('data-clipboard');
+        var temp = document.createElement('input');
+        document.body.appendChild(temp);
+        temp.value = code;
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        this.classList.add('copied');
+    }
+
+    function setClickHandlers(elem, className, handler) {
+        elements = elem.getElementsByClassName(className);
+        for ( var i = 0 ; i < elements.length ; i++ ) {
+            elements[i].onclick = handler;
+        }
+    }
+
     return {
         replaceTemplate: replaceTemplate,
         makeCashback: makeCashback,
         ucfirst: ucfirst,
         makeHrefs: makeHrefs,
-        storeIsActivate: storeIsActivate
+        storeIsActivate: storeIsActivate,
+        setClickHandlers: setClickHandlers,
+        copyToClipboard:copyToClipboard
     }
 
 })();

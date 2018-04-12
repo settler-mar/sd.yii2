@@ -163,14 +163,17 @@ var displayCoupons = function (response) {
         'couponName': response.coupons[i].name,
         'couponDateEnd': response.coupons[i].date_end,
         'couponUsed': response.coupons[i].visit,
-        'couponPromocode': response.coupons[i].promocode ? response.coupons[i].promocode : 'Не требуется',
-        'couponUseLink': siteUrl + 'goto/coupons/' + response.coupons[i].uid,
+        'couponPromocode': response.coupons[i].promocode ?
+            response.coupons[i].promocode+'<span title="Скопировать в буфер обмена"  class="secretdiscounter-extension__coupon-promocode-text-copy copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
+            'Не требуется',
+        'couponUseLink': siteUrl + 'goto/coupon:' + response.coupons[i].uid,
         'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid
       });
     }
     var tabCoupons = document.querySelector('.secretdiscounter-pupup__tab-coupons .secretdiscounter-pupup__tab-content');
     tabCoupons.innerHTML = html;
     utils.makeHrefs(tabCoupons);
+    utils.setClickHandlers(tabCoupons, 'copy-clipboard', utils.copyToClipboard);
     document.querySelector('.secretdiscounter-pupup__tab-coupons').style.display = 'block';
   }
 
