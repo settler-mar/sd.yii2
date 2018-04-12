@@ -152,6 +152,7 @@ function displayShop(item) {
     div.className = 'secretdiscounter-extension';
     div.innerHTML = shopDiv;
     div.style.right = document.body.clientWidth > 1200 ? (document.body.clientWidth - 1200) / 2 + 'px' : 0;
+    div.style.top = '10px';
 
     var tryCount = 10;
     var divInsertInterval = setInterval(function () {

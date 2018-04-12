@@ -65,23 +65,27 @@
 }
 
 .secretdiscounter-extension__button_close {
-    min-width: 27px !important;
-    height: 27px !important;
+    width: 26px !important;
+    height: 26px !important;
     box-sizing: border-box !important;
-    cursor: pointer;
+    cursor: pointer !important;
     background: rgb(250, 54, 28) !important;
     border-radius: 50% !important;
     text-align: center !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.secretdiscounter-extension__button_icon {
-    line-height: 27px !important;
-    color: #fff !important;
-    font-size: 25px !important;
-    font-family: "Open Sans", sans-serif !important;
-    margin-top: 0 !important;
-    display: block !important;
-    font-weight: 400 !important;
-}
+/*.secretdiscounter-extension__button_icon {*/
+    /*!*line-height: 27px !important;*!*/
+    /*line-height: 1 !important;*/
+    /*color: #fff !important;*/
+    /*font-size: 25px !important;*/
+    /*font-family: "Open Sans", sans-serif !important;*/
+    /*margin-top: 0 !important;*/
+    /*display: block !important;*/
+    /*font-weight: 400 !important;*/
+/*}*/
 .secretdiscounter-extension__shop {
     border-bottom: 1px solid #b5b5b5;
     padding: 10px;
@@ -103,7 +107,7 @@
 .secretdiscounter-extension__shop-text .cashback_old {
     font-size: 11px;
     text-decoration: line-through;
-    color: #d6d6d6;
+    color: #aaa;
 }
 
 .secretdiscounter-extension__buttons {
@@ -113,35 +117,36 @@
     padding: 10px 10px 8px;
 }
 .secretdiscounter-extension__buttons-message {
-    color: #666;
     font-size: 11px;
     text-align: center;
+    color: #aaa;
 }
 .secretdiscounter-extension__buttons .secretdiscounter-extension__link {
-    margin-bottom: 3px;
-    padding: 0.75rem;
-    background: #f7c714;
-    color: #000;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    border: 2px solid #f7c714;
-    -webkit-transition: all .25s ease;
-    -o-transition: all .25s ease;
-    -moz-transition: all .25s ease;
-    transition: all .25s ease;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1em;
-    cursor: pointer;
-    text-align: center;
-    box-shadow: none;
+    margin-bottom: 3px !important;
+    padding: 0.75rem !important;
+    background: #f7c714 !important;
+    color: #000 !important;
+    -webkit-border-radius: 4px !important;
+    border-radius: 4px !important;
+    border: 2px solid #f7c714 !important;
+    -webkit-transition: all .25s ease !important;
+    -o-transition: all .25s ease !important;
+    -moz-transition: all .25s ease !important;
+    transition: all .25s ease !important;
+    text-decoration: none !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1em !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    box-shadow: none !important;
+    text-transform: none !important;
 }
 .secretdiscounter-extension__buttons .secretdiscounter-extension__link:hover {
-    color: #fff;
-    background: #fdec3e;
-    box-shadow: none;
-    border: 2px solid #fdec3e;
+    color: #fff !important;
+    background: #fdec3e !important;
+    box-shadow: none !important;
+    border: 2px solid #fdec3e !important;
 }
 
 

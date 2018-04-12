@@ -34,9 +34,11 @@ var displayUser = function () {
   if (usersData && usersData.user) {
     document.querySelector('.secretdiscounter-pupup').classList.remove('logout');
     document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="' + siteUrl + usersData.user.photo + '"/>';
-    //document.querySelector('.secretdiscounter-pupup__info-name').innerHTML = usersData.user.name;
-    document.querySelector('.secretdiscounter-pupup__info-balance-current').innerHTML = usersData.user.balance.current;
-    document.querySelector('.secretdiscounter-pupup__info-balance-pending').innerHTML = '&nbsp;/&nbsp;' + usersData.user.balance.pending;
+    document.querySelector('.secretdiscounter-pupup__info-balance').innerHTML =
+        '<span class="secretdiscounter-pupup__info-balance-current">'+usersData.user.balance.current+'</span>'+
+        '<span class="secretdiscounter-pupup__info-balance-pending">'+
+        (usersData.user.balance.pending ? '&nbsp;/&nbsp;'+usersData.user.balance.pending: '')+
+        '&nbsp;руб.</span>';
     //document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'block';
     document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'block';
     //document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'block';
@@ -94,6 +96,7 @@ function makeFavorites() {
       'buttonClass' : storeIsActivate ? 'sd_hidden' : ''
     });
   }
+  result += '<div class="secretdiscounter-extension__notification-button"><a class="sd_button" href="' + siteUrl + '/stores">Все магазины</a></div>';
   return result;
 
 }
@@ -111,7 +114,7 @@ function makeNotifications() {
     });
   }
   if (usersData.btn) {
-    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__notificaton-link btn" href="' + siteUrl + userUrl + '">' + usersData.btn + '</a></div>';
+    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__notificaton-link sd_button" href="' + siteUrl + userUrl + '">' + usersData.btn + '</a></div>';
   }
   return result;
 }

@@ -47,9 +47,9 @@ button {
   margin-top: 0;
   font-size: 1.1em;
 }
-.btn {
+.sd_button {
   margin-bottom: 3px;
-  padding: 0.75rem;
+  padding: 0.65rem 0.75rem;
   background: #f7c714;
   color: #000;
   -webkit-border-radius: 4px;
@@ -66,7 +66,7 @@ button {
   cursor: pointer;
   text-align: center;
 }
-.btn:hover {
+.sd_button:hover {
   color: #fff;
   background: #fdec3e;
   border-color: #fdec3e;
@@ -165,11 +165,11 @@ button {
  }
 .secretdiscounter-pupup__info-logo {
   text-align: center;
-  margin: 4px;
+  margin: 8px;
 }
 .secretdiscounter-pupup__info-logo-circle {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   -webkit-border-radius: 50%;
   border-radius: 50%;
   overflow: hidden;
@@ -228,10 +228,12 @@ button {
   display: none;
   position: absolute;
   left: 0;
-  width: 100%;
+  /*width: 100%;*/
   border-top: 1px solid #aaa;
   margin: 0 5px 5px;
-  /*padding: 5px;*/
+  width: calc(100vw - 10px);
+  height: 213px;
+  overflow: auto;
 }
 
 .secretdiscounter-pupup__tab-checkboxtab ~ label {
@@ -254,11 +256,7 @@ button {
 .secretdiscounter-pupup__tab-notifications {
  display: none;
 }
-.secretdiscounter-pupup__tab-content {
-  width: calc(100vw - 10px);
-  height: 213px;
-  overflow: auto;
-}
+
 .secretdiscounter-popup__copy {
   display: flex;
   flex-direction: row;
@@ -266,9 +264,7 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 3px 5px;
-}
-.secretdiscounter-popup__copy-ltd {
-  color: #aaa;
+  color: #aaa
 }
 .secretdiscounter-popup__copy-help {
   display: block;
@@ -322,7 +318,7 @@ button {
 .secretdiscounter-extension__shop-text .cashback_old {
   font-size: 11px;
   text-decoration: line-through;
-  color: #d6d6d6;
+  color: #aaa;
 }
 
 .secretdiscounter-extension__buttons {
@@ -343,6 +339,7 @@ button {
 }
 .secretdiscounter-extension__buttons-tariffs {
   padding: 0 5px 5px;
+  text-align: left;
 }
 .secretdiscounter-extension__buttons-tariffs-header {
   font-weight: bold;
@@ -366,17 +363,17 @@ button {
   padding: 3px;
 }
 .secretdiscounter-extension__notification-button {
-  margin-top: 5px;
+  margin: 20px auto;
   width: calc(100vw - 35px);
   text-align: center;
   padding: 3px;
 }
-.secretdiscounter-extension__notificaton-link {
-  display: block;
-  color: #000;
-  text-decoration: none;
-  padding: 0.25rem 0.75rem;
-  margin: auto;
+.secretdiscounter-extension__notificaton-link{
+  /*display: block;*/
+  /*color: #000;*/
+  /*text-decoration: none;*/
+  /*padding: 0.25rem 0.75rem;*/
+  /*margin: auto;*/
 }
 .secretdiscounter-extension__notificaton-link:hover {
   color: #fff;
