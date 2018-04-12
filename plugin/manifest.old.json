@@ -1,0 +1,37 @@
+{
+   "background": {
+      "page": "background.html"
+   },
+   "browser_action": {
+      "default_icon": "images/btn/logo18.png",
+      "default_title": "Кэшбэк-сервис LetyShops"
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "js": [ "ci.content.pack.js", "libs/jquery-3.3.1.min.js", "libs/handlebars.runtime.min.js", "libs/underscore-min.js", "libs/underscore-no-conflict.js", "libs/backbone-min.js", "libs/backbone-no-conflict.js", "libs/jquery.qtip.min.js", "libs/material.min.js", "libs/circliful.min.js", "shared/constants.js", "shared/utils.js", "shared/storage.js", "shared/api.js", "content/style.js", "content/templates.js", "content/helpers.js", "content/notification_not_active.js", "content/notification_activated.js", "content/notification_promo.js", "content/notification_price.js", "content/notification_search.js", "content/user_notification.js", "content/notification_without_activete.js", "content/cookie.js", "content/content_meta.js", "content/content.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": false,
+      "js": [ "ci.browser.helper.js", "libs/chart.bundle.min.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "description": "Кэшбэк сервис LetyShops – экономьте до 30% с каждой покупки в AliExpress и еще 1000+ интернет-магазинах!",
+   "homepage_url": "https://letyshops.com",
+   "icons": {
+      "128": "images/tool/logo128.png",
+      "24": "images/tool/logo24.png",
+      "48": "images/tool/logo48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnMh8fNsY9dkzc8SCR7A02KpGeO4GXGhqffnzV1XJytWfGWXcvaLar8h8IQEIvEAF7bMYC8lu9IQRQyFMIRk8W4ykWeuTtDlx3KEFW61ZBJvQ531wOoi4m9zPWk7Ru4MtfdwH0eAsyA59VaO459zPQgEObYfaVXKhoosqzgXgDphSP+ySF2M9Fdo93qJKAAEEepDd5stXjSxZM4IQvByTexLVQbvBCFTcAB8ypcW8+MtEchNv4b95VVQ8FYJpAjfUnViVATL2U2VBWAXi9hrOFbeofoggCh5YjfDfp7wHYTgs7DyxUWT4cYNsAUocckoEnnnnsGF8XTmlwdXjwOwt1wIDAQAB",
+   "manifest_version": 2,
+   "name": "LetyShops — кэшбэк-сервис",
+   "options_ui": {
+      "page": "options.html"
+   },
+   "permissions": [ "tabs", "webNavigation", "contextMenus", "webRequest", "storage", "\u003Call_urls>", "notifications" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.3.7",
+   "web_accessible_resources": [ "images/btn/*.png" ]
+}
