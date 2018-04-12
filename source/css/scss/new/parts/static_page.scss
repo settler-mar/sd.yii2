@@ -20,30 +20,14 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: 50%;
-      //position: fixed;
-      //width: 1160PX;
+
       position: absolute;
       width: 100%;
       height: 520PX;
-      //top: 160px;
       top: -278PX;
       z-index: -100;
       border-radius: 5px;
       overflow: hidden;
-      //@include media($laptop-min) {
-      //  width: 1024PX;
-      //  height: 500PX;
-      //  top: 100PX;
-      //}
-      //@include media($tablets) {
-      //  width: 768PX;
-      //  top: 100PX;
-      //  height: 480PX;
-      //}
-      //@include media($phones) {
-      //  width: 380PX;
-      //  height: 460PX;
-      //}
     }
 
     h2.white {
@@ -58,6 +42,173 @@
         margin-top: 140PX;
       }
     }
+  }
+  .plugin {
+    position: relative;
+
+    &_image {
+      background-image: url(https://secretdiscounter.ru/img/plugin/ru/secretdiscounter-plugin-fon-2-1170.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50%;
+
+      position: absolute;
+      width: 100%;
+      height: 520PX;
+      top: -278PX;
+      z-index: -100;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    h2.white {
+      color: #fff;
+      margin-top: 50px;
+      margin-bottom: 200px;
+
+      @include media($tablets) {
+        margin-top: 210PX;
+      }
+      @include media($phones) {
+        margin-top: 140PX;
+      }
+    }
+    .gray-box {
+      padding: 10px;
+      border-radius: 10px;
+    }
+    &-links {
+      a:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+
+    &-browsers {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+
+      &-wrap {
+        margin: 10px 15px;
+        padding: 3px;
+        background-color: #f8f8f8;
+        border-radius: 5px;
+        &-in {
+          padding: 10px 0 15px;
+          background: #fff;
+          margin: 0;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+      }
+      &-image {
+        width: 100%!important;
+      }
+    }
+    &-browsers-download {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+    &-browser {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      svg {
+        width: 32px;
+        height: 32px;
+        margin: 10px;
+      }
+    }
+    &-browser-download {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 5px;
+
+      svg {
+        width: 32px;
+        height: 32px;
+        margin: 10px;
+      }
+    }
+    &-howitworks {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: center;
+      padding: 10px 0 15px;
+      background: #fff;
+      margin: 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    &-howitworks-wrap {
+      padding: 3px;
+      margin: 0 15px;
+      background: #f8f8f8;
+      border-radius: 5px;
+    }
+
+    &-howitworks-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      width: 25%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      min-height: 180px;
+
+      &-text {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      &-number {
+        margin: 10px 0;
+        background-color: #1ABB9C;
+        color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 50%;
+        position: relative;
+        text-align: center;
+
+        &:before {
+          content: " ";
+          display: block;
+          width: 2000%;
+          left: -1000%;
+          height: 3px;
+          background-color:  #1ABB9C;
+          position: absolute;
+        }
+        span {
+          display: block;
+          margin: auto;
+          z-index: 100;
+        }
+
+
+      }
+      svg {
+        width: 50px;
+        height: 50px;
+        fill: #3D6D9E;
+        stroke: #3D6D9E;
+        color: #3D6D9E;
+      }
+    }
+
   }
 
   h1.white {
