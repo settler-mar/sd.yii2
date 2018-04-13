@@ -1,4 +1,3 @@
-
 <div id="transition-wrapper" class="transition">
     <div class="center-block">
         <div class="phrase">
@@ -42,4 +41,4 @@
     <div id="transition-message" style="display: none;">{{ _constant('goto_adblock')|raw }}</div>
 </div>
 <img class="ad-detect" src="/images/ad.gif" style="position: absolute;"/>
-{{ this.registerJsFile('/js/cookie_check.js', {'depends': ['\\yii\\web\\JqueryAsset'], 'position' : constant('\\yii\\web\\View::POS_END')}) }}
+{{ this.registerJsFile('/js/cookie_check.js') }}
