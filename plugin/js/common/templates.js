@@ -43,11 +43,10 @@ var couponHtml = '<div class="secretdiscounter-extension__coupon">'+
   '<a href="{{couponUrl}}" class="secretdiscounter-extension__coupon-href">{{couponName}}</a>'+
   '<div class="secretdiscounter-extension__coupon-left">'+
   '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-date">Дата окончания: <span>{{couponDateEnd}}</span></div>'+
-  '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-used">Воспользовались: <span>{{couponUsed}}</span></div>'+
   '<div class="secretdiscounter-extension__coupon-item secretdiscounter-extension__coupon-promocode">' +
     'Промокод: <span class="secretdiscounter-extension__coupon-promocode-text copy-content">{{couponPromocode}}</span></div>'+
   '</div>'+
   '<div class="secretdiscounter-extension__coupon-right">'+
-  '<a class="secretdiscounter-extension__coupon-promocode-link sd_button" href="{{couponUseLink}}">Использовать промокод</a>'+
+  '<a class="secretdiscounter-extension__coupon-promocode-link sd_button" data-store="{{storeRoute}}" href="{{couponUseLink}}">Использовать промокод</a>'+
   '</div>'+
   '</div>';
