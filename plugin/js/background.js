@@ -32,6 +32,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
 
         return true; // prevents the callback from being called too early on return
     }
+
+    if (request.action === "icon_flash_change") {
+        console.log('icon change', request.icon);
+        chrome.browserAction.setIcon({
+            path: request.icon
+        });
+
+    }
+
 });
 
 

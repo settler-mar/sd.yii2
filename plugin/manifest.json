@@ -28,6 +28,7 @@
          "js/common/storage_manage.js",
          "js/common/search.js",
          "js/common/stores.js",
+         "js/common/icon_flash.js",
          "js/content.js"],
       "matches": ["<all_urls>"],
       "run_at": "document_start",

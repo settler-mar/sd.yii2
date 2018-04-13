@@ -233,6 +233,11 @@ function analizPage() {
   //if(debug) Storage.clear();//для тестов удалить, чтобы при загрузке получить снова
 }
 
+// iconFlash.start();
+// setTimeout(function(){
+//     iconFlash.stop();
+// },5000);
+
 
 
 
