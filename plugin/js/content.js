@@ -123,6 +123,12 @@ function findShop() {
 }
 
 function displayShop(item) {
+  //todo проверку кук сделать после этого
+  iconFlash.start();
+  setTimeout(function(){
+        iconFlash.stop();
+  },10000);
+
   div = document.querySelector('.secretdiscounter-extension');
   if (item && !div) {
 
@@ -237,7 +243,7 @@ function analizPage() {
 // setTimeout(function(){
 //     iconFlash.stop();
 // },5000);
-
+//
 
 
 

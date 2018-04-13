@@ -12,7 +12,7 @@ var iconFlash = (function(){
     function start() {
         defaultIcon = true;
         toggleIcon();
-        iconFlashInterval = setInterval(toggleIcon, 200);
+        iconFlashInterval = setInterval(toggleIcon, iconFlashTime);
 
     }
     function stop() {
