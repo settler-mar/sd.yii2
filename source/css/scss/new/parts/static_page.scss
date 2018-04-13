@@ -55,7 +55,7 @@
       position: absolute;
       width: 100%;
       height: 520PX;
-      top: -278PX;
+      top: -307PX;
       z-index: -100;
       border-radius: 5px;
       overflow: hidden;
@@ -63,14 +63,20 @@
 
     h2.white {
       color: #fff;
-      margin-top: 50px;
-      margin-bottom: 200px;
+      margin-top: 160PX;
+      margin-bottom: 130PX;
+
+      @include media($laptop-min) {
+        margin-bottom: 60PX;
+      }
 
       @include media($tablets) {
         margin-top: 210PX;
+        margin-bottom: 60PX;
       }
       @include media($phones) {
         margin-top: 140PX;
+        margin-bottom: 0;
       }
     }
     .gray-box {
@@ -83,23 +89,29 @@
       }
     }
 
+
     &-browsers {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
 
+      @include media ($tablets) {
+        flex-direction: column;
+      }
+
       &-wrap {
-        margin: 10px 15px;
-        padding: 3px;
+        margin: 0 0 10px;
+        padding: 0 3px  3px;
         background-color: #f8f8f8;
-        border-radius: 5px;
+        border-radius: 0 0 5px;
         &-in {
           padding: 10px 0 15px;
           background: #fff;
           margin: 0;
           border: 1px solid #ddd;
-          border-radius: 5px;
+          border-top: none;
+          border-radius: 0 0 5px;
         }
       }
       &-image {
@@ -111,14 +123,20 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
+      width: 100%;
+
+      @include media ($tablets) {
+        flex-direction: column;
+      }
+
     }
     &-browser {
       display: flex;
       flex-direction: column;
       align-items: center;
       svg {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         margin: 10px;
       }
     }
@@ -129,8 +147,8 @@
       margin: 5px;
 
       svg {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         margin: 10px;
       }
     }
@@ -144,10 +162,17 @@
       margin: 0;
       border: 1px solid #ddd;
       border-radius: 5px;
+
+      @include media ($tablets) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+
     }
     &-howitworks-wrap {
       padding: 3px;
-      margin: 0 15px;
+      margin: 0;
       background: #f8f8f8;
       border-radius: 5px;
     }
@@ -162,22 +187,28 @@
       padding: 0;
       overflow: hidden;
       min-height: 180px;
+      @include media($tablets) {
+        width: 80%;
+        margin-bottom: 30px;
+      }
 
       &-text {
         font-size: 16px;
         font-weight: bold;
+        min-height: 60px;
+        text-align: center;
       }
 
       &-number {
         margin: 10px 0;
-        background-color: #1ABB9C;
-        color: #fff;
+        background-color: $btn_base_bg;
+        color: $btn_base_color;
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 45px;
-        height: 45px;
-        font-size: 22px;
+        width: 45PX;
+        height: 45PX;
+        font-size: 22PX;
         font-weight: bold;
         border-radius: 50%;
         position: relative;
@@ -189,7 +220,7 @@
           width: 2000%;
           left: -1000%;
           height: 3px;
-          background-color:  #1ABB9C;
+          background-color:  $btn_base_bg;
           position: absolute;
         }
         span {
@@ -203,9 +234,9 @@
       svg {
         width: 50px;
         height: 50px;
-        fill: #3D6D9E;
-        stroke: #3D6D9E;
-        color: #3D6D9E;
+        fill: $btn_base_bg;
+        stroke: $btn_base_bg;
+        color: $btn_base_bg;
       }
     }
 
@@ -214,5 +245,9 @@
   h1.white {
     color: #fff;
     margin-top: 180px;
+  }
+  h1.plugin-white {
+    color: #fff;
+    margin-top: 100PX;
   }
 }

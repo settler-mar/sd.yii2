@@ -300,6 +300,9 @@ h2, h3, h4 {
   &-center {
     justify-content: center;
   }
+  &-start {
+    justify-content: flex-start;
+  }
 }
 
 .heart-red {
