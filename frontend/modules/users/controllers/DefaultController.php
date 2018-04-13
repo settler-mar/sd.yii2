@@ -227,7 +227,10 @@ class DefaultController extends Controller
     if (isset($serviceName)) {
       /** @var $eauth \nodge\eauth\ServiceBase */
       $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
-      $eauth->setRedirectUrl(Yii::$app->getUser()->getReturnUrl());
+
+      $url = Yii::$app->getUser()->getReturnUrl();
+      if(strpos($url, 'g=plugin') !== false)$url=null;
+      $eauth->setRedirectUrl($url);
       $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
       //ddd($eauth);
       try {
@@ -244,6 +247,7 @@ class DefaultController extends Controller
             Yii::$app->getUser()->login($user);
             //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
             $url = Yii::$app->user->getReturnUrl();
+            if(strpos($url, 'g=plugin') !== false)$url=null;
             if ($url == '/') {
               $url = null;
             }
@@ -384,6 +388,7 @@ class DefaultController extends Controller
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
           $url = Yii::$app->user->getReturnUrl();
+          if(strpos($url, 'g=plugin') !== false)$url=null;
           //есть страница, на которую переход
 
           Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
@@ -440,6 +445,7 @@ class DefaultController extends Controller
           Yii::$app->getUser()->login($user);
           //return Yii::$app->response->redirect('/')->send();
           $url = Yii::$app->user->getReturnUrl();
+          if(strpos($url, 'g=plugin') !== false)$url=null;
           //есть страница, на которую переход
           return Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
 
