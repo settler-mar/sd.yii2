@@ -102,6 +102,11 @@ button {
   background-color: #FFFFF0;
 }
 
+.secretdiscounter-pupup {
+  transition: 1s linear;
+  display: none;
+}
+
 .secretdiscounter-pupup__header {
   display: flex;
   flex-direction: row;

@@ -1,6 +1,6 @@
 (function (window, document) {
 
-    var transitionHref = $('#transition-href').attr('href');
+    var transitionHref = document.querySelector('#transition-href').getAttribute('href');
     var enabledTransition = true;
 
     var Checker = {
@@ -23,8 +23,8 @@
             eraseCookie('testWork');
         },
         testAd: function () {
-            var $adDetect = $('.ad-detect:visible').length;
-            this.adblockEnabled = ($adDetect>0);
+            var adDetect = document.querySelector('.ad-detect');
+            this.adblockEnabled = (adDetect.style.display !== 'none');
 
             if((!this.adblockEnabled)){
                 enabledTransition = false;
@@ -58,12 +58,14 @@
     };
 
     function showMessage(){
-        var messageDiv = $('#transition-message');
+        var messageDiv = document.querySelector('#transition-message');
         if (messageDiv) {
-            var html = messageDiv.html();
+            var html = messageDiv.innerHTML;
             messageDiv.remove();
-            $(html).find('#transition-message-transition-link').attr('href', transitionHref);
-            $('#transition-wrapper').find('.center-block').addClass('transition-message').html(html);
+            var centerBlock = document.querySelector('#transition-wrapper .center-block');
+            centerBlock.classList.add('transition-message');
+            centerBlock.innerHTML = html;
+            document.querySelector('#transition-message-transition-link').setAttribute('href', transitionHref);
         }
     }
     function goTransition(){

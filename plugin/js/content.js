@@ -144,7 +144,8 @@ function displayShop(item) {
       'storeText': message,
       'siteUrl': pluginSiteUrl,
       'favoritesLink': favoritesLink,
-      'logoImage': siteUrl + 'images/templates/logo_sd_horizontal_white_thin.svg',
+      //'logoImage': siteUrl + 'images/templates/logo_sd_horizontal_white_thin.svg',
+      'logoImage': logoImage,
       'storeRoute' : item.store_route,
       'buttonsClass' : storeIsActivate ? 'sd_hidden' : ''
     });
