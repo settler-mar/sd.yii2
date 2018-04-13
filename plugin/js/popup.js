@@ -62,6 +62,7 @@ var displayUser = function () {
 function resetStyles() {
   document.querySelector('.secretdiscounter-pupup').classList.add('logout');
   document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + '#login');
+  document.querySelector('.secretdiscounter-pupup__logo-link').innerHTML = logoImage;
   document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
   document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'none';
