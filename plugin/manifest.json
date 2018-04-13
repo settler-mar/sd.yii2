@@ -1,9 +1,10 @@
 {
    "manifest_version": 2,
-   "name": "SecretDiscount Cash Back",
-   "version": "1.0",
-   "description": "Hot Deals, Top Stores, Your Account Information and Cash Back are all just one click away.",
-   "homepage_url": "http://secretdiscounter.ru/",
+   "name": "SecretDiscounter.ru – кэшбэк-сервис",
+   "short_name":"Кэшбэк в онлайн и оффлайн-магазинах",
+   "version": "1.1",
+   "description": "Кэшбэк-сервис SecretDiscounter – возвращайте до 40% с каждой покупки в AliExpress и еще 1400+ магазинах! Кэшбэк в оффлайн-магазинах и ресторанах. Отслеживание посылок. Все в одном!",
+   "homepage_url": "https://secretdiscounter.ru/",
    "permissions": [
       "tabs",
       "webNavigation", "webRequest", "storage", "cookies", "unlimitedStorage", "webNavigation",
