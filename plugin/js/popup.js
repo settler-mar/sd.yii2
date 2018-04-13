@@ -55,6 +55,7 @@ var displayUser = function () {
     document.querySelector('.secretdiscounter-pupup__tabs').style.display="none";
     resetStyles();
   }
+  document.querySelector('.secretdiscounter-pupup').style.display = 'block';
 
 };
 
