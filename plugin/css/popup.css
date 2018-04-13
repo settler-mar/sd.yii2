@@ -417,6 +417,7 @@ button {
   display: flex;
   justify-content: space-between;
   padding: 1px 5px;
+  align-items: center;
 }
 
 .secretdiscounter-extension__coupon-promocode-link{
@@ -425,6 +426,8 @@ button {
   /*height: 100%;*/
   box-sizing: border-box;
   /*margin-top: auto;*/
+  padding: 0.15rem 0.75rem;
+  margin-bottom: 0;
 }
 
 .secretdiscounter-extension__coupon-promocode-link:before {
@@ -443,7 +446,20 @@ button {
 .secretdiscounter-extension__coupon-promocode-text-copy {
   cursor: pointer;
   margin-left: 10px;
-  line-height: 1;
+  /*line-height: 1;*/
+  display: block;
+  box-sizing: border-box;
+  padding: 0.15rem 0.75rem;
+  background: #f7c714;
+  border-radius: 4px;
+}
+.secretdiscounter-extension__coupon-promocode-text-copy svg {
+  color: #000;
+  fill: #000;
+  stroke: #000;
+}
+.secretdiscounter-extension__coupon-promocode-text-copy.copied {
+  background: #ddd;
 }
 .secretdiscounter-extension__coupon-promocode-text-copy.copied svg{
   color: #aaa;

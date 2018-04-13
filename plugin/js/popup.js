@@ -133,21 +133,21 @@ var displayShop = function (shop) {
   var tabShop = document.querySelector('.secretdiscounter-pupup__tab-shop');
   tabShop.style.display = 'block';
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-checkboxtab').checked = true;
+  var storeTemplate = parseFloat(shop.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storeHtml : storeHtmlCharity;//который из шаблонов
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
-    utils.replaceTemplate(storeHtml, {
-      'storeLogo': siteUrl + 'images/logos/' + shop.logo,
-      'storeText': utils.makeCashback(
-        shop.displayed_cashback,
-        shop.currency,
-        shop.action_id
-      ),
-      'storeUrl': siteUrl + 'goto/store:' + shop.uid,
-      'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
-      'storeTariffs': shop.conditions ?
-        '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
-      'storeRoute' : shop.store_route,
-      'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
-
+      utils.replaceTemplate(storeTemplate, {
+        'storeLogo': siteUrl + 'images/logos/' + shop.logo,
+        'storeText': utils.makeCashback(
+          shop.displayed_cashback,
+          shop.currency,
+          shop.action_id
+        ),
+        'storeUrl': siteUrl + 'goto/store:' + shop.uid,
+        'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
+        'storeTariffs': shop.conditions ?
+          '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
+        'storeRoute' : shop.store_route,
+        'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
     });
   utils.makeHrefs(tabShop);
   getCoupons(shop, displayCoupons);//запрос на купоны для шопа
@@ -155,7 +155,7 @@ var displayShop = function (shop) {
 
 var displayCoupons = function (response) {
   if (debug) {
-    console.log(response);
+    console.log('вывод купонов', response);
   }
   if (response.coupons && response.coupons.length) {
     var html = '';
@@ -164,12 +164,13 @@ var displayCoupons = function (response) {
       html += utils.replaceTemplate(couponHtml, {
         'couponName': response.coupons[i].name,
         'couponDateEnd': response.coupons[i].date_end,
-        'couponUsed': response.coupons[i].visit,
+        //'couponUsed': response.coupons[i].visit,
         'couponPromocode': response.coupons[i].promocode ?
             response.coupons[i].promocode+'<span title="Скопировать в буфер обмена"  class="secretdiscounter-extension__coupon-promocode-text-copy copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
             'Не требуется',
         'couponUseLink': siteUrl + 'goto/coupon:' + response.coupons[i].uid,
-        'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid
+        'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid,
+        'storeRoute': response.coupons[i].store_route
       });
     }
     var tabCoupons = document.querySelector('.secretdiscounter-pupup__tab-coupons .secretdiscounter-pupup__tab-content');

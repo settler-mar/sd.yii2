@@ -820,7 +820,8 @@ input.link {
 }
 
 .breadcrumbs {
-  margin-bottom: 47px;
+  //margin-bottom: 47px;
+  margin-bottom: 33px;
 
   @include media($laptop_min) {
     margin-bottom: 25px;

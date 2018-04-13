@@ -160,15 +160,15 @@ var searchAnalize = (function() {
         } else {
             url = siteUrl + 'stores/' + item.store_route + '#login';
         }
-        div.innerHTML = "<a href='" + url + "'target='_blank' class='sd_link_finder'>" +
+        div.innerHTML = "<a data-store='"+item.store_route+"' href='" + url + "'target='_blank' class='sd_link_finder'>" +
             // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;
-            searchFormImage + message;
+            favicon + message;
         div.id = 'secretdiscounter-search';
         div.className = 'secretdiscounter-search';
         div.setAttribute('style', engine.styles);
 
         el.prepend(div);
-
+        utils.makeHrefs(el);
 
     }
 
