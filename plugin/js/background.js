@@ -1,13 +1,44 @@
-chrome.runtime.onMessage.addListener(function(request, sender, callback) {
+var iconFlashInterval;
+var iconFlashIntervalMax;
+var defaultIcon = true;
+var iconFlashTime = 300;//время мерцания
+var stop;
+var maxFlashInterval = 10000;//время для принудительного выключения
 
-    function encodeQueryData(data) {
-        var result = [];
-        for (var key in data)
-            result.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-        return result.join('&');
+
+function toggleIcon() {
+    var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
+    defaultIcon = !defaultIcon;
+    chrome.browserAction.setIcon({
+        path: icon
+    });
+    if (stop && defaultIcon){
+        clearInterval(iconFlashInterval);
     }
+}
 
-    //console.log('request', request);
+function iconFlashStart() {
+    stop = false;
+    defaultIcon = true;
+    toggleIcon();
+    iconFlashInterval = setInterval(toggleIcon, iconFlashTime);
+    //если не пришла команда на выключение, то выключаем сами
+    iconFlashIntervalMax = setInterval(iconFlashStop, maxFlashInterval);
+}
+
+function iconFlashStop() {
+    stop = true;
+}
+
+function encodeQueryData(data) {
+    var result = [];
+    for (var key in data)
+        result.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    return result.join('&');
+}
+
+
+chrome.runtime.onMessage.addListener(function(request, sender, callback) {
 
     if (request.action == "sd_xhttp") {
 
@@ -33,12 +64,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
         return true; // prevents the callback from being called too early on return
     }
 
-    if (request.action === "icon_flash_change") {
-        console.log('icon change', request.icon);
-        chrome.browserAction.setIcon({
-            path: request.icon
-        });
-
+    if (request.action === "icon_flash_start") {
+        iconFlashStart()
+    }
+    if (request.action === "icon_flash_stop") {
+        iconFlashStop()
     }
 
 });

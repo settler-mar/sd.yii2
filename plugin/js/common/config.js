@@ -6,5 +6,4 @@ var userFavoriteUrl = 'account/favorites';
 var couponUrl = 'coupons';
 var storeActiveInterval = 30;//минут
 var storeActiveStorageName = 'secretdiscounter-extension-store-';// + store_route
-var iconFlashTime = 200;
 var debug = true;

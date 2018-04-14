@@ -124,10 +124,11 @@ function findShop() {
 
 function displayShop(item) {
   //todo проверку кук сделать после этого
-  iconFlash.start();
+  chrome.runtime.sendMessage({action: 'icon_flash_start'});
   setTimeout(function(){
-        iconFlash.stop();
-  },10000);
+      chrome.runtime.sendMessage({action: 'icon_flash_stop'});
+  },5000);
+
 
   div = document.querySelector('.secretdiscounter-extension');
   if (item && !div) {
