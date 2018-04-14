@@ -23,7 +23,7 @@ function iconFlashStart() {
     toggleIcon();
     iconFlashInterval = setInterval(toggleIcon, iconFlashTime);
     //если не пришла команда на выключение, то выключаем сами
-    iconFlashIntervalMax = setInterval(iconFlashStop, maxFlashInterval);
+    iconFlashIntervalMax = setTimeout(iconFlashStop, maxFlashInterval);
 }
 
 function iconFlashStop() {
