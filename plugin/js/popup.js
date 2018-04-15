@@ -186,27 +186,49 @@ resetStyles();
 
 getUser(displayUser);
 
-chrome.tabs.getSelected(null, function (tab) {
-  //получить юрл текущей вкладки
-  //затем грузим данные, после - поиск шопа и вывод
-  //console.log(tab, tab.url);
-  Storage.load(function () {
-    storageDataDate = Storage.get(storageDataKeyDate);
-    storageDataStores = Storage.get(storageDataKeyStores);
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    tabUrl = tabs[0].url;
     if (debug) {
-      console.log('storage load');
+        console.log('получили урл текущей вкладки' + tabUrl);
     }
-    if (!storageDataDate || !storageDataStores
-      || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
-      getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
-      //поиск шопа или после загрузки данных
-    } else {
-      storeUtil.findShop(storageDataStores.stores, tab.url, displayShop);
-      //или сразу
-    }
-  });
-
+    Storage.load(function () {
+        storageDataDate = Storage.get(storageDataKeyDate);
+        storageDataStores = Storage.get(storageDataKeyStores);
+        if (debug) {
+            console.log('storage load');
+        }
+        if (!storageDataDate || !storageDataStores
+            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+            getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
+            //поиск шопа или после загрузки данных
+        } else {
+            storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop);
+            //или сразу
+        }
+    });
 });
+
+// chrome.tabs.getSelected(null, function (tab) {
+//   //получить юрл текущей вкладки
+//   //затем грузим данные, после - поиск шопа и вывод
+//   //console.log(tab, tab.url);
+//   Storage.load(function () {
+//     storageDataDate = Storage.get(storageDataKeyDate);
+//     storageDataStores = Storage.get(storageDataKeyStores);
+//     if (debug) {
+//       console.log('storage load');
+//     }
+//     if (!storageDataDate || !storageDataStores
+//       || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+//       getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
+//       //поиск шопа или после загрузки данных
+//     } else {
+//       storeUtil.findShop(storageDataStores.stores, tab.url, displayShop);
+//       //или сразу
+//     }
+//   });
+//
+// });
 
 
 
