@@ -199,7 +199,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         }
         if (!storageDataDate || !storageDataStores
             || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
-            getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
+            getData(storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop));
             //поиск шопа или после загрузки данных
         } else {
             storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop);
