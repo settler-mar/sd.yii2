@@ -305,15 +305,35 @@ $config = [
   //для возврата с авторизации через соц. сети на предыдущую страницу
   'on beforeAction' => function (yii\base\ActionEvent $e) {
     if (Yii::$app->user->isGuest) {
-    $request = Yii::$app->request;
-    // исключаем страницу авторизации или ajax-запросы
-    if (!$request->isAjax &&
-      strpos($request->url, 'login') === false &&
-      strpos($request->url, 'verifysocialemail') === false ||
-        strpos($request->url, 'g=plugin') !== false
-    ) {
-      Yii::$app->user->setReturnUrl($request->url);
-    }
+      $request = Yii::$app->request;
+
+      /*//Если это аякс запрос и есть POST параметр с адресом
+      if ($request->isAjax && $request->post('returnUrl')){
+        Yii::$app->user->setReturnUrl($request->post('returnUrl'));
+      }*/
+
+      $myHost = Yii::$app->request->hostInfo;
+      //анализ страниц с которых приходит запрос на страницы связанные с LOGIN формой
+      $referrer=Yii::$app->request->referrer;
+      if(
+          (strpos($request->url, 'login') !== false ||
+          strpos($request->url, 'registration') !== false) &&
+          $referrer &&
+          strpos($referrer, $myHost) !== false &&
+          strpos($referrer, 'login') === false &&
+          strpos($referrer, 'verifysocialemail') === false
+      ){
+        Yii::$app->user->setReturnUrl($referrer);
+      }
+
+      /*// исключаем страницу авторизации или ajax-запросы
+      if (!$request->isAjax &&
+        strpos($request->url, 'login') === false &&
+        strpos($request->url, 'verifysocialemail') === false ||
+          strpos($request->url, 'g=plugin') !== false
+      ) {
+        Yii::$app->user->setReturnUrl($request->url);
+      }*/
     }
   },
 ];
