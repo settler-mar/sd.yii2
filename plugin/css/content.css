@@ -123,7 +123,7 @@
 }
 .secretdiscounter-extension__buttons .secretdiscounter-extension__link {
     margin-bottom: 3px !important;
-    padding: 0.75rem !important;
+    padding: 12px !important;
     background: #f7c714 !important;
     color: #000 !important;
     -webkit-border-radius: 4px !important;
@@ -134,9 +134,9 @@
     -moz-transition: all .25s ease !important;
     transition: all .25s ease !important;
     text-decoration: none !important;
-    font-size: 1rem !important;
+    font-size: 16px !important;
     font-weight: 400 !important;
-    line-height: 1em !important;
+    line-height: 16px !important;
     cursor: pointer !important;
     text-align: center !important;
     box-shadow: none !important;

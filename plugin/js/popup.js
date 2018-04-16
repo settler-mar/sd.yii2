@@ -33,7 +33,7 @@ var displayUser = function () {
   //console.log(usersData);
   if (usersData && usersData.user) {
     document.querySelector('.secretdiscounter-pupup').classList.remove('logout');
-    document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="' + siteUrl + usersData.user.photo + '"/>';
+    document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="' + utils.getAvatar(usersData.user.photo) + '"/>';
     document.querySelector('.secretdiscounter-pupup__info-balance').innerHTML =
         '<span class="secretdiscounter-pupup__info-balance-current">'+usersData.user.balance.current+'</span>'+
         '<span class="secretdiscounter-pupup__info-balance-pending">'+
@@ -98,7 +98,7 @@ function makeFavorites() {
       'buttonClass' : storeIsActivate ? 'sd_hidden' : ''
     });
   }
-  result += '<div class="secretdiscounter-extension__notification-button"><a class="sd_button" href="' + siteUrl + '/stores">Все магазины</a></div>';
+  result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + '/stores">Все магазины</a></div>';
   return result;
 
 }
@@ -116,7 +116,7 @@ function makeNotifications() {
     });
   }
   if (usersData.btn) {
-    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__notificaton-link sd_button" href="' + siteUrl + userUrl + '">' + usersData.btn + '</a></div>';
+    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + userUrl + '">' + usersData.btn + '</a></div>';
   }
   return result;
 }
@@ -166,7 +166,7 @@ var displayCoupons = function (response) {
         'couponDateEnd': response.coupons[i].date_end,
         //'couponUsed': response.coupons[i].visit,
         'couponPromocode': response.coupons[i].promocode ?
-            response.coupons[i].promocode+'<span title="Скопировать в буфер обмена"  class="secretdiscounter-extension__coupon-promocode-text-copy copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
+            response.coupons[i].promocode+'<span title="Скопировать в буфер обмена"  class="secretdiscounter-extension__coupon-promocode-text-copy sd_button copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
             'Не требуется',
         'couponUseLink': siteUrl + 'goto/coupon:' + response.coupons[i].uid,
         'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid,
@@ -208,27 +208,6 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
 });
 
-// chrome.tabs.getSelected(null, function (tab) {
-//   //получить юрл текущей вкладки
-//   //затем грузим данные, после - поиск шопа и вывод
-//   //console.log(tab, tab.url);
-//   Storage.load(function () {
-//     storageDataDate = Storage.get(storageDataKeyDate);
-//     storageDataStores = Storage.get(storageDataKeyStores);
-//     if (debug) {
-//       console.log('storage load');
-//     }
-//     if (!storageDataDate || !storageDataStores
-//       || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
-//       getData(storeUtil.findShop(storageDataStores.stores, tab.url, displayShop));
-//       //поиск шопа или после загрузки данных
-//     } else {
-//       storeUtil.findShop(storageDataStores.stores, tab.url, displayShop);
-//       //или сразу
-//     }
-//   });
-//
-// });
 
 
 

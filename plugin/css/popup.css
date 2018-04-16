@@ -65,6 +65,8 @@ button {
   line-height: 1em;
   cursor: pointer;
   text-align: center;
+  box-sizing: border-box;
+  display: block;
 }
 .sd_button:hover {
   color: #fff;
@@ -293,6 +295,15 @@ button {
   /*overflow: auto;*/
 /*}*/
 
+.secretdiscounter-extension__link {
+  font-size: 14px;
+  color: #f7c714;
+  /*text-decoration: none;*/
+}
+.secretdiscounter-extension__link:hover {
+  text-decoration: underline;
+  color: #fdec3e;
+}
 
 
 .secretdiscounter-extension__shop {
@@ -354,13 +365,6 @@ button {
   color: #d6d6d6;
   font-size: 11px;
 }
-.secretdiscounter-extension__link {
-  color: #000;
-  text-decoration: none;
-}
-.secretdiscounter-extension__link:hover {
-  color: #fff;
-}
 
 .secretdiscounter-extension__notificaton {
   border-bottom: 1px solid #aaa;
@@ -368,10 +372,10 @@ button {
   padding: 3px;
 }
 .secretdiscounter-extension__notification-button {
-  margin: 20px auto;
-  width: calc(100vw - 35px);
-  text-align: center;
   padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .secretdiscounter-extension__notificaton-link{
   /*display: block;*/
@@ -391,7 +395,7 @@ button {
   padding: 3px;
   border-bottom: 1px solid #aaa;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .secretdiscounter-extension__coupon-href{
@@ -416,7 +420,7 @@ button {
 
   display: flex;
   justify-content: space-between;
-  padding: 1px 5px;
+  padding: 0 5px;
   align-items: center;
 }
 
@@ -444,24 +448,32 @@ button {
   align-items: center;
 }
 .secretdiscounter-extension__coupon-promocode-text-copy {
-  cursor: pointer;
-  margin-left: 10px;
-  /*line-height: 1;*/
-  display: block;
-  box-sizing: border-box;
-  padding: 0.15rem 0.75rem;
-  background: #f7c714;
-  border-radius: 4px;
+  margin: 0 0 0 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
+
 .secretdiscounter-extension__coupon-promocode-text-copy svg {
   color: #000;
   fill: #000;
   stroke: #000;
 }
-.secretdiscounter-extension__coupon-promocode-text-copy.copied {
-  background: #ddd;
+.secretdiscounter-extension__coupon-promocode-text-copy:hover svg {
+  color: #fff;
+  fill: #fff;
+  stroke: #fff;
 }
-.secretdiscounter-extension__coupon-promocode-text-copy.copied svg{
+
+.secretdiscounter-extension__coupon-promocode-text-copy.copied,
+.secretdiscounter-extension__coupon-promocode-text-copy.copied:hover
+{
+  background: #ddd;
+  border-color: #ddd;
+  cursor: default;
+}
+
+.secretdiscounter-extension__coupon-promocode-text-copy.copied svg,
+.secretdiscounter-extension__coupon-promocode-text-copy.copied:hover svg{
   color: #aaa;
   fill: #aaa;
   stroke: #aaa;
