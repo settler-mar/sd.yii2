@@ -53,7 +53,7 @@
         position: absolute;
         width: 100%;
         height: 520PX;
-        top: -307PX;
+        top: -270PX;
         z-index: -100;
         border-radius: 5px;
         overflow: hidden;
@@ -73,20 +73,21 @@
 
     h2.white {
       color: #fff;
-      margin-top: 160PX;
+      margin-top: 73PX;
       margin-bottom: 130PX;
 
       @include media($laptop-min) {
+        margin-top: 90px;
         margin-bottom: 60PX;
       }
 
       @include media($tablets) {
-        margin-top: 210PX;
+        margin-top: 95PX;
         margin-bottom: 60PX;
       }
       @include media($phones) {
-        margin-top: 140PX;
-        margin-bottom: 0;
+        margin-top: 67PX;
+        margin-bottom: 5px;
       }
     }
     .gray-box {
@@ -105,8 +106,9 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
+      flex-wrap: wrap;
 
-      @include media ($tablets) {
+      @include media ($phones) {
         flex-direction: column;
       }
 
@@ -148,7 +150,10 @@
       justify-content: space-around;
       width: 100%;
 
-      @include media ($tablets) {
+      @include media($tablets) {
+        flex-wrap: wrap;
+      }
+      @include media ($phones) {
         flex-direction: column;
       }
 
@@ -157,6 +162,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
       svg {
         width: 40px;
         height: 40px;
@@ -169,12 +175,20 @@
           margin: 8px;
         }
       }
+      @include media($tablets) {
+        width: 33%;
+        margin-bottom: 10px;
+      }
+      @include media($phones) {
+        width: 100%;
+      }
     }
     &-browser-download {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin: 5px;
+      box-sizing: border-box;
 
       svg {
         width: 40px;
@@ -187,6 +201,13 @@
           height: 44px;
           margin: 8px;
         }
+      }
+      @include media($tablets) {
+        width: 30%;
+        margin-bottom: 10px;
+      }
+      @include media($phones) {
+        width: 100%;
       }
 
     }
@@ -202,6 +223,9 @@
       border-radius: 5px;
 
       @include media ($tablets) {
+        flex-wrap: wrap;
+      }
+      @include media ($phones) {
         flex-direction: column;
         align-items: center;
       }
@@ -226,8 +250,11 @@
       overflow: hidden;
       min-height: 180px;
       @include media($tablets) {
-        width: 80%;
+        width: 45%;
         margin-bottom: 30px;
+      }
+      @include media($phones) {
+        width: 80%;
       }
 
       &-text {
@@ -278,7 +305,9 @@
         stroke-width: 0;
       }
     }
-
+    &-google-screen {
+      text-align: center;
+    }
   }
 
   h1.white {
@@ -287,6 +316,6 @@
   }
   h1.plugin-white {
     color: #fff;
-    margin-top: 100PX;
+    margin-top: 145PX;
   }
 }
