@@ -143,6 +143,10 @@ function ajaxForm(els) {
     data.url += (data.url.indexOf('?') > 0 ? '&' : '?') + 'rc=' + Math.random();
     //console.log(data.url);
 
+    /*if(!postData.returnUrl){
+      postData.returnUrl=location.href;
+    }*/
+
     $.post(
       data.url,
       postData,
