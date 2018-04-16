@@ -6,16 +6,50 @@ var stop = true;
 var maxFlashInterval = 10000;//время для принудительного выключения
 var storeCashback = false;
 
+function getImage(src, cashback, callback) {
+    var c = document.createElement('canvas');
+    var ctx = c.getContext('2d')
+    var img = new Image();
+    var imageData = null;
+    img.crossOrigin = 'anonymous';
+
+    img.onload = function() {
+        var overY = 0;
+        c.width = this.width;
+        c.height = this.height + overY;
+        ctx.drawImage(this, 0, 0);
+        if (cashback) {
+            //ctx.font = "bold 20px Verdana";
+            ctx.font = "20px Verdana";
+            ctx.fillStyle = "#bbbbbb";
+            ctx.fillRect(0, 16 + overY, 32, 16);
+            ctx.fillStyle = "#ff0000";
+            ctx.fillText(cashback, 0, 30 + overY);
+        }
+        imageData = ctx.getImageData(0, 0, c.width, c.height + overY);
+        //console.log(imageData);
+        callback(imageData);
+    };
+
+    img.src = src;
+}
+
+
 
 function toggleIcon() {
     var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
     defaultIcon = !defaultIcon;
-    chrome.browserAction.setIcon({
-        path: icon
+    // chrome.browserAction.setIcon({
+    //     path: icon
+    // });
+    getImage(icon, storeCashback,  function(imageData) {
+        chrome.browserAction.setIcon({
+            imageData: imageData
+        });
     });
     if (stop && defaultIcon){
         clearInterval(iconFlashInterval);
-        storeCashback = false;
+
     }
 }
 
@@ -35,6 +69,7 @@ function iconFlashStart(cashback) {
 }
 
 function iconFlashStop() {
+    storeCashback = false;
     stop = true;
 }
 
