@@ -2,8 +2,9 @@ var iconFlashInterval;
 var iconFlashIntervalMax;
 var defaultIcon = true;
 var iconFlashTime = 300;//время мерцания
-var stop;
+var stop = true;
 var maxFlashInterval = 10000;//время для принудительного выключения
+var storeCashback = false;
 
 
 function toggleIcon() {
@@ -14,14 +15,21 @@ function toggleIcon() {
     });
     if (stop && defaultIcon){
         clearInterval(iconFlashInterval);
+        storeCashback = false;
     }
 }
 
-function iconFlashStart() {
+function iconFlashStart(cashback) {
+    //todo пока только передали кэшбэк
+    storeCashback = cashback;
+    if (stop) {
+        defaultIcon = true;
+        clearInterval(iconFlashInterval);
+        toggleIcon();
+        iconFlashInterval = setInterval(toggleIcon, iconFlashTime);
+    }
     stop = false;
-    defaultIcon = true;
-    toggleIcon();
-    iconFlashInterval = setInterval(toggleIcon, iconFlashTime);
+    clearTimeout(iconFlashIntervalMax);
     //если не пришла команда на выключение, то выключаем сами
     iconFlashIntervalMax = setTimeout(iconFlashStop, maxFlashInterval);
 }
@@ -65,10 +73,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     }
 
     if (request.action === "icon_flash_start") {
-        iconFlashStart()
+        iconFlashStart(request.cashback);
     }
     if (request.action === "icon_flash_stop") {
-        iconFlashStop()
+        iconFlashStop();
     }
 
 });

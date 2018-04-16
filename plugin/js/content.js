@@ -96,42 +96,45 @@ function findShop() {
   if (debug) {
     console.log('findShop');
   }
-  if (debug || getCookie(appCookieName) !== appCookieValue) {
-    //надо дождаться, когда будут пользователи
-    if (usersData !== false) {
-      //находим в данных текущий шоп, если нашли то коллбэк
-      storeUtil.findShop(storageDataStores.stores, false, displayShop);
-    } else {
-      //если пользователей нет, то ждём
-      var tryCount = 10;
-      var findShopInterval = setInterval(function () {
-        tryCount--;
-        if (debug) {
-            console.log(usersData);
-        }
-        if (usersData !== false) {
-          //находим в данных текущий шоп, если нашли то коллбэк
-          storeUtil.findShop(storageDataStores.stores, false, displayShop);
-          clearInterval(findShopInterval);
-        }
-        if (tryCount < 0) {
-          clearInterval(findShopInterval);
-        }
-      }, 1000);
-    }
+
+  //надо дождаться, когда будут пользователи
+  if (usersData !== false) {
+    //находим в данных текущий шоп, если нашли то коллбэк
+    storeUtil.findShop(storageDataStores.stores, false, displayShop);
+  } else {
+    //если пользователей нет, то ждём
+    var tryCount = 10;
+    var findShopInterval = setInterval(function () {
+      tryCount--;
+      if (debug) {
+          console.log(usersData);
+      }
+      if (usersData !== false) {
+        //находим в данных текущий шоп, если нашли то коллбэк
+        storeUtil.findShop(storageDataStores.stores, false, displayShop);
+        clearInterval(findShopInterval);
+      }
+      if (tryCount < 0) {
+        clearInterval(findShopInterval);
+      }
+    }, 1000);
   }
+
 }
 
 function displayShop(item) {
-  //todo проверку кук сделать после этого
-  chrome.runtime.sendMessage({action: 'icon_flash_start'});
-  setTimeout(function(){
-      chrome.runtime.sendMessage({action: 'icon_flash_stop'});
-  },5000);
+
+  if (item) {
+      chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashbackNum(item.displayed_cashback, item.action_id)});
+      setTimeout(function () {
+          chrome.runtime.sendMessage({action: 'icon_flash_stop'});
+      }, 5000);
+  }
 
 
   div = document.querySelector('.secretdiscounter-extension');
-  if (item && !div) {
+  //проверка кук теперь здесь
+  if (item && !div && (debug || getCookie(appCookieName) !== appCookieValue)) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '';
     if (usersData && usersData.user) {
@@ -151,7 +154,6 @@ function displayShop(item) {
       'storeText': message,
       'siteUrl': pluginSiteUrl,
       'favoritesLink': favoritesLink,
-      //'logoImage': siteUrl + 'images/templates/logo_sd_horizontal_white_thin.svg',
       'logoImage': logoImage,
       'storeRoute' : item.store_route,
       'buttonsClass' : storeIsActivate ? 'sd_hidden' : ''
