@@ -316,7 +316,8 @@ $config = [
       //анализ страниц с которых приходит запрос на страницы связанные с LOGIN формой
       $referrer=Yii::$app->request->referrer;
       if(
-          strpos($request->url, 'login') !== false &&
+          (strpos($request->url, 'login') !== false ||
+          strpos($request->url, 'registration') !== false) &&
           $referrer &&
           strpos($referrer, $myHost) !== false &&
           strpos($referrer, 'login') === false &&
