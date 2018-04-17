@@ -1,6 +1,7 @@
 var plugins = (function(){
     var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
     var pluginInstallDivClass = 'install-plugin-index';
+    var cookiePanelHidden = 'sd-install-plugin-hidden';
     var extensions = {
         'chrome': {
             'div_id': 'sd_chrome_app',
@@ -28,22 +29,26 @@ var plugins = (function(){
 
 
     function setPanel(text, href) {
-        var closeDiv = document.createElement('a');
-        closeDiv.innerHTML = '&times;';
-        closeDiv.className = 'btn btn-mini btn-red btn-round install-plugin_close';
-        closeDiv.onclick = closeClick;
-        var textIn = '<div class="install-plugin_text">'+text+'</div>' +
-            '<a class="btn btn-mini btn-round"  href="'+href+'" target="_blank">Установить&nbsp;плагин</a>';
-        var sectionInner = document.createElement('div');
-        sectionInner.className = 'page-wrap install-plugin_inner';
-        sectionInner.innerHTML = textIn;
-        sectionInner.appendChild(closeDiv);
-        var section = document.createElement('section');
-        section.className = 'install-plugin';
-        section.appendChild(sectionInner);
-        var contentWrap = document.body.querySelector('.content-wrap');
-        if (contentWrap) {
-            contentWrap.insertBefore(section, contentWrap.firstChild);
+        var pluginInstallPanel = document.querySelector('#plugin-install-panel');//выводить ли панель
+        if (pluginInstallPanel && getCookie(cookiePanelHidden) !== '1' ) {
+            //если выводить и в куки не выключили
+            var closeDiv = document.createElement('a');
+            closeDiv.innerHTML = '&times;';
+            closeDiv.className = 'btn btn-mini btn-red btn-round install-plugin_close';
+            closeDiv.onclick = closeClick;
+            var textIn = '<div class="install-plugin_text">' + text + '</div>' +
+                '<a class="btn btn-mini btn-round"  href="' + href + '" target="_blank">Установить&nbsp;плагин</a>';
+            var sectionInner = document.createElement('div');
+            sectionInner.className = 'page-wrap install-plugin_inner';
+            sectionInner.innerHTML = textIn;
+            sectionInner.appendChild(closeDiv);
+            var section = document.createElement('section');
+            section.className = 'install-plugin';
+            section.appendChild(sectionInner);
+            var contentWrap = document.body.querySelector('.content-wrap');
+            if (contentWrap) {
+                contentWrap.insertBefore(section, contentWrap.firstChild);
+            }
         }
     }
 
@@ -54,7 +59,9 @@ var plugins = (function(){
 
     function closeClick(){
         $('.install-plugin').addClass('install-plugin_hidden');
+        setCookie(cookiePanelHidden, '1');
     }
+
 
     window.onload = function() {
          setTimeout(function(){

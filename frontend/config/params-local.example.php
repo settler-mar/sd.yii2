@@ -55,4 +55,5 @@ return [
             'referrer_id' => 72882
         ],
     ],
+    'plugin_install_panel' => 1,
 ];
