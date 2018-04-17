@@ -38,31 +38,41 @@ var utils = (function(){
         return f + str.substr(1, str.length - 1);
     }
 
-    function doClick(e){
-        //e.preventDefault();
+    function doClick(){
         var store = this.getAttribute('data-store');
         if (store) {
             Storage.set(storeActiveStorageName+store, new Date().getTime());
-            // if (debug) {
-            //     console.log(store, Storage.get(storeActiveStorageName+store));
-            // }
         }
         chrome.tabs.create({url: this.getAttribute('href')});
+    }
+
+    function doClickPlugunClose(){
+        var store = this.getAttribute('data-store');
+        if (store) {
+            // if (debug) {
+            //     console.log(storeActiveStorageName+store, new Date().getTime());
+            // }
+            Storage.set(storeActiveStorageName+store, new Date().getTime());
+        }
+        document.querySelector('.secretdiscounter-extension').style.display = 'none';
+        chrome.tabs.create({url: this.getAttribute('href')});
+
     }
 
     function storeIsActivate(storeRoute){
         var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
         var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
-        if (debug) {
-            //console.log(storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
-        }
+        // if (debug) {
+        //     console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
+        // }
         return isActive;
     }
 
-    function makeHrefs(elem){
+    function makeHrefs(elem, handler){
+        handler = handler || doClick;
         elements = elem.getElementsByTagName('a');
         for (var i = 0; i < elements.length; i++){
-            elements[i].onclick = doClick;
+            elements[i].onclick = handler;
         }
     }
 
@@ -121,7 +131,8 @@ var utils = (function(){
         setClickHandlers: setClickHandlers,
         copyToClipboard:copyToClipboard,
         getAvatar: getAvatar,
-        log: log
+        log: log,
+        doClickPlugunClose: doClickPlugunClose
     }
 
 })();

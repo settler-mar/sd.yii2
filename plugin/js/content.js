@@ -165,7 +165,8 @@ function displayShop(item) {
     div = document.createElement('div');
     div.className = 'secretdiscounter-extension';
     div.innerHTML = shopDiv;
-    div.style.right = document.body.clientWidth > 1200 ? (document.body.clientWidth - 1200) / 2 + 'px' : 0;
+    //div.style.right = document.body.clientWidth > 1200 ? (document.body.clientWidth - 1200) / 2 + 'px' : 0;
+    div.style.right = '20px';
     div.style.top = '10px';
 
     var tryCount = 10;
@@ -181,8 +182,7 @@ function displayShop(item) {
           document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
         }
         displayFavoriteLinks(item.uid);
-        utils.makeHrefs(document.querySelector('.secretdiscounter-extension__buttons'));//меняем отработчик ссылки не активацию на свой
-
+        utils.makeHrefs(document.querySelector('.secretdiscounter-extension__buttons'), utils.doClickPlugunClose);//меняем отработчик ссылки не активацию на свой
       }
       if (tryCount < 0) {
         clearInterval(divInsertInterval);

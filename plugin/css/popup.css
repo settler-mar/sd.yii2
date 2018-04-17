@@ -30,7 +30,7 @@ form {
   width: 563px;
 }
 .sd_hidden {
-  display: none;
+  display: none !important;
 }
 
 button {
@@ -375,7 +375,8 @@ button {
   padding: 3px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 10px;
 }
 .secretdiscounter-extension__notificaton-link{
   /*display: block;*/
@@ -383,6 +384,7 @@ button {
   /*text-decoration: none;*/
   /*padding: 0.25rem 0.75rem;*/
   /*margin: auto;*/
+  font-size: 18px;
 }
 .secretdiscounter-extension__notificaton-link:hover {
   color: #fff;
@@ -449,8 +451,9 @@ button {
 }
 .secretdiscounter-extension__coupon-promocode-text-copy {
   margin: 0 0 0 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  /*padding-top: 2px;*/
+  /*padding-bottom: 2px;*/
+  padding: 2px 5px;
 }
 
 .secretdiscounter-extension__coupon-promocode-text-copy svg {
