@@ -303,6 +303,9 @@ h2, h3, h4 {
   &-start {
     justify-content: flex-start;
   }
+  &-around {
+    justify-content: space-between;
+  }
 }
 
 .heart-red {

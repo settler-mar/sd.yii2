@@ -1,7 +1,9 @@
 var plugins = (function(){
     var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
     var pluginInstallDivClass = 'install-plugin-index';
+    var pluginInstallDivAccountClass = 'install-plugin-account';
     var cookiePanelHidden = 'sd-install-plugin-hidden';
+    var cookieAccountDivHidden = 'sd-install-plugin-account-hidden';
     var extensions = {
         'chrome': {
             'div_id': 'sd_chrome_app',
@@ -55,12 +57,21 @@ var plugins = (function(){
     function setButtonInstallVisible(buttonClass) {
         $('.' + pluginInstallDivClass).removeClass('hidden');
         $('.' + buttonClass).removeClass('hidden');
+        if (getCookie(cookieAccountDivHidden) !== '1') {
+            $('.' + pluginInstallDivAccountClass).removeClass('hidden');
+        }
     }
 
     function closeClick(){
         $('.install-plugin').addClass('install-plugin_hidden');
         setCookie(cookiePanelHidden, '1');
     }
+
+    $('.install-plugin-account-later').click(function(e) {
+        e.preventDefault();
+        setCookie(cookieAccountDivHidden, '1');
+        $('.install-plugin-account').addClass('hidden');
+    });
 
 
     window.onload = function() {
@@ -69,7 +80,9 @@ var plugins = (function(){
                 if (extensions[key].used) {
                     var appId = document.querySelector('#'+extensions[key].div_id);
                     if (!appId) {
+                        //панель с кнопкой
                         setPanel(extensions[key].text, extensions[key].href);
+                        //на главной  и в /account блоки с иконками и кнопками
                         setButtonInstallVisible(extensions[key].install_button_class);
                     }
                 }
