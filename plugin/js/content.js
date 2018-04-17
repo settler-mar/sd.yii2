@@ -136,19 +136,22 @@ function displayShop(item) {
   //проверка кук теперь здесь
   if (item && !div && (debug || getCookie(appCookieName) !== appCookieValue)) {
 
-    var url = '', pluginSiteUrl = '', favoritesLink = '';
+    var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {
       url = siteUrl + 'goto/store:' + item.uid;
+      storesUrl = siteUrl + 'stores';
       pluginSiteUrl = siteUrl;
       favoritesLink = '<a title="Добавить в избранное" data-id="' + item.uid + '" data-type="add" class="" href="#vaforite_add">' + iconFavoriteClose + '</a>' +
         '<a title="Убрать из избранных" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="#vaforite_remove">' + iconFavoriteOpen + '</a>';
     } else {
       url = siteUrl + 'stores/' + item.store_route + '#login';
       pluginSiteUrl = siteUrl + '#login';
+      storesUrl = siteUrl + 'stores#login';
     }
     var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var storeIsActivate = utils.storeIsActivate(item.store_route);
-    var shopDiv = utils.replaceTemplate(storePluginHtml, {
+    var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
+    var shopDiv = utils.replaceTemplate(template, {
       'storeLogo': siteUrl + 'images/logos/' + item.logo,
       'storeUrl': url,
       'storeText': message,
@@ -156,7 +159,8 @@ function displayShop(item) {
       'favoritesLink': favoritesLink,
       'logoImage': logoImage,
       'storeRoute' : item.store_route,
-      'buttonsClass' : storeIsActivate ? 'sd_hidden' : ''
+      'buttonsClass' : storeIsActivate ? 'sd_hidden' : '',
+      'storesUrl' : storesUrl
     });
     div = document.createElement('div');
     div.className = 'secretdiscounter-extension';

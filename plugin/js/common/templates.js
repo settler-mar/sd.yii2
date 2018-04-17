@@ -37,7 +37,21 @@ var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '</div>'+
     '<div class="secretdiscounter-extension__buttons {{buttonsClass}}">'+
     '<a class="secretdiscounter-extension__link sd_button" href="{{storeUrl}}" data-store="{{storeRoute}}" target="_blank">Активировать&nbsp;кэшбэк</a>'+
-    '<span class="secretdiscounter-extension__buttons-message">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
+    '<span class="secretdiscounter-extension__buttons-message">Магазин с активированным кэшбэком<br>откроется в новом окне</span>'+
+    '</div>';
+//на странице благотворительного шопа всплывашка
+var storePluginHtmlCharity = '<div class="secretdiscounter-extension__header">'+
+    '<a href="{{siteUrl}}" class="secretdiscounter-extension__logo">'+logoImage+'</a>'+
+    '<div class="secretdiscounter-extension__button_close">'+iconClose+
+    '</div>'+
+    '</div>'+
+    '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
+    '<div class="secretdiscounter-extension__shop-text">{{storeText}}</div>'+
+    '<div class="secretdiscounter-extension__shop-favorites">{{favoritesLink}}</div>'+
+    '</div>'+
+    '<div class="secretdiscounter-extension__buttons {{buttonsClass}}">'+
+    '<span class="secretdiscounter-extension__buttons-message">Кэшбэк в данном магазине отсутствует</span>'+
+    '<a class="secretdiscounter-extension__link sd_button" href="{{storesUrl}}" target="_blank">Все&nbsp;магазины&nbsp;с кэшбэком</a>'+
     '</div>';
 var couponHtml = '<div class="secretdiscounter-extension__coupon">'+
   '<a href="{{couponUrl}}" class="secretdiscounter-extension__coupon-href">{{couponName}}</a>'+
