@@ -15,21 +15,26 @@ var storeUtil = (function () {
     return url;
   }
 
-  function testURL(here, currentUrl) {
-    //console.log(here, currentUrl);
-
+  function testURL(here, currentUrl, subdomen) {
+    subdomen = subdomen || false;
     currentUrl = clearURL(currentUrl);
     //тест полного совпадения
-    if (here === currentUrl)return true;
+    if (here === currentUrl) {
+      return  true;
+    }
 
-    //проверка на частичное совпадение
-    var pos = here.indexOf(currentUrl);
-    if (pos < 0)return false;
+    if (subdomen) {
+        //проверка на частичное совпадение
+        var pos = here.indexOf(currentUrl);
+        if (pos < 0) return false;
 
-    //проверка на суб домен перед URL
-    if(here[pos-1]!='.') return false;
-    //Проверка домена с отсечкой суба
-    if(here.substr(pos)==currentUrl) return true;
+        //проверка на суб домен перед URL
+        if (here[pos - 1] != '.') return false;
+        //Проверка домена с отсечкой суба
+        if (here.substr(pos) == currentUrl) {
+            return true;
+        }
+    }
     return false;
   }
 
@@ -41,22 +46,44 @@ var storeUtil = (function () {
     //найти магазин, если на нем находимся
     url = url || window.location.host;
     var here = clearURL(url);
+    var store = false;
+    //первый проход на точные совпадения
     stores.forEach(function (item) {
-      if (testURL(here, item.url)) {
+      if (!store && testURL(here, item.url, false)) {
+        store = true;
         callback(item);
         return false;
       }
-
-      if (item.url_alternative && item.url_alternative.length > 3) {
+      if (!store && item.url_alternative && item.url_alternative.length > 3) {
         var urls = item.url_alternative.split(',');
         for (var i = 0; i < urls.length; i++) {
-          if (testURL(here, urls[i])) {
+          if (testURL(here, urls[i]), false) {
+            store = true;
             callback(item);
             return false;
           }
         }
       }
     });
+    //если не нашли, второй по субдоменам
+    if (!store) {
+        stores.forEach(function (item) {
+            if (!store && testURL(here, item.url, true)) {
+                store = true;
+                callback(item);
+                return false;
+            }
+            if (!store && item.url_alternative && item.url_alternative.length > 3) {
+                var urls = item.url_alternative.split(',');
+                for (var i = 0; i < urls.length; i++) {
+                    if (testURL(here, urls[i], true)) {
+                        callback(item);
+                        return false;
+                    }
+                }
+            }
+        });
+    }
   }
 
   return {
