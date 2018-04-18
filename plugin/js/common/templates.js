@@ -7,14 +7,10 @@ var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secre
     '<a class="secretdiscounter-extension__buttons-link sd_button {{buttonsClass}}" data-store="{{storeRoute}}" href="{{storeUrl}}" target="_blank">{{btnText}}</a>'+
     '<span class="secretdiscounter-extension__buttons-title {{buttonsClass}}">Магазин с активированным кэшбэком<br> откроется в новом окне</span>'+
     '</div>';
-//благотворительный шоп
-var storeHtmlCharity = '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+
-    '<div class="secretdiscounter-extension__shop-text">Кэшбэк{{storeText}}</div>'+
-    '</div>'+
-    '<div class="secretdiscounter-extension__buttons">'+
-    '<div class="secretdiscounter-extension__buttons-tariffs">{{storeTariffs}}</div>'+
-    '<span class="secretdiscounter-extension__buttons-title {{buttonsClass}}">Кэшбэк в данном магазине отсутствует</span>'+
-    '<a class="secretdiscounter-extension__buttons-link sd_button {{buttonsClass}}" href="'+siteUrl+'/stores" target="_blank">Все магазины с кэшбэком</a>'+
+//любой сайт, не из шопов
+var storeHtmlEmpty = '<div class="secretdiscounter-extension__buttons">'+
+    '<span class="secretdiscounter-extension__buttons-title">Кэшбэк в данном магазине отсутствует</span>'+
+    '<a class="secretdiscounter-extension__buttons-link sd_button" href="'+siteUrl+'/stores" target="_blank">Все магазины с кэшбэком</a>'+
     '</div>';
 var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
     '<div class="secretdiscounter-extension__notificaton-date">{{notyDate}}</div>'+

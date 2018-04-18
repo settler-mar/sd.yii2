@@ -50,7 +50,7 @@ var displayUser = function () {
     utils.makeHrefs(tabNotifications);
     var tabFavorites = document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content');
     tabFavorites.innerHTML = makeFavorites();
-    utils.makeHrefs(tabFavorites)
+    utils.makeHrefs(tabFavorites);
   } else {
     document.querySelector('.secretdiscounter-pupup__tabs').style.display="none";
     resetStyles();
@@ -80,7 +80,7 @@ function resetStyles() {
 function makeFavorites() {
   //console.log(usersData.user);
   if (!usersData || !usersData.user.favorites_full || usersData.user.favorites_full.length == 0) {
-    document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true
+    document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
     return 'На данный момент у Вас нет избранных магазинов.';
   }
   result = '';
@@ -126,31 +126,38 @@ var displayShop = function (shop) {
   if (debug) {
     console.log('вывод шопа', shop);
   }
-  var storeIsActivate = utils.storeIsActivate(shop.store_route);
-  if (debug) {
-        console.log('шоп активирован ', storeIsActivate);
-  }
+
   var tabShop = document.querySelector('.secretdiscounter-pupup__tab-shop');
   tabShop.style.display = 'block';
   document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-checkboxtab').checked = true;
-  var storeTemplate = parseFloat(shop.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storeHtml : storeHtmlCharity;//который из шаблонов
-  document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
-      utils.replaceTemplate(storeTemplate, {
-        'storeLogo': siteUrl + 'images/logos/' + shop.logo,
-        'storeText': utils.makeCashback(
-          shop.displayed_cashback,
-          shop.currency,
-          shop.action_id
-        ),
-        'storeUrl': siteUrl + 'goto/store:' + shop.uid,
-        'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
-        'storeTariffs': shop.conditions ?
-          '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
-        'storeRoute' : shop.store_route,
-        'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
-    });
+  //var storeTemplate = storeHtml;//который из шаблонов
+
+  if (shop) {
+      var storeIsActivate = utils.storeIsActivate(shop.store_route);
+      if (debug) {
+          console.log('шоп активирован ', storeIsActivate);
+      }
+      document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
+          utils.replaceTemplate(storeHtml, {
+              'storeLogo': siteUrl + 'images/logos/' + shop.logo,
+              'storeText': utils.makeCashback(
+                  shop.displayed_cashback,
+                  shop.currency,
+                  shop.action_id
+              ),
+              'storeUrl': siteUrl + 'goto/store:' + shop.uid,
+              'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
+              'storeTariffs': shop.conditions ?
+                  '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
+              'storeRoute' : shop.store_route,
+              'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
+          });
+      getCoupons(shop, displayCoupons);//запрос на купоны для шопа
+  } else {
+    //вывод пустого шопа, если находимся на любой странице
+      document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML = storeHtmlEmpty;
+  }
   utils.makeHrefs(tabShop);
-  getCoupons(shop, displayCoupons);//запрос на купоны для шопа
 };
 
 var displayCoupons = function (response) {
@@ -183,6 +190,8 @@ var displayCoupons = function (response) {
 };
 
 resetStyles();
+
+displayShop(false);//пустой магазин
 
 getUser(displayUser);
 

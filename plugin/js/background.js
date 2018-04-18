@@ -24,7 +24,7 @@ function getImage(src, cashback, callback) {
         ctx.drawImage(this, 0, 0);
         if (cashback !== false && showCashback) {
             //ctx.font = "bold 20px Verdana";
-            ctx.font = "bold "+(textHeight+6)+"px ProximaNova";
+            ctx.font = (textHeight + 4) + "px Arial";
             ctx.fillStyle = "#333";
             ctx.fillRect(0, imgHeight-textHeight-4, textWidth, textHeight+4);
             ctx.fillStyle = "#fff";
