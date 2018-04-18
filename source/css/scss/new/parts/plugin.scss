@@ -111,6 +111,15 @@
   display: none;
 }
 
-.install-plugin-index.hidden {
-  display: none;
+.install-plugin-index {
+
+  &_border {
+    border-radius: 10px;
+    border: 3px solid $reccomendations-item-border-color;
+    padding: 0 30px;
+  }
+
+  .hidden {
+    display: none;
+  }
 }
