@@ -43,6 +43,26 @@ var paths = {
     b2b: {
       css: './b2b/web/css',
       js: './b2b/web/js'
+    },
+    plugin: {
+        source: './plugin',
+        browsers: {
+            chrome: {
+                dest:'./plugins/chrome',
+                rootFiles: ['auto-update.xml', 'background.html', 'popup.html'],
+                manifest: 'manifest.json'
+            },
+            opera: {
+                dest:'./plugins/opera',
+                rootFiles: ['background.html', 'popup.html'],
+                manifest: 'manifest.json'
+            },
+            firefox: {
+                dest:'./plugins/firefox',
+                rootFiles: ['background.html', 'popup.html'],
+                manifest: 'manifest.json'
+            }
+        }
     }
 };
 
@@ -290,4 +310,32 @@ gulp.task('clearb2b', function(){
         gulp.src(file, { read: true }) // much faster
             .pipe(rimraf({force: false}));
     });
+});
+
+gulp.task('plugin', function(){
+    for (var key in paths.plugin.browsers) {
+        console.log(paths.plugin.browsers[key].dest);
+        //js
+        gulp.src(paths.plugin.source + '/js/**/*.js')
+            .pipe(plugins.uglify({ie8: true}))
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/js'));
+        //css
+        gulp.src(paths.plugin.source + '/css/**/*.css')
+            .pipe(cleanCSS({compatibility: 'ie9'}))
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/css'));
+        //img
+        gulp.src(paths.plugin.source + '/img/*.*')
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
+        //файлы в корне
+        for (var i = 0; i < paths.plugin.browsers[key].rootFiles.length; i++) {
+            gulp.src(paths.plugin.source + '/' + paths.plugin.browsers[key].rootFiles[i])
+                .pipe(gulp.dest(paths.plugin.browsers[key].dest));
+        }
+        //манифест
+        gulp.src(paths.plugin.source + '/' +paths.plugin.browsers[key].manifest)
+            .pipe(plugins.rename('manifest.json'))
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest));
+
+    }
+
 });

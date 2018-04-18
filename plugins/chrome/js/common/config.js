@@ -1,0 +1,1 @@
+var siteUrl="https://secretdiscounter.ru/",userUrl="account/notification",storesUrl="stores/data",userFavoriteUrl="account/favorites",couponUrl="coupons",storeActiveInterval=30,storeActiveStorageName="secretdiscounter-extension-store-",debug=!0;
