@@ -13,6 +13,7 @@
   &_text {
     color: $header_color_up;
     padding: 10px;
+    margin-left: 15px;
   }
   &_close {
     font-size: 20px;
@@ -22,6 +23,19 @@
     display: none;
   }
 
+  &_button-close {
+    width: 26px !important;
+    height: 26px !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    background: rgb(250, 54, 28) !important;
+    border-radius: 50% !important;
+    text-align: center !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+  }
 }
 
 .plugin-browsers {
