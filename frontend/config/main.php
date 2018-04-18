@@ -342,5 +342,6 @@ $config = [
 if (YII_DEBUG) {
   // configuration adjustments for 'dev' environment
   unset($config['modules']['permit']['params']['accessRoles']);
+  $config['params']['plugin_install_panel'] = 1;
 }
 return $config;
