@@ -38,25 +38,35 @@ var utils = (function(){
         return f + str.substr(1, str.length - 1);
     }
 
-    function doClick(){
+    function doClick(e){
         var store = this.getAttribute('data-store');
         if (store) {
             Storage.set(storeActiveStorageName+store, new Date().getTime());
+            if (debug) {
+                console.log(storeActiveStorageName+store, Storage.get(storeActiveStorageName+store));
+            }
         }
-        chrome.tabs.create({url: this.getAttribute('href')});
+        if (chrome.tabs){
+            //из окна плагина
+            e.preventDefault();
+            chrome.tabs.create({url: this.getAttribute('href')});
+        }
     }
 
-    function doClickPlugunClose(){
+    function doClickPlugunClose(e){
         var store = this.getAttribute('data-store');
         if (store) {
-            // if (debug) {
-            //     console.log(storeActiveStorageName+store, new Date().getTime());
-            // }
             Storage.set(storeActiveStorageName+store, new Date().getTime());
+            if (debug) {
+                console.log(storeActiveStorageName+store, Storage.get(storeActiveStorageName+store));
+            }
         }
         document.querySelector('.secretdiscounter-extension').style.display = 'none';
-        chrome.tabs.create({url: this.getAttribute('href')});
-
+        if (chrome.tabs){
+            //из окна плагина
+            e.preventDefault();
+            chrome.tabs.create({url: this.getAttribute('href')});
+        }
     }
 
     function storeIsActivate(storeRoute){
@@ -70,7 +80,7 @@ var utils = (function(){
 
     function makeHrefs(elem, handler){
         handler = handler || doClick;
-        elements = elem.getElementsByTagName('a');
+        var elements = elem.getElementsByTagName('a');
         for (var i = 0; i < elements.length; i++){
             elements[i].onclick = handler;
         }
