@@ -28,6 +28,15 @@
       z-index: -100;
       border-radius: 5px;
       overflow: hidden;
+      @include media($laptop-min) {
+        top: -300PX;
+      }
+      @include media($tablets) {
+        top: -300PX;
+      }
+      @include media($phones) {
+        top: -300PX;
+      }
     }
 
     h2.white {
@@ -35,11 +44,15 @@
       margin-top: 50px;
       margin-bottom: 200px;
 
+      @include media($laptop-min) {
+        margin-top: 100PX;
+      }
+
       @include media($tablets) {
-        margin-top: 210PX;
+        margin-top: 100PX;
       }
       @include media($phones) {
-        margin-top: 140PX;
+        margin-top: 55PX;
       }
     }
   }
