@@ -10,28 +10,29 @@ var utils = (function(){
         }
         return template;
     }
-    function makeCashback(displayedCashback, currency, action){
+    function makeCashback(displayedCashback, currency, action, simple){
+        //simple = simple || false;//просто кешбек без тэгов
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
 
         if (cashbackNum > 0) {
-            result = '<span class="cashback">'+displayedCashback.replace(/[\d.]+/, cashbackNumFinal) +
-                (displayedCashback.match(/\%/) ? "" : " " + currency) +'</span>';
+            result = displayedCashback.replace(/[\d.]+/, cashbackNumFinal) + (displayedCashback.match(/\%/) ? "" : " " + currency);
+            result = simple ? result : '<span class="cashback">'+ result +'</span>';
         } else {
-            result = '<span class="cashback cashback-charity">&#x2764;</span>';
+            result = simple ? '\u2764' : '<span class="cashback cashback-charity">&#x2764;</span>';
 
         }
-        if (action == 1 && cashbackNum > 0) {
+        if (action == 1 && cashbackNum > 0 && !simple) {
             var cashbackOld = displayedCashback + (displayedCashback.match(/\%/) ? "" : " " + currency);
             result +=  '<span class="cashback_old">'+cashbackOld+'</span>';
         }
         return result;
     }
 
-    function makeCashbackNum(displayedCashback, action){
-        var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
-        return action == 1 ? cashbackNum * 2 : cashbackNum;
-    }
+    // function makeCashbackNum(displayedCashback, action){
+    //     var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
+    //     return action == 1 ? cashbackNum * 2 : cashbackNum;
+    // }
 
     function ucfirst(str) {   // Make a string&#039;s first character uppercase
         var f = str.charAt(0).toUpperCase();
@@ -134,7 +135,7 @@ var utils = (function(){
     return {
         replaceTemplate: replaceTemplate,
         makeCashback: makeCashback,
-        makeCashbackNum: makeCashbackNum,
+        //makeCashbackNum: makeCashbackNum,
         ucfirst: ucfirst,
         makeHrefs: makeHrefs,
         storeIsActivate: storeIsActivate,

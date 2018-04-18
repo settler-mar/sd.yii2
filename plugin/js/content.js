@@ -125,7 +125,8 @@ function findShop() {
 function displayShop(item) {
 
   if (item) {
-      chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashbackNum(item.displayed_cashback, item.action_id)});
+      //chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashbackNum(item.displayed_cashback, item.action_id)});
+      chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashback(item.displayed_cashback, item.currency, item.action_id, true)});
       setTimeout(function () {
           chrome.runtime.sendMessage({action: 'icon_flash_stop'});
       }, 5000);
