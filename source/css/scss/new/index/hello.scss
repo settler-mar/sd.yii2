@@ -274,6 +274,10 @@
       /*font-weight: bold;*/
       margin-bottom: 15px;
 
+      @include media($tablets) {
+        margin-bottom: 40px;
+      }
+
       &-numbers {
         display: flex;
         flex-direction: row;
@@ -342,7 +346,8 @@
         text-align: left;
         //padding-left: 70px;
         @include media($tablets) {
-          margin-bottom: 20px;
+          //margin-bottom: 20px;
+          margin-bottom: 47px;
         }
 
         a {
