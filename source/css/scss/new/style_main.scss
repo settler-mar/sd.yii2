@@ -821,6 +821,18 @@ input.link {
     width: 75%;
   }
 }
+.border-double {
+  padding: 3px;
+  margin: 0;
+  background: #f8f8f8;
+  border-radius: 5px;
+
+  &-in {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+}
 
 .breadcrumbs {
   //margin-bottom: 47px;
