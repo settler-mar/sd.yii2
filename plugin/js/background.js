@@ -51,6 +51,9 @@ function toggleIcon() {
     });
 
     storeCashback=storeCashback.replace(/^\s+/, "");
+    if(storeCashback.indexOf('%')==-1){
+        storeCashback=storeCashback.replace(/[0-9]/g, '')
+    }
 
     chrome.browserAction.setBadgeText({
         text: storeCashback ? storeCashback.toString() : ''
