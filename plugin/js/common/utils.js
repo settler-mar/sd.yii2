@@ -1,7 +1,6 @@
 console.log('utils.js');
 
 var utils = (function(){
-
     function replaceTemplate(template, items){
         items = items || {};
         for (var key in items) {
@@ -10,6 +9,7 @@ var utils = (function(){
         }
         return template;
     }
+
     function makeCashback(displayedCashback, currency, action, simple){
         //simple = simple || false;//просто кешбек без тэгов
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
