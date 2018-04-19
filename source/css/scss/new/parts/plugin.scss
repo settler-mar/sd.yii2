@@ -3,10 +3,11 @@
   //display: none;
 
   &_inner {
+    text-align: center;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-around;
     align-items: center;
   }
 
@@ -23,18 +24,30 @@
     display: none;
   }
 
-  &_button-close {
-    width: 26px !important;
-    height: 26px !important;
-    box-sizing: border-box !important;
-    cursor: pointer !important;
-    background: rgb(250, 54, 28) !important;
-    border-radius: 50% !important;
-    text-align: center !important;
+  &_buttons {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
-    margin-right: 15px;
+    justify-content: space-between;
+    flex-grow: 2;
+  }
+
+  &_button {
+    margin: 2px 15px;
+    &-close {
+      width: 26PX !important;
+      height: 26PX !important;
+      box-sizing: border-box !important;
+      cursor: pointer !important;
+      background: rgb(250, 54, 28) !important;
+      border-radius: 50% !important;
+      text-align: center !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
   }
 }
 
