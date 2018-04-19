@@ -49,6 +49,9 @@ function toggleIcon() {
     chrome.browserAction.setBadgeBackgroundColor({
        color: "#666"
     });
+
+    storeCashback=storeCashback.replace(/^\s+/, "");
+
     chrome.browserAction.setBadgeText({
         text: storeCashback ? storeCashback.toString() : ''
     });

@@ -15,6 +15,11 @@ var utils = (function(){
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
 
+        //если простой вывод то отсекаем лишние символы
+        if(simple){
+            displayedCashback=cashbackNum+(displayedCashback.indexOf('%')>0?' %':'');
+        }
+
         if (cashbackNum > 0) {
             result = displayedCashback.replace(/[\d.]+/, cashbackNumFinal) + (displayedCashback.match(/\%/) ? "" : " " + currency);
             result = simple ? result : '<span class="cashback">'+ result +'</span>';

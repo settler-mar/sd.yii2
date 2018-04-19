@@ -17,6 +17,7 @@
     align-items: center;
     border: 2px solid #b5b5b5;
     background: #fff;
+    direction: ltr;
 }
 .secretdiscounter-extension .sd_hidden {
     display: none;
