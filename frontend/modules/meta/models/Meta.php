@@ -3,6 +3,7 @@
 namespace frontend\modules\meta\models;
 
 use Yii;
+use JBZoo\Image\Image;
 
 /**
  * This is the model class for table "cw_metadata".
@@ -17,6 +18,10 @@ use Yii;
  */
 class Meta extends \yii\db\ActiveRecord
 {
+    public $backgroundImageImage;
+    public $backgroundImageAlt;
+    protected $imagesPath = '/images/templates/';
+
     /**
      * @inheritdoc
      */
@@ -33,12 +38,13 @@ class Meta extends \yii\db\ActiveRecord
         return [
             [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
             [['page', 'title', 'description', 'keywords', 'h1', 'h1_class'], 'trim'],
-            [['description', 'keywords', 'content', 'h1_class'], 'string'],
+            [['description', 'keywords', 'content', 'h1_class', 'h2', 'background_image'], 'string'],
             [['description', 'keywords', 'content'], 'trim'],
-            [['page', 'title', 'h1', 'h1_class'], 'string', 'max' => 255],
+            [['page', 'title', 'h1', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page','unique'],
             ['show_breadcrumbs', 'boolean'],
             [['content'], 'string'],
+            [['backgroundImageImage', 'backgroundImageAlt'], 'safe'],
         ];
     }
 
@@ -55,9 +61,30 @@ class Meta extends \yii\db\ActiveRecord
             'keywords' => 'Keywords',
             'h1' => 'H1',
             'h1_class' => 'Класс H1',
+            'h2' => 'H2',
+            'backgroundImageImage' => 'Изображение заставка',
+            'backgroundImageAlt' => 'Alt для изображения заставки',
             'content' => 'Content',
             'show_breadcrumbs' => 'Показывать крошки',
         ];
+    }
+
+    /**
+     *
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $backgroundImage = $this->background_image ? json_decode($this->background_image) : false;
+        if ($backgroundImage) {
+            $this->backgroundImageImage = $backgroundImage->image;
+            $this->backgroundImageAlt = $backgroundImage->alt;
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->saveImage();
     }
 
     public static function findByUrl($url,$model=false)
@@ -151,5 +178,56 @@ class Meta extends \yii\db\ActiveRecord
 
       //если ни чего не нашлось подходящего то возвращаем как для index
       return Yii::$app->params['meta']['index'];
+    }
+
+    /**
+     * Сохранение изображения
+     */
+    protected function saveImage()
+    {
+        $photo = \yii\web\UploadedFile::getInstance($this, 'backgroundImageImage');
+        if ($photo) {
+
+            $path = $this->imagesPath;// Путь для сохранения
+            $name = time(); // Название файла
+            $exch = explode('.', $photo->name);
+            $exch = $exch[count($exch) - 1];
+            $name .= '.' . $exch;
+            $imageName = $name;   // название
+            $bp=Yii::$app->getBasePath().'/web'.$path;
+            if (!file_exists($bp)) {
+                mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
+            }
+            $img = (new Image($photo->tempName));
+            $img->saveAs($bp . $imageName);
+
+            if ($img) {
+                $json = json_encode([
+                    'image' => $imageName,
+                    'alt' => $this->backgroundImageAlt,
+                ]);
+                $oldBackgroundImage = $this->background_image ? json_decode($this->background_image) : false;
+                if ($oldBackgroundImage && $oldBackgroundImage->image) {
+                    $this->removeImage($bp . $oldBackgroundImage->image);   // удаляем старое изображение
+                }
+                $this::getDb()
+                    ->createCommand()
+                    ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
+                    ->execute();
+            }
+        }
+    }
+    /**
+     * Удаляем изображение при его наличии
+     */
+    protected function removeImage($img)
+    {
+        if ($img) {
+            // Если файл существует
+            if (is_readable($img) && is_file($img)) {
+                // ddd($img);
+                unlink($img);
+            }
+        }
     }
 }

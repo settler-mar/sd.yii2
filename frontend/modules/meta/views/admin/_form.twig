@@ -20,10 +20,19 @@
                         {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
 
                         {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
+                        {{ form.field(model, 'h1_class').textInput({'maxlength':true})|raw }}
 
                         {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
-                        {{ form.field(model, 'h1_class').textInput({'maxlength':true})|raw }}
+                        <h4>Изображение заставка</h4>
+                        <p>
+                            <img for="Meta[backgroundImageImage]" style="max-height: 480px;" src="images/templates/{{ model.backgroundImageImage | raw }}">
+                        </p>
+                        {{ form.field(model, 'backgroundImageImage').fileInput().label(false)|raw }}
+
+                        {{ form.field(model, 'backgroundImageAlt').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'h2').textInput({'maxlength':true})|raw }}
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
