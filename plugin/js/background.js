@@ -38,7 +38,6 @@ var storeCashback = false;
 // }
 
 
-
 function toggleIcon() {
     var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
     //var icon = defaultIcon ? 'img/logo_mini_32.png' : 'img/favicon-32x32.png';
@@ -50,10 +49,10 @@ function toggleIcon() {
        color: "#666"
     });
 
-    storeCashback=storeCashback.replace(/^\s+/, "");
     if(storeCashback.indexOf('%')==-1){
-        storeCashback=storeCashback.replace(/[0-9]/g, '')
+        storeCashback=storeCashback.replace(/[0-9.]/g, '');
     }
+    storeCashback=storeCashback.replace(/^\s+/, "");
 
     chrome.browserAction.setBadgeText({
         text: storeCashback ? storeCashback.toString() : ''

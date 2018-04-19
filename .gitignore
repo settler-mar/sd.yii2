@@ -63,3 +63,5 @@ package-lock.json
 *-local.php
 *.lock
 common/config/socials.php
+
+*.zip
