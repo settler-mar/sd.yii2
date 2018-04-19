@@ -7,41 +7,12 @@ var stop = true;
 var maxFlashInterval = 10000;//время для принудительного выключения
 var storeCashback = false;
 
-// function getImage(src, cashback, callback) {
-//     var c = document.createElement('canvas');
-//     var ctx = c.getContext('2d')
-//     var img = new Image();
-//     var imgWidth = 32;
-//     var imgHeight = 32;
-//     var textHeight = 14;
-//     var textWidth = 28;
-//     var imageData = null;
-//     img.crossOrigin = 'anonymous';
-//
-//     img.onload = function() {
-//         c.width = imgWidth;//this.width;
-//         c.height = imgWidth;//this.height;
-//         ctx.drawImage(this, 0, 0);
-//         if (cashback !== false && showCashback) {
-//             //ctx.font = "bold 20px Verdana";
-//             ctx.font = (textHeight + 4) + "px Arial";
-//             ctx.fillStyle = "#333";
-//             ctx.fillRect(0, imgHeight-textHeight-4, textWidth, textHeight+4);
-//             ctx.fillStyle = "#fff";
-//             ctx.fillText(cashback, 1, imgHeight - 2);
-//         }
-//         imageData = ctx.getImageData(0, 0, c.width, c.height);
-//         callback(imageData);
-//     };
-//
-//     img.src = src;
-// }
-
 
 function toggleIcon() {
     var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
-    //var icon = defaultIcon ? 'img/logo_mini_32.png' : 'img/favicon-32x32.png';
     defaultIcon = !defaultIcon;
+    var cashback = storeCashback ? storeCashback.toString() : '';
+
     chrome.browserAction.setIcon({
         path: icon
     });
@@ -49,22 +20,17 @@ function toggleIcon() {
        color: "#666"
     });
 
-    if(storeCashback.indexOf('%')==-1){
-        storeCashback=storeCashback.replace(/[0-9.]/g, '');
+    if (cashback.indexOf('%') === -1) {
+        cashback = cashback.replace(/[0-9.]/g, '');
     }
-    storeCashback=storeCashback.replace(/^\s+/, "");
+    cashback = cashback.replace(/^\s+/, "");
 
     chrome.browserAction.setBadgeText({
-        text: storeCashback ? storeCashback.toString() : ''
+        text: cashback
     });
-    //getImage(icon, storeCashback,  function(imageData) {
-    //     chrome.browserAction.setIcon({
-    //         imageData: imageData
-    //     });
-    // });
+
     if (stop && defaultIcon){
         clearInterval(iconFlashInterval);
-
     }
 }
 
