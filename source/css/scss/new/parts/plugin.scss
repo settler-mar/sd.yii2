@@ -29,7 +29,8 @@
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between;
+    //justify-content: space-between;
+    justify-content: flex-end;
     flex-grow: 2;
   }
 
@@ -47,6 +48,7 @@
       align-items: center;
       justify-content: center;
       margin-right: 15px;
+      margin-left: 50px;
     }
   }
   &-index {
