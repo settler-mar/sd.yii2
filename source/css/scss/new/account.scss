@@ -469,5 +469,13 @@
     &-height-200 {
       max-height: 200px;
     }
+    &-width-250 {
+      max-width: 250px !important;
+      margin-right: 20px;
+
+      @include media($tablets) {
+        margin-right: 0;
+      }
+    }
   }
 }
