@@ -313,29 +313,39 @@ gulp.task('clearb2b', function(){
 });
 
 gulp.task('plugin', function(){
-    for (var key in paths.plugin.browsers) {
-        console.log(paths.plugin.browsers[key].dest);
-        //js
-        gulp.src(paths.plugin.source + '/js/**/*.js')
-            .pipe(plugins.uglify({ie8: true}))
-            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/js'));
-        //css
-        gulp.src(paths.plugin.source + '/css/**/*.css')
-            .pipe(cleanCSS({compatibility: 'ie9'}))
-            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/css'));
-        //img
-        gulp.src(paths.plugin.source + '/img/*.*')
-            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
-        //файлы в корне
-        for (var i = 0; i < paths.plugin.browsers[key].rootFiles.length; i++) {
-            gulp.src(paths.plugin.source + '/' + paths.plugin.browsers[key].rootFiles[i])
-                .pipe(gulp.dest(paths.plugin.browsers[key].dest));
-        }
-        //манифест
-        gulp.src(paths.plugin.source + '/' +paths.plugin.browsers[key].manifest)
-            .pipe(plugins.rename('manifest.json'))
-            .pipe(gulp.dest(paths.plugin.browsers[key].dest));
 
+  //manifest version
+  var manifest=require(paths.plugin.source + '/manifest.json' );
+  var ver = manifest.version.split('.');
+  ver[ver.length-1]=ver[ver.length-1]- -1;
+  manifest.version=ver.join('.');
+  console.log('Plugin version :',manifest.version);
+  manifest=JSON.stringify(manifest, null, 2);
+  fs.writeFileSync(paths.plugin.source + '/manifest.json', manifest);
+
+  for (var key in paths.plugin.browsers) {
+    console.log(paths.plugin.browsers[key].dest);
+    //js
+    gulp.src(paths.plugin.source + '/js/**/*.js')
+        .pipe(plugins.uglify({ie8: true}))
+        .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/js'));
+    //css
+    gulp.src(paths.plugin.source + '/css/**/*.css')
+        .pipe(cleanCSS({compatibility: 'ie9'}))
+        .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/css'));
+    //img
+    gulp.src(paths.plugin.source + '/img/*.*')
+        .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
+    //файлы в корне
+    for (var i = 0; i < paths.plugin.browsers[key].rootFiles.length; i++) {
+        gulp.src(paths.plugin.source + '/' + paths.plugin.browsers[key].rootFiles[i])
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest));
     }
+
+    //манифест
+    gulp.src(paths.plugin.source + '/' +paths.plugin.browsers[key].manifest)
+        .pipe(plugins.rename('manifest.json'))
+        .pipe(gulp.dest(paths.plugin.browsers[key].dest));
+  }
 
 });
