@@ -20,6 +20,7 @@ class Meta extends \yii\db\ActiveRecord
 {
     public $backgroundImageImage;
     public $backgroundImageAlt;
+    public $backgroundImageClassName;
     protected $imagesPath = '/images/templates/';
 
     /**
@@ -44,7 +45,7 @@ class Meta extends \yii\db\ActiveRecord
             ['page','unique'],
             ['show_breadcrumbs', 'boolean'],
             [['content'], 'string'],
-            [['backgroundImageImage', 'backgroundImageAlt'], 'safe'],
+            [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'], 'safe'],
         ];
     }
 
@@ -64,6 +65,7 @@ class Meta extends \yii\db\ActiveRecord
             'h2' => 'H2',
             'backgroundImageImage' => 'Изображение заставка',
             'backgroundImageAlt' => 'Alt для изображения заставки',
+            'backgroundImageClassName' => 'Class для изображения заставки',
             'content' => 'Content',
             'show_breadcrumbs' => 'Показывать крошки',
         ];
@@ -77,8 +79,9 @@ class Meta extends \yii\db\ActiveRecord
         parent::afterFind();
         $backgroundImage = $this->background_image ? json_decode($this->background_image) : false;
         if ($backgroundImage) {
-            $this->backgroundImageImage = $backgroundImage->image;
-            $this->backgroundImageAlt = $backgroundImage->alt;
+            $this->backgroundImageImage = isset($backgroundImage->image) ? $backgroundImage->image : null;
+            $this->backgroundImageAlt = isset($backgroundImage->alt) ? $backgroundImage->alt : null;
+            $this->backgroundImageClassName = isset($backgroundImage->class_name) ? $backgroundImage->class_name : null;
         }
     }
 
@@ -119,11 +122,10 @@ class Meta extends \yii\db\ActiveRecord
         if($model){
           return $page_meta->limit(1);
         }
+        $result = $page_meta->one()->toArray();
+        $result['background_image_full'] = self::extractImage($result['background_image']);
+        return $result;
 
-        return $page_meta
-          ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
-          ->asArray()
-          ->one();
       }
 
       //прямого совпадения нет ищем по плейсхолдерам
@@ -142,10 +144,10 @@ class Meta extends \yii\db\ActiveRecord
           if($model){
             return $metadataArray->limit(1);
           }
-          return $metadataArray
-            ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
-            ->asArray()
-            ->one();
+          $result = $metadataArray->one()->toArray();
+          $result['background_image_full'] = self::extractImage($result['background_image']);
+          return $result;
+
         }
 
         while($pageArr[count($pageArr)-1] != '*' && count($pageArr) > 2) {
@@ -158,10 +160,9 @@ class Meta extends \yii\db\ActiveRecord
             if($model){
               return $metadataArray->limit(1);
             }
-            return $metadataArray
-              ->select(['title', 'description', 'keywords', 'h1', 'content', 'h1_class', 'show_breadcrumbs'])
-              ->asArray()
-              ->one();
+            $result = $metadataArray->one()->toArray();
+            $result['background_image_full'] = self::extractImage($result['background_image']);
+            return $result;
           }
         }
       }
@@ -205,6 +206,7 @@ class Meta extends \yii\db\ActiveRecord
                 $json = json_encode([
                     'image' => $imageName,
                     'alt' => $this->backgroundImageAlt,
+                    'class_name' => $this->backgroundImageClassName,
                 ]);
                 $oldBackgroundImage = $this->background_image ? json_decode($this->background_image) : false;
                 if ($oldBackgroundImage && $oldBackgroundImage->image) {
@@ -230,4 +232,17 @@ class Meta extends \yii\db\ActiveRecord
             }
         }
     }
+
+    protected static function extractImage($image)
+    {
+        $backgroundImage = $image ? json_decode($image) : false;
+        if ($backgroundImage) {
+            return [
+                'image' => isset($backgroundImage->image) ? $backgroundImage->image : null,
+                'alt' =>  isset($backgroundImage->alt) ? $backgroundImage->alt : null,
+                'class_name' =>  isset($backgroundImage->class_name) ? $backgroundImage->class_name : null
+            ];
+        }
+    }
+
 }

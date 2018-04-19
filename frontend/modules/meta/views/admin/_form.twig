@@ -32,6 +32,8 @@
 
                         {{ form.field(model, 'backgroundImageAlt').textInput({'maxlength':true})|raw }}
 
+                        {{ form.field(model, 'backgroundImageClassName').textInput({'maxlength':true})|raw }}
+
                         {{ form.field(model, 'h2').textInput({'maxlength':true})|raw }}
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
