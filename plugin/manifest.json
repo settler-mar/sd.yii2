@@ -2,20 +2,15 @@
   "manifest_version": 2,
   "name": "SecretDiscounter.ru – кэшбэк-сервис",
   "short_name": "Кэшбэк в онлайн и оффлайн-магазинах",
-  "version": "1.3",
+  "version": "1.6",
   "description": "Кэшбэк-сервис SecretDiscounter – возвращайте до 40% с каждой покупки в AliExpress и еще 1400+ магазинах!",
   "homepage_url": "https://secretdiscounter.ru/",
   "permissions": [
     "tabs",
-    "webNavigation",
-    "webRequest",
     "storage",
-    "cookies",
     "unlimitedStorage",
-    "webNavigation",
-    "https://secretdiscounter.ru/stores/data",
-    "http://secretdiscounter.ru/accout/notification",
-    "http://sdyii/fonts"
+    "clipboardWrite",
+    "https://secretdiscounter.ru/*"
   ],
   "background": {
     "scripts": [

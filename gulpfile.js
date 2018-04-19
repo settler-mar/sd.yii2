@@ -62,7 +62,9 @@ var paths = {
                 rootFiles: ['background.html', 'popup.html'],
                 manifest: 'manifest.json'
             }
-        }
+        },
+        images: ['favicon-16x16.png', 'favicon-32x32.png', 'favicon-32x32-little.png', 'favicon-24x24.png', 'favicon-48x48.png']
+
     }
 };
 
@@ -334,8 +336,10 @@ gulp.task('plugin', function(){
         .pipe(cleanCSS({compatibility: 'ie9'}))
         .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/css'));
     //img
-    gulp.src(paths.plugin.source + '/img/*.*')
-        .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
+    for (var i= 0; i < paths.plugin.images.length; i++) {
+        gulp.src(paths.plugin.source + '/img/'+ paths.plugin.images[i])
+            .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
+    }
     //файлы в корне
     for (var i = 0; i < paths.plugin.browsers[key].rootFiles.length; i++) {
         gulp.src(paths.plugin.source + '/' + paths.plugin.browsers[key].rootFiles[i])

@@ -151,8 +151,8 @@ function displayShop(item) {
     }
     var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var storeIsActivate = utils.storeIsActivate(item.store_route);
-    var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
-    var shopDiv = utils.replaceTemplate(template, {
+    //var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
+    var shopDiv = utils.replaceTemplate(storePluginHtml, {
       'storeLogo': siteUrl + 'images/logos/' + item.logo,
       'storeUrl': url,
       'storeText': message,
