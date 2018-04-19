@@ -357,6 +357,12 @@ button {
   padding: 0 5px 5px;
   text-align: left;
 }
+.secretdiscounter-extension__buttons-empty {
+  padding: 0 5px 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
 .secretdiscounter-extension__buttons-tariffs-header {
   font-weight: bold;
   font-size: 14px;

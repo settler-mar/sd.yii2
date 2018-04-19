@@ -9,7 +9,7 @@ var storeHtml = '<div class="secretdiscounter-extension__shop"><img class="secre
     '</div>';
 //любой сайт, не из шопов
 var storeHtmlEmpty = '<div class="secretdiscounter-extension__buttons">'+
-    '<span class="secretdiscounter-extension__buttons-title">Кэшбэк в данном магазине отсутствует</span>'+
+    '<div class="secretdiscounter-extension__buttons-empty">Кэшбэк в данном магазине отсутствует</div>'+
     '<a class="secretdiscounter-extension__buttons-link sd_button" href="'+siteUrl+'/stores" target="_blank">Все магазины с кэшбэком</a>'+
     '</div>';
 var notificationHTML = '<div class="secretdiscounter-extension__notificaton">'+
