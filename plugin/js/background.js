@@ -20,9 +20,6 @@ function toggleIcon() {
        color: "#666"
     });
 
-    if (cashback.indexOf('%') === -1) {
-        cashback = cashback.replace(/[0-9.]/g, '');
-    }
     cashback = cashback.replace(/^\s+/, "");
 
     chrome.browserAction.setBadgeText({

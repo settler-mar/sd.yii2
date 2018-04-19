@@ -1,6 +1,7 @@
 (function (window, document) {
 
     var transitionHref = document.querySelector('#transition-href').getAttribute('href');
+    var storeRoute = document.querySelector('#transition-href').getAttribute('data-route');
     var enabledTransition = true;
 
     var Checker = {
@@ -10,12 +11,14 @@
         init: function() {
             this.isMobile=!!isMobile.any();
             this.testCookies();
-                if(this.isMobile && !this.cookiesEnabled){
-                    enabledTransition = false;
-                    this.showPop();
-                } else {
-                    this.testAd();
-                }
+            if(this.isMobile && !this.cookiesEnabled){
+                enabledTransition = false;
+                this.showPop();
+            } else {
+                this.testAd();
+            }
+            this.makeEnabledId();
+
         },
         testCookies: function () {
             setCookie('testWork','test');
@@ -33,6 +36,15 @@
         },
         showPop: function() {
             setTimeout(showMessage, 500);
+        },
+        makeEnabledId: function () {
+            if (enabledTransition) {
+                var divId =  document.createElement('div');
+                divId.id = 'sd_shop_id';
+                divId.setAttribute('code', storeRoute);
+                divId.className = 'transition_hidden';
+                document.body.insertBefore(divId, document.body.firstChild);
+            }
         }
     };
 

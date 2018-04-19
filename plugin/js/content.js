@@ -135,7 +135,7 @@ function displayShop(item) {
 
   div = document.querySelector('.secretdiscounter-extension');
   //проверка кук теперь здесь
-  if (item && !div && (debug || getCookie(appCookieName) !== appCookieValue)) {
+  if (item && !div && (debug || (getCookie(appCookieName) !== appCookieValue && !utils.storeIsActivate(item.store_route)))) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {
@@ -237,6 +237,8 @@ Storage.load(function () {
 window.onload = analizPage;
 
 function analizPage() {
+
+  storeUtil.analizeActivated();//проверка что goto пройдено
 
   setAppId();
 

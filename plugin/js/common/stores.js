@@ -86,8 +86,23 @@ var storeUtil = (function () {
     }
   }
 
+  function analizeActivated() {
+      //проверка, что на странице имеется див с атрибутом
+      var shopId = document.querySelector('#sd_shop_id');
+      if (debug) {
+          console.log('див для goto ',shopId);
+      }
+      if (shopId && shopId.getAttribute('code')) {
+          Storage.set(storeActiveStorageName + shopId.getAttribute('code'), new Date().getTime());
+          if (debug) {
+              console.log(storeActiveStorageName + shopId.getAttribute('code')+' '+Storage.get(storeActiveStorageName + shopId.getAttribute('code')));
+          }
+      }
+  }
+
   return {
-    findShop: findShop
+    findShop: findShop,
+    analizeActivated: analizeActivated
   };
 
 
