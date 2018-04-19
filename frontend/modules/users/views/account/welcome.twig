@@ -7,10 +7,12 @@
   </section>
 {% endif %}
 
-<section class="margin  border-wrap install-plugin-account hidden">
-    <h3>Получите доступ ко всем возможностям сервиса - установите расширение для браузера.</h3>
+<section class="align-center margin border-wrap flex-line flex-line-untill-tablets install-plugin-account hidden flex-align-center">
+  <img class="account-image-width-250" src="/images/templates/browsers.png" alt="плагины для браузеров">
+  <div>
+    <h3 class="margin-half account-margin-top account-cashbonus">Получите доступ ко всем возможностям сервиса &mdash; установите расширение для браузера.</h3>
     <p>Оно поможет вам не упустить магазины с кэшбэком и само напомнит об активации!</p>
-    <div class="margin-half flex-line flex-align-center flex-around">
+    <div class="margin-half flex-line flex-line-untill-tablets flex-align-center flex-around">
       <a href="https://chrome.google.com/webstore/category/extensions" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-chrome hidden">Установить для Chrome&nbsp;&rarr;</a>
       <a href="https://addons.mozilla.org/ru/firefox/" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-firefox hidden">Установить для Fairfox&nbsp;&rarr;</a>
       <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-opera hidden">Установить для Opera&nbsp;&rarr;</a>
@@ -18,8 +20,8 @@
       <a href="#" class="btn plugin-browsers-link plugin-browsers-link-safari hidden">Установить для Safari&nbsp;&rarr;</a>
       <a href="#" class="install-plugin-account-later">Напомнить позже</a>
     </div>
+  </div>
 </section>
-
 
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
