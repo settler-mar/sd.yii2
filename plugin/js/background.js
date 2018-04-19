@@ -49,9 +49,6 @@ function toggleIcon() {
        color: "#666"
     });
 
-    if(storeCashback.indexOf('%')==-1){
-        storeCashback=storeCashback.replace(/[0-9.]/g, '');
-    }
     storeCashback=storeCashback.replace(/^\s+/, "");
 
     chrome.browserAction.setBadgeText({
