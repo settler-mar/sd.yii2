@@ -322,6 +322,7 @@ class SiteController extends SdController
     }
 
     $data['store'] = $store;
+    $data['store_route'] = $store->route;
 
     if ($data['link'] == '') {
       $data['link'] = $store->url;

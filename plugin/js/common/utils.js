@@ -45,13 +45,6 @@ var utils = (function(){
     }
 
     function doClick(e){
-        var store = this.getAttribute('data-store');
-        if (store) {
-            Storage.set(storeActiveStorageName+store, new Date().getTime());
-            if (debug) {
-                console.log(storeActiveStorageName+store, Storage.get(storeActiveStorageName+store));
-            }
-        }
         if (chrome.tabs){
             //из окна плагина
             e.preventDefault();
@@ -60,13 +53,6 @@ var utils = (function(){
     }
 
     function doClickPlugunClose(e){
-        var store = this.getAttribute('data-store');
-        if (store) {
-            Storage.set(storeActiveStorageName+store, new Date().getTime());
-            if (debug) {
-                console.log(storeActiveStorageName+store, Storage.get(storeActiveStorageName+store));
-            }
-        }
         document.querySelector('.secretdiscounter-extension').style.display = 'none';
         if (chrome.tabs){
             //из окна плагина
@@ -78,9 +64,9 @@ var utils = (function(){
     function storeIsActivate(storeRoute){
         var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
         var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
-        // if (debug) {
-        //     console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
-        // }
+        if (debug) {
+            console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
+        }
         return isActive;
     }
 
