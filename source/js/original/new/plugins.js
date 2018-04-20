@@ -65,12 +65,12 @@ var plugins = (function(){
 
     function closeClick(){
         $('.install-plugin').addClass('install-plugin_hidden');
-        setCookie(cookiePanelHidden, '1');
+        setCookie(cookiePanelHidden, '1', 10);
     }
 
     $('.install-plugin-account-later').click(function(e) {
         e.preventDefault();
-        setCookie(cookieAccountDivHidden, '1');
+        setCookie(cookieAccountDivHidden, '1', 10);
         $('.install-plugin-account').addClass('hidden');
     });
 
