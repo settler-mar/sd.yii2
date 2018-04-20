@@ -47,8 +47,21 @@ function iconFlashStart(cashback) {
 }
 
 function iconFlashStop() {
-    storeCashback = false;
+    //storeCashback = false;
     stop = true;
+}
+
+function iconFlashClearCashback(){
+    storeCashback = false;
+    if (!stop) {
+        //если идёт моргание, пусть само правильно закончится
+        stop = true;
+    } else {
+        //иначе просто очищаем надпись
+        chrome.browserAction.setBadgeText({
+            text: ''
+        });
+    }
 }
 
 function encodeQueryData(data) {
@@ -90,6 +103,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     }
     if (request.action === "icon_flash_stop") {
         iconFlashStop();
+    }
+    if (request.action === "icon_flash_clear_cashback") {
+        iconFlashClearCashback();
     }
 
 });

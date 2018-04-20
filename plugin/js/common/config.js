@@ -1,9 +1,9 @@
-//var siteUrl = 'https://secretdiscounter.ru/';
-var siteUrl = 'http://sdyii/';
+var siteUrl = 'https://secretdiscounter.ru/';
+//var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
 var couponUrl = 'coupons';
 var storeActiveInterval = 30;//минут
 var storeActiveStorageName = 'secretdiscounter-extension-store-';// + store_route
-var debug = true;
+var debug = false;

@@ -215,6 +215,8 @@ function getCookie(name) {
 
 //получаем пользователя
 getUsers();
+//иконка - останавливаем моргание и убираем цифры
+chrome.runtime.sendMessage({action: 'icon_flash_clear_cashback'});
 
 Storage.load(function () {
   storageDataDate = Storage.get(storageDataKeyDate);

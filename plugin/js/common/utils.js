@@ -1,5 +1,3 @@
-console.log('utils.js');
-
 var utils = (function(){
     function replaceTemplate(template, items){
         items = items || {};
