@@ -61,14 +61,14 @@ var utils = (function(){
         }
     }
 
-    function storeIsActivate(storeRoute){
-        var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
-        var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
-        if (debug) {
-            console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
-        }
-        return isActive;
-    }
+    // function storeIsActivate(storeRoute){
+    //     var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
+    //     var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
+    //     if (debug) {
+    //         console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
+    //     }
+    //     return isActive;
+    // }
 
     function makeHrefs(elem, handler){
         handler = handler || doClick;
@@ -129,7 +129,7 @@ var utils = (function(){
         //makeCashbackNum: makeCashbackNum,
         ucfirst: ucfirst,
         makeHrefs: makeHrefs,
-        storeIsActivate: storeIsActivate,
+        //storeIsActivate: storeIsActivate,
         setClickHandlers: setClickHandlers,
         copyToClipboard:copyToClipboard,
         getAvatar: getAvatar,

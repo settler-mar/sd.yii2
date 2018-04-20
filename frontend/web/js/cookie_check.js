@@ -17,7 +17,7 @@
             } else {
                 this.testAd();
             }
-            this.makeEnabledId();
+            //this.makeEnabledId();
 
         },
         testCookies: function () {
@@ -36,16 +36,17 @@
         },
         showPop: function() {
             setTimeout(showMessage, 500);
-        },
-        makeEnabledId: function () {
-            if (enabledTransition) {
-                var divId =  document.createElement('div');
-                divId.id = 'sd_shop_id';
-                divId.setAttribute('code', storeRoute);
-                divId.className = 'transition_hidden';
-                document.body.insertBefore(divId, document.body.firstChild);
-            }
         }
+        //,
+        // makeEnabledId: function () {
+        //     if (enabledTransition) {
+        //         var divId =  document.createElement('div');
+        //         divId.id = 'sd_shop_id';
+        //         divId.setAttribute('code', storeRoute);
+        //         divId.className = 'transition_hidden';
+        //         document.body.insertBefore(divId, document.body.firstChild);
+        //     }
+        // }
     };
 
     var isMobile = {

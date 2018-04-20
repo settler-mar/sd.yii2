@@ -56,6 +56,7 @@ var displayUser = function () {
     resetStyles();
   }
   document.querySelector('.secretdiscounter-pupup').style.display = 'block';
+  document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-checkboxtab').checked = true;
 
 };
 
@@ -68,11 +69,11 @@ function resetStyles() {
   document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__tab-coupons').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'none';
-  document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
+  //document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
   document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content').innerHTML = '';
   document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'block';
-  document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-checkboxtab').checked = true;
+  //document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-checkboxtab').checked = true;
   document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = 'Обновление данных.';
 }
 
@@ -80,12 +81,12 @@ function resetStyles() {
 function makeFavorites() {
   //console.log(usersData.user);
   if (!usersData || !usersData.user.favorites_full || usersData.user.favorites_full.length == 0) {
-    document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
+    //document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
     return 'На данный момент у Вас нет избранных магазинов.';
   }
   result = '';
   for (var i = 0; i < usersData.user.favorites_full.length; i++) {
-    var storeIsActivate = utils.storeIsActivate(usersData.user.favorites_full[i].route);
+    var storeIsActivate = storeUtil.isActivated(usersData.user.favorites_full[i].route);
     result += utils.replaceTemplate(favoriteHTML, {
       'storeLogo': siteUrl + 'images/logos/' + usersData.user.favorites_full[i].logo,
       'storeText': utils.makeCashback(
@@ -133,7 +134,7 @@ var displayShop = function (shop) {
   //var storeTemplate = storeHtml;//который из шаблонов
 
   if (shop) {
-      var storeIsActivate = utils.storeIsActivate(shop.store_route);
+      var storeIsActivate = storeUtil.isActivated(shop.store_route);
       if (debug) {
           console.log('шоп активирован ', storeIsActivate);
       }

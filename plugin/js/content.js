@@ -135,7 +135,7 @@ function displayShop(item) {
 
   div = document.querySelector('.secretdiscounter-extension');
   //проверка кук теперь здесь
-  if (item && !div && (debug || (getCookie(appCookieName) !== appCookieValue && !utils.storeIsActivate(item.store_route)))) {
+  if (item && !div && (debug || (getCookie(appCookieName) !== appCookieValue && !storeUtil.isActivated(item.store_route)))) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {
@@ -150,7 +150,7 @@ function displayShop(item) {
       storesUrl = siteUrl + 'stores#login';
     }
     var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
-    var storeIsActivate = utils.storeIsActivate(item.store_route);
+    var storeIsActivate = storeUtil.isActivated(item.store_route);
     //var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
     var shopDiv = utils.replaceTemplate(storePluginHtml, {
       'storeLogo': siteUrl + 'images/logos/' + item.logo,

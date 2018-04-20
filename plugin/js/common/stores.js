@@ -86,23 +86,56 @@ var storeUtil = (function () {
     }
   }
 
-  function analizeActivated() {
-      //проверка, что на странице имеется див с атрибутом
-      var shopId = document.querySelector('#sd_shop_id');
-      if (debug) {
-          console.log('див для goto ',shopId);
+  function setShopActivated(storeRoute, status){
+      status = status || true;
+      if (status) {
+          Storage.set(storeActiveStorageName + storeRoute, new Date().getTime());
+      } else {
+          Storage.remove(storeActiveStorageName + storeRoute);
       }
-      if (shopId && shopId.getAttribute('code')) {
-          Storage.set(storeActiveStorageName + shopId.getAttribute('code'), new Date().getTime());
-          if (debug) {
-              console.log(storeActiveStorageName + shopId.getAttribute('code')+' '+Storage.get(storeActiveStorageName + shopId.getAttribute('code')));
-          }
+      if (debug) {
+          console.log('активация шопа '+storeActiveStorageName + storeRoute+' '+Storage.get(storeActiveStorageName + storeRoute));
       }
   }
 
+  function analizeActivated() {
+      //проверка, что на странице имеется картинка с атрибутом
+      var image = document.querySelector('.ad-detect');
+      var store = image ? image.getAttribute('data-store-route') : false;
+      var visible = image ? image.style.display !== 'none' : false;
+      if (debug) {
+          console.log('картинка для goto для шоп ' + (image ? ' yes ' : ' no ') + store + ' видимая ' + visible);
+      }
+      if (image && store && visible) {
+          setShopActivated(store, true);
+          var ifAddBlockExistsInterval = setInterval( function() {
+              image = document.querySelector('.ad-detect');
+              visible = image ? image.style.display !== 'none' : false;
+              if (debug) {
+                  console.log('проверка видимости картинки на goto ' + visible);
+              }
+              if (!visible) {
+                  setShopActivated(store, false);
+                  clearInterval(ifAddBlockExistsInterval)
+              }
+          }, 500);
+      }
+  }
+
+  function isActivated(storeRoute){
+    var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
+    var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
+    if (debug) {
+        console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
+    }
+    return isActive;
+  }
+
+
   return {
     findShop: findShop,
-    analizeActivated: analizeActivated
+    analizeActivated: analizeActivated,
+    isActivated: isActivated
   };
 
 

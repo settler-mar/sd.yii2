@@ -9,31 +9,30 @@ var plugins = (function(){
                     '<div class="install-plugin_button-close">'+iconClose+'</div>'+
                 '</div>'+
             '</div>';
-    var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
     var pluginInstallDivClass = 'install-plugin-index';
     var pluginInstallDivAccountClass = 'install-plugin-account';
     var cookiePanelHidden = 'sd-install-plugin-hidden';
     var cookieAccountDivHidden = 'sd-install-plugin-account-hidden';
+    var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
     var extensions = {
         'chrome': {
             'div_id': 'sd_chrome_app',
             'used': !!window.chrome && window.chrome.webstore !== null && !isOpera,
-            'text':'Установите наше расширение для браузера и больше никогда не пропустите кэшбэк!',
+            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://chrome.google.com/webstore/category/extensions',
             'install_button_class': 'plugin-browsers-link-chrome'
-
         },
         'firefox': {
             'div_id': 'sd_firefox_app',
             'used':  typeof InstallTrigger !== 'undefined',
-            'text':'Установите наше расширение для браузера и больше никогда не пропустите кэшбэк!',
+            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://addons.mozilla.org/ru/firefox/',
             'install_button_class': 'plugin-browsers-link-firefox'
         },
         'opera': {
             'div_id': 'sd_opera_app',
             'used': isOpera,
-            'text':'Установите наше расширение для браузера и больше никогда не пропустите кэшбэк!',
+            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://addons.opera.com/ru/extensions/?ref=page',
             'install_button_class': 'plugin-browsers-link-opera'
         }
