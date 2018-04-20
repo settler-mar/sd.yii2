@@ -1,4 +1,3 @@
-var showCashback = true;//это настройка, выводить ли кэшбек
 var iconFlashInterval;
 var iconFlashIntervalMax;
 var defaultIcon = true;
@@ -6,18 +5,14 @@ var iconFlashTime = 300;//время мерцания
 var stop = true;
 var maxFlashInterval = 10000;//время для принудительного выключения
 var storeCashback = false;
+var currentTab = false;
+var tabsCashback = [];
 
+function displayCashback(cashback){
+    cashback = cashback ? cashback.toString() : '';
 
-function toggleIcon() {
-    var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
-    defaultIcon = !defaultIcon;
-    var cashback = storeCashback ? storeCashback.toString() : '';
-
-    chrome.browserAction.setIcon({
-        path: icon
-    });
     chrome.browserAction.setBadgeBackgroundColor({
-       color: "#666"
+        color: "#666"
     });
 
     cashback = cashback.replace(/^\s+/, "");
@@ -25,6 +20,17 @@ function toggleIcon() {
     chrome.browserAction.setBadgeText({
         text: cashback
     });
+}
+
+function toggleIcon() {
+    var icon = defaultIcon ? 'img/favicon-32x32-little.png' : 'img/favicon-32x32.png';
+    defaultIcon = !defaultIcon;
+
+    chrome.browserAction.setIcon({
+        path: icon
+    });
+
+    displayCashback(storeCashback);
 
     if (stop && defaultIcon){
         clearInterval(iconFlashInterval);
@@ -32,7 +38,8 @@ function toggleIcon() {
 }
 
 function iconFlashStart(cashback) {
-    //todo пока только передали кэшбэк
+    tabsCashback[currentTab] = cashback;
+
     storeCashback = cashback;
     if (stop) {
         defaultIcon = true;
@@ -46,22 +53,19 @@ function iconFlashStart(cashback) {
     iconFlashIntervalMax = setTimeout(iconFlashStop, maxFlashInterval);
 }
 
-function iconFlashStop() {
-    //storeCashback = false;
+function iconFlashForceStop(){
     stop = true;
+    defaultIcon = true;
+    chrome.browserAction.setIcon({
+        path: 'img/favicon-32x32.png'
+    });
+    displayCashback(false);
+    clearInterval(iconFlashInterval);
+    clearTimeout(iconFlashIntervalMax);
 }
 
-function iconFlashClearCashback(){
-    storeCashback = false;
-    if (!stop) {
-        //если идёт моргание, пусть само правильно закончится
-        stop = true;
-    } else {
-        //иначе просто очищаем надпись
-        chrome.browserAction.setBadgeText({
-            text: ''
-        });
-    }
+function iconFlashStop() {
+    stop = true;
 }
 
 function encodeQueryData(data) {
@@ -70,6 +74,13 @@ function encodeQueryData(data) {
         result.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     return result.join('&');
 }
+
+chrome.tabs.onActiveChanged.addListener(function (tabId){
+    iconFlashForceStop();
+    currentTab = tabId;
+    currentCashback = tabsCashback[currentTab] !== undefined && tabsCashback[currentTab] !== null ? tabsCashback[currentTab] : false;
+    displayCashback(currentCashback);
+});
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, callback) {
@@ -103,9 +114,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     }
     if (request.action === "icon_flash_stop") {
         iconFlashStop();
-    }
-    if (request.action === "icon_flash_clear_cashback") {
-        iconFlashClearCashback();
     }
 
 });
