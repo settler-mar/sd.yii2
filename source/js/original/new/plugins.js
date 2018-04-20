@@ -26,7 +26,7 @@ var plugins = (function(){
             'div_id': 'sd_firefox_app',
             'used':  typeof InstallTrigger !== 'undefined',
             'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
-            'href': 'https://addons.mozilla.org/ru/firefox/',
+            'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
             'install_button_class': 'plugin-browsers-link-firefox'
         },
         'opera': {
