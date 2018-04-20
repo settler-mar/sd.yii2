@@ -1,5 +1,50 @@
 .static-page {
 
+  &_background-image {
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 3px 3px 0 3px;
+    background-color: #f8f8f8;
+
+    &-in {
+      border: 1px solid #ddd;
+      border-radius: 5px 5px 0 0;
+      border-bottom: none;
+      height: 540px;
+      background-size: cover;
+      background-position: 50%;
+      box-sizing: border-box;
+
+      @include media($phones) {
+        height: 600px;
+      }
+    }
+
+    h1 {
+      color: #fff;
+      margin-top: 145px;
+
+      @include media($tablets) {
+        margin-top: 100px;
+      }
+      @include media($phones) {
+        margin-top: 30px;
+      }
+    }
+
+    h2 {
+      color: #fff;
+      margin-top: 100px;
+
+      @include media($tablets) {
+        margin-top: 60px;
+      }
+      @include media($phones) {
+        margin-top: 30px;
+      }
+    }
+  }
 
 
   &_dopline {
@@ -57,52 +102,7 @@
     }
   }
   .plugin {
-    position: relative;
 
-
-    &_image {
-
-      &-wrap {
-        position: absolute;
-        width: 100%;
-        height: 520PX;
-        top: -270PX;
-        z-index: -100;
-        border-radius: 5px;
-        overflow: hidden;
-        box-sizing: border-box;
-        padding: 3px;
-        background-color: #f8f8f8;
-      }
-      background-image: url(https://secretdiscounter.ru/img/plugin/ru/secretdiscounter-plugin-fon-2-1170.jpg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: 50%;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-      height: 100%;
-    }
-
-    h2.white {
-      color: #fff;
-      margin-top: 73PX;
-      margin-bottom: 125PX;
-
-      @include media($laptop-min) {
-        margin-top: 90px;
-        margin-bottom: 60PX;
-      }
-
-      @include media($tablets) {
-        margin-top: 95PX;
-        margin-bottom: 60PX;
-      }
-      @include media($phones) {
-        margin-top: 67PX;
-        margin-bottom: 5px;
-      }
-    }
     .gray-box {
       padding: 10px;
       border-radius: 10px;
@@ -326,9 +326,5 @@
   h1.white {
     color: #fff;
     margin-top: 180px;
-  }
-  h1.plugin-white {
-    color: #fff;
-    margin-top: 145PX;
   }
 }

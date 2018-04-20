@@ -4,16 +4,16 @@
         <div class="static-page_background-image {{ background_image_full.class_name }}">
             <div class="static-page_background-image-in" style="background-image: url(images/templates/{{ background_image_full.image }});" >
                 <h1 class="align-center {{ h1_class }}">
-                    {{ h1 }}
+                    {{ h1|raw }}
                 </h1>
                 {% if h2 %}
-                    <h2 class="title-no-line">{{ h2 }}</h2>
+                    <h2 class="title-no-line">{{ h2|raw }}</h2>
                 {% endif %}
             </div>
         </div>
     {% else %}
         <h1 class="align-center {{ h1_class }}">
-            {{ h1 }}
+            {{ h1|raw }}
         </h1>
     {% endif %}
     <div  class="static-page-content margin">
