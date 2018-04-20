@@ -1,24 +1,21 @@
 .static-page {
 
   &_background-image {
-    border-radius: 5px 5px 0 0;
+    border-radius: 5px;
     overflow: hidden;
     box-sizing: border-box;
-    padding: 3px 3px 0 3px;
-    background-color: #f8f8f8;
+    padding: 0;
 
     &-in {
-      border: 1px solid #ddd;
-      border-radius: 5px 5px 0 0;
-      border-bottom: none;
-      height: 540px;
+      border: 1px solid #eee;
+      border-radius: 5px 5px;
+      height: 500px;
       background-size: cover;
       background-position: 50%;
       box-sizing: border-box;
+      background-color: #fff;
+      background-repeat: no-repeat;
 
-      @include media($phones) {
-        height: 600px;
-      }
     }
 
     h1 {
@@ -44,6 +41,24 @@
         margin-top: 30px;
       }
     }
+
+    &-plugin {
+      border-radius: 5px 5px 0 0;
+      padding: 3px 3px 0 3px;
+      background-color: #f8f8f8;
+
+
+      .static-page_background-image-in {
+        height: 540px;
+        border: 1px solid #ddd;
+        border-radius: 5px 5px 0 0;
+        border-bottom: none;
+
+        @include media($phones) {
+          height: 600px;
+        }
+      }
+    }
   }
 
 
@@ -57,50 +72,6 @@
 
   }
 
-  .mail-ru {
-    position: relative;
-
-    &_image {
-      background-image: url(https://secretdiscounter.ru/img/bonus.mail.ru/secretdiscounter-mailbonus.jpg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: 50%;
-
-      position: absolute;
-      width: 100%;
-      height: 520PX;
-      top: -278PX;
-      z-index: -100;
-      border-radius: 5px;
-      overflow: hidden;
-      @include media($laptop-min) {
-        top: -300PX;
-      }
-      @include media($tablets) {
-        top: -300PX;
-      }
-      @include media($phones) {
-        top: -300PX;
-      }
-    }
-
-    h2.white {
-      color: #fff;
-      margin-top: 50px;
-      margin-bottom: 200px;
-
-      @include media($laptop-min) {
-        margin-top: 100PX;
-      }
-
-      @include media($tablets) {
-        margin-top: 100PX;
-      }
-      @include media($phones) {
-        margin-top: 55PX;
-      }
-    }
-  }
   .plugin {
 
     .gray-box {
@@ -325,6 +296,5 @@
 
   h1.white {
     color: #fff;
-    margin-top: 180px;
   }
 }

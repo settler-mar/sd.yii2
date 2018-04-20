@@ -1,8 +1,8 @@
 <section class="static-page margin">
 
     {% if background_image_full.image %}
-        <div class="static-page_background-image {{ background_image_full.class_name }}">
-            <div class="static-page_background-image-in" style="background-image: url(images/templates/{{ background_image_full.image }});" >
+        <div class="static-page_background-image {% if background_image_full.class_name %} static-page_background-image-{{ background_image_full.class_name }}{% endif %}">
+            <div class="static-page_background-image-in" style="background-image: url(img/{{ background_image_full.image }});" >
                 <h1 class="align-center {{ h1_class }}">
                     {{ h1|raw }}
                 </h1>
