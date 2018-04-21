@@ -47,9 +47,10 @@ var plugins = (function(){
             var section = document.createElement('section');
             section.className = 'install-plugin';
             section.innerHTML = template;
-            var contentWrap = document.body.querySelector('.content-wrap');
-            if (contentWrap) {
-                contentWrap.insertBefore(section, contentWrap.firstChild);
+
+            var secondline = document.body.querySelector('.header-secondline');
+            if (secondline) {
+                secondline.appendChild(section);
                 document.querySelector('.install-plugin_button-close').onclick = closeClick;
             }
         }

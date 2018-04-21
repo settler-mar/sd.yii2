@@ -1,6 +1,8 @@
 .install-plugin {
   background-color: $header_bg_up;
-  //display: none;
+  height: 40px;
+  overflow: hidden;
+  transition: height 0.3s linear;
 
   &_inner {
     text-align: center;
@@ -13,8 +15,9 @@
 
   &_text {
     color: $header_color_up;
-    padding: 10px;
-    margin-left: 15px;
+    padding: 10px 10px 10px 0;
+    margin-left: 0;
+    line-height: normal;
   }
   &_close {
     font-size: 20px;
@@ -61,6 +64,10 @@
       display: none;
     }
   }
+}
+.header-secondline.scroll-down .install-plugin {
+  //display: none;
+  height: 0;
 }
 
 .plugin-browsers {
