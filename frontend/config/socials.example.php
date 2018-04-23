@@ -82,12 +82,13 @@ return [ // You can change the providers and their classes.
     'clientSecret' => '..',
     'title' => 'Регистрация через Vkontakte',
   ],
-//    'mailru' => array(
-//      // register your app here: http://api.mail.ru/sites/my/add
-//      'class' => 'nodge\eauth\services\MailruOAuth2Service',
-//      'clientId' => '...',
-//      'clientSecret' => '...',
-//    ),
+  'mailru' => [
+    // register your app here: http://api.mail.ru/sites/my/add
+    'class' => 'frontend\components\socials\Mailru',
+    'clientId' => '66bc891f553f4e17e80f968dea1240be',
+    'title' => 'Регистрация через Mail.ru',
+    'clientSecret' => '36f57ec91d958cd62ec84e772c84dcdc',
+  ],
   'odnoklassniki' => [
     // register your app here: http://dev.odnoklassniki.ru/wiki/pages/viewpage.action?pageId=13992188
     // ... or here: http://www.odnoklassniki.ru/dk?st.cmd=appsInfoMyDevList&st._aid=Apps_Info_MyDev
