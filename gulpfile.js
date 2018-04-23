@@ -353,7 +353,7 @@ gulp.task('plugin', function(){
         .pipe(plugins.rename('manifest.json'))
         .pipe(gulp.dest(paths.plugin.browsers[key].dest));
 
-    gulp.src(paths.plugin.browsers[key].dest+'/*')
+    gulp.src(paths.plugin.browsers[key].dest+'/**')
       .pipe(zip(key+'.zip'))
       .pipe(gulp.dest(paths.plugin.browsers[key].dest+'/../'));
     console.log(key+'.zip');
