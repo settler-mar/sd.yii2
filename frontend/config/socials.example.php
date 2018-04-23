@@ -85,9 +85,9 @@ return [ // You can change the providers and their classes.
   'mailru' => [
     // register your app here: http://api.mail.ru/sites/my/add
     'class' => 'frontend\components\socials\Mailru',
-    'clientId' => '66bc891f553f4e17e80f968dea1240be',
+    'clientId' => '',//в настройках  - ID 6 цифр
     'title' => 'Регистрация через Mail.ru',
-    'clientSecret' => '36f57ec91d958cd62ec84e772c84dcdc',
+    'clientSecret' => '',//в настройках - Секретный ключ
   ],
   'odnoklassniki' => [
     // register your app here: http://dev.odnoklassniki.ru/wiki/pages/viewpage.action?pageId=13992188

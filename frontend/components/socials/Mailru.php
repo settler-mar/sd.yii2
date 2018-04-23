@@ -19,11 +19,17 @@ class Mailru extends \nodge\eauth\services\MailruOAuth2Service
         ]);
 
         $info = $info[0];
-        //ddd($info);
 
-        $this->attributes['id'] = $info['uid'];
-        $this->attributes['name'] = $info['first_name'] . ' ' . $info['last_name'];
+        $this->attributes['social_name'] = $this->name;
+        $this->attributes['social_id'] = strval($info['uid']);
+        $this->attributes['name'] = $info['first_name'] . ($info['last_name'] ? ' '.$info['last_name'] : '');
         $this->attributes['url'] = $info['link'];
+        $this->attributes['email'] = $info['email'];
+        $this->attributes['photo'] = $info['pic'];
+        $this->attributes['sex'] = $info['sex'] === null ? null :
+            ($info['sex'] == '0' ? 'm' : ($info['sex'] == '1' ? 'f' : null));
+        $this->attributes['birthday'] = !empty($info['birthday']) ?
+            date('Y-m-d H:i:s', strtotime($info['birthday'])) : null;
 
         return true;
     }
