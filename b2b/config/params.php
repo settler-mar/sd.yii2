@@ -1,7 +1,7 @@
 <?php
 return [
-    'adminEmail' => 'admin@secretdiscounter.ru',
-    'registerEmailOffline' => 'admin@secretdiscounter.ru',
-    'registerEmail' => 'admin@secretdiscounter.ru',
+    'adminEmail' => 'admin@secretdiscounter.com',
+    'registerEmailOffline' => 'admin@secretdiscounter.com',
+    'registerEmail' => 'admin@secretdiscounter.com',
 
 ];
