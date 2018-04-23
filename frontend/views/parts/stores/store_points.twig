@@ -2,11 +2,18 @@
   <div class="page-wrap">
     <div class="store-points__info">
 
+      {% set map_hide = store_points.points|length == 0 %}
+
       {#шапка от условий#}
       {% if store_points.points|length == 1 %}
         {#одна точка#}
         <h2>Адрес торговой точки {{ current_store.name }} в {{ store_points.cities[0] }}</h2>
-
+        {#<select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_country" id="store_point_country">#}
+          {#<option value="{{ store_points.points[0].country }}" selected>{{ store_points.points[0].country }}</option>#}
+        {#</select>#}
+        {#<select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_city" id="store_point_city">#}
+          {#<option value="{{ store_points.sities[0] }}" selected>{{ store_points.sities[0] }}</option>#}
+        {#</select>#}
       {% elseif store_points.countries|length == 1 and store_points.cities|length == 1 %}
         {#несколько точек в одном городе #}
         <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}
@@ -25,16 +32,15 @@
               <div class="form-input-group">
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
                 <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city" id="store_point_city">
-                    {#{% for city in store_points.cities %}#}
-                      {#<option value="{{ city }}">{{ city }}</option>#}
-                    {#{% endfor %}#}
+                    {% for city in store_points.cities %}
+                      <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
                 </select>
               </div>s
             </div>
           </div>
 
         </div>
-        {% set no_visible = 0 %}
 
 
       {% else %}
@@ -71,12 +77,10 @@
             </div>
           </div>
 
-        {% set no_visible = 0 %}
-
       {% endif %}
       {#вывод точек для всех условий #}
       <div
-          class="store-points__points{% if store_points.points|length == 1 %} single{% endif %} {% if no_visible == 1 %} store-points__points-hidden{% endif %}"
+          class="store-points__points{% if store_points.points|length == 1 %} single{% endif %} {% if map_hide %} store-points__points-hidden{% endif %}"
           id="store-points">
         <table class="store-points__points_table adaptive adaptive-tablets">
           <tr class="store-points__points_head">
@@ -89,7 +93,7 @@
           {% for store_point in store_points.points %}
             <tr data-city="{{ store_point.city }}"
                 data-country="{{ store_point.country }}"
-                class="store-points__points_row{% if no_visible == 1 %} store-points__points_row-hidden{% endif %}">
+                class="store-points__points_row{% if map_hide %} store-points__points_row-hidden{% endif %}">
               <td>{{ store_point.name }}</td>
               <td>{{ store_point.address }}</td>
               <td>
@@ -113,7 +117,7 @@
 
     </div>
 
-    <div id="map" class="store-points__map{% if no_visible == 1 %} store-points__map-hidden{% endif %} "></div>
+    <div id="map" class="store-points__map{% if map_hide %} store-points__map-hidden{% endif %} "></div>
   </div>
 
 </section>
@@ -182,7 +186,7 @@
         imagePath: '/images/google_clusterer/m'
       });
       var city = false, country = false;
-      {% if no_visible != 1 %}
+      {% if map_hide == 0 %}
       //пишем, чтобы показать на карте
         country = '{{ store_points.points[0].country }}';
         city = '{{ store_points.cities[0] }}';
@@ -235,7 +239,7 @@
   };
 </script>
 
-{% if no_visible == 1 %}
+{% if map_hide %}
   <script src="https://maps.googleapis.com/maps/api/js?key={{ app.params.googleApiKey }}&libraries=places" async
           defer></script>
 {% else %}
