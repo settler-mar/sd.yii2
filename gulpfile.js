@@ -20,7 +20,9 @@ var gulp        = require('gulp'),
     cheerio = require('gulp-cheerio'),
     svgSprite = require('gulp-svg-sprite'),
     svgscaler = require('svg-scaler'),
-    svgo = require('gulp-svgo');
+    svgo = require('gulp-svgo'),
+
+    zip = require('gulp-zip');
 
 var paths = {
     source: {/*пути с исходниками*/
@@ -350,6 +352,11 @@ gulp.task('plugin', function(){
     gulp.src(paths.plugin.source + '/' +paths.plugin.browsers[key].manifest)
         .pipe(plugins.rename('manifest.json'))
         .pipe(gulp.dest(paths.plugin.browsers[key].dest));
+
+    gulp.src(paths.plugin.browsers[key].dest+'/*')
+      .pipe(zip(key+'.zip'))
+      .pipe(gulp.dest(paths.plugin.browsers[key].dest+'/../'));
+    console.log(key+'.zip');
   }
 
 });
