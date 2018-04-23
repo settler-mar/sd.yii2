@@ -167,6 +167,8 @@ class AccountController extends Controller
 
   public function actionSettings()
   {
+    $userUpdated = false;
+
     $user = UserSetting::find()
       ->where(['uid' => Yii::$app->user->id])
       ->one();
@@ -185,12 +187,17 @@ class AccountController extends Controller
 
     if ($post && $user->load($post) && $user->save()) {
       Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
-      return $this->redirect('/account/settings');
+      //return $this->redirect('/account/settings');
+        $userUpdated = true;
     }
 
     if ($post && $user_pass->load($post) && $user_pass->save()) {
       Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
-      return $this->redirect('/account/settings');
+      //return $this->redirect('/account/settings');
+        $userUpdated = true;
+    }
+    if ($userUpdated) {
+        return $this->redirect('/account/settings');
     }
 
     $user_pass->old_password='';
