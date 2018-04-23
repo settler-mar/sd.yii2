@@ -20,8 +20,9 @@ var store_points = (function(){
             }
         }
         $(points).addClass('hidden');
-        googleMap.showMap();
-        googleMap.showMarker(country, '');
+       // googleMap.showMap();
+       // googleMap.showMarker(country, '');
+        changeCity();
 
     }
 
@@ -73,11 +74,14 @@ var store_points = (function(){
 
     });
 
-    window.onload = function() {
+    function load(){
         changeCountry();
-        changeCity()
     }
 
+    load();
 
 })();
+
+
+
 

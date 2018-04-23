@@ -43,6 +43,10 @@
       .form-input-group {
         height: 40px;
         margin-left: 20px;
+
+        @include media($phones) {
+          margin-left: 0;
+        }
       }
 
 
