@@ -60,11 +60,37 @@ class DefaultController extends Controller
         'points' => $model->points,
       ];
       if ($user->save()) {
-        Yii::$app->session->addFlash('info', 'Ваша заяка отправлена. В ближайшее время с Вами свяжется администратор.');
+        //отправить письмо пользователю
+          Yii::$app
+              ->mailer
+              ->compose(
+                  [
+                      'html' => 'b2b-register-offline-shop-html',
+                      'text' => 'b2b-register-offline-shop-txt'],
+                  ['user' => $user, 'anketa' => json_decode($user->anketa)]
+              )
+              ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+              ->setTo($user->email)
+              ->setSubject('Заявка на регистрацию оффлайн шопа на SecretDiscounter.ru')
+              ->send();
+        //отправить письмо админу
+          Yii::$app
+              ->mailer
+              ->compose(
+                  [
+                      'html' => 'b2b-register-offline-shop-admin-html',
+                      'text' => 'b2b-register-offline-shop-admin-txt'],
+                  ['user' => $user, 'anketa' => json_decode($user->anketa)]
+              )
+              ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+              ->setTo(Yii::$app->params['supportEmail'])
+              ->setSubject('Заявка на регистрация оффлайн шопа на SecretDiscounter.ru')
+              ->send();
+
+        Yii::$app->session->addFlash('info', 'Ваша заявка отправлена. В ближайшее время с Вами свяжется администратор.');
         return $this->redirect('/registration_finish');
       }
     }
-
     $page['model'] = $model;
     $page['reCaptcha'] = \himiklab\yii2\recaptcha\ReCaptcha::className();
 
