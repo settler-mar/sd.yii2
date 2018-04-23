@@ -78,7 +78,12 @@ class UsersSocial extends \yii\db\ActiveRecord
 
   public static function findByEAuth($attributes)
   {
-    return self::findOne(['social_name' => $attributes['social_name'], 'social_id' => $attributes['social_id']]);
+    $request = Yii::$app->request;
+    $data=[
+        'social_name' => isset($attributes['social_name'])?$attributes['social_name']:$request->get('service'),
+        'social_id' => isset($attributes['social_id'])?$attributes['social_id']:$attributes['id']
+    ];
+    return self::findOne($data);
   }
 
   /**
@@ -98,9 +103,14 @@ class UsersSocial extends \yii\db\ActiveRecord
       $userSocial->user_id = null;
       if (!$userSocial->validate() || !$userSocial->save()) {
         //ddd($userSocial);
+        $request = Yii::$app->request;
+        $data=[
+            'social_name' => isset($attributes['social_name'])?$attributes['social_name']:$request->get('service'),
+            'social_id' => isset($attributes['social_id'])?$attributes['social_id']:$attributes['id']
+        ];
         Yii::$app->session->addFlash(
             'error',
-            Yii::t('account', 'social_login by {social_name} fails', ['social_name' => $attributes['social_name']])
+            Yii::t('account', 'social_login by {social_name} fails', $data)
         );
         return null;
       };
