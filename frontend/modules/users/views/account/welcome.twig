@@ -7,27 +7,29 @@
   </section>
 {% endif %}
 
-<section class="align-center margin border-wrap flex-line flex-line-untill-tablets install-plugin-account hidden flex-align-center">
-  <img class="account-image-width-250" src="/images/templates/browsers.png" alt="плагины для браузеров">
-  <div>
-    <h3 class="margin-half account-margin-top account-cashbonus">Установите наше расширение для браузера, и оно само напомнит о кэшбэке</h3>
-    <div class="margin-half flex-line flex-line-untill-tablets flex-align-center flex-around">
-      <a href="https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-chrome hidden">Установить для Chrome&nbsp;&rarr;</a>
-      <a href="https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-firefox hidden">Установить для Firefox&nbsp;&rarr;</a>
-      <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-opera hidden">Установить для Opera&nbsp;&rarr;</a>
-      <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-yandex hidden">Установить для Yandex&nbsp;&rarr;</a>
-      <a href="#"
-         data-notyfy_class="notify_box-alert"
-         class="btn plugin-browsers-link plugin-browsers-link-safari hidden disabled"
-         data-button_yes="false"
-         data-title="Приносим свои извинения"
-         data-question="Плагин для браузера Safari находится в разработке">
-            Установить для Safari&nbsp;&rarr;
-      </a>
-      <a href="#" class="install-plugin-account-later">Напомнить позже</a>
+{% set browsers = app.params.plugin.browsers %}
+{% if browsers %}
+  <section class="align-center margin border-wrap flex-line flex-line-untill-tablets install-plugin-account hidden flex-align-center">
+    <img class="account-image-width-250" src="/images/templates/browsers.png" alt="плагины для браузеров">
+    <div>
+      <h3 class="margin-half account-margin-top account-cashbonus">Установите наше расширение для браузера, и оно само напомнит о кэшбэке</h3>
+      <div class="margin-half flex-line flex-line-untill-tablets flex-align-center flex-around">
+        {% for key, browser in browsers %}
+          {% if browser.status != 'disabled' %}
+            <a href="{{ browser.url }}" target="_blank"  class="btn plugin-browsers-link plugin-browsers-link-{{ key }} hidden {% if browser.status == 'inactive' %} disabled {% endif %}"
+              {% if browser.status == 'inactive'  %}
+              data-notyfy_class="notify_box-alert"
+              data-button_yes="false"
+              data-title="Приносим свои извинения"
+              data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
+              {% endif %}>Установить для {{ _ucfirst(key) }}&nbsp;&rarr;</a>
+          {% endif %}
+        {% endfor %}
+        <a href="#" class="install-plugin-account-later">Напомнить позже</a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+{% endif %}
 
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}

@@ -1,3 +1,5 @@
+{% set browsers = app.params.plugin.browsers %}
+{% if browsers %}
 <section class="margin install-plugin-index hidden ">
     <div class="page-wrap">
     <div class="install-plugin-index_border border-double align-center">
@@ -8,35 +10,30 @@
             </p>
             <p><strong>Расширение доступно для следующих браузеров:</strong></p>
             <div class="plugin-browsers margin-half">
-                <a href="https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn" target="_blank" class="plugin-browsers-browser plugin-browsers-browser-chrome current">{{ svg("chrome")|raw}}</a>
-                <a href="https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/" target="_blank" class="plugin-browsers-browser plugin-browsers-browser-firefox">{{ svg("firefox")|raw}}</a>
-                <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank" class="plugin-browsers-browser plugin-browsers-browser-opera">{{ svg("opera")|raw}}</a>
-                <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank"  class="plugin-browsers-browser plugin-browsers-browser-yandex disabled"
-                   data-notyfy_class="notify_box-alert"
-                   data-button_yes="false"
-                   data-title="Приносим свои извинения"
-                   data-question="Плагин для браузера Yandex находится в разработке">{{ svg("yandex")|raw}}</a>
-                <a href="#"
-                   data-notyfy_class="notify_box-alert"
-                   class="plugin-browsers-browser plugin-browsers-browser-safari disabled"
-                   data-button_yes="false"
-                   data-title="Приносим свои извинения"
-                   data-question="Плагин для браузера Safari находится в разработке">
-                    {{ svg("safari")|raw}}
-                </a>
+                {% for key, browser in browsers %}
+                    {% if browser.status != 'disabled' %}
+                        <a href="{{ browser.url }}" target="_blank"  class="plugin-browsers-browser plugin-browsers-browser-{{ key }} {% if browser.status == 'inactive' %} disabled {% endif %}"
+                           {% if browser.status == 'inactive'  %}
+                           data-notyfy_class="notify_box-alert"
+                           data-button_yes="false"
+                           data-title="Приносим свои извинения"
+                           data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
+                           {% endif %}>{{ svg(browser.svg)|raw}}</a>
+                    {% endif %}
+                {% endfor %}
             </div>
             <div class="margin-half">
-                <a href="https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-chrome hidden">Установить для Chrome&nbsp;&rarr;</a>
-                <a href="https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-firefox hidden">Установить для Firefox&nbsp;&rarr;</a>
-                <a href="https://addons.opera.com/ru/extensions/?ref=page" target="_blank" class="btn plugin-browsers-link plugin-browsers-link-opera hidden">Установить для Opera&nbsp;&rarr;</a>
-                <a href="https://addons.opera.com/ru/extensions/?ref=page" target="blank" class="btn plugin-browsers-link plugin-browsers-link-yandex hidden">Установить для Yandex&nbsp;&rarr;</a>
-                <a href="#"
-                   class="btn plugin-browsers-link plugin-browsers-link-safari hidden disabled"
-                   data-notyfy_class="notify_box-alert"
-                   data-button_yes="false"
-                   data-title="Приносим свои извинения"
-                   data-question="Плагин для браузера Safari находится в разработке"
-                >Установить для Safari&nbsp;&rarr;</a>
+                {% for key, browser in browsers %}
+                    {% if browser.status != 'disabled' %}
+                        <a href="{{ browser.url }}" target="_blank"  class="btn plugin-browsers-link plugin-browsers-link-{{ key }} hidden {% if browser.status == 'inactive' %} disabled {% endif %}"
+                                {% if browser.status == 'inactive'  %}
+                            data-notyfy_class="notify_box-alert"
+                            data-button_yes="false"
+                            data-title="Приносим свои извинения"
+                            data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
+                                {% endif %}>Установить для {{ _ucfirst(key) }}&nbsp;&rarr;</a>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -44,3 +41,4 @@
     </div>
 
 </section>
+{% endif %}

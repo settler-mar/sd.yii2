@@ -27,6 +27,10 @@ var store_points = (function(){
     }
 
     function changeCity(){
+        if (typeof googleMap === 'undefined') {
+            return null;
+        }
+
         var that = $('#store_point_city');
         var city = $('option:selected', that).attr('value'),
             country = $('option:selected', $('#store_point_country')).attr('value'),

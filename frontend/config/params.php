@@ -71,5 +71,43 @@ $data['TinyMce'] = [
         ]
     ]
 ];/**/
+$data['plugin'] = [
+    'browsers' => [
+        'chrome' => [
+            'url' => 'https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn',
+            'svg' => 'chrome',
+            'status' => 'enabled',
+           // 'button_text' => 'Установить для Chrome&nbsp;&rarr;',
+        ],
+        'firefox' => [
+            'url' => 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
+            'svg' => 'firefox',
+            'status' => 'enabled',
+           // 'button_text' => 'Установить для Firefox&nbsp;&rarr;',
+        ],
+        'opera' => [
+            'url' => '',
+            'svg' => 'opera',
+            'status' => 'inactive',
+           // 'button_text' => 'Установить для Opera&nbsp;&rarr;',
+           // 'inactive_text' => 'Плагин для браузера Opera находится в разработке',
+        ],
+        'yandex' => [
+            'url' => '',
+            'svg' => 'yandex',
+            'status' => 'inactive',
+          //  'button_text' => 'Установить для Yandex&nbsp;&rarr;',
+           // 'inactive_text' => 'Плагин для браузера Yandex находится в разработке',
+        ],
+        'safari' => [
+            'url' => '',
+            'svg' => 'safari',
+            'status' => 'inactive',//'disabled'
+           // 'button_text' => 'Установить для Savari&nbsp;&rarr;',
+           // 'inactive_text' => 'Плагин для браузера Safari находится в разработке',
+        ],
+    ],
+
+];
 
 return $data;

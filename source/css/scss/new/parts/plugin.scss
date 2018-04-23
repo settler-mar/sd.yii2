@@ -104,6 +104,7 @@
         height: 44px;
         margin: 8px;
       }
+
     }
     @include media($tablets) {
       width: 30%;
@@ -127,7 +128,7 @@
         //color: inherit;
       }
     }
-    &-savari:hover svg{
+    &-safari:hover svg{
       width: 50px;
       height: 50px;
       margin: 5px;
