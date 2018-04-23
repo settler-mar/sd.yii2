@@ -54,7 +54,7 @@
     {% set slider=this.all_params.slider %}
 
     <div class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
-      {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' and app.controller.params['breadcrumbs'] %} margin-top{% endif %}">
+      {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' %} margin-top{% endif %}">
 
       {% if slider|length > 0 %}
         {% include 'parts/slider.twig' %}

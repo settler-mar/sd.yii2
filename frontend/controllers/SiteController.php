@@ -408,6 +408,7 @@ class SiteController extends SdController
       if ($page['show_breadcrumbs']) {
           $this->params['breadcrumbs'][] = $page['title'];
       }
+      $page['app_params'] = \Yii::$app->params;
       return $this->render('static_page', $page);
     }
   }

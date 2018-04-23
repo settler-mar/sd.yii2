@@ -20,12 +20,17 @@ var store_points = (function(){
             }
         }
         $(points).addClass('hidden');
-        googleMap.showMap();
-        googleMap.showMarker(country, '');
+       // googleMap.showMap();
+       // googleMap.showMarker(country, '');
+        changeCity();
 
     }
 
     function changeCity(){
+        if (typeof googleMap === 'undefined') {
+            return null;
+        }
+
         var that = $('#store_point_city');
         var city = $('option:selected', that).attr('value'),
             country = $('option:selected', $('#store_point_country')).attr('value'),
@@ -73,11 +78,14 @@ var store_points = (function(){
 
     });
 
-    window.onload = function() {
+    function load(){
         changeCountry();
-        changeCity()
     }
 
+    load();
 
 })();
+
+
+
 

@@ -1,5 +1,65 @@
 .static-page {
 
+  &_background-image {
+    border-radius: 5px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 0;
+
+    &-in {
+      border: 1px solid #eee;
+      border-radius: 5px 5px;
+      height: 500px;
+      background-size: cover;
+      background-position: 50%;
+      box-sizing: border-box;
+      background-color: #fff;
+      background-repeat: no-repeat;
+
+    }
+
+    h1 {
+      color: #fff;
+      margin-top: 145px;
+
+      @include media($tablets) {
+        margin-top: 100px;
+      }
+      @include media($phones) {
+        margin-top: 30px;
+      }
+    }
+
+    h2 {
+      color: #fff;
+      margin-top: 100px;
+
+      @include media($tablets) {
+        margin-top: 60px;
+      }
+      @include media($phones) {
+        margin-top: 30px;
+      }
+    }
+
+    &-plugin {
+      border-radius: 5px 5px 0 0;
+      padding: 3px 3px 0 3px;
+      background-color: #f8f8f8;
+
+
+      .static-page_background-image-in {
+        height: 540px;
+        border: 1px solid #ddd;
+        border-radius: 5px 5px 0 0;
+        border-bottom: none;
+
+        @include media($phones) {
+          height: 600px;
+        }
+      }
+    }
+  }
 
 
   &_dopline {
@@ -12,97 +72,8 @@
 
   }
 
-  .mail-ru {
-    position: relative;
-
-    &_image {
-      background-image: url(https://secretdiscounter.ru/img/bonus.mail.ru/secretdiscounter-mailbonus.jpg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: 50%;
-
-      position: absolute;
-      width: 100%;
-      height: 520PX;
-      top: -278PX;
-      z-index: -100;
-      border-radius: 5px;
-      overflow: hidden;
-      @include media($laptop-min) {
-        top: -300PX;
-      }
-      @include media($tablets) {
-        top: -300PX;
-      }
-      @include media($phones) {
-        top: -300PX;
-      }
-    }
-
-    h2.white {
-      color: #fff;
-      margin-top: 50px;
-      margin-bottom: 200px;
-
-      @include media($laptop-min) {
-        margin-top: 100PX;
-      }
-
-      @include media($tablets) {
-        margin-top: 100PX;
-      }
-      @include media($phones) {
-        margin-top: 55PX;
-      }
-    }
-  }
   .plugin {
-    position: relative;
 
-
-    &_image {
-
-      &-wrap {
-        position: absolute;
-        width: 100%;
-        height: 520PX;
-        top: -270PX;
-        z-index: -100;
-        border-radius: 5px;
-        overflow: hidden;
-        box-sizing: border-box;
-        padding: 3px;
-        background-color: #f8f8f8;
-      }
-      background-image: url(https://secretdiscounter.ru/img/plugin/ru/secretdiscounter-plugin-fon-2-1170.jpg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: 50%;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-      height: 100%;
-    }
-
-    h2.white {
-      color: #fff;
-      margin-top: 73PX;
-      margin-bottom: 125PX;
-
-      @include media($laptop-min) {
-        margin-top: 90px;
-        margin-bottom: 60PX;
-      }
-
-      @include media($tablets) {
-        margin-top: 95PX;
-        margin-bottom: 60PX;
-      }
-      @include media($phones) {
-        margin-top: 67PX;
-        margin-bottom: 5px;
-      }
-    }
     .gray-box {
       padding: 10px;
       border-radius: 10px;
@@ -187,6 +158,13 @@
           height: 44px;
           margin: 8px;
         }
+        &:hover {
+          svg{
+            width: 50px !important;
+            height: 50px !important;
+            margin: 5px !important;
+          }
+        }
       }
       @include media($tablets) {
         width: 33%;
@@ -194,6 +172,14 @@
       }
       @include media($phones) {
         width: 100%;
+      }
+      &:hover {
+
+        svg {
+          width: 46px;
+          height: 46px;
+          margin: 7px;
+        }
       }
     }
     &-browser-download {
@@ -214,6 +200,14 @@
           height: 44px;
           margin: 8px;
         }
+        &:hover {
+
+          svg{
+            width: 50px !important;
+            height: 50px !important;
+            margin: 5px !important;
+          }
+        }
       }
       @include media($tablets) {
         width: 30%;
@@ -221,6 +215,14 @@
       }
       @include media($phones) {
         width: 100%;
+      }
+
+      &:hover {
+        svg {
+          width: 46px;
+          height: 46px;
+          margin: 7px;
+        }
       }
 
     }
@@ -325,10 +327,5 @@
 
   h1.white {
     color: #fff;
-    margin-top: 180px;
-  }
-  h1.plugin-white {
-    color: #fff;
-    margin-top: 145PX;
   }
 }

@@ -21,7 +21,7 @@ class Meta extends \yii\db\ActiveRecord
     public $backgroundImageImage;
     public $backgroundImageAlt;
     public $backgroundImageClassName;
-    protected $imagesPath = '/images/templates/';
+    protected $imagesPath = '/img/';
 
     /**
      * @inheritdoc
@@ -65,7 +65,7 @@ class Meta extends \yii\db\ActiveRecord
             'h2' => 'H2',
             'backgroundImageImage' => 'Изображение заставка',
             'backgroundImageAlt' => 'Alt для изображения заставки',
-            'backgroundImageClassName' => 'Class для изображения заставки',
+            'backgroundImageClassName' => 'Вид отображения',
             'content' => 'Content',
             'show_breadcrumbs' => 'Показывать крошки',
         ];

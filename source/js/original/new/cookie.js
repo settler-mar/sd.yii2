@@ -3,9 +3,14 @@ function getCookie(n) {
   return unescape((RegExp(n + '=([^;]+)').exec(document.cookie) || [1, ''])[1]);
 }
 
-function setCookie(name, value) {
-  var cookie_string = name + "=" + escape ( value );
-  document.cookie = cookie_string;
+function setCookie(name, value, days) {
+  var expires = '';
+  if (days) {
+      var date = new Date;
+      date.setDate(date.getDate() + days);
+      expires = '; expires=' + date.toUTCString();
+  }
+  document.cookie = name + "=" + escape ( value ) + expires;
 }
 
 function eraseCookie(name){

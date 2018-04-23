@@ -25,17 +25,16 @@
               <div class="form-input-group">
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
                 <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city" id="store_point_city">
-                  {#<option value="">Выберите город</option>#}
-                    {% for city in store_points.cities %}
-                      <option value="{{ city }}">{{ city }}</option>
-                    {% endfor %}
+                    {#{% for city in store_points.cities %}#}
+                      {#<option value="{{ city }}">{{ city }}</option>#}
+                    {#{% endfor %}#}
                 </select>
-              </div>
+              </div>s
             </div>
           </div>
 
         </div>
-        {% set no_visible = 1 %}
+        {% set no_visible = 0 %}
 
 
       {% else %}
@@ -49,7 +48,6 @@
                 <i>{{ svg('globe','form-icon')|raw }}</i>
                 <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Страна" name="store_point_country"
                         id="store_point_country">
-                  {#<option data-cities="{{ store_points.cities|join(',') }}" value="">Выберите страну</option>#}
                     {% for country, country_arr in store_points.countries %}
                       <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
                     {% endfor %}
@@ -65,16 +63,15 @@
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
                 <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city"
                         id="store_point_city">
-                  {#<option value="">Выберите город</option>#}
-                    {% for city in store_points.cities %}
-                      <option value="{{ city }}">{{ city }}</option>
-                    {% endfor %}
+                    {#{% for city in store_points.cities %}#}
+                      {#<option value="{{ city }}">{{ city }}</option>#}
+                    {#{% endfor %}#}
                 </select>
               </div>
             </div>
           </div>
 
-        {% set no_visible = 1 %}
+        {% set no_visible = 0 %}
 
       {% endif %}
       {#вывод точек для всех условий #}
@@ -186,9 +183,9 @@
       });
       var city = false, country = false;
       {% if no_visible != 1 %}
-      //если одна страна и один город, пишем, чтобы показать на карте
-      country = '{{ store_points.points[0].country }}';
-      city = '{{ store_points.cities[0] }}';
+      //пишем, чтобы показать на карте
+        country = '{{ store_points.points[0].country }}';
+        city = '{{ store_points.cities[0] }}';
       {% endif %}
       if (city && country) {
         this.showMarker(country, city);

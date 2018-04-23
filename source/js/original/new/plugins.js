@@ -18,21 +18,21 @@ var plugins = (function(){
         'chrome': {
             'div_id': 'sd_chrome_app',
             'used': !!window.chrome && window.chrome.webstore !== null && !isOpera,
-            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
-            'href': 'https://chrome.google.com/webstore/category/extensions',
+            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            'href': 'https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn',
             'install_button_class': 'plugin-browsers-link-chrome'
         },
         'firefox': {
             'div_id': 'sd_firefox_app',
             'used':  typeof InstallTrigger !== 'undefined',
-            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
-            'href': 'https://addons.mozilla.org/ru/firefox/',
+            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
             'install_button_class': 'plugin-browsers-link-firefox'
         },
         'opera': {
             'div_id': 'sd_opera_app',
             'used': isOpera,
-            'text':'Установите наше расширение для браузера и оно само напомнит о кэшбэке на сайте магазина!',
+            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://addons.opera.com/ru/extensions/?ref=page',
             'install_button_class': 'plugin-browsers-link-opera'
         }
@@ -47,9 +47,10 @@ var plugins = (function(){
             var section = document.createElement('section');
             section.className = 'install-plugin';
             section.innerHTML = template;
-            var contentWrap = document.body.querySelector('.content-wrap');
-            if (contentWrap) {
-                contentWrap.insertBefore(section, contentWrap.firstChild);
+
+            var secondline = document.body.querySelector('.header-secondline');
+            if (secondline) {
+                secondline.appendChild(section);
                 document.querySelector('.install-plugin_button-close').onclick = closeClick;
             }
         }
@@ -65,12 +66,12 @@ var plugins = (function(){
 
     function closeClick(){
         $('.install-plugin').addClass('install-plugin_hidden');
-        setCookie(cookiePanelHidden, '1');
+        setCookie(cookiePanelHidden, '1', 10);
     }
 
     $('.install-plugin-account-later').click(function(e) {
         e.preventDefault();
-        setCookie(cookieAccountDivHidden, '1');
+        setCookie(cookieAccountDivHidden, '1', 10);
         $('.install-plugin-account').addClass('hidden');
     });
 

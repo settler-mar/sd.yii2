@@ -26,13 +26,13 @@
 
                         <h4>Изображение заставка</h4>
                         <p>
-                            <img for="Meta[backgroundImageImage]" style="max-height: 480px;" src="images/templates/{{ model.backgroundImageImage | raw }}">
+                            <img for="Meta[backgroundImageImage]" style="max-height: 480px;" src="img/{{ model.backgroundImageImage | raw }}">
                         </p>
                         {{ form.field(model, 'backgroundImageImage').fileInput().label(false)|raw }}
 
-                        {{ form.field(model, 'backgroundImageAlt').textInput({'maxlength':true})|raw }}
+                        {#{{ form.field(model, 'backgroundImageAlt').textInput({'maxlength':true})|raw }}#}
 
-                        {{ form.field(model, 'backgroundImageClassName').textInput({'maxlength':true})|raw }}
+                        {{ form.field(model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
 
                         {{ form.field(model, 'h2').textInput({'maxlength':true})|raw }}
 
