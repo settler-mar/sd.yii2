@@ -31,6 +31,7 @@ $data['TinyMce'] = [
         'height' => 500,
         'theme' => 'modern',
         'relative_urls' => false,
+        'convert_urls' =>  false,
         'remove_script_host' => false,
         'document_base_url' => "https://secretdiscounter.ru/",
         'forced_root_block' => false,
