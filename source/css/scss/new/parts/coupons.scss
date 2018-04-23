@@ -168,6 +168,10 @@
         width: 15px;
         height: 15px;
       }
+
+      &-cashback {
+        color: $header_heart !important;
+      }
     }
     &-content {
 
@@ -198,6 +202,9 @@
 
       display: none;
     }
+
+
+
   }
 }
 
