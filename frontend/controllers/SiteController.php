@@ -421,4 +421,28 @@ class SiteController extends SdController
         'html' => $this->renderAjax('modal_video', $request->get())
     ]);
   }
+
+  public function actionTestmail()
+  {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+      Yii::$app
+          ->mailer
+          ->compose(
+              [
+                  'html' => 'welcome-html',
+                  'text' => 'welcome-text'],
+              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+          )
+          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+          ->setTo('oxygenn@list.ru')
+          //->setTo('oxyggenn@google.com')
+          ->setSubject('Тестовое письмо с SecretDiscounter.ru')
+          ->send();
+      return 'Отправлено тестовое письмо';
+
+
+  }
 }

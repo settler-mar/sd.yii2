@@ -1,5 +1,7 @@
 <?php
+
 use yii\helpers\Html;
+
 /* @var $this \yii\web\View view component instance */
 /* @var $message \yii\mail\MessageInterface the message being composed */
 /* @var $content string main view render result */
@@ -9,66 +11,799 @@ use yii\helpers\Html;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?= Yii::$app->charset ?>" />
+    <meta http-equiv="Content-Type" content="text/html; charset=<?= Yii::$app->charset ?>"/>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
 <body id="top">
 <?php $this->beginBody() ?>
-    <body bgcolor="#f7f7f7" style="-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none; width: 100% !important; margin: 0 !important; height: 100%; color: #676767;">
-    <table align="center" cellpadding="0" cellspacing="0" style="min-width: 600px; border-collapse: collapse !important;" width="100%">
-        <tr>
-            <td align="left" valign="top" width="100%" style="background:repeat-x url(https://secretdiscounter.ru/images/email/bg_top.jpg) #ffffff; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; text-align: center; border-collapse: collapse; line-height: 21px;">
-                <center>
-                    <img style="border: none; height: 0px !important; line-height: 1px !important; font-size: 1px !important;" src="https://secretdiscounter.ru/images/email/transparent.png" >
-                    <table cellspacing="0" cellpadding="0" width="100%" bgcolor="#ffffff" background="https://secretdiscounter.ru/images/email/bg_top.jpg" style="background-color:transparent; border-collapse: collapse !important;">
-                        <tr>
-                            <td width="100%" height="80" valign="top" style="text-align: center; vertical-align:middle; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
-                                <!--[if gte mso 9]>
-                                <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="mso-width-percent:1000;height:80px; v-text-anchor:middle;">
-                                    <v:fill type="tile" src="https://secretdiscounter.ru/images/email/bg_top.jpg" color="#ffffff" />
-                                    <v:textbox inset="0,0,0,0">
-                                <![endif]-->
-                                <center>
-                                    <table cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse !important;">
-                                        <tr>
-                                            <td style="vertical-align: middle; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #4d4d4d; border-collapse: collapse; line-height: 21px; padding-left: 10px;">
-                                                <a href="https://secretdiscounter.ru/" target="_blank" style="#4d4d4d; text-decoration: none !important;"><img src="https://secretdiscounter.ru/images/templates/secretdiscounter-logo-d.png" style="border: 0px;width:170px;" alt="logo"></a>
+<body>
+<table class="wrapper-table_mailru_css_attribute_postfix" cellpadding="5" cellspacing="0" width="100%" border="0"
+       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#f6f6f6;background-repeat:no-repeat"
+       bgcolor="#f6f6f6">
+    <tbody>
+    <tr style="border-color:transparent">
+        <td align="center" style="border-collapse:collapse;border-color:transparent">
+
+            <table cellpadding="0" cellspacing="0" width="600px" border="0"
+                   bgcolor="#efd32a"
+                   style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5">
+                <tbody>
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+                        <table cellpadding="0" cellspacing="0"
+                               style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;width:100%"
+                               border="0" width="100%">
+                            <tbody>
+                            <tr style="border-color:transparent">
+                                <th width="600"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="10"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="570"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><span
+                                                                        style="color: #ffffff;font-size: 16px;">Кэшбэк-сервис</span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </td>
                                         </tr>
+                                        </tbody>
                                     </table>
-                                </center>
-                                <!--[if gte mso 9]>
-                                </v:textbox>
-                                </v:rect>
-                                <![endif]-->
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-            </td>
-        </tr>
-        <?= $content ?>
-        <tr>
-            <td align="center" valign="top" width="100%" style="background-color: #f7f7f7; height: 100px; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
-                <center>
-                    <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
-                        <tr>
-                            <td style="text-align: right;">
-                                <a href="https://secretdiscounter.ru/" target="_blank" style="#4d4d4d; text-decoration: none !important;"><img src="https://secretdiscounter.ru/images/email/logo_mini.png" style="border: 0px;width:70px;margin-right: 10px;" alt="logo"></a>
-                            </td>
-                            <td style="padding: 25px 0 25px; text-align: left; font-family: Helvetica, Arial, sans-serif; font-size: 15px; color: #777777; border-collapse: collapse; line-height: 21px;">
-                                Secret Discounter Ltd. Зарегистрирована в Англии под №10201982.<br>
-                                © 2016 Secret Discounter Ltd. Все права защищены.
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-            </td>
-        </tr>
-    </table>
-    <?php $this->endBody() ?>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+                        <table cellpadding="0" cellspacing="0"
+                               style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;width:100%"
+                               border="0" width="100%">
+                            <tbody>
+                            <tr style="border-color:transparent">
+                                <th width="600"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="5"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="570"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top">
+                                                            <div style="color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;display:block;height:31;text-align:center;width:100%"
+                                                                 height="31" align="center" width="100%">
+                                                                <center><img border="0" width="390" height="auto"
+                                                                             align="center"
+                                                                             alt=""
+                                                                             src="https://proxy.imgsmail.ru?email=oxygenn%40list.ru&amp;e=1524805329&amp;h=IHZoAdLQBllOiODN2H1wgw&amp;url171=aW1nLnB1bHNlLXN0YXQuY29tLzlkYWU2ZDYyYzgxNjU2MGE4NDIyNjhiZGUyY2QzMTdkL2ZpbGVzL2VtYWlsc2VydmljZS91c2VyZmlsZXMvNmI2M2VmOTdiOTUwYWNiODhlOTkwZDE1MTc3N2NkMmI2NzYyMTY0L0xvZ29fU2VjcmV0X0Rpc2NvdW50ZXJfSG9yaXpvbnRhbF9XaGl0ZV9UaGluLnBuZw~~&amp;is_https=1"
+                                                                             style="text-decoration:none;border:0;height:auto;line-height:100%;outline:0;display:block">
+                                                                </center>
+                                                            </div>
+                                                        </td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+                        <table cellpadding="0" cellspacing="0"
+                               style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;width:100%"
+                               border="0" width="100%">
+                            <tbody>
+                            <tr style="border-color:transparent">
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
+                                           bgcolor="#e4c84b">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#e4c84b">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="13"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><a
+                                                                        title="Более 1400 магазинов с кэшбэком!"
+                                                                        href="https://secretdiscounter.ru/stores"
+                                                                        target="_blank"
+                                                                        style="text-decoration:none;color:#fff"
+                                                                        rel=" noopener noreferrer">КАТАЛОГ МАГАЗИНОВ</a>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
+                                           bgcolor="#e4c84b">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#e4c84b">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="13"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><a
+                                                                        title="Более 5000 действующих промокодов!"
+                                                                        href="https://secretdiscounter.ru/coupons"
+                                                                        target="_blank"
+                                                                        style="text-decoration:none;color:#fff"
+                                                                        rel=" noopener noreferrer">КУПОНЫ И
+                                                                    ПРОМОКОДЫ</a></p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
+                                           bgcolor="#e4c84b">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#e4c84b">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="13"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><a
+                                                                        title="Приводи друзей и зарабатывай по 15% от их кэшбэка!"
+                                                                        href="https://secretdiscounter.ru/affiliate-system"
+                                                                        target="_blank"
+                                                                        style="text-decoration:none;color:#fff"
+                                                                        rel=" noopener noreferrer">ПАРТНЕРСКАЯ
+                                                                    ПРОГРАММА</a></p>
+                                                        </td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
+                                           bgcolor="#e4c84b">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#e4c84b">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="13"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><a
+                                                                        title="Войти в личный кабинет"
+                                                                        href="https://secretdiscounter.ru/account"
+                                                                        target="_blank"
+                                                                        style="text-decoration:none;color:#fff"
+                                                                        rel=" noopener noreferrer">ВОЙТИ
+                                                                    В КАБИНЕТ</a></p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+
+                        <?= $content ?>
+
+                    </td>
+                </tr>
+
+
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+                        <table cellpadding="0" cellspacing="0"
+                               style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;width:100%"
+                               border="0" width="100%">
+                            <tbody>
+                            <tr style="border-color:transparent">
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:16px !important"
+                                                            width="16" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="118"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><span
+                                                                        style="text-decoration: underline;color: #ffcc00;"><a
+                                                                            title="Только 10% от всех покупателей знают об этом! Читайте и не переплачивайте!"
+                                                                            href="https://secretdiscounter.ru/help"
+                                                                            target="_blank"
+                                                                            style="text-decoration:none;color:inherit"
+                                                                            rel=" noopener noreferrer">Что такое кэшбэк?</a></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:16px !important"
+                                                            width="16" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="5"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:5px !important"
+                                                            width="5" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="140"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><span
+                                                                        style="text-decoration: underline;color: #ffcc00;"><a
+                                                                            title="Чтобы ваша покупка засчиталась, следует выполнять определенные правила"
+                                                                            href="https://secretdiscounter.ru/recommendations"
+                                                                            target="_blank"
+                                                                            style="text-decoration:none;color:inherit"
+                                                                            rel=" noopener noreferrer">Правила совершения покупок</a></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:5px !important"
+                                                            width="5" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="5"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:27px !important"
+                                                            width="27" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="118"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><span
+                                                                        style="text-decoration: underline;"><span
+                                                                            style="color: #ffcc00;"><a
+                                                                                title="Бесплатное отслеживание посылок более 300 почтовых служб!"
+                                                                                href="https://gdeposylka.secretdiscounter.ru/"
+                                                                                target="_blank"
+                                                                                style="text-decoration:none;color:inherit"
+                                                                                rel=" noopener noreferrer">Отследить <span
+                                                                                    style="font-family: 'trebuchet ms', geneva, sans-serif;">посылку</span></a></span></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:5px !important"
+                                                            width="5" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="5"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#292929">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><span
+                                                                        style="text-decoration: underline;color: #ffcc00;"><a
+                                                                            title="Только ценные советы. Без «воды»!"
+                                                                            href="https://blog.secretdiscounter.ru/"
+                                                                            target="_blank"
+                                                                            style="text-decoration:none;color:inherit"
+                                                                            rel=" noopener noreferrer">Наш блог о покупках</a></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="5"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="border-color:transparent">
+                    <td border="0" cellpadding="0" cellspacing="0"
+                        style="border-collapse:collapse;border-color:transparent">
+                        <table cellpadding="0" cellspacing="0"
+                               style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;width:100%"
+                               border="0" width="100%">
+                            <tbody>
+                            <tr style="border-color:transparent">
+                                <th width="300"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;height:140px;margin:0;text-color:black"
+                                                       bgcolor="#292929" height="140">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:30px !important"
+                                                            width="30" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="240"
+                                                            height="110"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                                    width="100%"><span style="color: #ffffff;">© SecretDiscounter.ru, 2016-2018</span>
+                                                            </p>
+                                                            <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                               width="100%"><span style="color: #ffffff;">Вы получили данную рассылку, так как являетесь клиентом или подписчиком SecretDiscounter.ru</span>
+                                                            </p>
+                                                            <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                               width="100%"><span
+                                                                        style="text-decoration: underline;"><span
+                                                                            style="color: #ffffff;"><a
+                                                                                href="https://secretdiscounter.ru/account/settings"
+                                                                                style="text-decoration:none;color:inherit"
+                                                                                target="_blank"
+                                                                                rel=" noopener noreferrer">Отписаться от рассылки</a></span></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:30px !important"
+                                                            width="30" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="300"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929"
+                                           bgcolor="#292929">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#292929;font-weight:normal;height:140px;margin:0;text-color:black"
+                                                       bgcolor="#292929" height="140">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="15"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:30px !important"
+                                                            width="30" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="240"
+                                                            height="89"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                                    width="100%"><span
+                                                                        style="color: #ffffff;"><strong>Наш адрес:</strong></span>
+                                                            </p>
+                                                            <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                               width="100%"><span style="color: #ffffff;">119620, г. Москва, Солнцевский проспект, дом 14, пом. VI, ком. 1</span>
+                                                            </p>
+                                                            <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
+                                                               width="100%"><span style="color: #ffffff;"><strong>Телефон:</strong> <span
+                                                                            class="js-phone-number highlight-phone"
+                                                                            title="Позвонить через Веб-Агент">8 (800) 707 66 09</span></span>
+                                                            </p></td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:30px !important"
+                                                            width="30" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="36"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>
