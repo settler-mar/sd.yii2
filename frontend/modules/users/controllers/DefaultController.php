@@ -251,7 +251,7 @@ class DefaultController extends Controller
             $url = Yii::$app->user->getReturnUrl();
             //$url = explode('//',$url);
             //$url=$url[count($url)-1];
-            $url=replace(Yii::$app->request->getHostInfo(),'',$url);
+            $url=str_replace(Yii::$app->request->getHostInfo(),'',$url);
 
             if(strpos($url, 'g=plugin') !== false)$url=null;
             if (strlen($url) < 3) {
