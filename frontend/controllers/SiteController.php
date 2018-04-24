@@ -431,8 +431,8 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
-              ['user' => Yii::$app->user->identity, 'payment' => Payments::find()->one()]
+              ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
+              ['user' => Yii::$app->user->identity]
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )

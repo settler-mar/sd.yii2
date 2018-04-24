@@ -6,7 +6,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 't
 ?>
 
 <tr>
-    <td align="center" valign="top" width="100%" style="background-color: #f7f7f7;text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
+    <td align="center" valign="top" width="100%" style="background-color: #fff;text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
         <center>
             <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
                 <tr>
@@ -16,7 +16,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 't
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        На сайте SecretDiscounter.ru был сделан запрос на смену пароля для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан Вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо.
+                        На сайте SecretDiscounter.ru был сделан запрос на смену пароля для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо.
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +32,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 't
                 </tr>
                 <tr>
                     <td style="text-align: center;">
-                        Новый пароль:
+                        После нажатия на кнопку вашим паролем станет:<br>
                         <b><?=$user->password;?></b>
                     </td>
                 </tr>

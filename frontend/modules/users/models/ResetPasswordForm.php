@@ -106,7 +106,7 @@ class ResetPasswordForm extends Model
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($this->email)
-      ->setSubject('Сброс пароля на сайте ' . Yii::$app->name)
+      ->setSubject('Сброс пароля на сайте SecretDiscounter.ru')
       ->send();
   }
 }
