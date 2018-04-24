@@ -1,3 +1,3 @@
-Тема: <?=$title;?>
-Сообщение от  <?=$name;?> email <?=$email?> <?php if (!empty($phone)) : ?> телефон <?=$phone;?> <?php endif; ?>:
+Тема: <?=$title;?><br>
+Сообщение от  <?=$name;?> email <?=$email?> <?php if (!empty($phone)) : ?> телефон <?=$phone;?> <?php endif; ?>:<br>
 <?=$message;?>

@@ -58,7 +58,7 @@ class PasswordResetRequestForm extends Model
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName'] . ' robot'])
       //->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
       ->setTo($this->email)
-      ->setSubject('Password reset for ' . Yii::$app->name)
+      ->setSubject('Восстановление пароля для SecredDiscounter B2B')
       ->send();
   }
 }

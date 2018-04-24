@@ -71,7 +71,7 @@ class DefaultController extends Controller
               )
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo($user->email)
-              ->setSubject('Заявка на регистрацию оффлайн шопа на SecretDiscounter.ru')
+              ->setSubject('Заявка на регистрацию оффлайн-магазина на SecretDiscounter.ru')
               ->send();
         //отправить письмо админу
           Yii::$app
@@ -84,7 +84,7 @@ class DefaultController extends Controller
               )
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo(Yii::$app->params['supportEmail'])
-              ->setSubject('Заявка на регистрация оффлайн шопа на SecretDiscounter.ru')
+              ->setSubject('Заявка на регистрацию оффлайн-магазина на SecretDiscounter.ru')
               ->send();
 
         Yii::$app->session->addFlash('info', 'Ваша заявка отправлена. В ближайшее время с Вами свяжется администратор.');
@@ -106,7 +106,7 @@ class DefaultController extends Controller
     if ($request->isPost) {
       if ($model->load($request->post())) {
         $email = Yii::$app->params['registerEmailOffline'];
-        $model->subject = "Подключить оффлайн магазин";
+        $model->subject = "Заявка на подключение оффлайн-магазина";
         if ($this->sendRegistration($email, $model)) {
           Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
           return $this->redirect('/forms/finish');
@@ -132,7 +132,7 @@ class DefaultController extends Controller
     if ($request->isPost) {
       if ($model->load($request->post())) {
         $email = Yii::$app->params['registerEmail'];// : Yii::$app->params['registerEmail'];
-        $model->subject = "Подключить интернет магазин";
+        $model->subject = "Заявка на подключение интернет-магазина";
         if ($this->sendRegistration($email, $model)) {
           Yii::$app->session->addFlash('success', 'Сообщение отправлено, мы свяжемся с вами в ближайшее время.');
           return $this->redirect('/forms/finish');
