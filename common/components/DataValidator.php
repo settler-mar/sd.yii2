@@ -17,8 +17,13 @@ class DataValidator extends Validator
 
     if ($value) {
       $value = explode('-', $value);
-      $value = implode('-', array_reverse($value));
-      if (strtotime($value) === FALSE) {
+
+      if(strlen($value[0])!=4){
+        $value = implode('-', array_reverse($value));
+      }
+      if(strlen($value[0])!=4){
+        $model->addError($attribute, Yii::t('account', 'birthday_format_error'));
+      }elseif (strtotime($value) === FALSE) {
         $model->addError($attribute, Yii::t('account', 'birthday_format_error'));
       } elseif (strtotime($value) > time() - 5 * 356 * 24 * 60 * 60) {
         $model->addError($attribute, Yii::t('account', 'birthday_biggest_error'));

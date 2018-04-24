@@ -39,32 +39,31 @@ class UserSetting extends Users
         [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
         ['email', DomainValidator::className()],
 
-//        [['old_password', 'new_password', 'r_new_password'], 'safe'],
-//
-//      //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
-//        ['new_password', 'required', 'when' => function ($model) {
-//          return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
-//        }, 'whenClient' => "function (attribute, value) {
-//        return
-//          $('#usersetting-old_password').val().length >0 ||
-//          $('#usersetting-r_new_password').val().length >0;
-//      }"],
-//
-//        ['old_password', 'required', 'when' => function ($model) {
-//          return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
-//        }, 'whenClient' => "function (attribute, value) {
-//        return
-//          $('#usersetting-new_password').val().length >0 ||
-//          $('#usersetting-r_new_password').val().length >0;
-//      }"],
-//
-//        ['r_new_password', 'required', 'when' => function ($model) {
-//          return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
-//        }, 'whenClient' => "function (attribute, value) {
-//        return
-//          $('#usersetting-old_password').val().length >0 ||
-//          $('#usersetting-new_password').val().length >0;
-//      }"],
+        [['old_password', 'new_password', 'r_new_password'], 'safe'],
+      //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
+        ['new_password', 'required', 'when' => function ($model) {
+          return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
+        return
+          $('#usersetting-old_password').val().length >0 ||
+          $('#usersetting-r_new_password').val().length >0;
+      }"],
+
+        ['old_password', 'required', 'when' => function ($model) {
+          return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
+        return
+        $('#usersetting-new_password').val().length >0 ||
+          $('#usersetting-r_new_password').val().length >0;
+      }"],
+
+        ['r_new_password', 'required', 'when' => function ($model) {
+          return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
+        }, 'whenClient' => "function (attribute, value) {
+        return
+          $('#usersetting-old_password').val().length >0 ||
+          $('#usersetting-new_password').val().length >0;
+      }"],
 
         ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
         [['new_photo'], 'image',
