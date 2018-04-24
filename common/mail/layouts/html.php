@@ -668,7 +668,7 @@ use yii\helpers\Html;
                                                             href="https://www.youtube.com/watch?v=RlV3PyIYTqU"
                                                             style="text-decoration:none;color:#fff;display:block;overflow:auto"
                                                             target="_blank" rel=" noopener noreferrer"><img border="0"
-                                                                                                            src="https://secretdiscounter.ru/images/templates/yotube.png"
+                                                                                                            src="https://secretdiscounter.ru/images/templates/yotube.jpeg"
                                                                                                             width="270"
                                                                                                             height="auto"
                                                                                                             style="text-decoration:none;border:0;height:auto;line-height:100%;outline:0;max-width:100%;align:left;text-align:left"
