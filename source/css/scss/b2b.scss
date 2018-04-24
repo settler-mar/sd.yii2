@@ -124,9 +124,11 @@ a{
           text-align: left;
         }
       }
-      button {
-        width: 48%;
-        display: inline-block;
+      button,
+      a.btn {
+        //width: 48%;
+        //display: inline-block;
+        margin-bottom: 10px;
       }
       p.help-block {
         margin-top: 5px;
@@ -135,7 +137,7 @@ a{
     &-buttons {
       margin-top: 35px;
       &-register {
-        width: 50%;
+        //width: 50%;
         display: inline-block;
         text-decoration: none;
         //color: $button_register_font_color;
@@ -146,6 +148,13 @@ a{
         //&.disabled {
         //  color: $button_register_font_color;
         //}
+      }
+      &-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
       }
     }
   }

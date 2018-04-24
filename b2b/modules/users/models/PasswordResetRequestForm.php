@@ -52,13 +52,13 @@ class PasswordResetRequestForm extends Model
     return Yii::$app
       ->mailer
       ->compose(
-        ['html' => 'passwordResetToken-html', 'text' => 'b2b-passwordResetToken-text'],
+        ['html' => 'b2b-passwordResetToken-html', 'text' => 'b2b-passwordResetToken-text'],
         ['user' => $user]
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName'] . ' robot'])
       //->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
       ->setTo($this->email)
-      ->setSubject('Восстановление пароля для SecredDiscounter B2B')
+      ->setSubject('Восстановление пароля для  SecredDiscounter B2B')
       ->send();
   }
 }

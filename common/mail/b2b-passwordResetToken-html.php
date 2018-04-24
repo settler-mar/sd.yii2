@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 'token' => $user->password_reset_token,'password'=>$user->password]);
+$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 'token' => $user->password_reset_token]);
 
 ?>
 
@@ -28,12 +28,6 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['users/default/reset', 't
                             </v:roundrect>
                             <![endif]--><a href="<?=$resetLink;?>"
                                            style="background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;" target="_blank"><span  style="background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;">Восстановить</span></a></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">
-                        После нажатия на кнопку вашим паролем станет:<br>
-                        <b><?=$user->password;?></b>
                     </td>
                 </tr>
             </table>
