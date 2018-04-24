@@ -249,6 +249,10 @@ class DefaultController extends Controller
             Yii::$app->getUser()->login($user);
             //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
             $url = Yii::$app->user->getReturnUrl();
+            //$url = explode('//',$url);
+            //$url=$url[count($url)-1];
+            $url=replace(Yii::$app->request->getHostInfo(),'',$url);
+
             if(strpos($url, 'g=plugin') !== false)$url=null;
             if (strlen($url) < 3) {
               $url = null;
