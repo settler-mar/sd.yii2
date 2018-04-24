@@ -229,7 +229,9 @@ class DefaultController extends Controller
       $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
 
       $url = Yii::$app->getUser()->getReturnUrl();
-      if(strpos($url, 'g=plugin') !== false)$url=null;
+      if (strpos($url, 'g=plugin') !== false || strlen($url) < 3) {
+          $url = null;
+      }
       $eauth->setRedirectUrl($url);
       $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
       //ddd($eauth);
@@ -248,7 +250,7 @@ class DefaultController extends Controller
             //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
             $url = Yii::$app->user->getReturnUrl();
             if(strpos($url, 'g=plugin') !== false)$url=null;
-            if ($url == '/') {
+            if (strlen($url) < 3) {
               $url = null;
             }
             $eauth->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
@@ -388,7 +390,9 @@ class DefaultController extends Controller
         if (!empty($user)) {
           Yii::$app->getUser()->login($user);
           $url = Yii::$app->user->getReturnUrl();
-          if(strpos($url, 'g=plugin') !== false)$url=null;
+          if (strpos($url, 'g=plugin') !== false || strlen($url) < 3) {
+              $url = null;
+          }
           //есть страница, на которую переход
 
           Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
@@ -445,7 +449,9 @@ class DefaultController extends Controller
           Yii::$app->getUser()->login($user);
           //return Yii::$app->response->redirect('/')->send();
           $url = Yii::$app->user->getReturnUrl();
-          if(strpos($url, 'g=plugin') !== false)$url=null;
+            if (strpos($url, 'g=plugin') !== false || strlen($url) < 3) {
+                $url = null;
+            }
           //есть страница, на которую переход
           return Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
 
