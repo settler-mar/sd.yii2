@@ -18,6 +18,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
+use frontend\modules\users\models\UsersSocial;
 use frontend\modules\users\models\ValidateEmail;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\withdraw\models\UsersWithdraw;
@@ -431,8 +432,8 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-              ['user' => Yii::$app->user->identity]
+              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+              ['user' => UsersSocial::findOne(['user_id' => Yii::$app->user->id]), 'resetLink' => 'http://www.dkfjdkl']
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )

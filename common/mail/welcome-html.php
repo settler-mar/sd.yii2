@@ -1,5 +1,5 @@
 <tr>
-  <td align="center" valign="top" width="100%" style="background-color: #f7f7f7;text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
+  <td align="center" valign="top" width="100%" style="background-color: #fff;text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
     <center>
       <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
         <tr>
@@ -31,7 +31,7 @@
                 <center style="color:#0f181a;font-family:Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;">Мой аккаунт</center>
               </v:roundrect>
               <![endif]--><a href="https://secretdiscounter.ru/account"
-                             style="background-color:#fff200;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;" target="_blank"><span  style="background-color:#fff200;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;">Мой аккаунт</span></a></div>
+                             style="background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;" target="_blank"><span  style="background-color:#fff200;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;">Мой аккаунт</span></a></div>
           </td>
         </tr>
       </table>
@@ -133,7 +133,7 @@
                                       </center>
                                     </v:roundrect>
                                     <![endif]--><a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
-                                                   style="width: 228px; background-color:#fff200;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all"
+                                                   style="width: 228px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all"
                                                    target="_blank"><span
                                         style="width: 228px; background-color:#fff200;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all">Перейти в магазин</span></a>
                                   </div>
