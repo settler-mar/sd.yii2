@@ -167,37 +167,31 @@ class AccountController extends Controller
 
   public function actionSettings()
   {
-    $userUpdated = false;
 
+    $post = Yii::$app->request->post();
+
+    $user_pass = SetPasswordForm::find()
+      ->where(['uid' => Yii::$app->user->id])
+      ->one();
+
+    if (Yii::$app->request->isPost && !isset($post['UserSetting']['notice_email'])) {
+      $post['UserSetting']['notice_email'] = 0;
+    }
     $user = UserSetting::find()
       ->where(['uid' => Yii::$app->user->id])
       ->one();
 
-    $user_pass = SetPasswordForm::find()
-        ->where(['uid' => Yii::$app->user->id])
-        ->one();
+    if (!empty($post['SetPasswordForm']['password_change'])) {
 
-    $post = Yii::$app->request->post();
-    if (
-      Yii::$app->request->isPost &&
-      !isset($post['UserSetting']['notice_email'])
-    ) {
-      $post['UserSetting']['notice_email'] = 0;
-    };
-
-    if ($post && $user->load($post) && $user->save()) {
-      Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
-      //return $this->redirect('/account/settings');
-        $userUpdated = true;
-    }
-
-    if ($post && $user_pass->load($post) && $user_pass->save()) {
-      Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
-      //return $this->redirect('/account/settings');
-        $userUpdated = true;
-    }
-    if ($userUpdated) {
-        return $this->redirect('/account/settings');
+        if ($post && $user_pass->load($post) && $user_pass->save()) {
+            Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
+            return $this->redirect('/account/settings');
+        }
+    } else {
+        if ($post && $user->load($post) && $user->save()) {
+            Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
+            return $this->redirect('/account/settings');
+        }
     }
 
     $user_pass->old_password='';

@@ -39,44 +39,32 @@ class UserSetting extends Users
         [['email'], 'unique', 'message' => Yii::t('account', 'save_settings_email_exists')],
         ['email', DomainValidator::className()],
 
-        [['old_password', 'new_password', 'r_new_password'], 'string'],
-        [['old_password', 'new_password', 'r_new_password'], 'trim'],
-        [['old_password', 'new_password', 'r_new_password'], 'string', 'max' => 60],
-        [['new_password', 'r_new_password'], 'string', 'min' => 6],
-        [['old_password'], 'string', 'min' => 5],
-
-        ['old_password', 'validatePassword'],
-
-        ['r_new_password',
-            'compare',
-            'compareAttribute' => 'new_password',
-            'message' => Yii::t('account', 'save_settings_password_repeat_not_same')
-        ],
-
-      //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
-        ['new_password', 'required', 'when' => function ($model) {
-          return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
-        }, 'whenClient' => "function (attribute, value) {
-        return 
-          $('#usersetting-old_password').val().length >0 ||
-          $('#usersetting-r_new_password').val().length >0;
-      }"],
-
-        ['old_password', 'required', 'when' => function ($model) {
-          return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
-        }, 'whenClient' => "function (attribute, value) {
-        return 
-          $('#usersetting-new_password').val().length >0 ||
-          $('#usersetting-r_new_password').val().length >0;
-      }"],
-
-        ['r_new_password', 'required', 'when' => function ($model) {
-          return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
-        }, 'whenClient' => "function (attribute, value) {
-        return 
-          $('#usersetting-old_password').val().length >0 ||
-          $('#usersetting-new_password').val().length >0;
-      }"],
+//        [['old_password', 'new_password', 'r_new_password'], 'safe'],
+//
+//      //делаем обязательными новый пароль его ввод когда заполнили старый пароль дубль нового
+//        ['new_password', 'required', 'when' => function ($model) {
+//          return strlen($model->old_password) > 0 || strlen($model->r_new_password) > 0;
+//        }, 'whenClient' => "function (attribute, value) {
+//        return
+//          $('#usersetting-old_password').val().length >0 ||
+//          $('#usersetting-r_new_password').val().length >0;
+//      }"],
+//
+//        ['old_password', 'required', 'when' => function ($model) {
+//          return strlen($model->new_password) > 0 || strlen($model->r_new_password) > 0;
+//        }, 'whenClient' => "function (attribute, value) {
+//        return
+//          $('#usersetting-new_password').val().length >0 ||
+//          $('#usersetting-r_new_password').val().length >0;
+//      }"],
+//
+//        ['r_new_password', 'required', 'when' => function ($model) {
+//          return strlen($model->old_password) > 0 || strlen($model->new_password) > 0;
+//        }, 'whenClient' => "function (attribute, value) {
+//        return
+//          $('#usersetting-old_password').val().length >0 ||
+//          $('#usersetting-new_password').val().length >0;
+//      }"],
 
         ['!new_photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
         [['new_photo'], 'image',
@@ -87,15 +75,6 @@ class UserSetting extends Users
     ];
   }
 
-  public function validatePassword($param_name)
-  {
-    $old = $this->getOldAttributes();
-    $passord = $old['password'];
-    if (!Yii::$app->security->validatePassword($this->old_password, $passord)) {
-      $this->addError('old_password', Yii::t('account', 'save_settings_old_password_fail'));
-    }
-    Yii::$app->session->addFlash('info', Yii::t('account', 'save_settings_password_changed_to') . '<b>' . $this->new_password . '</b>');
-  }
 
   public function beforeValidate()
   {
@@ -109,9 +88,6 @@ class UserSetting extends Users
   {
     return array(
         'name' => Yii::t('account', 'user_name'),
-        'old_password' => Yii::t('account', 'password_old'),
-        'new_password' => Yii::t('account', 'password_new'),
-        'r_new_password' => Yii::t('account', 'password_repeat2'),
     );
   }
 

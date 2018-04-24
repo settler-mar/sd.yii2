@@ -119,6 +119,10 @@
     }) %}
     <h2>{{ t('account','password_change') }}</h2>
 
+    {{ form.field(model_pas, 'password_change',{
+        'template': '{input}'
+    }).hiddenInput({'value': '1'}).label(false)|raw }}
+
     {{ form.field(model_pas, 'old_password',{
       'template' :
       '{beginWrapper}<i>'~svg("unlock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
