@@ -1,1 +1,2 @@
-Здравствуйте! Ваш кэшбэк на <?=$payment->cashback;?> руб. в <?=$payment->store->name;?> (заказ №<?=$payment->uid;?>) зафиксирован в нашей системе.
+Здравствуйте! <?=$payment->action_date;?> ваш кэшбэк на <?=$payment->cashback;?> руб. в <?=$payment->store->name;?> (заказ №<?=$payment->uid;?>) зафиксирован в нашей системе.
+<a href="https://secretdiscounter.ru/account/payments">История заказов</a>

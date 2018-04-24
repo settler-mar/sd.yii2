@@ -431,10 +431,10 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              [
-                  'html' => 'welcome-html',
-                  'text' => 'welcome-text'],
-              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+              ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
+              ['user' => Yii::$app->user->identity, 'payment' => Payments::find()->one()]
+//              ['html' => 'welcome-html', 'text' => 'welcome-text'],
+//              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo('oxygenn@list.ru')

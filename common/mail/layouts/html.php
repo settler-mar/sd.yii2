@@ -403,16 +403,12 @@ use yii\helpers\Html;
                     </td>
                 </tr>
 
-
-                <tr style="border-color:transparent">
-                    <td border="0" cellpadding="0" cellspacing="0"
-                        style="border-collapse:collapse;border-color:transparent">
-
+<!--                <tr style="border-color:transparent">-->
+<!--                    <td border="0" cellpadding="0" cellspacing="0"-->
+<!--                        style="border-collapse:collapse;border-color:#fff;">-->
                         <?= $content ?>
-
-                    </td>
-                </tr>
-
+<!--                    </td>-->
+<!--                </tr>-->
 
                 <tr style="border-color:transparent">
                     <td border="0" cellpadding="0" cellspacing="0"
