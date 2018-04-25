@@ -52,7 +52,7 @@ function iconFlashStart(cashback) {
     //если не пришла команда на выключение, то выключаем сами
     iconFlashIntervalMax = setTimeout(iconFlashStop, maxFlashInterval);
 }
-
+//жёсткий стоп
 function iconFlashForceStop(){
     stop = true;
     defaultIcon = true;
@@ -63,7 +63,7 @@ function iconFlashForceStop(){
     clearInterval(iconFlashInterval);
     clearTimeout(iconFlashIntervalMax);
 }
-
+//мягкий стоп
 function iconFlashStop() {
     stop = true;
 }
@@ -73,6 +73,13 @@ function encodeQueryData(data) {
     for (var key in data)
         result.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     return result.join('&');
+}
+
+//очистка цифр иконки и стирание данных для текущей вкладки
+function iconFlashClear(){
+    iconFlashForceStop();
+    tabsCashback[currentTab] = false;
+    displayCashback(false);
 }
 
 chrome.tabs.onActiveChanged.addListener(function (tabId){
@@ -114,6 +121,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     }
     if (request.action === "icon_flash_stop") {
         iconFlashStop();
+    }
+    if (request.action === "icon_flash_clear") {
+        iconFlashClear();
     }
 
 });
