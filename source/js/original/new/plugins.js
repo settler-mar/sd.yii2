@@ -14,10 +14,11 @@ var plugins = (function(){
     var cookiePanelHidden = 'sd-install-plugin-hidden';
     var cookieAccountDivHidden = 'sd-install-plugin-account-hidden';
     var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
+    var isYandex = navigator.userAgent.indexOf(' YaBrowser/') >= 0;
     var extensions = {
         'chrome': {
             'div_id': 'sd_chrome_app',
-            'used': !!window.chrome && window.chrome.webstore !== null && !isOpera,
+            'used': !!window.chrome && window.chrome.webstore !== null && !isOpera && !isYandex,
             'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn',
             'install_button_class': 'plugin-browsers-link-chrome'
@@ -35,6 +36,13 @@ var plugins = (function(){
             'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
             'href': 'https://addons.opera.com/ru/extensions/?ref=page',
             'install_button_class': 'plugin-browsers-link-opera'
+        },
+        'yandex': {
+            'div_id': 'sd_yandex_app',
+            'used': isYandex,
+            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            'href': 'https://addons.opera.com/ru/extensions/?ref=page',
+            'install_button_class': 'plugin-browsers-link-yandex'
         }
     };
 

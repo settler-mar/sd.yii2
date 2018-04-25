@@ -15,11 +15,17 @@ var appIds = {
   'opera': {
     'id': 'sd_opera_app',
     'search_delay': 100
+  },
+  'yandex': {
+    'id': 'sd_yandex_app',
+    'search_delay': 100
   }
 };
 var currentBrowser = 'chrome';
 if (navigator.userAgent.indexOf(' OPR/') >= 0) {
   currentBrowser = 'opera';
+} else if (navigator.userAgent.indexOf(' YaBrowser/') >= 0) {
+  currentBrowser = 'yandex';
 } else if (!!window.chrome && !!window.chrome.webstore) {
   currentBrowser = 'chrome';
 } else if (typeof InstallTrigger !== 'undefined') {
