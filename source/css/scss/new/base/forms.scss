@@ -505,4 +505,11 @@ input[name="roles[]"]{
   position: absolute;
   z-index: 2;
   left: 15px;
+  opacity: 0.3;
+  transition: all 0.3s;
+
+  &.focused{
+    margin-top: -22px;
+    opacity: 0.8;
+  }
 }
