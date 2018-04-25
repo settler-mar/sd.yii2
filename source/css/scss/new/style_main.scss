@@ -754,6 +754,10 @@ svg.svg-no-stroke {
 
 .has-error {
   color: $header_heart;
+
+  .placeholder {
+    color: #1b2527;
+  }
 }
 
 .laptop_hide {

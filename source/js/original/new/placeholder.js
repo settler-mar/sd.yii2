@@ -38,7 +38,8 @@ var placeholder = (function(){
       } else {
         $(this).addClass('filled');
       }
-    })
+    });
+    els.trigger('blur');
   }
 
   run();

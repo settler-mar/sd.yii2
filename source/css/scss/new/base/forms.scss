@@ -325,7 +325,7 @@ td {
   border: solid 1px $form_input_border;
   text-align: left;
   position: relative;
-  overflow: hidden;
+  //overflow: hidden;
   @include media($phones) {
     width: 100%;
   }
@@ -507,9 +507,13 @@ input[name="roles[]"]{
   left: 15px;
   opacity: 0.3;
   transition: all 0.3s;
+  color: #1b2527;
+//  left: 60px;
+//  top: 20px;
 
   &.focused{
     margin-top: -22px;
+    //top: -19px;
     opacity: 0.8;
   }
 }

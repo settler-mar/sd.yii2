@@ -179,6 +179,11 @@ function ajaxForm(els) {
   for (var i = 0; i < els.length; i++) {
     init(els.eq(i));
   }
+
+  if (typeof placeholder == 'function') {
+      placeholder();
+  }
+
 }
 
 function addSRO() {
