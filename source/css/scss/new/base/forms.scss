@@ -28,7 +28,6 @@ textarea {
   }
 }
 
-
 form {
   margin-bottom: 15px;
 }
@@ -496,4 +495,21 @@ input[type=checkbox] {
 input, textarea {
   line-height: 1rem;
   transform: translate3d(0,0,0);
+}
+
+input[name="roles[]"]{
+  opacity: 1;
+}
+
+.placeholder{
+  position: absolute;
+  z-index: 2;
+  left: 15px;
+  opacity: 0.3;
+  transition: all 0.3s;
+
+  &.focused{
+    margin-top: -22px;
+    opacity: 0.8;
+  }
 }

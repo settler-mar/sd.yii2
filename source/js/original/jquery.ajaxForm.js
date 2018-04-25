@@ -26,7 +26,7 @@ function ajaxForm(els) {
         if (!post.error) {
           form.removeClass('loading');
           wrap.html(wrap_html);
-          form.find('input[type=text],textarea').val('')
+          form.find('input[type=text],textarea').val('');
           ajaxForm(wrap);
         }
       }
