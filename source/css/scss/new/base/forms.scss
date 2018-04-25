@@ -4,6 +4,7 @@ input[type=text],
 select,
 textarea {
   background: #fff;
+  color: $text_color;
 
   &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: $placeholder_color;
@@ -507,7 +508,8 @@ input[name="roles[]"]{
   left: 15px;
   opacity: 0.3;
   transition: all 0.3s;
-  color: #1b2527;
+  color: $placeholder_color;
+  font-size: 1em;
 //  left: 60px;
 //  top: 20px;
 
@@ -515,5 +517,28 @@ input[name="roles[]"]{
     margin-top: -22px;
     //top: -19px;
     opacity: 0.8;
+    font-size: 0.8em;
+    height: 1em !important;
+  }
+}
+
+.form-textarea-group{
+  .placeholder{
+    padding-top: 22px;
+  }
+}
+.form-input-group{
+  .placeholder{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    &.focused{
+      margin-top: 0;
+    }
+  }
+  i+.placeholder{
+    margin-left: 53px;
   }
 }

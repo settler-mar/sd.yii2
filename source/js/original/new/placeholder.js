@@ -1,10 +1,24 @@
 var placeholder = (function(){
+  function onBlur(){
+    var inputValue = $(this).val();
+    if ( inputValue == "" ) {
+      $(this).removeClass('filled');
+      $(this).prev('label.placeholder').removeClass('focused');
+    } else {
+      $(this).addClass('filled');
+    }
+  }
   function run(par) {
     var els;
     if(!par)
       els=$('[placeholder]');
     else
       els=$(par).find('[placeholder]');
+
+    els.focus(function(){
+      $(this).prev('label.placeholder').addClass('focused');
+    });
+    els.blur(onBlur);
 
     for(var i = 0; i<els.length;i++){
       var el=els.eq(i);
@@ -24,22 +38,10 @@ var placeholder = (function(){
         'text': text,
         'for':el_id
       });
-
       el.before(div);
+
+      onBlur.bind(el)()
     }
-    els.focus(function(){
-      $(this).prev('label.placeholder').addClass('focused');
-    });
-    els.blur(function(){
-      var inputValue = $(this).val();
-      if ( inputValue == "" ) {
-        $(this).removeClass('filled');
-        $(this).prev('label.placeholder').removeClass('focused');
-      } else {
-        $(this).addClass('filled');
-      }
-    });
-    els.trigger('blur');
   }
 
   run();
