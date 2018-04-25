@@ -32,7 +32,6 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
-/b2b/config/params-local.php
 /common/config/params-local.php
 /common/config/main-local.php
 /common/config/start_param.php

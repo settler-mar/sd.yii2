@@ -3,7 +3,7 @@
     <center>
       <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
         <tr>
-          <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 0; color: #4d4d4d;">
+          <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
             Заявка на регистрацию оффлайн-магазина.
           </td>
         </tr>

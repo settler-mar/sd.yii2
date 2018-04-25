@@ -6,7 +6,7 @@ $params = [
   'token' => $user->email_verify_token,
   'email'=>$user->email
 ];
-if ($path) {
+if (isset($path)) {
     $params['path'] = $path;
 }
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
@@ -18,7 +18,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
         <center>
             <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
                 <tr>
-                    <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 0; color: #4d4d4d;">
+                    <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
                         Здравствуйте!
                     </td>
                 </tr>

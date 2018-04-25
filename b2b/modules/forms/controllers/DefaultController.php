@@ -71,7 +71,7 @@ class DefaultController extends Controller
               )
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo($user->email)
-              ->setSubject('Заявка на регистрацию оффлайн-магазина на SecretDiscounter.ru')
+              ->setSubject('Заявка на регистрацию оффлайн-магазина на  SecretDiscounter.ru')
               ->send();
         //отправить письмо админу
           Yii::$app
@@ -84,7 +84,7 @@ class DefaultController extends Controller
               )
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo(Yii::$app->params['supportEmail'])
-              ->setSubject('Заявка на регистрацию оффлайн-магазина на SecretDiscounter.ru')
+              ->setSubject('Заявка на регистрацию оффлайн-магазина на  SecretDiscounter.ru')
               ->send();
 
         Yii::$app->session->addFlash('info', 'Ваша заявка отправлена. В ближайшее время с Вами свяжется администратор.');

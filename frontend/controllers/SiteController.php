@@ -432,15 +432,12 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
-              ['user' => UsersSocial::findOne(['user_id' => Yii::$app->user->id]), 'resetLink' => 'http://www.dkfjdkl']
-//              ['html' => 'welcome-html', 'text' => 'welcome-text'],
-//              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+              ['html' => 'welcome-html', 'text' => 'welcome-text'],
+              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo('oxygenn@list.ru')
-          //->setTo('oxyggenn@google.com')
-          ->setSubject('Тестовое письмо с SecretDiscounter.ru')
+          ->setSubject('Тестовое письмо с  SecretDiscounter.ru')
           ->send();
       return 'Отправлено тестовое письмо';
 

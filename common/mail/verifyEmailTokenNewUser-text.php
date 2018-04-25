@@ -7,7 +7,7 @@ $params = [
   'token' => $user->email_verify_token,
   'email'=>$user->email
 ];
-if ($path) {
+if (isset($path)) {
   $params['path'] = $path;
 }
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);

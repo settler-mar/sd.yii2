@@ -3,7 +3,7 @@
     <center>
       <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
         <tr>
-          <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 0; color: #4d4d4d;">
+          <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
             Добро пожаловать!
           </td>
         </tr>
@@ -64,10 +64,10 @@
                       <?php
                       foreach ($stores as $store) {
                       ?>
-                      <table cellpadding="0" cellspacing="0" width="260px" style="border-collapse:separate !important; margin: 15px; display:inline-block">
+                      <table cellpadding="0" cellspacing="0" width="240px" style="border-collapse:separate !important; margin: 15px; display:inline-block">
                         <tr>
                           <td
-                            style="width: 260px; border-radius: 5px;border: 1px solid #e5e5e5;vertical-align: top; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
+                            style="width: 240px; border-radius: 5px;border: 1px solid #e5e5e5;vertical-align: top; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
                             <table cellpadding="0" cellspacing="0" width="100%"
                                    style='border-collapse: collapse !important;'>
                               <tr>
@@ -133,9 +133,9 @@
                                       </center>
                                     </v:roundrect>
                                     <![endif]--><a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
-                                                   style="width: 228px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all"
+                                                   style="width: 200px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all"
                                                    target="_blank"><span
-                                        style="width: 228px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all">Перейти в магазин</span></a>
+                                        style="width: 200px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all">Перейти в магазин</span></a>
                                   </div>
                                 </td>
                               </tr>
