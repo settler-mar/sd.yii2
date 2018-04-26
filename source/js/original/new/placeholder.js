@@ -2,22 +2,23 @@ var placeholder = (function(){
   function onBlur(){
     var inputValue = $(this).val();
     if ( inputValue == "" ) {
-      $(this).removeClass('filled');
-      $(this).prev('label.placeholder').removeClass('focused');
-    } else {
-      $(this).addClass('filled');
+      $(this).closest('.form-group').removeClass('focused');
     }
   }
+
+  function onFocus(){
+    $(this).closest('.form-group').addClass('focused');
+  }
+
+
   function run(par) {
     var els;
     if(!par)
-      els=$('[placeholder]');
+      els=$('.form-group [placeholder]');
     else
-      els=$(par).find('[placeholder]');
+      els=$(par).find('.form-group [placeholder]');
 
-    els.focus(function(){
-      $(this).prev('label.placeholder').addClass('focused');
-    });
+    els.focus(onFocus);
     els.blur(onBlur);
 
     for(var i = 0; i<els.length;i++){
@@ -25,6 +26,7 @@ var placeholder = (function(){
       var text = el.attr('placeholder');
       el.attr('placeholder','');
       if(text.length<2)continue;
+      //if(el.closest('.form-group').length==0)return;
 
       var inputValue = el.val();
       var el_id = el.attr('id');
@@ -34,12 +36,13 @@ var placeholder = (function(){
       }
 
       var div = $('<label/>',{
-        'class':'placeholder'+(inputValue.length>0?' focused':''),
+        'class':'placeholder',
         'text': text,
         'for':el_id
       });
       el.before(div);
 
+      onFocus.bind(el)()
       onBlur.bind(el)()
     }
   }

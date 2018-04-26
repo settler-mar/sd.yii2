@@ -510,21 +510,44 @@ input[name="roles[]"]{
   transition: all 0.3s;
   color: $placeholder_color;
   font-size: 1em;
-//  left: 60px;
-//  top: 20px;
 
-  &.focused{
-    margin-top: -22px;
-    //top: -19px;
-    opacity: 0.8;
-    font-size: 0.8em;
-    height: 1em !important;
+  +*:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  }
+}
+
+.form-group{
+  &.focused {
+    .placeholder {
+      margin-top: -22px;
+      //top: -19px;
+      opacity: 1;
+      font-size: 0.8em;
+      height: 1em !important;
+      background: #fff;
+      padding: 0 5px;
+    }
+
+    .form-input-group{
+      .placeholder{
+        margin-top: -8px;
+        width: auto;
+        margin-left: -5px;
+      }
+    }
+
+    .form-textarea-group{
+      .placeholder{
+        margin-top: -9px;
+        margin-left: -8px;
+      }
+    }
   }
 }
 
 .form-textarea-group{
   .placeholder{
-    padding-top: 22px;
+    padding-top: 13px;
   }
 }
 .form-input-group{
@@ -533,11 +556,8 @@ input[name="roles[]"]{
     width: 100%;
     display: flex;
     align-items: center;
-
-    &.focused{
-      margin-top: 0;
-    }
   }
+
   i+.placeholder{
     margin-left: 53px;
   }
