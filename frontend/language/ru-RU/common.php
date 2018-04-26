@@ -41,6 +41,18 @@ return [
     'date_range' => 'Период',
     'your_bonus' => 'Ваш бонус',
     'email_address' => 'Email адрес',
+    'you_should_fill_here' => 'Необходимо заполнить',
+    'excuse_me' => 'Приносим свои извинения',
+    'remind_me_later' => 'Напомнить позже',
+    'share_width_friends' =>'поделиться с друзьями',
+    'successfull' => 'Успешно',
+    'to_know_details' => 'Узнать подробнее',
+    'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
+    'add_right_now' => 'Подключить сейчас',
+    'invite_friends' => 'пригласить друзей',
+
+
+
 
 
 

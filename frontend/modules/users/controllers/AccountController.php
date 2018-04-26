@@ -316,7 +316,7 @@ class AccountController extends Controller
       if ($request->isPost) {
         //удаление оккаунта
           if ($request->post('user_comment') == '') {
-            $errors['user_comment']='Необходимо заполнить';
+            $errors['user_comment']= Yii::t('common', 'you_should_fill_here');
           } else {
               $user = Users::findOne(Yii::$app->user->id);
               if ($user) {
@@ -325,7 +325,7 @@ class AccountController extends Controller
                   $user->save();
                   Yii::$app->session->remove('admin_id');
                   Yii::$app->user->logout();
-                  $data['html'] = 'Аккаунт успешно удалён!<script>login_redirect("/");</script>';
+                  $data['html'] = Yii::t('account', 'account_is_deleted').'<script>login_redirect("/");</script>';
                   return json_encode($data);
               }
           }

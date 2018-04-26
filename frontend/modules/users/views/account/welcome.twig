@@ -12,7 +12,7 @@
   <section class="align-center margin border-wrap flex-line flex-line-untill-tablets install-plugin-account hidden flex-align-center">
     <img class="account-image-width-250" src="/images/templates/browsers.png" alt="плагины для браузеров">
     <div>
-      <h3 class="margin-half account-margin-top account-cashbonus">Установите наше расширение для браузера, и оно само напомнит о кэшбэке</h3>
+      <h3 class="margin-half account-margin-top account-cashbonus">{{ t('main', 'install_plugin_and_it_will_notice_about_cashback') }}</h3>
       <div class="margin-half flex-line flex-line-untill-tablets flex-align-center flex-around">
         {% for key, browser in browsers %}
           {% if browser.status != 'disabled' %}
@@ -20,12 +20,12 @@
               {% if browser.status == 'inactive'  %}
               data-notyfy_class="notify_box-alert"
               data-button_yes="false"
-              data-title="Приносим свои извинения"
-              data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
-              {% endif %}>Установить для {{ _ucfirst(key) }}&nbsp;&rarr;</a>
+              data-title="{{ t('common', 'excuse_me') }}"
+              data-question="{{ t('main', 'plugin_for_browser_{browser}_in_develop', {'browser': _ucfirst(key)})|raw }}"
+              {% endif %}>{{ t('main', 'install_for_{browser}', {'browser': _ucfirst(key)})|raw }}</a>
           {% endif %}
         {% endfor %}
-        <a href="#" class="install-plugin-account-later">Напомнить позже</a>
+        <a href="#" class="install-plugin-account-later">{{ t('common', 'remind_me_later') }}</a>
       </div>
     </div>
   </section>
@@ -34,20 +34,20 @@
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
   <section class="margin account-welcome_share border-wrap flex-line flex-line-untill-tablets flex-align-center">
-    <img class="account-image-height-200" src="/images/templates/secretdiscounter-platinum.jpg" alt="поделиться с друзьями">
+    <img class="account-image-height-200" src="/images/templates/secretdiscounter-platinum.jpg" alt="{{ t('common', 'share_width_friends')|raw }}">
     <div class="align-center">
-      <p class="account-welcome_share-text">Для того, чтобы активировать платиновый статус лояльности и получить +30% к ставке кэшбэка в подарок, расскажите о нас в своих соцсетях:</p>
+      <p class="account-welcome_share-text">{{ t('account', 'share_in_social_networks_to_get_platin_status')|raw }}</p>
       <div class="share42init accauntSoc accauntSoc_32 wrap-tablets"
            data-url="https://secretdiscounter.ru?r={{ user_id }}"
-           data-title="Друзья! Вот сервис, который возвращает до 40% с каждой покупки, в интернете и оффлайне. Регистрируйтесь и не переплачивайте!"
-           data-description="Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира."
+           data-title="{{ t('account', 'this_is_the_service_what_returns_cashback_from_every_bying_in_internet_and_offline_shops')|raw }}"
+           data-description="{{ t('account', 'secret_discounter_hepls_you_save_your_money')|raw }}"
            data-socials="1,0,2,4,3,5,6"
            data-icon-size="40"
            data-icon-type="svg"
-           data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'Успешно','message':'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.'});"
+           data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'{{ t('common', 'successfull') }}','message':'{{ t('account', 'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.')|raw }}'});"
       >
       </div>
-      <p>Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!</p>
+      <p>{{ t('account', 'share_about_us_in_more_than_one_social_network')|raw }}</p>
     </div>
   </section>
 {% endif %}
@@ -57,7 +57,7 @@
     {{ t('account', 'user_loyalty_status') }}
   </h2>
   <div class="align-center margin" style="margin-top: -20px;">
-    <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
+    <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">{{ t('common', 'to_know_details') }}</a>
   </div>
 
   <div class="account-circles-wrap">
@@ -112,12 +112,12 @@
           {% else %}
             {% if key==4 %}
               <a href="#"
-                 data-question="Извините, данная функция находится в разработке"
+                 data-question="{{ t('common', 'sorry_this_is_in_develop') }}"
                  data-button_yes="ОК"
                  data-notyfy_class="notify_box-alert"
                  data-title="<br>"
                  class="disabled">
-                Подключить сейчас
+                {{ t('common', 'add_right_now') }}
               </a>
             {% endif %}
           {% endif %}
@@ -149,12 +149,12 @@
 </section>
 
 <section class="align-center margin border-wrap flex-line flex-line-untill-tablets flex-align-center">
-  <img class="account-image-height-200" src="/images/templates/shutterstock_322090571.jpg" alt="пригласить друзей">
+  <img class="account-image-height-200" src="/images/templates/shutterstock_322090571.jpg" alt="{{ t('common', 'invite_friends' ) }}">
   <div>
     <div class="margin-half account-margin-top account-cashbonus">
-      Также к нам можно приводить друзей и зарабатывать с их покупок
+      {{ t('account', 'you_can_invite_friends_and_get_money_from_their_byings')|raw }}
     </div>
-    <a class="btn btn-transform margin-half" href="account/affiliate">Узнать подробнее</a>
+    <a class="btn btn-transform margin-half" href="account/affiliate">{{ t('common', 'to_know_details') }}</a>
   </div>
 </section>
 
@@ -162,6 +162,6 @@
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
   <div class="align-center margin">
-    <a href="/stores" class="btn">Перейти к покупкам с кэшбэком &#8594;</a>
+    <a href="/stores" class="btn">{{ t('account', 'start_byuing_with_cashback')|raw }}</a>
   </div>
 {% endif %}

@@ -4,16 +4,9 @@ use common\components\Help;
 use yii\db\Query;
 
 $currencyIcon = [
-//  'RUB' => '<span class="fa fa-rub"></span>',
-//  'EUR' => '<span class="fa fa-eur"></span>',
-//  'USD' =>'<span class="fa fa-dollar"></span>',
-//  'UAH' => '<span class="uah">&#8372;</span>',
-//  'KZT' => '<span class="uah">&#8376;</span>',
-    'RUB' => 'ruble',
-    'EUR' => 'euro',
-    'USD' => 'dollar',
-  //'UAH' => '<span class="uah">&#8372;</span>',
-  //'KZT' => '<span class="uah">&#8376;</span>',
+//    'RUB' => 'ruble',
+//    'EUR' => 'euro',
+//    'USD' => 'dollar',
 ];
 
 $month = [

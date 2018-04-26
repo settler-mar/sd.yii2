@@ -215,4 +215,15 @@ return [
     'delete_account_reason'=>'Причина удаления аккаунта',
     'delete_account_text'=>'Сообщите, пожалуйста, причину удаления аккаунта',
     'account_id_copied'=>'Ваш ID скопирован в буфер обмена',
+    'account_is_deleted' => 'Аккаунт успешно удалён!',
+    'you_followers_on_sd' => 'За время работы с SecretDiscounter Вы привели:',
+    'share_in_social_networks_to_get_platin_status' => 'Для того, чтобы активировать платиновый статус лояльности и получить +30% к ставке кэшбэка в подарок, расскажите о нас в своих соцсетях:',
+    'this_is_the_service_what_returns_cashback_from_every_bying_in_internet_and_offline_shops' => 'Друзья! Вот сервис, который возвращает до 40% с каждой покупки, в интернете и оффлайне. Регистрируйтесь и не переплачивайте!',
+    'secret_discounter_hepls_you_save_your_money' => 'Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира.',
+    'thank_you_premium_account_is_activated' => 'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.',
+    'share_about_us_in_more_than_one_social_network' => 'Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!',
+    'you_can_invite_friends_and_get_money_from_their_byings' => 'Также к нам можно приводить друзей и зарабатывать с их покупок',
+    'start_byuing_with_cashback' => 'Перейти к покупкам с кэшбэком &#8594;',
+
+
 ];
