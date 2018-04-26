@@ -240,7 +240,7 @@
 {% include 'parts/calc_cashback.twig' %}
 
 {% set photos = current_store.photoList %}
-{% set videos = current_store.video %}
+{% set videos = current_store.videos %}
 {% if photos | length or  videos | length %}
   {% include 'parts/stores/photos.twig' %}
 {% endif %}

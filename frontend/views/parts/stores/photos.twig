@@ -13,7 +13,7 @@
         },
     }) %}
         {% for video in videos %}
-            <a href="{{ video }}"></a>
+            <a href="{{ video.video }}">{{ video.title }}</a>
         {% endfor %}
 
         {% for photo in photos %}
