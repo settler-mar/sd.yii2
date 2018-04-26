@@ -18,8 +18,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        <img src="https://secretdiscounter.ru/images/sd-mail-success.png" />
+                    <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 50px 0px;">
+                        <img width="500" src="https://secretdiscounter.ru/images/sd-mail-success.png" />
                     </td>
                 </tr>
                 <tr>

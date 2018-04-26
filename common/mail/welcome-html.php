@@ -93,7 +93,7 @@
                                         <a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;"
                                            target="_blank"><span
-                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;"><?=$store->name;?></span></a><br/>
+                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;word-wrap: break-word;width: 155px;max-height:46px;display: block;overflow: hidden"><?=$store->name;?></span></a><br/>
 
                                       </td>
                                       <td
