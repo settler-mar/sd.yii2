@@ -224,6 +224,23 @@ return [
     'share_about_us_in_more_than_one_social_network' => 'Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!',
     'you_can_invite_friends_and_get_money_from_their_byings' => 'Также к нам можно приводить друзей и зарабатывать с их покупок',
     'start_byuing_with_cashback' => 'Перейти к покупкам с кэшбэком &#8594;',
+    'withdraw_request_is_recieved' => 'Запрос на вывод средств принят',
+    'email_is_required' => 'Необходимо ввести ваш e-mail',
+    'password_is_required' => 'Необходимо ввести пароль',
+    'password_or_email_is_wrong' => 'Неверное имя пользователя или пароль',
+    'password_repeat_is_required' => 'Необходимо повторить пароль',
+    'password_not_same_with_password_repeat' => 'Введенные пароли не совпадают',
+    'user_width_this_email_exists' => 'Пользователь с таким e-mail уже зарегистрирован',
+    'url_must_be_in_format' => 'Ссылка должна быть в формате https://primer.ru',
+    'traffic_type_is_required' => 'Необходимо выбрать основной тип трафика',
+    'address_is_required' => 'Необходимо ввести адрес',
+    'url_to_web_resource' => 'Ссылка на вашу площадку',
+    'traffic_type' => 'Тип трафика',
+    'password_reset_token_is_required' => 'Идентификатор сброса пароля не может быть пустым.',
+    'password_reset_token_is_invalid' => 'Неверный ключ сброса пароля.',
+    'invalid_user_email' => 'Пользователь с таким e-mail не зарегистрирован.',
+    'error_updating_data_try_later' => 'Ошибка обновления данных. Попробуйте позже.',
+    'password_reset_on_sd' => 'Сброс пароля на сайте  SecretDiscounter.ru',
 
 
 ];

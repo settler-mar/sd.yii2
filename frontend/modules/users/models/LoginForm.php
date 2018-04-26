@@ -25,8 +25,8 @@ class LoginForm extends Model
         return [
             // username and password are both required
             [['email'], 'trim'],
-            [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
-            [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
+            [['email', ], 'required', 'message' => Yii::t('account', 'email_is_required')],
+            [['password', ], 'required', 'message' => Yii::t('account', 'password_is_required')],
             [['email'], 'email'],
             [['password'], 'string', 'max' => 60],
             [['password'], 'string', 'min' => 5],
@@ -49,7 +49,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Неверное имя пользователя или пароль.');
+                $this->addError($attribute, Yii::t('account', 'password_or_email_is_wrong'));
             }
         }
     }

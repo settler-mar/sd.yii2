@@ -50,6 +50,8 @@ return [
     'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
     'add_right_now' => 'Подключить сейчас',
     'invite_friends' => 'пригласить друзей',
+    'password' => 'Пароль',
+    'password_repeat' => 'Повтор пароля',
 
 
 
