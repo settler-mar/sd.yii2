@@ -13,8 +13,10 @@ $placeholder_color: #666;
 $header_bg_up: #121212;
 
 $link_color: #f7c714;
-$link_color_blue: #3088CF;
-$link_color_blue_hover: #2caef0;
+$link_color_blue: #0044bb;
+//$link_color_blue: #3088CF;
+$link_color_blue_hover: #fdec3e;//
+// #2caef0;
 
 /*для печати*/
 $print_text_color: #000;
@@ -103,7 +105,7 @@ $shop_review_link_color: #f7c714;
 $coupons_popular_stores_background_color: #eee;
 $coupons_popular_stores_color: #7e7e7e;
 $coupons_popular_stores_store_background_color: #fff;
-$coupons_abc_store_color: #3088CF;
+$coupons_abc_store_color: $link_color_blue;//#3088CF;
 $coupons_abc_store_hover_color: #fdec3e;
 $coupons_abc_border_color: #ccc;
 $coupons_coupon_logo_border_color: #ccc;
