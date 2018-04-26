@@ -372,6 +372,25 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
             ->send();
       } catch (\Exception $e) {
       }
+    } else {
+        //if not insertd
+        if (Yii::$app->user->identity->is_admin && isset($changedAttributes['email_verified']) &&
+            $changedAttributes['email_verified'] == 0 && $this->email_verified == '1') {
+            //админ поменял статус емейл на подтверждён
+            try {
+                Yii::$app
+                    ->mailer
+                    ->compose(
+                        ['html' => 'verifyEmailSuccess-html', 'text' => 'verifyEmailSuccess-text'],
+                        ['user' => $this])
+                    ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+                    ->setTo($this->email)
+                    ->setSubject(Yii::$app->name . ': Подтверждение е-mail')
+                    ->send();
+                Yii::$app->session->addFlash('info', 'Пользователю отправлено письмо о подтверждении его e-mail');
+            } catch (\Exception $e) {
+            }
+        }
     }
     $this->saveImage();
 
