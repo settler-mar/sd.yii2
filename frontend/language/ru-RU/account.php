@@ -214,4 +214,5 @@ return [
     'delete_account_confirm'=>'Вы уверены, что хотите удалить аккунт?',
     'delete_account_reason'=>'Причина удаления аккаунта',
     'delete_account_text'=>'Сообщите, пожалуйста, причину удаления аккаунта',
+    'account_id_copied'=>'Ваш ID скопирован в буфер обмена',
 ];

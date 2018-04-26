@@ -9,9 +9,9 @@ $currencyIcon = [
 //  'USD' =>'<span class="fa fa-dollar"></span>',
 //  'UAH' => '<span class="uah">&#8372;</span>',
 //  'KZT' => '<span class="uah">&#8376;</span>',
-/*    'RUB' => 'ruble',
+    'RUB' => 'ruble',
     'EUR' => 'euro',
-    'USD' => 'dollar',*/
+    'USD' => 'dollar',
   //'UAH' => '<span class="uah">&#8372;</span>',
   //'KZT' => '<span class="uah">&#8376;</span>',
 ];
@@ -550,9 +550,12 @@ $functionsList = [
       return '<img class="mobile_operator_logo" alt="'.$query['opsos_name'].'" src="/images/mobile_operator/'.$query['opsos_image'].'.gif">';
     });
   },
-    '_ucfirst' => function($value) {
+  '_ucfirst' => function($value) {
         return ucfirst($value);
-    }
+  },
+  '_strtolower' => function($value) {
+        return strtolower($value);
+  }
 ];
 
 return $functionsList;

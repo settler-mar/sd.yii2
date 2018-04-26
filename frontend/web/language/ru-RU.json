@@ -1,3 +1,5 @@
 {
-  "name": "Имя {name }"
+  "name": "Имя {name }",
+  "success" : "Успешно",
+  "data_copied_to_clipboard": "Данные успешно скопированы в буфер обмена"
 }

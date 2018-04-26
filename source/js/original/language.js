@@ -2,13 +2,13 @@ var lg = (function() {
   var lang={};
   url='/language/'+document.documentElement.lang+'.json';
   $.get(url,function (data) {
-    console.log(data);
+    //console.log(data);
     for(var index in data) {
       data[index]=clearVar(data[index]);
     }
     lang=data;
-    console.log(data);
-  },'json')
+    //console.log(data);
+  },'json');
 
   function clearVar(txt){
     txt=txt.replace(/\s+/g," ");//удаление задвоение пробелов
