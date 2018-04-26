@@ -27,7 +27,7 @@ use yii\helpers\Html;
         <td align="center" style="border-collapse:collapse;border-color:transparent">
 
             <table cellpadding="0" cellspacing="0" width="600px" border="0"
-                   bgcolor="#efd32a"
+                   bgcolor="#FFF"
                    style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5">
                 <tbody>
                 <tr style="border-color:transparent">
