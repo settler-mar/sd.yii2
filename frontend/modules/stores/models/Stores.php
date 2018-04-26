@@ -46,6 +46,7 @@ class Stores extends \yii\db\ActiveRecord
   public $logoTmp;
   public $logoImage;
   public $image_url;
+  public $videos;
   /**
    * @var array
    */
@@ -101,6 +102,7 @@ class Stores extends \yii\db\ActiveRecord
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
+      ['videos', 'safe']
     ];
   }
 
@@ -137,6 +139,7 @@ class Stores extends \yii\db\ActiveRecord
       'related' => 'Связанный магазин(ID, связка онлайн-оффлайн)',
       'is_offline' => 'Тип магазина',
       'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
+      'videos' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
       'rating' => 'Рейтинг',
       'no_rating_calculate' => 'Не пересчитывать рейтинг',
       'cash_number' => 'Номер чека',
@@ -157,7 +160,8 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    $this->video = json_encode($this->video);
+    //$this->video = json_encode($this->video);
+    $this->video = json_encode($this->videos);
     return parent::beforeValidate();
   }
 
@@ -231,9 +235,19 @@ class Stores extends \yii\db\ActiveRecord
   public function afterFind()
   {
     if(strlen($this->video)<10) {
-      $this->video = array();
-    }else {
-      $this->video = json_decode($this->video, true);
+      //$this->video = array();
+      $this->videos = [];
+    } else {
+      $this->videos = json_decode($this->video, true);
+      foreach ($this->videos as &$videoItem) {
+          if (is_string($videoItem)) {
+              $videoItem =  [
+                  'video' => $videoItem,
+                  'title' => ''
+              ];
+          }
+      }
+      //$this->video = json_decode($this->video, true);
     }
   }
 
