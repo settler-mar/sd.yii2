@@ -14,7 +14,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        Готовы отправиться по магазинам? Мы на реальном примере покажем, как просто экономить с кэшбэком
+                        Готовы отправиться по магазинам? Мы на реальном примере покажем, как просто экономить с кэшбэком.
                     </td>
                 </tr>
                 <tr>

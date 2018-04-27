@@ -6,7 +6,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['verifysocialemail', 'tok
 ?>
 
 <tr>
-    <td align="center" valign="top" width="100%" style="background-color: #ffff; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
+    <td align="center" valign="top" width="100%" style="background-color: #fff; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; padding: 20px 0 30px;">
         <center>
             <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
                 <tr>
@@ -37,7 +37,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['verifysocialemail', 'tok
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        Если кнопка не сработала, скопируйте и вставьте эту ссылку в адресную строку браузера: <a href="<?=$resetLink;?>"><?=$resetLink;?></a>
+                        Если кнопка не сработала, скопируйте и вставьте эту ссылку в адресную строку браузера: <a style="word-break:break-word;" href="<?=$resetLink;?>"><?=$resetLink;?></a>
                     </td>
                 </tr>
             </table>
