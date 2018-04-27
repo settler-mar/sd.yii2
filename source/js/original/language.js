@@ -24,10 +24,10 @@ var lg = (function() {
     return txt;
   }
 
-  return function(tpl,data){
+  return function(tpl, data){
     if(typeof(lang[tpl])=="undefined"){
       console.log("lang not found: "+tpl);
-      return "";
+      return tpl;
     }
     tpl=lang[tpl];
     if(typeof(data)=="object"){

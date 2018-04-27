@@ -36,7 +36,7 @@ function ajaxForm(els) {
       for (var index in post.error) {
         notification.notifi({
           'type': 'err',
-          'title': 'Ошибка',
+          'title': lg('error'),
           'message': post.error[index]
         });
       }
@@ -44,7 +44,7 @@ function ajaxForm(els) {
       for (var i = 0; i < post.error.length; i++) {
         notification.notifi({
           'type': 'err',
-          'title': 'Ошибка',
+          'title': lg('error'),
           'message': post.error[i]
         });
       }
@@ -52,7 +52,7 @@ function ajaxForm(els) {
       if (post.error || post.message) {
         notification.notifi({
           'type': post.error === false ? 'success' : 'err',
-          'title': post.error === false ? 'Успешно' : 'Ошибка',
+          'title': post.error === false ? lg('success') : lg('error'),
           'message': post.message ? post.message : post.error
         });
       }
@@ -71,9 +71,10 @@ function ajaxForm(els) {
     var form = data.form;
     var wrap = data.wrap;
     wrap.removeClass('loading');
-    wrap.html('<h3>Упс... Возникла непредвиденная ошибка<h3>' +
-      '<p>Часто это происходит в случае, если вы несколько раз подряд неверно ввели свои учетные данные. Но возможны и другие причины. В любом случае не расстраивайтесь и просто обратитесь к нашему оператору службы поддержки.</p><br>' +
-      '<p>Спасибо.</p>');
+    wrap.html(
+        '<h3>'+lg('sorry_not_expected_error')+'<h3>' +
+        lg('it_happens_sometimes')
+    );
     ajaxForm(wrap);
 
   }
@@ -119,7 +120,7 @@ function ajaxForm(els) {
       for (i = 0; i < required.length; i++) {
         var helpBlock = required.eq(i).attr('type') == 'hidden' ? required.eq(i).next('.help-block') :
           required.eq(i).closest('.form-input-group').next('.help-block');
-        var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : 'Необходимо заполнить';
+        var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : lg('required');
 
         if (required.eq(i).val().length < 1) {
           helpBlock.html(helpMessage);
@@ -138,7 +139,7 @@ function ajaxForm(els) {
     var postData = form.serializeObject();
     form.addClass('loading');
     form.html('');
-    wrap.html('<div style="text-align:center;"><p>Отправка данных</p></div>');
+    wrap.html('<div style="text-align:center;"><p>'+lg('sending_data')+'</p></div>');
 
     data.url += (data.url.indexOf('?') > 0 ? '&' : '?') + 'rc=' + Math.random();
     //console.log(data.url);
