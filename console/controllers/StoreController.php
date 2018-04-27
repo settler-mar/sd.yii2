@@ -13,9 +13,20 @@ use Yii;
 
 class StoreController extends Controller
 {
+  public function getData($params,$count=5){
+    $admitad = new Admitad();
+    if($count<=0)return false;
+
+    try {
+      $res=$admitad->getStore($params);
+    } catch (Exception $e) {
+      echo 'Ошибка получения данных. Осталось попыток '.$count;
+      $res=$this->getData($params,$count-1);
+    }
+    return $res;
+  }
 
   public function actionIndex(){
-    $admitad = new Admitad();
     $params = [
       'limit' => 500,
       'offset' => 0,
@@ -25,8 +36,7 @@ class StoreController extends Controller
     d(time());
 
     $action_type=array_flip(Yii::$app->params['dictionary']['action_type']);
-
-    $stores=$admitad->getStore($params);
+    $stores=$this->getData($params);
     while ($stores) {
       foreach ($stores['results'] as $store) {
         //ddd($store);
@@ -284,7 +294,7 @@ class StoreController extends Controller
       }
       $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
       if ($params['offset'] < $stores['_meta']['count']) {
-        $stores = $admitad->getStore($params);
+        $stores=$this->getData($params);
       } else {
         break;
       }
