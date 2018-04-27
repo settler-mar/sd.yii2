@@ -59,7 +59,7 @@ class AccountController extends \yii\web\Controller
       $user = \Yii::$app->user->identity;
       $favorites = UsersFavorites::userFavorites();
       $out = [
-        'btn' => 'Смотреть еще',
+        'btn' => Yii::t('common', 'look_more'),
         'notifications'=>[],
         'user' => [
             'balance' => $user->balance,

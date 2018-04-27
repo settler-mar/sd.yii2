@@ -5,10 +5,10 @@
     <table class="table ta_left adaptive adaptive-phones">
       <tr>
         <th>ID SD</th>
-        <th>{{ t('common', 'shop_or_service') }}</th>
-        <th>{{ t('common', 'date_active') }}</th>
-        <th>{{ t('common', 'cashback') }}</th>
-        <th>{{ t('common', 'status') }}</th>
+        <th>{{ t('common', 'shop_or_service')|raw }}</th>
+        <th>{{ t('common', 'date_active')|raw }}</th>
+        <th>{{ t('common', 'cashback')|raw }}</th>
+        <th>{{ t('common', 'status')|raw }}</th>
       </tr>
 
       {% set curr_icon = currencyIcon(app.params.valuta) %}
@@ -53,17 +53,17 @@
 {% if payments|length > 0 %}
   {% set curr = currencyIcon(app.params.valuta) %}
   <section class="margin">
-    <h3>{{ t('account', 'summary') }}:</h3>
+    <h3>{{ t('account', 'summary')|raw }}:</h3>
     <div>
-      {{ t('account', 'confirmed') }}:
+      {{ t('account', 'confirmed')|raw }}:
       <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
     </div>
     <div>
-      {{ t('account', 'expected') }}:
+      {{ t('account', 'expected')|raw }}:
       <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
     </div>
     <div>
-      {{ t('account', 'revoked') }}:
+      {{ t('account', 'revoked')|raw }}:
       <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
     </div>
   </section>

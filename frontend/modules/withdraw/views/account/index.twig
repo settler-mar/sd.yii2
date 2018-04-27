@@ -5,7 +5,7 @@
         <div class="account-text-block_item account-text-block_item-bold">{{ t('account', 'withdraw_balance_for')}}:&nbsp;
             <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}&nbsp{{ currencyIcon(app.params.valuta)|raw }}</span>
         </div>
-        <div class="account-text-block_item"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history') }}</a></div>
+        <div class="account-text-block_item"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history')|raw }}</a></div>
     </section>
     <section class="account-text-block">
         <div class="account-text-block_item">
@@ -14,12 +14,12 @@
     </section>
     <section class="account-withdraw account-text-block align-center">
         {% if balance.withdraw_waiting > 0 %}
-                <div class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists') }}</div>
+                <div class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists')|raw }}</div>
         {% elseif balance.current < 350 %}
-                <div class="account-text-block_item account-text-block_item-alert">{{ t('account', 'withrdaw_balance_little') }}</div>
+                <div class="account-text-block_item account-text-block_item-alert">{{ t('account', 'withrdaw_balance_little')|raw }}</div>
         {% else %}
                 <div class="account-withdraw-methods">
-                    <h3 class="">{{ t('account', 'withrdaw_choose_method') }}:</h3>
+                    <h3 class="">{{ t('account', 'withrdaw_choose_method')|raw }}:</h3>
                     <div class="account-withdraw-methods_list">
                         <div class="account-withdraw-methods_item">
                             <a href="#" class="account-withdraw-methods_item-option" data-option-process="2" ><img src="/images/account/webmoney-l.png" at=""></a>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                    <h3 class="text-center">{{ t('account', 'withrdaw_fill_data') }}:</h3>
+                    <h3 class="text-center">{{ t('account', 'withrdaw_fill_data')|raw }}:</h3>
                     <div class="payment-info users-withdraw ajax_form">
                         {% set form = active_form_begin({'action':'/account/withdraw', 'options':{'name':'withdraw-form', 'role':'form'},}) %}
 
@@ -70,7 +70,7 @@
                             })|raw }}
 
                             <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
-                            <input type="submit" class="btn" value="{{ t('account', 'withrdaw_form_button') }}">
+                            <input type="submit" class="btn" value="{{ t('account', 'withrdaw_form_button')|raw }}">
 
                         {{ active_form_end() }}
                     </div>

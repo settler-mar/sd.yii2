@@ -54,6 +54,8 @@ return [
     'password_repeat' => 'Повтор пароля',
     'register' => 'Регистрация',
     'do_register' => 'Зарегистрироваться',
+    'look_more' => 'Смотреть ещё',
+    'transition_date' => 'Дата перехода',
 
 
 

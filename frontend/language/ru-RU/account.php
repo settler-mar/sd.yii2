@@ -246,7 +246,7 @@ return [
     'password_reset_on_sd' => 'Сброс пароля на сайте  SecretDiscounter.ru',
     'authorize_success' => 'Успешная авторизация',
     'authorize_recommendations' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>, а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
-    'moderation_request_title' => 'Заявка на модерацию',
+    'moderation_request_title' => 'Заявка на модерации',
     'moderation_request_message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.',
     'email_confirm' => 'Подтверждение e-mail',
     'email_confirm_email_message' => 'Пользователю отправлено письмо о подтверждении его e-mail',
@@ -260,6 +260,18 @@ return [
     'choose_traffic_type'  => 'Выберите тип трафика',
     'agree_to_the_terms_of_parthner_agreement'  => 'Я принимаю условия <a href="/webmaster-terms" class="ignore-hash" style="text-decoration: underline;">Партнерского соглашения</a>',
     'the_combination_of_social_name_and_social_id_has_already_been_taken'  => 'такой ID в данной социальной сети уже имеется',
+    'referral_href_copied_to_clipboard'  => 'Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!',
+    'or_by_email'  => 'Или по электронной почте',
+    'send_href_all_frends_by_email'  => 'Отправьте ссылку всем своим друзьям по e-mail',
+    'charity_is_sent'  => 'Пожертвование успешно отправлено',
+    'autopayment_is_set'  => 'Автоплатёж был установлен',
+    'autopayment_is_unset'  => 'Автоплатёж был отменен',
+    'dobro_summ_required'  => 'Необходимо заполнить сумму пожертвования',
+    'dobro_fund_required'  => 'Необходимо выбрать фонд',
+    'error_sending_message'  => 'Ошибка отправки сообщения',
+    'all_fields_required'  => 'Необходимо заполнить все поля формы.',
+    'service_temporaty_unavailable'  => 'Сервис временно не доступен. Попробуйте позже.',
+    'message_to_admin_successfully_sent'  => 'Ваше сообщение успешно отправлено администратору.',
 
 
 ];
