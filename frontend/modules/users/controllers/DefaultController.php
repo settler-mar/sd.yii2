@@ -185,7 +185,7 @@ class DefaultController extends Controller
     $data['html'] = $this->renderAjax('registration-web', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
       'isAjax' => true,
-      'trafficTypeList' => Users::trafficTypeList
+      'trafficTypeList' => Users::trafficTypeList()
     ]);
     return json_encode($data);
 

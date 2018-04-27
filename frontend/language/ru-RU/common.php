@@ -52,6 +52,8 @@ return [
     'invite_friends' => 'пригласить друзей',
     'password' => 'Пароль',
     'password_repeat' => 'Повтор пароля',
+    'register' => 'Регистрация',
+    'do_register' => 'Зарегистрироваться',
 
 
 
