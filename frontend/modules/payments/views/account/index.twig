@@ -1,6 +1,6 @@
 {% include('parts/account/user_balance.twig') %}
 <section class="account">
-  {{ _constant('account_payments_history')|raw }}
+  {{ _tags_class(_constant('account_payments_history'), {'a':'blue'})|raw }}
   {% if payments|length > 0 %}
     <table class="table ta_left adaptive adaptive-phones">
       <tr>

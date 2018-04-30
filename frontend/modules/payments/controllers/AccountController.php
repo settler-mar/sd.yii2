@@ -55,7 +55,8 @@ class AccountController extends \yii\web\Controller
         ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id')
       ->innerJoin(Stores::tableName() . ' cws', "cwsl.stores_id = cws.uid")
       ->where(['cwp.user_id' => $id])
-      ->orderBy('cwp.action_id DESC');
+      //->orderBy('cwp.action_id DESC');
+      ->orderBy('cwp.action_date DESC');
 
 
     $search_range = Yii::$app->request->get('date');
@@ -123,7 +124,8 @@ class AccountController extends \yii\web\Controller
         ' cwsl', 'cwp.affiliate_id = cwsl.affiliate_id AND cwp.cpa_id = cwsl.cpa_id')
       ->innerJoin(Stores::tableName() . ' cws', "cwsl.stores_id = cws.uid")
       ->where(['cwp.user_id' => \Yii::$app->user->id])
-      ->orderBy('cwp.action_id DESC');
+      //->orderBy('cwp.action_id DESC');
+      ->orderBy('cwp.action_date DESC');
 
     $cacheName = 'account_payments_' . \Yii::$app->user->id . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
