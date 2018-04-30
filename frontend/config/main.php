@@ -130,6 +130,9 @@ $config = [
         [ // обработка реферальных ссылок
           'class' => 'frontend\components\SdUrlPromo',
         ],
+        [ // обработка локализации сайта
+            'class' => 'frontend\components\SdUrlLocalisation',
+        ],
         [ // обработка перехода после авторизации из админки под пользователем обратно в админку
             'class' => 'frontend\components\SdUrlAdmin',
         ],

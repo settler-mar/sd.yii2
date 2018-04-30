@@ -261,5 +261,4 @@ class SdUrlRule implements UrlRuleInterface
     }
     return $url;
   }
-
 }
