@@ -17,7 +17,7 @@
         </h1>
     {% endif %}
     <div  class="static-page-content margin">
-        {{ content | raw}}
+        {{ _tags_class(content, {'a':'blue'}) | raw}}
     </div>
 
     {% if dopline %}

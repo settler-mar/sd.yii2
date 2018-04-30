@@ -206,9 +206,9 @@
         </h2>
         <div class="accordion-content">
           {% if current_store.short_description %}
-            {{ current_store.short_description|raw }}
+            {{  _tags_class(current_store.short_description, {'a':'blue'})|raw }}
           {% else %}
-            {{ content|raw }}
+            {{ _tags_class(content, {'a':'blue'})|raw }}
           {% endif %}
         </div>
 
@@ -297,7 +297,7 @@
         <div class="accordion accordion-only_one accordion_pc_off">
           <h2 class="accordion-control accordion-title">Подробная информация о {{ current_store.name }} с кэшбэком</h2>
           <div class="accordion-content">
-            {{ current_store.description|raw }}
+            {{ _tags_class(current_store.description, {'a':'blue'})|raw }}
           </div>
         </div>
       </div>

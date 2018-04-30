@@ -1,6 +1,7 @@
 <?php
 use frontend\modules\constants\models\Constants;
 use common\components\Help;
+use common\components\TagsClasses;
 use yii\db\Query;
 
 $currencyIcon = [
@@ -550,9 +551,12 @@ $functionsList = [
       return '<img class="mobile_operator_logo" alt="'.$query['opsos_name'].'" src="/images/mobile_operator/'.$query['opsos_image'].'.gif">';
     });
   },
-    '_ucfirst' => function($value) {
+  '_ucfirst' => function($value) {
         return ucfirst($value);
-    }
+  },
+  '_tags_class' => function($content, $tags_list = [], $options = []){
+    return TagsClasses::add($content, $tags_list, $options);
+  }
 ];
 
 return $functionsList;

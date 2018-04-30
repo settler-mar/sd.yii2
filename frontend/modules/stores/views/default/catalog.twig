@@ -16,7 +16,7 @@
       <section class="gray-box wrap-round margin">
         <h1 class="align-center laptop-no-margin-bottom" >{{ h1_final|raw }}</h1>
         <div class="catalog_category-short-description laptop_hide">
-          {{ short_description|raw }}
+          {{ _tags_class(short_description, {'a':'blue'})|raw }}
         </div>
       </section>
     {% endif %}
@@ -81,13 +81,13 @@
       {% set down_description = offline and current_category.down_description_offline ? current_category.down_description_offline : current_category.down_description %}
       {% if down_description %}
         <div class="catalog_category-down-description margin">
-          {{ down_description|raw }}
+          {{ _tags_class(down_description, {'a':'blue'})|raw }}
         </div>
       {% endif %}
 
       {% if content and page==1 %}
         <div class="catalog_category-content margin">
-          {{ content | raw }}
+          {{ _tags_class(content, {'a':'blue'})|raw }}
         </div>
       {% endif %}
 
