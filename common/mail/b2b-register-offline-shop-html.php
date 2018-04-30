@@ -4,22 +4,17 @@
       <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
         <tr>
           <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
-            Заявка на регистрацию оффлайн-магазина.
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
             Уважаемый  <?=$user->fio;?>, ваша заявка принята. Мы ответим вам в ближайшее время
           </td>
         </tr>
 
         <tr>
-          <td>
+          <td style="padding: 0 20px;">
               Анкета:
           </td>
         </tr>
         <tr>
-          <td style="word-break:break-word;">
+          <td style="padding: 0 20px;word-break:break-word;">
               Фирма <?=$anketa->firm;?> <a href="<?=$anketa->url;?>"><?=$anketa->url;?></a> Категория <?=$anketa->category;?>.
               Регион <?=$anketa->region;?>. Тип деятельности <?=$anketa->type;?>. Время на рынке <?=$anketa->old;?> лет. Торговых точек <?=$anketa->points;?>.
           </td>
