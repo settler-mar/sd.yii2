@@ -5,7 +5,7 @@ var plugins = (function(){
     var template='<div class="page-wrap install-plugin_inner">'+
                 '<div class="install-plugin_text">{{text}}</div>'+
                 '<div class="install-plugin_buttons">'+
-                    '<a class="btn btn-mini btn-round install-plugin_button"  href="{{href}}" target="_blank">Установить&nbsp;плагин</a>'+
+                    '<a class="btn btn-mini btn-round install-plugin_button"  href="{{href}}" target="_blank">{{title}}</a>'+
                     '<div class="install-plugin_button-close">'+iconClose+'</div>'+
                 '</div>'+
             '</div>';
@@ -19,39 +19,40 @@ var plugins = (function(){
         'chrome': {
             'div_id': 'sd_chrome_app',
             'used': !!window.chrome && window.chrome.webstore !== null && !isOpera && !isYandex,
-            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            //'text': lg("install_plugin_and_it_will_notice_about_cashback"),
             'href': 'https://chrome.google.com/webstore/detail/secretdiscounterru-%E2%80%93-%D0%BA%D1%8D%D1%88%D0%B1/mcolhhemfacpoaghjidhliecpianpnjn',
             'install_button_class': 'plugin-browsers-link-chrome'
         },
         'firefox': {
             'div_id': 'sd_firefox_app',
             'used':  typeof InstallTrigger !== 'undefined',
-            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            //'text':lg("install_plugin_and_it_will_notice_about_cashback"),
             'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
             'install_button_class': 'plugin-browsers-link-firefox'
         },
         'opera': {
             'div_id': 'sd_opera_app',
             'used': isOpera,
-            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            //'text':lg("install_plugin_and_it_will_notice_about_cashback"),
             'href': 'https://addons.opera.com/ru/extensions/?ref=page',
             'install_button_class': 'plugin-browsers-link-opera'
         },
         'yandex': {
             'div_id': 'sd_yandex_app',
             'used': isYandex,
-            'text':'Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!',
+            //'text':lg("install_plugin_and_it_will_notice_about_cashback"),
             'href': 'https://addons.opera.com/ru/extensions/?ref=page',
             'install_button_class': 'plugin-browsers-link-yandex'
         }
     };
 
 
-    function setPanel(text, href) {
+    function setPanel(href) {
         var pluginInstallPanel = document.querySelector('#plugin-install-panel');//выводить ли панель
         if (pluginInstallPanel && getCookie(cookiePanelHidden) !== '1' ) {
-            template = template.replace('{{text}}', text);
+            template = template.replace('{{text}}', lg("install_plugin_and_it_will_notice_about_cashback"));
             template = template.replace('{{href}}', href);
+            template = template.replace('{{title}}', lg("install_plugin"));
             var section = document.createElement('section');
             section.className = 'install-plugin';
             section.innerHTML = template;
@@ -91,7 +92,7 @@ var plugins = (function(){
                     var appId = document.querySelector('#'+extensions[key].div_id);
                     if (!appId) {
                         //панель с кнопкой
-                        setPanel(extensions[key].text, extensions[key].href);
+                        setPanel(extensions[key].href);
                         //на главной  и в /account блоки с иконками и кнопками
                         setButtonInstallVisible(extensions[key].install_button_class);
                     }

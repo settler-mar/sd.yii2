@@ -9,9 +9,8 @@ $(document).ready(function () {
 
     if (!affiliate_id) {
       notification.notifi({
-        title: "Необходимо авторизоваться",
-        message: 'Добавить в избранное может только авторизованный пользователь.</br>' +
-        '<a href="#login" class="modals_open">Вход</a>  / <a href="#registration" class="modals_open">Регистрация</a>',
+        title: lg("registration_is_required"),
+        message: lg("add_to_favorite_may_only_registered_user"),
         type: 'err'
       });
       return false;
@@ -62,9 +61,8 @@ $(document).ready(function () {
     }, 'json').fail(function () {
       self.removeClass('disabled');
       notification.notifi({
-        message: "<b>Технические работы!</b><br>В данный момент времени" +
-        " произведённое действие невозможно. Попробуйте позже." +
-        " Приносим свои извинения за неудобство.", type: 'err'
+        message: lg("there_is_technical_works_now"),
+        type: 'err'
       });
 
       if (type == "add") {

@@ -11,6 +11,32 @@
   "are_you_sure_to_delete": "Вы действительно хотите удалить?",
   "yes": "Да",
   "no": "Нет",
-  "message": "Сообщение"
+  "message": "Сообщение",
+  "withdraw_cash_number": "Введите номер счёта",
+  "withdraw_r_number":"Введите номер R-кошелька",
+  "withdraw_phone_number":"Введите номер телефона",
+  "withdraw_cart_number":"Введите номер карты",
+  "withdraw_email": "Введите email адрес",
+  "promocode_expires": "Промокод истек",
+  "promocode_left_30_days": "Осталось: <span>более 30 дней</span>",
+  "day_case_0": "день",
+  "day_case_1": "дня",
+  "day_case_2": "дней",
+  "registration_is_required": "Необходимо авторизоваться",
+  "add_to_favorite_may_only_registered_user": "Добавить в избранное может только авторизованный пользователь.</br><a href='#login' class='modals_open'>Вход</a>&nbsp;/&nbsp;<a href='#registration' class='modals_open'>Регистрация</a>",
+  "there_is_technical_works_now": "<b>Технические работы!</b><br>В данный момент времени произведённое действие невозможно. Попробуйте позже. Приносим свои извинения за неудобство.",
+  "promocode_is_inactive": "К сожалению, промокод неактивен",
+  "promocode_view_all": "Все действующие промокоды вы можете <a href='/coupons'>посмотреть здесь</a>",
+  "promocode_is_expires": "К сожалению, срок действия данного промокода истек",
+  "use_promocode": "Использовать промокод",
+  "promocode_use_without_cashback_or_register": "Если вы хотите получать еще и КЭШБЭК (возврат денег), вам необходимо зарегистрироваться. Но можете и просто воспользоваться промокодом, без кэшбэка.",
+  "register": "Зарегистрироваться",
+  "promocode_recommendations": "Не рекомендуется совершать покупки без ознакомления<br> с <a target='_blank' rel='nofollow nooper noreferrer' href='/recommendations'>Правилами покупок с кэшбэком</a>",
+  "attentions": "Внимание",
+  "close": "Закрыть",
+  "download": "Скачать",
+  "install_plugin_and_it_will_notice_about_cashback":"Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!",
+  "install_plugin":"Установить&nbsp;плагин"
+
 
 }
