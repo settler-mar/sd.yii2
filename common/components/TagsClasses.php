@@ -11,7 +11,7 @@ use keltstr\simplehtmldom\SimpleHTMLDom as SHD;
  * Class TagsClasses
  * @package common\components
  */
-class TagsClasses extends Component
+class TagsClasses
 {
 
     /**
