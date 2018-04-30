@@ -19,7 +19,7 @@
         {% if friend_user or user_id %}
             <p class="affiliate-barcode_link-sent no_print">
 
-                <a href="" class="set_clipboard link-to-clipboard"
+                <a href="" class="set_clipboard link-to-clipboard blue"
                    data-link="{{ user_code }}"
                    data-text="{{ t('account', 'offline_pr_code_is_copy') }}"
                    data-clipboard="{{ user_code }}"
@@ -35,7 +35,7 @@
                     {{ svg('download')|raw }}
                 </div>
                 <div class="affiliate-invitation_download">
-                    <p class="intro-content_header"><a href="{{ user_code_img }}" download>{{ t('account', 'offline_pr_code_do_save') }}</a></p>
+                    <p class="intro-content_header"><a class="blue" href="{{ user_code_img }}" download>{{ t('account', 'offline_pr_code_do_save') }}</a></p>
                 </div>
             </div>
             {% if friend_user or user_id %}
@@ -65,7 +65,7 @@
                         {{ svg('printer')|raw }}
                     </div>
                     <div class="affiliate-invitation_printer">
-                        <p class="intro-content_header"><a href="/offline?ref={{user_id}}" {{ print | raw }}>{{ t('account', 'offline_pr_code_print') }}</a></p>
+                        <p class="intro-content_header"><a class="blue" href="/offline?ref={{user_id}}" {{ print | raw }}>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>
             {% endif %}
