@@ -40,6 +40,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
     $lg_code=$this->region['langList'][$lg];
     Yii::$app->language=$lg_code;
+    Yii::$app->params['lang_code']=$lg;
 
     if(isset($this->region['params'])){
       foreach ($this->region['params'] as $k=>$v){

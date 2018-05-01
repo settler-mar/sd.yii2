@@ -142,7 +142,8 @@ function _hyphen_words(array &$m, $wbr = false)
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
-    //$httpQurey =  $_SERVER['REQUEST_URI'];
+    $lg = Yii::$app->params['lang_code'];
+    $href = ($lg == 'ru' ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
     $httpQuery = '/' . Yii::$app->request->pathInfo;
     if (!count($item)) {
       return null;
@@ -150,8 +151,8 @@ $functionsList = [
     $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
         (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
     return '<a class="' . (empty($item['class']) ? '' : $item['class']) .
-    (($httpQuery == $item['href']) ? ' active' : '') . '" '
-    . (($httpQuery == $item['href']) ? '' : 'href="' . $item['href'] . '"') . '>' .
+    (($httpQuery == $href) ? ' active' : '') . '" '
+    . (($httpQuery == $href) ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
 //функция or - вывод первого непустого аргумента
