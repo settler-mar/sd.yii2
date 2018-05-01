@@ -4,7 +4,7 @@
             <table cellspacing="0" cellpadding="0" width="600" style="border-collapse: collapse !important;">
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
-                        Узнайте, как экономить до 40% на покупках
+                        Узнайте, как экономить до 40% на покупках.
                     </td>
                 </tr>
                 <tr>
@@ -14,7 +14,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        Готовы отправиться по магазинам? Мы на реальном примере покажем, как просто экономить с кэшбэком
+                        Готовы отправиться по магазинам? Мы на реальном примере покажем, как просто экономить с кэшбэком.
                     </td>
                 </tr>
                 <tr>

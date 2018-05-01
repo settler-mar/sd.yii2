@@ -16,6 +16,7 @@ $menu_left_color_hover: #eee; // цвет текста в меню
 $href_color: #e6ae03;
 $href_active_color: #F5BD03;
 $button_register_font_color: #9bbdda;
+$link_color_blue: #0044bb;
 
 //цвета кнопок
 $btn_primary_color: #fff;
@@ -48,6 +49,13 @@ a{
   &:hover {
     color: $href_active_color;
   }
+  &.blue {
+    color: $link_color_blue;
+    &:hover {
+      color: $href_active_color;
+    }
+  }
+
 }
 
 //перебиваем цвета кнопок

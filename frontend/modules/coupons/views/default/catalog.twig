@@ -18,9 +18,9 @@
         <h1 class="align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
           <div class="laptop_hide">
             {% if current_category.description %}
-              {{ current_category.description | raw }}
+              {{ _tags_class(current_category.description,{'a':'blue'})| raw }}
             {% else %}
-              {{ content | raw}}
+              {{ _tags_class(content, {'a':'blue'}) | raw}}
             {% endif %}
           </div>
       </section>
@@ -136,7 +136,7 @@
               {% if current_category.short_description %}
                 <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
-                    {{current_category.short_description|raw}}
+                    {{_tags_class(current_category.short_description,{'a':'blue'})|raw}}
                   </div>
                 </div>
               {% endif %}
@@ -145,7 +145,7 @@
               {% if current_store.coupon_description and page==1 and expired != 1 %}
                 <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
-                    {{current_store.coupon_description|raw}}
+                    {{ _tags_class(current_category.coupon_description,{'a':'blue'})|raw }}
                   </div>
                 </div>
               {% endif %}

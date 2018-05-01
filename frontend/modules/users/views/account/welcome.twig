@@ -25,7 +25,7 @@
               {% endif %}>{{ t('main', 'install_for_{browser}', {'browser': _ucfirst(key)})|raw }}</a>
           {% endif %}
         {% endfor %}
-        <a href="#" class="install-plugin-account-later">{{ t('common', 'remind_me_later') }}</a>
+        <a href="#" class="blue install-plugin-account-later">{{ t('common', 'remind_me_later') }}</a>
       </div>
     </div>
   </section>
@@ -57,7 +57,11 @@
     {{ t('account', 'user_loyalty_status') }}
   </h2>
   <div class="align-center margin" style="margin-top: -20px;">
+<<<<<<< HEAD
     <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">{{ t('common', 'to_know_details') }}</a>
+=======
+    <a href="#loyalty" class="blue modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
+>>>>>>> a5a8b97030d674eda8192d7f9cb646fbffe84593
   </div>
 
   <div class="account-circles-wrap">
@@ -116,8 +120,13 @@
                  data-button_yes="ОК"
                  data-notyfy_class="notify_box-alert"
                  data-title="<br>"
+<<<<<<< HEAD
                  class="disabled">
                 {{ t('common', 'add_right_now') }}
+=======
+                 class="disabled blue">
+                Подключить сейчас
+>>>>>>> a5a8b97030d674eda8192d7f9cb646fbffe84593
               </a>
             {% endif %}
           {% endif %}

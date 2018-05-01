@@ -1,6 +1,7 @@
 <?php
 use frontend\modules\constants\models\Constants;
 use common\components\Help;
+use common\components\TagsClasses;
 use yii\db\Query;
 
 $currencyIcon = [
@@ -546,9 +547,14 @@ $functionsList = [
   '_ucfirst' => function($value) {
         return ucfirst($value);
   },
+
   '_strtolower' => function($value) {
-        return strtolower($value);
-  }
+      return strtolower($value);
+  },
+  '_tags_class' => function($content, $tags_list = [], $options = []){
+    return TagsClasses::add($content, $tags_list, $options);
+  },
+
 ];
 
 return $functionsList;

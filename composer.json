@@ -40,7 +40,8 @@
     "nodge/yii2-eauth": "^2.5",
     "mihaildev/yii2-elfinder": "*",
     "dominus77/yii2-tinymce-widget": "*",
-    "webmil/text-language-detect": "dev-master"
+    "webmil/text-language-detect": "dev-master",
+    "keltstr/yii2-simplehtmldom": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

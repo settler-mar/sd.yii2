@@ -7,7 +7,7 @@
             </div>
             {% if not user_id %}
                 <div class="instruction-content">
-                    Пройдите простую <a href="#registration" class="modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
+                    Пройдите простую <a href="#registration" class="blue modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
                 </div>
             {% else %}
                 <div class="instruction-content">
@@ -23,7 +23,7 @@
                 Перейдите в магазин
             </div>
             <div class="instruction-content">
-                Нажмите кнопку <a href="#gotostore" class="scroll_to">&laquo;Перейти к покупкам&raquo;</a>
+                Нажмите кнопку <a href="#gotostore" class="blue scroll_to">&laquo;Перейти к покупкам&raquo;</a>
                     и сделайте заказ на сайте.
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="instruction-content">
                 Кэшбэк за заказ автоматически зачислится на
                 {% if user_id %}
-                    <a href="/account">ваш счёт</a>
+                    <a class="blue" href="/account">ваш счёт</a>
                 {% else %}
                     ваш счёт
                 {% endif %}
