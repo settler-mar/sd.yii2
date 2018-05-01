@@ -80,8 +80,12 @@ class CategoryCouponsMenu extends Widget
                 $out .=  '<span ' . $class . '">' . $category['name'] .
                     ($category['count'] !== null? "&nbsp;(" .  $category['count'] . ")" : "")."</span>";
             } else {
-                $out .=  '<a href="/coupons' . ($category['route']? '/'.$category['route'] : '') .
-                  '" class="title'.(isset($category['class']) ? ' '.($category['class']) : '').'">' . $category['name'] .($category['count'] !== null ?  '&nbsp;(' . $category['count'] .')' : '').'</a>';
+                $lg = Yii::$app->params['lang_code'];
+                $href = ($lg == 'ru'  ? '' : '/'.$lg) .'/coupons' . ($category['route']? '/'.$category['route'] : '');
+                $out .=  '<a href="'.$href.
+                    '" class="title'.(isset($category['class']) ? ' '.($category['class']) : '').'">' .
+                    $category['name'] .($category['count'] !== null ?  '&nbsp;(' . $category['count'] .')' : '') .
+                    '</a>';
             }
             $out .='</li>';
         }
