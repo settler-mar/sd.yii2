@@ -143,16 +143,22 @@ $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
     $lg = Yii::$app->params['lang_code'];
-    $href = ($lg == 'ru' ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
+    $href = ($lg == 'ru' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
     $httpQuery = '/' . Yii::$app->request->pathInfo;
+    $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');
     if (!count($item)) {
       return null;
     }
+    $attributes = '';
+    if (isset($item['attributes'])) {
+        foreach ($item['attributes'] as $key=>$attribute) {
+            $attributes .= (' '.$key.'="'.$attribute.'"');
+        }
+    }
     $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
         (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
-    return '<a class="' . (empty($item['class']) ? '' : $item['class']) .
-    (($httpQuery == $href) ? ' active' : '') . '" '
-    . (($httpQuery == $href) ? '' : 'href="' . $href . '"') . '>' .
+    return '<a '.($className ? 'class="' . $className . '"' : '') . $attributes .
+        ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
 //функция or - вывод первого непустого аргумента

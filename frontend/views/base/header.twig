@@ -11,6 +11,7 @@
               {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
               {{ svg('close', 'menu-toggle_button close')|raw }}
             </a>
+
           </div>
 
           <div class="search-toggle  btn-header mobile">
@@ -19,10 +20,12 @@
         </div>
 
         <div class="header-upline_logo">
-          <a href="/">
-            <img class="header-upline_logo-pc" src="/images/templates/sd_logo.png" alt="secretdiscounter logo">
-            <img class="header-upline_logo-mobile" src="/images/svg/mini-logo-2.svg" alt="secretdiscounter logo">
-          </a>
+          {#<a href="/">#}
+            {#<img class="header-upline_logo-pc" src="/images/templates/sd_logo.png" alt="secretdiscounter logo">#}
+            {#<img class="header-upline_logo-mobile" src="/images/svg/mini-logo-2.svg" alt="secretdiscounter logo">#}
+          {#</a>#}
+          {{ get_menu_item({'href': '/','title': '<img class="header-upline_logo-pc" src="/images/templates/sd_logo.png" alt="secretdiscounter logo">
+            <img class="header-upline_logo-mobile" src="/images/svg/mini-logo-2.svg" alt="secretdiscounter logo">' })|raw }}
         </div>
 
 
@@ -46,55 +49,85 @@
 
           {% if this.user_id == 0 %}
             {#если не зарегистрирован#}
-            <a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это
-              работает</a>
+            {#<a href="/howitworks" class="header-upline_in-right-howitworks header-right_link header-other-btn">Как это#}
+              {#работает</a>#}
+            {{ get_menu_item({'href': '/howitworks','title': 'Как это работает', 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
             {#<a href="/howitworks" class="header-right_link">Помощь</a>#}
             <div class="header-authorization">
-              <a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-enter modals_open">
-                <span class="header-authorization-enter-text">Вход</span>
-                {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
-              </a>
+              {#<a href="#login" rel="nofollow" class="header-authorization-btn header-authorization-enter modals_open">#}
+                {#<span class="header-authorization-enter-text">Вход</span>#}
+                {#{{ svg('sign-in', 'header-authorization-enter-icon')|raw }}#}
+              {#</a>#}
+                {{ get_menu_item({
+                    'href': '#login',
+                    'title': '<span class="header-authorization-enter-text">Вход</span>',
+                    'class':'header-authorization-btn header-authorization-enter modals_open',
+                    'attributes': {'rel': 'nofollow'}
+                })|raw }}
               <span class="header-authorization-separate header-authorization-separate-login">/</span>
-              <a href="#registration" rel="nofollow"
-                 class="header-authorization-btn header-authorization-register modals_open">Регистрация</a>
+              {#<a href="#registration" rel="nofollow"#}
+                 {#class="header-authorization-btn header-authorization-register modals_open">Регистрация</a>#}
+                {{ get_menu_item({
+                    'href': '#login',
+                    'title': 'Регистрация',
+                    'class':'header-authorization-btn header-authorization-register modals_open',
+                    'attributes': {'rel': 'nofollow'}
+                })|raw }}
             </div>
           {% else %}
             {#зарегистрирован#}
             <div class="btn-header header-upline_ballance">
-              <a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}
-                <span class="ballance-confirmed" data-toggle="tooltip"
+              {#<a href="/account" class="btn-header-ballance">{{ svg('circle', 'btn-header_button_money')|raw }}#}
+                {#<span class="ballance-confirmed" data-toggle="tooltip"#}
                     {#title="Сумма кэшбека за покупки, которая зачислена на ваш баланс"#}
-                      data-original-title="Сумма кэшбэка, уже доступная к выводу">
-                  {{ _nf(this.balance.current) | raw }} руб </span>
-                <span class="ballance-all" data-toggle="tooltip"
+                      {#data-original-title="Сумма кэшбэка, уже доступная к выводу">#}
+                  {#{{ _nf(this.balance.current) | raw }} руб </span>#}
+                {#<span class="ballance-all" data-toggle="tooltip"#}
                     {#title="Сумма кэшбека, которая будет доступна для вывода, после подтверждения вашей покупки интернет-магазином"#}
-                      data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">
-                &nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw }} руб </span>
-              </a>
+                      {#data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">#}
+                {#&nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw }} руб </span>#}
+              {#</a>#}
+              {{ get_menu_item({
+                'href': '/account',
+                'title': svg('circle', 'btn-header_button_money') ~ '<span class="ballance-confirmed" data-toggle="tooltip" data-original-title="Сумма кэшбэка, уже доступная к выводу">'
+                  ~ _nf(this.balance.current) ~'руб </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="Сумма кэшбэка за еще неподтвержденные магазином покупки">&nbsp;/&nbsp;'
+                  ~ _nf(this.balance.pending) ~' руб </span>',
+                'class':'btn-header-ballance'
+              })|raw }}
+
             </div>
             {% if this.favorites %}
               {#если есть избранные#}
               <div class="btn-header btn-header_favorite">
-                <a data-toggle="tooltip" data-original-title="Избранные магазины"
-                   href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>
+                {#<a data-toggle="tooltip" data-original-title="Избранные магазины"#}
+                   {#href="/account/favorites">{{ svg('heart-o', 'btn-header_button')|raw }}</a>#}
+                {{ get_menu_item({
+                  'href': '/account/favorites',
+                  'title': svg('heart-o', 'btn-header_button'),
+                  'attributes': {'data-toggle':"tooltip", 'data-original-title':"Избранные магазины"}
+                })|raw }}
               </div>
             {% endif %}
 
             <div class="header-logo_noty btn-header last">
-              <a data-toggle="tooltip" data-original-title="Уведомления"
-                 href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>
+              {#<a data-toggle="tooltip" data-original-title="Уведомления"#}
+                 {#href="/account/notification">{{ svg('bell-o', 'btn-header_button')|raw }}</a>#}
+              {{ get_menu_item({
+                  'href': '/account/notification',
+                  'title': svg('bell-o', 'btn-header_button'),
+                  'attributes': {'data-toggle':"tooltip", 'data-original-title':"Уведомления"}
+              })|raw }}
+
             </div>
 
             <div class="account-menu-wrap">
               <div class="avatar account-menu-toggle">
                 {% set user_avatar = _checkAvatar(this.user.photo) %}
                 <span class="avatar-wrap">
-                  <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}"
-                       alt="{{ this.user.name }}">
+                  <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}" alt="{{ this.user.name }}">
                 </span>
                 {{ svg('angle-down','avatar_angle-down')|raw }}
                 {{ svg('close', 'account-menu-toggle-close')|raw }}
-
               </div>
               {% include 'parts/account_menu.twig' %}
             </div>
@@ -110,25 +143,51 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-            <a href="#login" class="header-right_link mobile modals_open">Войти</a>
+            {#<a href="#login" class="header-right_link mobile modals_open">Войти</a>#}
+            {{ get_menu_item({
+                'href': '#login',
+                'title': 'Войти',
+                'class': 'header-right_link mobile modals_open'
+            })|raw }}
+
           </li>
           <li class="mobile">
-            <a href="#registration" class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open">Зарегистрироваться
-              (+30% к кэшбэку)</a>
+            {#<a href="#registration" class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open">Зарегистрироваться#}
+              {#(+30% к кэшбэку)</a>#}
+              {{ get_menu_item({
+                  'href': '#registration',
+                  'title': 'Зарегистрироваться (+30% к кэшбэку)',
+                  'class': 'header-right_link link_mobile_bold link_mobile_pointed mobile modals_open'
+              })|raw }}
           </li>
           <li class="mobile">
-            <a href="/howitworks" class="header-right_link mobile">Как это работает</a>
+            {#<a href="/howitworks" class="header-right_link mobile">Как это работает</a>#}
+              {{ get_menu_item({
+                  'href': '/howitworks',
+                  'title': 'Как это работает',
+                  'class': 'header-right_link mobile'
+              })|raw }}
           </li>
         {% else %}
           <li class="mobile">
-            <a href="/account">{{ t('account', 'menu_main_page') }}</a>
+            {#<a href="/account">{{ t('account', 'menu_main_page') }}</a>#}
+              {{ get_menu_item({
+                  'href': '/account',
+                  'title': t('account', 'menu_main_page'),
+                  'class': 'mobile'
+              })|raw }}
           </li>
         {% endif %}
         <li class="drop-menu_group__up">
-          <a class="drop-menu_group__up-header" href="/stores">
-            Интернет-магазины
-            {{ svg('angle-down','menu_angle-down')|raw }}
-          </a>
+          {#<a class="drop-menu_group__up-header" href="/stores">#}
+            {#Интернет-магазины#}
+            {#{{ svg('angle-down','menu_angle-down')|raw }}#}
+          {#</a>#}
+            {{ get_menu_item({
+                'href': '/stores',
+                'title': 'Интернет-магазины' ~ svg('angle-down','menu_angle-down'),
+                'class': 'drop-menu_group__up-header'
+            })|raw }}
 
           {{ use('frontend/components/CategoryMenu') }}
           {% set offline = app.params.stores_menu_separate ? 0 : null %}
@@ -138,12 +197,22 @@
           {% endif %}
         </li>
         <li class="mobile">
-          <a href="/stores/s-povyshennym-cashback" class="link_mobile_bold">Двойной кэшбэк</a>
+          {#<a href="/stores/s-povyshennym-cashback" class="link_mobile_bold">Двойной кэшбэк</a>#}
+          {{ get_menu_item({
+            'href': '/stores/s-povyshennym-cashback',
+            'title': 'Двойной кэшбэк',
+            'class': 'link_mobile_bold'
+          })|raw }}
         </li>
         <li class="drop-menu_group__up">
-          <a class="drop-menu_group__up-header" href="/coupons">Промокоды
-            {{ svg('angle-down','menu_angle-down')|raw }}
-          </a>
+          {#<a class="drop-menu_group__up-header" href="/coupons">Промокоды#}
+            {#{{ svg('angle-down','menu_angle-down')|raw }}#}
+          {#</a>#}
+          {{ get_menu_item({
+            'href': '/coupons',
+            'title': 'Промокоды'~svg('angle-down','menu_angle-down'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
           {{ use('frontend/components/CategoryCouponsMenu') }}
           {% set category_coupons = category_coupons_menu_widget() %}
           {% if category_coupons %}
@@ -153,10 +222,16 @@
         {#если есть в настройках, выводим меню шопов оффлайн#}
         {% if app.params.stores_menu_separate %}
           <li class="drop-menu_group__up">
-            <a class="drop-menu_group__up-header" href="/stores/offline">
-              Оффлайн-магазины
-              {{ svg('angle-down','menu_angle-down')|raw }}
-            </a>
+            {#<a class="drop-menu_group__up-header" href="/stores/offline">#}
+              {#Оффлайн-магазины#}
+              {#{{ svg('angle-down','menu_angle-down')|raw }}#}
+            {#</a>#}
+            {{ get_menu_item({
+                  'href': '/stores/offline',
+                  'title': 'Оффлайн-магазины'~ svg('angle-down','menu_angle-down'),
+                  'class': 'drop-menu_group__up-header'
+            })|raw }}
+
             {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': 1 }) %}
             {% if category_tree %}
               {{ category_tree|raw }}
@@ -164,7 +239,11 @@
           </li>
         {% endif %}
         <li class="desctop">
-          <a href="/stores/s-povyshennym-cashback">Двойной кэшбэк</a>
+          {#<a href="/stores/s-povyshennym-cashback">Двойной кэшбэк</a>#}
+            {{ get_menu_item({
+                'href': '/stores/s-povyshennym-cashback',
+                'title': 'Двойной кэшбэк'
+            })|raw }}
         </li>
         <li class="drop-menu_group__up drop-menu_group__up-pointed">
           <span class="drop-menu_group__up-header">Сервисы
@@ -175,7 +254,14 @@
             {% for item in link_list %}
               {% if item.show==1 %}
                 <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
-                  <a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="noopener noreferrer nofollow"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>
+                  {#<a href="{{ item.url }}"{{ _if(item.outer==1 or item.blank==1,' rel="noopener noreferrer nofollow"') | raw }}{{ _if(item.blank==1, ' target="_blank"') }}>{{ item.name }}</a>#}
+                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null  %}
+                    {{ get_menu_item({
+                        'href': item.url,
+                        'outer': item.outer,
+                        'title': item.name,
+                        'attributes': attributes
+                    })|raw }}
                 </li>
               {% endif %}
             {% endfor %}
@@ -184,10 +270,11 @@
       </ul>
       <ul class="header-right page-wrap-flex drop-menu">
         <li>
-          <a href="/dobro">
-            {{ svg('heart','header-heart heart-red')|raw }}
-            Делаем добро
-          </a>
+          {#<a href="/dobro">#}
+            {#{{ svg('heart','header-heart heart-red')|raw }}#}
+            {#Делаем добро#}
+          {#</a>#}
+          {{ get_menu_item({'href': '/dobro','title': svg('heart', 'header-heart heart-red') ~ 'Делаем добро'})|raw }}
         </li>
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
@@ -214,18 +301,27 @@
               {% for item in link_list %}
                 {% if item.show==1 %}
                   <li  {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
-                    <a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>
+                    {#<a href="{{ item.url }}"{{ _if(item.outer==1,'rel="nofollow noopener"') | raw }}>{{ item.name }}</a>#}
+                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null  %}
+                    {{ get_menu_item({
+                      'href': item.url,
+                      'outer': item.outer,
+                      'title': item.name,
+                      'attributes': attributes
+                    })|raw }}
                   </li>
                 {% endif %}
               {% endfor %}
             </ul>
           </li>
           <li class="mobile">
-            <a href="/logout">Выйти</a>
+            {#<a href="/logout">Выйти</a>#}
+            {{ get_menu_item({'href': '/logout','title': 'Выйти'})|raw }}
           </li>
         {% else %}
           <li>
-            <a href="/help-center">Помощь</a>
+            {#<a href="/help-center">Помощь</a>#}
+            {{ get_menu_item({'href': '/help-center','title': 'Помощь'})|raw }}
           </li>
         {% endif %}
       </ul>
