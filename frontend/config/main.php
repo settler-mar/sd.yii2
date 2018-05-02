@@ -104,15 +104,15 @@ $config = [
         'path' => '/',
         'domain' => DOMAIN_FRONT,
       ],
-      'session' => [
-          'cookieParams' => [
-              'domain' => '.' . DOMAIN_FRONT,
-              'httpOnly' => true,
-          ],
-      ],
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
       },
+    ],
+    'session' => [
+      'cookieParams' => [
+        'domain' => '.' . DOMAIN_FRONT,
+        'httpOnly' => true,
+      ],
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
