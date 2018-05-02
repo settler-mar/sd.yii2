@@ -100,11 +100,19 @@ $config = [
       'enableAutoLogin' => true,
       'identityCookie' => [
         'name' => '_identity-frontend',
-        'httpOnly' => true
+        'httpOnly' => true,
+        'path' => '/',
+        'domain' => DOMAIN_FRONT,
+      ],
+      'session' => [
+          'cookieParams' => [
+              'domain' => '.' . DOMAIN_FRONT,
+              'httpOnly' => true,
+          ],
       ],
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
-      }
+      },
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
