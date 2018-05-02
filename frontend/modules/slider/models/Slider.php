@@ -2,6 +2,7 @@
 
 namespace frontend\modules\slider\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use Yii;
 use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
@@ -58,12 +59,23 @@ class Slider extends \yii\db\ActiveRecord
         hide_animation:'hinge',
 			}
 		}";
+
   /**
    * @inheritdoc
    */
   public static function tableName()
   {
     return 'cw_slider';
+  }
+
+  public function behaviors()
+  {
+    return [
+        [
+            'class' => ActiveRecordChangeLogBehavior::className(),
+          //'ignoreAttributes' => ['visit','rating'],
+        ],
+    ];
   }
 
   /**

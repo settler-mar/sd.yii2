@@ -7,6 +7,8 @@ use frontend\modules\stores\models\CategoriesStores;
 use Yii;
 use yii\web\UploadedFile;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
+
 //use JBZoo\Image\Image;
 
 /**
@@ -26,6 +28,12 @@ class Banners extends \yii\db\ActiveRecord
 {
     public $picture_file;
 
+    public $banner_places = [];
+
+
+    protected $image_path = '/images/banners';
+
+
     private $places_array = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
@@ -33,16 +41,24 @@ class Banners extends \yii\db\ActiveRecord
         'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
         'coupons-catalog-left-menu' => ['name' => 'Купоны. Левое меню. Основной каталог'],
     ];
-    public $banner_places = [];
 
-
-    protected $image_path = '/images/banners';
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'cw_banners';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ActiveRecordChangeLogBehavior::className(),
+                //'ignoreAttributes' => ['visit','rating'],
+            ],
+
+        ];
     }
 
     /**
@@ -54,10 +70,10 @@ class Banners extends \yii\db\ActiveRecord
             [['url'], 'required'],
             [['picture_file'], 'file', 'extensions' => 'gif, jpg, png'],
             [['picture_file'], 'image',
-              'maxHeight' => 1200,
-              'maxWidth' => 1200,
-              'maxSize' => 4 * 1024 * 1024,
-              ],
+                'maxHeight' => 1200,
+                'maxWidth' => 1200,
+                'maxSize' => 4 * 1024 * 1024,
+            ],
             [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
             [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
@@ -90,9 +106,11 @@ class Banners extends \yii\db\ActiveRecord
         if (!parent::beforeValidate()) {
             return false;
         }
+
+
         $this->banner_places = method_exists(Yii::$app->request, 'post') &&
-            isset(Yii::$app->request->post('Banners')['banner_places']) ?
-                Yii::$app->request->post('Banners')['banner_places'] : null ;
+        isset(Yii::$app->request->post('Banners')['banner_places']) ?
+            Yii::$app->request->post('Banners')['banner_places'] : null;
         if ($this->banner_places) {
             $this->places = implode(',', $this->banner_places);
         }
@@ -106,33 +124,33 @@ class Banners extends \yii\db\ActiveRecord
     {
         $places = !empty($this->places) ? explode(',', $this->places) : [];
         foreach ($this->places_array as $key => &$value) {
-            $value['checked'] = in_array($key, $places) ?  1 : 0;
+            $value['checked'] = in_array($key, $places) ? 1 : 0;
         }
     }
 
 
-  /**
-   * @param bool $insert
-   * @param array $changedAttributes
-   */
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
     public function afterSave($insert, $changedAttributes)
     {
         $this->saveImage();
         $this->clearCache();
     }
 
-  /**
-   *
-   */
+    /**
+     *
+     */
     public function afterDelete()
     {
         $this->clearCache();
     }
 
-  /**
-   * Сохранение изображения
-   *
-   */
+    /**
+     * Сохранение изображения
+     *
+     */
     public function saveImage()
     {
         $photo = \yii\web\UploadedFile::getInstance($this, 'picture_file');
@@ -148,13 +166,13 @@ class Banners extends \yii\db\ActiveRecord
                 mkdir($fileDir, 0777, true);   // Создаем директорию при отсутствии
             }
             $this->picture_file = UploadedFile::getInstance($this, 'picture_file');
-            $this->picture_file->saveAs($fileDir. '/' . $this->picture);
+            $this->picture_file->saveAs($fileDir . '/' . $this->picture);
 
-            $this->removeImage($fileDir . '/' .$oldImage);   // удаляем старое изображение
+            $this->removeImage($fileDir . '/' . $oldImage);   // удаляем старое изображение
             $this::getDb()
-              ->createCommand()
-              ->update($this->tableName(), ['picture' => $this->picture], ['uid' => $this->uid])
-              ->execute();
+                ->createCommand()
+                ->update($this->tableName(), ['picture' => $this->picture], ['uid' => $this->uid])
+                ->execute();
         }
     }
 
@@ -164,7 +182,7 @@ class Banners extends \yii\db\ActiveRecord
     public function removeImage($img)
     {
         if ($img) {
-          // Если файл существует
+            // Если файл существует
             if (is_readable($img) && is_file($img)) {
                 unlink($img);
             }
@@ -172,21 +190,20 @@ class Banners extends \yii\db\ActiveRecord
     }
 
     /**
-    * вывод баннеров
-    */
+     * вывод баннеров
+     */
     public static function show($params = [])
     {
-      //
-      $place = !empty($params['place']) ? $params['place'] : false;
-      if(is_string($place))
-        $place=explode(',',$place);
+        //
+        $place = !empty($params['place']) ? $params['place'] : false;
+        if (is_string($place))
+            $place = explode(',', $place);
 
-      if(is_array($place)){
-        foreach ($place as &$item) $item=trim($item);
-      }
+        if (is_array($place)) {
+            foreach ($place as &$item) $item = trim($item);
+        }
 
-
-      $cacheName = 'banners'.($place ? '_' . implode(',',$place) : '');
+        $cacheName = 'banners' . ($place ? '_' . implode(',', $place) : '');
         $dependencyName = 'banners';
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
@@ -195,10 +212,10 @@ class Banners extends \yii\db\ActiveRecord
             $cacheName,
             function () use ($place) {
                 $banners = self::find()
-                     ->select(['picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
+                    ->select(['picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
                 if ($place) {
-                  foreach ($place as $item)
-                    $banners->orWhere(['like', 'places', $item]);
+                    foreach ($place as $item)
+                        $banners->orWhere(['like', 'places', $item]);
                 }
                 return $banners
                     ->andWhere(['is_active' => 1])
@@ -220,41 +237,45 @@ class Banners extends \yii\db\ActiveRecord
                     'image_class' => !empty($params['options']['image_class']) ? $params['options']['image_class'] : null,
                 ]
             );
+
         }
     }
 
     /**
-    * очистка кеш
-    */
+     * очистка кеш
+     */
     protected function clearCache()
     {
         Cache::clearName('banners');
     }
 
-    public function getPlaces_array(){
-      $places_array=$this->places_array;
-      $places = !empty($this->places) ? explode(',', $this->places) : [];
 
-      $cupons=CategoriesCoupons::find()->asArray()->all();
-      foreach($cupons as $cupon){
-        $key = 'coupons-'.$cupon['uid'].'-left-menu';
-        $places_array[$key]=[
-          'name'=>'Купоны.Левое меню.'.$cupon['name'],
-          'checked' => in_array($key, $places) ? 1 : 0,
-        ];
-      };
+    public function getPlaces_array()
+    {
+        $places_array = $this->places_array;
+        $places = !empty($this->places) ? explode(',', $this->places) : [];
 
-      $stores=CategoriesStores::find()
-          ->where(['parent_id'=>0])
-          ->asArray()
-          ->all();
-      foreach($stores as $store){
-        $key = 'stores-'.$store['uid'].'-left-menu';
-        $places_array[$key]=[
-          'name'=>'Магазины.Левое меню.'.$store['name'],
-          'checked' => in_array($key, $places) ? 1 : 0,
-        ];
-      };
-      return $places_array;
+        $cupons = CategoriesCoupons::find()->asArray()->all();
+        foreach ($cupons as $cupon) {
+            $key = 'coupons-' . $cupon['uid'] . '-left-menu';
+            $places_array[$key] = [
+                'name' => 'Купоны.Левое меню.' . $cupon['name'],
+                'checked' => in_array($key, $places) ? 1 : 0,
+            ];
+        };
+
+        $stores = CategoriesStores::find()
+            ->where(['parent_id' => 0])
+            ->asArray()
+            ->all();
+        foreach ($stores as $store) {
+            $key = 'stores-' . $store['uid'] . '-left-menu';
+            $places_array[$key] = [
+                'name' => 'Магазины.Левое меню.' . $store['name'],
+                'checked' => in_array($key, $places) ? 1 : 0,
+            ];
+        };
+        return $places_array;
     }
+
 }

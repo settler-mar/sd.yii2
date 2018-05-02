@@ -171,6 +171,7 @@ $config = [
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
 
+
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
         ],
@@ -344,6 +345,9 @@ $config = [
 
 if (YII_DEBUG) {
   // configuration adjustments for 'dev' environment
+  $config['modules']['ar_log'] = [
+      'class' => 'frontend\modules\ar_log\Module',
+  ];
   unset($config['modules']['permit']['params']['accessRoles']);
   $config['params']['plugin_install_panel'] = 1;
 }

@@ -2,6 +2,7 @@
 
 namespace frontend\modules\funds\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use Yii;
 use JBZoo\Image\Image;
 
@@ -27,6 +28,16 @@ class Foundations extends \yii\db\ActiveRecord
   public static function tableName()
   {
     return 'cw_foundation';
+  }
+
+  public function behaviors()
+  {
+    return [
+        [
+            'class' => ActiveRecordChangeLogBehavior::className(),
+          //'ignoreAttributes' => ['visit','rating'],
+        ],
+    ];
   }
 
   /**
@@ -56,11 +67,11 @@ class Foundations extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'uid' => 'Uid',
-      'title' => 'Название',
-      'description' => 'Описание',
-      'image' => 'Image',
-      'is_active' => 'Статус',
+        'uid' => 'Uid',
+        'title' => 'Название',
+        'description' => 'Описание',
+        'image' => 'Image',
+        'is_active' => 'Статус',
     ];
   }
 
@@ -76,8 +87,8 @@ class Foundations extends \yii\db\ActiveRecord
   public function afterDelete()
   {
     $path = $this->getPath();// Путь для сохранения
-    $bp=Yii::$app->getBasePath().'/web'.$path;
-    $this->removeImage($bp.$this->image);   // удаляем старое изображение
+    $bp = Yii::$app->getBasePath() . '/web' . $path;
+    $this->removeImage($bp . $this->image);   // удаляем старое изображение
   }
 
   /**
@@ -95,20 +106,20 @@ class Foundations extends \yii\db\ActiveRecord
       $exch = $exch[count($exch) - 1];
       $name .= '.' . $exch;
       $this->image = $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'/web'.$path;
-      if (!file_exists($bp.$path)) {
-        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
+      $bp = Yii::$app->getBasePath() . '/web' . $path;
+      if (!file_exists($bp . $path)) {
+        mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
       }
       $img = (new Image($photo->tempName));
       $img
-        ->fitToWidth(1024)
-        ->saveAs($bp.$this->image);
+          ->fitToWidth(1024)
+          ->saveAs($bp . $this->image);
       if ($img) {
-        $this->removeImage($bp.$oldImage);   // удаляем старое изображение
+        $this->removeImage($bp . $oldImage);   // удаляем старое изображение
         $this::getDb()
-          ->createCommand()
-          ->update($this->tableName(), ['image' => $this->image], ['uid' => $this->uid])
-          ->execute();
+            ->createCommand()
+            ->update($this->tableName(), ['image' => $this->image], ['uid' => $this->uid])
+            ->execute();
       }
     }
   }
@@ -127,7 +138,8 @@ class Foundations extends \yii\db\ActiveRecord
     }
   }
 
-  public function getPath(){
+  public function getPath()
+  {
     return '/images/dobro/';
   }
 }
