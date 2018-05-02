@@ -1,3 +1,5 @@
+{{ use('frontend/components/LangSelect') }}
+
 <section id="header" class="header">
   <div class="header-upline">
     <div class="header-upline_inner page-wrap-flex">
@@ -41,6 +43,9 @@
           </div>
         </div>
 
+        <div class="header-upline_lang">
+         {{ lang_select_widget() }}
+        </div>
 
         <div class="header-upline_in-right">
 

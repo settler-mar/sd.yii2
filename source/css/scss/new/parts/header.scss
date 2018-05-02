@@ -244,7 +244,7 @@
   &-search {
     position: relative;
     width: 310px;
-    margin-right: auto;
+    //margin-right: auto;
     margin-left: 15px;
 
     @include media($laptop-min) {
@@ -310,6 +310,10 @@
         }
       }
     }
+  }
+
+  &-header-upline_lang{
+
   }
 
   &-other-btn {
