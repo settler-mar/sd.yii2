@@ -16,7 +16,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
   public function parseRequest($manager, $request){
     $host=$request->headers['host'];
     $this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';
-    Yii::$app->params['regions_list'][$this->region]['active']=true;
+    Yii::$app->params['region']=$this->region;
     $this->region=Yii::$app->params['regions_list'][$this->region];
 
     Yii::$app->homeUrl=$host;

@@ -315,6 +315,40 @@
   &-upline_lang{
     margin-right: auto;
     margin-left: 15px;
+    display: flex;
+    color: #fff;
+
+    &-list {
+      list-style: none;
+
+      li{
+        margin: 5px 0;
+      }
+
+      &:hover{
+        .header-upline_lang-link{
+          color: #000;
+        }
+
+        .header-upline_lang-list-drap{
+          display: block;
+        }
+      }
+
+      &-drap {
+        display: none;
+        position: absolute;
+        list-style: none;
+        padding: 10px;
+        background: #f4f4f4;
+        margin: 5px 0 0 -10px;
+      }
+    }
+
+    &-img{
+      height: 12px;
+      margin-right: 5px;
+    }
   }
 
   &-other-btn {
