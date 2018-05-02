@@ -12,6 +12,7 @@ class LangSelect extends Widget
 
   public function run()
   {
+    ddd(\Yii::$app->params['regions_list']);
     return "test";
   }
 }

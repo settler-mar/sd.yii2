@@ -10,12 +10,15 @@ class SdUrlLocalisation implements UrlRuleInterface{
   ///private $url_pref='/';
 
   function __construct() {
-    $this->params->regions=require(__DIR__ . '/../config/regions.config-local.php');
+    Yii::$app->params['regions_list']=require(__DIR__ . '/../config/regions.config-local.php');
   }
 
   public function parseRequest($manager, $request){
     $host=$request->headers['host'];
-    $this->region=isset($this->params->regions[$host])?$this->params->regions[$host]:$this->params->regions['default'];
+    $this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';
+    Yii::$app->params['regions_list'][$this->region]['active']=true;
+    $this->region=Yii::$app->params['regions_list'][$this->region];
+
     Yii::$app->homeUrl=$host;
 
     $lg=explode('/',$request->pathInfo)[0];
@@ -43,7 +46,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
     if(isset($this->region['params'])){
       foreach ($this->region['params'] as $k=>$v){
-        Yii::$app->params->regions[$k]=$v;
+        Yii::$app->params['regions'][$k]=$v;
       }
     }
     if(isset($this->region['app'])){
@@ -55,7 +58,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
     if(isset($this->region[$lg])){
       if(isset($this->region[$lg]['params'])){
         foreach ($this->region[$lg]['params'] as $k=>$v){
-          Yii::$app->params->regions[$k]=$v;
+          Yii::$app->params['regions'][$k]=$v;
         }
       }
       if(isset($this->region[$lg]['app'])){
