@@ -2,19 +2,119 @@
 {% set title = 'Тест языка' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
-    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+  {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="charity-index">
-    <div class="content-wrapper">
-        <section>
-            <div class="row">
-                <h1>{{ html.encode(this.title) }}</h1>
+  <div class="content-wrapper">
+    <section>
+      <div class="row">
+        <h1>{{ html.encode(this.title) }}</h1>
 
-
-            </div>
-        </section>
-    </div>
+        <div class="tarif_select_blk">
+          {% for k,lang in language_list %}
+            <input type="radio" class="controls_option" value="{{ k }}" checked="" id="option_tab_{{ k }}"
+                   name="tabs_open">
+          {% endfor %}
+          <ul class="tab_control ajax_save" uid="1537" save_url="/admin/stores/ajax_save/active_cpa">
+            {% for k,lang in language_list %}
+              <li class="tab_butt_{{ k }}">
+                <label for="option_tab_{{ k }}">
+                  <img src="/images/flag/{{ k }}.svg" height="12px">
+                  {{ lang }}
+                  <span>
+                                        <img src="/images/svg/error.svg" height="12px">
+                    {{ lg[k].total.WARNING }}
+                                    </span>
+                  <span>
+                                        <img src="/images/svg/warning.svg" height="12px">
+                    {{ lg[k].total.NOTICE }}
+                                    </span>
+                  <span>
+                                        <img src="/images/svg/information.svg" height="12px">
+                    {{ lg[k].total.ERROR }}
+                                    </span>
+                </label>
+              </li>
+            {% endfor %}
+          </ul>
+          <div class="content_tab">
+            {% for k,lang in language_list %}
+              <div class="cpa_box tab_{{ k }}">
+                {% for name,data in lg[k] %}
+                  {% if name!='total' %}
+                    <div class="accordion">
+                      <div class="accordion-control accordion-title">
+                        {% if data.TYPE=='file_php' %}
+                          <img src="/images/svg/icons/file_php.svg" height="16px" title="{{ data.PATH }}">
+                        {% endif %}
+                        {% if data.TYPE=='file_json' %}
+                          <img src="/images/svg/icons/file_json.svg" height="16px" title="{{ data.PATH }}">
+                        {% endif %}
+                        {{ name }}
+                        <span>
+                           <img src="/images/svg/error.svg" height="12px">
+                           {{ data.WARNING | length }}
+                        </span>
+                        <span>
+                          <img src="/images/svg/warning.svg" height="12px">
+                          {{ data.NOTICE | length }}
+                        </span>
+                        <span>
+                          <img src="/images/svg/information.svg" height="12px">
+                          {{ data.ERROR | length }}
+                        </span>
+                      </div>
+                      <div class="accordion-content">
+                        <table>
+                          <tr><td width="20px"></td></tr>
+                          {% for item in data.WARNING %}
+                            <tr>
+                              <td><img src="/images/svg/error.svg" height="12px"></td>
+                              <td>{{ item }}</td>
+                            </tr>
+                          {% endfor %}
+                          {% for item in data.NOTICE %}
+                            <tr>
+                              <td><img src="/images/svg/warning.svg" height="12px"></td>
+                              <td>{{ item }}</td>
+                            </tr>
+                          {% endfor %}
+                          {% for item in data.ERROR %}
+                            <tr>
+                              <td><img src="/images/svg/information.svg" height="12px"></td>
+                              <td>{{ item }}</td>
+                            </tr>
+                          {% endfor %}
+                        </table>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
+
+<style>
+  {% for k,lang in language_list %}
+  #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+    background: #fbcf4a;
+  }
+
+  #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+    display: block;
+  }
+
+  #option_tab_{{ k }}:checked {
+    color: #000;
+  }
+
+  {% endfor %}
+</style>
