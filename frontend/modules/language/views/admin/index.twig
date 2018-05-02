@@ -1,0 +1,20 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Тест языка' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="charity-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <h1>{{ html.encode(this.title) }}</h1>
+
+
+            </div>
+        </section>
+    </div>
+</div>

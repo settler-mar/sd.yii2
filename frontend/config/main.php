@@ -273,6 +273,9 @@ $config = [
     'sdblog' => [
       'class' => 'app\modules\sdblog\Module',
     ],
+    'language' => [
+        'class' => 'frontend\modules\language\Module',
+    ],
   ],
   'params' => $params,
 
