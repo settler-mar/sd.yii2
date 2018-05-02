@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/LinkPager') }}
-{% set title = 'За время работы с SecretDiscounter Вы привели:' %}
+{% set title = t('account', 'you_followers_on_sd') %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -52,7 +52,7 @@
         <table class="table ta_left  adaptive adaptive-tablets">
           <tr>
             <th>ID</th>
-            <th>{{ t('common', 'Дата регистрации') }}</th>
+            <th>{{ t('common', 'date_register') }}</th>
             <th>{{ t('common', 'status_loyalty') }}</th>
             <th>
               {{ t('account', 'users_payment_confirmed_expected_table_header')|raw }}
@@ -94,7 +94,7 @@
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}
-                   <a href="/account/payments/ref/id:{{ user.uid }}">{{ t('account', 'users_payments_details') }}</a>
+                   <a  class="blue" href="/account/payments/ref/id:{{ user.uid }}">{{ t('account', 'users_payments_details') }}</a>
                   {% endif %}
                 </td>
 

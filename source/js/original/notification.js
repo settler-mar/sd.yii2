@@ -8,28 +8,28 @@ var notification = (function () {
   var notification_box = false;
   var is_init = false;
   var confirm_opt = {
-    title: "Удаление",
-    question: "Вы действительно хотите удалить?",
-    buttonYes: "Да",
-    buttonNo: "Нет",
+    // title: lg('deleting'),
+    // question: lg('are_you_sure_to_delete'),
+    // buttonYes: lg('yes'),
+    // buttonNo: lg('no'),
     callbackYes: false,
     callbackNo: false,
     obj: false,
     buttonTag: 'div',
     buttonYesDop: '',
-    buttonNoDop: '',
+    buttonNoDop: ''
   };
   var alert_opt = {
     title: "",
-    question: "Сообщение",
-    buttonYes: "Да",
+    question: 'message',
+    // buttonYes: lg('yes'),
     callbackYes: false,
     buttonTag: 'div',
-    obj: false,
+    obj: false
   };
 
   function testIphone() {
-    if (!/(iPhone|iPad|iPod).*(OS 11)/.test(navigator.userAgent)) return
+    if (!/(iPhone|iPad|iPod).*(OS 11)/.test(navigator.userAgent)) return;
     notification_box.css('position', 'absolute');
     notification_box.css('top', $(document).scrollTop());
   }
@@ -49,7 +49,7 @@ var notification = (function () {
 
   function closeModal() {
     $('html').removeClass('show_notifi');
-    $('.notification_box .notify_content').html('')
+    $('.notification_box .notify_content').html('');
   }
 
   function closeModalFon(e) {
@@ -104,6 +104,9 @@ var notification = (function () {
 
   function alert(data) {
     if (!data)data = {};
+    alert_opt = objects(alert_opt, {
+        buttonYes: lg('yes')
+    });
     data = objects(alert_opt, data);
 
     if (!is_init)init();
@@ -128,7 +131,6 @@ var notification = (function () {
       if (data.buttonNo)box_html += '<' + data.buttonTag + ' class="notify_btn_no" ' + data.buttonNoDop + '>' + data.buttonNo + '</' + data.buttonTag + '>';
       box_html += '</div>';
     }
-    ;
 
     box_html += '</div>';
     notification_box.html(box_html);
@@ -141,6 +143,12 @@ var notification = (function () {
 
   function confirm(data) {
     if (!data)data = {};
+    confirm_opt = objects(confirm_opt, {
+        title: lg('deleting'),
+        question: lg('are_you_sure_to_delete'),
+        buttonYes: lg('yes'),
+        buttonNo: lg('no')
+    });
     data = objects(confirm_opt, data);
     if (typeof(data.callbackYes) == 'string') {
       var code = 'data.callbackYes = function(){'+data.callbackYes+'}';
@@ -283,7 +291,7 @@ var notification = (function () {
   return {
     alert: alert,
     confirm: confirm,
-    notifi: notifi,
+    notifi: notifi
   };
 
 })();

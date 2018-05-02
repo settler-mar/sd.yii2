@@ -2,6 +2,7 @@
 
 namespace frontend\modules\coupons\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CategoriesStores;
@@ -26,6 +27,16 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         return 'cw_categories_coupons';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ActiveRecordChangeLogBehavior::className(),
+                //'ignoreAttributes' => ['visit','rating'],
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -40,7 +51,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             [['description'], 'trim'],
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
-            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
+            [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
         ];
     }
 
@@ -108,7 +119,6 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     {
         self::clearCache($this->uid, $this->route);
     }
-    
     public function afterDelete()
     {
         self::clearCache($this->uid, $this->route);

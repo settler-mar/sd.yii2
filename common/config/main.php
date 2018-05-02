@@ -159,6 +159,10 @@ $config = [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@frontend/language',
                 ],
+                'main*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@frontend/language',
+                ],
             ]
         ],
         'languageDetector' => [

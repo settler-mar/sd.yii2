@@ -2,13 +2,13 @@ var lg = (function() {
   var lang={};
   url='/language/'+document.documentElement.lang+'.json';
   $.get(url,function (data) {
-    console.log(data);
+    //console.log(data);
     for(var index in data) {
       data[index]=clearVar(data[index]);
     }
     lang=data;
-    console.log(data);
-  },'json')
+    //console.log(data);
+  },'json');
 
   function clearVar(txt){
     txt=txt.replace(/\s+/g," ");//удаление задвоение пробелов
@@ -24,10 +24,10 @@ var lg = (function() {
     return txt;
   }
 
-  return function(tpl,data){
+  return function(tpl, data){
     if(typeof(lang[tpl])=="undefined"){
       console.log("lang not found: "+tpl);
-      return "";
+      return tpl;
     }
     tpl=lang[tpl];
     if(typeof(data)=="object"){

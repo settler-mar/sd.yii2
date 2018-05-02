@@ -2,7 +2,17 @@
     {% set footer_links_text = '' %}
     {% for item in footer_links_list %}
         {% if item.show==1 %}
-            {% set footer_links_text = footer_links_text~'<a href="'~item.url~'"'~(item.outer==1 or item.blank==1 ? ' rel="nofollow noopener noreferrer"':'')~(item.blank==1 ?' target="_blank"':'')~(item.hide_mobile ? 'class="hide_mobile"':'')~'>'~(item.bold==1 ? '<b>':'')~item.name~(item.bold==1 ? '</b>':'')~'</a>' %}
+            {% set attributes = {"rel":(item.outer==1 or item.blank==1) ? "noopener noreferrer nofollow" : null,
+                             'target': item.blank==1? "_blank" : null}  %}
+            {% set footer_links_text = footer_links_text ~ get_menu_item({
+            'href': item.url,
+            'outer': item.outer,
+            'class': item.hide_mobile ? 'hide_mobile' : '',
+            'title': (item.bold==1 ? '<b>':'')~item.name~(item.bold==1 ? '</b>':''),
+            'attributes': attributes
+            }) %}
+
+            {#{%  <a href="'~item.url~'"'~(item.outer==1 or item.blank==1 ? ' rel="nofollow noopener noreferrer"':'')~(item.blank==1 ?' target="_blank"':'')~(item.hide_mobile ? 'class="hide_mobile"':'')~'>'~(item.bold==1 ? '<b>':'')~item.name~(item.bold==1 ? '</b>':'')~'</a>' %}#}
         {% endif %}
     {% endfor %}
     {% if footer_links_text %}

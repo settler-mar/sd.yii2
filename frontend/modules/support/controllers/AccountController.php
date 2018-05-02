@@ -56,7 +56,11 @@ class AccountController extends \yii\web\Controller
       if (!$validatorRequired->validate($title) || !$validatorRequired->validate($message) ||
         !$validator->validate($title) || !$validator->validate($message)
       ) {
-        return json_encode(['error' => true,'title'=>'Ошибка отправки сообщения','message'=>'Необходимо заполнить все поля формы.']);
+        return json_encode([
+            'error' => true,
+            'title' => Yii::t('account', 'error_sending_message'),
+            'message' => Yii::t('account', 'all_fields_required')
+        ]);
       }
       try{
         Yii::$app
@@ -74,10 +78,17 @@ class AccountController extends \yii\web\Controller
           ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
           ->send();
       } catch (\Exception $e) {
-        return json_encode(['error' => True,'title'=>'Ошибка отправки сообщения','message'=>'Сервис временно не доступен. Попробуйте позже.']);
+        return json_encode([
+            'error' => True,
+            'title'=>Yii::t('account', 'error_sending_message'),
+            'message'=> Yii::t('account', 'service_temporaty_unavailable')
+        ]);
       }
 
-      return json_encode(['error' => false,'message'=>'Ваше сообщение успешно отправлено администратору.']);
+      return json_encode([
+          'error' => false,
+          'message' => Yii::t('account', 'message_to_admin_successfully_sent')
+      ]);
     }
     return $this->render('index');
   }

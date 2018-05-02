@@ -15,7 +15,7 @@
 
 
     <div class="account-balance-block account-balance-block-2x">
-      <a href="/account/charity">{{ t('account', 'dobro_view_dobro') }}</a>
+      <a href="/account/charity">{{ t('account', 'dobro_view_dobro')|raw }}</a>
     </div>
   </div>
 </section>
@@ -25,26 +25,26 @@
     <h1 class="head align-center">
       <span>
         SecretDiscounter
-        <span class="second_line_title">{{ t('account', 'dobro_do_dobro_together') }}</span>
+        <span class="second_line_title">{{ t('account', 'dobro_do_dobro_together')|raw }}</span>
       </span>
     </h1>
-    <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long') }}</a></div>
+    <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long')|raw }}</a></div>
 
     {% if autopayment %}
       <div class="self-autopayment ajax_form margin">
-        <h3 class="text-center">{{ t('account', 'dobro_autopay') }} <span>{{ autopayment.fond.title }}</span></h3>
+        <h3 class="text-center">{{ t('account', 'dobro_autopay')|raw }} <span>{{ autopayment.fond.title }}</span></h3>
         <form action="/account/dobro/auto-delete" method="post" role="form" name="delete-autopayment-form">
           <input type="hidden" name="type" value="delete-autopayment">
-          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_remove') }}</button>
+          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_remove')|raw }}</button>
         </form>
-        <p class="text-center color-red"><strong>!</strong> {{ t('account', 'dobro_autopay_description') }}</p>
+        <p class="text-center color-red"><strong>!</strong> {{ t('account', 'dobro_autopay_description')|raw }}</p>
       </div>
     {% endif %}
     {% if funds|length > 0 %}
 
 
     <div>
-      <h3 class="text-center fhead">1. {{ t('account', 'dobro_choose_charity') }}:</h3>
+      <h3 class="text-center fhead">1. {{ t('account', 'dobro_choose_charity')|raw }}:</h3>
 
       {% set dobdo_select=true %}
       {% include('parts/dobro_list.twig') %}
@@ -52,36 +52,36 @@
 
     <div class="margin">
       {#<h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>#}
-      <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ') }}:</h3>
+      <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ')|raw }}:</h3>
       <div class="payment-info ajax_form">
         <form class="dobro-form" action="/account/dobro/send" method="post" role="form" name="fund-transfer-form" >
           <div>
           <div class="form-input-group">
             <i>{{ svg("money",'form-icon') |raw }}</i>
-            <input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder') }}" required>
+            <input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder')|raw }}" required>
           </div>
-          <div class="help-block help-block-error" data-message="Необходимо заполнить сумму пожертвования"></div>
+          <div class="help-block help-block-error" data-message="{{ t('account', 'dobro_summ_required')|raw }}"></div>
           <input type="hidden" name="charity-process" id="dobro-send-form-charity-process" value="" required>
-          <div class="help-block help-block-error" data-message="Необходимо выбрать фонд"></div>
+          <div class="help-block help-block-error" data-message="{{ t('account', 'dobro_fund_required')|raw }}"></div>
           </div>
           <br>
-          <button type="submit" class="btn">{{ t('account', 'dobro_button') }}</button>
+          <button type="submit" class="btn">{{ t('account', 'dobro_button')|raw }}</button>
         </form>
       </div>
     </div>
     {% if not autopayment %}
       <div class="autopayment-info ajax_form margin">
-        <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else') }}:</h3>
+        <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else')|raw }}:</h3>
         <form class="dobro-form" action="/account/dobro/auto-send" method="post" role="form" name="autopayment-form" class="margin">
           <input type="hidden" name="autopayment-uid" value="0">
-          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button') }}</button>
+          <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button')|raw }}</button>
         </form>
         <p class="autopayment-terms color-red">{{ t('account', 'dobro_autopay_text') |raw }}<p>
       </div>
     {% endif %}
     <p class="support-fund text-center margin ">{{ t('account', 'dobro_faq')|raw }}.</p>
     {% else %}
-      <div class="not-found">{{ t('account', 'dobro_little_summ') }}</div>
+      <div class="not-found">{{ t('account', 'dobro_little_summ')|raw }}</div>
     {% endif %}
   </div>
 </section>

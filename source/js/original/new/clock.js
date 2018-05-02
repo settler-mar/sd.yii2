@@ -24,14 +24,14 @@ $(document).ready(function () {
 
         //если срок прошел
         if (d <= 0) {
-          c.text('Промокод истек');
+          c.text(lg("promocode_expires"));
           c.addClass('clock-expired');
           continue;
         }
 
         //если срок более 30 дней
         if (d > 30 * 60 * 60 * 24) {
-          c.html('Осталось: <span>более 30 дней</span>');
+          c.html(lg( "promocode_left_30_days"));
           continue;
         }
 
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
         var str = firstZero(h) + ":" + firstZero(m) + ":" + firstZero(s);
         if (d > 0) {
-          str = d + " " + declOfNum(d, ['день', 'дня', 'дней']) + "  " + str;
+          str = d + " " + declOfNum(d, [lg("day_case_0"), lg("day_case_1"), lg("day_case_2")]) + "  " + str;
         }
         c.html("Осталось: <span>" + str + "</span>");
       }

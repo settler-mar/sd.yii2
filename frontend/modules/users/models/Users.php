@@ -62,6 +62,18 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     ];
   }
 
+  public static function trafficTypeList()
+  {
+     return [
+         0 => Yii::t('account', 'traffic_type_web'),
+         1 => Yii::t('account', 'traffic_type_social_network'),
+         2 => Yii::t('account', 'traffic_type_youtube'),
+         3 => Yii::t('account', 'traffic_type_doorway'),
+         4 => Yii::t('account', 'traffic_type_email'),
+         5 => Yii::t('account', 'traffic_type_other'),
+     ];
+  }
+
   /**
    * @inheritdoc
    */
@@ -321,15 +333,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       //если создание произошло не из под админа(авторизированного пользователя)
       if (Yii::$app->user->isGuest) {
         Yii::$app->session->setFlash('success', [
-            'title' => 'Успешная авторизация',
-            'message' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>,' .
-                ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
+            'title' => Yii::t('account', 'authorize_success'),
+            'message' => Yii::t('account', 'authorize_recommendations'),
             'no_show_page' => ['account']
         ]);
         if ($this->waitModeration) {
           Yii::$app->session->setFlash('info', [
-              'title' => 'Заявка на модерации',
-              'message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.'
+              'title' => Yii::t('account', 'moderation_request_title'),
+              'message' => Yii::t('account', 'moderation_request_message')
           ]);
         };
       }
@@ -368,7 +379,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
             )
             ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
             ->setTo($this->email)
-            ->setSubject(Yii::$app->name . ': Регистрация')
+            ->setSubject(Yii::$app->name . ': '. Yii::t('common', 'register'))
             ->send();
       } catch (\Exception $e) {
       }
@@ -385,9 +396,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
                   ['user' => $this])
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo($this->email)
-              ->setSubject(Yii::$app->name . ': Подтверждение е-mail')
+              ->setSubject(Yii::$app->name . ': ' . Yii::t('account', 'email_confirm'))
               ->send();
-          Yii::$app->session->addFlash('info', 'Пользователю отправлено письмо о подтверждении его e-mail');
+          Yii::$app->session->addFlash('info', Yii::t('account', 'email_confirm_email_message'));
         } catch (\Exception $e) {
         }
       }
@@ -415,7 +426,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       $oldImage = $this->photo;
 
       if (!is_readable($photo->tempName)) {
-        Yii::$app->session->addFlash('err', 'Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
+        Yii::$app->session->addFlash('err', Yii::t('account', 'avatar_updating_error'));
         return;
       }
 

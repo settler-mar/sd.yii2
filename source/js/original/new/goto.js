@@ -8,8 +8,8 @@
     var data_message = $(that).data('message');
 
     if (inactive) {
-      var title = data_message ? data_message : 'К сожалению, промокод неактивен';
-      var message = 'Все действующие промокоды вы можете <a href="/coupons">посмотреть здесь</a>';
+      var title = data_message ? data_message : lg("promocode_is_inactive");
+      var message = lg("promocode_view_all");
       notification.alert({
         'title': title,
         'question': message,
@@ -19,8 +19,8 @@
       });
       return false;
     } else if (expired.length > 0) {
-      var title = 'К сожалению, срок действия данного промокода истек';
-      var message = 'Все действующие промокоды вы можете <a href="/coupons">посмотреть здесь</a>';
+      var title = lg("promocode_is_expires");
+      var message = lg("promocode_view_all");
       notification.alert({
         'title': title,
         'question': message,
@@ -33,14 +33,14 @@
       var data = {
         'buttonYes': false,
         'notyfy_class': "notify_box-alert",
-        'title': 'Использовать промокод',
+        'title': lg("use_promocode"),
         'question': '<div class="notify_box-coupon-noregister">' +
         '<img src="/images/templates/swa.png" alt="">' +
-        '<p><b>Если вы хотите получать еще и КЭШБЭК (возврат денег), вам необходимо зарегистрироваться. Но можете и просто воспользоваться промокодом, без кэшбэка.</b></p>' +
+        '<p><b>'+lg("promocode_use_without_cashback_or_register")+'</b></p>' +
         '</div>' +
         '<div class="notify_box-buttons">' +
-        '<a href="' + that.attr('href') + '" target="_blank" class="btn">Использовать промокод</a>' +
-        '<a href="#registration" class="btn btn-transform modals_open">Зарегистрироваться</a>' +
+        '<a href="' + that.attr('href') + '" target="_blank" class="btn">'+lg("use_promocode")+'</a>' +
+        '<a href="#registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
         '</div>'
       };
       notification.alert(data);
@@ -51,9 +51,9 @@
   $('#shop_header-goto-checkbox').click(function(){
      if (!$(this).is(':checked')) {
          notification.alert({
-             'title': 'Внимание',
-             'question': 'Не рекомендуется совершать покупки без ознакомления<br> с <a target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок с кэшбэком</a>',
-             'buttonYes': 'Закрыть',
+             'title': lg("attentions"),
+             'question': lg("promocode_recommendations"),
+             'buttonYes': lg("close"),
              'buttonNo': false,
              'notyfy_class': 'notify_box-alert'
          });

@@ -404,8 +404,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $c = '';
         }
-
-        $catURL = "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
+        $lg = Yii::$app->params['lang_code'];
+        $catURL = ($lg == 'ru'  ? '' : '/'.$lg) . "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
 
         //имеются дочерние категрии
         $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) && count($cats[$cat['uid']]) > 0;

@@ -1,19 +1,13 @@
 <?php
 use frontend\modules\constants\models\Constants;
 use common\components\Help;
+use common\components\TagsClasses;
 use yii\db\Query;
 
 $currencyIcon = [
-//  'RUB' => '<span class="fa fa-rub"></span>',
-//  'EUR' => '<span class="fa fa-eur"></span>',
-//  'USD' =>'<span class="fa fa-dollar"></span>',
-//  'UAH' => '<span class="uah">&#8372;</span>',
-//  'KZT' => '<span class="uah">&#8376;</span>',
-/*    'RUB' => 'ruble',
-    'EUR' => 'euro',
-    'USD' => 'dollar',*/
-  //'UAH' => '<span class="uah">&#8372;</span>',
-  //'KZT' => '<span class="uah">&#8376;</span>',
+//    'RUB' => 'ruble',
+//    'EUR' => 'euro',
+//    'USD' => 'dollar',
 ];
 
 $month = [
@@ -148,16 +142,23 @@ function _hyphen_words(array &$m, $wbr = false)
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
-    //$httpQurey =  $_SERVER['REQUEST_URI'];
+    $lg = Yii::$app->params['lang_code'];
+    $href = ($lg == 'ru' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
     $httpQuery = '/' . Yii::$app->request->pathInfo;
+    $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');
     if (!count($item)) {
       return null;
     }
+    $attributes = '';
+    if (isset($item['attributes'])) {
+        foreach ($item['attributes'] as $key=>$attribute) {
+            $attributes .= (' '.$key.'="'.$attribute.'"');
+        }
+    }
     $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
         (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
-    return '<a class="' . (empty($item['class']) ? '' : $item['class']) .
-    (($httpQuery == $item['href']) ? ' active' : '') . '" '
-    . (($httpQuery == $item['href']) ? '' : 'href="' . $item['href'] . '"') . '>' .
+    return '<a '.($className ? 'class="' . $className . '"' : '') . $attributes .
+        ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
 //функция or - вывод первого непустого аргумента
@@ -550,9 +551,17 @@ $functionsList = [
       return '<img class="mobile_operator_logo" alt="'.$query['opsos_name'].'" src="/images/mobile_operator/'.$query['opsos_image'].'.gif">';
     });
   },
-    '_ucfirst' => function($value) {
+  '_ucfirst' => function($value) {
         return ucfirst($value);
-    }
+  },
+
+  '_strtolower' => function($value) {
+      return strtolower($value);
+  },
+  '_tags_class' => function($content, $tags_list = [], $options = []){
+    return TagsClasses::add($content, $tags_list, $options);
+  },
+
 ];
 
 return $functionsList;

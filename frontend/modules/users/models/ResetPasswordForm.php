@@ -28,11 +28,11 @@ class ResetPasswordForm extends Model
   {
     if ($token !== false) {
       if (empty($token) || !is_string($token)) {
-        throw new InvalidParamException('Идентификатор сброса пароля не может быть пустым.');
+        throw new InvalidParamException(Yii::t('account', 'password_reset_token_is_required'));
       }
       $this->_user = Users::findByPasswordResetToken($token);
       if (!$this->_user) {
-        throw new InvalidParamException('Неверный ключ сброса пароля.');
+        throw new InvalidParamException(Yii::t('account', 'password_reset_token_is_invalid'));
       }
       $this->password=$password;
     }
@@ -84,14 +84,14 @@ class ResetPasswordForm extends Model
     $user = Users::findByEmail($this->email);
 
     if (!$user) {
-      $this->addError('email', 'Пользователь с таким e-mail не зарегистрирован.');
+      $this->addError('email', Yii::t('account', 'invalid_user_email'));
       return false;
     }
 
 
     $user->generatePasswordResetToken();
     if (!$user->save()) {
-      $this->addError('email', 'Ошибка обновления данных. Попробуйте позже.');
+      $this->addError('email', Yii::t('account', 'error_updating_data_try_later'));
       return false;
     }
 
@@ -106,7 +106,7 @@ class ResetPasswordForm extends Model
       )
       ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
       ->setTo($this->email)
-      ->setSubject('Сброс пароля на сайте SecretDiscounter.ru')
+      ->setSubject(Yii::t('account', 'password_reset_on_sd'))
       ->send();
   }
 }

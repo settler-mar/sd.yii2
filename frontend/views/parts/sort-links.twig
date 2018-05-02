@@ -2,7 +2,7 @@
     <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
     <ul >
         {% for sortLink in sortlinks %}
-            <li><a href="{{sortLink.link}}" {% if sortLink.active == 1 %} class="active" {% endif %} >{{sortLink.title}}</a></li>
+            <li><a href="{{sortLink.link}}" class="blue{% if sortLink.active == 1 %} active{% endif %}" >{{sortLink.title}}</a></li>
         {% endfor %}
     </ul>
 </div>

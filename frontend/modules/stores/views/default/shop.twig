@@ -169,7 +169,7 @@
         <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big shop_header-goto-button">{{ btn_text }}</a>
         <div class="shop_header-goto-agree">
-          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок с&nbsp;кэшбэком</a></label>
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a class="blue" target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок с&nbsp;кэшбэком</a></label>
         </div>
       {% else %}
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
@@ -206,9 +206,9 @@
         </h2>
         <div class="accordion-content">
           {% if current_store.short_description %}
-            {{ current_store.short_description|raw }}
+            {{  _tags_class(current_store.short_description, {'a':'blue'})|raw }}
           {% else %}
-            {{ content|raw }}
+            {{ _tags_class(content, {'a':'blue'})|raw }}
           {% endif %}
         </div>
 
@@ -297,7 +297,7 @@
         <div class="accordion accordion-only_one accordion_pc_off">
           <h2 class="accordion-control accordion-title">Подробная информация о {{ current_store.name }} с кэшбэком</h2>
           <div class="accordion-content">
-            {{ current_store.description|raw }}
+            {{ _tags_class(current_store.description, {'a':'blue'})|raw }}
           </div>
         </div>
       </div>
