@@ -120,13 +120,17 @@ class AdminController extends Controller
       $data['total']['ERROR']+=count($data['lg'][$lg_k][$file]['ERROR']);
 
       //meta
+
       foreach ($lg_list as $lg_k => $lg){
-          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[]];
+          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
           $metas = Meta::find()->all();
           foreach ($metas as $meta) {
               $lang = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $lg_k])->one();
               if (!$lang) {
-                  $data['lg'][$lg_k]['meta']['WARNING'][] = $meta->page;
+                  $data['lg'][$lg_k]['meta']['WARNING'][] =[
+                      'title' => $meta->page,
+                      'href' => 'admin/meta/update/id:'.$meta->uid
+                  ];
               }
           }
       }

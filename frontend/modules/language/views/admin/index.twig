@@ -53,6 +53,9 @@
                         {% if data.TYPE=='file_json' %}
                           <img src="/images/svg/icons/file_json.svg" height="16px" title="{{ data.PATH }}">
                         {% endif %}
+                        {% if data.TYPE=='database' %}
+                          <img src="/images/svg/icons/database.svg" height="16px" title="{{ data.PATH }}">
+                        {% endif %}
                         {{ name }}
                         <span>
                            <img src="/images/svg/error.svg" height="12px">
@@ -73,7 +76,12 @@
                           {% for item in data.WARNING %}
                             <tr>
                               <td><img src="/images/svg/error.svg" height="12px"></td>
-                              <td>{{ item }}</td>
+                                {% if data.TYPE=='database' %}
+                                    <td>{{ item.title }}</td>
+                                    <td><a class="" href="{{ item.href }}">Добавить</a></td>
+                                {% else %}
+                                    <td>{{ item }}</td>
+                                {% endif %}
                             </tr>
                           {% endfor %}
                           {% for item in data.NOTICE %}
