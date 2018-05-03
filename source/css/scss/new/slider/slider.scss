@@ -24,7 +24,7 @@
   list-style: none;
   padding: 0;
 }
-.slide_select{height: 10px;width: 10px;border: #000 1px solid;display: inline-block;border-radius: 100%;cursor: pointer;margin: 2px 3px;transition: all 0.3s;}
+.slide_select{height: 10PX;width: 10PX;border: #000 1px solid;display: inline-block;border-radius: 100%;cursor: pointer;margin: 2px 3px;transition: all 0.3s;}
 .slide_select:hover{
   background: #fff;
 }
@@ -591,11 +591,26 @@
 #mega_slider_controle{
   overflow: auto;
 }
+#mega_slider_controle select{
+  min-height: 28px;
+  vertical-align: middle;
+  min-width: 28px;
+  margin: 0;
+}
+
+#mega_slider_controle input{
+  vertical-align: middle;
+}
+
+#mega_slider_controle td{
+  padding-bottom: 3px;
+}
 
 #mega_slider_controle button{
-  min-height: 24px;
-  vertical-align: bottom;
-  min-width: 24px;
+  min-height: 28px;
+  vertical-align: middle;
+  min-width: 28px;
+  margin: 0;
 }
 #mega_slider_controle .select_img{
   display: inline-block;
@@ -607,6 +622,8 @@
 #mega_slider_controle label span{
   display: inline-block;
   width: 170px;
+  text-align: right;
+  padding-right: 6px;
 }
 
 table{
@@ -626,4 +643,17 @@ table{
 
 #slide_data{
   display: none;
+}
+
+#mega_slider_controle .anim_sel span{
+  width: 170px;
+  display: inline-block;
+  text-align: right;
+  padding-right: 6px;
+}
+
+.file_button{
+  background: url(/images/open.png) 50% 50% no-repeat !important;
+  background-size: contain !important;
+  background-color: #333 !important;
 }

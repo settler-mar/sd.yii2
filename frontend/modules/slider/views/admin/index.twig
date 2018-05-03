@@ -25,7 +25,17 @@
 
                                 'uid',
                                 'title',
-                                'is_showed',
+                        {
+                            'format':'raw',
+                            'attribute':'is_showed',
+                            'value' : table_data.is_showed,
+                            'filter':{
+                            '':'Любой',
+                            0:"Скрыть",
+                            1:"Отобразить",
+                        },
+                        },
+                                'place',
                                 'date_start',
                                 'date_end',
                                 'sort_index',
