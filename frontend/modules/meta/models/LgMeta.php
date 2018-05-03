@@ -15,7 +15,7 @@ use Yii;
  * @property string $h1
  * @property string $content
  */
-class LgMeta extends Meta
+class LgMeta extends Meta//\yii\db\ActiveRecord
 {
 
     /**

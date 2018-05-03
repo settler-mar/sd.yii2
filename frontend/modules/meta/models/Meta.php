@@ -25,7 +25,8 @@ class Meta extends \yii\db\ActiveRecord
     public $backgroundImageClassName;
     protected $imagesPath = '/img/';
 
-    protected static $language = 'en';
+    protected static $translated_attributes = ['title', 'description', 'keywords', 'h1', 'h2', 'content',
+        'backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'];
 
     /**
      * @inheritdoc
@@ -108,6 +109,8 @@ class Meta extends \yii\db\ActiveRecord
     public static function findByUrl($url, $model = false)
     {
 
+        $language = Yii::$app->params['lang_code'];
+
         if (isset(Yii::$app->params['url_mask'])) {
             $page = Yii::$app->params['url_mask'];
             $page = str_replace('default/', '', $page);
@@ -126,9 +129,9 @@ class Meta extends \yii\db\ActiveRecord
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'metadata_'.$page;
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-        $casheName = 'meta_' . $page . ($model ? '_model' : '') . (self::$language ? '_'. self::$language : '');
+        $casheName = 'meta_' . $page . ($model ? '_model' : '') . ($language ? '_'. $language : '');
 
-        return $cache->getOrSet($casheName, function () use ($page, $model) {
+        return $cache->getOrSet($casheName, function () use ($page, $model, $language) {
             $page_meta = Meta::find()
                 ->where(['page' => $page]);
             $page_meta_count = $page_meta->count();
@@ -144,7 +147,7 @@ class Meta extends \yii\db\ActiveRecord
                 if ($model) {
                     return $page_meta->limit(1);
                 }
-                $result = self::languageMeta($page_meta->one(), self::$language)->toArray();
+                $result = self::languageMeta($page_meta->one(), $language)->toArray();
                 $result['background_image_full'] = self::extractImage($result['background_image']);
                 return $result;
 
@@ -167,7 +170,7 @@ class Meta extends \yii\db\ActiveRecord
                         return $metadataArray->limit(1);
                     }
 
-                    $result = self::languageMeta($metadataArray->one(), self::$language)->toArray();
+                    $result = self::languageMeta($metadataArray->one(), $language)->toArray();
                     $result['background_image_full'] = self::extractImage($result['background_image']);
                     return $result;
 
@@ -183,7 +186,7 @@ class Meta extends \yii\db\ActiveRecord
                         if ($model) {
                             return $metadataArray->limit(1);
                         }
-                        $result = self::languageMeta($metadataArray->one(), self::$language)->toArray();
+                        $result = self::languageMeta($metadataArray->one(), $language)->toArray();
                         $result['background_image_full'] = self::extractImage($result['background_image']);
                         return $result;
                     }
@@ -215,18 +218,11 @@ class Meta extends \yii\db\ActiveRecord
     {
         $languageMeta = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one();
         if ($languageMeta) {
-            $meta->title = $languageMeta->title ? $languageMeta->title : $meta->title;
-            $meta->h1 = $languageMeta->h1 ? $languageMeta->h1 : $meta->h1;
-            $meta->h2 = $languageMeta->h2 ? $languageMeta->h2 : $meta->h2;
-            $meta->description = $languageMeta->description ? $languageMeta->description : $meta->description;
-            $meta->content = $languageMeta->content ? $languageMeta->content : $meta->content;
-            $meta->keywords = $languageMeta->keywords ? $languageMeta->keywords : $meta->keywords;
-            $meta->backgroundImageImage = $languageMeta->backgroundImageImage ?
-                $languageMeta->backgroundImageImage : $meta->backgroundImageImage;
-            $meta->backgroundImageAlt = $languageMeta->backgroundImageAlt ?
-                $languageMeta->backgroundImageAlt : $meta->backgroundImageAlt;
-            $meta->backgroundImageClassName = $languageMeta->backgroundImageClassName ?
-                $languageMeta->backgroundImageClassName : $meta->backgroundImageClassName;
+            foreach (self::$translated_attributes as $attribute) {
+                if ($languageMeta->$attribute) {
+                    $meta->$attribute = $languageMeta->$attribute;
+                }
+            }
         }
         return $meta;
     }
