@@ -44,6 +44,11 @@ class AdminController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+        'table_data' => [
+            'is_showed' => function ($model, $value, $index, $column) {
+              return $model->is_showed == 1 ? 'Отобразить' : 'Скрыть';
+            },
+        ],
     ]);
   }
 

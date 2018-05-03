@@ -24,8 +24,18 @@
                 {{ form.field(model, 'date_start').textInput()|raw}}
 
                 {{ form.field(model, 'date_end').textInput()|raw }}
-
-
+            </div>
+            <div class="col-md-12">
+            <h4>Позиции</h4>
+                {% for key, item in model.places_array %}
+                    <div class="form-group field-banners-places">
+                        <input type="checkbox" id="banner-banner-places-{{ key }}" name="Slider[slide_places][]" value="{{ key }}"
+                            {% if item.checked %} checked {% endif %}
+                        >
+                        <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
+                        <div class="help-block"></div>
+                    </div>
+                {% endfor %}
             </div>
 
             <section id="mega_slider"></section>

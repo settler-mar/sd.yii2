@@ -103,7 +103,7 @@ class SiteController extends SdController
     ];
 
     if (!Yii::$app->user->isGuest) {
-      $data['slider'] = Slider::get();
+      $data['slider'] = Slider::get(['place'=>'index']);
       $data['posts'] = Posts::getLastPosts();
       $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1,'unique_store'=>true]);
     }else{

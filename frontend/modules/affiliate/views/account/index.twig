@@ -75,7 +75,7 @@
           <div class="instruction-content">
               <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{ user_id }}">
 
-              <a href="" class="set_clipboard"
+              <a href="" class="blue set_clipboard"
                  data-clipboard="https://secretdiscounter.ru/?r={{ user_id }}"
                  data-clipboard-notify="{{ t('account', 'referral_href_copied_to_clipboard')|raw }}"
               >{{ t('account', 'affiliate_copy_to_clipboard')|raw }}</a>
@@ -118,7 +118,7 @@
 
 {% if content %}
   <section class="section-content section-padding margin">
-    {{ content | raw }}
+     {{ _tags_class(content, {'a':'blue'}) | raw}}
   </section>
 {% endif %}
 

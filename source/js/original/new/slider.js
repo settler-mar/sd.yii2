@@ -16,7 +16,7 @@ var megaslider = (function () {
   var slide_select_box;
   var editor;
   var timeoutId;
-  var scroll_period = 5000;
+  var scroll_period = 6000;
 
   var posArr = [
     'slider__text-lt', 'slider__text-ct', 'slider__text-rt',
@@ -245,7 +245,7 @@ var megaslider = (function () {
     var out;
 
     if (data.type == 0) {
-      anim_sel.push('<span>Анимация появления</span>');
+      anim_sel.push('<span>Show animation</span>');
     }
     anim_sel.push(genSelect({
       list: show_animations,
@@ -258,7 +258,7 @@ var megaslider = (function () {
       parent: data.parent
     }));
     if (data.type == 0) {
-      anim_sel.push('<span>Задержка появления</span>');
+      anim_sel.push('<span>Show delay</span>');
     }
     anim_sel.push(genSelect({
       list: show_delay,
@@ -273,7 +273,7 @@ var megaslider = (function () {
 
     if (data.type == 0) {
       anim_sel.push('<br/>');
-      anim_sel.push('<span>Анимация исчезновения</span>');
+      anim_sel.push('<span>Hide animation</span>');
     }
     anim_sel.push(genSelect({
       list: hide_animations,
@@ -286,7 +286,7 @@ var megaslider = (function () {
       parent: data.parent
     }));
     if (data.type == 0) {
-      anim_sel.push('<span>Задержка исчезновения</span>');
+      anim_sel.push('<span>Hide delay</span>');
     }
     anim_sel.push(genSelect({
       list: hide_delay,
@@ -381,10 +381,22 @@ var megaslider = (function () {
     }));
 
     var but_sl = $('#mega_slider .slider__href').eq(0);
+    btn_ch.append(genInput({
+      value: slider_data[0].button.href,
+      label: "Ссылка",
+      onChange: function (e) {
+        e.preventDefault();
+        slider_data[0].button.href = $(this).val();
+        $('#mega_slider .slider__href').eq(0).attr('href',slider_data[0].button.href);
+        $('textarea#slide_data').text(JSON.stringify(slider_data[0]))
+      },
+    }));
 
     btn_ch.append('<br/>');
-    btn_ch.append('<span>Оформление кнопки</span>');
-    btn_ch.append(genSelect({
+    var wrap_lab = $('<label/>');
+    btn_ch.append(wrap_lab);
+    wrap_lab.append('<span>Оформление кнопки</span>');
+    wrap_lab.append(genSelect({
       list: btn_style,
       val_type: 0,
       obj: but_sl,
@@ -394,8 +406,10 @@ var megaslider = (function () {
     }));
 
     btn_ch.append('<br/>');
-    btn_ch.append('<span>Положение кнопки</span>');
-    btn_ch.append(genSelect({
+    wrap_lab = $('<label/>');
+    btn_ch.append(wrap_lab);
+    wrap_lab.append('<span>Положение кнопки</span>');
+    wrap_lab.append(genSelect({
       list: posArr,
       val_list: pos_list,
       val_type: 2,
@@ -763,7 +777,7 @@ var megaslider = (function () {
     if (active >= slide_cnt)active = 0;
     slide_points.eq(active).click();
 
-    setTimeout(next_slide, scroll_period);
+    timeoutId=setTimeout(next_slide, scroll_period);
   }
 
   function img_to_load(src) {
@@ -783,9 +797,10 @@ var megaslider = (function () {
           slide_select_box.find('li').eq(0).addClass('slider-active');
 
           if (!editor) {
-            setTimeout(function () {
+            if(timeoutId)clearTimeout(timeoutId);
+            timeoutId=setTimeout(function () {
               $(this).find('.first_show').removeClass('first_show');
-            }.bind(slides), 5000);
+            }.bind(slides), scroll_period);
           }
 
           if (mobile_mode === false) {
@@ -797,6 +812,7 @@ var megaslider = (function () {
           if (editor) {
             init_editor()
           } else {
+            if(timeoutId)clearTimeout(timeoutId);
             timeoutId = setTimeout(next_slide, scroll_period);
 
             $('.slide_select_box').on('click', '.slide_select', function () {
@@ -814,7 +830,7 @@ var megaslider = (function () {
             });
 
             $('#mega_slider').hover(function () {
-              clearTimeout(timeoutId);
+              if(timeoutId)clearTimeout(timeoutId);
               $('#mega_slider').addClass('stop_slide');
             }, function () {
               timeoutId = setTimeout(next_slide, scroll_period);
@@ -883,6 +899,7 @@ var megaslider = (function () {
       }
       render_slide_nom = 0;
       load_slide_img();
+      $('.sk-folding-cube').remove();
     };
 
     img.on('load', on_img_load());
