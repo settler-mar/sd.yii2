@@ -9,10 +9,6 @@ class SdUrlLocalisation implements UrlRuleInterface{
   private $region;
   ///private $url_pref='/';
 
-  function __construct() {
-    Yii::$app->params['regions_list']=require(__DIR__ . '/../config/regions.config-local.php');
-  }
-
   public function parseRequest($manager, $request){
     $host=$request->headers['host'];
     $this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';
