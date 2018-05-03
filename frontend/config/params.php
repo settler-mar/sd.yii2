@@ -16,6 +16,7 @@ $data = [
         'ru' => ['ru', 'bg', 'sr', 'uk', 'mk', 'ro'],//русский болгарский и т.д.
         'en' => ['en', 'la'],//английский латинский
     ],
+    'base_lang'=>'ru-RU',
     'language_list' => [
         'ru-RU'=> 'Русский',
         'en-EN'=> 'English',
