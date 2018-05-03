@@ -34,7 +34,7 @@ class LgMeta extends Meta//\yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['meta_id', 'language', 'title', 'description', 'keywords', 'h1'], 'required'],
+            [['meta_id', 'language', 'title'], 'required'],
             [['title', 'language', 'description', 'keywords', 'content', 'h1', 'h2', 'background_image'], 'trim'],
             [['description', 'language', 'keywords', 'content', 'h2', 'background_image'], 'string'],
             [['title', 'h1', 'h2'], 'string', 'max' => 255],

@@ -126,6 +126,7 @@ class AdminController extends Controller
        foreach ($languages as $lg_key => $language) {
            if (!$language['model']->load(Yii::$app->request->post()) || !$language['model']->save()) {
 
+               header("X-XSS-Protection: 1;");
                return $this->render('update.twig', [
                    'model' => $model,
                    'languages' => $languages
