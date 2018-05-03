@@ -108,8 +108,7 @@ class Meta extends \yii\db\ActiveRecord
 
     public static function findByUrl($url, $model = false)
     {
-
-        $language = Yii::$app->params['lang_code'];
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
 
         if (isset(Yii::$app->params['url_mask'])) {
             $page = Yii::$app->params['url_mask'];
@@ -216,7 +215,9 @@ class Meta extends \yii\db\ActiveRecord
      */
     private static function languageMeta($meta, $language)
     {
-        $languageMeta = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one();
+        $languageMeta = !empty($language) ?
+            LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one()
+            : false;
         if ($languageMeta) {
             foreach (self::$translated_attributes as $attribute) {
                 if ($languageMeta->$attribute) {
@@ -236,7 +237,7 @@ class Meta extends \yii\db\ActiveRecord
         if ($photo) {
 
             $path = $this->imagesPath;// Путь для сохранения
-            $name = time(); // Название файла
+            $name = preg_replace('/[\.\s]/', '', microtime());//time(); // Название файла
             $exch = explode('.', $photo->name);
             $exch = $exch[count($exch) - 1];
             $name .= '.' . $exch;

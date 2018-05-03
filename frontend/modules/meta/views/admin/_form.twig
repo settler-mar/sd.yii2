@@ -38,12 +38,75 @@
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
-                    <div class="form-group">
-                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-                    </div>
-                    {{ active_form_end() }}
+
+
                 </div>
             </div>
+            <div class="col-md-12 tarif_select_blk">
+                <h3>Переводы</h3>
+                {% for k,lang in languages %}
+                    <input type="radio" class="controls_option" value="{{ k }}" checked="" id="option_tab_{{ k }}"
+                           name="tabs_open">
+                {% endfor %}
+                <ul class="tab_control">
+                    {% for k,lang in languages %}
+                        <li class="tab_butt_{{ k }}">
+                            <label for="option_tab_{{ k }}">
+                                <img src="/images/flag/{{ k }}.svg" height="12px">
+                                {{ lang.name }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="content_tab">
+                    {% for k,lang in languages %}
+                        <div class="cpa_box tab_{{ k }}">
+                            {{ form.field(lang.model, 'title').textInput({'maxlength':true})|raw }}
+
+                            {{ form.field(lang.model, 'description').textarea({'rows':6})|raw }}
+
+                            {{ form.field(lang.model, 'keywords').textarea({'rows':6})|raw }}
+
+                            {{ form.field(lang.model, 'h1').textInput({'maxlength':true})|raw }}
+
+                            {{ form.field(lang.model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
+                            <h4>Изображение заставка</h4>
+                            <p>
+                                <img for="Meta_{{ k }}[backgroundImageImage]" style="max-height: 480px;" src="img/{{ lang.model.backgroundImageImage | raw }}">
+                            </p>
+                            {{ form.field(lang.model, 'backgroundImageImage').fileInput().label(false)|raw }}
+
+                            {{ form.field(lang.model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
+
+                            {{ form.field(lang.model, 'h2').textInput({'maxlength':true})|raw }}
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+            </div>
+            {{ active_form_end() }}
         </div>
     </section>
 </div>
+
+<style>
+    {% for k,lang in languages %}
+    #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+        background: #fbcf4a;
+    }
+
+    #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+        display: block;
+    }
+
+    #option_tab_{{ k }}:checked {
+        color: #000;
+    }
+
+    {% endfor %}
+</style>
