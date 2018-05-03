@@ -23,10 +23,10 @@ class AdminController extends Controller
         return false;
       }
 
-      $base_lang='ru-RU';
+      $base_lang=Yii::$app->params['base_lang'];
       $lg_list=Yii::$app->params['language_list'];
-
       unset($lg_list[$base_lang]);
+
       $data=[
         'language_list'=>$lg_list,
         'total'=>['WARNING'=>0,'ERROR'=>0,'NOTICE'=>0]
