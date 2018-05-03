@@ -111,7 +111,7 @@ class Slider extends \yii\db\ActiveRecord
 
   public function afterFind()
   {
-    if(strlen($this->json)<3){
+    if(strlen($this->json)<20){
       $this->json=Slider::$def_slide;
     }
     $places = !empty($this->place) ? explode(',', $this->place) : [];

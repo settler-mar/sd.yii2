@@ -37,7 +37,7 @@ class Coupons extends \yii\db\ActiveRecord
   {
     return 'cw_coupons';
   }
-
+  
   /**
    * @var string
    */
