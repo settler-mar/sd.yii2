@@ -139,17 +139,36 @@ class Slider extends \yii\db\ActiveRecord
    * Getting a list of
    * store promotions
    */
-  public static function get()
+  public static function get($params=[])
   {
-    return Yii::$app->cache->getOrSet('slider', function () {
+    $place = !empty($params['place']) ? $params['place'] : false;
+    if(is_string($place))
+      $place=explode(',',$place);
+
+    if(is_array($place)){
+      foreach ($place as &$item) $item=trim($item);
+    }
+
+    $cash_name='slider'.($place ? '_' . implode(',',$place) : '');
+    return Yii::$app->cache->getOrSet($cash_name, function ()  use ($place) {
       $queryResult = self::find()
           ->from(self::tableName() . " cwps")
-          ->select(["json"])
-          ->where(["cwps.is_showed" => 1])
+          ->select(["json"]);
+
+      if ($place) {
+        foreach ($place as $item)
+          $queryResult->orWhere(['like', 'place', $item]);
+      }
+
+      $date=date('Y-m-d G:i:s');
+      $queryResult=$queryResult
+          ->andWhere(["cwps.is_showed" => 1])
+          ->andWhere(['<','date_start',$date])
+          ->andWhere(['>','date_end',$date])
           ->orderBy(['sort_index' => SORT_ASC])
           ->asArray()
           ->all();
-
+      
       $out = [];
       foreach ($queryResult as $item) {
         if(strlen($item['json'])<3){

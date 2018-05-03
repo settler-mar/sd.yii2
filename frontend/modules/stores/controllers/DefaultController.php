@@ -211,15 +211,12 @@ class DefaultController extends SdController
       ];
     }
 
-
     if ($actionId == "") {
       $storesData['current_category'] = CategoriesStores::find()
           ->where(['route' => '/'])
           ->asArray()
           ->one();
     };
-
-
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
       $cacheName .= $offline ? '_offline' : '_online';
@@ -251,7 +248,6 @@ class DefaultController extends SdController
     if ($page > 1) {
        $this->params['breadcrumbs'][] = 'Страница ' . $page;
     }
-
 
     $pagination = new Pagination(
         $dataBaseData,
@@ -287,7 +283,7 @@ class DefaultController extends SdController
     $storesData['limitlinks'] =
         $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
-    $storesData['slider'] = Slider::get();
+    $storesData['slider'] = Slider::get(['place'=>($offline?'offline':'online').'-shop']);
     $storesData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
 
     if ($storesData['current_category'] && $storesData['current_category']['route'] != '/') {
