@@ -122,19 +122,34 @@ class AdminController extends Controller
       //meta
 
       foreach ($lg_list as $lg_k => $lg){
-          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
+          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
           $metas = Meta::find()->all();
           foreach ($metas as $meta) {
               $lang = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $lg_k])->one();
               if (!$lang) {
                   $data['lg'][$lg_k]['meta']['WARNING'][] =[
                       'title' => $meta->page,
-                      'href' => 'admin/meta/update/id:'.$meta->uid
+                      'href' => 'admin/meta/update/id:'.$meta->uid,
+                      'message' => 'Нет перевода'
                   ];
+              } else {
+                  foreach ($lang->notice_params as $notice_param) {
+                      if (empty($lang->$notice_param)) {
+                          $data['lg'][$lg_k]['meta']['NOTICE'][] = [
+                              'title' => $meta->page,
+                              'href' => 'admin/meta/update/id:' . $meta->uid,
+                              'message' => 'Не все критичные поля заполнены'
+                          ];
+                          break;
+                      }
+
+                  }
               }
           }
       }
       $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['meta']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['meta']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['meta']['NOTICE']);
       //ddd($data);
       return $this->render('index',$data);
     }

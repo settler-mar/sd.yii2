@@ -78,7 +78,7 @@
                               <td><img src="/images/svg/error.svg" height="12px"></td>
                                 {% if data.TYPE=='database' %}
                                     <td>{{ item.title }}</td>
-                                    <td><a class="" href="{{ item.href }}">Добавить</a></td>
+                                    <td><a class="" {% if item.message %}title="{{ item.message }}"{% endif %} href="{{ item.href }}">Добавить</a></td>
                                 {% else %}
                                     <td>{{ item }}</td>
                                 {% endif %}
@@ -87,7 +87,12 @@
                           {% for item in data.NOTICE %}
                             <tr>
                               <td><img src="/images/svg/warning.svg" height="12px"></td>
-                              <td>{{ item }}</td>
+                                {% if data.TYPE=='database' %}
+                                    <td>{{ item.title }}</td>
+                                    <td><a class="" {% if item.message %}title="{{ item.message }}"{% endif %} href="{{ item.href }}">Редактировать</a></td>
+                                {% else %}
+                                    <td>{{ item }}</td>
+                                {% endif %}
                             </tr>
                           {% endfor %}
                           {% for item in data.ERROR %}

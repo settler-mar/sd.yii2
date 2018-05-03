@@ -27,6 +27,11 @@ class LgMeta extends Meta//\yii\db\ActiveRecord
         return 'lg_meta';
     }
 
+    /**
+     * @var array
+     */
+    public $notice_params = ['h1', 'description', 'keywords', 'content'];
+
 
     /**
      * @inheritdoc
