@@ -131,9 +131,10 @@ class Slider extends \yii\db\ActiveRecord
       $this->json=Slider::$def_slide;
     }
     $places = !empty($this->place) ? explode(',', $this->place) : [];
-    foreach ($this->places_array as $key => &$value) {
-      $value['checked'] = in_array($key, $places) ?  1 : 0;
+    foreach ($this->places_array as $key => $value) {
+      $this->places_array[$key]['checked'] = in_array($key, $places) ?  1 : 0;
     }
+
     $regions = !empty($this->region) ? explode(',', $this->region) : [];
 
     foreach (Yii::$app->params['regions_list'] as $key => $value) {
@@ -176,9 +177,12 @@ class Slider extends \yii\db\ActiveRecord
     if(is_array($place)){
       foreach ($place as &$item) $item=trim($item);
     }
+    
+    $region=Yii::$app->params['region'];
+    $lg=Yii::$app->language;
 
-    $cash_name='slider'.($place ? '_' . implode(',',$place) : '');
-    return Yii::$app->cache->getOrSet($cash_name, function ()  use ($place) {
+    $cash_name='slider_'.$region.'_'.$lg.($place ? '_' . implode(',',$place) : '');
+    return Yii::$app->cache->getOrSet($cash_name, function ()  use ($place,$region,$lg) {
       $queryResult = self::find()
           ->from(self::tableName() . " cwps")
           ->select(["json"]);
@@ -190,6 +194,8 @@ class Slider extends \yii\db\ActiveRecord
 
       $date=date('Y-m-d G:i:s');
       $queryResult=$queryResult
+          ->andWhere(['like', 'region', $region])
+          ->andWhere(['=', 'lang', $lg])
           ->andWhere(["cwps.is_showed" => 1])
           ->andWhere(['<','date_start',$date])
           ->andWhere(['>','date_end',$date])
@@ -215,8 +221,6 @@ class Slider extends \yii\db\ActiveRecord
 
   public function getPlaces_array(){
     $places_array=$this->places_array;
-    $places = !empty($this->places) ? explode(',', $this->places) : [];
-
     return $places_array;
   }
 
