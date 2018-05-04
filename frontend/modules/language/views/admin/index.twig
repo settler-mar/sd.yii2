@@ -72,33 +72,29 @@
                       </div>
                       <div class="accordion-content">
                         <table>
-                          <tr><td width="20px"></td></tr>
+                          <tr><td width="20px"></td><td width="250px"></td><td width="120px"></td></tr>
                           {% for item in data.WARNING %}
                             <tr>
                               <td><img src="/images/svg/error.svg" height="12px"></td>
-                                {% if data.TYPE=='database' %}
-                                    <td>{{ item.title }}</td>
-                                    <td><a class="" {% if item.message %}title="{{ item.message }}"{% endif %} href="{{ item.href }}">Добавить</a></td>
-                                {% else %}
-                                    <td>{{ item }}</td>
-                                {% endif %}
+                              <td>{{ item.title }}</td>
+                              <td>{{ item.message }}</td>
+                              <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
                           {% for item in data.NOTICE %}
                             <tr>
                               <td><img src="/images/svg/warning.svg" height="12px"></td>
-                                {% if data.TYPE=='database' %}
-                                    <td>{{ item.title }}</td>
-                                    <td><a class="" {% if item.message %}title="{{ item.message }}"{% endif %} href="{{ item.href }}">Редактировать</a></td>
-                                {% else %}
-                                    <td>{{ item }}</td>
-                                {% endif %}
+                              <td>{{ item.title }}</td>
+                              <td>{{ item.message }}</td>
+                              <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
                           {% for item in data.ERROR %}
                             <tr>
                               <td><img src="/images/svg/information.svg" height="12px"></td>
-                              <td>{{ item }}</td>
+                              <td>{{ item.title }}</td>
+                              <td>{{ item.message }}</td>
+                              <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
                         </table>
