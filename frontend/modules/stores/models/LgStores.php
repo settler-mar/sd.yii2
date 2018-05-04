@@ -103,6 +103,7 @@ class LgStores extends \yii\db\ActiveRecord
     Cache::clearName('catalog_stores');
     Cache::clearName('top_12_stores');
     Cache::clearName('stores_by_column');
+    Cache::clearName('account_favorites');
   }
 
 
