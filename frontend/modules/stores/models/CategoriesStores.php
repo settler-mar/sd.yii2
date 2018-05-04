@@ -151,20 +151,22 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $casheName = 'categories_stores' . ($offline == 1 ? '_offline' : ($offline === 0 ? '_online' : ''));
+    $casheName = 'categories_stores' . ($offline == 1 ? '_offline' : ($offline === 0 ? '_online' : '')) .
+        ($language ? '_' . $language: '');
 
     if ($where) {
       $casheName .= '_' . str_replace(' ', '_', $where);
     }
 
-    $data = $cache->getOrSet($casheName, function () use ($offline, $where, $as_array) {
-      $categories = self::find()
-          ->from([self::tableName() . ' ccs'])
-          ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = ccs.uid')
+    $data = $cache->getOrSet($casheName, function () use ($offline, $where, $as_array, $language) {
+      $categories = self::languaged($language, ['uid', 'parent_id', 'name', 'route', 'menu_hidden', 'selected', 'menu_index'])
+          ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = cwcs.uid')
           ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
-          ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'ccs.uid' => SORT_ASC]);
+          ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'cwcs.uid' => SORT_ASC]);
 
       if (Yii::$app->params['stores_menu_separate'] == 1) {
         $categories->where(['cws.is_offline' => $offline ? 1 : 0]);
@@ -172,14 +174,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
       if ($where) {
         $categories
-            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index'])
             ->andWhere($where);
       } else {
         $categories
-            ->select(['ccs.uid', 'ccs.parent_id', 'ccs.name', 'ccs.route', 'ccs.menu_hidden', 'ccs.selected', 'ccs.menu_index',
-                'count(cstc.category_id) as count'])
-            ->andWhere(['cws.is_active' => [0, 1], 'ccs.is_active' => 1])
-            ->groupBy(['ccs.name', 'ccs.parent_id', 'ccs.uid']);
+            ->addSelect(['count(cstc.category_id) as count'])
+            ->andWhere(['cws.is_active' => [0, 1], 'cwcs.is_active' => 1])
+            ->groupBy(['cwcs.name', 'cwcs.parent_id', 'cwcs.uid']);
       }
       $categories = $categories->asArray()->all();
       return $categories;
@@ -199,13 +199,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $extItems = isset($options['ext_items']) ? $options['ext_items'] : [];
     $as_array = isset($options['as_array']) ? $options['as_array'] : false;
     $where = isset($options['where']) ? $options['where'] : false;
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
 
     $cache = Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
 
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $cacheName = 'category_tree';
+    $cacheName = 'category_tree' . ($language ? '_' . $language : '');
     if ($where) {
       $cacheName .= '_' . str_replace(' ', '_', $where);
     } else {
@@ -326,10 +327,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_stores';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $casheName = 'store_category_byid_' . $id . ($language ? '_'.$language: '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    return $cache->getOrSet('store_category_byid_' . $id, function () use ($id) {
-      return self::findOne($id);
+    return $cache->getOrSet($casheName, function () use ($id, $language) {
+      return self::languaged($language)->where(['uid' => $id])->one();
     }, $cache->defaultDuration, $dependency);
   }
 
@@ -346,11 +349,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_stores';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $casheName = 'store_category_byroute_' . $route . ($language ? '_'.$language: '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $category = $cache->getOrSet('store_category_byroute_' . $route, function () use ($route) {
-      //return self::findOne(['route' => $route, 'is_active' => 1]);
-      return self::findOne(['route' => $route]);
+    $category = $cache->getOrSet($casheName, function () use ($route, $language) {
+      return self::languaged($language)->where(['route' => $route])->one();
     }, $cache->defaultDuration, $dependency);
     return $category;
   }
@@ -503,6 +507,43 @@ class CategoriesStores extends \yii\db\ActiveRecord
     }
   }
 
+    /**
+     * @param $lang
+     * @param array $attributes //или заданные или все
+     * @return $this
+     */
+  protected static function languaged($lang, $attributes = [])
+  {
+      //общие для всех языков
+      $selectAttributes = ['uid', 'parent_id', 'is_active', 'menu_index', 'route',
+          'menu_hidden', 'map_icon', 'selected', 'show_in_footer'];
+      //переводимые
+      $translatedAttributes = ['name', 'short_description', 'down_description', 'short_description_offline',
+          'down_description_offline'];
+      //атрибуты в запрос
+      $resultAttributes = [];
+      foreach ($selectAttributes as $attr){
+          if (empty($attributes) || in_array($attr, $attributes)) {
+              $resultAttributes[] = 'cwcs.'.$attr;
+          }
+      }
+      foreach ($translatedAttributes as $attr) {
+          if (empty($attributes) || in_array($attr, $attributes)) {
+              $resultAttributes[] = $lang ?
+                  'if (lgcs.' . $attr . '>"",lgcs.' . $attr . ',cwcs.' . $attr . ') as ' . $attr :
+                  'cwcs.' . $attr;
+          }
+      }
+      $category = self::find()
+          ->from(self::tableName(). ' cwcs')
+          ->select($resultAttributes)  ;
+      if ($lang) {
+          $category->leftJoin(LgCategoriesStores::tableName(). ' lgcs', 'cwcs.uid = lgcs.category_id and lgcs.language = "' . $lang . '"');
+      }
+      return $category;
+
+  }
+
   public function getParentName()
   {
     if ($this->parent_id == 0) {
@@ -531,4 +572,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
     return $current['selected'] == $next['selected'] ?
         0 : ($current['selected'] > $next['selected'] ? 1 : -1);
   }
+
+
 }
