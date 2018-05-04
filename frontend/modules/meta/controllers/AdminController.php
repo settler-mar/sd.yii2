@@ -122,10 +122,13 @@ class AdminController extends Controller
     }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        Yii::$app->session->addFlash('info', 'Метаданные обновлены');
       //сохранение переводов
        foreach ($languages as $lg_key => $language) {
-           if (!$language['model']->load(Yii::$app->request->post()) || !$language['model']->save()) {
-
+           if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+               Yii::$app->session->addFlash('info', $language['name'] . '. Перевод метаданных обновлен');
+           } else {
+               Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода метаданных');
                header("X-XSS-Protection: 1;");
                return $this->render('update.twig', [
                    'model' => $model,

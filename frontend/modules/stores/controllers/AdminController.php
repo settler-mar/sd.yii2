@@ -225,9 +225,9 @@ class AdminController extends Controller
         //сохранение переводов
       foreach ($languages as $lg_key => $language) {
         if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
-            Yii::$app->session->addFlash('info', $language['name'] . ' обновлен');
+            Yii::$app->session->addFlash('info', $language['name'] . '. Перевод магазина обновлен');
         } else {
-            Yii::$app->session->addFlash('info', $language['name'] . ' ошибка при обновлении');
+            Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка при обновлении перевода магазина');
         }
       }
 

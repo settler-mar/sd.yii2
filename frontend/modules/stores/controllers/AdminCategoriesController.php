@@ -123,13 +123,13 @@ class AdminCategoriesController extends Controller
     }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
+        Yii::$app->session->addFlash('info', 'Категория обновлена');
         //сохранение переводов
         foreach ($languages as $lg_key => $language) {
             if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
-                Yii::$app->session->addFlash('info', $language['name'] . ' обновлен');
+                Yii::$app->session->addFlash('info', $language['name'] . '. Перевод категории обновлен');
             } else {
-                Yii::$app->session->addFlash('info', $language['name'] . ' ошибка при обновлении');
+                Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении категории');
             }
         }
 
