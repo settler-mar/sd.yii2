@@ -166,7 +166,9 @@ class DefaultController extends SdController
             " - locate(' ', displayed_cashback) - locate('%', displayed_cashback)) + 0 as cashback_summ",
         ])
         ->orderBy($sort . ' ' . $order);
-    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order .($storeFrom ? '_from_'.$storeFrom : '') ;
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order .
+        ($storeFrom ? '_from_'.$storeFrom : '') . ($language ? '_' . $language : '') ;
 
     if ($categoryStore) {
       //категория магазина

@@ -49,6 +49,9 @@ class Stores extends \yii\db\ActiveRecord
   public $image_url;
   public $videos;
 
+  private static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
+      'contact_name', 'contact_phone', 'contact_email', 'coupon_description',
+  ];
 
   public function behaviors()
   {
@@ -293,10 +296,15 @@ class Stores extends \yii\db\ActiveRecord
    */
   public static function top12()
   {
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('top_12_stores', function () {
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'top_12_stores';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $data = $cache->getOrSet('top_12_stores' . $language, function () {
       return self::items()->orderBy('visit DESC')->limit(12)->all();
-    });
+    }, $cache->defaultDuration, $dependency);
     return $data;
   }
 
@@ -313,7 +321,7 @@ class Stores extends \yii\db\ActiveRecord
    */
   public static function byRoute($route)
   {
-    $where = array();
+    $where = [];
     if(strpos($route,'-offline')){
       $where['is_offline']=1;
       $where['route']=str_replace('-offline','',$route);
@@ -321,15 +329,22 @@ class Stores extends \yii\db\ActiveRecord
       $where['is_offline']=0;
       $where['route']=$route;
     }
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $cache = Yii::$app->cache;
+    $cacheName = 'store_by_route_' . $route . ($language ? '_'.$language : '');
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'stores_by_column';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
-      return self::find()
-        ->where($where)
-        ->one();
+    $data = $cache->getOrSet($cacheName, function () use ($where, $language) {
+      $store =  self::find()
+        ->from(self::tableName() . ' cws')
+        ->select(self::selectAttributes($language))
+        ->where($where);
+      if ($language) {
+          $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
+      }
+      return $store->one();
     }, $cache->defaultDuration, $dependency);
     
     return $data;
@@ -349,7 +364,7 @@ class Stores extends \yii\db\ActiveRecord
     $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
       return self::findOne($id);
     }, $cache->defaultDuration, $dependency);
-    
+
     return $data;
   }
 
@@ -576,16 +591,21 @@ class Stores extends \yii\db\ActiveRecord
       ->groupBy('cws2.uid')
       ->where(['cwur.is_active' => 1]);
 
-    return self::find()
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+
+    $stores =  self::find()
       ->from(self::tableName() . ' cws')
-      ->select([
-        'cws.*',
+      ->select(array_merge(self::selectAttributes($language),[
         'store_rating.rating as reviews_rating',
         'store_rating.reviews_count as reviews_count',
-      ])
+      ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
       ->where(['cws.is_active' => $active])
       ->asArray();
+    if ($language) {
+        $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . Yii::$app->language . '"');
+    }
+    return $stores;
   }
 
     /** $sortvars в зависимости от online - offline
@@ -711,6 +731,7 @@ class Stores extends \yii\db\ActiveRecord
       }
   }
 
+
   /**
    * @param $id
    * @param $route
@@ -728,12 +749,13 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('total_all_stores');
     Cache::clearName('stores_abc');
     Cache::clearName('catalog_coupons');
+    Cache::clearName('top_12_stores');
+    Cache::clearName('stores_by_column');
 
       //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');
     //ключи
     //Cache::deleteName('total_all_stores');
-    Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');
     if ($id) {
       Cache::deleteName('store_byid_' . $id);
@@ -762,6 +784,25 @@ class Stores extends \yii\db\ActiveRecord
       ['like', 'cws.alias', '%,'.$query, false],
       ['=', 'cws.alias', $query],
     ];
+  }
+
+    /**
+     * массив для select
+     * @param bool $language
+     * @return array
+     */
+  private static function selectAttributes($language = false)
+  {
+      $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
+        'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
+        'cws.related', 'cws.is_offline', 'cws.video', 'cws.rating', 'cws.cash_number', 'cws.no_rating_calculate',
+        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking'];
+      $translated = [];
+      foreach (self::$translated_attributes as $attr) {
+          $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
+      }
+      return array_merge($attributes, $translated);
+
   }
   
 }

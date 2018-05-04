@@ -22,6 +22,7 @@ use yii\web\UploadedFile;
 use frontend\modules\stores\models\StoresToCategories;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\LgStores;
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -205,8 +206,31 @@ class AdminController extends Controller
       return $this->redirect(['update', 'id' => $model->uid]);
     }
 
+    $base_lang=Yii::$app->params['base_lang'];
+    $lg_list=Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
+
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $languages[$lg_key] = [
+        'name' => $lg_item,
+        'model' => $this->findLgStore($id, $lg_key)
+        ];
+    }
+
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {   // data from request
       Yii::$app->session->addFlash('info', 'Магазин обновлен');
+
+        //сохранение переводов
+      foreach ($languages as $lg_key => $language) {
+        if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+            Yii::$app->session->addFlash('info', $language['name'] . ' обновлен');
+        } else {
+            Yii::$app->session->addFlash('info', $language['name'] . ' ошибка при обновлении');
+        }
+      }
+
       return $this->redirect(['update', 'id' => $model->uid]);
     }
     $cpa_list = Cpa::find()->all();
@@ -236,6 +260,7 @@ class AdminController extends Controller
       'store_categories' => $categories,
       'tariffs' => $tariffs,
       "action_types" => Yii::$app->params['dictionary']['action_type'],
+      'languages' => $languages,
       //'FileInput' => FileInput::className(),
     ]);
   }
@@ -637,5 +662,16 @@ class AdminController extends Controller
     $store->active_cpa = $post['value'];
     return $store->save();
   }
+
+  protected function findLgStore($id, $lang)
+  {
+    $model = LgStores::find()->where(['store_id' => $id, 'language' => $lang])->one();
+      if (!$model) {
+        $model = new LgStores();
+        $model->store_id = $id;
+        $model->language = $lang;
+      }
+      return $model;
+    }
 
 }

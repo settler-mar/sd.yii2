@@ -4,6 +4,7 @@ namespace frontend\modules\meta\models;
 
 use Yii;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 
 /**
  * This is the model class for table "lg_meta".
@@ -25,6 +26,15 @@ class LgMeta extends Meta//\yii\db\ActiveRecord
     public static function tableName()
     {
         return 'lg_meta';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ActiveRecordChangeLogBehavior::className(),
+            ],
+        ];
     }
 
     /**
