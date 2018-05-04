@@ -39,6 +39,10 @@ $config = [
     'session' => [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
+      'cookieParams' => [
+        'domain' => '.' . DOMAIN_FRONT,
+        'httpOnly' => true,
+      ],
     ],
     'sphinx' => [
       'class' => 'yii\sphinx\Connection',
@@ -107,12 +111,6 @@ $config = [
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
       },
-    ],
-    'session' => [
-      'cookieParams' => [
-        'domain' => '.' . DOMAIN_FRONT,
-        'httpOnly' => true,
-      ],
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
