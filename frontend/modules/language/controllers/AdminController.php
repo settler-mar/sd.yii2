@@ -6,6 +6,8 @@ use yii\web\Controller;
 use Yii;
 use frontend\modules\meta\models\Meta;
 use frontend\modules\meta\models\LgMeta;
+use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\LgCategoriesStores;
 
 
 class AdminController extends Controller
@@ -120,7 +122,6 @@ class AdminController extends Controller
       $data['total']['ERROR']+=count($data['lg'][$lg_k][$file]['ERROR']);
 
       //meta
-
       foreach ($lg_list as $lg_k => $lg){
           $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
           $metas = Meta::find()->all();
@@ -150,6 +151,38 @@ class AdminController extends Controller
       $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['meta']['WARNING']);
       $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['meta']['ERROR']);
       $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['meta']['NOTICE']);
+
+      //категории шопов
+      foreach ($lg_list as $lg_k => $lg) {
+          $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store'];
+          $categories = CategoriesStores::find()->all();
+          foreach ($categories as $category) {
+              $lang = LgCategoriesStores::find()->where(['category_id' => $category->uid, 'language' => $lg_k])->one();
+              if (!$lang) {
+                  $data['lg'][$lg_k]['category_store']['WARNING'][] =[
+                      'title' => $category->name,
+                      'href' => '/admin-categories/stores/update/id:'.$category->uid,
+                      'message' => 'Нет перевода'
+                  ];
+              } else {
+                  foreach (CategoriesStores::$translatedAttributes as $notice_param) {
+                      if (empty($lang->$notice_param)) {
+                          $data['lg'][$lg_k]['category_store']['NOTICE'][] = [
+                              'title' => $category->name,
+                              'href' => '/admin-categories/stores/update/id:'.$category->uid,
+                              'message' => 'Не все поля заполнены'
+                          ];
+                          break;
+                      }
+
+                  }
+              }
+          }
+      }
+      $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['category_store']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['category_store']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['category_store']['NOTICE']);
+
       //ddd($data);
       return $this->render('index',$data);
     }

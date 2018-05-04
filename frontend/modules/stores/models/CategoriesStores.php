@@ -26,6 +26,9 @@ class CategoriesStores extends \yii\db\ActiveRecord
   const CATEGORY_STORE_SELECTED_PROMO = 1;
   const CATEGORY_STORE_SELECTED_GREEN = 2;
 
+  public static $translatedAttributes = ['name', 'short_description', 'down_description', 'short_description_offline',
+      'down_description_offline'];
+
   /**
    * @inheritdoc
    */
@@ -517,9 +520,6 @@ class CategoriesStores extends \yii\db\ActiveRecord
       //общие для всех языков
       $selectAttributes = ['uid', 'parent_id', 'is_active', 'menu_index', 'route',
           'menu_hidden', 'map_icon', 'selected', 'show_in_footer'];
-      //переводимые
-      $translatedAttributes = ['name', 'short_description', 'down_description', 'short_description_offline',
-          'down_description_offline'];
       //атрибуты в запрос
       $resultAttributes = [];
       foreach ($selectAttributes as $attr){
@@ -527,7 +527,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
               $resultAttributes[] = 'cwcs.'.$attr;
           }
       }
-      foreach ($translatedAttributes as $attr) {
+      //переводимые
+      foreach (self::$translatedAttributes as $attr) {
           if (empty($attributes) || in_array($attr, $attributes)) {
               $resultAttributes[] = $lang ?
                   'if (lgcs.' . $attr . '>"",lgcs.' . $attr . ',cwcs.' . $attr . ') as ' . $attr :
