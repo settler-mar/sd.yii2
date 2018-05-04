@@ -4,6 +4,7 @@ namespace frontend\modules\stores\controllers;
 
 use Yii;
 use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\LgCategoriesStores;
 use frontend\modules\stores\models\CategoriesStoresSearch;
 use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use frontend\modules\coupons\models\CategoriesCoupons;
@@ -109,7 +110,29 @@ class AdminCategoriesController extends Controller
           $model_coupon_categories[] = $category->uid;
     }
     //ddd($model->couponCategories, $model_coupon_categories);
+    $base_lang=Yii::$app->params['base_lang'];
+    $lg_list=Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
+
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $languages[$lg_key] = [
+        'name' => $lg_item,
+        'model' => $this->findLgCategory($id, $lg_key)
+      ];
+    }
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+        //сохранение переводов
+        foreach ($languages as $lg_key => $language) {
+            if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+                Yii::$app->session->addFlash('info', $language['name'] . ' обновлен');
+            } else {
+                Yii::$app->session->addFlash('info', $language['name'] . ' ошибка при обновлении');
+            }
+        }
+
       return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
@@ -119,6 +142,7 @@ class AdminCategoriesController extends Controller
         'iconSelectParam' => $this->getIconsParam(),
         'model_coupon_categories' => $model_coupon_categories,
         'coupons_categories' => CategoriesCoupons::find()->all(),
+        'languages' => $languages,
       ]);
     }
   }
@@ -201,4 +225,16 @@ class AdminCategoriesController extends Controller
       ],
     ];
   }
+
+  protected function findLgCategory($id, $lang)
+  {
+    $model = LgCategoriesStores::find()->where(['category_id' => $id, 'language' => $lang])->one();
+    if (!$model) {
+      $model = new LgCategoriesStores();
+      $model->category_id = $id;
+      $model->language = $lang;
+    }
+    return $model;
+  }
+
 }

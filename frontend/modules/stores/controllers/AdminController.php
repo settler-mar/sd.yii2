@@ -671,7 +671,7 @@ class AdminController extends Controller
         $model->store_id = $id;
         $model->language = $lang;
       }
-      return $model;
-    }
+    return $model;
+  }
 
 }
