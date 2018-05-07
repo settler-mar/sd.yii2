@@ -525,6 +525,7 @@ $functionsList = [
   'max' => 'max',
   'implode' => 'implode',
   'sin' => 'sin',
+  'str_replace' => 'str_replace',
   'svg' => function ($name, $class = false) {
     return Help::svg($name, $class);
   },

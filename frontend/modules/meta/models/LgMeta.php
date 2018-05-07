@@ -55,6 +55,7 @@ class LgMeta extends Meta//\yii\db\ActiveRecord
             [['title', 'h1', 'h2'], 'string', 'max' => 255],
             ['meta_id', 'unique', 'targetAttribute' => ['meta_id', 'language']],
             [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'], 'safe'],
+            ['regionsPostData', 'safe'],
         ];
     }
 
