@@ -36,6 +36,16 @@
                                     <p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>
                                     <p><span>Отображать в задолбашках</span> {{ form.field(model, 'show_notify').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
                                     <p><span>Отображать в блок посылок</span> {{ form.field(model, 'show_tracking').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
+                                    <p><span>Регионы</span></p>
+                                    <ul class="ch_tree">
+                                        {% for region_item in model.regions %}
+                                            <li>
+                                                <label>
+                                                    <input {% if region_item.checked %} checked {% endif %} type="checkbox" name="Stores[regions_list][]" value="{{region_item.code}}"><span>{{region_item.name}}</span>
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="edit_blk">
                                     <p>

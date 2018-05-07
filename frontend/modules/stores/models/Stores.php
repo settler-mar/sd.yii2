@@ -48,6 +48,8 @@ class Stores extends \yii\db\ActiveRecord
   public $logoImage;
   public $image_url;
   public $videos;
+  public $regions;
+  public $regions_list;
 
   private static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
       'contact_name', 'contact_phone', 'contact_email', 'coupon_description',
@@ -97,8 +99,10 @@ class Stores extends \yii\db\ActiveRecord
     return [
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'trim'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'string'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'trim'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone',
+          'contact_email','video','network_name','coupon_description', 'region'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name',
+          'contact_phone', 'contact_email','video','network_name','coupon_description', 'region'], 'trim'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify','show_tracking'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
@@ -119,7 +123,9 @@ class Stores extends \yii\db\ActiveRecord
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
-      ['videos', 'safe']
+      [['videos', 'regions'], 'safe'],
+      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])]
+
     ];
   }
 
@@ -164,6 +170,7 @@ class Stores extends \yii\db\ActiveRecord
       'network_name' => 'Название торговой сети',
       'show_notify' => 'Отображать в задолбашках',
       'coupon_description' => 'Текст для активных купонов',
+      'region' => 'Регионы',
     ];
   }
 
@@ -177,8 +184,8 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    //$this->video = json_encode($this->video);
     $this->video = json_encode($this->videos);
+    $this->region = implode(',', $this->regions_list);
     return parent::beforeValidate();
   }
 
@@ -266,6 +273,15 @@ class Stores extends \yii\db\ActiveRecord
       }
       //$this->video = json_decode($this->video, true);
     }
+    $regions = explode( ',', $this->region);
+    foreach (Yii::$app->params['regions_list'] as $key => $region) {
+        $this->regions[] = [
+            'name' => $region['name'],
+            'code' => $key,
+            'checked' => in_array($key, $regions)
+        ];
+    }
+    //ddd($this->regions);
   }
 
   /**
