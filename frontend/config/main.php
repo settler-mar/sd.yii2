@@ -340,6 +340,9 @@ $config = [
 
 
 if (YII_DEBUG) {
+  /*var_dump(session_start());
+  var_dump($_SESSION);
+  exit;*/
   // configuration adjustments for 'dev' environment
   unset($config['modules']['permit']['params']['accessRoles']);
   $config['params']['plugin_install_panel'] = 1;
