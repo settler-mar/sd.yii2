@@ -23,6 +23,7 @@ use frontend\modules\stores\models\StoresToCategories;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\LgStores;
+use frontend\modules\stores\models\StoreRatings;
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -218,6 +219,21 @@ class AdminController extends Controller
         ];
     }
 
+    $ratings = [];
+    foreach (Yii::$app->params['regions_list'] as $code => $region) {
+        $rating = StoreRatings::find()->where(['store_id' => $model->uid, 'region' => $code])->one();
+        if (!$rating) {
+            $rating = new StoreRatings();
+            $rating->store_id = $model->uid;
+            $rating->region = $code;
+        }
+        $ratings[]  = [
+            'region_name' => $region['name'],
+            'region_code' => $code,
+            'model' => $rating
+        ];
+    }
+
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {   // data from request
       Yii::$app->session->addFlash('info', 'Магазин обновлен');
@@ -225,9 +241,15 @@ class AdminController extends Controller
         //сохранение переводов
       foreach ($languages as $lg_key => $language) {
         if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
-            Yii::$app->session->addFlash('info', $language['name'] . ' обновлен');
+            Yii::$app->session->addFlash('info', $language['name'] . '. Перевод магазина обновлен');
         } else {
-            Yii::$app->session->addFlash('info', $language['name'] . ' ошибка при обновлении');
+            Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка при обновлении перевода магазина');
+        }
+      }
+      //сохранение рейтингов
+      foreach ($ratings as $rating) {
+        if (!$rating['model']->load(Yii::$app->request->post()) || !$rating['model']->save()) {
+           Yii::$app->session->addFlash('err', $rating['region_name'] . '. Ошибка при сохранении рейтинга');
         }
       }
 
@@ -261,6 +283,7 @@ class AdminController extends Controller
       'tariffs' => $tariffs,
       "action_types" => Yii::$app->params['dictionary']['action_type'],
       'languages' => $languages,
+      'ratings' => $ratings,
       //'FileInput' => FileInput::className(),
     ]);
   }

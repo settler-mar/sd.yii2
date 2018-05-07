@@ -36,6 +36,16 @@
                                     <p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>
                                     <p><span>Отображать в задолбашках</span> {{ form.field(model, 'show_notify').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
                                     <p><span>Отображать в блок посылок</span> {{ form.field(model, 'show_tracking').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
+                                    <p><span>Регионы</span></p>
+                                    <ul class="ch_tree">
+                                        {% for region_item in model.regions %}
+                                            <li>
+                                                <label>
+                                                    <input {% if region_item.checked %} checked {% endif %} type="checkbox" name="Stores[regions_list][]" value="{{region_item.code}}"><span>{{region_item.name}}</span>
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="edit_blk">
                                     <p>
@@ -177,9 +187,44 @@
                             })|raw }}
 
                             <input type="hidden" name="type" value="update_main_information">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="title">
+                                        Рейтинг по регионам
+                                    </p>
+                                </div>
+                                {% for rating in ratings %}
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                            {{ rating.region_name }}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group ">
+                                                <label for="stores-rating-{{ rating.region_code }}">Рейтинг</label>
+                                                <input type="text" id="stores-rating-{{ rating.region_code }}" class="form-control" name="StoreRatings_{{ rating.region_code }}[rating]" value="{{ rating.model.rating }}" maxlength="255" aria-required="true">
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group ">
+                                                <label for="stores-rating-no-calculate-{{ rating.region_code }}">Просчет рейтинга</label>
+                                                <select id="stores-rating-no-calculate-{{ rating.region_code }}" class="form-control" name="StoreRatings_{{ rating.region_code }}[no_calculate]">
+                                                    <option value="0" {% if rating.model.no_calculate == 0 %}selected{% endif %} >Пересчитывать</option>
+                                                    <option value="1" {% if rating.model.no_calculate == 1 %}selected{% endif %} >Не пересчитывать</option>
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
                             </div>
+
+
                             {{ active_form_end() }}
 
                         <p class="title">Тарифы</p>
@@ -229,6 +274,8 @@
 
                             {{ active_form_end() }}
                         </div>
+
+
 
                         {% if categories|length > 0 %}
                             <p class="title">
