@@ -64,6 +64,7 @@ class ActiveRecordChangeLogBehavior extends Behavior
     $primaryKeys = $model::primaryKey();
     $log->pk = json_encode(array_intersect_key($model->attributes, array_combine($primaryKeys, $primaryKeys)));
     $log->log_at = time();
+    $log->user_id=\Yii::$app->user->id;
     $log->save();
   }
 }
