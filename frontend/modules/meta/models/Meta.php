@@ -23,7 +23,11 @@ class Meta extends \yii\db\ActiveRecord
     public $backgroundImageImage;
     public $backgroundImageAlt;
     public $backgroundImageClassName;
+    public $regionsPostData = [];
+    public $regionsData = [];
     protected $imagesPath = '/img/';
+
+    protected static $json_attributes  = ['title', 'h1', 'description'];
 
     protected static $translated_attributes = ['title', 'description', 'keywords', 'h1', 'h2', 'content',
         'backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'];
@@ -54,13 +58,14 @@ class Meta extends \yii\db\ActiveRecord
         return [
             [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
             [['page', 'title', 'description', 'keywords', 'h1', 'h1_class'], 'trim'],
-            [['description', 'keywords', 'content', 'h1_class', 'h2', 'background_image'], 'string'],
+            [['description', 'keywords', 'content', 'h1_class', 'h2', 'background_image', 'title', 'h1'], 'string'],
             [['description', 'keywords', 'content'], 'trim'],
-            [['page', 'title', 'h1', 'h1_class', 'h2'], 'string', 'max' => 255],
+            [['page', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page', 'unique'],
             ['show_breadcrumbs', 'boolean'],
             [['content'], 'string'],
             [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'], 'safe'],
+            ['regionsPostData', 'safe'],
         ];
     }
 
@@ -86,6 +91,18 @@ class Meta extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeValidate()
+    {
+
+        foreach (self::$json_attributes as $attribute) {
+            $this->$attribute = isset($this->regionsPostData[$attribute]) ?
+                    json_encode($this->regionsPostData[$attribute]) : null;
+        }
+        //ddd($this);
+
+        return parent::beforeValidate();
+    }
+
     /**
      *
      */
@@ -98,7 +115,27 @@ class Meta extends \yii\db\ActiveRecord
             $this->backgroundImageAlt = isset($backgroundImage->alt) ? $backgroundImage->alt : null;
             $this->backgroundImageClassName = isset($backgroundImage->class_name) ? $backgroundImage->class_name : null;
         }
+
+        $regionCurrent = Yii::$app->params['region'];
+
+        foreach (self::$translated_attributes as $attribute) {
+            if ($this->$attribute) {
+                $data = !empty($this->$attribute) ? json_decode($this->$attribute, true) : false;
+
+                if (in_array($attribute, self::$json_attributes)) {
+                    foreach (Yii::$app->params['regions_list'] as $regionCode => $region) {
+                        $this->regionsData[$attribute][$regionCode] = empty($data) || !isset($data[$regionCode]) ?
+                            '' : $data[$regionCode];
+                    }
+                }
+                if ($data && isset($data[$regionCurrent])) {
+                    $this->$attribute = $data[$regionCurrent];
+                }
+            }
+        }
+        //ddd($this);
     }
+
 
     public function afterSave($insert, $changedAttributes)
     {
@@ -127,8 +164,10 @@ class Meta extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'metadata_'.$page;
+        $region = Yii::$app->params['region'] == 'default' ? '' :
+            '_' . str_replace('.', '_', Yii::$app->params['region']) ;
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-        $casheName = 'meta_' . $page . ($model ? '_model' : '') . ($language ? '_'. $language : '');
+        $casheName = 'meta_' . $page . ($model ? '_model' : '') . ($language ? '_'. $language : '') . $region;
 
         return $cache->getOrSet($casheName, function () use ($page, $model, $language) {
             $page_meta = Meta::find()
@@ -213,7 +252,7 @@ class Meta extends \yii\db\ActiveRecord
      * @param $language
      * @return mixed
      */
-    private static function languageMeta($meta, $language)
+    private static function languageMeta($meta, $language, $region = false)
     {
         $languageMeta = !empty($language) ?
             LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one()

@@ -46,13 +46,33 @@
 
                 <div class="content_tab">
                     <div class="cpa_box tab_ru-RU">
-                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+                        {% for r,region in app.params.regions_list %}
+                            <input type="radio" class="controls_option" value="ru-RU_{{ str_replace('.', '_', r) }}" id="option_tab_ru-RU_{{ str_replace('.', '_', r) }}"
+                                   name="tabs_open_ru-RU" {% if loop.first %}checked{% endif %}>
+                        {% endfor %}
+                        <ul class="tab_control">
+                            {% for r,region in app.params.regions_list %}
+                                <li class="tab_butt_ru-RU_{{ str_replace('.', '_', r) }}">
+                                    <label for="option_tab_ru-RU_{{ str_replace('.', '_', r) }}">
+                                        {{ region.name }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="content_tab">
+                            {% for r,region in app.params.regions_list %}
+                                <div class="tab_ru-RU_{{ str_replace('.', '_', r) }}">
+                                    {{ form.field(model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.title[r]}).label('Title')|raw }}
+                                    {{ form.field(model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.h1[r]}).label('H1')|raw }}
+                                    {{ form.field(model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.description[r]}).label('Description')|raw }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
 
                         {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
 
                         {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
@@ -69,13 +89,31 @@
                     </div>
                     {% for k,lang in languages %}
                         <div class="cpa_box tab_{{ k }}">
-                            {{ form.field(lang.model, 'title').textInput({'maxlength':true})|raw }}
+                            {% for r,region in app.params.regions_list %}
+                                <input type="radio" class="controls_option" value="{{ k }}_{{ str_replace('.', '_', r) }}" id="option_tab_{{ k }}_{{ str_replace('.', '_', r) }}"
+                                       name="tabs_open_{{ k }}" {% if loop.first %}checked{% endif %}>
+                            {% endfor %}
+                            <ul class="tab_control">
+                                {% for r,region in app.params.regions_list %}
+                                    <li class="tab_butt_{{ k }}_{{ str_replace('.', '_', r) }}">
+                                        <label for="option_tab_{{ k }}_{{ str_replace('.', '_', r) }}">
+                                            {{ region.name }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
 
-                            {{ form.field(lang.model, 'description').textarea({'rows':6})|raw }}
+                            <div class="content_tab">
+                                {% for r,region in app.params.regions_list %}
+                                    <div class="tab_{{ k }}_{{ str_replace('.', '_', r) }}">
+                                        {{ form.field(lang.model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.title[r]}).label('Title')|raw }}
+                                        {{ form.field(lang.model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.h1[r]}).label('H1')|raw }}
+                                        {{ form.field(lang.model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.description[r]}).label('Description')|raw }}
+                                    </div>
+                                {% endfor %}
+                            </div>
 
                             {{ form.field(lang.model, 'keywords').textarea({'rows':6})|raw }}
-
-                            {{ form.field(lang.model, 'h1').textInput({'maxlength':true})|raw }}
 
                             {{ form.field(lang.model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
@@ -121,18 +159,50 @@
         color: #000;
     }
 
+    {% for r,region in app.params.regions_list %}
+
+        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_ru-RU_{{ str_replace('.', '_', r) }} {
+            background: #fbcf4a;
+        }
+
+        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_ru-RU_{{ str_replace('.', '_', r) }} {
+            display: block;
+        }
+
+        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked {
+            color: #000;
+        }
+    {% endfor %}
+
+
+
     {% for k,lang in languages %}
-    #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
-        background: #fbcf4a;
-    }
+        #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+            background: #fbcf4a;
+        }
 
-    #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
-        display: block;
-    }
+        #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+            display: block;
+        }
 
-    #option_tab_{{ k }}:checked {
-        color: #000;
-    }
+        #option_tab_{{ k }}:checked {
+            color: #000;
+        }
+
+        {% for r,region in app.params.regions_list %}
+
+            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_{{ k }}_{{ str_replace('.', '_', r) }} {
+                background: #fbcf4a;
+            }
+
+            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_{{ k }}_{{ str_replace('.', '_', r) }} {
+                display: block;
+            }
+
+            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked {
+                color: #000;
+            }
+        {% endfor %}
 
     {% endfor %}
 </style>
