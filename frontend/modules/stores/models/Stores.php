@@ -185,7 +185,7 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     $this->video = json_encode($this->videos);
-    $this->region = implode(',', $this->regions_list);
+    $this->region = $this->regions_list ? implode(',', $this->regions_list) : null;
     return parent::beforeValidate();
   }
 
@@ -203,8 +203,16 @@ class Stores extends \yii\db\ActiveRecord
     return $this->hasOne(Stores::className(),['uid'=>'related']);
   }
 
+    /**
+     * рейтинг по регионам
+     * @return yii\db\ActiveQuery
+     */
+  public function getRatings(){
+    return $this->hasMany(StoreRatings::className(), ['store_id' => 'uid']);
+  }
+
   /*
-   * Выдает магазины сети автоматом добавдяя сяанный онлайн-оффлайн магазин и удаляется текущий
+   * Выдает магазины сети автоматом добавдяя связанный онлайн-оффлайн магазин и удаляется текущий
    *
    */
   public function getRelatedStores()
@@ -281,7 +289,6 @@ class Stores extends \yii\db\ActiveRecord
             'checked' => in_array($key, $regions)
         ];
     }
-    //ddd($this->regions);
   }
 
   /**
@@ -421,6 +428,9 @@ class Stores extends \yii\db\ActiveRecord
     parent::afterSave($insert, $changedAttributes);
 
     $this->saveImage();
+
+    //todo сохранить рейтинги
+
     $this->clearCache($this->uid, $this->route);
   }
 
