@@ -28,6 +28,8 @@ class Constants extends \yii\db\ActiveRecord
         7 => 'Системные',
     ];
 
+  protected static $translated_attributes = ['text'];
+
     /**
      * @inheritdoc
      */
