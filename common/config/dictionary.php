@@ -146,6 +146,16 @@ $dict = [
         'display_name'=>"personal 85%",
         'bonus'=>85,
         ],
+      22=>[
+        'name'=>"personal 90%",
+        'display_name'=>"personal 90%",
+        'bonus'=>90,
+        ],
+      23=>[
+        'name'=>"personal 95%",
+        'display_name'=>"personal 95%",
+        'bonus'=>95,
+        ],
     ],
     'bonus_status'=>[
       0=>[

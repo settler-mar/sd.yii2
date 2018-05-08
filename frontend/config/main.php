@@ -353,6 +353,9 @@ $config = [
 
 
 if (YII_DEBUG) {
+  /*var_dump(session_start());
+  var_dump($_SESSION);
+  exit;*/
   // configuration adjustments for 'dev' environment
   $config['modules']['ar_log'] = [
       'class' => 'frontend\modules\ar_log\Module',
