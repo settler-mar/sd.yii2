@@ -161,6 +161,8 @@ class Meta extends \yii\db\ActiveRecord
 
         $page = str_replace('-offline', '/offline', $page);//добавляем поддержку офлайна
 
+        if (!isset(Yii::$app->params['region']))return;
+
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'metadata_'.$page;
