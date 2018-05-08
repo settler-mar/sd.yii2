@@ -115,6 +115,5 @@ $data['plugin'] = [
     ],
 
 ];
-$data['regions_list'] = require(__DIR__ . '/regions.config-local.php');
 
 return $data;
