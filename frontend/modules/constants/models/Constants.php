@@ -140,6 +140,7 @@ class Constants extends \yii\db\ActiveRecord
      */
     public static function byName($name, $json_col = false, $json_index = 0)
     {
+
         $cash_name = $name . '_' . $json_col . '_' . $json_index;
         return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index) {
             $meta = self::find()->where(['name' => $name])->select(['text', 'ftype'])->one();
