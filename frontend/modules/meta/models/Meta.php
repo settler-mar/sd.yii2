@@ -254,7 +254,7 @@ class Meta extends \yii\db\ActiveRecord
      * @param $language
      * @return mixed
      */
-    private static function languageMeta($meta, $language, $region = false)
+    private static function languageMeta($meta, $language)
     {
         $languageMeta = !empty($language) ?
             LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one()
