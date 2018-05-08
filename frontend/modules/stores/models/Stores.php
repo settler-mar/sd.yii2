@@ -9,6 +9,7 @@ use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\favorites\models\UsersFavorites;
+use frontend\modules\users\models\Users;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -60,7 +61,7 @@ class Stores extends \yii\db\ActiveRecord
     return [
         [
             'class' => ActiveRecordChangeLogBehavior::className(),
-            'ignoreAttributes' => ['visit','rating'],
+            'ignoreAttributes' => ['visit'],
         ],
     ];
   }
@@ -104,9 +105,8 @@ class Stores extends \yii\db\ActiveRecord
       [['alias', 'description', 'conditions', 'short_description', 'contact_name',
           'contact_phone', 'contact_email','video','network_name','coupon_description', 'region'], 'trim'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify','show_tracking'], 'integer'],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'show_notify','show_tracking'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
-      [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
@@ -163,8 +163,8 @@ class Stores extends \yii\db\ActiveRecord
       'is_offline' => 'Тип магазина',
       'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
       'videos' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
-      'rating' => 'Рейтинг',
-      'no_rating_calculate' => 'Не пересчитывать рейтинг',
+      //'rating' => 'Рейтинг',
+      //'no_rating_calculate' => 'Не пересчитывать рейтинг',
       'cash_number' => 'Номер чека',
       'related_stores' => 'Магазины торговой сети (ID через запятую)',
       'network_name' => 'Название торговой сети',
@@ -614,8 +614,10 @@ class Stores extends \yii\db\ActiveRecord
       ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
       ->from(self::tableName(). ' cws2')
       ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+      ->leftJoin(Users::tableName(). ' cwu', 'cwu.uid = cwur.user_id')
       ->groupBy('cws2.uid')
-      ->where(['cwur.is_active' => 1]);
+      ->where(['cwur.is_active' => 1])
+      ->andWhere(['cwu.region' => Yii::$app->params['region']]);
 
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
 
@@ -821,7 +823,7 @@ class Stores extends \yii\db\ActiveRecord
   {
       $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
         'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
-        'cws.related', 'cws.is_offline', 'cws.video', 'cws.rating', 'cws.cash_number', 'cws.no_rating_calculate',
+        'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
         'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking'];
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
