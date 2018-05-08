@@ -62,7 +62,6 @@ class Constants extends \yii\db\ActiveRecord
     return [
         [
             'class' => ActiveRecordChangeLogBehavior::className(),
-          //'ignoreAttributes' => ['visit','rating'],
         ],
     ];
   }
@@ -141,18 +140,29 @@ class Constants extends \yii\db\ActiveRecord
     public static function byName($name, $json_col = false, $json_index = 0)
     {
 
-        $cash_name = $name . '_' . $json_col . '_' . $json_index;
-        return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index) {
-            $meta = self::find()->where(['name' => $name])->select(['text', 'ftype'])->one();
-            if ($meta) {
+
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $cash_name = $name . '_' . $json_col . '_' . $json_index . ($language ? '_' . $language : '');
+
+        return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index, $language) {
+            $const = self::find()->from(self::tableName() . ' cwc')->where(['name' => $name])->asArray();
+            if ($language) {
+                $const->select(['if(lgc.text > "", lgc.text, cwc.text) as text', 'ftype'])
+                    ->leftJoin(LgConstants::tableName() . ' lgc', 'lgc.const_id = cwc.uid')
+                    ->andWhere(['lgc.language' => $language]);
+            } else {
+                $const->select(['text', 'ftype']);
+            }
+            $const = $const->one();
+            if ($const) {
                 if ($json_col) {
-                    if (isset($meta['text'][$json_index]) && isset($meta['text'][$json_index][$json_col])) {
-                        return $meta['text'][$json_index][$json_col];
+                    if (isset($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
+                        return $const['text'][$json_index][$json_col];
                     } else {
                         return false;
                     }
                 }
-                return $meta['text'];
+                return $const['text'];
             } else {
                 return false;
             }
