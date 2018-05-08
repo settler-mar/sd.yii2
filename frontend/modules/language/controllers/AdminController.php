@@ -103,7 +103,7 @@ class AdminController extends Controller
             $data['lg'][$lg_k][$file]['WARNING'][]=['title'=>'Параметр <b>'.$k.'</b> отутствует'];
             continue;
           }
-          
+
           if(strlen(trim($transl[$k]))<2){
             $data['lg'][$lg_k][$file]['ERROR'][]=['title'=>'Параметр <b>'.$k.'</b> не заполнен'];
             continue;
@@ -124,7 +124,7 @@ class AdminController extends Controller
 
       //meta
       foreach ($lg_list as $lg_k => $lg){
-          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
+          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta','title'=>"Метотеги"];
           $metas = Meta::find()->all();
           foreach ($metas as $meta) {
               $lang = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $lg_k])->one();
@@ -155,7 +155,7 @@ class AdminController extends Controller
 
       //категории шопов
       foreach ($lg_list as $lg_k => $lg) {
-          $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store'];
+          $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store','title'=>"Категории магазинов"];
           $categories = CategoriesStores::find()->all();
           foreach ($categories as $category) {
               $lang = LgCategoriesStores::find()->where(['category_id' => $category->uid, 'language' => $lg_k])->one();
@@ -204,7 +204,7 @@ class AdminController extends Controller
         ],
       ];
       foreach ($lg_list as $lg_k => $lg) {
-        $data['lg'][$lg_k]['const'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'constants'];
+        $data['lg'][$lg_k]['const'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'constants','title'=>"Константы"];
         foreach ($err_w as $err) {
           $consts = Constants::find()
               ->leftJoin('lg_constants', '`lg_constants`.`const_id` = `cw_constants`.`uid` and `lg_constants`.`language` = \'' . $lg_k . '\'')

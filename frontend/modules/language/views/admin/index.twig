@@ -18,7 +18,7 @@
             <input type="radio" class="controls_option" value="{{ k }}" checked="" id="option_tab_{{ k }}"
                    name="tabs_open">
           {% endfor %}
-          <ul class="tab_control ajax_save" uid="1537" save_url="/admin/stores/ajax_save/active_cpa">
+          <ul class="tab_control">
             {% for k,lang in language_list %}
               <li class="tab_butt_{{ k }}">
                 <label for="option_tab_{{ k }}">
@@ -56,7 +56,7 @@
                         {% if data.TYPE=='database' %}
                           <img src="/images/svg/icons/database.svg" height="16px" title="{{ data.PATH }}">
                         {% endif %}
-                        {{ name }}
+                        {{ _if(data.title,data.title,name) }}
                         <span>
                            <img src="/images/svg/error.svg" height="12px">
                            {{ data.WARNING | length }}
