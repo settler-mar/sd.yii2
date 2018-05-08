@@ -9,6 +9,8 @@ use frontend\modules\meta\models\Meta;
 use frontend\modules\meta\models\LgMeta;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\LgCategoriesStores;
+use frontend\modules\stores\models\LgStores;
+use frontend\modules\stores\models\Stores;
 
 
 class AdminController extends Controller
@@ -219,11 +221,69 @@ class AdminController extends Controller
             ];
           }
         }
-        //ddd($const);
       }
       $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['const']['WARNING']);
       $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['const']['ERROR']);
       $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['const']['NOTICE']);
+
+      //шопы
+      foreach ($lg_list as $lg_k => $lg) {
+          $data['lg'][$lg_k]['stores'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'stores', 'title' => "Шопы"];
+          $stores = Stores::find()
+              ->from(Stores::tableName() . ' cws')
+              ->leftJoin(LgStores::tableName() . ' lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $lg_k . '"');
+          $selectAttrs = [];
+          foreach (Stores::$translated_attributes as $attribute) {
+              $selectAttrs[] = 'lgs.' . $attribute. ' as lg_'.$attribute;
+              $selectAttrs[] = 'cws.' . $attribute. ' as cw_'.$attribute;
+          }
+          $stores->select($selectAttrs);
+          $stores->addSelect(['cws.name as store_name', 'cws.uid']);
+          $stores = $stores->asArray()->all();
+
+          foreach ($stores as $store) {
+              $notTranslated = true;
+              $emptyTranslate = false;
+              $sameData = false;
+              foreach (Stores::$translated_attributes as $attribute) {
+                  if ($store['lg_'.$attribute] !== null) {
+                      $notTranslated = false;
+                  }
+                  if ($store['lg_'.$attribute] === '' && $store['cw_'.$attribute] !== '') {
+                      $emptyTranslate = true;
+                  }
+                  if ($store['cw_'.$attribute] !== '' && $store['lg_'.$attribute] == $store['cw_'.$attribute]) {
+                      $sameData = true;
+                  }
+              }
+              if ($notTranslated) {
+                  $data['lg'][$lg_k]['stores']['WARNING'][] = [
+                      'title' => $store['store_name'],
+                      'href' => '/admin/stores/update/id:' . $store['uid'],
+                      'message' => 'Нет перевода',
+                  ];
+
+              } else {
+                  if ($emptyTranslate) {
+                      $data['lg'][$lg_k]['stores']['ERROR'][] = [
+                          'title' => $store['store_name'],
+                          'href' => '/admin/stores/update/id:' . $store['uid'],
+                          'message' => 'Не все поля переведены',
+                      ];
+                  }
+                  if ($sameData) {
+                      $data['lg'][$lg_k]['stores']['NOTICE'][] = [
+                          'title' => $store['store_name'],
+                          'href' => '/admin/stores/update/id:' . $store['uid'],
+                          'message' => 'Имеются совпадения с языком оригинала',
+                      ];
+                  }
+              }
+          }
+      }
+      $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['stores']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['stores']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['stores']['NOTICE']);
 
       //ddd($data);
       return $this->render('index',$data);

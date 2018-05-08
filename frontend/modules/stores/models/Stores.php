@@ -52,7 +52,7 @@ class Stores extends \yii\db\ActiveRecord
   public $regions;
   public $regions_list;
 
-  private static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
+  public static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
       'contact_name', 'contact_phone', 'contact_email', 'coupon_description',
   ];
 
