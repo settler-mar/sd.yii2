@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\CategoriesCouponsSearch;
 use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\coupons\models\LgCategoriesCoupons;
 use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -91,7 +92,47 @@ class AdminCategoriesController extends Controller
 
     $model = $this->findModel($id);
 
+    $base_lang=Yii::$app->params['base_lang'];
+    $lg_list=Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
+
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $language = LgCategoriesCoupons::find()->where(['category_id' => $id, 'language' => $lg_key])->one();
+      if (!$language) {
+        $language = new LgCategoriesCoupons();
+        $language->category_id = $id;
+        $language->language = $lg_key;
+      }
+      $languages[$lg_key] = [
+        'name' => $lg_item,
+        'model' => $language,
+      ];
+    }
+
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      //сохранение переводов
+      foreach ($languages as $lg_key => $language) {
+        if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+          Yii::$app->session->addFlash('info', $language['name'] . '. Перевод категории обновлен');
+        } else {
+          Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении категории');
+            $model_stores_categories = [];
+            foreach ($model->storesCategories as $category) {
+                $model_stores_categories[] = $category->uid;
+            }
+            header("X-XSS-Protection: 1;");
+            return $this->render('update.twig', [
+                'model' => $model,
+                'model_stores_categories' => $model_stores_categories,
+                'stores_categories' => CategoriesStores::find()->where(['parent_id' => 0])->all(),
+                'languages' => $languages,
+            ]);
+
+        }
+      }
+
       return $this->redirect(['index']);
     } else {
       $model_stores_categories = [];
@@ -102,6 +143,7 @@ class AdminCategoriesController extends Controller
         'model' => $model,
         'model_stores_categories' => $model_stores_categories,
         'stores_categories' => CategoriesStores::find()->where(['parent_id' => 0])->all(),
+        'languages' => $languages,
       ]);
     }
   }
