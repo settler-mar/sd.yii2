@@ -2,6 +2,7 @@
 
 namespace frontend\modules\language\controllers;
 
+use frontend\modules\constants\models\Constants;
 use yii\web\Controller;
 use Yii;
 use frontend\modules\meta\models\Meta;
@@ -103,13 +104,13 @@ class AdminController extends Controller
             continue;
           }
 
-          if(trim($transl[$k])==$item){
-            $data['lg'][$lg_k][$file]['NOTICE'][]=['title'=>'Параметр <b>'.$k.'</b> совпадает с оригинальным языком'];
+          if(strlen(trim($transl[$k]))<2){
+            $data['lg'][$lg_k][$file]['ERROR'][]=['title'=>'Параметр <b>'.$k.'</b> не заполнен'];
             continue;
           }
 
-          if(strlen(trim($transl[$k]))<2){
-            $data['lg'][$lg_k][$file]['ERROR'][]=['title'=>'Параметр <b>'.$k.'</b> не заполнен'];
+          if(trim($transl[$k])==$item){
+            $data['lg'][$lg_k][$file]['NOTICE'][]=['title'=>'Параметр <b>'.$k.'</b> совпадает с оригинальным языком'];
             continue;
           }
         }
@@ -123,7 +124,7 @@ class AdminController extends Controller
 
       //meta
       foreach ($lg_list as $lg_k => $lg){
-          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta'];
+          $data['lg'][$lg_k]['meta'] = ['WARNING'=>[], 'ERROR'=>[], 'NOTICE'=>[], 'TYPE' => 'database', 'PATH' => 'lg_meta','title'=>"Метотеги"];
           $metas = Meta::find()->all();
           foreach ($metas as $meta) {
               $lang = LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $lg_k])->one();
@@ -136,7 +137,7 @@ class AdminController extends Controller
               } else {
                   foreach ($lang->notice_params as $notice_param) {
                       if (empty($lang->$notice_param)) {
-                          $data['lg'][$lg_k]['meta']['NOTICE'][] = [
+                          $data['lg'][$lg_k]['meta']['ERROR'][] = [
                               'title' => $meta->page,
                               'href' => 'admin/meta/update/id:' . $meta->uid,
                               'message' => 'Не все критичные поля заполнены'
@@ -154,7 +155,7 @@ class AdminController extends Controller
 
       //категории шопов
       foreach ($lg_list as $lg_k => $lg) {
-          $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store'];
+          $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store','title'=>"Категории магазинов"];
           $categories = CategoriesStores::find()->all();
           foreach ($categories as $category) {
               $lang = LgCategoriesStores::find()->where(['category_id' => $category->uid, 'language' => $lg_k])->one();
@@ -167,7 +168,7 @@ class AdminController extends Controller
               } else {
                   foreach (CategoriesStores::$translatedAttributes as $notice_param) {
                       if (empty($lang->$notice_param)) {
-                          $data['lg'][$lg_k]['category_store']['NOTICE'][] = [
+                          $data['lg'][$lg_k]['category_store']['ERROR'][] = [
                               'title' => $category->name,
                               'href' => '/admin-categories/stores/update/id:'.$category->uid,
                               'message' => 'Не все поля заполнены'
@@ -182,6 +183,47 @@ class AdminController extends Controller
       $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['category_store']['WARNING']);
       $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['category_store']['ERROR']);
       $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['category_store']['NOTICE']);
+
+
+      //константы
+      $err_w=[
+        [
+          'code'=>'WARNING',
+          'message'=>'Нет перевода',
+          'w'=>['`lg_constants`.`text`'=>null],
+        ],
+        [
+          'code'=>'ERROR',
+          'message'=>'Константа не заполнена',
+          'w'=>['`lg_constants`.`text`'=>''],
+        ],
+        [
+          'code'=>'NOTICE',
+          'message'=>'Совпадает с языком оригинала',
+          'w'=>['`lg_constants`.`text`'=>'`cw_constants`.`text`'],
+        ],
+      ];
+      foreach ($lg_list as $lg_k => $lg) {
+        $data['lg'][$lg_k]['const'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'constants','title'=>"Константы"];
+        foreach ($err_w as $err) {
+          $consts = Constants::find()
+              ->leftJoin('lg_constants', '`lg_constants`.`const_id` = `cw_constants`.`uid` and `lg_constants`.`language` = \'' . $lg_k . '\'')
+              ->orWhere($err['w'])
+              ->asArray()
+              ->all();
+          foreach ($consts as $const) {
+            $data['lg'][$lg_k]['const'][$err['code']][] = [
+                'title' => $const['title'],
+                'href' => '/admin/constants/update/id:' . $const['uid'],
+                'message' => $err['message']
+            ];
+          }
+        }
+        //ddd($const);
+      }
+      $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['const']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['const']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['const']['NOTICE']);
 
       //ddd($data);
       return $this->render('index',$data);
