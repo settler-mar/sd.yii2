@@ -425,6 +425,7 @@ class SiteController extends SdController
 
   public function actionTestmail()
   {
+    if(!YII_DEBUG)exit;
       if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
           throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
           return false;
@@ -438,7 +439,7 @@ class SiteController extends SdController
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('oxygenn@list.ru')
+          ->setTo('matuhinmax@mail.ru')
           ->setSubject('Тестовое письмо с  SecretDiscounter.ru')
           ->send();
       return 'Отправлено тестовое письмо';
