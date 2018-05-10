@@ -626,9 +626,11 @@ class Stores extends \yii\db\ActiveRecord
       ->select(array_merge(self::selectAttributes($language),[
         'store_rating.rating as reviews_rating',
         'store_rating.reviews_count as reviews_count',
+        'cwsr.rating'
       ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-      ->where(['cws.is_active' => $active])
+      ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid')
+      ->where(['cws.is_active' => $active, 'cwsr.region' => Yii::$app->params['region']])
       ->asArray();
     if ($language) {
         $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . Yii::$app->language . '"');

@@ -167,8 +167,9 @@ class DefaultController extends SdController
         ])
         ->orderBy($sort . ' ' . $order);
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
     $cacheName = 'catalog_stores_' . $page . '_' . $limit . '_' . $sort . '_' . $order .
-        ($storeFrom ? '_from_'.$storeFrom : '') . ($language ? '_' . $language : '') ;
+        ($storeFrom ? '_from_'.$storeFrom : '') . ($language ? '_' . $language : '') . ($region? '_' . $region : '') ;
 
     if ($categoryStore) {
       //категория магазина
@@ -391,9 +392,14 @@ class DefaultController extends SdController
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'additional_stores';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    if (!$category) {
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
+    $cacheName = 'additional_stores' . ($category ? '_by_categories_' . $category->uid : '') .'_except_' . $store->uid .
+        ($language ? '_' . $language : '') . ($region? '_' . $region : '') ;
+
+      if (!$category) {
       //если нет категории
-      $additional_stores = $cache->getOrSet('additional_stores_except_' . $store->uid, function () use ($store) {
+      $additional_stores = $cache->getOrSet($cacheName, function () use ($store) {
         return Stores::items()
             ->andWhere(['<>', 'cws.uid', $store->uid])
             ->andWhere(['cws.is_offline' => $store->is_offline])
@@ -404,7 +410,7 @@ class DefaultController extends SdController
     } else {
       //категория есть
       $additional_stores = $cache->getOrSet(
-          'additional_stores_by_categories_' . $category->uid . '_except_' . $store->uid,
+          $cacheName,
           function () use ($category, $store
           ) {
             return Stores::items()
