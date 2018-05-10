@@ -73,12 +73,12 @@
                               <tr>
                                 <td
                                   style="padding: 10px !important;border-radius: 5px 5px 0 0; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
-                                  <a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
+                                  <a href="https://secretdiscounter.ru/stores/<?=$store['route'];?>"
                                      style="color: #676767; text-decoration: none !important;" target="_blank">
                                     <img
                                       style="padding: 10px !important;border-radius: 5px 5px 0 0;border: 0px;"
-                                      src="https://secretdiscounter.ru/images/logos/<?=$store->logo;?>"
-                                      alt="<?=$store->name;?>"/>
+                                      src="https://secretdiscounter.ru/images/logos/<?=$store['logo'];?>"
+                                      alt="<?=$store['name'];?>"/>
                                   </a>
                                 </td>
                               </tr>
@@ -90,18 +90,18 @@
                                     <tr>
                                       <td
                                         style="text-align:left; width:155px; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
-                                        <a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
+                                        <a href="https://secretdiscounter.ru/stores/<?=$store['route'];?>"
                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;"
                                            target="_blank"><span
-                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;word-wrap: break-word;width: 155px;max-height:46px;display: block;overflow: hidden"><?=$store->name;?></span></a><br/>
+                                            style="text-decoration: none !important; padding: 5px 0; font-size: 18px; line-height: 1.3; color: #4d4d4d; font-weight: 700;word-wrap: break-word;width: 155px;max-height:46px;display: block;overflow: hidden"><?=$store['name'];?></span></a><br/>
 
                                       </td>
                                       <td
                                         style="text-align:right; vertical-align: top; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px;">
                                         <strong><?php
-                                          $cashback=$store->displayed_cashback;
-                                          $action=$store->action_id;
-                                          $currency=$store->currency;
+                                          $cashback=$store['displayed_cashback'];
+                                          $action=$store['action_id'];
+                                          $currency=$store['currency'];
                                             if($action == 1){
                                               $value = preg_replace('/[^0-9\.]/', '', $cashback);
                                               $cashback = str_replace($value,$value*2,$cashback);
@@ -123,7 +123,7 @@
                                   <div><!--[if mso]>
                                     <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
                                                  xmlns:w="urn:schemas-microsoft-com:office:word"
-                                                 href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
+                                                 href="https://secretdiscounter.ru/stores/<?=$store['route'];?>"
                                                  style="height:45px;v-text-anchor:middle;width:228px;" arcsize="15%"
                                                  strokecolor="#0f181a" fillcolor="#f7c714">
                                       <w:anchorlock/>
@@ -132,7 +132,7 @@
                                         Перейти в магазин
                                       </center>
                                     </v:roundrect>
-                                    <![endif]--><a href="https://secretdiscounter.ru/stores/<?=$store->route;?>"
+                                    <![endif]--><a href="https://secretdiscounter.ru/stores/<?=$store['route'];?>"
                                                    style="width: 200px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all"
                                                    target="_blank"><span
                                         style="width: 200px; background-color:#f7c714;border-radius:5px;color:#0f181a;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;mso-hide:all">Перейти в магазин</span></a>

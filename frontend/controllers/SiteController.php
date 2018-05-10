@@ -425,21 +425,26 @@ class SiteController extends SdController
 
   public function actionTestmail()
   {
+    if(!YII_DEBUG)exit;
       if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
           throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
           return false;
       }
+    $user=Users::findOne(['uid'=>8]);
+    $db_payment=Payments::findOne(['user_id'=>8]);
+    $store = Stores::top12(12);
+    $userSocial=UsersSocial::findOne(['user_id'=>8]);
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'verifyEmailTokenNewUser-html', 'text' => 'verifyEmailTokenNewUser-text'],
-              ['user' => Yii::$app->user->identity]
+              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+              ['user' => $userSocial]
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('oxygenn@list.ru')
-          ->setSubject('Тестовое письмо с  SecretDiscounter.ru')
+          ->setTo('matuhinmax@mail.ru')
+          ->setSubject(Yii::t('account', 'confirm_social_email'))
           ->send();
       return 'Отправлено тестовое письмо';
 

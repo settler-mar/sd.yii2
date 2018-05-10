@@ -15,9 +15,9 @@ class m180508_051012_AddRegionLanguageCurrencyColumnsUsersTable extends Migratio
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $this->addColumn('cw_users', 'region', $this->string()->defaultValue('default'));
-        $this->addColumn('cw_users', 'language', $this->string()->defaultValue('ru-RU'));
-        $this->addColumn('cw_users', 'currency', $this->string()->defaultValue('RUB'));
+        $this->addColumn('cw_users', 'region', $this->string(30)->defaultValue('default'));
+        $this->addColumn('cw_users', 'language', $this->string(5)->defaultValue('ru-RU'));
+        $this->addColumn('cw_users', 'currency', $this->string(3)->defaultValue('RUB'));
     }
 
     /**
