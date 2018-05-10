@@ -110,30 +110,33 @@ class AdminController extends Controller
 
 
     $base_lang=Yii::$app->params['base_lang'];
-    $lg_list=Yii::$app->params['language_list'];
-    unset($lg_list[$base_lang]);
 
+    $lg_list=Yii::$app->params['transform_language_list'];
     $languages = [];
     foreach ($lg_list as $lg_key => $lg_item) {
-        $languages[$lg_key] = [
-            'name' => $lg_item,
-            'model' => $this->findLgMeta($id, $lg_key)
-        ];
+      $languages[$lg_key] = [
+        'name' => $lg_item['name'],
+        'regions' => $lg_item['regions'],
+        'code' => $lg_item['code'],
+        'model' => $lg_item['code'] == $base_lang ? null : $this->findLgMeta($id, $lg_item['code'])
+      ];
     }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         Yii::$app->session->addFlash('info', 'Метаданные обновлены');
       //сохранение переводов
        foreach ($languages as $lg_key => $language) {
-           if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
-               Yii::$app->session->addFlash('info', $language['name'] . '. Перевод метаданных обновлен');
-           } else {
-               Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода метаданных');
-               header("X-XSS-Protection: 1;");
-               return $this->render('update.twig', [
-                   'model' => $model,
-                   'languages' => $languages
-               ]);
+           if ($language['model'] != null) {
+               if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+                   Yii::$app->session->addFlash('info', $language['name'] . '. Перевод метаданных обновлен');
+               } else {
+                   Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода метаданных');
+                   header("X-XSS-Protection: 1;");
+                   return $this->render('update.twig', [
+                       'model' => $model,
+                       'languages' => $languages
+                   ]);
+               }
            }
        }
 

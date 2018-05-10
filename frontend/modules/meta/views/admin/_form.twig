@@ -21,23 +21,15 @@
             </div>
             <div class="col-md-12 tarif_select_blk">
                 <h3>Содержимое</h3>
-                <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
-                       name="tabs_open">
                 {% for k,lang in languages %}
-                    <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                    <input type="radio" class="controls_option" value="{{ lang.code }}" {% if lang.code == app.params.base_lang %}checked{% endif %} id="option_tab_{{ lang.code }}"
                            name="tabs_open">
                 {% endfor %}
                 <ul class="tab_control">
-                    <li class="tab_butt_ru-RU">
-                        <label for="option_tab_ru-RU">
-                            <img src="/images/flag/ru-RU.svg" height="12px">
-                            Русский
-                        </label>
-                    </li>
                     {% for k,lang in languages %}
-                        <li class="tab_butt_{{ k }}">
-                            <label for="option_tab_{{ k }}">
-                                <img src="/images/flag/{{ k }}.svg" height="12px">
+                        <li class="tab_butt_{{ lang.code }}">
+                            <label for="option_tab_{{ lang.code }}">
+                                <img src="/images/flag/{{ lang.code }}.svg" height="12px">
                                 {{ lang.name }}
                             </label>
                         </li>
@@ -45,58 +37,19 @@
                 </ul>
 
                 <div class="content_tab">
-                    <div class="cpa_box tab_ru-RU">
-
-                        {% for r,region in app.params.regions_list %}
-                            <input type="radio" class="controls_option" value="ru-RU_{{ str_replace('.', '_', r) }}" id="option_tab_ru-RU_{{ str_replace('.', '_', r) }}"
-                                   name="tabs_open_ru-RU" {% if loop.first %}checked{% endif %}>
-                        {% endfor %}
-                        <ul class="tab_control">
-                            {% for r,region in app.params.regions_list %}
-                                <li class="tab_butt_ru-RU_{{ str_replace('.', '_', r) }}">
-                                    <label for="option_tab_ru-RU_{{ str_replace('.', '_', r) }}">
-                                        {{ region.name }}
-                                    </label>
-                                </li>
-                            {% endfor %}
-                        </ul>
-
-                        <div class="content_tab">
-                            {% for r,region in app.params.regions_list %}
-                                <div class="tab_ru-RU_{{ str_replace('.', '_', r) }}">
-                                    {{ form.field(model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.title[r]}).label('Title')|raw }}
-                                    {{ form.field(model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.h1[r]}).label('H1')|raw }}
-                                    {{ form.field(model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': model.regionsData.description[r]}).label('Description')|raw }}
-                                </div>
-                            {% endfor %}
-                        </div>
-
-
-                        {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
-
-                        <h4>Изображение заставка</h4>
-                        <p>
-                            <img for="Meta[backgroundImageImage]" style="max-height: 480px;" src="img/{{ model.backgroundImageImage | raw }}">
-                        </p>
-                        {{ form.field(model, 'backgroundImageImage').fileInput().label(false)|raw }}
-
-                        {{ form.field(model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
-
-                        {{ form.field(model, 'h2').textInput({'maxlength':true})|raw }}
-
-                    </div>
                     {% for k,lang in languages %}
-                        <div class="cpa_box tab_{{ k }}">
-                            {% for r,region in app.params.regions_list %}
-                                <input type="radio" class="controls_option" value="{{ k }}_{{ str_replace('.', '_', r) }}" id="option_tab_{{ k }}_{{ str_replace('.', '_', r) }}"
-                                       name="tabs_open_{{ k }}" {% if loop.first %}checked{% endif %}>
+
+                        {% set loop_model = lang.code == app.params.base_lang ? model : lang.model %}
+
+                        <div class="cpa_box tab_{{ lang.code }}">
+                            {% for r, region in lang.regions %}
+                                <input type="radio" class="controls_option" value="{{ lang.code }}_{{ str_replace('.', '_', r) }}" id="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}"
+                                       name="tabs_open_{{ lang.code }}" {% if loop.first %}checked{% endif %}>
                             {% endfor %}
                             <ul class="tab_control">
-                                {% for r,region in app.params.regions_list %}
-                                    <li class="tab_butt_{{ k }}_{{ str_replace('.', '_', r) }}">
-                                        <label for="option_tab_{{ k }}_{{ str_replace('.', '_', r) }}">
+                                {% for r,region in lang.regions %}
+                                    <li class="tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
+                                        <label for="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
                                             {{ region.name }}
                                         </label>
                                     </li>
@@ -104,28 +57,28 @@
                             </ul>
 
                             <div class="content_tab">
-                                {% for r,region in app.params.regions_list %}
-                                    <div class="tab_{{ k }}_{{ str_replace('.', '_', r) }}">
-                                        {{ form.field(lang.model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.title[r]}).label('Title')|raw }}
-                                        {{ form.field(lang.model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.h1[r]}).label('H1')|raw }}
-                                        {{ form.field(lang.model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': lang.model.regionsData.description[r]}).label('Description')|raw }}
+                                {% for r,region in lang.regions %}
+                                    <div class="tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
+                                        {{ form.field(loop_model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.title[r]}).label('Title')|raw }}
+                                        {{ form.field(loop_model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.h1[r]}).label('H1')|raw }}
+                                        {{ form.field(loop_model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.description[r]}).label('Description')|raw }}
                                     </div>
                                 {% endfor %}
                             </div>
 
-                            {{ form.field(lang.model, 'keywords').textarea({'rows':6})|raw }}
+                            {{ form.field(loop_model, 'keywords').textarea({'rows':6})|raw }}
 
-                            {{ form.field(lang.model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
+                            {{ form.field(loop_model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
                             <h4>Изображение заставка</h4>
                             <p>
-                                <img for="Meta_{{ k }}[backgroundImageImage]" style="max-height: 480px;" src="img/{{ lang.model.backgroundImageImage | raw }}">
+                                <img for="Meta_{{ k }}[backgroundImageImage]" style="max-height: 480px;" src="img/{{ loop_model.backgroundImageImage | raw }}">
                             </p>
-                            {{ form.field(lang.model, 'backgroundImageImage').fileInput().label(false)|raw }}
+                            {{ form.field(loop_model, 'backgroundImageImage').fileInput().label(false)|raw }}
 
-                            {{ form.field(lang.model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
+                            {{ form.field(loop_model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
 
-                            {{ form.field(lang.model, 'h2').textInput({'maxlength':true})|raw }}
+                            {{ form.field(loop_model, 'h2').textInput({'maxlength':true})|raw }}
 
                         </div>
                     {% endfor %}
@@ -147,59 +100,30 @@
         cursor: pointer;
     }
 
-    #option_tab_ru-RU:checked ~ ul .tab_butt_ru-RU {
-        background: #fbcf4a;
-    }
-
-    #option_tab_ru-RU:checked ~ .content_tab .tab_ru-RU {
-        display: block;
-    }
-
-    #option_tab_ru-RU:checked {
-        color: #000;
-    }
-
-    {% for r,region in app.params.regions_list %}
-
-        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_ru-RU_{{ str_replace('.', '_', r) }} {
-            background: #fbcf4a;
-        }
-
-        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_ru-RU_{{ str_replace('.', '_', r) }} {
-            display: block;
-        }
-
-        #option_tab_ru-RU_{{ str_replace('.', '_', r) }}:checked {
-            color: #000;
-        }
-    {% endfor %}
-
-
-
     {% for k,lang in languages %}
-        #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+        #option_tab_{{ lang.code }}:checked ~ ul .tab_butt_{{ lang.code }} {
             background: #fbcf4a;
         }
 
-        #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+        #option_tab_{{ lang.code }}:checked ~ .content_tab .tab_{{ lang.code }} {
             display: block;
         }
 
-        #option_tab_{{ k }}:checked {
+        #option_tab_{{ lang.code }}:checked {
             color: #000;
         }
 
-        {% for r,region in app.params.regions_list %}
+        {% for r,region in lang.regions %}
 
-            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_{{ k }}_{{ str_replace('.', '_', r) }} {
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }} {
                 background: #fbcf4a;
             }
 
-            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_{{ k }}_{{ str_replace('.', '_', r) }} {
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_{{ lang.code }}_{{ str_replace('.', '_', r) }} {
                 display: block;
             }
 
-            #option_tab_{{ k }}_{{ str_replace('.', '_', r) }}:checked {
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked {
                 color: #000;
             }
         {% endfor %}
