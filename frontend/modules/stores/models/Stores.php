@@ -383,9 +383,18 @@ class Stores extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'stores_by_column';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $cacheName = 'store_byid_' . $id . ($language ? '_'.$language : '');
 
-    $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
-      return self::findOne($id);
+    $data = $cache->getOrSet($cacheName, function () use ($id, $language) {
+        $store =  self::find()
+            ->from(self::tableName() . ' cws')
+            ->select(self::selectAttributes($language))
+            ->where(['cws.uid' => $id]);
+        if ($language) {
+            $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
+        }
+      return $store;
     }, $cache->defaultDuration, $dependency);
 
     return $data;
@@ -830,6 +839,8 @@ class Stores extends \yii\db\ActiveRecord
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
           $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
+          $translated[] = $language ? "concat('/".Yii::$app->params['lang_code']."/stores/',cws.route) as store_href" :
+              "concat('/stores/',cws.route) as store_href";
       }
       return array_merge($attributes, $translated);
 

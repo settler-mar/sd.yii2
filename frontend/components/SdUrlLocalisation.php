@@ -15,7 +15,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
     Yii::$app->params['region']=$this->region;
     $this->region=Yii::$app->params['regions_list'][$this->region];
 
-    Yii::$app->homeUrl=$host;
+    //Yii::$app->homeUrl = $host;
 
     $lg=explode('/',$request->pathInfo)[0];
     $url=$request->url;
@@ -64,7 +64,6 @@ class SdUrlLocalisation implements UrlRuleInterface{
         }
       }
     }
-
     return false;
   }
 

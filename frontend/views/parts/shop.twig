@@ -3,13 +3,13 @@
         <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
     <div class="shop-logo">
-        <a class="shop-logo_link" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
+        <a class="shop-logo_link" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">
             <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{store.name}}">
         </a>
     </div>
     <div class="shop_panel">
         {% if store.reviews_rating %}
-            <a href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}#reviews"
+            <a href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}#reviews"
                class="shop_panel-item"
                data-toggle="tooltip" data-state="delete" data-placement="top"
                data-original-title="Рейтинг магазина на основании отзывов {{ store.reviews_count }} наших пользователей"
@@ -34,7 +34,7 @@
             {% set s=getShop(store.related) %}
             {% if s.is_active !=-1 %}
                 <a
-                        class="shop_panel-item" href="/stores/{{ s.route }}{{ _if(s.is_offline,'-offline') }}"
+                        class="shop_panel-item" href="{{ s.store_href }}{{ _if(s.is_offline,'-offline') }}"
                         data-toggle="tooltip" data-state="delete" data-placement="top"
                         data-original-title="{{ _if(store.is_offline,'Есть и интернет-магазин','Данный магазин представлен и в оффлайне') }}"
                 >
@@ -61,14 +61,14 @@
     </div>
     <a
             class="shop_header {{ _if(store.name|length> 35,"small-size") }}"
-            href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}"
+            href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
     >
         <span>
             {{store.name}}
         </span>
     </a>
 
-    <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="/stores/{{store.route}}{{ _if(store.is_offline,'-offline') }}">
+    <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">
             Кэшбэк
         {% if store.action_id == 1 %}
             <span class="shop-cashback-link_cashback_old shop-cashback_old">
