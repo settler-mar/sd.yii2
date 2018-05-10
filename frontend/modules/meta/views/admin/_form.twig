@@ -50,7 +50,7 @@
                                 {% for r,region in lang.regions %}
                                     <li class="tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
                                         <label for="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
-                                            {{ region.name }}
+                                            {{ region.name }} {{ lang.name }}
                                         </label>
                                     </li>
                                 {% endfor %}
