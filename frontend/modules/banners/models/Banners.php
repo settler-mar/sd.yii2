@@ -222,11 +222,12 @@ class Banners extends \yii\db\ActiveRecord
         if (is_array($place)) {
             foreach ($place as &$item) $item = trim($item);
         }
-        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $region = Yii::$app->params['region'] == 'default' ? false : Yii::$app->params['region'];
+        $language =  Yii::$app->language;
+        $region = Yii::$app->params['region'];
 
         $cacheName = 'banners' . ($place ? '_' . implode(',', $place) : '') .
-            ($language ? '_'.$language : '') . ($region ? '_'.$region : '');
+            (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_'. $language)
+            . ( Yii::$app->params['region'] == 'default' ? '' : '_'.$region);
         $dependencyName = 'banners';
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
