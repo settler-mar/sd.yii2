@@ -19,6 +19,8 @@ use common\components\Help;
  */
 class CategoriesCoupons extends \yii\db\ActiveRecord
 {
+    public static $translatedAttributes = ['name', 'description', 'short_description', 'short_description_offline'];
+
     /**
      * @inheritdoc
      */
@@ -165,12 +167,12 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     public static function translated($attributes = [])
     {
         $allAttributes = ['uid', 'name', 'route', 'description', 'short_description', 'short_description_offline'];
-        $translatedAttributes = ['name', 'description', 'short_description', 'short_description_offline'];
+        //$translatedAttributes = ['name', 'description', 'short_description', 'short_description_offline'];
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $selectAttributes = [];
         $attributes = empty($attributes) ? $allAttributes : $attributes;
         foreach ($attributes as $attribute) {
-            $selectAttributes[] = $language && in_array($attribute, $translatedAttributes) ?
+            $selectAttributes[] = $language && in_array($attribute, self::$translatedAttributes) ?
                 'IF(lgcc.'.$attribute.' > "", lgcc.'.$attribute.', cwcc.'.$attribute.') as '.$attribute :
                 'cwcc.'.$attribute;
         }
