@@ -27,8 +27,8 @@ class AccountController extends \yii\web\Controller
 
   public function actionTransfer()
   {
-    $funds=Foundations::find()
-
+    //$funds=Foundations::find()
+    $funds=Foundations::translated()
       ->asArray()
       ->all();
 

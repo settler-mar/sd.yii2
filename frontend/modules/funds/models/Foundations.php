@@ -151,14 +151,13 @@ class Foundations extends \yii\db\ActiveRecord
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
       $selectAttributes = [];
       foreach ($attributes as $attribute) {
-          $selectAttributes[] = $language ?
+          $selectAttributes[] = $language && in_array($attribute, self::$translated_attributes) ?
               'IF(lgf.'.$attribute.' > "", lgf.'.$attribute.', cwf.'.$attribute.') as '.$attribute :
               'cwf.'.$attribute;
       }
       $funds = self::find()->from(self::tableName(). ' cwf')->select($selectAttributes);
       if ($language) {
-          $funds->leftJoin(LgFoundation::tableName() .' lgf', 'cwf.uid = lgf.foundation_id')
-              ->where(['lgf.language' => $language]);
+          $funds->leftJoin(LgFoundations::tableName() .' lgf', 'cwf.uid = lgf.foundation_id and lgf.language = "'.$language.'"');
       }
       return $funds;
   }
