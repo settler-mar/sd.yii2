@@ -4,7 +4,9 @@
     return;
   }
 
-  $.get('/account/notification', function (data) {
+  var href = '/'+lang.href_prefix+'account/notification';
+
+  $.get(href, function (data) {
     if (!data.notifications || data.notifications.length == 0) return;
 
     var out = '<div class=header-noty-box><div class=header-noty-box-inner><ul class="header-noty-list">';
@@ -21,7 +23,7 @@
     }
 
     out += '</ul>';
-    out += '<a class="btn header-noty-box-btn" href="/account/notification">' + data.btn + '</a>';
+    out += '<a class="btn header-noty-box-btn" href="'+href+'">' + data.btn + '</a>';
     out += '</div></div>';
     $('.header').append(out);
 

@@ -45,8 +45,9 @@ class LangSelect extends Widget
         'region'=>Yii::$app->params['region'],
         'lang'=>Yii::$app->language
       ],
-      'langs'=>$lang,
-      'regions'=>$regions,
+      'langs' => $lang,
+      'regions' => $regions,
+      'langlist' => json_encode(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])
     ];
 
     //ddd($path);
