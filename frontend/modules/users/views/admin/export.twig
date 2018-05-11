@@ -1,0 +1,50 @@
+{% set title = 'Экспорт пользователей' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Users', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge(['Экпорт']) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+
+
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current">
+        <div class="row">
+                <h1>{{ title }}</h1>
+                {% set form = active_form_begin() %}
+
+                <div class="col-md-6">
+
+                    {{ form.field(model, 'id_from').textInput()|raw }}
+
+                    {{ form.field(model, 'id_to').textInput()|raw }}
+
+                    <div class="form-group usersexport-register_at_range">
+                        <label class="control-label" for="usersexport-register_at_range">Период регистрации</label>
+                        {{ data_ranger | raw }}
+                        <p class="help-block help-block-error"></p>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <h4>Поля</h4>
+                    {% for column, column_label in model.users_columns  %}
+                        <div class="form-group">
+                            <label for="users_attributes_{{ column }}">
+                                <input type="checkbox" id="users_attributes_{{ column }}" name="UsersExport[columns][]" value="{{ column }}">
+                                <span>{{ column_label }}</span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Экспорт" class="btn btn-primary">
+                </div>
+                {{ active_form_end() }}
+
+            </div>
+    </section>
+</div>
