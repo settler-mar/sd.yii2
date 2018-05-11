@@ -50,7 +50,6 @@ class DefaultController extends SdController
   public function actionSend($shop = 0)
   {
     $request = \Yii::$app->request;
-    //return json_encode([$shop, $request]);
     if (!$request->isAjax) {
       $this->redirect('/reviews');
     }
@@ -78,7 +77,6 @@ class DefaultController extends SdController
     }
 
     if($request->isPost) {
-      //return json_encode($request->post);
       if ($model->load($request->post())) {
         if ($model->store_id == null) {
           $review = Reviews::findOne(['store_id' => 0, 'user_id' => \Yii::$app->user->id]);
@@ -110,7 +108,8 @@ class DefaultController extends SdController
       exit;
     }
 
-    $data['model']=$model;
+    $data['model'] = $model;
+    $data['action'] = (\Yii::$app->params['lang_code'] == 'ru' ? '' : '/'.\Yii::$app->params['lang_code']).$request->url;
 
     $model->rating=5;
     $data=[

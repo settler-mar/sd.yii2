@@ -33,7 +33,7 @@
       {% endif %}
 
       {% if user_id %}
-        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
+        <a href="#{% if app.params.lang_code != 'ru' %}{{ app.params.lang_code }}/{% endif %}reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
       {% else %}
         <p>
           Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
