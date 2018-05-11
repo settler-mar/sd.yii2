@@ -4,12 +4,42 @@
             <div class="col-md-12">
                 <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
-                <div class="foundations-form">
+                <div class="foundations-form tarif_select_blk">
                     {% set form = active_form_begin() %}
 
-                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+                        {% for k,lang in languages %}
+                            <input type="radio" class="controls_option" value="{{ lang.code }}" {% if lang.code == app.params.base_lang %}checked{% endif %} id="option_tab_{{ lang.code }}"
+                                   name="tabs_open">
+                        {% endfor %}
+                        <ul class="tab_control">
+                            {% for k,lang in languages %}
+                                <li class="tab_butt_{{ lang.code }}">
+                                    <label for="option_tab_{{ lang.code }}">
+                                        <img src="/images/flag/{{ lang.code }}.svg" height="12px">
+                                        {{ lang.name }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
 
-                        {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce'))|raw }}
+                        <div class="content_tab">
+                            {% for k,lang in languages %}
+
+                                {% set loop_model = lang.code == app.params.base_lang ? model : lang.model %}
+
+                                <div class="cpa_box tab_{{ lang.code }}">
+                                    {{ form.field(loop_model, 'title').textInput({'maxlength':true})|raw }}
+
+                                    {{ form.field(loop_model, 'description').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
+                                </div>
+                            {% endfor %}
+                        </div>
+
+
+                        {#{{ form.field(model, 'title').textInput({'maxlength':true})|raw }}#}
+
+                        {#{{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce'))|raw }}#}
 
                         {{ form.field(model, 'is_active').dropDownList({
                             0:"Скрытый",
@@ -31,3 +61,5 @@
         </div>
     </section>
 </div>
+
+{% include('parts/admin/tabs_styles.twig') %}
