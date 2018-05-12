@@ -149,6 +149,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         'show_balance' => 'Отображаемый баланс',
         'in_action' => 'Участвует в акции с ',
         'delete_comment' => 'Причина удаления',
+        'language' => 'Язык',
+        'region' => 'Регион',
+        'currency' => 'Валюта',
+        'sum_declined'=>'Сумма отменённого',
+        'cnt_declined'=>'Количество отменённого',
+        'new_loyalty_status_end' => 'Окончание нового статуса лояльности',
+        'old_loyalty_status' => 'Прежний статус лояльности'
+
     ];
   }
 

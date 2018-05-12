@@ -4,6 +4,8 @@ namespace frontend\modules\users\models;
 
 use Yii;
 use yii\base\Model;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class UsersExport extends Model
 {
@@ -12,17 +14,22 @@ class UsersExport extends Model
     public $id_to;
     public $columns = [];
     public $users_columns = [];
+    public $all_columns = [];
     public $register_at_range;
+    public $only_active;
+    public $notice_email;
+    public $excel;
 
     public function init()
     {
-        $notAlloweds = ['password', 'newpassword', 'new_photo'];
+        $forbiddens = ['password', 'new_password', 'new_photo', 'email_verify_token',
+            'auth_key', 'password_reset_token', 'email_verify_time'];//не нужно выводить
         $users = new Users;
         $this->users_columns = $users->attributeLabels();
-        foreach ($notAlloweds as $notAllowed) {
-            unset($this->users_columns[$notAllowed]);
+        $this->all_columns = array_diff(array_keys($users->attributes), $forbiddens);
+        foreach ($forbiddens as $forbidden) {
+            unset($this->users_columns[$forbidden]);
         }
-
     }
 
   /**
@@ -33,7 +40,9 @@ class UsersExport extends Model
     return [
         [['id_from', 'id_to'], 'integer'],
         [['columns'], 'safe'],
-        ['register_at_range', 'safe'],
+        ['register_at_range', 'string'],
+        [['only_active', 'notice_email'], 'in' ,'range' => [1]],
+        ['excel', 'in', 'range' => [0, 1]],
     ];
   }
 
@@ -47,19 +56,17 @@ class UsersExport extends Model
     ];
   }
 
-//  public function beforeValidate()
-//  {
-//
-//      //ddd($this);
-//      return parent::beforeValidate();
-//  }
-
   public function export()
   {
-    $users = Users::find();
-    if (!empty($this->columns)) {
-        $users->select($this->columns);
+    $users = Users::find()
+        ->from(Users::tableName().' cwu');
+    //выводимые колонки
+    $columns = !empty($this->columns) ? $this->columns : $this->all_columns;
+
+    foreach($columns as $column) {
+        $users->addSelect('cwu.' . $column);
     }
+
     if ($this->id_from) {
       $users->where(['>=', 'uid', $this->id_from]);
     }
@@ -73,6 +80,17 @@ class UsersExport extends Model
       $end_date=date('Y-m-d',strtotime($end_date));
       $users->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
     }
+    if (!empty($this->only_active)) {
+        $referrals = Users::find()
+            ->from(Users::tableName().' cwref')
+            ->select(['cwref.referrer_id','count(*) as count'])
+            ->groupBy('cwref.referrer_id');
+        $users->leftJoin(['cwref' => $referrals], 'cwref.referrer_id = cwu.uid')
+            ->andWhere(['or', ['>', 'cwref.count', 9], ['is not', 'cwu.cnt_confirmed', null]]);
+    }
+    if (!empty($this->notice_email)) {
+        $users->andWhere(['notice_email'=>1]);
+    }
 
     $users =  $users->asArray()->all();
 
@@ -80,15 +98,36 @@ class UsersExport extends Model
     if (!file_exists($fileExport)) {
         mkdir($fileExport, '777');
     }
-    $fileExport .= '/users.csv';
-    $fp = fopen($fileExport, 'w');
+    if ($this->excel == 1) {
+        $headers = [];
+        foreach($columns as $column) {
+            $headers[] = !empty($this->users_columns[$column]) ? $this->users_columns[$column] : '';
+        }
+        array_unshift($users, $headers);
+        $fileExport .= '/users.xlsx';
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()
+            ->fromArray(
+                $users, // The data to set
+                NULL,        // Array values with this value will not be set
+                'A1'         // Top left coordinate of the worksheet range where
+            //    we want to set these values (default is A1)
+            );
 
-    foreach ($users as $user) {
-      fputcsv($fp, $user, ';');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($fileExport);
+
+    } else {
+        $fileExport .= '/users.csv';
+        $fp = fopen($fileExport, 'w');
+        foreach ($users as $user) {
+            fputcsv($fp, $user, ';');
+        }
+        fclose($fp);
     }
-    fclose($fp);
 
     Yii::$app->response->sendFile($fileExport)->send();
+    unlink($fileExport);
     return true;
   }
 
