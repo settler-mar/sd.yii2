@@ -918,6 +918,11 @@ table{
     max-width: none;
     max-height: none;
 }
+.user_export {
+    input.form-control {
+        display: block;
+    }
+}
 
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";

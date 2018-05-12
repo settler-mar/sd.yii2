@@ -49,10 +49,8 @@ class UsersExport extends Model
   public function attributeLabels()
   {
     return [
-        'id_from' => 'ID от',
-        'id_to' => 'ID до',
-        'date_from' => 'Дата регистрации от',
-        'date_to' => 'Дата регистрации до',
+        'id_from' => 'ID пользователя от',
+        'id_to' => 'ID пользователя до',
     ];
   }
 

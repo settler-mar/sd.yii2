@@ -10,41 +10,50 @@
 
 
 <div class="content-wrapper">
-    <section class="account-padding view-list view-current">
+    <section class="account-padding view-list view-current  user_export">
         <div class="row">
                 <h1>{{ title }}</h1>
                 {% set form = active_form_begin() %}
 
                 <div class="col-md-6">
+                    <h4>Фильтр</h4>
 
-                    {{ form.field(model, 'id_from').textInput()|raw }}
-
-                    {{ form.field(model, 'id_to').textInput()|raw }}
+                    <div class="form-group usersexport-id_from">
+                        <label class="control-label" for="usersexport-id_from" >ID пользователя от </label>
+                        <input class="form-control" type="text" value="{{ model.id_from }}" id="usersexport-id_from" name="UsersExport[id_from]">
+                        <div class="help-block help-block-error"></div>
+                    </div>
+                    <div class="form-group usersexport-id_to">
+                        <label class="control-label" for="usersexport-id_to" >ID пользователя до </label>
+                        <input class="form-control" type="text" value="{{ model.id_to}}" id="usersexport-id_to" name="UsersExport[id_to]">
+                        <div class="help-block help-block-error"></div>
+                    </div>
 
                     <div class="form-group usersexport-register_at_range">
                         <label class="control-label" for="usersexport-register_at_range">Период регистрации</label>
                         {{ data_ranger | raw }}
-                        <p class="help-block help-block-error"></p>
+                        <div class="help-block help-block-error"></div>
                     </div>
 
                     <div class="form-group usersexport-only_active">
-                        <label class="control-label" for="usersexport-only_active" title="Сделавшие покупки или привели не менее 100 человек">
+                        <label class="control-label" for="usersexport-only_active" title="Сделавшие покупки или привели не менее 10 человек">
                             <input type="checkbox" value="1" id="usersexport-only_active" name="UsersExport[only_active]">Только активные
                         </label>
-                        <p class="help-block help-block-error"></p>
+                        <div class="help-block help-block-error"></div>
                     </div>
 
                     <div class="form-group usersexport-notice_email">
                         <label class="control-label" for="usersexport-notice_email" title="Сделавшие покупки или привели не менее 100 человек">
                             <input type="checkbox" value="1" id="usersexport-notice_email" name="UsersExport[notice_email]">Подписавшиеся на рассылку
                         </label>
-                        <p class="help-block help-block-error"></p>
+                        <div class="help-block help-block-error"></div>
                     </div>
+                    <h4>Формат</h4>
                     <div class="form-group usersexport-excel">
                         <label class="control-label" for="usersexport-excel" >
                             <input type="checkbox" value="1" id="usersexport-excel" name="UsersExport[excel]">Формат Excel
                         </label>
-                        <p class="help-block help-block-error"></p>
+                        <div class="help-block help-block-error"></div>
                     </div>
 
 
