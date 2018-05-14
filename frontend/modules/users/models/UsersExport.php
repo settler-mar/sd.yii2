@@ -93,7 +93,7 @@ class UsersExport extends Model
 
     $users =  $users->asArray()->all();
 
-    $fileExport = Yii::getAlias('@runtime').'/export';
+    $fileExport = 'export';
     if (!file_exists($fileExport)) {
         mkdir($fileExport, '777');
     }
