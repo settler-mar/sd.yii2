@@ -42,25 +42,10 @@ class m180514_104215_MainPageConstants extends Migration
 
         $const->name='index-hello-advantages';
         $const->title = 'Преимущества около счётчика на стартовой';
-        $const->text = "<ul class='icons-list index-hello_icons-list'>
-                <li>
-                    {{ svg('online','icons-list_icon')|raw }}
-                    <span class=\"icons-list_title\">Кэшбэк в онлайн-магазинах</span>
-                </li>
-                <li>
-                    {{ svg('offline','icons-list_icon')|raw }}
-                    <span class=\"icons-list_title\">Кэшбэк в реальных магазинах</span>
-                </li>
-                <li>
-                    {{ svg('gift','icons-list_icon')|raw }}
-                    <span class=\"icons-list_title\">Бесплатные купоны и промокоды</span>
-                </li>
-                <li>
-                    {{ svg('look','icons-list_icon')|raw }}
-                    <span class=\"icons-list_title\">Отслеживание посылок</span>
-                </li>
-            </ul>";
+        $const->text = '["\u041a\u044d\u0448\u0431\u044d\u043a \u0432 \u043e\u043d\u043b\u0430\u0439\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430\u0445","\u041a\u044d\u0448\u0431\u044d\u043a \u0432 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0445 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430\u0445","\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0435 \u043a\u0443\u043f\u043e\u043d\u044b \u0438 \u043f\u0440\u043e\u043c\u043e\u043a\u043e\u0434\u044b","\u041e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0441\u044b\u043b\u043e\u043a"]';
         $const->uid = null;
+        $const->editor_param = 'list';
+        $const->ftype = 'json';
         $const->isNewRecord = true;
         $const->save();
 
