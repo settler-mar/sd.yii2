@@ -1,7 +1,7 @@
 
 <div class="catalog-categories-account_menu{% if header == 1 %}-header{% endif %}" >
 
-    {% set curr = currencyIcon(app.params.valuta) %}
+    {% set curr = currencyIcon(app.user.identity.currency) %}
 
     <div class="account-menu_header">
         <div class="account-menu_header-avatar">

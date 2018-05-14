@@ -1,4 +1,4 @@
-{% set curr = currencyIcon(app.params.valuta) %}
+{% set curr = currencyIcon(app.user.identity.currency) %}
 <div class="content-wrapper">
             <h3>{{ t('account', 'users_referral_history') }}</h3>
         <div>

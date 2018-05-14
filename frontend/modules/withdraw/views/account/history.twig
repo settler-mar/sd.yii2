@@ -1,5 +1,5 @@
 |raw{% include('parts/account/user_balance.twig') %}
-{% set curr = currencyIcon(app.params.valuta) %}
+{% set curr = currencyIcon(app.user.identity.currency) %}
 
 <section class="account account-padding">
   <h1>{{ t('account', 'withdraw_history')|raw }}</h1>

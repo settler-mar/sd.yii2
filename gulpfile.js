@@ -134,6 +134,7 @@ gulp.task('jsb2b', compileJs([
 );
 gulp.task('js_new', compileJs([
         paths.source.js+'/original/language.js',
+        paths.source.js+'/original/new/lang.js',
         paths.source.js+'/original/new/functions.js',
         paths.source.js+'/original/new/scroll.js',
         paths.source.js+'/original/new/accordion.js',

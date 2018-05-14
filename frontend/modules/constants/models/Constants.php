@@ -148,13 +148,18 @@ class Constants extends \yii\db\ActiveRecord
             $const = self::find()->from(self::tableName() . ' cwc')->where(['name' => $name])->asArray();
             if ($language) {
                 $const->select(['if(lgc.text > "", lgc.text, cwc.text) as text', 'ftype'])
-                    ->leftJoin(LgConstants::tableName() . ' lgc', 'lgc.const_id = cwc.uid')
-                    ->andWhere(['lgc.language' => $language]);
+                    ->leftJoin(
+                        LgConstants::tableName() . ' lgc',
+                        'lgc.const_id = cwc.uid and lgc.language="'.$language.'"'
+                    );
             } else {
                 $const->select(['text', 'ftype']);
             }
             $const = $const->one();
             if ($const) {
+                if ($const['ftype'] == 'json' && is_string($const['text'])) {
+                    $const['text'] = json_decode($const['text'], true);
+                }
                 if ($json_col) {
                     if (isset($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
                         return $const['text'][$json_index][$json_col];
