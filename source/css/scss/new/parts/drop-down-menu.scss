@@ -101,7 +101,8 @@
       //для первого пункта подменю
       &:first-child {
         a, span {
-          padding-top: 25px;
+          //padding-top: 25px;
+          padding-top: 20px;
         }
         //для его дочернего
         &>ul {
@@ -244,7 +245,9 @@
 
       a, span{
 
-        padding: 10px 15px;
+        //padding: 10px 15px;
+        padding: 4px 15px;
+        line-height: 20px;
         white-space: normal;
 
         @include media($laptop_min) {
@@ -252,7 +255,8 @@
         }
       }
       span.active {
-        padding: 10px 15px;
+        //padding: 10px 15px;
+        padding: 4px 15px;
         @include media($laptop_min) {
           padding: 15px 15px;
           border-bottom: 1px solid $menu_border_color;
@@ -341,6 +345,8 @@
         height: 0 !important;
       }
     }
+
+
   }
 
   .submenu{
@@ -349,8 +355,10 @@
 
   .menu_angle-down{
     margin-left: 10px;
-    width: 9px;
-    height: 9px;
+//    width: 9px;
+//    height: 9px;
+    width: 7px;
+    height: 7px;
     right: 8px;
     //padding: 0 1px 0 10px;
     color: $text_color;
@@ -360,7 +368,17 @@
 
     @include media($laptop-min) {
       fill: $share_color;
+      width: 9px;
+      height: 9px;
     }
+  }
+
+  &_group__up-header {
+    .menu_angle-down {
+      width: 9px;
+      height: 9px;
+    }
+
   }
 
 
@@ -399,8 +417,14 @@
   &.close {
     display: none;
   }
-  .all_shops {
+  li.all_shops {
+    border: none;
+  }
+  a.all_shops,
+  span.all_shops {
     border-top: 1px solid $menu_border_color;
+    margin: 0 5px;
+    padding: 6px 10px;
   }
   .cat_bold {
     font-weight: bold;
