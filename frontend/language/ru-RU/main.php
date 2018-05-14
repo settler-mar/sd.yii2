@@ -36,6 +36,9 @@ return [
     'based_on_{count}_users_opinion' => '<span>на основании опроса</span><span property="v:votes">{count}</span><span>наших пользователей</span>',
     'rating' => 'Рейтинг',
     'from' => 'из',
+    'watch_video' => 'Посмотреть видео',
+    'welcome_to_shops_future' => 'Добро пожаловать в будущее магазинов!',
+
 
 
 ];

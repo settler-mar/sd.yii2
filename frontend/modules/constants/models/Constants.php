@@ -160,9 +160,13 @@ class Constants extends \yii\db\ActiveRecord
                 if ($const['ftype'] == 'json' && is_string($const['text'])) {
                     $const['text'] = json_decode($const['text'], true);
                 }
-                if ($json_col) {
-                    if (isset($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
-                        return $const['text'][$json_index][$json_col];
+                if ($json_col !== false) {
+                    if (isset($const['text'][$json_index])) {
+                        if (is_array($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
+                            return $const['text'][$json_index][$json_col];
+                        } else {
+                            return $const['text'][$json_index];
+                        }
                     } else {
                         return false;
                     }

@@ -49,6 +49,7 @@ return [
     'excuse_me' => 'Приносим свои извинения',
     'remind_me_later' => 'Напомнить позже',
     'share_width_friends' =>'поделиться с друзьями',
+    'tell_to_friends' =>'Рассказать друзьям',
     'successfull' => 'Успешно',
     'to_know_details' => 'Узнать подробнее',
     'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
@@ -60,7 +61,7 @@ return [
     'do_register' => 'Зарегистрироваться',
     'look_more' => 'Смотреть ещё',
     'transition_date' => 'Дата перехода',
-
+    'register_free' => 'Зарегистрироваться бесплатно',
 
 
 
