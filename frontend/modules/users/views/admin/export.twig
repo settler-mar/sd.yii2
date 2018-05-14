@@ -1,0 +1,80 @@
+{% set title = 'Экспорт пользователей' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Users', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge(['Экпорт']) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+
+
+<div class="content-wrapper">
+    <section class="account-padding view-list view-current  user_export">
+        <div class="row">
+                <h1>{{ title }}</h1>
+                {% set form = active_form_begin() %}
+
+                <div class="col-md-6">
+                    <h4>Фильтр</h4>
+
+                    <div class="form-group usersexport-id_from">
+                        <label class="control-label" for="usersexport-id_from" >ID пользователя от </label>
+                        <input class="form-control" type="text" value="{{ model.id_from }}" id="usersexport-id_from" name="UsersExport[id_from]">
+                        <div class="help-block help-block-error"></div>
+                    </div>
+                    <div class="form-group usersexport-id_to">
+                        <label class="control-label" for="usersexport-id_to" >ID пользователя до </label>
+                        <input class="form-control" type="text" value="{{ model.id_to}}" id="usersexport-id_to" name="UsersExport[id_to]">
+                        <div class="help-block help-block-error"></div>
+                    </div>
+
+                    <div class="form-group usersexport-register_at_range">
+                        <label class="control-label" for="usersexport-register_at_range">Период регистрации</label>
+                        {{ data_ranger | raw }}
+                        <div class="help-block help-block-error"></div>
+                    </div>
+
+                    <div class="form-group usersexport-only_active">
+                        <label class="control-label" for="usersexport-only_active" title="Сделавшие покупки или привели не менее 10 человек">
+                            <input type="checkbox" value="1" id="usersexport-only_active" name="UsersExport[only_active]">Только активные
+                        </label>
+                        <div class="help-block help-block-error"></div>
+                    </div>
+
+                    <div class="form-group usersexport-notice_email">
+                        <label class="control-label" for="usersexport-notice_email" title="Сделавшие покупки или привели не менее 100 человек">
+                            <input type="checkbox" value="1" id="usersexport-notice_email" name="UsersExport[notice_email]">Подписавшиеся на рассылку
+                        </label>
+                        <div class="help-block help-block-error"></div>
+                    </div>
+                    <h4>Формат</h4>
+                    <div class="form-group usersexport-excel">
+                        <label class="control-label" for="usersexport-excel" >
+                            <input type="checkbox" value="1" id="usersexport-excel" name="UsersExport[excel]">Формат Excel
+                        </label>
+                        <div class="help-block help-block-error"></div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-6">
+                    <h4>Поля</h4>
+                    {% for column, column_label in model.users_columns  %}
+                        <div class="form-group">
+                            <label for="users_attributes_{{ column }}">
+                                <input type="checkbox" id="users_attributes_{{ column }}" name="UsersExport[columns][]" value="{{ column }}">
+                                <span>{{ column_label }}</span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Экспорт" class="btn btn-primary">
+                </div>
+                {{ active_form_end() }}
+
+            </div>
+    </section>
+</div>
