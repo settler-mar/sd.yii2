@@ -57,11 +57,7 @@
     {{ t('account', 'user_loyalty_status') }}
   </h2>
   <div class="align-center margin" style="margin-top: -20px;">
-<<<<<<< HEAD
     <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">{{ t('common', 'to_know_details') }}</a>
-=======
-    <a href="#loyalty" class="blue modals_open" data-notyclass="notify_box-wide">Узнать подробнее</a>
->>>>>>> a5a8b97030d674eda8192d7f9cb646fbffe84593
   </div>
 
   <div class="account-circles-wrap">
@@ -120,13 +116,8 @@
                  data-button_yes="ОК"
                  data-notyfy_class="notify_box-alert"
                  data-title="<br>"
-<<<<<<< HEAD
-                 class="disabled">
+                 class="disabled blue" >
                 {{ t('common', 'add_right_now') }}
-=======
-                 class="disabled blue">
-                Подключить сейчас
->>>>>>> a5a8b97030d674eda8192d7f9cb646fbffe84593
               </a>
             {% endif %}
           {% endif %}
@@ -137,7 +128,7 @@
 
   {% if desire %}
     <div class="cashbonus account-margin-top align-center margin-half">
-      {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.params.valuta)} ) | raw }}
+      {{ t('account', 'for_status {desire} left {left}', {'desire':desire, 'left': _nf(left)~'&nbsp;'~currencyIcon(app.user.identity.currency)} ) | raw }}
     </div>
   {% endif %}
   {% if (not(this_tarif.min_sum)) and (this_tarif.bonus>0) %}

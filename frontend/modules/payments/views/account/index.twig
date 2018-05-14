@@ -11,7 +11,7 @@
         <th>{{ t('common', 'status')|raw }}</th>
       </tr>
 
-      {% set curr_icon = currencyIcon(app.params.valuta) %}
+      {% set curr_icon = currencyIcon(app.user.identity.currency) %}
       {% for payment in payments %}
         <tr>
           <td>{{ payment.action_id }}</td>
@@ -51,20 +51,20 @@
 </section>
 
 {% if payments|length > 0 %}
-  {% set curr = currencyIcon(app.params.valuta) %}
+
   <section class="margin">
     <h3>{{ t('account', 'summary')|raw }}:</h3>
     <div>
       {{ t('account', 'confirmed')|raw }}:
-      <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
+      <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
     <div>
       {{ t('account', 'expected')|raw }}:
-      <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
+      <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
     <div>
       {{ t('account', 'revoked')|raw }}:
-      <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
+      <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
   </section>
 {% endif %}
