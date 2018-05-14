@@ -22,6 +22,8 @@ class Foundations extends \yii\db\ActiveRecord
 
   public $imageImage;
 
+  public static $translated_attributes = ['title', 'description'];
+
   /**
    * @inheritdoc
    */
@@ -141,5 +143,22 @@ class Foundations extends \yii\db\ActiveRecord
   public function getPath()
   {
     return '/images/dobro/';
+  }
+
+  public static function translated()
+  {
+      $attributes = ['uid', 'title', 'description', 'image', 'is_active'];
+      $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      $selectAttributes = [];
+      foreach ($attributes as $attribute) {
+          $selectAttributes[] = $language && in_array($attribute, self::$translated_attributes) ?
+              'IF(lgf.'.$attribute.' > "", lgf.'.$attribute.', cwf.'.$attribute.') as '.$attribute :
+              'cwf.'.$attribute;
+      }
+      $funds = self::find()->from(self::tableName(). ' cwf')->select($selectAttributes);
+      if ($language) {
+          $funds->leftJoin(LgFoundations::tableName() .' lgf', 'cwf.uid = lgf.foundation_id and lgf.language = "'.$language.'"');
+      }
+      return $funds;
   }
 }

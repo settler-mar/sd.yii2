@@ -30,6 +30,8 @@ class Banners extends \yii\db\ActiveRecord
 
     public $banner_places = [];
 
+    public $banner_regions = [];
+    public $regions_array = [];
 
     protected $image_path = '/images/banners';
 
@@ -77,6 +79,10 @@ class Banners extends \yii\db\ActiveRecord
             [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
             [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
+            [['language', 'regions'], 'trim'],
+            [['language'], 'string', 'max' => 5],
+            [['regions'], 'string'],
+            [['banner_regions'], 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
         ];
     }
 
@@ -98,6 +104,8 @@ class Banners extends \yii\db\ActiveRecord
             'picture_file' => 'Изображение',
             'show_desctop' => 'Отображать на  ПК',
             'show_mobile' => 'Отображать в телефоне',
+            'language' => 'Язык',
+            'regions' => 'Регионы',
         ];
     }
 
@@ -117,6 +125,9 @@ class Banners extends \yii\db\ActiveRecord
         if (!$this->isNewRecord) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
+        if ($this->banner_regions) {
+            $this->regions = implode(',', $this->banner_regions);
+        }
         return true;
     }
 
@@ -125,6 +136,15 @@ class Banners extends \yii\db\ActiveRecord
         $places = !empty($this->places) ? explode(',', $this->places) : [];
         foreach ($this->places_array as $key => &$value) {
             $value['checked'] = in_array($key, $places) ? 1 : 0;
+        }
+        $regions = !empty($this->regions) ? explode(',', $this->regions) : [];
+
+        foreach (Yii::$app->params['regions_list'] as $key => $value) {
+            $this->regions_array[] = [
+                'code' => $key,
+                'name' => $value['name'],
+                'checked' => in_array($key, $regions) ? 1 : 0
+            ];
         }
     }
 
@@ -202,20 +222,39 @@ class Banners extends \yii\db\ActiveRecord
         if (is_array($place)) {
             foreach ($place as &$item) $item = trim($item);
         }
+        $language =  Yii::$app->language;
+        $region = Yii::$app->params['region'];
 
-        $cacheName = 'banners' . ($place ? '_' . implode(',', $place) : '');
+        $cacheName = 'banners' . ($place ? '_' . implode(',', $place) : '') .
+            (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_'. $language)
+            . ( Yii::$app->params['region'] == 'default' ? '' : '_'.$region);
         $dependencyName = 'banners';
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
         $banners = $cache->getOrSet(
             $cacheName,
-            function () use ($place) {
+            function () use ($place, $language, $region) {
                 $banners = self::find()
                     ->select(['picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
                 if ($place) {
-                    foreach ($place as $item)
+                    foreach ($place as $item) {
                         $banners->orWhere(['like', 'places', $item]);
+                    }
+                }
+                if ($language) {
+                    $banners->andWhere(['or',
+                        ['like', 'language', $language],
+                        ['=', 'language', ''],
+                        ['is', 'language', null]
+                    ]);
+                }
+                if ($region) {
+                    $banners->andWhere(['or',
+                        ['like', 'regions', $region],
+                        ['=', 'regions', ''],
+                        ['is', 'regions', null]
+                    ]);
                 }
                 return $banners
                     ->andWhere(['is_active' => 1])

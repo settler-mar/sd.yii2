@@ -11,6 +11,10 @@ use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\LgCategoriesStores;
 use frontend\modules\stores\models\LgStores;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\coupons\models\LgCategoriesCoupons;
+use frontend\modules\funds\models\Foundations;
+use frontend\modules\funds\models\LgFoundations;
 
 
 class AdminController extends Controller
@@ -187,6 +191,65 @@ class AdminController extends Controller
       $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['category_store']['NOTICE']);
 
 
+      //категории  купонов
+      foreach ($lg_list as $lg_k => $lg) {
+        $data['lg'][$lg_k]['category_coupon'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_coupon','title'=>"Категории купонов"];
+        $categories = CategoriesCoupons::find()
+          ->from(CategoriesCoupons::tableName(). ' cwcc')
+          ->leftJoin(LgCategoriesCoupons::tableName() . ' lgcc', 'cwcc.uid = lgcc.category_id and lgcc.language = "' . $lg_k . '"');
+        $selectAttrs = [];
+        foreach (CategoriesCoupons::$translatedAttributes as $attribute) {
+          $selectAttrs[] = 'lgcc.' . $attribute. ' as lg_'.$attribute;
+          $selectAttrs[] = 'cwcc.' . $attribute. ' as cw_'.$attribute;
+        }
+        $categories->select($selectAttrs);
+        $categories->addSelect(['cwcc.uid']);
+        $categories = $categories->asArray()->all();
+        foreach ($categories as $category) {
+
+            $notTranslated = true;
+            $emptyTranslate = false;
+            $sameData = false;
+            foreach (CategoriesCoupons::$translatedAttributes as $attribute) {
+                if ($category['lg_'.$attribute] !== null) {
+                    $notTranslated = false;
+                }
+                if ($category['lg_'.$attribute] === '' && $category['cw_'.$attribute] !== '') {
+                    $emptyTranslate = true;
+                }
+                if ($category['cw_'.$attribute] !== '' && $category['lg_'.$attribute] == $category['cw_'.$attribute]) {
+                    $sameData = true;
+                }
+            }
+            if ($notTranslated) {
+                $data['lg'][$lg_k]['category_coupon']['WARNING'][] = [
+                    'title' => $category['cw_name'],
+                    'href' => '/admin-categories/coupons/update/id:' . $category['uid'],
+                    'message' => 'Нет перевода',
+                ];
+
+            } else {
+                if ($emptyTranslate) {
+                    $data['lg'][$lg_k]['category_coupon']['ERROR'][] = [
+                        'title' => $category['cw_name'],
+                        'href' => '/admin-categories/coupons/update/id:' . $category['uid'],
+                        'message' => 'Не все поля переведены',
+                    ];
+                }
+                if ($sameData) {
+                    $data['lg'][$lg_k]['category_coupon']['NOTICE'][] = [
+                        'title' => $category['cw_name'],
+                        'href' => '/admin-categories/coupons/update/id:' . $category['uid'],
+                        'message' => 'Имеются совпадения с языком оригинала',
+                    ];
+                }
+            }
+        }
+      }
+      $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['category_coupon']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['category_coupon']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['category_coupon']['NOTICE']);
+
       //константы
       $err_w=[
         [
@@ -284,6 +347,65 @@ class AdminController extends Controller
       $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['stores']['WARNING']);
       $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['stores']['ERROR']);
       $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['stores']['NOTICE']);
+
+      //фонды
+      foreach ($lg_list as $lg_k => $lg) {
+            $data['lg'][$lg_k]['funds'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'funds', 'title' => "Благотворительные фонды"];
+            $foundations = Foundations::find()
+                ->from(Foundations::tableName() . ' cwf')
+                ->leftJoin(LgFoundations::tableName() . ' lgf', 'cwf.uid = lgf.foundation_id and lgf.language = "' . $lg_k . '"');
+            $selectAttrs = [];
+            foreach (Foundations::$translated_attributes as $attribute) {
+                $selectAttrs[] = 'lgf.' . $attribute. ' as lg_'.$attribute;
+                $selectAttrs[] = 'cwf.' . $attribute. ' as cw_'.$attribute;
+            }
+            $foundations->select($selectAttrs);
+            $foundations->addSelect(['cwf.uid']);
+            $foundations = $foundations->asArray()->all();
+
+            foreach ($foundations as $foundation) {
+                $notTranslated = true;
+                $emptyTranslate = false;
+                $sameData = false;
+                foreach (Foundations::$translated_attributes as $attribute) {
+                    if ($foundation['lg_'.$attribute] !== null) {
+                        $notTranslated = false;
+                    }
+                    if ($foundation['lg_'.$attribute] === '' && $foundation['cw_'.$attribute] !== '') {
+                        $emptyTranslate = true;
+                    }
+                    if ($foundation['cw_'.$attribute] !== '' && $foundation['lg_'.$attribute] == $foundation['cw_'.$attribute]) {
+                        $sameData = true;
+                    }
+                }
+                if ($notTranslated) {
+                    $data['lg'][$lg_k]['funds']['WARNING'][] = [
+                        'title' => $foundation['cw_title'],
+                        'href' => '/admin/funds/update/id:' . $foundation['uid'],
+                        'message' => 'Нет перевода',
+                    ];
+
+                } else {
+                    if ($emptyTranslate) {
+                        $data['lg'][$lg_k]['funds']['ERROR'][] = [
+                            'title' => $foundation['cw_title'],
+                            'href' => '/admin/funds/update/id:' . $foundation['uid'],
+                            'message' => 'Не все поля переведены',
+                        ];
+                    }
+                    if ($sameData) {
+                        $data['lg'][$lg_k]['funds']['NOTICE'][] = [
+                            'title' => $foundation['cw_title'],
+                            'href' => '/admin/funds/update/id:' . $foundation['uid'],
+                            'message' => 'Имеются совпадения с языком оригинала',
+                        ];
+                    }
+                }
+            }
+      }
+      $data['lg'][$lg_k]['total']['WARNING']+=count($data['lg'][$lg_k]['funds']['WARNING']);
+      $data['lg'][$lg_k]['total']['ERROR']+=count($data['lg'][$lg_k]['funds']['ERROR']);
+      $data['lg'][$lg_k]['total']['NOTICE']+=count($data['lg'][$lg_k]['funds']['NOTICE']);
 
       //ddd($data);
       return $this->render('index',$data);

@@ -44,8 +44,8 @@ class AccountController extends \yii\web\Controller
 
         $dataBase = Charity::find()
             ->from(Charity::tableName().' cwch')
-            ->select(['cwch.*', 'cwf.title'])
-            ->innerJoin(Foundations::tableName(). ' cwf', 'cwch.foundation_id = cwf.uid')
+            ->select(['cwch.*', 'funds.title'])
+            ->innerJoin(['funds' => Foundations::translated()], 'cwch.foundation_id = funds.uid')
             ->where(['cwch.user_id' => \Yii::$app->user->id])
             ->orderBy('cwch.added DESC');
 

@@ -181,24 +181,24 @@ class Coupons extends \yii\db\ActiveRecord
   {
     $languages = self::languagesArray();
     $cache = Yii::$app->cache;
-    $cacheName = 'categories_coupons';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $cacheName = 'categories_coupons' . ($language ? '_' . $language : '');
     $dependencyName = 'catalog_coupons';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $categories = $cache->getOrSet($cacheName, function () use ($languages) {
-      $categories =  CategoriesCoupons::find()
-          ->from(CategoriesCoupons::tableName() . ' ccc')
-          ->select(['ccc.name', 'ccc.uid', 'ccc.route', 'count(cct.coupon_id) as count'])
-          ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
-          ->innerJoin(self::tableName() . ' cwc', 'cct.coupon_id = cwc.coupon_id')
+      $categories =  CategoriesCoupons::translated(['uid', 'name', 'route'])
+          ->addSelect(['count(cwctc.coupon_id) as count'])
+          ->innerJoin('cw_coupons_to_categories cwctc', "cwcc.uid = cwctc.category_id")
+          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.coupon_id')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
           //->where(['cws.is_active' => [0, 1]])
           ->where(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
-          ->groupBy('cct.category_id')
+          ->groupBy('cwctc.category_id')
           ->asArray();
       if (!empty($languages)) {
-          $categories->andWhere(['language' => $languages]);
+          $categories->andWhere(['cwc.language' => $languages]);
       }
       return $categories->all();
     }, $cache->defaultDuration, $dependency);

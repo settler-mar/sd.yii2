@@ -91,6 +91,8 @@ class DefaultController extends SdController
             </p>';
             return json_encode($data);          }
         }
+        //ddd($model);
+        $model->language = \Yii::$app->language;
         if ($model->save()) {
           $data['html']='<h2 class="title-no-line">Спасибо!</h2>
             <p style="text-align: center;">
@@ -106,7 +108,8 @@ class DefaultController extends SdController
       exit;
     }
 
-    $data['model']=$model;
+    $data['model'] = $model;
+    $data['action'] = (\Yii::$app->params['lang_code'] == 'ru' ? '' : '/'.\Yii::$app->params['lang_code']).$request->url;
 
     $model->rating=5;
     $data=[

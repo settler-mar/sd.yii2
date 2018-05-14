@@ -17,8 +17,9 @@ store_category_byroute_<route> - категория магазина по route 
 store_coupons_store_<store_id> - купоны для магазина ЗАВИСИМОСТЬ: store_coupons_store
 popular_stores_with_promocodes - популярные маганизы с купонами
 ip_count_<ip> - количесво пользователей у которых встречается данный ip в последней авторизации или регистрации
-categories_coupons - Cписок категорий купонов
-categories_coupons_byid_<id> - категория купонов по id
+categories_coupons - Cписок категорий купонов зависимость catalog_coupons
+categories_coupons_byid_<id> - категория купонов по id зависимость catalog_coupons
+categories_coupons_byroute_<route> - категория купонов по route зависимость catalog_coupons
 stores_coupon[_category_id] - Список магазинов с купонами ЗАВИСИМОСТЬ catalog_coupons
 coupons_top_limit_<limit>[_category_<category>][_store_<store>][_new] - топ купонов ЗАВИСИМОСТЬ: catalog_coupons
 total_all_coupons - Количество активных купонов

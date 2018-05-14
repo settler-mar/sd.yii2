@@ -4,6 +4,7 @@ namespace frontend\modules\funds\controllers;
 
 use Yii;
 use frontend\modules\funds\models\Foundations;
+use frontend\modules\funds\models\LgFoundations;
 use frontend\modules\funds\models\FundsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -95,11 +96,53 @@ class AdminController extends Controller
         }
         $model = $this->findModel($id);
 
+        $base_lang=Yii::$app->params['base_lang'];
+        $lg_list=Yii::$app->params['transform_language_list'];
+        $languages = [];
+        foreach ($lg_list as $lg_key => $lg_item) {
+            if ($lg_item['code'] == $base_lang) {
+                $language = null;
+            } else {
+                $language = LgFoundations::find()
+                    ->where(['foundation_id' => $id, 'language' => $lg_item['code']])
+                    ->one();
+                if (!$language) {
+                    $language = new LgFoundations();
+                    $language->foundation_id = $id;
+                    $language->language = $lg_item['code'];
+                }
+            }
+            $languages[$lg_key] = [
+                'name' => $lg_item['name'],
+                'code' => $lg_item['code'],
+                'model' => $language
+            ];
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //сохраняем переводы
+            //сохранение переводов
+            foreach ($languages as $lg_key => $language) {
+                if ($language['model'] != null) {
+                    if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+                        Yii::$app->session->addFlash('info', $language['name'] . '. Перевод фонда обновлен');
+                    } else {
+                        Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода фонда');
+                        header("X-XSS-Protection: 1;");
+                        return $this->render('update.twig', [
+                            'model' => $model,
+                            'languages' => $languages
+                        ]);
+                    }
+                }
+            }
+
+
             return $this->redirect(['index']);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
+                'languages' => $languages,
             ]);
         }
     }
