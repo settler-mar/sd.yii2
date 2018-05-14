@@ -272,6 +272,9 @@ return [
     'all_fields_required'  => 'Необходимо заполнить все поля формы.',
     'service_temporaty_unavailable'  => 'Сервис временно не доступен. Попробуйте позже.',
     'message_to_admin_successfully_sent'  => 'Ваше сообщение успешно отправлено администратору.',
+    'ballance_current'  => 'Сумма кэшбэка, уже доступная к выводу',
+    'ballance_pending'  => 'Сумма кэшбэка за еще неподтвержденные магазином покупки',
+    'register_and_get_plus_30_percent_cachback'  => 'Зарегистрироваться (+30% к кэшбэку)',
 
 
 ];
