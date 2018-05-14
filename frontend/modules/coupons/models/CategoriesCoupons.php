@@ -178,8 +178,11 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         }
         $categories = self::find()->from(self::tableName(). ' cwcc')->select($selectAttributes);
         if ($language) {
-            $categories->leftJoin(LgCategoriesCoupons::tableName() .' lgcc', 'cwcc.uid = lgcc.category_id')
-                ->where(['lgcc.language' => $language]);
+            $categories->leftJoin(
+                LgCategoriesCoupons::tableName() .' lgcc',
+                'cwcc.uid = lgcc.category_id and lgcc.language="'.$language.'"'
+            );
+
         }
         return $categories;
     }
