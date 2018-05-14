@@ -131,11 +131,35 @@ var storeUtil = (function () {
     return isActive;
   }
 
+  function setPopupClosedStatus(storeRoute, status) {
+      status = status || true;
+      var storageKey = storePopupClosedStorageName + storeRoute;
+      if (status) {
+          Storage.set(storageKey, new Date().getTime());
+      } else {
+          Storage.remove(storageKey);
+      }
+      if (debug) {
+          console.log('статус попап шопа '+storageKey+' '+Storage.get(storageKey));
+      }
+  }
+
+  function getPopupClosedStatus(storeRoute) {
+      var storageKey = storePopupClosedStorageName + storeRoute;
+      var storePopupCloseDate = Storage.get(storageKey);
+      var closed = storePopupCloseDate !== null && new Date().getTime() - storePopupCloseDate < storePopupCloseInterval * 60 * 1000;
+      if (debug) {
+         console.log('Cтатус попап шопа '+storageKey+' закрыт - '+closed);
+      }
+      return closed;
+  }
 
   return {
     findShop: findShop,
     analizeActivated: analizeActivated,
-    isActivated: isActivated
+    isActivated: isActivated,
+    setPopupClosed: setPopupClosedStatus,
+    popupClosed: getPopupClosedStatus
   };
 
 
