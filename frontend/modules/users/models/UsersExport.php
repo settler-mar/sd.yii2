@@ -95,7 +95,7 @@ class UsersExport extends Model
 
     $fileExport = 'export';
     if (!file_exists($fileExport)) {
-        mkdir($fileExport, '777');
+        mkdir($fileExport,0777,true);
     }
 
     if ($this->excel == 1) {
