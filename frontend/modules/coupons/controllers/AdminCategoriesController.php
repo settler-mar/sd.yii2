@@ -51,6 +51,11 @@ class AdminCategoriesController extends Controller
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
+      'table' => [
+        'hide_high_menu' => function ($model, $key, $index, $column) {
+          return $model->hide_high_menu == 1 ? 'Скрыто' : 'Нет';
+        }
+      ]
     ]);
   }
 

@@ -19,7 +19,7 @@ class CategoriesCouponsSearch extends CategoriesCoupons
     {
         return [
             [['uid'], 'integer'],
-            [['name', 'short_description', 'route'], 'safe'],
+            [['name', 'short_description', 'route', 'hide_high_menu'], 'safe'],
         ];
     }
 
@@ -60,6 +60,7 @@ class CategoriesCouponsSearch extends CategoriesCoupons
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
+            'hide_high_menu' => $this->hide_high_menu,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

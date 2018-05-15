@@ -38,6 +38,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             [['short_description', 'short_description_offline'], 'trim'],
             [['description'], 'string'],
             [['description'], 'trim'],
+            [['hide_high_menu'], 'integer'],
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
             [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
@@ -56,6 +57,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             'short_description_offline' => 'Нижнее описание оффлайн',
             'route' => 'Route',
             'description' => 'Верхнее описание',
+            'hide_high_menu' => 'Скрывать в верхнем меню',
         ];
     }
 

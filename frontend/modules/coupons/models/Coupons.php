@@ -177,15 +177,20 @@ class Coupons extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function getActiveCategoriesCoupons()
+  public static function getActiveCategoriesCoupons($where = [])
   {
     $languages = self::languagesArray();
     $cache = Yii::$app->cache;
     $cacheName = 'categories_coupons';
+    if (!empty($where)) {
+        foreach($where as $key => $value) {
+            $cacheName .= ('_'.$key.'_'.$value);
+        }
+    }
     $dependencyName = 'catalog_coupons';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $categories = $cache->getOrSet($cacheName, function () use ($languages) {
+    $categories = $cache->getOrSet($cacheName, function () use ($languages, $where) {
       $categories =  CategoriesCoupons::find()
           ->from(CategoriesCoupons::tableName() . ' ccc')
           ->select(['ccc.name', 'ccc.uid', 'ccc.route', 'count(cct.coupon_id) as count'])
@@ -199,6 +204,9 @@ class Coupons extends \yii\db\ActiveRecord
           ->asArray();
       if (!empty($languages)) {
           $categories->andWhere(['language' => $languages]);
+      }
+      if (!empty($where)) {
+          $categories->andWhere($where);
       }
       return $categories->all();
     }, $cache->defaultDuration, $dependency);
