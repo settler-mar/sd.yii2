@@ -38,6 +38,14 @@ return [
     'from' => 'из',
     'watch_video' => 'Посмотреть видео',
     'welcome_to_shops_future' => 'Добро пожаловать в будущее магазинов!',
+    '{count}_popular_stores' => '{count} популярных интернет-магазинов',
+    'all_stores_with_cashback' => 'Все магазины с кэшбэком →',
+    'cashback' => 'Кэшбэк',
+    'there_is_online_shop' => 'Есть и интернет-магазин',
+    'there_is_offline_shop' => 'Данный магазин представлен и в оффлайне',
+    'offline_shop' => 'Оффлайн-магазин',
+    'based_on_reviews_of_{count}_our_users' => 'Рейтинг магазина на основании отзывов {count} наших пользователей',
+    'up_to' => 'до'
 
 
 

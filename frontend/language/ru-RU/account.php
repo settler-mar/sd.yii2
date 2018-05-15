@@ -138,6 +138,8 @@ return [
     'favorites_shop_removed_allready' => 'Данного магазина нет у вас в Избранном.',
     'favorites_shop_removed' => 'Магазин был успешно удалён из Избранного.',
     'favorites_shop_do_add' => 'Добавить в Избранное',
+    'favorites_shop_shop_do_add' => 'Добавить магазин в Избранное',
+    'favorites_shop_shop_do_remove' => 'Удалить магазин из Избранного',
     'offline_friend_pr_code' => 'Штрихкод вашего друга',
     'offline_pr_code_example' => 'Пример штрихкода',
     'offline_pr_code_is_copy' => 'Номер вашего штрихкода успешно скопирован в буфер обмена. Вставьте его в примечание к заказу в интернет-магазине.',
