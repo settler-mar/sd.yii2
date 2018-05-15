@@ -235,6 +235,8 @@ class SdController extends Controller
         if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
             $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
         }
+        $params['pagination_page'] = $params['page'];
+
         return parent::render($view, $params);
     }
 }
