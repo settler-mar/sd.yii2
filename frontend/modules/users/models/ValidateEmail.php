@@ -184,7 +184,6 @@ class ValidateEmail extends Model
       if ($user->save() && self::sentEmailValidation($user, ['path' => $path])) {
         return true;
       }
-      ddd($user);
     }
     return false;
   }
