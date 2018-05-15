@@ -19,14 +19,18 @@ class DefaultController extends SdController
     if (!empty($page) && !$validator->validate($page)) {
       throw new \yii\web\NotFoundHttpException;
     };
+    $language = \Yii::$app->language;
 
-    $cacheName = 'reviews_catalog_' . $page;
+    $cacheName = 'reviews_catalog_' . $page. ($language ? $language : '');
     $databaseObj = Reviews::find()
-      ->select(['ur.*', "u.email", "u.name", "u.photo", "u.sex"])
+      ->select(['ur.*', "u.email", "u.name", "u.photo", "u.sex" , "u.sum_confirmed", "u.sum_pending", "u.show_balance", "u.currency"])
       ->from(Reviews::tableName() . ' ur')
       ->innerJoin(Users::tableName() . ' u', 'ur.user_id = u.uid')
-      ->where(["u.is_active" => 1, "ur.is_active" => 1, "ur.store_id" => 0])
+      ->where(["u.is_active" => 1, "ur.is_active" => 1, "ur.store_id" => 0, ])
       ->orderBy('added DESC');
+    if ($language) {
+        $databaseObj->andWhere(['ur.language' => $language]);
+    }
 
     $pagination = new Pagination($databaseObj, $cacheName, ['limit' => 10, 'page' => $page, 'asArray' => true]);
     $contentData["reviews"] = $pagination->data();

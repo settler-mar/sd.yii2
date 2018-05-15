@@ -161,6 +161,11 @@ $functionsList = [
         ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
+//ссылка на внутренний ресурс с учётом языка
+   '_href' => function($href){
+     $lang = Yii::$app->params['lang_code'] == 'ru' ? '' : '/' . Yii::$app->params['lang_code'];
+     return $lang . $href;
+   },
 //функция or - вывод первого непустого аргумента
   '_or' => function () {
     if (!func_num_args()) {

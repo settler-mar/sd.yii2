@@ -1,6 +1,6 @@
 <section class="margin">
     <div class="page-wrap gray-box round-box-mini">
-        <h2>Что говорят о нас клиенты</h2>
+        <h2>{{ t('main', 'reviews_about_us')|raw }}</h2>
         <div class="scroll_box ">
             {% set not_admin_coment = true %}
             {% for review in top_reviews %}
@@ -8,7 +8,7 @@
             {% endfor %}
         </div>
         <div class="align-center">
-            <a href="/reviews" class="btn btn-transform">Все отзывы →</a>
+            <a href="{{ _href('/reviews') }}" class="btn btn-transform">{{ t('main', 'all_reviews')|raw }}</a>
         </div>
     </div>
 </section>

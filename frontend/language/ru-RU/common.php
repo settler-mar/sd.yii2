@@ -52,6 +52,7 @@ return [
     'tell_to_friends' =>'Рассказать друзьям',
     'successfull' => 'Успешно',
     'to_know_details' => 'Узнать подробнее',
+    'read_all_topic' => 'Читать полностью',
     'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
     'add_right_now' => 'Подключить сейчас',
     'invite_friends' => 'пригласить друзей',
@@ -62,6 +63,7 @@ return [
     'look_more' => 'Смотреть ещё',
     'transition_date' => 'Дата перехода',
     'register_free' => 'Зарегистрироваться бесплатно',
+    'register_easy' => 'Зарегистрироваться в один клик',
 
 
 

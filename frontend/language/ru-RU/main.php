@@ -45,7 +45,14 @@ return [
     'there_is_offline_shop' => 'Данный магазин представлен и в оффлайне',
     'offline_shop' => 'Оффлайн-магазин',
     'based_on_reviews_of_{count}_our_users' => 'Рейтинг магазина на основании отзывов {count} наших пользователей',
-    'up_to' => 'до'
+    'up_to' => 'до',
+    'reviews_about_us' => 'Что говорят о нас клиенты',
+    'all_reviews' => 'Все отзывы →',
+    'admin_answer' => 'Ответ администрации',
+    '{sum}_{currency}_of_cashback' => '{sum} {currency} кэшбэка',
+    'faq' => 'Часто задаваемые вопросы',
+    'our_friends' => 'С нами дружат',
+    'posts_about_us' => 'О нас пишут',
 
 
 
