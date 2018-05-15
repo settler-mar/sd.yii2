@@ -48,20 +48,13 @@
           {% if this.user_id == 0 %}
             {{ get_menu_item({'href': '/howitworks','title': t('main', 'how_it_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
             <div class="header-authorization">
-                {{ get_menu_item({
-                    'href': '#login',
-                    'title': '<span class="header-authorization-enter-text">'~t('common', 'login')~'</span>',
-                    'class':'header-authorization-btn header-authorization-enter modals_open',
-                    'attributes': {'rel': 'nofollow'}
-                })|raw }}
-              <span class="header-authorization-separate header-authorization-separate-login">/</span>
-
-                {{ get_menu_item({
-                    'href': '#registration',
-                    'title': t('common', 'register'),
-                    'class':'header-authorization-btn header-authorization-register modals_open',
-                    'attributes': {'rel': 'nofollow'}
-                })|raw }}
+                <a class = "header-authorization-btn header-authorization-enter modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
+                    <span class="header-authorization-enter-text"> {{ t('common', 'login')|raw }}</span>
+                </a>
+                <span class="header-authorization-separate header-authorization-separate-login">/</span>
+                <a class = "header-authorization-btn header-authorization-register modals_open" rel="nofollow" href="{{ _href('#registration')|raw }}">
+                   {{ t('common', 'register')|raw }}
+                </a>
             </div>
           {% else %}
             {#зарегистрирован#}
@@ -118,19 +111,15 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-            {{ get_menu_item({
-                'href': '#login',
-                'title': t('common', 'do_login'),
-                'class': 'header-right_link mobile modals_open'
-            })|raw }}
+              <a class = "header-right_link mobile modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
+                  {{ t('common', 'do_login')|raw }}
+              </a>
 
           </li>
           <li class="mobile">
-              {{ get_menu_item({
-                  'href': '#registration',
-                  'title': t('account', 'register_and_get_plus_30_percent_cachback'),
-                  'class': 'header-right_link link_mobile_bold link_mobile_pointed mobile modals_open'
-              })|raw }}
+              <a class = "header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow" href="{{ _href('#registration')|raw }}">
+                  {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
+              </a>
           </li>
           <li class="mobile">
             {#<a href="/howitworks" class="header-right_link mobile">Как это работает</a>#}

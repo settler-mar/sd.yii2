@@ -79,7 +79,7 @@
         <p class="autopayment-terms color-red">{{ t('account', 'dobro_autopay_text') |raw }}<p>
       </div>
     {% endif %}
-    <p class="support-fund text-center margin ">{{ t('account', 'dobro_faq')|raw }}.</p>
+    <p class="support-fund text-center margin ">{{ t('account', 'dobro_faq_call<a href="{href}">support</a>', {'href': _href('/account/support')})|raw }}.</p>
     {% else %}
       <div class="not-found">{{ t('account', 'dobro_little_summ')|raw }}</div>
     {% endif %}

@@ -181,4 +181,16 @@ class Help extends Component
       }
       return $output;
   }
+  public static function href($href, $lang)
+  {
+      $lang = $lang == 'ru' ? '' : $lang;
+      if ($lang == '') {
+          return $href;
+      }
+      if (substr($href, 0, 1) == '#') {
+          return substr($href, 0, 1) . $lang . '/'. substr($href, 1);
+      } else {
+          return '/'. $lang . $href;
+      }
+  }
 }

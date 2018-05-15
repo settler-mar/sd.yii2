@@ -259,8 +259,8 @@ class AdminController extends Controller
           'model' => $model,
           'loyalty_status_list' => $loyalty_status_list,
           'bonus_status_list' => $bonus_status_list,
-          'traffTypeList' => Users::trafficTypeList,
-          'MaskedInput_class' => MaskedInput::class
+          'traffTypeList' => Users::trafficTypeList(),
+          'MaskedInput_class' => MaskedInput::className()
       ]);
     }
   }
@@ -346,7 +346,7 @@ class AdminController extends Controller
           'ref_users' => $ref_users,
           "pagination" => $pagination->getPagination('users/admin/update', ['id' => $id]),
           'refs_active' => $refsActive,
-          'traffTypeList' => Users::trafficTypeList,
+          'traffTypeList' => Users::trafficTypeList(),
           'MaskedInput_class' => MaskedInput::class
       ]);
     }

@@ -5,6 +5,7 @@ namespace frontend\modules\favorites\controllers;
 use yii;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
+use common\components\Help;
 
 class AccountController extends \yii\web\Controller
 {
@@ -26,7 +27,12 @@ class AccountController extends \yii\web\Controller
     if($request->isAjax || $request->post('g') == 'plugin') {
       if(Yii::$app->user->isGuest){
         return json_encode([
-          'error'=>Yii::t('account', 'favorites_login_to_add'),
+          'error'=>Yii::t(
+              'account',
+              'favorites_<a href="{href}">login</a>_to_add',
+              ['href' => Help::href('#login', Yii::$app->params['lang_code']
+              )]
+          ),
           'title'=>Yii::t('common', 'error')]);
       }
 

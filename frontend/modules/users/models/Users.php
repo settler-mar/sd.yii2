@@ -17,6 +17,7 @@ use yii\web\IdentityInterface;
 use developeruz\db_rbac\interfaces\UserRbacInterface;
 use JBZoo\Image\Image;
 use common\components\DataValidator;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_users".
@@ -29,14 +30,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
-  const trafficTypeList = [
-      0 => 'Веб-сайт/Блог',
-      1 => 'Паблик в соцсетях',
-      2 => 'YouTube-канал',
-      3 => 'Дорвей',
-      4 => 'Email-рассылка',
-      5 => 'Другое'
-  ];
+//  const trafficTypeList = [
+//      0 => 'Веб-сайт/Блог',
+//      1 => 'Паблик в соцсетях',
+//      2 => 'YouTube-канал',
+//      3 => 'Дорвей',
+//      4 => 'Email-рассылка',
+//      5 => 'Другое'
+//  ];
 
   private $balans;
 
@@ -334,7 +335,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       if (Yii::$app->user->isGuest) {
         Yii::$app->session->setFlash('success', [
             'title' => Yii::t('account', 'authorize_success'),
-            'message' => Yii::t('account', 'authorize_recommendations'),
+            'message' => Yii::t(
+                'account',
+                'authorize_recommendations_visit_<a href="{profile}">profile</a>_and_learn<a href="{terms}">terms</a>_before',
+                [
+                    'profile' => Help::href('/account?new=1', Yii::$app->params['lang_code']),
+                    'terms' => Help::href('/recommendations', Yii::$app->params['lang_code'])
+                ]
+            ),
             'no_show_page' => ['account']
         ]);
         if ($this->waitModeration) {

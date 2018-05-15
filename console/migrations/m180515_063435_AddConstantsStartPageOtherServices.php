@@ -230,7 +230,7 @@ class m180515_063435_AddConstantsStartPageOtherServices extends Migration
                         Благотворительность
                     </div>
                     <div class="instruction-content">
-                        10% от всех наших доходов, заработанных в том числе и с вашей помощью, мы отправляем на <a  class="blue" href="/dobro">благотворительность</a>.
+                        10% от всех наших доходов, заработанных в том числе и с вашей помощью, мы отправляем на <a  class="blue" href="{{ _href("/dobro")|raw }}">благотворительность</a>.
                     </div>
                 </div>
             </div>
@@ -271,7 +271,7 @@ class m180515_063435_AddConstantsStartPageOtherServices extends Migration
         <p class="mini-wrap">
             Попробуйте сделать недорогую покупку и убедитесь, что получать кэшбэк просто, безопасно и выгодно. Вы же и так покупаете в Сети, так почему не экономить с SecretDiscounter?
         </p>
-        <a class="btn" href="/stores">Перейти к покупкам</a>';
+        <a class="btn" href="{{ _href("/stores")|raw }}">Перейти к покупкам</a>';
         $const->save();
 
     }

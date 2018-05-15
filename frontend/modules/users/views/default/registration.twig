@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up">
-  <h2 class="title-no-line">Регистрация</h2>
+  <h2 class="title-no-line">{{ t('common', 'register')|raw }}</h2>
   {% set form = active_form_begin({
     'id' : isAjax?'registration-form-ajax':'registration-form',
     'layout' : 'horizontal',
@@ -18,33 +18,32 @@
   {{ form.field(model, 'email',{
     'template' :
     '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Введите ваш e-mail'}) | raw }}
+  }).textInput({'placeholder': t('account', 'enter_your_email')}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Придумайте пароль'}) | raw }}
+  }).passwordInput({'placeholder': t('account', 'enter_your_password')}) | raw }}
 
   {{ form.field(model, 'password_repeat',{
     'template' :
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
+  }).passwordInput({'placeholder': t('account', 'enter_password_repeat')}) | raw }}
 
-  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">Я принимаю условия <a class="blue" href="/terms" target="_blank">Пользовательского соглашения</a> и
-    <a class="blue ignore-hash" href="/privacy-policy"  target="_blank">Политики конфиденциальности</a></div>
-    <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">Зарегистрироваться</button>
+  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">{{ t('account', 'agree_with_rerms_<a href="{terms}">terms</a>_and_<a href="{policy}">policy</a>', {'terms': _href('/terms'), 'policy': _href('/privacy-policy')})|raw }}</div>
+    <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('common', 'do_register')|raw }}</button>
   {{ active_form_end() }}
 
 
-  <div class="terms">Или при помощи соцсетей</div>
+  <div class="terms">{{ t('common', 'do_login_by_socials')|raw }}</div>
   <div>
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <a href="#login" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">Я уже зарегистрирован</a>
-    <div class="text-dop" style="color: #888;">Войдите, если у вас есть аккаунт</div>
+    <a href="#login" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">{{ t('account', 'i_have_registered')|raw }}</a>
+    <div class="text-dop" style="color: #888;">{{ t('account', 'login_if_you_registered')|raw }}</div>
   </div>
 
 

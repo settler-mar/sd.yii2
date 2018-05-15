@@ -10,8 +10,8 @@
             </div>
 
             <div class="index-hello_fw_li-in">
-                <a href="#registration" class="btn  btn-red btn-narrow index-hello_margin_btn modals_open">{{ t('common', 'register_free') }}</a>
-                <a href="/affiliate-system" class="btn  btn-transform btn-narrow btn-share">{{ t('common', 'tell_to_friends') }}</a>
+                <a href="{{ _href('#registration')|raw }}" class="btn  btn-red btn-narrow index-hello_margin_btn modals_open">{{ t('common', 'register_free') }}</a>
+                <a href="{{ _href('/affiliate-system')|raw }}" class="btn  btn-transform btn-narrow btn-share">{{ t('common', 'tell_to_friends') }}</a>
             </div>
             <ul class='icons-list index-hello_icons-list'>
                 <li>
@@ -37,7 +37,7 @@
              data-original-title="{{ t('main', 'welcome_to_shops_future') }}" data-top="200" data-left="190" data-placement="bottom" data-norevert="1"></div>
         <div class="index-hello_right">
             <div class="index-hello_right-link index-hello_right-link-absolute">
-                <a href="#video?v=RlV3PyIYTqU" class="modals_open">
+                <a href="'#video?v=RlV3PyIYTqU" class="modals_open">
                 <span class="index-hello_right-icon">
                     <span class="index-hello_right-svg_wrap">
                         {{ svg('play','index-hello_right-svg')|raw }}
