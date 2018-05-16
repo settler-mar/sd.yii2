@@ -51,6 +51,7 @@ return [
     'excuse_me' => 'Приносим свои извинения',
     'remind_me_later' => 'Напомнить позже',
     'share_width_friends' =>'поделиться с друзьями',
+    'share' =>'Поделиться',
     'tell_to_friends' =>'Рассказать друзьям',
     'successfull' => 'Успешно',
     'to_know_details' => 'Узнать подробнее',
