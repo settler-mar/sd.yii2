@@ -347,8 +347,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
                 'account',
                 'authorize_recommendations_visit_<a href="{profile}">profile</a>_and_learn<a href="{terms}">terms</a>_before',
                 [
-                    'profile' => Help::href('/account?new=1', Yii::$app->params['lang_code']),
-                    'terms' => Help::href('/recommendations', Yii::$app->params['lang_code'])
+                    'profile' => Help::href('/account?new=1'),
+                    'terms' => Help::href('/recommendations')
                 ]
             ),
             'no_show_page' => ['account']

@@ -30,8 +30,7 @@ class AccountController extends \yii\web\Controller
           'error'=>Yii::t(
               'account',
               'favorites_<a href="{href}">login</a>_to_add',
-              ['href' => Help::href('#login', Yii::$app->params['lang_code']
-              )]
+              ['href' => Help::href('#login')]
           ),
           'title'=>Yii::t('common', 'error')]);
       }

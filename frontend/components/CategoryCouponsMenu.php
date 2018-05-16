@@ -29,7 +29,7 @@ class CategoryCouponsMenu extends Widget
 //        ]];
         if ($this->search_item) {
             $categories[] = [
-                'name' => 'АЛФАВИТНЫЙ ПОИСК',
+                'name' => Yii::t('main','stores_menu_abc'),
                 'count' => null,
                 'route' => 'abc',
                 'uid' => -2,
@@ -44,7 +44,7 @@ class CategoryCouponsMenu extends Widget
             'class' => 'cat_promo'
         ];
         $categories[] = [
-            'name' => 'Новые промокоды',
+            'name' => Yii::t('main', 'coupons_menu_new'),
             'count' => Coupons::activeCount('new'),
             'route' => 'new',
             'uid' => -4,
@@ -59,7 +59,7 @@ class CategoryCouponsMenu extends Widget
 //          'uid' => -1
 //        ]]);
         $categories = array_merge($categories, [[
-            'name' => 'Все промокоды',
+            'name' => Yii::t('main', 'coupons_menu_all'),
             'count' => Coupons::activeCount(),
             'route' => '',
             'uid' => 0,

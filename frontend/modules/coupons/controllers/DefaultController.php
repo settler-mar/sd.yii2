@@ -14,6 +14,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\models\RouteChange;
 use frontend\modules\sdblog\models\Posts;
 use yii;
+use common\components\Help;
 
 /**
  * Class DefaultController
@@ -127,7 +128,7 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $storeFrom = $request->get('w');
 
-    $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>Help::href('/coupons')];
     if ($this->top) {
       $sort = 'visit';
     }
@@ -158,7 +159,7 @@ class DefaultController extends SdController
     //$contentData['show_expired'] = $request->get('expired');
 
     if (!empty($categoryCoupons)) {
-      $this->params['breadcrumbs'][] = ['label' => $categoryCoupons->name, 'url'=>'/coupons/'.$categoryCoupons->route];
+      $this->params['breadcrumbs'][] = ['label' => $categoryCoupons->name, 'url'=>Help::href('/coupons/'.$categoryCoupons->route)];
         \Yii::$app->params['url_mask'] = 'coupons/category/'.$actionId;
       $category = $categoryCoupons->uid;
       $this->current_coupon_category_id = $category;
@@ -175,7 +176,7 @@ class DefaultController extends SdController
 
     } elseif (!empty($store)) {
       $storeId = $store->uid;
-      $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>'/coupons/'.$store->getRouteUrl()];
+      $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>Help::href('/coupons/'.$store->getRouteUrl())];
       if ($store->is_active == -1) {
         header("Location: /coupons",TRUE,301);
         exit;
@@ -221,7 +222,7 @@ class DefaultController extends SdController
       }
       if ($this->new) {
           //новые
-        $this->params['breadcrumbs'][] = ['label' => 'Новые промокоды', 'url'=>'/coupons/new'];
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'coupons_menu_new'), 'url'=>Help::href('/coupons/new')];
         $databaseObj->andWhere(['>', 'date_start', date('Y-m-d', time()-60*60*24* Coupons::NEW_COUPONS_SUB_DAYS)]);
         $cacheName .= '_' . $actionId;
         \Yii::$app->params['url_mask'] = 'coupons/new';
@@ -248,7 +249,7 @@ class DefaultController extends SdController
         }
         $this->params['breadcrumbs'][] = [
             'label' => $storeFrom,
-            'url' => '/coupons'. ($categoryCoupons ? '/' . $categoryCoupons->route : '') .'?w=' .  $storeFrom,
+            'url' => Help::href('/coupons'. ($categoryCoupons ? '/' . $categoryCoupons->route : '') .'?w=' .  $storeFrom),
         ];
     }
 
@@ -283,7 +284,7 @@ class DefaultController extends SdController
     $contentData['top'] = $this->top;
     $contentData['new'] = $this->new;
     if ($page>1) {
-        $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_page').' '.$page];
     }
 
     if ($pagination->pages() > 1) {
@@ -300,7 +301,7 @@ class DefaultController extends SdController
     $contentData["coupons_top5"] =  Coupons::top(['limit' => 5,'unique_store'=>true]);
 
     $contentData["counts_all"] = Coupons::counts();
-    $contentData['coupons_view']=isset($_COOKIE['coupons_view'])?$_COOKIE['coupons_view']:'';
+    $contentData['coupons_view']=isset($_COOKIE['coupons_view']) ? $_COOKIE['coupons_view'] : '';
 
     $contentData['menu_subscribe'] = 1;
     $contentData['posts'] = Posts::getLastPosts();
@@ -334,11 +335,11 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-    $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
-    $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>'/coupons/'.$store->getRouteUrl()];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>'/coupons'];
+    $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>Help::href('/coupons/'.$store->getRouteUrl())];
     $this->params['breadcrumbs'][] = [
         'label' => $coupon['name'],
-        'url' => '/coupons/' . $store->getRouteUrl() . '/' . $coupon['uid']
+        'url' => Help::href('/coupons/' . $store->getRouteUrl() . '/' . $coupon['uid'])
     ];
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     $contentData["popular_stores"] = $this->popularStores();
@@ -413,7 +414,7 @@ class DefaultController extends SdController
 
     $contentData['is_root'] = false;
     if ($page>1) {
-      $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_page').' '.$page];
     }
 
     if ($pagination->pages() > 1) {
@@ -504,7 +505,7 @@ class DefaultController extends SdController
       $contentData["total_all_coupons"] = Coupons::activeCount();
       $contentData["page"] = empty($page) ? 1 : $page;
       $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
-      $contentData['h1'] = 'Промокоды. Результат поиска по запросу "'.$query.'"';
+      $contentData['h1'] = Yii::t('main', 'coupons_search_h1'). ' "'.$query.'"';
 
       $contentData['search_form'] = 1;
       $contentData['is_root'] = false;
@@ -520,9 +521,9 @@ class DefaultController extends SdController
       $paginatePath = '/coupon/search';
 
 
-      $this->params['breadcrumbs'][] = ['label' => 'Поиск', 'url'=>'/search/coupon?query='.$query];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_search'), 'url'=>'/search/coupon?query='.$query];
       if ($page>1) {
-          $this->params['breadcrumbs'][] = ['label' => 'Страница '.$page];
+          $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_page').' '.$page];
       }
 
       if ($pagination->pages() > 1) {
@@ -543,8 +544,8 @@ class DefaultController extends SdController
   private function actionAbc()
   {
       //\Yii::$app->params['url_mask'] = 'coupons';
-      $this->params['breadcrumbs'][] = ['label' => 'Промокоды', 'url'=>'/coupons'];
-      $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>'/coupons'];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_search_abc')];
       $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
       $contentData["stores_abc"] = Stores::getActiveStoresByAbc(['for_stores' => false]);
       $contentData["popular_stores"] = $this->popularStores();

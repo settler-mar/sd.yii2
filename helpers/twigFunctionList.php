@@ -163,7 +163,7 @@ $functionsList = [
   },
 //ссылка на внутренний ресурс с учётом языка
    '_href' => function($href){
-       return Help::href($href, Yii::$app->params['lang_code']);
+       return Help::href($href);
    },
 //функция or - вывод первого непустого аргумента
   '_or' => function () {
