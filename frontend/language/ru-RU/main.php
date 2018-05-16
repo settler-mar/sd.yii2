@@ -118,6 +118,11 @@ return [
     'detail_information_about_{store}_' => 'Подробная информация о {store} с кэшбэком',
     'how_to_get_cashback_in_{store}_' => 'Как получить кэшбэк в {store}?',
     'shoose_other_shop' => 'Выбрать другой магазин',
+    'shops_left_menu_categories' => 'Категории',
+    'coupons_left_menu_shops' => 'Самые популярные магазины с промокодами',
+    'coupons_left_menu_the_bests' => 'Лучшие промокоды',
+    'coupons_left_menu_show_all' => 'Показать все',
+    'enter_shop_name' => 'Введите название магазина',
 
 
 
