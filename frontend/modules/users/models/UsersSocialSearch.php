@@ -19,7 +19,7 @@ class UsersSocialSearch extends UsersSocial
     {
         return [
             [['uid', 'user_id', 'status'], 'integer'],
-            [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'created_at', 'updated_at'], 'safe'],
+            [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'email_manual', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -71,6 +71,7 @@ class UsersSocialSearch extends UsersSocial
             ->andFilterWhere(['like', 'social_id', $this->social_id])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'email_manual', $this->email_manual])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'photo', $this->photo])
             ->andFilterWhere(['like', 'sex', $this->sex]);

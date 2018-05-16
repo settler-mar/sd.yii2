@@ -1,4 +1,4 @@
-{% set title = 'Обновление связонной социальной сети: ' ~ model.name ~ ' (' ~ model.social_name ~')'%}
+{% set title = 'Обновление связанной социальной сети: ' ~ model.name ~ ' (' ~ model.social_name ~')'%}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
