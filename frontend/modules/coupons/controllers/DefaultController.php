@@ -141,7 +141,8 @@ class DefaultController extends SdController
     };
     $sort = (!empty($sort)) ? $sort : Coupons::$defaultSort;
     $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
-    $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
+    $sortvars = Coupons::sortvars();
+    $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     $cacheName = 'catalog_coupons' . ($request->get('expired') ? '_expired' : ($request->get('all') ? '_all' : ''));
@@ -291,7 +292,7 @@ class DefaultController extends SdController
     }
 
     $contentData['sortlinks'] =
-      $this->getSortLinks($paginatePath, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
+      $this->getSortLinks($paginatePath, $sortvars, Coupons::$defaultSort, $paginateParams);
     $contentData['limitlinks'] =
       $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 
@@ -470,6 +471,7 @@ class DefaultController extends SdController
       $page = $request->get('page');
       $limit = $request->get('limit');
       $sort = $request->get('sort');
+      $sortvars = Coupons::sortvars();
 
 
       $validator = new \yii\validators\NumberValidator();
@@ -481,7 +483,7 @@ class DefaultController extends SdController
       };
       $sort = (!empty($sort)) ? $sort : Coupons::$defaultSort;
       $limit = (!empty($limit)) ? $limit : $this->defaultLimit;
-      $order = !empty(Coupons::$sortvars[$sort]['order']) ? Coupons::$sortvars[$sort]['order'] : 'DESC';
+      $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
       $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;
 
@@ -529,7 +531,7 @@ class DefaultController extends SdController
       }
 
       $contentData['sortlinks'] =
-          $this->getSortLinks($paginatePath, Coupons::$sortvars, Coupons::$defaultSort, $paginateParams);
+          $this->getSortLinks($paginatePath, $sortvars, Coupons::$defaultSort, $paginateParams);
       $contentData['limitlinks'] =
           $this->getLimitLinks($paginatePath, Coupons::$defaultSort, $paginateParams);
 

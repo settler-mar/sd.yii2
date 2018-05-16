@@ -258,7 +258,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $favoriteCount = UsersFavorites::userFavoriteCount(false, $offline);
       if ($favoriteCount > 0) {
         array_unshift($cats[0], [
-            'name' => 'Мои избранные',
+            'name' => Yii::t('main', 'stores_menu_favorites'),
             'parent_id' => 0,
             'route' => 'favorite',
             'menu_hidden' => 0,
@@ -273,7 +273,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     //алфавитный поиск
     if (in_array('abc', $extItems)) {
         array_unshift($cats[0], [
-            'name' => 'АЛФАВИТНЫЙ ПОИСК',
+            'name' => Yii::t('main', 'stores_menu_abc'),
             'parent_id' => 0,
             'route' => 'abc',
             'menu_hidden' => 0,
@@ -295,7 +295,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             $filterCount = [];
         }
         array_unshift($cats[0], [
-          'name' => $offline == 1 ? 'Все компании' : 'Все магазины',
+          'name' => $offline == 1 ? Yii::t('main', 'stores_menu_all_offline') : Yii::t('main', 'stores_menu_all_online'),
           'parent_id' => 0,
           'route' => '',
           'menu_hidden' => 0,

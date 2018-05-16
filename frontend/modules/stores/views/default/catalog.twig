@@ -4,9 +4,9 @@
 {% else %}
   {#если нет, то#}
     {% if current_category.name != '' %}
-        {% set h1_final = current_category.name~': магазины с кэшбэком' %}
+        {% set h1_final = t('main', '{category}_stores_default_h1', {'category': current_category.name}) %}
     {% else %}
-        {% set h1_final = 'Лучшие магазины с кэшбэком' %}
+        {% set h1_final = t('main', 'stores_default_h1') %}
     {% endif %}
     {% set h1_final = h1_final~'<span>('~total_v~')</span>' %}
 {% endif %}
@@ -37,14 +37,15 @@
       <div class="catalog-categories_tree-toggle">
         {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
         {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-        <span class="catalog-categories_tree-toggle-tittle">Сменить&nbsp;категорию</span>
+        <span class="catalog-categories_tree-toggle-tittle">{{ t('main', 'stores_change_category')|raw }}</span>
       </div>
 
       {#выбор и отображение сортировки#}
       <div class="margin-half page-wrap-flex catalog-stores_sort">
         {% include('parts/sort-links.twig') %}
-        <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{ offset_stores + 1 }}{% else %}0{% endif %}
-          -{{ offset_stores + show_stores }} из {{ total_v }}</div>
+        <div class="catalog-stores_sort-info">
+           {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_stores + 1 : '0'), 'end': offset_stores + show_stores, 'total': total_v})|raw }}
+        </div>
       </div>
 
       {% include('parts/stores/abc_search.twig') %}
@@ -73,7 +74,7 @@
 
 
         {% else %}
-          <p>Ничего не найдено.</p>
+          <p>{{ t('main', 'not_found')|raw }}</p>
         {% endif %}
       </div>
 
@@ -97,13 +98,13 @@
       {% endif %}
 
       {% if posts and page==1 %}
-        <h2 class="">Новое в нашем блоге</h2>
+        <h2 class="">{{ t('main', 'news_in_blog')|raw }}</h2>
         <div class="flex-line flex-wrap tablets_flex-col instruction-list instruction-list-x3">
           {% set post_in_line=3 %}
           {% include 'parts/blog_posts.twig' %}
         </div>
         <div class="align-center">
-          <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">Больше статей →</a>
+          <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">{{ t('main', 'more_articles')|raw }}</a>
         </div>
       {% endif %}
     </div>
