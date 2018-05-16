@@ -8,6 +8,7 @@ use frontend\modules\users\models\Users;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\users\models\UsersSearch;
+use frontend\modules\users\models\UsersExport;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
 use yii\web\Controller;
@@ -17,6 +18,7 @@ use yii\data\Pagination;
 use yii\helpers\Url;
 use frontend\components\Pagination as SdPagination;
 use yii\widgets\MaskedInput;
+use common\components\Help;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -373,6 +375,24 @@ class AdminController extends Controller
 
     $this->findModel($user_id)->delete();
     return true;
+  }
+
+  public function actionExport()
+  {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+      $model = new UsersExport();
+
+      if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->export()) {
+          Yii::$app->session->addFlash('info', 'Экспорт пользователей выполнен');
+      }
+
+      $data['model'] = $model;
+      $data['data_ranger'] = Help::DateRangePicker($model,'register_at_range',['hideInput'=>false]);
+
+      return $this->render('export.twig', $data);
   }
 
   /**

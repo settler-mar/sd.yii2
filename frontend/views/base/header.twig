@@ -166,7 +166,7 @@
             'class': 'drop-menu_group__up-header'
           })|raw }}
           {{ use('frontend/components/CategoryCouponsMenu') }}
-          {% set category_coupons = category_coupons_menu_widget() %}
+          {% set category_coupons = category_coupons_menu_widget({'where': {'hide_high_menu': 0}}) %}
           {% if category_coupons %}
             {{ category_coupons|raw }}
           {% endif %}

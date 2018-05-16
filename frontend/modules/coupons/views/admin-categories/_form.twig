@@ -10,6 +10,9 @@
 
                 {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
 
+                {{ form.field(model, 'hide_high_menu').dropDownList({0:'Отобразить',1:'Скрыть'})|raw }}
+
+
                 <div class="tarif_select_blk">
                     <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
                            name="tabs_open">

@@ -24,7 +24,7 @@ var favoriteHTML ='<div class="secretdiscounter-extension__shop"><img class="sec
 //на странице шопа всплывашка
 var storePluginHtml = '<div class="secretdiscounter-extension__header">'+
     '<a href="{{siteUrl}}" class="secretdiscounter-extension__logo">'+logoImage+'</a>'+
-    '<div class="secretdiscounter-extension__button_close">'+iconClose+
+    '<div class="secretdiscounter-extension__button_close" data-store="{{storeRoute}}">'+iconClose+
     '</div>'+
     '</div>'+
     '<div class="secretdiscounter-extension__shop"><img class="secretdiscounter-extension__shop-logo" src="{{storeLogo}}"/>'+

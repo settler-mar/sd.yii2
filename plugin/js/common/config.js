@@ -5,5 +5,7 @@ var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
 var couponUrl = 'coupons';
 var storeActiveInterval = 30;//минут
+var storePopupCloseInterval = 60;//минут
 var storeActiveStorageName = 'secretdiscounter-extension-store-';// + store_route
+var storePopupClosedStorageName = 'secretdiscounter-extension-popup-closed-store-';// + store_route
 var debug = false;

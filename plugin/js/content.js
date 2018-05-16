@@ -1,6 +1,6 @@
 var usersData = false;
-var appCookieName = 'secretdiscounter-extension-window';
-var appCookieValue = 'hidden';
+//var appCookieName = 'secretdiscounter-extension-window';
+//var appCookieValue = 'hidden';
 var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
 var repeatTimes=false;
 var appIds = {
@@ -34,8 +34,9 @@ if (navigator.userAgent.indexOf(' OPR/') >= 0) {
 
 
 function closeClick() {
+  var store = this.getAttribute('data-store');
+  storeUtil.setPopupClosed(store);
   document.querySelector('.secretdiscounter-extension').style.display = 'none';
-  document.cookie = appCookieName + '=' + appCookieValue;
 }
 
 function getUsers() {
@@ -140,8 +141,9 @@ function displayShop(item) {
 
 
   div = document.querySelector('.secretdiscounter-extension');
-  //проверка кук теперь здесь
-  if (item && !div && (debug || (getCookie(appCookieName) !== appCookieValue && !storeUtil.isActivated(item.store_route)))) {
+
+  //есть шоп и нет див и (дебаг или (попап на шопе не закрыт  и шоп не активирован)
+  if (item && !div && (debug || (!storeUtil.popupClosed(item.store_route) && !storeUtil.isActivated(item.store_route)))) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {

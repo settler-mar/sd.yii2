@@ -307,4 +307,39 @@
       }
     }
   }
+  &_more {
+    position: relative;
+    padding-bottom: 20px;
+
+    &.open {
+
+      .accordion_more_content {
+        max-height: 9999px;
+      }
+
+      .accordion_more_button {
+        &_less {
+          display: block;
+        }
+        &_more {
+          display: none;
+        }
+      }
+    }
+    &_content {
+      max-height: 100px;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    &_button {
+      position: absolute;
+      bottom: 0;
+      right: 30px;
+
+      &_less {
+        display: none;
+      }
+    }
+  }
 }

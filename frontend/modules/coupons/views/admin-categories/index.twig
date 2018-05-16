@@ -26,6 +26,16 @@
                         'uid',
                         'name',
                         'route',
+                        {
+                            'format':'raw',
+                            'attribute':'hide_high_menu',
+                            'filter':{
+                            '':'Любое',
+                                0:"Нет",
+                                1:"Скрыто"
+                            },
+                            'value':table.hide_high_menu
+                        },
                         {'class': '\\yii\\grid\\ActionColumn',
                             'template' : '{update} {delete}',
                         },
