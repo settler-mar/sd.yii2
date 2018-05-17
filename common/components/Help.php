@@ -184,7 +184,8 @@ class Help extends Component
   public static function href($href)
   {
       $lang = Yii::$app->params['lang_code'];
-      $lang = $lang == 'ru' ? '' : $lang;
+
+      $lang = $lang == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lang;
       if ($lang == '') {
           return $href;
       }
