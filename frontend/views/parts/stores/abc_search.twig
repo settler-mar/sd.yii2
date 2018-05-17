@@ -1,13 +1,15 @@
 <div class="coupons-abc">
-    {% set lang = (app.params.lang_code == 'ru' ? '' : '/'~app.params.lang_code) %}
     <div  class="coupons-abc_chars">
         {% for char, stores in stores_abc|slice(0, 27) %}
-            {% if offline %}
-                {% set href = lang~'/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
-            {% else %}
-                {% set href = lang~'/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route:'')~'?w='~char %}
-            {% endif %}
             {% if stores|length and stores_abc_w != char %}
+                {% if offline %}
+                    {% set href = '/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+                    {% set href = _href(href) %}
+                {% else %}
+                    {% set href = '/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route:'')~'?w='~char %}
+                    {% set href = _href(href) %}
+                {% endif %}
+
                 <a href="{{ href|raw }}">{{ char|raw }} </a>
             {% else %}
                 <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
@@ -16,12 +18,14 @@
     </div>
     <div  class="coupons-abc_chars row-2">
         {% for char, stores in stores_abc|slice(27) %}
-            {% if offline %}
-                {% set href = lang~'/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
-            {% else %}
-                {% set href = lang~'/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route:'')~'?w='~char %}
-            {% endif %}
             {% if stores|length and stores_abc_w != char %}
+                {% if offline %}
+                    {% set href = '/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route~'-offline':'/offline')~'?w='~char %}
+                    {% set href = _href(href) %}
+                {% else %}
+                    {% set href = '/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route:'')~'?w='~char %}
+                    {% set href = _href(href) %}
+                {% endif %}
                 <a href="{{ href|raw }}">{{ char|raw }}</a>
             {% else %}
                 <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>

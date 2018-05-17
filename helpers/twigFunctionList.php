@@ -143,7 +143,8 @@ $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
     $lg = Yii::$app->params['lang_code'];
-    $href = ($lg == 'ru' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
+    $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
+    $href = ($lg == '' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
     $httpQuery = '/' . Yii::$app->request->pathInfo;
     $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');
     if (!count($item)) {
@@ -162,8 +163,8 @@ $functionsList = [
     $title . '</a>';
   },
 //ссылка на внутренний ресурс с учётом языка
-   '_href' => function($href){
-       return Help::href($href);
+   '_href' => function($href, $basePath = ''){
+       return Help::href($href, $basePath);
    },
 //функция or - вывод первого непустого аргумента
   '_or' => function () {

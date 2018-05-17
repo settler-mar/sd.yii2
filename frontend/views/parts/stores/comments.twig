@@ -33,11 +33,11 @@
       {% endif %}
 
       {% if user_id %}
-        <a href="#{% if app.params.lang_code != 'ru' %}{{ app.params.lang_code }}/{% endif %}reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
+        <a href="#{{ _href('reviews/send?shop'~current_store.uid)|raw }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
       {% else %}
         <p>
           Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-          <a href="#registration" class="modals_open">зарегистрироваться</a> или <a href="#login" class="modals_open">войти в свой аккаунт</a>.
+          <a href="{{ _href('#registration')|raw }}" class="modals_open">зарегистрироваться</a> или <a href="{{ _href('#login')|raw }}" class="modals_open">войти в свой аккаунт</a>.
         </p>
       {% endif %}
     </div>

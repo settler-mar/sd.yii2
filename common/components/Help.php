@@ -181,18 +181,18 @@ class Help extends Component
       }
       return $output;
   }
-  public static function href($href)
+  public static function href($href, $basePath = '')
   {
       $lang = Yii::$app->params['lang_code'];
 
       $lang = $lang == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lang;
       if ($lang == '') {
-          return $href;
+          return $basePath . $href;
       }
       if (substr($href, 0, 1) == '#') {
-          return substr($href, 0, 1) . $lang . '/'. substr($href, 1);
+          return ($basePath != '' ? $basePath . '/' : '')  . substr($href, 0, 1) . $lang . '/'. substr($href, 1);
       } else {
-          return '/'. $lang . $href;
+          return $basePath . '/' .  $lang . $href;
       }
   }
 }

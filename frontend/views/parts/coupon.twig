@@ -53,7 +53,7 @@
           {% set coupon_name = coupon.name ~ " +&nbsp;кэшбэк&nbsp;" ~ _cashback(coupon.store_cashback, '',coupon.store_action_id)~"&nbsp;"~coupon.store_currency %}
           <div class="coupons-list_item-logo-info-share-header">Поделиться c друзьями:</div>
           <div class="share42init accauntSoc accauntSoc_32"
-               data-url="https://secretdiscounter.ru/{{ app.params.lang_code == 'ru' ? '' : app.params.lang_code~'/' }}coupons/{{ coupon.store_route }}/{{ coupon.uid }}"
+               data-url="{{ _href('/coupons/'~coupon.store_route~'/'~coupon.uid, 'https://secretdiscounter.ru') }}"
                data-image="https://secretdiscounter.ru/images/logos/{{ coupon.store_image }}"
                data-title="{{ coupon_name|raw }}"
                data-description="{{ this.description }}"

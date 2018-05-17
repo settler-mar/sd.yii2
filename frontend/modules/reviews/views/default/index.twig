@@ -31,10 +31,12 @@
         отзыв</a>
     {% else %}
       Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-      <a href="#registration" class="blue modals_open" rel="nofollow">зарегистрироваться</a> или <a class="blue modals_open"
-                                                                                               href="#login"
-                                                                                               rel="nofollow">войти
-      в свой аккаунт</a>.
+      <a href="{{ _href('#registration')|raw }}" class="blue modals_open" rel="nofollow">зарегистрироваться</a>
+        или <a href="{{ _href('#login')|raw }}" class="blue modals_open" rel="nofollow">войти в свой аккаунт</a>.
+      {#<a href="#registration" class="blue modals_open" rel="nofollow">зарегистрироваться</a> или <a class="blue modals_open"#}
+                                                                                               {#href="#login"#}
+                                                                                               {#rel="nofollow">войти#}
+      {#в свой аккаунт</a>.#}
     {% endif %}
   </div>
 
