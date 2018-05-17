@@ -36,7 +36,7 @@
                data-url="{{ _href('/stores/'~current_store.route ~ (current_store.is_offline ? '-offline' : ''), 'https://secretdiscounter.ru')|raw }}"
                data-title="{{ html.encode(this.title) }}"
                data-description="{{ this.description }}"
-               data-socials="1,0,2,4,3,5,6"
+               data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
                data-icon-type="svg"
                data-icon-size=28
           >

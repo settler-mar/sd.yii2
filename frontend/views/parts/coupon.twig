@@ -57,7 +57,7 @@
                data-image="https://secretdiscounter.ru/images/logos/{{ coupon.store_image }}"
                data-title="{{ coupon_name|raw }}"
                data-description="{{ this.description }}"
-               data-socials="1,0,2,4,3,5,6"
+               data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
                data-icon-type="svg"
                data-icon-size=24
           >

@@ -41,7 +41,7 @@
            data-url="https://secretdiscounter.ru?r={{ user_id }}"
            data-title="{{ t('account', 'this_is_the_service_what_returns_cashback_from_every_bying_in_internet_and_offline_shops')|raw }}"
            data-description="{{ t('account', 'secret_discounter_hepls_you_save_your_money')|raw }}"
-           data-socials="1,0,2,4,3,5,6"
+           data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
            data-icon-size="40"
            data-icon-type="svg"
            data-script-after="$('#account_circles_items').removeClass('hidden');notification.notifi({'type':'info','title':'{{ t('common', 'successfull') }}','message':'{{ t('account', 'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.')|raw }}'});"

@@ -9,7 +9,8 @@ return [
         'langDefault'=>'ru',
         'params'=>[
             'valuta'=>'RUB',
-        ]
+        ],
+        'socialsShareList' => '1,0,2,4,3,5,6',//vk,fb,ok,g+,tw,mali.ru,lj
     ],
     'usa.secretdiscounter.com'=>[
         'name'=>'USA',
@@ -17,6 +18,8 @@ return [
         'langDefault'=>'en',
         'params'=>[
             'valuta'=>'USD',
-        ]
+        ],
+        'socialsShareList' => '0,4,3,6',//fb,g+,tw,lj
+
     ]
 ];
