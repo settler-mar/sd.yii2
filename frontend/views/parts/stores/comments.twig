@@ -32,7 +32,7 @@
       {% endif %}
 
       {% if user_id %}
-        <a href="#{{ _href('reviews/send?shop'~current_store.uid)|raw }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">{{ t('main', 'reviews_add')|raw }}</a>
+        <a href="#{{ _href('/reviews/send?shop'~current_store.uid)|raw }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">{{ t('main', 'reviews_add')|raw }}</a>
       {% else %}
         <p>
             {{ t('main', 'you_need_<a href="{register}" class="modals_open">register</a>or<a href="{login}" class="modals_open">login</a>to_add_review', {'register': _href('#registration'),'login': _href('#login')})|raw }}

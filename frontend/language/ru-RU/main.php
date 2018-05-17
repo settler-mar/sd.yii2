@@ -168,7 +168,23 @@ return [
     'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur' =>'Ваш кэшбэк для магазина <span class="shop-calc-cashback_content-result-store">{store}</span> составит до <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> рублей',
     'calc_cashback_fixed' =>'(фиксированная ставка)',
     'calc_cashback_term' =>'* Все расчеты привязаны к максимальному тарифу магазина и могут не совпадать со ставками на выбранный вами товар.',
-
+    'reviews' =>'Отзывы о нашем сервисе',
+    'reviews_breadcrumbs' =>'Отзывы о сайте',
+    'reviews_empty' =>'На данный момент отзывы о нашем сервисе отсутствуют. Будь первым!',
+    'review_add' =>'Оставить отзыв',
+    'review_add_form_site' =>'Отзыв о сайте',
+    'review_add_form_{store}' =>'Отзыв о магазине {store}',
+    'review_add_you_must <a class="blue modals_open" href="{register}">register</a> or <a class="blue modals_open" href="{login}">login</a>' =>'Для того, чтобы иметь возможность оставлять отзывы, Вам нужно <a href="{register}" class="blue modals_open" rel="nofollow">зарегистрироваться</a> или <a href="{login}" class="blue modals_open" rel="nofollow">войти в свой аккаунт</a>.',
+    'review_add_can_only_registered' => '<b>Внимание:</b> отзыв могут оставлять только зарегистрированые пользователи',
+    'review_add_terms' => '<b>Внимание:</b> в отзывах запрещается использовать нецензурные и оскорбительные <br>выражения, а также указывать ссылки на внешние интернет-ресурсы.',
+    'review_title' => 'Заголовок',
+    'review_text' => 'Текст отзыва',
+    'review_rating' => 'Рейтинг',
+    'review_add_shop_not_found' => 'Ошибка!!! Магазин не найден.',
+    'review_not_found' => 'Отзыв не найден.',
+    'review_exists_you_can_only_<br>_<a class="modals_open" href="{edit}">edit</a>_previesly_added_review' => 'Вы уже оставили отзыв о сайте.<br> Теперь вы можете только <a href="{edit}" class="modals_open">изменить</a> или <a href="{edit}" class="modals_open">дополнить</a><br>ранее оставленный <a href="{edit}" class="ajaxFormOpen">отзыв</a>',
+    'review_add_successfull' => 'Ваш отзыв успешно добавлен и будет<br>опубликован на сайте после модерации.',
+    'review_edit_successfull' => 'Ваш отзыв успешно изменён и будет<br>опубликован на сайте после модерации.',
 
 
 

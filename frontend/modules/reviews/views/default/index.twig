@@ -1,5 +1,5 @@
 <section class="margin">
-  <h1 class="reviews__header">Отзывы о нашем сервисе</h1>
+  <h1 class="reviews__header">{{ t('main', 'reviews')|raw }}</h1>
 
   {% if reviews|length > 0 %}
 
@@ -18,7 +18,7 @@
     </div>
 
   {% else %}
-    На данный момент отзывы о нашем сервисе отсутствуют. Будь первым!
+    {{ t('main', 'reviews_empty')|raw }}
   {% endif %}
 
   <div class="margin-half">
@@ -27,16 +27,9 @@
 
   <div class="align-center">
     {% if user_id %}
-      <a href="#reviews/send" class="btn modals_open">Оставить
-        отзыв</a>
+      <a href="{{ _href('#reviews/send')|raw }}" class="btn modals_open">{{ t('main', 'review_add')|raw }}</a>
     {% else %}
-      Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-      <a href="{{ _href('#registration')|raw }}" class="blue modals_open" rel="nofollow">зарегистрироваться</a>
-        или <a href="{{ _href('#login')|raw }}" class="blue modals_open" rel="nofollow">войти в свой аккаунт</a>.
-      {#<a href="#registration" class="blue modals_open" rel="nofollow">зарегистрироваться</a> или <a class="blue modals_open"#}
-                                                                                               {#href="#login"#}
-                                                                                               {#rel="nofollow">войти#}
-      {#в свой аккаунт</a>.#}
+        {{ t('main', 'review_add_you_must <a class="blue modals_open" href="{register}">register</a> or <a class="blue modals_open" href="{login}">login</a>', {'register': _href('#registration') ,'login': _href('#login')})|raw }}
     {% endif %}
   </div>
 

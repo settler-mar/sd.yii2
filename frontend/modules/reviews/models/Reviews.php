@@ -55,9 +55,9 @@ class Reviews extends \yii\db\ActiveRecord
     return [
       'uid' => 'Uid',
       'user_id' => 'Пользователь',
-      'title' => 'Заголовок',
-      'text' => 'Текст отзыва',
-      'rating' => 'Рейтинг',
+      'title' => Yii::t('main', 'review_title'),
+      'text' => Yii::t('main', 'review_text'),
+      'rating' => Yii::t('main', 'review_rating'),
       'added' => 'Создан',
       'is_active' => 'Активный',
       'is_top' => 'Топ отзыв',

@@ -1,13 +1,12 @@
 <div class="feedback popup-content">
     <h2 class="title-no-line">
         {% if(shop==0) %}
-            Отзыв о сайте
+            {{ t('main', 'review_add_form_site')|raw }}
         {% else %}
-            Отзыв о магазине {{ store_name }}
+            {{ t('main', 'review_add_form_{store}', {'store':store_name })|raw }}
         {% endif %}
     </h2>
-    <p class="align-center"><b>Внимание:</b> в отзывах запрещается использовать нецензурные и оскорбительные <br>выражения,
-        а также указывать ссылки на внешние интернет-ресурсы.</p>
+    <p class="align-center">{{ t('main', 'review_add_terms')|raw }}</p>
     {% set form = active_form_begin({
         'id' : 'reviews-form',
         'action' : action,
@@ -29,16 +28,16 @@
         {{ form.field(model, 'title',{
             'template' :
             '{beginWrapper}<i>'~svg("info",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-        }).textInput({'placeholder':'Заголовок','required':true}) | raw }}
+        }).textInput({'placeholder': t('main', 'review_title'),'required':true}) | raw }}
 
         {{ form.field(model, 'text',{
             'template' :
             '<div class="form-textarea-group">{input}</div>\n{error}'
-        }).textarea({'placeholder':'Текст отзыва','required':true}) | raw }}
+        }).textarea({'placeholder': t('main', 'review_text'),'required':true}) | raw }}
 
 
         <div class="rating rating-editor">
-            <span class="rating-title">Рейтинг:</span>
+            <span class="rating-title">{{ t('main', 'review_rating')|raw }}:</span>
             <span class="rating-wrapper">
               {% if model.rating > 0 %}
                 {% for i in range(1, model.rating|round()) %}
@@ -60,6 +59,6 @@
             '{input}'
         }).hiddenInput().label(false) | raw}}
 
-        <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">Оставить отзыв</button>
+        <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('main', 'review_add')|raw }}</button>
     {{ active_form_end() }}
 </div>
