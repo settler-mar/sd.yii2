@@ -15,14 +15,14 @@
               {{ h1|raw }}
           {% else %}
             {#если нет, то#}
-            Магазины - алфавитный поиск <span>({{ total_v }})</span>
+            {{ t('main', 'stores_abc_default_h1_{count}_', {'count': total_v})|raw }}
           {% endif %}
       </h1>
 
       <div class="catalog-categories_tree-toggle">
           {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
           {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-        <span class="catalog-categories_tree-toggle-tittle">Сменить категорию</span>
+        <span class="catalog-categories_tree-toggle-tittle">{{ t('main', 'stores_change_category')|raw }}</span>
       </div>
 
       <div class="coupons-abc">
@@ -53,7 +53,7 @@
                   <div class="coupons-abc_list-item-char">{{ char|raw }}</div>
                   <div class="coupons-abc_list-item-stores">
                       {% for store in stores %}
-                        <a href="/stores/{{ store.route }}">{{ store.name}}</a>
+                        <a href="{{ _href('/stores/'~store.route)|raw }}">{{ store.name}}</a>
                       {% endfor %}
                   </div>
                 </div>

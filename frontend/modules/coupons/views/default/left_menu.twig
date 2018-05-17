@@ -4,13 +4,13 @@
         <div class="catalog-categories_tree-cat accordeon">
             <div class="catalog-categories_tree-cat-close">
                 {{ svg('close', 'catalog-categories_tree-cat-close-icon')|raw }}
-                <span class="catalog-categories_tree-cat-close-tittle">Категории</span>
+                <span class="catalog-categories_tree-cat-close-tittle">{{ t('main', 'shops_left_menu_categories')|raw }}</span>
             </div>
             {{category_tree|raw}}
         </div>
         {% if popular_stores %}
             <div class="catalog-categories_popular-stores">
-                <h3 class="catalog-categories_popular-stores-header">Самые популярные магазины с промокодами</h3>
+                <h3 class="catalog-categories_popular-stores-header">{{ t('main', 'coupons_left_menu_shops')|raw }}</h3>
                 <div class="catalog-categories_popular-stores-content">
                     {% for store in popular_stores %}
                         {% if app.request.pathinfo == 'coupons/'~store.route %}
@@ -26,14 +26,14 @@
 
         {% if coupons_top5 and coupons_top5|length > 0 %}
             <div  class="catalog-categories_popular-stores">
-                <h3 class="catalog-categories_popular-stores-header">Лучшие промокоды</h3>
+                <h3 class="catalog-categories_popular-stores-header">{{ t('main', 'coupons_left_menu_the_bests')|raw }}</h3>
                 <div class="catalog-categories_popular-stores-content coupons-list left-menu">
                     {% for coupon in coupons_top5 %}
                         {% include 'parts/coupon.twig' %}
                     {% endfor %}
                 </div>
                 <div class="catalog-categories_popular-stores-links">
-                    <a href="/coupons">Показать все</a>
+                    <a href="/coupons">{{ t('main', 'coupons_left_menu_show_all')|raw }}</a>
                 </div>
             </div>
         {% endif %}

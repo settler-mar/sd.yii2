@@ -4,11 +4,11 @@
 {% else %}
     {#если нет, то#}
     {% if current_category.name != '' %}
-        {% set h1_final =  current_category.name~': акции, скидки, распродажи и промкоды - '~_local_date('', '%BRUS %G', true) %}
+        {% set h1_final =  t('main', '{category} coupons default h1 category {date}', {'category': current_category.name, 'date': _local_date('', '%BRUS %G', true)}) %}
     {% elseif current_store.name != '' %}
-        {% set h1_final = 'Акции, скидки, распродажи и промкоды '~current_store.name~' - '~_local_date('', '%BRUS %G', true) %}
+        {% set h1_final = t('main', 'coupons default h1 {store} - {date}', {'store': current_store.name, 'date': _local_date('', '%BRUS %G', true)}) %}
     {% else %}
-        {% set h1_final = 'Лучшие акции, скидки, распродажи и промокоды от наших <a href="/stores">интернет-магазинов</a>' %}
+        {% set h1_final = t('main', 'coupons default h1 <a href="{href}">stores</a>', {'href': _href('/stores')}) %}
     {% endif %}
     {% set h1_final = h1_final~'<span>('~total_v~')</span>' %}
 {% endif%}
@@ -45,7 +45,7 @@
                 <div class="catalog-categories_tree-toggle">
                     {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close')|raw }}
                     {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open')|raw }}
-                    <span class="catalog-categories_tree-toggle-tittle">Сменить&nbsp;категорию</span>
+                    <span class="catalog-categories_tree-toggle-tittle">{{ t('main', 'stores_change_category')|raw }}</span>
                 </div>
 
                 {#выбор и отображение сортировки#}
@@ -54,7 +54,9 @@
 
                     {% include('parts/sort-links.twig') %}
 
-                    <div class="catalog-stores_sort-info">Показано {% if total_v > 0 %}{{offset_coupons + 1}}{% else %}0{% endif %}-{{offset_coupons + show_coupons}} из {{total_v}}</div>
+                    <div class="catalog-stores_sort-info">
+                        {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_coupons + 1 : '0'), 'end': offset_coupons + show_coupons, 'total': total_v})|raw }}
+                     </div>
                 </div>
 
                 {% if current_store == null and search_result == null %}
@@ -62,8 +64,9 @@
                     <div class="coupons-abc">
                         <div  class="coupons-abc_chars">
                             {% for char, stores in stores_abc|slice(0, 27) %}
+                                {% set href = '/coupons'~(current_category and current_category.route  and current_category.route !='/' ? '/'~current_category.route : '')~'?w='~char %}
                                 {% if stores|length and stores_abc_w != char %}
-                                    <a href="/coupons{% if current_category and current_category.route  and current_category.route!='/' %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }}</a>
+                                    <a href="{{ _href(href)|raw }}">{{ char|raw }}</a>
                                 {% else %}
                                     <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
                                 {% endif %}
@@ -71,8 +74,9 @@
                         </div>
                         <div  class="coupons-abc_chars row-2">
                             {% for char, stores in stores_abc|slice(27) %}
+                                {% set href = '/coupons'~(current_category and current_category.route  and current_category.route !='/' ? '/'~current_category.route : '')~'?w='~char %}
                                 {% if stores|length and stores_abc_w != char %}
-                                    <a href="/coupons{% if current_category and current_category.route and current_category.route!='/' %}/{{ current_category.route }}{% endif %}?w={{ char|raw }}">{{ char|raw }}</a>
+                                    <a href="{{ _href(href)|raw }}">{{ char|raw }}</a>
                                 {% else %}
                                     <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
                                 {% endif %}
@@ -98,7 +102,7 @@
                             <div class="coupons coupons-empty"></div>
                             <div class="coupons coupons-empty"></div>
                           {% else %}
-                              Ничего не найдено.
+                              {{ t('main', 'not_found')|raw }}
                           {% endif %}
                         </div>
 
@@ -107,7 +111,7 @@
 
 
                     {% else %}
-                        <p>Ничего не найдено.</p>
+                        <p>{{ t('main', 'not_found')|raw }}</p>
                     {% endif %}
                 </div>
 
@@ -115,19 +119,19 @@
                     <div class="coupons_buttons align-center">
                         {% if counts.actual > 0 and current_store %}
                         <div class="coupons_buttons-top">
-                            <a class="btn btn-narrow btn-transform coupons_buttons-margin" href="/coupons/expired"><span>Показать все завершившиеся акции ({{ counts_all.expired }})</span></a>
+                            <a class="btn btn-narrow btn-transform coupons_buttons-margin" href="{{ _href('/coupons/expired')|raw }}"><span>{{ t('main', 'coupons_show_all_expired')|raw }} ({{ counts_all.expired }})</span></a>
                         </div>
                         {% endif %}
                         <div class="coupons_buttons-bottom">
                             {% if counts.actual > 0 %}
                                 {% if current_store %}
-                                    <a class="btn btn-transform  btn-mini btn-round coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}"><span>Все промокоды этого магазина ({{ counts.actual }})</span></a>
+                                    <a class="btn btn-transform  btn-mini btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_store.routeUrl)|raw }}"><span>{{ t('main', 'coupons_show_all_for_shop')|raw }} ({{ counts.actual }})</span></a>
                                 {% endif %}
                                 {% if current_category %}
-                                    <a class="btn bnt-mini btn-transform btn-round coupons_buttons-margin" href="/coupons/{{ current_category.route }}"><span>Все промокоды этой категории ({{ counts.actual }})</span></a>
+                                    <a class="btn bnt-mini btn-transform btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_category.route)|raw }}"><span>{{ t('main','coupons_show_all_for_category')|raw }} ({{ counts.actual }})</span></a>
                                 {% endif %}
                             {% endif %}
-                            <a class="btn btn-mini  btn-round coupons_buttons-margin" href="/coupons"><span>Все промокоды ({{ total_all_coupons }})</span></a>
+                            <a class="btn btn-mini  btn-round coupons_buttons-margin" href="{{ _href('/coupons') }}"><span>{{ t('main', 'coupons_all')|raw }} ({{ total_all_coupons }})</span></a>
                         </div>
                     </div>
                 {% endif %}
@@ -157,11 +161,11 @@
               {% if expired == null and counts.expired %}
                 <div class="coupons_buttons align-center">
                   {% if current_store %}
-                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="/coupons/{{ current_store.routeUrl }}/expired"><span>Показать все завершившиеся акции ({{ counts.expired }})</span></a>
+                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="{{ _href('/coupons/'~current_store.routeUrl~'/expired')|raw }}"><span>{{ t('main', 'coupons_show_all_expired')|raw }} ({{ counts.expired }})</span></a>
                   {% elseif current_category %}
-                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="/coupons/{{ current_category.route }}/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="{{ _href('/coupons/'~current_category.route~'/expired')|raw }}"><span>{{ t('main', 'coupons_all_expired')|raw }} ({{ counts.expired }})</span></a>
                   {% else %}
-                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="/coupons/expired"><span>Завершившиеся акции, купоны и промокоды ({{ counts.expired }})</span></a>
+                    <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="{{ _href('/coupons/expired')|raw }}"><span>{{ t('main', 'coupons_all_expired')|raw }} ({{ counts.expired }})</span></a>
                   {% endif %}
                 </div>
               {% endif %}

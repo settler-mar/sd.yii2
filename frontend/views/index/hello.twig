@@ -1,64 +1,49 @@
 <section class="index-hello">
     <div class="page-wrap page-wrap-flex" >
         <div class="index-hello_left">
-            <h1>Здесь возвращают деньги с покупок!</h1>
+            <h1>{{ h1|raw }}</h1>
             <p class="index-hello_description">
                 {{ _constant('welcome') | raw}}
             </p>
             <div class="index-hello_counter laptop-min_bold">
-                к нам присоединились:
-                <div class="index-hello_counter-numbers-out">
-                    <div class="index-hello_counter-numbers">
-                        {{ _nf(sd_counter.user_count,0,true,'<span class="index-hello_counter-numbers_space"></span>',1)|raw }}
-                    </div>
-                    <a class="index-hello_counter-numbers-compare blue scroll_to" href="#comparison">
-                        <span>Сравнить лучшие<br>кэшбэк сервисы</span>
-                        {{ svg('long-arrow-down', 'index-hello_counter-numbers-compare-arrow')|raw }}
-                    </a>
-                </div>
-
+                {{ _constant('index-hello-counter')|raw }}
             </div>
 
             <div class="index-hello_fw_li-in">
-                <a href="#registration" class="btn  btn-red btn-narrow index-hello_margin_btn modals_open">Зарегистрироваться бесплатно</a>
-                <a href="/affiliate-system" class="btn  btn-transform btn-narrow btn-share">Рассказать друзьям</a>
+                <a href="{{ _href('#registration')|raw }}" class="btn  btn-red btn-narrow index-hello_margin_btn modals_open">{{ t('common', 'register_free') }}</a>
+                <a href="{{ _href('/affiliate-system')|raw }}" class="btn  btn-transform btn-narrow btn-share">{{ t('common', 'tell_to_friends') }}</a>
             </div>
             <ul class='icons-list index-hello_icons-list'>
-                {#<li class="index-hello_fw_li">#}
-                    {#<div class="index-hello_fw_li-in">#}
-                        {#<a href="#registration" class="btn  btn-red  index-hello_margin_btn modals_open">Зарегистрироваться</a>#}
-                    {#</div>#}
-                {#</li>#}
                 <li>
                     {{ svg('online','icons-list_icon')|raw }}
-                    <span class="icons-list_title">Кэшбэк в онлайн-магазинах</span>
+                    <span class="icons-list_title">{{ _constant('index-hello-advantages', 0, 0)|raw }}</span>
                 </li>
                 <li>
                     {{ svg('offline','icons-list_icon')|raw }}
-                    <span class="icons-list_title">Кэшбэк в реальных магазинах</span>
+                    <span class="icons-list_title">{{ _constant('index-hello-advantages', 0, 1)|raw }}</span>
                 </li>
                 <li>
                     {{ svg('gift','icons-list_icon')|raw }}
-                    <span class="icons-list_title">Бесплатные купоны и промокоды</span>
+                    <span class="icons-list_title">{{ _constant('index-hello-advantages', 0, 2)|raw }}</span>
                 </li>
                 <li>
                     {{ svg('look','icons-list_icon')|raw }}
-                    <span class="icons-list_title">Отслеживание посылок</span>
+                    <span class="icons-list_title">{{ _constant('index-hello-advantages', 0, 3)|raw }}</span>
                 </li>
-
             </ul>
+
         </div>
         <div class="index-hello_center" data-toggle="tooltip"
-             data-original-title="Добро пожаловать в будущее магазинов!" data-top="200" data-left="190" data-placement="bottom" data-norevert="1"></div>
+             data-original-title="{{ t('main', 'welcome_to_shops_future') }}" data-top="200" data-left="190" data-placement="bottom" data-norevert="1"></div>
         <div class="index-hello_right">
             <div class="index-hello_right-link index-hello_right-link-absolute">
-                <a href="#video?v=RlV3PyIYTqU" class="modals_open">
+                <a href="'#video?v=RlV3PyIYTqU" class="modals_open">
                 <span class="index-hello_right-icon">
                     <span class="index-hello_right-svg_wrap">
                         {{ svg('play','index-hello_right-svg')|raw }}
                     </span>
                 </span>
-                    <span class="index-hello_right-link_text">Посмотреть видео</span>
+                    <span class="index-hello_right-link_text">{{ t('main', 'watch_video') }}</span>
                 </a>
             </div>
 

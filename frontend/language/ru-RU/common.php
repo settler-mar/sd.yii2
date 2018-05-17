@@ -11,6 +11,11 @@ return [
     'change' => 'Сменить',
     'choose' => 'Выбрать',
     'logout' => 'Выход',
+    'login' => 'Вход',
+    'login_to_site' => 'Вход на сайт',
+    'do_login' => 'Войти',
+    'do_login_by_socials' => 'Или при помощи соцсетей',
+    'do_logout' => 'Выйти',
     'shops' => 'Магазины',
     'shop' => 'Магазин',
     'coupons' => 'Купоны',
@@ -46,8 +51,11 @@ return [
     'excuse_me' => 'Приносим свои извинения',
     'remind_me_later' => 'Напомнить позже',
     'share_width_friends' =>'поделиться с друзьями',
+    'share' =>'Поделиться',
+    'tell_to_friends' =>'Рассказать друзьям',
     'successfull' => 'Успешно',
     'to_know_details' => 'Узнать подробнее',
+    'read_all_topic' => 'Читать полностью',
     'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
     'add_right_now' => 'Подключить сейчас',
     'invite_friends' => 'пригласить друзей',
@@ -57,7 +65,9 @@ return [
     'do_register' => 'Зарегистрироваться',
     'look_more' => 'Смотреть ещё',
     'transition_date' => 'Дата перехода',
-
+    'register_free' => 'Зарегистрироваться бесплатно',
+    'register_easy' => 'Зарегистрироваться в один клик',
+    'find' => 'Найти',
 
 
 

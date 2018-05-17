@@ -52,6 +52,25 @@ class Coupons extends \yii\db\ActiveRecord
       'date_end' => ["title" => "Сроку действия", "title_mobile" => "Сроку действия", 'order' => 'DESC'],
   ];
 
+  public static function sortvars(){
+      return [
+          'visit' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+          ],
+          'date_start' => [
+              "title" => Yii::t('main','sort_by_date'),
+              "title_mobile" => Yii::t('main','sort_by_date_mobile')
+          ],
+          'date_end' => [
+              "title" => Yii::t('main','sort_by_expire'),
+              "title_mobile" => Yii::t('main','sort_by_expire_mobile'),
+              'order' => 'DESC'
+          ],
+      ];
+  }
+
+
   /**
    * @inheritdoc
    */

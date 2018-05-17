@@ -75,14 +75,46 @@ class Stores extends \yii\db\ActiveRecord
    * Possible sorting options with titles and default value
    * @var array
    */
-  public static $sortvars = [
-    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
-    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
-    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
-    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
-    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
-    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
-  ];
+//  public static $sortvars = [
+//    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
+//    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
+//    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
+//    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
+//    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
+//    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
+//  ];
+
+  public static function sortvars(){
+      return [
+          'rating' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+              'no_online' => 1
+          ],
+          'visit' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+              'no_offline' => 1
+          ],
+          'name' => [
+              "title" => Yii::t('main','sort_by_abc'),
+              "title_mobile" => Yii::t('main','sort_by_abc_mobile'),
+              'order' => 'ASC'
+          ],
+          'added' => [
+              "title" => Yii::t('main','sort_by_date'),
+              "title_mobile" => Yii::t('main','sort_by_date_mobile')
+          ],
+          'cashback_percent' => [
+              "title" => Yii::t('main','sort_by_percent'),
+              "title_mobile" => Yii::t('main','sort_by_percent_mobile')
+          ],
+          'cashback_summ' => [
+              "title" => Yii::t('main','sort_by_cashback'),
+              "title_mobile" => Yii::t('main','sort_by_cashback_mobile')
+          ],
+      ];
+  }
 
   /**
    * @inheritdoc
@@ -654,7 +686,7 @@ class Stores extends \yii\db\ActiveRecord
   public static function sortvarItems($offline = null)
   {
     $result = [];
-    foreach (self::$sortvars as $key => $sortvar) {
+    foreach (self::sortvars() as $key => $sortvar) {
         if ($offline === null ||
            (empty($sortvar['no_online']) && empty($sortvar['no_offline'])) ||
            ($offline === true && !empty($sortvar['no_online'])) ||

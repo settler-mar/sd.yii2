@@ -161,6 +161,10 @@ $functionsList = [
         ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
+//ссылка на внутренний ресурс с учётом языка
+   '_href' => function($href){
+       return Help::href($href);
+   },
 //функция or - вывод первого непустого аргумента
   '_or' => function () {
     if (!func_num_args()) {
@@ -215,6 +219,7 @@ $functionsList = [
   },
 //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback' => function ($cashback, $currency = '', $action = 0) use ($currencyIcon) {
+    $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);

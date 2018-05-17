@@ -2,7 +2,7 @@
     <div class="page-wrap">
         {{ _constant('comparison') | raw}}
         <div class="align-center">
-            <a class="btn" href="#registration">Зарегистрироваться в один клик</a>
+            <a class="btn" href="{{ _href('#registration')|raw }}">{{ t('common', 'register_easy')|raw }}</a>
         </div>
     </div>
 

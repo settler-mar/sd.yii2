@@ -14,6 +14,7 @@ use frontend\components\Pagination;
 use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
 use b2b\modules\stores_points\models\B2bStoresPoints;
+use common\components\Help;
 
 
 class DefaultController extends SdController
@@ -143,14 +144,17 @@ class DefaultController extends SdController
     $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
-      $this->params['breadcrumbs'][] = ['label' => ($offline ? 'Оффлайн-магазины' : 'Магазины'), 'url' => '/stores' . ($offline ? '/offline' : '')];
+      $this->params['breadcrumbs'][] = [
+          'label' => ($offline ? Yii::t('main', 'breadcrumbs_stores_offline') : Yii::t('main', 'breadcrumbs_stores_online')),
+          'url' => Help::href('/stores' . ($offline ? '/offline' : ''))
+      ];
     } else {
-      $this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => '/stores'];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_stores_offline'), 'url' => Help::href('/stores')];
     }
 
     if ($offline) {
       if (!isset(Yii::$app->params['stores_menu_separate']) || Yii::$app->params['stores_menu_separate'] == 0) {
-        $url = isset(Yii::$app->params['offline_redirect']) ? Yii::$app->params['offline_redirect'] : "/stores/stores-offline";
+        $url = isset(Yii::$app->params['offline_redirect']) ? Yii::$app->params['offline_redirect'] : Help::href("/stores/stores-offline");
         $this->redirect($url, 307)->send();
         exit;
       }
@@ -184,7 +188,7 @@ class DefaultController extends SdController
       \Yii::$app->controller->current_category_id = $category;
       $this->params['breadcrumbs'][] = [
           'label' => $categoryStore['name'],
-          'url' => '/stores/' . $categoryStore->route,
+          'url' => Help::href('/stores/' . $categoryStore->route),
       ];
 
       $dataBaseData->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
@@ -203,13 +207,13 @@ class DefaultController extends SdController
           ->one();
 
       $cacheName .= '_favorites_' . Yii::$app->user->id;
-      $url = '/stores/favorite';
+      $url = Help::href('/stores/favorite');
 
       $dataBaseData->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
           ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
 
       $this->params['breadcrumbs'][] = [
-          'label' => 'Мои избранные',
+          'label' => Yii::t('main', 'breadcrumbs_stores_favorite'),
           'url' => $url,
       ];
     }
@@ -245,11 +249,11 @@ class DefaultController extends SdController
         }
         $this->params['breadcrumbs'][] = [
             'label' => $storeFrom,
-            'url' => '/stores'. ($categoryStore ? '/' . $categoryStore->route : '') .'?w=' .  $storeFrom,
+            'url' => Help::href('/stores'. ($categoryStore ? '/' . $categoryStore->route : '') .'?w=' .  $storeFrom),
         ];
     }
     if ($page > 1) {
-       $this->params['breadcrumbs'][] = 'Страница ' . $page;
+       $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
     }
 
     $pagination = new Pagination(
@@ -358,9 +362,15 @@ class DefaultController extends SdController
   {
     $offline = Yii::$app->request->get('offline') || $this->offline;
 
-    //$this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url'=>'/stores'];
-    $this->params['breadcrumbs'][] = ['label' => ($offline ? 'Оффлайн-магазины' : 'Магазины'), 'url' => '/stores' . ($offline ? '/offline' : '')];
-    $this->params['breadcrumbs'][] = ['label' => 'Алфавитный поиск'];
+    if (Yii::$app->params['stores_menu_separate'] == 1) {
+      $this->params['breadcrumbs'][] = [
+        'label' => ($offline ? Yii::t('main', 'breadcrumbs_stores_offline') : Yii::t('main', 'breadcrumbs_stores_online')),
+        'url' => Help::href('/stores' . ($offline ? '/offline' : ''))
+      ];
+    } else {
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_stores_offline'), 'url' => Help::href('/stores')];
+    }
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_search_abc')];
     $contentData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
 
     $contentData["stores_abc"] = Stores::getActiveStoresByAbc(['offline' => $offline]);
@@ -470,20 +480,11 @@ class DefaultController extends SdController
 
       $data = $cache->getOrSet($cacheName, function(){
 
-//          $storeCategories = CategoriesStores::find()
-//              ->from(CategoriesStores::tableName().' cwcs')
-//              ->select(['cwstc.store_id', 'cwcs.route'])
-//              ->innerJoin('cw_stores_to_categories cwstc', 'cwstc.category_id = cwcs.uid')
-//              ->groupBy(['cwstc.store_id']);
-
           $stores = Stores::find()
-              //->select(['cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cwsc.route as category_route'])
               ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo', 'cws.conditions','cws.url_alternative'])
               ->from(Stores::tableName(). ' cws')
-              //->leftJoin(['cwsc' => $storeCategories], 'cwsc.store_id = cws.uid')
               ->where(['cws.is_active'=> '1'])
               ->asArray()
-              //->limit(10)
               ->all();
           $data = [
              // "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
