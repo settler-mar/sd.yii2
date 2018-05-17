@@ -200,6 +200,7 @@ $functionsList = [
   },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {
+    $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     if ($action == 1) {
       $value = preg_replace('/[^0-9\.\,]/', '', $cashback);
       $cashback = str_replace($value, $value * 2, $cashback);

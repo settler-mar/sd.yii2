@@ -1,48 +1,50 @@
 <div class="flex-line tablets_flex-col">
-    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-        {{ svg('user_card','instruction-icon instruction-icon-big')|raw }}
-        <div class="instruction-wrap">
-            <div class="instruction-title">
-                Регистрируйтесь на сайте
-            </div>
-            {% if not user_id %}
-                <div class="instruction-content">
-                    Пройдите простую <a href="#registration" class="blue modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.
-                </div>
-            {% else %}
-                <div class="instruction-content">
-                    Пройдите простую регистрацию в кэшбэк-сервисе SecretDiscounter.
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-        {{ svg('chart_click2','instruction-icon instruction-icon-big')|raw }}
-        <div class="instruction-wrap">
-            <div class="instruction-title">
-                Перейдите в магазин
-            </div>
-            <div class="instruction-content">
-                Нажмите кнопку <a href="#gotostore" class="blue scroll_to">&laquo;Перейти к покупкам&raquo;</a>
-                    и сделайте заказ на сайте.
-            </div>
-        </div>
-    </div>
-    <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-        {{ svg('save_money','instruction-icon instruction-icon-big')|raw }}
-        <div class="instruction-wrap">
-            <div class="instruction-title">
-                Получите деньги
-            </div>
-            <div class="instruction-content">
-                Кэшбэк за заказ автоматически зачислится на
-                {% if user_id %}
-                    <a class="blue" href="/account">ваш счёт</a>
-                {% else %}
-                    ваш счёт
-                {% endif %}
-                в SecretDiscounter.
-            </div>
-        </div>
-    </div>
+    {{ _constant('store-instruction-offline')|raw }}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('user_card','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#Регистрируйтесь на сайте#}
+            {#</div>#}
+            {#{% if not user_id %}#}
+                {#<div class="instruction-content">#}
+                    {#Пройдите простую <a href="#registration" class="blue modals_open">регистрацию</a> в кэшбэк-сервисе SecretDiscounter.#}
+                {#</div>#}
+            {#{% else %}#}
+                {#<div class="instruction-content">#}
+                    {#Пройдите простую регистрацию в кэшбэк-сервисе SecretDiscounter.#}
+                {#</div>#}
+            {#{% endif %}#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('chart_click2','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#Перейдите в магазин#}
+            {#</div>#}
+            {#<div class="instruction-content">#}
+                {#Нажмите кнопку <a href="#gotostore" class="blue scroll_to">&laquo;Перейти к покупкам&raquo;</a>#}
+                {#и сделайте заказ на сайте.#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('save_money','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#Получите деньги#}
+            {#</div>#}
+            {#<div class="instruction-content">#}
+                {#Кэшбэк за заказ автоматически зачислится на#}
+                {#{% if user_id %}#}
+                    {#<a class="blue" href="/account">ваш счёт</a>#}
+                {#{% else %}#}
+                    {#ваш счёт#}
+                {#{% endif %}#}
+                {#в SecretDiscounter.#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
 </div>

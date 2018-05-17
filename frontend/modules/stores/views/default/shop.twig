@@ -13,7 +13,7 @@
         <div class="shop_header_big-item_ticket-wrap">
           <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
             <div class="promo">
-              Кэшбэк
+              {{ t('main', 'cashback')|raw }}
               {% if current_store.action_id != 0 %}
                 <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
               {% endif %}
