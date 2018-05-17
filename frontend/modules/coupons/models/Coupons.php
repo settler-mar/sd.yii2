@@ -177,16 +177,21 @@ class Coupons extends \yii\db\ActiveRecord
   /**
    * @return mixed
    */
-  public static function getActiveCategoriesCoupons()
+  public static function getActiveCategoriesCoupons($where = [])
   {
     $languages = self::languagesArray();
     $cache = Yii::$app->cache;
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $cacheName = 'categories_coupons' . ($language ? '_' . $language : '');
+    if (!empty($where)) {
+      foreach($where as $key => $value) {
+        $cacheName .= ('_'.$key.'_'.$value);
+      }
+    }
     $dependencyName = 'catalog_coupons';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $categories = $cache->getOrSet($cacheName, function () use ($languages) {
+    $categories = $cache->getOrSet($cacheName, function () use ($languages, $where) {
       $categories =  CategoriesCoupons::translated(['uid', 'name', 'route'])
           ->addSelect(['count(cwctc.coupon_id) as count'])
           ->innerJoin('cw_coupons_to_categories cwctc', "cwcc.uid = cwctc.category_id")
@@ -199,6 +204,9 @@ class Coupons extends \yii\db\ActiveRecord
           ->asArray();
       if (!empty($languages)) {
           $categories->andWhere(['cwc.language' => $languages]);
+      }
+      if (!empty($where)) {
+          $categories->andWhere($where);
       }
       return $categories->all();
     }, $cache->defaultDuration, $dependency);

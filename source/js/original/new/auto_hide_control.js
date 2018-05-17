@@ -26,6 +26,9 @@
   });
 
   function hasScroll(el) {
+    if (!el) {
+      return false;
+    }
     return el.scrollHeight > el.clientHeight;
   }
 

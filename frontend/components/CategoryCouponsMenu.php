@@ -10,6 +10,7 @@ use frontend\modules\coupons\models\Coupons;
 class CategoryCouponsMenu extends Widget
 {
     public $search_item = false;
+    public $where = [];
 
     public function init()
     {
@@ -50,7 +51,7 @@ class CategoryCouponsMenu extends Widget
             'class' => 'cat_news',
         ];
 
-        $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons());
+        $categories = array_merge($categories, Coupons::getActiveCategoriesCoupons($this->where));
 //        $categories = array_merge($categories, [[
 //          'name' => 'Завершившиеся акции',
 //          'count' => Coupons::activeCount('expired'),

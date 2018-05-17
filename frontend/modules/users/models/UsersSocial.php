@@ -66,6 +66,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       'name' => 'Имя',
       'user_id' => 'Пользователь',
       'email' => 'Email',
+      'email_manual' => 'Email введён вручную',
       'url' => 'Url',
       'photo' => 'Photo',
       'status' => 'Status',

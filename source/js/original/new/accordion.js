@@ -66,3 +66,45 @@ $('.accordion-content a').on('click', function (e) {
   e.stopPropagation()
 });
 
+(function(){
+  var els = $('.accordion_more');
+
+  function addButton(el, className, title) {
+      var buttons = $(el).find('.'+className);
+      if (buttons.length === 0) {
+          var button = $('<div>').addClass(className).addClass('accordion_more_button');
+          var a = $('<a>').attr('href', "").addClass('blue').html(title);
+          $(button).append(a);
+          $(el).append(button);
+      }
+  }
+  $('body').on('click', '.accordion_more_button_more', function(e){
+      e.preventDefault();
+      $(this).closest('.accordion_more').addClass('open');
+  });
+  $('body').on('click', '.accordion_more_button_less', function(e){
+      e.preventDefault();
+      $(this).closest('.accordion_more').removeClass('open');
+  });
+
+
+
+  function rebuild(){
+    $(els).each(function(key, item){
+      $(item).removeClass('open');
+      var content = item.querySelector('.accordion_more_content');
+      if (content.scrollHeight > content.clientHeight) {
+        addButton(item, 'accordion_more_button_more', 'Подробнее');
+        addButton(item, 'accordion_more_button_less', 'Скрыть');
+      } else {
+        $(item).find('.accordion_more_button').remove();
+      }
+    });
+
+  }
+
+  $(window).resize(rebuild);
+  rebuild();
+})();
+
+

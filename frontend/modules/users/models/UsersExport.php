@@ -23,7 +23,8 @@ class UsersExport extends Model
     public function init()
     {
         $forbiddens = ['password', 'new_password', 'new_photo', 'email_verify_token',
-            'auth_key', 'password_reset_token', 'email_verify_time'];//не нужно выводить
+            'auth_key', 'password_reset_token', 'email_verify_time',
+            'sum_from_ref_pending','sum_from_ref_confirmed','sum_to_friend_pending','in_action'];//не нужно выводить
         $users = new Users;
         $this->users_columns = $users->attributeLabels();
         $this->all_columns = array_diff(array_keys($users->attributes), $forbiddens);
@@ -92,10 +93,11 @@ class UsersExport extends Model
 
     $users =  $users->asArray()->all();
 
-    $fileExport = Yii::getAlias('@runtime').'/export';
+    $fileExport = 'export';
     if (!file_exists($fileExport)) {
-        mkdir($fileExport, '777');
+        mkdir($fileExport,0777,true);
     }
+
     if ($this->excel == 1) {
         $headers = [];
         foreach($columns as $column) {
