@@ -42,7 +42,7 @@
                     'model': model,
                     })
                     %}
-                    {{ form.field(model, 'text').widget(mp_class,json_decode(param)).label('')|raw}}
+                    {{ form.field(model, 'text').widget(mp_class,_regions_include(json_decode(param))).label('')|raw}}
                 {% endif %}
             </div>
             {% for k,lang in languages %}
@@ -56,7 +56,7 @@
                         'model': lang.model,
                         })
                         %}
-                        {{ form.field(lang.model, 'text').widget(mp_class,json_decode(param)).label('')|raw}}
+                        {{ form.field(lang.model, 'text').widget(mp_class,_regions_include(json_decode(param))).label('')|raw}}
                     {% endif %}
                 </div>
             {% endfor %}

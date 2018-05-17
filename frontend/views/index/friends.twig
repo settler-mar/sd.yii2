@@ -4,7 +4,7 @@
         <div class="flex-line flex-wrap">
             {% set social_list = _constant("social_list") %}
             {% for item in social_list %}
-                {% if item.on_index==1 %}
+                {% if item.on_index==1 and item.regions and in_array(app.params.region, item.regions) %}
                     <div class="instruction-item instruction-item-margin-mobile  instruction-item-230 gray-box">
                         <div class="flex-line">
                             {{ svg('color/'~item.code,'instruction-social_logo')|raw }}

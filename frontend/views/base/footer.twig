@@ -112,7 +112,7 @@
         </a>
         {% set social_list = _constant("social_list") %}
         {% for item in social_list %}
-          {% if item.on_footer==1 %}
+          {% if item.on_footer==1 and item.regions and in_array(app.params.region, item.regions) %}
             <a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">
               {{ svg('color/'~item.code,'footer-social_links-icon')|raw }}
               {{ _nf(item.count,0)|raw }} {{ item.footer_text }}

@@ -532,6 +532,7 @@ $functionsList = [
   'implode' => 'implode',
   'sin' => 'sin',
   'str_replace' => 'str_replace',
+  'in_array' => 'in_array',
   'svg' => function ($name, $class = false) {
     return Help::svg($name, $class);
   },
@@ -568,6 +569,21 @@ $functionsList = [
   '_tags_class' => function($content, $tags_list = [], $options = []){
     return TagsClasses::add($content, $tags_list, $options);
   },
+  '_regions_include' => function($params){
+    //на форму редактирования констант json регионы из настроек
+    if (isset($params['columns'])) {
+      foreach($params['columns'] as &$column) {
+        if (isset($column['name']) && $column['name'] == 'regions') {
+          $regions = [];
+          foreach (Yii::$app->params['regions_list'] as $key => $region) {
+            $regions[$key] = $region['name'];
+          }
+          $column['items'] = $regions;
+        }
+      }
+    }
+    return $params;
+  }
 
 ];
 
