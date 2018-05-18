@@ -198,6 +198,8 @@ return [
     'goto_to_{store}' => 'Осуществляется переход в интернет-магазин <strong>{store}</strong>',
     'goto_you_ll_get_{cashback}' => 'За заказ в нём вы получите <span>{cashback}</span>кэшбэка',
     'push_to_<a id="transition-href" href="{link}">here</a>_if_not_redirected' => 'Если автоматический переход не произошёл, нажмите <a id="transition-href" href="{link}">сюда</a>.',
+    'offline_how_to_get_cashback' => 'Как получить кэшбэк в оффлайне от SecretDiscounter?',
+    'offline_how_to_get_cashback_infotitle' => 'Как получить кэшбэк в оффлайне от SecretDiscounter?',
 
 
 

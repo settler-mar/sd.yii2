@@ -175,8 +175,8 @@ class SiteController extends SdController
       throw new HttpException(404, 'User not found');
     }
 
-    $page['pre_footer'] = '<h2>Как получить кэшбэк в оффлайне от SecretDiscounter?</h2>{{_include(\'stores/instruction_offline\') | raw}}';
-    $page['infotitle'] = 'Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $page['pre_footer'] = '<h2>'.\Yii::t('main', 'offline_how_to_get_cashback').'</h2>{{_include(\'stores/instruction_offline\') | raw}}';
+    $page['infotitle'] = \Yii::t('main', 'offline_how_to_get_cashback_infotitle');
     $this->params['breadcrumbs'][] = $page['title'];
 
     Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";
