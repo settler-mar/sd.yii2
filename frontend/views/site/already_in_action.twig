@@ -1,2 +1,2 @@
-<h2>ВНИМАНИЕ!</h2>
-<p>Вы уже зарегистрировались для участия в акции ранее ({{ _date(user.in_action) }}). Повторная регистрация не нужна.</p>
+{{ t('main', 'start_action_allredy_in_{action}', {'action': _date(user.in_action)})|raw }}
+

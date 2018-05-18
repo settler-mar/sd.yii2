@@ -146,11 +146,14 @@ function _hyphen_words(array &$m, $wbr = false)
  * @return string
  */
 function getConstant($name, $json_col = false, $json_index = 0) {
+
     $constant = Constants::byName($name, $json_col, $json_index);
-    if ($constant && in_array($constant['ftype'], ['textarea', 'reachtext'])) {
-        return Yii::$app->TwigString->render($constant['text'], []);
+    if ($constant && isset($constant['ftype']) && in_array($constant['ftype'], ['textarea', 'reachtext'])) {
+        return Yii::$app->TwigString->render($constant['text'], Yii::$app->view->all_params);
+    } elseif ($constant && isset($constant['text'])) {
+        return $constant['text'];
     } else {
-        return $constant ? $constant['text'] : '';
+        return $constant;
     }
 }
 
@@ -600,8 +603,8 @@ $functionsList = [
     }
     return $params;
   },
-  '_render' => function($content, $params = []){
-    return Yii::$app->TwigString->render($content, $params);
+  '_render' => function($content){
+    return Yii::$app->TwigString->render($content, Yii::$app->view->all_params);
   }
 
 

@@ -284,6 +284,7 @@ return [
     'ballance_current'  => 'Сумма кэшбэка, уже доступная к выводу',
     'ballance_pending'  => 'Сумма кэшбэка за еще неподтвержденные магазином покупки',
     'register_and_get_plus_30_percent_cachback'  => 'Зарегистрироваться (+30% к кэшбэку)',
+    'account_blocked'  => 'Аккаунт заблокирован',
 
 
 ];

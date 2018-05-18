@@ -185,6 +185,8 @@ return [
     'review_exists_you_can_only_<br>_<a class="modals_open" href="{edit}">edit</a>_previesly_added_review' => 'Вы уже оставили отзыв о сайте.<br> Теперь вы можете только <a href="{edit}" class="modals_open">изменить</a> или <a href="{edit}" class="modals_open">дополнить</a><br>ранее оставленный <a href="{edit}" class="ajaxFormOpen">отзыв</a>',
     'review_add_successfull' => 'Ваш отзыв успешно добавлен и будет<br>опубликован на сайте после модерации.',
     'review_edit_successfull' => 'Ваш отзыв успешно изменён и будет<br>опубликован на сайте после модерации.',
+    'start_action_allredy_in_{action}' => '<h2>ВНИМАНИЕ!</h2><p>Вы уже зарегистрировались для участия в акции ранее ({action}). Повторная регистрация не нужна.</p>',
+    'start_action' => '<h2>Поздравляем!</h2><p>Вы успешно зарегистрировались для участия в акции.</p>',
 
 
 

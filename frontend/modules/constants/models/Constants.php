@@ -140,7 +140,6 @@ class Constants extends \yii\db\ActiveRecord
     public static function byName($name, $json_col = false, $json_index = 0)
     {
 
-
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $cash_name = $name . '_' . $json_col . '_' . $json_index . ($language ? '_' . $language : '');
 
@@ -163,9 +162,9 @@ class Constants extends \yii\db\ActiveRecord
                 if ($json_col !== false) {
                     if (isset($const['text'][$json_index])) {
                         if (is_array($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
-                            return $const['text'][$json_index][$json_col];
+                            return ['text' => $const['text'][$json_index][$json_col], 'ftype' => $const['ftype']];
                         } else {
-                            return $const['text'][$json_index];
+                            return ['text' => $const['text'][$json_index], 'ftype'=> $const['ftype']];
                         }
                     } else {
                         return false;

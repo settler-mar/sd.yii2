@@ -271,7 +271,7 @@ class SiteController extends SdController
    */
   public function actionAccountblocked()
   {
-    $this->params['breadcrumbs'][] = 'Аккаунт заблокирован';
+    $this->params['breadcrumbs'][] = Yii::t('account', 'account_blocked');
     return $this->render('user-blocked');
   }
 
