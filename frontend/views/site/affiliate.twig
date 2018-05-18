@@ -1,9 +1,9 @@
 <section class="affiliate section-padding margin">
   <div class="container">
     <div class="margin">
-      <h1>Партнёрская программа</h1>
+      <h1>{{ t('main', 'affiliate_h1')|raw }}</h1>
       <p>
-        Мы хотим, чтобы Вы не только экономили при помощи нашего кэшбэк-сервиса, но и зарабатывали вместе с нами. Для этого мы разработали удобную и выгодную <strong>партнерскую программу</strong>, по которой Вы будете зарабатывать 15% от кэшбэка всех приведенных Вами друзей. ПОЖИЗНЕННО!
+        {{ t('main', 'affiliate_we_want')|raw }}
       </p>
     </div>
 
@@ -11,13 +11,13 @@
       {% if h1 %}
         {{ h1 | raw }}
       {% else %}
-        Принцип работы партнёрской программы
+        {{ t('main', 'affiliate_principle')|raw }}
       {% endif %}
     </h2>
 
     {% include 'parts/principle-affiliate.twig' %}
 
-    <h2>Способы приглашения</h2>
+    <h2>{{ t('main', 'affiliate_invite_methods')|raw }}</h2>
     <div class="flex-line tablets_flex-col">
       <div class="instruction-item tablets_flex-row tablets_text-aling_left">
         <svg class="instruction-icon instruction-icon-mini svg-no-stroke" xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@
         </svg>
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Поделиться ссылкой в социальных сетях
+            {{ t('main', 'affiliate_share_social')|raw }}
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
         </svg>
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Отправить друзьям ссылку напрямую
+            {{ t('main', 'affiliate_share_direct')|raw }}
           </div>
         </div>
       </div>
@@ -53,14 +53,14 @@
         </svg>
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Отправить приглашение на электронную почту
+            {{ t('main', 'affiliate_share_email')|raw }}
           </div>
         </div>
       </div>
     </div>
 
     <div class="align-center">
-      <a href="#registration" class="btn modals_open">Зарегистрироваться</a>
+      <a href="{{ _href('#registration')|raw }}" class="btn modals_open">{{ t('common', 'do_register')|raw }}</a>
     </div>
 
   </div>

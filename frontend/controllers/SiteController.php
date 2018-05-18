@@ -214,7 +214,7 @@ class SiteController extends SdController
    */
   public function actionAffiliate()
   {
-    $this->params['breadcrumbs'][] = 'Партнёрская программа';
+    $this->params['breadcrumbs'][] = Yii::t('main', 'affiliate_breadcrumbs');
     return $this->render('affiliate');
   }
 
