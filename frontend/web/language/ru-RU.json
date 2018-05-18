@@ -36,7 +36,8 @@
   "close": "Закрыть",
   "download": "Скачать",
   "install_plugin_and_it_will_notice_about_cashback":"Установите наше расширение для браузера, и оно само напомнит о кэшбэке на сайте магазина!",
-  "install_plugin":"Установить&nbsp;плагин"
-
+  "install_plugin":"Установить&nbsp;плагин",
+  "show_details": "Подробнее",
+  "hide_details": "Скрыть"
 
 }

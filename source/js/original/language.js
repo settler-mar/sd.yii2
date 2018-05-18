@@ -7,7 +7,9 @@ var lg = (function() {
       data[index]=clearVar(data[index]);
     }
     lang=data;
-    //console.log(data);
+    var event = new CustomEvent("language_loaded");
+    document.dispatchEvent(event);
+    //console.log(data, event);
   },'json');
 
   function clearVar(txt){
