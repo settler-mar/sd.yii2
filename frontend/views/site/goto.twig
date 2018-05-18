@@ -2,16 +2,12 @@
     <div class="center-block">
         <div class="phrase">
             <p>
-                Осуществляется переход в интернет-магазин <strong>{{store.name}}</strong>
+                {{ t('main', 'goto_to_{store}', {'store': store.name})|raw }}
             </p>
             <p class="phrase_cashback">
-                За заказ в нём Вы получите
-                    <span>
-                        {{ _cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
-                    </span>
-                кэшбэка
+                {{ t('main', 'goto_you_ll_get_{cashback}', {'cashback': _cashback(store.displayed_cashback, store.currency,store.action_id)})|raw }}
             </p>
-            <div class="manual-shift">Если автоматический переход не произошёл, нажмите <a id="transition-href" href="{{link}}" >сюда</a>.</div>
+            <div class="manual-shift">{{ t('main', 'push_to_<a id="transition-href" href="{link}">here</a>_if_not_redirected', {'link': link})|raw }}</div>
         </div>
         <div class="svg-container">
             <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100">
