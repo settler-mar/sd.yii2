@@ -204,6 +204,11 @@ return [
     'dobro_funds' => 'Мы поддерживаем следующие благотворительные организации',
     'dobro_start' => 'Перейти к покупкам <span>и начать помогать</span> →',
     'dobro_do_together' => 'Делаем Добрые Дела вместе!',
+    'dobro_do_breadcrumbs' => 'Делаем добро',
+    'search_result_empty' => 'По вашему запросу ничего не найдено.',
+    'search_result' => 'Результаты поиска',
+    'search_result_with_{query}_' => 'Результаты поиска по запросу {query}',
+    'search_result_breadcrumbs' => 'Поиск',
 
 
 

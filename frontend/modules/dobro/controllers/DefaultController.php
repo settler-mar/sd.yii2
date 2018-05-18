@@ -24,7 +24,7 @@ class DefaultController extends SdController
             ->asArray()
             ->all();
 
-        $this->params['breadcrumbs'][] = 'Делаем добро';
+        $this->params['breadcrumbs'][] = \Yii::t('main', 'dobro_do_breadcrumbs');
 
         return $this->render('index', $contentData);
     }

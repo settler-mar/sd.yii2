@@ -60,7 +60,7 @@ class DefaultController extends SdController
       echo json_encode($out);
       exit;
     } else {
-      $this->params['breadcrumbs'][] = ['label' => 'Поиск'];
+      $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'search_result_breadcrumbs')];
       return $this->render('index', [
         'stores' => $stores,
         "query" => $query,

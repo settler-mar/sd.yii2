@@ -5,7 +5,7 @@
                 {{ _constant('stores-search-module-text')|raw }}
             </div>
             <div class="stores-search_wrap">
-                <form action="/search/coupon" method="get" class="stores-search_form">
+                <form action="{{ _href('/search/coupon')|raw }}" method="get" class="stores-search_form">
                     <input type="hidden" name="limit" value="30">
                     <input type="text" name="query" class="stores-search_form-input search-form-input btn-min_width80" placeholder="{{ t('main', 'enter_shop_name')|raw }}" autocomplete="off">
                     <button type="submit" class="stores-search_form-button">{{ t('common', 'find')|raw }}</button>

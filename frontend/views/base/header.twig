@@ -27,7 +27,7 @@
 
 
         <div class="header-search stores_search">
-          <form action="/search" class="header-search_form" name="search" method="get">
+          <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
             <div class="header-search_form-group">
               <input type="text" name="query" id="search" class="header-search_form-input search-form-input" value=""
                      placeholder="{{ t('main', 'find_shop') }}" autocomplete="off">
