@@ -248,11 +248,11 @@ class SiteController extends SdController
    * /recommendations
    * @return string
    */
-  public function actionRecommendations()
-  {
-    $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
-    return $this->render('recommendations');
-  }
+//  public function actionRecommendations()
+//  {
+//    $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
+//    return $this->render('recommendations');
+//  }
 
 //  /**
 //   * /about
