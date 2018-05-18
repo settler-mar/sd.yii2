@@ -139,6 +139,21 @@ function _hyphen_words(array &$m, $wbr = false)
   return $s;
 }
 
+/**константу или так отдаём или рендерим
+ * @param $name
+ * @param bool $json_col
+ * @param int $json_index
+ * @return string
+ */
+function getConstant($name, $json_col = false, $json_index = 0) {
+    $constant = Constants::byName($name, $json_col, $json_index);
+    if ($constant && in_array($constant['ftype'], ['textarea', 'reachtext'])) {
+        return Yii::$app->TwigString->render($constant['text'], []);
+    } else {
+        return $constant ? $constant['text'] : '';
+    }
+}
+
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
@@ -190,7 +205,7 @@ $functionsList = [
   },
 //функция отдать константу по имени
   '_constant' => function ($name, $json_col = false, $json_index = 0) {
-     return Constants::byName($name, $json_col, $json_index);
+    return getConstant($name, $json_col, $json_index);
   },
   'currencyIcon' => function ($currency) use ($currencyIcon) {
     return (isset($currencyIcon[$currency]) ? Help::svg(
@@ -479,7 +494,7 @@ $functionsList = [
         } else {
           foreach ($flashe as $txt) {
             if ($type == 'constant') {
-                $html .= Constants::byName($txt);
+                $html .= getConstant($txt);
             } else {
                 $js .= create_flash($type, $txt);
             }
@@ -487,7 +502,7 @@ $functionsList = [
         }
       } elseif (is_string($flashe)) {
         if ($type == 'constant') {
-            $html .= Constants::byName($flashe);
+            $html .= getConstant($flashe);
         } else {
             $js .= create_flash($type, $flashe);
         }
@@ -584,7 +599,11 @@ $functionsList = [
       }
     }
     return $params;
+  },
+  '_render' => function($content, $params = []){
+    return Yii::$app->TwigString->render($content, $params);
   }
+
 
 ];
 

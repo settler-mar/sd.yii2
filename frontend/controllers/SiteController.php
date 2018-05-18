@@ -234,15 +234,15 @@ class SiteController extends SdController
    * /loyalty
    * @return string
    */
-  public function actionLoyalty()
-  {
-    $this->params['breadcrumbs'][] = 'Накопительная система';
-    if (Yii::$app->request->isAjax) {
-      return json_encode(['html' => $this->renderAjax('loyalty')]);
-    } else {
-      return $this->render('loyalty');
-    }
-  }
+//  public function actionLoyalty()
+//  {
+//    $this->params['breadcrumbs'][] = 'Накопительная система';
+//    if (Yii::$app->request->isAjax) {
+//      return json_encode(['html' => $this->renderAjax('loyalty')]);
+//    } else {
+//      return $this->render('loyalty');
+//    }
+//  }
 
   /**
    * /recommendations

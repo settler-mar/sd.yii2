@@ -171,7 +171,7 @@ class Constants extends \yii\db\ActiveRecord
                         return false;
                     }
                 }
-                return $const['text'];
+                return ['text'=> $const['text'], 'ftype' => $const['ftype']];
             } else {
                 return false;
             }
