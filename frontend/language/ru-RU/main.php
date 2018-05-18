@@ -200,6 +200,10 @@ return [
     'push_to_<a id="transition-href" href="{link}">here</a>_if_not_redirected' => 'Если автоматический переход не произошёл, нажмите <a id="transition-href" href="{link}">сюда</a>.',
     'offline_how_to_get_cashback' => 'Как получить кэшбэк в оффлайне от SecretDiscounter?',
     'offline_how_to_get_cashback_infotitle' => 'Как получить кэшбэк в оффлайне от SecretDiscounter?',
+    'dobro_h1' => 'Делаем Добрые Дела вместе!',
+    'dobro_funds' => 'Мы поддерживаем следующие благотворительные организации',
+    'dobro_start' => 'Перейти к покупкам <span>и начать помогать</span> →',
+    'dobro_do_together' => 'Делаем Добрые Дела вместе!',
 
 
 

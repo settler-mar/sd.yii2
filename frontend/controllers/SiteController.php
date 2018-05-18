@@ -118,7 +118,7 @@ class SiteController extends SdController
   public function actionAdmin()
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('adminIndex')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(\Yii::t('main', 'page_is_forbidden'));
       return false;
     }
 
