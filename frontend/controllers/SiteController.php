@@ -192,11 +192,11 @@ class SiteController extends SdController
    * /faq
    * @return string
    */
-  public function actionFaq()
-  {
-    $this->params['breadcrumbs'][] = 'FAQ';
-    return $this->render('faq');
-  }
+//  public function actionFaq()
+//  {
+//    $this->params['breadcrumbs'][] = 'FAQ';
+//    return $this->render('faq');
+//  }
 
 //  /**
 //   * /promo

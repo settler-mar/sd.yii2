@@ -167,7 +167,7 @@ $config = [
         'search/<action>' => '404',
         'coupons/search' => '404',
 
-        '<action:(faq|admin|loyalty|recommendations|offline)>' => 'site/<action>',
+        '<action:(admin|loyalty|recommendations|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
         'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
