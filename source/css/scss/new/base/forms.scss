@@ -343,6 +343,23 @@ td {
     border: 0;
   }
 }
+.form-input-recaptcha {
+  display: inline-block;
+  width: 75%;
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+  border: none;
+
+  &.support {
+    width: 100%;
+
+    iframe {
+      width: 304px !important;
+      height: 78px !important;
+    }
+  }
+}
 
 .form {
   &_right_blk {

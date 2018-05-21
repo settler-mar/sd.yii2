@@ -13,6 +13,7 @@ class RegistrationForm extends Model
   public $email;
   public $password;
   public $password_repeat;
+  public $reCaptcha;
 
   /**
    * @inheritdoc
@@ -24,6 +25,7 @@ class RegistrationForm extends Model
       [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
       [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
       [['password_repeat'], 'required', 'message' => 'Необходимо повторить пароль'],
+      [['reCaptcha'], 'required', 'message' => 'Докажите, что вы не робот'],
       [['email'], 'email'],
       ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Введенные пароли не совпадают.', 'operator' => '=='],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким e-mail уже зарегистрирован'],
@@ -31,6 +33,7 @@ class RegistrationForm extends Model
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 6],
+      [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
     ];
   }
 
@@ -40,6 +43,7 @@ class RegistrationForm extends Model
       'email' => 'Email',
       'password' => 'Пароль',
       'password_repeat' => 'Повтор пароля',
+      'reCaptcha' => 'Докажите, что вы не робот',
     ];
   }
 

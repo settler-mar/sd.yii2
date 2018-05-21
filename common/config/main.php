@@ -4,6 +4,7 @@ $twigFunction['translate'] = '\Yii::t';
 
 include_once(__DIR__ . '/start_param.php');
 $dict = require(__DIR__ . '/dictionary.php');
+$reCaptcha = include_once(__DIR__ . '/recaptcha-local.php');
 
 
 if (!function_exists('get_ip')) {
@@ -164,6 +165,10 @@ $config = [
         'languageDetector' => [
             'class' => 'common\components\LanguageDetect',
         ],
+        'reCaptcha' => array_merge([
+            'name' => 'reCaptcha',
+            'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
+        ], $reCaptcha),
       //'db' => require __DIR__.'/db.php'
     ],
     'params' => [
