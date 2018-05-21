@@ -1,3 +1,41 @@
+@mixin account-table {
+  padding: 0;
+  box-shadow: none;
+  background: inherit;
+
+  .scroll_box {
+    &-content {
+      margin: 0;
+      width: 100%;
+    }
+
+    &-text {
+      padding: 10px 6px 0 3px;
+    }
+
+    &-show_more {
+      padding: 3px 10px 3px 3px;
+      text-align: left;
+    }
+
+  }
+
+  .max_text_hide {
+
+    &:before {
+      margin-left: -3px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #eaeaea 75%);
+    }
+  }
+}
+
+tr:nth-child(2n) {
+  .scroll_box-item.account-table .max_text_hide:before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f6f6f5 75%);
+  }
+}
+
+
 .scroll_box {
   &-active {
     display: flex;
@@ -37,6 +75,10 @@
     box-shadow: 2px 2px 21px rgba($scroll_box_shadow, 0.21);
     overflow: hidden;
     position: relative;
+
+    &.account-table {
+      @include account-table;
+    }
 
     &-emty {
       box-shadow: none;
@@ -182,5 +224,11 @@
     padding: 5px 18px 10px;
     left: 0;
     box-sizing: border-box;
+  }
+}
+
+.account {
+  .table {
+
   }
 }

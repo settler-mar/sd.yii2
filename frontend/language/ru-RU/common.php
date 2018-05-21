@@ -56,6 +56,7 @@ return [
     'successfull' => 'Успешно',
     'to_know_details' => 'Узнать подробнее',
     'read_all_topic' => 'Читать полностью',
+    'read_all_topic_short' => 'Читать',
     'sorry_this_is_in_develop' => 'Извините, данная функция находится в разработке',
     'add_right_now' => 'Подключить сейчас',
     'invite_friends' => 'пригласить друзей',

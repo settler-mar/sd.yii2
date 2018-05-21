@@ -33,9 +33,18 @@
               {{ svg('check','currency-icon')|raw }}{{ w.status_title }}
             {% endif %}
           </td>
-          <td>
-            {{ _n_to_br(w.admin_comment) | raw }}
-          </td>
+          {% if w.admin_comment != '' %}
+            <td class="scroll_box-item account-table">
+              <div class="scroll_box-content auto_hide_control">
+                <div class="scroll_box-text max_text_hide">
+                    {{ _n_to_br(w.admin_comment) | raw }}
+                </div>
+                <a class="blue scroll_box-show_more">{{ t('common', 'read_all_topic_short')|raw }}</a>
+              </div>
+            </td>
+          {% else %}
+            <td></td>
+          {% endif %}
         </tr>
       {% endfor %}
 
