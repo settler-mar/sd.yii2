@@ -181,4 +181,29 @@ class Help extends Component
       }
       return $output;
   }
+  public static function href($href, $basePath = '')
+  {
+      $lang = Yii::$app->params['lang_code'];
+
+      $lang = $lang == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lang;
+      if ($lang == '') {
+          return $basePath . $href;
+      }
+      if (substr($href, 0, 1) == '#') {
+          return ($basePath != '' ? $basePath . '/' : '')  . substr($href, 0, 1) . $lang . '/'. substr($href, 1);
+      } else {
+          return $basePath . '/' .  $lang . $href;
+      }
+  }
+
+  public static function makeHrefs($text)
+  {
+      $pattern = '/\s((http(s)?:\/\/)|(www\.))([^\.]+)\.([^\s]+)/i';
+      return preg_replace_callback($pattern, function($replace) {
+          $href = trim($replace[0]);
+          $hrefArr = explode('/', $href);
+          return '<a target="_blank" rel="nofollow noreferrer" href="'.$href.'">'.$hrefArr[count($hrefArr)-1].'</a>';
+      }, $text);
+  }
+
 }
