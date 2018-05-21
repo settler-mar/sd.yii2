@@ -6,6 +6,7 @@ use yii;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\withdraw\models\WithdrawProcess;
 use frontend\components\Pagination;
+use common\components\Help;
 
 /**
  * Class AccountController
@@ -90,6 +91,7 @@ class AccountController extends \yii\web\Controller
     $payment_statuses = Yii::t('dictionary', 'pay_status');
     foreach ($data['withdraw'] as &$withdraw) {
         $withdraw['status_title'] = isset($payment_statuses[$withdraw['status']]) ? $payment_statuses[$withdraw['status']] : '';
+        $withdraw['admin_comment'] = Help::makeHrefs($withdraw['admin_comment']);
     }
     return $this->render('history', $data);
   }
