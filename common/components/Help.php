@@ -196,13 +196,18 @@ class Help extends Component
       }
   }
 
+    /**ищем в тектсте url, переделываем в <a hrer="...">...</a>
+     * @param $text
+     * @return null|string|string[]
+     */
   public static function makeHrefs($text)
   {
-      $pattern = '/\s((http(s)?:\/\/)|(www\.))([^\.]+)\.([^\s]+)/i';
+      $pattern = '/\s((http(s)?:\/\/)|(www\.))([^\.]+)\.([^\s()]+)/i';
       return preg_replace_callback($pattern, function($replace) {
           $href = trim($replace[0]);
           $hrefArr = explode('/', $href);
-          return '<a target="_blank" rel="nofollow noreferrer" href="'.$href.'">'.$hrefArr[count($hrefArr)-1].'</a>';
+          $text = strlen($href) < 40 ? $href : $hrefArr[count($hrefArr)-1];
+          return ' <a target="_blank" rel="nofollow noreferrer"  class="blue" href="' . $href . '">' . $text . '</a> ';
       }, $text);
   }
 
