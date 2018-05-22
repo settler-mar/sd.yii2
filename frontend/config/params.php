@@ -111,4 +111,29 @@ $data['plugin'] = [
 
 ];
 
+$data['meta_tags'] = [
+    'name' => [
+        "twitter:card" =>"summary_large_image",
+        "twitter:title" => "title",
+    ],
+    'property' => [
+        "og:type" => "website",
+        "og:site_name" => "SecretDiscounter",
+        "og:url" => "request.pathInfo",
+        "twitter:url" => "https://secretdiscounter.ru/~request.pathInfo",
+        "twitter:domain" => "https://secretdiscounter.ru/",
+        "og:title" => "meta.title",
+        "og:description" => "description",
+        "twitter:description" => "description",
+        "og:image" => "https://secretdiscounter.ru/images/share_img.png",
+        "twitter:image:src" => "https://secretdiscounter.ru/images/share_img.png"
+],
+    'itemprop' => [
+        "name" => "SecretDiscounter",
+        "description" => "description",
+        "image" => "https://secretdiscounter.ru/images/share_img.png",
+    ]
+];
+
+
 return $data;
