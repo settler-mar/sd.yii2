@@ -10,6 +10,24 @@ use  JBZoo\Image\Image;
 class SdImage
 {
 
+    const MAX_SIZE = 20; // mb
+    const MIN_WIDTH = 150;
+    const MIN_HEIGHT = 150;
+    const ULTIMATE_HEIGHT = 6000;
+    const MAX_WIDTH = 1280;
+    const ULTIMATE_WIDTH = 6000;
+    const MAX_HEIGHT = 720;
+    const PREVIEW_SIZE = 150;
+    const CHAT_PREVIEW_SIZE = 150;
+    protected static  $allowedTypes = [
+        'image/png',
+        'image/jpeg',
+        'image/gif',
+        'image/bmp',
+        'image/jpg',
+        'image/x-ms-bmp'
+    ];
+
     /**
      * @param $file
      * @param $path
@@ -21,6 +39,9 @@ class SdImage
      */
     public static function save($file, $path, $width = 300, $old = false)
     {
+        if (!self::testImage($file)) {
+            return false;
+        };
         $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
         $exch = explode('.', $file->name);
         $exch = $exch[count($exch) - 1];
@@ -56,6 +77,31 @@ class SdImage
         if ($image && is_readable($image) && is_file($image)) {
             unlink($image);
         }
+    }
+
+    protected static function testImage($file)
+    {
+        // Check image
+        $image = file_get_contents($file->tempName);
+        if (base64_decode(base64_encode($image) !== $image)) {
+            return false;
+        }
+
+        // image size
+        $size = strlen($image) / 1000 / 1024; //get size in mb
+        $info = getimagesizefromstring($image);
+
+        //check file type
+        if (!in_array($info['mime'], self::$allowedTypes) || $info[0] > self::ULTIMATE_WIDTH
+            || $info[1] > self::ULTIMATE_HEIGHT) {
+            return false;
+        }
+        // check size
+        if ($size > self::MAX_SIZE) {
+            return false;
+        }
+
+        return true;
     }
 
 }
