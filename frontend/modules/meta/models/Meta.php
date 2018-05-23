@@ -22,6 +22,19 @@ class Meta extends \yii\db\ActiveRecord
     public $backgroundImageAlt;
     public $backgroundImageClassName;
     protected $imagesPath = '/img/';
+    public $metaTagArray;
+
+    public $metaProperties = [
+        'title' => 'Title',
+        'description' => 'Description',
+        'image' => 'Image',
+        'url' => 'Url',
+        'meta.title' => 'Title из Метаданных',
+        'meta.description' => 'Desription  из Метаданных',
+        'meta.keywords' => 'Keywords  из Метаданных',
+        'request.pathInfo' => 'Url текущей страницы',
+        ];
+
 
     /**
      * @inheritdoc
@@ -44,8 +57,8 @@ class Meta extends \yii\db\ActiveRecord
             [['page', 'title', 'h1', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page','unique'],
             ['show_breadcrumbs', 'boolean'],
-            [['content'], 'string'],
-            [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'], 'safe'],
+            [['content', 'meta_tags'], 'string'],
+            [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
         ];
     }
 
@@ -71,6 +84,24 @@ class Meta extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeValidate()
+    {
+        $meta_tags = [];
+        $appTags = Yii::$app->params['meta_tags'];
+        foreach ($appTags as  $attribute => $groups) {
+            foreach ($groups as $name => $property) {
+                $data = !empty($this->metaTagArray[$attribute.'.'.$name]) && !empty($this->metaTagArray[$attribute.'.'.$name]) ?
+                    implode('~', $this->metaTagArray[$attribute.'.'.$name]):
+                    false;
+                if ($data && $data != $property) {
+                    $meta_tags[$attribute][$name] = $data;
+                }
+            }
+        }
+        $this->meta_tags = !empty($meta_tags) ? json_encode($meta_tags) : null;
+        return parent::beforeValidate();
+    }
+
     /**
      *
      */
@@ -82,6 +113,16 @@ class Meta extends \yii\db\ActiveRecord
             $this->backgroundImageImage = isset($backgroundImage->image) ? $backgroundImage->image : null;
             $this->backgroundImageAlt = isset($backgroundImage->alt) ? $backgroundImage->alt : null;
             $this->backgroundImageClassName = isset($backgroundImage->class_name) ? $backgroundImage->class_name : null;
+        }
+        foreach ($this->metaTags as  $attribute => $groups) {
+            foreach ($groups as $name => $property) {
+                $data = [];
+                $dataArr = explode('~', $property);
+                foreach ($dataArr as $key => $dataItem) {
+                    $data[] = $dataItem;
+                }
+                $this->metaTagArray[$attribute.'.'.$name] = $data;
+            }
         }
     }
 
@@ -179,6 +220,26 @@ class Meta extends \yii\db\ActiveRecord
 
       //если ни чего не нашлось подходящего то возвращаем как для index
       return Yii::$app->params['meta']['index'];
+    }
+
+    /**
+     * мета теги  читаем из конфига и подменяем те, что вписаны в текущую запись
+     * @return mixed
+     */
+    public function getMetaTags()
+    {
+        $tags = json_decode($this->meta_tags, true);
+
+        $result = Yii::$app->params['meta_tags'];
+        foreach ($result as  $attribute => &$groups) {
+            foreach ($groups as $name => &$property) {
+                if (isset($tags[$attribute][$name]) &&  $tags[$attribute][$name] != $property) {
+                    $property = $tags[$attribute][$name];
+                }
+
+            }
+        }
+        return $result;
     }
 
     /**
