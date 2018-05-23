@@ -27,6 +27,8 @@ class DataValidator extends Validator
         $model->addError($attribute, Yii::t('account', 'birthday_format_error'));
       } elseif (strtotime($value) > time() - 5 * 356 * 24 * 60 * 60) {
         $model->addError($attribute, Yii::t('account', 'birthday_biggest_error'));
+      } elseif (strtotime($value) < time() - 90 * 356 * 24 * 60 * 60) {
+        $model->addError($attribute, Yii::t('account', 'birthday_smallest_error'));
       } elseif (date('d-m-Y', strtotime($value)) != $model->$attribute) {
         $model->addError($attribute, Yii::t('account', 'birthday_format_error'));
       }else{
