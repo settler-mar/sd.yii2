@@ -38,62 +38,59 @@
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
+                        {{ form.field(model, 'meta_tags_type').dropDownList({0:"По умолчанию",1:"Ручной ввод"})|raw }}
+
                         <h4>Тэги микрозазметки</h4>
 
-                        {% for attribute, groups in model.metaTags  %}
-                            {% for name, property in groups %}
-                                {#{{ model.metaTagArray[attribute~'.'~name][0] }}#}
-                                {#{{ form.field(model, 'metaTagArray['~attribute~'.'~name~']').widget(MultipleInput.className(), {#}
-                                    {#'allowEmptyList':true,#}
-                                    {#'columns': [#}
-                                        {#{#}
-                                            {#'name': 'data_meta',#}
-                                            {#'title': 'data_meta',#}
-                                            {#'value': meta_table.data_meta#}
-                                        {#},#}
-                                    {#]#}
-                                {#}).label(attribute~' '~name)|raw }}#}
-                                <div class="form-group field-meta-metatagarray-{{ attribute }}-{{ name }}">
-                                    <label class="meta-metatagarray-label">&lt;meta {{ attribute }}="{{ name }}" content="{{ property }}"&gt;</label>
-                                    <table class="table" data-attribute="{{ attribute }}" data-name="{{ name }}">
-                                        {% for key, value in model.metaTagArray[attribute~'.'~name] %}
-                                            <tr class="multiple-input-list__item">
-                                                <td class="list-cell__data_meta">
-                                                    <div class="form-group">
-                                                        <input type="text"
-                                                               class="form-control meta-metatagarray" name="Meta[metaTagArray][{{ attribute }}.{{ name }}][]"
-                                                            value="{{ value }}">
-                                                    </div>
+                        {{ form.field(model, 'metaTitle').textInput({'maxlength':true})|raw }}
 
-                                                </td>
-                                                <td class="list-cell__button">
-                                                    <div class="btn multiple-input-list__btn meta-input-remove btn btn-danger"><i class="glyphicon glyphicon-remove"></i></div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <tr>
-                                            <td class="list-cell__data_meta">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" list="meta-metatagarray-datalist"/>
-                                                </div>
+                        {{ form.field(model, 'metaDescription').textArea({'rows':6})|raw }}
 
-                                            </td>
-                                            <td class="list-cell__button">
-                                                <div data-key="{{ attribute }}.{{ name }}" class="btn multiple-input-list__btn meta-input-plus btn btn-default"><i class="glyphicon glyphicon-plus"></i></div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                        {{ form.field(model, 'metaImage').textInput({'maxlength':true})|raw }}
 
-                                </div>
-                            <br>
+                        {#{% for attribute, groups in model.metaTags  %}#}
+                            {#{% for name, property in groups %}#}
+                                {#<div class="form-group field-meta-metatagarray-{{ attribute }}-{{ name }}">#}
+                                    {#<label class="meta-metatagarray-label">&lt;meta {{ attribute }}="{{ name }}" content="{{ property }}"&gt;</label>#}
+                                    {#<table class="table" data-attribute="{{ attribute }}" data-name="{{ name }}">#}
+                                        {#{% for key, value in model.metaTagArray[attribute~'.'~name] %}#}
+                                            {#<tr class="multiple-input-list__item">#}
+                                                {#<td class="list-cell__data_meta">#}
+                                                    {#<div class="form-group">#}
+                                                        {#<input type="text"#}
+                                                               {#class="form-control meta-metatagarray" name="Meta[metaTagArray][{{ attribute }}.{{ name }}][]"#}
+                                                            {#value="{{ value }}">#}
+                                                    {#</div>#}
 
-                        {% endfor %}
-                        {% endfor %}
-                    <datalist id="meta-metatagarray-datalist">
-                        {% for prop_key, prop_value in model.metaProperties %}
-                            <option value="{{ prop_key }}">{{ prop_value }}</option>
-                        {% endfor %}
-                    </datalist>
+                                                {#</td>#}
+                                                {#<td class="list-cell__button">#}
+                                                    {#<div class="btn multiple-input-list__btn meta-input-remove btn btn-danger"><i class="glyphicon glyphicon-remove"></i></div>#}
+                                                {#</td>#}
+                                            {#</tr>#}
+                                        {#{% endfor %}#}
+                                        {#<tr>#}
+                                            {#<td class="list-cell__data_meta">#}
+                                                {#<div class="form-group">#}
+                                                    {#<input type="text" class="form-control" list="meta-metatagarray-datalist"/>#}
+                                                {#</div>#}
+
+                                            {#</td>#}
+                                            {#<td class="list-cell__button">#}
+                                                {#<div data-key="{{ attribute }}.{{ name }}" class="btn multiple-input-list__btn meta-input-plus btn btn-default"><i class="glyphicon glyphicon-plus"></i></div>#}
+                                            {#</td>#}
+                                        {#</tr>#}
+                                    {#</table>#}
+
+                                {#</div>#}
+                            {#<br>#}
+
+                        {#{% endfor %}#}
+                        {#{% endfor %}#}
+                    {#<datalist id="meta-metatagarray-datalist">#}
+                        {#{% for prop_key, prop_value in model.metaProperties %}#}
+                            {#<option value="{{ prop_key }}">{{ prop_value }}</option>#}
+                        {#{% endfor %}#}
+                    {#</datalist>#}
                         
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

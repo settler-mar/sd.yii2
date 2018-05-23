@@ -56,8 +56,10 @@ class SdImage
             } else {
                 $img = (new Image($file->tempName));
             }
-            $img->fitToWidth($width)
-                ->saveAs($fullPath .$name);
+            if ($width > 0) {
+                $img->fitToWidth($width);
+            }
+            $img->saveAs($fullPath .$name);
             if ($old) {
                 self::deleteImage($fullPath.$old);
             }

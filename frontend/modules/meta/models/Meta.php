@@ -4,6 +4,7 @@ namespace frontend\modules\meta\models;
 
 use Yii;
 use JBZoo\Image\Image;
+use common\components\SdImage;
 
 /**
  * This is the model class for table "cw_metadata".
@@ -22,7 +23,10 @@ class Meta extends \yii\db\ActiveRecord
     public $backgroundImageAlt;
     public $backgroundImageClassName;
     protected $imagesPath = '/img/';
-    public $metaTagArray;
+    //public $metaTagArray;
+    public $metaTitle;
+    public $metaDescription;
+    public $metaImage;
 
     public $metaProperties = [
         'title' => 'Title',
@@ -57,7 +61,8 @@ class Meta extends \yii\db\ActiveRecord
             [['page', 'title', 'h1', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page','unique'],
             ['show_breadcrumbs', 'boolean'],
-            [['content', 'meta_tags'], 'string'],
+            [['content', 'meta_tags', 'metaTitle', 'metaDescription', 'metaImage'], 'string'],
+            [['meta_tags_type'], 'integer'],
             [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
         ];
     }
@@ -81,24 +86,35 @@ class Meta extends \yii\db\ActiveRecord
             'backgroundImageClassName' => 'Вид отображения',
             'content' => 'Content',
             'show_breadcrumbs' => 'Показывать крошки',
+            'meta_tags_type' => 'Микроразметка',
+            'metaTitle' => 'Title для микроразметки',
+            'metaDescription' => 'Description для микроразметки',
+            'metaImage' => 'Image для микроразметки',
         ];
     }
 
     public function beforeValidate()
     {
-        $meta_tags = [];
-        $appTags = Yii::$app->params['meta_tags'];
-        foreach ($appTags as  $attribute => $groups) {
-            foreach ($groups as $name => $property) {
-                $data = !empty($this->metaTagArray[$attribute.'.'.$name]) && !empty($this->metaTagArray[$attribute.'.'.$name]) ?
-                    implode('~', $this->metaTagArray[$attribute.'.'.$name]):
-                    false;
-                if ($data && $data != $property) {
-                    $meta_tags[$attribute][$name] = $data;
-                }
-            }
+//        $meta_tags = [];
+//        $appTags = Yii::$app->params['meta_tags'];
+//        foreach ($appTags as  $attribute => $groups) {
+//            foreach ($groups as $name => $property) {
+//                $data = !empty($this->metaTagArray[$attribute.'.'.$name]) && !empty($this->metaTagArray[$attribute.'.'.$name]) ?
+//                    implode('~', $this->metaTagArray[$attribute.'.'.$name]):
+//                    false;
+//                if ($data && $data != $property) {
+//                    $meta_tags[$attribute][$name] = $data;
+//                }
+//            }
+//        }
+//        $this->meta_tags = !empty($meta_tags) ? json_encode($meta_tags) : null;
+        if ($this->meta_tags_type == 1) {
+            $this->meta_tags = json_encode([
+                'title' => $this->metaTitle,
+                'description' => $this->metaDescription,
+                'image' => $this->metaImage,
+            ]);
         }
-        $this->meta_tags = !empty($meta_tags) ? json_encode($meta_tags) : null;
         return parent::beforeValidate();
     }
 
@@ -114,15 +130,21 @@ class Meta extends \yii\db\ActiveRecord
             $this->backgroundImageAlt = isset($backgroundImage->alt) ? $backgroundImage->alt : null;
             $this->backgroundImageClassName = isset($backgroundImage->class_name) ? $backgroundImage->class_name : null;
         }
-        foreach ($this->metaTags as  $attribute => $groups) {
-            foreach ($groups as $name => $property) {
-                $data = [];
-                $dataArr = explode('~', $property);
-                foreach ($dataArr as $key => $dataItem) {
-                    $data[] = $dataItem;
-                }
-                $this->metaTagArray[$attribute.'.'.$name] = $data;
-            }
+//        foreach ($this->metaTags as  $attribute => $groups) {
+//            foreach ($groups as $name => $property) {
+//                $data = [];
+//                $dataArr = explode('~', $property);
+//                foreach ($dataArr as $key => $dataItem) {
+//                    $data[] = $dataItem;
+//                }
+//                $this->metaTagArray[$attribute.'.'.$name] = $data;
+//            }
+//        }
+        if ($this->meta_tags_type == 1 && $this->meta_tags) {
+            $meta = json_decode($this->meta_tags, true);
+            $this->metaTitle = !empty($meta['title']) ? $meta['title'] : null;
+            $this->metaDescription = !empty($meta['description']) ? $meta['description'] : null;
+            $this->metaImage = !empty($meta['image']) ? $meta['image'] : null;
         }
     }
 
@@ -226,21 +248,21 @@ class Meta extends \yii\db\ActiveRecord
      * мета теги  читаем из конфига и подменяем те, что вписаны в текущую запись
      * @return mixed
      */
-    public function getMetaTags()
-    {
-        $tags = json_decode($this->meta_tags, true);
-
-        $result = Yii::$app->params['meta_tags'];
-        foreach ($result as  $attribute => &$groups) {
-            foreach ($groups as $name => &$property) {
-                if (isset($tags[$attribute][$name]) &&  $tags[$attribute][$name] != $property) {
-                    $property = $tags[$attribute][$name];
-                }
-
-            }
-        }
-        return $result;
-    }
+//    public function getMetaTags()
+//    {
+//        $tags = json_decode($this->meta_tags, true);
+//
+//        $result = Yii::$app->params['meta_tags'];
+//        foreach ($result as  $attribute => &$groups) {
+//            foreach ($groups as $name => &$property) {
+//                if (isset($tags[$attribute][$name]) &&  $tags[$attribute][$name] != $property) {
+//                    $property = $tags[$attribute][$name];
+//                }
+//
+//            }
+//        }
+//        return $result;
+//    }
 
     /**
      * Сохранение изображения
@@ -248,37 +270,56 @@ class Meta extends \yii\db\ActiveRecord
     protected function saveImage()
     {
         $photo = \yii\web\UploadedFile::getInstance($this, 'backgroundImageImage');
-        if ($photo) {
-
-            $path = $this->imagesPath;// Путь для сохранения
-            $name = time(); // Название файла
-            $exch = explode('.', $photo->name);
-            $exch = $exch[count($exch) - 1];
-            $name .= '.' . $exch;
-            $imageName = $name;   // название
-            $bp=Yii::$app->getBasePath().'/web'.$path;
-            if (!file_exists($bp)) {
-                mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
-            }
-            $img = (new Image($photo->tempName));
-            $img->saveAs($bp . $imageName);
-
-            if ($img) {
-                $json = json_encode([
-                    'image' => $imageName,
-                    'alt' => $this->backgroundImageAlt,
-                    'class_name' => $this->backgroundImageClassName,
-                ]);
-                $oldBackgroundImage = $this->background_image ? json_decode($this->background_image) : false;
-                if ($oldBackgroundImage && $oldBackgroundImage->image) {
-                    $this->removeImage($bp . $oldBackgroundImage->image);   // удаляем старое изображение
-                }
-                $this::getDb()
-                    ->createCommand()
-                    ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
-                    ->execute();
-            }
+        $oldBackgroundImage = $this->background_image ? json_decode($this->background_image, true) : false;
+        if ($photo && $image = SdImage::save(
+            $photo,
+            $this->imagesPath,
+            0,
+            isset($oldBackgroundImage['image']) ? $oldBackgroundImage['image'] : null
+            )) {
+            $json = json_encode([
+                'image' => $image,
+                'alt' => isset($oldBackgroundImage['alt']) ? $oldBackgroundImage['alt'] : null,
+                'class_name' => isset($oldBackgroundImage['class_name']) ? $oldBackgroundImage['class_name'] : null
+            ]);
+            $this::getDb()
+                ->createCommand()
+                ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
+                ->execute();
         }
+
+//        $photo = \yii\web\UploadedFile::getInstance($this, 'backgroundImageImage');
+//        if ($photo) {
+//
+//            $path = $this->imagesPath;// Путь для сохранения
+//            $name = time(); // Название файла
+//            $exch = explode('.', $photo->name);
+//            $exch = $exch[count($exch) - 1];
+//            $name .= '.' . $exch;
+//            $imageName = $name;   // название
+//            $bp=Yii::$app->getBasePath().'/web'.$path;
+//            if (!file_exists($bp)) {
+//                mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
+//            }
+//            $img = (new Image($photo->tempName));
+//            $img->saveAs($bp . $imageName);
+//
+//            if ($img) {
+//                $json = json_encode([
+//                    'image' => $imageName,
+//                    'alt' => $this->backgroundImageAlt,
+//                    'class_name' => $this->backgroundImageClassName,
+//                ]);
+//                $oldBackgroundImage = $this->background_image ? json_decode($this->background_image) : false;
+//                if ($oldBackgroundImage && $oldBackgroundImage->image) {
+//                    $this->removeImage($bp . $oldBackgroundImage->image);   // удаляем старое изображение
+//                }
+//                $this::getDb()
+//                    ->createCommand()
+//                    ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
+//                    ->execute();
+//            }
+//        }
     }
     /**
      * Удаляем изображение при его наличии
