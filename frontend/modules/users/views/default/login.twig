@@ -23,7 +23,7 @@
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder': t('account', 'enter_your_remembered_password'),'required':true}) | raw }}
   <div class="form_right_blk">
-    <a href="#resetpassword" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
+    <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
   </div>
 
   <button type="submit" class="btn block_margin-auto btn-min_width240">{{ t('common', 'do_login')|raw }}</button>
@@ -36,7 +36,7 @@
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <a href="#registration" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">{{ t('common', 'do_register') }}</a>
+    <a href="{{ _href('#registration')|raw }}" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">{{ t('common', 'do_register') }}</a>
     <div class="text-dop text-dop_gray">{{ t('account', 'if_you_new_user')|raw }}</div>
   </div>
 

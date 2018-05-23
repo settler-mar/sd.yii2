@@ -6,6 +6,7 @@ use yii\base\InvalidParamException;
 use frontend\modules\users\models\Users;
 use Yii;
 use Yii\helpers\Url;
+use common\components\Help;
 
 /**
  * Password reset form
@@ -204,8 +205,10 @@ class ValidateEmail extends Model
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,
-        Yii::t('account', 'email_confirm_not_confirmed') . '<br><a href="/account/sendverifyemail' .
-            ($path ? '?path=' . $path : '') . '">'.Yii::t('common','confirm').'</a> E-mail<br><a href="/account/settings">'.Yii::t('common','change').'</a> E-mail'
+        Yii::t('account', 'email_confirm_not_confirmed') .
+            '<br><a href="'.Help::href('/account/sendverifyemail'. ($path ? '?path=' . $path : '')) . '">'
+            .Yii::t('common','confirm').
+            '</a> E-mail<br><a href="'.Help::href('/account/settings').'">'.Yii::t('common','change').'</a> E-mail'
       );
     }
   }

@@ -57,7 +57,7 @@
     {{ t('account', 'user_loyalty_status') }}
   </h2>
   <div class="align-center margin" style="margin-top: -20px;">
-    <a href="#loyalty" class="modals_open" data-notyclass="notify_box-wide">{{ t('common', 'to_know_details') }}</a>
+    <a href="{{ _href('#loyalty')|raw }}" class="modals_open" data-notyclass="notify_box-wide">{{ t('common', 'to_know_details') }}</a>
   </div>
 
   <div class="account-circles-wrap">
@@ -153,9 +153,9 @@
   <img class="account-image-height-200" src="/images/templates/shutterstock_322090571.jpg" alt="{{ t('common', 'invite_friends' ) }}">
   <div>
     <div class="margin-half account-margin-top account-cashbonus">
-      {{ t('account', 'you_can_invite_friends_and_get_money_from_their_byings')|raw }}
+      {{ t('account', 'you_can_invite_friends_and get_money_from_their_byings')|raw }}
     </div>
-    <a class="btn btn-transform margin-half" href="account/affiliate">{{ t('common', 'to_know_details') }}</a>
+    <a class="btn btn-transform margin-half" href="{{ _href('/account/affiliate')|raw }}">{{ t('common', 'to_know_details') }}</a>
   </div>
 </section>
 
@@ -163,7 +163,7 @@
 
 {% if user.new_loyalty_status_end!=0 and newuser and newuser == '1' %}
   <div class="align-center margin">
-    <a href="/stores" class="btn">{{ t('account', 'start_byuing_with_cashback')|raw }}</a>
+    <a href="{{ _href('/stores')|raw }}" class="btn">{{ t('account', 'start_byuing_with_cashback')|raw }}</a>
   </div>
 {% endif %}
 

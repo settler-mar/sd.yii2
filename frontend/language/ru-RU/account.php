@@ -24,8 +24,11 @@ return [
     'account_user_name' => 'Имя на сайте',
     'account_user_email' => 'Email адрес',
     'enter_your_email' => 'Введите ваш e-mail',
+    'enter_email' => 'Введите e-mail',
+    'enter_email_for_complete_registration' => 'Для завершения регистрации необходимо ввести e-mail',
     'enter_your_remembered_password' => 'Введите ваш пароль',
     'enter_your_password' => 'Придумайте пароль',
+    'enter_password_you_want' => 'Желаемый пароль',
     'enter_password_repeat' => 'Повторите пароль',
     'account_user_burthday' => 'Дата рождения',
     'password_is_fogotten' => 'Забыли пароль',
@@ -235,7 +238,7 @@ return [
     'secret_discounter_hepls_you_save_your_money' => 'Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира.',
     'thank_you_premium_account_is_activated' => 'Спасибо за репост, ваш премиум-аккаунт на 10 дней активирован.',
     'share_about_us_in_more_than_one_social_network' => 'Мы будем очень признательны, если вы расскажете о нас более, чем в одной соцсети. Спасибо!',
-    'you_can_invite_friends_and_get_money_from_their_byings' => 'Также к нам можно приводить друзей и зарабатывать с их покупок',
+    'you_can_invite_friends_and get_money_from_their_byings' => 'Также к нам можно приводить друзей и зарабатывать с их покупок',
     'start_byuing_with_cashback' => 'Перейти к покупкам с кэшбэком &#8594;',
     'withdraw_request_is_recieved' => 'Запрос на вывод средств принят',
     'email_is_required' => 'Необходимо ввести ваш e-mail',
@@ -286,6 +289,21 @@ return [
     'ballance_pending'  => 'Сумма кэшбэка за еще неподтвержденные магазином покупки',
     'register_and_get_plus_30_percent_cachback'  => 'Зарегистрироваться (+30% к кэшбэку)',
     'account_blocked'  => 'Аккаунт заблокирован',
+    'user_registered_successful'  => 'Пользователь успешно зарегистрирован',
+    'user_password_changed'  => 'Ваш пароль был успешно изменен.',
+    'user_email_confirmed'  => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.',
+    'login_error'  => 'Ошибка при авторизации',
+    'email_error'  => 'Ошибка ввода Email',
+    'email_confirm_error'  => 'Ошибка подтверждения Email',
+    'email_is_send'  => 'E-mail отправлен',
+    'if_you_mistake_retun_<a{back}>back</a>' => 'Если вы ошиблись при вводе e-mail, вернитесь <a {back}>назад</a>.',
+    'email_with_confirmation sent_to_{email}_' => 'На {email} отправлено письмо со ссылкой для подтверждения аккаунта.'.
+        'Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
+    'email_with_confirmation sent_to' => 'Инструкции по восстановлению пароля успешно отправлены на указанный email-адрес.'.
+        'Если письмо не пришло в течение 5 минут, посмотрите в папке «Спам».',
+    'password_reset' => 'Восстановление пароля',
+    'password_reset_description' => 'Инструкции для восстановления пароля<br>придут к вам на указанный e-mail',
+    'do_password_reset' => 'Восстановить пароль',
 
 
 ];

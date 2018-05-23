@@ -53,7 +53,8 @@ class DefaultController extends Controller
 
     if ($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
-        $data['html'] = '<div><p>Успешная авторизация</p></div><script>login_redirect("/account");</script>';
+        $data['html'] = '<div><p>'. Yii::t('account','authorize_success').
+            '</p></div><script>login_redirect("'. Help::href('/account').'");</script>';
 
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
@@ -109,12 +110,12 @@ class DefaultController extends Controller
         if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores') {
           $location = $referrer;
         } else {
-          $location = '/account?new=1';
+          $location = Help::href('/account?new=1');
         };
 
 
 
-        $data['html'] = '<div><p>Пользователь успешно зарегистрирован</p></div><script>login_redirect("' . $location . '");</script>';
+        $data['html'] = '<div><p>'.Yii::t('account','user_registered_successful').'</p></div><script>login_redirect("' . $location . '");</script>';
 
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
@@ -170,11 +171,11 @@ class DefaultController extends Controller
         if (count($referrerArray) > 2 && $referrerArray[count($referrerArray) - 2] == 'stores') {
           $location = $referrer;
         } else {
-          $location = '/account?new=1';
+          $location = Help::href('/account?new=1');
         };
 
 
-        $data['html'] = '<div><p>Пользователь успешно зарегистрирован</p></div><script>login_redirect("' . $location . '");</script>';
+        $data['html'] = '<div><p>'.Yii::t('account','user_registered_successful').'</p></div><script>login_redirect("' . $location . '");</script>';
         //сообщения, если email не подтверждён
         ValidateEmail::emailStatusInfo(Yii::$app->user->identity);
 
@@ -235,7 +236,7 @@ class DefaultController extends Controller
           $url = null;
       }
       $eauth->setRedirectUrl($url);
-      $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
+      $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl(Help::href('site/login')));
       //ddd($eauth);
       try {
         if ($eauth->authenticate()) {
@@ -245,7 +246,7 @@ class DefaultController extends Controller
           //ddd($user);
           if (!empty($user)) {
             if (!Yii::$app->user->isGuest) {
-              $eauth->redirect('/account/settings');
+              $eauth->redirect(Help::href('/account/settings'));
             }
 
             Yii::$app->getUser()->login($user);
@@ -259,7 +260,7 @@ class DefaultController extends Controller
             if (strlen($url) < 3) {
               $url = null;
             }
-            $eauth->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
+            $eauth->redirect(!empty($url) ? $url : Help::href('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
           } else {
             $eauth->cancel();
           }
@@ -305,14 +306,15 @@ class DefaultController extends Controller
     if ($forget->load(Yii::$app->request->post()) && $forget->sendEmail()) {
       $data['question'] = $this->renderAjax('resetpassword_sendmail_ok.twig');
       $data['render'] = 'true';
-      $data['buttonYes'] = 'Продолжить';
+      $data['buttonYes'] = Yii::t('common', 'continue');
       return json_encode($data);
     }
 
 
     $data['html'] = $this->renderAjax('resetpassword', [      // рисуем форму для ввода имени и пароля
       'model' => $forget,
-      'isAjax' => true
+      'isAjax' => true,
+      'action' => Help::href($request->url),
     ]);
     return json_encode($data);
   }
@@ -334,12 +336,12 @@ class DefaultController extends Controller
     if ($user_id = $model->resetPassword()) {
       // Авторизируемся при успешном сбросе пароля
       Yii::$app->getSession()->setFlash('info', [
-        'message' => 'Ваш пароль был успешно изменен.',
-        'title' => 'Поздравляем!'
+        'message' => Yii::t('account', 'user_password_changed'),
+        'title' => Yii::t('common', 'congratulations')
       ]);
       Yii::$app->user->login(Users::findIdentity($user_id));
     }
-    return $this->redirect(['/account']);
+    return $this->redirect([Help::href('/account')]);
   }
 
   /**
@@ -361,11 +363,14 @@ class DefaultController extends Controller
       // Авторизируемся при успешной валидации
       Yii::$app->user->login(Users::findIdentity($user_id));
 
-      Yii::$app->session->addFlash('success', ['title' => 'Спасибо!', 'message' => 'Ваш E-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.']);
+      Yii::$app->session->addFlash('success', [
+          'title' => Yii::t('common', 'thank_you').'!',
+          'message' => Yii::t('account', 'user_email_confirmed')
+      ]);
 
       if ($path && preg_match('/^\d+$/', $path) && $path > 0) {
         //если $path - целое число, то это store.uid
-        return $this->redirect(['/store:' . intval($path) . '/goto']);
+        return $this->redirect([Help::href('/store:' . intval($path) . '/goto')]);
       }
 
       return $this->redirect([Help::href('/email-success/account')]);
@@ -404,11 +409,11 @@ class DefaultController extends Controller
           Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
           //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
         } else {
-          Yii::$app->session->addFlash('error', 'Ошибка при авторизации');
+          Yii::$app->session->addFlash('error', Yii::t('account', 'login_error'));
         }
         Yii::$app->response->redirect('/')->send();
       } else {
-        Yii::$app->session->addFlash('error', 'Ошибка ввода Email');
+        Yii::$app->session->addFlash('error', Yii::t('account', 'email_error'));
       }
 
     }
@@ -459,14 +464,14 @@ class DefaultController extends Controller
                 $url = null;
             }
           //есть страница, на которую переход
-          return Yii::$app->response->redirect(!empty($url) ? $url : ('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')))->send();
+          return Yii::$app->response->redirect(!empty($url) ? $url : (Help::href('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : ''))))->send();
 
         }
       }
 
     }
 
-    Yii::$app->session->addFlash('error', 'Ошибка подтверждения Email');
+    Yii::$app->session->addFlash('error', Yii::t('account', 'email_confirm_error'));
     return Yii::$app->response->redirect('/')->send();
   }
 
