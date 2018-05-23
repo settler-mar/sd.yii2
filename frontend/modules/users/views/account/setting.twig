@@ -48,7 +48,7 @@
         {% if model.email_verified == 0 %}
           <div class="align-center">
             <a class="btn"
-               href="/account/sendverifyemail">{{ t('account', 'send_email_verify_repeat') | raw}}</a>
+               href="{{ _href('/account/sendverifyemail')|raw }}">{{ t('account', 'send_email_verify_repeat') | raw}}</a>
           </div>
         {% endif %}
         </div>
@@ -177,7 +177,7 @@
                                             class="ajax_remove"
                                             mode="reload"
                                             uid="{{ social.uid }}"
-                                            url="/account/users/social-delete"
+                                            url="{{ _href('/account/users/social-delete')|raw }}"
                                             data-remove-error="{{ t('account', 'social_account_delete_error') }}"
                                         >
                                           {{ t('common', 'delete') }}
@@ -197,7 +197,7 @@
   <div class="border-wrap account-settings">
     <h2>{{ t('account', 'delete_account') }}</h2>
     <div class="align-center margin">
-      <a href="#deleteaccount" class="btn modals_open">{{ t('common', 'delete') }}</a>
+      <a href="{{ _href('#deleteaccount')|raw }}" class="btn modals_open">{{ t('common', 'delete') }}</a>
     </div>
   </div>
 </section>

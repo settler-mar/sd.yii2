@@ -78,7 +78,7 @@ class AccountController extends \yii\web\Controller
     return $this->render('index', [
         'reCaptcha' => \himiklab\yii2\recaptcha\ReCaptcha::className(),
         'model' => $model,
-        'action' => '/account/support',
+        'action' => Help::href('/account/support'),
 
     ]);
   }

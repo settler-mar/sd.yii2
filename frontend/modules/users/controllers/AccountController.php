@@ -258,13 +258,17 @@ class AccountController extends Controller
         }
         //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
         $url = !empty(Yii::$app->request->referrer) &&
-          strpos(Yii::$app->request->referrer, '/account/sendverifyemail') === false ?
-          Yii::$app->request->referrer : '/account';
+          strpos(Yii::$app->request->referrer,'/account/sendverifyemail') === false ?
+          Yii::$app->request->referrer : Help::href('/account');
         return $this->redirect($url)->send();
       }
     }
 
-    return $this->render('goto_email', ['model' => $user, 'path' => $request->get('path')]);
+    return $this->render('goto_email', [
+        'model' => $user,
+        'path' => $request->get('path'),
+        'action' => Help::href($request->url),
+    ]);
   }
 
   public function actionEmailsuccess()

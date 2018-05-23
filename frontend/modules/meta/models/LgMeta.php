@@ -19,7 +19,8 @@ use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
  */
 class LgMeta extends Meta//\yii\db\ActiveRecord
 {
-
+    public $meta_tags_type = 0;
+    public $meta_tags = '';
     /**
      * @inheritdoc
      */

@@ -51,6 +51,10 @@ class SdUrlLocalisation implements UrlRuleInterface{
     Yii::$app->language=$lg_code;
     Yii::$app->params['lang_code']=$lg;
 
+    if (Yii::$app->language != 'ru-RU') {
+        Yii::$app->mailer->setViewPath(Yii::$app->mailer->getViewPath(). '/' . Yii::$app->language);
+    }
+
     if(isset($this->region['params'])){
       foreach ($this->region['params'] as $k=>$v){
         Yii::$app->params['regions'][$k]=$v;

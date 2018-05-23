@@ -32,16 +32,16 @@ class Meta extends \yii\db\ActiveRecord
     public $metaDescription;
     public $metaImage;
 
-    public $metaProperties = [
-        'title' => 'Title',
-        'description' => 'Description',
-        'image' => 'Image',
-        'url' => 'Url',
-        'meta.title' => 'Title из Метаданных',
-        'meta.description' => 'Desription  из Метаданных',
-        'meta.keywords' => 'Keywords  из Метаданных',
-        'request.pathInfo' => 'Url текущей страницы',
-        ];
+//    public $metaProperties = [
+//        'title' => 'Title',
+//        'description' => 'Description',
+//        'image' => 'Image',
+//        'url' => 'Url',
+//        'meta.title' => 'Title из Метаданных',
+//        'meta.description' => 'Desription  из Метаданных',
+//        'meta.keywords' => 'Keywords  из Метаданных',
+//        'request.pathInfo' => 'Url текущей страницы',
+//        ];
 
 
     protected static $json_attributes  = ['title', 'h1', 'description'];

@@ -17,6 +17,7 @@ use yii\validators\StringValidator;
 use yii\validators\EmailValidator;
 use yii\validators\RequiredValidator;
 use yii\helpers\Url;
+use common\components\Help;
 
 
 class DefaultController extends Controller
@@ -367,7 +368,7 @@ class DefaultController extends Controller
         return $this->redirect(['/store:' . intval($path) . '/goto']);
       }
 
-      return $this->redirect(['/email-success/account']);
+      return $this->redirect([Help::href('/email-success/account')]);
     } else {
       return false;
     }
