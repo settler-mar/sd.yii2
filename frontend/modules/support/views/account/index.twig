@@ -5,32 +5,58 @@
   <br>
   {{ _constant('account_support')|raw }}
 
-  <form action="/account/support" method="post" role="form" name="support-form">
-      <div class="form-group form-group-left">
+ {% set form = active_form_begin({
+          'id' : 'supprt-form',
+          'layout' : 'horizontal',
+          'action': action,
+          'fieldConfig':{
+              'horizontalCssClasses':{
+                  'wrapper':'form-input-group',
+              }
+          },
+          'options' : {
+              'role' : 'form',
+              'name' : 'support-form'
+          },
+      }) %}
+
+
+
+
+
+
+  {#<form action="/account/support" method="post" role="form" name="support-form">#}
+
+    <div class="form-group form-group-left">
         <div class="form-input-group">
           <i>{{ svg("envelope",'form-icon')|raw }}</i>
-          <input autocomplete="off" name="title" type="text"
-                 placeholder="{{ t('account', 'support_mail_topic') }}" required>
+          <input autocomplete="off" name="Support[title]" type="text"
+                 placeholder="{{ t('account', 'support_mail_topic') }}" value="{{ model.title }}" required />
         </div>
         <div class="help-block help-block-error"></div>
-      </div>
+    </div>
+
     <div class="form-group form-group-left">
       <div class="form-textarea-group">
 
         <textarea cols="30" rows="10"
                   class="account-textarea"
-                  name="message"
+                  name="Support[message]"
                   placeholder="{{ t('account', 'support_mail_text') }}"
-                  required
-        ></textarea>
+                  required>{{ model.message }}</textarea>
+        <div class="help-block help-block-error"></div>
       </div>
     </div>
+
+
+    {{ form.field(model,'reCaptcha',{'template': "<div class='form-input-recaptcha support'>{input}</div>{error}"}).widget(reCaptcha)|raw }}
 
     <div class="align-center width_75">
       <button type="submit" class="btn">{{ t('account', 'support_button')|raw }}</button>
     </div>
 
-  </form>
+  {#</form>#}
+    {{ active_form_end() }}
   </div>
 
 

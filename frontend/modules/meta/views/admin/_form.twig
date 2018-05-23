@@ -17,6 +17,17 @@
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
+                        {{ form.field(model, 'meta_tags_type').dropDownList({0:"По умолчанию",1:"Ручной ввод"})|raw }}
+
+                        <h4>Тэги микрозазметки</h4>
+
+                        {{ form.field(model, 'metaTitle').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'metaDescription').textArea({'rows':6})|raw }}
+
+                        {{ form.field(model, 'metaImage').textInput({'maxlength':true})|raw }}
+
+
                 </div>
             </div>
             <div class="col-md-12 tarif_select_blk">
@@ -88,6 +99,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+
                 </div>
             </div>
             {{ active_form_end() }}

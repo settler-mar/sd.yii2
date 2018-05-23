@@ -3,6 +3,8 @@
 namespace frontend\modules\support\controllers;
 
 use yii;
+use frontend\modules\support\models\Support;
+use common\components\Help;
 
 /**
  * Class AccountController
@@ -48,49 +50,37 @@ class AccountController extends \yii\web\Controller
   public function actionIndex()
   {
     $request = Yii::$app->request;
+    $model = new Support();
     if ($request->isAjax && $request->isPost) {
-      $title = \Yii::$app->request->post('title');
-      $message = \Yii::$app->request->post('message');
-      $validator = new \yii\validators\StringValidator();
-      $validatorRequired = new \yii\validators\RequiredValidator();
-      if (!$validatorRequired->validate($title) || !$validatorRequired->validate($message) ||
-        !$validator->validate($title) || !$validator->validate($message)
-      ) {
-        return json_encode([
-            'error' => true,
-            'title' => Yii::t('account', 'error_sending_message'),
-            'message' => Yii::t('account', 'all_fields_required')
-        ]);
-      }
-      try{
-        Yii::$app
-          ->mailer
-          ->compose(
-            ['html' => 'support-html', 'text' => 'support-text'],
-            [
-              'title' => $title,
-              'message' => $message,
-              'user'=>Yii::$app->user->identity,
-            ]
-          )
-          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo(Yii::$app->params['supportEmail'])
-          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
-          ->send();
-      } catch (\Exception $e) {
-        return json_encode([
-            'error' => True,
-            'title'=>Yii::t('account', 'error_sending_message'),
-            'message'=> Yii::t('account', 'service_temporaty_unavailable')
-        ]);
-      }
 
-      return json_encode([
-          'error' => false,
-          'message' => Yii::t('account', 'message_to_admin_successfully_sent')
-      ]);
+       if ($model ->load($request->post()) && $model->validate()) {
+          try{
+             Yii::$app
+                ->mailer
+                ->compose(
+                    ['html' => 'support-html', 'text' => 'support-text'],
+                    [
+                        'title' => $model->title,
+                        'message' => $model->message,
+                        'user'=>Yii::$app->user->identity,
+                    ]
+                )
+                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+                ->setTo(Yii::$app->params['supportEmail'])
+                ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
+                ->send();
+             return json_encode(['error' => false, 'message'=> Yii::t('account', 'message_to_admin_successfully_sent')]);
+          } catch (\Exception $e) {
+             return json_encode(['error' => True,'title'=>Yii::t('account', 'error_sending_message'),'message'=> Yii::t('account', 'service_temporaty_unavailable')]);
+          }
+       }
     }
-    return $this->render('index');
+    return $this->render('index', [
+        'reCaptcha' => \himiklab\yii2\recaptcha\ReCaptcha::className(),
+        'model' => $model,
+        'action' => '/account/support',
+
+    ]);
   }
 
 }

@@ -30,8 +30,14 @@
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder': t('account', 'enter_password_repeat')}) | raw }}
 
+
+  {{ form.field(model, 'reCaptcha', {
+      'template': "<div class='form-input-recaptcha'>{input}</div>{error}"
+  }).widget(reCaptcha)|raw }}
+
   <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">{{ t('account', 'agree_with_rerms_<a href="{terms}">terms</a>_and_<a href="{policy}">policy</a>', {'terms': _href('/terms'), 'policy': _href('/privacy-policy')})|raw }}</div>
     <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('common', 'do_register')|raw }}</button>
+
   {{ active_form_end() }}
 
 

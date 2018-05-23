@@ -13,6 +13,7 @@ class RegistrationForm extends Model
   public $email;
   public $password;
   public $password_repeat;
+  public $reCaptcha;
 
   /**
    * @inheritdoc
@@ -21,9 +22,12 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
+
       [['email', ], 'required', 'message' => Yii::t('account', 'email_is_required')],
       [['password', ], 'required', 'message' => Yii::t('account', 'password_is_required')],
       [['password_repeat'], 'required', 'message' => Yii::t('account', 'password_repeat_is_required')],
+
+      [['reCaptcha'], 'required', 'message' => Yii::t('main', 'make_sure_not_robot')],
       [['email'], 'email'],
       ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('account', 'password_not_same_with_password_repeat'), 'operator' => '=='],
       ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => Yii::t('account', 'user_width_this_email_exists')],
@@ -31,6 +35,7 @@ class RegistrationForm extends Model
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 6],
+      [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
     ];
   }
 
@@ -40,6 +45,8 @@ class RegistrationForm extends Model
       'email' => 'Email',
       'password' => Yii::t('common', 'password'),
       'password_repeat' => Yii::t('common', 'password_repeat'),
+
+      'reCaptcha' => Yii::t('main', 'make_sure_not_robot'),
     ];
   }
 

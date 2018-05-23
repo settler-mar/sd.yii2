@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use developeruz\db_rbac\interfaces\UserRbacInterface;
 use JBZoo\Image\Image;
+use common\components\SdImage;
 use common\components\DataValidator;
 use common\components\Help;
 
@@ -437,42 +438,51 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   public function saveImage()
   {
     $photo = \yii\web\UploadedFile::getInstance($this, 'new_photo');
-    if ($photo) {
-      $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
-      $oldImage = $this->photo;
 
-      if (!is_readable($photo->tempName)) {
-        Yii::$app->session->addFlash('err', Yii::t('account', 'avatar_updating_error'));
-        return;
-      }
+    $userPath = $this->getUserPath($this->uid);
+    if ($photo && $image = SdImage::save($photo, $userPath, 500, substr($this->photo, strlen($userPath)))){
 
-      $name = time(); // Название файла
-      $exch = explode('.', $photo->name);
-      $exch = $exch[count($exch) - 1];
-      $name .= '.' . $exch;
-      $this->photo = $path . $name;   // Путь файла и название
-      $bp = Yii::$app->getBasePath() . '/web';
-      if (!file_exists($bp . $path)) {
-        mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
-      }
 
-      if (exif_imagetype($photo->tempName) == 2) {
-        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
-      } else {
-        $img = (new Image($photo->tempName));
-      }
-
-      $img
-          ->fitToWidth(500)
-          ->saveAs($bp . $this->photo);
-      if ($img) {
-        $this->removeImage($bp . $oldImage);   // удаляем старое изображение
         $this::getDb()
             ->createCommand()
-            ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
+            ->update($this->tableName(), ['photo' => $userPath . $image], ['uid' => $this->uid])
             ->execute();
-      }
     }
+//      $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
+//      $oldImage = $this->photo;
+//
+//      if (!is_readable($photo->tempName)) {
+//        Yii::$app->session->addFlash('err', 'Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
+//        return;
+//      }
+//
+//      $name = time(); // Название файла
+//      $exch = explode('.', $photo->name);
+//      $exch = $exch[count($exch) - 1];
+//      $name .= '.' . $exch;
+//      $this->photo = $path . $name;   // Путь файла и название
+//      $bp = Yii::$app->getBasePath() . '/web';
+//      if (!file_exists($bp . $path)) {
+//        mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
+//      }
+//
+//      if (exif_imagetype($photo->tempName) == 2) {
+//        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+//      } else {
+//        $img = (new Image($photo->tempName));
+//      }
+//
+//      $img
+//          ->fitToWidth(500)
+//          ->saveAs($bp . $this->photo);
+//      if ($img) {
+//        $this->removeImage($bp . $oldImage);   // удаляем старое изображение
+//        $this::getDb()
+//            ->createCommand()
+//            ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
+//            ->execute();
+//      }
+//    }
   }
 
   /**

@@ -198,6 +198,10 @@ tr:nth-child(2n) {
     padding: 18px;
     a {
       color: $shop_review_link_color;
+
+      &.blue {
+        color: $link_color_blue;
+      }
     }
   }
 

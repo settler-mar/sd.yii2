@@ -14,6 +14,7 @@ use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 use JBZoo\Image\Image;
+use common\components\SdImage;
 use frontend\modules\cache\models\Cache;
 use frontend\models\RouteChange;
 use frontend\models\DeletedPages;
@@ -521,30 +522,35 @@ class Stores extends \yii\db\ActiveRecord
   public function saveImage()
   {
     $photo = \yii\web\UploadedFile::getInstance($this, 'logoImage');
-    if ($photo) {
-      $path = $this->getStorePath();// Путь для сохранения
-      $oldImage = $this->logo;
-      $name = time(); // Название файла
-      $exch = explode('.', $photo->name);
-      $exch = $exch[count($exch) - 1];
-      $name .= '.' . $exch;
-      $this->logo = $name;   // Путь файла и название
-      $bp=Yii::$app->getBasePath().'/web'.$path;
-      if (!file_exists($bp)) {
-        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
-      }
-      $img = (new Image($photo->tempName));
-      $img
-        ->fitToWidth(143)
-        ->saveAs($bp.$this->logo);
-      if ($img) {
-        $this->removeImage($bp.$oldImage);   // удаляем старое изображение
+    if ($photo && $image = SdImage::save($photo, $this->getStorePath(), 143, $this->logo)) {
         $this::getDb()
-          ->createCommand()
-          ->update($this->tableName(), ['logo' => $this->logo], ['uid' => $this->uid])
-          ->execute();
-      }
+            ->createCommand()
+            ->update($this->tableName(), ['logo' => $image], ['uid' => $this->uid])
+            ->execute();
     }
+//      $path = $this->getStorePath();// Путь для сохранения
+//      $oldImage = $this->logo;
+//      $name = time(); // Название файла
+//      $exch = explode('.', $photo->name);
+//      $exch = $exch[count($exch) - 1];
+//      $name .= '.' . $exch;
+//      $this->logo = $name;   // Путь файла и название
+//      $bp=Yii::$app->getBasePath().'/web'.$path;
+//      if (!file_exists($bp)) {
+//        mkdir($bp.$path, 0777, true);   // Создаем директорию при отсутствии
+//      }
+//      $img = (new Image($photo->tempName));
+//      $img
+//        ->fitToWidth(143)
+//        ->saveAs($bp.$this->logo);
+//      if ($img) {
+//        $this->removeImage($bp.$oldImage);   // удаляем старое изображение
+//        $this::getDb()
+//          ->createCommand()
+//          ->update($this->tableName(), ['logo' => $this->logo], ['uid' => $this->uid])
+//          ->execute();
+//      }
+//    }
   }
 
   public function getPhotoList(){

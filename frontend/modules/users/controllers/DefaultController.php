@@ -135,7 +135,8 @@ class DefaultController extends Controller
     } else {
       $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
-        'isAjax' => true
+        'isAjax' => true,
+        'reCaptcha' => \himiklab\yii2\recaptcha\ReCaptcha::className(),
       ]);
       return json_encode($data);
     }

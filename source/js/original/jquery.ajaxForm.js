@@ -116,10 +116,9 @@ function ajaxForm(els) {
 
       e.stopImmediatePropagation();
       e.stopPropagation();
-      var required = form.find('input.required');
-      for (i = 0; i < required.length; i++) {
-        var helpBlock = required.eq(i).attr('type') == 'hidden' ? required.eq(i).next('.help-block') :
-          required.eq(i).closest('.form-input-group').next('.help-block');
+      var required = form.find('input.required, textarea.required, input[id="support-recaptcha"]');
+      for (var i = 0; i < required.length; i++) {
+        var helpBlock = required.eq(i).closest('.form-group').find('.help-block');
         var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : lg('required');
 
         if (required.eq(i).val().length < 1) {

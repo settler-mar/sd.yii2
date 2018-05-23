@@ -209,6 +209,7 @@ return [
     'search_result' => 'Результаты поиска',
     'search_result_with_{query}_' => 'Результаты поиска по запросу {query}',
     'search_result_breadcrumbs' => 'Поиск',
+    'make_sure_not_robot' => 'Докажите, что вы не робот',
 
 
 
