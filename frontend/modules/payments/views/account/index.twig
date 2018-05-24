@@ -17,12 +17,12 @@
           <td>{{ payment.action_id }}</td>
           <td class="store">
             {% if payment.is_active != -1 %}
-              <a href="/stores/{{ payment.route }}{{ _if(payment.is_offline,'-offline') }}">{{ payment.name }}</a>
+              <a href="{{ _href('/stores/'~payment.route~(payment.is_offline ? '-offline' : ''))|raw }}">{{ payment.name }}</a>
             {% else %}
               {{ payment.name }}
             {% endif %}
           </td>
-          <td>{{ _date(payment.action_date) }}</td>
+          <td>{{ _local_date(payment.action_date, t('dictionary', 'date_format_long')) }}</td>
           <td class="cashback status_{{ payment.status }}">
             {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
           </td>
@@ -46,7 +46,7 @@
   {% else %}
     <br>
     <p class="not-found">{{ t('account', 'payments_no_found') | raw }}</p>
-    <a href="/stores" class="btn">{{ t('account', 'payments_no_found_btn') | raw }}</a>
+    <a href="{{ _href('/stores')|raw }}" class="btn">{{ t('account', 'payments_no_found_btn') | raw }}</a>
   {% endif %}
 </section>
 

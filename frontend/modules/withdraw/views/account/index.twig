@@ -4,7 +4,7 @@
         <div class="account-text-block_item account-text-block_item-bold">{{ t('account', 'withdraw_balance_for')}}:&nbsp;
             <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}&nbsp{{ currencyIcon(app.user.identity.currency)|raw }}</span>
         </div>
-        <div class="account-text-block_item"><a href="/account/withdraw/history">{{ t('account', 'withdraw_view_history')|raw }}</a></div>
+        <div class="account-text-block_item"><a href="{{ _href('/account/withdraw/history')|raw }}">{{ t('account', 'withdraw_view_history')|raw }}</a></div>
     </section>
     <section class="account-text-block">
         <div class="account-text-block_item">
@@ -43,7 +43,8 @@
 
                     <h3 class="text-center">{{ t('account', 'withrdaw_fill_data')|raw }}:</h3>
                     <div class="payment-info users-withdraw ajax_form">
-                        {% set form = active_form_begin({'action':'/account/withdraw', 'options':{'name':'withdraw-form', 'role':'form'},}) %}
+                        {% set cur = currencyIcon(app.user.identity.currency) %}
+                        {% set form = active_form_begin({'action': _href('/account/withdraw'), 'options':{'name':'withdraw-form', 'role':'form'},}) %}
 
                             {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
 
@@ -52,12 +53,21 @@
                                 'options': {'class':'form-group'},
                             }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_cashe_number')}).label(false)|raw }}
 
-                            {{ form.field(model, 'amount', {
-                                'template' :'<div class="form-input-group"><span>{{ svg("money")|raw }} {input}</div>{error}{hint}',
-                                'options': {'class':'form-group'},
-                            }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}
+                            {#{{ form.field(model, 'amount', {#}
+                                {#'template' :'<div class="form-input-group"><span>{{ svg("money")|raw }}</span> {input}<div class="withdraw_currency"></div></div>{error}{hint}',#}
+                                {#'options': {'class':'form-group'},#}
+                            {#}).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}#}
 
-                            {{ form.field(model, 'user_comment', {
+                        <div class="form-group field-userswithdraw-amount required">
+                            <div class="form-input-group"><span>{{ svg("money")|raw }}</span>
+                            <input type="text" id="userswithdraw-amount" class="form-control" name="UsersWithdraw[amount]" placeholder="withrdaw_fill_amount" aria-required="true"/>
+                                <div class="user-currency">{{ cur|raw }}</div>
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
+
+
+                        {{ form.field(model, 'user_comment', {
                                 'template' : '<div class="form-textarea-group">{input}</div>{error}{hint}',
                                 'options': {'class':'form-group'},
                             }).textarea({

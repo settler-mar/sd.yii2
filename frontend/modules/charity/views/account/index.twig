@@ -13,7 +13,7 @@
         <th class="sum">{{ t('common', 'amount')|raw }}</th>
         <th></th>
       </tr>
-      {% set curr_icon = app.params.currencies[app.user.identity.currency].icon ? app.params.currencies[app.user.identity.currency].icon : '' %}
+      {% set curr = currencyIcon(app.user.identity.currency) %}
       {% for chty in charity %}
         <tr {% if chty.is_listed==1 %}class="status_bg_{{ chty.is_listed }}"{% endif %}>
           <td>
@@ -25,7 +25,7 @@
           </td>
           <td>{{ _local_date(chty.added,  t('dictionary', 'date_format_long')) }}</td>
           <td class="cashback">
-            {{ _nf(chty.amount) | raw }} {{ curr_icon|raw }}
+            {{ _nf(chty.amount) | raw }} {{ curr|raw }}
           </td>
           <td>
             {% if chty.is_listed==1 %}
@@ -43,6 +43,5 @@
   {% include '/parts/pagination.twig' %}
 </section>
 <section class="account-padding">
-  {% set curr = app.params.currencies[app.user.identity.currency].text ? app.params.currencies[app.user.identity.currency].text : '' %}
   <h3>{{ t('account', 'charity_total')|raw }}: {{ _nf(user.sum_foundation) | raw }} {{ curr|raw }}</h3>
 </section>

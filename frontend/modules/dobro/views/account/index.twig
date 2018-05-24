@@ -15,7 +15,7 @@
 
 
     <div class="account-balance-block account-balance-block-2x">
-      <a href="/account/charity">{{ t('account', 'dobro_view_dobro')|raw }}</a>
+      <a href="{{ _href('/account/charity')|raw }}">{{ t('account', 'dobro_view_dobro')|raw }}</a>
     </div>
   </div>
 </section>
@@ -28,12 +28,12 @@
         <span class="second_line_title">{{ t('account', 'dobro_do_dobro_together')|raw }}</span>
       </span>
     </h1>
-    <div class="text-center"><a href="/dobro">{{ t('common', 'read_more_long')|raw }}</a></div>
+    <div class="text-center"><a href="{{ _href('/dobro')|raw }}">{{ t('common', 'read_more_long')|raw }}</a></div>
 
     {% if autopayment %}
       <div class="self-autopayment ajax_form margin">
         <h3 class="text-center">{{ t('account', 'dobro_autopay')|raw }} <span>{{ autopayment.fond.title }}</span></h3>
-        <form action="/account/dobro/auto-delete" method="post" role="form" name="delete-autopayment-form">
+        <form action="{{ _href('/account/dobro/auto-delete')|raw }}" method="post" role="form" name="delete-autopayment-form">
           <input type="hidden" name="type" value="delete-autopayment">
           <button type="submit" class="btn">{{ t('account', 'dobro_autopay_remove')|raw }}</button>
         </form>
@@ -54,11 +54,12 @@
       {#<h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>#}
       <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ')|raw }}:</h3>
       <div class="payment-info ajax_form">
-        <form class="dobro-form" action="/account/dobro/send" method="post" role="form" name="fund-transfer-form" >
+        <form class="dobro-form" action="{{ _href('/account/dobro/send')|raw }}" method="post" role="form" name="fund-transfer-form" >
           <div>
           <div class="form-input-group">
             <i>{{ svg("money",'form-icon') |raw }}</i>
             <input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder')|raw }}" required>
+            <div class="user-currency">{{ currencyIcon(app.user.identity.currency)|raw }}</div>
           </div>
           <div class="help-block help-block-error" data-message="{{ t('account', 'dobro_summ_required')|raw }}"></div>
           <input type="hidden" name="charity-process" id="dobro-send-form-charity-process" value="" required>
@@ -72,7 +73,7 @@
     {% if not autopayment %}
       <div class="autopayment-info ajax_form margin">
         <h3 class="text-center hpreform">3. {{ t('account', 'dobro_you_can_else')|raw }}:</h3>
-        <form class="dobro-form" action="/account/dobro/auto-send" method="post" role="form" name="autopayment-form" class="margin">
+        <form class="dobro-form" action="{{ _href('/account/dobro/auto-send')|raw }}" method="post" role="form" name="autopayment-form" class="margin">
           <input type="hidden" name="autopayment-uid" value="0">
           <button type="submit" class="btn">{{ t('account', 'dobro_autopay_button')|raw }}</button>
         </form>
