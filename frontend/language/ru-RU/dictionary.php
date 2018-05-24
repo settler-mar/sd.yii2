@@ -5,7 +5,7 @@ return [
         1 => 'Отменён',
         2 => 'Подтверждён',
     ],
-    'date_format_long' => '%e %BRUS %G %H:%I', //'%G %B %E %H:%I:%S' - для англ.
+    'date_format_long' => '%e&nbsp;%BRUS&nbsp;%G в&nbsp;%H:%I',//'%G %B %E %H:%I:%S' - для англ.
     'date_format_short' => '%e %BRUS %G', //'%G %B %E' - для англ.
 
     'notification_type'=>[
