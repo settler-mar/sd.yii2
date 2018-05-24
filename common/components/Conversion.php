@@ -73,4 +73,13 @@ class Conversion extends Component
     }
     return isset($this->data[$from]) ? $this->data[$from] * $amount : null;
   }
+
+  public function getCurs($to, $from)
+  {
+    $from = (string)$from;
+    $to = (string)$to;
+
+    return isset($this->data[$from]) && isset($this->data[$to]) ? $this->data[$from] / $this->data[$to]  : null;
+  }
+
 }

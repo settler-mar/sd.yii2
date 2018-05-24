@@ -151,7 +151,8 @@ class PaymentsController extends Controller
 
           $db_payment = new Payments(['scenario' => 'online']);
 
-          $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
+          //$kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
+          $kurs = Yii::$app->conversion->getCurs($user->currency, $payment['currency']);
 
           $loyalty_bonus = $user->loyalty_status_data['bonus'];
           $reward = $kurs * $payment['payment'];
@@ -191,10 +192,14 @@ class PaymentsController extends Controller
             $db_payment->ref_bonus_id = $ref->bonus_status;
             $ref_bonus_data = $ref->bonus_status_data;
 
+            $ref_kurs = Yii::$app->conversion->getCurs($ref->currency, $user->currency);
+            $ref_kurs = $ref_kurs ? $ref_kurs : 1;
+            $db_payment->ref_kurs = $ref_kurs;
+
             if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-              $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+              $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
             } else {
-              $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+              $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs / 100;
             }
             $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
           }
@@ -253,6 +258,7 @@ class PaymentsController extends Controller
           if (!$kurs) {
             $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
           }
+          $ref_kurs = $db_payment->ref_kurs;
 
           $db_payment->kurs = $kurs;
 
@@ -286,9 +292,9 @@ class PaymentsController extends Controller
             if ($user->referrer_id > 0) {
               $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
               if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-                $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
+                $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
               } else {
-                $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
+                $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs/ 100;
               }
               $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
             }

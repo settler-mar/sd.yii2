@@ -76,7 +76,8 @@ class Payments extends \yii\db\ActiveRecord
       [['order_id'], 'required', 'on' => 'offline'],
       [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
         'on' => 'online'],
-      [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number','message'=>"Значение должно быть числом.\nКопейки должны отделяться точкой."],
+      [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'ref_kurs'],
+          'number','message'=>"Значение должно быть числом.\nКопейки должны отделяться точкой."],
       [['click_date', 'action_date', 'status_updated', 'closing_date', 'storeName', 'email', 'category'], 'safe'],
 
       [['order_id'], 'string', 'max' => 50],
