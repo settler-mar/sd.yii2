@@ -74,12 +74,18 @@ class Conversion extends Component
     return isset($this->data[$from]) ? $this->data[$from] * $amount : null;
   }
 
+    /**
+     * курс одной валюты к другой
+     * @param $to
+     * @param $from
+     * @return float|int|null
+     */
   public function getCurs($to, $from)
   {
     $from = (string)$from;
     $to = (string)$to;
 
-    return isset($this->data[$from]) && isset($this->data[$to]) ? $this->data[$from] / $this->data[$to]  : null;
+    return isset($this->data[$from]) && !empty($this->data[$to]) ? $this->data[$from] / $this->data[$to]  : null;
   }
 
 }
