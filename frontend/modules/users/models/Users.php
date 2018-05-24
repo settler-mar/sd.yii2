@@ -901,4 +901,67 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         ->groupBy('user.uid')
         ->count();
   }
+
+  public static function calculate($where = [], $params = [])
+  {
+      $allParams = ['ref_total','sum_from_ref_pending','sum_from_ref_confirmed',
+          'cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending',
+          'sum_to_friend_confirmed',
+          'sum_foundation','sum_withdraw','sum_bonus','cnt_declined','sum_declined','loaylty_status'];
+      $referrer = ['ref_total', 'sum_from_ref_pending', 'sum_from_ref_confirmed'];
+      $cash = ['cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending',
+                'sum_to_friend_confirmed'];
+
+      $params = !empty($params) ? $params : $allParams;
+      $set = [];
+      $sql = 'UPDATE cw_users u1 ';
+
+      $setParams = array_intersect($referrer, $params);
+      if (!empty($setParams)) {
+          $sql .= " LEFT JOIN (
+          SELECT COUNT(uid) as ref_total, referrer_id,
+            SUM(sum_to_friend_pending) as sum_from_ref_pending,
+            SUM(sum_to_friend_confirmed) as sum_from_ref_confirmed
+            FROM cw_users
+            GROUP BY referrer_id
+        ) u2 on u2.referrer_id=u1.uid ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=u2.' . $setParam;
+          }
+      }
+      $setParams = array_intersect($cash, $params);
+      if (!empty($setParams)) {
+          $sql.=" LEFT JOIN (
+          SELECT  user_id,
+                SUM(IF(status=0,1,0)) as cnt_pending,
+                SUM(IF(status=0,cashback,0)) as sum_pending,
+                SUM(IF(status=2,1,0)) as cnt_confirmed,
+                SUM(IF(status=2,cashback,0)) as sum_confirmed,
+                SUM(IF(status=1,1,0)) as cnt_declined,
+                SUM(IF(status=1,cashback,0)) as sum_declined,
+                SUM(IF(status=0,ref_bonus,0)) as sum_to_friend_pending,
+                SUM(IF(status=2 ,ref_bonus,0)) as sum_to_friend_confirmed
+            from cw_payments
+            GROUP BY user_id
+        )cwp on u1.uid = cwp.user_id ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwp.' . $setParam;
+          }
+      }
+
+
+      $sql .= "\n set ".implode(",\n", $set);
+      if ($where) {
+        $selectParams = [];
+        foreach ($where as $key=>$value) {
+            $selectParams[] = 'u1.'.$key.'="'.$value.'"';
+        }
+        $sql .= "\n where ".implode("\n and ", $selectParams);
+      }
+      ddd($sql);
+      //Yii::$app->db->createCommand($sql)->execute();
+
+  }
+
+
 }
