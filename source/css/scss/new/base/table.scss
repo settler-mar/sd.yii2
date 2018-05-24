@@ -52,7 +52,7 @@ tr:first-child th {
 td:first-child,
 th:first-child {
   text-align: left;
-  white-space: nowrap;
+  //white-space: nowrap;
 
   &:before {
     content: '';
@@ -64,6 +64,9 @@ th:first-child {
   &.align-center{
     text-align: center;
   }
+}
+th:first-child {
+  white-space: nowrap;
 }
 
 .table-selected {
