@@ -905,16 +905,20 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   public static function calculate($where = [], $params = [])
   {
       $allParams = ['ref_total','sum_from_ref_pending','sum_from_ref_confirmed',
-          'cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending',
-          'sum_to_friend_confirmed',
-          'sum_foundation','sum_withdraw','sum_bonus','cnt_declined','sum_declined','loaylty_status'];
+          'cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending','sum_to_friend_confirmed',
+          'sum_foundation','sum_withdraw','sum_bonus',
+          'loaylty_status'];
+      //все параметры разбить на части
       $referrer = ['ref_total', 'sum_from_ref_pending', 'sum_from_ref_confirmed'];
-      $cash = ['cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending',
-                'sum_to_friend_confirmed'];
+      $cash = ['cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending','sum_to_friend_confirmed'];
+      $foundation = ['sum_foundation'];
+      $bonus = ['sum_bonus'];
+      $withdraw = ['sum_withdraw'];
+      $loyalty = ['loyalty_status'];//??
 
       $params = !empty($params) ? $params : $allParams;
       $set = [];
-      $sql = 'UPDATE cw_users u1 ';
+      $sql = 'UPDATE ' . self::tableName() . ' u1 ';
 
       $setParams = array_intersect($referrer, $params);
       if (!empty($setParams)) {
@@ -948,6 +952,46 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
               $set[] = ' u1.' . $setParam . '=cwp.' . $setParam;
           }
       }
+      $setParams = array_intersect($foundation, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_foundation,user_id
+                FROM cw_charity
+                WHERE is_listed!=1
+                GROUP BY user_id
+            ) cwf on cwf.user_id=u1.uid";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwf.' . $setParam;
+          }
+      }
+
+      $setParams = array_intersect($bonus, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_bonus,user_id
+                FROM cw_users_notification
+                WHERE type_id=2
+                GROUP BY user_id
+            ) cwn on cwn.user_id=u1.uid";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwn.' . $setParam;
+          }
+      }
+      $setParams = array_intersect($withdraw, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_withdraw,user_id
+                FROM cw_users_withdraw
+                WHERE status=2
+                GROUP BY user_id
+            ) w on w.user_id=u1.uid ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=w.' . $setParam;
+          }
+      }
 
 
       $sql .= "\n set ".implode(",\n", $set);
@@ -958,7 +1002,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         }
         $sql .= "\n where ".implode("\n and ", $selectParams);
       }
-      ddd($sql);
+      //ddd($sql);
       //Yii::$app->db->createCommand($sql)->execute();
 
   }
