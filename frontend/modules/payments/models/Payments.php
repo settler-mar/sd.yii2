@@ -487,24 +487,16 @@ class Payments extends \yii\db\ActiveRecord
           $ref = $ref ? $ref : ($user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null);
 
           $db_payment = new self(['scenario' => 'online']);
-          $kurs = Yii::$app->conversion->getCurs($user->currency, $payment['currency']);
 
-          $loyalty_bonus = $user->loyalty_status_data['bonus'];
-          $reward = $kurs * $payment['payment'];
-
-          $cashback = $reward * $store->percent / 100;
-          $cashback = $cashback + $cashback * $loyalty_bonus / 100;
-
-          $cashback = round($cashback, 2);
-          $reward = round($reward, 2);
+          $userCashback = self::userCashback($db_payment, $payment, true, $user, $store, $ref);
 
           $db_payment->action_id = $payment['action_id'];
           $db_payment->is_showed = 1;
           $db_payment->affiliate_id = $payment['advcampaign_id'];
           $db_payment->user_id = $payment['subid'];
           $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
-          $db_payment->reward = $reward;
-          $db_payment->cashback = $cashback;
+          $db_payment->reward = $userCashback['reward'];//$reward;
+          $db_payment->cashback = $userCashback['cashback'];
           $db_payment->status = $status;
           $db_payment->cpa_id = 1;
           $db_payment->click_date = $payment['click_date'];
@@ -517,25 +509,15 @@ class Payments extends \yii\db\ActiveRecord
           $db_payment->loyalty_status = $user->loyalty_status;
           $db_payment->shop_percent = $store->percent;
           $db_payment->order_id = $payment['order_id'];
-          $db_payment->kurs = $kurs;
+          $db_payment->kurs = $userCashback['kurs'];
           $db_payment->action_code = $payment['tariff_id'];
           $db_payment->rate_id = $rate_id;
 
           if ($ref) {
               $db_payment->ref_id = $user->referrer_id;
               $db_payment->ref_bonus_id = $ref->bonus_status;
-              $ref_bonus_data = $ref->bonus_status_data;
-
-              $ref_kurs = Yii::$app->conversion->getCurs($ref->currency, $user->currency);
-              $ref_kurs = $ref_kurs ? $ref_kurs : 1;
-              $db_payment->ref_kurs = $ref_kurs;
-
-              if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-                  $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
-              } else {
-                  $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs / 100;
-              }
-              $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
+              $db_payment->ref_kurs = $userCashback['ref_kurs'];
+              $db_payment->ref_bonus = $userCashback['ref_bonus'];
           }
 
           if (!$db_payment->closing_date) {
@@ -572,19 +554,9 @@ class Payments extends \yii\db\ActiveRecord
           }
       } else {
           //обновляем старый платеж
-          if ($db_payment->kurs > 0) {
-              $kurs = $db_payment->kurs;
-          } else {
-              //в старых платежах нет курса. Получаем его косвенно
-              $kurs = $db_payment->reward / $payment['payment'];
-          }
+          $userCashback = self::userCashback($db_payment, $payment);
 
-          if (!$kurs) {
-              $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
-          }
-          $ref_kurs = $db_payment->ref_kurs;
-
-          $db_payment->kurs = $kurs;
+          $db_payment->kurs = $db_payment->kurs ? $db_payment->kurs : $userCashback['kurs'];
 
           //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
           if ($db_payment->status == 2) {
@@ -597,32 +569,17 @@ class Payments extends \yii\db\ActiveRecord
                       'type_id'=>3
                   ]);
               }
-
               //через врямя удалить
               $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
               $db_payment->rate_id = $rate_id;
           } else {
-              $loyalty_bonus = Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
-              $reward = $kurs * $payment['payment'];
 
-              $cashback = $reward * $db_payment->shop_percent / 100;
-              $cashback = $cashback + $cashback * $loyalty_bonus / 100;
-
-              $cashback = round($cashback, 2);
-              $reward = round($reward, 2);
-
-              $db_payment->reward = $reward;
-              $db_payment->cashback = $cashback;
+              $db_payment->reward = $userCashback['reward'];
+              $db_payment->cashback = $userCashback['cashback'];
               $db_payment->status = $status;
 
-              if ($ref) {
-                  $ref_bonus_data = Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
-                  if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-                      $db_payment->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
-                  } else {
-                      $db_payment->ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs/ 100;
-                  }
-                  $db_payment->ref_bonus = round($db_payment->ref_bonus, 2);
+              if ($db_payment->ref_id) {
+                  $db_payment->ref_bonus = $userCashback['ref_bonus'];
               }
           }
           if (count($db_payment->getDirtyAttributes()) > 0) {
@@ -661,6 +618,47 @@ class Payments extends \yii\db\ActiveRecord
       $notifi->amount = $data['amount'];
       $notifi->payment_id =$data['payment_id'];
       $notifi->save();
+  }
+
+  protected static function userCashback($db_payment, $payment, $new = false, $user=null, $store=null, $ref=null)
+  {
+      $percent = $new ? $store->percent : $db_payment->shop_percent;
+
+      $kurs = $new ? Yii::$app->conversion->getCurs($user->currency, $payment['currency'])
+         : $db_payment->kurs;
+      //в старых платежах нет курса. Получаем его косвенно
+      if (!$kurs) {
+         $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
+      }
+
+      $loyalty_bonus = $new ? $user->loyalty_status_data['bonus'] :
+            Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
+
+      $reward = $kurs * $payment['payment'];
+
+      $cashback = $reward * $percent / 100;
+      $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+
+      if ($ref || (!$new && $db_payment->ref_id)) {
+          $ref_kurs = $new ? Yii::$app->conversion->getCurs($ref->currency, $user->currency): $db_payment->ref_kurs;;
+          $ref_kurs = $ref_kurs ? $ref_kurs : 1;
+
+          $ref_bonus_data = $new ? $ref->bonus_status_data :
+              Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
+
+          if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
+              $ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
+          } else {
+              $ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs / 100;
+          }
+      }
+      return [
+          'cashback' => round($cashback, 2),
+          'reward' => round($reward, 2),
+          'kurs' => $kurs,
+          'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2) : null,
+          'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
+      ];
   }
 
 

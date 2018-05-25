@@ -154,7 +154,7 @@ class PaymentsController extends Controller
             ['notify'=> true, 'email' => true]
         );
 
-        echo $paymentStatus['payment']->uid.' '.$paymentStatus['payment']->action_id.' status '.$paymentStatus['save_status'].' new '.$paymentStatus['new_record']."\n";
+        //echo $paymentStatus['payment']->uid.' '.$paymentStatus['payment']->action_id.' status '.$paymentStatus['save_status'].' new '.$paymentStatus['new_record']."\n";
 
 //        if (!$db_payment) {
 //          //добавляем новый платеж
