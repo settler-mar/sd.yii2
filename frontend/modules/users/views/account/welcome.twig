@@ -99,7 +99,7 @@
         </div>
         <div class="account-circles-item-sum">
           {% if  status.min_sum %}
-            {{ _nf(status.min_sum,0) | raw }}&nbsp;{{ currencyIcon(status.valuta) | raw }}
+            {{ _nf(status.min_sum[app.user.identity.currency],0) | raw }}&nbsp;{{ currencyIcon(app.user.identity.currency) | raw }}
           {% else %}
 
           {% endif %}

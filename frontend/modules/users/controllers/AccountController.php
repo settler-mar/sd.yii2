@@ -129,21 +129,21 @@ class AccountController extends Controller
 
     $prev_min=0;
     foreach ($statuses as $k => $status_k) {
-      if (isset($status_k['min_sum'])) {
-        $t_total=$total-$prev_min;
+      if (isset($status_k['min_sum'][Yii::$app->user->identity->currency])) {
+        $t_total = $total - $prev_min;
         $t_total_p=$total_p-$prev_min;
-        $prev_min=$status_k['min_sum'];
+        $prev_min=$status_k['min_sum'][Yii::$app->user->identity->currency];
         $status_k['id'] = $k;
-        $status_k['total'] = 100*(($status_k['min_sum']<=$t_total)?1:$t_total/$status_k['min_sum']);
-        $status_k['total_p'] = 100*(($status_k['min_sum']<=$t_total_p)?1:$t_total_p/$status_k['min_sum']);
+        $status_k['total'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total)?1:$t_total/$status_k['min_sum'][Yii::$app->user->identity->currency]);
+        $status_k['total_p'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total_p)?1:$t_total_p/$status_k['min_sum'][Yii::$app->user->identity->currency]);
         $statuses_marafon[$k] = $status_k;
         if (
-          $total < $status_k['min_sum'] &&
+          $total < $status_k['min_sum'][Yii::$app->user->identity->currency] &&
           $status['bonus'] < $status_k['bonus'] &&
-          (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'])
+          (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'][Yii::$app->user->identity->currency])
         ) {
           $next_tarif = $status_k;
-          $next_tarif_min_sum = $status_k['min_sum'];
+          $next_tarif_min_sum = $status_k['min_sum'][Yii::$app->user->identity->currency];
         }
       }
     }
@@ -151,7 +151,7 @@ class AccountController extends Controller
 
     if ($next_tarif) {
       $data["desire"] = $next_tarif['display_name'];
-      $data["left"] = $next_tarif['min_sum'] - $total;
+      $data["left"] = $next_tarif['min_sum'][Yii::$app->user->identity->currency] - $total;
     } else {
       $data["desire"] = "";
       $data["left"] = "";

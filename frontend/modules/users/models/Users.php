@@ -274,8 +274,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     foreach ($statuses as $k => $status_k) {
       if (
-          isset($status_k['min_sum']) && //у статса лояльности есть минимальная сумма назначения
-          $status_k['min_sum'] < $total &&//минимальная сумма ниже заработанной суммы
+          isset($status_k['min_sum'][Yii::$app->user->identity->currency]) && //у статса лояльности есть минимальная сумма назначения
+          $status_k['min_sum'][Yii::$app->user->identity->currency] < $total &&//минимальная сумма ниже заработанной суммы
           $status_k['bonus'] > $status['bonus'] //новый бонус будет выгоднее клиенту чем текущий
       ) {
         $status = $status_k;
