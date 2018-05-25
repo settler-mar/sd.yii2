@@ -52,6 +52,7 @@ class AdminController extends Controller
 
     //получение статистики
     //для выборки
+
     $stat = clone $dataProvider->query;
     $stat = $stat->select(
       ['sum(order_price*kurs) as order_price',
@@ -96,7 +97,7 @@ class AdminController extends Controller
         };
 
         if($name!='order_price') {
-          $out .= ' RUB';
+          $out .= ' ' .$model->user->currency;
         }else{
           $out.=' '.$model->storeCur;
         };
@@ -107,7 +108,7 @@ class AdminController extends Controller
         return $out;
       },
       'cashback_txt'=>function ($model, $value, $index, $column){
-        return number_format($model['cashback'],2,'.',' ').' RUB';
+        return number_format($model['cashback'],2,'.',' ').' '.$model->user->currency;
       },
       'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
