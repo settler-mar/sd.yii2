@@ -68,8 +68,12 @@
                 'value' : table_value.process
               },
                 'bill',
-                'amount',
-                'request_date',
+              {
+                  'attribute': 'amount',
+                  'value': table_value.amount,
+                  'format': 'raw'
+              },
+              'request_date',
                 {
                   'format':'raw',
                   'attribute':'status',

@@ -56,6 +56,9 @@ class AdminController extends Controller
       'dataProvider' => $dataProvider,
       'data_ranger'=>Help::DateRangePicker($searchModel,'added_range',['hideInput'=>false]),
       'type_list'=>$type_list,
+      'amount' => function ($model, $key, $index, $column) {
+        return $model->amount. ' '.$model->user->currency;
+      },
     ]);
   }
 

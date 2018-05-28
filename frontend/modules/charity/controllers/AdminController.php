@@ -71,6 +71,10 @@ class AdminController extends Controller
             'status' => function ($model, $key, $index, $column) {
                 return Yii::$app->help->colorStatus($model->is_listed);
             },
+            'amount' => function ($model, $key, $index, $column) {
+                return $model->amount. ' '.$model->user->currency;
+            }
+
         ];
         $searchModel = new CharitySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
