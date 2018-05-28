@@ -23,7 +23,7 @@
               {{ t('account', 'charity_to') }} {{ chty.title }}
             {% endif %}
           </td>
-          <td>{{ _local_date(chty.added,  t('dictionary', 'date_format_long')) }}</td>
+          <td>{{ _local_date(chty.added,  t('dictionary', 'date_format_long'))|raw }}</td>
           <td class="cashback">
             {{ _nf(chty.amount) | raw }} {{ curr_icon|raw }}
           </td>

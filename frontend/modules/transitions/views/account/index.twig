@@ -16,7 +16,7 @@
 
                         {% for visit in visit_history %}
                         <tr>
-                            <td>{{_local_date(visit.visit_date, date_format)}}</td>
+                            <td>{{_local_date(visit.visit_date, date_format)|raw }}</td>
                             <td class="store"><a href="/stores/{{visit.route}}{{ _if(visit.is_offline,'-offline') }}">{{visit.name}}</a></td>
                         </tr>
                         {% endfor %}

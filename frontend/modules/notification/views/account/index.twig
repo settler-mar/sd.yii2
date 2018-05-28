@@ -6,7 +6,7 @@
   {% if notifications|length > 0 %}
     {% for notification in notifications %}
       <div class="account-notification cashback news_{{ notification.name }}">
-        <div class="account-notification-date">{{ _local_date(notification.added, t('dictionary', 'date_format_long')) }}</div>
+        <div class="account-notification-date">{{ _local_date(notification.added, t('dictionary', 'date_format_long'))|raw }}</div>
         <div class="account-notification-title">{{ notification.title }}</div>
         <div  class="account-notification-text">{{ notification.text|raw }}</div>
       </div>
