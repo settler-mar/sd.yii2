@@ -42,15 +42,11 @@
               {{ _nf(users_total.cnt_confirmed,0) | raw }}
             </div>
           </div>
-              {#{{ _nf(users_total.sum_confirmed) | raw }} р#}
-
             {% for key, item in users_summ if item.sum_confirmed > 0 %}
             <div class="line">
-              <div class="name">
-                {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                {{ _nf(item.sum_confirmed)|raw }}
+                {{ _nf(item.sum_confirmed)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
             {% endfor %}
@@ -62,11 +58,9 @@
           </div>
             {% for key, item in users_summ if item.sum_pending > 0 %}
           <div class="line">
-              <div class="name">
-                  {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                 {{ _nf(item.sum_pending)|raw }}
+                 {{ _nf(item.sum_pending)|raw }} <span>{{ item.currency }}</span>
               </div>
           </div>
             {% endfor %}
@@ -78,11 +72,9 @@
           </div>
           {% for key, item in users_summ if item.sum_from_ref_pending > 0 %}
           <div class="line">
-            <div class="name">
-                {{ item.currency }}
-            </div>
+            <div class="name name-none"></div>
             <div class="value">
-                {{ _nf(item.sum_from_ref_pending)|raw }}
+                {{ _nf(item.sum_from_ref_pending)|raw }} <span>{{ item.currency }}</span>
             </div>
           </div>
           {% endfor %}
@@ -97,11 +89,9 @@
           </div>
           {% for key, item in users_ref if item.sum_to_friend_pending > 0 %}
             <div class="line">
-              <div class="name">
-                {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                {{ _nf(item.sum_to_friend_pending)|raw }}
+                {{ _nf(item.sum_to_friend_pending)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
           {% endfor %}
@@ -115,11 +105,9 @@
           </div>
           {% for key, item in users_summ if item.sum_from_ref_confirmed > 0 %}
           <div class="line">
-           <div class="name">
-             {{ item.currency }}
-           </div>
+           <div class="name name-none"></div>
             <div class="value">
-              {{ _nf(item.sum_from_ref_confirmed)|raw }}
+              {{ _nf(item.sum_from_ref_confirmed)|raw }} <span>{{ item.currency }}</span>
             </div>
           </div>
           {% endfor %}
@@ -134,11 +122,9 @@
           </div>
           {% for key, item in users_ref if item.sum_to_friend_confirmed > 0 %}
             <div class="line">
-              <div class="name">
-                  {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                  {{ _nf(item.sum_to_friend_confirmed)|raw }}
+                  {{ _nf(item.sum_to_friend_confirmed)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
           {% endfor %}
@@ -149,11 +135,9 @@
           </div>
           {% for key, item in users_summ if item.sum_withdraw > 0 %}
             <div class="line">
-              <div class="name">
-                  {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                  {{ _nf(item.sum_withdraw)|raw }}
+                  {{ _nf(item.sum_withdraw)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
           {% endfor %}
@@ -162,11 +146,9 @@
           </div>
           {% for key, item in users_summ if item.sum_foundation > 0 %}
             <div class="line">
-              <div class="name">
-                  {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                  {{ _nf(item.sum_foundation)|raw }}
+                  {{ _nf(item.sum_foundation)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
           {% endfor %}
@@ -175,11 +157,9 @@
           </div>
           {% for key, item in users_summ if item.sum_bonus > 0 %}
             <div class="line">
-              <div class="name">
-                  {{ item.currency }}
-              </div>
+              <div class="name name-none"></div>
               <div class="value">
-                  {{ _nf(item.sum_bonus)|raw }}
+                  {{ _nf(item.sum_bonus)|raw }} <span>{{ item.currency }}</span>
               </div>
             </div>
           {% endfor %}
