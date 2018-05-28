@@ -63,24 +63,24 @@ class AdminController extends Controller
     }
 
     if (isset($get['ip']) && strlen($get['ip']) > 0) {
-      $query->andWhere(['or', 'last_ip=\'' . $get['ip'] . '\'', 'reg_ip=\'' . $get['ip'] . '\'']);
+      $query->andWhere(['or', 'cw_users.last_ip=\'' . $get['ip'] . '\'', 'cw_users.reg_ip=\'' . $get['ip'] . '\'']);
     }
 
     if (isset($get['ref_id']) && strlen($get['ref_id']) > 0) {
-      $query->andWhere(['referrer_id' => ((int)$get['ref_id'])]);
+      $query->andWhere(['cw_users.referrer_id' => ((int)$get['ref_id'])]);
     }
 
     if (isset($get['email']) && strlen($get['email']) > 0) {
-      $query->andWhere(['like', 'email', $get['email']]);
+      $query->andWhere(['like', 'cw_users.email', $get['email']]);
     }
     if (isset($get['wait-moderation']) && strlen($get['wait-moderation']) > 0) {
-      $query->andWhere(['waitModeration' => $get['wait-moderation']]);
+      $query->andWhere(['cw_users.waitModeration' => $get['wait-moderation']]);
     }
     if (isset($get['loyalty_status']) && strlen($get['loyalty_status']) > 0) {
         if ($get['loyalty_status'] == 'personal') {
-            $query->andWhere(['>', 'loyalty_status', 4]);
+            $query->andWhere(['>', 'cw_users.loyalty_status', 4]);
         } else {
-            $query->andWhere(['loyalty_status' => $get['loyalty_status']]);
+            $query->andWhere(['cw_users.loyalty_status' => $get['loyalty_status']]);
         }
     }
 
@@ -88,31 +88,31 @@ class AdminController extends Controller
       if ($get['is_active'] == 1) {
         $query->andFilterWhere([
             'or',
-            ['>', 'sum_pending', 0],
-            ['>', 'sum_confirmed', 0],
-            ['>', 'sum_from_ref_pending', 0],
-            ['>', 'sum_from_ref_confirmed', 0],
+            ['>', 'cw_users.sum_pending', 0],
+            ['>', 'cw_users.sum_confirmed', 0],
+            ['>', 'cw_users.sum_from_ref_pending', 0],
+            ['>', 'cw_users.sum_from_ref_confirmed', 0],
         ]);
       } elseif ($get['is_active'] === '0') {
         $query->andWhere([
             'or',
-            ['sum_pending' => null],
-            ['=', 'sum_pending', 0]
+            ['cw_users.sum_pending' => null],
+            ['=', 'cw_users.sum_pending', 0]
         ]);
         $query->andWhere([
             'or',
-            ['sum_confirmed' => null],
-            ['=', 'sum_confirmed', 0]
+            ['cw_users.sum_confirmed' => null],
+            ['=', 'cw_users.sum_confirmed', 0]
         ]);
         $query->andWhere([
             'or',
-            ['sum_from_ref_pending' => null],
-            ['=', 'sum_from_ref_pending', 0]
+            ['cw_users.sum_from_ref_pending' => null],
+            ['=', 'cw_users.sum_from_ref_pending', 0]
         ]);
         $query->andWhere([
             'or',
-            ['sum_from_ref_confirmed' => null],
-            ['=', 'sum_from_ref_confirmed', 0]
+            ['cw_users.sum_from_ref_confirmed' => null],
+            ['=', 'cw_users.sum_from_ref_confirmed', 0]
         ]);
 
       }
