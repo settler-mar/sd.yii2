@@ -47,27 +47,69 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+    $selects = [
+        'order_price' => [
+            'select' =>  ['cw_stores.currency', 'sum(order_price) as order_price'],
+            'groupby' => 'cw_stores.currency',
+        ],
+        'reward' => [
+            'select' =>  ['cw_users.currency', 'sum(reward) as reward'],
+            'groupby' => 'cw_users.currency',
+        ],
+        'cashback' => [
+            'select' =>  ['cw_users.currency', 'sum(cashback) as cashback'],
+            'groupby' => 'cw_users.currency',
+        ],
+        'ref_bonus' => [
+            'select' =>  ['users2.currency', 'sum(ref_bonus) as ref_bonus'],
+            'groupby' => 'users2.currency',
+            'join' => [Users::tableName() .' users2', 'users2.uid = cw_payments.ref_id'],
+            'where' => [['>', 'ref_bonus', 0], ['is not', 'users2.currency', null]],
+        ]
+    ];
+
     $searchModel = new PaymentsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-    //получение статистики
-    //для выборки
+    $statResults = [];
+
+    foreach ($selects as  $key => $select) {
+        $stat = clone $dataProvider->query;
+        $stat->select(array_merge($select['select'], ['cw_payments.affiliate_id', 'cw_payments.cpa_id', 'cw_payments.user_id']))
+            ->groupBy($select['groupby']);
+        if (isset($select['join'])) {
+            $stat->leftJoin($select['join'][0], $select['join'][1]);
+        }
+        if (!empty($select['where'])) {
+            foreach ($select['where'] as $where) {
+                $stat->andWhere($where);
+            }
+        }
+        $statResults[$key]['all'] = $stat->asArray()->all();
+        $statWait = clone $stat;
+        $statRevoke = clone $stat;
+        $statSuccess = clone $stat;
+        $statResults[$key]['wait'] = $statWait->andWhere(['status' => 0])->asArray()->all();
+        $statResults[$key]['revoke'] = $statRevoke->andWhere(['status' => 1])->asArray()->all();
+        $statResults[$key]['success'] = $statSuccess->andWhere(['status' => 2])->asArray()->all();
+    }
+
 
     $stat = clone $dataProvider->query;
-    $stat = $stat->select(
-      ['sum(order_price*kurs) as order_price',
-        'sum(reward) as reward',
-        'sum(cashback) as cashback',
-        'sum(ref_bonus) as ref_bonus'
-      ]);
-    //$statsQuery['all'] = $stat->asArray()->one();
-    $statsQuery['all'] = $stat->one();
-    $statWait = clone $stat;
-    $statRevoke = clone $stat;
-    $statSuccess = clone $stat;
-    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->one();
-    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->one();
-    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->one();
+//    $stat = $stat->select(
+//      ['sum(order_price*kurs) as order_price',
+//        'sum(reward) as reward',
+//        'sum(cashback) as cashback',
+//        'sum(ref_bonus) as ref_bonus'
+//      ]);
+//    //$statsQuery['all'] = $stat->asArray()->one();
+//    $statsQuery['all'] = $stat->one();
+//    $statWait = clone $stat;
+//    $statRevoke = clone $stat;
+//    $statSuccess = clone $stat;
+//    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->one();
+//    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->one();
+//    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->one();
     $statsQuery['users'] = $stat->groupBy('user_id')->count();
 
     $canAdmitadUpdate=false;
@@ -112,7 +154,7 @@ class AdminController extends Controller
       },
       'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
-      //'stats_all' => $statsAll,
+      'stats_result' => $statResults,
     ]);
   }
 
