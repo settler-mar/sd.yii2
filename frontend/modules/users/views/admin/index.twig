@@ -39,61 +39,150 @@
           <div class="line">
             <div class="name">Кэшбэк(confirmed)</div>
             <div class="value">
-              {{ users_total.cnt_confirmed }}
-            </div>
-            <div class="value">
-              {{ _nf(users_total.sum_confirmed) | raw }} р
+              {{ _nf(users_total.cnt_confirmed,0) | raw }}
             </div>
           </div>
+              {#{{ _nf(users_total.sum_confirmed) | raw }} р#}
+
+            {% for key, item in users_summ if item.sum_confirmed > 0 %}
+            <div class="line">
+              <div class="name">
+                {{ item.currency }}
+              </div>
+              <div class="value">
+                {{ _nf(item.sum_confirmed)|raw }}
+              </div>
+            </div>
+            {% endfor %}
           <div class="line">
             <div class="name">Кэшбэк(pending)</div>
             <div class="value">
               {{ _nf(users_total.cnt_pending,0) | raw }}
             </div>
-            <div class="value">
-              {{ _nf(users_total.sum_pending) | raw }} р
-            </div>
           </div>
+            {% for key, item in users_summ if item.sum_pending > 0 %}
+          <div class="line">
+              <div class="name">
+                  {{ item.currency }}
+              </div>
+              <div class="value">
+                 {{ _nf(item.sum_pending)|raw }}
+              </div>
+          </div>
+            {% endfor %}
           <div class="line">
             <div class="name">Ref(pending)</div>
             <div class="value">
               <span>from</span>
-              {{ _nf(users_total.sum_from_ref_pending) | raw }} р
+            </div>
+          </div>
+          {% for key, item in users_summ if item.sum_from_ref_pending > 0 %}
+          <div class="line">
+            <div class="name">
+                {{ item.currency }}
+            </div>
+            <div class="value">
+                {{ _nf(item.sum_from_ref_pending)|raw }}
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="line">
+            <div class="name">
+              Ref(pending)
             </div>
             <div class="value">
               <span>to</span>
-              {{ _nf(users_total.sum_to_ref_pending) | raw }} р
             </div>
           </div>
+          {% for key, item in users_ref if item.sum_to_friend_pending > 0 %}
+            <div class="line">
+              <div class="name">
+                {{ item.currency }}
+              </div>
+              <div class="value">
+                {{ _nf(item.sum_to_friend_pending)|raw }}
+              </div>
+            </div>
+          {% endfor %}
+
+
           <div class="line">
             <div class="name">Ref(confirmed)</div>
             <div class="value">
               <span>from</span>
-              {{ _nf(users_total.sum_from_ref_confirmed) | raw }} р
             </div>
+          </div>
+          {% for key, item in users_summ if item.sum_from_ref_confirmed > 0 %}
+          <div class="line">
+           <div class="name">
+             {{ item.currency }}
+           </div>
+            <div class="value">
+              {{ _nf(item.sum_from_ref_confirmed)|raw }}
+            </div>
+          </div>
+          {% endfor %}
+
+
+
+          <div class="line">
+            <div class="name">Ref(confirmed)</div>
             <div class="value">
               <span>to</span>
-              {{ _nf(users_total.sum_to_ref_confirmed) | raw }} р
             </div>
           </div>
+          {% for key, item in users_ref if item.sum_to_friend_confirmed > 0 %}
+            <div class="line">
+              <div class="name">
+                  {{ item.currency }}
+              </div>
+              <div class="value">
+                  {{ _nf(item.sum_to_friend_confirmed)|raw }}
+              </div>
+            </div>
+          {% endfor %}
+
+
           <div class="line">
             <div class="name">Выплаченно</div>
-            <div class="value">
-              {{ _nf(users_total.sum_withdraw) | raw }} р
-            </div>
           </div>
+          {% for key, item in users_summ if item.sum_withdraw > 0 %}
+            <div class="line">
+              <div class="name">
+                  {{ item.currency }}
+              </div>
+              <div class="value">
+                  {{ _nf(item.sum_withdraw)|raw }}
+              </div>
+            </div>
+          {% endfor %}
           <div class="line">
             <div class="name">Пожертвовано</div>
-            <div class="value">
-              {{ _nf(users_total.sum_foundation) | raw }} р
-            </div>
           </div>
+          {% for key, item in users_summ if item.sum_foundation > 0 %}
+            <div class="line">
+              <div class="name">
+                  {{ item.currency }}
+              </div>
+              <div class="value">
+                  {{ _nf(item.sum_foundation)|raw }}
+              </div>
+            </div>
+          {% endfor %}
           <div class="line">
             <div class="name">Бонусов</div>
-            <div class="value">
-              {{ _nf(users_total.sum_bonus) | raw }} р
-            </div>
           </div>
+          {% for key, item in users_summ if item.sum_bonus > 0 %}
+            <div class="line">
+              <div class="name">
+                  {{ item.currency }}
+              </div>
+              <div class="value">
+                  {{ _nf(item.sum_bonus)|raw }}
+              </div>
+            </div>
+          {% endfor %}
           {% for loyalty_status in loyalty_statuses %}
             <div class="line">
               <div class="name">Статус&nbsp;{{ app.params.dictionary.loyalty_status[loyalty_status.loyalty_status].display_name }}</div>

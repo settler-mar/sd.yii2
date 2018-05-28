@@ -59,7 +59,7 @@ class AdminController extends Controller
 
     $w = [];
     if (isset($get['user_id']) && strlen($get['user_id']) > 0) {
-      $query->andWhere(['uid' => ((int)$get['user_id'])]);
+      $query->andWhere(['cw_users.uid' => ((int)$get['user_id'])]);
     }
 
     if (isset($get['ip']) && strlen($get['ip']) > 0) {
@@ -118,25 +118,43 @@ class AdminController extends Controller
       }
     }
 
-    $totQuery = clone $query;
-    $totQuery = $totQuery
+    $totQueryCount = clone $query;
+    $totQuerySumm = clone $query;
+    $totQueryRef = clone $query;
+    $totQueryCount = $totQueryCount
         ->select([
             'count(*) as total',
             'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
-            'SUM(sum_pending) as sum_pending',
             'SUM(cnt_pending) as cnt_pending',
-            'SUM(sum_confirmed) as sum_confirmed',
             'SUM(cnt_confirmed) as cnt_confirmed',
-            'SUM(sum_from_ref_pending) as sum_from_ref_pending',
-            'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
-            'SUM(sum_to_friend_pending) as sum_to_ref_pending',
-            'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
-            'SUM(sum_foundation) as sum_foundation',
-            'SUM(sum_withdraw) as sum_withdraw',
-            'SUM(sum_bonus) as sum_bonus',
         ])
         ->asArray()
         ->one();
+    $totQuerySumm = $totQuerySumm
+        ->select([
+            'SUM(sum_pending) as sum_pending',
+            'SUM(sum_confirmed) as sum_confirmed',
+            'SUM(sum_from_ref_pending) as sum_from_ref_pending',
+            'SUM(sum_from_ref_confirmed) as sum_from_ref_confirmed',
+            'SUM(sum_foundation) as sum_foundation',
+            'SUM(sum_withdraw) as sum_withdraw',
+            'SUM(sum_bonus) as sum_bonus',
+            'currency'
+        ])
+        ->groupby('currency')
+        ->asArray()
+        ->all();
+    $totQueryRef = $totQueryRef
+        ->select([
+            'SUM(cw_users.sum_to_friend_pending) as sum_to_friend_pending',
+            'SUM(cw_users.sum_to_friend_confirmed) as sum_to_friend_confirmed',
+            'user2.currency'
+        ])
+        ->andWhere(['is not', 'user2.currency', null])
+        ->leftJoin(Users::tableName(). ' user2', 'user2.uid = cw_users.referrer_id')
+        ->groupby('user2.currency')
+        ->asArray()
+        ->all();
 
     $countQuery = clone $query;
     $pages = new Pagination(['totalCount' => $countQuery->count()]);
@@ -171,7 +189,9 @@ class AdminController extends Controller
         'users' => $models,
         'pages' => $pages,
         'get' => $get,
-        'users_total' => $totQuery,
+        'users_total' => $totQueryCount,
+        'users_summ' => $totQuerySumm,
+        'users_ref' => $totQueryRef,
         'notes' => $notes,
         'loyalty_statuses' => $loyaltyStatuses,
     ]);
