@@ -22,7 +22,7 @@
               {{ payment.name }}
             {% endif %}
           </td>
-          <td>{{ _local_date(payment.action_date, t('dictionary', 'date_format_long')) }}</td>
+          <td>{{ _local_date(payment.action_date, t('dictionary', 'date_format_long'))|raw }}</td>
           <td class="cashback status_{{ payment.status }}">
             {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
           </td>
