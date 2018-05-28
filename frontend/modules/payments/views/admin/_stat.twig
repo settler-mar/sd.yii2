@@ -37,7 +37,7 @@
             </td>
             <td class="value">
                 {#{{ _nf(stats_query.all.cashback)|raw }}#}
-                {% for key, item in stats_result.cashback.all %}
+                {% for key, item in stats_result.reward.all %}
                     <div>
                        {{ _nf(item.cashback)|raw }} {{ item.currency }}
                     </div>
@@ -72,7 +72,7 @@
             </td>
             <td class="value">
                 {#{{ _nf(stats_query.wait.cashback)|raw }}#}
-                {% for key, item in stats_result.cashback.wait %}
+                {% for key, item in stats_result.reward.wait %}
                     <div>
                         {{ _nf(item.cashback)|raw }} {{ item.currency }}
                     </div>
@@ -107,7 +107,7 @@
             </td>
             <td class="value">
                 {#{{ _nf(stats_query.revoke.cashback)|raw }}#}
-                {% for key, item in stats_result.cashback.revoke %}
+                {% for key, item in stats_result.reward.revoke %}
                     <div>
                         {{ _nf(item.cashback)|raw }} {{ item.currency }}
                     </div>
@@ -142,7 +142,7 @@
             </td>
             <td class="value">
                 {#{{ _nf(stats_query.success.cashback)|raw }}#}
-                {% for key, item in stats_result.cashback.success %}
+                {% for key, item in stats_result.reward.success %}
                     <div>
                         {{ _nf(item.cashback)|raw }} {{ item.currency }}
                     </div>

@@ -53,11 +53,7 @@ class AdminController extends Controller
             'groupby' => 'cw_stores.currency',
         ],
         'reward' => [
-            'select' =>  ['cw_users.currency', 'sum(reward) as reward'],
-            'groupby' => 'cw_users.currency',
-        ],
-        'cashback' => [
-            'select' =>  ['cw_users.currency', 'sum(cashback) as cashback'],
+            'select' =>  ['cw_users.currency', 'sum(reward) as reward', 'sum(cashback) as cashback'],
             'groupby' => 'cw_users.currency',
         ],
         'ref_bonus' => [
