@@ -118,6 +118,20 @@ class AdminController extends Controller
       }
     }
 
+    $search_range = Yii::$app->request->get('date_range_added');
+    if (empty($search_range) || strpos($search_range, '-') === false) {
+      $search_range = date('01-01-2017') . ' - ' . date('d-m-Y');
+    }
+
+
+    list($start_date, $end_date) = explode(' - ', $search_range);
+    $data_ranger_added = Help::DateRangePicker($start_date . ' - ' . $end_date,'date_range_added');
+
+    $start_date = date('Y-m-d', strtotime($start_date));
+    $end_date = date('Y-m-d', strtotime($end_date));
+    $query->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+
+
     $totQuery = clone $query;
     $totQuery = $totQuery
         ->select([
@@ -174,6 +188,7 @@ class AdminController extends Controller
         'users_total' => $totQuery,
         'notes' => $notes,
         'loyalty_statuses' => $loyaltyStatuses,
+        'data_ranger_added' => $data_ranger_added,
     ]);
   }
 
