@@ -303,7 +303,9 @@ class SiteController extends SdController
       if (!$coupon) {
         return $this->redirect('/coupons');
       }
-      $data['link'] = $coupon->goto_link;
+      //$data['link'] = $coupon->goto_link;
+      $data['link'] = $this->makeGotoLink($coupon->goto_link, ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+
       $store = $coupon->store_id;
       $coupon->visit++;
       $coupon->save();
@@ -319,27 +321,36 @@ class SiteController extends SdController
     }
 
     if ($data['link'] == '') {
-      $data['link'] = $store->cpaLink->affiliate_link;
+        $cpaLink = $store->cpaLink;
+        if ($cpaLink && $cpaLink->affiliate_link &&
+            !empty($cpaLink->cpa->name)&&
+            $cpaLink->cpa->name == 'Admitad') {
+            //admitad
+            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+        } else if ($cpaLink &&
+            !empty($cpaLink->cpa->name) && $cpaLink->cpa->name == 'Ozon') {
+            //ozon
+            $data['link'] = $this->makeGotoLink('https:://ozon.ru',[
+                'parthner' => Yii::$app->params['ozonPartnerId'],
+                'partnerAgentId' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id,
+            ]);
+        } else if ($cpaLink && $cpaLink->affiliate_link) {
+            //не опознано cpa  но affiliate_link имеется
+            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+        } else {
+            //нет ничего подставляем store->url
+            $data['link'] = $this->makeGotoLink($store->url,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+        }
     }
 
     $data['store'] = $store;
     $data['store_route'] = $store->route;
 
-    if ($data['link'] == '') {
-      $data['link'] = $store->url;
-    }
-
-    if (strripos($data['link'], "?") === false) {
-      $data['link'] .= "?";
-    } else {
-      $data['link'] .= "&";
-    }
-    $data['link'] .= 'subid=' . (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
-
     $visit->store_id = $store->uid;
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);
+    //ddd($data);
 
     $this->layout = '@app/views/layouts/blank.twig';
     return $this->render('goto', $data);
@@ -444,5 +455,19 @@ class SiteController extends SdController
       return 'Отправлено тестовое письмо';
 
 
+  }
+
+
+  protected function makeGotoLink($link, $params)
+  {
+      if (!$link) {
+          return '';
+      }
+      if (empty($params)) {
+          return $link;
+      }
+      $link .= (strpos('?', $link) === false) ? '?' : '&';
+      $link .= http_build_query($params);
+      return $link;
   }
 }
