@@ -480,7 +480,7 @@ class SiteController extends SdController
         return '';
     }
     foreach ($params as $key => $value) {
-        $link = str_replace('{'.$key.'}', $value, $link);
+        $link = str_replace('{{'.$key.'}}', $value, $link);
     }
     return $link;
   }

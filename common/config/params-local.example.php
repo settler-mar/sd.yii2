@@ -24,10 +24,10 @@ return [
       'login' => 'admin@secretdiscounter.com',
       'affiliateId' => '1533884',
       'password' => '2011odnN@',
-      'parthnerLink' => 'https://www.ozon.ru/?partner=SecretDiscounter&partneragentid={subid}',
+      'parthnerLink' => 'https://www.ozon.ru/?partner=SecretDiscounter&partneragentid={{subid}}',
     ],
     'booking.com' => [
-      'parthnerLink' => 'http://www.booking.com?aid=1535050&label={subid}',
+      'parthnerLink' => 'http://www.booking.com?aid=1535050&label={{subid}}',
     ],
   ],
 ];
