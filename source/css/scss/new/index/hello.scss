@@ -138,7 +138,9 @@
         transition: all .25s ease;
         text-decoration: none;
         position: relative;
-        background: url(/images/header_present.png) no-repeat 50% 20px;
+        //background: url(/images/header_present.png) no-repeat 50% 20px;
+        background-repeat: no-repeat;
+        background-position: 50% 20px;
         height: 100%;
         min-width: 245px;
 
