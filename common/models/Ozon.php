@@ -76,10 +76,11 @@ class Ozon
      */
     protected function makeParams($dateFrom = false, $dateTo = false)
     {
+        $config = Yii::$app->params['outstand_cpa']['ozon'];
         $params = [
-            'partnerName' => Yii::$app->params['ozon']['parthnerId'],
-            'login' => Yii::$app->params['ozon']['login'],
-            'password' => Yii::$app->params['ozon']['password'],
+            'partnerName' => $config['parthnerId'],
+            'login' => $config['login'],
+            'password' => $config['password'],
         ];
         if ($dateFrom) {
             $params['dateFrom'] = $dateFrom;

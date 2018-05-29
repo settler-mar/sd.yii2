@@ -17,7 +17,7 @@ class m180529_071926_addCpaTypeOzon extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $cpa = new Cpa();
-        $cpa->name = 'Ozon';
+        $cpa->name = 'Внешние подключения';
         $cpa->save();
     }
 
@@ -29,7 +29,7 @@ class m180529_071926_addCpaTypeOzon extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        Cpa::deleteAll(['name' => 'Ozon']);
+        Cpa::deleteAll(['name' => 'Внешние подключения']);
     }
 
     /*

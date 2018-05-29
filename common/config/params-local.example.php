@@ -18,11 +18,13 @@ return [
     'en' => ['en', 'la'],//английский латинский
   ],
 
-  'ozon' => [
-    'parthnerId' => '',
-    'login' => '',
-    'affiliateId' => '',
-    'password' => '',
+  'outstand_cpa' => [
+    'ozon' => [
+      'parthnerId' => 'SecretDiscounter',
+      'login' => 'admin@secretdiscounter.com',
+      'affiliateId' => '1533884',
+      'password' => '2011odnN@',
+      'parthnerLink' => 'https://www.ozon.ru/?partner=SecretDiscounter&partneragentid={subid}',
+    ],
   ],
-
 ];

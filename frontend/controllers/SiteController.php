@@ -327,13 +327,10 @@ class SiteController extends SdController
             $cpaLink->cpa->name == 'Admitad') {
             //admitad
             $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-        } else if ($cpaLink &&
-            !empty($cpaLink->cpa->name) && $cpaLink->cpa->name == 'Ozon') {
-            //ozon
-            $data['link'] = $this->makeGotoLink('https:://ozon.ru',[
-                'parthner' => Yii::$app->params['ozon']['partnerId'],
-                'partnerAgentId' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id,
-            ]);
+        } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
+            $cpaLink->cpa->name == 'Внешние подключения' && $cpaLink->affiliate_link ) {
+            //внешние подключения = в $cpaLink->affiliate_link находится индекс в настройках
+            $data['link'] = $this->makeOutstandLink($cpaLink->affiliate_link, ['subid' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id]);
         } else if ($cpaLink && $cpaLink->affiliate_link) {
             //не опознано cpa  но affiliate_link имеется
             $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
@@ -457,7 +454,6 @@ class SiteController extends SdController
 
   }
 
-
   protected function makeGotoLink($link, $params)
   {
       if (!$link) {
@@ -469,5 +465,23 @@ class SiteController extends SdController
       $link .= (strpos('?', $link) === false) ? '?' : '&';
       $link .= http_build_query($params);
       return $link;
+  }
+
+    /** cсылки для внешних cpa
+     * @param $paramsOffset
+     * @param array $params
+     * @return mixed|string
+     */
+  protected function makeOutstandLink($offset, $params = [])
+  {
+    $link = isset(Yii::$app->params['outstand_cpa'][$offset]['parthnerLink']) ?
+        Yii::$app->params['outstand_cpa'][$offset]['parthnerLink'] : '';
+    if ($link) {
+        return '';
+    }
+    foreach ($params as $key => $value) {
+        $link = str_replace('{'.$key.'}', $value, $link);
+    }
+    return $link;
   }
 }
