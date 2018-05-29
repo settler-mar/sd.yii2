@@ -331,7 +331,7 @@ class SiteController extends SdController
             !empty($cpaLink->cpa->name) && $cpaLink->cpa->name == 'Ozon') {
             //ozon
             $data['link'] = $this->makeGotoLink('https:://ozon.ru',[
-                'parthner' => Yii::$app->params['ozonPartnerId'],
+                'parthner' => Yii::$app->params['ozon']['partnerId'],
                 'partnerAgentId' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id,
             ]);
         } else if ($cpaLink && $cpaLink->affiliate_link) {

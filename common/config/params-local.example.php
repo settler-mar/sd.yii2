@@ -18,4 +18,11 @@ return [
     'en' => ['en', 'la'],//английский латинский
   ],
 
+  'ozon' => [
+    'parthnerId' => '',
+    'login' => '',
+    'affiliateId' => '',
+    'password' => '',
+  ],
+
 ];

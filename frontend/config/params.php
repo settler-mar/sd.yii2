@@ -111,6 +111,4 @@ $data['plugin'] = [
 
 ];
 
-$data['ozonPartnerId'] = 'SecredDiscounter';
-
 return $data;
