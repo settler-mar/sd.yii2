@@ -479,11 +479,12 @@ class SiteController extends SdController
      */
   protected function makeOutstandLink($offset, $params = [])
   {
-    $link = isset(Yii::$app->params['outstand_cpa'][$offset]['parthnerLink']) ?
+    $link=$offset;
+    /*$link = isset(Yii::$app->params['outstand_cpa'][$offset]['parthnerLink']) ?
         Yii::$app->params['outstand_cpa'][$offset]['parthnerLink'] : '';
     if ($link) {
         return '';
-    }
+    }*/
     foreach ($params as $key => $value) {
         $link = str_replace('{{'.$key.'}}', $value, $link);
     }
