@@ -31,7 +31,7 @@ return [
     'footer_menu_popular_cats' => 'Популярные категории',
     'footer_menu_col_2' => 'Menu column 2',
     'footer_menu_usful' => 'Полезные ссылки',
-    'footer_menu_col_3' => 'Menu column 3',
+    'footer_menu_col_3' => 'Промокоды',
     'footer_menu_help' => 'Помощь',
     'footer_menu_col_4' => 'Menu column 4',
     'withdraw_methods' => 'Способы вывода кэшбэка',
