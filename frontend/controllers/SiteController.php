@@ -467,7 +467,7 @@ class SiteController extends SdController
       if (empty($params)) {
           return $link;
       }
-      $link .= (strpos('?', $link) === false) ? '?' : '&';
+      $link .= (strpos($link, '?') === false) ? '?' : '&';
       $link .= http_build_query($params);
       return $link;
   }
