@@ -92,21 +92,7 @@ class AdminController extends Controller
 
 
     $stat = clone $dataProvider->query;
-//    $stat = $stat->select(
-//      ['sum(order_price*kurs) as order_price',
-//        'sum(reward) as reward',
-//        'sum(cashback) as cashback',
-//        'sum(ref_bonus) as ref_bonus'
-//      ]);
-//    //$statsQuery['all'] = $stat->asArray()->one();
-//    $statsQuery['all'] = $stat->one();
-//    $statWait = clone $stat;
-//    $statRevoke = clone $stat;
-//    $statSuccess = clone $stat;
-//    $statsQuery['wait'] = $statWait->andWhere(['status' => 0])->one();
-//    $statsQuery['revoke'] = $statRevoke->andWhere(['status' => 1])->one();
-//    $statsQuery['success'] = $statSuccess->andWhere(['status' => 2])->one();
-    $statsQuery['users'] = $stat->groupBy('user_id')->count();
+    $statsQuery['users'] = $stat->select(['cw_payments.user_id'])->groupBy('cw_payments.user_id')->count();
 
     $canAdmitadUpdate=false;
     $sort=trim(Yii::$app->request->get('sort'),'-');
