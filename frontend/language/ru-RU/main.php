@@ -4,6 +4,10 @@ return [
     'install_plugin_and_it_will_notice_about_cashback' =>'Установите наше расширение для браузера, и оно само напомнит о кэшбэке',
     'plugin_for_browser_{browser}_in_develop' => 'Плагин для браузера {browser} находится в разработке',
     'install_for_{browser}' => 'Установить для {browser}&nbsp;&rarr;',
+    'plugin' => 'Расширение SecretDiscounter',
+    'plugin_install_and_get_cadhback' => 'Установите наш плагин для браузера, и больше никогда не пропустите кэшбэк.<br> Получите возможность активировать кэшбэк в один клик прямо на сайте магазина!',
+    'plugin_available_for' => 'Расширение доступно для следующих браузеров',
+
     'share_about_us'  => 'Расскажите о нас в соцсетях',
     'share_your_friends_url'  => 'Отправьте друзьям ссылку',
     'find_shop' => 'Найти магазин',
