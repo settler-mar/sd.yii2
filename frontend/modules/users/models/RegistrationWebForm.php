@@ -22,18 +22,18 @@ class RegistrationWebForm extends Model
   {
     return [
       [['email','url'], 'trim'],
-      [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
-      [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
-      [['password_repeat'], 'required', 'message' => 'Необходимо повторить пароль'],
+      [['email', ], 'required', 'message' => Yii::t('account', 'email_is_required')],
+      [['password', ], 'required', 'message' => Yii::t('account', 'password_is_required')],
+      [['password_repeat'], 'required', 'message' => Yii::t('account', 'password_repeat_is_required')],
       [['email'], 'email'],
-      ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Введенные пароли не совпадают.', 'operator' => '=='],
-      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким email уже зарегистрирован.'],
+      ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('account', 'password_not_same_with_password_repeat'), 'operator' => '=='],
+      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => Yii::t('account', 'user_width_this_email_exists')],
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
       [['password'], 'string', 'min' => 6],
-      ['url','url','message'=>"Ссылка должна быть в формате https://primer.ru"],
-      [['traffType'], 'required', 'message' => 'Необходимо выбрать основной тип трафика'],
-      [['url'], 'required', 'message' => 'Необходимо ввести адрес'],
+      ['url','url','message'=> Yii::t('account', 'url_must_be_in_format')],
+      [['traffType'], 'required', 'message' => Yii::t('account', 'traffic_type_is_required')],
+      [['url'], 'required', 'message' => Yii::t('account', 'address_is_required')],
     ];
   }
 
@@ -41,10 +41,10 @@ class RegistrationWebForm extends Model
   {
     return [
       'email' => 'Email',
-      'password' => 'Пароль',
-      'password_repeat' => 'Повтор пароля',
-      'url' => 'Ссылка на вашу площадку',
-      'traffType' => 'Тип трафика',
+      'password' => Yii::t('common', 'password'),
+      'password_repeat' => Yii::t('common', 'password_repeat'),
+      'url' => Yii::t('account', 'url_to_web_resource'),
+      'traffType' => Yii::t('account', 'traffic_type'),
     ];
   }
 

@@ -1,7 +1,11 @@
 <section class="search margin">
 
     <h1 class="search__header">
-        Результаты поиска {% if query != '' %} по запросу '{{query}}' {% endif %}
+        {% if query != '' %}
+            {{ t('main', 'search_result_with_{query}_', {'query': query})|raw }}
+        {% else %}
+            {{ t('main', 'search_result')|raw }}
+        {% endif %}
     </h1>
     <div  class="search_stores margin">
 
@@ -21,7 +25,7 @@
 
 
         {% else %}
-            <p>По вашему запросу ничего не найдено.</p>
+            <p>{{ t('main', 'search_result_empty')|raw }}</p>
         {% endif %}
     </div>
 

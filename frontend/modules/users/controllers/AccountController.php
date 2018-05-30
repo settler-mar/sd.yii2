@@ -129,21 +129,21 @@ class AccountController extends Controller
 
     $prev_min=0;
     foreach ($statuses as $k => $status_k) {
-      if (isset($status_k['min_sum'])) {
-        $t_total=$total-$prev_min;
+      if (isset($status_k['min_sum'][Yii::$app->user->identity->currency])) {
+        $t_total = $total - $prev_min;
         $t_total_p=$total_p-$prev_min;
-        $prev_min=$status_k['min_sum'];
+        $prev_min=$status_k['min_sum'][Yii::$app->user->identity->currency];
         $status_k['id'] = $k;
-        $status_k['total'] = 100*(($status_k['min_sum']<=$t_total)?1:$t_total/$status_k['min_sum']);
-        $status_k['total_p'] = 100*(($status_k['min_sum']<=$t_total_p)?1:$t_total_p/$status_k['min_sum']);
+        $status_k['total'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total)?1:$t_total/$status_k['min_sum'][Yii::$app->user->identity->currency]);
+        $status_k['total_p'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total_p)?1:$t_total_p/$status_k['min_sum'][Yii::$app->user->identity->currency]);
         $statuses_marafon[$k] = $status_k;
         if (
-          $total < $status_k['min_sum'] &&
+          $total < $status_k['min_sum'][Yii::$app->user->identity->currency] &&
           $status['bonus'] < $status_k['bonus'] &&
-          (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'])
+          (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'][Yii::$app->user->identity->currency])
         ) {
           $next_tarif = $status_k;
-          $next_tarif_min_sum = $status_k['min_sum'];
+          $next_tarif_min_sum = $status_k['min_sum'][Yii::$app->user->identity->currency];
         }
       }
     }
@@ -151,7 +151,7 @@ class AccountController extends Controller
 
     if ($next_tarif) {
       $data["desire"] = $next_tarif['display_name'];
-      $data["left"] = $next_tarif['min_sum'] - $total;
+      $data["left"] = $next_tarif['min_sum'][Yii::$app->user->identity->currency] - $total;
     } else {
       $data["desire"] = "";
       $data["left"] = "";
@@ -258,13 +258,17 @@ class AccountController extends Controller
         }
         //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
         $url = !empty(Yii::$app->request->referrer) &&
-          strpos(Yii::$app->request->referrer, '/account/sendverifyemail') === false ?
-          Yii::$app->request->referrer : '/account';
+          strpos(Yii::$app->request->referrer,'/account/sendverifyemail') === false ?
+          Yii::$app->request->referrer : Help::href('/account');
         return $this->redirect($url)->send();
       }
     }
 
-    return $this->render('goto_email', ['model' => $user, 'path' => $request->get('path')]);
+    return $this->render('goto_email', [
+        'model' => $user,
+        'path' => $request->get('path'),
+        'action' => Help::href($request->url),
+    ]);
   }
 
   public function actionEmailsuccess()
@@ -316,7 +320,7 @@ class AccountController extends Controller
       if ($request->isPost) {
         //удаление оккаунта
           if ($request->post('user_comment') == '') {
-            $errors['user_comment']='Необходимо заполнить';
+            $errors['user_comment']= Yii::t('common', 'you_should_fill_here');
           } else {
               $user = Users::findOne(Yii::$app->user->id);
               if ($user) {
@@ -325,7 +329,7 @@ class AccountController extends Controller
                   $user->save();
                   Yii::$app->session->remove('admin_id');
                   Yii::$app->user->logout();
-                  $data['html'] = 'Аккаунт успешно удалён!<script>login_redirect("/");</script>';
+                  $data['html'] = Yii::t('account', 'account_is_deleted').'<script>login_redirect("/");</script>';
                   return json_encode($data);
               }
           }

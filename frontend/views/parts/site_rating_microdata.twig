@@ -1,11 +1,11 @@
 {% if this.site_rating %}
 <div typeof="v:Review-aggregate" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="http://rdf.data-vocabulary.org/#" class="microdata-site-rating">
-    Рейтинг
+    {{ t('main', 'rating') }}
     <span property="v:itemreviewed">Secret Discounter:
         <span  rel="v:rating">
             <span class="number" typeof="v:Rating">
                 <span property="v:average">{{ _nf(this.site_rating.value, 1) }}</span>
-                из
+                {{ t('main', 'from') }}
                 <span property="v:best">5 </span>
             </span>
         </span>
@@ -24,9 +24,7 @@
             {% endif %}
         </a>
         <span class="small">
-            <span>на основании опроса</span>
-            <span property="v:votes">{{ this.site_rating.reviews_count }}</span>
-            <span>наших пользователей</span>
+            {{ t('main', 'based_on_{count}_users_opinion', {'count': this.site_rating.reviews_count})|raw }}
         </span>
     </span>
 </div>

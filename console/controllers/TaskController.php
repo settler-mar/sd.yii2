@@ -235,17 +235,31 @@ class TaskController extends Controller
   {
     $interval = Yii::$app->params['rating_calculate_interval'];
     $dateStart = date('Y-m-d H:i:s', strtotime("-" . ($interval ? $interval : 3) . " months", time()));
-    $reviewsCount = Reviews::find()
-        ->where([
-            '>', 'added', $dateStart])
-        ->andWhere(['is_active' => 1])
-        ->count();
-    $paymentsCount = Payments::find()
-        ->where(['>', 'action_date', $dateStart])
-        ->andWhere(['status' => [0, 2]])
-        ->count();
 
-    $sql = 'UPDATE `cw_stores` `cws`
+    foreach (Yii::$app->params['regions_list'] as $region => $regionItem) {
+        $reviewsCount = Reviews::find()
+            ->from(Reviews::tableName(). ' cwur')
+            ->leftJoin(Users::tableName(). ' cwu', 'cwu.uid = cwur.user_id')
+            ->where([
+                '>', 'cwur.added', $dateStart])
+            ->andWhere(['cwur.is_active' => 1])
+            ->andWhere(['cwu.region' => $region])
+            ->count();
+        $paymentsCount = Payments::find()
+            ->from(Payments::tableName(). ' cwp')
+            ->leftJoin(Users::tableName(). ' cwu', 'cwu.uid = cwp.user_id')
+            ->where(['>', 'cwp.action_date', $dateStart])
+            ->andWhere(['cwp.status' => [0, 2]])
+            ->andWhere(['cwu.region' => $region])
+            ->count();
+       // d($region.' '.$reviewsCount.' '.$paymentsCount);
+        //алгоритм
+       $sql = 'INSERT INTO  `cw_store_ratings` (`store_id`,`region`,`rating`)
+        SELECT `select2`.`uid`, "'.$region.'", `select2`.`rating_result` from
+       (SELECT `cws`.`uid`, 
+        (ifnull(`store_rating`.`rating_geometr`, 0)' .
+        ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '') .
+        ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /' . $paymentsCount . ')' : '').') as `rating_result` FROM `cw_stores` `cws`
        LEFT JOIN
        (SELECT `cws2`.`uid`,
          avg(`cwur`.`rating`) as `rating_avg`,
@@ -253,27 +267,26 @@ class TaskController extends Controller
          exp(sum(log(`cwur`.`rating`))/count(*)) as `rating_geometr`
          FROM `cw_stores` `cws2`
          LEFT JOIN `cw_users_reviews` `cwur` ON cws2.uid = cwur.store_id
+         LEFT JOIN `cw_users` `cwu` ON `cwur`.`user_id` = `cwu`.`uid`
          WHERE `cwur`.`is_active`= 1 and `cwur`.`added` > "' . $dateStart . '"
+         AND `cwu`.`region` = "'.$region.'"
          GROUP BY `cws2`.`uid`)
          `store_rating` ON `cws`.`uid` = `store_rating`.`uid`
        LEFT JOIN
        (SELECT `cws3`.`uid`,
          count(`cwp`.`uid`) as `payments`
-         FROM `cw_stores` `cws3` 
+         FROM `cw_stores` `cws3`
          LEFT JOIN `cw_cpa_link` `cwcl` on `cws3`.`uid` = `cwcl`.`stores_id`
          LEFT JOIN `cw_payments` `cwp` on `cwp`.`affiliate_id` = `cwcl`.`affiliate_id`
+         LEFT JOIN `cw_users` `cwu` ON `cwp`.`user_id` = `cwu`.`uid`
          WHERE `cwp`.`status` = 2 and `cwp`.`action_date` > "' . $dateStart . '"
+         AND `cwu`.`region` = "'.$region.'"
          GROUP BY `cws3`.`uid`)
-         `store_payments` on `cws`.`uid` = `store_payments`.`uid` 
-         SET 
-         rating = ifnull(`store_rating`.`rating_geometr`, 0)
-         ' .
-        ($reviewsCount > 0 ? '* (5  * 100 * ifnull(`store_rating`.`reviews_count`, 0)/' . $reviewsCount . ')' : '') .
-        ($paymentsCount > 0 ? '+ (15 * 100 * ifnull(`store_payments`.`payments`, 0) /' . $paymentsCount . ')' : '')
-        . 'WHERE `cws`.`no_rating_calculate` = 0 or isnull(`cws`.`no_rating_calculate`)';
-    //алгоритм
-    \Yii::$app->db->createCommand($sql)->execute();
+         `store_payments` on `cws`.`uid` = `store_payments`.`uid` ) `select2`
+         ON DUPLICATE KEY UPDATE `rating` = IF(`no_calculate` = 0 or isnull(`no_calculate`), `select2`.`rating_result`,`rating`) ';
 
+       Yii::$app->db->createCommand($sql)->execute();
+    }
     Cache::deleteName('top_12_stores');
 
     Cache::clearName('catalog_stores');

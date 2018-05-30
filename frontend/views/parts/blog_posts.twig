@@ -23,10 +23,10 @@
         class="instruction-article-link blue"
         target="_blank"
         rel="nofollow noopener noreferrer"
-    >Читать полностью</a>
+    >{{ t('common', 'read_all_topic')|raw }}</a>
     <div class="instruction-status_line">
       <div class="instruction-status_line-item">
-        {{ _date(post.date,false) }}
+        {{ _local_date(post.date, t('dictionary', 'date_format_short'))|raw }}
       </div>
       <div class="instruction-status_line-item">
         {{ svg('eye','instruction-status_line-icon')|raw }}{{ post.views }}

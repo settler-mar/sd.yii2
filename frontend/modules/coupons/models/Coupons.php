@@ -52,6 +52,25 @@ class Coupons extends \yii\db\ActiveRecord
       'date_end' => ["title" => "Сроку действия", "title_mobile" => "Сроку действия", 'order' => 'DESC'],
   ];
 
+  public static function sortvars(){
+      return [
+          'visit' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+          ],
+          'date_start' => [
+              "title" => Yii::t('main','sort_by_date'),
+              "title_mobile" => Yii::t('main','sort_by_date_mobile')
+          ],
+          'date_end' => [
+              "title" => Yii::t('main','sort_by_expire'),
+              "title_mobile" => Yii::t('main','sort_by_expire_mobile'),
+              'order' => 'DESC'
+          ],
+      ];
+  }
+
+
   /**
    * @inheritdoc
    */
@@ -181,29 +200,29 @@ class Coupons extends \yii\db\ActiveRecord
   {
     $languages = self::languagesArray();
     $cache = Yii::$app->cache;
-    $cacheName = 'categories_coupons';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $cacheName = 'categories_coupons' . ($language ? '_' . $language : '');
     if (!empty($where)) {
-        foreach($where as $key => $value) {
-            $cacheName .= ('_'.$key.'_'.$value);
-        }
+      foreach($where as $key => $value) {
+        $cacheName .= ('_'.$key.'_'.$value);
+      }
     }
     $dependencyName = 'catalog_coupons';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $categories = $cache->getOrSet($cacheName, function () use ($languages, $where) {
-      $categories =  CategoriesCoupons::find()
-          ->from(CategoriesCoupons::tableName() . ' ccc')
-          ->select(['ccc.name', 'ccc.uid', 'ccc.route', 'count(cct.coupon_id) as count'])
-          ->innerJoin('cw_coupons_to_categories cct', "ccc.uid = cct.category_id")
-          ->innerJoin(self::tableName() . ' cwc', 'cct.coupon_id = cwc.coupon_id')
+      $categories =  CategoriesCoupons::translated(['uid', 'name', 'route'])
+          ->addSelect(['count(cwctc.coupon_id) as count'])
+          ->innerJoin('cw_coupons_to_categories cwctc', "cwcc.uid = cwctc.category_id")
+          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.coupon_id')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
           //->where(['cws.is_active' => [0, 1]])
           ->where(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
-          ->groupBy('cct.category_id')
+          ->groupBy('cwctc.category_id')
           ->asArray();
       if (!empty($languages)) {
-          $categories->andWhere(['language' => $languages]);
+          $categories->andWhere(['cwc.language' => $languages]);
       }
       if (!empty($where)) {
           $categories->andWhere($where);

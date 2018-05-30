@@ -1,0 +1,111 @@
+<?php
+
+use yii\db\Migration;
+use frontend\modules\meta\models\Meta;
+
+/**
+ * Class m180518_080037_AddMetadataLoyalty
+ */
+class m180518_080037_AddMetadataLoyalty extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
+        \Yii::$app->db->createCommand('insert into `cw_metadata` (`page`, `title`, `description`, `keywords`, `h1`, `content`)'.
+            ' values ("loyalty", "Накопительная система SecretDiscounter",'.
+            '"Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира.",'.
+            '"Кэшбэк-сервис, кэшбэк сайт, возврат денег, экономия в интернете, secretdiscounter, secret discounter, секрет дискаунтер, секретдискаунтер, сикрет дискаунтер, сикретдискаунтер, секретдискаунтер.ру, secretdiscounter.ru",'.
+            '"Накопительная система",'.
+            '"<div class=\"loyalty-text margin\">
+        <p>Уважаемые пользователи нашего кэшбэк-сервиса! Мы благодарны Вам за проявленное к нам доверие. Для нас это очень ценно и поэтому мы хотим сохранить отношения с Вами как можно дольше. А чтобы от частых покупок через наш сервис Вы почувствовали дополнительную выгоду, мы разработали для Вас накопительную систему лояльности. Она состоит из 4-х уровней, представленных ниже:</p>
+    </div>
+    <div class=\"loyalty-items\">
+        <div class=\"loyalty-items_item loyalty-items_item-bronze\">
+            <div class=\"loyalty-items_item-title\">
+                {{ svg(\'trophy\')|raw }}Bronze Status (+10%)
+            </div>
+            <div class=\"loyalty-items_item-text\">
+                <div class=\"loyalty-items_item-text-top\">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>500</b>{{ svg(\'ruble\')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>10%</b> кэшбэк.
+                </div>
+                <div class=\"loyalty-items_item-text-bottom\">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg(\'ruble\')|raw }} кэшбэка, то с <b>Bronze Status</b> Вам достанется <b>1100</b>{{ svg(\'ruble\')|raw }}.
+                </div>
+            </div>
+        </div>
+        <div class=\"loyalty-items_item loyalty-items_item-silver\">
+            <div class=\"loyalty-items_item-title\">
+                {{ svg(\'trophy\')|raw }}Silver Status (+15%)
+            </div>
+            <div class=\"loyalty-items_item-text\">
+                <div class=\"loyalty-items_item-text-top\">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>3000</b>{{ svg(\'ruble\')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>15%</b> кэшбэк.
+                </div>
+                <div class=\"loyalty-items_item-text-bottom\">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg(\'ruble\')|raw }} кэшбэка, то с <b>Silver Status</b> Вам достанется <b>1150</b>{{ svg(\'ruble\')|raw }}.
+                </div>
+            </div>
+        </div>
+        <div class=\"loyalty-items_item loyalty-items_item-gold\">
+            <div class=\"loyalty-items_item-title\">
+                {{ svg(\'trophy\')|raw }}Gold Status (+20%)
+            </div>
+            <div class=\"loyalty-items_item-text\">
+                <div class=\"loyalty-items_item-text-top\">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>7000</b>{{ svg(\'ruble\')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>20%</b>  кэшбэк.
+                </div>
+                <div class=\"loyalty-items_item-text-bottom\">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg(\'ruble\')|raw }} кэшбэка, то с <b>Gold Status</b> Вам достанется <b>1200</b>{{ svg(\'ruble\')|raw }}.
+                </div>
+            </div>
+        </div>
+        <div class=\"loyalty-items_item loyalty-items_item-platinum\">
+            <div class=\"loyalty-items_item-title\">
+                {{ svg(\'trophy\')|raw }}Platinum Status (+30%)
+            </div>
+            <div class=\"loyalty-items_item-text\">
+                <div class=\"loyalty-items_item-text-top\">
+                    Пользователи, у которых подтверждённый кэшбэк превысил <b>10000</b>{{ svg(\'ruble\')|raw }}, при всех своих последующих покупках будут получать увеличенный на <b>30%</b>  кэшбэк.
+                </div>
+                <div class=\"loyalty-items_item-text-bottom\">
+                    Например, если в обычном режиме Вы получили за покупку 1000{{ svg(\'ruble\')|raw }} кэшбэка, то с <b>Platinum Status</b> Вам достанется <b>1300</b>{{ svg(\'ruble\')|raw }}.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=\"loyalty-text align-center\">
+        <p>Экономьте с Secret Discounter, и Ваша выгода будет только расти!<a href=\"{{ _href(\'/account\')|raw }}\">ссылка</a></p>
+    </div>")')->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
+        Meta::deleteAll(['page' => 'loyalty']);
+    }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m180518_080037_AddMetadataLoyalty cannot be reverted.\n";
+
+        return false;
+    }
+    */
+}

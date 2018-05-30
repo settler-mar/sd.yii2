@@ -1,19 +1,12 @@
 <section>
 <div class="sign-up noajax result social">
-    <h2 class="title-no-line">E-mail отправлен</h2>
-        {% if new %}
-
-        {% else %}
-
-        {% endif %}
+    <h2 class="title-no-line">{{ t('account', 'email_is_send')|raw }}</h2>
 
     <p class="message">
-        {{ _if(email,"На <b>"~email~"</b>") |raw }} отправлено письмо
-        со ссылкой для подтверждения аккаунта.
-        Если письмо не пришло в течение 5 минут – проверьте папку «Спам».
+        {{ t('account', 'email_with_confirmation sent_to_{email}_', {'email': email})|raw }}
     </p>
     <p>
-        Если вы ошиблись при вводе e-mail, вернитесь <a href="#" onclick="javascript:history.back(); return false;">назад</a>.
+        {{ t('admin', 'if_you_mistake_retun_<a{back}>back</a>', {'back': 'href="#" onclick="javascript:history.back(); return false;"'})|raw }}
     </p>
 </div>
 </section>

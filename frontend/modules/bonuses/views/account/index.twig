@@ -20,7 +20,7 @@
               <th style="width: 140px;">{{ t('common', 'status') }}</th>
             </tr>
 
-          {% set curr_icon = currencyIcon(app.params.valuta) %}
+          {% set curr_icon = currencyIcon(app.user.identity.currency) %}
             {% for bonus in bonuses %}
             <tr>
               <td>
@@ -55,7 +55,7 @@
 
       {% else %}
 
-        <div class="not-found">{{ t('account', 'history_bonuses_empty') }}</div>
+        <div class="not-found">{{ t('account', 'history_bonuses_empty')|raw }}</div>
 
       {% endif %}
 

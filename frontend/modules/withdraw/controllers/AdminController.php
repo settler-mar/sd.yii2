@@ -87,6 +87,9 @@ class AdminController extends Controller
         'process' => function ($model, $key, $index, $column) {
           return $model->process_name;
         },
+        'amount' => function($model, $key, $index, $column) {
+            return $model->amount. ' '.$model->user->currency;
+        }
       )
       ,
       'stat' => $stats,

@@ -13,9 +13,9 @@ $(document).ready(function () {
     $temp.remove();
 
     if (!msg) {
-      msg = "Данные успешно скопированы в буфер обмена";
+      msg = lg("data_copied_to_clipboard");
     }
-    notification.notifi({'type': 'info', 'message': msg, 'title': 'Успешно'})
+    notification.notifi({'type': 'info', 'message': msg, 'title': lg('success')})
   }
 
   $("body").on('click', "input.link", function () {	// получение фокуса текстовым полем-ссылкой

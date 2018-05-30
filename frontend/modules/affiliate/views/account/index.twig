@@ -1,9 +1,9 @@
-{% set curr = currencyIcon(app.params.valuta) %}
+{% set curr = currencyIcon(app.user.identity.currency) %}
 
 <section class="account-balance">
   <div class="account-balance-row">
     <div class="account-balance-block">
-        {{ t('account', 'affiliate_referrals') }}:
+        {{ t('account', 'affiliate_referrals')|raw }}:
       <span>{{ number_referrals }}</span>
     </div>
     <div class="account-balance-block">
@@ -18,7 +18,7 @@
   </div>
   <div class="account-balance-row">
     <div class="account-balance-block account-balance-block-link">
-      <a href="/account/users">{{ t('common', 'read_more') }}</a>
+      <a href="/account/users">{{ t('common', 'read_more')|raw }}</a>
     </div>
   </div>
 </section>
@@ -28,11 +28,8 @@
   <section>
     {% if this.user.waitModeration==1 %}
       <div class="account-balance">
-        <h3>Заявка на модерации</h3>
-        <p>
-          Ваша заявка вебмастера принята.
-          Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
-        </p>
+        <h3>{{ t('account', 'moderation_request_title')|raw }}</h3>
+        <p>{{ t('account', 'moderation_request_message')|raw }}</p>
       </div>
     {% endif %}
 
@@ -40,21 +37,21 @@
       {% if h1 %}
         {{ h1 | raw }}
       {% else %}
-        {{ t('account', 'affiliate_h1_default') }}
+        {{ t('account', 'affiliate_h1_default')|raw }}
       {% endif %}
     </h1>
 
     {% include 'parts/principle-affiliate.twig' %}
 
 
-    <h2 class="text-center">{{ t('account', 'affiliate_how_to_share') }}</h2>
+    <h2 class="text-center">{{ t('account', 'affiliate_how_to_share')|raw }}</h2>
 
     <div class="flex-line tablets_flex-col">
       <div class="instruction-item tablets_flex-row tablets_text-aling_left">
         {{ svg('global','instruction-icon instruction-icon-mini svg-no-stroke')|raw }}
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Расскажите о нас в соцсетях
+            {{ t('main', 'share_about_us')|raw }}
           </div>
           <div class="instruction-content">
             <div
@@ -73,15 +70,15 @@
         {{ svg('megaphone','instruction-icon instruction-icon-mini svg-no-stroke')|raw }}
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Отправьте друзьям ссылку
+            {{ t('main', 'share_your_friends_url')|raw }}
           </div>
           <div class="instruction-content">
               <input type="text" class="link" readonly="readonly" value="https://secretdiscounter.ru/?r={{ user_id }}">
 
               <a href="" class="blue set_clipboard"
                  data-clipboard="https://secretdiscounter.ru/?r={{ user_id }}"
-                 data-clipboard-notify="Ваша партнёрская ссылка скопирована в буфер обмена. Удачной работы!"
-              >{{ t('account', 'affiliate_copy_to_clipboard') }}</a>
+                 data-clipboard-notify="{{ t('account', 'referral_href_copied_to_clipboard')|raw }}"
+              >{{ t('account', 'affiliate_copy_to_clipboard')|raw }}</a>
           </div>
         </div>
       </div>
@@ -89,10 +86,10 @@
         {{ svg('mail','instruction-icon instruction-icon-mini svg-no-stroke')|raw }}
         <div class="instruction-wrap">
           <div class="instruction-title">
-            Или по электронной почте
+            {{ t('account', 'or_by_email')|raw }}
           </div>
           <div class="instruction-content">
-            Отправьте ссылку всем своим друзьям по e-mail
+            {{ t('account', 'send_href_all_frends_by_email')|raw }}
           </div>
         </div>
       </div>
@@ -108,16 +105,13 @@
     {% if h1 %}
       {{ h1 | raw }}
     {% else %}
-      {{ t('account', 'affiliate_h1_default') }}
+      {{ t('account', 'affiliate_h1_default')|raw }}
     {% endif %}
   </h1>
   {% if this.user.waitModeration==1 %}
     <div class="account-balance">
-      <h3>Заявка на модерации</h3>
-      <p>
-        Ваша заявка вебмастера принята.
-        Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.
-      </p>
+      <h3>{{ t('account', 'moderation_request_title')|raw }}</h3>
+      <p>{{ t('account', 'moderation_request_message')|raw }}</p>
     </div>
   {% endif %}
 {% endif %}

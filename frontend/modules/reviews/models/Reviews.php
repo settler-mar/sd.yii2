@@ -43,6 +43,7 @@ class Reviews extends \yii\db\ActiveRecord
       [['title'], 'string', 'max' => 100, 'min' => 5],
       [['text'], 'string', 'min' => 20],
       [['answer'], 'string', 'min' => 20],
+      [['language'], 'string', 'max' => 5],
     ];
   }
 
@@ -54,14 +55,15 @@ class Reviews extends \yii\db\ActiveRecord
     return [
       'uid' => 'Uid',
       'user_id' => 'Пользователь',
-      'title' => 'Заголовок',
-      'text' => 'Текст отзыва',
-      'rating' => 'Рейтинг',
+      'title' => Yii::t('main', 'review_title'),
+      'text' => Yii::t('main', 'review_text'),
+      'rating' => Yii::t('main', 'review_rating'),
       'added' => 'Создан',
       'is_active' => 'Активный',
       'is_top' => 'Топ отзыв',
       'store_id' => 'ID магазина',
       'answer' => 'Ответ администратора',
+      'language' => 'Язык',
     ];
   }
 
@@ -101,15 +103,23 @@ class Reviews extends \yii\db\ActiveRecord
   public static function top($params=[])
   {
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('reviews_top', function () {
+    $dependencyName = 'reviews_catalog';
+    $dependency = new yii\caching\DbDependency;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $language = Yii::$app->language;
+    $cacheName = 'reviews_top' . (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . $language);
+
+    $data = $cache->getOrSet($cacheName, function () use ($language) {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
-        ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending'])
+        ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending', 'u.currency'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
         ->where(['r.is_active' => 1, 'is_top' => 1, 'u.is_active' => 1])
-        ->asArray()
-        ->all();
-      return $reviews;
+        ->asArray();
+        if ($language) {
+            $reviews->andWhere(['r.language' => $language]);
+        }
+        return $reviews->all();
     });
     return $data;
   }
@@ -125,16 +135,21 @@ class Reviews extends \yii\db\ActiveRecord
     $dependencyName = 'reviews_catalog';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-    $data = $cache->getOrSet('reviews_by_store_' . $storeId, function () use ($storeId) {
+    $language =  Yii::$app->language;
+    $cacheName = 'reviews_by_store_' . $storeId. (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . $language);
+
+    $data = $cache->getOrSet($cacheName, function () use ($storeId, $language) {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
         ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
         ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
         ->orderBy('added DESC')
-        ->asArray()
-        ->all();
-      return $reviews;
+        ->asArray();
+      if ($language) {
+          $reviews->andWhere(['r.language' => $language]);
+      }
+      return $reviews->all();
     }, $cache->defaultDuration, $dependency);
     return $data;
   }
@@ -160,8 +175,6 @@ class Reviews extends \yii\db\ActiveRecord
 
       return [
         'value' => $data['avgrating'],
-        //'value' => intval($data['avgrating']),
-        //'value_float' => floatval($data['avgrating']),
         'reviews_count' => intval($data['reviews_count']),
       ];
     }, $cache->defaultDuration, $dependency);
@@ -179,8 +192,6 @@ class Reviews extends \yii\db\ActiveRecord
   
   private function clearCache($id = null)
   {
-      //удаляем ключи
-      Cache::deleteName('reviews_top');
       //обновляем зависимости
       Cache::clearName('reviews_catalog');
   }

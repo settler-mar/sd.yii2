@@ -1,4 +1,4 @@
-{% set curr = currencyIcon(app.params.valuta) %}
+{% set curr = currencyIcon(app.user.identity.currency) %}
 
 <section class="account-balance">
 
@@ -27,11 +27,11 @@
 
   <div class="account-balance-row {% if show_payment_link == false %}account-balance-row-right{% endif %}">
     {% if show_payment_link %}
-      <div class="account-balance-block account-balance-block-link"><a class="blue" href="/account/payments">{{ t('account', 'view_payments_history') }}</a></div>
+      <div class="account-balance-block account-balance-block-link"><a class="blue" href="{{ _href('/account/payments')|raw }}">{{ t('account', 'view_payments_history') }}</a></div>
     {% endif %}
 
     <div class="account-balance-block account-balance-block-btn">
-      <a href="/account/dobro/transfer" class="btn btn-mini btn-red">{{ t('common', 'charity') }}</a>
+      <a href="{{ _href('/account/dobro/transfer')|raw }}" class="btn btn-mini btn-red">{{ t('common', 'charity') }}</a>
     </div>
   </div>
 

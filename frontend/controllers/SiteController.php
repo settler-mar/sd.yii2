@@ -118,7 +118,7 @@ class SiteController extends SdController
   public function actionAdmin()
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('adminIndex')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(\Yii::t('main', 'page_is_forbidden'));
       return false;
     }
 
@@ -175,8 +175,8 @@ class SiteController extends SdController
       throw new HttpException(404, 'User not found');
     }
 
-    $page['pre_footer'] = '<h2>Как получить кэшбэк в оффлайне от SecretDiscounter?</h2>{{_include(\'stores/instruction_offline\') | raw}}';
-    $page['infotitle'] = 'Как получить кэшбэк в оффлайне от SecretDiscounter?';
+    $page['pre_footer'] = '<h2>'.\Yii::t('main', 'offline_how_to_get_cashback').'</h2>{{_include(\'stores/instruction_offline\') | raw}}';
+    $page['infotitle'] = \Yii::t('main', 'offline_how_to_get_cashback_infotitle');
     $this->params['breadcrumbs'][] = $page['title'];
 
     Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";
@@ -192,11 +192,11 @@ class SiteController extends SdController
    * /faq
    * @return string
    */
-  public function actionFaq()
-  {
-    $this->params['breadcrumbs'][] = 'FAQ';
-    return $this->render('faq');
-  }
+//  public function actionFaq()
+//  {
+//    $this->params['breadcrumbs'][] = 'FAQ';
+//    return $this->render('faq');
+//  }
 
 //  /**
 //   * /promo
@@ -214,7 +214,7 @@ class SiteController extends SdController
    */
   public function actionAffiliate()
   {
-    $this->params['breadcrumbs'][] = 'Партнёрская программа';
+    $this->params['breadcrumbs'][] = Yii::t('main', 'affiliate_breadcrumbs');
     return $this->render('affiliate');
   }
 
@@ -234,25 +234,25 @@ class SiteController extends SdController
    * /loyalty
    * @return string
    */
-  public function actionLoyalty()
-  {
-    $this->params['breadcrumbs'][] = 'Накопительная система';
-    if (Yii::$app->request->isAjax) {
-      return json_encode(['html' => $this->renderAjax('loyalty')]);
-    } else {
-      return $this->render('loyalty');
-    }
-  }
+//  public function actionLoyalty()
+//  {
+//    $this->params['breadcrumbs'][] = 'Накопительная система';
+//    if (Yii::$app->request->isAjax) {
+//      return json_encode(['html' => $this->renderAjax('loyalty')]);
+//    } else {
+//      return $this->render('loyalty');
+//    }
+//  }
 
   /**
    * /recommendations
    * @return string
    */
-  public function actionRecommendations()
-  {
-    $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
-    return $this->render('recommendations');
-  }
+//  public function actionRecommendations()
+//  {
+//    $this->params['breadcrumbs'][] = 'Советы по совершению покупок';
+//    return $this->render('recommendations');
+//  }
 
 //  /**
 //   * /about
@@ -271,7 +271,7 @@ class SiteController extends SdController
    */
   public function actionAccountblocked()
   {
-    $this->params['breadcrumbs'][] = 'Аккаунт заблокирован';
+    $this->params['breadcrumbs'][] = Yii::t('account', 'account_blocked');
     return $this->render('user-blocked');
   }
 
@@ -433,21 +433,26 @@ class SiteController extends SdController
 
   public function actionTestmail()
   {
+    if(!YII_DEBUG)exit;
       if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
           throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
           return false;
       }
+    $user=Users::findOne(['uid'=>8]);
+    $db_payment=Payments::findOne(['user_id'=>8]);
+    $store = Stores::top12(12);
+    $userSocial=UsersSocial::findOne(['user_id'=>8]);
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'verifyEmailTokenNewUser-html', 'text' => 'verifyEmailTokenNewUser-text'],
-              ['user' => Yii::$app->user->identity]
+              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+              ['user' => $userSocial]
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('oxygenn@list.ru')
-          ->setSubject('Тестовое письмо с  SecretDiscounter.ru')
+          ->setTo('matuhinmax@mail.ru')
+          ->setSubject(Yii::t('account', 'confirm_social_email'))
           ->send();
       return 'Отправлено тестовое письмо';
 

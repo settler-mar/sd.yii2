@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h2 class="title-no-line">Вход на сайт</h2>
+  <h2 class="title-no-line">{{ t('common', 'login_to_site')|raw }}</h2>
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
@@ -16,28 +16,28 @@
   {{ form.field(model, 'email',{
     'template' :
     '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Введите ваш e-mail','required':true}) | raw }}
+  }).textInput({'placeholder': t('account', 'enter_your_email'),'required':true}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Введите ваш пароль','required':true}) | raw }}
+  }).passwordInput({'placeholder': t('account', 'enter_your_remembered_password'),'required':true}) | raw }}
   <div class="form_right_blk">
-    <a href="#resetpassword" class="blue modals_open">Забыли пароль?</a>
+    <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
   </div>
 
-  <button type="submit" class="btn block_margin-auto btn-min_width240">Войти</button>
+  <button type="submit" class="btn block_margin-auto btn-min_width240">{{ t('common', 'do_login')|raw }}</button>
   {{ active_form_end() }}
 
 
-  <div class="terms">Или при помощи соцсетей</div>
+  <div class="terms">{{ t('common', 'do_login_by_socials')|raw }}</div>
   <div>
       {{ use('frontend/components/socials/EauthWidget') }}
       {{ eauth_widget_widget() }}
   </div>
   <div class="gray-box">
-    <a href="#registration" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">Зарегистрироваться</a>
-    <div class="text-dop text-dop_gray">Если вы новый пользователь</div>
+    <a href="{{ _href('#registration')|raw }}" class="btn btn-transform btn-mini modals_open btn-max_width180 block_margin-auto">{{ t('common', 'do_register') }}</a>
+    <div class="text-dop text-dop_gray">{{ t('account', 'if_you_new_user')|raw }}</div>
   </div>
 
 </div>

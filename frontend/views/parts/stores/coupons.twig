@@ -4,16 +4,12 @@
     <div class="page-wrap">
   {% endif %}
   {% if current_store.name %}
-    <h2>Действующие промокоды и купоны {{ current_store.name }}</h2>
+    <h2>{{ t('main', 'coupons_for_{store}', {'store': current_store.name})|raw }}</h2>
   {% else %}
     {% if current_category %}
-      {% if current_category.name != '' %}
-        <h2>Популярные промокоды в категории «{{ current_category.name }}»</h2>
-      {% else %}
-        <h2>Популярные промокоды в категории</h2>
-      {% endif %}
+        <h2>{{ t('main', 'coupons_for_{category}', {'category': current_category.name != '' ?  '«'~current_category.name~'»' : ''})|raw }}</h2>
     {% else %}
-      <h2>Новые купоны и промокоды</h2>
+      <h2>{{ t('main', 'coupons_new')|raw }}</h2>
     {% endif %}
   {% endif %}
   <div class="coupons-list coupons-list-stores {{ _if(current_category.name,'','narrow list-4 ') }}narrow_off">
@@ -26,11 +22,13 @@
   </div>
   <div class="align-center">
     {% if current_store.name and current_store.route %}
-      <a href="/coupons/{{ current_store.route }}" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все
-        промокоды {{ current_store.name }} →</a>
+      <a href="{{ _href('/coupons/'~current_store.route)|raw }}" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>
+        {{ t('main', 'coupons_all_for_{store}_', {'store': current_store.name})|raw }}
+      </a>
     {% else %}
-      <a href="/coupons" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>Все промокоды {{ _if(total_all_coupon,'('~total_all_coupon~') ') }}
-        →</a>
+      <a href="{{ _href('/coupons')|raw }}" class="btn btn-transform btn-narrow" {{ _if(coupons_target_blank,'target="_blank" rel="nofollow noopener"')|raw }}>
+        {{ t('main', 'coupons_all_{count}_', {'count': total_all_coupon ? '('~total_all_coupon~')' : ''})|raw }}
+      </a>
     {% endif %}
   </div>
   {% if not current_category %}

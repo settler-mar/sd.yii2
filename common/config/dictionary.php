@@ -19,7 +19,12 @@ $dict = [
       0=>[
         'name'=>"default",
         'display_name'=>"Start",
-        'min_sum'=>0,
+          'min_sum'=>
+            [
+              'RUB' => 0,
+              'USD' => 0,
+              'EUR' => 0,
+            ],
         'valuta'=>'RUB',
         'bonus'=>0,
         'description'=>'Базовая ставка кэшбэка',
@@ -29,7 +34,12 @@ $dict = [
         'name'=>"bronze",
         'display_name'=>"Bronze",
         'bonus'=>10,
-        'min_sum'=>500,
+        'min_sum'=>
+          [
+            'RUB' => 500,
+            'USD' => 20,
+            'EUR' => 20,
+          ],
         'valuta'=>'RUB',
         'description'=>'+10% к базовой ставке кэшбэка',
         ],
@@ -38,7 +48,11 @@ $dict = [
         'name'=>"silver",
         'display_name'=>"Silver",
         'bonus'=>15,
-        'min_sum'=>3000,
+        'min_sum' =>  [
+          'RUB' => 3000,
+          'USD' => 100,
+          'EUR' => 100,
+        ],
         'valuta'=>'RUB',
         'description'=>'+15% к базовой ставке кэшбэка',
       ],
@@ -47,7 +61,11 @@ $dict = [
         'name'=>"gold",
         'display_name'=>"Gold",
         'bonus'=>20,
-        'min_sum'=>7000,
+          'min_sum' =>  [
+            'RUB' => 7000,
+            'USD' => 200,
+            'EUR' => 200,
+          ],
         'valuta'=>'RUB',
         'description'=>'+20% к базовой ставке кэшбэка',
         ],
@@ -56,7 +74,11 @@ $dict = [
         'name'=>"platinum",
         'display_name'=>"Platinum",
         'bonus'=>30,
-        'min_sum'=>10000,
+          'min_sum' =>  [
+              'RUB' => 10000,
+              'USD' => 300,
+              'EUR' => 300,
+          ],
         'valuta'=>'RUB',
         'description'=>'+30% к базовой ставке кэшбэка',
         'is_vip'=>0,

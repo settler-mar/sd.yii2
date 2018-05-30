@@ -19,31 +19,143 @@
         </tr>
         <tr class="line">
             <td class="name">Всего</td>
-            <td class="value">{{ _nf(stats_query.all.order_price)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.all.reward)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.all.cashback)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.all.ref_bonus)|raw }}</td>
+            <td class="value">
+                {#{{ _nf(stats_query.all.order_price)|raw }}#}
+                {% for key, item in stats_result.order_price.all %}
+                    <div>
+                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.all.reward)|raw }}#}
+                {% for key, item in stats_result.reward.all %}
+                    <div>
+                        {{ _nf(item.reward)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.all.cashback)|raw }}#}
+                {% for key, item in stats_result.reward.all %}
+                    <div>
+                       {{ _nf(item.cashback)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.all.ref_bonus)|raw }}#}
+                {% for key, item in stats_result.ref_bonus.all %}
+                    <div>
+                        {{ _nf(item.ref_bonus)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
         </tr>
         <tr class="line">
             <td class="name">В ожидании</td>
-            <td class="value">{{ _nf(stats_query.wait.order_price)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.wait.reward)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.wait.cashback)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.wait.ref_bonus)|raw }}</td>
+            <td class="value">
+                {#{{ _nf(stats_query.wait.order_price)|raw }}#}
+                {% for key, item in stats_result.order_price.wait %}
+                    <div>
+                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.wait.reward)|raw }}#}
+                {% for key, item in stats_result.reward.wait %}
+                    <div>
+                        {{ _nf(item.reward)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.wait.cashback)|raw }}#}
+                {% for key, item in stats_result.reward.wait %}
+                    <div>
+                        {{ _nf(item.cashback)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.wait.ref_bonus)|raw }}#}
+                {% for key, item in stats_result.ref_bonus.wait %}
+                    <div>
+                        {{ _nf(item.ref_bonus)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
         </tr>
         <tr class="line">
             <td class="name">Отменено</td>
-            <td class="value">{{ _nf(stats_query.revoke.order_price)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.revoke.reward)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.revoke.cashback)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.revoke.ref_bonus)|raw }}</td>
+            <td class="value">
+                {#{{ _nf(stats_query.revoke.order_price)|raw }}#}
+                {% for key, item in stats_result.order_price.revoke %}
+                    <div>
+                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.revoke.reward)|raw }}#}
+                {% for key, item in stats_result.reward.revoke %}
+                    <div>
+                        {{ _nf(item.reward)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.revoke.cashback)|raw }}#}
+                {% for key, item in stats_result.reward.revoke %}
+                    <div>
+                        {{ _nf(item.cashback)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.revoke.ref_bonus)|raw }}#}
+                {% for key, item in stats_result.ref_bonus.revoke %}
+                    <div>
+                        {{ _nf(item.ref_bonus)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
         </tr>
         <tr class="line">
             <td class="name">Подтверждено</td>
-            <td class="value">{{ _nf(stats_query.success.order_price)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.success.reward)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.success.cashback)|raw }}</td>
-            <td class="value">{{ _nf(stats_query.success.ref_bonus)|raw }}</td>
+            <td class="value">
+                {#{{ _nf(stats_query.success.order_price)|raw }}#}
+                {% for key, item in stats_result.order_price.success %}
+                    <div>
+                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.success.reward)|raw }}#}
+                {% for key, item in stats_result.reward.success %}
+                    <div>
+                        {{ _nf(item.reward)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.success.cashback)|raw }}#}
+                {% for key, item in stats_result.reward.success %}
+                    <div>
+                        {{ _nf(item.cashback)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {#{{ _nf(stats_query.success.ref_bonus)|raw }}#}
+                {% for key, item in stats_result.ref_bonus.success %}
+                    <div>
+                        {{ _nf(item.ref_bonus)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
         </tr>
     </table>
 </div>

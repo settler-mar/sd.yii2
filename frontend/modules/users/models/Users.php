@@ -18,6 +18,7 @@ use developeruz\db_rbac\interfaces\UserRbacInterface;
 use JBZoo\Image\Image;
 use common\components\SdImage;
 use common\components\DataValidator;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_users".
@@ -30,14 +31,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 1;
 
-  const trafficTypeList = [
-      0 => 'Веб-сайт/Блог',
-      1 => 'Паблик в соцсетях',
-      2 => 'YouTube-канал',
-      3 => 'Дорвей',
-      4 => 'Email-рассылка',
-      5 => 'Другое'
-  ];
+//  const trafficTypeList = [
+//      0 => 'Веб-сайт/Блог',
+//      1 => 'Паблик в соцсетях',
+//      2 => 'YouTube-канал',
+//      3 => 'Дорвей',
+//      4 => 'Email-рассылка',
+//      5 => 'Другое'
+//  ];
 
   private $balans;
 
@@ -61,6 +62,18 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   {
     return [
     ];
+  }
+
+  public static function trafficTypeList()
+  {
+     return [
+         0 => Yii::t('account', 'traffic_type_web'),
+         1 => Yii::t('account', 'traffic_type_social_network'),
+         2 => Yii::t('account', 'traffic_type_youtube'),
+         3 => Yii::t('account', 'traffic_type_doorway'),
+         4 => Yii::t('account', 'traffic_type_email'),
+         5 => Yii::t('account', 'traffic_type_other'),
+     ];
   }
 
   /**
@@ -261,8 +274,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     foreach ($statuses as $k => $status_k) {
       if (
-          isset($status_k['min_sum']) && //у статса лояльности есть минимальная сумма назначения
-          $status_k['min_sum'] < $total &&//минимальная сумма ниже заработанной суммы
+          isset($status_k['min_sum'][Yii::$app->user->identity->currency]) && //у статса лояльности есть минимальная сумма назначения
+          $status_k['min_sum'][Yii::$app->user->identity->currency] < $total &&//минимальная сумма ниже заработанной суммы
           $status_k['bonus'] > $status['bonus'] //новый бонус будет выгоднее клиенту чем текущий
       ) {
         $status = $status_k;
@@ -330,15 +343,21 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       //если создание произошло не из под админа(авторизированного пользователя)
       if (Yii::$app->user->isGuest) {
         Yii::$app->session->setFlash('success', [
-            'title' => 'Успешная авторизация',
-            'message' => 'Рекомендуем посетить <a href="/account?new=1">личный кабинет</a>,' .
-                ' а также изучить <a href="/recommendations">Правила покупок с кэшбэком</a>',
+            'title' => Yii::t('account', 'authorize_success'),
+            'message' => Yii::t(
+                'account',
+                'authorize_recommendations_visit_<a href="{profile}">profile</a>_and_learn<a href="{terms}">terms</a>_before',
+                [
+                    'profile' => Help::href('/account?new=1'),
+                    'terms' => Help::href('/recommendations')
+                ]
+            ),
             'no_show_page' => ['account']
         ]);
         if ($this->waitModeration) {
           Yii::$app->session->setFlash('info', [
-              'title' => 'Заявка на модерации',
-              'message' => 'Ваша заявка вебмастера принята. Ожидайте ответа администратора. После одобрения на ваш e-mail придет письмо с подтверждением.'
+              'title' => Yii::t('account', 'moderation_request_title'),
+              'message' => Yii::t('account', 'moderation_request_message')
           ]);
         };
       }
@@ -377,7 +396,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
             )
             ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
             ->setTo($this->email)
-            ->setSubject(Yii::$app->name . ': Регистрация')
+            ->setSubject(Yii::$app->name . ': '. Yii::t('common', 'register'))
             ->send();
       } catch (\Exception $e) {
       }
@@ -394,9 +413,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
                   ['user' => $this])
               ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
               ->setTo($this->email)
-              ->setSubject(Yii::$app->name . ': Подтверждение е-mail')
+              ->setSubject(Yii::$app->name . ': ' . Yii::t('account', 'email_confirm'))
               ->send();
-          Yii::$app->session->addFlash('info', 'Пользователю отправлено письмо о подтверждении его e-mail');
+          Yii::$app->session->addFlash('info', Yii::t('account', 'email_confirm_email_message'));
         } catch (\Exception $e) {
         }
       }
@@ -419,8 +438,11 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   public function saveImage()
   {
     $photo = \yii\web\UploadedFile::getInstance($this, 'new_photo');
+
     $userPath = $this->getUserPath($this->uid);
     if ($photo && $image = SdImage::save($photo, $userPath, 500, substr($this->photo, strlen($userPath)))){
+
+
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), ['photo' => $userPath . $image], ['uid' => $this->uid])
@@ -879,4 +901,111 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         ->groupBy('user.uid')
         ->count();
   }
+
+  public static function calculate($where = [], $params = [])
+  {
+      $allParams = ['ref_total','sum_from_ref_pending','sum_from_ref_confirmed',
+          'cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending','sum_to_friend_confirmed',
+          'sum_foundation','sum_withdraw','sum_bonus',
+          'loaylty_status'];
+      //все параметры разбить на части
+      $referrer = ['ref_total', 'sum_from_ref_pending', 'sum_from_ref_confirmed'];
+      $cash = ['cnt_pending', 'sum_pending','cnt_confirmed','sum_confirmed','cnt_declined','sum_declined','sum_to_friend_pending','sum_to_friend_confirmed'];
+      $foundation = ['sum_foundation'];
+      $bonus = ['sum_bonus'];
+      $withdraw = ['sum_withdraw'];
+      $loyalty = ['loyalty_status'];//??
+
+      $params = !empty($params) ? $params : $allParams;
+      $set = [];
+      $sql = 'UPDATE ' . self::tableName() . ' u1 ';
+
+      $setParams = array_intersect($referrer, $params);
+      if (!empty($setParams)) {
+          $sql .= " LEFT JOIN (
+          SELECT COUNT(uid) as ref_total, referrer_id,
+            SUM(sum_to_friend_pending) as sum_from_ref_pending,
+            SUM(sum_to_friend_confirmed) as sum_from_ref_confirmed
+            FROM cw_users
+            GROUP BY referrer_id
+        ) u2 on u2.referrer_id=u1.uid ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=u2.' . $setParam;
+          }
+      }
+      $setParams = array_intersect($cash, $params);
+      if (!empty($setParams)) {
+          $sql.=" LEFT JOIN (
+          SELECT  user_id,
+                SUM(IF(status=0,1,0)) as cnt_pending,
+                SUM(IF(status=0,cashback,0)) as sum_pending,
+                SUM(IF(status=2,1,0)) as cnt_confirmed,
+                SUM(IF(status=2,cashback,0)) as sum_confirmed,
+                SUM(IF(status=1,1,0)) as cnt_declined,
+                SUM(IF(status=1,cashback,0)) as sum_declined,
+                SUM(IF(status=0,ref_bonus,0)) as sum_to_friend_pending,
+                SUM(IF(status=2 ,ref_bonus,0)) as sum_to_friend_confirmed
+            from cw_payments
+            GROUP BY user_id
+        )cwp on u1.uid = cwp.user_id ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwp.' . $setParam;
+          }
+      }
+      $setParams = array_intersect($foundation, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_foundation,user_id
+                FROM cw_charity
+                WHERE is_listed!=1
+                GROUP BY user_id
+            ) cwf on cwf.user_id=u1.uid";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwf.' . $setParam;
+          }
+      }
+
+      $setParams = array_intersect($bonus, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_bonus,user_id
+                FROM cw_users_notification
+                WHERE type_id=2
+                GROUP BY user_id
+            ) cwn on cwn.user_id=u1.uid";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=cwn.' . $setParam;
+          }
+      }
+      $setParams = array_intersect($withdraw, $params);
+      if (!empty($setParams)) {
+          $sql.= " 
+          LEFT JOIN (
+            SELECT SUM(amount) as sum_withdraw,user_id
+                FROM cw_users_withdraw
+                WHERE status=2
+                GROUP BY user_id
+            ) w on w.user_id=u1.uid ";
+          foreach ($setParams as $setParam) {
+              $set[] = ' u1.' . $setParam . '=w.' . $setParam;
+          }
+      }
+
+
+      $sql .= "\n set ".implode(",\n", $set);
+      if ($where) {
+        $selectParams = [];
+        foreach ($where as $key=>$value) {
+            $selectParams[] = 'u1.'.$key.'="'.$value.'"';
+        }
+        $sql .= "\n where ".implode("\n and ", $selectParams);
+      }
+      //ddd($sql);
+      //Yii::$app->db->createCommand($sql)->execute();
+
+  }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace frontend\modules\coupons\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CategoriesStores;
@@ -18,12 +19,24 @@ use common\components\Help;
  */
 class CategoriesCoupons extends \yii\db\ActiveRecord
 {
+    public static $translatedAttributes = ['name', 'description', 'short_description', 'short_description_offline'];
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'cw_categories_coupons';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ActiveRecordChangeLogBehavior::className(),
+                //'ignoreAttributes' => ['visit','rating'],
+            ],
+        ];
     }
 
     /**
@@ -41,7 +54,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             [['hide_high_menu'], 'integer'],
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
-            [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => Stores::className()],
+            [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
         ];
     }
 
@@ -91,29 +104,40 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
     public static function byId($categoryId)
     {
         $cache = \Yii::$app->cache;
-        $category = $cache->getOrSet('categories_coupons_byid_' . $categoryId, function () use ($categoryId) {
-            return self::findOne($categoryId);
-        });
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $cacheName = 'categories_coupons_byid_' . $categoryId . ($language ? '_' . $language : '');
+        $dependencyName = 'catalog_coupons';
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $category = $cache->getOrSet($cacheName, function () use ($categoryId) {
+            return self::translated()->andWhere(['uid' => $categoryId])->one();
+        }, $cache->defaultDuration, $dependency);
         return $category;
     }
 
     public static function byRoute($route)
     {
         $cache = \Yii::$app->cache;
-        $category = $cache->getOrSet('categories_coupons_byroute_' . $route, function () use ($route) {
-            return self::findOne(['route' => $route]);
-        });
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $cacheName = 'categories_coupons_byid_' . $route . ($language ? '_' . $language : '');
+        $dependencyName = 'catalog_coupons';
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $category = $cache->getOrSet($cacheName, function () use ($route) {
+            return self::translated()->andWhere(['route' => $route])->one();
+        }, $cache->defaultDuration, $dependency);
         return $category;
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        self::clearCache($this->uid, $this->route);
+        self::clearCache();
     }
-    
     public function afterDelete()
     {
-        self::clearCache($this->uid, $this->route);
+        self::clearCache();
     }
 
     /**
@@ -130,7 +154,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
      * @param null $id
      * очистка кеш
      */
-    public static function clearCache($id = null, $route = null)
+    public static function clearCache()
     {
         //зависимости
         Cache::clearName('catalog_coupons');
@@ -139,14 +163,30 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         //ключи
         Cache::deleteName('total_all_coupons');
         Cache::deleteName('total_all_coupons_expired');
-        //Cache::deleteName('stores_coupons');
-        Cache::deleteName('categories_coupons');
-        if ($id) {
-            Cache::deleteName('categories_coupons_byid_' . $id);
+
+    }
+
+    public static function translated($attributes = [])
+    {
+        $allAttributes = ['uid', 'name', 'route', 'description', 'short_description', 'short_description_offline'];
+        //$translatedAttributes = ['name', 'description', 'short_description', 'short_description_offline'];
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $selectAttributes = [];
+        $attributes = empty($attributes) ? $allAttributes : $attributes;
+        foreach ($attributes as $attribute) {
+            $selectAttributes[] = $language && in_array($attribute, self::$translatedAttributes) ?
+                'IF(lgcc.'.$attribute.' > "", lgcc.'.$attribute.', cwcc.'.$attribute.') as '.$attribute :
+                'cwcc.'.$attribute;
         }
-        if ($route) {
-            Cache::deleteName('categories_coupons_byroute_' . $route);
+        $categories = self::find()->from(self::tableName(). ' cwcc')->select($selectAttributes);
+        if ($language) {
+            $categories->leftJoin(
+                LgCategoriesCoupons::tableName() .' lgcc',
+                'cwcc.uid = lgcc.category_id and lgcc.language="'.$language.'"'
+            );
+
         }
+        return $categories;
     }
 
 

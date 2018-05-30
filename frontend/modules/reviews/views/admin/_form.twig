@@ -48,6 +48,8 @@
             0:"Обычный",
             1:"Топ",
         })|raw }}
+
+        {{ form.field(model, 'language').dropDownList(app.params.language_list)|raw}}
     </div>
     <div class="col-md-12">
         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}

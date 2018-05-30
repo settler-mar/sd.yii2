@@ -69,16 +69,16 @@ class AccountController extends \yii\web\Controller
                 ->setTo(Yii::$app->params['supportEmail'])
                 ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'support_subject'))
                 ->send();
-             return json_encode(['error' => false, 'message'=>'Ваше сообщение успешно отправлено администратору.']);
+             return json_encode(['error' => false, 'message'=> Yii::t('account', 'message_to_admin_successfully_sent')]);
           } catch (\Exception $e) {
-             return json_encode(['error' => True,'title'=>'Ошибка отправки сообщения','message'=>'Сервис временно не доступен. Попробуйте позже.']);
+             return json_encode(['error' => True,'title'=>Yii::t('account', 'error_sending_message'),'message'=> Yii::t('account', 'service_temporaty_unavailable')]);
           }
        }
     }
     return $this->render('index', [
         'reCaptcha' => \himiklab\yii2\recaptcha\ReCaptcha::className(),
         'model' => $model,
-        'action' => '/account/support',
+        'action' => Help::href('/account/support'),
 
     ]);
   }

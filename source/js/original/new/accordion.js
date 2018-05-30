@@ -104,7 +104,11 @@ $('.accordion-content a').on('click', function (e) {
   }
 
   $(window).resize(rebuild);
-  rebuild();
+
+  document.addEventListener('language_loaded', function(){
+    rebuild();
+  }, false);
+
 })();
 
 

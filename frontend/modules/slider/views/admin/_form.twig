@@ -24,8 +24,10 @@
                 {{ form.field(model, 'date_start').textInput()|raw}}
 
                 {{ form.field(model, 'date_end').textInput()|raw }}
+
+                {{ form.field(model, 'lang').dropDownList(app.params.language_list)|raw}}
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
             <h4>Позиции</h4>
                 {% for key, item in model.places_array %}
                     <div class="form-group field-banners-places">
@@ -33,6 +35,16 @@
                             {% if item.checked %} checked {% endif %}
                         >
                         <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
+                        <div class="help-block"></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6">
+                <h4>Регионы</h4>
+                {% for item in model.regions_array %}
+                    <div class="form-group field-banners-places">
+                        <input type="checkbox" id="slider-region-{{ key }}" name="Slider[slide_regions][]" value="{{ item.code }}" {% if item.checked %}checked{% endif %}>
+                        <label class="control-label" for="slider-region-{{ key }}">{{ item.name }}</label>
                         <div class="help-block"></div>
                     </div>
                 {% endfor %}

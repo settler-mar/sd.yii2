@@ -36,6 +36,12 @@
     },{
       "name": "index_text",
       "title": "Текст после счетчика(стартовая)"
+    },{
+      "name": "regions",
+      "title": "Выводить в регионах",
+      "type": "checkboxlist",
+      "items": {
+      }
     }
   ]
 }

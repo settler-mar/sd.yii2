@@ -35,5 +35,8 @@ return [
           'icon' => 'бел.руб',
       ],
   ],
+  'regions_list' => require(__DIR__ . '/regions.config-local.php'),
+
+  'rating_calculate_interval' => 12,
 
 ];

@@ -5,33 +5,33 @@
       placeholder = '';
     switch (option) {
       case 1:
-        placeholder = "Введите номер счёта";
+        placeholder = lg("withdraw_cash_number");
         break;
 
       case 2:
-        placeholder = "Введите номер R-кошелька";
+        placeholder = lg("withdraw_r_number");
         break;
 
       case 3:
-        placeholder = "Введите номер телефона";
+        placeholder = lg("withdraw_phone_number");
         break;
 
       case 4:
-        placeholder = "Введите номер карты";
+        placeholder = lg("withdraw_cart_number");
         break;
 
       case 5:
-        placeholder = "Введите email адрес";
+        placeholder = lg("withdraw_email");
         break;
 
       case 6:
-        placeholder = "Введите номер телефона";
+        placeholder = lg("withdraw_phone_number");
         break;
     }
 
     $(this).parent().siblings().removeClass('active');
     $(this).parent().addClass('active');
-    $("#userswithdraw-bill").attr("placeholder", placeholder);
+    $("#userswithdraw-bill").prev(".placeholder").html(placeholder);
     $('#userswithdraw-process_id').val(option);
   });
 })();

@@ -100,6 +100,7 @@ gulp.task('css_new', function() {
 });
 
 gulp.task('jsadmin', compileJs([
+    paths.source.js+'/original/language.js',
     paths.source.js+'/external/account/jquery.menu-aim.js',
     paths.source.js+'/external/account/circles.min.js',
     paths.source.js+'/external/account/datepicker.js',
@@ -122,14 +123,18 @@ gulp.task('jsadmin', compileJs([
 );
 
 gulp.task('jsb2b', compileJs([
+        paths.source.js+'/original/language.js',
         paths.source.js+'/external/bootstrap.min.js',
         paths.source.js+'/original/for_all.js',
         paths.source.js+'/original/notification.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
         paths.source.js+'/original/b2b.js'
+
     ], paths.b2b.js)
 );
 gulp.task('js_new', compileJs([
+        paths.source.js+'/original/language.js',
+        paths.source.js+'/original/new/lang.js',
         paths.source.js+'/original/new/functions.js',
         paths.source.js+'/original/new/scroll.js',
         paths.source.js+'/original/new/accordion.js',

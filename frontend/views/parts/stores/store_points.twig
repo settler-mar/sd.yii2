@@ -7,33 +7,25 @@
       {#шапка от условий#}
       {% if store_points.points|length == 1 %}
         {#одна точка#}
-        <h2>Адрес торговой точки {{ current_store.name }} в {{ store_points.cities[0] }}</h2>
-        {#<select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_country" id="store_point_country">#}
-          {#<option value="{{ store_points.points[0].country }}" selected>{{ store_points.points[0].country }}</option>#}
-        {#</select>#}
-        {#<select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_city" id="store_point_city">#}
-          {#<option value="{{ store_points.sities[0] }}" selected>{{ store_points.sities[0] }}</option>#}
-        {#</select>#}
+        <h2>{{ t('main', 'store_point_{store}_in_{sity}', {'store': current_store.name , 'city':store_points.cities[0]})|raw }}</h2>
       {% elseif store_points.countries|length == 1 and store_points.cities|length == 1 %}
         {#несколько точек в одном городе #}
-        <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}
-          , {{ store_points.cities[0] }}</h2>
-
+        <h2>{{ t('main', 'store_points_{store}_in_{country}_{sity}', {'store':current_store.name,'city':store_points.cities[0],'country':store_points.points[0].country})|raw }}</h2>
       {% elseif store_points.countries|length == 1 %}
         {#несколько точек в одной стpане#}
-        <h2>Адреса торговых точек {{ current_store.name }} в {{ store_points.points[0].country }}</h2>
+        <h2>{{ t('main', 'store_points_{store}_in_{country}', {'store':current_store.name,'country':store_points.points[0].country})|raw }}</h2>
         <div class="row store-points__point-selects">
           <select class="store-points__point-selects-select store-points__point-selects-select-hidden" name="store_point_country" id="store_point_country">
             <option value="{{ store_points.points[0].country }}" selected>{{ store_points.points[0].country }}</option>
           </select>
           <div class="store-points__point-selects-item">
-            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите город</label>
+            <label class="store-points__point-selects-item-label" for="store_point_city">{{ t('main', 'store_points_choose_city')|raw }}</label>
             <div class="form-group">
               <div class="form-input-group">
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
-                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city" id="store_point_city">
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="{{ t('main', 'store_points_city')|raw }}" name="store_point_city" id="store_point_city">
                     {% for city in store_points.cities %}
-                      <option value="{{ city }}">{{ city }}</option>
+                      <option value="{{ city }}">{{ city }}"</option>
                     {% endfor %}
                 </select>
               </div>
@@ -45,14 +37,14 @@
 
       {% else %}
         {#точки в разных странах#}
-        <h2>Адреса торговых точек {{ current_store.name }}</h2>
+        <h2>{{ t('main', 'store_points_{store}', {'store': current_store.name})|raw }}</h2>
         <div class="row store-points__point-selects">
           <div class="store-points__point-selects-item">
-            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите страну</label>
+            <label class="store-points__point-selects-item-label" for="store_point_city">{{ t('main', 'store_points_choose_country')|raw }}</label>
             <div class="form-group">
               <div class="form-input-group">
                 <i>{{ svg('globe','form-icon')|raw }}</i>
-                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Страна" name="store_point_country"
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="{{ t('main', 'store_points_country')|raw }}" name="store_point_country"
                         id="store_point_country">
                     {% for country, country_arr in store_points.countries %}
                       <option data-cities="{{ country_arr|join(',') }}" value="{{ country }}">{{ country }}</option>
@@ -63,11 +55,11 @@
           </div>
 
           <div class="store-points__point-selects-item">
-            <label class="store-points__point-selects-item-label" for="store_point_city">Выберите город</label>
+            <label class="store-points__point-selects-item-label" for="store_point_city">{{ t('main', 'store_points_choose_city')|raw }}</label>
             <div class="form-group">
               <div class="form-input-group">
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
-                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="Город" name="store_point_city"
+                <select class="store-points__point-selects-select form-control select2-select" data-placeholder="{{ t('main', 'store_points_city')|raw }}" name="store_point_city"
                         id="store_point_city">
                     {#{% for city in store_points.cities %}#}
                       {#<option value="{{ city }}">{{ city }}</option>#}
@@ -84,10 +76,10 @@
           id="store-points">
         <table class="store-points__points_table adaptive adaptive-tablets">
           <tr class="store-points__points_head">
-            <td>Название</td>
-            <td>Адрес</td>
-            <td>Время работы</td>
-            <td>Телефон</td>
+            <td>{{ t('main', 'store_points_name')|raw }}</td>
+            <td>{{ t('main', 'store_points_address')|raw }}</td>
+            <td>{{ t('main', 'store_points_work_time')|raw }}</td>
+            <td>{{ t('main', 'store_points_phone')|raw }}</td>
           </tr>
 
           {% for store_point in store_points.points %}
@@ -151,10 +143,10 @@
         title: '{{ store_point.name }}',
         content: '<div class="google-map-point-content">' +
         '<h5 class="google-map-point-content__header">{{ store_point.name }}</h5>' +
-        '<div class="google-map-point-content__address">Адрес: {{ store_point.address }}</div>' +
-        '<div class="google-map-point-content__phone">Телефон: {{ store_point_phones|raw }}</div>' +
+        '<div class="google-map-point-content__address">{{ t("main", "store_points_address")|raw }}: {{ store_point.address }}</div>' +
+        '<div class="google-map-point-content__phone">{{ t("main", "store_points_phone")|raw }}: {{ store_point_phones|raw }}</div>' +
         {% if store_point.work_time_details %}
-        '<h6 class="google-map-point-content__work_time_header">Время работы:</h5>' +
+        '<h6 class="google-map-point-content__work_time_header">{{ t("main", "store_points_work_time")|raw }}:</h5>' +
         '<div class="google-map-point-content__work_time">' +
         '{% set work_times = store_point.work_time_details %}' +
         '{% set foo = include('parts/work_time.twig') %}' +

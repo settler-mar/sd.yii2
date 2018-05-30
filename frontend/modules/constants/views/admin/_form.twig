@@ -6,22 +6,99 @@
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
-        {% if model.ftype=='textarea' %}
-            {{ form.field(model, 'text').textarea({'rows':6})|raw }}
-        {% elseif(model.ftype=='reachtext') %}
-            {{ form.field(model, 'text').widget(TinyMce.className(),params('TinyMce'))|raw }}
-        {% elseif(model.ftype=='json') %}
-            {% set param = include('json/'~model.editor_param~'.json', {
-                'model': model,
-            })
-            %}
-            {{ form.field(model, 'text').widget(mp_class,json_decode(param))|raw}}
-        {% endif %}
 
-        {{ form.field(model, 'updated_at').textInput()|raw }}
+    <div class="col-md-12 tarif_select_blk">
+        <h3>Содержимое</h3>
+        <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
+               name="tabs_open">
+        {% for k,lang in languages %}
+            <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                   name="tabs_open">
+        {% endfor %}
+        <ul class="tab_control">
+            <li class="tab_butt_ru-RU">
+                <label for="option_tab_ru-RU">
+                    <img src="/images/flag/ru-RU.svg" height="12px">
+                    Русский
+                </label>
+            </li>
+            {% for k,lang in languages %}
+                <li class="tab_butt_{{ k }}">
+                    <label for="option_tab_{{ k }}">
+                        <img src="/images/flag/{{ k }}.svg" height="12px">
+                        {{ lang.name }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="content_tab">
+            <div class="cpa_box tab_ru-RU">
+                {% if model.ftype=='textarea' %}
+                    {{ form.field(model, 'text').textarea({'rows':6}).label('')|raw }}
+                {% elseif(model.ftype=='reachtext') %}
+                    {{ form.field(model, 'text').widget(TinyMce.className(),params('TinyMce')).label('')|raw }}
+                {% elseif(model.ftype=='json') %}
+                    {% set param = include('json/'~model.editor_param~'.json', {
+                    'model': model,
+                    })
+                    %}
+                    {{ form.field(model, 'text').widget(mp_class,_regions_include(json_decode(param))).label('')|raw}}
+                {% endif %}
+            </div>
+            {% for k,lang in languages %}
+                <div class="cpa_box tab_{{ k }}">
+                    {% if model.ftype=='textarea' %}
+                        {{ form.field(lang.model, 'text').textarea({'rows':6}).label('')|raw }}
+                    {% elseif(model.ftype=='reachtext') %}
+                        {{ form.field(lang.model, 'text').widget(TinyMce.className(),params('TinyMce')).label('')|raw }}
+                    {% elseif(model.ftype=='json') %}
+                        {% set param = include('json/'~model.editor_param~'.json', {
+                        'model': lang.model,
+                        })
+                        %}
+                        {{ form.field(lang.model, 'text').widget(mp_class,_regions_include(json_decode(param))).label('')|raw}}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
 
     <div class="form-group">
         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
     {{ active_form_end() }}
 </div>
+
+<style>
+    ul.tab_control li label {
+        cursor: pointer;
+    }
+
+    #option_tab_ru-RU:checked ~ ul .tab_butt_ru-RU {
+        background: #fbcf4a;
+    }
+
+    #option_tab_ru-RU:checked ~ .content_tab .tab_ru-RU {
+        display: block;
+    }
+
+    #option_tab_ru-RU:checked {
+        color: #000;
+    }
+
+    {% for k,lang in languages %}
+        #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+            background: #fbcf4a;
+        }
+
+        #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+            display: block;
+        }
+
+        #option_tab_{{ k }}:checked {
+            color: #000;
+        }
+    {% endfor %}
+</style>

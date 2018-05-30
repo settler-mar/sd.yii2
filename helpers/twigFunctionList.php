@@ -5,16 +5,9 @@ use common\components\TagsClasses;
 use yii\db\Query;
 
 $currencyIcon = [
-//  'RUB' => '<span class="fa fa-rub"></span>',
-//  'EUR' => '<span class="fa fa-eur"></span>',
-//  'USD' =>'<span class="fa fa-dollar"></span>',
-//  'UAH' => '<span class="uah">&#8372;</span>',
-//  'KZT' => '<span class="uah">&#8376;</span>',
-/*    'RUB' => 'ruble',
-    'EUR' => 'euro',
-    'USD' => 'dollar',*/
-  //'UAH' => '<span class="uah">&#8372;</span>',
-  //'KZT' => '<span class="uah">&#8376;</span>',
+//    'RUB' => 'ruble',
+//    'EUR' => 'euro',
+//    'USD' => 'dollar',
 ];
 
 $month = [
@@ -146,21 +139,51 @@ function _hyphen_words(array &$m, $wbr = false)
   return $s;
 }
 
+/**константу или так отдаём или рендерим
+ * @param $name
+ * @param bool $json_col
+ * @param int $json_index
+ * @return string
+ */
+function getConstant($name, $json_col = false, $json_index = 0) {
+
+    $constant = Constants::byName($name, $json_col, $json_index);
+    if ($constant && isset($constant['ftype']) && in_array($constant['ftype'], ['textarea', 'reachtext'])) {
+        return Yii::$app->TwigString->render($constant['text'], Yii::$app->view->all_params);
+    } elseif ($constant && isset($constant['text'])) {
+        return $constant['text'];
+    } else {
+        return $constant;
+    }
+}
+
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
-    //$httpQurey =  $_SERVER['REQUEST_URI'];
+    $lg = Yii::$app->params['lang_code'];
+    $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
+    $href = ($lg == '' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
     $httpQuery = '/' . Yii::$app->request->pathInfo;
+    $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');
     if (!count($item)) {
       return null;
     }
+    $attributes = '';
+    if (isset($item['attributes'])) {
+        foreach ($item['attributes'] as $key=>$attribute) {
+            $attributes .= (' '.$key.'="'.$attribute.'"');
+        }
+    }
     $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
         (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
-    return '<a class="' . (empty($item['class']) ? '' : $item['class']) .
-    (($httpQuery == $item['href']) ? ' active' : '') . '" '
-    . (($httpQuery == $item['href']) ? '' : 'href="' . $item['href'] . '"') . '>' .
+    return '<a '.($className ? 'class="' . $className . '"' : '') . $attributes .
+        ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },
+//ссылка на внутренний ресурс с учётом языка
+   '_href' => function($href, $basePath = ''){
+       return Help::href($href, $basePath);
+   },
 //функция or - вывод первого непустого аргумента
   '_or' => function () {
     if (!func_num_args()) {
@@ -185,16 +208,17 @@ $functionsList = [
   },
 //функция отдать константу по имени
   '_constant' => function ($name, $json_col = false, $json_index = 0) {
-     return Constants::byName($name, $json_col, $json_index);
+    return getConstant($name, $json_col, $json_index);
   },
   'currencyIcon' => function ($currency) use ($currencyIcon) {
     return (isset($currencyIcon[$currency]) ? Help::svg(
         $currencyIcon[$currency],
         'currency-icon currency-icon-' . $currencyIcon[$currency]
-    ) : ' '.$currency);
+    ) : $currency);
   },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {
+    $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     if ($action == 1) {
       $value = preg_replace('/[^0-9\.\,]/', '', $cashback);
       $cashback = str_replace($value, $value * 2, $cashback);
@@ -215,6 +239,7 @@ $functionsList = [
   },
 //функция - вывести кэшбек шопа в списках если нулевой, то сердечки
   '_shop_cashback' => function ($cashback, $currency = '', $action = 0) use ($currencyIcon) {
+    $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
@@ -472,7 +497,7 @@ $functionsList = [
         } else {
           foreach ($flashe as $txt) {
             if ($type == 'constant') {
-                $html .= Constants::byName($txt);
+                $html .= getConstant($txt);
             } else {
                 $js .= create_flash($type, $txt);
             }
@@ -480,7 +505,7 @@ $functionsList = [
         }
       } elseif (is_string($flashe)) {
         if ($type == 'constant') {
-            $html .= Constants::byName($flashe);
+            $html .= getConstant($flashe);
         } else {
             $js .= create_flash($type, $flashe);
         }
@@ -489,7 +514,7 @@ $functionsList = [
     return $html . ($js ? '<script type="text/javascript">' . "\n" . $js . "\n". '</script>' : '');
   },
   'getShop' => function ($id) {
-    return \frontend\modules\stores\models\Stores::findOne(['uid' => $id]);
+    return \frontend\modules\stores\models\Stores::byId($id);
   },
   '_can' => function ($do) {
     return !Yii::$app->user->isGuest && Yii::$app->user->can($do);
@@ -525,6 +550,8 @@ $functionsList = [
   'max' => 'max',
   'implode' => 'implode',
   'sin' => 'sin',
+  'str_replace' => 'str_replace',
+  'in_array' => 'in_array',
   'svg' => function ($name, $class = false) {
     return Help::svg($name, $class);
   },
@@ -554,9 +581,33 @@ $functionsList = [
   '_ucfirst' => function($value) {
         return ucfirst($value);
   },
+
+  '_strtolower' => function($value) {
+      return strtolower($value);
+  },
   '_tags_class' => function($content, $tags_list = [], $options = []){
     return TagsClasses::add($content, $tags_list, $options);
+  },
+  '_regions_include' => function($params){
+    //на форму редактирования констант json регионы из настроек
+    if (isset($params['columns'])) {
+      foreach($params['columns'] as &$column) {
+        if (isset($column['name']) && $column['name'] == 'regions') {
+          $regions = [];
+          foreach (Yii::$app->params['regions_list'] as $key => $region) {
+            $regions[$key] = $region['name'];
+          }
+          $column['items'] = $regions;
+        }
+      }
+    }
+    return $params;
+  },
+  '_render' => function($content){
+    return Yii::$app->TwigString->render($content, Yii::$app->view->all_params);
   }
+
+
 ];
 
 return $functionsList;

@@ -1,24 +1,7 @@
 <section>
     <div class="row page-404__main">
         <div class="col-sm-12 page-404__content">
-            <div class="page-404__header">404 Упс...</div>
-            <div class="page-404__text">
-                <h1 class="page-404__header-h1">Запрошенной страницы не существует</h1>
-                <p>
-                    Проверьте правильность адреса или попробуйте обновить страницу
-                </p>
-            </div>
-            <div class="page-404__buttons">
-                <ul class="page-404__buttons_list">
-                    <li class="page-404__buttons_item"><a class="btn btn-mini" href="/">На главную</a></li>
-                    <li class="page-404__buttons_item"><a class="btn btn-mini" href="/stores">Интернет-магазины</a></li>
-                    <li class="page-404__buttons_item"><a class="btn btn-mini" href="/coupons">Промокоды</a></li>
-                    <li class="page-404__buttons_item"><a class="btn btn-mini" href="/account/support">Служба поддержки</a></li>
-                </ul>
-            </div>
-            <div class="page-404__bottom">
-                Если вы уверены, что это системная ошибка, <a href="/account/support">сообщите нам</a>, и мы обязательно всё исправим!
-            </div>
+            {{ _constant('page_404')|raw }}
         </div>
     </div>
 </section>

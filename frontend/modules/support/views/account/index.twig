@@ -52,7 +52,7 @@
     {{ form.field(model,'reCaptcha',{'template': "<div class='form-input-recaptcha support'>{input}</div>{error}"}).widget(reCaptcha)|raw }}
 
     <div class="align-center width_75">
-      <button type="submit" class="btn">{{ t('account', 'support_button') }}</button>
+      <button type="submit" class="btn">{{ t('account', 'support_button')|raw }}</button>
     </div>
 
   {#</form>#}

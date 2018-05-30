@@ -129,7 +129,8 @@ class UsersFavorites extends \yii\db\ActiveRecord
 
   public static function userFavorites()
   {
-      $cacheName = 'account_favorites_' . \Yii::$app->user->id;
+      $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      $cacheName = 'account_favorites_'. ($language ? '_' . $language : '') . \Yii::$app->user->id;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'account_favorites';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';

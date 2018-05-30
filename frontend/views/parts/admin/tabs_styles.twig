@@ -1,0 +1,35 @@
+<style>
+    ul.tab_control li label {
+        cursor: pointer;
+    }
+
+    {% for k,lang in languages %}
+        #option_tab_{{ lang.code }}:checked ~ ul .tab_butt_{{ lang.code }} {
+            background: #fbcf4a;
+        }
+
+        #option_tab_{{ lang.code }}:checked ~ .content_tab .tab_{{ lang.code }} {
+            display: block;
+        }
+
+        #option_tab_{{ lang.code }}:checked {
+            color: #000;
+        }
+
+        {% for r,region in lang.regions %}
+
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked ~ ul .tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }} {
+                background: #fbcf4a;
+            }
+
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked ~ .content_tab .tab_{{ lang.code }}_{{ str_replace('.', '_', r) }} {
+                display: block;
+            }
+
+            #option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}:checked {
+                color: #000;
+            }
+            {% endfor %}
+
+    {% endfor %}
+</style>

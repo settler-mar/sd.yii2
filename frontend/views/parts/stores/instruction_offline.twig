@@ -1,40 +1,43 @@
 <div class="flex-line tablets_flex-col">
-  <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-    {{ svg('shop2','instruction-icon instruction-icon-big')|raw }}
-    <div class="instruction-wrap">
-      <div class="instruction-title">
-        ВЫБЕРИТЕ МАГАЗИН
-      </div>
-      <div class="instruction-content">
-        Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a class="blue"
-            href="/stores/offline">нашего каталога</a>, выбираете товар.
-      </div>
-    </div>
-  </div>
-  <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-    {{ svg('show_barcode','instruction-icon instruction-icon-big')|raw }}
-    <div class="instruction-wrap">
-      <div class="instruction-title">
-        ПРЕДЪЯВИТЕ СКИДКУ
-      </div>
-      <div class="instruction-content">
-        Перед оплатой товара сообщаете кассиру или менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой
-        <a class="blue" href="{{ _if(user_id,"/account/offline","/offline-system") }}">индивидуальный штрихкод</a>.
-      </div>
-    </div>
-  </div>
-  <div class="instruction-item tablets_flex-row tablets_text-aling_left">
-    {{ svg('confirm_check','instruction-icon instruction-icon-big')|raw }}
-    <div class="instruction-wrap">
-      <div class="instruction-title">
-        ЗАФИКСИРУЙТЕ ПОКУПКУ
-      </div>
-      <div class="instruction-content">
-        Кассир сканирует ваш штрихкод, вводит сумму покупки
-        и номер чека и показывает вам всплывающее окно об успешной операции.
-        Вскоре после этого кэшбэк отобразится в вашем
-        <a class="blue" href="/account">Личном кабинете</a> в SecretDiscounter.
-      </div>
-    </div>
-  </div>
+  {{ _constant('store-instruction-offline')|raw }}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('shop2','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#ВЫБЕРИТЕ МАГАЗИН#}
+            {#</div>#}
+            {#<div class="instruction-content">#}
+                {#Приходите в нужный магазин, ресторан, химчистку, страховую компанию или любое другое заведение из <a class="blue"#}
+                                                                                                                     {#href="/stores/offline">нашего каталога</a>, выбираете товар.#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('show_barcode','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#ПРЕДЪЯВИТЕ СКИДКУ#}
+            {#</div>#}
+            {#<div class="instruction-content">#}
+                {#Перед оплатой товара сообщаете кассиру или менеджеру, что у вас скидка от SecretDiscounter, показываете ему свой#}
+                {#<a class="blue" href="{{ _if(user_id,"/account/offline","/offline-system") }}">индивидуальный штрихкод</a>.#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="instruction-item tablets_flex-row tablets_text-aling_left">#}
+        {#{{ svg('confirm_check','instruction-icon instruction-icon-big')|raw }}#}
+        {#<div class="instruction-wrap">#}
+            {#<div class="instruction-title">#}
+                {#ЗАФИКСИРУЙТЕ ПОКУПКУ#}
+            {#</div>#}
+            {#<div class="instruction-content">#}
+                {#Кассир сканирует ваш штрихкод, вводит сумму покупки#}
+                {#и номер чека и показывает вам всплывающее окно об успешной операции.#}
+                {#Вскоре после этого кэшбэк отобразится в вашем#}
+                {#<a class="blue" href="/account">Личном кабинете</a> в SecretDiscounter.#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+
 </div>

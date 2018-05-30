@@ -7,34 +7,13 @@
                 <div class="meta-form">
                     
                     <p>
-                        В метотегах можно использовать <a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank" rel="noreferrer nofollow">emoji</a>
+                        В метатегах можно использовать <a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank" rel="noreferrer nofollow">emoji</a>
                     </p>
                     {% set form = active_form_begin() %}
 
                         {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'keywords').textarea({'rows':6})|raw }}
-
-                        {{ form.field(model, 'h1').textInput({'maxlength':true})|raw }}
                         {{ form.field(model, 'h1_class').textInput({'maxlength':true})|raw }}
-
-                        {{ form.field(model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
-
-                        <h4>Изображение заставка</h4>
-                        <p>
-                            <img for="Meta[backgroundImageImage]" style="max-height: 480px;" src="img/{{ model.backgroundImageImage | raw }}">
-                        </p>
-                        {{ form.field(model, 'backgroundImageImage').fileInput().label(false)|raw }}
-
-                        {#{{ form.field(model, 'backgroundImageAlt').textInput({'maxlength':true})|raw }}#}
-
-                        {{ form.field(model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
-
-                        {{ form.field(model, 'h2').textInput({'maxlength':true})|raw }}
 
                         {{ form.field(model, 'show_breadcrumbs').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
 
@@ -48,56 +27,84 @@
 
                         {{ form.field(model, 'metaImage').textInput({'maxlength':true})|raw }}
 
-                        {#{% for attribute, groups in model.metaTags  %}#}
-                            {#{% for name, property in groups %}#}
-                                {#<div class="form-group field-meta-metatagarray-{{ attribute }}-{{ name }}">#}
-                                    {#<label class="meta-metatagarray-label">&lt;meta {{ attribute }}="{{ name }}" content="{{ property }}"&gt;</label>#}
-                                    {#<table class="table" data-attribute="{{ attribute }}" data-name="{{ name }}">#}
-                                        {#{% for key, value in model.metaTagArray[attribute~'.'~name] %}#}
-                                            {#<tr class="multiple-input-list__item">#}
-                                                {#<td class="list-cell__data_meta">#}
-                                                    {#<div class="form-group">#}
-                                                        {#<input type="text"#}
-                                                               {#class="form-control meta-metatagarray" name="Meta[metaTagArray][{{ attribute }}.{{ name }}][]"#}
-                                                            {#value="{{ value }}">#}
-                                                    {#</div>#}
 
-                                                {#</td>#}
-                                                {#<td class="list-cell__button">#}
-                                                    {#<div class="btn multiple-input-list__btn meta-input-remove btn btn-danger"><i class="glyphicon glyphicon-remove"></i></div>#}
-                                                {#</td>#}
-                                            {#</tr>#}
-                                        {#{% endfor %}#}
-                                        {#<tr>#}
-                                            {#<td class="list-cell__data_meta">#}
-                                                {#<div class="form-group">#}
-                                                    {#<input type="text" class="form-control" list="meta-metatagarray-datalist"/>#}
-                                                {#</div>#}
-
-                                            {#</td>#}
-                                            {#<td class="list-cell__button">#}
-                                                {#<div data-key="{{ attribute }}.{{ name }}" class="btn multiple-input-list__btn meta-input-plus btn btn-default"><i class="glyphicon glyphicon-plus"></i></div>#}
-                                            {#</td>#}
-                                        {#</tr>#}
-                                    {#</table>#}
-
-                                {#</div>#}
-                            {#<br>#}
-
-                        {#{% endfor %}#}
-                        {#{% endfor %}#}
-                    {#<datalist id="meta-metatagarray-datalist">#}
-                        {#{% for prop_key, prop_value in model.metaProperties %}#}
-                            {#<option value="{{ prop_key }}">{{ prop_value }}</option>#}
-                        {#{% endfor %}#}
-                    {#</datalist>#}
-                        
-                    <div class="form-group">
-                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-                    </div>
-                    {{ active_form_end() }}
                 </div>
             </div>
+            <div class="col-md-12 tarif_select_blk">
+                <h3>Содержимое</h3>
+                {% for k,lang in languages %}
+                    <input type="radio" class="controls_option" value="{{ lang.code }}" {% if lang.code == app.params.base_lang %}checked{% endif %} id="option_tab_{{ lang.code }}"
+                           name="tabs_open">
+                {% endfor %}
+                <ul class="tab_control">
+                    {% for k,lang in languages %}
+                        <li class="tab_butt_{{ lang.code }}">
+                            <label for="option_tab_{{ lang.code }}">
+                                <img src="/images/flag/{{ lang.code }}.svg" height="12px">
+                                {{ lang.name }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="content_tab">
+                    {% for k,lang in languages %}
+
+                        {% set loop_model = lang.code == app.params.base_lang ? model : lang.model %}
+
+                        <div class="cpa_box tab_{{ lang.code }}">
+                            {% for r, region in lang.regions %}
+                                <input type="radio" class="controls_option" value="{{ lang.code }}_{{ str_replace('.', '_', r) }}" id="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}"
+                                       name="tabs_open_{{ lang.code }}" {% if loop.first %}checked{% endif %}>
+                            {% endfor %}
+                            <ul class="tab_control">
+                                {% for r,region in lang.regions %}
+                                    <li class="tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
+                                        <label for="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
+                                            {{ region.name }} {{ lang.name }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="content_tab">
+                                {% for r,region in lang.regions %}
+                                    <div class="tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
+                                        {{ form.field(loop_model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.title[r]}).label('Title')|raw }}
+                                        {{ form.field(loop_model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.h1[r]}).label('H1')|raw }}
+                                        {{ form.field(loop_model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.description[r]}).label('Description')|raw }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            {{ form.field(loop_model, 'keywords').textarea({'rows':6})|raw }}
+
+                            {{ form.field(loop_model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
+                            <h4>Изображение заставка</h4>
+                            <p>
+                                <img for="Meta_{{ k }}[backgroundImageImage]" style="max-height: 480px;" src="img/{{ loop_model.backgroundImageImage | raw }}">
+                            </p>
+                            {{ form.field(loop_model, 'backgroundImageImage').fileInput().label(false)|raw }}
+
+                            {{ form.field(loop_model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
+
+                            {{ form.field(loop_model, 'h2').textInput({'maxlength':true})|raw }}
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+
+                </div>
+            </div>
+            {{ active_form_end() }}
         </div>
     </section>
 </div>
+
+{% include('parts/admin/tabs_styles.twig') %}

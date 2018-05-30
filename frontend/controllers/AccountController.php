@@ -16,7 +16,7 @@ class AccountController extends SdController
   public function beforeAction($action)
   {
     if (Yii::$app->user->isGuest) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
     $this->view->layout_mode = 'account';

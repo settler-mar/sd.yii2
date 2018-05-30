@@ -2,7 +2,7 @@
     <section class="favorites account-padding account-home">
         <div class="row">
             <div class="col-md-12">
-                <h1>{{ t('account', 'favorites') }}</h1>
+                <h1>{{ t('account', 'favorites')|raw }}</h1>
             </div>
             {% if favorites|length > 0 %}
 
@@ -23,7 +23,7 @@
             {% else %}
             <div class="col-md-12">
                 <p>
-                    {{ t('account', 'favorites_empty_text')|raw }}
+                    {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add', {'href': _href('/stores')})|raw }}
                 </p>
                 <div class="not-found">{{ t('account', 'favorites_empty')|raw }}</div>
             </div>

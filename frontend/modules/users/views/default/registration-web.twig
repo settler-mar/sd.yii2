@@ -1,5 +1,5 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h2  class="title-no-line">Регистрация</h2>
+  <h2  class="title-no-line">{{ t('common', 'register') }}</h2>
   {% set form = active_form_begin({
     'id' : 'registration-web-form-ajax',
     'layout' : 'horizontal',
@@ -20,33 +20,33 @@
     'template' :
     '{beginWrapper}<i>'~svg("exchange",'form-icon')~'</i>{input}\n{endWrapper}\n{error}',
   }).dropDownList(trafficTypeList,{
-    'prompt':'Выберите тип трафика',
+    'prompt': t('account', 'choose_traffic_type'),
   }) | raw }}
 
 
   {{ form.field(model, 'url',{
     'template' :
     '{beginWrapper}<i>'~svg("link",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Ссылка на вашу площадку'}) | raw }}
+  }).textInput({'placeholder': t('account', 'url_to_web_resource')}) | raw }}
 
   {{ form.field(model, 'email',{
     'template' :
     '{beginWrapper}<i>'~svg("envelope",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).textInput({'placeholder':'Введите ваш e-mail'}) | raw }}
+  }).textInput({'placeholder': t('account', 'enter_your_email')}) | raw }}
 
   {{ form.field(model, 'password',{
     'template' :
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Придумайте пароль'}) | raw }}
+  }).passwordInput({'placeholder': t('account', 'enter_your_password')}) | raw }}
 
   {{ form.field(model, 'password_repeat',{
     'template' :
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-  }).passwordInput({'placeholder':'Повторите пароль'}) | raw }}
+  }).passwordInput({'placeholder': t('account', 'enter_password_repeat')}) | raw }}
 
-  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">Я принимаю условия <a href="/webmaster-terms" class="ignore-hash" style="text-decoration: underline;">Партнерского соглашения</a></div>
+  <div class="text-dop text-dop_gray btn-max_width400 block_margin-auto">{{ t('account', 'agree_to_the_<a class="ignore-hash" style="text-decoration: underline;" href="{href}">terms</a>_of_parthner_agreement', {'href': _href('/webmaster-terms')})|raw }}</div>
 
-  <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">Зарегистрироваться</button>
+  <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('common', 'do_register') }}</button>
   {{ active_form_end() }}
 
 </div>

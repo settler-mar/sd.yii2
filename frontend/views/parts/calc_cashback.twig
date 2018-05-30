@@ -2,10 +2,10 @@
   <div class="page-wrap">
     <div class="shop-calc-cashback_content align-center">
 
-      <h3 class="shop-calc-cashback_content-header">Калькулятор кэшбэка в {{current_store.name}}</h3>
+      <h3 class="shop-calc-cashback_content-header">{{ t('main', 'calc_cashback_in_{store}', {'store': current_store.name})|raw }}</h3>
 
         <div class="shop-calc-cashback_content-form">
-          <label for="shop-calc-summ">Стоимость покупки</label>
+          <label for="shop-calc-summ">{{ t('main','calc_cashback_price')|raw }}</label>
             <input id="shop-calc-summ"
                    class="ctrl"
                 type="text"
@@ -29,17 +29,14 @@
         </select>
       </div>
       <div class="shop-calc-cashback_content-result">
-        Ваш кэшбэк для магазина <span class="shop-calc-cashback_content-result-store">{{current_store.name}}</span> составит
-          до
-          <span class="shop-calc-cashback_content-result-value calc-result_value">0</span>
-          рублей
+        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name})|raw }}
           {% if current_store.displayed_cashback ends with '%' %}
           {% else %}
-            (фиксированная ставка)
+            {{ t('main','calc_cashback_fixed')|raw }}
           {% endif %}
       </div>
       <div class="shop-calc-cashback_content-description">
-        * Все расчеты привязаны к максимальному тарифу магазина и могут не совпадать со ставками на выбранный вами товар.
+        {{ t('main', 'calc_cashback_term')|raw }}
       </div>
     </div>
   </div>

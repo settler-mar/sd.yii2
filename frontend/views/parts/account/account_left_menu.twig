@@ -1,6 +1,8 @@
 
 <div class="catalog-categories-account_menu{% if header == 1 %}-header{% endif %}" >
 
+    {% set curr = currencyIcon(app.user.identity.currency) %}
+
     <div class="account-menu_header">
         <div class="account-menu_header-avatar">
             <div class="account-menu_header-avatar-image">
@@ -14,17 +16,17 @@
             <div class="account-menu_header-info-balance">
                 <a href="/account/payments" class="account-menu_header-info-balance-link">
                     <span class="account-menu_header-info-balance-link-confirmed" >
-                  {{ _nf(this.balance.current) | raw}} руб </span>
-                    <span class="account-menu_header-info-balance-link-all">&nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw}} руб </span>
+                  {{ _nf(this.balance.current) | raw}} {{ curr|raw }}</span>
+                    <span class="account-menu_header-info-balance-link-all">&nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw}} {{ curr|raw }} </span>
                 </a>
             </div>
             <div class="account-menu_header-info-id">
                 ID:&nbsp;{{ this.user.uid }} {% if header == 0 %}<a
                     class="set_clipboard"
                     data-clipboard="{{ this.user.uid }}"
-                    data-clipboard-notify="Ваш ID скопирован в буфер обмена"
+                    data-clipboard-notify="{{ t('account', 'account_id_copied') }}"
                     href=""
-                    >cкопировать</a> {% endif %}
+                    >{{ t('common', 'copy_lower') }}</a> {% endif %}
             </div>
         </div>
     </div>
@@ -166,7 +168,7 @@
         </li>
         <li class="action-btn"> {{ get_menu_item({
                 'href':'/logout',
-                'title': 'Выход',
+                'title': t('common', 'logout'),
                 'left-icon': 'sign-out'
             })|raw }}
         </li>

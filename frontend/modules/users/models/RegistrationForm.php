@@ -22,13 +22,15 @@ class RegistrationForm extends Model
   {
     return [
       ['email', 'trim'],
-      [['email', ], 'required', 'message' => 'Необходимо ввести ваш E-mail'],
-      [['password', ], 'required', 'message' => 'Необходимо ввести пароль'],
-      [['password_repeat'], 'required', 'message' => 'Необходимо повторить пароль'],
-      [['reCaptcha'], 'required', 'message' => 'Докажите, что вы не робот'],
+
+      [['email', ], 'required', 'message' => Yii::t('account', 'email_is_required')],
+      [['password', ], 'required', 'message' => Yii::t('account', 'password_is_required')],
+      [['password_repeat'], 'required', 'message' => Yii::t('account', 'password_repeat_is_required')],
+
+      [['reCaptcha'], 'required', 'message' => Yii::t('main', 'make_sure_not_robot')],
       [['email'], 'email'],
-      ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Введенные пароли не совпадают.', 'operator' => '=='],
-      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => 'Пользователь с таким e-mail уже зарегистрирован'],
+      ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('account', 'password_not_same_with_password_repeat'), 'operator' => '=='],
+      ['email', 'unique', 'targetClass' => 'frontend\modules\users\models\Users', 'message' => Yii::t('account', 'user_width_this_email_exists')],
       ['email', DomainValidator::className()],
       [['password'], 'trim'],
       [['password'], 'string', 'max' => 60],
@@ -41,9 +43,10 @@ class RegistrationForm extends Model
   {
     return [
       'email' => 'Email',
-      'password' => 'Пароль',
-      'password_repeat' => 'Повтор пароля',
-      'reCaptcha' => 'Докажите, что вы не робот',
+      'password' => Yii::t('common', 'password'),
+      'password_repeat' => Yii::t('common', 'password_repeat'),
+
+      'reCaptcha' => Yii::t('main', 'make_sure_not_robot'),
     ];
   }
 

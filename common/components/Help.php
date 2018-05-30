@@ -196,6 +196,7 @@ class Help extends Component
       }
   }
 
+
     /**ищем в тектсте url, переделываем в <a hrer="...">...</a>
      * @param $text
      * @return null|string|string[]
@@ -210,5 +211,6 @@ class Help extends Component
           return ' <a target="_blank" rel="nofollow noreferrer"  class="blue" href="' . $href . '">' . $text . '</a> ';
       }, $text);
   }
+
 
 }

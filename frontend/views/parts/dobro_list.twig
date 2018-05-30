@@ -1,6 +1,6 @@
 <div class="dobro-funds_list align-center">
   {% for fund in funds %}
-  {% if not dobdo_select or (fund.uid != '9' and fund.title != 'Переговоры с данным Фондом еще не завершены') %}
+  {% if not dobdo_select or (fund.uid != '9' and fund.title != t('account', 'dobro_charity_in_process')) %}
     {% if dobdo_select %}
       <input
           type="radio"
@@ -17,7 +17,7 @@
           {{fund.description|raw}}
           {% if dobdo_select %}
             <div class="align-center">
-              <label for="fond_{{ fund.uid }}" class="btn dobro-funds_item-button" data-id="{{ fund.uid }}">Выбрать</label>
+              <label for="fond_{{ fund.uid }}" class="btn dobro-funds_item-button" data-id="{{ fund.uid }}">{{ t('common', 'choose') }}</label>
             </div>
           {% endif %}
         </div>

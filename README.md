@@ -160,6 +160,43 @@ composer install
 
 Пример миграции для работы с ролями https://github.com/settler-mar/sd.yii2/blob/dev/console/migrations/m170825_064904_RBACuser.php
 
+
+## ActiveRecord logger
+
+* Создаем таблицу через миграцию
+``php yii migrate --migrationPath=@frontend/modules/ar_log/migrations``
+* в frontend/config/params-local.php выставляем
+`'ActiveRecordLog' => true,`
+* логирование работает только при активном режиме DEBUG
+
+Контроль того что попало в лог осуществляется на странице `/admin/ar_log`.
+
+* в модели в которой необходимо осуществлять логирование добавляем
+
+  * подключаем библиотеку
+  
+  ``use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;``
+
+  * настраиваем поля которые не учавствуют в логирование
+  
+  ```
+    public function behaviors()
+    {
+      return [
+          [
+              'class' => ActiveRecordChangeLogBehavior::className(),
+              'ignoreAttributes' => ['visit','rating'],
+          ],
+      ];
+    }
+  ```
+  
+## Флаги для языков
+
+За основу брал отсюда
+d
+https://ru.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_%D0%B3%D0%BE%D1%81%D1%83%D0%B4%D0%B0%D1%80%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D1%85_%D1%84%D0%BB%D0%B0%D0%B3%D0%BE%D0%B2#%D0%A0
+  
 ## Описание таблиц
 
 Часть данных хранится в словаре application/modules/Cwcashback/Dictionary.php

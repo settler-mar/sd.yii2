@@ -2,12 +2,14 @@
 
 namespace frontend\modules\stores\models;
 
+use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use yii;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\favorites\models\UsersFavorites;
+use frontend\modules\users\models\Users;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -48,6 +50,24 @@ class Stores extends \yii\db\ActiveRecord
   public $logoImage;
   public $image_url;
   public $videos;
+  public $regions;
+  public $regions_list;
+
+  public static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
+      'contact_name', 'contact_phone', 'contact_email', 'coupon_description',
+  ];
+
+  public function behaviors()
+  {
+    return [
+        [
+            'class' => ActiveRecordChangeLogBehavior::className(),
+            'ignoreAttributes' => ['visit'],
+        ],
+    ];
+  }
+
+
   /**
    * @var array
    */
@@ -56,14 +76,46 @@ class Stores extends \yii\db\ActiveRecord
    * Possible sorting options with titles and default value
    * @var array
    */
-  public static $sortvars = [
-    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
-    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
-    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
-    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
-    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
-    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
-  ];
+//  public static $sortvars = [
+//    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
+//    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
+//    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
+//    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
+//    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
+//    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
+//  ];
+
+  public static function sortvars(){
+      return [
+          'rating' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+              'no_online' => 1
+          ],
+          'visit' => [
+              "title" => Yii::t('main','sort_by_rating'),
+              "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
+              'no_offline' => 1
+          ],
+          'name' => [
+              "title" => Yii::t('main','sort_by_abc'),
+              "title_mobile" => Yii::t('main','sort_by_abc_mobile'),
+              'order' => 'ASC'
+          ],
+          'added' => [
+              "title" => Yii::t('main','sort_by_date'),
+              "title_mobile" => Yii::t('main','sort_by_date_mobile')
+          ],
+          'cashback_percent' => [
+              "title" => Yii::t('main','sort_by_percent'),
+              "title_mobile" => Yii::t('main','sort_by_percent_mobile')
+          ],
+          'cashback_summ' => [
+              "title" => Yii::t('main','sort_by_cashback'),
+              "title_mobile" => Yii::t('main','sort_by_cashback_mobile')
+          ],
+      ];
+  }
 
   /**
    * @inheritdoc
@@ -81,12 +133,13 @@ class Stores extends \yii\db\ActiveRecord
     return [
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'trim'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'string'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email','video','network_name','coupon_description'], 'trim'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone',
+          'contact_email','video','network_name','coupon_description', 'region'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name',
+          'contact_phone', 'contact_email','video','network_name','coupon_description', 'region'], 'trim'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'no_rating_calculate', 'show_notify','show_tracking'], 'integer'],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'show_notify','show_tracking'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
-      [['rating'], 'number', 'min' => 0],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
@@ -103,7 +156,9 @@ class Stores extends \yii\db\ActiveRecord
         'maxSize' => 2 * 1024 * 1024,
         'skipOnEmpty' => true
       ],
-      ['videos', 'safe']
+      [['videos', 'regions'], 'safe'],
+      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])]
+
     ];
   }
 
@@ -141,13 +196,14 @@ class Stores extends \yii\db\ActiveRecord
       'is_offline' => 'Тип магазина',
       'video' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
       'videos' => 'Видео для слайдера (ссылка на YouTube или Vimeo)',
-      'rating' => 'Рейтинг',
-      'no_rating_calculate' => 'Не пересчитывать рейтинг',
+      //'rating' => 'Рейтинг',
+      //'no_rating_calculate' => 'Не пересчитывать рейтинг',
       'cash_number' => 'Номер чека',
       'related_stores' => 'Магазины торговой сети (ID через запятую)',
       'network_name' => 'Название торговой сети',
       'show_notify' => 'Отображать в задолбашках',
       'coupon_description' => 'Текст для активных купонов',
+      'region' => 'Регионы',
     ];
   }
 
@@ -161,8 +217,8 @@ class Stores extends \yii\db\ActiveRecord
       $this->route = $help->str2url($this->name);
     }
 
-    //$this->video = json_encode($this->video);
     $this->video = json_encode($this->videos);
+    $this->region = $this->regions_list ? implode(',', $this->regions_list) : null;
     return parent::beforeValidate();
   }
 
@@ -180,8 +236,16 @@ class Stores extends \yii\db\ActiveRecord
     return $this->hasOne(Stores::className(),['uid'=>'related']);
   }
 
+    /**
+     * рейтинг по регионам
+     * @return yii\db\ActiveQuery
+     */
+  public function getRatings(){
+    return $this->hasMany(StoreRatings::className(), ['store_id' => 'uid']);
+  }
+
   /*
-   * Выдает магазины сети автоматом добавдяя сяанный онлайн-оффлайн магазин и удаляется текущий
+   * Выдает магазины сети автоматом добавдяя связанный онлайн-оффлайн магазин и удаляется текущий
    *
    */
   public function getRelatedStores()
@@ -250,6 +314,14 @@ class Stores extends \yii\db\ActiveRecord
       }
       //$this->video = json_decode($this->video, true);
     }
+    $regions = explode( ',', $this->region);
+    foreach (Yii::$app->params['regions_list'] as $key => $region) {
+        $this->regions[] = [
+            'name' => $region['name'],
+            'code' => $key,
+            'checked' => in_array($key, $regions)
+        ];
+    }
   }
 
   /**
@@ -280,10 +352,15 @@ class Stores extends \yii\db\ActiveRecord
    */
   public static function top12()
   {
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
     $cache = Yii::$app->cache;
-    $data = $cache->getOrSet('top_12_stores', function () {
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'top_12_stores';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $data = $cache->getOrSet('top_12_stores' . $language, function () {
       return self::items()->orderBy('visit DESC')->limit(12)->all();
-    });
+    }, $cache->defaultDuration, $dependency);
     return $data;
   }
 
@@ -300,7 +377,7 @@ class Stores extends \yii\db\ActiveRecord
    */
   public static function byRoute($route)
   {
-    $where = array();
+    $where = [];
     if(strpos($route,'-offline')){
       $where['is_offline']=1;
       $where['route']=str_replace('-offline','',$route);
@@ -308,15 +385,22 @@ class Stores extends \yii\db\ActiveRecord
       $where['is_offline']=0;
       $where['route']=$route;
     }
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $cache = Yii::$app->cache;
+    $cacheName = 'store_by_route_' . $route . ($language ? '_'.$language : '');
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'stores_by_column';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $data = $cache->getOrSet('store_by_route_' . $route, function () use ($where) {
-      return self::find()
-        ->where($where)
-        ->one();
+    $data = $cache->getOrSet($cacheName, function () use ($where, $language) {
+      $store =  self::find()
+        ->from(self::tableName() . ' cws')
+        ->select(self::selectAttributes($language))
+        ->where($where);
+      if ($language) {
+          $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
+      }
+      return $store->one();
     }, $cache->defaultDuration, $dependency);
     
     return $data;
@@ -332,11 +416,20 @@ class Stores extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'stores_by_column';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $cacheName = 'store_byid_' . $id . ($language ? '_'.$language : '');
 
-    $data = $cache->getOrSet('store_byid_' . $id, function () use ($id) {
-      return self::findOne($id);
+    $data = $cache->getOrSet($cacheName, function () use ($id, $language) {
+        $store =  self::find()
+            ->from(self::tableName() . ' cws')
+            ->select(self::selectAttributes($language))
+            ->where(['cws.uid' => $id]);
+        if ($language) {
+            $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
+        }
+      return $store;
     }, $cache->defaultDuration, $dependency);
-    
+
     return $data;
   }
 
@@ -374,16 +467,19 @@ class Stores extends \yii\db\ActiveRecord
    */
   public function afterSave($insert, $changedAttributes)
   {
+    parent::afterSave($insert, $changedAttributes);
+
     $this->saveImage();
+
+    //todo сохранить рейтинги
+
     $this->clearCache($this->uid, $this->route);
   }
 
-  /**
-   * очищаем кеш, связанный с магазинами и данным store
-   * пишем записи в удалённые страницы
-   */
   public function afterDelete()
   {
+    parent::afterDelete(); // TODO: Change the autogenerated stub
+
     $this->clearCache($this->uid, $this->route);
 
     $deletedPage = new DeletedPages();
@@ -565,19 +661,28 @@ class Stores extends \yii\db\ActiveRecord
       ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
       ->from(self::tableName(). ' cws2')
       ->leftJoin(Reviews::tableName(). ' cwur', 'cws2.uid = cwur.store_id')
+      ->leftJoin(Users::tableName(). ' cwu', 'cwu.uid = cwur.user_id')
       ->groupBy('cws2.uid')
-      ->where(['cwur.is_active' => 1]);
+      ->where(['cwur.is_active' => 1])
+      ->andWhere(['cwu.region' => Yii::$app->params['region']]);
 
-    return self::find()
+    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+
+    $stores =  self::find()
       ->from(self::tableName() . ' cws')
-      ->select([
-        'cws.*',
+      ->select(array_merge(self::selectAttributes($language),[
         'store_rating.rating as reviews_rating',
         'store_rating.reviews_count as reviews_count',
-      ])
+        'cwsr.rating'
+      ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-      ->where(['cws.is_active' => $active])
+      ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid')
+      ->where(['cws.is_active' => $active, 'cwsr.region' => Yii::$app->params['region']])
       ->asArray();
+    if ($language) {
+        $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . Yii::$app->language . '"');
+    }
+    return $stores;
   }
 
     /** $sortvars в зависимости от online - offline
@@ -587,7 +692,7 @@ class Stores extends \yii\db\ActiveRecord
   public static function sortvarItems($offline = null)
   {
     $result = [];
-    foreach (self::$sortvars as $key => $sortvar) {
+    foreach (self::sortvars() as $key => $sortvar) {
         if ($offline === null ||
            (empty($sortvar['no_online']) && empty($sortvar['no_offline'])) ||
            ($offline === true && !empty($sortvar['no_online'])) ||
@@ -703,6 +808,7 @@ class Stores extends \yii\db\ActiveRecord
       }
   }
 
+
   /**
    * @param $id
    * @param $route
@@ -720,12 +826,13 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('total_all_stores');
     Cache::clearName('stores_abc');
     Cache::clearName('catalog_coupons');
+    Cache::clearName('top_12_stores');
+    Cache::clearName('stores_by_column');
 
       //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');
     //ключи
     //Cache::deleteName('total_all_stores');
-    Cache::deleteName('top_12_stores');
     Cache::deleteName('categories_stores');
     if ($id) {
       Cache::deleteName('store_byid_' . $id);
@@ -754,6 +861,27 @@ class Stores extends \yii\db\ActiveRecord
       ['like', 'cws.alias', '%,'.$query, false],
       ['=', 'cws.alias', $query],
     ];
+  }
+
+    /**
+     * массив для select
+     * @param bool $language
+     * @return array
+     */
+  private static function selectAttributes($language = false)
+  {
+      $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
+        'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
+        'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
+        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking'];
+      $translated = [];
+      foreach (self::$translated_attributes as $attr) {
+          $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
+          $translated[] = $language ? "concat('/".Yii::$app->params['lang_code']."/stores/',cws.route) as store_href" :
+              "concat('/stores/',cws.route) as store_href";
+      }
+      return array_merge($attributes, $translated);
+
   }
   
 }

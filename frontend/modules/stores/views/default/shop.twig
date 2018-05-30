@@ -4,7 +4,7 @@
       {% if h1 %}
         {{ h1|raw }}
       {% else %}
-        Кэшбэк с&nbsp;покупок на&nbsp;{{ current_store.name }}
+        {{ t('main', 'store_default_h1_{store}_name', {'store': current_store.name})|raw }}
       {% endif %}
     </h1>
     <div class="shop_header_big-wrap">
@@ -13,7 +13,7 @@
         <div class="shop_header_big-item_ticket-wrap">
           <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
             <div class="promo">
-              Кэшбэк
+              {{ t('main', 'cashback')|raw }}
               {% if current_store.action_id != 0 %}
                 <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
               {% endif %}
@@ -23,22 +23,20 @@
           </div>
           <div href="#howgetcashback" class="shop_header_big-item_ticket-down scroll_to">
             {% if current_store.is_offline==0 %}
-              Для получения кэшбэка следуйте
-              <a href="#howgetcashback" class="shop-howgetcashback scroll_to">инструкции</a>
+              {{ t('main', 'store_instruction_online')|raw }}
             {% else %}
-              Для получения кэшбэка покажите кассиру свой
-              <a href="#howgetcashback" class="shop-howgetcashback scroll_to">штрихкод</a>
+              {{ t('main', 'store_instruction_offline')|raw }}
             {% endif %}
           </div>
         </div>
 
         <div class="shop_header_big-share">
-          <div class="footer-share-text">Поделиться:</div>
+          <div class="footer-share-text">{{ t('main', 'share')|raw }}:</div>
           <div class="share42init accauntSoc accauntSoc_32"
-               data-url="https://secretdiscounter.ru/stores/{{ current_store.route }}{{ _if(current_store.is_offline,'-offline') }}"
+               data-url="{{ _href('/stores/'~current_store.route ~ (current_store.is_offline ? '-offline' : ''), 'https://secretdiscounter.ru')|raw }}"
                data-title="{{ html.encode(this.title) }}"
                data-description="{{ this.description }}"
-               data-socials="1,0,2,4,3,5,6"
+               data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
                data-icon-type="svg"
                data-icon-size=28
           >
@@ -55,19 +53,19 @@
               {% if current_store.uid in fav_ids %}
                 <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{ current_store.uid }}"
                    data-toggle="tooltip" data-state="delete" data-placement="top"
-                   data-original-title="Удалить магазин из Избранного">
+                   data-original-title="{{ t('account', 'favorites_shop_shop_do_remove')|raw }}">
                   {{ svg('heart','shop_panel-item_icon')|raw }}
                 </a>
               {% else %}
                 <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{ current_store.uid }}"
                    data-toggle="tooltip" data-state="add" data-placement="top"
-                   data-original-title="Добавить магазин в Избранное">
+                   data-original-title="{{ t('account', 'favorites_shop_shop_do_add')|raw }}">
                   {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
                 </a>
               {% endif %}
             {% else %}
               <a class="shop_panel-item favorite-link" href="#" data-toggle="tooltip" data-placement="top"
-                 data-original-title="Добавить в Избранное">
+                 data-original-title="{{ t('account', 'favorites_shop_do_add')|raw }}">
                 {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
               </a>
             {% endif %}
@@ -99,10 +97,7 @@
 
       <div class="shop_header_big-item">
         <div class="shop_header_big-item-head ">
-
-          {{ _if(current_store.is_offline,
-          'Оффлайн-магазин',
-          'Интернет-магазин') | raw }}
+          {{ _if(current_store.is_offline, t('main', 'online_shop'), t('main', 'offline_shop')) | raw }}
         </div>
         <div class="shop_header_big-item-body">
           <div
@@ -117,7 +112,7 @@
               </div>
             {% else %}
               <div class="accordion-control accordion-title">
-                <span class="color-red">Читать обязательно:&nbsp;</span>все тарифы и условия
+               {{ t('main', 'read_all_tarifs_terms')|raw }}
               </div>
             {% endif %}
 
@@ -126,8 +121,7 @@
                 {% if current_store.conditions != '' %}
                   {{ _no_br(current_store.conditions)|raw }}
                 {% else %}
-                  Дополнительные тарифы для магазина {{ current_store.name }} отсутствуют.
-                  Текущая ставка кэшбэка – {{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}.
+                    {{ t('main', 'extended_tarifs_for_{store}_is_empty_cashback_{cashback}', {'store': current_store.name,'cashback': _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)})|raw }}
                 {% endif %}
 
                 <div class="accordion-control tablets_hide">
@@ -140,12 +134,11 @@
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
             <div class="align-center">
-              Кэшбэк станет активным для вывода через
-              <span>{{ current_store.hold_time }}&nbsp;дней</span>
+              {{ t('main', 'cashback_will_be_active_in_{timie}_day', {'time': current_store.hold_time})|raw }}
               <span class="avg">
-                  (среднее время обработки)
+                  {{ t('main', 'average_process_time') }}
                   <a class="shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
-                     data-original-title="Это время требуется магазину, чтобы убедиться, что не будет возврата товара. Нередко кэшбэк подтверждается и раньше."
+                     data-original-title="{{ t('main', 'time_to_sure_no_money_back')|raw }}"
                   >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
               </span>
             </div>
@@ -160,16 +153,16 @@
   {% if current_store.is_active==0 %}
     {% set btn_text =  _constant('shop_offline_text','goto') %}
   {% else %}
-    {% set btn_text = 'Перейти к покупкам' %}
+    {% set btn_text = t('main', 'start_shopping') %}
   {% endif %}
 
   {% if current_store.is_offline==0 %}
     {% if user_id %}
       {% if current_store.is_active == 1 %}
-        <a href="/goto/store:{{ current_store.uid }}" target="_blank" rel="nofollow noopener"
+        <a href="{{ _href('/goto/store:'~current_store.uid)|raw }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big shop_header-goto-button">{{ btn_text }}</a>
         <div class="shop_header-goto-agree">
-          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">Я ознакомлен с <a class="blue" target="_blank" rel="nofollow nooper noreferrer" href="/recommendations">Правилами покупок с&nbsp;кэшбэком</a></label>
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">{{ t('main', 'agree_with_<a href="{href}">terms</a>', {'href':_href('/recommendations')})|raw }}</label>
         </div>
       {% else %}
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
@@ -183,7 +176,7 @@
   {% if current_store.related and current_store.relatedData.is_active in [0, 1] %}
     <a class="btn btn-black btn-relink btn-block btn-max_width400 btn-margin_vertical btn-margin_auto"
        href="/stores/{{ current_store.relatedData.routeUrl }}">
-      {{ _if(current_store.is_offline==0,'Этот магазин также представлен в оффлайне','Этот магазин также торгует в Интернете') }}
+      {{ _if(current_store.is_offline==0, t('main', 'shop_is_in_offline_too'), t('main', 'shop_is_in_online_too')) }}
     </a>
   {% endif %}
 </section>
@@ -191,7 +184,7 @@
 {% if current_store.is_active==-1 %}
   <section class="shop-no_active margin page-wrap">
     <div class="black_box align-center">
-      <h2 class="title-no-line">Магазин ВЫКЛЮЧЕН и не доступен посетителям сайта</h2>
+      <h2 class="title-no-line">{{ t('main', 'shop_is_off')|raw }}</h2>
     </div>
   </section>
 {% endif %}
@@ -202,7 +195,7 @@
 
       <div class="shop_information-border">
         <h2 class="accordion-control accordion-title">
-          Информация о {{ current_store.name }}
+          {{ t('main', 'information_about_{store}_', {'store': current_store.name})|raw }}
         </h2>
         <div class="accordion-content">
           {% if current_store.short_description %}
@@ -251,7 +244,7 @@
   <section class="tablets_order-1">
     <div class="page-wrap">
       <div class="accordion accordion-only_one accordion_pc_off">
-        <h2 class="accordion-control accordion-title">Все магазины сети {{ current_store.network_name }}</h2>
+        <h2 class="accordion-control accordion-title">{{ t('main', 'all_shops_of_{network}_', {'network': current_store.network_name})|raw }}</h2>
         <div class="accordion-content">
           <div class="shops">
             {% for store in related_stores %}
@@ -295,7 +288,7 @@
     <section class="tablets_order-1 tablets_hide">
       <div class="page-wrap margin">
         <div class="accordion accordion-only_one accordion_pc_off">
-          <h2 class="accordion-control accordion-title">Подробная информация о {{ current_store.name }} с кэшбэком</h2>
+          <h2 class="accordion-control accordion-title">{{ t('main', 'detail_information_about_{store}_', {'store': current_store.name})|raw }}</h2>
           <div class="accordion-content">
             {{ _tags_class(current_store.description, {'a':'blue'})|raw }}
           </div>
@@ -312,7 +305,7 @@
         {% if infotitle %}
           {{ infotitle }}
         {% else %}
-          Как получить кэшбэк в {{ current_store.name }}?
+          {{ t('main', 'how_to_get_cashback_in_{store}_', {'store': current_store.name}) }}
         {% endif %}
       </h2>
       <div class="accordion-content">
@@ -337,8 +330,8 @@
       data-title=""
       data-button-no=""
       data-notyfy_class="notify_white"
-      data-button-yes="Выбрать другой магазин"
-      data-callback-yes="window.location='/stores{% if referrer_category and referrer_category.route %}/{{ referrer_category.route }}{% endif %}';"
+      data-button-yes="{{ t('main', 'shoose_other_shop')|raw }}"
+      data-callback-yes="window.location='{{ _href('/stores'~(referrer_category and referrer_category.route ? '/'~referrer_category.route : ''))|raw }}';"
        >
     {{ _constant('shop_not_active_message')|raw }}
   </div>

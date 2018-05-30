@@ -145,6 +145,9 @@ class SdViewBASE extends View
         strpos($viewFile, 'layout') > 0 &&
         !(
         strpos($viewFile, 'admin.twig')
+        ) &&
+        !(
+        strpos($viewFile, 'vendor')
         )
     ) {
       //ddd($this->all_params);

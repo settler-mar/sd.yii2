@@ -243,6 +243,7 @@ td {
     text-align: center;
     max-width: calc(100% - 20px);
   }
+
 }
 
 .form-horizontal_aling-left {
@@ -305,6 +306,7 @@ td {
 
   span {
     svg {
+      z-index: 1;
       width: 18px;
       height: 18px;
       position: absolute;
@@ -314,6 +316,14 @@ td {
       fill: $btn_base_bg;
       stroke: $btn_base_bg;
     }
+  }
+
+  .user-currency {
+    position: absolute;
+    right: 6px;
+    top: 18px;
+    opacity: 0.5;
+    color: #000;
   }
 }
 

@@ -50,7 +50,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       [['created_at', 'updated_at', 'bdate'], 'safe'],
       [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex'], 'string', 'max' => 255],
       [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name',
-        'social_id'], 'message' => 'The combination of Social Name and Social ID has already been taken.'],
+        'social_id'], 'message' => Yii::t('account', 'the_combination_of_social_name_and_social_id_has_already_been_taken')],
     ];
   }
 

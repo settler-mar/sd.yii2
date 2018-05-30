@@ -6,7 +6,7 @@
             {% if not user_cashbak_hide %}
                 <div class="scroll_box-user_cashback">
                     <span>
-                        {{ _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance))|raw }} руб. кэшбэка
+                        {{ t('main', '{sum}_{currency}_of_cashback', {'sum': _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance)) ,'currency': review.currency})|raw }}
                     </span>
                 </div>
             {% endif %}
@@ -38,13 +38,13 @@
 
         {% if not not_admin_coment and review.answer %}
             <div class="scroll_box-answer {{ _if(comments_max_height,'max_text_hide max_text_hide-gray','') }}">
-                <div class="scroll_box-answer-header">Ответ администрации:</div>
+                <div class="scroll_box-answer-header">{{ t('main', 'admin_answer')|raw }}:</div>
                 {{review.answer}}
             </div>
         {% endif %}
 
         {% if comments_max_height %}
-            <a class="blue scroll_box-show_more">Читать полностью</a>
+            <a class="blue scroll_box-show_more">{{ t('common', 'read_all_topic')|raw }}</a>
         {% endif %}
     </div>
 

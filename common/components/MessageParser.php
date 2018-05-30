@@ -28,9 +28,9 @@ class MessageParser extends Component
    */
   function __construct()
   {
-    $this->notification_type=Yii::$app->params['dictionary']['notification_type'];
+    $this->notification_type = Yii::t('dictionary', 'notification_type');
     $this->twig=Yii::$app->TwigString;
-    $this->twig_template=Yii::$app->params['dictionary']['twig_template'];
+    $this->twig_template= Yii::t('dictionary', 'notification_twig_template');
   }
 
 

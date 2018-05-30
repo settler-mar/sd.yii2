@@ -16,7 +16,7 @@
 
 
     data.el.remove();
-    wrap.append('<span>' + size + '</span> <a href="' + data.src + '" download>Скачать</a>');
+    wrap.append('<span>' + size + '</span> <a href="' + data.src + '" download>'+lg("download")+'</a>');
   }
 
   var imgs = $('.downloads_img img');

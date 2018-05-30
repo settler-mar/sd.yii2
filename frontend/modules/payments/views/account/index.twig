@@ -5,24 +5,24 @@
     <table class="table ta_left adaptive adaptive-phones">
       <tr>
         <th>ID SD</th>
-        <th>{{ t('common', 'shop_or_service') }}</th>
-        <th>{{ t('common', 'date_active') }}</th>
-        <th>{{ t('common', 'cashback') }}</th>
-        <th>{{ t('common', 'status') }}</th>
+        <th>{{ t('common', 'shop_or_service')|raw }}</th>
+        <th>{{ t('common', 'date_active')|raw }}</th>
+        <th>{{ t('common', 'cashback')|raw }}</th>
+        <th>{{ t('common', 'status')|raw }}</th>
       </tr>
 
-      {% set curr_icon = currencyIcon(app.params.valuta) %}
+      {% set curr_icon = currencyIcon(app.user.identity.currency) %}
       {% for payment in payments %}
         <tr>
           <td>{{ payment.action_id }}</td>
           <td class="store">
             {% if payment.is_active != -1 %}
-              <a href="/stores/{{ payment.route }}{{ _if(payment.is_offline,'-offline') }}">{{ payment.name }}</a>
+              <a href="{{ _href('/stores/'~payment.route~(payment.is_offline ? '-offline' : ''))|raw }}">{{ payment.name }}</a>
             {% else %}
               {{ payment.name }}
             {% endif %}
           </td>
-          <td>{{ _date(payment.action_date) }}</td>
+          <td>{{ _local_date(payment.action_date, t('dictionary', 'date_format_long'))|raw }}</td>
           <td class="cashback status_{{ payment.status }}">
             {{ _nf(payment.cashback) | raw }} {{ curr_icon|raw }}
           </td>
@@ -46,25 +46,25 @@
   {% else %}
     <br>
     <p class="not-found">{{ t('account', 'payments_no_found') | raw }}</p>
-    <a href="/stores" class="btn">{{ t('account', 'payments_no_found_btn') | raw }}</a>
+    <a href="{{ _href('/stores')|raw }}" class="btn">{{ t('account', 'payments_no_found_btn') | raw }}</a>
   {% endif %}
 </section>
 
 {% if payments|length > 0 %}
-  {% set curr = currencyIcon(app.params.valuta) %}
+
   <section class="margin">
-    <h3>{{ t('account', 'summary') }}:</h3>
+    <h3>{{ t('account', 'summary')|raw }}:</h3>
     <div>
-      {{ t('account', 'confirmed') }}:
-      <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr | raw }}</b>
+      {{ t('account', 'confirmed')|raw }}:
+      <b>{{ _nf(user.sum_confirmed) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
     <div>
-      {{ t('account', 'expected') }}:
-      <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr | raw }}</b>
+      {{ t('account', 'expected')|raw }}:
+      <b>{{ _nf(user.sum_pending) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
     <div>
-      {{ t('account', 'revoked') }}:
-      <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr | raw }}</b>
+      {{ t('account', 'revoked')|raw }}:
+      <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
   </section>
 {% endif %}

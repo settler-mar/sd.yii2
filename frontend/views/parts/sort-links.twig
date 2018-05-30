@@ -1,5 +1,5 @@
 <div class="catalog-stores_sort-desctop">
-    <span class="catalog-stores_sort-desctop-title">Сортировать по:</span>
+    <span class="catalog-stores_sort-desctop-title">{{ t('main', 'sort_by')|raw }}:</span>
     <ul >
         {% for sortLink in sortlinks %}
             <li><a href="{{sortLink.link}}" class="blue{% if sortLink.active == 1 %} active{% endif %}" >{{sortLink.title}}</a></li>
@@ -10,7 +10,7 @@
 <div class="catalog-stores_sort-mobile">
 
     <div class="catalog-stores_sort-mobile-select sd-select linked">
-        <span class="catalog-stores_sort-mobile-title">Сортировать по:</span>
+        <span class="catalog-stores_sort-mobile-title">{{ t('main', 'sort_by')|raw }}:</span>
         {% for sortLink in sortlinks %}
              {% if sortLink.active == 1 %}
                  <span class="sd-select-selected">{{ sortLink.title_mobile }}

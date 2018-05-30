@@ -27,8 +27,8 @@ class AccountController extends \yii\web\Controller
 
   public function actionTransfer()
   {
-    $funds=Foundations::find()
-
+    //$funds=Foundations::find()
+    $funds=Foundations::translated()
       ->asArray()
       ->all();
 
@@ -98,7 +98,7 @@ class AccountController extends \yii\web\Controller
 
     Yii::$app->balanceCalc->todo([$charity->user_id], 'foundation');
 
-    return json_encode(['error' => false, 'message' => 'Пожертвование успешно отправлено']);
+    return json_encode(['error' => false, 'message' => Yii::t('account', 'charity_is_sent')]);
   }
 
   public function actionAutoSend()
@@ -138,7 +138,7 @@ class AccountController extends \yii\web\Controller
     $auto->foundation_id=$request->post('autopayment-uid');
     $auto->save();
 
-    return json_encode(['error' => false,'message' => 'Автоплатёж был установлен']);
+    return json_encode(['error' => false,'message' => Yii::t('account', 'autopayment_is_set')]);
   }
 
 
@@ -160,6 +160,6 @@ class AccountController extends \yii\web\Controller
     }
 
     $auto->delete();
-    return json_encode(['error' => false,'message' => 'Автоплатёж был отменен']);
+    return json_encode(['error' => false,'message' => Yii::t('account', 'autopayment_is_unset')]);
   }
 }

@@ -28,15 +28,28 @@
                                     <p><span>Посещений:</span> {{store.visit}}</p>
                                     <p><span>Картчка магазина:</span> <a href="/stores/{{store.routeUrl}}" target="_blank" rel="nofollow noopener">перейти</a></p>
                                     <p><span>Название:</span> <br>{{ form.field(model, 'name').textInput({'maxlength':true}).label(false)|raw }}</p>
-                                    <p><span>Название по русски:</span> <br>{{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Route:</span> <br>{{ form.field(model, 'route').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>URL:</span> <br>{{ form.field(model, 'url').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Дополнительные URL(через запятую):</span> <br>{{ form.field(model, 'url_alternative').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Акция</span> {{ form.field(model, 'action_id').dropDownList({'0' : '','1' : 'Двойной кэшбэк'}).label(false)|raw }}</p>
-                                    <p><span>Рейтинг</span> {{ form.field(model, 'rating').textInput({'maxlength':true}).label(false)|raw }}</p>
-                                    <p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>
+                                    {#<p><span>Рейтинг</span> {{ form.field(model, 'rating').textInput({'maxlength':true}).label(false)|raw }}</p>#}
+                                    {#<p><span>Просчет рейтинга</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>#}
                                     <p><span>Отображать в задолбашках</span> {{ form.field(model, 'show_notify').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
                                     <p><span>Отображать в блок посылок</span> {{ form.field(model, 'show_tracking').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
+                                    <p><span>Регионы</span></p>
+                                    <ul class="ch_tree">
+                                        {% for region_item in model.regions %}
+                                            <li>
+                                                <label>
+                                                    <input {% if region_item.checked %} checked {% endif %} type="checkbox" name="Stores[regions_list][]" value="{{region_item.code}}"><span>{{region_item.name}}</span>
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p><span>Магазин активен:</span><br>
+                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
+                                    </p>
+
                                 </div>
                                 <div class="edit_blk">
                                     <p>
@@ -48,9 +61,6 @@
                                     <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true}).label(false)|raw }}</p>
-                                    <p><span>Магазин активен:</span><br>
-                                        {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
-                                    </p>
                                     <p><span>Тип магазина:</span><br>
                                         {{ form.field(model, 'is_offline').dropDownList({'0' : 'Онлайн','1' : 'Оффлайн'}).label(false)|raw }}
                                     </p>
@@ -62,18 +72,104 @@
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>
-                            <p><span>Краткое описание  (Информация о  ...):</span> <br> {{ form.field(model, 'short_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }} </p>
-                            <p>
-                                <span>Описание  (Информация о кэшбэк в ...):</span>
-                                <br> {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
-                            </p>
-                            <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
-                            <p><span>Текст для активных купонов:</span> <br> {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
+
+                            <p class="title first">Локальная информация</p>
+                            <div class="tarif_select_blk">
+                                <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
+                                       name="tabs_open">
+                                {% for k,lang in languages %}
+                                    <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                                           name="tabs_open">
+                                {% endfor %}
+                                <ul class="tab_control">
+                                    <li class="tab_butt_ru-RU">
+                                        <label for="option_tab_ru-RU">
+                                            <img src="/images/flag/ru-RU.svg" height="12px">
+                                            Русский
+                                        </label>
+                                    </li>
+                                    {% for k,lang in languages %}
+                                        <li class="tab_butt_{{ k }}">
+                                            <label for="option_tab_{{ k }}">
+                                                <img src="/images/flag/{{ k }}.svg" height="12px">
+                                                {{ lang.name }}
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="content_tab">
+                                    <div class="cpa_box tab_ru-RU">
+                                        <p><span>Название по русски:</span> <br>
+                                            {{ form.field(model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}
+                                        </p>
+                                        <p><span>Контакты. Имя:</span> <br>
+                                            {{ form.field(model, 'contact_name').textInput({'maxlength':true}).label(false)|raw }}
+                                        </p>
+                                        <p><span>Контакты. Телефон:</span> <br>
+                                            {{ form.field(model, 'contact_email').textInput({'maxlength':true}).label(false)|raw }}
+                                        </p>
+                                        <p><span>Контакты. E-mail:</span> <br>
+                                            {{ form.field(model, 'contact_phone').textInput({'maxlength':true}).label(false)|raw }}
+                                        </p>
+                                        <p>
+                                            <span>Краткое описание  (Информация о  ...):</span> <br>
+                                            {{ form.field(model, 'short_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                        </p>
+                                        <p>
+                                            <span>Описание  (Информация о кэшбэк в ...):</span><br>
+                                            {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                        </p>
+                                        <p>
+                                            <span>Специальные условия  (Дополнительная информация):</span> <br>
+                                            {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                        </p>
+                                        <p>
+                                            <span>Текст для активных купонов:</span> <br>
+                                            {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                        </p>
+                                    </div>
+                                    {% for k,lang in languages %}
+                                        <div class="cpa_box tab_{{ k }}">
+                                            <p><span>Название:</span> <br>
+                                                {{ form.field(lang.model, 'local_name').textInput({'maxlength':true}).label(false)|raw }}
+                                            </p>
+                                            <p><span>Контакты. Имя:</span> <br>
+                                                {{ form.field(lang.model, 'contact_name').textInput({'maxlength':true}).label(false)|raw }}
+                                            </p>
+                                            <p><span>Контакты. Телефон:</span> <br>
+                                                {{ form.field(lang.model, 'contact_email').textInput({'maxlength':true}).label(false)|raw }}
+                                            </p>
+                                            <p><span>Контакты. E-mail:</span> <br>
+                                                {{ form.field(lang.model, 'contact_phone').textInput({'maxlength':true}).label(false)|raw }}
+                                            </p>
+                                            <p>
+                                                <span>Краткое описание  (Информация о  ...):</span> <br>
+                                                {{ form.field(lang.model, 'short_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                            </p>
+                                            <p>
+                                                <span>Описание  (Информация о кэшбэк в ...):</span><br>
+                                                {{ form.field(lang.model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                            </p>
+                                            <p>
+                                                <span>Специальные условия  (Дополнительная информация):</span> <br>
+                                                {{ form.field(lang.model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                            </p>
+                                            <p>
+                                                <span>Текст для активных купонов:</span> <br>
+                                                {{ form.field(lang.model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                            </p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
 
                             {#{{ form.field(model, 'video').widget(MultipleInput.className(), {#}
                                 {#'allowEmptyList':true,#}
 
                             {#})|raw }}#}
+                            <br>
 
                             {{ form.field(model, 'videos').widget(MultipleInput.className(), {
                                 'allowEmptyList':true,
@@ -92,9 +188,44 @@
                             })|raw }}
 
                             <input type="hidden" name="type" value="update_main_information">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="title">
+                                        Рейтинг по регионам
+                                    </p>
+                                </div>
+                                {% for rating in ratings %}
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                            {{ rating.region_name }}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group ">
+                                                <label for="stores-rating-{{ rating.region_code }}">Рейтинг</label>
+                                                <input type="text" id="stores-rating-{{ rating.region_code }}" class="form-control" name="StoreRatings_{{ rating.region_code }}[rating]" value="{{ rating.model.rating }}" maxlength="255" aria-required="true">
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group ">
+                                                <label for="stores-rating-no-calculate-{{ rating.region_code }}">Просчет рейтинга</label>
+                                                <select id="stores-rating-no-calculate-{{ rating.region_code }}" class="form-control" name="StoreRatings_{{ rating.region_code }}[no_calculate]">
+                                                    <option value="0" {% if rating.model.no_calculate == 0 %}selected{% endif %} >Пересчитывать</option>
+                                                    <option value="1" {% if rating.model.no_calculate == 1 %}selected{% endif %} >Не пересчитывать</option>
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
                             <div class="form-group">
                                 <button type="submit" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">{{ model.isNewRecord ? 'Create' : 'Сохранить' }}</button>
                             </div>
+
+
                             {{ active_form_end() }}
 
                         <p class="title">Тарифы</p>
@@ -144,6 +275,8 @@
 
                             {{ active_form_end() }}
                         </div>
+
+
 
                         {% if categories|length > 0 %}
                             <p class="title">
@@ -222,3 +355,35 @@
         </section>
     </div>
 </div>
+<style>
+    ul.tab_control li label {
+        cursor: pointer;
+    }
+
+    #option_tab_ru-RU:checked ~ ul .tab_butt_ru-RU {
+        background: #fbcf4a;
+    }
+
+    #option_tab_ru-RU:checked ~ .content_tab .tab_ru-RU {
+        display: block;
+    }
+
+    #option_tab_ru-RU:checked {
+        color: #000;
+    }
+
+    {% for k,lang in languages %}
+    #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+        background: #fbcf4a;
+    }
+
+    #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+        display: block;
+    }
+
+    #option_tab_{{ k }}:checked {
+        color: #000;
+    }
+
+    {% endfor %}
+</style>

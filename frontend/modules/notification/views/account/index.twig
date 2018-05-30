@@ -12,7 +12,7 @@
       </div>
     {% endfor %}
   {% else %}
-    <div class="not-found">{{ t('account', 'notifications_empty') }}</div>
+    <div class="not-found">{{ t('account', 'notifications_empty')|raw }}</div>
   {% endif %}
 
   {% include '/parts/pagination.twig' %}

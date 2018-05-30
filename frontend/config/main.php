@@ -39,6 +39,10 @@ $config = [
     'session' => [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
+      'cookieParams' => [
+        'domain' => '.' . DOMAIN_FRONT,
+        'httpOnly' => true,
+      ],
     ],
     'sphinx' => [
       'class' => 'yii\sphinx\Connection',
@@ -100,11 +104,13 @@ $config = [
       'enableAutoLogin' => true,
       'identityCookie' => [
         'name' => '_identity-frontend',
-        'httpOnly' => true
+        'httpOnly' => true,
+        'path' => '/',
+        'domain' => DOMAIN_FRONT,
       ],
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
-      }
+      },
     ],
     'errorHandler' => [
       'errorAction' => 'site/error',
@@ -129,6 +135,9 @@ $config = [
         ],
         [ // обработка реферальных ссылок
           'class' => 'frontend\components\SdUrlPromo',
+        ],
+        [ // обработка локализации сайта
+            'class' => 'frontend\components\SdUrlLocalisation',
         ],
         [ // обработка перехода после авторизации из админки под пользователем обратно в админку
             'class' => 'frontend\components\SdUrlAdmin',
@@ -158,7 +167,7 @@ $config = [
         'search/<action>' => '404',
         'coupons/search' => '404',
 
-        '<action:(faq|admin|loyalty|recommendations|offline)>' => 'site/<action>',
+        '<action:(admin|offline)>' => 'site/<action>',
         'affiliate-system' => 'site/affiliate',
         'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
@@ -167,6 +176,7 @@ $config = [
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
+
 
         [ // Обновлении мадели для работы с адресми и роутингом
           'class' => 'frontend\components\SdUrlRule',
@@ -261,6 +271,9 @@ $config = [
     'sdblog' => [
       'class' => 'app\modules\sdblog\Module',
     ],
+    'language' => [
+        'class' => 'frontend\modules\language\Module',
+    ],
   ],
   'params' => $params,
 
@@ -344,6 +357,9 @@ if (YII_DEBUG) {
   var_dump($_SESSION);
   exit;*/
   // configuration adjustments for 'dev' environment
+  $config['modules']['ar_log'] = [
+      'class' => 'frontend\modules\ar_log\Module',
+  ];
   unset($config['modules']['permit']['params']['accessRoles']);
   $config['params']['plugin_install_panel'] = 1;
 }

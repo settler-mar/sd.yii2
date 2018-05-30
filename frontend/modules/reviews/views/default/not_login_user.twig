@@ -1,15 +1,15 @@
 <div class="feedback popup-content">
   <h2 class="title-no-line">
     {% if(shop==0) %}
-      Отзыв о сайте
+      {{ t('main', 'review_add_form_site')|raw }}
     {% else %}
-      Отзыв о магазине {{ store_name }}
+        {{ t('main', 'review_add_form_{store}', {'store':store_name })|raw }}
     {% endif %}
   </h2>
-  <p class="align-center"><b>Внимание:</b> отзыв могут оставлять только зарегистрированые пользователи</p>
+  <p class="align-center">{{ t('main', 'review_add_can_only_registered')|raw }}</p>
 
   <div class="align-center">
-    <a href="#login" class="btn btn-transform btn-margin btn-mini modals_open">Войти</a>
-    <a href="#registration" class="btn btn-mini btn-margin modals_open">Зарегистрироваться</a>
+    <a href="{{ _href('#login')|raw }}" class="btn btn-transform btn-margin btn-mini modals_open">{{ t('common', 'do_login')|raw }}</a>
+    <a href="{{ _href('#registration')|raw }}" class="btn btn-mini btn-margin modals_open">{{ t('common','do_register')|raw }}</a>
   </div>
 </div>

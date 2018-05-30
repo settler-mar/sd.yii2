@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/LinkPager') }}
-{% set title = 'За время работы с SecretDiscounter Вы привели:' %}
+{% set title = t('account', 'you_followers_on_sd') %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -7,7 +7,7 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 
-  {% set curr = currencyIcon(app.params.valuta) %}
+  {% set curr = currencyIcon(app.user.identity.currency) %}
   <section>
         <h2>{{ html.encode(this.title) }}</h2>
       <div>
@@ -52,7 +52,7 @@
         <table class="table ta_left  adaptive adaptive-tablets">
           <tr>
             <th>ID</th>
-            <th>{{ t('common', 'Дата регистрации') }}</th>
+            <th>{{ t('common', 'date_register') }}</th>
             <th>{{ t('common', 'status_loyalty') }}</th>
             <th>
               {{ t('account', 'users_payment_confirmed_expected_table_header')|raw }}
@@ -67,6 +67,7 @@
           </tr>
 
             {% for user in users %}
+            {% set user_curr = currencyIcon(app.user.identity.currency) %}
               <tr>
                 <td>{{user.uid}}</td>
                 <td>{{user.added}}</td>
@@ -83,14 +84,14 @@
                   {{ _nf(user.cnt_pending,0) | raw}}
                 </td>
                 <td>
-                  {{ _nf(user.sum_confirmed) | raw }} {{ curr | raw}}
+                  {{ _nf(user.sum_confirmed) | raw }} {{ user_curr | raw}}
                   /
-                  {{ _nf(user.sum_pending) | raw }} {{ curr | raw}}
+                  {{ _nf(user.sum_pending) | raw }} {{ user_curr | raw}}
                 </td>
                 <td>
-                  {{ _nf(user.sum_to_friend_confirmed) | raw }} {{ curr | raw}}
+                  {{ _nf(user.sum_to_friend_confirmed) | raw }} {{ user_curr | raw}}
                   /
-                  {{ _nf(user.sum_to_friend_pending) | raw }} {{ curr | raw}}
+                  {{ _nf(user.sum_to_friend_pending) | raw }} {{ user_curr | raw}}
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}

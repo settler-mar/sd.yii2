@@ -1,7 +1,7 @@
 {{ use({'Fotorama':'kotchuprik/fotorama/Widget'}) }}
 <section class="margin">
   <div class="page-wrap">
-    <h2>Фото и видео {{ current_store.name }}</h2>
+    <h2>{{ t('main', 'photo_and_video_for_{store}', {'store': current_store.name})|raw }}</h2>
     {% set gel=fotorama_begin({
         'version' : '4.5.2',
         'options' : {

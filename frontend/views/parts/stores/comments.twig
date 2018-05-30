@@ -2,12 +2,11 @@
 
 <section id=reviews class="margin">
   <div class="page-wrap ">
-    <h2>Отзывы о {{current_store.name}}</h2>
+    <h2>{{ t('main', 'reviews_about_{store}', {'store': current_store.name})|raw }}</h2>
     {% if store_reviews|length == 0 %}
       <div class="comments_no-comments align-center">
         <p class="ntfnd">
-          На данный момент отзывы о магазине
-          {{current_store.name}} отсутствуют. Будь первым!
+            {{ t('main', 'reviews_about_{store}_is_empty', {'store': current_store.name})|raw }}
         </p>
       </div>
     {% endif %}
@@ -28,16 +27,15 @@
 
     <div class="align-center">
       {% if store_reviews|length>6 %}
-        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini show_all" data-cntrl-class="scroll_box-item-hide" href="#">Показать все</a>
-        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">Скрыть все</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini show_all" data-cntrl-class="scroll_box-item-hide" href="#">{{ t('main','reviews_show_all')|raw }}</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">{{ t('main','reviews_hide_all')|raw }}</a>
       {% endif %}
 
       {% if user_id %}
-        <a href="#reviews/send?shop={{ current_store.uid }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">Оставить отзыв</a>
+        <a href="{{ _href('#reviews/send?shop='~current_store.uid)|raw }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">{{ t('main', 'reviews_add')|raw }}</a>
       {% else %}
         <p>
-          Для того, чтобы иметь возможность оставлять отзывы, Вам нужно
-          <a href="#registration" class="modals_open">зарегистрироваться</a> или <a href="#login" class="modals_open">войти в свой аккаунт</a>.
+            {{ t('main', 'you_need_<a href="{register}" class="modals_open">register</a>or<a href="{login}" class="modals_open">login</a>to_add_review', {'register': _href('#registration'),'login': _href('#login')})|raw }}
         </p>
       {% endif %}
     </div>

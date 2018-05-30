@@ -2,6 +2,7 @@
 
 namespace frontend\modules\constants\controllers;
 
+use frontend\modules\constants\models\LgConstants;
 use Yii;
 use frontend\modules\constants\models\Constants;
 use frontend\modules\constants\models\ConstantsSearch;
@@ -71,12 +72,50 @@ class AdminController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-      $model = $this->findModel($id);
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['index']);
+    $model = $this->findModel($id);
+
+
+    $base_lang=Yii::$app->params['base_lang'];
+    $lg_list=Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
+
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $lgModel=   LgConstants::find()->where(['const_id' => $model->uid, 'language' => $lg_key])->one();
+      if (!$lgModel) {
+        $lgModel = new LgConstants();
+        $lgModel->const_id = $model->uid;
+        $lgModel->language = $lg_key;
       }
+      $languages[$lg_key] = [
+          'name' => $lg_item,
+          'model' => $lgModel
+      ];
+    }
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      Yii::$app->session->addFlash('info', 'Константа обновлена');
+
+      foreach ($languages as $lg_key => $language) {
+        if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+          Yii::$app->session->addFlash('info', $language['name'] . '. Перевод констант обновлен');
+        } else {
+          Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода констант');
+          header("X-XSS-Protection: 1;");
+          return $this->render('update.twig', [
+              'model' => $model,
+              'languages' => $languages,
+              'mp_class' =>MultipleInput::className()
+          ]);
+        }
+      }
+
+      return $this->redirect(['index']);
+    }
+
       return $this->render('update', [
         'model' => $model,
+        'languages' => $languages,
         'mp_class' =>MultipleInput::className()
       ]);
   }

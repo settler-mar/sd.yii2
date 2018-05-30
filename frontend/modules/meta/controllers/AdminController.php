@@ -4,6 +4,7 @@ namespace frontend\modules\meta\controllers;
 
 use Yii;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\meta\models\LgMeta;
 use frontend\modules\meta\models\MetaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -100,17 +101,51 @@ class AdminController extends Controller
    */
   public function actionUpdate($id)
   {
+
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('MetaEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
     $model = $this->findModel($id);
 
+
+    $base_lang=Yii::$app->params['base_lang'];
+
+    $lg_list=Yii::$app->params['transform_language_list'];
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $languages[$lg_key] = [
+        'name' => $lg_item['name'],
+        'regions' => $lg_item['regions'],
+        'code' => $lg_item['code'],
+        'model' => $lg_item['code'] == $base_lang ? null : $this->findLgMeta($id, $lg_item['code'])
+      ];
+    }
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        Yii::$app->session->addFlash('info', 'Метаданные обновлены');
+      //сохранение переводов
+       foreach ($languages as $lg_key => $language) {
+           if ($language['model'] != null) {
+               if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+                   Yii::$app->session->addFlash('info', $language['name'] . '. Перевод метаданных обновлен');
+               } else {
+                   Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода метаданных');
+                   header("X-XSS-Protection: 1;");
+                   return $this->render('update.twig', [
+                       'model' => $model,
+                       'languages' => $languages
+                   ]);
+               }
+           }
+       }
+
+
       return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
         'model' => $model,
+        'languages' => $languages
       ]);
     }
   }
@@ -146,6 +181,17 @@ class AdminController extends Controller
     } else {
       throw new NotFoundHttpException('The requested page does not exist.');
     }
+  }
+
+  protected function findLgMeta($id, $lang)
+  {
+    $model = LgMeta::find()->where(['meta_id' => $id, 'language' => $lang])->one();
+    if (!$model) {
+      $model = new LgMeta();
+      $model->meta_id = $id;
+      $model->language = $lang;
+    }
+    return $model;
   }
 
 }
