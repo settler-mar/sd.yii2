@@ -71,7 +71,7 @@ class AdminController extends Controller
 
     foreach ($selects as  $key => $select) {
         $stat = clone $dataProvider->query;
-        $stat->select(array_merge($select['select'], ['cw_payments.affiliate_id', 'cw_payments.cpa_id', 'cw_payments.user_id']))
+        $stat->select($select['select'])
             ->groupBy($select['groupby']);
         if (isset($select['join'])) {
             $stat->leftJoin($select['join'][0], $select['join'][1]);

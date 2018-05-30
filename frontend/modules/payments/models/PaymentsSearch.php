@@ -49,8 +49,8 @@ class PaymentsSearch extends Payments
     public function search($params)
     {
         $query = Payments::find()
-            ->joinWith(['store'])
-            ->joinWith(['user']);
+            ->joinWith('store', false)
+            ->joinWith('user', false);
 
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
