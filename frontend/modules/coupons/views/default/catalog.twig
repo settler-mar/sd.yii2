@@ -149,7 +149,7 @@
               {% if current_store.coupon_description and pagination_page==1 and expired != 1 %}
                 <div class="catalog_category-content margin">
                   <div class="catalog_category-short-description">
-                    {{ _tags_class(current_category.coupon_description,{'a':'blue'})|raw }}
+                    {{ _tags_class(current_store.coupon_description,{'a':'blue'})|raw }}
                   </div>
                 </div>
               {% endif %}
