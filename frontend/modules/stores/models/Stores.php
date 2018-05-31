@@ -71,7 +71,7 @@ class Stores extends \yii\db\ActiveRecord
   /**
    * @var array
    */
-  protected static $defaultSorts = ['rating', 'visit'];
+  protected static $defaultSorts = ['region_rating', 'visit'];
   /**
    * Possible sorting options with titles and default value
    * @var array
@@ -87,7 +87,7 @@ class Stores extends \yii\db\ActiveRecord
 
   public static function sortvars(){
       return [
-          'rating' => [
+          'region_rating' => [
               "title" => Yii::t('main','sort_by_rating'),
               "title_mobile" => Yii::t('main','sort_by_rating_mobile'),
               'no_online' => 1
@@ -359,9 +359,9 @@ class Stores extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $data = $cache->getOrSet('top_12_stores' . $language, function () {
-      return self::items()->orderBy('rating DESC')->limit(12)->all();
+      return self::items()->orderBy('region_rating DESC')->limit(12)->all();
     }, $cache->defaultDuration, $dependency);
-    return $data;
+     return $data;
   }
 
   public function getRouteUrl(){
@@ -673,7 +673,7 @@ class Stores extends \yii\db\ActiveRecord
       ->select(array_merge(self::selectAttributes($language),[
         'store_rating.rating as reviews_rating',
         'store_rating.reviews_count as reviews_count',
-        'cwsr.rating'
+        'cwsr.rating as region_rating'
       ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
       ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid')

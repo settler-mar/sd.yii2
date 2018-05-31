@@ -325,7 +325,6 @@ class DefaultController extends SdController
         'total_all_coupons' => $contentData["total_all_coupons"],
       ]);
     }
-
     return $this->render('catalog', $contentData);
   }
 
