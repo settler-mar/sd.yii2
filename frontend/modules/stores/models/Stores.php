@@ -359,7 +359,7 @@ class Stores extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $data = $cache->getOrSet('top_12_stores' . $language, function () {
-      return self::items()->orderBy('visit DESC')->limit(12)->all();
+      return self::items()->orderBy('store_rating.rating DESC')->limit(12)->all();
     }, $cache->defaultDuration, $dependency);
     return $data;
   }
