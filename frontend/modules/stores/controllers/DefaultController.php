@@ -413,7 +413,7 @@ class DefaultController extends SdController
         return Stores::items()
             ->andWhere(['<>', 'cws.uid', $store->uid])
             ->andWhere(['cws.is_offline' => $store->is_offline])
-            ->orderBy('rating DESC')
+            ->orderBy('region_rating DESC')
             ->limit(6)
             ->all();
       }, $cache->defaultDuration, $dependency);
@@ -427,7 +427,7 @@ class DefaultController extends SdController
                 ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
                 ->andWhere(['<>', 'cws.uid', $store->uid])
                 ->andWhere(['cwstc.category_id' => $category->uid])
-                ->orderBy('rating DESC')
+                ->orderBy('region_rating DESC')
                 ->limit(6)
                 ->all();
           },
