@@ -1,0 +1,160 @@
+<?php
+
+namespace frontend\modules\stores\models;
+
+use yii\base\Model;
+use frontend\modules\users\models\Users;
+use frontend\modules\payments\models\Payments;
+use yii;
+
+class FileImport extends Model
+{
+
+    public $cpa;
+    public $store;
+    public $file;
+
+    private $users;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['cpa', 'store'], 'required'],
+            [['store'], 'number'],
+            [['cpa'], 'in', 'range'=>array_keys(Yii::$app->params['outstand_cpa'])],
+            [['file'], 'file', 'extensions' => ['csv', 'json', 'xml'], 'maxSize' => 1024*1024*10 ],
+        ];
+    }
+
+    /**
+     *
+     */
+    public function import()
+    {
+        $file = \yii\web\UploadedFile::getInstance($this, 'file');
+        $cpa = isset(Yii::$app->params['outstand_cpa'][$this->cpa]) ?
+            Yii::$app->params['outstand_cpa'][$this->cpa] : false;
+        $store = $cpa && isset($cpa['route']) ? Stores::find()->where(['route' => $cpa['route']])->one() : false;
+        $method = $cpa && isset($cpa['file_loader']['method']) ? $cpa['file_loader']['method'] : false;
+
+        if ($file && $store && $method && is_callable([$this, $method])) {
+            $this->$method($file, $store);
+        }
+    }
+
+    /**
+     * @param $file
+     * @param $store
+     */
+    private function booking($file, $store)
+    {
+        $orders = $this->getCsv($file);
+        $users = [];
+        foreach ($orders as $order) {
+            $user = $this->getUserData($order["Label"]);
+            if ($user && !in_array($user->uid, $users)) {
+                $users[] = $user->uid;
+            }
+
+            if (!$user) {
+                continue;
+            }
+            //d($order);
+            //подогнать под формат платёжа с адмитад пока предварительно !!!!
+
+            $orderId = $order['Book Nr.'];
+            //сумму попробуем вычислить так комиссия/процент
+            $summ = (float) str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
+                (float) $this->float($order['Comission ( EUR )']) * 100 / (float) $this->float(str_replace('%', '', $order['Perc']));
+            $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
+            $fee = (float) $this->float($order['Fee ( EUR )']);
+            $payment = [
+                'status' => $order['Status'] == 'Завершенные' ? 2 : ($order['Status'] == 'Отмененные' ? 1 : 0), //надо проверить, когда в выгрузке будут завершенные
+                'subid' => $user->uid,
+                'positions' => false, //для тарифа, видимо так
+                'action_id' => $orderId,
+                'cart' => $summ,
+                'payment' => $fee,
+                'click_date' => $date,
+                'action_date' => $date,
+                'status_updated' => $date,
+                'closing_date' => $date,
+                'product_country_code' => null,
+                'order_id' => $orderId,
+                'tariff_id' => null,
+                'currency' => 'EUR',
+                'advcampaign_id' => $store->cpaLink->affiliate_id,
+                'cpa_id' => $store->cpaLink->cpa_id
+            ];
+            //d($payment);
+            $paymentStatus = Payments::makeOrUpdate(
+                $payment,
+                $store,
+                $user,
+                $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+                ['notify' => true, 'email' => true]
+            );
+            //ddd($paymentStatus);
+
+
+        }
+        if (count($users) > 0) {
+            Yii::$app->balanceCalc->setNotWork(false);
+            Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+        }
+    }
+
+    /**
+     * @param $file
+     * @return array
+     */
+    protected function getCsv($file)
+    {
+        $filename = $file->tempName;
+        $data = [];
+        if (($handle = fopen($filename, "r")) !== false) {
+            $headers = fgetcsv($handle);
+            $bom = pack('H*', 'EFBBBF');
+            $headers[0] = preg_replace("/[".$bom."\"]/", '', $headers[0]);
+            while (($row = fgetcsv($handle)) !== false) {
+                $data[] = array_combine($headers, $row);
+            }
+            fclose($handle);
+        } else {
+            Yii::info('File import. File not found. '.$filename);
+        }
+        return $data;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function float($value)
+    {
+        return str_replace(',', '.', $value);
+    }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     *
+     * Получаем данные пользователя
+     */
+    private function getUserData($user_id)
+    {
+        if (!isset($this->users[$user_id])) {
+            $user = Users::findOne(['uid' => $user_id]);
+            if ($user) {
+                $this->users[$user_id] = $user;
+            } else {
+                $this->users[$user_id] = false;
+            }
+        }
+        return $this->users[$user_id];
+    }
+
+}
