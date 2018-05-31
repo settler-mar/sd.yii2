@@ -148,6 +148,11 @@
     }
   }
   &-link {
+
+    @include media($tablets) {
+      margin-bottom: 20px;
+    }
+
     &.hidden {
       display: none;
     }
