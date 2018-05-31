@@ -452,6 +452,7 @@ class Payments extends \yii\db\ActiveRecord
         $pay_status = Admitad::getStatus();
         $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
         $saveStatus = false;
+        $newRecord = false;
         $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
         $email = isset($options['email']) && $options['email'] === false ? false : true;
 
@@ -471,6 +472,7 @@ class Payments extends \yii\db\ActiveRecord
         $db_payment = self::findOne(['action_id' => $payment['action_id']]);
         if (!$db_payment) {
             //если не задан шоп но ищем
+            $newRecord = true;
             $store = $store ? $store : CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $payment['advcampaign_id']]);
             //не задан юсер то ищем
             $user = $user ? $user : Users::findOne(['uid' => $payment['subid']]);
@@ -498,7 +500,7 @@ class Payments extends \yii\db\ActiveRecord
             $db_payment->reward = $userCashback['reward'];//$reward;
             $db_payment->cashback = $userCashback['cashback'];
             $db_payment->status = $status;
-            $db_payment->cpa_id = 1;
+            $db_payment->cpa_id = $payment['cpa_id'];
             $db_payment->click_date = $payment['click_date'];
             $db_payment->action_date = $payment['action_date'];
             $db_payment->status_updated = $payment['status_updated'];
@@ -599,7 +601,7 @@ class Payments extends \yii\db\ActiveRecord
         return [
             'payment' => $db_payment,
             'save_status' => $saveStatus,
-            'new_record' => $db_payment->isNewRecord,
+            'new_record' => $newRecord,
         ];
 
     }

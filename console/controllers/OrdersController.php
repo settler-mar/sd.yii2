@@ -3,6 +3,7 @@
 namespace console\controllers;
 
 use common\models\Ozon;
+use common\models\Booking;
 use yii\console\Controller;
 use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
@@ -10,9 +11,10 @@ use frontend\modules\payments\models\Payments;
 use yii\helpers\Console;
 use Yii;
 
-class OzonController extends Controller
+class OrdersController extends Controller
 {
     private $users;
+    private $store;
 
     /**
      * @param $user_id
@@ -37,24 +39,24 @@ class OzonController extends Controller
      * store, в данном случае это один шоп??
      * @return array|mixed|null|\yii\db\ActiveRecord
      */
-    private function getStore()
+    private function getStore($route)
     {
         if (!$this->store) {
-            $this->store = Stores::find()->where(['route' => 'ozon.ru'])->one(); //видимо так ??????!!!!
+            $this->store = Stores::find()->where(['route' => $route])->one();
         }
         return $this->store;
     }
 
-
     /**
      * платежи с озон
      */
-    public function actionOrders()
+    public function actionOzon()
     {
         $users = [];
         $ozon = new Ozon();
         $stat = $ozon->getOrders(time() - 60 * 60 * 24 * 30);
         ddd($stat);
+        $store = $this->getStore('ozon'); //роут уточнить
         /*
         ItemID ID товара в заказе string ID товара в заказе
         Name Название string Название
@@ -75,17 +77,14 @@ class OzonController extends Controller
             if (!in_array($user->uid, $users)) {
                 $users[] = $user->uid;
             }
-            $store = $this->getStore();
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
             $payment = [
                 'status' => $order->status == 'done' ? 2 : ($order->status == 'canceled' ? 1 : 0),
                 'subid' => $order->AgentId,
-                'position' => false, //для тарифа, видимо так
+                'positions' => false, //для тарифа, видимо так
                 'action_id' => $order->ItemId, //или StatIdent - пока непонятно
-                'card' => (float)$order->Price * ($order->Qty ? (int) $order->Qty : 1),
-                'payment' => (float)$order->Price * ($order->Qty ? (int) $order->Qty : 1),
-                'reward' => $order->Summ,//комиссия
-                'cashback' => (float)$order->Summ / 2, //кэшбэк
+                'cart' => (float)$order->Price * ($order->Qty ? (int) $order->Qty : 1),
+                'payment' => $order->Summ,//(float)$order->Price * ($order->Qty ? (int) $order->Qty : 1),
                 'click_date' => date('Y-m-d H:i:s', strtotime($order->Date)),
                 'action_date' => date('Y-m-d H:i:s', strtotime($order->Date)),
                 'status_updated' => date('Y-m-d H:i:s', strtotime($order->StateChangeMoment)),
@@ -94,6 +93,8 @@ class OzonController extends Controller
                 'order_id' => $order->StatIdent,// тоже под вопросом??
                 'tariff_id' => null,
                 'currency' => 'RUB',
+                'advcampaign_id' => $store->cpaLink->affiliate_id,
+                'cpa_id' => $store->cpaLink->cpa_id
             ];
             $paymentStatus = Payments::makeOrUpdate(
                 $payment,
@@ -109,5 +110,71 @@ class OzonController extends Controller
             Yii::$app->balanceCalc->setNotWork(false);
             Yii::$app->balanceCalc->todo($users, 'cash,bonus');
         }
+    }
+
+    public function actionBooking()
+    {
+        $booking = new Booking();
+        $orders = $booking->getOrders();
+        $users = [];
+        $store = $this->getStore('booking-com');
+
+        foreach ($orders as $order) {
+            $user = $this->getUserData($order["Label"]);
+            if ($user && !in_array($user->uid, $users)) {
+                $users[] = $user->uid;
+            }
+
+            if (!$user || !$store) {
+                continue;
+            }
+            //d($order);
+            //подогнать под формат платёжа с адмитад пока предварительно !!!!
+
+            $orderId = $order['Book Nr.'];
+            //сумму попробуем вычислить так комиссия/процент
+            $summ = (float) str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
+                (float) $this->float($order['Comission ( EUR )']) * 100 / (float) $this->float(str_replace('%', '', $order['Perc']));
+            $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
+            $fee = (float) $this->float($order['Fee ( EUR )']);
+            $payment = [
+                'status' => $order['Status'] == 'Завершенные' ? 2 : ($order['Status'] == 'Отмененные' ? 1 : 0), //надо проверить, когда в выгрузке будут завершенные
+                'subid' => $user->uid,
+                'positions' => false, //для тарифа, видимо так
+                'action_id' => $orderId,
+                'cart' => $summ,
+                'payment' => $fee,
+                'click_date' => $date,
+                'action_date' => $date,
+                'status_updated' => $date,
+                'closing_date' => $date,
+                'product_country_code' => null,
+                'order_id' => $orderId,
+                'tariff_id' => null,
+                'currency' => 'EUR',
+                'advcampaign_id' => $store->cpaLink->affiliate_id,
+                'cpa_id' => $store->cpaLink->cpa_id
+            ];
+            //d($payment);
+            $paymentStatus = Payments::makeOrUpdate(
+                $payment,
+                $store,
+                $user,
+                $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+                ['notify' => true, 'email' => true]
+            );
+            //d($paymentStatus);
+
+
+        }
+        if (count($users) > 0) {
+            Yii::$app->balanceCalc->setNotWork(false);
+            Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+        }
+    }
+
+    protected function float($value)
+    {
+        return str_replace(',', '.', $value);
     }
 }

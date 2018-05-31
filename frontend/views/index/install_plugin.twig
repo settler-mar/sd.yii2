@@ -4,11 +4,11 @@
     <div class="page-wrap">
     <div class="install-plugin-index_border border-double align-center">
         <div class="border-double-in">
-            <h2>Расширение SecretDiscounter</h2>
+            <h2>{{ t('main', 'plugin')|raw }}</h2>
             <p>
-                Установите наш плагин для браузера, и больше никогда не пропустите кэшбэк.<br> Получите возможность активировать кэшбэк в один клик прямо на сайте магазина!
+                {{ t('main', 'plugin_install_and_get_cadhback')|raw }}
             </p>
-            <p><strong>Расширение доступно для следующих браузеров:</strong></p>
+            <p><strong>{{ t('main', 'plugin_available_for')|raw }}:</strong></p>
             <div class="plugin-browsers margin-half">
                 {% for key, browser in browsers %}
                     {% if browser.status != 'disabled' %}
@@ -16,8 +16,8 @@
                            {% if browser.status == 'inactive'  %}
                            data-notyfy_class="notify_box-alert"
                            data-button_yes="false"
-                           data-title="Приносим свои извинения"
-                           data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
+                           data-title="{{ t('common', 'excuse_me')|raw }}"
+                           data-question="{{ t('main', 'plugin_for_browser_{browser}_in_develop', {'browser': _ucfirst(key)})|raw }}"
                            {% endif %}>{{ svg(browser.svg)|raw}}</a>
                     {% endif %}
                 {% endfor %}
@@ -29,9 +29,9 @@
                                 {% if browser.status == 'inactive'  %}
                             data-notyfy_class="notify_box-alert"
                             data-button_yes="false"
-                            data-title="Приносим свои извинения"
-                            data-question="Плагин для браузера {{ _ucfirst(key) }} находится в разработке"
-                                {% endif %}>Установить для {{ _ucfirst(key) }}&nbsp;&rarr;</a>
+                            data-title="{{ t('common', 'excuse_me')|raw }}"
+                            data-question="{{ t('main', 'plugin_for_browser_{browser}_in_develop', {'browser': _ucfirst(key)})|raw }}"
+                                {% endif %}>{{ t('main', 'install_for_{browser}', {'browser': _ucfirst(key)})|raw }}</a>
                     {% endif %}
                 {% endfor %}
             </div>

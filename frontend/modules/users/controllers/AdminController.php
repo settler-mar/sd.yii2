@@ -129,7 +129,7 @@ class AdminController extends Controller
 
     $start_date = date('Y-m-d', strtotime($start_date));
     $end_date = date('Y-m-d', strtotime($end_date));
-    $query->andFilterWhere(['between', 'added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+    $query->andFilterWhere(['between', 'cw_users.added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
 
     $totQueryCount = clone $query;
     $totQuerySumm = clone $query;

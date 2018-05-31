@@ -129,6 +129,7 @@
       position: relative;
       align-items: flex-start;
       margin-bottom: 24px;
+      justify-content: center;
     }
 
     &-item {
@@ -199,6 +200,11 @@
       &-sum {
         width: 100%;
         text-align: center;
+        padding: 0 5px;
+
+        @include media($phones) {
+          font-size: 12px;
+        }
       }
 
       &-name {
@@ -207,6 +213,11 @@
         min-height: 1em;
         line-height: 1em;
         margin-bottom: 15px;
+        padding: 0 5px;
+
+        @include media($phones) {
+          font-size: 1em;
+        }
       }
 
       &:before {
