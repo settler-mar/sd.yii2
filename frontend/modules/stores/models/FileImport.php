@@ -96,8 +96,6 @@ class FileImport extends Model
                     'order_id' => $orderId,
                     'tariff_id' => null,
                     'currency' => 'EUR',
-                    'advcampaign_id' => $store->cpaLink->affiliate_id,
-                    'cpa_id' => $store->cpaLink->cpa_id
                 ];
                 //d($payment);
                 $paymentStatus = Payments::makeOrUpdate(
@@ -107,18 +105,18 @@ class FileImport extends Model
                     $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
                     ['notify' => true, 'email' => true]
                 );
+                if ($paymentStatus['save_status']) {
+                    if ($paymentStatus['new_record']) {
+                        $inserted++;
+                    } else {
+                        $updated++;
+                    }
+                }
             } catch (\Exception $e) {
-                $this->log .= 'Ошибка '.$e->getMessage(). '<br>';
+                $this->log .= '<span class="error">Ошибка '.$e->getMessage(). '</span><br>';
                 $errors ++;
             }
-            //ddd($paymentStatus['save_status']);
-            if ($paymentStatus['save_status']) {
-                if ($paymentStatus['new_record']) {
-                    $inserted++;
-                } else {
-                    $updated++;
-                }
-            }
+
 
         }
         if (count($users) > 0) {
@@ -127,7 +125,12 @@ class FileImport extends Model
         }
         $this->log .= 'Новых записей ' . $inserted . "<br>";
         $this->log .= 'Обновлено ' . $updated . "<br>";
-        $this->log .= 'Не найдено пользователей ' . $nouser . "<br>";
+        if ($nouser > 0) {
+            $this->log .= '<span class="warning">Не найдено пользователей ' . $nouser . "</span><br>";
+        }
+        if ($errors > 0) {
+            $this->log .= '<span class="error">Ошибок ' . $errors . "</span><br>";
+        }
     }
 
     /**

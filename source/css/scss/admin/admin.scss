@@ -924,6 +924,15 @@ table{
     }
 }
 
+.admim-result__log  {
+    .error {
+        color: red;
+    }
+    .warning {
+        color: orange;
+    }
+}
+
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";
 @import "../new/parts/pagination";

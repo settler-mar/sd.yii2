@@ -12,15 +12,6 @@ class TestController extends Controller
 {
 
   /**
-   * Тест Адмтада.
-   */
-  public function actionAdmitad()
-  {
-    $test = new Admitad();
-    ddd($test->test());
-  }
-
-  /**
    * Тест почты. отправка письма на matuhinmax@mail.ru
    */
   public function actionMail()

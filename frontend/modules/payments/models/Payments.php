@@ -449,8 +449,6 @@ class Payments extends \yii\db\ActiveRecord
      */
     public static function makeOrUpdate($payment, $store = null, $user = null, $ref = null, $options = [],  $params=[])
     {
-        $pay_status = Admitad::getStatus();
-        $status = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
         $saveStatus = false;
         $newRecord = false;
         $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
@@ -494,13 +492,15 @@ class Payments extends \yii\db\ActiveRecord
 
             $db_payment->action_id = $payment['action_id'];
             $db_payment->is_showed = 1;
-            $db_payment->affiliate_id = $payment['advcampaign_id'];
             $db_payment->user_id = $payment['subid'];
             $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
             $db_payment->reward = $userCashback['reward'];//$reward;
             $db_payment->cashback = $userCashback['cashback'];
-            $db_payment->status = $status;
-            $db_payment->cpa_id = $payment['cpa_id'];
+            $db_payment->status = $payment['status'];
+            $db_payment->affiliate_id = !empty($payment['affiliate_id']) ? $payment['affiliate_id'] :
+                $store->cpaLink->affiliate_id;//по активному cpa для шопа, если не задано прямо в $payments
+            $db_payment->cpa_id = !empty($payment['cpa_id']) ? $payment['cpa_id'] :
+                $store->cpaLink->cpa_id;//по активному cpa для шопа, если не задано прямо в $payments
             $db_payment->click_date = $payment['click_date'];
             $db_payment->action_date = $payment['action_date'];
             $db_payment->status_updated = $payment['status_updated'];
@@ -563,8 +563,8 @@ class Payments extends \yii\db\ActiveRecord
             //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
             if ($db_payment->status == 2) {
 
-                if($db_payment->status!=$status){
-                    $db_payment->status=$status;
+                if($db_payment->status!=$payment['status']){
+                    $db_payment->status=$payment['status'];
                     Yii::$app->logger->add($payment,'payment_status_wrong',false);
                     Notifications::deleteAll([
                         'payment_id'=>$db_payment->uid,
@@ -578,7 +578,7 @@ class Payments extends \yii\db\ActiveRecord
 
                 $db_payment->reward = $userCashback['reward'];
                 $db_payment->cashback = $userCashback['cashback'];
-                $db_payment->status = $status;
+                $db_payment->status = $payment['status'];
 
                 if ($db_payment->ref_id) {
                     $db_payment->ref_bonus = $userCashback['ref_bonus'];
