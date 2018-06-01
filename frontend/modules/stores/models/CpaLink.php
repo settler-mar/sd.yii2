@@ -61,7 +61,7 @@ class CpaLink extends \yii\db\ActiveRecord
 
   public function afterSave($insert, $changedAttributes)
   {
-    if($insert && $this->cpa_id!=1) {
+    if($insert && $this->cpa_id!=1 && empty($this->affiliate_id)) {
       $this::getDb()
         ->createCommand()
         ->update($this->tableName(), ['affiliate_id' => $this->id], ['id' => $this->id])
