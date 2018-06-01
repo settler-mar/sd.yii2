@@ -77,8 +77,9 @@ class FileImport extends Model
 
                 $orderId = $order['Book Nr.'];
                 //сумму попробуем вычислить так комиссия/процент
-                $summ = (float)str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
-                    (float)$this->float($order['Comission ( EUR )']) * 100 / (float)$this->float(str_replace('%', '', $order['Perc']));
+                //$summ = (float)str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
+                  //  (float)$this->float($order['Comission ( EUR )']) * 100 / (float)$this->float(str_replace('%', '', $order['Perc']));
+                $summ = 0;
                 $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
                 $fee = (float)$this->float($order['Fee ( EUR )']);
                 $payment = [
