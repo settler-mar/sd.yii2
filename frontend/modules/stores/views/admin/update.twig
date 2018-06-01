@@ -228,130 +228,134 @@
 
                             {{ active_form_end() }}
 
-                        <p class="title">Тарифы</p>
+                            <p class="title">Тарифы</p>
 
-                        <div class="tarif_select_blk">
-                            {% if tariffs|length > 0 %}
-                                {% for tariff in tariffs %}
-                                    {% include 'store/tab_head_suf.twig' %}
-                                {% endfor %}
-                            {% endif %}
-                            <ul class="tab_control ajax_save" uid="{{store.uid}}" save_url="/admin/stores/ajax_save/active_cpa">
+                            <div class="tarif_select_blk">
                                 {% if tariffs|length > 0 %}
                                     {% for tariff in tariffs %}
-                                        {% include 'store/tab_head_but.twig' %}
+                                        {% include 'store/tab_head_suf.twig' %}
                                     {% endfor %}
                                 {% endif %}
-                                <li class="add_button">
-                                    Добавить CPA
-                                    <ul>
-                                        {% for cpa in cpa_list %}
-                                            <li code="{{cpa.id}}" parent="{{store.uid}}" class="add_shop_element" mode="cpa">{{cpa.name}}</li>
+                                <ul class="tab_control ajax_save" uid="{{store.uid}}" save_url="/admin/stores/ajax_save/active_cpa">
+                                    {% if tariffs|length > 0 %}
+                                        {% for tariff in tariffs %}
+                                            {% include 'store/tab_head_but.twig' %}
                                         {% endfor %}
-                                    </ul>
-                                </li>
-                            </ul>
-                            <div class="content_tab">
-                                {% if tariffs|length > 0 %}
-                                    {% for tariff in tariffs %}
-                                        {% include 'store/tab_body.twig' %}
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <p class="title">
-                            Фотографии магазина
-                        </p>
-                        <div>
-                            {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
-
-                                {{ FileInput_widget({
-                                    'name':'photo_input',
-                                    'url' : {0:'/stores/admin/fileapi-upload','id':model.uid},
-                                    'removeUrl' : {0:'/stores/admin/fileapi-remove','id':model.uid},
-                                    'value':model.photoList
-                                }) | raw }}
-
-                            {{ active_form_end() }}
-                        </div>
-
-
-
-                        {% if categories|length > 0 %}
-                            <p class="title">
-                                Категории магазина
-                                {% if related %}
-                                <a
-                                        class="btn btn-primary ajax-confirm"
-                                        style="float: right;font-size: 12px;padding: 3px 10px;"
-                                        data-question="Хотите импортировать все категории из {{ related.name }} ({{ related.uid }})?
-                                                        <br>Все текущие категории будут очищенны."
-                                        data-store="{{ store.uid }}"
-                                >Копировать из {{ related.name }} ({{ related.uid }})</a>
-                                {% endif %}
-                            </p>
-                            <form method="post" action="/admin/stores/update?id={{store.uid}}" name="categories-edit-stores">
-                                <ul class="ch_tree">
-                                    {% for category in categories %}
-                                        <li>
-                                            <label>
-                                                <input {% if category.uid in store_categories %} checked {% endif %} data-uid="{{category.uid}}" data-parent-id="{{category.parent_id}}" type="checkbox" name="category_id[]" value="{{category.uid}}"><span>{{category.name}}</span>
-                                            </label>
-                                            {% if category.childrens|length > 0 %}
-                                                <ul>
-                                                    {% for category_ch in category.childrens %}
-                                                        <li>
-                                                            <label>
-                                                                <input {% if category_ch.uid in store_categories %} checked {% endif %} data-uid="{{category_ch.uid}}" data-parent-id="{{category_ch.parent_id}}" type="checkbox" name="category_id[]" value="{{category_ch.uid}}"><span>{{category_ch.name}}</span>
-                                                            </label>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endif %}
-                                        </li>
-                                    {% endfor %}
-                                    <input type="hidden" name="id" value="{{store.uid}}">
-                                    <input type="hidden" name="type" value="update_categories">
-                                    <button type="submit">Изменить</button>
+                                    {% endif %}
+                                    <li class="add_button">
+                                        Добавить CPA
+                                        <ul>
+                                            {% for cpa in cpa_list %}
+                                                <li code="{{cpa.id}}" parent="{{store.uid}}" class="add_shop_element" mode="cpa">{{cpa.name}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
                                 </ul>
-                            </form>
-                        {% endif %}
-                        {% if store.storesPoints|length > 0%}
-                            <p class="title">Точки продаж</p>
-                            <table class="stores-form__stores-points_table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Название</th>
-                                    <th>Адрес</th>
-                                    <th>Время работы</th>
-                                    <th>Телефон</th>
-                                </tr>
-                                </thead>
-                                {% for store_point  in store.storesPoints %}
-                                    <tr class="stores-form__stores-points_row">
-                                        <th>{{ loop.index }}.</th>
-                                        <th>
-                                            {{ store_point.name }}
-                                        </th>
-                                        <th> {{ store_point.country }}, {{ store_point.city }}, {{ store_point.address }}</th>
-                                        <th>
-                                            {% set work_times = store_point.work_time_details %}
-                                            {% include('parts/work_time.twig')%}
-                                        </th>
-                                        <th>{{ store_point.phone }}</th>
+                                <div class="content_tab">
+                                    {% if tariffs|length > 0 %}
+                                        {% for tariff in tariffs %}
+                                            {% include 'store/tab_body.twig' %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <p class="title">
+                            Фотографии магазина
+                            </p>
+                            <div>
+                                {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}}) %}
+
+                                    {{ FileInput_widget({
+                                        'name':'photo_input',
+                                        'url' : {0:'/stores/admin/fileapi-upload','id':model.uid},
+                                        'removeUrl' : {0:'/stores/admin/fileapi-remove','id':model.uid},
+                                        'value':model.photoList
+                                    }) | raw }}
+
+                                {{ active_form_end() }}
+                            </div>
+
+
+
+                            {% if categories|length > 0 %}
+                                <p class="title">
+                                    Категории магазина
+                                    {% if related %}
+                                    <a
+                                            class="btn btn-primary ajax-confirm"
+                                            style="float: right;font-size: 12px;padding: 3px 10px;"
+                                            data-question="Хотите импортировать все категории из {{ related.name }} ({{ related.uid }})?
+                                                            <br>Все текущие категории будут очищенны."
+                                            data-store="{{ store.uid }}"
+                                    >Копировать из {{ related.name }} ({{ related.uid }})</a>
+                                    {% endif %}
+                                </p>
+                                <form method="post" action="/admin/stores/update?id={{store.uid}}" name="categories-edit-stores">
+                                    <ul class="ch_tree">
+                                        {% for category in categories %}
+                                            <li>
+                                                <label>
+                                                    <input {% if category.uid in store_categories %} checked {% endif %} data-uid="{{category.uid}}" data-parent-id="{{category.parent_id}}" type="checkbox" name="category_id[]" value="{{category.uid}}"><span>{{category.name}}</span>
+                                                </label>
+                                                {% if category.childrens|length > 0 %}
+                                                    <ul>
+                                                        {% for category_ch in category.childrens %}
+                                                            <li>
+                                                                <label>
+                                                                    <input {% if category_ch.uid in store_categories %} checked {% endif %} data-uid="{{category_ch.uid}}" data-parent-id="{{category_ch.parent_id}}" type="checkbox" name="category_id[]" value="{{category_ch.uid}}"><span>{{category_ch.name}}</span>
+                                                                </label>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                        <input type="hidden" name="id" value="{{store.uid}}">
+                                        <input type="hidden" name="type" value="update_categories">
+                                        <button type="submit">Изменить</button>
+                                    </ul>
+                                </form>
+                            {% endif %}
+                            {% if store.storesPoints|length > 0%}
+                                <p class="title">Точки продаж</p>
+                                <table class="stores-form__stores-points_table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Название</th>
+                                        <th>Адрес</th>
+                                        <th>Время работы</th>
+                                        <th>Телефон</th>
                                     </tr>
-                                {% endfor %}
-                            </table>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <div class="col-md-12">
-                        <div class="not-found">Магазин не найден.</div>
-                    </div>
-                {% endif %}
+                                    </thead>
+                                    {% for store_point  in store.storesPoints %}
+                                        <tr class="stores-form__stores-points_row">
+                                            <th>{{ loop.index }}.</th>
+                                            <th>
+                                                {{ store_point.name }}
+                                            </th>
+                                            <th> {{ store_point.country }}, {{ store_point.city }}, {{ store_point.address }}</th>
+                                            <th>
+                                                {% set work_times = store_point.work_time_details %}
+                                                {% include('parts/work_time.twig')%}
+                                            </th>
+                                            <th>{{ store_point.phone }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="col-md-12">
+                            <div class="not-found">Магазин не найден.</div>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
+
+                {% include('outstand_cpa_loader.twig') %}
+
         </section>
     </div>
 </div>

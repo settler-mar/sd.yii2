@@ -19,13 +19,20 @@ return [
   ],
 
   'outstand_cpa' => [
-    'ozon' => [
-      'parthnerId' => '',
-      'login' => '',
-      'affiliateId' => '',
-      'password' => '',
-    ],
-    'booking.com' => [
-    ],
+      'ozon' => [
+          'parthnerId' => '',
+          'login' => '',
+          'affiliateId' => '',
+          'password' => '',
+          'route' => 'ozon.ru'//??
+      ],
+      'booking.com' => [
+          'route' => 'booking-com',
+          'file_loader' => [
+              //of frontend/modules/stores/models/FileImport
+              'method' => 'booking',
+
+          ],
+      ],
   ],
 ];

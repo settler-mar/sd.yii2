@@ -24,6 +24,7 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\LgStores;
 use frontend\modules\stores\models\StoreRatings;
+use frontend\modules\stores\models\FileImport;
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -284,6 +285,7 @@ class AdminController extends Controller
       "action_types" => Yii::$app->params['dictionary']['action_type'],
       'languages' => $languages,
       'ratings' => $ratings,
+      'fileimport' => new FileImport(),
       //'FileInput' => FileInput::className(),
     ]);
   }
@@ -627,6 +629,20 @@ class AdminController extends Controller
     exit;
   }
 
+  public function actionOutstandcpa()
+  {
+      $import = new FileImport();
+
+      if ($import->load(Yii::$app->request->post()) && $import->validate()) {
+          $import->import();
+          Yii::$app->session->addFlash('info','Данные загружены');
+      } else {
+
+      }
+
+      return Yii::$app->response->redirect('/admin/stores/update/id:'.$import->store);
+  }
+
   /**
    * Finds the Stores model based on its primary key value.
    * If the model is not found, a 404 HTTP exception will be thrown.
@@ -696,5 +712,7 @@ class AdminController extends Controller
       }
     return $model;
   }
+
+
 
 }
