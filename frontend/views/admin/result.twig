@@ -1,0 +1,24 @@
+{% set title = 'Результат операции' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ title }}</h1>
+                <p class="admim-result__message">{{ message | raw }}</p>
+            </div>
+            <div class="col-md-12">
+                <p class="admim-result__log">{{ log | raw }}</p>
+            </div>
+            <div class="col-md-12">
+                <a class="btn btn-primary" href="{{ back }}">Назад</a>
+            </div>
+        </div>
+    </section>
+</div>

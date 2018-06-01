@@ -318,6 +318,10 @@
     display: flex;
     color: #fff;
 
+    @include media($laptop-min) {
+      margin-right: 15px;
+    }
+
     &-list {
       list-style: none;
 

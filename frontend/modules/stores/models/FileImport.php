@@ -13,6 +13,8 @@ class FileImport extends Model
     public $cpa;
     public $store;
     public $file;
+    public $log;
+    public $message;
 
     private $users;
 
@@ -41,6 +43,7 @@ class FileImport extends Model
         $method = $cpa && isset($cpa['file_loader']['method']) ? $cpa['file_loader']['method'] : false;
 
         if ($file && $store && $method && is_callable([$this, $method])) {
+            $this->message = 'Загрузка данных для '.$this->cpa;
             $this->$method($file, $store);
         }
     }
@@ -53,6 +56,11 @@ class FileImport extends Model
     {
         $orders = $this->getCsv($file);
         $users = [];
+        $inserted = 0;
+        $updated  = 0;
+        $nouser = 0;
+        $errors = 0;
+        $this->log = "Записей - ".count($orders)."<br>";
         foreach ($orders as $order) {
             $user = $this->getUserData($order["Label"]);
             if ($user && !in_array($user->uid, $users)) {
@@ -60,51 +68,66 @@ class FileImport extends Model
             }
 
             if (!$user) {
+                $nouser ++;
                 continue;
             }
             //d($order);
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
+            try {
 
-            $orderId = $order['Book Nr.'];
-            //сумму попробуем вычислить так комиссия/процент
-            $summ = (float) str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
-                (float) $this->float($order['Comission ( EUR )']) * 100 / (float) $this->float(str_replace('%', '', $order['Perc']));
-            $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
-            $fee = (float) $this->float($order['Fee ( EUR )']);
-            $payment = [
-                'status' => $order['Status'] == 'Завершенные' ? 2 : ($order['Status'] == 'Отмененные' ? 1 : 0), //надо проверить, когда в выгрузке будут завершенные
-                'subid' => $user->uid,
-                'positions' => false, //для тарифа, видимо так
-                'action_id' => $orderId,
-                'cart' => $summ,
-                'payment' => $fee,
-                'click_date' => $date,
-                'action_date' => $date,
-                'status_updated' => $date,
-                'closing_date' => $date,
-                'product_country_code' => null,
-                'order_id' => $orderId,
-                'tariff_id' => null,
-                'currency' => 'EUR',
-                'advcampaign_id' => $store->cpaLink->affiliate_id,
-                'cpa_id' => $store->cpaLink->cpa_id
-            ];
-            //d($payment);
-            $paymentStatus = Payments::makeOrUpdate(
-                $payment,
-                $store,
-                $user,
-                $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
-                ['notify' => true, 'email' => true]
-            );
-            //ddd($paymentStatus);
-
+                $orderId = $order['Book Nr.'];
+                //сумму попробуем вычислить так комиссия/процент
+                $summ = (float)str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
+                    (float)$this->float($order['Comission ( EUR )']) * 100 / (float)$this->float(str_replace('%', '', $order['Perc']));
+                $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
+                $fee = (float)$this->float($order['Fee ( EUR )']);
+                $payment = [
+                    'status' => $order['Status'] == 'Завершенные' ? 2 : ($order['Status'] == 'Отмененные' ? 1 : 0), //надо проверить, когда в выгрузке будут завершенные
+                    'subid' => $user->uid,
+                    'positions' => false, //для тарифа, видимо так
+                    'action_id' => $orderId,
+                    'cart' => $summ,
+                    'payment' => $fee,
+                    'click_date' => $date,
+                    'action_date' => $date,
+                    'status_updated' => $date,
+                    'closing_date' => $date,
+                    'product_country_code' => null,
+                    'order_id' => $orderId,
+                    'tariff_id' => null,
+                    'currency' => 'EUR',
+                    'advcampaign_id' => $store->cpaLink->affiliate_id,
+                    'cpa_id' => $store->cpaLink->cpa_id
+                ];
+                //d($payment);
+                $paymentStatus = Payments::makeOrUpdate(
+                    $payment,
+                    $store,
+                    $user,
+                    $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+                    ['notify' => true, 'email' => true]
+                );
+            } catch (\Exception $e) {
+                $this->log .= 'Ошибка '.$e->getMessage(). '<br>';
+                $errors ++;
+            }
+            //ddd($paymentStatus['save_status']);
+            if ($paymentStatus['save_status']) {
+                if ($paymentStatus['new_record']) {
+                    $inserted++;
+                } else {
+                    $updated++;
+                }
+            }
 
         }
         if (count($users) > 0) {
             Yii::$app->balanceCalc->setNotWork(false);
             Yii::$app->balanceCalc->todo($users, 'cash,bonus');
         }
+        $this->log .= 'Новых записей ' . $inserted . "<br>";
+        $this->log .= 'Обновлено ' . $updated . "<br>";
+        $this->log .= 'Не найдено пользователей ' . $nouser . "<br>";
     }
 
     /**
@@ -113,18 +136,24 @@ class FileImport extends Model
      */
     protected function getCsv($file)
     {
-        $filename = $file->tempName;
         $data = [];
-        if (($handle = fopen($filename, "r")) !== false) {
-            $headers = fgetcsv($handle);
-            $bom = pack('H*', 'EFBBBF');
-            $headers[0] = preg_replace("/[".$bom."\"]/", '', $headers[0]);
-            while (($row = fgetcsv($handle)) !== false) {
-                $data[] = array_combine($headers, $row);
+        try {
+            $filename = $file->tempName;
+            $data = [];
+            if (($handle = fopen($filename, "r")) !== false) {
+                $headers = fgetcsv($handle);
+                $bom = pack('H*', 'EFBBBF');
+                $headers[0] = preg_replace("/[" . $bom . "\"]/", '', $headers[0]);
+                while (($row = fgetcsv($handle)) !== false) {
+                    $data[] = array_combine($headers, $row);
+                }
+                fclose($handle);
+            } else {
+                Yii::info('File import. File not found. ' . $filename);
             }
-            fclose($handle);
-        } else {
-            Yii::info('File import. File not found. '.$filename);
+            return $data;
+        } catch (\Exception $e) {
+            $this->log .= 'Ошибка при загркзке файла '.$e->getMessage().'<br>';
         }
         return $data;
     }

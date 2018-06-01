@@ -636,6 +636,12 @@ class AdminController extends Controller
       if ($import->load(Yii::$app->request->post()) && $import->validate()) {
           $import->import();
           Yii::$app->session->addFlash('info','Данные загружены');
+          $this->viewPath = '@app/views/admin';
+          return $this->render('result.twig', [
+              'log' => $import->log,
+              'back' => '/admin/stores/update/id:'.$import->store,
+              'message' => $import->message,
+          ]);
       } else {
 
       }

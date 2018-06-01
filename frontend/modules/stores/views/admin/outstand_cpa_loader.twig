@@ -1,7 +1,6 @@
 {% for key, item in app.params.outstand_cpa if item.route == store.route and item.file_loader %}
-    <div class="row">
-        <div class="col-md-12">
-            <h4> Загрузка данных CPA из файла</h4>
+
+            <p class="title">Загрузка данных CPA из файла</p>
 
             {% set form = active_form_begin({'options' : {'enctype' : 'multipart/form-data'}, 'action': '/admin/stores/outstandcpa'}) %}
 
@@ -12,9 +11,7 @@
 
                 {{ form.field(fileimport, 'file').fileInput().label(false)|raw }}
 
-                <input type="submit" class="btn btn-primary" value="Загрузить">
+                <button type="submit" class="btn btn-primary">Загрузить</button>
 
             {{ active_form_end() }}
-        </div>
-    </div>
 {% endfor %}
