@@ -473,7 +473,8 @@ class Payments extends \yii\db\ActiveRecord
         if (!$db_payment) {
             //если не задан шоп но ищем
             $newRecord = true;
-            $store = $store ? $store : CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $payment['advcampaign_id']]);
+            $cpa_link=CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $payment['advcampaign_id']]);
+            $store = $store ? $store : $cpa_link;
             //не задан юсер то ищем
             $user = $user ? $user : Users::findOne(['uid' => $payment['subid']]);
 
@@ -500,7 +501,7 @@ class Payments extends \yii\db\ActiveRecord
             $db_payment->reward = $userCashback['reward'];//$reward;
             $db_payment->cashback = $userCashback['cashback'];
             $db_payment->status = $status;
-            $db_payment->cpa_id = $payment['cpa_id'];
+            $db_payment->cpa_id = 1; //для адмитада 1
             $db_payment->click_date = $payment['click_date'];
             $db_payment->action_date = $payment['action_date'];
             $db_payment->status_updated = $payment['status_updated'];
