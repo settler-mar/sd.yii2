@@ -447,7 +447,7 @@ class Payments extends \yii\db\ActiveRecord
      * @param array $params - что обновлять при обновлении, если не задано то всё
      * @return array
      */
-    public static function makeOrUpdate($payment, $store = null, $user = null, $ref = null, $options = [],  $params=[])
+    public static function makeOrUpdate($payment, $store, $user = null, $ref = null, $options = [],  $params=[])
     {
         $saveStatus = false;
         $newRecord = false;
@@ -471,7 +471,6 @@ class Payments extends \yii\db\ActiveRecord
         if (!$db_payment) {
             //если не задан шоп но ищем
             $newRecord = true;
-            $store = $store ? $store : CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $payment['advcampaign_id']]);
             //не задан юсер то ищем
             $user = $user ? $user : Users::findOne(['uid' => $payment['subid']]);
 
@@ -497,10 +496,8 @@ class Payments extends \yii\db\ActiveRecord
             $db_payment->reward = $userCashback['reward'];//$reward;
             $db_payment->cashback = $userCashback['cashback'];
             $db_payment->status = $payment['status'];
-            $db_payment->affiliate_id = !empty($payment['affiliate_id']) ? $payment['affiliate_id'] :
-                $store->cpaLink->affiliate_id;//по активному cpa для шопа, если не задано прямо в $payments
-            $db_payment->cpa_id = !empty($payment['cpa_id']) ? $payment['cpa_id'] :
-                $store->cpaLink->cpa_id;//по активному cpa для шопа, если не задано прямо в $payments
+            $db_payment->affiliate_id = $payment['affiliate_id'];
+            $db_payment->cpa_id = $payment['cpa_id'];
             $db_payment->click_date = $payment['click_date'];
             $db_payment->action_date = $payment['action_date'];
             $db_payment->status_updated = $payment['status_updated'];
