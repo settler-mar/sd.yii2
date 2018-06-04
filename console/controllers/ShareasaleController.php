@@ -124,6 +124,9 @@ class ShareasaleController extends Controller
                     $db_store = Stores::find()->where(['route' => $route])->one();
                 }
 
+                $cashback = $store->salecomm;
+                $cashbackClean = preg_replace('/[^[0-9\.\,\%]/', '', $cashback);
+                //echo $cashback .' '.$cashbackClean."\n";
                 //Если магазин так и не нашли то создаем
                 if (!$db_store) {
                     $db_store = new Stores();
@@ -137,6 +140,7 @@ class ShareasaleController extends Controller
                     $db_store->currency = 'USD';//$store['currency'];
                     $db_store->hold_time = 30;//$store['max_hold_time'] ? (int)$store['max_hold_time'] : 30;
                     $db_store->percent = 50;
+                    $db_store->displayed_cashback = $cashbackClean;
                     if (!$db_store->save()) {
                         d($db_store->errors);
                     } else {
@@ -175,142 +179,15 @@ class ShareasaleController extends Controller
                 }
 
                 //если СPA не выбранна то выставляем текущую
+                //echo $db_store->active_cpa.' '.$cpa_id."\n";
                 if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
                     $db_store->active_cpa = $cpa_id;
                 }
 
-                $p_cback = [];
-                $v_cback = [];
-//                foreach ($store['actions_detail'] AS $action) {
-//                    $is_new_action = $is_new;
-//                    //если магазин был в базе то проверяем есть у него данное событие
-//                    if (!$is_new) {
-//                        $action_r = StoresActions::findOne(['cpa_link_id' => $cpa_id, 'action_id' => $action['id']]);
-//                    }
-//
-//                    //если магазин новый или не нашли событие то создаем его
-//                    if ($is_new || !$action_r) {
-//                        $action_r = new StoresActions();
-//                        $action_r->cpa_link_id = $cpa_id;
-//                        $action_r->action_id = $action['id'];
-//                        $action_r->name = $action['name'];
-//                        $action_r->hold_time = $action['hold_size'];
-//                        $action_r->type = $action_type[$action['type']];
-//                        if (!$action_r->save()) {
-//                            continue;
-//                        };
-//                        $is_new_action = true;
-//                    }
-//
-//                    $action_id = $action_r->uid;// код события
-//                    foreach ($action['tariffs'] as $tariff) {
-//                        $is_new_tarif = $is_new_action;
-//
-//                        if (!$is_new_action) {
-//                            $tariff_r = ActionsTariffs::findOne(['id_tariff' => $tariff['id'], 'id_action' => $action_id]);
-//                        }
-//
-//                        if ($is_new_action || !$tariff_r) {
-//                            $tariff_r = new ActionsTariffs();
-//                            $tariff_r->id_tariff = $tariff['id'];
-//                            $tariff_r->id_action = $action_id;
-//                            $tariff_r->name = $tariff['name'];
-//                            $tariff_r->id_action_out = $tariff['action_id'];
-//
-//                            $tariff_r->validate();
-//                            if (!$tariff_r->save()) {
-//                                continue;
-//                            };
-//                            $is_new_tarif = true;
-//                        }
-//                        $tariff_id = $tariff_r->uid;
-//                        foreach ($tariff['rates'] as $rate) {
-//                            $isPercentage = in_array($rate['is_percentage'], ["true", "True"]) ? 1 : 0;
-//                            $our_size = floatval(str_replace(",", ".", $rate['size'])) / 2;
-//                            if ($isPercentage) {
-//                                if (is_float($our_size)) {
-//                                    $our_size = round($our_size, 1);
-//                                } else {
-//                                    $our_size = round($our_size, 0);
-//                                }
-//                                $p_cback[] = $our_size;
-//                            } else {
-//                                $our_size = round($our_size, 2);
-//                                $v_cback[] = $our_size;
-//                            }
-//
-//                            $f_value = [
-//                                'id_tariff' => $tariff_id,
-//                                'id_rate' => $rate['id']
-//                            ];
-//                            if (isset($rate['country']) && strlen($rate['country']) > 1) {
-//                                $f_value['additional_id'] = $rate['country'];
-//                            }
-//
-//                            if (!$is_new_tarif) {
-//                                $rate_r = TariffsRates::findOne($f_value);
-//                            }
-//
-//                            //если запись старая то проверяем ее на актуальность
-//                            if (!$is_new_tarif && $rate_r) {
-//                                if ($rate_r->auto_update == 0) { //при запрете автообновления
-//                                    continue;
-//                                }
-//
-//                                $rate_r->size = $rate['size'];
-//                                $rate_r->price_s = $rate['price_s'];
-//                                $rate_r->our_size = $our_size;
-//                                $rate_r->save();
-//
-//                                continue;
-//                            }
-//
-//                            $rate_r = new TariffsRates;
-//                            $rate_r->id_tariff_out = $rate['tariff_id'];
-//                            $rate_r->id_tariff = $tariff_id;
-//                            $rate_r->id_rate = $rate['id'];
-//                            $rate_r->price_s = $rate['price_s'];
-//                            $rate_r->our_size = $our_size;
-//                            $rate_r->size = $rate['size'];
-//                            $rate_r->is_percentage = $isPercentage;
-//                            $rate_r->additional_id = isset($rate['country']) ? $rate['country'] : '';
-//                            $rate_r->date_s = $rate['date_s'];
-//                            $rate_r->save();
-//                        }
-//                    }
-//                }
-
-                if ($is_new && $db_store->active_cpa == $cpa_id) {
-                    // :display cashback calculation
-                    $c_per = count($p_cback);
-                    $c_val = count($v_cback);
-                    $additional = "";
-                    if ($c_per > 0) {
-                        if ($c_val > 0 || $c_per > 1) {
-                            $result = "до " . max($p_cback) . "%";
-                            $additional .= "* (count)";
-                        } else {
-                            $result = $p_cback[0] . "%";
-                        }
-                    } else {
-                        if ($c_val > 0) {
-                            if ($c_val > 1) {
-                                $v = max($v_cback);
-                                $result = "до ";
-                                $additional .= "* (count)";
-                            } else {
-                                $v = $v_cback[0];
-                                $result = "";
-                            }
-                            $result .= $v;
-                        } else {
-                            $result = 0;
-                        }
-                    }
-                    $db_store->displayed_cashback = $result;
-                }
+                $db_store->displayed_cashback = $cashbackClean;
 
                 $db_store->url = (string) $store->www;
+
                 if ($db_store->is_active != -1) {
                     $db_store->is_active = 1;
                 }
