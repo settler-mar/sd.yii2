@@ -49,24 +49,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="sum_information">
-                            <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=1">Через CPA (Admitad)</a></div>
-                                <div class="value">
-                                    {{ stat.cpa_cpa }}
+                            {% for key, cpa_item in stat_cpa  %}
+                                <div class="line">
+                                    <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=1">{% if key == 0 %}Через CPA{% endif %} {{ cpa_item.name }}</a></div>
+                                    <div class="value">
+                                        {{ cpa_item.count }}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=2">Оффлайн</a></div>
-                                <div class="value">
-                                    {{ stat.cpa_offline }}
-                                </div>
-                            </div>
-                            <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=3">Прямые</a></div>
-                                <div class="value">
-                                    {{ stat.cpa_direct }}
-                                </div>
-                            </div>
+                            {% endfor %}
                             {#<div class="line">#}
                                 {#<div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0">Онлайн (is_offline=0)</a></div>#}
                                 {#<div class="value">#}

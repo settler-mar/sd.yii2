@@ -71,9 +71,15 @@ class AdminController extends Controller
     $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
     $stores->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id');
     $stat['hubrid'] = $stores->where(['cwcl.cpa_id' => 2, 'is_offline' => 0])->count();
-    $stat['cpa_cpa'] = $stores->where(['cwcl.cpa_id' => 1])->count();
-    $stat['cpa_offline'] = $stores->where(['cwcl.cpa_id' => 2])->count();
-    $stat['cpa_direct'] = $stores->where(['cwcl.cpa_id' => 3])->count();
+
+    $statCpa = clone $stores;
+    $statCpa = $statCpa
+        ->innerJoin('cw_cpa', 'cw_cpa.id = cwcl.cpa_id')
+        ->where([])
+        ->select(['cw_cpa.name', 'count(*) as count'])
+        ->groupBy('cw_cpa.name')
+        ->asArray()
+        ->all();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
@@ -111,7 +117,8 @@ class AdminController extends Controller
           $out .= '</a>';
           return $out;
         },
-      ]
+      ],
+     'stat_cpa' => $statCpa,
     ]);
   }
 
