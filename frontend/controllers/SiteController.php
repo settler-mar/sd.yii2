@@ -131,6 +131,12 @@ class SiteController extends SdController
     $payments = $payments->where(['>=', 'action_date', date('Y-m-d 00:00:00', time())]);
     $paymentsToday = $payments->count();
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
+    $visitsToday = UsersVisits::find()
+        ->select(['source', 'count(*) as count'])
+        ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+        ->groupBy('source')
+        ->asArray()
+        ->all();
 
     $this->layout = '@app/views/layouts/admin.twig';
 
@@ -146,6 +152,7 @@ class SiteController extends SdController
         'users_today_count' => $usersToday,
         'payments_count' => $paymentsCount,
         'payments_today_count' => $paymentsToday,
+        'visits_today' => $visitsToday,
         'total_cashback' => $totalCashback['summ'],
         'notes' => $notes,
     ]);

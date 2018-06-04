@@ -49,6 +49,13 @@
                         {% if notes.users_wait_moderation %}<a href="/admin/users?wait-moderation=1"><span title="Пользователей ожидает модерации" class="notes_users wait_moderation">{{ notes.users_wait_moderation }}</span></a>{% endif %}
                         {% if notes.users_on_actions %}<a href="/admin/users/action"><span title="Пользователей на акции" class="notes_users users_on_actions">{{ notes.users_on_actions }}</span></a>{% endif %}
                     </div>
+                    <div class="col-md-12 stat-block-actions">
+                        Переходы за сегодня:
+                            {% for key, visit in visits_today %}
+                                {% if key > 0 %},{% endif %} {{ _if(visit.source==0, 'в шопы', 'в купоны ') }} ({{ visit.count }})
+                            {% endfor %}
+                    </div>
+
                 </div>
         {% endif %}
 
