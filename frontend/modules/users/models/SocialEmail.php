@@ -43,6 +43,7 @@ class SocialEmail extends \yii\db\ActiveRecord
       [['email_manual'], 'email'],
       [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name',
         'social_id'], 'message' => 'The combination of Social Name and Social ID has already been taken.'],
+      [['social_name'], 'in', 'range' => array_keys(Yii::$app->eauth->services)],
     ];
   }
 
