@@ -52,7 +52,10 @@
                     <div class="col-md-12 stat-block-actions">
                         Переходы за сегодня:
                             {% for key, visit in visits_today %}
-                                {% if key > 0 %},{% endif %} {{ _if(visit.source==0, 'в шопы', 'в купоны ') }} ({{ visit.count }})
+                                {% if key > 0 %},{% endif %}
+                                <a href="/admin/transitions?TransitionsSearch%5Bsource%5D={{ visit.source }}">
+                                {{ _if(visit.source==0, 'в шопы', 'в купоны ') }} ({{ visit.count }})
+                                </a>
                             {% endfor %}
                         {% if notes.watched_transitions %}<a href="/admin/transitions?TransitionsSearch%5Bwatched%5D=1">
                             <span title="Переходов по отслеживаемым шопам за последине сутки" class="notes_users watched_transitions">{{ notes.watched_transitions }}</span>
