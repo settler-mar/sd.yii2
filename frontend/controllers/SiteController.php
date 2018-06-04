@@ -344,6 +344,7 @@ class SiteController extends SdController
     $data['store_route'] = $store->route;
 
     $visit->store_id = $store->uid;
+    $visit->cpa_link_id = $store->active_cpa;
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);

@@ -14,8 +14,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
+                    {% set cpa_items = '' %}
+                    {% for cpa in stat %}
+                        {% set cpa_items = cpa_items~', '~cpa.name~'-'~cpa.count %}
+                    {% endfor %}
                     {{ grid_view_widget({
                         'dataProvider': dataProvider,
+                        'summary': 'Показаны записи {begin}-{end}  из {totalCount}'~cpa_items,
                         'pager' : {
                             'firstPageLabel' : true,
                             'lastPageLabel' : true,
@@ -51,7 +56,13 @@
                         {
                             'format':'raw',
                             'attribute':'store_id',
-                            'value' : tableValue.store,
+                            'value' : tableValue.store
+                        },
+                        {
+                           'format':'raw',
+                           'attribute': 'cpa_name',
+                           'value': tableValue.cpa_name,
+                           'filter': cpa_names
                         },
                         'user_ip',
                         ],

@@ -6,6 +6,9 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\transitions\models\UsersVisits;
+use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
+
 
 /**
  * TransitionsSearch represents the model behind the search form about `frontend\modules\transitions\models\UsersVisits`.
@@ -13,13 +16,17 @@ use frontend\modules\transitions\models\UsersVisits;
 class TransitionsSearch extends UsersVisits
 {
     public $visit_date_range;
+
+    public $cpa_name;
+
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid', 'user_id', 'source', 'store_id'], 'integer'],
+            [['uid', 'user_id', 'source', 'store_id','cpa_name'], 'integer'],
             [['visit_date', 'user_ip'], 'safe'],
             [['visit_date_range'], 'safe'],
         ];
@@ -43,7 +50,10 @@ class TransitionsSearch extends UsersVisits
      */
     public function search($params)
     {
-        $query = UsersVisits::find();
+        $query = UsersVisits::find()
+            ->joinWith('cpaLink', false)
+            ->innerJoin(Cpa::tableName(), 'cw_cpa.id = cw_cpa_link.cpa_id');
+        $query->select(['cw_users_visits.*', 'cw_cpa.name as db_cpa_name']);
 
         // add conditions that should always apply here
 
@@ -58,6 +68,10 @@ class TransitionsSearch extends UsersVisits
                 'pageSize' => 40,
             ],
         ]);
+        $dataProvider->sort->attributes['cpa_name'] = [
+            'asc' => ['cw_cpa.name' => SORT_ASC],
+            'desc' => ['cw_cpa.name' => SORT_DESC],
+        ];
 
         $this->load($params);
         $this->isNewRecord = false;
@@ -81,6 +95,10 @@ class TransitionsSearch extends UsersVisits
             $start_date=date('Y-m-d', strtotime($start_date));
             $end_date=date('Y-m-d', strtotime($end_date));
             $query->andFilterWhere(['between', 'visit_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+
+        if (!empty($this->cpa_name)) {
+            $query->andFilterWhere(['cw_cpa_link.cpa_id' => $this->cpa_name]);
         }
 
 

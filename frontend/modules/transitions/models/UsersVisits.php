@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\stores\models\CpaLink;
 
 /**
  * This is the model class for table "cw_users_visits".
@@ -52,7 +53,13 @@ class UsersVisits extends \yii\db\ActiveRecord
       'visit_date' => 'Visit Date',
       'store_id' => 'Store ID',
       'user_ip' => 'User Ip',
+      'cpa_name' => 'Cpa',
     ];
+  }
+
+  public function getCpaLink()
+  {
+      return $this->hasOne(CpaLink::className(), ['id' => 'cpa_link_id']);
   }
 
   public function beforeValidate()

@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\components\Help;
+use frontend\modules\stores\models\Cpa;
+use yii\helpers\ArrayHelper;
 
 /**
  * AdminController implements the CRUD actions for UsersVisits model.
@@ -68,18 +70,30 @@ class AdminController extends Controller
             },
             'source' => function ($model, $key, $index, $column) {
                 return $model->source == 1 ? 'Купоны' : 'Шопы';
+            },
+            'cpa_name' => function ($model) {
+                return $model->cpaLink->cpa->name;
             }
            
         ];
 
         $searchModel = new TransitionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $stat = clone $dataProvider->query;
+
+        $stat = $stat->select(['cw_cpa.name', 'count(*) as count'])
+            ->groupBy('cw_cpa.name')
+            ->asArray()
+            ->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tableValue' => $tableValue,
             'data_ranger' => Help::DateRangePicker($searchModel, 'visit_date_range', ['hideInput'=>false]),
-
+            'cpa_names' => ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
+            'stat' => $stat,
         ]);
     }
 
