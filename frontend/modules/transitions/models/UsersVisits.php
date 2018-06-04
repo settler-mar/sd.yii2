@@ -108,4 +108,24 @@ class UsersVisits extends \yii\db\ActiveRecord
     return $this->hasOne(Users::className(), ['uid' => 'user_id']);
   }
 
+    /** количество переходов по отлеживаемым шопам за отслеживаемое время
+     * @return int|string
+     */
+  public static function watchedCount()
+  {
+      return self::find()
+          ->innerJoin(Stores::tableName(), Stores::tableName() . '.uid = ' . self::tableName() . '.store_id')
+          ->where(['watch_transitions' => 1])
+          ->andWhere(['>', 'visit_date', self::watchedTime()])
+          ->count();
+  }
+
+    /**за какое время отслеживать посещения
+     * @return string
+     */
+  public static function watchedTime()
+  {
+      return date('Y-m-d H:i:s', time() - 60*60*24);
+  }
+
 }

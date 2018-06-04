@@ -19,6 +19,7 @@ class TransitionsSearch extends UsersVisits
 
     public $cpa_name;
 
+    public $watched;
 
     /**
      * @inheritdoc
@@ -26,9 +27,10 @@ class TransitionsSearch extends UsersVisits
     public function rules()
     {
         return [
-            [['uid', 'user_id', 'source', 'store_id','cpa_name'], 'integer'],
+            [['uid', 'user_id', 'source', 'store_id','cpa_name', 'watched'], 'integer'],
             [['visit_date', 'user_ip'], 'safe'],
             [['visit_date_range'], 'safe'],
+            [['visit_date_range'], 'default', 'value' => static::watchedTime() . ' - ' . date('Y-m-d H:i:s', time())],
         ];
     }
 
@@ -100,7 +102,10 @@ class TransitionsSearch extends UsersVisits
         if (!empty($this->cpa_name)) {
             $query->andFilterWhere(['cw_cpa_link.cpa_id' => $this->cpa_name]);
         }
-
+        if (!empty($this->watched)) {
+            $query->joinWith('store', false)
+                ->andWhere(['cw_stores.watch_transitions' => 1]);
+        }
 
         return $dataProvider;
     }

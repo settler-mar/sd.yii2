@@ -22,6 +22,7 @@
                     {#<p><span>Не пересчитывать рейтинг</span> {{ form.field(model, 'no_rating_calculate').dropDownList({'0' : 'Пересчитывать','1' : 'Не пересчитывать'}).label(false)|raw }}</p>#}
                     <p><span>Отображать в задолбашках</span> {{ form.field(model, 'show_notify').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
                     <p><span>Отображать в блок посылок</span> {{ form.field(model, 'show_tracking').dropDownList({'0' : 'Не отображать','1' : 'Отображать'}).label(false)|raw }}</p>
+                    <p><span>Отслеживать переходы</span> {{ form.field(model, 'watch_transitions').dropDownList({'0' : 'Не отслеживать','1' : 'Отслеживать'}).label(false)|raw }}</p>
                     <p><span>Магазин активен:</span><br>
                         {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
                     </p>

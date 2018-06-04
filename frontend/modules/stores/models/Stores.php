@@ -138,7 +138,8 @@ class Stores extends \yii\db\ActiveRecord
       [['alias', 'description', 'conditions', 'short_description', 'contact_name',
           'contact_phone', 'contact_email','video','network_name','coupon_description', 'region'], 'trim'],
       [['added'], 'safe'],
-      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related', 'cash_number', 'show_notify','show_tracking'], 'integer'],
+      [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related',
+          'cash_number', 'show_notify','show_tracking', 'watch_transitions'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
@@ -204,6 +205,7 @@ class Stores extends \yii\db\ActiveRecord
       'show_notify' => 'Отображать в задолбашках',
       'coupon_description' => 'Текст для активных купонов',
       'region' => 'Регионы',
+      'watch_transitions' => 'Отслеживать переходы',
     ];
   }
 
