@@ -15,8 +15,7 @@ class SdUrlSlash implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
-
-    if (preg_match('/[^[a-zA-Z0-9\?\&\-\_\=\:\/\#\%\+]/', $request->absoluteUrl)) {
+    if (preg_match('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.]/', $request->absoluteUrl)) {
         throw new \yii\web\NotFoundHttpException;
     }
 
