@@ -608,6 +608,9 @@ $functionsList = [
   },
   '_getFilterAdd' => function($params, $get, $arrayName) {
     //добавляем(обновлям) $params в $get[$arrayName]  и формируем гет-запрос из $get[$arrayName]
+      if (!isset($get[$arrayName])) {
+          $get[$arrayName] = [];
+      }
       $get[$arrayName] = array_merge($get[$arrayName], $params);
       $res = [];
       foreach ($get[$arrayName] as $key => $item) {
