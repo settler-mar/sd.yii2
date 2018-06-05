@@ -51,7 +51,7 @@
                         <div class="sum_information">
                             {% for key, cpa_item in stat_cpa  %}
                                 <div class="line">
-                                    <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]=1">{% if key == 0 %}Через CPA{% endif %} {{ cpa_item.name }}</a></div>
+                                    <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{% if key == 0 %}Через CPA{% endif %} {{ cpa_item.name }}</a></div>
                                     <div class="value">
                                         {{ cpa_item.count }}
                                     </div>

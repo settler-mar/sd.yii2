@@ -76,10 +76,12 @@ class AdminController extends Controller
     $statCpa = $statCpa
         ->innerJoin('cw_cpa', 'cw_cpa.id = cwcl.cpa_id')
         ->where([])
-        ->select(['cw_cpa.name', 'count(*) as count'])
-        ->groupBy('cw_cpa.name')
+        ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
+        ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
         ->asArray()
+        ->orderBy('cw_cpa.id')
         ->all();
+    //ddd($statCpa);
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,

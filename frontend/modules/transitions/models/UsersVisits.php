@@ -116,16 +116,8 @@ class UsersVisits extends \yii\db\ActiveRecord
       return self::find()
           ->innerJoin(Stores::tableName(), Stores::tableName() . '.uid = ' . self::tableName() . '.store_id')
           ->where(['watch_transitions' => 1])
-          ->andWhere(['>', 'visit_date', self::watchedTime()])
+          ->andWhere(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
           ->count();
-  }
-
-    /**за какое время отслеживать посещения
-     * @return string
-     */
-  public static function watchedTime()
-  {
-      return date('Y-m-d H:i:s', time() - 60*60*24);
   }
 
 }

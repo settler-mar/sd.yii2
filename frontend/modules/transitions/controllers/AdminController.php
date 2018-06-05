@@ -5,6 +5,7 @@ namespace frontend\modules\transitions\controllers;
 use Yii;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\transitions\models\TransitionsSearch;
+use frontend\modules\stores\models\Stores;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -80,10 +81,22 @@ class AdminController extends Controller
         $searchModel = new TransitionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $stat = clone $dataProvider->query;
+        //статистика - по всем, не по выборке
+        $stat = UsersVisits::find()
+            ->innerJoin('cw_cpa_link', 'cw_cpa_link.id = cw_users_visits.cpa_link_id')
+            ->innerJoin('cw_cpa', 'cw_cpa.id = cw_cpa_link.cpa_id')
+            ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
+            ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
+            ->orderBy('cw_cpa.id')
+            ->asArray()
+            ->all();
 
-        $stat = $stat->select(['cw_cpa.name', 'count(*) as count'])
-            ->groupBy('cw_cpa.name')
+        $watches = UsersVisits::find()
+            ->innerJoin(Stores::tableName().' cws', UsersVisits::tableName(). '.store_id = cws.uid')
+            ->select(['cws.uid', 'cws.name', 'count(*) as count'])
+            ->andWhere(['cws.watch_transitions' => 1])
+            ->groupBy(['cws.uid', 'cws.name'])
+            ->orderBy('cws.name')
             ->asArray()
             ->all();
 
@@ -94,6 +107,7 @@ class AdminController extends Controller
             'data_ranger' => Help::DateRangePicker($searchModel, 'visit_date_range', ['hideInput'=>false]),
             'cpa_names' => ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
             'stat' => $stat,
+            'watches' => $watches,
         ]);
     }
 
