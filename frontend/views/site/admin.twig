@@ -53,14 +53,17 @@
                             </a>
                         {% endif %}
                     </div>
-                    {% if visits_watcheds > 0 or visits_cpa > 0 %}
+                    {% if visits_watcheds > 0 or visits_cpa > 0 or visits_sources > 0 %}
                         <div class="col-md-12 stat-block-actions">
                             Переходы сегодня
+                            {% for visit in visits_sources %}
+                                <a class="btn btn-primary" href="/admin/transitions?{{ _getFilterAdd({'source':visit.source}, {}, 'TransitionsSearch')|raw }}">{{ _if(visit.source, 'Купоны', 'Магазины') }} ({{ visit.count}})</a>
+                            {% endfor %}
                             {% for watch in visits_watcheds %}
-                                <a class="btn btn-primary" href="/admin/transitions?{{ _getFilterAdd({'store_id':watch.uid}, {}, 'TransitionsSearch')|raw }}">{{ watch.name}} ({{ watch.count}})</a>
+                                <a class="btn btn-primary" title="Отслеживаемый шоп" href="/admin/transitions?{{ _getFilterAdd({'store_id':watch.uid}, {}, 'TransitionsSearch')|raw }}">{{ watch.name}} ({{ watch.count}})</a>
                             {% endfor %}
                             {% for cpa in visits_cpa %}
-                               <a class="btn btn-primary" href="/admin/transitions?{{ _getFilterAdd({'cpa_name':cpa.id}, {}, 'TransitionsSearch')|raw }}">{{ cpa.name}} ({{ cpa.count }})</a>
+                               <a class="btn btn-primary" title="Тип Cpa" href="/admin/transitions?{{ _getFilterAdd({'cpa_name':cpa.id}, {}, 'TransitionsSearch')|raw }}">{{ cpa.name}} ({{ cpa.count }})</a>
                             {% endfor %}
                         </div>
                     {% endif %}

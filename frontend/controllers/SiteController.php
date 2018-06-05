@@ -151,7 +151,12 @@ class SiteController extends SdController
           ->orderBy('cw_cpa.id')
           ->asArray()
           ->all();
-
+    $visitsSource = UsersVisits::find()
+          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+          ->select(['source', 'count(*) as count'])
+          ->groupBy(['source'])
+          ->asArray()
+          ->all();
     $visitsWatcheds = UsersVisits::find()
           ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
           ->innerJoin(Stores::tableName().' cws', UsersVisits::tableName(). '.store_id = cws.uid')
@@ -172,6 +177,7 @@ class SiteController extends SdController
         'notes' => $notes,
         'visits_cpa' => $visitsCpa,
         'visits_watcheds' => $visitsWatcheds,
+        'visits_sources' => $visitsSource,
     ]);
   }
 
