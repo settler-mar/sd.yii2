@@ -143,7 +143,7 @@ class Meta extends \yii\db\ActiveRecord
                 'image' => $this->metaImage,
             ]);
         }
-
+        return parent::beforeValidate();
     }
 
     /**
@@ -176,7 +176,7 @@ class Meta extends \yii\db\ActiveRecord
                 }
             }
         }
-        //ddd($this);
+       //ddd($this);
 //        foreach ($this->metaTags as  $attribute => $groups) {
 //            foreach ($groups as $name => $property) {
 //                $data = [];

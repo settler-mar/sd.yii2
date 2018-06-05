@@ -143,6 +143,7 @@ class AdminController extends Controller
 
       return $this->redirect(['index']);
     } else {
+      header("X-XSS-Protection: 1;");
       return $this->render('update.twig', [
         'model' => $model,
         'languages' => $languages
