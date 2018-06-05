@@ -81,17 +81,17 @@ class AdminController extends Controller
         $searchModel = new TransitionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        //статистика - по всем, не по выборке
-        $stat = UsersVisits::find()
-            ->innerJoin('cw_cpa_link', 'cw_cpa_link.id = cw_users_visits.cpa_link_id')
-            ->innerJoin('cw_cpa', 'cw_cpa.id = cw_cpa_link.cpa_id')
+        //статистика - по выборке
+        $stat = clone $dataProvider->query;
+        $watches = clone $dataProvider->query;
+        $stat = $stat
             ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
             ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
             ->orderBy('cw_cpa.id')
             ->asArray()
             ->all();
 
-        $watches = UsersVisits::find()
+        $watches = $watches
             ->innerJoin(Stores::tableName().' cws', UsersVisits::tableName(). '.store_id = cws.uid')
             ->select(['cws.uid', 'cws.name', 'count(*) as count'])
             ->andWhere(['cws.watch_transitions' => 1])

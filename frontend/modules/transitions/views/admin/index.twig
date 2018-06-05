@@ -15,17 +15,17 @@
                 <div class="col-md-12">
                     <h1  style="padding: 0">{{ html.encode(this.title) }}</h1>
                     <div>
-                        <a class="btn btn-primary" href="/admin/transitions">Сбросить фильтр</a>
+                        <a class="btn btn-primary" href="/admin/transitions?TransitionsSearch%5Bvisit_date_range%5D=01-01-2000+-+01-01-2038">Сбросить фильтр</a>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     {% set cpa_items = '' %}
                     {% for watch in watches %}
-                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?TransitionsSearch%5Bstore_id%5D='~watch.uid~'">'~watch.name~' ('~watch.count~')</a>' %}
+                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?'~_getFilterAdd({'store_id':watch.uid}, app.request.get, 'TransitionsSearch')~'">'~watch.name~' ('~watch.count~')</a>' %}
                     {% endfor %}
                     {% for cpa in stat %}
-                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?TransitionsSearch%5Bcpa_name%5D='~cpa.id~'">'~cpa.name~' ('~cpa.count~')</a>' %}
+                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?'~_getFilterAdd({'cpa_name':cpa.id}, app.request.get, 'TransitionsSearch')~'">'~cpa.name~' ('~cpa.count~')</a>' %}
                     {% endfor %}
                     {{ grid_view_widget({
                         'dataProvider': dataProvider,

@@ -605,6 +605,15 @@ $functionsList = [
   },
   '_render' => function($content){
     return Yii::$app->TwigString->render($content, Yii::$app->view->all_params);
+  },
+  '_getFilterAdd' => function($params, $get, $arrayName) {
+    //добавляем(обновлям) $params в $get[$arrayName]  и формируем гет-запрос из $get[$arrayName]
+      $get[$arrayName] = array_merge($get[$arrayName], $params);
+      $res = [];
+      foreach ($get[$arrayName] as $key => $item) {
+          $res[$arrayName.'['.$key.']'] = $item;
+      }
+      return http_build_query($res);
   }
 
 
