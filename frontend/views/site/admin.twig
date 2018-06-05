@@ -31,21 +31,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="stat-block">
-                    <div class="stat-head">
-                        Совершено переходов
-                    </div>
-                    <div class="stat-curr">
-                        Всего
-                        <span>{{ visits_all }}</span>
-                    </div>
-                    <div class="stat-curr">
-                        Сегодня
-                        <span>{{visits_today}}</span>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-12">
                 <div class="stat-block-cashback">
                     Всего выплачено кэшбэка<br>
@@ -68,6 +53,17 @@
                             </a>
                         {% endif %}
                     </div>
+                    {% if visits_watcheds > 0 or visits_cpa > 0 %}
+                        <div class="col-md-12 stat-block-actions">
+                            Переходы сегодня
+                            {% for watch in visits_watcheds %}
+                                <a class="btn btn-primary" href="/admin/transitions?{{ _getFilterAdd({'store_id':watch.uid}, {}, 'TransitionsSearch')|raw }}">{{ watch.name}} ({{ watch.count}})</a>
+                            {% endfor %}
+                            {% for cpa in visits_cpa %}
+                               <a class="btn btn-primary" href="/admin/transitions?{{ _getFilterAdd({'cpa_name':cpa.id}, {}, 'TransitionsSearch')|raw }}">{{ cpa.name}} ({{ cpa.count }})</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
                 </div>
         {% endif %}

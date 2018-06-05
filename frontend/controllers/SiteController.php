@@ -131,9 +131,6 @@ class SiteController extends SdController
     $payments = $payments->where(['>=', 'action_date', date('Y-m-d 00:00:00', time())]);
     $paymentsToday = $payments->count();
     $totalCashback = Payments::find()->select(['sum(cashback) as summ'])->where(['status' => 2])->asArray()->one();
-    $visits = UsersVisits::find();
-    $visitsAll = $visits->count();
-    $visitsToday = $visits->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])->count();
 
     $this->layout = '@app/views/layouts/admin.twig';
 
@@ -143,17 +140,38 @@ class SiteController extends SdController
     $notes['b2b_users_requests'] = B2bUsers::requestRegisterCount();
     $notes['users_wait_moderation'] = Users::waitModerationCount();
     $notes['users_on_actions'] = Users::onActionCount();
-    $notes['watched_transitions'] = UsersVisits::watchedCount();
+
+      //свежие переходы
+    $visitsCpa = UsersVisits::find()
+          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+          ->innerJoin('cw_cpa_link', 'cw_cpa_link.id = cw_users_visits.cpa_link_id')
+          ->innerJoin('cw_cpa', 'cw_cpa.id = cw_cpa_link.cpa_id')
+          ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
+          ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
+          ->orderBy('cw_cpa.id')
+          ->asArray()
+          ->all();
+
+    $visitsWatcheds = UsersVisits::find()
+          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+          ->innerJoin(Stores::tableName().' cws', UsersVisits::tableName(). '.store_id = cws.uid')
+          ->select(['cws.uid', 'cws.name', 'count(*) as count'])
+          ->andWhere(['cws.watch_transitions' => 1])
+          ->groupBy(['cws.uid', 'cws.name'])
+          ->orderBy('cws.name')
+          ->asArray()
+          ->all();
+
 
     return $this->render('admin', [
         'users_count' => $usersCount,
         'users_today_count' => $usersToday,
         'payments_count' => $paymentsCount,
         'payments_today_count' => $paymentsToday,
-        'visits_today' => $visitsToday,
-        'visits_all' => $visitsAll,
         'total_cashback' => $totalCashback['summ'],
         'notes' => $notes,
+        'visits_cpa' => $visitsCpa,
+        'visits_watcheds' => $visitsWatcheds,
     ]);
   }
 
