@@ -357,6 +357,11 @@ class SiteController extends SdController
             $cpaLink->cpa->name == 'Admitad') {
             //admitad
             $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+        } else if ($cpaLink && $cpaLink->affiliate_link &&
+            !empty($cpaLink->cpa->name)&&
+            $cpaLink->cpa->name == 'Shareasale') {
+            //shareasale
+            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['afftrack' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
         } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
             $cpaLink->cpa->name == 'Внешние подключения' && $cpaLink->affiliate_link ) {
             //внешние подключения = в $cpaLink->affiliate_link находится индекс в настройках
