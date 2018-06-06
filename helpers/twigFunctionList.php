@@ -160,9 +160,13 @@ function getConstant($name, $json_col = false, $json_index = 0) {
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
-    $lg = Yii::$app->params['lang_code'];
+    //$lg = Yii::$app->params['lang_code'];
+    $lg = isset(Yii::$app->params['lang_code']) ?
+          Yii::$app->params['lang_code'] :
+          Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'];
     $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
     $href = ($lg == '' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
+
     $httpQuery = '/' . Yii::$app->request->pathInfo;
     $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');
     if (!count($item)) {
