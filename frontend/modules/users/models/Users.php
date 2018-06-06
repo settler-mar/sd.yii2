@@ -385,19 +385,21 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       $store = Stores::top12(12);
 
       try {
-        Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'welcome-html', 'text' => 'welcome-text'],
-                [
-                    'user' => $this,
-                    'stores' => $store,
-                ]
-            )
-            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-            ->setTo($this->email)
-            ->setSubject(Yii::$app->name . ': '. Yii::t('common', 'register'))
-            ->send();
+         // пока отключили письмо при регистрации
+
+//        Yii::$app
+//            ->mailer
+//            ->compose(
+//                ['html' => 'welcome-html', 'text' => 'welcome-text'],
+//                [
+//                    'user' => $this,
+//                    'stores' => $store,
+//                ]
+//            )
+//            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+//            ->setTo($this->email)
+//            ->setSubject(Yii::$app->name . ': '. Yii::t('common', 'register'))
+//            ->send();
       } catch (\Exception $e) {
       }
     } else {

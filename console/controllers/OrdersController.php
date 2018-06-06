@@ -71,6 +71,33 @@ class OrdersController extends Controller
         Qty Количество string Количество экземпляров
         Date Дата и время оформления заказа string Формат: dd.mm.yyyy hh:mm:ss
         StatIdent Идентификатор позиции заказа string Уникальный идентификатор товара в каждом конкретном заказе клиента.   Позволяет точно определять перемещение из принятых к обработке в выполненные.
+
+        SimpleXMLElement (3) (
+    public DateFrom -> string (18) "07.05.2018 0:00:00"
+    public DateTo -> string (18) "06.06.2018 9:41:21"
+    public Stats -> SimpleXMLElement (1) (
+        public OrderItem -> SimpleXMLElement (15) (
+            public ItemId -> string (9) "141198386"
+            public Name -> string UTF-8 (82) "╨У╨╛╤А╤И╨╛╨║ ╨┤╨╗╤П ╤Ж╨▓╨╡╤В╨╛╨▓ ╨Ь╨╡╨│╨░╨
+┐╨╗╨░╤Б╤В "╨Ъ╨▓╨░╨┤╤А╨░╤В", ╤Б ╨┐╨╛╨┤╨┤╨╛╨╜╨╛╨╝, ╤Ж╨▓╨╡╤В: ╨▒╨╕╤А╤О╨╖╨╛╨▓╤Л╨╣ ╨┐╨╡╤А╨╗╨░
+╨╝╤Г╤В╤А, 10 ╨╗"
+            public State -> string (4) "done"
+            public Summ -> string (4) "8.88"
+            public AgentId -> string (5) "63381"
+            public StateChangeMoment -> string (19) "05.06.2018 14:56:46"
+            public LinkDirect -> string (1) "0"
+            public IsElectronics -> string (1) "0"
+            public PostingId -> string (8) "68955523"
+            public Price -> string (3) "355"
+            public Qty -> string (1) "1"
+            public Date -> string (19) "04.06.2018 15:09:12"
+            public StatIdent -> string (17) "12797612879517960"
+            public Type -> string UTF-8 (19) "╨Т╤Б╨╡ ╨┤╨╗╤П ╨┤╨╛╨╝╨░ ╨╕ ╨┤╨░╤З╨╕"
+            public IsClientNew -> string (5) "false"
+        )
+    )
+)
+
         */
         foreach ($stat as $order) {
             $user = $this->getUserData($order->AgentId);
