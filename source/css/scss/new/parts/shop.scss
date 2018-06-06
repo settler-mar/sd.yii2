@@ -3,31 +3,36 @@
 .shops {
   display:flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  flex-direction: row;
+  /*justify-content: space-around;
+  flex-direction: row;*/
   margin-top: 27px;
   margin-bottom: 27px;
 }
 
 .shop{
-  margin: 10PX 5PX;
+  margin: 10px 10px;
   position: relative;
-  max-width: 200px;
-  min-width: 165px;
+  /*max-width: 260px;
+  min-width: 210px;*/
+  box-shadow: 0px 0px 10px rgba(0,0,0,.1);
   text-align: center;
   background: $shop_bg;
-  border-radius: 5px;
+  border-radius: 12px;
   transition: all .2s;
+  width: calc(20% - 10px);
   @include media($phones) {
-    width: 45%;
+    width: calc(50% - 5px);
     min-width: 100PX;
+    margin: 5px 5px;
   }
+
+  .catalog-stores_list .shop{width: calc(33% - 10px);}
 
   &-logo{
     text-align: center;
     padding: 20px 0px;
     background-color: $shop_logo_bg;
-    border-radius: 5px 5px 0 0;
+    border-radius: 12px 12px 0 0;
     height: 66px;
     box-sizing: content-box;
 
@@ -38,7 +43,7 @@
       display: inline-block;
 
       &-img{
-        max-width: 130px;
+        max-width: 143px;
         @include media($phones) {
           max-width: 100%;
 
@@ -57,7 +62,7 @@
 
     span{
       font-weight: 700;
-      font-size: 15px;
+      font-size: 17px;
       color: $shop_name_color;
       margin: auto;
       max-width: 155px;
@@ -108,14 +113,14 @@
       height: auto;
       margin: auto auto 0;
       text-transform: uppercase;
-      padding: 5px;
+      padding: 12px;
       background: $shop_cashback_link_bg;
       font-size: 15px;
       font-weight: 400;
       color: $shop_cashback_link_color;
       line-height: 20px;
       text-decoration: none;
-      border-radius: 0 0 5px 5px;
+      border-radius: 0 0 12px 12px;
 
       &_cashback{
         display: flex;
@@ -164,7 +169,7 @@
   }
 
   &_panel{
-    text-align: right;
+    text-align: center;
     padding: 5px;
     background: $shop_panel_bg;
     line-height: 16px;
@@ -172,9 +177,9 @@
     box-sizing: content-box;
 
     &-item{
-      color: $shop_cashback_link_color;
-      fill: $shop_cashback_link_color;
-      stroke: $shop_cashback_link_color;
+      color: /*$shop_cashback_link_color*/ #009ece;
+      fill: /*$shop_cashback_link_color*/ #009ece;
+      stroke: /*$shop_cashback_link_color*/ #009ece;
       text-decoration: none;
       stroke-width: 3px;
       border: none;
