@@ -26,7 +26,9 @@
     margin: 5px 5px;
   }
 
-  .catalog-stores_list .shop{width: calc(33% - 10px);}
+  .catalog-stores_list .shop{
+    width: calc(33% - 10px);
+  }
 
   &-logo{
     text-align: center;
