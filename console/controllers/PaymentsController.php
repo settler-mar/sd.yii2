@@ -83,8 +83,8 @@ class PaymentsController extends Controller
   {
       echo "Payments from Admitad\n";
       Yii::$app->runAction('admitad/payments');
-      echo "Payments from Ozon\n";
-      $this->actionOzon();
+      //echo "Payments from Ozon\n";
+      //$this->actionOzon();
   }
 
     /**
