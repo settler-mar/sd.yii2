@@ -875,8 +875,7 @@ class Stores extends \yii\db\ActiveRecord
       $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
         'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
-        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking',
-        'coupon_description'];
+        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking'];
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
           $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;

@@ -5,6 +5,7 @@ namespace frontend\components;
 use yii;
 use yii\base\Widget;
 use frontend\modules\coupons\models\Coupons;
+use common\components\Help;
 
 
 class CategoryCouponsMenu extends Widget
@@ -81,8 +82,9 @@ class CategoryCouponsMenu extends Widget
                 $out .=  '<span ' . $class . '">' . $category['name'] .
                     ($category['count'] !== null? "&nbsp;(" .  $category['count'] . ")" : "")."</span>";
             } else {
-                $lg = Yii::$app->params['lang_code'];
-                $href = ($lg == 'ru'  ? '' : '/'.$lg) .'/coupons' . ($category['route']? '/'.$category['route'] : '');
+                //$lg = Yii::$app->params['lang_code'];
+                //$href = ($lg == 'ru'  ? '' : '/'.$lg) .'/coupons' . ($category['route']? '/'.$category['route'] : '');
+                $href = Help::href('/coupons' . ($category['route']? '/'.$category['route'] : ''));
                 $out .=  '<a href="'.$href.
                     '" class="title'.(isset($category['class']) ? ' '.($category['class']) : '').'">' .
                     $category['name'] .($category['count'] !== null ?  '&nbsp;(' . $category['count'] .')' : '') .

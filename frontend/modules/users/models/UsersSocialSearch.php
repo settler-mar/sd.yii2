@@ -20,6 +20,8 @@ class UsersSocialSearch extends UsersSocial
         return [
             [['uid', 'user_id', 'status'], 'integer'],
             [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'email_manual', 'created_at', 'updated_at'], 'safe'],
+            [['social_name'], 'in', 'range' => array_keys(Yii::$app->eauth->services)],
+
         ];
     }
 

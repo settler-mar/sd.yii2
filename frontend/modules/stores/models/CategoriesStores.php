@@ -382,7 +382,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
           $c[] = "title";
         }
 
-        if (!empty(($cat['class']))) {
+        if (!empty($cat['class'])) {
           //d($cat['class']);
           $itemClass[] = $cat['class'];
           $c[] = $cat['class'];
@@ -411,8 +411,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $c = '';
         }
-        $lg = Yii::$app->params['lang_code'];
-        $catURL = ($lg == 'ru'  ? '' : '/'.$lg) . "/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : '');
+        $catURL = Help::href("/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : ''));
 
         //имеются дочерние категрии
         $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) && count($cats[$cat['uid']]) > 0;

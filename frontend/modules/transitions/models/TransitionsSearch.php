@@ -30,7 +30,7 @@ class TransitionsSearch extends UsersVisits
             [['uid', 'user_id', 'source', 'store_id','cpa_name', 'watched'], 'integer'],
             [['visit_date', 'user_ip'], 'safe'],
             [['visit_date_range'], 'safe'],
-            [['visit_date_range'], 'default', 'value' => static::watchedTime() . ' - ' . date('Y-m-d H:i:s', time())],
+            [['visit_date_range'], 'default', 'value' => date('Y-m-d 00:00:00', time()) . ' - ' . date('Y-m-d H:i:s', time())],
         ];
     }
 

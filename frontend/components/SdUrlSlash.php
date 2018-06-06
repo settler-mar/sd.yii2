@@ -15,6 +15,10 @@ class SdUrlSlash implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
+    if (preg_match('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', $request->absoluteUrl)) {
+        throw new \yii\web\NotFoundHttpException;
+    }
+
     $pathArray = explode('/', $request->getPathInfo());
     if(count($pathArray)<2) return false; //если в адресе всего 1 элемент то проверять не чего
 

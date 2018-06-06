@@ -44,7 +44,19 @@ class FileImport extends Model
 
         if ($file && $store && $method && is_callable([$this, $method])) {
             $this->message = 'Загрузка данных для '.$this->cpa;
-            $this->$method($file, $store);
+
+            $cpaType = Cpa::find()->where(['name' => 'Внешние подключения'])->one();
+            $cpaLink = CpaLink::find()->where(['cpa_id' => $cpaType->id, 'stores_id' => $store->uid])->one();
+            if (!$cpaType) {
+                $this->log = 'Не найден тип cpa "Внешние подключения"<br>';
+                return null;
+            }
+            if (!$cpaLink) {
+                $this->log = 'Не найден cpa для шопа, с типом "Внешние подключения"<br>';
+                return null;
+            }
+
+            $this->$method($file, $store, $cpaType->id, $cpaLink->affiliate_id);
         }
     }
 
@@ -52,9 +64,10 @@ class FileImport extends Model
      * @param $file
      * @param $store
      */
-    private function booking($file, $store)
+    private function booking($file, $store, $cpa_id, $affiliate_id)
     {
         $orders = $this->getCsv($file);
+        //ddd($orders, $cpa_id, $affiliate_id);
         $users = [];
         $inserted = 0;
         $updated  = 0;
@@ -71,7 +84,6 @@ class FileImport extends Model
                 $nouser ++;
                 continue;
             }
-            //d($order);
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
             try {
 
@@ -97,6 +109,9 @@ class FileImport extends Model
                     'order_id' => $orderId,
                     'tariff_id' => null,
                     'currency' => 'EUR',
+                    'cpa_id' => $cpa_id,
+                    'affiliate_id' => $affiliate_id,
+
                 ];
                 //d($payment);
                 $paymentStatus = Payments::makeOrUpdate(
