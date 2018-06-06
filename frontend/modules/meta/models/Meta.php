@@ -161,14 +161,18 @@ class Meta extends \yii\db\ActiveRecord
 
         $regionCurrent = Yii::$app->params['region'];
 
-        foreach (self::$translated_attributes as $attribute) {
+        foreach (self::$json_attributes as $attribute) {
             if ($this->$attribute) {
                 $data = !empty($this->$attribute) ? json_decode($this->$attribute, true) : false;
-
-                if (in_array($attribute, self::$json_attributes)) {
-                    foreach (Yii::$app->params['regions_list'] as $regionCode => $region) {
-                        $this->regionsData[$attribute][$regionCode] = empty($data) || !isset($data[$regionCode]) ?
-                            '' : $data[$regionCode];
+                foreach (Yii::$app->params['regions_list'] as $regionCode => $region) {
+                    if ($data) {
+                        //есть данные регионов из json
+                        $this->regionsData[$attribute][$regionCode] =
+                            isset($data[$regionCode]) ?  $data[$regionCode] : //есть такой регион
+                                ($data['default'] ? $data['default'] : '');//нет такого региона, подставляем, если есть для региона по умолчанию
+                    } else {
+                        //нет данных регионов из json - подставляем значение поля
+                        $this->regionsData[$attribute][$regionCode] = $this->$attribute;
                     }
                 }
                 if ($data && isset($data[$regionCurrent])) {
@@ -177,16 +181,6 @@ class Meta extends \yii\db\ActiveRecord
             }
         }
        //ddd($this);
-//        foreach ($this->metaTags as  $attribute => $groups) {
-//            foreach ($groups as $name => $property) {
-//                $data = [];
-//                $dataArr = explode('~', $property);
-//                foreach ($dataArr as $key => $dataItem) {
-//                    $data[] = $dataItem;
-//                }
-//                $this->metaTagArray[$attribute.'.'.$name] = $data;
-//            }
-//        }
         if ($this->meta_tags_type == 1 && $this->meta_tags) {
             $meta = json_decode($this->meta_tags, true);
             $this->metaTitle = !empty($meta['title']) ? $meta['title'] : null;
