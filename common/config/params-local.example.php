@@ -15,6 +15,11 @@ return [
     'APIToken' => "",
     'APISecretKey' => "",
   ],
+  'sellaction' => [
+    'id' => '100025598',
+    'apiKey' => '5lPEoGZ1tsdWHO8Af6lLO9dQZmLaitoK',
+    'categories_json' => '/common/config/json/sellaction_categories.json'
+  ],
   'pays_update_period'=>1,
   'b2b_address' => '127.0.0.1:8080',
   'coupons_languages' => ['ru'],

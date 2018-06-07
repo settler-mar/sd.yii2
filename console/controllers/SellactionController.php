@@ -11,15 +11,15 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\Coupons;
-use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\coupons\models\CouponsToCategories;
 use JBZoo\Image\Image;
 
 class SellactionController extends Controller
 {
     private $cpa;
-    private $debug = true;
+    private $debug = false;
     private $categories;
-    private $cats;
+
     /**
      * Получение платежей
      */
@@ -336,6 +336,21 @@ class SellactionController extends Controller
                 if (!$dbCoupon->save()) {
                     d($dbCoupon->errors);
                 }
+                //категории  к купону
+                //d($dbCoupon->uid, $store['categories'], $categories);
+                foreach ($categories as $category) {
+                    $categoryCoupon = CouponsToCategories::find()
+                        ->where(['coupon_id' => $dbCoupon->uid, 'category_id' => $category])
+                        ->one();
+                    if (!$categoryCoupon) {
+                        $categoryCoupon = new CouponsToCategories();
+                        $categoryCoupon->coupon_id = $dbCoupon->uid;
+                        $categoryCoupon->category_id = $category;
+                        if (!$categoryCoupon->save()) {
+                            d($categoryCoupon->errors);
+                        }
+                    }
+                }
             }
         }
         return [
@@ -347,20 +362,26 @@ class SellactionController extends Controller
     private function getCategories($categories)
     {
         if (!$this->categories) {
-            $cats = CategoriesCoupons::find()->select(['uid', 'name'])->asArray()->all();
-            $this->categories = [];
-            foreach ($cats as $cat) {
-                $this->categories[$cat['uid']] = $cat['name'];
+            $file = Yii::$app->basePath . '/..'. Yii::$app->params['sellaction']['categories_json'];
+            if (file_exists($file)) {
+                $this->categories = json_decode(file_get_contents($file), true);
             }
         }
         $result = [];
-        foreach ($categories as $category) {
-            if (isset($this->categories[$category['name']])) {
-                $result[] = $this->categories[$category['name']];
-            }
-
+        if (!$this->categories) {
+            return [];
         }
-        return $result;
+        foreach ($categories as $category) {
+            if (!empty($this->categories[$category['id']]['id'])) {
+                $id = $this->categories[$category['id']]['id'];
+                if (is_array($id)) {
+                    $result = array_merge($result, $id);
+                } else {
+                    $result[] = (integer) $id;
+                }
+            }
+        }
+        return array_unique($result);
     }
 
     /*
