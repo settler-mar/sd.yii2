@@ -40,7 +40,7 @@ $search-btn-color: $text_color;
 $search-btn-color-hover: #ffffff;
 $header_authorization_color: $search-btn-bg;
 //$header_bg_second: #F0F0F0;
-$header_bg_second: #FFFFF0;
+$header_bg_second: #FFFFFF;
 $header_sub_menu_bg: $header_bg_second;
 $header_sub_menu_color: $text_color;
 $header_sub_menu_color_hover: #ffcd16;
@@ -86,15 +86,15 @@ $instruction_color: $btn_base_bg;
 $instruction_select_color: $btn_base_bg;
 
 /*shop*/
-$shop_bg: #f8f8f8;
-$shop_logo_bg: #eee;
+$shop_bg: #fff;
+$shop_logo_bg: #fff;
 $shop_name_color: #283133;
 $shop_cashback_link_bg: $btn_base_bg;
 $shop_cashback_link_color: #0f181a;
 $search_list_hover_color: #283739;
 $shop_cashback_link_action: #9a0921;
 $shop_cashback_old_action: $shop_name_color;
-$shop_cashback_old_color: #d6d6d6;
+$shop_cashback_old_color: #fff;
 $shop_panel_bg: $shop_cashback_old_color;
 $shop_panel_coor: $shop_cashback_link_color;
 $shop_calculate_cashback_background_color: #f7c714;
