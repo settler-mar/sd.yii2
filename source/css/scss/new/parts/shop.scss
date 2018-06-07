@@ -3,30 +3,31 @@
 .shops {
   display:flex;
   flex-wrap: wrap;
-  /*justify-content: space-around;
-  flex-direction: row;*/
+  justify-content: space-around;
+  flex-direction: row;
   margin-top: 27px;
   margin-bottom: 27px;
 }
 
 .shop{
-  margin: 10px 10px;
+  margin: 10px 5px;
   position: relative;
-  /*max-width: 260px;
-  min-width: 210px;*/
+  max-width: 360px;
+  min-width: 210px;
   box-shadow: 0px 0px 10px rgba(0,0,0,.1);
   text-align: center;
   background: $shop_bg;
   border-radius: 12px;
   transition: all .2s;
-  width: calc(20% - 10px);
   @include media($phones) {
-    width: calc(50% - 5px);
-    min-width: 100PX;
+    /*width: calc(50% - 5px);*/
+
     margin: 5px 5px;
   }
 
-  .catalog-stores_list .shop{width: calc(33% - 10px);}
+  /*.catalog-stores_list .shop{
+    width: calc(33% - 10px);
+  }*/
 
   &-logo{
     text-align: center;
@@ -44,6 +45,7 @@
 
       &-img{
         max-width: 143px;
+        width: 100%;
         @include media($phones) {
           max-width: 100%;
 
