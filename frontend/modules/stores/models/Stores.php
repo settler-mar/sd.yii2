@@ -54,7 +54,7 @@ class Stores extends \yii\db\ActiveRecord
   public $regions_list;
 
   public static $translated_attributes = ['description', 'conditions', 'short_description', 'local_name',
-      'contact_name', 'contact_phone', 'contact_email', 'coupon_description',
+      'contact_name', 'contact_phone', 'contact_email', 'coupon_description', 'description_extend'
   ];
 
   public function behaviors()
@@ -134,9 +134,9 @@ class Stores extends \yii\db\ActiveRecord
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'required'],
       [['name', 'route', 'currency', 'added', 'hold_time','percent'], 'trim'],
       [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone',
-          'contact_email','video','network_name','coupon_description', 'region'], 'string'],
-      [['alias', 'description', 'conditions', 'short_description', 'contact_name',
-          'contact_phone', 'contact_email','video','network_name','coupon_description', 'region'], 'trim'],
+          'contact_email','video','network_name','coupon_description', 'region', 'description_extend'], 'string'],
+      [['alias', 'description', 'conditions', 'short_description', 'contact_name', 'contact_phone',
+          'contact_email','video','network_name','coupon_description', 'region', 'description_extend'], 'trim'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related',
           'cash_number', 'show_notify','show_tracking', 'watch_transitions'], 'integer'],
@@ -206,6 +206,7 @@ class Stores extends \yii\db\ActiveRecord
       'coupon_description' => 'Текст для активных купонов',
       'region' => 'Регионы',
       'watch_transitions' => 'Отслеживать переходы',
+      'desctiption_extend' => 'Дополнительное описание',
     ];
   }
 

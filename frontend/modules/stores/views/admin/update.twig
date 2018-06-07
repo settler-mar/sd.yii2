@@ -129,6 +129,10 @@
                                             <span>Текст для активных купонов:</span> <br>
                                             {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                                         </p>
+                                        <p>
+                                            <span>Дополнительное описание:</span> <br>
+                                            {{ form.field(model, 'description_extend').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                        </p>
                                     </div>
                                     {% for k,lang in languages %}
                                         <div class="cpa_box tab_{{ k }}">
@@ -159,6 +163,10 @@
                                             <p>
                                                 <span>Текст для активных купонов:</span> <br>
                                                 {{ form.field(lang.model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
+                                            </p>
+                                            <p>
+                                                <span>Дополнительное описание:</span> <br>
+                                                {{ form.field(lang.model, 'description_extend').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                                             </p>
                                         </div>
                                     {% endfor %}

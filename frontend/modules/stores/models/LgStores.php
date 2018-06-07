@@ -54,9 +54,10 @@ class LgStores extends \yii\db\ActiveRecord
   {
     return [
       [['store_id', 'language'], 'required'],
-      [['description', 'conditions', 'short_description', 'coupon_description', 'language'], 'string'],
+      [['description', 'conditions', 'short_description', 'coupon_description', 'description_extend', 'language'],
+          'string'],
       [['description', 'conditions', 'short_description', 'contact_name', 'contact_phone', 'contact_email',
-          'coupon_description', 'language', 'local_name'], 'trim'],
+          'coupon_description', 'language', 'local_name', 'description_extend'], 'trim'],
       [['store_id'], 'integer'],
       [['contact_name', 'contact_phone', 'contact_email', 'local_name'], 'string', 'max' => 255],
       ['store_id', 'unique', 'targetAttribute' => ['store_id', 'language']],
@@ -79,6 +80,7 @@ class LgStores extends \yii\db\ActiveRecord
       'contact_phone' => 'Contact Phone',
       'contact_email' => 'Contact Email',
       'coupon_description' => 'Текст для активных купонов',
+      'description_extend' => 'Дополнительное описание',
     ];
   }
 

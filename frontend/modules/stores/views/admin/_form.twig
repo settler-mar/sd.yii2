@@ -52,7 +52,12 @@
                         <span>Описание  (Информация о кэшбэк в ...):</span>
                         <br> {{ form.field(model, 'description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                     </p>
-                    <p><span>Специальные условия  (Дополнительная информация):</span> <br> {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
+                    <p><span>Специальные условия  (Дополнительная информация):</span>
+                        <br> {{ form.field(model, 'conditions').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
+                    <p><span>Текст для активных купонов:</span>
+                        <br> {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
+                    <p><span>Дополнительное описание:</span>
+                        <br> {{ form.field(model, 'description_extend').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}</p>
                 </div>
                 <div class="col-md-12">
                     <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
