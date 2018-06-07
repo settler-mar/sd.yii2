@@ -11,12 +11,14 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\Coupons;
+use frontend\modules\coupons\models\CategoriesCoupons;
 use JBZoo\Image\Image;
 
 class SellactionController extends Controller
 {
     private $cpa;
-
+    private $debug = true;
+    private $categories;
     /**
      * Получение платежей
      */
@@ -56,7 +58,7 @@ class SellactionController extends Controller
         $page = 1;
         $pageCount = 2;
         do {
-            $response = $sellaction->campaigns($page, 50);
+            $response = $sellaction->campaigns($page, $this->debug ? 5 : 50);
             if (!isset($response['_meta'])) {
                 $page = $pageCount;
             } else {
@@ -77,7 +79,11 @@ class SellactionController extends Controller
 
             echo 'Page ' . $page . ' of ' . $pageCount . ' records ' . count($response['data']) . "\n";
             $page++;
-            //$page = $pageCount + 1;//для тестов - только один цикл
+            if ($this->debug) {
+                //для тестов - только один цикл
+                $page = $pageCount + 1;
+            }
+
         } while ($page <= $pageCount);
 
         if (!empty($affiliate_list)) {
@@ -224,6 +230,7 @@ class SellactionController extends Controller
                 //$db_store->displayed_cashback = $conditions['cashback'];
                 //$db_store->conditions = $conditions['text'];
                 //$db_store->hold_time = $conditions['process'] > 0 ? $conditions['process'] : 30;
+                $db_store->coupon_description = print_r($store['categories'], true);
             }
 
             //надо определиться с полями, которые обновлять
@@ -234,7 +241,7 @@ class SellactionController extends Controller
                 $db_store->is_active = 1;
             }
             $db_store->save();
-            $coupons = $this->saveCoupons($db_store->uid, $store['coupons']);
+            $coupons = $this->saveCoupons($db_store->uid, $store);
             $countCoupons += $coupons['count'];
             $insertedCoupons += $coupons['inserted'];
 
@@ -303,35 +310,58 @@ class SellactionController extends Controller
         }
     }
 
-    private function saveCoupons($storeId, $coupons)
+    private function saveCoupons($storeId, $store)
     {
         $count = 0;
         $inserted = 0;
-        foreach ($coupons as $coupon) {
-            $count++;
-            $dbCoupon = Coupons::find()->where(['store_id' => $storeId, 'coupon_id' => $coupon ['id']])->one();
-            if (!$dbCoupon) {
-                $inserted++;
-                $dbCoupon = new Coupons;
-                $dbCoupon->store_id = $storeId;
-                $dbCoupon->coupon_id = $coupon['id'];
-            }
-            $dbCoupon->name = $coupon['name'];
-            $dbCoupon->description = $coupon['description'];
-            $dbCoupon->goto_link = $coupon['url'];
-            $dbCoupon->date_start = $coupon['date_start'];
-            $dbCoupon->date_end = $coupon['date_end'];
-            $dbCoupon->species = 0;
-            $dbCoupon->exclusive = 0;
-            //$coupon['type'] campaign discount  - нет полей куда и зачем положить
-            if (!$dbCoupon->save()) {
-                d($dbCoupon->errors);
+        if (isset($store['coupons'])) {
+            $categories = $this->getCategories($store['categories']);
+            foreach ($store['coupons'] as $coupon) {
+                $count++;
+                $dbCoupon = Coupons::find()->where(['store_id' => $storeId, 'coupon_id' => $coupon ['id']])->one();
+                if (!$dbCoupon) {
+                    $inserted++;
+                    $dbCoupon = new Coupons;
+                    $dbCoupon->store_id = $storeId;
+                    $dbCoupon->coupon_id = $coupon['id'];
+                }
+                $dbCoupon->name = $coupon['name'];
+                $dbCoupon->description = $coupon['description'];
+                $dbCoupon->goto_link = $coupon['url'];
+                $dbCoupon->date_start = $coupon['date_start'];
+                $dbCoupon->date_end = $coupon['date_end'];
+                $dbCoupon->species = 0;
+                $dbCoupon->exclusive = 0;
+                //$coupon['type'] campaign discount  - нет полей куда и зачем положить
+                if (!$dbCoupon->save()) {
+                    d($dbCoupon->errors);
+                }
             }
         }
         return [
             'count' => $count,
             'inserted' => $inserted,
         ];
+    }
+
+    private function getCategories($categories)
+    {
+        if (!$this->categories) {
+            $cats = CategoriesCoupons::find()->select(['uid', 'name'])->asArray()->all();
+            $this->categories = [];
+            foreach ($cats as $cat) {
+                $this->categories[$cat['name']] = $cat['uid'];
+            }
+        }
+        $result = [];
+        foreach ($categories as $category) {
+            if (isset($this->categories[$category['name']])) {
+                $result[] = $this->categories[$category['name']];
+            }
+
+        }
+        d($result);
+        return $result;
     }
 
 
