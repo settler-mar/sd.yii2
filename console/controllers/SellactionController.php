@@ -10,6 +10,7 @@ use common\models\Sellaction;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use JBZoo\Image\Image;
 
 class SellactionController extends Controller
 {
@@ -52,7 +53,7 @@ class SellactionController extends Controller
         $page = 1;
         $pageCount = 2;
         do {
-            $response = $sellaction->campaigns($page, 50);
+            $response = $sellaction->campaigns($page, 5);
             if (!isset($response['_meta'])) {
                 $page = $pageCount;
             } else {
@@ -71,7 +72,7 @@ class SellactionController extends Controller
 
             echo 'Page ' . $page . ' of ' . $pageCount . ' records ' . count($response['data']) . "\n";
             $page++;
-            //$page = $pageCount + 1;//для тестов - только один цикл
+            $page = $pageCount + 1;//для тестов - только один цикл
         } while ($page <= $pageCount);
 
         if (!empty($affiliate_list)) {
@@ -127,18 +128,10 @@ class SellactionController extends Controller
 
             $route = Yii::$app->help->str2url($store['name']);
 
-            //если лого адмитадовский, то проверяем его наличие и при нобходимости обновляем
+            //если лого то проверяем его наличие и размер и при нобходимости обновляем
             if ($test_logo) {
-                //проверяем лого на папки
-                $path = Yii::$app->getBasePath() . '/../frontend/web/images/logos/';
-                if (!file_exists($path)) {
-                    mkdir($path, 0777, true);
-                }
-                //проверяем лого на наличие
-                if (!file_exists($path . $logo)) {
-                    $file = file_get_contents($store['logo']);
-                    file_put_contents($path . $logo, $file);
-                }
+                //обрабатываем лого
+                $this->saveLogo($logo, $store['logo']);
             }
 
             //если магазин не нашли по прямому подключению пробуем найти по косвеным признакам
@@ -185,13 +178,7 @@ class SellactionController extends Controller
                 } else {
                     d($db_store->errors);
                 }
-
-
-            } else if ($test_logo && !empty($logo)) {
-                //если нашли, но лого нужно обновить, то обновляем
-               // $db_store->logo = $logo;
             }
-
 
             $store_id = $db_store->uid;
 
@@ -218,10 +205,19 @@ class SellactionController extends Controller
             if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
                 $db_store->active_cpa = (int) $cpa_id;
             }
+            if ($db_store->active_cpa == (int) $cpa_id) {
+                // спа активная, обновляем поля - какие - можно потом добавить
+                $db_store->url = $store['url'];
+                //$db_store->logo = $test_logo && !empty($logo) ? $logo : $db_store->logo;
+                //$db_store->description = $store['description'];
+                //$db_store->short_description = $store['advantages_client'];
+                //$db_store->displayed_cashback = $conditions['cashback'];
+                //$db_store->conditions = $conditions['text'];
+                //$db_store->hold_time = $conditions['process'] > 0 ? $conditions['process'] : 30;
+            }
 
-            $db_store->displayed_cashback = $conditions['cashback'];
-            $db_store->conditions = $conditions['text'];
-            $db_store->hold_time = $conditions['process'] > 0 ? $conditions['process'] : 30;
+            //надо определиться с полями, которые обновлять
+
 
             $db_store->url = $store['url'];
             if ($db_store->is_active != -1) {
@@ -263,6 +259,33 @@ class SellactionController extends Controller
             'text' => $text,
             'process' => $process,
         ];
+    }
+
+    private function saveLogo($logo, $logoNew)
+    {
+        $needUpdate = false;
+        $path = Yii::$app->getBasePath() . '/../frontend/web/images/logos/';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        //echo $path .' '.$logo.' '.$logoNew."\n";
+        try {
+            if (file_exists($path . $logo)) {
+                $image = new Image($path . $logo);
+                if ($image->getWidth() > 192 || $image->getHeight() > 192) {
+                    $needUpdate = true;
+                }
+            }
+            if (!file_exists($path . $logo) || $needUpdate) {
+                $file = file_get_contents($logoNew);
+                //file_put_contents($path . $logo, $file);
+                $image = new Image($file);
+                $image->bestFit(192, 192);
+                $image->saveAs($path . $logo);
+            }
+        } catch (\Exception $e) {
+            echo $e->getMessage()."\n";
+        }
     }
 
 
