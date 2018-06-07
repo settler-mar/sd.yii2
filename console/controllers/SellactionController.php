@@ -56,7 +56,7 @@ class SellactionController extends Controller
         $page = 1;
         $pageCount = 2;
         do {
-            $response = $sellaction->campaigns($page, 5);
+            $response = $sellaction->campaigns($page, 50);
             if (!isset($response['_meta'])) {
                 $page = $pageCount;
             } else {
@@ -77,7 +77,7 @@ class SellactionController extends Controller
 
             echo 'Page ' . $page . ' of ' . $pageCount . ' records ' . count($response['data']) . "\n";
             $page++;
-            $page = $pageCount + 1;//для тестов - только один цикл
+            //$page = $pageCount + 1;//для тестов - только один цикл
         } while ($page <= $pageCount);
 
         if (!empty($affiliate_list)) {
@@ -288,14 +288,12 @@ class SellactionController extends Controller
         //echo $path .' '.$logo.' '.$logoNew."\n";
         try {
             if (file_exists($path . $logo)) {
-                $image = new Image($path . $logo);
-                if ($image->getWidth() > 192 || $image->getHeight() > 192) {
-                    $needUpdate = true;
-                }
+                $imageSize = getimagesize($path . $logo);
+                $needUpdate =  (isset($imageSize[0]) && $imageSize[0] > 192) ||
+                    (isset($imageSize[1]) && $imageSize[1] > 192);
             }
             if (!file_exists($path . $logo) || $needUpdate) {
                 $file = file_get_contents($logoNew);
-                //file_put_contents($path . $logo, $file);
                 $image = new Image($file);
                 $image->bestFit(192, 192);
                 $image->saveAs($path . $logo);
