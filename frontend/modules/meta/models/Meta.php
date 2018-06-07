@@ -169,7 +169,7 @@ class Meta extends \yii\db\ActiveRecord
                         //есть данные регионов из json
                         $this->regionsData[$attribute][$regionCode] =
                             isset($data[$regionCode]) ?  $data[$regionCode] : //есть такой регион
-                                ($data['default'] ? $data['default'] : '');//нет такого региона, подставляем, если есть для региона по умолчанию
+                                (!empty($data['default']) ? $data['default'] : '');//нет такого региона, подставляем, если есть для региона по умолчанию
                     } else {
                         //нет данных регионов из json - подставляем значение поля
                         $this->regionsData[$attribute][$regionCode] = $this->$attribute;

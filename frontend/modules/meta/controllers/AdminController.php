@@ -84,11 +84,25 @@ class AdminController extends Controller
     }
     $model = new Meta();
 
+    $base_lang=Yii::$app->params['base_lang'];
+
+    $lg_list=Yii::$app->params['transform_language_list'];
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+      $languages[$lg_key] = [
+        'name' => $lg_item['name'],
+        'regions' => $lg_item['regions'],
+        'code' => $lg_item['code'],
+        'model' => $lg_item['code'] == $base_lang ? null : $this->findLgMeta(0, $lg_item['code'])
+      ];
+    }
+
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
       return $this->render('create.twig', [
         'model' => $model,
+        'languages' => $languages
       ]);
     }
   }
