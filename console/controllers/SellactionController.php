@@ -10,6 +10,7 @@ use common\models\Sellaction;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\Coupons;
 use JBZoo\Image\Image;
 
 class SellactionController extends Controller
@@ -41,6 +42,8 @@ class SellactionController extends Controller
         $records = 0;
         $inserted = 0;
         $cpalinkInserted = 0;
+        $countCoupons = 0;
+        $insertedCoupons = 0;
 
         $cpa = Cpa::find()->where(['name' => 'Cellaction'])->one();
         if (!$cpa) {
@@ -69,6 +72,8 @@ class SellactionController extends Controller
             $inserted += $dataResult['inserted'];
             $affiliate_list = array_merge($affiliate_list, $dataResult['affiliate_list']);
             $cpalinkInserted += $dataResult['cpalinkInserted'];
+            $countCoupons += $dataResult['couponsCount'];
+            $insertedCoupons += $dataResult['couponsInserted'];
 
             echo 'Page ' . $page . ' of ' . $pageCount . ' records ' . count($response['data']) . "\n";
             $page++;
@@ -85,6 +90,8 @@ class SellactionController extends Controller
         echo 'Stores ' . $records . "\n";
         echo 'Inserted ' . $inserted . "\n";
         echo 'Inserted Cpa link ' . $cpalinkInserted . "\n";
+        echo 'Coupons ' . $countCoupons . "\n";
+        echo 'Inserted ' . $insertedCoupons . "\n";
     }
 
     private function writeStores($data)
@@ -92,6 +99,9 @@ class SellactionController extends Controller
         $inserted = 0;
         $insertedCpalink = 0;
         $affiliate_list = [];
+        $countCoupons = 0;
+        $insertedCoupons = 0;
+
         foreach ($data as $store) {
             //d($store);
             $affiliate_id = $store['id'];
@@ -224,11 +234,18 @@ class SellactionController extends Controller
                 $db_store->is_active = 1;
             }
             $db_store->save();
+            $coupons = $this->saveCoupons($db_store->uid, $store['coupons']);
+            $countCoupons += $coupons['count'];
+            $insertedCoupons += $coupons['inserted'];
+
+
         }
         return [
             'inserted' => $inserted,
             'affiliate_list' => $affiliate_list,
             'cpalinkInserted' => $insertedCpalink,
+            'couponsCount' => $countCoupons,
+            'couponsInserted' => $insertedCoupons,
         ];
     }
 
@@ -286,6 +303,37 @@ class SellactionController extends Controller
         } catch (\Exception $e) {
             echo $e->getMessage()."\n";
         }
+    }
+
+    private function saveCoupons($storeId, $coupons)
+    {
+        $count = 0;
+        $inserted = 0;
+        foreach ($coupons as $coupon) {
+            $count++;
+            $dbCoupon = Coupons::find()->where(['store_id' => $storeId, 'coupon_id' => $coupon ['id']])->one();
+            if (!$dbCoupon) {
+                $inserted++;
+                $dbCoupon = new Coupons;
+                $dbCoupon->store_id = $storeId;
+                $dbCoupon->coupon_id = $coupon['id'];
+            }
+            $dbCoupon->name = $coupon['name'];
+            $dbCoupon->description = $coupon['description'];
+            $dbCoupon->goto_link = $coupon['url'];
+            $dbCoupon->date_start = $coupon['date_start'];
+            $dbCoupon->date_end = $coupon['date_end'];
+            $dbCoupon->species = 0;
+            $dbCoupon->exclusive = 0;
+            //$coupon['type'] campaign discount  - нет полей куда и зачем положить
+            if (!$dbCoupon->save()) {
+                d($dbCoupon->errors);
+            }
+        }
+        return [
+            'count' => $count,
+            'inserted' => $inserted,
+        ];
     }
 
 
