@@ -274,8 +274,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     foreach ($statuses as $k => $status_k) {
       if (
-          isset($status_k['min_sum'][Yii::$app->user->identity->currency]) && //у статса лояльности есть минимальная сумма назначения
-          $status_k['min_sum'][Yii::$app->user->identity->currency] < $total &&//минимальная сумма ниже заработанной суммы
+          isset($status_k['min_sum'][$this->currency]) && //у статса лояльности есть минимальная сумма назначения
+          $status_k['min_sum'][$this->currency] < $total &&//минимальная сумма ниже заработанной суммы
           $status_k['bonus'] > $status['bonus'] //новый бонус будет выгоднее клиенту чем текущий
       ) {
         $status = $status_k;
@@ -335,6 +335,10 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
    */
   public function afterSave($insert, $changedAttributes)
   {
+    if (Yii::$app instanceof Yii\console\Application){
+        return;
+    };
+
     if ($insert) {
       if ($this->referrer_id > 0) {
         Yii::$app->balanceCalc->todo($this->referrer_id, 'ref');
@@ -443,48 +447,12 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     $userPath = $this->getUserPath($this->uid);
     if ($photo && $image = SdImage::save($photo, $userPath, 500, substr($this->photo, strlen($userPath)))){
-
-
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), ['photo' => $userPath . $image], ['uid' => $this->uid])
             ->execute();
     }
-//      $path = $this->getUserPath($this->uid);// Путь для сохранения аватаров
-//      $oldImage = $this->photo;
-//
-//      if (!is_readable($photo->tempName)) {
-//        Yii::$app->session->addFlash('err', 'Ошибка обновления аватарки. попробуйте другой файл или повторите процедуру позже.');
-//        return;
-//      }
-//
-//      $name = time(); // Название файла
-//      $exch = explode('.', $photo->name);
-//      $exch = $exch[count($exch) - 1];
-//      $name .= '.' . $exch;
-//      $this->photo = $path . $name;   // Путь файла и название
-//      $bp = Yii::$app->getBasePath() . '/web';
-//      if (!file_exists($bp . $path)) {
-//        mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
-//      }
-//
-//      if (exif_imagetype($photo->tempName) == 2) {
-//        $img = (new Image(imagecreatefromjpeg($photo->tempName)));
-//      } else {
-//        $img = (new Image($photo->tempName));
-//      }
-//
-//      $img
-//          ->fitToWidth(500)
-//          ->saveAs($bp . $this->photo);
-//      if ($img) {
-//        $this->removeImage($bp . $oldImage);   // удаляем старое изображение
-//        $this::getDb()
-//            ->createCommand()
-//            ->update($this->tableName(), ['photo' => $this->photo], ['uid' => $this->uid])
-//            ->execute();
-//      }
-//    }
+
   }
 
   /**
