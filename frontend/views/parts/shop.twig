@@ -63,9 +63,14 @@
             class="shop_header {{ _if(store.name|length> 35,"small-size") }}"
             href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
     >
-        <span>
-            {{store.name}}
-        </span>
+        <div class="shop_header-title">
+            <span>
+                {{store.name}}
+            </span>
+            {% if store.description_extend %}
+                {{ store.description_extend|raw}}
+            {% endif %}
+        </div>
     </a>
 
     <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">

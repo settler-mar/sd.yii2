@@ -61,16 +61,21 @@
     overflow: hidden;
     text-decoration: none;
 
-    span{
-      font-weight: 700;
-      font-size: 17px;
-      color: $shop_name_color;
+    &-title {
+      display: flex;
+      flex-direction: column;
       margin: auto;
       max-width: 155px;
+      font-size: 12px;
+      color: $shop_name_color;
       @include media($phones) {
         max-width: 100%;
       }
 
+      span{
+        font-weight: 700;
+        font-size: 17px;
+      }
     }
     &-goto {
       &-button {
