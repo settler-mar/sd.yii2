@@ -111,7 +111,11 @@
                                             {{ form.field(model, 'contact_email').textInput({'maxlength':true}).label(false)|raw }}
                                         </p>
                                         <p><span>Контакты. E-mail:</span> <br>
-                                            {{ form.field(model, 'contact_phone').textInput({'maxlength':true}).label(false)|raw }}
+                                        {{ form.field(model, 'contact_phone').textInput({'maxlength':true}).label(false)|raw }}
+                                        </p>
+                                        <p>
+                                            <span>Дополнительное описание:</span> <br>
+                                            {{ form.field(model, 'description_extend').textInput({'maxlength':true}).label(false)|raw }}
                                         </p>
                                         <p>
                                             <span>Краткое описание  (Информация о  ...):</span> <br>
@@ -129,10 +133,6 @@
                                             <span>Текст для активных купонов:</span> <br>
                                             {{ form.field(model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                                         </p>
-                                        <p>
-                                            <span>Дополнительное описание:</span> <br>
-                                            {{ form.field(model, 'description_extend').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
-                                        </p>
                                     </div>
                                     {% for k,lang in languages %}
                                         <div class="cpa_box tab_{{ k }}">
@@ -149,6 +149,10 @@
                                                 {{ form.field(lang.model, 'contact_phone').textInput({'maxlength':true}).label(false)|raw }}
                                             </p>
                                             <p>
+                                                <span>Дополнительное описание:</span> <br>
+                                                {{ form.field(lang.model, 'description_extend').textInput({'maxlength':true}).label(false)|raw }}
+                                            </p>
+                                            <p>
                                                 <span>Краткое описание  (Информация о  ...):</span> <br>
                                                 {{ form.field(lang.model, 'short_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                                             </p>
@@ -163,10 +167,6 @@
                                             <p>
                                                 <span>Текст для активных купонов:</span> <br>
                                                 {{ form.field(lang.model, 'coupon_description').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
-                                            </p>
-                                            <p>
-                                                <span>Дополнительное описание:</span> <br>
-                                                {{ form.field(lang.model, 'description_extend').widget(TinyMce.className(),params('TinyMce')).label(false)|raw }}
                                             </p>
                                         </div>
                                     {% endfor %}
