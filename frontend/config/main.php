@@ -274,6 +274,9 @@ $config = [
     'language' => [
         'class' => 'frontend\modules\language\Module',
     ],
+    'configs' => [
+        'class' => 'frontend\modules\configs\Module',
+    ],
   ],
   'params' => $params,
 

@@ -1,0 +1,19 @@
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+
+                {% set form = active_form_begin() %}
+
+                {{ form.field(model, 'text').textArea({'maxlength':true, 'rows': 30}).label(false)|raw }}
+
+                <div class="form-group">
+                    <input type="submit" value="Изменить" class="btn btn-primary">
+                </div>
+                {{ active_form_end() }}
+            </div>
+        </div>
+    </section>
+</div>
+

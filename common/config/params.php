@@ -39,4 +39,11 @@ return [
 
   'rating_calculate_interval' => 12,
 
+  'configs' => [
+      [
+          'config' => 'sellaction_categories.json',
+          'title' => 'Категории Sellaction',
+      ]
+  ],
+
 ];
