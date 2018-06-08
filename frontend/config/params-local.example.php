@@ -27,33 +27,40 @@ return [
         'default' => [
             'bonus_status' => null,
             'loyalty_status' => 5,
+            'title' => '',
         ],
         'premium' => [
             'bonus_status' => null,
             'loyalty_status' => 6,
+            'title' => 'Premium',
         ],
         'platinum' => [
             'loyalty_status' => 4,
             'time' => false,
+            'title' => 'Platinum',
         ],
         'platinum-vk' => [
             'loyalty_status' => 4,
             'time' => false,
+            'title' => 'Platinum',
         ],
         'platinum0418' => [
             'loyalty_status' => 4,
             'new_loyalty_status_end' => 0,
-            'referrer_id' => 72884
+            'referrer_id' => 72884,
+            'title' => 'Platinum',
         ],
         'gold0418' => [
             'loyalty_status' => 3,
             'new_loyalty_status_end' => 0,
-            'referrer_id' => 72883
+            'referrer_id' => 72883,
+            'title' => 'Gold',
         ],
         'silver0418' => [
             'loyalty_status' => 2,
             'new_loyalty_status_end' => 0,
-            'referrer_id' => 72882
+            'referrer_id' => 72882,
+            'title' => 'Silver',
         ],
     ],
     'plugin_install_panel' => 1,
