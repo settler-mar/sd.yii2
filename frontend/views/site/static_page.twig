@@ -7,8 +7,8 @@
             {{ h1|raw }}
         </h1>
         <div class="static-page_background-image {% if background_image_full.class_name %} static-page_background-image-{{ background_image_full.class_name }}{% endif %}">
-            <div class="static-page_background-image-in" style="background-image: url(img/{{ background_image_full.image }});" >
-            </div>
+            <img class="static-page_background-image" src="/img/{{ background_image_full.image }}" />
+
         </div>
     {% elseif background_image_full.image %}
         {# иначе просто имеем картинку - картинка, на ней h1 h2#}
