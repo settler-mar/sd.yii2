@@ -27,27 +27,16 @@ class Meta extends \yii\db\ActiveRecord
     public $regionsPostData = [];
     public $regionsData = [];
     protected $imagesPath = '/img/';
-    //public $metaTagArray;
     public $metaTitle;
     public $metaDescription;
     public $metaImage;
 
-//    public $metaProperties = [
-//        'title' => 'Title',
-//        'description' => 'Description',
-//        'image' => 'Image',
-//        'url' => 'Url',
-//        'meta.title' => 'Title из Метаданных',
-//        'meta.description' => 'Desription  из Метаданных',
-//        'meta.keywords' => 'Keywords  из Метаданных',
-//        'request.pathInfo' => 'Url текущей страницы',
-//        ];
 
 
     protected static $json_attributes  = ['title', 'h1', 'description'];
 
     protected static $translated_attributes = ['title', 'description', 'keywords', 'h1', 'h2', 'content',
-        'backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'];
+        'backgroundImageImage', 'backgroundImageClassName'];
 
     /**
      * @inheritdoc
