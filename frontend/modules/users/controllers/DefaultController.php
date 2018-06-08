@@ -501,10 +501,20 @@ class DefaultController extends Controller
     $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
     if ($validatorPromo->validate($promo)) {
       Yii::$app->session->set('referrer_promo', $promo);
-      return json_encode([
-        'title' => Yii::t('common', 'congratulations'),
-        'message' => Yii::t('account', 'user_loyalty_reg_status'),
-      ]);
+      if (isset(Yii::$app->params['ref_promo'][$promo])) {
+          $promoItem = Yii::$app->params['ref_promo'][$promo];
+          $title = (isset($promoItem['title'])) ? $promoItem['title'] : $promo;
+          $days = (isset($promoItem['new_loyalty_status_end'])) ? $promoItem['new_loyalty_status_end'] : 0;
+          if ($days == 0) {
+              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_forever', ['title' => $title]);
+          } else {
+              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_for_{days}_', ['title' => $title, 'days'=> $days]);
+          }
+          return json_encode([
+              'title' => Yii::t('common', 'congratulations'),
+              'message' => $message,
+          ]);
+      };
     } else {
         //return json_encode(['validator' => $validatorPromo]);
     }
