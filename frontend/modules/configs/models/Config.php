@@ -4,6 +4,7 @@ namespace frontend\modules\configs\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\Sellaction;
 
 /**
  * This is the model class for table "cw_cache".
@@ -14,9 +15,11 @@ use yii\base\Model;
  */
 class Config extends Model
 {
-    public $config;
-    public $text;
     public $title;
+    public $items = [];
+    public $postItems = [];
+
+    private $categories;
     private $file;
 
     /**
@@ -25,31 +28,24 @@ class Config extends Model
     public function rules()
     {
         return [
-            [['config', 'text'], 'required'],
-            ['text', 'string'],
-            ['text', 'trim'],
-            ['config', 'in', 'range' => array_keys($this->configsList())],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'config' => 'Настройка',
-            'text' => 'Конфигурация',
+            [['postItems'], 'required'],
         ];
     }
 
     public function init()
     {
         $configs = Yii::$app->params['configs'];
-        $this->config = $configs[0]['config'];
+        $config = $configs[0]['config'];
         $this->title = $configs[0]['title'];
-        $this->file = realpath(Yii::$app->basePath . '/../common/config/json/'.$this->config);
-        $this->text = file_exists($this->file) ? file_get_contents($this->file) : '';
+        $this->file = realpath(Yii::$app->basePath . '/../common/config/json/'.$config);
+        $this->categories = Sellaction::categories();
+        $jsonArr = file_exists($this->file) ? json_decode(file_get_contents($this->file), true) : [];
+        foreach ($this->categories as $key => $category) {
+            $this->items[$key] = [
+                'name' => $category,
+                'id' => isset($jsonArr[$key]) ? $jsonArr[$key]['id'] : null,
+            ];
+        }
     }
 
     public function configsList()
@@ -64,9 +60,14 @@ class Config extends Model
 
     public function save()
     {
-        return file_put_contents($this->file, $this->text);
+        $this->items = [];
+        foreach ($this->postItems as $key => $item) {
+            $this->items[$key] = [
+                'id' => $item,
+                'name' => $this->categories[$key]
+            ];
+        }
+        return file_put_contents($this->file, json_encode($this->items));
     }
-
-
 
 }

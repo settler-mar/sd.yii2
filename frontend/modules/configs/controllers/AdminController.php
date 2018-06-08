@@ -4,6 +4,8 @@ namespace frontend\modules\configs\controllers;
 
 use yii;
 use frontend\modules\configs\models\Config;
+use frontend\modules\coupons\models\CategoriesCoupons;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class AdminController
@@ -34,6 +36,11 @@ class AdminController extends \yii\web\Controller
         }
         return $this->render('update.twig', [
             'model' => $model,
+            'categories' => ArrayHelper::map(
+                CategoriesCoupons::find()->select(['uid', 'name'])->asArray()->all(),
+                'uid',
+                'name'
+            ),
         ]);
     }
 

@@ -6,7 +6,21 @@
 
                 {% set form = active_form_begin() %}
 
-                {{ form.field(model, 'text').textArea({'maxlength':true, 'rows': 30}).label(false)|raw }}
+                {% for key, item in model.items %}
+                    <div class="form-group row" style="margin-bottom:10px;">
+                        <label class="col-sm-4 col-form-label" for="post-item-{{ key }}">{{ key }}.{{ item.name }}</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="Config[postItems][{{ key }}]" id="post-item-{{ key }}">
+                                <option value=""></option>
+                                {% for index, category in categories %}
+                                    <option value="{{ index }}" {% if index == item.id %}selected{% endif %}>{{ index }}.{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="help-block"></div>
+                    </div>
+
+                {% endfor %}
 
                 <div class="form-group">
                     <input type="submit" value="Изменить" class="btn btn-primary">
