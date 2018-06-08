@@ -85,9 +85,16 @@
                             <p>
                                 <img for="Meta_{{ k }}[backgroundImageImage]" style="max-height: 480px;" src="img/{{ loop_model.backgroundImageImage | raw }}">
                             </p>
-                            {{ form.field(loop_model, 'backgroundImageImage').fileInput().label(false)|raw }}
+                            {{ form.field(loop_model, 'backgroundImageImage', {
+                                'template':"<div style=\"display:flex;\">{input}<label class=\"inline\"><input name=\"Meta[backgroundImageDelete]\" value=\"1\" type=\"checkbox\"> Удалить</label></div>{error}"
+                            }).fileInput().label(false)|raw }}
 
-                            {{ form.field(loop_model, 'backgroundImageClassName').dropDownList({"":"Стандартное отображение", "plugin":"Страница установки плагина"})|raw }}
+                            {{ form.field(loop_model, 'backgroundImageClassName')
+                                .dropDownList({
+                                "":"Стандартное отображение",
+                                "plugin":"Страница установки плагина",
+                                "narrow-page":"Узкая страница"
+                            })|raw }}
 
                             {{ form.field(loop_model, 'h2').textInput({'maxlength':true})|raw }}
 

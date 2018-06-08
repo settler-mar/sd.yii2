@@ -22,7 +22,7 @@ use common\components\SdImage;
 class Meta extends \yii\db\ActiveRecord
 {
     public $backgroundImageImage;
-    public $backgroundImageAlt;
+    public $backgroundImageDelete;
     public $backgroundImageClassName;
     public $regionsPostData = [];
     public $regionsData = [];
@@ -79,10 +79,10 @@ class Meta extends \yii\db\ActiveRecord
             [['description', 'keywords', 'content'], 'trim'],
             [['page', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page', 'unique'],
-            ['show_breadcrumbs', 'boolean'],
+            [['show_breadcrumbs', 'backgroundImageDelete'], 'boolean'],
             [['content', 'meta_tags', 'metaTitle', 'metaDescription', 'metaImage'], 'string'],
             [['meta_tags_type'], 'integer'],
-            [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
+            [['backgroundImageImage', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
             ['regionsPostData', 'safe'],
         ];
     }
@@ -115,27 +115,11 @@ class Meta extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-
-
         foreach (self::$json_attributes as $attribute) {
             $this->$attribute = isset($this->regionsPostData[$attribute]) ?
                     json_encode($this->regionsPostData[$attribute]) : null;
         }
 
-
-//        $meta_tags = [];
-//        $appTags = Yii::$app->params['meta_tags'];
-//        foreach ($appTags as  $attribute => $groups) {
-//            foreach ($groups as $name => $property) {
-//                $data = !empty($this->metaTagArray[$attribute.'.'.$name]) && !empty($this->metaTagArray[$attribute.'.'.$name]) ?
-//                    implode('~', $this->metaTagArray[$attribute.'.'.$name]):
-//                    false;
-//                if ($data && $data != $property) {
-//                    $meta_tags[$attribute][$name] = $data;
-//                }
-//            }
-//        }
-//        $this->meta_tags = !empty($meta_tags) ? json_encode($meta_tags) : null;
         if ($this->meta_tags_type == 1) {
             $this->meta_tags = json_encode([
                 'title' => $this->metaTitle,
@@ -155,7 +139,6 @@ class Meta extends \yii\db\ActiveRecord
         $backgroundImage = $this->background_image ? json_decode($this->background_image) : false;
         if ($backgroundImage) {
             $this->backgroundImageImage = isset($backgroundImage->image) ? $backgroundImage->image : null;
-            $this->backgroundImageAlt = isset($backgroundImage->alt) ? $backgroundImage->alt : null;
             $this->backgroundImageClassName = isset($backgroundImage->class_name) ? $backgroundImage->class_name : null;
         }
 
@@ -351,56 +334,20 @@ class Meta extends \yii\db\ActiveRecord
         $photo = \yii\web\UploadedFile::getInstance($this, 'backgroundImageImage');
 
         $oldBackgroundImage = $this->background_image ? json_decode($this->background_image, true) : false;
-        if ($photo && $image = SdImage::save(
-            $photo,
-            $this->imagesPath,
-            0,
-            isset($oldBackgroundImage['image']) ? $oldBackgroundImage['image'] : null
-            )) {
-            $json = json_encode([
-                'image' => $image,
-                'alt' => isset($oldBackgroundImage['alt']) ? $oldBackgroundImage['alt'] : null,
-                'class_name' => isset($oldBackgroundImage['class_name']) ? $oldBackgroundImage['class_name'] : null
-            ]);
-            $this::getDb()
-                ->createCommand()
-                ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
-                ->execute();
-
+        if ($photo) {
+            $image = SdImage::save($photo, $this->imagesPath, 0, false);//удалять старое фото не нужно
+        } else {
+            $image = $this->backgroundImageDelete ? null :
+                (isset($oldBackgroundImage['image']) ? $oldBackgroundImage['image'] : null);
         }
-
-//        $photo = \yii\web\UploadedFile::getInstance($this, 'backgroundImageImage');
-//        if ($photo) {
-//
-//            $path = $this->imagesPath;// Путь для сохранения
-//            $name = time(); // Название файла
-//            $exch = explode('.', $photo->name);
-//            $exch = $exch[count($exch) - 1];
-//            $name .= '.' . $exch;
-//            $imageName = $name;   // название
-//            $bp=Yii::$app->getBasePath().'/web'.$path;
-//            if (!file_exists($bp)) {
-//                mkdir($bp . $path, 0777, true);   // Создаем директорию при отсутствии
-//            }
-//            $img = (new Image($photo->tempName));
-//            $img->saveAs($bp . $imageName);
-//
-//            if ($img) {
-//                $json = json_encode([
-//                    'image' => $imageName,
-//                    'alt' => $this->backgroundImageAlt,
-//                    'class_name' => $this->backgroundImageClassName,
-//                ]);
-//                $oldBackgroundImage = $this->background_image ? json_decode($this->background_image) : false;
-//                if ($oldBackgroundImage && $oldBackgroundImage->image) {
-//                    $this->removeImage($bp . $oldBackgroundImage->image);   // удаляем старое изображение
-//                }
-//                $this::getDb()
-//                    ->createCommand()
-//                    ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
-//                    ->execute();
-//            }
-//        }
+        $json = json_encode([
+            'image' => $image,
+            'class_name' => $this->backgroundImageClassName
+        ]);
+        $this::getDb()
+            ->createCommand()
+            ->update($this->tableName(), ['background_image' => $json], ['uid' => $this->uid])
+            ->execute();
     }
     /**
      * Удаляем изображение при его наличии

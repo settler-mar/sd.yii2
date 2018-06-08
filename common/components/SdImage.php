@@ -64,7 +64,7 @@ class SdImage
                 self::deleteImage($fullPath.$old);
             }
             return $name;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }
