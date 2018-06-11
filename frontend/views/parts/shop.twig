@@ -64,11 +64,13 @@
             href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
     >
         <div class="shop_header-title">
-            <span>
+            <span class="shop_header-title_name">
                 {{store.name}}
             </span>
             {% if store.description_extend %}
-                {{ store.description_extend|raw}}
+              <span  class="shop_header-title_description_extend">
+                  {{ store.description_extend|raw}}
+              </span>
             {% endif %}
         </div>
     </a>

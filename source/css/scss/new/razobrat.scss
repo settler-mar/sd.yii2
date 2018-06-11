@@ -1,0 +1,24 @@
+.gray-box {background-color: #fff;}
+a.blue {color: #1a8cff; }
+a.blue:hover {text-decoration: none; color: #1a8cff;}
+.static-page h1 {line-height: 1.1; margin-bottom: 40px;}
+.static-page-content-narrow-page {width: 80%; margin: 60px auto 80px auto; font-size: 19px;}
+.mail_ru {color: #33a0b5;}
+/*.btn {
+  padding: 16px 40px;
+  border-radius: 12px;
+  border: 0;
+  font-size: 19px;
+  margin-bottom: 0px;
+}*/
+.new-year_item-description-header {
+  font-size: 21px;
+  color: #000;
+}
+.static-page_background-image {width: 100% !important;}
+
+@media (max-width: 1024px) {
+  .static-page-content-narrow-page {width: 90%; margin: 40px auto 60px auto;}
+  .static-page h1 {font-size: 2.0em; margin-bottom: 30px;}
+  .static-page h1 br {display: none;}
+}
