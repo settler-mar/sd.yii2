@@ -23,7 +23,7 @@
           {{ langs[active.lang].name }}
 
           <ul class="header-upline_lang-list-drap">
-            {% for k,lang in langs %}
+            {% for k,lang in langs if lang.active %}
               {% if k!=active.lang %}
                 <li><a href="{{ lang.url }}" class="header-upline_lang-link"><img src="{{ lang.icon|e }}" class="header-upline_lang-img">{{ lang.name|e }}</a></li>
               {% endif %}

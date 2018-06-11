@@ -6,6 +6,7 @@ return [
         'url'=>'127.0.0.1:8080',
         'protocol'=>'http',
         'langList'=>['ru'=>'ru-RU','en'=>'en-EN'],
+        'langListActive' => ['ru', 'en'],
         'langDefault'=>'ru',
         'params'=>[
             'valuta'=>'RUB',
@@ -16,6 +17,7 @@ return [
     'usa.secretdiscounter.com'=>[
         'name'=>'USA',
         'langList'=>['en'=>'en-EN'],
+        'langListActive' => ['en'],
         'langDefault'=>'en',
         'params'=>[
             'valuta'=>'USD',
