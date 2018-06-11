@@ -135,7 +135,7 @@ class PaymentsController extends Controller
 
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
             $payment = [
-                'status' => $order['State'] == 'done' ? 2 : ($order['State'] == 'canceled' ? 1 : 0),
+                'status' => $order['State'] == 'done' ? 2 : (in_array($order['State'],['canceled','wait-canceled']) ? 1 : 0),
                 'subid' => $user->uid,
                 'positions' => false, //для тарифа, видимо так
                 'action_id' => (string) $order['ItemId'],
@@ -152,6 +152,8 @@ class PaymentsController extends Controller
                 'affiliate_id' => $store->cpaLink->affiliate_id,
                 'cpa_id' => $store->cpaLink->cpa_id
             ];
+
+            //d([(string) $order['ItemId'],$payment['status'],$order['State']]);
 
             $paymentStatus = Payments::makeOrUpdate(
                 $payment,
