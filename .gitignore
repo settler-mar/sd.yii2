@@ -66,3 +66,6 @@ package-lock.json
 common/config/socials.php
 
 *.zip
+
+
+sellaction_categories.json
