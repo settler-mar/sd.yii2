@@ -11,6 +11,7 @@ return [
             'valuta'=>'RUB',
         ],
         'socialsShareList' => '1,0,2,4,3,5,6',//vk,fb,ok,g+,tw,mali.ru,lj
+        'active' => 1,
     ],
     'usa.secretdiscounter.com'=>[
         'name'=>'USA',
@@ -20,6 +21,6 @@ return [
             'valuta'=>'USD',
         ],
         'socialsShareList' => '0,4,3,6',//fb,g+,tw,lj
-
+        'active' => 1,
     ]
 ];

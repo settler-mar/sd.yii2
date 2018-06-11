@@ -36,7 +36,8 @@ class LangSelect extends Widget
     foreach (Yii::$app->params['regions_list'] as $k=>$v){
       $regions[$k]=[
         'name'=>$v['name'],
-        'url'=>(isset($v['protocol'])?$v['protocol']:'https').'://'.(isset($v['url'])?$v['url']:$k).'/'.$path
+        'url'=>(isset($v['protocol'])?$v['protocol']:'https').'://'.(isset($v['url'])?$v['url']:$k).'/'.$path,
+        'active' => $v['active'],
       ];
     }
 

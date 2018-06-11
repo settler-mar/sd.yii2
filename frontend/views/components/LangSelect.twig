@@ -1,4 +1,4 @@
-{% if regions|length>1 or langs|length>1  %}
+{% if app.params.lang_select_active == 1 %}
   <div class="header-upline_lang">
       {% if regions|length>1 %}
       <ul class="header-upline_lang-list btn-header">
@@ -6,7 +6,7 @@
           {{ regions[active.region].name }}
 
           <ul class="header-upline_lang-list-drap">
-            {% for k,region in regions %}
+            {% for k,region in regions if region.active %}
               {% if k!=active.region %}
                 <li><a href="{{ region.url }}" class="header-upline_lang-link">{{ region.name|e }}</a></li>
               {% endif %}
