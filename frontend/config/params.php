@@ -20,6 +20,7 @@ $data = [
     'language_list' => [
         'ru-RU'=> 'Русский',
         'en-EN'=> 'English',
+        'lt'=> 'Литовский',
     ]
 ];
 
