@@ -83,8 +83,9 @@ class PaymentsController extends Controller
   {
       echo "Payments from Admitad\n";
       Yii::$app->runAction('admitad/payments');
-      //echo "Payments from Ozon\n";
-      //$this->actionOzon();
+
+      echo "Payments from Ozon\n";
+      $this->actionOzon();
   }
 
     /**
@@ -121,10 +122,9 @@ class PaymentsController extends Controller
            Позволяет точно определять перемещение из принятых к обработке в выполненные.
     */
 
-        foreach ($stat->Stats as $orderItem) {
+        foreach ($stat['OrderItems']as $order) {
             $records++;
-            $order = $orderItem->OrderItem;
-            $user = $this->getUserData((string) $order->AgentId);
+            $user = $this->getUserData((string) $order['AgentId']);
             if ($user == false) {
                 $noUser++;
                 continue;
@@ -132,25 +132,27 @@ class PaymentsController extends Controller
             if (!in_array($user->uid, $users)) {
                 $users[] = $user->uid;
             }
+
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
             $payment = [
-                'status' => $order->State == 'done' ? 2 : ($order->State == 'canceled' ? 1 : 0),
+                'status' => $order['State'] == 'done' ? 2 : ($order['State'] == 'canceled' ? 1 : 0),
                 'subid' => $user->uid,
                 'positions' => false, //для тарифа, видимо так
-                'action_id' => (string) $order->ItemId,
-                'cart' => (float)$order->Price * ($order->Qty ? (int) $order->Qty : 1),
-                'payment' => (float) $order->Summ,
-                'click_date' => date('Y-m-d H:i:s', strtotime($order->Date)),
-                'action_date' => date('Y-m-d H:i:s', strtotime($order->Date)),
-                'status_updated' => date('Y-m-d H:i:s', strtotime($order->StateChangeMoment)),
-                'closing_date' => date('Y-m-d H:i:s', strtotime($order->StateChangeMoment)), //??
+                'action_id' => (string) $order['ItemId'],
+                'cart' => (float)$order['Price'] * ($order['Qty'] ? (int) $order['Qty'] : 1),
+                'payment' => (float) $order['Summ'],
+                'click_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
+                'action_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
+                'status_updated' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])),
+                'closing_date' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])), //??
                 'product_country_code' => null, // а может сюда StatIdent ??
-                'order_id' => (string) $order->StatIdent,// тоже под вопросом??
+                'order_id' => (string) $order['StatIdent'],// тоже под вопросом??
                 'tariff_id' => null,
                 'currency' => 'RUB',
                 'affiliate_id' => $store->cpaLink->affiliate_id,
                 'cpa_id' => $store->cpaLink->cpa_id
             ];
+
             $paymentStatus = Payments::makeOrUpdate(
                 $payment,
                 $store,
@@ -165,9 +167,8 @@ class PaymentsController extends Controller
                     $updated++;
                 }
             }
-
-
         }
+
         echo 'Payments ' . $records . "\n";
         if ($noUser) {
             echo 'User not found ' . $noUser . "\n";
