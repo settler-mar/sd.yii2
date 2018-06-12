@@ -16,7 +16,6 @@
     <title>{{ this.title |raw}}</title>
 
     <!-- SEO -->
-    {{   void(this.head) }}
     {% if app.controller.pagination_tags.prev_page != null %}
       <link rel="prev" href="{{site_url}}{{app.controller.pagination_tags.prev_page}}">
     {% endif %}
@@ -44,8 +43,12 @@
     {% endfor %}
 
     {% include 'base/header_include.twig' %}
+    {{ void(this.head()) }}
   </head>
   <body>
+  {{ void(this.beginBody()) }}
+  {{ this.meta_head | raw }}
+
     <!--[if lt IE 9]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->

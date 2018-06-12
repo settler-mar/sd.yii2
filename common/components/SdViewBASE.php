@@ -19,6 +19,7 @@ class SdViewBASE extends View
   public $first_init = true;
   public $description;
   public $h1;
+  public $meta_head;
   public $type = 'frontend';
 
   private $def_meta=array(
@@ -64,6 +65,8 @@ class SdViewBASE extends View
         if (isset($arr['title'])) $this->title = $arr['title'];
         if (isset($arr['content'])) $this->contentBD = $arr['content'];
         if (isset($arr['h1'])) $this->h1 = $arr['h1'];
+
+        if (isset($arr['head'])) $this->meta_head = $arr['head'];
 
         $this->all_params = array_merge($this->all_params, $arr);
         if (isset($arr['meta_tags_type']) && $arr['meta_tags_type'] == 1 && $arr['meta_tags']) {
