@@ -19,6 +19,7 @@ class SellactionController extends Controller
   private $cpa;
   private $debug = false;
   private $categories;
+  private $categoriesConfigFile;
 
   /**
    * Получение платежей
@@ -48,7 +49,7 @@ class SellactionController extends Controller
     $countCoupons = 0;
     $insertedCoupons = 0;
 
-    $cpa = Cpa::find()->where(['name' => 'Cellaction'])->one();
+    $cpa = Cpa::find()->where(['name' => 'Sellaction'])->one();
     if (!$cpa) {
       echo 'Cpa type Cellaction not found';
       return;
@@ -94,6 +95,7 @@ class SellactionController extends Controller
             WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
       Yii::$app->db->createCommand($sql)->execute();
     }
+    $this->saveCategories();
     echo 'Stores ' . $records . "\n";
     echo 'Inserted ' . $inserted . "\n";
     echo 'Inserted Cpa link ' . $cpalinkInserted . "\n";
@@ -389,15 +391,17 @@ class SellactionController extends Controller
   private function getCategories($categories)
   {
     if (!$this->categories) {
-      $file = Yii::$app->basePath . '/..' . Yii::$app->params['sellaction']['categories_json'];
+      $file = realpath(Yii::$app->basePath . '/../');
+      $file .= Yii::$app->params['sellaction']['categories_json'];
+      $this->categoriesConfigFile = $file;
       if (file_exists($file)) {
         $this->categories = json_decode(file_get_contents($file), true);
+      } else {
+          $this->categories = [];
       }
+
     }
     $result = [];
-    if (!$this->categories) {
-      return [];
-    }
     foreach ($categories as $category) {
       if (!empty($this->categories[$category['id']]['id'])) {
         $id = $this->categories[$category['id']]['id'];
@@ -406,78 +410,28 @@ class SellactionController extends Controller
         } else {
           $result[] = (integer)$id;
         }
+      } else {
+          //неизвестное значение - вписать в массив
+         $this->categories[$category['id']] = [
+           'name' => $category['name']
+         ];
       }
     }
     return array_unique($result);
   }
 
-  /*
-   категории купонов адмитад
-(
-  [1] => Товары для детей
-  [2] => Красота и Здоровье
-  [3] => Аксессуары и Сумки
-  [4] => Обувь
-  [5] => Одежда
-  [6] => Спорт и Активный отдых
-  [7] => Товары для дома
-  [8] => Техника и Электроника
-  [9] => Цветы и Подарки
-  [10] => Часы и Украшения
-  [11] => Еда и напитки
-  [12] => Путешествия и Туризм
-  [14] => Книги
-  [15] => Финансы и Страхование
-  [17] => Зоотовары
-  [18] => Товары для взрослых
-  [19] => Игры и игрушки
-  [20] => Автотовары
-  [21] => Услуги
-  [22] => Работа и Образование
-  [23] => Инструменты и Садовая техника
-  [24] => Товары для туризма
-  [25] => 11.11 FEST
-)
-
-(
-  категории шопов
-
-  [8] => Красота и здоровье
-  [13] => Мебель, товары для дома
-  [7] => Книги и диски
-  [15] => Подарки, цветы
-  [42] => Украшения
-  [14] => Одежда, обувь, аксессуары
-  [30] => Установочные
-  [17] => Бытовая техника и электроника
-  [18] => Спортивные товары
-  [63] => Подтвержденный заказ
-  [60] => Услуги
-  [29] => Браузерные игры
-  [4] => Авто
-  [16] => Товары для детей
-  [10] => Пластиковые карты
-  [11] => Кредиты
-  [32] => Заказ билетов
-  [5] => Продукты питания
-  [40] => Аксессуары
-  [50] => Софт & Игры
-  [6] => Товары для животных
-  [19] => Купонные сервисы
-  [49] => Товары для творчества
-  [61] => Строительство и ремонт
-  [33] => Подбор туров
-  [25] => Android
-  [62] => Оплаченный заказ
-  [21] => Мобильные сервисы
-  [22] => Провайдеры
-  [45] => Знакомства
-  [34] => Бронирование отелей
-  [37] => Бизнес
-  [44] => Работа & Обучение
-  [9] => Депозиты
-)
-    */
+  private function saveCategories()
+  {
+      $categories = !empty($this->categories) ? json_encode($this->categories) : false;
+      $fileArray = explode('/', $this->categoriesConfigFile);
+      $filePath = implode('/', array_slice($fileArray, 0, count($fileArray) - 1));
+      if (!file_exists($filePath)) {
+          mkdir($filePath, 0777, true);
+      }
+      if ($categories && $this->categoriesConfigFile) {
+          file_put_contents($this->categoriesConfigFile, $categories);
+      }
+  }
 
 
 }
