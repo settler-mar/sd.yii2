@@ -16,6 +16,7 @@ class StoresSearch extends Stores
               " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
     public $charity;
     public $cpa_id;
+    public $active_cpa_type;
     /**
      * @inheritdoc
      */
@@ -23,7 +24,7 @@ class StoresSearch extends Stores
     {
         return [
             [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id'], 'integer'],
-            [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email'], 'safe'],
+            [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email', 'active_cpa_type'], 'safe'],
         ];
     }
 
@@ -51,8 +52,9 @@ class StoresSearch extends Stores
      */
     public function search($params)
     {
-        $query = Stores::find();
-
+        $query = Stores::find()
+            ->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id')
+            ->innerJoin(Cpa::tableName().' cwc', 'cwc.id = cwcl.cpa_id');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -66,6 +68,10 @@ class StoresSearch extends Stores
             'pageSize' => 40,
           ],
         ]);
+        $dataProvider->sort->attributes['active_cpa_type'] = [
+            'asc' => ['cwc.name' => SORT_ASC],
+            'desc' => ['cwc.name' => SORT_DESC],
+        ];
 
       //ddd($dataProvider->pagination);
       //$dataProvider->pagination = false; // отключаем пагинацию
@@ -108,9 +114,11 @@ class StoresSearch extends Stores
         if (!empty($this->charity)) {
             $query->andFilterWhere(self::CHARITY_QUERY);
         }
-        if (!empty($this->cpa_id)) {
-          $query->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id')
-            ->andFilterWhere(['cwcl.cpa_id' => $this->cpa_id]);
+        if (!empty($this->cpa_id) || !empty($this->active_cpa_type)) {
+            $query->andFilterWhere(['cwcl.cpa_id' => $this->cpa_id]);
+        }
+        if (!empty($this->active_cpa_type)) {
+            $query->andFilterWhere(['cwc.id' => $this->active_cpa_type]);
         }
         return $dataProvider;
     }
