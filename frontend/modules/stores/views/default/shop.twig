@@ -97,7 +97,7 @@
 
       <div class="shop_header_big-item">
         <div class="shop_header_big-item-head ">
-          {{ _if(current_store.is_offline, t('main', 'online_shop'), t('main', 'offline_shop')) | raw }}
+          {{ _if(current_store.is_offline==0, t('main', 'online_shop'), t('main', 'offline_shop')) | raw }}
         </div>
         <div class="shop_header_big-item-body">
           <div

@@ -52,7 +52,7 @@ class LgMeta extends Meta//\yii\db\ActiveRecord
         return [
             [['meta_id', 'language', 'title'], 'required'],
             [['title', 'language', 'description', 'keywords', 'content', 'h1', 'h2', 'background_image'], 'trim'],
-            [['description', 'language', 'keywords', 'content', 'h2', 'background_image'], 'string'],
+            [['description', 'language', 'keywords', 'content', 'h2', 'background_image','head'], 'string'],
             [['title', 'h1', 'h2'], 'string', 'max' => 255],
             ['meta_id', 'unique', 'targetAttribute' => ['meta_id', 'language']],
             [['backgroundImageImage', 'backgroundImageAlt', 'backgroundImageClassName'], 'safe'],

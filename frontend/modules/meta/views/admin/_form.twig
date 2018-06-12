@@ -73,6 +73,7 @@
                                         {{ form.field(loop_model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.title[r]}).label('Title')|raw }}
                                         {{ form.field(loop_model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.h1[r]}).label('H1')|raw }}
                                         {{ form.field(loop_model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.description[r]}).label('Description')|raw }}
+                                        {{ form.field(loop_model, 'regionsPostData[head]['~r~']').textarea({'rows':6, 'value': loop_model.regionsData.head[r]}).label('head')|raw }}
                                     </div>
                                 {% endfor %}
                             </div>

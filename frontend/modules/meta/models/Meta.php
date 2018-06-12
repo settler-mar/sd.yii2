@@ -32,11 +32,10 @@ class Meta extends \yii\db\ActiveRecord
     public $metaImage;
 
 
-
-    protected static $json_attributes  = ['title', 'h1', 'description'];
+    protected static $json_attributes  = ['title', 'h1', 'description','head'];
 
     protected static $translated_attributes = ['title', 'description', 'keywords', 'h1', 'h2', 'content',
-        'backgroundImageImage', 'backgroundImageClassName'];
+        'backgroundImageImage', 'backgroundImageClassName','head'];
 
     /**
      * @inheritdoc
@@ -69,7 +68,7 @@ class Meta extends \yii\db\ActiveRecord
             [['page', 'h1_class', 'h2'], 'string', 'max' => 255],
             ['page', 'unique'],
             [['show_breadcrumbs', 'backgroundImageDelete'], 'boolean'],
-            [['content', 'meta_tags', 'metaTitle', 'metaDescription', 'metaImage'], 'string'],
+            [['content', 'meta_tags', 'metaTitle', 'metaDescription', 'metaImage','head'], 'string'],
             [['meta_tags_type'], 'integer'],
             [['backgroundImageImage', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
             ['regionsPostData', 'safe'],
