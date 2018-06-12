@@ -3,7 +3,7 @@
 namespace frontend\modules\meta\models;
 
 use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
-use Yii;
+use yii;
 use JBZoo\Image\Image;
 use frontend\modules\cache\models\Cache;
 use common\components\SdImage;
