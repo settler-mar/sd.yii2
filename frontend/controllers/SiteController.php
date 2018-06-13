@@ -437,7 +437,7 @@ class SiteController extends SdController
   {
     $page = Meta::findByUrl($action,false);
 
-    if (!$page) {
+    if (!$page || !isset($page['content'])) {
       throw new HttpException(404, 'User not found');
     }
     if (Yii::$app->request->isAjax) {
