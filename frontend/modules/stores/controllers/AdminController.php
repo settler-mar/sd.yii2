@@ -25,6 +25,7 @@ use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\LgStores;
 use frontend\modules\stores\models\StoreRatings;
 use frontend\modules\stores\models\FileImport;
+use yii\helpers\ArrayHelper;
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -119,8 +120,12 @@ class AdminController extends Controller
           $out .= '</a>';
           return $out;
         },
+        'active_cpa_name' => function($model) {
+            return $model->cpaLink->cpa->name;
+        },
       ],
-     'stat_cpa' => $statCpa,
+      'stat_cpa' => $statCpa,
+      'cpa_types' => ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
     ]);
   }
 

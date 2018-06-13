@@ -436,10 +436,8 @@ class SiteController extends SdController
    */
   public function actionStaticPage($action)
   {
-    $page = Meta::find()
-        ->where(['page' => $action])
-        ->asArray()
-        ->one();
+    $page = Meta::findByUrl($action,false);
+
     if (!$page) {
       throw new HttpException(404, 'User not found');
     }

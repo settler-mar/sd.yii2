@@ -111,6 +111,13 @@
                                 'visit',
                                 'category_cnt',
                                 {
+                                    'attribute':'active_cpa_type',
+                                    'format': 'raw',
+                                    'label': 'Тип активного Cpa',
+                                    'value': table_value.active_cpa_name,
+                                    'filter': cpa_types
+                                },
+                                {
                                     'format':'raw',
                                     'attribute':'is_offline',
                                     'filter':{

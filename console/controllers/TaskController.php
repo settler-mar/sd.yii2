@@ -540,4 +540,26 @@ class TaskController extends Controller
       $user->save();
     }
   }
+
+
+    /**
+     * Исправление статуса лояльности юсеров, для которых окончание статуса наступило, но статус не вернулся
+     */
+  public function actionLoyaltyStatus()
+  {
+      $users = Users::find()->where(['loyalty_status' => 4])
+        ->andWhere(['>', 'new_loyalty_status_end', 0])
+        ->andWhere(['<', 'new_loyalty_status_end', time()])
+        ->all();
+
+      foreach ($users as $user) {
+          d($user->uid);
+          $user->new_loyalty_status_end = 0;
+          $user->loyalty_status = $user->old_loyalty_status;
+          $user->old_loyalty_status = 0;
+
+          $user->testLoyality();
+          $user->save();
+      }
+  }
 }

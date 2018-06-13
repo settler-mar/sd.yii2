@@ -66,6 +66,16 @@ class FileImport extends Model
      */
     private function booking($file, $store, $cpa_id, $affiliate_id)
     {
+        $statuses = [
+          'Отмененные' => 1,
+          'Незавершенные' => 0,
+          'Cancelled' => 1,
+          'Not finalised' => 0,
+          'Завершенные' => 2,//??
+          'Finalised' => 2,//??
+        ];
+
+
         $orders = $this->getCsv($file);
         //ddd($orders, $cpa_id, $affiliate_id);
         $users = [];
@@ -95,7 +105,7 @@ class FileImport extends Model
                 $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
                 $fee = (float)$this->float($order['Fee ( EUR )']);
                 $payment = [
-                    'status' => $order['Status'] == 'Завершенные' ? 2 : ($order['Status'] == 'Отмененные' ? 1 : 0), //надо проверить, когда в выгрузке будут завершенные
+                    'status' => isset($statuses[$order['Status']]) ? $statuses[$order['Status']] : 0,
                     'subid' => $user->uid,
                     'positions' => false, //для тарифа, видимо так
                     'action_id' => $orderId,
