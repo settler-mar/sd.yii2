@@ -97,7 +97,7 @@ class StoresSearch extends Stores
             'is_offline' => $this->is_offline,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'cw_stores.name', $this->name])
             ->andFilterWhere(['like', 'route', $this->route])
             ->andFilterWhere(['like', 'alias', $this->alias])
             ->andFilterWhere(['like', 'url', $this->url])
