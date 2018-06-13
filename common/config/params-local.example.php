@@ -18,6 +18,7 @@ return [
   'sellaction' => [
     'id' => '100025598',
     'apiKey' => '5lPEoGZ1tsdWHO8Af6lLO9dQZmLaitoK',
+    'siteId' => '13779',// id площадки
     'categories_json' => '/common/config/json/sellaction_categories.json'
   ],
   'pays_update_period'=>1,

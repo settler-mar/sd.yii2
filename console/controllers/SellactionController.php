@@ -32,8 +32,8 @@ class SellactionController extends Controller
   public function actionTest()
   {
     $sellaction = new Sellaction();
-    $response = $sellaction->campaigns(2, 20);
-    ddd(count($response['data']), $response['_meta'], $response['_links']);
+    $response = $sellaction->myCampaigns(1, 5);
+    ddd($response['data'], $response['_meta'], $response['_links']);
   }
 
   /**
@@ -60,7 +60,7 @@ class SellactionController extends Controller
     $page = 1;
     $pageCount = 2;
     do {
-      $response = $sellaction->campaigns($page, $this->debug ? 5 : 50);
+      $response = $sellaction->myCampaigns($page, $this->debug ? 5 : 50);
       if (!isset($response['_meta'])) {
         $page = $pageCount;
       } else {
@@ -129,8 +129,8 @@ class SellactionController extends Controller
 
       if ($cpa_link) {
         //если CPA link нашли то проверяем ссылку и при необходимости обновляем ее
-        if ($cpa_link->affiliate_link != 'https://sellaction.net/?r=6bfa950dae1962d292') {
-          $cpa_link->affiliate_link = 'https://sellaction.net/?r=6bfa950dae1962d292';
+        if ($cpa_link->affiliate_link != $store['default_link']) {
+          $cpa_link->affiliate_link = $store['default_link'];
           $cpa_link->save();
         }
 
@@ -206,7 +206,7 @@ class SellactionController extends Controller
         $db_store->currency = $store['currency'];
         $db_store->percent = 50;
         $db_store->description = $store['description'];
-        $db_store->short_description = $store['advantages_client'];
+        $db_store->short_description = $store['short_description'] . '<br>' . $store['advantages_client'];
         $db_store->displayed_cashback = $conditions['cashback'];
         $db_store->conditions = $conditions['text'];
         $db_store->hold_time = (integer)$conditions['process'] > 0 ? (integer)$conditions['process'] : 30;
@@ -225,7 +225,7 @@ class SellactionController extends Controller
         $cpa_link->cpa_id = $this->cpa->id;
         $cpa_link->stores_id = $store_id;
         $cpa_link->affiliate_id = $affiliate_id;
-        $cpa_link->affiliate_link = 'https://sellaction.net/?r=6bfa950dae1962d292';
+        $cpa_link->affiliate_link = $store['default_link'];
         if (!$cpa_link->save()) continue;
         $insertedCpalink++;
 

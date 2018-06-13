@@ -8,6 +8,7 @@ class Sellaction
 {
     private $id;
     private $apiKey;
+    private $siteId;//id площадки
     private $url = 'https://sellaction.net/api/';
     public $statuses =[
         '0' => 'ожидает',
@@ -23,6 +24,7 @@ class Sellaction
         $config = Yii::$app->params['sellaction'];
         $this->id = $config && isset($config['id']) ? $config['id'] : '';
         $this->apiKey = $config && isset($config['apiKey']) ? $config['apiKey'] : '';
+        $this->siteId = $config && isset($config['siteId']) ? $config['siteId'] : '';
     }
 
     public function test()
@@ -59,7 +61,11 @@ class Sellaction
     public function myCampaigns($page, $limit)
     {
         //'campaigns/my'  - возможно этот метод, но возвращает 0
-        return $this->getRequest('campaigns/my', false, ['page' => $page, 'per-page' => $limit]);
+        return $this->getRequest(
+            'campaigns/my',
+            false,
+            ['site_id'=>$this->siteId, 'page' => $page, 'per-page' => $limit]
+        );
     }
 
     /**
