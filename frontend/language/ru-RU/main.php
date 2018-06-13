@@ -62,7 +62,7 @@ return [
     'reviews_hide_all' => 'Скрыть все',
     'reviews_add' => 'Оставить отзыв',
     'all_reviews' => 'Все отзывы →',
-    'you_need_<a href="{register}" class="modals_open">register</a>or<a href="{login}" class="modals_open">login</a>to_add_review' => 'Для того, чтобы иметь возможность оставлять отзывы, вам нужно <a href="{register}" class="modals_open">зарегистрироваться</a> или <a href="{login}" class="modals_open">войти в свой аккаунт',
+    'you_need_<a href="{register}" class="modals_open">register</a>or<a href="{login}" class="modals_open">login</a>to_add_review' => 'Для того, чтобы иметь возможность оставлять отзывы, вам нужно <a href="{register}" class="modals_open">зарегистрироваться</a> или <a href="{login}" class="modals_open">войти</a> в свой аккаунт',
     'admin_answer' => 'Ответ администрации',
     '{sum}_{currency}_of_cashback' => '{sum} {currency} кэшбэка',
     'faq' => 'Часто задаваемые вопросы',
