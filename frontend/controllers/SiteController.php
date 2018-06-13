@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
@@ -353,15 +354,13 @@ class SiteController extends SdController
     if ($data['link'] == '') {
         $cpaLink = $store->cpaLink;
         if ($cpaLink && $cpaLink->affiliate_link &&
-            !empty($cpaLink->cpa->name)&&
-            $cpaLink->cpa->name == 'Admitad') {
-            //admitad
-            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-        } else if ($cpaLink && $cpaLink->affiliate_link &&
-            !empty($cpaLink->cpa->name)&&
-            $cpaLink->cpa->name == 'Shareasale') {
-            //shareasale
-            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['afftrack' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+            !empty($cpaLink->cpa->name) &&
+            isset(Cpa::$user_id_params[$cpaLink->cpa->name])) {
+            //admitad shareasale sellaction
+            $data['link'] = $this->makeGotoLink(
+                $cpaLink->affiliate_link,
+                [Cpa::$user_id_params[$cpaLink->cpa->name] => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]
+            );
         } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
             $cpaLink->cpa->name == 'Внешние подключения' && $cpaLink->affiliate_link ) {
             //внешние подключения = в $cpaLink->affiliate_link находится индекс в настройках
@@ -438,7 +437,7 @@ class SiteController extends SdController
   {
     $page = Meta::findByUrl($action,false);
 
-    if (!$page) {
+    if (!$page || !isset($page['content'])) {
       throw new HttpException(404, 'User not found');
     }
     if (Yii::$app->request->isAjax) {

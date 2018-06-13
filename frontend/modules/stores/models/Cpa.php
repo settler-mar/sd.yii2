@@ -15,6 +15,16 @@ use frontend\modules\stores\models\StoresActions;
 class Cpa extends \yii\db\ActiveRecord
 {
     /**
+     * имя параметра id юсера для разных спа
+     * @var array
+     */
+    public static $user_id_params = [
+        'Admitad' =>'subid',
+        'Shareasale' => 'afftrack',
+        'Sellaction' => 'SubID1',
+    ];
+
+    /**
      * @inheritdoc
      */
     public static function tableName()

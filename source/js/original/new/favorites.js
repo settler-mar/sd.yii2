@@ -43,19 +43,17 @@ $(document).ready(function () {
         'title': (data.title ? data.title : false)
       });
 
-      if (type == "add") {
-        self.find(".item_icon").addClass("svg-no-fill");
-      }
-
       self.attr({
         "data-state": data["data-state"],
         "data-original-title": data['data-original-title']
       });
 
       if (type == "add") {
-        self.find("svg").removeClass("spin svg-no-fill");
+        self.find("svg").removeClass("spin in_fav_off").addClass("in_fav_on");
+        self.data('original-title', lg("favorites_shop_remove"));
       } else if (type == "delete") {
-        self.find("svg").removeClass("spin").addClass("svg-no-fill");
+        self.find("svg").removeClass("spin in_fav_on").addClass("in_fav_off");
+        self.data('original-title', lg("favorites_shop_add"));
       }
 
     }, 'json').fail(function () {
@@ -66,9 +64,13 @@ $(document).ready(function () {
       });
 
       if (type == "add") {
-        self.find("svg").addClass("svg-no-fill");
+        self.find("svg").removeClass("spin in_fav_off").addClass("in_fav_on");
+        self.data('original-title', lg("favorites_shop_remove"));
+      } else if (type == "delete") {
+        self.find("svg").removeClass("spin in_fav_on").addClass("in_fav_off");
+        self.data('original-title', lg("favorites_shop_add"));
       }
-      self.find("svg").removeClass("spin");
+
     })
   });
 });

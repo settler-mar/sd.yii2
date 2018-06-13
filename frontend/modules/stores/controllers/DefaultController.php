@@ -414,7 +414,7 @@ class DefaultController extends SdController
             ->andWhere(['<>', 'cws.uid', $store->uid])
             ->andWhere(['cws.is_offline' => $store->is_offline])
             ->orderBy('region_rating DESC')
-            ->limit(6)
+            ->limit(5)
             ->all();
       }, $cache->defaultDuration, $dependency);
     } else {
@@ -428,7 +428,7 @@ class DefaultController extends SdController
                 ->andWhere(['<>', 'cws.uid', $store->uid])
                 ->andWhere(['cwstc.category_id' => $category->uid])
                 ->orderBy('region_rating DESC')
-                ->limit(6)
+                ->limit(5)
                 ->all();
           },
           $cache->defaultDuration,
