@@ -17,3 +17,5 @@ function eraseCookie(name){
   var cookie_string = name + "=0" +"; expires=Wed, 01 Oct 2017 00:00:00 GMT";
   document.cookie = cookie_string;
 }
+
+document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
