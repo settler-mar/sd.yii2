@@ -3,6 +3,7 @@
 namespace console\controllers;
 
 use common\models\Ozon;
+use common\models\Ebay;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Cpa;
@@ -181,6 +182,14 @@ class PaymentsController extends Controller
             Yii::$app->balanceCalc->setNotWork(false);
             Yii::$app->balanceCalc->todo($users, 'cash,bonus');
         }
+    }
+
+
+    public function actionEbay()
+    {
+        $ebay = new Ebay();
+        $orders = $ebay->getOrders();
+        ddd($orders);
     }
 
     /**

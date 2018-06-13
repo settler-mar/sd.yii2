@@ -21,10 +21,12 @@ return [
     'siteId' => '13779',// id площадки
     'categories_json' => '/common/config/json/sellaction_categories.json'
   ],
-  'ebay' => [
-    'AppID' => 'SecretDi-SecretDi-PRD-5668815a4-f1ea0df8',
-    'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
-    'CertID'  => 'PRD-668815a4ebe3-4844-412a-993f-456f',
+  'ebay' => [ //sandbox
+      'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
+      'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
+      'CertID'  => 'SBX-c970d9ce75e4-201d-4ed2-a0de-8492',
+      'ProjectName' => 'Secret Discounter Api',
+      'token' => 'AgAAAA**AQAAAA**aAAAAA**aXMhWw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6ABmYOgAZKCpgqdj6x9nY+seQ**wGIEAA**AAMAAA**352eTdTmr/9WPYNRFiwqlBF0YaSYYxMb0/x47FUUGVf+arsNjWVgBYbykAr3liidutmewf56GJ9LeIVxuFTm9g1j+cygacDg7BOIkYqTeXOm0Au1VffrreBxdWdbnZ968mnGnRSR+pne1jtR3GQWds3VxVVhAzytp31Qx45EBFvmkXNBIzdvIoNoHJ1TbwAQuoBoHB6Hc4HYzkE4Rrn9wQKnagDIfUgNeNpQhJIX7r0p/nJgFAxyB1oTk7MTxNM2nVc6rfoI6bR/IJgEkSa50qeNV94yMyhg6plo7WVfpaKnGwo32VjS1zXYtD4QQYRv9m9k+pwxMP2sp94JcJGCyuNWzk8PBb2A0ENRyCQAl956qe9XO7CA69GcYVm+X3CpoJZe6tE7yv2Wl5CSMdIAROW76KTHS5VyXjQvks9aU4+OgKvDjfY9Ko39jsEIEeSvpTJ+KLoCOYH3aCXETBD0CG/nEMAbN3oQlzHuSlsvQSA6DjafPe3rUr4lLvTuz9LJQ6QoewIo1tXRInVIXJVYvwFTFLBtl/YH4Pgci6Eixi9w2WZZhsKXWPhoccPlDc8nHUHRWyuDNu3m4rokiuh+LDCUsd5uLZHJu75XFxBKn657n2jQQDWA8Zo59/JlY8ND714LFZks66WPdozVqDexpDSYgv9CPhG2hDKQv6HUFd+rwVM5zDc8jCmJNM1LiybfvKZkM5eeuClxYP8lCogbZVBso598oaLvgw18Qm5JFCdBJCP2BwjnPtfvcvr76Pbs',
   ],
   'pays_update_period'=>1,
   'b2b_address' => '127.0.0.1:8080',
