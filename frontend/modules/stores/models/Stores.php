@@ -351,6 +351,7 @@ class Stores extends \yii\db\ActiveRecord
   }
 
   /**
+   * теперь 10 шопов
    * @return mixed
    */
   public static function top12()
@@ -362,7 +363,7 @@ class Stores extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $data = $cache->getOrSet('top_12_stores' . $language, function () {
-      return self::items()->orderBy('region_rating DESC')->limit(12)->all();
+      return self::items()->orderBy('region_rating DESC')->limit(10)->all();
     }, $cache->defaultDuration, $dependency);
      return $data;
   }
