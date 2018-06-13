@@ -46,16 +46,16 @@
         {% if user_id %}
             {% if store.uid in fav_ids %}
                 <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="delete" data-placement="top" data-original-title="{{ t('account', 'favorites_shop_shop_do_remove')|raw }}">
-                    {{ svg('heart','shop_panel-item_icon')|raw }}
+                    {{ svg('heart','shop_panel-item_icon  in_fav_on' )|raw }}
                 </a>
             {% else %}
                 <a class="shop_panel-item favorite-link" href="#" data-affiliate-id="{{store.uid}}" data-toggle="tooltip" data-state="add" data-placement="top" data-original-title="{{ t('account', 'favorites_shop_shop_do_add')|raw }}">
-                    {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
+                    {{ svg('heart','shop_panel-item_icon  in_fav_off')|raw }}
                 </a>
             {% endif %}
         {% else %}
             <a class="shop_panel-item favorite-link" href="#" data-toggle="tooltip" data-placement="top" data-original-title="{{ t('account', 'favorites_shop_do_add')|raw }}">
-                {{ svg('heart','shop_panel-item_icon svg-no-fill')|raw }}
+                {{ svg('heart','shop_panel-item_icon  in_fav_off')|raw }}
             </a>
         {% endif %}
     </div>
