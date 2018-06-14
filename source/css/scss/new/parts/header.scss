@@ -46,9 +46,6 @@
       flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
-      //??
-      max-height: 30px;
-      overflow: hidden;
 
       @include media($laptop-min) {
         flex-wrap: wrap;
