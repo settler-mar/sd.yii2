@@ -270,6 +270,10 @@ class AdmitadController extends Controller
             }
             $file = file_get_contents($store['image']);
             file_put_contents($path . $logo, $file);
+
+            if($db_store){
+              $db_store->logo=$logo;
+            }
           }
         }
 

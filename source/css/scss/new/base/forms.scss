@@ -369,6 +369,12 @@ td {
       height: 78px !important;
     }
   }
+
+  @include media($phones) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .form {
