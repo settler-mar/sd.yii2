@@ -562,4 +562,24 @@ class TaskController extends Controller
           $user->save();
       }
   }
+
+
+  public function actionLetyshops()
+  {
+      $urlRates = 'https://eapi.letyshops.com/eapi/cashback-rates';//кешбеки
+      $urlShops = 'https://eapi.letyshops.com/eapi/shops';//шопы
+      $data = json_decode(file_get_contents($urlShops));
+      $count = 0;
+
+      foreach ($data as $k => $shop) {
+          $store = Stores::find()->where(['like', 'url', str_replace('www.', '', $shop->c)])->one();
+          if (!$store) {
+              echo 'https://'.$shop->c. '        https://letyshops.com/' . $shop->b . "\n";
+              $count++;
+          }
+      }
+      echo "\n";
+      echo "Stores on Lety ".(count($data)). "\n";
+      echo "Stores not on SD ".$count."\n";
+  }
 }
