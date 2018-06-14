@@ -10,7 +10,7 @@
         <tr>
           <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 15px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
             Здравствуйте!
-            <?=$payment->action_date;?> ваш кэшбэк на <?=$payment->cashback;?> руб. в
+            <?=$payment->action_date;?> ваш кэшбэк на <?=$payment->cashback;?> <?=$payment->user->currency;?> в
             <a href="<?=$payment->store->url;?>"><?=$payment->store->name;?></a>
             (заказ №<?=$payment->uid;?>) зафиксирован в нашей системе.
           </td>

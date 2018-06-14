@@ -1,23 +1,15 @@
-Здраствуйте, <?= $user->name ?>,
+Good day, <?= $user->name ?>,
 
-Узнайте, как экономить до 40% на покупках.
+Find out how to save up to 40% on your shopping.
 
-Благодарим, ваша почта подтверждена. Мир выгодных покупок с кэшбэком теперь открыт для вас :)
+Thank you, your email has been confirmed. Welcome to the world of benefits of shopping with cashback :)
 
-Готовы отправиться по магазинам? Мы на реальном примере покажем, как просто экономить с кэшбэком.
+Ready to go shopping? Let us use a real-life example of how to save money with cashback. Simple!
 
-Готовы экономить по-настоящему? Вас ждут более 1200 магазинов с кэшбэком, бесплатные купоны и промокоды.
-Вперед за выгодными покупками!
-
-Успехов вам и процветания!
+Are you ready to really start saving? Over 1400 stores with cashback, free coupons and promo-codes are waiting for you!
 
 
-С наилучшими пожеланиями,
-команда SecretDiscounter.ru
-SecretDiscounter экономит ваши деньги!
-
-
-Вы получили это письмо, потому что являетесь подписчиком нашего сайта http://secretdiscounter.ru
-Чтобы отписаться от рассылки, перейдите, пожалуйста, в http://secretdiscounter.ru/account/settings
+You are subscribed to this mailing list as a client or follower of <a href="http://secretdiscounter.ru/en"> SecretDiscounter.ru</a>
+<a href="http://secretdiscounter.ru/en/account/settings">Unsubscribe</a>
 
 

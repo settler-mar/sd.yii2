@@ -70,7 +70,7 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                     width="100%" align="center"><span
-                                                                        style="color: #ffffff;font-size: 16px;">Кэшбэк-сервис</span>
+                                                                        style="color: #ffffff;font-size: 16px;">Cashback Service</span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
@@ -205,11 +205,11 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                     width="100%" align="center"><a
-                                                                        title="Более 1400 магазинов с кэшбэком!"
-                                                                        href="https://secretdiscounter.ru/stores"
+                                                                        title="Over 1400 stores with cashback!"
+                                                                        href="https://secretdiscounter.ru/en/stores"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
-                                                                        rel=" noopener noreferrer">КАТАЛОГ МАГАЗИНОВ</a>
+                                                                        rel=" noopener noreferrer">STORE CATALOGUE</a>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
@@ -258,71 +258,16 @@ use yii\helpers\Html;
                                                         <td class="content-cell_mailru_css_attribute_postfix"
                                                             width="120"
                                                             style="border-collapse:collapse;border-color:transparent;vertical-align:top"
-                                                            valign="top"><p
-                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
-                                                                    width="100%" align="center"><a
-                                                                        title="Более 5000 действующих промокодов!"
-                                                                        href="https://secretdiscounter.ru/coupons"
-                                                                        target="_blank"
-                                                                        style="text-decoration:none;color:#fff"
-                                                                        rel=" noopener noreferrer">КУПОНЫ И
-                                                                    ПРОМОКОДЫ</a></p></td>
-                                                        <td class="gutter_mailru_css_attribute_postfix"
-                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
-                                                            width="15" height="100%"></td>
-                                                    </tr>
-                                                    <tr style="border-color:transparent">
-                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
-                                                            width="100%"
-                                                            height="0"
-                                                            style="border-collapse:collapse;border-color:transparent"></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </th>
-                                <th width="150"
-                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
-                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
-                                    valign="top">
-                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
-                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
-                                           bgcolor="#e4c84b">
-                                        <tbody>
-                                        <tr style="border-color:transparent">
-                                            <td cellpadding="0" cellspacing="0"
-                                                style="border-collapse:collapse;border-color:transparent">
-                                                <table width="100%" cellpadding="0" cellspacing="0"
-
-                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
-                                                       bgcolor="#e4c84b">
-                                                    <tbody>
-                                                    <tr style="border-color:transparent">
-                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
-                                                            width="100%"
-                                                            height="13"
-                                                            style="border-collapse:collapse;border-color:transparent"></td>
-                                                    </tr>
-                                                    <tr class="content-row_mailru_css_attribute_postfix"
-                                                        style="border-color:transparent">
-                                                        <td class="gutter_mailru_css_attribute_postfix"
-                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
-                                                            width="15" height="100%"></td>
-                                                        <td class="content-cell_mailru_css_attribute_postfix"
-                                                            width="120"
-                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
-                                                            valign="top"><p
-                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
-                                                                    width="100%" align="center"><a
-                                                                        title="Приводи друзей и зарабатывай по 15% от их кэшбэка!"
-                                                                        href="https://secretdiscounter.ru/affiliate-system"
-                                                                        target="_blank"
-                                                                        style="text-decoration:none;color:#fff"
-                                                                        rel=" noopener noreferrer">ПАРТНЕРСКАЯ
-                                                                    ПРОГРАММА</a></p>
+                                                            valign="top">
+                                                            <p style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center">
+                                                                <a
+                                                                    title="Free coupons and promo-codes are waiting for you!"
+                                                                    href="https://secretdiscounter.ru/en/coupons"
+                                                                    target="_blank"
+                                                                    style="text-decoration:none;color:#fff"
+                                                                    rel=" noopener noreferrer">COUPONS AND PROMO CODES</a>
+                                                            </p>
                                                         </td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
@@ -374,12 +319,67 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                     width="100%" align="center"><a
-                                                                        title="Войти в личный кабинет"
-                                                                        href="https://secretdiscounter.ru/account"
+                                                                        title="Bring friends and make 15% of their cashback!"
+                                                                        href="https://secretdiscounter.ru/en/affiliate-system"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
-                                                                        rel=" noopener noreferrer">ВОЙТИ
-                                                                    В КАБИНЕТ</a></p></td>
+                                                                        rel=" noopener noreferrer">AFFILIATE PROGRAM</a></p>
+                                                        </td>
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                    </tr>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="0"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </th>
+                                <th width="150"
+                                    style="border-color:transparent;font-weight:400;text-align:left;vertical-align:top"
+                                    cellpadding="0" cellspacing="0" class="tc_mailru_css_attribute_postfix" align="left"
+                                    valign="top">
+                                    <table border="0" width="100%" cellpadding="0" cellspacing="0"
+                                           style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b"
+                                           bgcolor="#e4c84b">
+                                        <tbody>
+                                        <tr style="border-color:transparent">
+                                            <td cellpadding="0" cellspacing="0"
+                                                style="border-collapse:collapse;border-color:transparent">
+                                                <table width="100%" cellpadding="0" cellspacing="0"
+
+                                                       style="border-collapse:collapse;color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;background-color:#e4c84b;border-bottom-color:#fff;border-bottom-style:dashed;border-bottom-width:1px;border-left-color:#fff;border-left-style:dashed;border-left-width:1px;border-right-color:#fff;border-right-style:dashed;border-right-width:1px;border-top-color:#fff;border-top-style:dashed;border-top-width:1px;font-weight:normal;margin:0;text-color:black"
+                                                       bgcolor="#e4c84b">
+                                                    <tbody>
+                                                    <tr style="border-color:transparent">
+                                                        <td class="expander_mailru_css_attribute_postfix" colspan="3"
+                                                            width="100%"
+                                                            height="13"
+                                                            style="border-collapse:collapse;border-color:transparent"></td>
+                                                    </tr>
+                                                    <tr class="content-row_mailru_css_attribute_postfix"
+                                                        style="border-color:transparent">
+                                                        <td class="gutter_mailru_css_attribute_postfix"
+                                                            style="border-collapse:collapse;border-color:transparent;width:15px !important"
+                                                            width="15" height="100%"></td>
+                                                        <td class="content-cell_mailru_css_attribute_postfix"
+                                                            width="120"
+                                                            style="border-collapse:collapse;border-color:transparent;vertical-align:top"
+                                                            valign="top"><p
+                                                                    style="display:block;font-size:inherit;line-height:1;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
+                                                                    width="100%" align="center"><a
+                                                                        title="Login to my account"
+                                                                        href="https://secretdiscounter.ru/en/account"
+                                                                        target="_blank"
+                                                                        style="text-decoration:none;color:#fff"
+                                                                        rel=" noopener noreferrer">MY ACCOUNT</a></p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
                                                             width="15" height="100%"></td>
@@ -487,7 +487,7 @@ use yii\helpers\Html;
                                                             valign="top">
                                                             <div style="color:#242424;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;display:block;height:132;width:100%"
                                                                  height="132" width="100%"><a
-                                                                        href="https://secretdiscounter.ru/plugin"
+                                                                        href="https://secretdiscounter.ru/en/plugin"
                                                                         style="text-decoration:none;color:#fff"
                                                                         target="_blank" rel=" noopener noreferrer"><img
                                                                             border="0" width="240" height="auto"
@@ -543,25 +543,23 @@ use yii\helpers\Html;
                                                             style="border-collapse:collapse;border-color:transparent;vertical-align:top"
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                                    width="100%"><span style="font-size: 18px;"><strong>Не упустите кэшбэк – установите наше расширение для браузера!</strong></span>
+                                                                    width="100%"><span style="font-size: 18px;"><strong>Don’t miss out on your cashback – install our browser add-on!</strong></span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">Плагин напомнит о кэшбэке, когда вы
-                                                                перейдете на сайт подключенного к нам магазина, а
-                                                                активировать кэшбэк можно прямо из него <a
-                                                                        title="Установить плагин кэшбэка"
-                                                                        href="https://secretdiscouter.ru/plugin"
+                                                               width="100%">The add-on will remind you about the cashback when you access an affiliated store and you can also use it to activate cashback directly (click to download)
+                                                                <a title="Install add-on"
+                                                                        href="https://secretdiscounter.ru/en/plugin"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer">(</a><a
-                                                                        title="Перейти на страницу с плагинами кэшбэка"
-                                                                        href="https://secretdiscouter.ru/plugin"
+                                                                        title="Plugin page"
+                                                                        href="https://secretdiscounter.ru/en/plugin"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer"><span
-                                                                            style="text-decoration: underline;">скачать здесь</span></a><a
-                                                                        title="Перейти на страницу с плагинами кэшбэка"
-                                                                        href="https://secretdiscouter.ru/plugin"
+                                                                            style="text-decoration: underline;">download</span></a><a
+                                                                        title="Page whith plugins"
+                                                                        href="https://secretdiscounter.ru/en/plugin"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer">)</a>&nbsp;</p></td>
@@ -625,16 +623,15 @@ use yii\helpers\Html;
                                                             style="border-collapse:collapse;border-color:transparent;vertical-align:top"
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                                    width="100%"><span style="font-size: 20px;"><strong>А еще к нам можно приводить друзей и зарабатывать по 15% от их кэшбэка (<span
+                                                                    width="100%"><span style="font-size: 20px;"><strong>You can also bring friends and make 15% of their cashback (<span
                                                                                 style="text-decoration: underline;color: #0000ff;"><a
                                                                                     href="https://www.youtube.com/watch?v=RlV3PyIYTqU"
                                                                                     target="_blank"
                                                                                     style="text-decoration:none;color:inherit"
-                                                                                    rel=" noopener noreferrer">смотрите видео</a></span>)</strong></span>
+                                                                                    rel=" noopener noreferrer">watch video</a></span>)</strong></span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">Ваш друг не получит меньше, мы выплачиваем
-                                                                ваше вознаграждение из собственных средств.</p></td>
+                                                               width="100%">Your friend’s cashback will not be reduced, we pay commission out of our own money.</p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
                                                             width="15" height="100%"></td>
@@ -721,7 +718,7 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                     width="100%" align="center"><span
-                                                                        style="font-size: 18px;color: #ffffff;"><strong>Давайте дружить, в наших группах более 40 000 участников!</strong></span>
+                                                                        style="font-size: 18px;color: #ffffff;"><strong>Let’s be friends! Join over 40,000 people on our social media!</strong></span>
                                                             </p></td>
                                                     </tr>
                                                     <tr style="border-color:transparent">
@@ -772,11 +769,11 @@ use yii\helpers\Html;
                                                                                 style="text-decoration:none;color:#fff"
                                                                                 target="_blank"
                                                                                 rel=" noopener noreferrer"><img
-                                                                                    border="0" alt="Вконтакте"
+                                                                                    border="0" alt="Vk"
                                                                                     class="social_mailru_css_attribute_postfix small_img_mailru_css_attribute_postfix smallImg_mailru_css_attribute_postfix"
                                                                                     style="text-decoration:none;border:0;height:auto;line-height:100%;outline:0;border-color:transparent;border-style:none;border-width:0;display:block;margin:5px"
                                                                                     vspace="5" hspace="5"
-                                                                                    title="Вконтакте" width="48"
+                                                                                    title="Vk" width="48"
                                                                                     height="auto"
                                                                                     src="https://secretdiscounter.ru/images/socialicons/vk.png"></a>
                                                                     </th>
@@ -802,11 +799,11 @@ use yii\helpers\Html;
                                                                                 style="text-decoration:none;color:#fff"
                                                                                 target="_blank"
                                                                                 rel=" noopener noreferrer"><img
-                                                                                    border="0" alt="Одноклассники"
+                                                                                    border="0" alt="Ok"
                                                                                     class="social_mailru_css_attribute_postfix small_img_mailru_css_attribute_postfix smallImg_mailru_css_attribute_postfix"
                                                                                     style="text-decoration:none;border:0;height:auto;line-height:100%;outline:0;border-color:transparent;border-style:none;border-width:0;display:block;margin:5px"
                                                                                     vspace="5" hspace="5"
-                                                                                    title="Одноклассники" width="48"
+                                                                                    title="Ok" width="48"
                                                                                     height="auto"
                                                                                     src="https://secretdiscounter.ru/images/socialicons/ok.png"></a>
                                                                     </th>
@@ -902,46 +899,42 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                     width="100%" align="center"><span
-                                                                        style="font-size: 18px;"><strong>Напоминаем о том, как возвращать деньги со своих покупок:</strong></span>
+                                                                        style="font-size: 18px;"><strong>How to get cashback:</strong></span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">1. Перейдите на сайт любого магазина, выбрав
-                                                                его в <span style="text-decoration: underline;"><span
+                                                               width="100%">1. Choose a store from our <span style="text-decoration: underline;"><span
                                                                             style="color: #ffffff;"><a
                                                                                 title="Более 1400 магазинов с кэшбэком!"
                                                                                 href="http://s6762164.pulse-stat.com/go/ec/399a9f62e5124fd2b07690e5d51a2c69/ci/NjQzMjY1OA==/ui/Njc2MjE2NA==/li/MTQ2NDE2MTgz/pl/1/re/b3h5Z2VubkBsaXN0LnJ1/l/aHR0cHMlM0ElMkYlMkZzZWNyZXRkaXNjb3VudGVyLnJ1JTJGc3RvcmVzJTNGdXRtX2NhbXBhaWduJTNEb2Jub3ZsZW5peWEtc2VjcmV0ZGlzY291biUyNnV0bV9zb3VyY2UlM0RzZW5kcHVsc2UlMjZ1dG1fbWVkaXVtJTNEZW1haWw=/"
                                                                                 target="_blank"
                                                                                 style="text-decoration:none;color:inherit"
-                                                                                rel=" noopener noreferrer">нашем каталоге</a></span></span>
+                                                                                rel=" noopener noreferrer">Catalogue</a></span></span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">2. Сделайте покупку, как вы обычно это
-                                                                делаете</p>
+                                                               width="100%">2. Shop as usual</p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">3. Через несколько часов или дней получите
-                                                                кэшбэк на ваш счет в <span
+                                                               width="100%">3. In a few hours to a few days your cashback will be transferred to your account on <span
                                                                         style="text-decoration: underline;color: #ffffff;"><a
                                                                             href="http://s6762164.pulse-stat.com/go/ec/399a9f62e5124fd2b07690e5d51a2c69/ci/NjQzMjY1OA==/ui/Njc2MjE2NA==/li/MTQ2NDE2MTg0/pl/1/re/b3h5Z2VubkBsaXN0LnJ1/l/aHR0cHMlM0ElMkYlMkZTZWNyZXREaXNjb3VudGVyLnJ1JTNGdXRtX2NhbXBhaWduJTNEb2Jub3ZsZW5peWEtc2VjcmV0ZGlzY291biUyNnV0bV9zb3VyY2UlM0RzZW5kcHVsc2UlMjZ1dG1fbWVkaXVtJTNEZW1haWw=/"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
                                                                             rel=" noopener noreferrer">SecretDiscounter.ru</a></span>
-                                                                (максимальное время ожидания – около 2-х недель)</p>
+                                                                (maximum waiting time is 2 weeks)</p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">4. Получите деньги любым удобным способом:
-                                                                на электронный кошелек (Qiwi, Yandex, WebMoney, PayPal),
-                                                                банковскую карточку или счет мобильного телефона</p>
+                                                               width="100%">4. Use one of the convenient money withdrawal options: to an electronic wallet
+                                                                (Qiwi, Yandex, WebMoney, PayPal), bank card or use it for a mobile top-up</p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%">5. А еще вы можете возвращать деньги и&nbsp;<span
+                                                               width="100%">5. We are also the only service that offers cashback from&nbsp;<span
                                                                         style="text-decoration: underline;color: #ffffff;"><a
                                                                             title="Деньги с покупок в оффлайн-магазинах и ресторанах возвращает только SecretDiscounter!"
-                                                                            href="https://secretdiscouter.ru/offline"
+                                                                            href="https://secretdiscounter.ru/en/offline"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
-                                                                            rel=" noopener noreferrer">с покупок в оффлайне</a></span>.
-                                                                И такое есть только у нас :)</p>
+                                                                            rel=" noopener noreferrer">offline shopping</a></span>.
+                                                                 :)</p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0;text-align:center"
                                                                width="100%" align="center"><span
-                                                                        style="font-size: 18px;"><strong>SecretDiscounter экономит ваши деньги!</strong></span>
+                                                                        style="font-size: 18px;"><strong>SecretDiscounter saves your money!</strong></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:30px !important"
@@ -1008,10 +1001,10 @@ use yii\helpers\Html;
                                                                     width="100%" align="center"><span
                                                                         style="text-decoration: underline;color: #ffcc00;"><a
                                                                             title="Только 10% от всех покупателей знают об этом! Читайте и не переплачивайте!"
-                                                                            href="https://secretdiscounter.ru/help"
+                                                                            href="https://secretdiscounter.ru/en/help"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
-                                                                            rel=" noopener noreferrer">Что такое кэшбэк?</a></span>
+                                                                            rel=" noopener noreferrer">What is cashback?</a></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:16px !important"
@@ -1065,10 +1058,10 @@ use yii\helpers\Html;
                                                                     width="100%" align="center"><span
                                                                         style="text-decoration: underline;color: #ffcc00;"><a
                                                                             title="Чтобы ваша покупка засчиталась, следует выполнять определенные правила"
-                                                                            href="https://secretdiscounter.ru/recommendations"
+                                                                            href="https://secretdiscounter.ru/en/recommendations"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
-                                                                            rel=" noopener noreferrer">Правила совершения покупок</a></span>
+                                                                            rel=" noopener noreferrer">Shopping Rules</a></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:5px !important"
@@ -1126,8 +1119,8 @@ use yii\helpers\Html;
                                                                                 href="https://gdeposylka.secretdiscounter.ru/"
                                                                                 target="_blank"
                                                                                 style="text-decoration:none;color:inherit"
-                                                                                rel=" noopener noreferrer">Отследить <span
-                                                                                    style="font-family: 'trebuchet ms', geneva, sans-serif;">посылку</span></a></span></span>
+                                                                                rel=" noopener noreferrer">Track <span
+                                                                                    style="font-family: 'trebuchet ms', geneva, sans-serif;">a Package</span></a></span></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:5px !important"
@@ -1184,7 +1177,7 @@ use yii\helpers\Html;
                                                                             href="https://blog.secretdiscounter.ru/"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
-                                                                            rel=" noopener noreferrer">Наш блог о покупках</a></span>
+                                                                            rel=" noopener noreferrer">Our Shopping Blog</a></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:15px !important"
@@ -1252,16 +1245,16 @@ use yii\helpers\Html;
                                                                     width="100%"><span style="color: #ffffff;">© SecretDiscounter.ru, 2016-2018</span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%"><span style="color: #ffffff;">Вы получили данную рассылку, так как являетесь клиентом или подписчиком SecretDiscounter.ru</span>
+                                                               width="100%"><span style="color: #ffffff;">You are subscribed to this mailing list as a client or follower of SecretDiscounter.ru</span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
                                                                width="100%"><span
                                                                         style="text-decoration: underline;"><span
                                                                             style="color: #ffffff;"><a
-                                                                                href="https://secretdiscounter.ru/account/settings"
+                                                                                href="https://secretdiscounter.ru/en/account/settings"
                                                                                 style="text-decoration:none;color:inherit"
                                                                                 target="_blank"
-                                                                                rel=" noopener noreferrer">Отписаться от рассылки</a></span></span>
+                                                                                rel=" noopener noreferrer">Unsubscribe</a></span></span>
                                                             </p></td>
                                                         <td class="gutter_mailru_css_attribute_postfix"
                                                             style="border-collapse:collapse;border-color:transparent;width:30px !important"
@@ -1314,13 +1307,13 @@ use yii\helpers\Html;
                                                             valign="top"><p
                                                                     style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
                                                                     width="100%"><span
-                                                                        style="color: #ffffff;"><strong>Наш адрес:</strong></span>
+                                                                        style="color: #ffffff;"><strong>Our Address:</strong></span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%"><span style="color: #ffffff;">119620, г. Москва, Солнцевский проспект, дом 14, пом. VI, ком. 1</span>
+                                                               width="100%"><span style="color: #ffffff;">119620, Moscow, Solntsevsky avenue, house14, VI, office. 1 </span>
                                                             </p>
                                                             <p style="display:block;font-size:inherit;line-height:inherit;margin:0 0 10px;color:inherit;font-family:&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;width:100%;font-weight:normal;padding:0"
-                                                               width="100%"><span style="color: #ffffff;"><strong>Телефон:</strong> <span
+                                                               width="100%"><span style="color: #ffffff;"><strong>Phone:</strong> <span
                                                                             class="js-phone-number highlight-phone"
                                                                             title="Позвонить через Веб-Агент">8 (800) 707 66 09</span></span>
                                                             </p></td>

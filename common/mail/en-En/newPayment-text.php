@@ -1,2 +1,3 @@
-Здравствуйте! <?=$payment->action_date;?> ваш кэшбэк на <?=$payment->cashback;?> руб. в <?=$payment->store->name;?> (заказ №<?=$payment->uid;?>) зафиксирован в нашей системе.
-<a href="https://secretdiscounter.ru/account/payments">История заказов</a>
+Hello! <?=$payment->action_date;?> our system detected your cashback in the amount of <?=$payment->cashback;?> <?=$payment->user->currency;?>
+from <?=$payment->store->name;?> (order №<?=$payment->uid;?>).
+<a href="https://secretdiscounter.ru/en/account/payments">Order History</a>

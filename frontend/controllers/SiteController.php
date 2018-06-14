@@ -484,7 +484,7 @@ class SiteController extends SdController
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('matuhinmax@mail.ru')
+          ->setTo('oxygenn@list.ru')
           ->setSubject(Yii::t('account', 'confirm_social_email'))
           ->send();
       return 'Отправлено тестовое письмо';
