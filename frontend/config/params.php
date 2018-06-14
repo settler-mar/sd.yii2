@@ -116,5 +116,15 @@ $data['plugin'] = [
     ],
 
 ];
+$data['competitions'] = [
+    'letyshops' => [
+        'title' => 'Letyshops.com',
+        'url' => 'https://letyshops.com/',
+        'stores_url' => 'https://eapi.letyshops.com/eapi/shops',//шопы
+        'rates_url' => 'https://eapi.letyshops.com/eapi/cashback-rates',//кешбеки
+        'json' => 'letyshop.json',
+        'check_method' => 'checkLety',
+    ]
+];
 
 return $data;

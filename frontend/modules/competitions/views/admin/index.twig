@@ -1,0 +1,24 @@
+{% set title = 'Competitions:' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': this.title}]) %}
+<div class="competitions">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

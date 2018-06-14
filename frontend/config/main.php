@@ -277,6 +277,9 @@ $config = [
     'configs' => [
         'class' => 'frontend\modules\configs\Module',
     ],
+    'competitions' => [
+        'class' => 'frontend\modules\competitions\Module',
+    ],
   ],
   'params' => $params,
 
