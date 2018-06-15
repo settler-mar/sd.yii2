@@ -938,6 +938,10 @@ table{
     }
 }
 
+.competitions_item {
+    list-style-type: none;
+}
+
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";
 @import "../new/parts/pagination";

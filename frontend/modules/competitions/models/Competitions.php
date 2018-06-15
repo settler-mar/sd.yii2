@@ -24,13 +24,12 @@ class Competitions extends Model
     public function init()
     {
         $this->config = Yii::$app->params['competitions'];
-        $this->makeData();
     }
 
     /**
      * подготовка данных для вывода
      */
-    private function makeData()
+    public function makeData()
     {
         $this->getData();
 
