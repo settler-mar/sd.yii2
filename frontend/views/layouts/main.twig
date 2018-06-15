@@ -42,8 +42,9 @@
       <script src="{{scriptH}}" {% if scriptH starts with 'http' %} async="async" {% endif %}></script>
     {% endfor %}
 
-    {% include 'base/header_include.twig' %}
     {{ void(this.head()) }}
+    {% include 'base/header_include.twig' %}
+
   </head>
   <body>
   {{ void(this.beginBody()) }}

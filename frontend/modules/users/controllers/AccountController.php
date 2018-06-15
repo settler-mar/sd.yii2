@@ -319,7 +319,7 @@ class AccountController extends Controller
       $errors=[];
       if ($request->isPost) {
         //удаление оккаунта
-          if ($request->post('user_comment') == '') {
+          if (strlen(trim(strip_tags($request->post('user_comment'))))<10) {
             $errors['user_comment']= Yii::t('common', 'you_should_fill_here');
           } else {
               $user = Users::findOne(Yii::$app->user->id);
@@ -334,6 +334,7 @@ class AccountController extends Controller
               }
           }
       }
+
       //вывод формы
       $data['html'] = $this->renderAjax('delete', [
           'isAjax' => true,
