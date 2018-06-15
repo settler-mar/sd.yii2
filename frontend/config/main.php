@@ -40,7 +40,7 @@ $config = [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
       'cookieParams' => [
-        'domain' => '.' . DOMAIN_FRONT,
+        'domain' => (strpos(DOMAIN_FRONT,'.0.0.1')?'':'.') . DOMAIN_FRONT,
         'httpOnly' => true,
       ],
     ],
@@ -106,7 +106,7 @@ $config = [
         'name' => '_identity-frontend',
         'httpOnly' => true,
         'path' => '/',
-        'domain' => DOMAIN_FRONT,
+        'domain' => strpos(DOMAIN_FRONT,'.0.0.1')?false:DOMAIN_FRONT,
       ],
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
