@@ -29,12 +29,21 @@ class AdminController extends \yii\web\Controller
     public function actionIndex()
     {
         $model = new Competitions();
-
-        ddd($model);
+        $model->makeData();
 
         return $this->render('index.twig', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRefresh()
+    {
+        if (Yii::$app->request->isPost) {
+            $model = new Competitions();
+            $model->getData(true);
+            Yii::$app->session->addFlash('success', 'Данные о компаниях обновлены');
+        }
+        return $this->redirect(['index']);
     }
 
 }

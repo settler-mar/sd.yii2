@@ -9,16 +9,64 @@
     <div class="content-wrapper">
         <section>
             <div class="row">
+                <h1>{{ html.encode(this.title) }}</h1>
                 <div class="col-md-12">
-                    <h1>{{ html.encode(this.title) }}</h1>
+                    {% set form  = active_form_begin({'action':'/admin/competitions/refresh'}) %}
+
+                    <button class="btn btn-primary" type="submit">Обновить данные</button>
+
+                    {{ active_form_end() }}
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
-
-
+                    <div class="tarif_select_blk">
+                        {% for k,competitor in model.data %}
+                            <input type="radio" class="controls_option" value="{{ k }}" checked="" id="option_tab_{{ k }}"
+                                   name="tabs_open">
+                        {% endfor %}
+                        <ul class="tab_control">
+                            {% for k,competitor in model.data %}
+                                <li class="tab_butt_{{ k }}">
+                                    <label for="option_tab_{{ k }}">
+                                        {{ competitor.title }} ({{ competitor.all_shops }})
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="content_tab">
+                            {% for k,competitor in model.data %}
+                                <div class="cpa_box tab_{{ k }}">
+                                    <h5>Шопы отсутствуют в SD ({{ competitor.missings | length }}) </h5>
+                                    <ul class="competitions_list">
+                                        {% for missing in competitor.missings %}
+                                            <li class="competitions_item" >
+                                                Шоп: <a target="_blank" href="https://{{ missing.route }}">{{ missing.route }}</a>
+                                                 , страница на сайте сервиса <a target="_blank" href="{{ missing.service_route }}">{{ missing.service_route }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 </div>
+
+<style>
+    {% for k,competitor in model.data %}
+    #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
+        background: #fbcf4a;
+    }
+
+    #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
+        display: block;
+    }
+
+    #option_tab_{{ k }}:checked {
+        color: #000;
+    }
+
+    {% endfor %}
+</style>
