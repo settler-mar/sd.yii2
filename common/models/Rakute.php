@@ -47,7 +47,20 @@ class Rakute {
    * @throws Exception on cURL failure or http status code greater than or equal to 400
    */
   public function productSearch(array $parameters = array()) {
-    return $this->api("productsearch", "productsearch", $parameters);
+    return $this->api("productsearch", false, $parameters);
+  }
+
+  public function merchantList(array $parameters = array()) {
+    return $this->api("advertisersearch", false, $parameters);
+  }
+
+  /*покупки*/
+  public function events(array $parameters = array()) {
+    return $this->api("events","transactions", $parameters);
+  }
+
+  public function test(array $parameters = array()) {
+    return $this->api("events","transactions", $parameters);
   }
 
   public function getToken()
@@ -77,11 +90,16 @@ class Rakute {
    */
   public function api($subdomain, $resource, array $parameters = array(), $version = '1.0') {
     $ch = $this->getCurl();
-    $url = sprintf($this->domain, $subdomain, $version, $resource);
+    $url = sprintf($this->domain, $subdomain, $version);
+
+    if($resource && strlen($resource)>3 && $resource!=$subdomain){
+      $url.='/'.$resource;
+    }
 
     if (!empty($parameters))
       $url .= "?" . http_build_query($parameters);
 
+    echo $url."\n";
     curl_setopt_array($ch, array(
         CURLOPT_URL  => $url,
         CURLOPT_HTTPHEADER => array(
@@ -99,7 +117,7 @@ class Rakute {
     if ($http_status >= 400) {
       ddd(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
     }
-
+    d($body);
     return json_decode(json_encode((array)simplexml_load_string($body)), true);
   }
 
