@@ -26,8 +26,16 @@ class Rakute {
    * @param string $api_key API Key
    * @param null|resource $curl Manually provided cURL handle
    */
-  public function __construct($api_key=false,$curl = null) {
-    $this->api_key = $api_key?$api_key:"Basic X3NtVkpISWZmVkpaVklPUkN5RVU5bkhrak5vYTpEcTBaZnQ3V0pnS2U2eVVEdlhuUlZZcDFrcFFh";
+  public function __construct($curl = null) {
+    $cache = Yii::$app->cache;
+
+    $bearer_token=$cache->getOrSet('bearer_token', function () {
+      $this->api_key="Basic X3NtVkpISWZmVkpaVklPUkN5RVU5bkhrak5vYTpEcTBaZnQ3V0pnS2U2eVVEdlhuUlZZcDFrcFFh";
+      return $this->getToken()->access_token;
+    }, 3600);
+
+    $this->api_key = "Bearer ".$bearer_token ;
+
     if ($curl) $this->setCurl($curl);
   }
 
