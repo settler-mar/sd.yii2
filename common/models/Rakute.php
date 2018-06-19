@@ -18,6 +18,8 @@ class Rakute {
    * @var string
    */
   protected $api_key;
+
+  private $config;
   /**
    * The Commission Junction API Client is completely self contained with it's own API key.
    * The cURL resource used for the actual querying can be overidden in the contstructor for
@@ -29,8 +31,10 @@ class Rakute {
   public function __construct($curl = null) {
     $cache = Yii::$app->cache;
 
+    $this->config = Yii::$app->params['rakute'];
+
     $bearer_token=$cache->getOrSet('bearer_token', function () {
-      $this->api_key="Basic X3NtVkpISWZmVkpaVklPUkN5RVU5bkhrak5vYTpEcTBaZnQ3V0pnS2U2eVVEdlhuUlZZcDFrcFFh";
+      $this->api_key="Basic ".$this->config['basic_token'];
       return $this->getToken()->access_token;
     }, 3600);
 
@@ -57,6 +61,10 @@ class Rakute {
   /*покупки*/
   public function events(array $parameters = array()) {
     return $this->api("events","transactions", $parameters);
+  }
+
+  public function getMerchByID($mid){
+    return $this->api("linklocator","getMerchByID/".$mid);
   }
 
   public function test(array $parameters = array()) {
@@ -118,15 +126,16 @@ class Rakute {
       ddd(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
     }
     d($body);
+    $body=str_replace("ns1:","",$body);
     return json_decode(json_encode((array)simplexml_load_string($body)), true);
   }
 
   public function apiToken($subdomain, $resource, array $parameters = array(), $version = '1.0') {
     $data = array(
         "grant_type" => "password",
-        "username" => "versus",
-        'password'=>'2011odnNN',
-        'scope'=>'3307423'
+        "username" => $this->config['username'],
+        'password'=>$this->config['password'],
+        'scope'=>$this->config['scope'],
     );
     $data_string = http_build_query($data);
 

@@ -21,6 +21,12 @@ return [
     'siteId' => '13779',// id площадки
     'categories_json' => '/common/config/json/sellaction_categories.json'
   ],
+  'rakute' => [
+      'basic_token'=>"X3NtVkpISWZmVkpaVklPUkN5RVU5bkhrak5vYTpEcTBaZnQ3V0pnS2U2eVVEdlhuUlZZcDFrcFFh",
+      "username" => "versus",
+      'password'=>'2011odnNN',
+      'scope'=>'3307423'
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
