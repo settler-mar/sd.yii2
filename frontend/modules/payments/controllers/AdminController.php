@@ -8,6 +8,7 @@ use frontend\modules\notification\models\Notifications;
 use frontend\modules\users\models\Users;
 use Yii;
 use frontend\modules\payments\models\Payments;
+use frontend\modules\withdraw\models\UsersWithdraw;
 use app\modules\payments\models\PaymentsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -100,6 +101,17 @@ class AdminController extends Controller
       $canAdmitadUpdate=true;
     }
 
+    $withdraw = UsersWithdraw::find()
+        ->from(UsersWithdraw::tableName(). ' cwuw')
+        ->innerJoin(Users::tableName().' cwu', 'cwu.uid = cwuw.user_id')
+        ->select(['sum(amount) as summ', 'cwu.currency as currency'])
+        ->groupBy('cwu.currency')
+        ->asArray();
+    $statWithdraw['all'] = $withdraw->all();
+    $statWithdraw['waiting'] = $withdraw->where(['status' => 0])->all();
+    $statWithdraw['success'] = $withdraw->where(['status' => 2])->all();
+    $statWithdraw['revoked'] = $withdraw->where(['status' => 1])->all();
+
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
@@ -137,6 +149,7 @@ class AdminController extends Controller
       'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
       'stats_result' => $statResults,
+      'stats_withdraw' => $statWithdraw,
     ]);
   }
 

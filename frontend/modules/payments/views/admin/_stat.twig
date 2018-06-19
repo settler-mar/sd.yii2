@@ -157,5 +157,43 @@
                 {% endfor %}
             </td>
         </tr>
+        <tr class="line">
+            <td class="name">Вывод средств</td>
+            <td class="name">Подтверждено</td>
+            <td class="name">В ожидании</td>
+            <td class="name">Отменено</td>
+            <td class="name">Всего</td>
+        </tr>
+        <tr class="line">
+            <td class="name"></td>
+            <td class="value">
+                {% for key, item in stats_withdraw.success %}
+                    <div>
+                        {{ _nf(item.summ)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {% for key, item in stats_withdraw.waiting %}
+                    <div>
+                        {{ _nf(item.summ)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {% for key, item in stats_withdraw.revoked %}
+                    <div>
+                        {{ _nf(item.summ)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="value">
+                {% for key, item in stats_withdraw.all %}
+                    <div>
+                        {{ _nf(item.summ)|raw }} {{ item.currency }}
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
     </table>
 </div>
