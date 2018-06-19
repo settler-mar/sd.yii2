@@ -6,6 +6,7 @@ use frontend\modules\withdraw\models\WithdrawProcess;
 use Yii;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\withdraw\models\UsersWithdrawSearch;
+use frontend\modules\users\models\Users;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -48,13 +49,25 @@ class AdminController extends Controller
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     //статистика полная
-    $statAll = UsersWithdraw::find();
-    $stats['summ_all'] = $statAll->select('sum(amount) as sum')->asArray()->one()['sum'];
-    $stats['users_all'] = $statAll->groupBy('user_id')->count();
+    $stats['summ_all'] = UsersWithdraw::find()
+      ->from(UsersWithdraw::tableName(). ' cwuw')
+      ->innerJoin(Users::tableName().' cwu', 'cwu.uid = cwuw.user_id')
+      ->select(['sum(amount) as summ', 'cwu.currency as currency'])
+      ->groupBy('cwu.currency')
+      ->asArray()
+      ->all();
+    $stats['users_all'] = UsersWithdraw::find()->groupBy('user_id')->count();
+
     //статистика для выборки
-    $stat = clone $dataProvider->query;
-    $stats['summ']= $stat->select('sum(amount) as sum')->asArray()->one()['sum'];
-    $stats['users'] = $stat->groupBy('user_id')->count();
+    $statUsers = clone $dataProvider->query;
+    $statSumm = clone $dataProvider->query;
+    $stats['summ'] = $statSumm
+      ->innerJoin(Users::tableName().' cwu', 'cwu.uid = cw_users_withdraw.user_id')
+      ->select(['sum(amount) as summ', 'cwu.currency as currency'])
+      ->groupBy('cwu.currency')
+      ->asArray()
+      ->all();
+    $stats['users'] = $statUsers->groupBy('user_id')->count();
 
 
     $process=WithdrawProcess::find()

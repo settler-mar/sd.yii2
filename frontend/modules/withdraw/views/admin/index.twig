@@ -28,7 +28,17 @@
                         <div class="line">
                             <div class="name">Сумма</div>
                             <div class="value">
-                                {{ _nf(stat.summ)|raw }} / {{ _nf(stat.summ_all)|raw }}
+                                {% for item in stat.summ %}
+                                    <div>{{ _nf(item.summ)|raw }} {{ item.currency }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="name">Всего</div>
+                            <div class="value">
+                                {% for item in stat.summ_all %}
+                                    <div>{{ _nf(item.summ)|raw }} {{ item.currency }}</div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
