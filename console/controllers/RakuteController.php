@@ -13,12 +13,12 @@ class RakuteController extends Controller
   public function actionProduct()
   {
     $client = new Rakute();
-    d($client->merchantList());
-    $products = $client->test([
-        "limit"=>1000,
-        "page"=>1,
-    ]);
-    ddd($products);
+    //d($merchants=$client->merchantList());
+    //$mid=$merchants[0]->midlist[0]->merchant[0]->mid;
+
+    $mid=40842;
+    $merchant=$client->getMerchByID($mid);
+    ddd($merchant);
   }
 
 }
