@@ -67,6 +67,22 @@ class Rakute {
     return $this->api("linklocator","getMerchByID/".$mid);
   }
 
+  public function getTextLinksByID($mid){
+    return $this->api("linklocator","getTextLinks/".$mid);
+  }
+
+  public function getBannerLinksByID($mid){
+    return $this->api("linklocator","getBannerLinks/".$mid);
+  }
+
+  public function getDrmLinksByID($mid){
+    return $this->api("linklocator","getDRMLinks/".$mid);
+  }
+
+  public function getCoupons($parameters = []){
+    return $this->api("coupon", false, $parameters);
+  }
+
   public function test(array $parameters = array()) {
     return $this->api("events","transactions", $parameters);
   }
@@ -118,14 +134,14 @@ class Rakute {
     $body = curl_exec($ch);
     $errno = curl_errno($ch);
     if ($errno !== 0) {
-      ddd(sprintf("Error connecting to CommissionJunction: [%s] %s ", $errno, curl_error($ch)), $errno);
+      d(sprintf("Error connecting to CommissionJunction: [%s] %s ", $errno, curl_error($ch)), $errno);
     }
 
     $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($http_status >= 400) {
-      ddd(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
+      d(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
     }
-    d($body);
+    //d($body);
     $body=str_replace("ns1:","",$body);
     return json_decode(json_encode((array)simplexml_load_string($body)), true);
   }
@@ -156,7 +172,7 @@ class Rakute {
 
     $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($http_status >= 400) {
-      ddd(sprintf("CommissionJunction Error Token  [%s] %s", $http_status, strip_tags($body)), $http_status);
+      d(sprintf("CommissionJunction Error Token  [%s] %s", $http_status, strip_tags($body)), $http_status);
     }
     return json_decode($body);
   }

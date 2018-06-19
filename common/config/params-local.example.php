@@ -25,7 +25,8 @@ return [
       'basic_token'=>"X3NtVkpISWZmVkpaVklPUkN5RVU5bkhrak5vYTpEcTBaZnQ3V0pnS2U2eVVEdlhuUlZZcDFrcFFh",
       "username" => "versus",
       'password'=>'2011odnNN',
-      'scope'=>'3307423'
+      'scope'=>'3307423',
+      'categories_json' => '/common/config/json/rakute_categories.json',
   ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
