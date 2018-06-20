@@ -6,6 +6,10 @@ use yii;
 
 class Rakute {
   public $domain = "https://api.rakutenmarketing.com/%s/%s";
+
+  private $merchUrl = "http://cli.linksynergy.com/cli/publisher/programs/adv_info.php";
+
+
   /**
    * Curl handle
    *
@@ -41,6 +45,14 @@ class Rakute {
     $this->api_key = "Bearer ".$bearer_token ;
 
     if ($curl) $this->setCurl($curl);
+  }
+
+  public function merchantDetail($merchantId)
+  {
+      $oid = isset($this->config['oid']) ? $this->config['oid'] : '';
+      $url = $this->merchUrl. "?mid=" . $merchantId . '&oid=' . $oid;
+      //return file_get_contents($url);
+      return $this->cli($url);
   }
 
   /**
@@ -91,6 +103,35 @@ class Rakute {
   {
     return $this->apiToken("token", "token", $parameters = array());
   }
+
+  private function cli($url) {
+        $ch = $this->getCurl();
+        echo $url."\n";
+        echo $this->api_key."\n";
+
+      curl_setopt_array($ch, array(
+            CURLOPT_URL  => $url,
+            CURLOPT_HTTPHEADER => array(
+                //'Accept: application/xml',
+                'authorization: ' . $this->api_key,
+
+            )
+        ));
+        $body = curl_exec($ch);
+        $errno = curl_errno($ch);
+        if ($errno !== 0) {
+            d(sprintf("Error connecting to CommissionJunction: [%s] %s ", $errno, curl_error($ch)), $errno);
+        }
+
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($http_status >= 400) {
+            d(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
+        }
+        //d($body);
+        $body=str_replace("ns1:","",$body);
+        curl_close($ch);
+        return $body;
+    }
 
   /**
    * Convenience method to access Commission Detail Service

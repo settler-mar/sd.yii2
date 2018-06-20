@@ -27,9 +27,12 @@ return [
       'password'=>'2011odnNN',
       'scope'=>'3307423',
       'categories_json' => '/common/config/json/rakute_categories.json',
+      'oid' => 419234,
+      'site_id' => 'PyKfoj8cbJ4',
   ],
   'cj.com' => [
-        'dev_key' => '00bcee2d8efac83743ed7c0abcbb764e0ad1194c3f2db2ab326453e22fcc3aed8379e7d1e0572e49054eeb155c1710061b42a83f118f3889379e386add0ee2555b/0099d74407ba139054e2ab6fbed0d2fba7792ea55488ac8514aa7757a5de2259c59fc5cb63354bd629e0a9fd4adbd9b11711c8de6d7dc224f6c79573e16c5113f1',
+      'site_id' => '8021356',
+      'dev_key' => '00bcee2d8efac83743ed7c0abcbb764e0ad1194c3f2db2ab326453e22fcc3aed8379e7d1e0572e49054eeb155c1710061b42a83f118f3889379e386add0ee2555b/0099d74407ba139054e2ab6fbed0d2fba7792ea55488ac8514aa7757a5de2259c59fc5cb63354bd629e0a9fd4adbd9b11711c8de6d7dc224f6c79573e16c5113f1',
   ],
 
   'ebay' => [ //sandbox
