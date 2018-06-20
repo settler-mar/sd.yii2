@@ -362,8 +362,8 @@ class SiteController extends SdController
                 [Cpa::$user_id_params[$cpaLink->cpa->name] => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]
             );
         } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
-            $cpaLink->cpa->name == 'Внешние подключения' && $cpaLink->affiliate_link ) {
-            //внешние подключения = в $cpaLink->affiliate_link находится индекс в настройках
+            in_array($cpaLink->cpa->name, Cpa::$user_id_in_template) && $cpaLink->affiliate_link ) {
+            //внешние подключения, cj.com - ссылка в виде шаблона в cpa->affiliate_link
             $data['link'] = $this->makeOutstandLink($cpaLink->affiliate_link, ['subid' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id]);
         } else if ($cpaLink && $cpaLink->affiliate_link) {
             //не опознано cpa  но affiliate_link имеется
@@ -513,11 +513,6 @@ class SiteController extends SdController
   protected function makeOutstandLink($offset, $params = [])
   {
     $link=$offset;
-    /*$link = isset(Yii::$app->params['outstand_cpa'][$offset]['parthnerLink']) ?
-        Yii::$app->params['outstand_cpa'][$offset]['parthnerLink'] : '';
-    if ($link) {
-        return '';
-    }*/
     foreach ($params as $key => $value) {
         $link = str_replace('{{'.$key.'}}', $value, $link);
     }

@@ -23,6 +23,11 @@ class Cpa extends \yii\db\ActiveRecord
         'Shareasale' => 'afftrack',
         'Sellaction' => 'SubID1',
     ];
+    /**
+     * для таких спа subid подставляется в шаблоне
+     * @var array
+     */
+    public static $user_id_in_template = ['Внешние подключения', 'Cj.com'];
 
     /**
      * @inheritdoc

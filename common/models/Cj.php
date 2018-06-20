@@ -8,6 +8,7 @@ class Cj
 {
     private $devKey;
     private $url = 'https://advertiser-lookup.api.cj.com/v3/advertiser-lookup';
+    private $commissionUrl = 'https://commission-detail.api.cj.com/v3/commissions';
 
 
     public function __construct()
