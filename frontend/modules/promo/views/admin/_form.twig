@@ -1,0 +1,34 @@
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+                {{ use('/yii/widgets/ActiveForm') }}
+                <div class="promo-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'loyalty_status').dropDownList(loyalty_statuses, {'prompt': ''})|raw }}
+
+                        {{ form.field(model, 'referrer_id').textInput()|raw }}
+
+                        {{ form.field(model, 'bonus_status').dropDownList(bonus_statuses, {'prompt': ''})|raw }}
+
+                        {{ form.field(model, 'new_loyalty_status_end').textInput()|raw }}
+
+                        {{ form.field(model, 'date_to').textInput()|raw }}
+
+                        {{ form.field(model, 'on_form').dropDownList({'0': 'Недоступно','1': 'Доступно'},{'prompt': ''})|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

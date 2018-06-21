@@ -1,3 +1,4 @@
+{% if user_id == 0 %}
 <div class="ajax_form">
 <form id="promo-ajax" class=" form-horizontal" action="/account/promo" method="post" role="form">
     <input type="hidden" name="{{ request.csrfParam }}" value="{{ request.csrfToken }}">
@@ -24,3 +25,4 @@
 
 </form>
 </div>
+{% endif %}

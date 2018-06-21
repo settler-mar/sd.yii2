@@ -1,0 +1,57 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Promos' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="promo-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+                <p>
+                    <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Promo' }}</a>
+                </p>
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+                            'uid',
+                            'name',
+                            'title',
+                            {   'format': 'raw',
+                                'attribute': 'loyalty_status',
+                                'value': tableData.loyalty_status,
+                            },
+                            'referrer_id',
+                            {   'format': 'raw',
+                                'attribute': 'bonus_status',
+                                'value': tableData.bonus_status,
+                            },
+                            'new_loyalty_status_end',
+                            'date_to',
+                            {   'format': 'raw',
+                                'attribute': 'on_form',
+                                'value': tableData.on_form,
+                            },
+                            'created_at',
+
+                            {'class': '\\yii\\grid\\ActionColumn',
+                                'template' : '{update} {delete}',
+                            },
+                        ],
+                    })
+                }}
+                </div>
+            </div>
+        </section>
+    </div>
+{#
+
+#}
+</div>
