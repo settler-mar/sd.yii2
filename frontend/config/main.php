@@ -161,6 +161,7 @@ $config = [
         'account/webmaster' => 'affiliate/account/index',
         'account/promo' => 'users/default/promo',
         'deleteaccount' => 'users/account/delete',
+        'reg' => 'users/default/reg',
 
         'search' => 'search/default/index',
         'search/coupon' => 'search/default/coupon',

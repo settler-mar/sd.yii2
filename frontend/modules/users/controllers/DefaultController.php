@@ -12,6 +12,7 @@ use frontend\modules\users\models\LoginForm;
 use frontend\modules\users\models\RegistrationForm;
 use frontend\modules\users\models\ValidateEmail;
 use frontend\modules\users\models\SocialEmail;
+use frontend\modules\users\models\Promo;
 use yii\web\NotFoundHttpException;
 use yii\validators\StringValidator;
 use yii\validators\EmailValidator;
@@ -496,14 +497,17 @@ class DefaultController extends Controller
     if (!Yii::$app->user->isGuest || !$request->isAjax) {
       throw new NotFoundHttpException();
     }
-    $promo = $request->post('promo');
-    $promo = trim($promo);
-    $validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
-    if ($validatorPromo->validate($promo)) {
-      Yii::$app->session->set('referrer_promo', $promo);
-      if (isset(Yii::$app->params['ref_promo'][$promo])) {
-          $promoItem = Yii::$app->params['ref_promo'][$promo];
-          $title = (isset($promoItem['title'])) ? $promoItem['title'] : $promo;
+    $model = new Promo();
+    //$promo = $request->post('promo');
+   // $promo = trim($promo);
+    //$validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
+    //if ($validatorPromo->validate($promo)) {
+    if ($model->load($request->post()) && $model->validate()) {
+        $model->save();
+      //Yii::$app->session->set('referrer_promo', $promo);
+      if (isset(Yii::$app->params['ref_promo'][$model->promo])) {
+          $promoItem = Yii::$app->params['ref_promo'][$model->promo];
+          $title = (isset($promoItem['title'])) ? $promoItem['title'] : $model->promo;
           $days = (isset($promoItem['new_loyalty_status_end'])) ? $promoItem['new_loyalty_status_end'] : 0;
           if ($days == 0) {
               $message = Yii::t('account', 'user_loyalty_reg_status_{title}_forever', ['title' => $title]);
@@ -513,10 +517,37 @@ class DefaultController extends Controller
           return json_encode([
               'title' => Yii::t('common', 'congratulations'),
               'message' => $message,
+              'error' => false,
+              'html' => '<div class="margin align-center"><h3>'.Yii::t('common','successfull').'</h3>'.
+                  '<a class="btn modals_open" href="#registration">'.Yii::t('common', 'do_register').'</a>'.
+                  '</div>',
           ]);
       };
     } else {
-        //return json_encode(['validator' => $validatorPromo]);
+        Yii::info($model);
+        $messages = [];
+        foreach ($model->errors as $key=>$error){
+            $messages[] = $model->attributeLabels()[$key].': '.implode(', ', $error);
+        }
+        return json_encode([
+            'title' => Yii::t('common', 'error'),
+            'message' => implode(', ', $messages),
+        ]);
     }
+  }
+
+    /**
+     * форма с вводом промокода
+     * @return string
+     */
+  public function actionReg()
+  {
+     $this->viewPath = '@app/views/site';
+     $model = new Promo();
+     return $this->render('static_page', [
+         'model' => $model,
+         'recaptcha' => Yii::$app->reCaptcha->siteKey,
+         'request' => Yii::$app->request,
+     ]);
   }
 }

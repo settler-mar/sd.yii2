@@ -18,6 +18,7 @@ return [
     'duble_cashback' => 'Двойной кэшбэк',
     'promocodes' => 'Промокоды',
     'promocode' => 'Промокод',
+    'register_promocode' => 'Зарегистрировать промокод',
     'offline_shops' => 'Оффлайн-магазины',
     'offline_shops_low' => 'оффлайн-магазины',
     'offline_shop' => 'Оффлайн-магазин',
@@ -214,6 +215,9 @@ return [
     'search_result_with_{query}_' => 'Результаты поиска по запросу {query}',
     'search_result_breadcrumbs' => 'Поиск',
     'make_sure_not_robot' => 'Докажите, что вы не робот',
+    'recaptcha' => 'Проверочный код',
+    'wrong_promocode' => 'Неправильный промокод',
+    'wrong_recaptcha' => 'Неправильный проверочный код',
     'index-hello-link-image' => '/images/header_present.png',
 
 
