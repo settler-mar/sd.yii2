@@ -56,7 +56,7 @@ class AdminController extends Controller
       ->groupBy('cwu.currency')
       ->asArray()
       ->all();
-    $stats['users_all'] = UsersWithdraw::find()->groupBy('user_id')->count();
+    $stats['users_all'] = UsersWithdraw::find()->select(['user_id'])->groupBy('user_id')->count();
 
     //статистика для выборки
     $statUsers = clone $dataProvider->query;
@@ -67,7 +67,7 @@ class AdminController extends Controller
       ->groupBy('cwu.currency')
       ->asArray()
       ->all();
-    $stats['users'] = $statUsers->groupBy('user_id')->count();
+    $stats['users'] = $statUsers->select(['user_id'])->groupBy('user_id')->count();
 
 
     $process=WithdrawProcess::find()
