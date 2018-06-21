@@ -4,6 +4,7 @@ namespace frontend\modules\users\models;
 
 use yii;
 use yii\base\Model;
+use frontend\modules\promo\models\Promo as DbPromo;
 
 class Promo extends Model
 {
@@ -17,15 +18,15 @@ class Promo extends Model
   public function rules()
   {
     return [
-      ['promo', 'required'],
+      [['promo'], 'required'],
       ['promo', 'trim'],
       ['promo', function ($attribute) {
         if ($this->form == 1) {
-            if (!in_array($this->promo, $this->formPromos())) {
+            if (!in_array($this->promo, $this->promos(true))) {
                 $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
             }
         } else {
-            if (!in_array($this->promo, array_keys(Yii::$app->params['ref_promo']))) {
+            if (!in_array($this->promo, $this->promos())) {
                 $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
             }
         }
@@ -56,17 +57,21 @@ class Promo extends Model
   }
 
 
-    public function save()
+  public function save()
   {
       Yii::$app->session->set('referrer_promo', $this->promo);
   }
 
-  private function formPromos()
+    /** список доступных промокодов в 2 режимах
+     * @param bool $onForm
+     * @return array
+     */
+  private function promos($onForm = false)
   {
     $result = [];
-      foreach (Yii::$app->params['ref_promo'] as $key => $promo) {
-        if (isset($promo['form']) && $promo['form'] == 1) {
-            $result[] = $key;
+      foreach (DbPromo::all() as $promo) {
+        if (!$onForm || (isset($promo['on_form']) && $promo['on_form'] == 1)) {
+          $result[] = $promo['name'];
         }
     }
     return $result;

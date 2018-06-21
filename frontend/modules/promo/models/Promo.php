@@ -61,4 +61,12 @@ class Promo extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function all()
+    {
+        return self::find()->asArray()->all();
+    }
+
 }

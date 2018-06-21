@@ -524,7 +524,6 @@ class DefaultController extends Controller
           ]);
       };
     } else {
-        Yii::info($model);
         $messages = [];
         foreach ($model->errors as $key=>$error){
             $messages[] = $model->attributeLabels()[$key].': '.implode(', ', $error);

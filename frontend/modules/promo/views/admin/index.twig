@@ -27,17 +27,22 @@
                             {   'format': 'raw',
                                 'attribute': 'loyalty_status',
                                 'value': tableData.loyalty_status,
+                                'filter': loyalty_statuses,
                             },
                             'referrer_id',
                             {   'format': 'raw',
                                 'attribute': 'bonus_status',
                                 'value': tableData.bonus_status,
+                                'filter': bonus_statuses,
                             },
                             'new_loyalty_status_end',
                             'date_to',
                             {   'format': 'raw',
                                 'attribute': 'on_form',
                                 'value': tableData.on_form,
+                                'filter': {
+                                    '1': 'Доступно',
+                                }
                             },
                             'created_at',
 

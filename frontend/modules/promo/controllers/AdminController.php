@@ -8,7 +8,6 @@ use frontend\modules\promo\models\SearchPromo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 
 /**
  * AdminController implements the CRUD actions for Promo model.
@@ -62,11 +61,19 @@ class AdminController extends Controller
                 return $model->on_form == 1 ? 'Доступно' : 'Недоступно';
             }
         ];
+        $loyaltyStatuses = array_map(function ($item, $key) {
+            return $item['display_name'].'('.$key.')';
+        }, $loyaltyStatuses, array_keys($loyaltyStatuses));
+        $bonusStatuses = array_map(function ($item, $key) {
+            return $item['name'].' ('.$key.')';
+        }, $bonusStatuses, array_keys($bonusStatuses));
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tableData' => $tableData,
+            'loyalty_statuses' => $loyaltyStatuses,
+            'bonus_statuses' => $bonusStatuses,
         ]);
     }
 
@@ -87,6 +94,7 @@ class AdminController extends Controller
         $bonusStatuses = array_map(function ($item, $key) {
             return $item['name'].' ('.$key.')';
         }, $bonusStatuses, array_keys($bonusStatuses));
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -117,8 +125,6 @@ class AdminController extends Controller
         $bonusStatuses = array_map(function ($item, $key) {
             return $item['name'].' ('.$key.')';
         }, $bonusStatuses, array_keys($bonusStatuses));
-
-
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
