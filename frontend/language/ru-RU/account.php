@@ -305,6 +305,6 @@ return [
     'password_reset' => 'Восстановление пароля',
     'password_reset_description' => 'Инструкции для восстановления пароля<br>придут к вам на указанный e-mail',
     'do_password_reset' => 'Восстановить пароль',
-
+    'promocode'=>'Промокод',
 
 ];
