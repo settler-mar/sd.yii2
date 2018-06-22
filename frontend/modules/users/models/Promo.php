@@ -11,6 +11,7 @@ class Promo extends Model
   public $promo;
   public $form;
   public $reCaptcha;
+  public $dbPromo;
 
   /**
    * @inheritdoc
@@ -21,14 +22,13 @@ class Promo extends Model
       [['promo'], 'required'],
       ['promo', 'trim'],
       ['promo', function ($attribute) {
-        if ($this->form == 1) {
-            if (!in_array($this->promo, $this->promos(true))) {
-                $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
-            }
-        } else {
-            if (!in_array($this->promo, $this->promos())) {
-                $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
-            }
+        $query = DbPromo::find()->where(['name'=>$this->promo])->asArray();
+        if ($this->form) {
+            $query->andWhere(['on_form' => 1]);
+        }
+        $this->dbPromo = $query->one();
+        if (!$this->dbPromo) {
+            $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
         }
       }],
       ['form', 'integer'],
@@ -61,21 +61,5 @@ class Promo extends Model
   {
       Yii::$app->session->set('referrer_promo', $this->promo);
   }
-
-    /** список доступных промокодов в 2 режимах
-     * @param bool $onForm
-     * @return array
-     */
-  private function promos($onForm = false)
-  {
-    $result = [];
-      foreach (DbPromo::all() as $promo) {
-        if (!$onForm || (isset($promo['on_form']) && $promo['on_form'] == 1)) {
-          $result[] = $promo['name'];
-        }
-    }
-    return $result;
-  }
-
 
 }
