@@ -23,7 +23,7 @@ class Promo extends Model
       ['promo', 'trim'],
       ['promo', function ($attribute) {
         $query = DbPromo::find()->where(['name'=>$this->promo])->asArray();
-        if ($this->promo) {
+        if ($this->form) {
             $query->andWhere(['on_form' => 1]);
         }
         $this->dbPromo = $query->one();
