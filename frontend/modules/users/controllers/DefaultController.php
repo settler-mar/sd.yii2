@@ -498,17 +498,11 @@ class DefaultController extends Controller
       throw new NotFoundHttpException();
     }
     $model = new Promo();
-    //$promo = $request->post('promo');
-   // $promo = trim($promo);
-    //$validatorPromo = new \yii\validators\RangeValidator(['range'=> array_keys(Yii::$app->params['ref_promo'])]);
-    //if ($validatorPromo->validate($promo)) {
     if ($model->load($request->post()) && $model->validate()) {
         $model->save();
-      //Yii::$app->session->set('referrer_promo', $promo);
-      if (isset(Yii::$app->params['ref_promo'][$model->promo])) {
-          $promoItem = Yii::$app->params['ref_promo'][$model->promo];
-          $title = (isset($promoItem['title'])) ? $promoItem['title'] : $model->promo;
-          $days = (isset($promoItem['new_loyalty_status_end'])) ? $promoItem['new_loyalty_status_end'] : 0;
+        if ($model->dbPromo) {
+          $title = $model->dbPromo['title'];
+          $days = $model->dbPromo['new_loyalty_status_end'] > 0 ? $model->dbPromo['new_loyalty_status_end'] : 0;
           if ($days == 0) {
               $message = Yii::t('account', 'user_loyalty_reg_status_{title}_forever', ['title' => $title]);
           } else {
