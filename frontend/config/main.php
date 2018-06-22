@@ -284,6 +284,9 @@ $config = [
     'promo' => [
       'class' => 'frontend\modules\promo\Module',
     ],
+    'actions' => [
+      'class' => 'frontend\modules\actions\Module',
+    ],
   ],
   'params' => $params,
 
