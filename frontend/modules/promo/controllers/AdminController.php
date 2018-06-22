@@ -59,6 +59,9 @@ class AdminController extends Controller
             },
             'on_form' => function ($model) {
                 return $model->on_form == 1 ? 'Доступно' : 'Недоступно';
+            },
+            'on_link' => function ($model) {
+                return $model->on_link == 1 ? 'Доступно' : 'Недоступно';
             }
         ];
         $loyaltyStatuses = array_map(function ($item, $key) {

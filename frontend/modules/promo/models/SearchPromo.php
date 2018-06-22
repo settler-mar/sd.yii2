@@ -19,7 +19,7 @@ class SearchPromo extends Promo
     {
         return [
             [['uid', 'loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'], 'integer'],
-            [['name', 'title', 'date_to', 'on_form', 'created_at'], 'safe'],
+            [['name', 'title', 'date_to', 'on_form', 'on_link', 'created_at'], 'safe'],
         ];
     }
 
@@ -65,12 +65,13 @@ class SearchPromo extends Promo
             'bonus_status' => $this->bonus_status,
             'new_loyalty_status_end' => $this->new_loyalty_status_end,
             'date_to' => $this->date_to,
+            'on_form' => $this->on_form,
+            'on_link' => $this->on_link,
             'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'on_form', $this->on_form]);
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }
