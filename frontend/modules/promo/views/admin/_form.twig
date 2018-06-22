@@ -17,9 +17,9 @@
 
                         {{ form.field(model, 'bonus_status').dropDownList(bonus_statuses, {'prompt': ''})|raw }}
 
-                        {{ form.field(model, 'new_loyalty_status_end').textInput()|raw }}
+                        {{ form.field(model, 'new_loyalty_status_end').textInput({'placeholder' :"0 - навседа"})|raw }}
 
-                        {{ form.field(model, 'date_to').textInput()|raw }}
+                        {{ form.field(model, 'date_to').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
 
                         {{ form.field(model, 'on_form').dropDownList({'0': 'Недоступно','1': 'Доступно'},{'prompt': ''})|raw }}
 

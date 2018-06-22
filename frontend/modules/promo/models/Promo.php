@@ -36,7 +36,7 @@ class Promo extends \yii\db\ActiveRecord
         return [
             [['name', 'title'], 'required'],
             [['loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'], 'integer'],
-            [['date_to', 'created_at'], 'safe'],
+            [['date_to', 'created_at'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['name', 'title'], 'string', 'max' => 255],
             [['on_form'], 'integer'],
         ];
