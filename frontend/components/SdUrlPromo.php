@@ -4,6 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 use frontend\modules\users\models\Users;
+use frontend\modules\promo\models\Promo;
 
 class SdUrlPromo implements UrlRuleInterface
 {
@@ -62,14 +63,22 @@ class SdUrlPromo implements UrlRuleInterface
         }
       }
       //проверка ссылки promo
-      if (!empty(Yii::$app->params['ref_promo'])) {
-        if (isset($params['promo'])) {
-          $promo = trim($params['promo']);
-          $validatorPromo = new \yii\validators\RangeValidator(['range' => array_keys(Yii::$app->params['ref_promo'])]);
-          if ($validatorPromo->validate($promo)) {
-            Yii::$app->session->set('referrer_promo', $promo);
-            $promoEn = true;
-          }
+//      if (!empty(Yii::$app->params['ref_promo'])) {
+//        if (isset($params['promo'])) {
+//          $promo = trim($params['promo']);
+//          $validatorPromo = new \yii\validators\RangeValidator(['range' => array_keys(Yii::$app->params['ref_promo'])]);
+//          if ($validatorPromo->validate($promo)) {
+//            Yii::$app->session->set('referrer_promo', $promo);
+//            $promoEn = true;
+//          }
+//        }
+//      }
+
+      if (isset($params['promo'])) {
+        $promo = trim($params['promo']);
+        $dbPromo = Promo::find()->where(['name' => $promo])->one();
+        if ($dbPromo) {
+          Yii::$app->session->set('referrer_promo', $promo);
         }
       }
 

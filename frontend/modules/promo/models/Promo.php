@@ -20,6 +20,8 @@ use Yii;
  */
 class Promo extends \yii\db\ActiveRecord
 {
+    public $attributesToUser = ['loyalty_status', 'referrer_id', 'bonus_status' , 'new_loyalty_status_end'];
+
     /**
      * @inheritdoc
      */
@@ -59,14 +61,6 @@ class Promo extends \yii\db\ActiveRecord
             'on_form' => 'Доступно для выбора с формы',
             'created_at' => 'Создано',
         ];
-    }
-
-    /**
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function all()
-    {
-        return self::find()->asArray()->all();
     }
 
 }
