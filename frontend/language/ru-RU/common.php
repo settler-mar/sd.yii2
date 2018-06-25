@@ -40,7 +40,7 @@ return [
     'admin_comment' => 'Комментарий администратора',
     'error' => 'Ошибка',
     'info' => 'Внимание',
-    'congratulations' => 'Поздравляем!',
+    'congratulations' => 'Поздравляем',
     'error_try_again' => 'Ошибка. Попробуйте позже.',
     'read_more' => 'Подробнее',
     'read_more_long' => 'Подробная информация',
