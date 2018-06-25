@@ -526,7 +526,7 @@ class Stores extends \yii\db\ActiveRecord
   public function saveImage()
   {
     $photo = \yii\web\UploadedFile::getInstance($this, 'logoImage');
-    if ($photo && $image = SdImage::save($photo, $this->getStorePath(), 143, $this->logo)) {
+    if ($photo && $image = SdImage::save($photo, $this->getStorePath(), 192, $this->logo)) {
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), ['logo' => $image], ['uid' => $this->uid])
