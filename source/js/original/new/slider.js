@@ -975,6 +975,9 @@ var megaslider = (function () {
   }
 
   return {
-    init: init
+    init: init,
+    initButtons: function(){
+       initImageServerSelect($('.fileSelect'));
+    }
   };
 }());
