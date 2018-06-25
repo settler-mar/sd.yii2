@@ -4,7 +4,6 @@
             <div class="col-md-12">
                 <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
-                {{ use('/yii/twig/html/HtmlHelperExtension') }}
                 <div class="actions-form">
                     {% set form = active_form_begin() %}
 
@@ -46,6 +45,54 @@
                     {{ active_form_end() }}
                 </div>
             </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <h3>Условия</h3>
+                <a href="admin/actions/add-condition/id:{{ model.uid }}" class="btn btn-success">Добавить условие</a>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <th>#</th>
+                        <th>Количество рефферралов</th>
+                        <th>Количество покупок</th>
+                        <th>Статус лояльности</th>
+                        <th>Статус вебмастера</th>
+                        <th>Дата регистрации от</th>
+                        <th>Дата регистрации до</th>
+                        <th>Для шопов</th>
+                        <th></th>
+                    </thead>
+                    {% for condition in model.conditions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ condition.referral_count }}</td>
+                            <td>{{ condition.payment_count }}</td>
+                            <td>{{ condition.loyalty_status }}</td>
+                            <td>{{ condition.bonus_status }}</td>
+                            <td>{{ condition.date_register_from }}</td>
+                            <td>{{ condition.date_register_to }}</td>
+                            <td>{{ condition.stores_list }}</td>
+
+                            <td>
+                                <a href="admin/actions/update-condition/id:{{ condition.uid }}" title="Редактировать условие">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a href="/admin/actions/delete-condition/id:{{ condition.uid }}" title="Удалить условие"
+                                   aria-label="Удалить" data-pjax="0"
+                                   data-confirm="Вы уверены, что хотите удалить этот элемент?"
+                                   data-method="post">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+
         </div>
     </section>
 </div>
