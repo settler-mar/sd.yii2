@@ -369,6 +369,9 @@ td {
       height: 78px !important;
     }
   }
+  &.align-center .g-recaptcha > div {
+    margin: auto;
+  }
 
   @include media($phones) {
     width: 100%;
