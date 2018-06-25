@@ -27,7 +27,7 @@
 
                         {{ form.field(model, 'action_time').textInput({'maxlength':true})|raw }}
 
-                        <h5>Информировать пользователя</h5>
+                        <h5>Активация акции пользователем</h5>
 
                         {% for key,item in model.inform_types_select %}
                             <div class="form-group field-actions-inform_types_form-{{ key }}">
