@@ -1,0 +1,52 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Акции' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="actions-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h1>{{ html.encode(this.title) }}</h1>
+                    {# include('_search.twig', {'model': searchModel}) #}
+                    <p>
+                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Actions' }}</a>
+                    </p>
+                    {{ grid_view_widget({
+                            'dataProvider': dataProvider,
+                            'filterModel': searchModel,
+                                'columns': [
+                                {'class': '\\yii\\grid\\SerialColumn'},
+
+                                'uid',
+                                'name',
+                                'date_start',
+                                'date_end',
+                                'active',
+
+                                {'class': '\\yii\\grid\\ActionColumn', 'template': '{update} {delete}', },
+                            ],
+                        })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
+{#
+'image',
+'page',
+'date_start',
+'date_end',
+'action_time:datetime',
+'inform_types',
+'promo_start',
+'promo_end',
+'created_at'
+#}
+</div>

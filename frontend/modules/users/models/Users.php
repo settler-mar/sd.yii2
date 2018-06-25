@@ -9,6 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\withdraw\models\UsersWithdraw;
+use frontend\modules\promo\models\Promo;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -308,19 +309,26 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       //ссылки промо
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
-      if ($promo && !empty(Yii::$app->params['ref_promo']) && !empty(Yii::$app->params['ref_promo'][$promo])) {
-        $promos = isset(Yii::$app->params['ref_promo'][$promo]) ? Yii::$app->params['ref_promo'][$promo] : [];
-        if (isset($promos['time'])) {
-          if ($promos['time'] === false) {
-            $this->new_loyalty_status_end = 0;
-          } else {
-            $this->new_loyalty_status_end = time() + $promos['time'] * 24 * 60 * 60;
+      if ($promo) {
+          $dbPromo = Promo::find()->where(['name' => $promo])->one();
+          if ($dbPromo) {
+          //if ($promo && !empty(Yii::$app->params['ref_promo']) && !empty(Yii::$app->params['ref_promo'][$promo])) {
+//              $promos = isset(Yii::$app->params['ref_promo'][$promo]) ? Yii::$app->params['ref_promo'][$promo] : [];
+//              if (isset($promos['time'])) {
+//                  if ($promos['time'] === false) {
+//                      $this->new_loyalty_status_end = 0;
+//                  } else {
+//                      $this->new_loyalty_status_end = time() + $promos['time'] * 24 * 60 * 60;
+//                  }
+//                  unset ($promos['time']);
+//              }
+              if ($dbPromo->new_loyalty_status_end > 0) {
+                  $dbPromo->new_loyalty_status_end = time() + $dbPromo->new_loyalty_status_end * 24 * 60 * 60;
+              }
+              foreach ($dbPromo->attributesToUser as $field) {
+                  $this->$field = $dbPromo->$field;
+              }
           }
-          unset ($promos['time']);
-        }
-        foreach ($promos as $field => $promo) {
-          $this->$field = $promo;
-        }
       }
     }
 

@@ -21,7 +21,10 @@
 
                         {{ form.field(model, 'date_to').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
 
-                        {{ form.field(model, 'on_form').dropDownList({'0': 'Недоступно','1': 'Доступно'},{'prompt': ''})|raw }}
+                        {#{{ form.field(model, 'on_form').dropDownList({'0': 'Недоступно','1': 'Доступно'},{'prompt': ''})|raw }}#}
+                        {{ form.field(model, 'on_form').checkbox()|raw }}
+
+                        {{ form.field(model, 'on_link').checkbox()|raw }}
 
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

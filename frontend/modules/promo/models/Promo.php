@@ -20,6 +20,8 @@ use Yii;
  */
 class Promo extends \yii\db\ActiveRecord
 {
+    public $attributesToUser = ['loyalty_status', 'referrer_id', 'bonus_status' , 'new_loyalty_status_end'];
+
     /**
      * @inheritdoc
      */
@@ -38,7 +40,7 @@ class Promo extends \yii\db\ActiveRecord
             [['loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'], 'integer'],
             [['date_to', 'created_at'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['name', 'title'], 'string', 'max' => 255],
-            [['on_form'], 'integer'],
+            [['on_form', 'on_link'], 'integer'],
         ];
     }
 
@@ -56,17 +58,10 @@ class Promo extends \yii\db\ActiveRecord
             'bonus_status' => 'Статус вебмастера',
             'new_loyalty_status_end' => 'Действительно дней',
             'date_to' => 'Действительно до даты',
-            'on_form' => 'Доступно для выбора с формы',
+            'on_form' => 'Доступно с формы',
+            'on_link' => 'Доступно со ссылки',
             'created_at' => 'Создано',
         ];
-    }
-
-    /**
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function all()
-    {
-        return self::find()->asArray()->all();
     }
 
 }

@@ -28,9 +28,9 @@ class AdminController extends Controller
 
     public function beforeAction($action)
     {
-//        if (!Yii::$app->user->identity->is_admin) {
-//            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-//        }
+        if (!Yii::$app->user->identity->is_admin) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+        }
         $this->layout = '@app/views/layouts/admin.twig';
         return true;
     }
@@ -59,6 +59,9 @@ class AdminController extends Controller
             },
             'on_form' => function ($model) {
                 return $model->on_form == 1 ? 'Доступно' : 'Недоступно';
+            },
+            'on_link' => function ($model) {
+                return $model->on_link == 1 ? 'Доступно' : 'Недоступно';
             }
         ];
         $loyaltyStatuses = array_map(function ($item, $key) {

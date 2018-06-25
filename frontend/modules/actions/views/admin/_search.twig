@@ -1,0 +1,38 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="actions-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'uid')|raw }}
+
+    {{ form.field(model, 'name')|raw }}
+
+    {{ form.field(model, 'image')|raw }}
+
+    {{ form.field(model, 'page')|raw }}
+
+    {{ form.field(model, 'active')|raw }}
+
+    {# form.field(model, 'date_start')|raw #}
+
+    {# form.field(model, 'date_end')|raw #}
+
+    {# form.field(model, 'action_time')|raw #}
+
+    {# form.field(model, 'inform_types')|raw #}
+
+    {# form.field(model, 'promo_start')|raw #}
+
+    {# form.field(model, 'promo_end')|raw #}
+
+    {# form.field(model, 'created_at')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

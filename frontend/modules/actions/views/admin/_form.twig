@@ -1,0 +1,51 @@
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+                {{ use('/yii/widgets/ActiveForm') }}
+                {{ use('/yii/twig/html/HtmlHelperExtension') }}
+                <div class="actions-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'active').checkbox()|raw }}
+
+                        {{ form.field(model, 'date_start').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
+
+                        {{ form.field(model, 'date_end').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
+
+                        {{ form.field(model, 'action_time').textInput({'maxlength':true})|raw }}
+
+                        <h5>Информировать пользователя</h5>
+
+                        {% for key,item in model.inform_types_select %}
+                            <div class="form-group field-actions-inform_types_form-{{ key }}">
+                                <label for="actions-inform_types_form-{{ key }}">
+                                    <input type="checkbox" id="actions-inform_types_form-{{ key }}"
+                                           name="Actions[inform_types_form][]" value="{{ key }}"
+                                    {% if key in model.inform_types_array %}checked{% endif %} >
+                                    {{ item }}
+                                </label>
+                                <div class="help-block"></div>
+                            </div>
+                        {% endfor %}
+
+                        {{ form.field(model, 'promo_start').dropDownList(promos, {'prompt': 'Выберите акцию'})|raw }}
+
+                        {{ form.field(model, 'promo_end').dropDownList(promos, {'prompt': 'Выберите акцию'})|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

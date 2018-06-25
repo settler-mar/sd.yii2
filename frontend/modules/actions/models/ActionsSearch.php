@@ -1,16 +1,16 @@
 <?php
 
-namespace frontend\modules\promo\models;
+namespace frontend\modules\actions\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\actions\models\Actions;
 
 /**
- * SearchPromo represents the model behind the search form about `frontend\modules\promo\models\Promo`.
+ * ActionsSearch represents the model behind the search form about `frontend\modules\actions\models\Actions`.
  */
-class SearchPromo extends Promo
+class ActionsSearch extends Actions
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchPromo extends Promo
     public function rules()
     {
         return [
-            [['uid', 'loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'], 'integer'],
-            [['name', 'title', 'date_to', 'on_form', 'on_link', 'created_at'], 'safe'],
+            [['uid', 'action_time', 'promo_start', 'promo_end'], 'integer'],
+            [['name', 'image', 'page', 'active', 'date_start', 'date_end', 'inform_types', 'created_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchPromo extends Promo
      */
     public function search($params)
     {
-        $query = Promo::find();
+        $query = Actions::find();
 
         // add conditions that should always apply here
 
@@ -60,18 +60,19 @@ class SearchPromo extends Promo
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
-            'loyalty_status' => $this->loyalty_status,
-            'referrer_id' => $this->referrer_id,
-            'bonus_status' => $this->bonus_status,
-            'new_loyalty_status_end' => $this->new_loyalty_status_end,
-            'date_to' => $this->date_to,
-            'on_form' => $this->on_form,
-            'on_link' => $this->on_link,
+            'date_start' => $this->date_start,
+            'date_end' => $this->date_end,
+            'action_time' => $this->action_time,
+            'promo_start' => $this->promo_start,
+            'promo_end' => $this->promo_end,
             'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'title', $this->title]);
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'page', $this->page])
+            ->andFilterWhere(['like', 'active', $this->active])
+            ->andFilterWhere(['like', 'inform_types', $this->inform_types]);
 
         return $dataProvider;
     }
