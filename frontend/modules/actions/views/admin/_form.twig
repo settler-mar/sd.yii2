@@ -35,19 +35,19 @@
                             </div>
                         {% endfor %}
 
-                        {{ form.field(model, 'promo_start').dropDownList(promos, {'prompt': 'Выберите акцию'})|raw }}
+                        {{ form.field(model, 'promo_start').dropDownList(promos, {'prompt': 'Выберите помокод'})|raw }}
 
-                        {{ form.field(model, 'promo_end').dropDownList(promos, {'prompt': 'Выберите акцию'})|raw }}
+                        {{ form.field(model, 'promo_end').dropDownList(promos, {'prompt': 'Выберите промокод'})|raw }}
 
                     <div class="form-group">
-                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
                     </div>
                     {{ active_form_end() }}
                 </div>
             </div>
         </div>
+        {% if model.isNewRecord == 0 %}
         <div class="row">
-
             <div class="col-md-12">
                 <h3>Условия</h3>
                 <a href="admin/actions/add-condition/id:{{ model.uid }}" class="btn btn-success">Добавить условие</a>
@@ -75,7 +75,6 @@
                             <td>{{ condition.date_register_from }}</td>
                             <td>{{ condition.date_register_to }}</td>
                             <td>{{ condition.stores_list }}</td>
-
                             <td>
                                 <a href="admin/actions/update-condition/id:{{ condition.uid }}" title="Редактировать условие">
                                     <span class="glyphicon glyphicon-pencil"></span>
@@ -88,11 +87,50 @@
                                 </a>
                             </td>
                         </tr>
-
                     {% endfor %}
                 </table>
             </div>
-
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Действия</h3>
+                <a href="admin/actions/add-action/id:{{ model.uid }}" class="btn btn-success">Добавить действие</a>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <th>#</th>
+                        <th>Количество покупок</th>
+                        <th>Количество покупок реферралов</th>
+                        <th>Количество покупок новых реферралов</th>
+                        <th>Покупки в шопах</th>
+                        <th>Количество приведённых реферралов</th>
+                        <th></th>
+                    </thead>
+                    {% for action in model.actionsActions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ action.payment_count }}</td>
+                            <td>{{ action.users_payment_count }}</td>
+                            <td>{{ action.new_users_payment_count }}</td>
+                            <td>{{ action.payment_stores_list }}</td>
+                            <td>{{ action.referral_count }}</td>
+                            <td>
+                                <a href="admin/actions/update-action/id:{{ action.uid }}" title="Редактировать действие">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a href="/admin/actions/delete-action/id:{{ action.uid }}" title="Удалить действие"
+                                   aria-label="Удалить" data-pjax="0"
+                                   data-confirm="Вы уверены, что хотите удалить этот элемент?"
+                                   data-method="post">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif %}
     </section>
 </div>

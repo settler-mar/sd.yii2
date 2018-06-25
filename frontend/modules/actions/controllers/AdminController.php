@@ -6,6 +6,7 @@ use Yii;
 use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsSearch;
 use frontend\modules\actions\models\ActionsConditions;
+use frontend\modules\actions\models\ActionsActions;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,6 +26,7 @@ class AdminController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                     'deleteCondition' => ['post'],
+                    'deleteAction' => ['post'],
                 ],
             ],
         ];
@@ -199,6 +201,61 @@ class AdminController extends Controller
     }
 
     /**
+     * создать действие
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionAddAction($id)
+    {
+        $model = new ActionsActions();
+        $model->action_id = $id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id' => $id]);
+        } else {
+            return $this->render('formActions.twig', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * изменить действие
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdateAction($id)
+    {
+        $model = $this->findAction($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id'=>$model->action_id]);
+        } else {
+            return $this->render('formActions.twig', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * удалить действие
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDeleteAction($id)
+    {
+        $model = $this->findAction($id);
+        $actionId = $model->action_id;
+        $model->delete();
+
+        return $this->redirect(['update', 'id' => $actionId]);
+    }
+
+    /**
      * Finds the Actions model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -222,6 +279,19 @@ class AdminController extends Controller
     protected function findCondition($id)
     {
         if (($model = ActionsConditions::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    /**
+     * @param $id
+     * @return ActionsActions|null
+     * @throws NotFoundHttpException
+     */
+    protected function findAction($id)
+    {
+        if (($model = ActionsActions::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

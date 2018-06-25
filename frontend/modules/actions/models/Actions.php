@@ -75,7 +75,7 @@ class Actions extends \yii\db\ActiveRecord
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',
-            'action_time' => 'Продолжительность для пользователя',
+            'action_time' => 'Продолжительность для пользователя (дней)',
             'inform_types' => 'Информировать пользователя',
             'inform_types_form' => 'Информировать пользователя',
             'promo_start' => 'Использовать промокод при начале акции',

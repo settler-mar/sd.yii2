@@ -1,4 +1,4 @@
-{% set title = model.isNewRecord ? 'Создать условие' : 'Изменить условие: id = ' ~ model.uid~' акции '~model.action.name %}
+{% set title = model.isNewRecord ? 'Создать действие' : 'Изменить действие: id = ' ~ model.uid ~ ' акции '~model.action.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -20,19 +20,15 @@
 
                         {{ form.field(model, 'action_id').hiddenInput().label(false)|raw }}
 
-                        {{ form.field(model, 'referral_count').textInput({'maxlength':true})|raw }}
-
                         {{ form.field(model, 'payment_count').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'loyalty_status').dropDownList(loyalty_statuses, {'prompt': 'Выберите статус'})|raw }}
+                        {{ form.field(model, 'users_payment_count').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'bonus_status').dropDownList(bonus_statuses, {'prompt': 'Выберите статус'})|raw  }}
+                        {{ form.field(model, 'new_users_payment_count').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'date_register_from').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
+                        {{ form.field(model, 'payment_stores_list').textInput({'maxlength':true})|raw  }}
 
-                        {{ form.field(model, 'date_register_to').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
-
-                        {{ form.field(model, 'stores_list').textInput({'maxlength':true})|raw  }}
+                        {{ form.field(model, 'referral_count').textInput({'maxlength':true})|raw }}
 
                         <div class="form-group">
                             <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Изменить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

@@ -50,11 +50,11 @@ class ActionsActions extends \yii\db\ActiveRecord
         return [
             'uid' => 'Uid',
             'action_id' => 'Action ID',
-            'payment_count' => 'Payment Count',
-            'payment_stores_list' => 'Payment Stores List',
-            'referral_count' => 'Referral Count',
-            'users_payment_count' => 'Users Payment Count',
-            'new_users_payment_count' => 'New Users Payment Count',
+            'payment_count' => 'Количество покупок',
+            'payment_stores_list' => 'Покупки в шопах',
+            'referral_count' => 'Количество приведённых реферралов',
+            'users_payment_count' => 'Количество покупок реферралов',
+            'new_users_payment_count' => 'Количество покупок новых реферралов',
             'created_at' => 'Created At',
         ];
     }
