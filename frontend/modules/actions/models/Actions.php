@@ -71,7 +71,7 @@ class Actions extends \yii\db\ActiveRecord
             'uid' => 'ID',
             'name' => 'Название',
             'image' => 'Изображение',
-            'page' => 'Станица',
+            'page' => 'Страница',
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',

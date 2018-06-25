@@ -4,12 +4,18 @@
             <div class="col-md-12">
                 <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
-                <div class="actions-form">
+                <div class="actions-form ">
                     {% set form = active_form_begin() %}
 
                         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-                        {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+                        {#{{ form.field(model, 'image').textInput({'maxlength':true})|raw }}#}
+
+                        <div class="form-group form-group-button">
+                            <label for="actions-image">Изображение</label>
+                                <input id="actions-image" name="Actions[image]" class="fileSelect form-control" value="{{ model.image }}">
+                            <div class="help-block"></div>
+                        </div>
 
                         {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
 
@@ -133,4 +139,46 @@
         </div>
         {% endif %}
     </section>
+
 </div>
+<script type="application/javascript">
+    if (typeof mihaildev == "undefined" || !mihaildev) {
+        var mihaildev = {};
+    }
+
+    mihaildev.elFinder = {
+        openManager: function(options){
+            var params = "menubar=no,toolbar=no,location=no,directories=no,status=no,fullscreen=no";
+            if(options.width == 'auto'){
+                options.width = $(window).width()/1.5;
+            }
+
+            if(options.height == 'auto'){
+                options.height = $(window).height()/1.5;
+            }
+
+            params = params + ",width=" + options.width;
+            params = params + ",height=" + options.height;
+
+            //console.log(params);
+            var win = window.open(options.url, 'ElFinderManager' + options.id, params);
+            win.focus()
+        },
+        functions: {},
+        register: function(id, func){
+            this.functions[id] = func;
+        },
+        callFunction: function(id, file){
+            return this.functions[id](file, id);
+        },
+        functionReturnToInput: function(file, id){
+            jQuery('#' + id).val(file.url);
+            return true;
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        megaslider.initButtons();
+
+    });
+</script>
