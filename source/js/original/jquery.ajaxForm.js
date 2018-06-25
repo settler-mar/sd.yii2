@@ -36,7 +36,7 @@ function ajaxForm(els) {
       for (var index in post.error) {
         notification.notifi({
           'type': 'err',
-          'title': lg('error'),
+          'title': post.title ? post.title : lg('error'),
           'message': post.error[index]
         });
       }
@@ -44,7 +44,7 @@ function ajaxForm(els) {
       for (var i = 0; i < post.error.length; i++) {
         notification.notifi({
           'type': 'err',
-          'title': lg('error'),
+          'title': post.title ? post.title : lg('error'),
           'message': post.error[i]
         });
       }
@@ -52,7 +52,7 @@ function ajaxForm(els) {
       if (post.error || post.message) {
         notification.notifi({
           'type': post.error === false ? 'success' : 'err',
-          'title': post.error === false ? lg('success') : lg('error'),
+          'title': post.title ? post.title : (post.error === false ? lg('success') : lg('error')),
           'message': post.message ? post.message : post.error
         });
       }

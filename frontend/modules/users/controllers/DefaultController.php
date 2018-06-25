@@ -509,10 +509,10 @@ class DefaultController extends Controller
               $message = Yii::t('account', 'user_loyalty_reg_status_{title}_for_{days}_', ['title' => $title, 'days'=> $days]);
           }
           return json_encode([
-              'title' => Yii::t('common', 'congratulations'),
+              'title' => Yii::t('common', 'congratulations').'!',
               'message' => $message,
               'error' => false,
-              'html' => '<div class="margin align-center"><h3>'.Yii::t('common','successfull').'</h3>'.
+              'html' => '<div class="margin align-center"><h3 class="margin">'.Yii::t('main','promocode_successfull').'</h3>'.
                   '<a class="btn modals_open" href="#registration">'.Yii::t('common', 'do_register').'</a>'.
                   '</div>',
           ]);
@@ -520,11 +520,11 @@ class DefaultController extends Controller
     } else {
         $messages = [];
         foreach ($model->errors as $key=>$error){
-            $messages[] = $model->attributeLabels()[$key].': '.implode(', ', $error);
+            $messages[] = implode(' ', $error);
         }
         return json_encode([
-            'title' => Yii::t('common', 'error'),
-            'message' => implode(', ', $messages),
+            'title' => Yii::t('common', 'error').'!',
+            'message' => implode(' ', $messages),
         ]);
     }
   }

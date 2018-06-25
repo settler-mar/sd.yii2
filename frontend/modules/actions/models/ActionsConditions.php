@@ -52,13 +52,13 @@ class ActionsConditions extends \yii\db\ActiveRecord
         return [
             'uid' => 'Uid',
             'action_id' => 'Action ID',
-            'stores_list' => 'Stores List',
-            'referral_count' => 'Referral Count',
-            'payment_count' => 'Payment Count',
-            'loyalty_status' => 'Loyalty Status',
-            'bonus_status' => 'Bonus Status',
-            'date_register_from' => 'Date Register From',
-            'date_register_to' => 'Date Register To',
+            'stores_list' => 'Для шопов',
+            'referral_count' => 'Количество рефералов',
+            'payment_count' => 'Количество покупок',
+            'loyalty_status' => 'Статус лояльности',
+            'bonus_status' => 'Статус вебмастера',
+            'date_register_from' => 'Дата регистрации от',
+            'date_register_to' => 'Дата регистрации до',
             'created_at' => 'Created At',
         ];
     }
@@ -69,5 +69,13 @@ class ActionsConditions extends \yii\db\ActiveRecord
     public function getAction()
     {
         return $this->hasOne(Actions::className(), ['uid' => 'action_id']);
+    }
+
+    public function beforeValidate()
+    {
+        //ddd($this);
+        $this->date_register_from =  $this->date_register_from == "" ? 0 : $this->date_register_from;
+        $this->date_register_to =  $this->date_register_to == "" ? 0 : $this->date_register_to;
+        return parent::beforeValidate();
     }
 }

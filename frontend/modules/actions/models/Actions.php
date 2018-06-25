@@ -75,7 +75,7 @@ class Actions extends \yii\db\ActiveRecord
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',
-            'action_time' => 'Продолжительность для пользователя',
+            'action_time' => 'Продолжительность для пользователя (дней)',
             'inform_types' => 'Информировать пользователя',
             'inform_types_form' => 'Информировать пользователя',
             'promo_start' => 'Использовать промокод при начале акции',
@@ -116,7 +116,7 @@ class Actions extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwActionsActions()
+    public function getActionsActions()
     {
         return $this->hasMany(ActionsActions::className(), ['action_id' => 'uid']);
     }
@@ -124,7 +124,7 @@ class Actions extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwActionsConditions()
+    public function getConditions()
     {
         return $this->hasMany(ActionsConditions::className(), ['action_id' => 'uid']);
     }
@@ -132,7 +132,7 @@ class Actions extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwActionsToUsers()
+    public function getActionsToUsers()
     {
         return $this->hasMany(ActionsToUsers::className(), ['action_id' => 'uid']);
     }
