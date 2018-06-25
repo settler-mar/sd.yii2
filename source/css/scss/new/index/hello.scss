@@ -167,8 +167,10 @@
         }
 
         &_no_label{
-          padding-bottom: 0;
-          padding-top: 0;
+          padding-bottom: 50px;
+          padding-top: 50px;
+          //padding-bottom: 0;
+          //padding-top: 0;
           background: transparent;
 
           @include media($laptop_min){
