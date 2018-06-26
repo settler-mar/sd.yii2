@@ -58,9 +58,9 @@ class SdUrlPromo implements UrlRuleInterface
           $refEn = true;
         }
 
-        if (!$ref_href && isset($ref_redirect[$user->uid])) {
+        /*if (!$ref_href && isset($ref_redirect[$user->uid])) {
           $ref_href = $ref_redirect[$user->uid];
-        }
+        }*/
       }
       //проверка ссылки promo
 //      if (!empty(Yii::$app->params['ref_promo'])) {
