@@ -252,7 +252,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     if ($this->isNewRecord) {
       $this->reg_ip = get_ip();
-      $this->referrer_id = (int)Yii::$app->session->get('referrer_id');
+      //$this->referrer_id = (int)Yii::$app->session->get('referrer_id');
       $this->added = date('Y-m-d H:i:s');
 
       if (!isset($this->auth_key)) {
@@ -309,6 +309,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       //ссылки промо
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
+      $referrer_id = Yii::$app->session->get('referrer_id') &&
+        self::findOne((int) Yii::$app->session->get('referrer_id')) ?
+          (int) Yii::$app->session->get('referrer_id') : false;
       if ($promo) {
           $dbPromo = DbPromo::find()->where(['name' => $promo])->one();
           if ($dbPromo) {
@@ -319,6 +322,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
                   $this->$field = $dbPromo->$field;
               }
           }
+      }
+      if ($referrer_id) {
+          $this->referrer_id = $referrer_id;
       }
     }
 
