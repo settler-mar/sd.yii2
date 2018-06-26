@@ -10,6 +10,8 @@ class Ozon
 
   protected $travelUrl = 'https://api.ozon.travel/tours/v1/';
 
+  protected static $travelUrl_2 = 'https://www.ozon.travel/my/partners/report_xml.html?PartnerCode=23647&Date=2018-06-01';
+
   protected $config;
 
   public function __construct($config = 'ozon')
@@ -19,6 +21,10 @@ class Ozon
       } else {
           ddd('Config outstand_cpa.'.$config.' not found');
       }
+  }
+
+  public static function test(){
+      ddd(file_get_contents(self::$travelUrl_2));
   }
 
     /**
