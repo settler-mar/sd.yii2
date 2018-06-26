@@ -17,7 +17,8 @@
                             <div class="help-block"></div>
                         </div>
 
-                        {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
+                        {#{{ form.field(model, 'page').textInput({'maxlength':true})|raw }}#}
+                        {{ form.field(model, 'page').dropDownList(pages, {'prompt': 'Выберите страницу'})|raw }}
 
                         {{ form.field(model, 'active').checkbox()|raw }}
 

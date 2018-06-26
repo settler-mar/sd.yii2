@@ -7,6 +7,7 @@ use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsSearch;
 use frontend\modules\actions\models\ActionsConditions;
 use frontend\modules\actions\models\ActionsActions;
+use frontend\modules\meta\models\Meta;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -77,6 +78,10 @@ class AdminController extends Controller
     {
         $model = new Actions();
         $promos = ArrayHelper::map(DbPromo::find()->all(), 'uid', 'title');
+        $pages = ArrayHelper::map(Meta::find()
+            ->select(['page'])
+            ->where(['not like', 'page', '*'])
+            ->all(), 'page', 'page');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -84,6 +89,7 @@ class AdminController extends Controller
             return $this->render('create.twig', [
                 'model' => $model,
                 'promos' => $promos,
+                'pages' => $pages,
             ]);
         }
     }
@@ -98,6 +104,10 @@ class AdminController extends Controller
     {
         $model = $this->findModel($id);
         $promos = ArrayHelper::map(DbPromo::find()->all(), 'uid', 'title');
+        $pages = ArrayHelper::map(Meta::find()
+            ->select(['page'])
+            ->where(['not like', 'page', '*'])
+            ->all(), 'page', 'page');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -105,6 +115,7 @@ class AdminController extends Controller
             return $this->render('update.twig', [
                 'model' => $model,
                 'promos' => $promos,
+                'pages' => $pages,
             ]);
         }
     }
