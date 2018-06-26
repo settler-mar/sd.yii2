@@ -136,4 +136,63 @@ class Actions extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ActionsToUsers::className(), ['action_id' => 'uid']);
     }
+
+    /**
+     * доступные для юсера акции и в которых участвует
+     * @param $userId
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function byUser($userId)
+    {
+        if (!$userId) {
+            return null;
+        }
+        $actions = self::find()->from(self::tableName().' cwa')
+            ->select(['cwa.*', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+                'cwac.date_register_from', 'cwac.date_register_to',
+                'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
+            ->innerJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
+            ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
+            ->where([
+                'cwa.active' => 1,
+            ])
+            ->andWhere(['<=', 'cwa.date_start', date('Y-m-d H:i:s')])
+            ->andWhere(['>=', 'cwa.date_end', date('Y-m-d H:i:s')])
+            ->andWhere(['like', 'cwa.inform_types', 'on_account_start'])
+            ->asArray()
+            ->all();
+        $user = Yii::$app->user->identity;
+        $actionsEnabled = [];
+        $actionsJoined = [];
+        $actionsCompleted = [];
+        $actionsOverTimed = [];
+        foreach ($actions as $action) {
+            if (($action['referral_count'] == null || (int) $user->ref_total >= $action['referral_count'])
+                && ($action['payment_count'] == null || ((int) $user->cnt_pending + (int) $user->cnt_confirmed) >= $action['payment_count'])
+                && ($action['loyalty_status'] == null || $action['loyalty_status'] == $user->loyalty_status)
+                && ($action['bonus_status'] == null || $action['bonus_status'] == $user->bonus_status )
+                && ($action['date_register_from'] == 0 || $action['date_register_from']  <= $user->added)
+                && ($action['date_register_to'] == 0 || $action['date_register_to']  >= $user->added)
+            ) {
+                if ($action['joined'] && $action['complete']) {
+                    $actionsComlete[$action['uid']] = $action;
+                } elseif ($action['joined'] && !$action['complete']
+                    && strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time())
+                ) {
+                    $actionsOverTimed[$action['uid']] = $action;
+                } elseif ($action['joined'] && !$action['complete']) {
+                    $actionsJoined[$action['uid']] = $action;
+                } elseif (!$action['joined']) {
+                    $actionsEnabled[$action['uid']] = $action;
+                }
+            }
+        }
+
+        return [
+            'enabled' =>$actionsEnabled,
+            'joined' => $actionsJoined,
+            'completed' => $actionsCompleted,
+            'overtimed' => $actionsOverTimed,
+        ];
+    }
 }

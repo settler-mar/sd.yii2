@@ -306,5 +306,9 @@ return [
     'password_reset_description' => 'Инструкции для восстановления пароля<br>придут к вам на указанный e-mail',
     'do_password_reset' => 'Восстановить пароль',
     'promocode'=>'Промокод',
+    'enabled_actions' => 'Акции',
+    'join_action'=>'Подключиться к акции',
+    'user_joined_to_action'=>'Вы подключились к акции',
+    'user_joined_to_action_error'=>'Произошла ошибка при подключении к акции',
 
 ];
