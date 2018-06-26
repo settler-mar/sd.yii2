@@ -58,6 +58,11 @@ return [
           'password' => '',
           'route' => 'ozon.ru'//??
       ],
+      'ozontravel' => [
+          'parthnerId' => 'xsjb68an',
+          'login' => 'admin@secretdiscounter.com',
+          'password' => '2011idnN@',
+      ],
       'booking.com' => [
           'route' => 'booking-com',
           'file_loader' => [

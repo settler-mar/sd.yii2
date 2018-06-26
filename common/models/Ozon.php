@@ -8,7 +8,20 @@ class Ozon
 {
   protected $url = 'http://ows.ozon.ru/PartnerStatisticsService/PartnerStatisticsService.asmx';
 
-  /**
+  protected $travelUrl = 'https://api.ozon.travel/tours/v1/';
+
+  protected $config;
+
+  public function __construct($config = 'ozon')
+  {
+      if (isset(Yii::$app->params['outstand_cpa'][$config])) {
+          $this->config = Yii::$app->params['outstand_cpa'][$config];
+      } else {
+          ddd('Config outstand_cpa.'.$config.' not found');
+      }
+  }
+
+    /**
    * получение заказов
    * @param bool $dateFrom
    * @return null|\Array
@@ -92,7 +105,6 @@ class Ozon
   protected function makeGetRequest($action, $dateFrom = false, $dateTo = false)
   {
     $url = $this->url . '/' . $action . '?' . $this->makeParams($dateFrom, $dateTo);
-    //d($url);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 0);
@@ -113,6 +125,7 @@ class Ozon
   {
     $url = $this->url . '/' . $action;
     $params = $this->makeParams($dateFrom, $dateTo);
+    //ddd($params);
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -132,7 +145,7 @@ class Ozon
    */
   protected function makeParams($dateFrom = false, $dateTo = false)
   {
-    $config = Yii::$app->params['outstand_cpa']['ozon'];
+    $config = $this->config;//Yii::$app->params['outstand_cpa']['ozon'];
     $params = [
         'partnerName' => $config['parthnerId'],
         'login' => $config['login'],
