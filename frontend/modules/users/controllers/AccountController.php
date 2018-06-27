@@ -348,6 +348,10 @@ class AccountController extends Controller
 
   }
 
+    /**
+     * подключение юсера к акции
+     * @return string
+     */
   public function actionJoinAction()
   {
       $actions = Actions::byUser(Yii::$app->user->id);
