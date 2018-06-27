@@ -447,14 +447,19 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
      */
   public function applyPromo($promoId)
   {
+      if (!$promoId) {
+          return false;
+      }
       $dbPromo = DbPromo::find()->where(['uid' => $promoId])->one();
       if ($dbPromo) {
-          if ($dbPromo->new_loyalty_status_end > 0) {
-              $dbPromo->new_loyalty_status_end = time() + $dbPromo->new_loyalty_status_end * 24 * 60 * 60;
-          }
           foreach ($dbPromo->attributesToUser as $field) {
-              $this->$field = $dbPromo->$field;
+              if ($field == 'new_loyalty_status_end') {
+                  $this->$field = $dbPromo->$field > 0 ? $dbPromo->$field   * 24 * 60 * 60 : $dbPromo->$field;
+              } else {
+                  $this->$field = $dbPromo->$field;
+              }
           }
+          return $dbPromo;
       }
   }
 

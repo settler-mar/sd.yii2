@@ -17,6 +17,8 @@ use common\components\Help;
 use yii\widgets\MaskedInput;
 use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsToUsers;
+use frontend\modules\notification\models\Notifications;
+use frontend\modules\promo\models\Promo;
 use frontend\modules\actions\models\ActionsActions;
 
 /**
@@ -362,11 +364,22 @@ class AccountController extends Controller
           $userAction->date_start = date('Y-m-d H:i:s', time());
           $userAction->action_id = $action['uid'];
           if ($userAction->save()) {
-              if ($action['promo_start']) {
-                  $user = Users::findOne(Yii::$app->user->id);
-                  $user->applyPromo($action['promo_start']);
+              $user = Users::findOne(Yii::$app->user->id);
+              $promo = $user->applyPromo($action['promo_start']);
+              if ($promo) {
                   $user->save();
               }
+              //уведомления пользователю
+              $notify = new Notifications();
+              $notify->user_id = Yii::$app->user->id;
+              $notify->type_id = 0;//Прочее
+              $notify->text = Yii::t(
+                  'account',
+                  $promo ? 'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}' :
+                      'you_confirmed_to_be_member_of_{action}',
+                  ['action' => $action['name'], 'advantages' => $promo ? Promo::resultText($promo): null]
+              );
+              $notify->save();
 
               return json_encode([
                   'error' => false,

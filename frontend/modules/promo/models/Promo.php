@@ -64,4 +64,37 @@ class Promo extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * текстовый результат от применения промокода
+     * @param $promo
+     * @return string
+     */
+    public static function resultText($promo)
+    {
+        $result = [];
+        Yii::info($promo);
+        if ($promo->loyalty_status) {
+            $result[] = Yii::t('account', 'account_loyalty_status') .' '.
+                (isset(Yii::$app->params['dictionary']['loyalty_status'][$promo ->loyalty_status]['display_name']) ?
+                    Yii::$app->params['dictionary']['loyalty_status'][$promo ->loyalty_status]['display_name'] :
+                    $promo ->loyalty_status);
+        }
+        if ($promo->new_loyalty_status_end > 0) {
+            $result[] = Yii::t(
+                'account',
+                'account_loyalty_status_time_{days}',
+                ['days' => $promo->new_loyalty_status_end]
+            );
+        } else {
+            $result[] = Yii::t('account', 'forever');
+        }
+        if ($promo->bonus_status) {
+            $result[] = Yii::t('account', 'account_bonus_status') .' '.
+                (isset(Yii::$app->params['dictionary']['bonus_status'][$promo ->bonus_status]['name']) ?
+                    Yii::$app->params['dictionary']['bonus_status'][$promo ->bonus_status]['name'] :
+                    $promo ->bonus_status);
+        }
+        return implode(' ', $result);
+    }
+
 }
