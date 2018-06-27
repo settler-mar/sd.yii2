@@ -17,6 +17,7 @@ use common\components\Help;
 use yii\widgets\MaskedInput;
 use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsToUsers;
+use frontend\modules\actions\models\ActionsActions;
 
 /**
  * AdminController implements the CRUD actions for Users model.
