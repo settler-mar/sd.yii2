@@ -358,6 +358,12 @@ class AccountController extends Controller
           $userAction->date_start = date('Y-m-d H:i:s', time());
           $userAction->action_id = $action['uid'];
           if ($userAction->save()) {
+              if ($action['promo_start']) {
+                  $user = Users::findOne(Yii::$app->user->id);
+                  $user->applyPromo($action['promo_start']);
+                  $user->save();
+              }
+
               return json_encode([
                   'error' => false,
                   'title' => Yii::t('common', 'successfull') . '!',

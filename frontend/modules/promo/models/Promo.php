@@ -20,7 +20,7 @@ use Yii;
  */
 class Promo extends \yii\db\ActiveRecord
 {
-    public $attributesToUser = ['loyalty_status', 'referrer_id', 'bonus_status' , 'new_loyalty_status_end'];
+    public $attributesToUser = ['loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'];
 
     /**
      * @inheritdoc

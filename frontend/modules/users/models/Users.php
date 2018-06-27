@@ -441,6 +441,23 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     }
   }
 
+    /**
+     * промокод для аккаунта
+     * @param $promoName
+     */
+  public function applyPromo($promoId)
+  {
+      $dbPromo = DbPromo::find()->where(['uid' => $promoId])->one();
+      if ($dbPromo) {
+          if ($dbPromo->new_loyalty_status_end > 0) {
+              $dbPromo->new_loyalty_status_end = time() + $dbPromo->new_loyalty_status_end * 24 * 60 * 60;
+          }
+          foreach ($dbPromo->attributesToUser as $field) {
+              $this->$field = $dbPromo->$field;
+          }
+      }
+  }
+
   /**
    * Сохранение изображения (аватара)
    * пользвоателя
