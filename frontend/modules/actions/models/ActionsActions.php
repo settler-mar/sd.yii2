@@ -2,7 +2,7 @@
 
 namespace frontend\modules\actions\models;
 
-use Yii;
+use yii;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\users\models\Users;
 
@@ -70,35 +70,60 @@ class ActionsActions extends \yii\db\ActiveRecord
     }
 
     /**
-     * пока только на количество покупок
+     *  проверка условий завершения акций
      * @param array $users
      * @throws \yii\db\Exception
      */
     public static function observeActions($users = [])
     {
-
         if (empty($users)) {
             return;
         }
-         $actionsUsers = ActionsToUsers::find()->from(ActionsToUsers::tableName() . ' cwau')
-             ->select(['cwau.uid as action_to_user_id', 'cwaa.payment_count','cwa.promo_end', 'cwau.user_id', 'count(cwp.uid) as payments'])
-             ->innerJoin(Actions::tableName().' cwa', 'cwa.uid = cwau.action_id')
-             ->innerJoin(self::tableName(). ' cwaa', 'cwa.uid=cwaa.action_id')
-             ->leftJoin(
-                 Payments::tableName() .' cwp',
-                 'cwp.user_id = cwau.user_id and cwp.action_date > cwau.date_start and cwp.action_date < cwa.date_end'
-             )
-             ->where([
-                 'cwa.active' => 1,
-                 'cwau.user_id' => $users,
-                 'cwau.date_end' => null,
-             ])
-             ->andWhere(['>', 'cwaa.payment_count', 0])
-             ->having(['>=', 'payments', 'cwaa.payment_count'])
-             ->groupBy(['cwau.uid', 'cwaa.payment_count', 'cwau.user_id'])
-             ->asArray()
-             ->all();
-        //ddd($actionsUsers);
+        $actionsUsers = ActionsToUsers::find()->from(ActionsToUsers::tableName() . ' cwau')
+            ->select(['cwau.uid as action_to_user_uid', 'cwau.user_id as user_id',
+                'cwaa.payment_count', 'cwaa.referral_count', 'cwaa.referral_count', 'cwaa.users_payment_count',
+                'cwaa.new_users_payment_count', 'cwa.promo_end', 'cwau.user_id',
+                'count(cwp.uid) as payments, count(newref.uid) as newrefs', 'count(ref.uid) as refs',
+                'count(newrefp.uid) as newref_payments', 'count(refp.uid) as ref_payments'])
+            ->innerJoin(Actions::tableName() . ' cwa', 'cwa.uid = cwau.action_id')
+            ->innerJoin(self::tableName() . ' cwaa', 'cwa.uid=cwaa.action_id')
+            ->leftJoin(
+                Payments::tableName() . ' cwp', //платежи за время акции
+                'cwp.user_id = cwau.user_id and cwp.action_date >= cwau.date_start and cwp.action_date <= cwa.date_end'
+            )
+            ->leftJoin(
+                Users::tableName() . ' newref', //новые рефералы за время акции
+                'cwp.user_id = newref.referrer_id and newref.added >= cwau.date_start and newref.added <= cwa.date_end '
+            )
+            ->leftJoin(
+                Payments::tableName() . ' newrefp', //покупки новых рефералов за время акции
+                'newrefp.user_id = newref.uid and newrefp.action_date >= cwau.date_start and newrefp.action_date <= cwa.date_end'
+            )
+            ->leftJoin(
+                Users::tableName() . ' ref', //все рефералы
+                'cwp.user_id = ref.referrer_id '
+            )
+            ->leftJoin(
+                Payments::tableName() . ' refp', //покупки рефералов (за время акции ??)
+                'refp.user_id = ref.uid and refp.action_date >= cwau.date_start and refp.action_date <= cwa.date_end'
+            )
+            ->where([
+                'cwa.active' => 1,
+                'cwau.user_id' => $users,
+                'cwau.date_end' => null,
+            ])
+            ->having( //условия завершения акции
+                '(cwaa.payment_count is null or payments >= cwaa.payment_count) ' .
+                'and (cwaa.referral_count is null or newrefs >= cwaa.referral_count) ' .
+                'and (cwaa.users_payment_count is null or ref_payments >= cwaa.users_payment_count)' .
+                'and (cwaa.new_users_payment_count is null or newref_payments >= cwaa.new_users_payment_count)'
+            )
+            ->groupBy(['action_to_user_uid', 'user_id',
+                'cwaa.payment_count', 'cwaa.referral_count', 'cwaa.referral_count', 'cwaa.users_payment_count',
+                'cwaa.new_users_payment_count', 'cwa.promo_end', 'cwau.user_id'])
+            ->asArray()
+            ->all();
+        //d($actionsUsers);
         foreach ($actionsUsers as $action) {
             if ($action['promo_end']) {
                 $user = Users::findOne($action['user_id']);
@@ -106,24 +131,17 @@ class ActionsActions extends \yii\db\ActiveRecord
                 $user->save();
             }
         }
-        $updateResult = Yii::$app->db->createCommand()->update(
-            'cw_actions_to_users',
-            ['complete' => 1, 'date_end' => date('Y-m-d H:i:s')],
-            ['uid' => array_column($actionsUsers, 'action_to_user_id')]
-        )->execute();
-//        $sql = 'UPDATE `cw_actions_to_users` SET `complete` = 1, `date_end` = "'.date('Y-m-d H:i:s').'" WHERE `uid` IN '.
-//            '(SELECT conditions.uid from (SELECT `cwau`.`uid`, `cwaa`.`payment_count`, count(cwp.uid) as `payments` '.
-//            ' FROM `cw_actions_to_users` `cwau` '.
-//            ' INNER JOIN `cw_actions` `cwa` ON `cwa`.`uid` = `cwau`.`action_id` '.
-//            ' INNER JOIN `cw_actions_actions` `cwaa` ON `cwa`.`uid` = `cwaa`.`action_id` '.
-//            ' LEFT JOIN `cw_payments` `cwp` ON `cwp`.`user_id` = `cwau`.`user_id` and `cwp`.`action_date` > `cwau`.`date_start` and `cwp`.`action_date` < `cwa`.`date_end` '.
-//            ' WHERE `cwa`.`active`=1 and `cwau`.`user_id` in ('.implode(',', $users).') and `cwau`.`date_end` IS NULL and `cwaa`.`payment_count` > 0 '.
-//            ' GROUP BY `cwau`.`uid` , `cwaa`.`payment_count` '.
-//            ' HAVING `payments` >= `cwaa`.`payment_count`) conditions )';
+        if (!empty($actionUsers)) {
+            $updateResult = Yii::$app->db->createCommand()->update(
+                'cw_actions_to_users',
+                ['complete' => 1, 'date_end' => date('Y-m-d H:i:s')],
+                ['uid' => array_column($actionsUsers, 'action_to_user_uid')]
+            )->execute();
 
-        //$updateResult = Yii::$app->db->createCommand($sql)->execute();
-
-        //ddd($updateResult);
+            if (Yii::$app instanceof Yii\console\Application) {
+                d('Updated users actions '. $updateResult);
+            };
+        }
     }
 
 }

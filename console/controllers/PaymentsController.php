@@ -11,10 +11,12 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
+use frontend\modules\actions\models\ActionsActions;
 use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use Yii;
+
 
 class PaymentsController extends Controller
 {
@@ -181,6 +183,12 @@ class PaymentsController extends Controller
         if (count($users) > 0) {
             Yii::$app->balanceCalc->setNotWork(false);
             Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+
+            try {
+                ActionsActions::observeActions($users);
+            } catch (\Exception $e) {
+                d('Error applying actions ' . $e->getMessage());
+            }
         }
     }
 
