@@ -23,9 +23,9 @@
               {% endif %}
               <div>
                     {% if action.page %}
-                        <a href="{{ _href('/'~action.page) }}"><h3>{{ action.name }}</h3></a>
+                        <a href="{{ _href('/'~action.page) }}"><h3 class="margin-half">{{ action.name }}</h3></a>
                     {% else %}
-                        <h3>{{ action.name }}</h3>
+                        <h3 class="margin-half">{{ action.name }}</h3>
                     {% endif %}
                     <div class="ajax_form">
                         <form action="{{ _href('/account/users/join-action')|raw }}" method="post">
@@ -38,9 +38,9 @@
 
         {% else %}
           {% if action.page %}
-            <a href="{{ _href('/'~action.page) }}"><h3>{{ action.name }}</h3></a>
+            <a href="{{ _href('/'~action.page) }}"><h3 class="margin-half">{{ action.name }}</h3></a>
           {% else %}
-            <h3>{{ action.name }}</h3>
+            <h3 class="margin-half">{{ action.name }}</h3>
           {% endif %}
           <div class="ajax_form">
             <form action="{{ _href('/account/users/join-action')|raw }}" method="post">

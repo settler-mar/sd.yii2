@@ -3,6 +3,7 @@
 namespace frontend\modules\actions\models;
 
 use Yii;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_actions_conditions".
@@ -77,5 +78,15 @@ class ActionsConditions extends \yii\db\ActiveRecord
         $this->date_register_from =  $this->date_register_from == "" ? 0 : $this->date_register_from;
         $this->date_register_to =  $this->date_register_to == "" ? 0 : $this->date_register_to;
         return parent::beforeValidate();
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Cache::clearName('actions_users');
     }
 }
