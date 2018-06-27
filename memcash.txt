@@ -45,3 +45,4 @@ counter_index - счетчики на стартовой
 sd_blog_posts - последние статьи в блоге
 mobile_country_list - список стран с телефонными кодами
 mobile_<country>_<operator> - иконка телефонного оператора
+actions_users_<user_id> - акции юсера ЗАВИСИМОСТЬ: actions_users

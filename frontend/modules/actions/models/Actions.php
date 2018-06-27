@@ -2,8 +2,9 @@
 
 namespace frontend\modules\actions\models;
 
-use Yii;
+use yii;
 use frontend\modules\promo\models\Promo;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_actions".
@@ -130,6 +131,16 @@ class Actions extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Cache::clearName('actions_users');
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getActionsToUsers()
@@ -138,7 +149,7 @@ class Actions extends \yii\db\ActiveRecord
     }
 
     /**
-     * доступные для юсера акции и в которых участвует
+     * акции юсера
      * @param $userId
      * @return array|null|\yii\db\ActiveRecord
      */
@@ -147,52 +158,65 @@ class Actions extends \yii\db\ActiveRecord
         if (!$userId) {
             return null;
         }
-        $actions = self::find()->from(self::tableName().' cwa')
-            ->select(['cwa.*', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
-                'cwac.date_register_from', 'cwac.date_register_to',
-                'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
-            ->innerJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
-            ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
-            ->where([
-                'cwa.active' => 1,
-            ])
-            ->andWhere(['<=', 'cwa.date_start', date('Y-m-d H:i:s')])
-            ->andWhere(['>=', 'cwa.date_end', date('Y-m-d H:i:s')])
-            ->andWhere(['like', 'cwa.inform_types', 'on_account_start'])
-            ->asArray()
-            ->all();
-        $user = Yii::$app->user->identity;
-        $actionsEnabled = [];
-        $actionsJoined = [];
-        $actionsCompleted = [];
-        $actionsOverTimed = [];
-        foreach ($actions as $action) {
-            if (($action['referral_count'] == null || (int) $user->ref_total >= $action['referral_count'])
-                && ($action['payment_count'] == null || ((int) $user->cnt_pending + (int) $user->cnt_confirmed) >= $action['payment_count'])
-                && ($action['loyalty_status'] == null || $action['loyalty_status'] == $user->loyalty_status)
-                && ($action['bonus_status'] == null || $action['bonus_status'] == $user->bonus_status )
-                && ($action['date_register_from'] == 0 || $action['date_register_from']  <= $user->added)
-                && ($action['date_register_to'] == 0 || $action['date_register_to']  >= $user->added)
-            ) {
-                if ($action['joined'] && $action['complete']) {
-                    $actionsComlete[$action['uid']] = $action;
-                } elseif ($action['joined'] && !$action['complete']
-                    && strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time())
+        $cache = Yii::$app->cache;
+        $cache_name = 'actions_users_'.$userId;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'actions_users';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        return $cache->getOrSet($cache_name, function () {
+            $actions = self::find()->from(self::tableName().' cwa')
+                ->select(['cwa.*', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+                    'cwac.date_register_from', 'cwac.date_register_to',
+                    'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
+                ->innerJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
+                ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
+                ->where([
+                    'cwa.active' => 1,
+                ])
+                ->andWhere(['<=', 'cwa.date_start', date('Y-m-d H:i:s')])
+                ->andWhere(['>=', 'cwa.date_end', date('Y-m-d H:i:s')])
+                ->asArray()
+                ->all();
+            $user = Yii::$app->user->identity;
+            $actionsEnabled = [];
+            $actionsEnabledAccountStart = [];
+            $actionsJoined = [];
+            $actionsCompleted = [];
+            $actionsOvered = [];
+            foreach ($actions as $action) {
+                if (($action['referral_count'] == null || (int) $user->ref_total >= $action['referral_count'])
+                    && ($action['payment_count'] == null || ((int) $user->cnt_pending + (int) $user->cnt_confirmed) >= $action['payment_count'])
+                    && ($action['loyalty_status'] == null || $action['loyalty_status'] == $user->loyalty_status)
+                    && ($action['bonus_status'] == null || $action['bonus_status'] == $user->bonus_status )
+                    && ($action['date_register_from'] == 0 || $action['date_register_from']  <= $user->added)
+                    && ($action['date_register_to'] == 0 || $action['date_register_to']  >= $user->added)
                 ) {
-                    $actionsOverTimed[$action['uid']] = $action;
-                } elseif ($action['joined'] && !$action['complete']) {
-                    $actionsJoined[$action['uid']] = $action;
-                } elseif (!$action['joined']) {
-                    $actionsEnabled[$action['uid']] = $action;
+                    if ($action['joined'] && $action['complete']) {
+                        $actionsComlete[$action['uid']] = $action;
+                    } elseif ($action['joined'] && !$action['complete']
+                        && (strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time() ||
+                            $action['user_date_end']))
+                    ) {
+                        $actionsOvered[$action['uid']] = $action;
+                    } elseif ($action['joined'] && !$action['complete']) {
+                        $actionsJoined[$action['uid']] = $action;
+                    } elseif (!$action['joined']) {
+                        $actionsEnabled[$action['uid']] = $action;
+                        if (strpos($action['inform_types'], 'on_account_start') !== false) {
+                            $actionsEnabledAccountStart[$action['uid']] = $action;
+                        }
+                    }
                 }
             }
-        }
 
-        return [
-            'enabled' =>$actionsEnabled,
-            'joined' => $actionsJoined,
-            'completed' => $actionsCompleted,
-            'overtimed' => $actionsOverTimed,
-        ];
+            return [
+                'enabled' =>$actionsEnabled,
+                'enabled_account_start' =>$actionsEnabledAccountStart,
+                'joined' => $actionsJoined,
+                'completed' => $actionsCompleted,
+                'overed' => $actionsOvered,
+            ];
+        }, $cache->defaultDuration, $dependency);
     }
 }

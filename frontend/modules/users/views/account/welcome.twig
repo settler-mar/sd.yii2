@@ -7,13 +7,13 @@
   </section>
 {% endif %}
 
-{#участие в акциях#}
+{#доступные акции для участия#}
 {% if actions.enabled %}
   <section class="align-center margin border-wrap">
     <h2>{{ t('account', 'enabled_actions') }}</h2>
-    {% for action in actions.enabled %}
+    {% for action in actions.enabled_account_start %}
         {% if action.image %}
-            <div class="margin-half flex-line flex-line-untill-tablets flex-align-center">
+            <div class="margin-half flex-line flex-line-around flex-line-untill-tablets flex-align-center">
               {% if action.page %}
                 <a href="{{ _href('/'~action.page) }}">
                   <img class="account-image-height-200" src="{{ action.image }}" alt="{{ action.name }}">
@@ -49,8 +49,6 @@
             </form>
           </div>
         {% endif %}
-
-
     {% endfor %}
   </section>
 {% endif %}
