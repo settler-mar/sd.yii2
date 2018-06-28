@@ -56,6 +56,18 @@ class AdminController extends Controller
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tableData' => [
+                'joined' => function ($model) {
+                    return $model['joined'] > 0 ?
+                        '<a href="/admin/users?joined_to='.$model['uid'].'">'.$model['joined'].'</a>' :
+                        $model['joined'];
+                },
+                'completed' => function ($model) {
+                    return $model['completed'] > 0 ?
+                        '<a href="/admin/users?completed_to='.$model['uid'].'">'.$model['completed'].'</a>' :
+                        $model['completed'];
+                },
+            ],
         ]);
     }
 

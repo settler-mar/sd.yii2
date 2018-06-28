@@ -30,6 +30,18 @@
                                 'date_end',
                                 'action_time',
                                 'active',
+                                {
+                                    'attribute':'joined',
+                                    'format': 'raw',
+                                    'label': 'Подключились',
+                                    'value': tableData.joined,
+                                },
+                                {
+                                    'attribute':'completed',
+                                    'format': 'raw',
+                                    'label': 'Выполнили условия',
+                                    'value': tableData.completed,
+                                },
 
                                 {'class': '\\yii\\grid\\ActionColumn', 'template': '{update} {delete}', },
                             ],
