@@ -177,12 +177,12 @@ class Actions extends \yii\db\ActiveRecord
                 ->andWhere([
                     'or',
                     ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
-                    ['=', 'cwa.date_start', null],
+                    ['is', 'cwa.date_start', null],
                 ])
                 ->andWhere([
                     'or',
                     ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
-                    ['=', 'cwa.date_end', null],
+                    ['is', 'cwa.date_end', null],
                 ])
                 ->asArray()
                 ->all();
