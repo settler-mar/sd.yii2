@@ -15,6 +15,11 @@ use frontend\modules\users\models\UserSetting;
 use frontend\modules\users\models\ValidateEmail;
 use common\components\Help;
 use yii\widgets\MaskedInput;
+use frontend\modules\actions\models\Actions;
+use frontend\modules\actions\models\ActionsToUsers;
+use frontend\modules\notification\models\Notifications;
+use frontend\modules\promo\models\Promo;
+use frontend\modules\actions\models\ActionsActions;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -125,6 +130,7 @@ class AccountController extends Controller
       'newuser' => Yii::$app->request->get('new'),
       'this_tarif' => $status,
       't_satus_id' => $status_id,
+      'actions' => Actions::byUser(Yii::$app->user->id),
     ];
 
     $prev_min=0;
@@ -342,5 +348,51 @@ class AccountController extends Controller
       ]);
       return json_encode($data);
 
+  }
+
+    /**
+     * подключение юсера к акции
+     * @return string
+     */
+  public function actionJoinAction()
+  {
+      $actions = Actions::byUser(Yii::$app->user->id);
+      if (isset($actions['enabled'][(int) Yii::$app->request->post('action_id')])) {
+          $action = $actions['enabled'][(int) Yii::$app->request->post('action_id')];
+          $userAction = new ActionsToUsers();
+          $userAction->user_id = Yii::$app->user->id;
+          $userAction->date_start = date('Y-m-d H:i:s', time());
+          $userAction->action_id = $action['uid'];
+          if ($userAction->save()) {
+              $user = Users::findOne(Yii::$app->user->id);
+              $promo = $user->applyPromo($action['promo_start']);
+              if ($promo) {
+                  $user->save();
+              }
+              //уведомления пользователю
+              $notify = new Notifications();
+              $notify->user_id = Yii::$app->user->id;
+              $notify->type_id = 0;//Прочее
+              $notify->text = Yii::t(
+                  'account',
+                  $promo ? 'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}' :
+                      'you_confirmed_to_be_member_of_{action}',
+                  ['action' => $action['name'], 'advantages' => $promo ? Promo::resultText($promo): null]
+              );
+              $notify->save();
+
+              return json_encode([
+                  'error' => false,
+                  'title' => Yii::t('common', 'successfull') . '!',
+                  'message' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
+                  'html' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
+              ]);
+          }
+      }
+      return json_encode([
+          'error' => true,
+          'title' => Yii::t('common', 'error').'!',
+          'message' => Yii::t('account', 'user_joined_to_action_error')
+      ]);
   }
 }

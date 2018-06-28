@@ -28,9 +28,6 @@ class AdminController extends Controller
 
     public function beforeAction($action)
     {
-        if (!Yii::$app->user->identity->is_admin) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-        }
         $this->layout = '@app/views/layouts/admin.twig';
         return true;
     }
@@ -41,6 +38,11 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('PromoView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $searchModel = new SearchPromo();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dictionary = Yii::$app->params['dictionary'];
@@ -87,6 +89,11 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('PromoCreate')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = new Promo();
         $dictionary = Yii::$app->params['dictionary'];
         $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
@@ -118,6 +125,10 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('PromoEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $model = $this->findModel($id);
         $dictionary = Yii::$app->params['dictionary'];
         $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
@@ -148,6 +159,10 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('PromoDelete')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

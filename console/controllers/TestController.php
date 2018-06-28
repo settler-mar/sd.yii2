@@ -7,6 +7,7 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use Yii;
+use frontend\modules\actions\models\ActionsActions;
 
 class TestController extends Controller
 {
@@ -68,5 +69,10 @@ class TestController extends Controller
         d($payments['results'][0]);
       }
     }
+  }
+
+  public function actionActionObserver()
+  {
+      ActionsActions::observeActions([62053]);
   }
 }

@@ -188,6 +188,8 @@ class Meta extends \yii\db\ActiveRecord
 
         if (!isset(Yii::$app->params['region']))return;
 
+        $page = preg_replace('/[^a-zA-Z0-9\/\-]/', '', $page);
+
         $cache = Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'metadata_'.$page;

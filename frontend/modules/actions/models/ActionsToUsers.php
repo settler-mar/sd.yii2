@@ -4,6 +4,7 @@ namespace frontend\modules\actions\models;
 
 use Yii;
 use frontend\modules\users\models\Users;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_actions_to_users".
@@ -74,5 +75,15 @@ class ActionsToUsers extends \yii\db\ActiveRecord
     public function getAction()
     {
         return $this->hasOne(Actions::className(), ['uid' => 'action_id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Cache::deleteName('actions_users_' . $this->user_id);
     }
 }

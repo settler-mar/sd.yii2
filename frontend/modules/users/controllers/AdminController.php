@@ -11,6 +11,7 @@ use frontend\modules\users\models\UsersSearch;
 use frontend\modules\users\models\UsersExport;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
+use frontend\modules\actions\models\ActionsToUsers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -117,6 +118,18 @@ class AdminController extends Controller
 
       }
     }
+    if ((isset($get['completed_to']) && (int) $get['completed_to'] > 0) || (isset($get['joined_to']) && (int) $get['joined_to'] > 0)) {
+      $query->innerJoin(ActionsToUsers::tableName() . ' cwau', 'cwau.user_id = cw_users.uid');
+
+      if (isset($get['completed_to']) && (int) $get['completed_to'] > 0) {
+        $query->andWhere(['cwau.action_id'=>(int) $get['completed_to'], 'cwau.complete'=> 1]);
+      }
+
+      if (isset($get['joined_to']) && (int) $get['joined_to'] > 0) {
+        $query->andWhere(['cwau.action_id'=>(int) $get['joined_to']]);
+      }
+    }
+
 
     $search_range = Yii::$app->request->get('date_range_added');
     if (empty($search_range) || strpos($search_range, '-') === false) {

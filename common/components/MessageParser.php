@@ -157,9 +157,11 @@ class MessageParser extends Component
     $data=(array)$data;
     $data=$this->getFullDataNotification($data['uid'],$data);
 
-    if($data['twig_template']!=0){
+    if ($data['twig_template'] != 0) {
       $code='notification_text_manual_'.$data['twig_template'];
-    }else {
+    } elseif ($data['twig_template'] == 0 && $data['text']){
+        $code =  $data['text'];
+    } else {
       $code = 'notification_text';
       if ($data['type_id'] == 1) {
         $code .= '_' . $data['status'];

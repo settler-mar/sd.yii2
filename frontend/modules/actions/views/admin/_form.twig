@@ -17,7 +17,8 @@
                             <div class="help-block"></div>
                         </div>
 
-                        {{ form.field(model, 'page').textInput({'maxlength':true})|raw }}
+                        {#{{ form.field(model, 'page').textInput({'maxlength':true})|raw }}#}
+                        {{ form.field(model, 'page').dropDownList(pages, {'prompt': 'Выберите страницу'})|raw }}
 
                         {{ form.field(model, 'active').checkbox()|raw }}
 
@@ -27,7 +28,7 @@
 
                         {{ form.field(model, 'action_time').textInput({'maxlength':true})|raw }}
 
-                        <h5>Информировать пользователя</h5>
+                        <h5>Активация акции пользователем</h5>
 
                         {% for key,item in model.inform_types_select %}
                             <div class="form-group field-actions-inform_types_form-{{ key }}">
@@ -141,44 +142,3 @@
     </section>
 
 </div>
-<script type="application/javascript">
-    if (typeof mihaildev == "undefined" || !mihaildev) {
-        var mihaildev = {};
-    }
-
-    mihaildev.elFinder = {
-        openManager: function(options){
-            var params = "menubar=no,toolbar=no,location=no,directories=no,status=no,fullscreen=no";
-            if(options.width == 'auto'){
-                options.width = $(window).width()/1.5;
-            }
-
-            if(options.height == 'auto'){
-                options.height = $(window).height()/1.5;
-            }
-
-            params = params + ",width=" + options.width;
-            params = params + ",height=" + options.height;
-
-            //console.log(params);
-            var win = window.open(options.url, 'ElFinderManager' + options.id, params);
-            win.focus()
-        },
-        functions: {},
-        register: function(id, func){
-            this.functions[id] = func;
-        },
-        callFunction: function(id, file){
-            return this.functions[id](file, id);
-        },
-        functionReturnToInput: function(file, id){
-            jQuery('#' + id).val(file.url);
-            return true;
-        }
-    };
-
-    document.addEventListener("DOMContentLoaded", function(event) {
-        megaslider.initButtons();
-
-    });
-</script>

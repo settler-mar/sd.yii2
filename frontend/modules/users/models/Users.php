@@ -252,7 +252,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
     if ($this->isNewRecord) {
       $this->reg_ip = get_ip();
-      $this->referrer_id = (int)Yii::$app->session->get('referrer_id');
+      //$this->referrer_id = (int)Yii::$app->session->get('referrer_id');
       $this->added = date('Y-m-d H:i:s');
 
       if (!isset($this->auth_key)) {
@@ -309,6 +309,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       //ссылки промо
       $promo = Yii::$app->session->get('referrer_promo') ? Yii::$app->session->get('referrer_promo') : 'default';
+      $referrer_id = Yii::$app->session->get('referrer_id') &&
+        self::findOne((int) Yii::$app->session->get('referrer_id')) ?
+          (int) Yii::$app->session->get('referrer_id') : false;
       if ($promo) {
           $dbPromo = DbPromo::find()->where(['name' => $promo])->one();
           if ($dbPromo) {
@@ -319,6 +322,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
                   $this->$field = $dbPromo->$field;
               }
           }
+      }
+      if ($referrer_id) {
+          $this->referrer_id = $referrer_id;
       }
     }
 
@@ -433,6 +439,28 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       }
       $this->birthday = implode('-', $this->birthday);
     }
+  }
+
+    /**
+     * промокод для аккаунта
+     * @param $promoName
+     */
+  public function applyPromo($promoId)
+  {
+      if (!$promoId) {
+          return false;
+      }
+      $dbPromo = DbPromo::find()->where(['uid' => $promoId])->one();
+      if ($dbPromo) {
+          foreach ($dbPromo->attributesToUser as $field) {
+              if ($field == 'new_loyalty_status_end') {
+                  $this->$field = $dbPromo->$field > 0 ? $dbPromo->$field   * 24 * 60 * 60 : $dbPromo->$field;
+              } else {
+                  $this->$field = $dbPromo->$field;
+              }
+          }
+          return $dbPromo;
+      }
   }
 
   /**

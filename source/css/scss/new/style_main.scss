@@ -255,6 +255,10 @@ h2, h3, h4 {
     flex-direction: row;
     justify-content: space-between;
 
+    &-around {
+      justify-content: space-around;
+    }
+
     &-untill-tablets {
       @include media($tablets) {
         flex-direction: column;
