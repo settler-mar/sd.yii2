@@ -174,8 +174,16 @@ class Actions extends \yii\db\ActiveRecord
                 ->where([
                     'cwa.active' => 1,
                 ])
-                ->andWhere(['<=', 'cwa.date_start', date('Y-m-d H:i:s')])
-                ->andWhere(['>=', 'cwa.date_end', date('Y-m-d H:i:s')])
+                ->andWhere([
+                    'or',
+                    ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
+                    ['=', 'cwa.date_start', null],
+                ])
+                ->andWhere([
+                    'or',
+                    ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
+                    ['=', 'cwa.date_end', null],
+                ])
                 ->asArray()
                 ->all();
             $user = Yii::$app->user->identity;
