@@ -19,8 +19,9 @@ class AdminController extends \yii\web\Controller
      */
     public function beforeAction($action)
     {
-        if (!Yii::$app->user->identity->is_admin) {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('CompetitionsView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
         }
         $this->layout = '@app/views/layouts/admin.twig';
         return true;

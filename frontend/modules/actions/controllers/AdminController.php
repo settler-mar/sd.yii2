@@ -35,9 +35,6 @@ class AdminController extends Controller
 
     public function beforeAction($action)
     {
-        if (!Yii::$app->user->identity->is_admin) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-        }
         $this->layout = '@app/views/layouts/admin.twig';
         return true;
     }
@@ -48,6 +45,11 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $searchModel = new ActionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -76,6 +78,11 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsCreate')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = new Actions();
         $promos = ArrayHelper::map(DbPromo::find()->all(), 'uid', 'title');
         $pages = ArrayHelper::map(Meta::find()
@@ -102,6 +109,11 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = $this->findModel($id);
         $promos = ArrayHelper::map(DbPromo::find()->all(), 'uid', 'title');
         $pages = ArrayHelper::map(Meta::find()
@@ -128,6 +140,11 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsDelete')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -139,6 +156,11 @@ class AdminController extends Controller
      */
     public function actionAddCondition($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = new ActionsConditions();
         $model->action_id = $id;
 
@@ -171,8 +193,12 @@ class AdminController extends Controller
      */
     public function actionUpdateCondition($id)
     {
-        $model = $this->findCondition($id);
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
 
+        $model = $this->findCondition($id);
 
         $dictionary = Yii::$app->params['dictionary'];
         $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
@@ -204,6 +230,11 @@ class AdminController extends Controller
      */
     public function actionDeleteCondition($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = $this->findCondition($id);
         $actionId = $model->action_id;
         $model->delete();
@@ -218,6 +249,11 @@ class AdminController extends Controller
      */
     public function actionAddAction($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = new ActionsActions();
         $model->action_id = $id;
 
@@ -238,6 +274,11 @@ class AdminController extends Controller
      */
     public function actionUpdateAction($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = $this->findAction($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -259,6 +300,11 @@ class AdminController extends Controller
      */
     public function actionDeleteAction($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ActionsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+
         $model = $this->findAction($id);
         $actionId = $model->action_id;
         $model->delete();
