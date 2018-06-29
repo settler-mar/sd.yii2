@@ -57,7 +57,7 @@
                                 <select id="actionsconditions-loyalty_status" class="form-control form-control-inline-90" name="ActionsConditions[loyalty_status]">
                                     <option value="">Выберите статус</option>
                                     {% for key,status in loyalty_statuses %}
-                                        <option value="{{ key }}" {% if model.loyalty_status != "" and key == model.loyalty_status %}selected{% endif %} >{{ status }}</option>
+                                        <option value="{{ key }}" {% if key is same as (model.loyalty_status) %}selected{% endif %} >{{ status }}</option>
                                     {% endfor %}
 
                                 </select>
@@ -77,7 +77,7 @@
                                 <select id="actionsconditions-bonus_status" class="form-control" name="ActionsConditions[bonus_status]">
                                     <option value="">Выберите статус</option>
                                     {% for key,status in bonus_statuses %}
-                                        <option value="{{ key }}" {% if model.bonus_status != "" and key == model.bonus_status %}selected{% endif %}>{{ status }}</option>
+                                        <option value="{{ key }}" {% if key is same as (model.bonus_status) %}selected{% endif %}>{{ status }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

@@ -99,4 +99,32 @@ class ActionsConditions extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
         Cache::clearName('actions_users');
     }
+
+    /**
+     * сравнение величин
+     * @param $value
+     * @param $value_compared
+     * @param $value_operator
+     * @return bool
+     */
+    public static function compare($value, $value_compared, $compare_operator)
+    {
+        $value_operator = trim($compare_operator);
+        switch ($value_operator) {
+            case '=':
+                return (int) $value == (int) $value_compared;
+                break;
+            case '>':
+                return (int) $value > (int) $value_compared;
+                break;
+            case '<=':
+                return (int) $value <= (int) $value_compared;
+                break;
+            case '<':
+                return (int) $value < (int) $value_compared;
+                break;
+            default: //не задано или >=
+                return (int) $value >= (int) $value_compared;
+        }
+    }
 }

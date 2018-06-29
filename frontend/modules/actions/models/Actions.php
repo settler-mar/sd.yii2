@@ -197,21 +197,21 @@ class Actions extends \yii\db\ActiveRecord
                 //если уловие пустое, или условие выполняется
                 $enabled = ($action['actions_conditions_id'] == null ||
                         (($action['referral_count'] == null ||
-                            self::compare(
+                            ActionsConditions::compare(
                                 $user->ref_total,
                                 $action['referral_count'],
                                 $action['referral_count_operator']
                             ))
                         && ($action['payment_count'] == null ||
-                            self::compare(
+                            ActionsConditions::compare(
                                 (int) $user->cnt_pending + (int) $user->cnt_confirmed,
                                 $action['payment_count'],
                                 $action['payment_count_operator']
                             ))
                         && ($action['loyalty_status'] == null ||
-                            self::compare($user->loyalty_status, $action['loyalty_status'], $action['loyalty_status']))
+                            ActionsConditions::compare($user->loyalty_status, $action['loyalty_status'], $action['loyalty_status']))
                         && ($action['bonus_status'] == null ||
-                            self::campare($user->bonus_status, $action['bonus_status'], $action['bonus_status']))
+                            ActionsConditions::compare($user->bonus_status, $action['bonus_status'], $action['bonus_status']))
                         && ($action['date_register_from'] == null || $action['date_register_from']  <= $user->added)
                         && ($action['date_register_to'] == null || $action['date_register_to']  >= $user->added)
                     ));
@@ -243,31 +243,5 @@ class Actions extends \yii\db\ActiveRecord
         return $result;
     }
 
-    /**
-     * сравнение величин
-     * @param $value
-     * @param $value_compared
-     * @param $value_operator
-     * @return bool
-     */
-    private static function compare($value, $value_compared, $compare_operator)
-    {
-        $value_operator = trim($compare_operator);
-        switch ($value_operator) {
-            case '=':
-                return (int) $value == (int) $value_compared;
-                break;
-            case '>':
-                return (int) $value > (int) $value_compared;
-                break;
-            case '<=':
-                return (int) $value <= (int) $value_compared;
-                break;
-            case '<':
-                return (int) $value < (int) $value_compared;
-                break;
-            default: //не задано или >=
-                return (int) $value >= (int) $value_compared;
-        }
-    }
+
 }
