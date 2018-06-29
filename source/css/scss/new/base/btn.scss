@@ -159,7 +159,8 @@
   position: relative;
 
   &:hover {
-    color: #fff;
+    //color: #fff;
+    color: $button_base_hover_color;
     background: $coupons_a_hover_color;
     border-color: $coupons_a_hover_color;
   }
