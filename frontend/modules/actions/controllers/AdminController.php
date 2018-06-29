@@ -103,7 +103,7 @@ class AdminController extends Controller
             ->all(), 'page', 'page');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['update', 'id'=>$model->uid]);
         } else {
             return $this->render('create.twig', [
                 'model' => $model,
@@ -133,6 +133,16 @@ class AdminController extends Controller
             ->where(['not like', 'page', '*'])
             ->all(), 'page', 'page');
 
+        $dictionary = Yii::$app->params['dictionary'];
+        $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
+        $bonusStatuses = isset($dictionary['bonus_status']) ? $dictionary['bonus_status'] : [];
+        $loyaltyStatuses = array_map(function ($item, $key) {
+            return $item['display_name'].'('.$key.')';
+        }, $loyaltyStatuses, array_keys($loyaltyStatuses));
+        $bonusStatuses = array_map(function ($item, $key) {
+            return $item['name'].' ('.$key.')';
+        }, $bonusStatuses, array_keys($bonusStatuses));
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
@@ -140,6 +150,8 @@ class AdminController extends Controller
                 'model' => $model,
                 'promos' => $promos,
                 'pages' => $pages,
+                'loyalty_statuses' => $loyaltyStatuses,
+                'bonus_statuses' => $bonusStatuses,
             ]);
         }
     }

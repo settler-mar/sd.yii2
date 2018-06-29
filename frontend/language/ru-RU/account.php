@@ -318,5 +318,6 @@ return [
     'you_did_conditions_of_{action}'=>'Вы выполнили все условия акции {action}',
     'you_confirmed_to_be_member_of_{action}'=>'Вы подтвердили участие в акции {action}',
     'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}'=>'Вы подтвердили участие в акции {action} и получили {advantages}',
+    'you_are_joined_to_action'=>'Вы подтвердили участие в акции',
 
 ];

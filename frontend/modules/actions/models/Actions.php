@@ -164,12 +164,13 @@ class Actions extends \yii\db\ActiveRecord
         $dependencyName = 'actions_users';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        return $cache->getOrSet($cache_name, function () {
+        $result = $cache->getOrSet($cache_name, function () {
             $actions = self::find()->from(self::tableName().' cwa')
-                ->select(['cwa.*', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+                ->select(['cwa.*', 'cwac.uid as actions_conditions_id', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+                    'cwac.referral_count_operator', 'cwac.payment_count_operator', 'cwac.bonus_status_operator', 'cwac.loyalty_status_operator',
                     'cwac.date_register_from', 'cwac.date_register_to',
                     'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
-                ->innerJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
+                ->leftJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
                 ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
                 ->where([
                     'cwa.active' => 1,
@@ -193,27 +194,39 @@ class Actions extends \yii\db\ActiveRecord
             $actionsCompleted = [];
             $actionsOvered = [];
             foreach ($actions as $action) {
-                if (($action['referral_count'] == null || (int) $user->ref_total >= $action['referral_count'])
-                    && ($action['payment_count'] == null || ((int) $user->cnt_pending + (int) $user->cnt_confirmed) >= $action['payment_count'])
-                    && ($action['loyalty_status'] == null || $action['loyalty_status'] == $user->loyalty_status)
-                    && ($action['bonus_status'] == null || $action['bonus_status'] == $user->bonus_status )
-                    && ($action['date_register_from'] == 0 || $action['date_register_from']  <= $user->added)
-                    && ($action['date_register_to'] == 0 || $action['date_register_to']  >= $user->added)
-                ) {
-                    if ($action['joined'] && $action['complete']) {
-                        $actionsComlete[$action['uid']] = $action;
-                    } elseif ($action['joined'] && !$action['complete']
-                        && (strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time() ||
-                            $action['user_date_end']))
-                    ) {
-                        $actionsOvered[$action['uid']] = $action;
-                    } elseif ($action['joined'] && !$action['complete']) {
-                        $actionsJoined[$action['uid']] = $action;
-                    } elseif (!$action['joined']) {
-                        $actionsEnabled[$action['uid']] = $action;
-                        if (strpos($action['inform_types'], 'on_account_start') !== false) {
-                            $actionsEnabledAccountStart[$action['uid']] = $action;
-                        }
+                //если уловие пустое, или условие выполняется
+                $enabled = ($action['actions_conditions_id'] == null ||
+                        (($action['referral_count'] == null ||
+                            self::compare(
+                                $user->ref_total,
+                                $action['referral_count'],
+                                $action['referral_count_operator']
+                            ))
+                        && ($action['payment_count'] == null ||
+                            self::compare(
+                                (int) $user->cnt_pending + (int) $user->cnt_confirmed,
+                                $action['payment_count'],
+                                $action['payment_count_operator']
+                            ))
+                        && ($action['loyalty_status'] == null ||
+                            self::compare($user->loyalty_status, $action['loyalty_status'], $action['loyalty_status']))
+                        && ($action['bonus_status'] == null ||
+                            self::campare($user->bonus_status, $action['bonus_status'], $action['bonus_status']))
+                        && ($action['date_register_from'] == null || $action['date_register_from']  <= $user->added)
+                        && ($action['date_register_to'] == null || $action['date_register_to']  >= $user->added)
+                    ));
+                if ($action['complete']) {
+                    $actionsCompleted[$action['uid']] = $action;
+                } elseif ($action['joined'] && !$action['complete']
+                    && (strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time() ||
+                        $action['user_date_end']))) {
+                    $actionsOvered[$action['uid']] = $action;
+                } elseif ($action['joined']) {
+                    $actionsJoined[$action['uid']] = $action;
+                } elseif ($enabled) {
+                    $actionsEnabled[$action['uid']] = $action;
+                    if (strpos($action['inform_types'], 'on_account_start') !== false) {
+                        $actionsEnabledAccountStart[$action['uid']] = $action;
                     }
                 }
             }
@@ -226,5 +239,35 @@ class Actions extends \yii\db\ActiveRecord
                 'overed' => $actionsOvered,
             ];
         }, $cache->defaultDuration, $dependency);
+        //ddd($result);
+        return $result;
+    }
+
+    /**
+     * сравнение величин
+     * @param $value
+     * @param $value_compared
+     * @param $value_operator
+     * @return bool
+     */
+    private static function compare($value, $value_compared, $compare_operator)
+    {
+        $value_operator = trim($compare_operator);
+        switch ($value_operator) {
+            case '=':
+                return (int) $value == (int) $value_compared;
+                break;
+            case '>':
+                return (int) $value > (int) $value_compared;
+                break;
+            case '<=':
+                return (int) $value <= (int) $value_compared;
+                break;
+            case '<':
+                return (int) $value < (int) $value_compared;
+                break;
+            default: //не задано или >=
+                return (int) $value >= (int) $value_compared;
+        }
     }
 }

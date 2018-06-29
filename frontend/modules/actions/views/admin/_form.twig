@@ -75,10 +75,26 @@
                     {% for condition in model.conditions %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>{{ condition.referral_count }}</td>
-                            <td>{{ condition.payment_count }}</td>
-                            <td>{{ condition.loyalty_status }}</td>
-                            <td>{{ condition.bonus_status }}</td>
+                            <td>
+                                {% if condition.referral_count or condition.referral_count == '0' %}
+                                    {{ _if(condition.referral_count_operator, condition.referral_count_operator, '>=') }} {{ condition.referral_count }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if condition.payment_count or condition.payment_count == '0' %}
+                                    {{ _if(condition.payment_count_operator, condition.payment_count_operator, '>=') }} {{ condition.payment_count }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if condition.loyalty_status or condition.loyalty_status == '0' %}
+                                    {{ _if(condition.loyalty_status_operator, condition.loyalty_status_operator, '>=') }} {{ loyalty_statuses[condition.loyalty_status] }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if condition.bonus_status or condition.bonus_status == '0' %}
+                                    {{ _if(condition.bonus_status_operator, condition.bonus_status_operator, '>=') }} {{ bonus_statuses[condition.bonus_status] }}
+                                {% endif %}
+                            </td>
                             <td>{{ condition.date_register_from }}</td>
                             <td>{{ condition.date_register_to }}</td>
                             <td>{{ condition.stores_list }}</td>

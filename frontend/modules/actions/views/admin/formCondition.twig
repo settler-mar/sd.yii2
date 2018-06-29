@@ -20,13 +20,69 @@
 
                         {{ form.field(model, 'action_id').hiddenInput().label(false)|raw }}
 
-                        {{ form.field(model, 'referral_count').textInput({'maxlength':true})|raw }}
+                        <div class="form-group field-actionsconditions-referral_count">
+                            <label class="control-label" for="actionsconditions-referral_count">Количество рефералов</label>
+                            <div class="form-group-inline">
+                                <select class="form-control form-control-inline-10" name="ActionsConditions[referral_count_operator]" id="actionsconditions-referral_count_operator">
+                                    {% for operator in model.operators %}
+                                        <option value="{{ operator }}" {% if operator == model.referral_count_operator %}selected{% endif %}>{{ operator }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" id="actionsconditions-referral_count" class="form-control form-control-inline form-control-inline-90 " name="ActionsConditions[referral_count]" value="{{ model.referral_count }}">
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
 
-                        {{ form.field(model, 'payment_count').textInput({'maxlength':true})|raw }}
+                        <div class="form-group field-actionsconditions-payment_count">
+                            <label class="control-label" for="actionsconditions-payment_count">Количество покупок</label>
+                            <div class="form-group-inline">
+                                <select class="form-control form-control-inline-10" name="ActionsConditions[payment_count_operator]" id="actionsconditions-payment_count_operator">
+                                    {% for operator in model.operators %}
+                                        <option value="{{ operator }}" {% if operator == model.payment_count_operator %}selected{% endif %}>{{ operator }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" id="actionsconditions-payment_count" class="form-control form-control-inline form-control-inline-90 " name="ActionsConditions[payment_count]" value="{{ model.payment_count }}">
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
 
-                        {{ form.field(model, 'loyalty_status').dropDownList(loyalty_statuses, {'prompt': 'Выберите статус'})|raw }}
+                        <div class="form-group field-actionsconditions-loyalty_status">
+                            <label class="control-label" for="actionsconditions-loyalty_status">Статус лояльности</label>
+                            <div class="form-group-inline">
+                                <select class="form-control form-control-inline-10" name="ActionsConditions[loyalty_status_operator]" id="actionsconditions-loyalty_status_operator">
+                                    {% for operator in model.operators %}
+                                        <option value="{{ operator }}" {% if operator == model.loyalty_status_operator %}selected{% endif %}>{{ operator }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select id="actionsconditions-loyalty_status" class="form-control form-control-inline-90" name="ActionsConditions[loyalty_status]">
+                                    <option value="">Выберите статус</option>
+                                    {% for key,status in loyalty_statuses %}
+                                        <option value="{{ key }}" {% if model.loyalty_status != "" and key == model.loyalty_status %}selected{% endif %} >{{ status }}</option>
+                                    {% endfor %}
 
-                        {{ form.field(model, 'bonus_status').dropDownList(bonus_statuses, {'prompt': 'Выберите статус'})|raw  }}
+                                </select>
+                            </div>
+
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="form-group field-actionsconditions-bonus_status">
+                            <label class="control-label" for="actionsconditions-bonus_status">Статус вебмастера</label>
+                            <div class="form-group-inline">
+                                <select class="form-control form-control-inline-10" name="ActionsConditions[bonus_status_operator]" id="actionsconditions-bonus_status_operator">
+                                    {% for operator in model.operators %}
+                                        <option value="{{ operator }}" {% if operator == model.bonus_status_operator %}selected{% endif %}>{{ operator }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select id="actionsconditions-bonus_status" class="form-control" name="ActionsConditions[bonus_status]">
+                                    <option value="">Выберите статус</option>
+                                    {% for key,status in bonus_statuses %}
+                                        <option value="{{ key }}" {% if model.bonus_status != "" and key == model.bonus_status %}selected{% endif %}>{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
 
                         {{ form.field(model, 'date_register_from').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
 

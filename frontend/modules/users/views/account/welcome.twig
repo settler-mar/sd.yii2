@@ -8,47 +8,16 @@
 {% endif %}
 
 {#доступные акции для участия#}
-{% if actions.enabled %}
+{% if actions.enabled or actions.joined %}
   <section class="align-center margin border-wrap">
     <h2>{{ t('account', 'enabled_actions') }}</h2>
+    {% for action in actions.joined %}
+        {% set action_joined = 1 %}
+        {% include 'parts/account/action.twig' %}
+    {% endfor %}
     {% for action in actions.enabled_account_start %}
-        {% if action.image %}
-            <div class="margin-half flex-line flex-line-around flex-line-untill-tablets flex-align-center">
-              {% if action.page %}
-                <a href="{{ _href('/'~action.page) }}">
-                  <img class="account-image-height-200" src="{{ action.image }}" alt="{{ action.name }}">
-                </a>
-              {% else %}
-                <img class="account-image-height-200" src="{{ action.image }}" alt="{{ action.name }}">
-              {% endif %}
-              <div>
-                    {% if action.page %}
-                        <a href="{{ _href('/'~action.page) }}"><h3 class="margin-half">{{ action.name }}</h3></a>
-                    {% else %}
-                        <h3 class="margin-half">{{ action.name }}</h3>
-                    {% endif %}
-                    <div class="ajax_form">
-                        <form action="{{ _href('/account/users/join-action')|raw }}" method="post">
-                            <input type="hidden" name="action_id" value="{{ action.uid }}">
-                            <input type="submit" class="btn" value="{{ t('account', 'join_action')|raw }}">
-                        </form>
-                    </div>
-               </div>
-            </div>
-
-        {% else %}
-          {% if action.page %}
-            <a href="{{ _href('/'~action.page) }}"><h3 class="margin-half">{{ action.name }}</h3></a>
-          {% else %}
-            <h3 class="margin-half">{{ action.name }}</h3>
-          {% endif %}
-          <div class="ajax_form">
-            <form action="{{ _href('/account/users/join-action')|raw }}" method="post">
-              <input type="hidden" name="action_id" value="{{ action.uid }}">
-              <input type="submit" class="btn" value="{{ t('account', 'join_action')|raw }}">
-            </form>
-          </div>
-        {% endif %}
+        {% set action_joined = 0 %}
+        {% include 'parts/account/action.twig' %}
     {% endfor %}
   </section>
 {% endif %}
