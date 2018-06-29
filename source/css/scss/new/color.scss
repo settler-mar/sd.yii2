@@ -16,7 +16,7 @@ $header_bg_up: #121212;
 $link_color: #f7c714;
 $link_color_blue: #0044bb;
 //$link_color_blue: #3088CF;
-$link_color_blue_hover: #fdec3e;//
+$link_color_blue_hover: $btn_base_bg;//
 // #2caef0;
 
 /*для печати*/
@@ -47,10 +47,10 @@ $header_sub_menu_color: $text_color;
 $header_sub_menu_color_hover: #ffcd16;
 $header_heart: #f00;
 $gray_box_bg: #f4f4f4;
-$yellow_box_bg: #fdec3e;
+$yellow_box_bg: #btn_base_bg;
 $red_box_bg: #d83636;
 $black_box_bg: #000;
-$black_box_border: #fdec3e;
+$black_box_border: #btn_base_bg;
 $red_box_border: #fff;
 $r: #000;
 $header_border_color: #313131;
@@ -107,7 +107,7 @@ $coupons_popular_stores_background_color: #eee;
 $coupons_popular_stores_color: #7e7e7e;
 $coupons_popular_stores_store_background_color: #fff;
 $coupons_abc_store_color: $link_color_blue;//#3088CF;
-$coupons_abc_store_hover_color: #fdec3e;
+$coupons_abc_store_hover_color: #btn_base_bg;
 $coupons_abc_border_color: #ccc;
 $coupons_coupon_logo_border_color: #ccc;
 $coupons_coupon_sel_text_bg_color: #000;
@@ -115,8 +115,8 @@ $coupons_coupon_sel_text_color: #fff;
 $coupons_coupon_promocode_border_color: #7e7e7e;
 $coupons_coupon_name_cashback: #FDC02F;
 $coupons_all_coupons_icon_color: #FDC02F;
-$coupons_a_hover_color: #fdec3e;
-$coupons_list_type_switcher_hover_color: #fdec3e;
+$coupons_a_hover_color: #btn_base_bg;
+$coupons_list_type_switcher_hover_color: #btn_base_bg;
 
 /*scroll-box*/
 $scroll_box_bg: #fff;
