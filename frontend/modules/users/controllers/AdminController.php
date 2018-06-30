@@ -185,11 +185,12 @@ class AdminController extends Controller
                       ];
                   }
                   if ($query_action['payment_count'] !== null) {
-                      if ($query_action['payment_count'] === '0' and $query_action['payment_count_operator'] == '=') {
-                          //чтобы найти по отсутствии покупок в запросе должно быть = 0 , тогда
+                      if (($query_action['payment_count'] === '0' and $query_action['payment_count_operator'] == '=') ||
+                          (in_array(trim($query_action['payment_count_operator']), ['<', '<=']))) {
+                          //если 0 или меньше чего-то, то два условия
                           $condition_query[] = [
                              'or',
-                             ['=', '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', 0],
+                             [trim($query_action['payment_count_operator']), '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', $query_action['payment_count']],
                              ['is', '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', null]
                           ];
                       } else {
