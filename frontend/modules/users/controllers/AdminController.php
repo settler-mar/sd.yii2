@@ -308,6 +308,9 @@ class AdminController extends Controller
         ->orderBy(['loyalty_status' => SORT_ASC])
         ->asArray()
         ->all();
+    Yii::$app->cache->add('users_list_query', [
+        'where' => $query->where,
+    ]);
 
     return $this->render('index', [
         'users' => $models,

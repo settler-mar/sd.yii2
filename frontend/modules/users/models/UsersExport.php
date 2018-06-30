@@ -19,6 +19,8 @@ class UsersExport extends Model
     public $only_active;
     public $notice_email;
     public $excel;
+    public $users_list;
+    public $usersListQuery;
 
     public function init()
     {
@@ -28,6 +30,9 @@ class UsersExport extends Model
         $users = new Users;
         $this->users_columns = $users->attributeLabels();
         $this->all_columns = array_diff(array_keys($users->attributes), $forbiddens);
+        //из кеш - последний сделанный запрос в списке пользователей
+        $this->usersListQuery = Yii::$app->cache->get('users_list_query');
+
         foreach ($forbiddens as $forbidden) {
             unset($this->users_columns[$forbidden]);
         }
@@ -42,8 +47,8 @@ class UsersExport extends Model
         [['id_from', 'id_to'], 'integer'],
         [['columns'], 'safe'],
         ['register_at_range', 'string'],
-        [['only_active', 'notice_email'], 'in' ,'range' => [1]],
-        ['excel', 'in', 'range' => [0, 1]],
+        [['only_active', 'notice_email', 'users_list'], 'in' ,'range' => [1]],
+        [['excel'], 'in', 'range' => [0, 1]],
     ];
   }
 
@@ -58,12 +63,12 @@ class UsersExport extends Model
   public function export()
   {
     $users = Users::find()
-        ->from(Users::tableName().' cwu');
+        ->from(Users::tableName().' cw_users');
     //выводимые колонки
     $columns = !empty($this->columns) ? $this->columns : $this->all_columns;
 
     foreach($columns as $column) {
-        $users->addSelect('cwu.' . $column);
+        $users->addSelect('cw_users.' . $column);
     }
 
     if ($this->id_from) {
@@ -84,11 +89,19 @@ class UsersExport extends Model
             ->from(Users::tableName().' cwref')
             ->select(['cwref.referrer_id','count(*) as count'])
             ->groupBy('cwref.referrer_id');
-        $users->leftJoin(['cwref' => $referrals], 'cwref.referrer_id = cwu.uid')
-            ->andWhere(['or', ['>', 'cwref.count', 9], ['is not', 'cwu.cnt_confirmed', null]]);
+        $users->leftJoin(['cwref' => $referrals], 'cwref.referrer_id = cw_users.uid')
+            ->andWhere(['or', ['>', 'cwref.count', 9], ['is not', 'cw_users.cnt_confirmed', null]]);
     }
     if (!empty($this->notice_email)) {
         $users->andWhere(['notice_email'=>1]);
+    }
+
+    if ($this->users_list) {
+        if (!$this->usersListQuery || !isset($this->usersListQuery['where'])) {
+            Yii::$app->session->addFlash('error', 'Условие из последнего запроса не найдено!');
+        } else {
+            $users->where = $this->usersListQuery['where'];
+        }
     }
 
     $users =  $users->asArray()->all();

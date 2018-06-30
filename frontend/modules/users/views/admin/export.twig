@@ -48,6 +48,16 @@
                         </label>
                         <div class="help-block help-block-error"></div>
                     </div>
+
+                    <div class="form-group usersexport-users_list">
+                        <label class="control-label" for="usersexport-users_list" title="Использовать последний фильтр из списка пользователей">
+                            <input type="checkbox" value="1" {% if model.usersListQuery == false %}disabled{% endif %} id="usersexport-users_list" name="UsersExport[users_list]">Фильтр из списка пользователей
+                        </label>
+                        <div class="help-block help-block-error"></div>
+                    </div>
+
+
+
                     <h4>Формат</h4>
                     <div class="form-group usersexport-excel">
                         <label class="control-label" for="usersexport-excel" >
