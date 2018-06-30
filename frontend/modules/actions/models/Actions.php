@@ -165,28 +165,41 @@ class Actions extends \yii\db\ActiveRecord
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $result = $cache->getOrSet($cache_name, function () {
-            $actions = self::find()->from(self::tableName().' cwa')
-                ->select(['cwa.*', 'cwac.uid as actions_conditions_id', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
-                    'cwac.referral_count_operator', 'cwac.payment_count_operator', 'cwac.bonus_status_operator', 'cwac.loyalty_status_operator',
-                    'cwac.date_register_from', 'cwac.date_register_to',
-                    'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
-                ->leftJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
-                ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
-                ->where([
-                    'cwa.active' => 1,
-                ])
-                ->andWhere([
-                    'or',
-                    ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
-                    ['is', 'cwa.date_start', null],
-                ])
-                ->andWhere([
-                    'or',
-                    ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
-                    ['is', 'cwa.date_end', null],
-                ])
-                ->asArray()
-                ->all();
+//            $actions = self::find()->from(self::tableName().' cwa')
+//                ->select(['cwa.*', 'cwac.uid as actions_conditions_id', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+//                    'cwac.referral_count_operator', 'cwac.payment_count_operator', 'cwac.bonus_status_operator', 'cwac.loyalty_status_operator',
+//                    'cwac.date_register_from', 'cwac.date_register_to',
+//                    'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
+//                ->leftJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
+//                ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
+//                ->where([
+//                    'cwa.active' => 1,
+//                ])
+//                ->andWhere([
+//                    'or',
+//                    ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
+//                    ['is', 'cwa.date_start', null],
+//                ])
+//                ->andWhere([
+//                    'or',
+//                    ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
+//                    ['is', 'cwa.date_end', null],
+//                ])
+//                ->asArray()
+//                ->all();
+            //голый запрос - правильно отрабатывать случаи больше одного условия (записи) для акции
+            $sql = 'SELECT `cwa`.*, `cwac`.`uid` AS `actions_conditions_id`,'.
+                ' `cwac`.`referral_count`, `cwac`.`payment_count`, `cwac`.`bonus_status`, `cwac`.`loyalty_status`,'.
+                ' `cwac`.`referral_count_operator`, `cwac`.`payment_count_operator`, `cwac`.`bonus_status_operator`,'.
+                ' `cwac`.`loyalty_status_operator`, `cwac`.`date_register_from`, `cwac`.`date_register_to`,'.
+                ' `cwau`.`uid` AS `joined`, `cwau`.`date_start` AS `user_date_start`,'.
+                ' `cwau`.`date_end` AS `user_date_end`, `cwau`.`complete` FROM `cw_actions` `cwa`'.
+                ' LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id'.
+                ' LEFT JOIN `cw_actions_to_users` `cwau` ON cwa.uid = cwau.action_id '.
+                'WHERE (`cwa`.`active`=1) AND ((`cwa`.`date_start` <= "'.date('Y-m-d H:i:s').'") '.
+                ' OR (`cwa`.`date_start` IS NULL)) AND ((`cwa`.`date_end` >= "'.date('Y-m-d H:i:s').'") '.
+                ' OR (`cwa`.`date_end` IS NULL))';
+            $actions = Yii::$app->db->createCommand($sql)->queryAll();
             $user = Yii::$app->user->identity;
             $actionsEnabled = [];
             $actionsEnabledAccountStart = [];
