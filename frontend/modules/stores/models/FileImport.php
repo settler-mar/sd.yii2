@@ -5,6 +5,7 @@ namespace frontend\modules\stores\models;
 use yii\base\Model;
 use frontend\modules\users\models\Users;
 use frontend\modules\payments\models\Payments;
+use frontend\modules\actions\models\ActionsActions;
 use yii;
 
 class FileImport extends Model
@@ -148,6 +149,11 @@ class FileImport extends Model
         if (count($users) > 0) {
             Yii::$app->balanceCalc->setNotWork(false);
             Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+            try {
+                ActionsActions::observeActions($users);
+            } catch (\Exception $e) {
+                $this->log .= '<span class="error">Ошибка применения акций '.$e->getMessage(). '</span><br>';
+            }
         }
         $this->log .= 'Новых записей ' . $inserted . "<br>";
         $this->log .= 'Обновлено ' . $updated . "<br>";
