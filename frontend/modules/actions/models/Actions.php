@@ -196,9 +196,9 @@ class Actions extends \yii\db\ActiveRecord
                 ' `cwau`.`date_end` AS `user_date_end`, `cwau`.`complete` FROM `cw_actions` `cwa`'.
                 ' LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id'.
                 ' LEFT JOIN `cw_actions_to_users` `cwau` ON cwa.uid = cwau.action_id '.
-                'WHERE (`cwa`.`active`=1) AND ((`cwa`.`date_start` <= "'.date('Y-m-d H:i:s').'") '.
-                ' OR (`cwa`.`date_start` IS NULL)) AND ((`cwa`.`date_end` >= "'.date('Y-m-d H:i:s').'") '.
-                ' OR (`cwa`.`date_end` IS NULL))';
+                'WHERE (`cwa`.`active`=1)'.
+                ' AND ((`cwa`.`date_start` <= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_start` IS NULL))'.
+                ' AND ((`cwa`.`date_end` >= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_end` IS NULL))';
             $actions = Yii::$app->db->createCommand($sql)->queryAll();
             $user = Yii::$app->user->identity;
             $actionsEnabled = [];
