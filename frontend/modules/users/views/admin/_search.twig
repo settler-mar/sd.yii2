@@ -31,6 +31,33 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="select_expected_to">Возможные участники акции</label>
+        <select name="expected_to" id="select_expected_to">
+            <option value="" >Выберите акцию</option>
+            {% for action in actions %}
+                <option value="{{ action.uid }}" {% if (action.uid == get.expected_to) %}selected{% endif %}>{{ action.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="select_joined_to">Подключившиеся к акции</label>
+        <select name="joined_to" id="select_joined_to">
+            <option value="" >Выберите акцию</option>
+            {% for action in actions %}
+                <option value="{{ action.uid }}" {% if (action.uid == get.joined_to) %}selected{% endif %}>{{ action.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="select_completed_to">Выполнившие условия акции</label>
+        <select name="completed_to" id="select_completed_to">
+            <option value="" >Выберите акцию</option>
+            {% for action in actions %}
+                <option value="{{ action.uid }}" {% if (action.uid == get.completed_to) %}selected{% endif %}>{{ action.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
         <label for="search_sort">Сортировать по</label>
         <select name="sort" id="search_sort">
             <option value="">Выберите поле</option>
@@ -48,7 +75,7 @@
         <input type="submit" value="Поиск" class="btn btn-primary">
         <a href="/admin/users" class="btn btn-default">Сброс</a>
         <a href="/admin/users/create" class="btn btn-success" style="color:#fff">Создать пользователя</a>
-        <a class="btn btn-primary" href="/admin/users/export">Экспорт</a>
+        <a class="btn btn-primary" href="/admin/users/export{{ _if(get_params, '?'~get_params, '')|raw }}">Экспорт</a>
     </div>
     {{ active_form_end() }}
 

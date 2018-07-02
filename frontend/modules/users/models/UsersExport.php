@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use frontend\modules\actions\models\Actions;
+use frontend\modules\actions\models\ActionsToUsers;
 
 class UsersExport extends Model
 {
@@ -18,9 +20,10 @@ class UsersExport extends Model
     public $register_at_range;
     public $only_active;
     public $notice_email;
+    public $expected_to;
+    public $completed_to;
+    public $joined_to;
     public $excel;
-    public $users_list;
-    public $usersListQuery;
 
     public function init()
     {
@@ -30,8 +33,6 @@ class UsersExport extends Model
         $users = new Users;
         $this->users_columns = $users->attributeLabels();
         $this->all_columns = array_diff(array_keys($users->attributes), $forbiddens);
-        //из кеш - последний сделанный запрос в списке пользователей
-        $this->usersListQuery = Yii::$app->cache->get('users_list_query');
 
         foreach ($forbiddens as $forbidden) {
             unset($this->users_columns[$forbidden]);
@@ -47,8 +48,11 @@ class UsersExport extends Model
         [['id_from', 'id_to'], 'integer'],
         [['columns'], 'safe'],
         ['register_at_range', 'string'],
-        [['only_active', 'notice_email', 'users_list'], 'in' ,'range' => [1]],
+        [['only_active', 'notice_email'], 'in' ,'range' => [1]],
         [['excel'], 'in', 'range' => [0, 1]],
+        //[['expected_to', 'completed_to', 'joined_to'], 'safe'],
+        [['expected_to', 'completed_to', 'joined_to'], 'in',
+            'range'=> array_column(Actions::find()->select(['uid'])->asArray()->all(), 'uid')],
     ];
   }
 
@@ -96,52 +100,70 @@ class UsersExport extends Model
         $users->andWhere(['notice_email'=>1]);
     }
 
-    if ($this->users_list) {
-        if (!$this->usersListQuery || !isset($this->usersListQuery['where'])) {
-            Yii::$app->session->addFlash('error', 'Условие из последнего запроса не найдено!');
-        } else {
-            $users->where = $this->usersListQuery['where'];
-        }
+    if (!empty($this->completed_to) || !empty($this->joined_to)) {
+          $users->innerJoin(ActionsToUsers::tableName() . ' cwau', 'cwau.user_id = cw_users.uid');
+
+      if ($this->completed_to) {
+          $users->andWhere(['cwau.action_id'=> $this->completed_to, 'cwau.complete'=> 1]);
+      }
+
+      if ($this->joined_to) {
+          $users->andWhere(['cwau.action_id'=> $this->joined_to]);
+      }
+    }
+    if (!empty($this->expected_to)) {
+      //возможные участники акции
+      $actionQuery = Actions::makeUsersExpectedQuery($this->expected_to);//формируем where для cw_users
+
+      if (!empty($actionQuery)) {
+          $users->andWhere($actionQuery);
+      }
     }
 
     $users =  $users->asArray()->all();
 
-    $fileExport = 'export';
-    if (!file_exists($fileExport)) {
-        mkdir($fileExport,0777,true);
-    }
-
-    if ($this->excel == 1) {
-        $headers = [];
-        foreach($columns as $column) {
-            $headers[] = !empty($this->users_columns[$column]) ? $this->users_columns[$column] : '';
-        }
-        array_unshift($users, $headers);
-        $fileExport .= '/users.xlsx';
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet()
-            ->fromArray(
-                $users, // The data to set
-                NULL,        // Array values with this value will not be set
-                'A1'         // Top left coordinate of the worksheet range where
-            //    we want to set these values (default is A1)
-            );
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save($fileExport);
-
+    if (count($users) == 0) {
+        Yii::$app->session->addFlash('err', 'В выборке нет пользователей. Экспорт не выполнен');
+        return true;
     } else {
-        $fileExport .= '/users.csv';
-        $fp = fopen($fileExport, 'w');
-        foreach ($users as $user) {
-            fputcsv($fp, $user, ';');
-        }
-        fclose($fp);
-    }
 
-    Yii::$app->response->sendFile($fileExport)->send();
-    unlink($fileExport);
-    return true;
+        $fileExport = 'export';
+        if (!file_exists($fileExport)) {
+            mkdir($fileExport, 0777, true);
+        }
+
+        if ($this->excel == 1) {
+            $headers = [];
+            foreach ($columns as $column) {
+                $headers[] = !empty($this->users_columns[$column]) ? $this->users_columns[$column] : '';
+            }
+            array_unshift($users, $headers);
+            $fileExport .= '/users.xlsx';
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()
+                ->fromArray(
+                    $users, // The data to set
+                    NULL,        // Array values with this value will not be set
+                    'A1'         // Top left coordinate of the worksheet range where
+                //    we want to set these values (default is A1)
+                );
+
+            $writer = new Xlsx($spreadsheet);
+            $writer->save($fileExport);
+
+        } else {
+            $fileExport .= '/users.csv';
+            $fp = fopen($fileExport, 'w');
+            foreach ($users as $user) {
+                fputcsv($fp, $user, ';');
+            }
+            fclose($fp);
+        }
+
+        Yii::$app->response->sendFile($fileExport)->send();
+        unlink($fileExport);
+        return true;
+    }
   }
 
 

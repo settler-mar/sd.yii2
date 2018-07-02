@@ -37,7 +37,7 @@
 
                     <div class="form-group usersexport-only_active">
                         <label class="control-label" for="usersexport-only_active" title="Сделавшие покупки или привели не менее 10 человек">
-                            <input type="checkbox" value="1" id="usersexport-only_active" name="UsersExport[only_active]">Только активные
+                            <input type="checkbox" value="1" {% if (get.is_active == '1') %}checked{% endif %} id="usersexport-only_active" name="UsersExport[only_active]">Только активные
                         </label>
                         <div class="help-block help-block-error"></div>
                     </div>
@@ -49,13 +49,36 @@
                         <div class="help-block help-block-error"></div>
                     </div>
 
-                    <div class="form-group usersexport-users_list">
-                        <label class="control-label" for="usersexport-users_list" title="Использовать последний фильтр из списка пользователей">
-                            <input type="checkbox" value="1" {% if model.usersListQuery == false %}disabled{% endif %} id="usersexport-users_list" name="UsersExport[users_list]">Фильтр из списка пользователей
-                        </label>
+                    <div class="form-group">
+                        <label for="select_expected_to">Возможные участники акции</label>
+                        <select class="form-control" name="UsersExport[expected_to]" id="select_expected_to">
+                            <option value="" >Выберите акцию</option>
+                            {% for action in actions %}
+                                <option value="{{ action.uid }}" {% if (action.uid == get.expected_to) %}selected{% endif %}>{{ action.name }}</option>
+                            {% endfor %}
+                        </select>
                         <div class="help-block help-block-error"></div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="select_joined_to">Подключившиеся к акции</label>
+                        <select class="form-control" name="UsersExport[joined_to]" id="select_joined_to">
+                            <option value="" >Выберите акцию</option>
+                            {% for action in actions %}
+                                <option value="{{ action.uid }}" {% if (action.uid == get.joined_to) %}selected{% endif %}>{{ action.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="help-block help-block-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="select_completed_to">Выполнившие условия акции</label>
+                        <select class="form-control" name="UsersExport[completed_to]" id="select_completed_to">
+                            <option value="" >Выберите акцию</option>
+                            {% for action in actions %}
+                                <option value="{{ action.uid }}" {% if (action.uid == get.completed_to) %}selected{% endif %}>{{ action.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="help-block help-block-error"></div>
+                    </div>
 
 
                     <h4>Формат</h4>

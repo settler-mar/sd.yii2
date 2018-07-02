@@ -256,5 +256,95 @@ class Actions extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * формируем массив для where в cs_users как возможные участники акции $actionId
+     * @param $actionId
+     * @return array
+     * @throws yii\db\Exception
+     */
+    public static function makeUsersExpectedQuery($actionId)
+    {
+        $sql = 'SELECT `cwa`.*, `cwac`.`uid` AS `actions_conditions_id`, `cwac`.`referral_count`, `cwac`.`payment_count`,'.
+            ' `cwac`.`bonus_status`, `cwac`.`loyalty_status`, `cwac`.`referral_count_operator`, `cwac`.`payment_count_operator`,'.
+            ' `cwac`.`bonus_status_operator`, `cwac`.`loyalty_status_operator`, `cwac`.`date_register_from`, `cwac`.`date_register_to`'.
+            ' FROM `cw_actions` `cwa` LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id WHERE `cwa`.`uid`='
+            .(int)$actionId;
+        $query_actions = Yii::$app->db->createCommand($sql)->queryAll();
+        if (count($query_actions) == 0) {
+            //таких акций нет, результат должен быть пустой
+            return  ['cw_users.uid' => 0];
+        } else {
+            $actions_query = ['or'];
+            //по каждому условию - записи
+            foreach ($query_actions as $query_action) {
+                $condition_query = ['and'];
+                //по каждому условию в записи
+                if ($query_action['actions_conditions_id'] === null) {
+                    //пустой join - нет условий в акции, т.е. участвуют все
+                    $actions_query = [];
+                    break;
+                }
+                if ($query_action['referral_count'] !== null) {
+                    $condition_query[] = [
+                        $query_action['referral_count_operator'] > '' ? $query_action['referral_count_operator']  : '>=',
+                        'cw_users.ref_total',
+                        $query_action['referral_count']
+                    ];
+                }
+                if ($query_action['payment_count'] !== null) {
+                    if (($query_action['payment_count'] === '0' and $query_action['payment_count_operator'] == '=') ||
+                        (in_array(trim($query_action['payment_count_operator']), ['<', '<=']))) {
+                        //если 0 или меньше чего-то, то два условия
+                        $condition_query[] = [
+                            'or',
+                            [trim($query_action['payment_count_operator']), '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', $query_action['payment_count']],
+                            ['is', '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', null]
+                        ];
+                    } else {
+                        $condition_query[] = [
+                            $query_action['payment_count_operator'] > '' ? $query_action['payment_count_operator']  : '>=',
+                            '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`',
+                            $query_action['payment_count']
+                        ];
+                    }
+
+                }
+                if ($query_action['loyalty_status'] !== null) {
+                    $condition_query[] = [
+                        $query_action['loyalty_status_operator'] > '' ? $query_action['loyalty_status_operator']  : '>=',
+                        '`cw_users`.`loyalty_status`',
+                        $query_action['loyalty_status']
+                    ];
+                }
+                if ($query_action['bonus_status'] !== null) {
+                    $condition_query[] = [
+                        $query_action['bonus_status_operator'] > '' ? $query_action['bonus_status_operator']  : '>=',
+                        '`cw_users`.`bonus_status`',
+                        $query_action['bonus_status']
+                    ];
+                }
+                if ($query_action['date_register_from'] !== null && $query_action['date_register_from'] != '0000-00-00 00:00:00') {
+                    $condition_query[] = [
+                        '>=',
+                        '`cw_users`.`added`',
+                        $query_action['date_register_from']
+                    ];
+                }
+                if ($query_action['date_register_to'] !== null && $query_action['date_register_to'] != '0000-00-00 00:00:00') {
+                    $condition_query[] = [
+                        '<=',
+                        '`cw_users`.`added`',
+                        $query_action['date_register_to']
+                    ];
+                }
+                if (count($condition_query)>1) {
+                    $actions_query[] = $condition_query;
+                }
+            };
+            if (!empty($actions_query)) {
+                return $actions_query;
+            }
+        }
+    }
 
 }
