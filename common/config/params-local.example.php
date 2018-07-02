@@ -34,7 +34,14 @@ return [
       'site_id' => '8021356',
       'dev_key' => '00bcee2d8efac83743ed7c0abcbb764e0ad1194c3f2db2ab326453e22fcc3aed8379e7d1e0572e49054eeb155c1710061b42a83f118f3889379e386add0ee2555b/0099d74407ba139054e2ab6fbed0d2fba7792ea55488ac8514aa7757a5de2259c59fc5cb63354bd629e0a9fd4adbd9b11711c8de6d7dc224f6c79573e16c5113f1',
   ],
-
+  'doublertrade' => [
+    'affiliateId' => 3044873,
+    'reportKey' => '7b07b59a606f6349e64c100aff74d413',
+    'tokenProducts' => 'F37CF4D9328741C32097539AA4E02D346BE0BEB6',
+    'tokenVouchers' => '761C55597D6FFEA524A4AAFFE7E6D93A4F3DBD55',
+    'tokenPublisherVouchers' => '7EB9463BF01D9535478B61CE81404D1CFFE2C0F8',
+    'tokenConversions' => '4972CD3B8619F74F419B703CF878E10681C1BB0A',
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
