@@ -270,6 +270,23 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ]);
       }
     }
+    //просмотренные шопы
+    if (in_array('visited', $extItems)) {
+      $visited = Stores::visited();
+      if (!empty($visited['count'])) {
+        array_unshift($cats[0], [
+            'name' => Yii::t('main', 'breadcrumbs_stores_visited'),
+            'parent_id' => 0,
+            'route' => 'visited',
+            'menu_hidden' => 0,
+            'selected' => '0',
+            'count' => $visited['count'],
+            'uid' => null,
+            'menu_index' => -999,
+            'class' => 'cat_bold',
+        ]);
+      }
+    }
     //алфавитный поиск
     if (in_array('abc', $extItems)) {
         array_unshift($cats[0], [
@@ -399,7 +416,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         if ($currentCategoryId != null && isset($cat['uid']) && $cat['uid'] == $currentCategoryId ||
             $cat['route'] == 'favorite' && Yii::$app->request->pathInfo == 'stores/favorite'.($offline?'-offline':'') ||
             $cat['route'] == '' && Yii::$app->request->pathInfo == 'stores' ||
-            $cat['route'] == 'abc' && in_array(Yii::$app->request->pathInfo, ['stores/abc', 'stores/abc/offline'])
+            $cat['route'] == 'abc' && in_array(Yii::$app->request->pathInfo, ['stores/abc', 'stores/abc/offline']) ||
+            $cat['route'] == 'visited' && Yii::$app->request->pathInfo == 'stores/visited'
         ) {
           $title = true;
           $c[] = 'active';
