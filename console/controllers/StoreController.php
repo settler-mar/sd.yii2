@@ -11,5 +11,6 @@ class StoreController extends Controller
   public function actionIndex()
   {
     Yii::$app->runAction('admitad/store');
+    Yii::$app->runAction('doublertrade/offers');
   }
 }
