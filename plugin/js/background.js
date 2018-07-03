@@ -37,9 +37,16 @@ function toggleIcon() {
     }
 }
 
-function iconFlashStart(cashback) {
-    tabsCashback[currentTab] = cashback;
-
+function iconFlashStart(cashback, tab_url) {
+    chrome.tabs.getAllInWindow(null, function(tabs) {
+        //текущую вкладку, где кешбек, определяем по url
+        for (var i = 0 ; i < tabs.length ; i++) {
+            if (tabs[i].url === tab_url) {
+                var tabId = tabs[i].id;
+                tabsCashback[tabId] = cashback;
+            }
+        }
+    });
     storeCashback = cashback;
     if (stop) {
         defaultIcon = true;
@@ -117,7 +124,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
     }
 
     if (request.action === "icon_flash_start") {
-        iconFlashStart(request.cashback);
+        iconFlashStart(request.cashback, request.tab_url);
     }
     if (request.action === "icon_flash_stop") {
         iconFlashStop();
