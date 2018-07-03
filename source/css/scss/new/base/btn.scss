@@ -161,7 +161,9 @@
   &:hover {
     //color: #fff;
     color: $button_base_hover_color;
-    background: $coupons_a_hover_color;
+//    background: $coupons_a_hover_color;
+    background: $button_base_hover_bg;
+
     border-color: $coupons_a_hover_color;
   }
 
