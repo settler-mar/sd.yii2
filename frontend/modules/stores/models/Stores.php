@@ -374,7 +374,7 @@ class Stores extends \yii\db\ActiveRecord
      * @param int $userId
      * @return bool|mixed
      */
-  public static function visited($userId = 0, $limit = 0, $offline = false)
+  public static function visited($userId = 0, $limit = 0)
   {
       $userId = $userId > 0  ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
       if ($userId == 0) {
@@ -383,11 +383,11 @@ class Stores extends \yii\db\ActiveRecord
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
 
       $cache = Yii::$app->cache;
-      $cache_name = 'stores_visited' . $language . '_' . $userId. '_' . $limit . ($offline !== false ? '_offline_' . $offline : '');
+      $cache_name = 'stores_visited' . $language . '_' . $userId. '_' . $limit;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'stores_visited';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-      $data = $cache->getOrSet($cache_name, function () use ($userId, $limit, $offline) {
+      $data = $cache->getOrSet($cache_name, function () use ($userId, $limit) {
           $visits = UsersVisits::find()
               ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
               ->where(['user_id' => $userId])
@@ -396,9 +396,6 @@ class Stores extends \yii\db\ActiveRecord
           $stores = self::items()
               ->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid')
               ->orderBy('cwuv.visit_date DESC');
-          if ($offline !== false) {
-              $stores->andWhere(['is_offline' => 1]);
-          }
           $count = $stores->count();
           if ($limit > 0) {
               $stores->limit($limit);
@@ -763,16 +760,17 @@ class Stores extends \yii\db\ActiveRecord
     $categoryId = !empty($options['category_id']) && $options['category_id'] > 0 ? $options['category_id'] : false;
     $offline = isset($options['offline']) && $options['offline'] !== null ? $options['offline'] : null;
     $favorites = !empty($options['favorites']) ? true : false;
+    $visited = !\Yii::$app->user->isGuest && !empty($options['visited']) ? true : false;
 
     $cache = Yii::$app->cache;
     $cacheName = 'stores_abc_' . ($forStores ? 'stores' : 'coupons') . ($charListOnly ? '_list' : '') .
         ($categoryId ? '_' . $categoryId : '') . ($offline !== null ? '_offline' . $offline : '') .
-        ($favorites? '_favorites' : '');
+        ($favorites ? '_favorites' : '').($visited ? '_visited' : '');
     $dependencyName = 'stores_abc';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline, $favorites) {
+    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline, $favorites, $visited) {
         $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
             'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
@@ -793,6 +791,10 @@ class Stores extends \yii\db\ActiveRecord
             if ($favorites) {
                 $storesObj->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
                     ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
+            }
+            if ($visited && !\Yii::$app->user->isGuest) {
+                $storesObj->innerJoin(UsersVisits::tableName() . ' cwuv', 'cws.uid = cwuv.store_id')
+                    ->andWhere(["cwuv.user_id" => \Yii::$app->user->id]);
             }
 
             $stores = $storesObj->all();

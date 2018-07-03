@@ -108,8 +108,8 @@ return [
     'breadcrumbs_search' => 'Поиск',
     'breadcrumbs_search_abc' => 'Алфавитный поиск',
     'breadcrumbs_page' => 'Страница',
-    'breadcrumbs_stores_online' => 'Оффлайн-магазины',
-    'breadcrumbs_stores_offline' => 'Магазины',
+    'breadcrumbs_stores_online' => 'Магазины',
+    'breadcrumbs_stores_offline' => 'Оффлайн - магазины',
     'breadcrumbs_stores_favorite' => 'Мои избранные',
     'coupons_search_h1' => 'Промокоды. Результат поиска по запросу',
     'stores_abc_default_h1_{count}_' => 'Магазины - алфавитный поиск <span>({count})</span>',
@@ -220,6 +220,7 @@ return [
     'promocode_successfull' => 'Промокод успешно применён. Зарегистрируйтесь по кнопке ниже &mdash; и получите повышенный аккаунт.',
     'wrong_recaptcha' => 'Неправильный проверочный код',
     'index-hello-link-image' => '/images/header_present.png',
+    'breadcrumbs_stores_visited' => 'Просмотренные',
 
 
 

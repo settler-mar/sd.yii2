@@ -15,6 +15,7 @@ use frontend\modules\slider\models\Slider;
 use frontend\models\RouteChange;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use common\components\Help;
+use frontend\modules\transitions\models\UsersVisits;
 
 
 class DefaultController extends SdController
@@ -91,6 +92,10 @@ class DefaultController extends SdController
         //ddd($id);
         echo $this->actionIndex(str_replace('-offline', '', $id));
         exit;
+      }
+      if ($id == 'visited' && !Yii::$app->user->isGuest) {
+          echo $this->actionIndex($id);
+          exit;
       }
 
       $categoryStore = CategoriesStores::byRoute($id);
@@ -217,12 +222,27 @@ class DefaultController extends SdController
           'url' => $url,
       ];
     }
+    if ($actionId == 'visited') {
+      $cacheName .= '_visited_' . Yii::$app->user->id;
+      $url = Help::href('/stores/visited');
+      $visits = UsersVisits::find()
+            ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
+            ->where(['user_id' => Yii::$app->user->id])
+            ->groupBy('store_id');
+
+      $dataBaseData->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid');
+
+      $this->params['breadcrumbs'][] = [
+        'label' => Yii::t('main', 'breadcrumbs_stores_visited'),
+        'url' => $url,
+      ];
+    }
 
     if ($actionId == "") {
-      $storesData['current_category'] = CategoriesStores::find()
-          ->where(['route' => '/'])
-          ->asArray()
-          ->one();
+          $storesData['current_category'] = CategoriesStores::find()
+              ->where(['route' => '/'])
+              ->asArray()
+              ->one();
     };
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {
@@ -293,7 +313,7 @@ class DefaultController extends SdController
     $storesData['slider'] = Slider::get(['place'=>($offline?'offline':'online').'-shop']);
     $storesData['offline'] = $offline ? 1 : (Yii::$app->params['stores_menu_separate'] == 1 ? 0 : null);
 
-    if ($storesData['current_category'] && $storesData['current_category']['route'] != '/') {
+    if (isset($storesData['current_category']) && $storesData['current_category']['route'] != '/') {
       $storesData['coupons'] = Coupons::top([
           'store_category' => $storesData['current_category']['uid'],
           'offline' => $this->offline ? 1 : 0,
@@ -308,6 +328,7 @@ class DefaultController extends SdController
         'category_id' => isset($category) ? $category : false,
         'offline' => $offline,
         'favorites' => $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline',
+        'visited' => $actionId == 'visited',
     ]);
     $storesData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
 
