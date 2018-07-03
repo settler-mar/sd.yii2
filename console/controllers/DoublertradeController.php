@@ -20,6 +20,10 @@ class DoublertradeController extends Controller
     private $insertedCpaLink;
 
 
+    /**
+     * получение шопов из DoublerTrade
+     * @throws \yii\db\Exception
+     */
     public function actionOffers()
     {
         $cpa = Cpa::find()->where(['name' => 'Doublertrade'])->one();
@@ -205,7 +209,6 @@ class DoublertradeController extends Controller
             } else {
                 d($db_store->errors);
             }
-            echo $store['programName']. " ".$cashback. ' '. $status. "\n";
         }
 
         $store_id = $db_store->uid;
