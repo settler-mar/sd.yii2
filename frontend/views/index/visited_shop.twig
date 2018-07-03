@@ -1,0 +1,23 @@
+{% if visited_stores.stores | length > 0 %}
+<section class="margin">
+    <div class="page-wrap">
+        <h2>{{ t('account', 'visited_stores')|raw }}</h2>
+        <div class="shops">
+            {% for store in visited_stores.stores %}
+                {% include 'parts/shop.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+        </div>
+        {% if visited_stores.stores | length < visited_stores.count %}
+            <div class="align-center">
+                <a href="{{ _href('/stores/visited')|raw }}" class="btn btn-transform">{{ t('account', 'all_visited_stores_{count}', {'count':visited_stores.count})|raw }}</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}

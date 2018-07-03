@@ -374,7 +374,7 @@ class Stores extends \yii\db\ActiveRecord
      * @param int $userId
      * @return bool|mixed
      */
-  public static function visited($userId = 0)
+  public static function visited($userId = 0, $limit = 0, $offline = false)
   {
       $userId = $userId > 0  ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
       if ($userId == 0) {
@@ -383,17 +383,30 @@ class Stores extends \yii\db\ActiveRecord
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
 
       $cache = Yii::$app->cache;
-      $cache_name = 'stores_visited' . $language . '_' . $userId;
+      $cache_name = 'stores_visited' . $language . '_' . $userId. '_' . $limit . ($offline !== false ? '_offline_' . $offline : '');
       $dependency = new yii\caching\DbDependency;
-      $dependencyName = 'catalog_stores';
+      $dependencyName = 'stores_visited';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-      $data = $cache->getOrSet($cache_name, function () use ($userId) {
+      $data = $cache->getOrSet($cache_name, function () use ($userId, $limit, $offline) {
+          $visits = UsersVisits::find()
+              ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
+              ->where(['user_id' => $userId])
+              ->groupBy('store_id');
+
           $stores = self::items()
-              ->innerJoin(UsersVisits::tableName().' cwuv', 'cwuv.store_id = cws.uid')
-              ->andWhere(['cwuv.user_id' => $userId])
-              ->orderBy('cwuv.visit_date DESC')
-              ->all();
-          return $stores;
+              ->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid')
+              ->orderBy('cwuv.visit_date DESC');
+          if ($offline !== false) {
+              $stores->andWhere(['is_offline' => 1]);
+          }
+          $count = $stores->count();
+          if ($limit > 0) {
+              $stores->limit($limit);
+          }
+          return [
+              'count' => $count,
+              'stores' => $stores->all(),
+          ];
       }, $cache->defaultDuration, $dependency);
       return $data;
   }
@@ -862,6 +875,7 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('catalog_coupons');
     Cache::clearName('top_12_stores');
     Cache::clearName('stores_by_column');
+    Cache::clearName('stores_visited');
 
       //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');

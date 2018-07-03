@@ -319,5 +319,7 @@ return [
     'you_confirmed_to_be_member_of_{action}'=>'Вы подтвердили участие в акции {action}',
     'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}'=>'Вы подтвердили участие в акции {action} и получили {advantages}',
     'you_are_joined_to_action'=>'Вы подтвердили участие в акции',
+    'visited_stores' => 'Просмотренные магазины',
+    'all_visited_stores_{count}' => 'Все просмотренные ({count})',
 
 ];
