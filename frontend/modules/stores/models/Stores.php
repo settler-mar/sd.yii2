@@ -10,6 +10,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\users\models\Users;
+use frontend\modules\transitions\models\UsersVisits;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -366,6 +367,35 @@ class Stores extends \yii\db\ActiveRecord
       return self::items()->orderBy('region_rating DESC')->limit(10)->all();
     }, $cache->defaultDuration, $dependency);
      return $data;
+  }
+
+    /**
+     * просмотренные шопы
+     * @param int $userId
+     * @return bool|mixed
+     */
+  public static function visited($userId = 0)
+  {
+      $userId = $userId > 0  ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+      if ($userId == 0) {
+          return false;
+      }
+      $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
+
+      $cache = Yii::$app->cache;
+      $cache_name = 'stores_visited' . $language . '_' . $userId;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'catalog_stores';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+      $data = $cache->getOrSet($cache_name, function () use ($userId) {
+          $stores = self::items()
+              ->innerJoin(UsersVisits::tableName().' cwuv', 'cwuv.store_id = cws.uid')
+              ->andWhere(['cwuv.user_id' => $userId])
+              ->orderBy('cwuv.visit_date DESC')
+              ->all();
+          return $stores;
+      }, $cache->defaultDuration, $dependency);
+      return $data;
   }
 
   public function getRouteUrl(){

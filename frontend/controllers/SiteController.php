@@ -107,12 +107,12 @@ class SiteController extends SdController
       $data['slider'] = Slider::get(['place'=>'index']);
       $data['posts'] = Posts::getLastPosts();
       $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1,'unique_store'=>true]);
+      $data['visited_stores'] = Stores::visited();
     }else{
       $reviews = Reviews::top();
       $data['top_reviews'] = $reviews;
     }
 
-    //ddd($counter);
     return $this->render('index', $data);
   }
 
