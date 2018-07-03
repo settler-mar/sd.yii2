@@ -74,6 +74,7 @@ class UsersExport extends Model
     foreach($columns as $column) {
         $users->addSelect('cw_users.' . $column);
     }
+    $users->addSelect(['if(cnt_confirmed > 0 or ref_count > 9,1,0) as user_active']);
 
     if ($this->id_from) {
       $users->where(['>=', 'uid', $this->id_from]);
@@ -88,13 +89,13 @@ class UsersExport extends Model
       $end_date=date('Y-m-d',strtotime($end_date));
       $users->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
     }
+    $referrals = Users::find()
+          ->from(Users::tableName().' cwref')
+          ->select(['cwref.referrer_id','count(*) as ref_count'])
+          ->groupBy('cwref.referrer_id');
+    $users->leftJoin(['cwref' => $referrals], 'cwref.referrer_id = cw_users.uid');
     if (!empty($this->only_active)) {
-        $referrals = Users::find()
-            ->from(Users::tableName().' cwref')
-            ->select(['cwref.referrer_id','count(*) as count'])
-            ->groupBy('cwref.referrer_id');
-        $users->leftJoin(['cwref' => $referrals], 'cwref.referrer_id = cw_users.uid')
-            ->andWhere(['or', ['>', 'cwref.count', 9], ['is not', 'cw_users.cnt_confirmed', null]]);
+      $users->andWhere(['or', ['>', 'ref_count', 9], ['is not', 'cw_users.cnt_confirmed', null]]);
     }
     if (!empty($this->notice_email)) {
         $users->andWhere(['notice_email'=>1]);
@@ -120,7 +121,11 @@ class UsersExport extends Model
       }
     }
 
-    $users =  $users->asArray()->all();
+    $users =  $users->orderBy('user_active DESC')->asArray()->all();
+
+    array_walk($users, function(&$row) {
+        unset($row['user_active']);//убираем колонку с user_active
+    });
 
     if (count($users) == 0) {
         Yii::$app->session->addFlash('err', 'В выборке нет пользователей. Экспорт не выполнен');
