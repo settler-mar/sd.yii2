@@ -57,6 +57,23 @@ $width_switch: $tablets;
         }
       }
     }
+    &-middle {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .about-content_adress {
+        width: 25%;
+
+        @include media($tablets) {
+          width: 50%;
+        }
+        @include media($phones) {
+          width: 100%;
+        }
+      }
+    }
 
     &_mobile {
       display: none;
