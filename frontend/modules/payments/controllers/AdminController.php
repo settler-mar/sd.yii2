@@ -146,7 +146,7 @@ class AdminController extends Controller
       'cashback_txt'=>function ($model, $value, $index, $column){
         return number_format($model['cashback'],2,'.',' ').' '.$model->user->currency;
       },
-      'data_ranger'=>Help::DateRangePicker($searchModel,'created_at_range',['hideInput'=>false]),
+      'data_ranger'=>Help::DateRangePicker($searchModel,'click_at_range',['hideInput'=>false]),
       'stats_query' => $statsQuery,
       'stats_result' => $statResults,
       'stats_withdraw' => $statWithdraw,
