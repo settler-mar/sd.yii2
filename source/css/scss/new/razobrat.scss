@@ -100,8 +100,7 @@ a.blue:hover {text-decoration: none; color: #1a8cff;}
 .catalog_category-short-description {
   color: #b3b2b2;
   overflow: hidden;
-  height: 58px;
-
+  height: 58px;//?? ограничивает высоту блока, текст не влезает например для купона
 }
 
 .breadcrumbs {
