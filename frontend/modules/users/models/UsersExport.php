@@ -74,7 +74,6 @@ class UsersExport extends Model
     foreach($columns as $column) {
         $users->addSelect('cw_users.' . $column);
     }
-    $users->addSelect(['if(cnt_confirmed > 0 or ref_count > 9,1,0) as user_active']);
 
     if ($this->id_from) {
       $users->where(['>=', 'uid', $this->id_from]);
@@ -121,11 +120,7 @@ class UsersExport extends Model
       }
     }
 
-    $users =  $users->orderBy('user_active DESC')->asArray()->all();
-
-    array_walk($users, function(&$row) {
-        unset($row['user_active']);//убираем колонку с user_active
-    });
+    $users =  $users->orderBy('(cnt_confirmed > 0 or ref_count > 9)  DESC')->asArray()->all();
 
     if (count($users) == 0) {
         Yii::$app->session->addFlash('err', 'В выборке нет пользователей. Экспорт не выполнен');
