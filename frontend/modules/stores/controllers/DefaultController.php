@@ -226,9 +226,10 @@ class DefaultController extends SdController
       $cacheName .= '_visited_' . Yii::$app->user->id;
       $url = Help::href('/stores/visited');
       $visits = UsersVisits::find()
-            ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
-            ->where(['user_id' => Yii::$app->user->id])
-            ->groupBy('store_id');
+        ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
+        ->where(['user_id' => Yii::$app->user->id])
+        ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
+        ->groupBy('store_id');
 
       $dataBaseData->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid');
 
