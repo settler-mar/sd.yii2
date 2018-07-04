@@ -36,7 +36,7 @@ class Banners extends \yii\db\ActiveRecord
     protected $image_path = '/images/banners';
 
 
-    private $places_array = [
+    public $places_array = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
         'shops-catalog-left-menu' => ['name' => 'Шопы. Левое меню. Основной каталог'],
@@ -63,6 +63,11 @@ class Banners extends \yii\db\ActiveRecord
         ];
     }
 
+    public function init()
+    {
+        $this->updatePlacesArray();
+    }
+
     /**
      * @inheritdoc
      */
@@ -78,7 +83,7 @@ class Banners extends \yii\db\ActiveRecord
             ],
             [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
-            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
+            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
             [['language', 'regions'], 'trim'],
             [['language'], 'string', 'max' => 5],
             [['regions'], 'string'],
@@ -134,8 +139,8 @@ class Banners extends \yii\db\ActiveRecord
     public function afterFind()
     {
         $places = !empty($this->places) ? explode(',', $this->places) : [];
-        foreach ($this->places_array as $key => &$value) {
-            $value['checked'] = in_array($key, $places) ? 1 : 0;
+        foreach ($this->places_array as $place_key => &$place) {
+            $place['checked'] = in_array($place_key, $places) ? 1 : 0;
         }
         $regions = !empty($this->regions) ? explode(',', $this->regions) : [];
 
@@ -289,17 +294,13 @@ class Banners extends \yii\db\ActiveRecord
     }
 
 
-    public function getPlaces_array()
+    private function updatePlacesArray()
     {
-        $places_array = $this->places_array;
-        $places = !empty($this->places) ? explode(',', $this->places) : [];
-
         $cupons = CategoriesCoupons::find()->asArray()->all();
         foreach ($cupons as $cupon) {
             $key = 'coupons-' . $cupon['uid'] . '-left-menu';
-            $places_array[$key] = [
+            $this->places_array[$key] = [
                 'name' => 'Купоны.Левое меню.' . $cupon['name'],
-                'checked' => in_array($key, $places) ? 1 : 0,
             ];
         };
 
@@ -309,12 +310,10 @@ class Banners extends \yii\db\ActiveRecord
             ->all();
         foreach ($stores as $store) {
             $key = 'stores-' . $store['uid'] . '-left-menu';
-            $places_array[$key] = [
+            $this->places_array[$key] = [
                 'name' => 'Магазины.Левое меню.' . $store['name'],
-                'checked' => in_array($key, $places) ? 1 : 0,
             ];
         };
-        return $places_array;
     }
 
 }
