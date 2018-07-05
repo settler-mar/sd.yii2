@@ -78,5 +78,9 @@ return [
 
           ],
       ],
+      'playeurolotto' => [
+          'ip' => '78.46.47.243',
+          'route' => 'playeurolotto-com'
+      ]
   ],
 ];
