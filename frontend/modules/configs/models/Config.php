@@ -19,8 +19,8 @@ class Config extends Model
     public $items = [];
     public $postItems = [];
 
-    private $categories;
     private $file;
+    private $config;
 
     /**
      * @inheritdoc
@@ -34,22 +34,20 @@ class Config extends Model
 
     public function init()
     {
-        $configs = Yii::$app->params['configs'];
-        $config = $configs[0]['config'];
-        $this->title = $configs[0]['title'];
-        $this->file = realpath(Yii::$app->basePath . '/../common/config/json/'.$config);
+        $config = Yii::$app->request->get('config') &&
+            isset(Yii::$app->params['configs'][Yii::$app->request->get('config')]) ?
+            Yii::$app->params['configs'][Yii::$app->request->get('config')] :
+            false;
+        if (!$config) {
+            throw new \yii\web\NotFoundHttpException();
+            return false;
+        }
+        $this->config = $config;
+        $configFile = $config['config'];
+        $this->title = $config['title'];
+        $this->file = realpath(Yii::$app->basePath . '/../common/config/json/'.$configFile);
         $this->items = $this->file ? json_decode(file_get_contents($this->file), true) : [];
         ksort($this->items);
-    }
-
-    public function configsList()
-    {
-        $configs = Yii::$app->params['configs'];
-        $res = [];
-        foreach ($configs as $config) {
-            $res[$config['config']] = $config['title'];
-        }
-        return $res;
     }
 
     public function save()
@@ -57,7 +55,6 @@ class Config extends Model
         foreach ($this->postItems as $key => $item) {
             $this->items[$key]['id'] = $item;
         }
-        //ddd($this->items);
         return file_put_contents($this->file, json_encode($this->items));
     }
 

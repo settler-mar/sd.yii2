@@ -5,12 +5,12 @@
                 <h1>{{ html.encode(this.title) }}</h1>
 
                 {% set form = active_form_begin() %}
-                <div class="col-sm-4"><h5>Sellaction</h5></div>
-                <div class="col-sm-8"><h5>SecretDiscouter</h5></div>
+                <div class="col-sm-4"><h5>{{ model.title }}</h5></div>
+                <div class="col-sm-8"><h5>Категории SecretDiscounter</h5></div>
 
                 {% for key, item in model.items %}
                     <div class="form-group row" style="margin-bottom:10px;">
-                        <label class="col-sm-4 col-form-label" for="post-item-{{ key }}">{{ key }}.{{ item.name }}</label>
+                        <label class="col-sm-4 col-form-label" for="post-item-{{ key }}">{{ _if(key==item.name,loop.index~'.'~key,key~'.'~item.name) }}</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="Config[postItems][{{ key }}]" id="post-item-{{ key }}">
                                 <option value=""></option>
