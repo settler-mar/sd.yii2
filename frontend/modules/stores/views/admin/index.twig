@@ -51,28 +51,31 @@
                         <div class="sum_information">
                             {% for key, cpa_item in stat_cpa  %}
                                 <div class="line">
-                                    <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{% if key == 0 %}Через CPA{% endif %} {{ cpa_item.name }}</a></div>
+                                    <div class="name">{% if key == 0 %}Через CPA: {% endif %} {{ cpa_item.name }}</div>
                                     <div class="value">
-                                        {{ cpa_item.count }} ({{ cpa_item.count_active }})
+                                        <a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{{ cpa_item.count }}</a>
+                                        {% if cpa_item.id > 0 %}
+                                            (<a href="/admin/stores?StoresSearch[active_cpa_type]={{ cpa_item.id }}">{{ cpa_item.count_active }}</a>)
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
                             <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=online">Онлайн</a></div>
+                                <div class="name">Тип магазина: Онлайн</div>
                                 <div class="value">
-                                    {{ stat.online }}
+                                    <a href="/admin/stores?StoresSearch[shop_type]=online">{{ stat.online }}</a>
                                 </div>
                             </div>
                             <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=offline">Оффлайн</a></div>
+                                <div class="name">Оффлайн</div>
                                 <div class="value">
-                                    {{ stat.offline }}
+                                    <a href="/admin/stores?StoresSearch[shop_type]=offline">{{ stat.offline }}</a>
                                 </div>
                             </div>
                             <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=hubrid">Гибрид</a></div>
+                                <div class="name">Гибрид</div>
                                 <div class="value">
-                                    {{ stat.hubrid }}
+                                    <a href="/admin/stores?StoresSearch[shop_type]=hubrid">{{ stat.hubrid }}</a>
                                 </div>
                             </div>
                         </div>

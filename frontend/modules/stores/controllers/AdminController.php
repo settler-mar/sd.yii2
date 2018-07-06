@@ -67,8 +67,6 @@ class AdminController extends Controller
     $stat['active'] = $stores->where(['is_active' => 1])->count();
     $stat['waiting'] = $stores->where(['is_active' => 0])->count();
     $stat['blocked'] = $stores->where(['is_active' => -1])->count();
-    //$stat['online'] = $stores->where(['is_offline' => 0])->count();
-    //$stat['offline'] = $stores->where(['is_offline' => 1])->count();
     $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
     $stores->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id');
     $stat['hubrid'] = $stores->where(['cwcl.cpa_id' => 2, 'is_offline' => 0])->count();
@@ -85,11 +83,19 @@ class AdminController extends Controller
         ->asArray()
         ->orderBy('cwc.id')
         ->all();
+    $cpaLinkId = CpaLink::find()->select(['id']);
     $statCpa[] = [
       'name' => 'Не задано',
       'id' => 0,
-      'count' => Stores::find()->where(['or',['active_cpa'=>0], ['is', 'active_cpa', null]])->count(),
+      'count' => Stores::find()
+          ->where([
+              'or',
+              ['active_cpa'=>0],
+              ['is', 'active_cpa', null],
+              ['not in', 'active_cpa', $cpaLinkId]
+          ])->count(),
     ];
+
 
     $cpaTypes = ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->orderBy('id')->all(), 'id', 'name');
     $cpaTypes[0] = 'Не задано';
@@ -101,7 +107,7 @@ class AdminController extends Controller
       'table_value' => [
         'is_offline' => function ($model, $key, $index, $column) {
            if ($model->cpaLink == null || $model->cpaLink->cpa == null) {
-               return '';
+               return 'Не задано';
            } elseif ($model->is_offline == 1) {
                return 'Оффлайн';
            } elseif ($model->cpaLink->cpa->id == 2) {
@@ -139,7 +145,7 @@ class AdminController extends Controller
           return $out;
         },
         'active_cpa_name' => function($model) {
-            return $model->cpaLink != null && $model->cpaLink->cpa != null ? $model->cpaLink->cpa->name : '';
+            return $model->cpaLink != null && $model->cpaLink->cpa != null ? $model->cpaLink->cpa->name : 'Не задано';
         },
       ],
       'stat_cpa' => $statCpa,

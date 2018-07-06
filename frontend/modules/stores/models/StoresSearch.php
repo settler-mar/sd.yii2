@@ -12,8 +12,7 @@ use frontend\modules\stores\models\Stores;
  */
 class StoresSearch extends Stores
 {
-    const CHARITY_QUERY = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
-              " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
+    const CHARITY_QUERY = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
     public $charity;
     public $cpa_id;
     public $active_cpa_type;
@@ -116,11 +115,21 @@ class StoresSearch extends Stores
         if (!empty($this->charity)) {
             $query->andFilterWhere(self::CHARITY_QUERY);
         }
-        if (!empty($this->cpa_id) || !empty($this->active_cpa_type)) {
-            $query->andFilterWhere(['cwcl.cpa_id' => $this->cpa_id]);
-        }
         if (!empty($this->active_cpa_type)) {
-            $query->andFilterWhere(['cwc.id' => $this->active_cpa_type]);
+            $query->andFilterWhere(['cwcl.cpa_id' => $this->active_cpa_type]);
+        }
+        if ($this->cpa_id === '0') {
+            $cpaLinkId = CpaLink::find()->select(['id']);
+            $query->andFilterWhere([
+                'or',
+                ['active_cpa'=>0],
+                ['is', 'active_cpa', null],
+                ['not in', 'active_cpa', $cpaLinkId]
+            ]);
+        }
+        if (!empty($this->cpa_id)) {
+            $query->leftJoin(CpaLink::tableName().' cwclall', 'cw_stores.uid = cwclall.stores_id');
+            $query->andFilterWhere(['cwclall.cpa_id' => $this->cpa_id]);
         }
         if (!empty($this->shop_type)) {
             if ($this->shop_type == 'offline') {
