@@ -12,7 +12,7 @@ use frontend\modules\stores\models\Stores;
  */
 class StoresSearch extends Stores
 {
-    const CHARITY_QUERY = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
+    public static $charity_query = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
     public $charity;
     public $cpa_id;
     public $active_cpa_type;
@@ -113,7 +113,7 @@ class StoresSearch extends Stores
             ->andFilterWhere(['like', 'contact_phone', $this->contact_phone])
             ->andFilterWhere(['like', 'contact_email', $this->contact_email]);
         if (!empty($this->charity)) {
-            $query->andFilterWhere(self::CHARITY_QUERY);
+            $query->andFilterWhere(self::$charity_query);
         }
         if (!empty($this->active_cpa_type)) {
             $query->andFilterWhere(['cwcl.cpa_id' => $this->active_cpa_type]);

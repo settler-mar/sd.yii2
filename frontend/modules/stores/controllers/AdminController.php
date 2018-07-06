@@ -67,7 +67,7 @@ class AdminController extends Controller
     $stat['active'] = $stores->where(['is_active' => 1])->count();
     $stat['waiting'] = $stores->where(['is_active' => 0])->count();
     $stat['blocked'] = $stores->where(['is_active' => -1])->count();
-    $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
+    $stat['charity'] = $stores->where(StoresSearch::$charity_query)->count();
     $stores->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id');
     $stat['hubrid'] = $stores->where(['cwcl.cpa_id' => 2, 'is_offline' => 0])->count();
     $stat['online'] = $stores->where(['and',['<>', 'cwcl.cpa_id', 2], ['is_offline' => 0]])->count();
