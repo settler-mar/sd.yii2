@@ -51,7 +51,7 @@
                         <div class="sum_information">
                             {% for key, cpa_item in stat_cpa  %}
                                 <div class="line">
-                                    <div class="name">{% if key == 0 %}Через CPA: {% endif %} {{ cpa_item.name }}</div>
+                                    <div class="name wide">{% if key == 0 %}Тип CPA (активного): {% endif %} {{ cpa_item.name }}</div>
                                     <div class="value">
                                         <a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{{ cpa_item.count }}</a>
                                         {% if cpa_item.id > 0 %}
@@ -61,19 +61,19 @@
                                 </div>
                             {% endfor %}
                             <div class="line">
-                                <div class="name">Тип магазина: Онлайн</div>
+                                <div class="name wide">Тип магазина: Онлайн</div>
                                 <div class="value">
                                     <a href="/admin/stores?StoresSearch[shop_type]=online">{{ stat.online }}</a>
                                 </div>
                             </div>
                             <div class="line">
-                                <div class="name">Оффлайн</div>
+                                <div class="name wide">Оффлайн</div>
                                 <div class="value">
                                     <a href="/admin/stores?StoresSearch[shop_type]=offline">{{ stat.offline }}</a>
                                 </div>
                             </div>
                             <div class="line">
-                                <div class="name">Гибрид</div>
+                                <div class="name wide">Гибрид</div>
                                 <div class="value">
                                     <a href="/admin/stores?StoresSearch[shop_type]=hubrid">{{ stat.hubrid }}</a>
                                 </div>
