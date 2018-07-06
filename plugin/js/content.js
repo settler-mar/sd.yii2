@@ -129,8 +129,19 @@ function findShop() {
 
 }
 
+function testDisplayPage(display){
+    //показывать ли на странице шопа
+    if (debug) {
+        console.log('display on page '+(display === undefined || display === null || display == 1 || display == 3));
+    }
+    return display === undefined || display === null || display == 1 || display == 3;
+}
+
 function displayShop(item) {
 
+  if (!testDisplayPage(item.display)) {
+    return;
+  }
   if (item) {
       chrome.runtime.sendMessage({
           action: 'icon_flash_start',
