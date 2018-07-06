@@ -85,6 +85,14 @@ class AdminController extends Controller
         ->asArray()
         ->orderBy('cwc.id')
         ->all();
+    $statCpa[] = [
+      'name' => 'Не задано',
+      'id' => 0,
+      'count' => Stores::find()->where(['or',['active_cpa'=>0], ['is', 'active_cpa', null]])->count(),
+    ];
+
+    $cpaTypes = ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->orderBy('id')->all(), 'id', 'name');
+    $cpaTypes[0] = 'Не задано';
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
@@ -135,7 +143,7 @@ class AdminController extends Controller
         },
       ],
       'stat_cpa' => $statCpa,
-      'cpa_types' => ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
+      'cpa_types' => $cpaTypes,
     ]);
   }
 
