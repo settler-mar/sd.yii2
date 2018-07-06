@@ -53,24 +53,24 @@
                                 <div class="line">
                                     <div class="name"><a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{% if key == 0 %}Через CPA{% endif %} {{ cpa_item.name }}</a></div>
                                     <div class="value">
-                                        {{ cpa_item.count }}
+                                        {{ cpa_item.count }} ({{ cpa_item.count_active }})
                                     </div>
                                 </div>
                             {% endfor %}
-                            {#<div class="line">#}
-                                {#<div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0">Онлайн (is_offline=0)</a></div>#}
-                                {#<div class="value">#}
-                                    {#{{ stat.online }}#}
-                                {#</div>#}
-                            {#</div>#}
-                            {#<div class="line">#}
-                                {#<div class="name"><a href="/admin/stores?StoresSearch[is_offline]=1">Оффлайн (is_offline=1)</a></div>#}
-                                {#<div class="value">#}
-                                    {#{{ stat.offline }}#}
-                                {#</div>#}
-                            {#</div>#}
                             <div class="line">
-                                <div class="name"><a href="/admin/stores?StoresSearch[is_offline]=0&StoresSearch[cpa_id]=2">Гибрид</a></div>
+                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=online">Онлайн</a></div>
+                                <div class="value">
+                                    {{ stat.online }}
+                                </div>
+                            </div>
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=offline">Оффлайн</a></div>
+                                <div class="value">
+                                    {{ stat.offline }}
+                                </div>
+                            </div>
+                            <div class="line">
+                                <div class="name"><a href="/admin/stores?StoresSearch[shop_type]=hubrid">Гибрид</a></div>
                                 <div class="value">
                                     {{ stat.hubrid }}
                                 </div>
@@ -119,11 +119,13 @@
                                 },
                                 {
                                     'format':'raw',
-                                    'attribute':'is_offline',
+                                    'attribute':'shop_type',
+                                    'label':'Тип магазина',
                                     'filter':{
                                         '':'Любой',
-                                        0:"Онлайн",
-                                        1:"Оффлайн",
+                                        'online':"Онлайн",
+                                        'offline':"Оффлайн",
+                                        'hubrid':"Гибрид",
                                     },
                                     'value' : table_value.is_offline
                                 },

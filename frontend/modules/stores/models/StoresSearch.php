@@ -17,6 +17,7 @@ class StoresSearch extends Stores
     public $charity;
     public $cpa_id;
     public $active_cpa_type;
+    public $shop_type;
     /**
      * @inheritdoc
      */
@@ -25,6 +26,7 @@ class StoresSearch extends Stores
         return [
             [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email', 'active_cpa_type'], 'safe'],
+            ['shop_type', 'in', 'range' => ['online', 'offline', 'hubrid']]
         ];
     }
 
@@ -119,6 +121,16 @@ class StoresSearch extends Stores
         }
         if (!empty($this->active_cpa_type)) {
             $query->andFilterWhere(['cwc.id' => $this->active_cpa_type]);
+        }
+        if (!empty($this->shop_type)) {
+            if ($this->shop_type == 'offline') {
+                $query->andFilterWhere(['is_offline' => 1]);
+            } elseif ($this->shop_type == 'hubrid') {
+                $query->andFilterWhere(['is_offline' => 0, 'cwc.id' => 2]);
+            } else {
+                $query->andFilterWhere(['is_offline' => 0]);
+                $query->andFilterWhere(['<>', 'cwc.id', 2]);
+            }
         }
         return $dataProvider;
     }

@@ -72,17 +72,19 @@ class AdminController extends Controller
     $stat['charity'] = $stores->where(StoresSearch::CHARITY_QUERY)->count();
     $stores->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.uid = cwcl.stores_id');
     $stat['hubrid'] = $stores->where(['cwcl.cpa_id' => 2, 'is_offline' => 0])->count();
+    $stat['online'] = $stores->where(['and',['<>', 'cwcl.cpa_id', 2], ['is_offline' => 0]])->count();
+    $stat['offline'] = $stores->where(['is_offline' => 1])->count();
 
-    $statCpa = clone $stores;
-    $statCpa = $statCpa
-        ->innerJoin('cw_cpa', 'cw_cpa.id = cwcl.cpa_id')
-        ->where([])
-        ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
-        ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
+    $statCpa = Cpa::find()
+        ->from(Cpa::tableName().' cwc')
+        ->select(['cwc.name', 'cwc.id', 'count(cws.uid) as count', 'count(cwsa.uid) as count_active'])
+        ->leftJoin(CpaLink::tableName(). ' cwcl', 'cwc.id = cwcl.cpa_id')
+        ->leftJoin(Stores::tableName(). ' cws', 'cws.uid = cwcl.stores_id')
+        ->leftJoin(Stores::tableName(). ' cwsa', 'cwsa.active_cpa = cwcl.id')
+        ->groupBy(['cwc.name', 'cwc.id'])
         ->asArray()
-        ->orderBy('cw_cpa.id')
+        ->orderBy('cwc.id')
         ->all();
-    //ddd($statCpa);
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
@@ -90,7 +92,13 @@ class AdminController extends Controller
       'stat' => $stat,
       'table_value' => [
         'is_offline' => function ($model, $key, $index, $column) {
-          return $model->is_offline == 1 ? 'Оффлайн' : 'Онлайн';
+           if ($model->is_offline == 1) {
+               return 'Оффлайн';
+           } elseif ($model->cpaLink->cpa->id == 2) {
+               return 'Гибрид';
+           } else {
+               return 'Онлайн';
+           }
         },
         'is_active' => function ($model, $key, $index, $column) {
           $st = [
