@@ -66,5 +66,9 @@
       {{ t('account', 'revoked')|raw }}:
       <b>{{ _nf(user.sum_declined) | raw }}&nbsp;{{ curr_icon | raw }}</b>
     </div>
+    <div>
+      {{ t('account', 'withdraw_sum')|raw }}:
+      <b>{{ _nf(user.sum_withdraw) | raw }}&nbsp;{{ curr_icon | raw }}</b>
+    </div>
   </section>
 {% endif %}

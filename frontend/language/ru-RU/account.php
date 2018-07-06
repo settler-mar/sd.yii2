@@ -133,6 +133,7 @@ return [
     'withrdaw_method_wrong' => 'Неправильный способ вывода',
     'withrdaw_email_wrong' => 'Введите правильный email',
     'withrdaw_webmoney_wrong' => 'Введите правильный кошелёк webmoney R000000000000',
+    'withdraw_sum' => 'Выплачено',
     'charity_empty' => 'На данный момент Вы не делали никаких пожертвований.',
     'charity_total' => 'Итого пожертвовано',
     'charity_type' => 'Тип пожертвования',
