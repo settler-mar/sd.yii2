@@ -238,16 +238,21 @@ function getCookie(name) {
 //получаем пользователя
 getUsers();
 
+var appVersion = chrome.runtime.getManifest().version;
+
 Storage.load(function () {
   storageDataDate = Storage.get(storageDataKeyDate);
   storageDataStores = Storage.get(storageDataKeyStores);
+  storageDataVersion = Storage.get(storageDataKeyVersion);
   if (debug) {
-    console.log('storage load', storageDataStores, storageDataDate)
+    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion);
+    console.log(appVersion);
   }
-  if (!storageDataDate || !storageDataStores
-    || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+  if (!storageDataDate || !storageDataStores || !storageDataVersion
+    || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+    || storageDataVersion !== appVersion) {
     //||storageData.date + 100 < new Date().getTime() ) {
-    getData(findShop());
+    getData(findShop);
     //поиск шопа или после загрузки данных
   } else {
     findShop();
