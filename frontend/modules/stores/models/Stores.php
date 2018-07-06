@@ -73,18 +73,7 @@ class Stores extends \yii\db\ActiveRecord
    * @var array
    */
   protected static $defaultSorts = ['region_rating', 'visit'];
-  /**
-   * Possible sorting options with titles and default value
-   * @var array
-   */
-//  public static $sortvars = [
-//    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
-//    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
-//    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
-//    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
-//    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
-//    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
-//  ];
+
 
   public static function sortvars(){
       return [
@@ -159,8 +148,8 @@ class Stores extends \yii\db\ActiveRecord
         'skipOnEmpty' => true
       ],
       [['videos', 'regions'], 'safe'],
-      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])]
-
+      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
+      ['display_on_plugin', 'in', 'range' => [0, 1, 2, 3], 'skipOnEmpty' => 1],
     ];
   }
 

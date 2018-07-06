@@ -92,7 +92,9 @@ class AdminController extends Controller
       'stat' => $stat,
       'table_value' => [
         'is_offline' => function ($model, $key, $index, $column) {
-           if ($model->is_offline == 1) {
+           if ($model->cpaLink == null || $model->cpaLink->cpa == null) {
+               return '';
+           } elseif ($model->is_offline == 1) {
                return 'Оффлайн';
            } elseif ($model->cpaLink->cpa->id == 2) {
                return 'Гибрид';
@@ -129,7 +131,7 @@ class AdminController extends Controller
           return $out;
         },
         'active_cpa_name' => function($model) {
-            return $model->cpaLink->cpa->name;
+            return $model->cpaLink != null && $model->cpaLink->cpa != null ? $model->cpaLink->cpa->name : '';
         },
       ],
       'stat_cpa' => $statCpa,

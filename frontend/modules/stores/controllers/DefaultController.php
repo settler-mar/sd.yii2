@@ -503,7 +503,9 @@ class DefaultController extends SdController
       $data = $cache->getOrSet($cacheName, function(){
 
           $stores = Stores::find()
-              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency', 'cws.displayed_cashback', 'cws.logo', 'cws.conditions','cws.url_alternative'])
+              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
+                  'cws.displayed_cashback', 'cws.logo', 'cws.conditions','cws.url_alternative',
+                  'display_on_plugin as display'])
               ->from(Stores::tableName(). ' cws')
               ->where(['cws.is_active'=> '1'])
               ->asArray()

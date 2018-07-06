@@ -55,8 +55,8 @@ class StoresSearch extends Stores
     public function search($params)
     {
         $query = Stores::find()
-            ->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.active_cpa = cwcl.id')
-            ->innerJoin(Cpa::tableName().' cwc', 'cwc.id = cwcl.cpa_id');
+            ->leftJoin(CpaLink::tableName().' cwcl', 'cw_stores.active_cpa = cwcl.id')
+            ->leftJoin(Cpa::tableName().' cwc', 'cwc.id = cwcl.cpa_id');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
