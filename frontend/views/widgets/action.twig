@@ -1,0 +1,12 @@
+{% if action.joined %}
+    <div class="margin-half">
+        {{ t('account', 'you_are_joined_to_action')|raw }}
+    </div>
+{% else %}
+    <div class="ajax_form">
+        <form action="{{ _href('/account/users/join-action')|raw }}" method="post">
+            <input type="hidden" name="action_id" value="{{ action.uid }}">
+            <input type="submit" class="btn" value="{{ t('account', 'join_action')|raw }}">
+        </form>
+    </div>
+{% endif %}

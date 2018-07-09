@@ -14,7 +14,7 @@
                 <h3 class="margin-half">{{ action.name }}</h3>
             {% endif %}
             <div class="ajax_form">
-                {% if action_joined %}
+                {% if action.joined %}
                     <div class="margin-half">
                         {{ t('account', 'you_are_joined_to_action')|raw }}
                     </div>
@@ -35,7 +35,7 @@
         <h3 class="margin-half">{{ action.name }}</h3>
     {% endif %}
     <div class="ajax_form">
-        {% if action_joined %}
+        {% if action.joined %}
             <div class="margin-half">
                 {{ t('account', 'you_are_joined_to_action')|raw }}
             </div>

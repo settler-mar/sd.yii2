@@ -12,11 +12,9 @@
   <section class="align-center margin border-wrap">
     <h2>{{ t('account', 'enabled_actions') }}</h2>
     {% for action in actions.joined %}
-        {% set action_joined = 1 %}
         {% include 'parts/account/action.twig' %}
     {% endfor %}
     {% for action in actions.enabled_account_start %}
-        {% set action_joined = 0 %}
         {% include 'parts/account/action.twig' %}
     {% endfor %}
   </section>

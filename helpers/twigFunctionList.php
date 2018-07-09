@@ -1,5 +1,6 @@
 <?php
 use frontend\modules\constants\models\Constants;
+use frontend\components\Action;
 use common\components\Help;
 use common\components\TagsClasses;
 use yii\db\Query;
@@ -621,6 +622,9 @@ $functionsList = [
           $res[$arrayName.'['.$key.']'] = $item;
       }
       return http_build_query($res);
+  },
+    '_action' => function($id, $options =[]){
+    return Action::widget(['id' => $id, 'options' => $options]);
   }
 
 
