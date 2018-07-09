@@ -73,7 +73,7 @@ class Actions extends \yii\db\ActiveRecord
             'name' => 'Название',
             'image' => 'Изображение',
             'page' => 'Страница с описанием акции (опционально)',
-            'page_disabled_for_disableds' => 'Страница недоступна для потенциально неучаствующих',
+            'page_disabled_for_disableds' => 'Страница доступна только потенциальным участникам',
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',

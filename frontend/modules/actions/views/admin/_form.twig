@@ -4,9 +4,6 @@
             <div class="col-md-12">
                 <h1>{{ html.encode(this.title) }}</h1>
                 {{ use('/yii/widgets/ActiveForm') }}
-                {% if model.isNewRecord == false %}
-                    <div><p>Для вставки блока акциии на страницу условий добавте код {{'{{ '}} _action({{ model.uid }})|raw {{'}}'}}</p></div>
-                {% endif %}
                 <div class="actions-form ">
                     {% set form = active_form_begin() %}
 
@@ -24,6 +21,10 @@
 
                         {#{{ form.field(model, 'page').textInput({'maxlength':true})|raw }}#}
                         {{ form.field(model, 'page').dropDownList(pages, {'prompt': 'Выберите страницу'})|raw }}
+
+                        {% if model.isNewRecord == false %}
+                            <div><p class="bold">Для вставки блока акциии на страницу условий добавте код {{'{{ '}} _action({{ model.uid }})|raw {{'}}'}}</></div>
+                        {% endif %}
 
                         {{ form.field(model, 'page_disabled_for_disableds').checkbox()|raw }}
 
