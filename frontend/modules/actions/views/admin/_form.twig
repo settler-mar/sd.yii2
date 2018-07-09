@@ -12,7 +12,9 @@
 
                         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-                        {#{{ form.field(model, 'image').textInput({'maxlength':true})|raw }}#}
+                    {{ form.field(model, 'active').checkbox()|raw }}
+
+                    {#{{ form.field(model, 'image').textInput({'maxlength':true})|raw }}#}
 
                         <div class="form-group form-group-button">
                             <label for="actions-image">Изображение</label>
@@ -23,7 +25,7 @@
                         {#{{ form.field(model, 'page').textInput({'maxlength':true})|raw }}#}
                         {{ form.field(model, 'page').dropDownList(pages, {'prompt': 'Выберите страницу'})|raw }}
 
-                        {{ form.field(model, 'active').checkbox()|raw }}
+                        {{ form.field(model, 'page_disabled_for_disableds').checkbox()|raw }}
 
                         {{ form.field(model, 'date_start').textInput({'placeholder' :"YYYY-MM-DD HH:ММ:CC"})|raw }}
 

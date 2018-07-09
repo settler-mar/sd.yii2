@@ -55,7 +55,7 @@ class Actions extends \yii\db\ActiveRecord
             [['date_start', 'date_end', 'created_at'], 'safe'],
             [['action_time', 'promo_start', 'promo_end'], 'integer'],
             [['name', 'image', 'page', 'inform_types'], 'string', 'max' => 255],
-            [['active'], 'string', 'max' => 1],
+            [['active', 'page_disabled_for_disableds'], 'string', 'max' => 1],
             [['promo_end'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_end' => 'uid']],
             [['promo_start'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_start' => 'uid']],
             [['inform_types_form'], 'in', 'range' => array_keys($this->inform_types_select), 'allowArray'=>true],
@@ -73,6 +73,7 @@ class Actions extends \yii\db\ActiveRecord
             'name' => 'Название',
             'image' => 'Изображение',
             'page' => 'Страница с описанием акции (опционально)',
+            'page_disabled_for_disableds' => 'Страница недоступна для потенциально неучаствующих',
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',
@@ -206,6 +207,7 @@ class Actions extends \yii\db\ActiveRecord
             $actionsJoined = [];
             $actionsCompleted = [];
             $actionsOvered = [];
+            $actionsDisabled = [];
             foreach ($actions as $action) {
                 //если уловие пустое, или условие выполняется
                 $enabled = ($action['actions_conditions_id'] == null ||
@@ -241,6 +243,8 @@ class Actions extends \yii\db\ActiveRecord
                     if (strpos($action['inform_types'], 'on_account_start') !== false) {
                         $actionsEnabledAccountStart[$action['uid']] = $action;
                     }
+                } else {
+                    $actionsDisabled[$action['uid']] = $action;
                 }
             }
 
@@ -250,6 +254,7 @@ class Actions extends \yii\db\ActiveRecord
                 'joined' => $actionsJoined,
                 'completed' => $actionsCompleted,
                 'overed' => $actionsOvered,
+                'disabled' => $actionsDisabled,
             ];
         }, $cache->defaultDuration, $dependency);
         //ddd($result);
@@ -257,7 +262,7 @@ class Actions extends \yii\db\ActiveRecord
     }
 
     /**
-     * формируем массив для where в cs_users как возможные участники акции $actionId
+     * формируем массив для where в cw_users как возможные участники акции $actionId
      * @param $actionId
      * @return array
      * @throws yii\db\Exception
@@ -346,5 +351,29 @@ class Actions extends \yii\db\ActiveRecord
             }
         }
     }
+
+    /**
+     * @param $userId
+     * @param $page
+     * @return bool страница недоступна для пользователя
+     */
+    public static function pageDisabled($userId, $page)
+    {
+        if ($userId == 0 || empty($page)) {
+            //при отсутствии юсера тоже недоступно
+            return true;
+        }
+        $actions = self::byUser($userId);
+        if (!empty($actions['disabled'])) {
+            foreach ($actions['disabled'] as $action) {
+                if ($action['page'] == $page) {
+                    return $action['page_disabled_for_disableds'];
+                }
+            }
+
+        }
+        return false;
+    }
+
 
 }
