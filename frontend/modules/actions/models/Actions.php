@@ -165,7 +165,7 @@ class Actions extends \yii\db\ActiveRecord
         $dependencyName = 'actions_users';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $result = $cache->getOrSet($cache_name, function () {
+        $result = $cache->getOrSet($cache_name, function () use ($userId) {
 //            $actions = self::find()->from(self::tableName().' cwa')
 //                ->select(['cwa.*', 'cwac.uid as actions_conditions_id', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
 //                    'cwac.referral_count_operator', 'cwac.payment_count_operator', 'cwac.bonus_status_operator', 'cwac.loyalty_status_operator',
@@ -196,8 +196,8 @@ class Actions extends \yii\db\ActiveRecord
                 ' `cwau`.`uid` AS `joined`, `cwau`.`date_start` AS `user_date_start`,'.
                 ' `cwau`.`date_end` AS `user_date_end`, `cwau`.`complete` FROM `cw_actions` `cwa`'.
                 ' LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id'.
-                ' LEFT JOIN `cw_actions_to_users` `cwau` ON cwa.uid = cwau.action_id '.
-                'WHERE (`cwa`.`active`=1)'.
+                ' LEFT JOIN `cw_actions_to_users` `cwau` ON cwa.uid = cwau.action_id  and cwau.`user_id` = ' . $userId .
+                ' WHERE (`cwa`.`active`=1)'.
                 ' AND ((`cwa`.`date_start` <= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_start` IS NULL))'.
                 ' AND ((`cwa`.`date_end` >= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_end` IS NULL))';
             $actions = Yii::$app->db->createCommand($sql)->queryAll();
@@ -208,6 +208,7 @@ class Actions extends \yii\db\ActiveRecord
             $actionsCompleted = [];
             $actionsOvered = [];
             $actionsDisabled = [];
+            //ddd($actions);
             foreach ($actions as $action) {
                 //если уловие пустое, или условие выполняется
                 $enabled = ($action['actions_conditions_id'] == null ||
