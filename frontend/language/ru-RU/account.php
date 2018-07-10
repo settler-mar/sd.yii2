@@ -50,6 +50,7 @@ return [
     'upload_avatar_max_size' => 'максимальный размер 2 МБ',
     'notify_settings' => 'Настройка уведомлений',
     'notify_settings_email' => 'Получать уведомления на электронную почту',
+    'notify_settings_email_status' => 'Получать уведомления на электронную почту при изменении статуса',
     'password_change' => 'Изменение пароля',
     'password_old' => 'Старый пароль',
     'password_new' => 'Новый пароль',
