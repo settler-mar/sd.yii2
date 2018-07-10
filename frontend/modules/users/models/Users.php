@@ -273,6 +273,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
     $total = $this->balance['total'];
     $status = $statuses[$this->loyalty_status];
+    $loyalty_status = $this->loyalty_status;
 
     foreach ($statuses as $k => $status_k) {
       if (
@@ -284,7 +285,23 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         $this->loyalty_status = $k;
       }
     }
-    $this->save();
+    if ($this->save() && $loyalty_status  != $this->loyalty_status && $this->notice_email_status) {
+        //изменился статус лояльности - письмо пользователю, если задано в настройках
+      try {
+      Yii::$app
+        ->mailer
+        ->compose(
+          ['html' => 'status-html', 'text' => 'status-text'],
+          ['user' => $this]
+        )
+        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+        ->setTo($this->email)
+        ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
+        ->send();
+      } catch (\Exception $e) {
+      }
+
+    }
   }
 
   public function beforeSave($insert)

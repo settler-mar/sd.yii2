@@ -326,5 +326,6 @@ return [
     'you_are_joined_to_action'=>'Вы подтвердили участие в акции',
     'visited_stores' => 'Просмотренные магазины',
     'all_visited_stores_{count}' => 'Все просмотренные ({count})',
+    'loyalty_status_change' => 'Изменение статуса лояльности',
 
 ];

@@ -479,14 +479,16 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
-              ['user' => $userSocial]
+//              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+//              ['user' => $userSocial]
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+              ['html' => 'status-html', 'text' => 'status-text'],
+              ['user' => Yii::$app->user->identity]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo('oxygenn@list.ru')
-          ->setSubject(Yii::t('account', 'confirm_social_email'))
+          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
           ->send();
       return 'Отправлено тестовое письмо';
 
