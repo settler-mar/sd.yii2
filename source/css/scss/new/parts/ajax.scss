@@ -7,11 +7,11 @@
       content: " ";
       display: block;
       position: absolute;
-      background: url(/images/templates/loader.gif) no-repeat 50%;
-      width: 16px;
-      height: 16px;
-      top: calc(50% - 8px);
-      left: calc(50% - 8px);
+      background: url(/images/preloader.gif) no-repeat 50%;
+      width: 20px;
+      height: 20px;
+      top: calc(50% - 10px);
+      left: calc(50% - 10px);
     }
   }
 }
