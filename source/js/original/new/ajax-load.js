@@ -9,6 +9,7 @@
             var content = $(data).find('#content-wrap').html();
             $('body').find('#content-wrap').html(content);
             window.history.pushState("object or string", "Title", url);
+            $('html, body').animate({scrollTop: 0}, 500);
         }).fail(function() {
             $(that).removeClass('loading');
             notification.notifi({type:'err', 'title':lg('error'), 'message':lg('error_querying_data')});
