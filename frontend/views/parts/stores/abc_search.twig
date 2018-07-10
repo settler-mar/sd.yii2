@@ -10,7 +10,7 @@
                     {% set href = _href(href) %}
                 {% endif %}
 
-                <a href="{{ href|raw }}">{{ char|raw }} </a>
+                <a class="ajax_load" href="{{ href|raw }}">{{ char|raw }} </a>
             {% else %}
                 <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
             {% endif %}
@@ -26,7 +26,7 @@
                     {% set href = '/stores'~favorites_link~(current_category and current_category.route and current_category.route!='/' ? '/'~current_category.route:'')~'?w='~char %}
                     {% set href = _href(href) %}
                 {% endif %}
-                <a href="{{ href|raw }}">{{ char|raw }}</a>
+                <a class="ajax_load" href="{{ href|raw }}">{{ char|raw }}</a>
             {% else %}
                 <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
             {% endif %}

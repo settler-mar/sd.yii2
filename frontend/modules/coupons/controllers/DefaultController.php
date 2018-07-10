@@ -313,7 +313,7 @@ class DefaultController extends SdController
     $contentData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
     $contentData["users_reviews"] = Reviews::top();
 
-    if ($request->isAjax || $request->get('g') == 'plugin') {
+    if ($request->isAjax && $request->get('g') != 'ajax_load' || $request->get('g') == 'plugin') {
       return json_encode([
         'coupons' => $contentData["coupons"],
         'coupon_ended' => $contentData["coupon_ended"],
