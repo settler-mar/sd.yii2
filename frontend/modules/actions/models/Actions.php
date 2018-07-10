@@ -348,7 +348,7 @@ class Actions extends \yii\db\ActiveRecord
                 }
             };
             if (!empty($actions_query)) {
-                return $actions_query;
+                return ['and', ['cw_users.is_active' => 1], $actions_query];
             }
         }
     }
