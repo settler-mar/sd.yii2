@@ -47,7 +47,8 @@ class LgConstants extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['const_id', 'language','text'], 'required'],
+            [['const_id', 'language'], 'required'],
+            [['text'], 'required', 'enableClientValidation'=> false],
             [['const_id'], 'integer'],
             [['text'], 'string'],
             [['language'], 'string', 'max' => 10],
@@ -76,9 +77,21 @@ class LgConstants extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if(isset($this->text)) {
+        if (isset($this->text)) {
             $type = $this->constant->ftype;
             if ($type == 'json' && is_array($this->text)) {
+                $editorParamRules = realpath(__DIR__ .'/../') .
+                    '/views/admin/json/'.$this->constant->editor_param.'_rules.json';
+                if (file_exists($editorParamRules)) {
+                    $rules = json_decode(file_get_contents($editorParamRules), true);
+                    foreach ($this->text as $textItem) {
+                        foreach ($textItem as $attr => $value) {
+                            if (isset($rules[$attr]) && $rules[$attr] == 'required' && trim($value) == '') {
+                                Yii::$app->session->addFlash('err', $this->formName() . ' задан пустой атрибут '.$attr);
+                            }
+                        }
+                    }
+                }
                 $this->text = json_encode($this->text);
             }
         }
