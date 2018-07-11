@@ -32,8 +32,8 @@ class SellactionController extends Controller
   public function actionTest()
   {
     $sellaction = new Sellaction();
-    $response = $sellaction->myCampaigns(1, 5);
-    ddd($response['data'], $response['_meta'], $response['_links']);
+    $response = $sellaction->actions(1, 10);
+    ddd($response, $response['data'], $response['_meta'], $response['_links']);
   }
 
   /**
