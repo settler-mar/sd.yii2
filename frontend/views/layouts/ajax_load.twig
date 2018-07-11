@@ -2,38 +2,38 @@
   <head>
   </head>
   <body>
-  <div>
+      <div>
 
-    <div id="content-wrap" class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
-      {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' %} margin-top{% endif %}">
+        <div id="content-wrap" class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
+          {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' %} margin-top{% endif %}">
 
-      {% if slider|length > 0 %}
-        {% include 'parts/slider.twig' %}
-      {% elseif this.all_params.search_form %}
-          {% include ('parts/coupons_search.twig') %}
-      {% endif %}
+          {% if slider|length > 0 %}
+            {% include 'parts/slider.twig' %}
+          {% elseif this.all_params.search_form %}
+              {% include ('parts/coupons_search.twig') %}
+          {% endif %}
 
 
-      {% if this.all_params.wrap=='index' %}
-          {{ content|raw }}
-      {% else %}
-        {% include 'parts/catalog_breadcrumbs.twig' %}
-        <div class="page-wrap
-          {{ _if(params('global_wrap'),' '~params('global_wrap')) }}
-          {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">
-
-          {% if this.layout_mode=="account" %}
-            {% include 'parts/account/menu.twig' %}
-            <div class="catalog-stores  account">
+          {% if this.all_params.wrap=='index' %}
               {{ content|raw }}
-            </div>
           {% else %}
-            {{ content|raw }}
+            {% include 'parts/catalog_breadcrumbs.twig' %}
+            <div class="page-wrap
+              {{ _if(params('global_wrap'),' '~params('global_wrap')) }}
+              {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">
+
+              {% if this.layout_mode=="account" %}
+                {% include 'parts/account/menu.twig' %}
+                <div class="catalog-stores  account">
+                  {{ content|raw }}
+                </div>
+              {% else %}
+                {{ content|raw }}
+              {% endif %}
+            </div>
           {% endif %}
         </div>
-      {% endif %}
-    </div>
-  </div>
+      </div>
   </body>
 </html>
 

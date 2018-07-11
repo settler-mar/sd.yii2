@@ -238,10 +238,10 @@ class SdController extends Controller
         if (isset($params['page'])) {
             $params['pagination_page'] = $params['page'];
         }
-        if (isset(Yii::$app->request->get()['g']) && Yii::$app->request->get()['g']=='ajax_load') {
-            //return $this->renderAjax($view, $params);
-            $this->layout = '@app/views/layouts/ajax_load.twig';
-        }
+//        if (isset(Yii::$app->request->get()['g']) && Yii::$app->request->get()['g']=='ajax_load') {
+//            //return $this->renderAjax($view, $params);
+//            $this->layout = '@app/views/layouts/ajax_load.twig';
+//        }
 
         return parent::render($view, $params);
     }
