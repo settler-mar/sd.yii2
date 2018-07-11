@@ -40,9 +40,13 @@ return [
   'rating_calculate_interval' => 12,
 
   'configs' => [
-      [
+      'sellaction' => [
           'config' => 'sellaction_categories.json',
           'title' => 'Категории Sellaction',
+      ],
+      'rakuten' => [
+          'config' => 'rakute_categories.json',
+          'title' => 'Категории Rakuten',
       ]
   ],
 

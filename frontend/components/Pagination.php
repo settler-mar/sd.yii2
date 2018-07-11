@@ -142,7 +142,7 @@ class Pagination
 
     //предыдущая
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Предыдущая" href="' .
+      ' data-original-title="Предыдущая" class="ajax_load"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
       Help::svg('caret-left', 'pagination_button pagination_button_left').'</a></li>' : '';
@@ -150,18 +150,18 @@ class Pagination
     //первая
     $first = $page >= $displayCount && $total > $displayCount ?
       '<li class="first"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Первая" href="' .
+      ' data-original-title="Первая" class="ajax_load"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => 1])) . '">1' .
       '</a></li>' : '';
     //последняя
     $last = $total - $page >= $displayCount ? '<li class="last"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Последняя" href="' .
+      ' data-original-title="Последняя" class="ajax_load"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $total])) . '">' . $total .
       '</a></li>' : '';
 
     //следующая
     $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Следующая" href="' .
+      ' data-original-title="Следующая" class="ajax_load"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
         Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';
@@ -176,7 +176,7 @@ class Pagination
 
     for ($i = $pageStart; $i <= $pageEnd; $i++) {
       $pages .= ($i == $page ? '<li class="active"><span>' . $i . '</span></li>' :
-        '<li><a href="' .
+        '<li><a class="ajax_load"  href="' .
         Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
     };
 

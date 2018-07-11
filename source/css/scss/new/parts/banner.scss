@@ -19,6 +19,17 @@ $banner_mobile_interval: $laptop-min;
         display: block;
       }
     }
+
+    &.shop-banner-item {
+      height: 220px;
+      border-radius: 10px;
+      overflow: hidden;
+
+      img {
+        max-height: 100%;
+        object-fit: cover;
+      }
+    }
   }
 
   &__wrapper {
@@ -36,3 +47,4 @@ $banner_mobile_interval: $laptop-min;
     display: block;
   }
 }
+

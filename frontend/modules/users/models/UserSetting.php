@@ -32,7 +32,7 @@ class UserSetting extends Users
         [['email', 'name'], 'string', 'max' => 60],
         [['birthday'], DataValidator::className()],
         [['sex'], 'string', 'max' => 1],
-        [['notice_email'], 'integer'],
+        [['notice_email', 'notice_email_status'], 'integer'],
 
         [['email', 'name', 'added'], 'required'],
         [['email'], 'email'],
@@ -80,6 +80,10 @@ class UserSetting extends Users
     if (!empty($this->getDirtyAttributes(['email']))) {
       $this->email_verified = 0;
     }
+    if (empty(Yii::$app->request->post('UserSetting')['notice_email_status'])) {
+        $this->notice_email_status = 0;
+    }
+    //ddd($this->getDirtyAttributes(), $this->attributes, Yii::$app->request->post());
     return parent::beforeValidate();
   }
 

@@ -69,7 +69,14 @@
                                     <p><span>Связанный магазин(ID, связка онлайн-оффлайн):</span> <br>{{ form.field(model, 'related').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Магазины торговой сети (ID через запятую):</span> <br>{{ form.field(model, 'related_stores').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Название торговой сети:</span> <br>{{ form.field(model, 'network_name').textInput({'maxlength':true}).label(false)|raw }}</p>
-
+                                    <p><span>Выводить в плагин:</span><br>
+                                        {{ form.field(model, 'display_on_plugin').dropDownList({
+                                            '0' : 'Не выводить',
+                                            '1' : 'Выводить везде',
+                                            '2' : 'Выводить только в поиске',
+                                            '3' : 'Выводить только на странице шопа',
+                                        }).label(false)|raw }}
+                                    </p>
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>

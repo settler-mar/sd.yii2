@@ -10,6 +10,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\users\models\Users;
+use frontend\modules\transitions\models\UsersVisits;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -72,18 +73,7 @@ class Stores extends \yii\db\ActiveRecord
    * @var array
    */
   protected static $defaultSorts = ['region_rating', 'visit'];
-  /**
-   * Possible sorting options with titles and default value
-   * @var array
-   */
-//  public static $sortvars = [
-//    'rating' => ["title" => "Популярности", "title_mobile" => "Популярности", 'no_online' => 1],
-//    'visit' => ["title" => "Популярности", "title_mobile" => "Популярности" , 'no_offline' => 1],
-//    'name' => ["title" => "Алфавиту", "title_mobile" => "Алфавиту", 'order' => 'ASC'],
-//    'added' => ["title" => "Новизне", "title_mobile" => "Новизне"],
-//    'cashback_percent' => ["title" => "%", "title_mobile" => "% кэшбэка"],
-//    'cashback_summ' => ["title" => "$", "title_mobile" => "$ кэшбэка"],
-//  ];
+
 
   public static function sortvars(){
       return [
@@ -158,8 +148,8 @@ class Stores extends \yii\db\ActiveRecord
         'skipOnEmpty' => true
       ],
       [['videos', 'regions'], 'safe'],
-      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])]
-
+      ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
+      ['display_on_plugin', 'in', 'range' => [0, 1, 2, 3], 'skipOnEmpty' => 1],
     ];
   }
 
@@ -366,6 +356,46 @@ class Stores extends \yii\db\ActiveRecord
       return self::items()->orderBy('region_rating DESC')->limit(10)->all();
     }, $cache->defaultDuration, $dependency);
      return $data;
+  }
+
+    /**
+     * просмотренные шопы
+     * @param int $userId
+     * @return bool|mixed
+     */
+  public static function visited($userId = 0, $limit = 0)
+  {
+      $userId = $userId > 0  ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+      if ($userId == 0) {
+          return false;
+      }
+      $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
+
+      $cache = Yii::$app->cache;
+      $cache_name = 'stores_visited' . $language . '_' . $userId. '_' . $limit;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'stores_visited';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+      $data = $cache->getOrSet($cache_name, function () use ($userId, $limit) {
+          $visits = UsersVisits::find()
+              ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
+              ->where(['user_id' => $userId])
+              ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
+              ->groupBy('store_id');
+
+          $stores = self::items()
+              ->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid')
+              ->orderBy('cwuv.visit_date DESC');
+          $count = $stores->count();
+          if ($limit > 0) {
+              $stores->limit($limit);
+          }
+          return [
+              'count' => $count,
+              'stores' => $stores->all(),
+          ];
+      }, $cache->defaultDuration, $dependency);
+      return $data;
   }
 
   public function getRouteUrl(){
@@ -720,16 +750,17 @@ class Stores extends \yii\db\ActiveRecord
     $categoryId = !empty($options['category_id']) && $options['category_id'] > 0 ? $options['category_id'] : false;
     $offline = isset($options['offline']) && $options['offline'] !== null ? $options['offline'] : null;
     $favorites = !empty($options['favorites']) ? true : false;
+    $visited = !\Yii::$app->user->isGuest && !empty($options['visited']) ? true : false;
 
     $cache = Yii::$app->cache;
     $cacheName = 'stores_abc_' . ($forStores ? 'stores' : 'coupons') . ($charListOnly ? '_list' : '') .
         ($categoryId ? '_' . $categoryId : '') . ($offline !== null ? '_offline' . $offline : '') .
-        ($favorites? '_favorites' : '');
+        ($favorites ? '_favorites' : '').($visited ? '_visited' : '');
     $dependencyName = 'stores_abc';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline, $favorites) {
+    $stores = $cache->getOrSet($cacheName, function() use ($forStores, $charListOnly, $categoryId, $offline, $favorites, $visited) {
         $charList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0&#8209;9', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н',
             'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
@@ -750,6 +781,10 @@ class Stores extends \yii\db\ActiveRecord
             if ($favorites) {
                 $storesObj->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
                     ->andWhere(["cuf.user_id" => \Yii::$app->user->id]);
+            }
+            if ($visited && !\Yii::$app->user->isGuest) {
+                $storesObj->innerJoin(UsersVisits::tableName() . ' cwuv', 'cws.uid = cwuv.store_id')
+                    ->andWhere(["cwuv.user_id" => \Yii::$app->user->id]);
             }
 
             $stores = $storesObj->all();
@@ -832,6 +867,7 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('catalog_coupons');
     Cache::clearName('top_12_stores');
     Cache::clearName('stores_by_column');
+    Cache::clearName('stores_visited');
 
       //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');

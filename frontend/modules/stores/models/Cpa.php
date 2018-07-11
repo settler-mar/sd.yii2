@@ -22,6 +22,7 @@ class Cpa extends \yii\db\ActiveRecord
         'Admitad' =>'subid',
         'Shareasale' => 'afftrack',
         'Sellaction' => 'SubID1',
+        'Doublertrade' => 'epi',
     ];
     /**
      * для таких спа subid подставляется в шаблоне

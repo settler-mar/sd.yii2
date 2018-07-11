@@ -123,6 +123,14 @@ var searchAnalize = (function() {
 //   })
 // }
 
+    function testDisplaySearch(display){
+        //показывать ли в поиске
+        if (debug) {
+            console.log('display on search '+(display === undefined || display === null || display == 1 || display == 2));
+        }
+        return display === undefined || display === null || display == 1 || display == 2;
+    }
+
     function checkLocation(href, index, key) {
         if (index instanceof Array) {
             for (var i = 0; i < index.length; i++) {
@@ -137,6 +145,9 @@ var searchAnalize = (function() {
     }
 
     function displayShopFinders(item){
+        if (!testDisplaySearch(item.display)) {
+            return;
+        }
         var data = this;
         var engine = data.engine;
         var el = data.el;

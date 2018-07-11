@@ -3,7 +3,9 @@ return [
     'user_settings_updated' => 'Данные успешно обновлены.',
     'user_password_updated' => 'Пароль успешно обновлен.',
     'social_account_off' => 'Социальная сеть успешно отключена.',
-    'email_confirm_sent' => 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
+    'email_confirm_sent' => 'Вам отправлено письмо со ссылкой на подтверждение Email. Проверьте вашу почту.'.
+        ' Если письмо не пришло в течение 5 минут – проверьте папку «Спам».'.
+        ' Eсли письмо с подтверждением не пришло, и даже нет в папке «Спам», то обратитесь в чат к администратору и он активирует вручную.',
     'email_confirmed_success' => 'Ваш e-mail подтверждён. Весь функционал нашего кэшбэк-сервиса теперь доступен для вас.',
     'confirm_social_email' => 'Подтвердите e-mail на  SecretDiscounter.ru при авторизации через соцсети',
     'social_login by {social_name} fails' => 'Авторизация через {social_name} прошла неудачно.',
@@ -48,6 +50,7 @@ return [
     'upload_avatar_max_size' => 'максимальный размер 2 МБ',
     'notify_settings' => 'Настройка уведомлений',
     'notify_settings_email' => 'Получать уведомления на электронную почту',
+    'notify_settings_email_status' => 'Получать уведомления на электронную почту при изменении статуса',
     'password_change' => 'Изменение пароля',
     'password_old' => 'Старый пароль',
     'password_new' => 'Новый пароль',
@@ -131,6 +134,7 @@ return [
     'withrdaw_method_wrong' => 'Неправильный способ вывода',
     'withrdaw_email_wrong' => 'Введите правильный email',
     'withrdaw_webmoney_wrong' => 'Введите правильный кошелёк webmoney R000000000000',
+    'withdraw_sum' => 'Выплачено',
     'charity_empty' => 'На данный момент Вы не делали никаких пожертвований.',
     'charity_total' => 'Итого пожертвовано',
     'charity_type' => 'Тип пожертвования',
@@ -176,10 +180,11 @@ return [
     'users_users_active' => 'Из них активных (совершающих покупки)',
     'users_your_status' => 'Ваш статус партнера',
     'users_your_status_webmaster' => 'веб мастер',
+    'users_avatar' => 'Аватар',
     'users_payment_confirmed_expected' => 'Количество покупок (подтвержденных/ожидающих)',
     'users_cashback_confirmed_expected' => 'Кэшбэк друзей (подтвержденный/ожидаемый)',
     'users_summ_confirmed_expected' => 'Доход от друзей (подтвержденный/ожидаемый)',
-    'users_payment_confirmed_expected_table_header' => 'Покупок <br>(подтвержденных/ожидающих)',
+    'users_payment_confirmed_expected_table_header' => 'Покупок <br>(подтвержд./ожидающих)',
     'users_cashback_confirmed_expected_table_header' => 'Кэшбэк друзей <br>(подтвержденный/ожидаемый)',
     'users_bonus_confirmed_expected_table_header' => 'Ваш бонус <br>(подтвержденный/ожидаемый)',
     'users_vip_client' => 'VIP клиент',
@@ -221,7 +226,6 @@ return [
     'email_confirm_email_subject_activate' => 'Активируйте аккаунт на  SecretDiscounter.ru',
     'email_confirm_email_subject_how_to_save' => 'Узнайте, как экономить до 40% на покупках',
     'email_confirm_email_wait' => 'Повторное письмо для подтверждения электронной почты можно отправить раз в 5 минут. Немного подождите.',
-    'email_confirm_email_sent' => 'Вам отправлено письмо со ссылкой на подтверждение e-mail. Проверьте вашу почту. Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
     'email_confirm_not_confirmed' => 'Ваш e-mail не подтверждён.',
     'email_confirmed' => 'Ваш e-mail подтверждён ранее и не требует повторной активации.',
     'email_confirm_email_error' => 'Данная ссылка активации принадлежит другому пользователю..',
@@ -303,7 +307,8 @@ return [
     'email_is_send'  => 'E-mail отправлен',
     'if_you_mistake_retun_<a{back}>back</a>' => 'Если вы ошиблись при вводе e-mail, вернитесь <a {back}>назад</a>.',
     'email_with_confirmation sent_to_{email}_' => 'На {email} отправлено письмо со ссылкой для подтверждения аккаунта.'.
-        'Если письмо не пришло в течение 5 минут – проверьте папку «Спам».',
+        'Если письмо не пришло в течение 5 минут – проверьте папку «Спам».'.
+        ' Eсли письмо с подтверждением не пришло, и даже нет в папке «Спам», то обратитесь в чат к администратору и он активирует вручную.',
     'email_with_confirmation sent_to' => 'Инструкции по восстановлению пароля успешно отправлены на указанный email-адрес.'.
         'Если письмо не пришло в течение 5 минут, посмотрите в папке «Спам».',
     'password_reset' => 'Восстановление пароля',
@@ -318,5 +323,9 @@ return [
     'you_did_conditions_of_{action}'=>'Вы выполнили все условия акции {action}',
     'you_confirmed_to_be_member_of_{action}'=>'Вы подтвердили участие в акции {action}',
     'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}'=>'Вы подтвердили участие в акции {action} и получили {advantages}',
+    'you_are_joined_to_action'=>'Вы подтвердили участие в акции',
+    'visited_stores' => 'Просмотренные магазины',
+    'all_visited_stores_{count}' => 'Все просмотренные ({count})',
+    'loyalty_status_change' => 'Изменение статуса лояльности',
 
 ];

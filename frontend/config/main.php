@@ -287,6 +287,9 @@ $config = [
     'actions' => [
       'class' => 'frontend\modules\actions\Module',
     ],
+    'cpa' => [
+      'class' => 'app\modules\cpa\Module',
+    ],
   ],
   'params' => $params,
 

@@ -1,0 +1,17 @@
+.ajax_load {
+
+  &.loading {
+    position: relative;
+
+    &:after {
+      content: " ";
+      display: block;
+      position: absolute;
+      background: url(/images/preloader.gif) no-repeat 50%;
+      width: 20px;
+      height: 20px;
+      top: calc(50% - 10px);
+      left: calc(50% - 10px);
+    }
+  }
+}

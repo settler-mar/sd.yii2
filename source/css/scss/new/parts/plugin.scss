@@ -4,6 +4,10 @@
   overflow: hidden;
   transition: height 0.3s linear;
 
+  @include media($laptop_min) {
+    display: none;
+  }
+
   &_inner {
     text-align: center;
     display: flex;

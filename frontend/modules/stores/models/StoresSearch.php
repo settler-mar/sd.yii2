@@ -12,11 +12,11 @@ use frontend\modules\stores\models\Stores;
  */
 class StoresSearch extends Stores
 {
-    const CHARITY_QUERY = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1,".
-              " length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
+    public static $charity_query = ["substr(displayed_cashback, locate(' ', displayed_cashback)+1, length(displayed_cashback)- locate(' ', displayed_cashback)) + 0" => 0];
     public $charity;
     public $cpa_id;
     public $active_cpa_type;
+    public $shop_type;
     /**
      * @inheritdoc
      */
@@ -25,6 +25,7 @@ class StoresSearch extends Stores
         return [
             [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email', 'active_cpa_type'], 'safe'],
+            ['shop_type', 'in', 'range' => ['online', 'offline', 'hubrid']]
         ];
     }
 
@@ -53,8 +54,8 @@ class StoresSearch extends Stores
     public function search($params)
     {
         $query = Stores::find()
-            ->innerJoin(CpaLink::tableName().' cwcl', 'cw_stores.active_cpa = cwcl.id')
-            ->innerJoin(Cpa::tableName().' cwc', 'cwc.id = cwcl.cpa_id');
+            ->leftJoin(CpaLink::tableName().' cwcl', 'cw_stores.active_cpa = cwcl.id')
+            ->leftJoin(Cpa::tableName().' cwc', 'cwc.id = cwcl.cpa_id');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -112,13 +113,33 @@ class StoresSearch extends Stores
             ->andFilterWhere(['like', 'contact_phone', $this->contact_phone])
             ->andFilterWhere(['like', 'contact_email', $this->contact_email]);
         if (!empty($this->charity)) {
-            $query->andFilterWhere(self::CHARITY_QUERY);
-        }
-        if (!empty($this->cpa_id) || !empty($this->active_cpa_type)) {
-            $query->andFilterWhere(['cwcl.cpa_id' => $this->cpa_id]);
+            $query->andFilterWhere(self::$charity_query);
         }
         if (!empty($this->active_cpa_type)) {
-            $query->andFilterWhere(['cwc.id' => $this->active_cpa_type]);
+            $query->andFilterWhere(['cwcl.cpa_id' => $this->active_cpa_type]);
+        }
+        if ($this->cpa_id === '0') {
+            $cpaLinkId = CpaLink::find()->select(['id']);
+            $query->andFilterWhere([
+                'or',
+                ['active_cpa'=>0],
+                ['is', 'active_cpa', null],
+                ['not in', 'active_cpa', $cpaLinkId]
+            ]);
+        }
+        if (!empty($this->cpa_id)) {
+            $query->leftJoin(CpaLink::tableName().' cwclall', 'cw_stores.uid = cwclall.stores_id');
+            $query->andFilterWhere(['cwclall.cpa_id' => $this->cpa_id]);
+        }
+        if (!empty($this->shop_type)) {
+            if ($this->shop_type == 'offline') {
+                $query->andFilterWhere(['is_offline' => 1]);
+            } elseif ($this->shop_type == 'hubrid') {
+                $query->andFilterWhere(['is_offline' => 0, 'cwc.id' => 2]);
+            } else {
+                $query->andFilterWhere(['is_offline' => 0]);
+                $query->andFilterWhere(['<>', 'cwc.id', 2]);
+            }
         }
         return $dataProvider;
     }

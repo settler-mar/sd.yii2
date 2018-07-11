@@ -512,7 +512,7 @@ class DefaultController extends Controller
               'title' => Yii::t('common', 'congratulations').'!',
               'message' => $message,
               'error' => false,
-              'html' => '<div class="margin align-center"><h3 class="margin">'.Yii::t('main','promocode_successfull').'</h3>'.
+              'html' => '<div class="margin align-center"><div class="margin"><p>'.Yii::t('main','promocode_successfull').'</p></div>'.
                   '<a class="btn modals_open" href="#registration">'.Yii::t('common', 'do_register').'</a>'.
                   '</div>',
           ]);

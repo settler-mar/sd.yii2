@@ -12,6 +12,8 @@ use frontend\modules\users\models\UsersExport;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
 use frontend\modules\actions\models\ActionsToUsers;
+use frontend\modules\actions\models\ActionsConditions;
+use frontend\modules\actions\models\Actions;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -144,6 +146,14 @@ class AdminController extends Controller
     $end_date = date('Y-m-d', strtotime($end_date));
     $query->andFilterWhere(['between', 'cw_users.added', $start_date . ' 00:00:00', $end_date . ' 23:59:59']);
 
+    if (isset($get['expected_to']) && (int) $get['expected_to'] > 0) {
+      //возможные участники акции
+      $actionQuery = Actions::makeUsersExpectedQuery($get['expected_to']);//формируем where для cw_users
+      if (!empty($actionQuery)) {
+        $query->andWhere($actionQuery);
+      }
+    }
+
     $totQueryCount = clone $query;
     $totQuerySumm = clone $query;
     $totQueryRef = clone $query;
@@ -221,6 +231,8 @@ class AdminController extends Controller
         'notes' => $notes,
         'loyalty_statuses' => $loyaltyStatuses,
         'data_ranger_added' => $data_ranger_added,
+        'actions' => Actions::find()->select(['uid', 'name']) ->asArray()->all(),
+        'get_params' => http_build_query($get),
     ]);
   }
 
@@ -435,9 +447,12 @@ class AdminController extends Controller
       if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->export()) {
           Yii::$app->session->addFlash('info', 'Экспорт пользователей выполнен');
       }
-
       $data['model'] = $model;
+      $get = Yii::$app->request->get();
+      $model->register_at_range = isset($get['date_range_added']) ? $get['date_range_added'] : '';
       $data['data_ranger'] = Help::DateRangePicker($model,'register_at_range',['hideInput'=>false]);
+      $data['get'] = $get;
+      $data['actions'] = Actions::find()->select(['uid', 'name']) ->asArray()->all();
 
       return $this->render('export.twig', $data);
   }

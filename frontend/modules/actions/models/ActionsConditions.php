@@ -23,6 +23,8 @@ use frontend\modules\cache\models\Cache;
  */
 class ActionsConditions extends \yii\db\ActiveRecord
 {
+    public $operators = ['', '>=', '>', '=', '<', '<='];
+
     /**
      * @inheritdoc
      */
@@ -39,6 +41,8 @@ class ActionsConditions extends \yii\db\ActiveRecord
         return [
             [['action_id'], 'required'],
             [['action_id', 'referral_count', 'payment_count', 'loyalty_status', 'bonus_status'], 'integer'],
+            [['referral_count_operator', 'payment_count_operator', 'loyalty_status_operator', 'bonus_status_operator'],
+                'in', 'range' => $this->operators],
             [['stores_list'], 'string'],
             [['date_register_from', 'date_register_to', 'created_at'], 'safe'],
             [['action_id'], 'exist', 'skipOnError' => true, 'targetClass' => Actions::className(), 'targetAttribute' => ['action_id' => 'uid']],
@@ -58,6 +62,10 @@ class ActionsConditions extends \yii\db\ActiveRecord
             'payment_count' => 'Количество покупок',
             'loyalty_status' => 'Статус лояльности',
             'bonus_status' => 'Статус вебмастера',
+            'referral_count_operator' => 'Количество рефералов - оператор',
+            'payment_count_operator' => 'Количество покупок - оператор',
+            'loyalty_status_operator' => 'Статус лояльности - оператор',
+            'bonus_status_operator' => 'Статус вебмастера - оператор',
             'date_register_from' => 'Дата регистрации от',
             'date_register_to' => 'Дата регистрации до',
             'created_at' => 'Created At',
@@ -75,8 +83,10 @@ class ActionsConditions extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         //ddd($this);
-        $this->date_register_from =  $this->date_register_from == "" ? 0 : $this->date_register_from;
-        $this->date_register_to =  $this->date_register_to == "" ? 0 : $this->date_register_to;
+        $this->date_register_from =  $this->date_register_from == "" ? null : $this->date_register_from;
+        $this->date_register_to =  $this->date_register_to == "" ? null : $this->date_register_to;
+        $this->referral_count = $this->referral_count == "" ? null : $this->referral_count;
+        $this->payment_count = $this->payment_count == "" ? null : $this->payment_count;
         return parent::beforeValidate();
     }
 
@@ -88,5 +98,33 @@ class ActionsConditions extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         Cache::clearName('actions_users');
+    }
+
+    /**
+     * сравнение величин
+     * @param $value
+     * @param $value_compared
+     * @param $value_operator
+     * @return bool
+     */
+    public static function compare($value, $value_compared, $compare_operator)
+    {
+        $value_operator = trim($compare_operator);
+        switch ($value_operator) {
+            case '=':
+                return (int) $value == (int) $value_compared;
+                break;
+            case '>':
+                return (int) $value > (int) $value_compared;
+                break;
+            case '<=':
+                return (int) $value <= (int) $value_compared;
+                break;
+            case '<':
+                return (int) $value < (int) $value_compared;
+                break;
+            default: //не задано или >=
+                return (int) $value >= (int) $value_compared;
+        }
     }
 }

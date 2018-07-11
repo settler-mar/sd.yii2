@@ -939,6 +939,10 @@ body>.news-index{
     text-align: right;
     display: inline-block;
 
+    &.wide {
+      width: 225px;
+    }
+
     &:after{
       content: ":";
     }

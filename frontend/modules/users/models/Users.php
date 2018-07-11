@@ -91,7 +91,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         [['new_password'], 'string', 'min' => 5],
         [['last_login', 'added', 'new_loyalty_status_end', 'in_action'], 'safe'],
         [['birthday'], DataValidator::className()],
-        [['notice_email', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed', 'email_verified'], 'integer'],
+        [['notice_email', 'notice_email_status', 'notice_account', 'referrer_id', 'loyalty_status', 'is_active', 'is_admin', 'bonus_status', 'ref_total', 'cnt_pending', 'cnt_confirmed', 'email_verified'], 'integer'],
         [['sum_pending', 'sum_confirmed', 'sum_from_ref_pending', 'sum_from_ref_confirmed', 'sum_to_friend_pending', 'sum_to_friend_confirmed', 'sum_foundation', 'sum_withdraw', 'sum_bonus'], 'number'],
         [['email', 'name', '!password', 'registration_source'], 'string', 'max' => 255],
         [['sex'], 'string', 'max' => 1],
@@ -133,6 +133,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         'photo' => 'Фото',
         'new_photo' => 'Фото',
         'notice_email' => 'Уведомление на почту',
+        'notice_email_status' => 'Уведомление на почту о смене статуса',
         'notice_account' => 'Внутренние уведомления',
         'referrer_id' => 'Referrer ID',
         'last_ip' => 'IP последнего входа',
@@ -272,6 +273,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     $statuses = Yii::$app->params['dictionary']['loyalty_status'];
     $total = $this->balance['total'];
     $status = $statuses[$this->loyalty_status];
+    $loyalty_status = $this->loyalty_status;
 
     foreach ($statuses as $k => $status_k) {
       if (
@@ -283,7 +285,23 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         $this->loyalty_status = $k;
       }
     }
-    $this->save();
+    if ($this->save() && $loyalty_status  != $this->loyalty_status && $this->notice_email_status) {
+        //изменился статус лояльности - письмо пользователю, если задано в настройках
+      try {
+      Yii::$app
+        ->mailer
+        ->compose(
+          ['html' => 'status-html', 'text' => 'status-text'],
+          ['user' => $this]
+        )
+        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+        ->setTo($this->email)
+        ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
+        ->send();
+      } catch (\Exception $e) {
+      }
+
+    }
   }
 
   public function beforeSave($insert)

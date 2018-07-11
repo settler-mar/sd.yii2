@@ -49,9 +49,11 @@
       </form>
 
       {% if users|length > 0 %}
-        <table class="table ta_left  adaptive adaptive-tablets">
+        <table class="table account-users ta_left  adaptive adaptive-tablets">
           <tr>
             <th>ID</th>
+            <th>E-mail</th>
+            <th>{{ t('account', 'users_avatar') }}</th>
             <th>{{ t('common', 'date_register') }}</th>
             <th>{{ t('common', 'status_loyalty') }}</th>
             <th>
@@ -67,9 +69,19 @@
           </tr>
 
             {% for user in users %}
-            {% set user_curr = currencyIcon(app.user.identity.currency) %}
+            {% set user_curr = currencyIcon(user.currency) %}
+            {% set user_avatar = _checkAvatar(user.photo) %}
+
               <tr>
                 <td>{{user.uid}}</td>
+                <td class="email">
+                    {{user.email}}
+                </td>
+                <td>
+                  <span class="avatar-wrap">
+                    <img class="avatar-image no_optomize" src="{{ user_avatar }}"/>
+                  </span>
+                </td>
                 <td>{{user.added}}</td>
                 <td>
                   {{user.loyalty_status_data.display_name}}

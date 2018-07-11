@@ -66,7 +66,7 @@
                             {% for char, stores in stores_abc|slice(0, 27) %}
                                 {% if stores|length and stores_abc_w != char %}
                                     {% set href = '/coupons'~(current_category and current_category.route  and current_category.route !='/' ? '/'~current_category.route : '')~'?w='~char %}
-                                    <a href="{{ _href(href)|raw }}">{{ char|raw }}</a>
+                                    <a class="ajax_load" href="{{ _href(href)|raw }}">{{ char|raw }}</a>
                                 {% else %}
                                     <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
                                 {% endif %}
@@ -76,7 +76,7 @@
                             {% for char, stores in stores_abc|slice(27) %}
                                 {% if stores|length and stores_abc_w != char %}
                                     {% set href = '/coupons'~(current_category and current_category.route  and current_category.route !='/' ? '/'~current_category.route : '')~'?w='~char %}
-                                    <a href="{{ _href(href)|raw }}">{{ char|raw }}</a>
+                                    <a class="ajax_load" href="{{ _href(href)|raw }}">{{ char|raw }}</a>
                                 {% else %}
                                     <span {% if stores_abc_w == char %}class="active"{% endif %}>{{ char|raw }}</span>
                                 {% endif %}

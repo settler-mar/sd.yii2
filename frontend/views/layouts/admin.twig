@@ -85,7 +85,9 @@
         <a href="/admin/coupons">Купоны</a>
         <ul>
           <li><a href="/admin-categories/coupons">Категории</a></li>
-          <li><a href="/admin/configs">Категории Sellaction</a></li>
+          {% for config_key,config  in app.params.configs  %}
+            <li><a href="/admin/configs?config={{ config_key }}">{{ config.title }}</a></li>
+          {% endfor %}
         </ul>
       </li>
       <li class="no-icon"><a href="/admin/slider">Слайдер</a></li>

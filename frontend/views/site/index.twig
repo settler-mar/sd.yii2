@@ -9,6 +9,7 @@
 {% include 'index/popular_shop.twig' %}
 
 {% if user_id %}
+  {% include 'index/visited_shop.twig' %}
   {% include 'index/blog_posts.twig' %}
   {% include 'parts/stores/coupons.twig' %}
   {% include 'index/install_plugin.twig' %}

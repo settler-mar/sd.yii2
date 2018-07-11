@@ -1,5 +1,6 @@
 <?php
 use frontend\modules\constants\models\Constants;
+use frontend\components\Action;
 use common\components\Help;
 use common\components\TagsClasses;
 use yii\db\Query;
@@ -241,8 +242,8 @@ $functionsList = [
     }
     return trim($cashback . $cur);
   },
-//функция - вывести кэшбек шопа в списках если нулевой, то сердечки
-  '_shop_cashback' => function ($cashback, $currency = '', $action = 0) use ($currencyIcon) {
+//функция - вывести кэшбек шопа в списках если нулевой, то сердечки $pre - символы перед, если не благотворительный
+  '_shop_cashback' => function ($cashback, $currency = '', $action = 0, $pre = '') use ($currencyIcon) {
     $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
     if ($action == 1) {
@@ -255,12 +256,12 @@ $functionsList = [
     if ($value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
-      $out = $cashback .
+      $out = $pre . $cashback .
           (isset($currencyIcon[$currency]) ?
               '{{svg("' . $currencyIcon[$currency] . '","currency-icon currency-icon-' . $currencyIcon[$currency] . '")|raw}}' :
               ' '.$currency);
     } else {
-      $out = ' '.$cashback;
+      $out = $pre . $cashback;
     }
     return trim($out);
   },
@@ -621,6 +622,9 @@ $functionsList = [
           $res[$arrayName.'['.$key.']'] = $item;
       }
       return http_build_query($res);
+  },
+    '_action' => function($id, $options =[]){
+    return Action::widget(['id' => $id, 'options' => $options]);
   }
 
 

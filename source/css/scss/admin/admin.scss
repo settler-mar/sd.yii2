@@ -965,6 +965,25 @@ table{
 .competitions_item {
     list-style-type: none;
 }
+.form-group-inline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    .form-control-inline {
+        &-10 {
+            width: 10%;
+        }
+        &-90 {
+            width: 90%;
+        }
+    }
+}
+.bold {
+    font-weight: bold;
+}
 
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";

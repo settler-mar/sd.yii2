@@ -8,6 +8,9 @@
   init_scroll();
   calc_scroll();
 
+  $(window ).on("load", function() {
+    calc_scroll();
+  });
   var t1, t2;
 
   $(window).resize(function () {

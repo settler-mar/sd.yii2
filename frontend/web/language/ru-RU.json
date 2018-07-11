@@ -40,6 +40,7 @@
   "show_details": "Подробнее",
   "hide_details": "Скрыть",
   "favorites_shop_add": "Добавить магазин в Избранное",
-  "favorites_shop_remove": "Удалить магазин из Избранного"
+  "favorites_shop_remove": "Удалить магазин из Избранного",
+  "error_querying_data": "Ошибка обращения к серверу"
 
 }

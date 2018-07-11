@@ -107,12 +107,13 @@ class SiteController extends SdController
       $data['slider'] = Slider::get(['place'=>'index']);
       $data['posts'] = Posts::getLastPosts();
       $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1,'unique_store'=>true]);
+      $data['visited_stores'] = Stores::visited(Yii::$app->user->id, 5);
     }else{
       $reviews = Reviews::top();
       $data['top_reviews'] = $reviews;
     }
+    //ddd($data);
 
-    //ddd($counter);
     return $this->render('index', $data);
   }
 
@@ -478,14 +479,16 @@ class SiteController extends SdController
       Yii::$app
           ->mailer
           ->compose(
-              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
-              ['user' => $userSocial]
+//              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+//              ['user' => $userSocial]
 //              ['html' => 'welcome-html', 'text' => 'welcome-text'],
 //              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+              ['html' => 'status-html', 'text' => 'status-text'],
+              ['user' => Yii::$app->user->identity]
           )
           ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
           ->setTo('oxygenn@list.ru')
-          ->setSubject(Yii::t('account', 'confirm_social_email'))
+          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
           ->send();
       return 'Отправлено тестовое письмо';
 

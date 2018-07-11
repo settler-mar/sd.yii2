@@ -107,7 +107,7 @@ class Payments extends \yii\db\ActiveRecord
       'old_reward' => 'Старое Вознаграждение',
       'cashback' => 'Кэшбэк',
       'status' => 'Статус',
-      'click_date' => 'Click Date',
+      'click_date' => 'Дата покупки',
       'action_date' => 'Action Date',
       'status_updated' => 'Status Updated',
       'closing_date' => 'Closing Date',

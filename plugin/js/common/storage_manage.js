@@ -1,11 +1,15 @@
 var storageDataKeyStores = 'secretdiscounter_local_stores';
 var storageDataKeyDate = 'secretdiscounter_local_date';
+var storageDataKeyVersion = 'secretdiscounter_local_version';
 var storageDataStores = false;
 var storageDataDate = false;
+var storageDataVersion = false;
 
 
 function getData(callback) {
-    console.log('get data');
+    if (debug) {
+        console.log('get data');
+    }
     //getRequest(storesUrl, storageDataKeyStores);
 
     chrome.runtime.sendMessage({
@@ -17,6 +21,7 @@ function getData(callback) {
         }
         // set a storage key
         Storage.set(storageDataKeyStores, responseData);
+        Storage.set(storageDataKeyVersion, chrome.runtime.getManifest().version);
         Storage.set(storageDataKeyDate, new Date().getTime());
         if (callback) {
             callback();

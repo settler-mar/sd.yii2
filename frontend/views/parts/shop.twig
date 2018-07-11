@@ -74,8 +74,9 @@
             {% endif %}
         </div>
     </a>
-
-    <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">
+    <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}"
+            href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
+            {% if _is_empty(store.displayed_cashback) %} data-toggle="tooltip" data-placement="top" data-original-title="{{ t('common', 'charity_shop')|raw }}"{% endif %} >
             {{ t('main', 'cashback')|raw }}
         {% if store.action_id == 1 %}
             <span class="shop-cashback-link_cashback_old shop-cashback_old">

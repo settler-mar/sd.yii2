@@ -55,7 +55,7 @@ class Actions extends \yii\db\ActiveRecord
             [['date_start', 'date_end', 'created_at'], 'safe'],
             [['action_time', 'promo_start', 'promo_end'], 'integer'],
             [['name', 'image', 'page', 'inform_types'], 'string', 'max' => 255],
-            [['active'], 'string', 'max' => 1],
+            [['active', 'page_disabled_for_disableds'], 'string', 'max' => 1],
             [['promo_end'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_end' => 'uid']],
             [['promo_start'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_start' => 'uid']],
             [['inform_types_form'], 'in', 'range' => array_keys($this->inform_types_select), 'allowArray'=>true],
@@ -73,6 +73,7 @@ class Actions extends \yii\db\ActiveRecord
             'name' => 'Название',
             'image' => 'Изображение',
             'page' => 'Страница с описанием акции (опционально)',
+            'page_disabled_for_disableds' => 'Страница доступна только потенциальным участникам',
             'active' => 'Активна',
             'date_start' => 'Начало',
             'date_end' => 'Окончание',
@@ -164,57 +165,87 @@ class Actions extends \yii\db\ActiveRecord
         $dependencyName = 'actions_users';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        return $cache->getOrSet($cache_name, function () {
-            $actions = self::find()->from(self::tableName().' cwa')
-                ->select(['cwa.*', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
-                    'cwac.date_register_from', 'cwac.date_register_to',
-                    'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
-                ->innerJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
-                ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
-                ->where([
-                    'cwa.active' => 1,
-                ])
-                ->andWhere([
-                    'or',
-                    ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
-                    ['is', 'cwa.date_start', null],
-                ])
-                ->andWhere([
-                    'or',
-                    ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
-                    ['is', 'cwa.date_end', null],
-                ])
-                ->asArray()
-                ->all();
+        $result = $cache->getOrSet($cache_name, function () use ($userId) {
+//            $actions = self::find()->from(self::tableName().' cwa')
+//                ->select(['cwa.*', 'cwac.uid as actions_conditions_id', 'cwac.referral_count', 'cwac.payment_count', 'cwac.bonus_status', 'cwac.loyalty_status',
+//                    'cwac.referral_count_operator', 'cwac.payment_count_operator', 'cwac.bonus_status_operator', 'cwac.loyalty_status_operator',
+//                    'cwac.date_register_from', 'cwac.date_register_to',
+//                    'cwau.uid as joined', 'cwau.date_start as user_date_start', 'cwau.date_end as user_date_end', 'cwau.complete'])
+//                ->leftJoin(ActionsConditions::tableName(). ' cwac', 'cwa.uid = cwac.action_id')
+//                ->leftJoin(ActionsToUsers::tableName().' cwau', 'cwa.uid = cwau.action_id')
+//                ->where([
+//                    'cwa.active' => 1,
+//                ])
+//                ->andWhere([
+//                    'or',
+//                    ['<=', 'cwa.date_start', date('Y-m-d H:i:s')],
+//                    ['is', 'cwa.date_start', null],
+//                ])
+//                ->andWhere([
+//                    'or',
+//                    ['>=', 'cwa.date_end', date('Y-m-d H:i:s')],
+//                    ['is', 'cwa.date_end', null],
+//                ])
+//                ->asArray()
+//                ->all();
+            //голый запрос - правильно отрабатывать случаи больше одного условия (записи) для акции
+            $sql = 'SELECT `cwa`.*, `cwac`.`uid` AS `actions_conditions_id`,'.
+                ' `cwac`.`referral_count`, `cwac`.`payment_count`, `cwac`.`bonus_status`, `cwac`.`loyalty_status`,'.
+                ' `cwac`.`referral_count_operator`, `cwac`.`payment_count_operator`, `cwac`.`bonus_status_operator`,'.
+                ' `cwac`.`loyalty_status_operator`, `cwac`.`date_register_from`, `cwac`.`date_register_to`,'.
+                ' `cwau`.`uid` AS `joined`, `cwau`.`date_start` AS `user_date_start`,'.
+                ' `cwau`.`date_end` AS `user_date_end`, `cwau`.`complete` FROM `cw_actions` `cwa`'.
+                ' LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id'.
+                ' LEFT JOIN `cw_actions_to_users` `cwau` ON cwa.uid = cwau.action_id  and cwau.`user_id` = ' . $userId .
+                ' WHERE (`cwa`.`active`=1)'.
+                ' AND ((`cwa`.`date_start` <= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_start` IS NULL))'.
+                ' AND ((`cwa`.`date_end` >= "'.date('Y-m-d H:i:s').'") OR (`cwa`.`date_end` IS NULL))';
+            $actions = Yii::$app->db->createCommand($sql)->queryAll();
             $user = Yii::$app->user->identity;
             $actionsEnabled = [];
             $actionsEnabledAccountStart = [];
             $actionsJoined = [];
             $actionsCompleted = [];
             $actionsOvered = [];
+            $actionsDisabled = [];
+            //ddd($actions);
             foreach ($actions as $action) {
-                if (($action['referral_count'] == null || (int) $user->ref_total >= $action['referral_count'])
-                    && ($action['payment_count'] == null || ((int) $user->cnt_pending + (int) $user->cnt_confirmed) >= $action['payment_count'])
-                    && ($action['loyalty_status'] == null || $action['loyalty_status'] == $user->loyalty_status)
-                    && ($action['bonus_status'] == null || $action['bonus_status'] == $user->bonus_status )
-                    && ($action['date_register_from'] == 0 || $action['date_register_from']  <= $user->added)
-                    && ($action['date_register_to'] == 0 || $action['date_register_to']  >= $user->added)
-                ) {
-                    if ($action['joined'] && $action['complete']) {
-                        $actionsComlete[$action['uid']] = $action;
-                    } elseif ($action['joined'] && !$action['complete']
-                        && (strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time() ||
-                            $action['user_date_end']))
-                    ) {
-                        $actionsOvered[$action['uid']] = $action;
-                    } elseif ($action['joined'] && !$action['complete']) {
-                        $actionsJoined[$action['uid']] = $action;
-                    } elseif (!$action['joined']) {
-                        $actionsEnabled[$action['uid']] = $action;
-                        if (strpos($action['inform_types'], 'on_account_start') !== false) {
-                            $actionsEnabledAccountStart[$action['uid']] = $action;
-                        }
+                //если уловие пустое, или условие выполняется
+                $enabled = ($action['actions_conditions_id'] == null ||
+                        (($action['referral_count'] == null ||
+                            ActionsConditions::compare(
+                                $user->ref_total,
+                                $action['referral_count'],
+                                $action['referral_count_operator']
+                            ))
+                        && ($action['payment_count'] == null ||
+                            ActionsConditions::compare(
+                                (int) $user->cnt_pending + (int) $user->cnt_confirmed,
+                                $action['payment_count'],
+                                $action['payment_count_operator']
+                            ))
+                        && ($action['loyalty_status'] == null ||
+                            ActionsConditions::compare($user->loyalty_status, $action['loyalty_status'], $action['loyalty_status']))
+                        && ($action['bonus_status'] == null ||
+                            ActionsConditions::compare($user->bonus_status, $action['bonus_status'], $action['bonus_status']))
+                        && ($action['date_register_from'] == null || $action['date_register_from']  <= $user->added)
+                        && ($action['date_register_to'] == null || $action['date_register_to']  >= $user->added)
+                    ));
+                if ($action['complete']) {
+                    $actionsCompleted[$action['uid']] = $action;
+                } elseif ($action['joined'] && !$action['complete']
+                    && (strtotime($action['user_date_start'] + $action['action_time'] * 24 * 60 * 60 > time() ||
+                        $action['user_date_end']))) {
+                    $actionsOvered[$action['uid']] = $action;
+                } elseif ($action['joined']) {
+                    $actionsJoined[$action['uid']] = $action;
+                } elseif ($enabled) {
+                    $actionsEnabled[$action['uid']] = $action;
+                    if (strpos($action['inform_types'], 'on_account_start') !== false) {
+                        $actionsEnabledAccountStart[$action['uid']] = $action;
                     }
+                } else {
+                    $actionsDisabled[$action['uid']] = $action;
                 }
             }
 
@@ -224,7 +255,126 @@ class Actions extends \yii\db\ActiveRecord
                 'joined' => $actionsJoined,
                 'completed' => $actionsCompleted,
                 'overed' => $actionsOvered,
+                'disabled' => $actionsDisabled,
             ];
         }, $cache->defaultDuration, $dependency);
+        //ddd($result);
+        return $result;
     }
+
+    /**
+     * формируем массив для where в cw_users как возможные участники акции $actionId
+     * @param $actionId
+     * @return array
+     * @throws yii\db\Exception
+     */
+    public static function makeUsersExpectedQuery($actionId)
+    {
+        $sql = 'SELECT `cwa`.*, `cwac`.`uid` AS `actions_conditions_id`, `cwac`.`referral_count`, `cwac`.`payment_count`,'.
+            ' `cwac`.`bonus_status`, `cwac`.`loyalty_status`, `cwac`.`referral_count_operator`, `cwac`.`payment_count_operator`,'.
+            ' `cwac`.`bonus_status_operator`, `cwac`.`loyalty_status_operator`, `cwac`.`date_register_from`, `cwac`.`date_register_to`'.
+            ' FROM `cw_actions` `cwa` LEFT JOIN `cw_actions_conditions` `cwac` ON cwa.uid = cwac.action_id WHERE `cwa`.`uid`='
+            .(int)$actionId;
+        $query_actions = Yii::$app->db->createCommand($sql)->queryAll();
+        if (count($query_actions) == 0) {
+            //таких акций нет, результат должен быть пустой
+            return  ['cw_users.uid' => 0];
+        } else {
+            $actions_query = ['or'];
+            //по каждому условию - записи
+            foreach ($query_actions as $query_action) {
+                $condition_query = ['and'];
+                //по каждому условию в записи
+                if ($query_action['actions_conditions_id'] === null) {
+                    //пустой join - нет условий в акции, т.е. участвуют все
+                    $actions_query = [];
+                    break;
+                }
+                if ($query_action['referral_count'] !== null) {
+                    $condition_query[] = [
+                        $query_action['referral_count_operator'] > '' ? $query_action['referral_count_operator']  : '>=',
+                        'cw_users.ref_total',
+                        $query_action['referral_count']
+                    ];
+                }
+                if ($query_action['payment_count'] !== null) {
+                    if (($query_action['payment_count'] === '0' and $query_action['payment_count_operator'] == '=') ||
+                        (in_array(trim($query_action['payment_count_operator']), ['<', '<=']))) {
+                        //если 0 или меньше чего-то, то два условия
+                        $condition_query[] = [
+                            'or',
+                            [trim($query_action['payment_count_operator']), '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', $query_action['payment_count']],
+                            ['is', '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`', null]
+                        ];
+                    } else {
+                        $condition_query[] = [
+                            $query_action['payment_count_operator'] > '' ? $query_action['payment_count_operator']  : '>=',
+                            '`cw_users`.`cnt_confirmed` + `cw_users`.`cnt_pending`',
+                            $query_action['payment_count']
+                        ];
+                    }
+
+                }
+                if ($query_action['loyalty_status'] !== null) {
+                    $condition_query[] = [
+                        $query_action['loyalty_status_operator'] > '' ? $query_action['loyalty_status_operator']  : '>=',
+                        '`cw_users`.`loyalty_status`',
+                        $query_action['loyalty_status']
+                    ];
+                }
+                if ($query_action['bonus_status'] !== null) {
+                    $condition_query[] = [
+                        $query_action['bonus_status_operator'] > '' ? $query_action['bonus_status_operator']  : '>=',
+                        '`cw_users`.`bonus_status`',
+                        $query_action['bonus_status']
+                    ];
+                }
+                if ($query_action['date_register_from'] !== null && $query_action['date_register_from'] != '0000-00-00 00:00:00') {
+                    $condition_query[] = [
+                        '>=',
+                        '`cw_users`.`added`',
+                        $query_action['date_register_from']
+                    ];
+                }
+                if ($query_action['date_register_to'] !== null && $query_action['date_register_to'] != '0000-00-00 00:00:00') {
+                    $condition_query[] = [
+                        '<=',
+                        '`cw_users`.`added`',
+                        $query_action['date_register_to']
+                    ];
+                }
+                if (count($condition_query)>1) {
+                    $actions_query[] = $condition_query;
+                }
+            };
+            if (!empty($actions_query)) {
+                return ['and', ['cw_users.is_active' => 1], $actions_query];
+            }
+        }
+    }
+
+    /**
+     * @param $userId
+     * @param $page
+     * @return bool страница недоступна для пользователя
+     */
+    public static function pageDisabled($userId, $page)
+    {
+        if ($userId == 0 || empty($page)) {
+            //при отсутствии юсера тоже недоступно
+            return true;
+        }
+        $actions = self::byUser($userId);
+        if (!empty($actions['disabled'])) {
+            foreach ($actions['disabled'] as $action) {
+                if ($action['page'] == $page) {
+                    return $action['page_disabled_for_disableds'];
+                }
+            }
+
+        }
+        return false;
+    }
+
+
 }

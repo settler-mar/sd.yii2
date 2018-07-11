@@ -489,4 +489,31 @@
       }
     }
   }
+
+  &-users {
+
+    .email {
+      width:80px;
+      display: block;
+      word-break: break-word;
+    }
+
+    .avatar {
+
+      &-wrap {
+        display: block;
+        border-radius: 50%;
+        overflow: hidden;
+        height: 50px;
+        width: 50px;
+      }
+
+      &-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+  }
 }

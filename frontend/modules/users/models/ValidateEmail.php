@@ -201,7 +201,7 @@ class ValidateEmail extends Model
       self::validateEmail($user);
     }
     if ($user->email_verify_token != null) {
-      Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_email_sent'));
+      Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_sent'));
     } elseif (empty($user->email_verified)){
       Yii::$app->session->addFlash(
         null,

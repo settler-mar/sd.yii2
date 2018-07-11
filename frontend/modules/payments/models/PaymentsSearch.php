@@ -16,7 +16,7 @@ class PaymentsSearch extends Payments
 {
     public $storeName;
 
-  public $created_at_range;
+  public $click_at_range;
   /**
      * @inheritdoc
      */
@@ -26,7 +26,7 @@ class PaymentsSearch extends Payments
             [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
             [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id', 'storeName', 'user_id'], 'safe'],
-          [['created_at_range'], 'safe'],
+          [['click_at_range'], 'safe'],
         ];
     }
 
@@ -55,31 +55,23 @@ class PaymentsSearch extends Payments
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
           'sort' => [
-            'attributes' => [
-              'uid',
-              'action_id',
-              'status',
-              'action_date',
-              'order_price',
-              'reward',
-              'cashback',
-              'user_id' => [
-                'asc' => [Users::tableName() . '.email' => SORT_ASC],
-                'desc' => [Users::tableName(). '.email' => SORT_DESC],
-              ],
-              'storeName' => [
-                'asc' => [Stores::tableName() . '.name' => SORT_ASC],
-                'desc' => [Stores::tableName(). '.name' => SORT_DESC],
-              ],
-            ],
             'defaultOrder' => [
-              'action_date' => SORT_DESC,
+              'click_date' => SORT_DESC,
             ]
           ],
           'pagination' => [
             'pageSize' => 40,
           ],
         ]);
+
+        $dataProvider->sort->attributes['user_id'] = [
+            'asc' => [Users::tableName() . '.email' => SORT_ASC],
+            'desc' => [Users::tableName(). '.email' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['storeName'] = [
+            'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+            'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -140,11 +132,11 @@ class PaymentsSearch extends Payments
         }
 
       }
-      if(!empty($this->created_at_range) && strpos($this->created_at_range, '-') !== false) {
-        list($start_date, $end_date) = explode(' - ', $this->created_at_range);
+      if(!empty($this->click_at_range) && strpos($this->click_at_range, '-') !== false) {
+        list($start_date, $end_date) = explode(' - ', $this->click_at_range);
         $start_date=date('Y-m-d',strtotime($start_date));
         $end_date=date('Y-m-d',strtotime($end_date));
-        $query->andFilterWhere(['between', 'action_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        $query->andFilterWhere(['between', 'click_date', $start_date.' 00:00:00', $end_date.' 23:59:59']);
       }
 
       return $dataProvider;

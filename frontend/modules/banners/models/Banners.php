@@ -36,12 +36,13 @@ class Banners extends \yii\db\ActiveRecord
     protected $image_path = '/images/banners';
 
 
-    private $places_array = [
+    public $places_array = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
         'shops-catalog-left-menu' => ['name' => 'Шопы. Левое меню. Основной каталог'],
         'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
         'coupons-catalog-left-menu' => ['name' => 'Купоны. Левое меню. Основной каталог'],
+        'shop-page' => ['name' => 'В магазине'],
     ];
 
     /**
@@ -63,6 +64,11 @@ class Banners extends \yii\db\ActiveRecord
         ];
     }
 
+    public function init()
+    {
+        $this->updatePlacesArray();
+    }
+
     /**
      * @inheritdoc
      */
@@ -78,7 +84,7 @@ class Banners extends \yii\db\ActiveRecord
             ],
             [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
             [['picture', 'url', 'places'], 'string', 'max' => 255],
-            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->getPlaces_array())],
+            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
             [['language', 'regions'], 'trim'],
             [['language'], 'string', 'max' => 5],
             [['regions'], 'string'],
@@ -134,8 +140,8 @@ class Banners extends \yii\db\ActiveRecord
     public function afterFind()
     {
         $places = !empty($this->places) ? explode(',', $this->places) : [];
-        foreach ($this->places_array as $key => &$value) {
-            $value['checked'] = in_array($key, $places) ? 1 : 0;
+        foreach ($this->places_array as $place_key => &$place) {
+            $place['checked'] = in_array($place_key, $places) ? 1 : 0;
         }
         $regions = !empty($this->regions) ? explode(',', $this->regions) : [];
 
@@ -216,11 +222,14 @@ class Banners extends \yii\db\ActiveRecord
     {
         //
         $place = !empty($params['place']) ? $params['place'] : false;
-        if (is_string($place))
+        if (is_string($place)) {
             $place = explode(',', $place);
+        }
 
         if (is_array($place)) {
-            foreach ($place as &$item) $item = trim($item);
+            foreach ($place as &$item) {
+                $item = trim($item);
+            }
         }
         $language =  Yii::$app->language;
         $region = Yii::$app->params['region'];
@@ -236,7 +245,7 @@ class Banners extends \yii\db\ActiveRecord
             $cacheName,
             function () use ($place, $language, $region) {
                 $banners = self::find()
-                    ->select(['picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
+                    ->select(['uid', 'picture', 'url', 'new_window', 'show_desctop', 'show_mobile']);
                 if ($place) {
                     foreach ($place as $item) {
                         $banners->orWhere(['like', 'places', $item]);
@@ -266,6 +275,23 @@ class Banners extends \yii\db\ActiveRecord
             $dependency
         );
         if ($banners) {
+            if (!empty($params['options']['random'])) {
+                //случайно один баннер из не просмотренных
+                $bannerLastList =  Yii::$app->session->get('sd_banner_last_list');
+                $bannerLastList = $bannerLastList && count($bannerLastList) < count($banners) ? $bannerLastList : [];
+                if (!empty($bannerLastList)) {
+                    foreach ($banners as $key => $banner) {
+                        if (in_array($banner['uid'], $bannerLastList)) {
+                            unset($banners[$key]);
+                        }
+                    }
+                    $banners = array_values($banners);
+                }
+                $index = mt_rand(0, count($banners)-1);
+                $banners = [$banners[$index]];
+                $bannerLastList[] = $banners[0]['uid'];
+                Yii::$app->session->set('sd_banner_last_list', $bannerLastList);
+            }
             return Yii::$app->view->render(
                 '@app/views/parts/banner.twig',
                 [
@@ -289,17 +315,13 @@ class Banners extends \yii\db\ActiveRecord
     }
 
 
-    public function getPlaces_array()
+    private function updatePlacesArray()
     {
-        $places_array = $this->places_array;
-        $places = !empty($this->places) ? explode(',', $this->places) : [];
-
         $cupons = CategoriesCoupons::find()->asArray()->all();
         foreach ($cupons as $cupon) {
             $key = 'coupons-' . $cupon['uid'] . '-left-menu';
-            $places_array[$key] = [
+            $this->places_array[$key] = [
                 'name' => 'Купоны.Левое меню.' . $cupon['name'],
-                'checked' => in_array($key, $places) ? 1 : 0,
             ];
         };
 
@@ -309,12 +331,10 @@ class Banners extends \yii\db\ActiveRecord
             ->all();
         foreach ($stores as $store) {
             $key = 'stores-' . $store['uid'] . '-left-menu';
-            $places_array[$key] = [
+            $this->places_array[$key] = [
                 'name' => 'Магазины.Левое меню.' . $store['name'],
-                'checked' => in_array($key, $places) ? 1 : 0,
             ];
         };
-        return $places_array;
     }
 
 }

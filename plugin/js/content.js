@@ -129,11 +129,25 @@ function findShop() {
 
 }
 
+function testDisplayPage(display){
+    //показывать ли на странице шопа
+    if (debug) {
+        console.log('display on page '+(display === undefined || display === null || display == 1 || display == 3));
+    }
+    return display === undefined || display === null || display == 1 || display == 3;
+}
+
 function displayShop(item) {
 
+  if (!testDisplayPage(item.display)) {
+    return;
+  }
   if (item) {
-      //chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashbackNum(item.displayed_cashback, item.action_id)});
-      chrome.runtime.sendMessage({action: 'icon_flash_start', cashback: utils.makeCashback(item.displayed_cashback, item.currency, item.action_id, true)});
+      chrome.runtime.sendMessage({
+          action: 'icon_flash_start',
+          cashback: utils.makeCashback(item.displayed_cashback, item.currency, item.action_id, true),
+          tab_url: window.location.href
+      });
       setTimeout(function () {
           chrome.runtime.sendMessage({action: 'icon_flash_stop'});
       }, 5000);
@@ -224,16 +238,21 @@ function getCookie(name) {
 //получаем пользователя
 getUsers();
 
+var appVersion = chrome.runtime.getManifest().version;
+
 Storage.load(function () {
   storageDataDate = Storage.get(storageDataKeyDate);
   storageDataStores = Storage.get(storageDataKeyStores);
+  storageDataVersion = Storage.get(storageDataKeyVersion);
   if (debug) {
-    console.log('storage load', storageDataStores, storageDataDate)
+    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion);
+    console.log(appVersion);
   }
-  if (!storageDataDate || !storageDataStores
-    || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+  if (!storageDataDate || !storageDataStores || !storageDataVersion
+    || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+    || storageDataVersion !== appVersion) {
     //||storageData.date + 100 < new Date().getTime() ) {
-    getData(findShop());
+    getData(findShop);
     //поиск шопа или после загрузки данных
   } else {
     findShop();

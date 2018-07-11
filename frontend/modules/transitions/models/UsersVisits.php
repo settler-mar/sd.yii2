@@ -92,6 +92,7 @@ class UsersVisits extends \yii\db\ActiveRecord
   public function afterSave($insert, $changedAttributes)
   {
     Cache::clearName('account_transitions' . $this->user_id);
+    Cache::clearName('stores_visited');
   }
   public function afterDelete()
   {

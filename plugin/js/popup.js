@@ -201,14 +201,18 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     if (debug) {
         console.log('получили урл текущей вкладки' + tabUrl);
     }
+    var appVersion = chrome.runtime.getManifest().version;
+
     Storage.load(function () {
         storageDataDate = Storage.get(storageDataKeyDate);
         storageDataStores = Storage.get(storageDataKeyStores);
+        storageDataVersion = Storage.get(storageDataKeyVersion);
         if (debug) {
             console.log('storage load');
         }
-        if (!storageDataDate || !storageDataStores
-            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()) {
+        if (!storageDataDate || !storageDataStores || !storageDataVersion
+            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+            || storageDataVersion !== appVersion) {
             getData(storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop));
             //поиск шопа или после загрузки данных
         } else {
