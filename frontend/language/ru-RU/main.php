@@ -75,7 +75,7 @@ return [
     'sort_by_abc' => 'Алфавиту',
     'sort_by_abc_mobile' => 'Алфавиту',
     'sort_by_date' => 'Новизне',
-    'sort_by_date_mobile' => 'Говизне',
+    'sort_by_date_mobile' => 'Новизне',
     'sort_by_expire' => 'Сроку действия',
     'sort_by_expire_mobile' => 'Сроку действия',
     'sort_by_percent' => '%',
