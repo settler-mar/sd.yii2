@@ -27,6 +27,8 @@ class AdmitadController extends Controller
   private $categories = [];
   private $helpMy = false;
 
+  private $updateCategoriesCoupons = true;//обновлять ли категории для купона
+
   //добавляем параметры для запуска
   public $day;
 
@@ -569,7 +571,7 @@ class AdmitadController extends Controller
           }
 
           //Добавляем категорию в массив
-          foreach ($coupon['categories'] as $k => $categorie) {
+          foreach ($coupon['categories'] as $categorie) {
             $this->writeCategory($categorie);
 
             $coupon_cat = new CouponsToCategories();
@@ -585,6 +587,28 @@ class AdmitadController extends Controller
           $db_coupons->promocode = $coupon['promocode'];
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
           $db_coupons->save();
+          //обновление категорий
+          if ($this->updateCategoriesCoupons) {
+            $cats = [];
+            foreach ($coupon['categories'] as $categorie) {
+              $this->writeCategory($categorie);
+
+              $cats[] = $categorie['id'];
+              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $db_coupons->uid, 'category_id' => $categorie['id']]);
+              if (!$couponToCategory) {
+                $coupon_cat = new CouponsToCategories();
+                $coupon_cat->coupon_id = $db_coupons->uid;
+                $coupon_cat->category_id = $categorie['id'];
+                $coupon_cat->save();
+              }
+            }
+            if (empty($cats)) {
+              CouponsToCategories::deleteAll(['coupon_id' => $db_coupons->uid]);
+            } else {
+              CouponsToCategories::deleteAll(['and', ['coupon_id' => $db_coupons->uid], ['not in', 'category_id', $cats]]);
+            }
+          }
+
         }
       }
       $params['offset'] = $coupons['_meta']['limit'] + $coupons['_meta']['offset'];
