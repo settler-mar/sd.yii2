@@ -27,8 +27,8 @@ img.no_optomize {height: auto;}
   flex-grow: 0.3;
 }
 .shop-logo_link-img {
-  max-width: 192px;
-  width: 100%;
+  //max-width: 192px;
+  //width: 100%;
 }
 .shop_header {
   flex-grow: 1;
@@ -173,5 +173,8 @@ span.shop_header-title_description_extend {
   .static-page-content-narrow-page {width: 90%; margin: 40px auto 60px auto;}
   .static-page h1 {font-size: 2.0em; margin-bottom: 30px;}
   .static-page h1 br {display: none;}
-  .shop {max-width: 260px; min-width: 160px;}
+  .shop {
+    max-width: 260px;
+    //min-width: 160px;
+  }
 }

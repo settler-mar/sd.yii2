@@ -475,9 +475,12 @@
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
-      //justify-content: space-around;
       justify-content: space-between;
       margin-top: 27px;
+
+      @include media($phones) {
+        justify-content: space-around;
+      }
     }
     &_sort {
       display: flex;

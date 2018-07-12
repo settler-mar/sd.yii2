@@ -3,6 +3,7 @@
 namespace console\controllers;
 
 use common\models\Admitad;
+use common\models\Travelpayouts;
 use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
@@ -74,5 +75,12 @@ class TestController extends Controller
   public function actionActionObserver()
   {
       ActionsActions::observeActions([62053]);
+  }
+
+  public function actionTravelpayouts()
+  {
+      $service = new Travelpayouts();
+      ddd($service->getPeyments());
+      //ddd($service->getCompaings());
   }
 }
