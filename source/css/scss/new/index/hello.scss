@@ -423,6 +423,10 @@
       margin: auto;
       display: flex;
 
+      .index-hello_right-link {
+        background: none;
+      }
+
       @include media_min($laptop_min) {
         padding-bottom: 70px;
       }
