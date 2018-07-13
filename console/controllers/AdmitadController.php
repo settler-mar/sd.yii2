@@ -26,6 +26,7 @@ class AdmitadController extends Controller
   private $users = [];
   private $categories = [];
   private $helpMy = false;
+  private $cpaId = 1;//admitad
 
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
@@ -64,9 +65,9 @@ class AdmitadController extends Controller
   private function getStore($adm_id)
   {
     if (!isset($this->stores[$adm_id])) {
-      $store = CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $adm_id]);
-      if ($store) {
-        $this->stores[$adm_id] = $store->getStore();
+      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $adm_id]);
+      if ($cpaLink) {
+        $this->stores[$adm_id] = $cpaLink->store;
       } else {
         $this->stores[$adm_id] = false;
       }
@@ -238,7 +239,7 @@ class AdmitadController extends Controller
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
-        $cpa_link = CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $affiliate_id]);
+        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $affiliate_id]);
 
 
         $route = Yii::$app->help->str2url($store['name']);
@@ -546,15 +547,14 @@ class AdmitadController extends Controller
     $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
-        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id']]);
+        $store = $this->getStore($coupon['campaign']['id']);
+        if (!$store) {
+          echo 'Store not found '.$coupon['campaign']['id']."\n";
+          continue;
+        }
+        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id'], 'store_id' => $store->uid]);
         //Проверяем что б купон был новый
         if (!$db_coupons) {
-
-          $store = $this->getStore($coupon['campaign']['id']);
-          if (!$store) {
-            continue;
-          }
-
           $db_coupons = new Coupons();
           $db_coupons->coupon_id = $coupon['id'];
           $db_coupons->name = $coupon['name'];
