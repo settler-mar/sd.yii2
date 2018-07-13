@@ -2,16 +2,24 @@
 
 namespace common\models;
 
+use yii;
+
 class Advertise
 {
-    private $config = [
-        'user_id' => 14372,
-        'token' => '3f9f65d171af1ef1563da373e1566df2',
-    ];
+    private $config;
     private $url = 'https://advertise.ru/export/';
 
+    public function __construct()
+    {
+        if (isset(Yii::$app->params['advertise'])) {
+            $this->config = Yii::$app->params['advertise'];
+        } else {
+            ddd('Config Advertise not found!');
+        }
+    }
 
-    public function test()
+
+    public function offers()
     {
         return $this->getRequest('offers', ['connected_offers' => 1]);
     }

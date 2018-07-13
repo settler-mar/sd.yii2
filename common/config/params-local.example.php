@@ -42,6 +42,10 @@ return [
     'tokenPublisherVouchers' => '7EB9463BF01D9535478B61CE81404D1CFFE2C0F8',
     'tokenConversions' => '4972CD3B8619F74F419B703CF878E10681C1BB0A',
   ],
+  'advertise' => [
+    'user_id' => 14372,
+    'token' => '3f9f65d171af1ef1563da373e1566df2',
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
