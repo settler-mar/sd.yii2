@@ -73,6 +73,11 @@ return [
           'parthnerId' => 'xsjb68an',
           'login' => 'admin@secretdiscounter.com',
           'password' => '2011idnN@',
+          'route' => 'ozon-travel',
+          'file_loader' => [
+              'method' => 'ozontravel',
+
+          ],
       ],
       'booking.com' => [
           'route' => 'booking-com',

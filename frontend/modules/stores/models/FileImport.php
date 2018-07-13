@@ -18,6 +18,11 @@ class FileImport extends Model
     public $message;
 
     private $users;
+    private $usersUpdated = [];
+    private $inserted = 0;
+    private $updated  = 0;
+    private $nouser = 0;
+    private $errors = 0;
 
     /**
      * @inheritdoc
@@ -76,32 +81,17 @@ class FileImport extends Model
           'Finalised' => 2,//??
         ];
 
-
         $orders = $this->getCsv($file);
-        //ddd($orders, $cpa_id, $affiliate_id);
-        $users = [];
-        $inserted = 0;
-        $updated  = 0;
-        $nouser = 0;
-        $errors = 0;
         $this->log = "Записей - ".count($orders)."<br>";
         foreach ($orders as $order) {
             $user = $this->getUserData($order["Label"]);
-            if ($user && !in_array($user->uid, $users)) {
-                $users[] = $user->uid;
-            }
-
             if (!$user) {
-                $nouser ++;
+                $this->nouser ++;
                 continue;
             }
             //подогнать под формат платёжа с адмитад пока предварительно !!!!
             try {
-
                 $orderId = $order['Book Nr.'];
-                //сумму попробуем вычислить так комиссия/процент
-                //$summ = (float)str_replace('%', '', $this->float($order['Perc'])) == 0 ? 0 :
-                  //  (float)$this->float($order['Comission ( EUR )']) * 100 / (float)$this->float(str_replace('%', '', $order['Perc']));
                 $summ = 0;
                 $date = date('Y-m-d H:i:s', strtotime($order['Booked']));
                 $fee = (float)$this->float($order['Fee ( EUR )']);
@@ -124,7 +114,6 @@ class FileImport extends Model
                     'affiliate_id' => $affiliate_id,
 
                 ];
-                //d($payment);
                 $paymentStatus = Payments::makeOrUpdate(
                     $payment,
                     $store,
@@ -134,52 +123,128 @@ class FileImport extends Model
                 );
                 if ($paymentStatus['save_status']) {
                     if ($paymentStatus['new_record']) {
-                        $inserted++;
+                        $this->inserted++;
                     } else {
-                        $updated++;
+                        $this->updated++;
+                    }
+                    if (!in_array($user->uid, $this->usersUpdated)) {
+                        $this->usersUpdated[] = $user->uid;
                     }
                 }
             } catch (\Exception $e) {
                 $this->log .= '<span class="error">Ошибка '.$e->getMessage(). '</span><br>';
-                $errors ++;
-            }
-
-
-        }
-        if (count($users) > 0) {
-            Yii::$app->balanceCalc->setNotWork(false);
-            Yii::$app->balanceCalc->todo($users, 'cash,bonus');
-            try {
-                ActionsActions::observeActions($users);
-            } catch (\Exception $e) {
-                $this->log .= '<span class="error">Ошибка применения акций '.$e->getMessage(). '</span><br>';
+                $this->errors ++;
             }
         }
-        $this->log .= 'Новых записей ' . $inserted . "<br>";
-        $this->log .= 'Обновлено ' . $updated . "<br>";
-        if ($nouser > 0) {
-            $this->log .= '<span class="warning">Не найдено пользователей ' . $nouser . "</span><br>";
-        }
-        if ($errors > 0) {
-            $this->log .= '<span class="error">Ошибок ' . $errors . "</span><br>";
-        }
+        $this->completeLoad();
     }
 
     /**
      * @param $file
+     * @param $store
+     * @param $cpa_id
+     * @param $affiliate_id
+     */
+    protected function ozontravel($file, $store, $cpa_id, $affiliate_id)
+    {
+        $statuses = [
+            'Confirmed' => 2,
+        ];
+        $orders = $this->getCsv($file, ';');
+        /*'Number' => string(13) "16044417-0002"
+            'FIO' => string UTF-8(19) "Колпакова Екатерина"
+            'PositionNumber' => string(16) "16044417-0002-01"
+            'CreateDate' => string(19) "2018-06-23 02:09:07"
+            'OrderType' => string UTF-8(4) "Авиа"
+            'Status' => string(9) "Confirmed"
+            'ConfirmDate' => string(19) "2018-06-23 02:21:21"
+            'Sum' => string(5) "21004"
+            'Compensation' => string(6) "210,04"
+            'PartnerRef' => string(5) "75767"*/
+        $this->log = "Записей - ".count($orders)."<br>";
+        foreach ($orders as $order) {
+            $user = $this->getUserData($order["PartnerRef"]);
+            if (!$user) {
+                $this->nouser ++;
+                continue;
+            }
+            //подогнать под формат платёжа с адмитад пока предварительно !!!!
+            try {
+                $orderId = explode('-', $order['Number']);
+                $orderIdInt = '';
+                foreach ($orderId as $part) {
+                    $orderIdInt .= (int) $part;
+                }
+                $clickDate = date('Y-m-d H:i:s', strtotime($order['CreateDate']));
+                $actionDate = date('Y-m-d H:i:s', strtotime($order['ConfirmDate']));
+                $payment = [
+                    'status' => isset($statuses[$order['Status']]) ? $statuses[$order['Status']] : 0,
+                    'subid' => $user->uid,
+                    'positions' => false, //для тарифа, видимо так
+                    'action_id' => $orderIdInt,
+                    'cart' => (float) str_replace(',', '.', $order['Sum']),
+                    'payment' => (float) str_replace(',', '.', $order['Compensation']),
+                    'click_date' => $clickDate,
+                    'action_date' => $actionDate,
+                    'status_updated' => $actionDate,
+                    'closing_date' => $actionDate,
+                    'product_country_code' => null,
+                    'order_id' => $order['Number'],
+                    'tariff_id' => null,
+                    'currency' => 'RUB',
+                    'cpa_id' => $cpa_id,
+                    'affiliate_id' => $affiliate_id,
+
+                ];
+                $paymentStatus = Payments::makeOrUpdate(
+                    $payment,
+                    $store,
+                    $user,
+                    $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+                    ['notify' => true, 'email' => true]
+                );
+                if ($paymentStatus['save_status']) {
+                    if ($paymentStatus['new_record']) {
+                        $this->inserted++;
+                    } else {
+                        $this->updated++;
+                    }
+                    if (!in_array($user->uid, $this->usersUpdated)) {
+                        $this->usersUpdated[] = $user->uid;
+                    }
+                } else {
+                    if ($paymentStatus['payment']->errors) {
+                        foreach ($paymentStatus['payment']->errors as $key => $errors) {
+                            foreach ($errors as $error) {
+                                $this->log .= '<span class="error">'.$key.' '.$error.'</span><br>';
+                            }
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                $this->log .= '<span class="error">Ошибка '.$e->getMessage(). '</span><br>';
+                $this->errors ++;
+            }
+        }
+        $this->completeLoad();
+    }
+
+    /**
+     * @param $file
+     * @param string $delimiter
      * @return array
      */
-    protected function getCsv($file)
+    protected function getCsv($file, $delimiter = ',')
     {
         $data = [];
         try {
             $filename = $file->tempName;
             $data = [];
             if (($handle = fopen($filename, "r")) !== false) {
-                $headers = fgetcsv($handle);
+                $headers = fgetcsv($handle, 0, $delimiter);
                 $bom = pack('H*', 'EFBBBF');
                 $headers[0] = preg_replace("/[" . $bom . "\"]/", '', $headers[0]);
-                while (($row = fgetcsv($handle)) !== false) {
+                while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
                     $data[] = array_combine($headers, $row);
                 }
                 fclose($handle);
@@ -219,6 +284,30 @@ class FileImport extends Model
             }
         }
         return $this->users[$user_id];
+    }
+
+    /**
+     * завершить загрузку
+     */
+    private function completeLoad()
+    {
+        if (count($this->usersUpdated) > 0) {
+            Yii::$app->balanceCalc->setNotWork(false);
+            Yii::$app->balanceCalc->todo($this->usersUpdated, 'cash,bonus');
+            try {
+                ActionsActions::observeActions($this->usersUpdated);
+            } catch (\Exception $e) {
+                $this->log .= '<span class="error">Ошибка применения акций '.$e->getMessage(). '</span><br>';
+            }
+        }
+        $this->log .= 'Новых записей ' . $this->inserted . "<br>";
+        $this->log .= 'Обновлено ' . $this->updated . "<br>";
+        if ($this->nouser > 0) {
+            $this->log .= '<span class="warning">Не найдено пользователей ' . $this->nouser . "</span><br>";
+        }
+        if ($this->errors > 0) {
+            $this->log .= '<span class="error">Ошибок ' . $this->errors . "</span><br>";
+        }
     }
 
 }
