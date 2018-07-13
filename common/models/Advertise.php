@@ -4,6 +4,12 @@ namespace common\models;
 
 use yii;
 
+/**
+ * https://advertise.ru/webmaster/
+ * versus 2011odn
+ * Class Advertise
+ * @package common\models
+ */
 class Advertise
 {
     private $config;
