@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use common\models\Admitad;
 use common\models\Travelpayouts;
+use common\models\Advertise;
 use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
@@ -82,5 +83,12 @@ class TestController extends Controller
       $service = new Travelpayouts();
       ddd($service->getPeyments());
       //ddd($service->getCompaings());
+  }
+
+  public function actionAdvertice()
+  {
+      $service = new Advertise();
+      ddd($service->test()) ;
+
   }
 }
