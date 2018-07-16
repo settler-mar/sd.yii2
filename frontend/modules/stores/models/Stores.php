@@ -923,5 +923,219 @@ class Stores extends \yii\db\ActiveRecord
       return array_merge($attributes, $translated);
 
   }
+
+    /**
+     * запись шопа из консольных action
+     * @param $store
+     * @return array
+     */
+  public static function addOrUpdate($store)
+  {
+      $cpa_id = false;
+      $db_store = false;
+      $new = false;
+      $result = false;
+      $newCpa = false;
+      $resultCpa = false;
+      $logo = null;
+
+      $cpa_link = CpaLink::findOne(['cpa_id' => $store['cpa_id'], 'affiliate_id' => $store['affiliate_id']]);
+
+      //чистим URL
+      $url = str_replace("https://", "%", $store['url']);
+      $url = str_replace("http://", "%", $url);
+      $url = str_replace("www.", "", $url);
+      //$url=explode('/',$url);
+      //$url=$url[0].'%';
+
+
+      $route = Yii::$app->help->str2url($url);
+
+      if ($store['logo'] != '') {
+          $logo = explode(".", $store['logo']);
+          $logo = 'cw' . $store['cpa_id'] . '_' .$route.'.'. $logo[count($logo) - 1];
+          $logo = str_replace('_', '-', $logo);
+      }
+
+
+      if ($cpa_link) {
+          //если CPA link нашли то проверяем ссылку и при необходимости обновляем ее
+          if ($cpa_link->affiliate_link != $store['affiliate_link']) {
+              $cpa_link->affiliate_link = $store['affiliate_link'];
+              $cpa_link->save();
+          }
+
+          $cpa_id = $cpa_link->id;
+
+          //переходим от ссылки СПА на магазин
+          $db_store = $cpa_link->store;
+
+          /*
+           * Лого обновляем если
+           * - лого был прописан данной CPA (тут подумать еще)
+           * - нет лого
+           * - лого от адмитада
+           */
+
+          if ($db_store && (
+                  $db_store->logo == $logo ||
+                  !$db_store->logo ||
+                  strpos($db_store->logo, 'cw1-') !== false ||
+                  strpos($db_store->logo, 'cw'.$store['cpa_id'].'-') !== false ||
+                  strpos($db_store->logo, 'cw_') !== false
+              )) {
+              $test_logo = true;
+          } else {
+              $test_logo = false;
+          }
+      } else {
+          $test_logo = true;
+      }
+
+
+      //если лого то проверяем его наличие и размер и при нобходимости обновляем
+      if ($test_logo && $logo) {
+          //обрабатываем лого и если обновление то меняем имя
+          if(self::saveLogo($logo, $store['logo'], $db_store ? $db_store->logo : false) && $db_store){
+              $db_store->logo=$logo;
+          };
+      }
+
+      //если магазин не нашли по прямому подключению пробуем найти по косвеным признакам
+
+      //поиск по ссылке на магазин
+      if (!$db_store) {
+          //Проверяем существования магазина на основании его адреса
+          $url = trim($url, '/') . '%';
+          $db_store = self::find()->where(['like', 'url', $url, false])->one();
+      }
+
+      //поиск по ссылке на роуту
+      if (!$db_store) {
+          $db_store = self::find()->where(['route' => $route])->one();
+      }
+
+      //Если магазин так и не нашли то создаем
+      if (!$db_store) {
+          $new = true;
+          $db_store = new Stores();
+          $db_store->name = $store['name'];
+          $db_store->description = !empty($store['description']) ? $store['description'] : null;
+          $db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : null;
+          $db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : null;
+          $db_store->route = $route;
+          $db_store->url = $store['url'];
+          $db_store->logo = $logo;
+          $db_store->currency = $store['currency'];
+          $db_store->percent = 50;
+          $db_store->hold_time =  $store['hold_time'];
+          $db_store->displayed_cashback = $store['cashback'];
+          $db_store->is_active = $store['status'];
+          if ($db_store->save()) {
+              $result = true;
+          } else {
+              if (Yii::$app instanceof Yii\console\Application){
+                  d($db_store->errors);
+              }
+          }
+      }
+
+      $store_id = $db_store->uid;
+
+      //если нет в базе CPA ЛИНК то создаем ее
+      if (!$cpa_id) {
+          $newCpa = true;
+          $cpa_link = new CpaLink();
+          $cpa_link->cpa_id = $store['cpa_id'];
+          $cpa_link->stores_id = $store_id;
+          $cpa_link->affiliate_id = $store['affiliate_id'];
+          $cpa_link->affiliate_link = $store['affiliate_link'];
+          if (!$cpa_link->save()) {
+              if (Yii::$app instanceof Yii\console\Application){
+                  d($cpa_link->errors);
+              }
+              return [
+                  'result' => $result,
+                  'new' => $new,
+                  'newCpa' => $newCpa,
+                  'resultCpa' => $resultCpa,
+              ];
+
+          } else {
+              $resultCpa = true;
+          }
+          $cpa_id = $cpa_link->id;
+      } else {
+          //проверяем свяль CPA линк и магазина
+          if ($cpa_link->stores_id != $store_id) {
+              $cpa_link->stores_id = $store_id;
+              $cpa_link->save();
+          }
+      }
+
+      //если СPA не выбранна то выставляем текущую
+      if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
+          $db_store->active_cpa = (int)$cpa_id;
+      }
+      if ($db_store->active_cpa == (int)$cpa_id) {
+          // спа активная, обновляем поля - какие - можно потом добавить
+          $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
+          $db_store->displayed_cashback = $store['cashback'];
+          $db_store->is_active = $store['status'];
+          $db_store->description = !empty($store['description']) ? $store['description'] : $db_store->description;
+          $db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : $db_store->short_description;
+          $db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : $db_store->conditions;
+
+      }
+      if ($db_store->save()) {
+          $result = true;
+      };
+      return [
+          'result' => $result,
+          'new' => $new,
+          'newCpa' => $newCpa,
+          'resultCpa' => $resultCpa,
+      ];
+  }
+
+    /** обновление лого из CPA
+     * @param $logo
+     * @param $logoNew
+     * @param $db_logo
+     * @return bool
+     */
+  private static function saveLogo($logo, $logoNew, $db_logo)
+  {
+    $needUpdate = false;
+    $imageSizeNeed = 192;
+    $path = Yii::$app->getBasePath() . '/../frontend/web/images/logos/';
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+    try {
+        if (file_exists($path . $logo)) {
+            $imageSize = getimagesize($path . $logo);
+            $needUpdate = (isset($imageSize[0]) && $imageSize[0] < $imageSizeNeed) ||
+                (isset($imageSize[1]) && $imageSize[1] < $imageSizeNeed);
+        }
+        if (!file_exists($path . $logo) || $needUpdate) {
+            if ($db_logo && file_exists($path . $db_logo)) {
+                unlink($path . $db_logo);
+            }
+            $file = file_get_contents($logoNew);
+            $image = new Image($file);
+            $image->bestFit($imageSizeNeed, $imageSizeNeed);
+            $image->saveAs($path . $logo);
+            return true;
+        } else {
+            return false;
+        }
+    } catch (\Exception $e) {
+        if (Yii::$app instanceof Yii\console\Application){
+            echo $e->getMessage() . "\n";
+        }
+        return false;
+    }
+  }
   
 }

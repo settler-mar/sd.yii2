@@ -17,15 +17,30 @@ use frontend\modules\users\models\Users;
 use frontend\modules\actions\models\ActionsActions;
 use Yii;
 use yii\console\Controller;
+use yii\helpers\Console;
 
 class AdmitadController extends Controller
 {
 
   private $stores = [];
   private $users = [];
+  private $categories = [];
+  private $helpMy = false;
+  private $cpaId = 1;//admitad
+
+  private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
   //добавляем параметры для запуска
   public $day;
+
+  public function beforeAction($action)
+  {
+    if (Console::isRunningOnWindows()) {
+      shell_exec('chcp 65001');
+    }
+    return parent::beforeAction($action);
+  }
+
 
   /**
    * Тест Адмтада.
@@ -50,9 +65,9 @@ class AdmitadController extends Controller
   private function getStore($adm_id)
   {
     if (!isset($this->stores[$adm_id])) {
-      $store = CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $adm_id]);
-      if ($store) {
-        $this->stores[$adm_id] = $store->getStore(1);
+      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $adm_id]);
+      if ($cpaLink) {
+        $this->stores[$adm_id] = $cpaLink->store;
       } else {
         $this->stores[$adm_id] = false;
       }
@@ -224,7 +239,7 @@ class AdmitadController extends Controller
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
-        $cpa_link = CpaLink::findOne(['cpa_id' => 1, 'affiliate_id' => $affiliate_id]);
+        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $affiliate_id]);
 
 
         $route = Yii::$app->help->str2url($store['name']);
@@ -522,7 +537,6 @@ class AdmitadController extends Controller
 //          $params['campaign']=$this->campaign;
 //      }
 
-    $categories = [];
     $coupons = $admitad->getCoupons($params);
     if ($coupons) {
       d($params);
@@ -533,33 +547,32 @@ class AdmitadController extends Controller
     $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
-        $coupon_categories = [];
-        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id']]);
+        $store = $this->getStore($coupon['campaign']['id']);
+        if (!$store) {
+          echo 'Store not found '.$coupon['campaign']['id']."\n";
+          continue;
+        }
+        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id'], 'store_id' => $store->uid]);
         //Проверяем что б купон был новый
         if (!$db_coupons) {
-
-          $store_id = $this->getStore($coupon['campaign']['id']);
-          if (!$store_id) {
-            continue;
-          }
-
           $db_coupons = new Coupons();
           $db_coupons->coupon_id = $coupon['id'];
           $db_coupons->name = $coupon['name'];
           $db_coupons->description = $coupon['description'];
-          $db_coupons->store_id = $store_id;
+          $db_coupons->store_id = $store->uid;
           $db_coupons->date_start = $coupon['date_start'];
           $db_coupons->date_end = $coupon['date_end'];
           $db_coupons->goto_link = $coupon['frameset_link'];
           $db_coupons->promocode = $coupon['promocode'];
           $db_coupons->species = 0;
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          if (!$db_coupons->save()) continue;
+          if (!$db_coupons->save()) {
+              continue;
+          }
 
           //Добавляем категорию в массив
-          foreach ($coupon['categories'] as $k => $categorie) {
-            $categories[$categorie['id']] = $categorie['name'];
-            $coupon_categories[$categorie['id']] = $categorie['name'];
+          foreach ($coupon['categories'] as $categorie) {
+            $this->writeCategory($categorie);
 
             $coupon_cat = new CouponsToCategories();
             $coupon_cat->coupon_id = $db_coupons->uid;
@@ -574,9 +587,30 @@ class AdmitadController extends Controller
           $db_coupons->promocode = $coupon['promocode'];
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
           $db_coupons->save();
+          //обновление категорий
+          if ($this->updateCategoriesCoupons) {
+            $cats = [];
+            foreach ($coupon['categories'] as $categorie) {
+              $this->writeCategory($categorie);
+
+              $cats[] = $categorie['id'];
+              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $db_coupons->uid, 'category_id' => $categorie['id']]);
+              if (!$couponToCategory) {
+                $coupon_cat = new CouponsToCategories();
+                $coupon_cat->coupon_id = $db_coupons->uid;
+                $coupon_cat->category_id = $categorie['id'];
+                $coupon_cat->save();
+              }
+            }
+            if (empty($cats)) {
+              CouponsToCategories::deleteAll(['coupon_id' => $db_coupons->uid]);
+            } else {
+              CouponsToCategories::deleteAll(['and', ['coupon_id' => $db_coupons->uid], ['not in', 'category_id', $cats]]);
+            }
+          }
+
         }
       }
-
       $params['offset'] = $coupons['_meta']['limit'] + $coupons['_meta']['offset'];
       if ($params['offset'] < $coupons['_meta']['count']) {
         $coupons = $admitad->getCoupons($params);
@@ -586,17 +620,26 @@ class AdmitadController extends Controller
     }
 
     Coupons::deleteAll(['store_id' => 0]);
+  }
 
-    $help = new Help();
-    foreach ($categories as $k => $categorie) {
-      if (!CategoriesCoupons::findOne(['uid' => $k])) {
-        $cat = new CategoriesCoupons();
-        $cat->uid = $k;
-        $cat->name = $categorie;
-        $cat->route = $help->str2url($categorie);
-        $cat->save();
+  private function writeCategory($category)
+  {
+      if (!$this->helpMy) {
+          $this->helpMy = new Help();
       }
-    }
+      if (!isset($this->categories[$category['id']])) {
+          //в массиве ещё нет, смотрим в базе
+          if (!CategoriesCoupons::findOne(['uid' => $category['id']])) {
+              //в базе нет - пишем
+              $cat = new CategoriesCoupons();
+              $cat->uid = $category['id'];
+              $cat->name =  $category['name'];
+              $cat->route = $this->helpMy->str2url($category['name']);
+              $cat->save();
+          }
+          //пишем в массив
+          $this->categories[$category['id']] = $category['name'];
+      }
   }
 
 

@@ -467,7 +467,8 @@ class Payments extends \yii\db\ActiveRecord
             $rate_id = 0;
         }
 
-        $db_payment = self::findOne(['action_id' => $payment['action_id']]);
+        $db_payment = self::findOne(['action_id' => $payment['action_id'], 'affiliate_id' => $payment['affiliate_id']]);
+        //$db_payment = self::findOne(['action_id' => $payment['action_id']]);
         if (!$db_payment) {
             //если не задан шоп но ищем
             $newRecord = true;

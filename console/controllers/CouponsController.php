@@ -31,6 +31,9 @@ class CouponsController extends Controller
    */
   public function actionInsert()
   {
+    echo "Coupons Admitad\n";
     Yii::$app->runAction('admitad/coupons');
+    echo "Coupons Tradedoubler\n";
+    Yii::$app->runAction('doublertrade/vouchers');
   }
 }
