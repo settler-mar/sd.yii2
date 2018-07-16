@@ -20,6 +20,9 @@ class AdvertiseController extends Controller
     }
 
 
+  /**
+   * Получение магазинов
+   */
     public function actionStore()
     {
         $service = new Advertise();
@@ -78,6 +81,15 @@ class AdvertiseController extends Controller
         }
     }
 
+  /**
+   * Получение купонов.
+   */
+  public function actionCoupons(){
+    //https://advertise.ru/webmaster/api_manual/?action=discounts
+    $service = new Advertise();
+    ddd($service->coupons());
+  }
+
     private function getCashback($offer)
     {
         $cashback = 0;
@@ -97,4 +109,6 @@ class AdvertiseController extends Controller
             'cashback' => (count($offer['actions']) > 1 ? 'до ': ''). $cashback . ($percent ? '%':''),
         ];
     }
+
+
 }

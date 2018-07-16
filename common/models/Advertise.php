@@ -30,6 +30,11 @@ class Advertise
         return $this->getRequest('offers', ['connected_offers' => 1]);
     }
 
+    public function coupons()
+    {
+      return $this->getRequest('discounts', ['connected_offers' => 1]);
+    }
+
     protected function getRequest($method, $params = [])
     {
         $params = array_merge($params, [
