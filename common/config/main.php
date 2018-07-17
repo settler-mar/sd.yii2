@@ -1,5 +1,5 @@
 <?php
-$twigFunction = require(dirname(dirname(__DIR__)) . '/helpers/twigFunctionList.php');
+$twigFunction = require(dirname(dirname(__DIR__)) . '/common/components/twigFunctionList.php');
 $twigFunction['translate'] = '\Yii::t';
 
 include_once(__DIR__ . '/start_param.php');

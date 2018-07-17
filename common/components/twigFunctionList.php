@@ -246,6 +246,7 @@ $functionsList = [
   '_shop_cashback' => function ($cashback, $currency = '', $action = 0, $pre = '') use ($currencyIcon) {
     $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
+    if ($value=="")$value=0;
     if ($action == 1) {
       $cashback = str_replace($value, $value * 2, $cashback);
     } else {
