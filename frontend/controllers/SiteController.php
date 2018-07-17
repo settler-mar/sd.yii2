@@ -503,8 +503,16 @@ class SiteController extends SdController
       if (empty($params)) {
           return $link;
       }
-      $link .= (strpos($link, '?') === false) ? '?' : '&';
-      $link .= http_build_query($params);
+
+      if(strpos($link,"{{") && strpos($link,"}}")){
+        $link=Yii::$app->TwigString->render(
+            $link,
+            $params
+        );
+      }else {
+        $link .= (strpos($link, '?') === false) ? '?' : '&';
+        $link .= http_build_query($params);
+      }
       return $link;
   }
 
