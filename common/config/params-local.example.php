@@ -50,6 +50,10 @@ return [
     'user_id' => 134553,
     'token' => 'a8c77227884722401b63a30287a02ba9',
   ],
+  "performancehorizon"=>[
+      "user_api_key"=>"IS6HQNTj",
+      "token"=>"AG9wKYuYbV",
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',

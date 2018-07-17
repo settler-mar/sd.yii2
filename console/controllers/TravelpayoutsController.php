@@ -21,7 +21,7 @@ class TravelpayoutsController extends Controller{
     }
   }
   /*
-   * получение шопов
+   Парсит шопы из travelpayouts.json. Предварительно генерируются в браузере через travelpayouts.js
    */
   public function actionStore()
   {
@@ -35,7 +35,7 @@ class TravelpayoutsController extends Controller{
       ])->one();
 
       $route = Yii::$app->help->str2url($store['title']);
-\
+
       //Если магазин не найден в базе для данно CPA то пробуем определить его
       if(!$sd_cpa){
         //Ищим по названию
