@@ -220,6 +220,9 @@ class AdmitadController extends Controller
     return $res;
   }
 
+    /*
+     * получение шопов
+     */
   public function actionStore()
   {
     $params = [

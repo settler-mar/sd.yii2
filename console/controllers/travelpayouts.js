@@ -9,9 +9,17 @@ var out={};
 for (var i=0;i<els.length;i++){
   var el=els.eq(i);
   var item={};
-  var h2=el.find('h2').text().trim().split(' - ');
-  item.title=h2[0];
-  item.comment=h2[1];
+  var h2=el.find('h2')
+    .text()
+    .trim()
+    .replace(' — ',' - ')
+    .replace(' – ',' - ')
+    .split(' - ');
+  if(h2.length==1){
+    h2=h2[0].split(': ');
+  }
+  item.title=h2[0].trim();
+  item.comment=h2[1].trim();
   var img = el.find('img.cps-list-campaign-info__logo');
   item.img=img.attr('src')
   tr_href=img.parent().attr('href');
@@ -19,7 +27,7 @@ for (var i=0;i<els.length;i++){
   id=id[id.length-1];
   item.id=id;
   var status=el.find('.cps-list-campaign-header__subscribed').text().trim();
-  item.status=-1;
+  item.status=0;
   if(status=="Вы подписаны")item.status=1;
   out[id]=item;
 
@@ -30,18 +38,17 @@ for (var i=0;i<els.length;i++){
     eval(data);
     var campaign=gon.campaign;
     var id=campaign.id;
-    out[id].advertiser_id=campaign.advertiser_id
-    out[id].description=campaign.description
-    out[id].required_params=campaign.required_params
-    out[id].approver=campaign.approver
-    out[id].published=campaign.published
+    out[id].advertiser_id=campaign.advertiser_id;
+    out[id].description=campaign.description;
+    out[id].required_params=campaign.required_params;
+    out[id].approver=campaign.approver;
+    out[id].published=campaign.published;
   })
 
   $.get((tr_href+"/promos").replace("//","/"),function(data){
-    id=$(data).find('.campaign-tabs__tab').attr('href').trim().split('/')
-    id=id[id.length-1];
+    id=this;
     out[id].link=$(data).find(".campaign-promos-item__body a").attr('href')
-  })
+  }.bind(id))
 }
 
 //выполнить после того как закончатся все запросы

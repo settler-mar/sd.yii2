@@ -1104,7 +1104,7 @@ class Stores extends \yii\db\ActiveRecord
      * @param $db_logo
      * @return bool
      */
-  private static function saveLogo($logo, $logoNew, $db_logo)
+  public static function saveLogo($logo, $logoNew, $db_logo)
   {
     $needUpdate = false;
     $imageSizeNeed = 192;
