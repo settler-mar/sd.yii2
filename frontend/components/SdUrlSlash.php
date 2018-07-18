@@ -15,7 +15,17 @@ class SdUrlSlash implements UrlRuleInterface
    */
   public function parseRequest($manager, $request)
   {
-    if (preg_match('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', $request->absoluteUrl)) {
+    $url_test=urldecode($request->absoluteUrl);
+    //Из теста адреса убераем поисковую строку
+    if($request->get("query")){
+      $url_test=str_replace($request->get("query"),"",$url_test);
+    }
+    //Для админки допускаем в адресе пробелы
+    if(strpos($request->pathInfo,"admin/")===0){
+      //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
+      $url_test=str_replace(" ",'',$url_test);
+    };
+    if (preg_match('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', $url_test)) {
         throw new \yii\web\NotFoundHttpException;
     }
 

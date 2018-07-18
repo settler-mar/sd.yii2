@@ -52,6 +52,7 @@ phpunit.phar
 /frontend/web/thumbs
 
 log/
+logs/
 /frontend/web/images/logos/
 *.sql
 *.lock
@@ -67,6 +68,6 @@ common/config/socials.php
 
 *.zip
 
-
+debug
 sellaction_categories.json
 rakute_categories.json

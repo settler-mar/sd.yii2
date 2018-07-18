@@ -37,14 +37,16 @@ class SdImage
      * @throws \JBZoo\Image\Exception
      * @throws \JBZoo\Utils\Exception
      */
-    public static function save($file, $path, $width = 300, $old = false)
+    public static function save($file, $path, $width = 300, $old = false,$exch=false)
     {
         if (!self::testImage($file)) {
             return false;
         };
         $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
-        $exch = explode('.', $file->name);
-        $exch = $exch[count($exch) - 1];
+        if(!$exch) {
+          $exch = explode('.', $file->name);
+          $exch = $exch[count($exch) - 1];
+        };
         $name .= ('.' . $exch);//имя и расширение
         $fullPath = \Yii::$app->getBasePath() . '/web' . $path;
         if (!file_exists($fullPath)) {
