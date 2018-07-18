@@ -9,8 +9,9 @@ $params = array_merge(
 
 return [
     'id' => 'app-api',
-    'basePath' => dirname(__DIR__),    
+    'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    //'controllerNamespace' => 'api\controllers',
     'modules' => [
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
@@ -30,7 +31,7 @@ return [
             ]
         ],
     ],
-    'components' => [        
+    'components' => [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,
@@ -46,12 +47,21 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'enableStrictParsing' => true,
+            'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
+                //'<action:index|stores|payments>' => 'site/<action>'
+                //'/' => 'site/index'
 
-            ],        
-        ]
+
+            ],
+        ],
+        'session' => [
+            'name' => 'advanced-sd-api',
+        ],
+        'request' => [
+            'cookieValidationKey' => '655wgregers555jyyrj65',
+        ],
     ],
     'params' => $params,
 ];
