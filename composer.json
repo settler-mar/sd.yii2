@@ -42,7 +42,8 @@
     "dominus77/yii2-tinymce-widget": "*",
     "webmil/text-language-detect": "dev-master",
     "keltstr/yii2-simplehtmldom": "dev-master",
-    "phpoffice/phpspreadsheet": "dev-master"
+    "phpoffice/phpspreadsheet": "dev-master",
+    "filsh/yii2-oauth2-server": "^1.0@dev"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
