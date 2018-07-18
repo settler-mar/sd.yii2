@@ -40,7 +40,7 @@ $config = [
       // this is the name of the session cookie used for login on the frontend
       'name' => 'advanced-frontend',
       'cookieParams' => [
-        'domain' => (strpos(DOMAIN_FRONT,'.0.0.1')?'':'.') . DOMAIN_FRONT,
+        'domain' => (strpos(DOMAIN_FRONT, '.0.0.1') ? '' : '.') . DOMAIN_FRONT,
         'httpOnly' => true,
       ],
     ],
@@ -106,7 +106,7 @@ $config = [
         'name' => '_identity-frontend',
         'httpOnly' => true,
         'path' => '/',
-        'domain' => strpos(DOMAIN_FRONT,'.0.0.1')?false:DOMAIN_FRONT,
+        'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : DOMAIN_FRONT,
       ],
       'on afterLogin' => function ($event) {
         frontend\modules\users\models\Users::afterLogin($event->identity->id);
@@ -130,17 +130,17 @@ $config = [
     'urlManager' => [
       'rules' => [
         'site/<action>' => '404',
+        [ // обработка локализации сайта
+          'class' => 'frontend\components\SdUrlLocalisation',
+        ],
         [ // обработка слэш в конце и двойных слэшэй
           'class' => 'frontend\components\SdUrlSlash',
         ],
         [ // обработка реферальных ссылок
           'class' => 'frontend\components\SdUrlPromo',
         ],
-        [ // обработка локализации сайта
-            'class' => 'frontend\components\SdUrlLocalisation',
-        ],
         [ // обработка перехода после авторизации из админки под пользователем обратно в админку
-            'class' => 'frontend\components\SdUrlAdmin',
+          'class' => 'frontend\components\SdUrlAdmin',
         ],
         /*'users/<action>/<action>'=>'404',
         'users/<action>/<action>/<action>'=>'404',*/
@@ -191,7 +191,7 @@ $config = [
   ],
   'modules' => [
     /*'manager'=> [
-      'class' => 'frontend\modules\manager\Module',
+    'class' => 'frontend\modules\manager\Module',
     ],*/
     'users' => [
       'class' => 'frontend\modules\users\Module',
@@ -273,13 +273,13 @@ $config = [
       'class' => 'app\modules\sdblog\Module',
     ],
     'language' => [
-        'class' => 'frontend\modules\language\Module',
+      'class' => 'frontend\modules\language\Module',
     ],
     'configs' => [
-        'class' => 'frontend\modules\configs\Module',
+      'class' => 'frontend\modules\configs\Module',
     ],
     'competitions' => [
-        'class' => 'frontend\modules\competitions\Module',
+      'class' => 'frontend\modules\competitions\Module',
     ],
     'promo' => [
       'class' => 'frontend\modules\promo\Module',
@@ -314,18 +314,18 @@ $config = [
           'access' => ['read' => 'FilesEdit', 'write' => false]
         ],
         /*[
-          'class' => 'mihaildev\elfinder\UserPath',
-          'path'  => 'files/user_{id}',
-          'name'  => 'My Documents'
+        'class' => 'mihaildev\elfinder\UserPath',
+        'path'  => 'files/user_{id}',
+        'name'  => 'My Documents'
         ],
         [
-          'path' => 'files/some',
-          'name' => ['category' => 'my','message' => 'Some Name'] //перевод Yii::t($category, $message)
+        'path' => 'files/some',
+        'name' => ['category' => 'my','message' => 'Some Name'] //перевод Yii::t($category, $message)
         ],
         [
-          'path'   => 'files/some',
-          'name'   => ['category' => 'my','message' => 'Some Name'], // Yii::t($category, $message)
-          'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
+        'path'   => 'files/some',
+        'name'   => ['category' => 'my','message' => 'Some Name'], // Yii::t($category, $message)
+        'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
         ]*/
       ],
     ]
@@ -334,35 +334,35 @@ $config = [
   //для возврата с авторизации через соц. сети на предыдущую страницу
   'on beforeAction' => function (yii\base\ActionEvent $e) {
     if (Yii::$app->user->isGuest) {
-      $request = Yii::$app->request;
+    $request = Yii::$app->request;
 
-      /*//Если это аякс запрос и есть POST параметр с адресом
-      if ($request->isAjax && $request->post('returnUrl')){
-        Yii::$app->user->setReturnUrl($request->post('returnUrl'));
-      }*/
+    /*//Если это аякс запрос и есть POST параметр с адресом
+    if ($request->isAjax && $request->post('returnUrl')){
+      Yii::$app->user->setReturnUrl($request->post('returnUrl'));
+    }*/
 
-      $myHost = Yii::$app->request->hostInfo;
-      //анализ страниц с которых приходит запрос на страницы связанные с LOGIN формой
-      $referrer=Yii::$app->request->referrer;
-      if(
-          (strpos($request->url, 'login') !== false ||
-          strpos($request->url, 'registration') !== false) &&
-          $referrer &&
-          strpos($referrer, $myHost) !== false &&
-          strpos($referrer, 'login') === false &&
-          strpos($referrer, 'verifysocialemail') === false
-      ){
-        Yii::$app->user->setReturnUrl($referrer);
-      }
+    $myHost = Yii::$app->request->hostInfo;
+    //анализ страниц с которых приходит запрос на страницы связанные с LOGIN формой
+    $referrer = Yii::$app->request->referrer;
+    if (
+      (strpos($request->url, 'login') !== false ||
+        strpos($request->url, 'registration') !== false) &&
+      $referrer &&
+      strpos($referrer, $myHost) !== false &&
+      strpos($referrer, 'login') === false &&
+      strpos($referrer, 'verifysocialemail') === false
+    ) {
+      Yii::$app->user->setReturnUrl($referrer);
+    }
 
-      /*// исключаем страницу авторизации или ajax-запросы
-      if (!$request->isAjax &&
-        strpos($request->url, 'login') === false &&
-        strpos($request->url, 'verifysocialemail') === false ||
-          strpos($request->url, 'g=plugin') !== false
-      ) {
-        Yii::$app->user->setReturnUrl($request->url);
-      }*/
+    /*// исключаем страницу авторизации или ajax-запросы
+    if (!$request->isAjax &&
+      strpos($request->url, 'login') === false &&
+      strpos($request->url, 'verifysocialemail') === false ||
+      strpos($request->url, 'g=plugin') !== false
+    ) {
+      Yii::$app->user->setReturnUrl($request->url);
+    }*/
     }
   },
 ];
@@ -374,7 +374,7 @@ if (YII_DEBUG) {
   exit;*/
   // configuration adjustments for 'dev' environment
   $config['modules']['ar_log'] = [
-      'class' => 'frontend\modules\ar_log\Module',
+    'class' => 'frontend\modules\ar_log\Module',
   ];
   unset($config['modules']['permit']['params']['accessRoles']);
   $config['params']['plugin_install_panel'] = 1;
