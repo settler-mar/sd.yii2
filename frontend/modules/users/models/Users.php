@@ -490,7 +490,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     $photo = \yii\web\UploadedFile::getInstance($this, 'new_photo');
 
     $userPath = $this->getUserPath($this->uid);
-    if ($photo && $image = SdImage::save($photo, $userPath, 500, substr($this->photo, strlen($userPath)),".jpg")){
+    if ($photo && $image = SdImage::save($photo, $userPath, 500, substr($this->photo, strlen($userPath)),"jpg")){
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), ['photo' => $userPath . $image], ['uid' => $this->uid])
