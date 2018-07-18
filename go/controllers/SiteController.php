@@ -1,6 +1,6 @@
 <?php
 
-namespace api\controllers;
+namespace go\controllers;
 
 class SiteController extends \yii\web\Controller
 {

@@ -8,10 +8,10 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'goto-api',
+    'id' => 'go-api',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    //'controllerNamespace' => 'api\controllers',
+    'controllerNamespace' => 'go\controllers',
     'modules' => [
 
     ],
