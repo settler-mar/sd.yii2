@@ -1,6 +1,8 @@
 <?php
 
 namespace api\controllers;
+
+use yii;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
@@ -14,6 +16,7 @@ class SiteController extends \yii\web\Controller
     /**
      * @inheritdoc
      */
+
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
@@ -21,7 +24,7 @@ class SiteController extends \yii\web\Controller
                 'class' => CompositeAuth::className(),
                 'authMethods' => [
                     ['class' => HttpBearerAuth::className()],
-                    ['class' => QueryParamAuth::className(), 'tokenParam' => 'accessToken'],
+                    ['class' => QueryParamAuth::className(), 'tokenParam' => 'access-token'],
                 ]
             ],
             'exceptionFilter' => [
@@ -31,9 +34,15 @@ class SiteController extends \yii\web\Controller
 
     }
 
-    public function actionIndex()
+    public function beforeAction($action)
     {
-        return 'index';
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
+    public function actionStores()
+    {
+        return json_encode(['foo' => 'bar']);
     }
 
 }

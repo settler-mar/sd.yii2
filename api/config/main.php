@@ -20,6 +20,9 @@ return [
             'options' => [
                 'tokenParamName' => 'accessToken',
                 'tokenAccessLifetime' => 3600 * 24,
+                'token_param_name' => 'accessToken',
+                'access_lifetime' => 3600 * 24,
+                //'allow_credentials_in_request_body' => false,
             ],
            // 'token_param_name' => 'access_token',
             //'access_lifetime' => 3600 * 24,
@@ -58,7 +61,7 @@ return [
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
-                //'<action:index|stores|payments>' => 'site/<action>'
+                '<action:stores|payments>' => 'site/<action>',
                 //'/' => 'site/index'
                 'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
 
