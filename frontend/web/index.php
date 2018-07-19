@@ -2,7 +2,7 @@
 require(__DIR__ . '/../../common/config/start_param.php');
 require(__DIR__ . '/../../vendor/autoload.php');
 require(__DIR__ . '/../../vendor/yiisoft/yii2/Yii.php');
-require(__DIR__ . '/../../common/config/bootstrap.php');
+require(__DIR__ . '/../../common/config/aliases.php');
 
 
 $config = yii\helpers\ArrayHelper::merge(

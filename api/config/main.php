@@ -13,23 +13,31 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'api\controllers',
     'modules' => [
-//        'oauth2' => [
-//            'class' => 'filsh\yii2\oauth2server\Module',
-//            'tokenParamName' => 'accessToken',
-//            'tokenAccessLifetime' => 3600 * 24,
-//            'storageMap' => [
-//                'user_credentials' => 'app\models\User',
-//            ],
-//            'grantTypes' => [
-//                'user_credentials' => [
-//                    'class' => 'OAuth2\GrantType\UserCredentials',
-//                ],
-//                'refresh_token' => [
-//                    'class' => 'OAuth2\GrantType\RefreshToken',
-//                    'always_issue_new_refresh_token' => true
-//                ]
-//            ]
-//        ],
+        'oauth2' => [
+            'class' => 'filsh\yii2\oauth2server\Module',
+            //'tokenParamName' => 'accessToken',
+            //'tokenAccessLifetime' => 3600 * 24,
+            'options' => [
+                'tokenParamName' => 'accessToken',
+                'tokenAccessLifetime' => 3600 * 24,
+            ],
+           // 'token_param_name' => 'access_token',
+            //'access_lifetime' => 3600 * 24,
+            'storageMap' => [
+               // 'user_credentials' => 'frontend\modules\users\models\Users',
+                'user_credentials' => 'api\components\User',
+            ],
+            'grantTypes' => [
+                'user_credentials' => [
+                    'class' => 'OAuth2\GrantType\UserCredentials',
+
+                ],
+                'refresh_token' => [
+                    'class' => 'OAuth2\GrantType\RefreshToken',
+                    'always_issue_new_refresh_token' => true
+                ]
+            ]
+        ],
     ],
     'components' => [
         'user' => [
@@ -52,6 +60,7 @@ return [
             'rules' => [
                 //'<action:index|stores|payments>' => 'site/<action>'
                 //'/' => 'site/index'
+                'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
 
 
             ],
