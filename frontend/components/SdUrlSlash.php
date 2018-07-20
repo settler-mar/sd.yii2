@@ -25,7 +25,13 @@ class SdUrlSlash implements UrlRuleInterface
       //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
       $url_test=str_replace(" ",'',$url_test);
     };
-    if (preg_match('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', $url_test)) {
+    //для запросов фильтра по алфавиту
+    if($request->get("w") && strlen(trim($request->get("w")))<6){
+      $url_test=str_replace($request->get("w"),"",$url_test);
+    }
+    if (preg_match('/[^a-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/', $url_test)) {
+        //$cl=preg_replace('/[^a-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/',"", $url_test);
+        //var_dump($cl);
         throw new \yii\web\NotFoundHttpException;
     }
 

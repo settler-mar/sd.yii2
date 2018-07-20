@@ -26,7 +26,7 @@ class AdmitadController extends Controller
   private $users = [];
   private $categories = [];
   private $helpMy = false;
-  private $cpaId = 1;//admitad
+  private $cpa_id = 1;//admitad
 
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
@@ -65,7 +65,7 @@ class AdmitadController extends Controller
   private function getStore($adm_id)
   {
     if (!isset($this->stores[$adm_id])) {
-      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $adm_id]);
+      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $adm_id]);
       if ($cpaLink) {
         $this->stores[$adm_id] = $cpaLink->store;
       } else {
@@ -128,6 +128,10 @@ class AdmitadController extends Controller
       $params['status_updated_start'] = date('d.m.Y H:i:s', time() - 86400 * $days); //последнии 7 дней
       //$params['status_updated_end'] = date('d.m.Y 00:00:00');
     }
+
+
+    if(is_numeric($params['status_updated_start']))$params['status_updated_start']=date('d.m.Y H:i:s',$params['status_updated_start']);
+    if(isset($params['status_updated_end']) && is_numeric($params['status_updated_end']))$params['status_updated_end']=date('d.m.Y H:i:s',$params['status_updated_end']);
 
     $pay_status = Admitad::getStatus();
 
@@ -242,7 +246,7 @@ class AdmitadController extends Controller
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
-        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpaId, 'affiliate_id' => $affiliate_id]);
+        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $affiliate_id]);
 
 
         $route = Yii::$app->help->str2url($store['name']);

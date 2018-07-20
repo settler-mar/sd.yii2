@@ -5,7 +5,7 @@ use frontend\models\Task;
 use frontend\modules\stores\models\CpaLink;
 use Yii;
 use frontend\components\SdController;
-
+use frontend\modules\stores\models\Cpa;
 
 /**
  * Site controller
@@ -21,7 +21,7 @@ class FixingController extends SdController
   }
 
   /**
-   * Добавдяем задачу на обновление платежа
+   * Добавдяем задачу на обновление платежа адмитада
    */
   public function actionPayment()
   {
@@ -31,7 +31,30 @@ class FixingController extends SdController
     Yii::$app->logger->add(json_encode($post));
     $task = new Task();
     $task->task = 1;
-    $task->param = isset($post['time']) ? $post['time'] : time();
+    $task->param = 1;
+    $task->add_time = time();
+    $task->save();
+
+    return true;
+  }
+
+  /**
+   * Добавдяем задачу на обновление платежа performancehorizon
+   */
+  public function actionPaymentph()
+  {
+    $cpa = Cpa::findOne(['name' => 'Performancehorizon']);
+    if (!$cpa) {
+      ddd('CPA Advertise not found');
+    }
+
+    $request = Yii::$app->request;
+    $post = $request->post();
+
+    Yii::$app->logger->add(json_encode($post));
+    $task = new Task();
+    $task->task = 1;
+    $task->param = $cpa->id;
     $task->add_time = time();
     $task->save();
 

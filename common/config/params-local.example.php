@@ -53,6 +53,7 @@ return [
   "performancehorizon"=>[
       "user_api_key"=>"IS6HQNTj",
       "token"=>"AG9wKYuYbV",
+      "publisher_id"=>"1100l32938",//Can be retrieved via the Partnerize console under Settings->Publisher
   ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',

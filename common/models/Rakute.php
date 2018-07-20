@@ -178,7 +178,7 @@ class Rakute {
       d(sprintf("Error connecting to CommissionJunction: [%s] %s ", $errno, curl_error($ch)), $errno);
     }
 
-    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_PerformancehorizonCODE);
     if ($http_status >= 400) {
       d(sprintf("CommissionJunction Error [%s] %s", $http_status, strip_tags($body)), $http_status);
     }
