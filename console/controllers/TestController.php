@@ -124,6 +124,7 @@ class TestController extends Controller
               d(sprintf("Error connecting to Api request token: [%s] %s ", $errno, curl_error($ch)), $errno);
           }
           curl_close($ch);
+          d($response);
           $token = json_decode($response, true);
           if (isset($token['access_token'])) {
               return $token;
@@ -137,6 +138,7 @@ class TestController extends Controller
           ];
           $params = http_build_query($params);
           $url .= '?' . $params;
+          d($url);
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url);
           curl_setopt($ch, CURLOPT_POST, 0);

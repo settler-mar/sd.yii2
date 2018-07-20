@@ -8,9 +8,11 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use filsh\yii2\oauth2server\filters\ErrorToExceptionFilter;
 use filsh\yii2\oauth2server\filters\auth\CompositeAuth;
+use yii\rest\ActiveController;
+use yii\web\Controller;
 
 
-class SiteController extends \yii\web\Controller
+class SiteController extends Controller
 {
 
     /**
@@ -27,9 +29,9 @@ class SiteController extends \yii\web\Controller
                     ['class' => QueryParamAuth::className(), 'tokenParam' => 'access-token'],
                 ]
             ],
-            'exceptionFilter' => [
-                'class' => ErrorToExceptionFilter::className()
-            ],
+//            'exceptionFilter' => [
+//                'class' => ErrorToExceptionFilter::className()
+//            ],
         ]);
 
     }
@@ -37,12 +39,15 @@ class SiteController extends \yii\web\Controller
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
         return parent::beforeAction($action);
     }
 
     public function actionStores()
     {
-        return json_encode(['foo' => 'bar']);
+
+        return ['foo' => 'bar'];
     }
 
 }

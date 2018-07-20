@@ -28,7 +28,7 @@ return [
             //'access_lifetime' => 3600 * 24,
             'storageMap' => [
                // 'user_credentials' => 'frontend\modules\users\models\Users',
-                'user_credentials' => 'api\components\User',
+                'user_credentials' => 'api\models\User',
             ],
             'grantTypes' => [
                 'user_credentials' => [
@@ -44,7 +44,7 @@ return [
     ],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'api\models\User',
             'enableAutoLogin' => false,
         ],
         'log' => [
