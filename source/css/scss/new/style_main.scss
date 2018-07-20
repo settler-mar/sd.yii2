@@ -417,6 +417,10 @@ svg.svg-no-stroke {
 
 .yellow-box {
   background: $yellow_box_bg;
+
+  &-wrap {
+    border-radius: 10px;
+  }
 }
 
 .red_box {
