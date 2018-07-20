@@ -3,6 +3,7 @@
 namespace api\models;
 
 use frontend\modules\users\models\Users;
+use yii;
 
 class User extends Users
 {
@@ -17,15 +18,19 @@ class User extends Users
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $token = OauthAccessTokens::find()->where(['access_token'=>$token])->one();
-        if ($token == null) {
+        //авторизоваться только последним выданным токеном
+        $tokens = OauthAccessTokens::find()
+            ->from(OauthAccessTokens::tableName().' oatl')
+            ->innerJoin(OauthAccessTokens::tableName().' oat', 'oat.client_id = oatl.client_id')
+            ->where(['oat.access_token' => $token])
+            ->orderBy('oatl.expires DESC')
+            ->all();
+        //ddd($tokens);
+        if (count($tokens) == 0 || $tokens[0]->access_token != $token || strtotime($tokens[0]->expires) < time()) {
             return null;
         }
-        if ($token->expires < date('Y-m-d H:i:s')) {
-            //как то надо сообщать, что время истекло?
-            return null;
-        }
-        $user =  static::findOne($token->client->user_id);
+
+        $user =  static::findOne($tokens[0]->client->user_id);
         return $user;
     }
 
