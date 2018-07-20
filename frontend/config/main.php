@@ -173,7 +173,7 @@ $config = [
         'offline-system' => 'site/offline-system',
         'account-blocked' => 'site/accountblocked',
 
-        'fixing/<action:payment|stores>' => 'fixing/<action>',
+        'fixing/<action:payment|stores|paymentph>' => 'fixing/<action>',
 
         'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
         'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',

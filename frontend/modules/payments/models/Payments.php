@@ -50,6 +50,7 @@ class Payments extends \yii\db\ActiveRecord
 
   private $_store;
   //public $store_point_id;
+
   /**
    * @inheritdoc
    */
@@ -64,28 +65,28 @@ class Payments extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-        'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id','rate_id'], 'integer'],
-      [['recalc_json'],'string'],
-      [['user_id'], 'integer', 'on' => 'online'],
-      [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
-        'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
-      [['user_id'], 'filter', 'on' => 'offline', 'filter' => function ($value) {
-        $value = intval(preg_replace('/[^0-9\.]/', '', $value));
-        return $value;
-      }],
-      [['user_id', 'order_price'], 'required'],
-      [['order_id'], 'required', 'on' => 'offline'],
-      [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
-        'on' => 'online'],
-      [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'ref_kurs'],
-          'number','message'=>"Значение должно быть числом.\nКопейки должны отделяться точкой."],
-      [['click_date', 'action_date', 'status_updated', 'closing_date', 'storeName', 'email', 'category'], 'safe'],
+        [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
+            'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id', 'rate_id'], 'integer'],
+        [['recalc_json'], 'string'],
+        [['user_id'], 'integer', 'on' => 'online'],
+        [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
+            'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
+        [['user_id'], 'filter', 'on' => 'offline', 'filter' => function ($value) {
+          $value = intval(preg_replace('/[^0-9\.]/', '', $value));
+          return $value;
+        }],
+        [['user_id', 'order_price'], 'required'],
+        [['order_id'], 'required', 'on' => 'offline'],
+        [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
+            'on' => 'online'],
+        [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'ref_kurs'],
+            'number', 'message' => "Значение должно быть числом.\nКопейки должны отделяться точкой."],
+        [['click_date', 'action_date', 'status_updated', 'closing_date', 'storeName', 'email', 'category'], 'safe'],
 
-      [['order_id'], 'string', 'max' => 50],
-      [['admin_comment'], 'string', 'max' => 255],
-      [['category'], 'required', 'on' => 'offline', 'message' => 'Необходимо выбрать "Категория покупки"'],
-      [['category'], 'integer'],
+        [['order_id'], 'string', 'max' => 50],
+        [['admin_comment'], 'string', 'max' => 255],
+        [['category'], 'required', 'on' => 'offline', 'message' => 'Необходимо выбрать "Категория покупки"'],
+        [['category'], 'integer'],
     ];
   }
 
@@ -95,43 +96,43 @@ class Payments extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'uid' => 'ID',
-      'admin_comment' => 'Коментарий администратора',
-      'is_showed' => 'Is Showed',
-      'action_id' => 'Код действия',
-      'affiliate_id' => 'Affiliate ID (Код связанной CPA)',
-      'user_id' => 'Пользователь',
-      'order_price' => 'Сумма заказа',
-      'old_order_price' => 'Old Order Price',
-      'reward' => 'Вознаграждение',
-      'old_reward' => 'Старое Вознаграждение',
-      'cashback' => 'Кэшбэк',
-      'status' => 'Статус',
-      'click_date' => 'Дата покупки',
-      'action_date' => 'Action Date',
-      'status_updated' => 'Status Updated',
-      'closing_date' => 'Closing Date',
-      'cpa_id' => 'CPA ID',
-      'additional_id' => 'Additional ID (Вспомогательный код для тарифа)',
-      'ref_bonus_id' => 'Ref Bonus ID',
-      'ref_bonus' => 'Кэшбэк бонус',
-      'ref_id' => 'Ref ID',
-      'loyalty_status' => 'Loyalty Status',
-      'order_id' => 'Номер заказа',
-      'shop_percent' => 'Shop Percent',
-      'kurs' => 'kurs',
-      'storeName' => 'Название магазина',
-      'store_point_id' => 'ID точки продаж',
-      'storePointName' => 'Точка продаж',
+        'uid' => 'ID',
+        'admin_comment' => 'Коментарий администратора',
+        'is_showed' => 'Is Showed',
+        'action_id' => 'Код действия',
+        'affiliate_id' => 'Affiliate ID (Код связанной CPA)',
+        'user_id' => 'Пользователь',
+        'order_price' => 'Сумма заказа',
+        'old_order_price' => 'Old Order Price',
+        'reward' => 'Вознаграждение',
+        'old_reward' => 'Старое Вознаграждение',
+        'cashback' => 'Кэшбэк',
+        'status' => 'Статус',
+        'click_date' => 'Дата покупки',
+        'action_date' => 'Action Date',
+        'status_updated' => 'Status Updated',
+        'closing_date' => 'Closing Date',
+        'cpa_id' => 'CPA ID',
+        'additional_id' => 'Additional ID (Вспомогательный код для тарифа)',
+        'ref_bonus_id' => 'Ref Bonus ID',
+        'ref_bonus' => 'Кэшбэк бонус',
+        'ref_id' => 'Ref ID',
+        'loyalty_status' => 'Loyalty Status',
+        'order_id' => 'Номер заказа',
+        'shop_percent' => 'Shop Percent',
+        'kurs' => 'kurs',
+        'storeName' => 'Название магазина',
+        'store_point_id' => 'ID точки продаж',
+        'storePointName' => 'Точка продаж',
     ];
   }
 
 
   public function beforeValidate()
   {
-    if(!$this->ref_bonus_id)$this->ref_bonus_id=0;
+    if (!$this->ref_bonus_id) $this->ref_bonus_id = 0;
 
-    if($this->isNewRecord) {
+    if ($this->isNewRecord) {
       //для оффлайн шопов с формы
       if ($this->scenario == 'offline') {
         if (!$this->_store) {
@@ -147,8 +148,8 @@ class Payments extends \yii\db\ActiveRecord
         }
 
         $action = StoresActions::findOne([
-          'uid' => $this->category,
-          'cpa_link_id' => $store->cpaLink->id,
+            'uid' => $this->category,
+            'cpa_link_id' => $store->cpaLink->id,
         ]);
         if (!$action) {
           Yii::$app->session->addFlash('err', 'Ошибка - неправильная категория');
@@ -177,16 +178,16 @@ class Payments extends \yii\db\ActiveRecord
         $this->action_code = $action->uid;
 
         $tariff = $action->getTariffs()
-          ->orderBy('uid')
-          ->one();
+            ->orderBy('uid')
+            ->one();
         if (!$tariff) {
           Yii::$app->session->addFlash('err', 'Ошибка - не найден тариф для категории');
           return false;
         }
         $rates = $tariff->getRates()
-          ->where(['<', 'date_s', date("Y-m-d H:i:s")])
-          //->orderBy(['date_s DESC','uid'])
-          ->one();
+            ->where(['<', 'date_s', date("Y-m-d H:i:s")])
+            //->orderBy(['date_s DESC','uid'])
+            ->one();
         if (!$rates) {
           Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
           return false;
@@ -194,7 +195,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
         $this->rate_id = $rates->uid;
 
-        $this->updateRecalcJson($action,$tariff,$rates);
+        $this->updateRecalcJson($action, $tariff, $rates);
 
         if ($rates->is_percentage) {
           $reward = $this->order_price * $rates->size * $this->kurs / 100;
@@ -234,15 +235,15 @@ class Payments extends \yii\db\ActiveRecord
   public function beforeSave($insert)
   {
     if (
-      !$this->isNewRecord &&
-      $this->oldAttributes['order_price'] != $this->order_price
+        !$this->isNewRecord &&
+        $this->oldAttributes['order_price'] != $this->order_price
     ) {
       $this->old_order_price = $this->oldAttributes['order_price'];
     }
 
     if (
-      !$this->isNewRecord &&
-      $this->oldAttributes['reward'] != $this->reward
+        !$this->isNewRecord &&
+        $this->oldAttributes['reward'] != $this->reward
     ) {
       $this->old_reward = $this->oldAttributes['reward'];
     }
@@ -273,15 +274,15 @@ class Payments extends \yii\db\ActiveRecord
   public function getStore()
   {
     return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
-      ->via('cpaLink');
+        ->via('cpaLink');
   }
 
   public function getStoreName()
   {
-    if(!$this->_store){
-      $this->_store=$this->store;
+    if (!$this->_store) {
+      $this->_store = $this->store;
     }
-    if(!$this->_store){
+    if (!$this->_store) {
       //ddd($this);
       return "err";
     };
@@ -291,10 +292,10 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getStoreCur()
   {
-    if(!$this->_store){
-      $this->_store=$this->store;
+    if (!$this->_store) {
+      $this->_store = $this->store;
     }
-    if(!$this->_store){
+    if (!$this->_store) {
       return "err";
     };
     return $this->store->currency;
@@ -343,78 +344,79 @@ class Payments extends \yii\db\ActiveRecord
   public function getStoresPointText()
   {
     $point = $this->getStoresPoint()->one();
-    return $point->name.', '.$point->country.', '.$point->city.', '.$point->address;
+    return $point->name . ', ' . $point->country . ', ' . $point->city . ', ' . $point->address;
   }
 
-  public function updateRecalcJson($action=false,$tariff=false,$rates=false)
+  public function updateRecalcJson($action = false, $tariff = false, $rates = false)
   {
-    if(!$rates){
-      $rates=TariffsRates::find()
-        ->where(['uid'=>$this->rate_id])
-        ->one();
+    if (!$rates) {
+      $rates = TariffsRates::find()
+          ->where(['uid' => $this->rate_id])
+          ->one();
     }
 
-    if(!$action){
-      $action=StoresActions::find()
-        ->where(['action_id'=>$this->action_code])
-        ->one();
+    if (!$action) {
+      $action = StoresActions::find()
+          ->where(['action_id' => $this->action_code])
+          ->one();
     }
 
-    if(!$tariff && $action && $rates){
+    if (!$tariff && $action && $rates) {
       $tariff = $rates->getTariff()
-        ->one();
+          ->one();
     }
 
-    if(!$action || !$tariff || !$rates){
+    if (!$action || !$tariff || !$rates) {
       return false;
     }
 
-    $action=$action->toArray();
-    $tariff=$tariff->toArray();
-    $rates=$rates->toArray();
+    $action = $action->toArray();
+    $tariff = $tariff->toArray();
+    $rates = $rates->toArray();
 
-    $recalc_json=[
-      'action' => [
-        'uid'=>$action['uid'],
-        'name' => $action['name']
-      ],
-      'tariff' => [
-        'uid'=>$tariff['uid'],
-        'name' => $tariff['name']
-      ],
-      'rate' => $rates,
+    $recalc_json = [
+        'action' => [
+            'uid' => $action['uid'],
+            'name' => $action['name']
+        ],
+        'tariff' => [
+            'uid' => $tariff['uid'],
+            'name' => $tariff['name']
+        ],
+        'rate' => $rates,
     ];
     $this->recalc_json = json_encode($recalc_json);
   }
 
-  public function getTariffText(){
-    if(!$this->recalc_json || strlen($this->recalc_json)<5){
+  public function getTariffText()
+  {
+    if (!$this->recalc_json || strlen($this->recalc_json) < 5) {
       return "Нет данных";
     }
 
-    $data=json_decode($this->recalc_json,true);
-    if(!$this->_store){
-      $this->_store=$this->store;
+    $data = json_decode($this->recalc_json, true);
+    if (!$this->_store) {
+      $this->_store = $this->store;
     }
-    if(!$this->_store){
+    if (!$this->_store) {
       return "ERR";
     }
 
-    $out=$this->_store->is_offline?$data['action']['name']:$data['tariff']['name'];
-    $suf=$data['rate']['is_percentage']?'%':$this->_store->currency;
-    $out.=' (вознаграждение: ';
-    $out.=$data['rate']['size'].$suf;
-    $out.='; кэшбек: ';
-    $out.=$data['rate']['our_size'].$suf;
-    $out.=')';
+    $out = $this->_store->is_offline ? $data['action']['name'] : $data['tariff']['name'];
+    $suf = $data['rate']['is_percentage'] ? '%' : $this->_store->currency;
+    $out .= ' (вознаграждение: ';
+    $out .= $data['rate']['size'] . $suf;
+    $out .= '; кэшбек: ';
+    $out .= $data['rate']['our_size'] . $suf;
+    $out .= ')';
     return $out;
   }
 
   public static function recalcCashback($id, $newPrice)
   {
     $payment = self::findOne($id);
-    if (!$payment || empty($payment->recalc_json) || strlen($payment->recalc_json)<5) {
-      return  null;
+    if (!$payment || empty($payment->recalc_json) || strlen($payment->recalc_json) < 5) {
+      return null;
     }
     $newPrice = round($newPrice, 2);
     $recalc = json_decode($payment->recalc_json, true);
@@ -432,233 +434,237 @@ class Payments extends \yii\db\ActiveRecord
     }
     $reward = round($reward, 2);
     $cashback = round($cashback, 2);
-      return [
-      'reward' => $reward,
-      'cashback' => $cashback,
-      'order_price' => $newPrice
+    return [
+        'reward' => $reward,
+        'cashback' => $cashback,
+        'order_price' => $newPrice
     ];
   }
 
-    /**
-     * @param $payment
-     * @param null $store
-     * @param null $user
-     * @param null $ref
-     * @param array $params - что обновлять при обновлении, если не задано то всё
-     * @return array
-     */
-    public static function makeOrUpdate($payment, $store, $user = null, $ref = null, $options = [],  $params=[])
-    {
+  /**
+   * @param $payment
+   * @param null $store
+   * @param null $user
+   * @param null $ref
+   * @param array $params - что обновлять при обновлении, если не задано то всё
+   * @return array
+   */
+  public static function makeOrUpdate($payment, $store, $user = null, $ref = null, $options = [], $params = [])
+  {
+    $saveStatus = false;
+    $newRecord = false;
+    $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
+    $email = isset($options['email']) && $options['email'] === false ? false : true;
+
+    if (isset($payment['positions']) && isset($payment['positions'][0]) && isset($payment['positions'][0]['rate_id'])) {
+      $rate = TariffsRates::find()
+          ->where(['id_rate' => $payment['positions'][0]['rate_id']])
+          ->one();
+      if ($rate) {
+        $rate_id = $rate->uid;
+      } else {
+        $rate_id = 0;
+      }
+    } else {
+      $rate_id = 0;
+    }
+
+    $db_payment = self::findOne(['action_id' => $payment['action_id'], 'affiliate_id' => $payment['affiliate_id']]);
+    //$db_payment = self::findOne(['action_id' => $payment['action_id']]);
+    if (!$db_payment) {
+      //если не задан шоп но ищем
+      $newRecord = true;
+      //не задан юсер то ищем
+      $user = $user ? $user : Users::findOne(['uid' => $payment['subid']]);
+
+      if (!$store || !$user) {
+        return [
+            'payment' => null,
+            'save_status' => false,
+            'new_record' => true,
+            'remove_ref_bonus' => false,
+        ];
+      }
+      //не задан реф и имеется rererrer_id у юсера то ищем
+      $ref = $ref ? $ref : ($user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null);
+
+      $db_payment = new self(['scenario' => 'online']);
+
+      $userCashback = self::userCashback($db_payment, $payment, true, $user, $store, $ref);
+
+      $db_payment->action_id = $payment['action_id'];
+      $db_payment->is_showed = 1;
+      $db_payment->user_id = $payment['subid'];
+      $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
+      $db_payment->reward = $userCashback['reward'];//$reward;
+      $db_payment->cashback = $userCashback['cashback'];
+      $db_payment->status = $payment['status'];
+      $db_payment->affiliate_id = $payment['affiliate_id'];
+      $db_payment->cpa_id = $payment['cpa_id'];
+      $db_payment->click_date = $payment['click_date'];
+      $db_payment->action_date = $payment['action_date'];
+      $db_payment->status_updated = $payment['status_updated'];
+      $db_payment->closing_date = $payment['closing_date'];
+      if (isset($payment['ip'])) $db_payment->ip = $payment['ip'];
+      if (isset($payment['product_country_code'])) {
+        $db_payment->additional_id = $payment['product_country_code'];
+      }
+      $db_payment->loyalty_status = $user->loyalty_status;
+      $db_payment->shop_percent = $store->percent;
+      $db_payment->order_id = $payment['order_id'];
+      $db_payment->kurs = $userCashback['kurs'];
+      $db_payment->action_code = $payment['tariff_id'];
+      $db_payment->rate_id = $rate_id;
+
+      if ($ref) {
+        $db_payment->ref_id = $user->referrer_id;
+        $db_payment->ref_bonus_id = $ref->bonus_status;
+        $db_payment->ref_kurs = $userCashback['ref_kurs'];
+        $db_payment->ref_bonus = $userCashback['ref_bonus'];
+      }
+
+      if (!$db_payment->closing_date) {
+        $time = strtotime($payment['action_date']);
+        $time += $store->hold_time * 24 * 60 * 60;
+        $db_payment->closing_date = date("Y-m-d H:i:s", $time);
+      }
+      $saveStatus = $db_payment->save();
+      if ($saveStatus && $notify) {
+        self::makeNotification($payment['subid'], [
+            'type_id' => 1,
+            'status' => $db_payment->status,
+            'amount' => $db_payment->cashback,
+            'payment_id' => $db_payment->uid,
+        ]);
+      }
+      if ($saveStatus && $email) {
+        try {
+          Yii::$app
+              ->mailer
+              ->compose(
+                  ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
+                  [
+                      'user' => $user,
+                      'payment' => $db_payment,
+                  ]
+              )
+              ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+              ->setTo($user->email)
+              ->setSubject(Yii::$app->name . ': Зафиксирован новый кэшбэк')
+              ->send();
+        } catch (\Exception $e) {
+        }
+      }
+    } else {
+      //обновляем старый платеж
+      $userCashback = self::userCashback($db_payment, $payment);
+
+      $db_payment->kurs = $db_payment->kurs ? $db_payment->kurs : $userCashback['kurs'];
+
+      if (isset($payment['ip'])) $db_payment->ip = $payment['ip'];
+      //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
+      if ($db_payment->status == 2) {
+
+        if ($db_payment->status != $payment['status']) {
+          $db_payment->status = $payment['status'];
+          Yii::$app->logger->add($payment, 'payment_status_wrong', false);
+          Notifications::deleteAll([
+              'payment_id' => $db_payment->uid,
+              'type_id' => 3
+          ]);
+        }
+        //через врямя удалить
+        $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
+        $db_payment->rate_id = $rate_id;
+      } else {
+
+        $db_payment->reward = $userCashback['reward'];
+        $db_payment->cashback = $userCashback['cashback'];
+        $db_payment->status = $payment['status'];
+
+        if ($db_payment->ref_id) {
+          $db_payment->ref_bonus = $userCashback['ref_bonus'];
+        }
+      }
+      if (count($db_payment->getDirtyAttributes()) > 0) {
+        $saveStatus = $db_payment->save();
+      } else {
         $saveStatus = false;
-        $newRecord = false;
-        $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
-        $email = isset($options['email']) && $options['email'] === false ? false : true;
+      }
+      if ($saveStatus && $notify && $user->referrer_id > 0 && $db_payment->status == 2) {
+        self::makeNotification($user->referrer_id, [
+            'type_id' => 3,
+            'status' => $db_payment->status,
+            'amount' => $db_payment->ref_bonus,
+            'payment_id' => $db_payment->uid,
+        ]);
+      }
+    }
+    //ddd($db_payment);
+    return [
+        'payment' => $db_payment,
+        'save_status' => $saveStatus,
+        'new_record' => $newRecord,
+    ];
 
-        if ($payment['positions'] && $payment['positions'][0] && $payment['positions'][0]['rate_id']) {
-            $rate = TariffsRates::find()
-                ->where(['id_rate' => $payment['positions'][0]['rate_id']])
-                ->one();
-            if ($rate) {
-                $rate_id = $rate->uid;
-            } else {
-                $rate_id = 0;
-            }
-        } else {
-            $rate_id = 0;
-        }
+  }
 
-        $db_payment = self::findOne(['action_id' => $payment['action_id'], 'affiliate_id' => $payment['affiliate_id']]);
-        //$db_payment = self::findOne(['action_id' => $payment['action_id']]);
-        if (!$db_payment) {
-            //если не задан шоп но ищем
-            $newRecord = true;
-            //не задан юсер то ищем
-            $user = $user ? $user : Users::findOne(['uid' => $payment['subid']]);
+  /**
+   * @param $userId
+   * @param $data
+   */
+  protected static function makeNotification($userId, $data)
+  {
+    //Создаем нотификацию
+    $notifi = new Notifications();
+    $notifi->user_id = $userId;
+    $notifi->type_id = $data['type_id'];
+    $notifi->status = $data['status'];
+    $notifi->amount = $data['amount'];
+    $notifi->payment_id = $data['payment_id'];
+    $notifi->save();
+  }
 
-            if (!$store || !$user) {
-                return [
-                    'payment' => null,
-                    'save_status' => false,
-                    'new_record' => true,
-                    'remove_ref_bonus' => false,
-                ];
-            }
-            //не задан реф и имеется rererrer_id у юсера то ищем
-            $ref = $ref ? $ref : ($user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null);
+  protected static function userCashback($db_payment, $payment, $new = false, $user = null, $store = null, $ref = null)
+  {
+    $percent = $new ? $store->percent : $db_payment->shop_percent;
 
-            $db_payment = new self(['scenario' => 'online']);
-
-            $userCashback = self::userCashback($db_payment, $payment, true, $user, $store, $ref);
-
-            $db_payment->action_id = $payment['action_id'];
-            $db_payment->is_showed = 1;
-            $db_payment->user_id = $payment['subid'];
-            $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
-            $db_payment->reward = $userCashback['reward'];//$reward;
-            $db_payment->cashback = $userCashback['cashback'];
-            $db_payment->status = $payment['status'];
-            $db_payment->affiliate_id = $payment['affiliate_id'];
-            $db_payment->cpa_id = $payment['cpa_id'];
-            $db_payment->click_date = $payment['click_date'];
-            $db_payment->action_date = $payment['action_date'];
-            $db_payment->status_updated = $payment['status_updated'];
-            $db_payment->closing_date = $payment['closing_date'];
-            if (isset($payment['product_country_code'])) {
-                $db_payment->additional_id = $payment['product_country_code'];
-            }
-            $db_payment->loyalty_status = $user->loyalty_status;
-            $db_payment->shop_percent = $store->percent;
-            $db_payment->order_id = $payment['order_id'];
-            $db_payment->kurs = $userCashback['kurs'];
-            $db_payment->action_code = $payment['tariff_id'];
-            $db_payment->rate_id = $rate_id;
-
-            if ($ref) {
-                $db_payment->ref_id = $user->referrer_id;
-                $db_payment->ref_bonus_id = $ref->bonus_status;
-                $db_payment->ref_kurs = $userCashback['ref_kurs'];
-                $db_payment->ref_bonus = $userCashback['ref_bonus'];
-            }
-
-            if (!$db_payment->closing_date) {
-                $time = strtotime($payment['action_date']);
-                $time += $store->hold_time * 24 * 60 * 60;
-                $db_payment->closing_date = date("Y-m-d H:i:s", $time);
-            }
-            $saveStatus = $db_payment->save();
-            if ($saveStatus && $notify) {
-                self::makeNotification($payment['subid'], [
-                    'type_id' => 1,
-                    'status' => $db_payment->status,
-                    'amount' => $db_payment->cashback,
-                    'payment_id' => $db_payment->uid,
-                ]);
-            }
-            if ($saveStatus && $email) {
-                try {
-                    Yii::$app
-                        ->mailer
-                        ->compose(
-                            ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
-                            [
-                                'user' => $user,
-                                'payment' => $db_payment,
-                            ]
-                        )
-                        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-                        ->setTo($user->email)
-                        ->setSubject(Yii::$app->name . ': Зафиксирован новый кэшбэк')
-                        ->send();
-                } catch (\Exception $e) {
-                }
-            }
-        } else {
-            //обновляем старый платеж
-            $userCashback = self::userCashback($db_payment, $payment);
-
-            $db_payment->kurs = $db_payment->kurs ? $db_payment->kurs : $userCashback['kurs'];
-
-            //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
-            if ($db_payment->status == 2) {
-
-                if($db_payment->status!=$payment['status']){
-                    $db_payment->status=$payment['status'];
-                    Yii::$app->logger->add($payment,'payment_status_wrong',false);
-                    Notifications::deleteAll([
-                        'payment_id'=>$db_payment->uid,
-                        'type_id'=>3
-                    ]);
-                }
-                //через врямя удалить
-                $db_payment->action_code = $payment['tariff_id']; //нужно для заполнения поля тарифа
-                $db_payment->rate_id = $rate_id;
-            } else {
-
-                $db_payment->reward = $userCashback['reward'];
-                $db_payment->cashback = $userCashback['cashback'];
-                $db_payment->status = $payment['status'];
-
-                if ($db_payment->ref_id) {
-                    $db_payment->ref_bonus = $userCashback['ref_bonus'];
-                }
-            }
-            if (count($db_payment->getDirtyAttributes()) > 0) {
-                $saveStatus = $db_payment->save();
-            } else {
-                $saveStatus = false;
-            }
-            if ($saveStatus && $notify && $user->referrer_id > 0 && $db_payment->status == 2) {
-                self::makeNotification($user->referrer_id, [
-                    'type_id' => 3,
-                    'status' => $db_payment->status,
-                    'amount' => $db_payment->ref_bonus,
-                    'payment_id' => $db_payment->uid,
-                ]);
-            }
-        }
-        return [
-            'payment' => $db_payment,
-            'save_status' => $saveStatus,
-            'new_record' => $newRecord,
-        ];
-
+    $kurs = $new ? Yii::$app->conversion->getCurs($user->currency, $payment['currency'])
+        : $db_payment->kurs;
+    //в старых платежах нет курса. Получаем его косвенно
+    if (!$kurs) {
+      $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
     }
 
-    /**
-     * @param $userId
-     * @param $data
-     */
-    protected static function makeNotification($userId, $data)
-    {
-        //Создаем нотификацию
-        $notifi = new Notifications();
-        $notifi->user_id = $userId;
-        $notifi->type_id = $data['type_id'];
-        $notifi->status = $data['status'];
-        $notifi->amount = $data['amount'];
-        $notifi->payment_id =$data['payment_id'];
-        $notifi->save();
+    //ddd($kurs);
+    $loyalty_bonus = $new ? $user->loyalty_status_data['bonus'] :
+        Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
+
+    $reward = $kurs * $payment['payment'];
+
+    $cashback = $reward * $percent / 100;
+    $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+
+    if ($ref || (!$new && $db_payment->ref_id)) {
+      $ref_kurs = $new ? Yii::$app->conversion->getCurs($ref->currency, $user->currency) : $db_payment->ref_kurs;;
+      $ref_kurs = $ref_kurs ? $ref_kurs : 1;
+
+      $ref_bonus_data = $new ? $ref->bonus_status_data :
+          Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
+
+      if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
+        $ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
+      } else {
+        $ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs / 100;
+      }
     }
-
-    protected static function userCashback($db_payment, $payment, $new = false, $user=null, $store=null, $ref=null)
-    {
-        $percent = $new ? $store->percent : $db_payment->shop_percent;
-
-        $kurs = $new ? Yii::$app->conversion->getCurs($user->currency, $payment['currency'])
-            : $db_payment->kurs;
-        //в старых платежах нет курса. Получаем его косвенно
-        if (!$kurs) {
-            $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
-        }
-
-        $loyalty_bonus = $new ? $user->loyalty_status_data['bonus'] :
-            Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
-
-        $reward = $kurs * $payment['payment'];
-
-        $cashback = $reward * $percent / 100;
-        $cashback = $cashback + $cashback * $loyalty_bonus / 100;
-
-        if ($ref || (!$new && $db_payment->ref_id)) {
-            $ref_kurs = $new ? Yii::$app->conversion->getCurs($ref->currency, $user->currency): $db_payment->ref_kurs;;
-            $ref_kurs = $ref_kurs ? $ref_kurs : 1;
-
-            $ref_bonus_data = $new ? $ref->bonus_status_data :
-                Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];
-
-            if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-                $ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] * $ref_kurs / 100;
-            } else {
-                $ref_bonus = $cashback * $ref_bonus_data['bonus'] * $ref_kurs / 100;
-            }
-        }
-        return [
-            'cashback' => round($cashback, 2),
-            'reward' => round($reward, 2),
-            'kurs' => $kurs,
-            'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2) : null,
-            'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
-        ];
-    }
+    return [
+        'cashback' => round($cashback, 2),
+        'reward' => round($reward, 2),
+        'kurs' => $kurs,
+        'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2) : null,
+        'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
+    ];
+  }
 
 }
