@@ -15,24 +15,17 @@ return [
     'modules' => [
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
-            //'tokenParamName' => 'accessToken',
-            //'tokenAccessLifetime' => 3600 * 24,
             'options' => [
-                'tokenParamName' => 'accessToken',
-                'tokenAccessLifetime' => 3600 * 24,
-                'token_param_name' => 'accessToken',
+             //   'token_param_name' => 'accessToken',
                 'access_lifetime' => 3600 * 24,
-                //'allow_credentials_in_request_body' => false,
             ],
-           // 'token_param_name' => 'access_token',
-            //'access_lifetime' => 3600 * 24,
             'storageMap' => [
-               // 'user_credentials' => 'frontend\modules\users\models\Users',
-                'user_credentials' => 'api\models\User',
+               // 'user_credentials' => 'api\models\User',
             ],
             'grantTypes' => [
                 'user_credentials' => [
-                    'class' => 'OAuth2\GrantType\UserCredentials',
+                    //'class' => 'OAuth2\GrantType\UserCredentials',
+                    'class' => 'api\components\UserCredentials',
 
                 ],
                 'refresh_token' => [
@@ -62,10 +55,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '<action:stores|payments>' => 'site/<action>',
-                //'/' => 'site/index'
                 'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
-
-
             ],
         ],
         'session' => [

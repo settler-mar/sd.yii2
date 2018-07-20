@@ -105,8 +105,6 @@ class TestController extends Controller
           $url = 'sdapi/oauth2/default/token';
           $params = [
               'grant_type'=> 'password',
-              'username'=>'someuser',
-              'password'=> 'somepass',
               'client_id'=>'testclient',
               'client_secret'=>'testpass'
           ];
