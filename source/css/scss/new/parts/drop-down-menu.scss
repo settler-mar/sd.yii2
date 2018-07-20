@@ -62,7 +62,7 @@
   }
 
   &>li{
-    margin-right: 20px;
+    //margin-right: 20px;
 
     &:first-child {
       @include media($laptop_min) {
@@ -147,6 +147,7 @@
     white-space: nowrap;
     flex-direction: row;
     cursor: pointer;
+    overflow: hidden;
 
 
     &.cat_news {
@@ -170,14 +171,16 @@
     }
 
     @include media($tablets) {
-      font-size: 1.2rem;
+      //font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     @include media($laptop-min) {
       border-bottom: 1px solid $header_border_color;
       cursor: default;
       color: $drop-menu-color-mobile;
-      font-size: 1.2rem;
+      //font-size: 1.2rem;
+      font-size: 1.1rem;
       padding: 6PX 0;
 
       &.link_mobile_bold {
