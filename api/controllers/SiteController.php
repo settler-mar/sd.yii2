@@ -10,11 +10,14 @@ use filsh\yii2\oauth2server\filters\ErrorToExceptionFilter;
 use filsh\yii2\oauth2server\filters\auth\CompositeAuth;
 use yii\rest\ActiveController;
 use yii\web\Controller;
+use frontend\modules\stores\models\Stores;
 
 
 class SiteController extends Controller
 {
 
+    protected $page;
+    protected $onPage;
     /**
      * @inheritdoc
      */
@@ -46,8 +49,33 @@ class SiteController extends Controller
 
     public function actionStores()
     {
+        $this->getRequest();
+        $stores = Stores::find()
+            ->select([
+                'name',
+                'concat("https://secretdiscounter.ru/images/logos/",logo) as logo',
+                'concat("https://secretdiscounter.ru/stores/", route, "?subid='.Yii::$app->user->id.'") as url', //пока непонятно куда ссылка и какого вида
+                'displayed_cashback as cashback',
+                'description',
+                'currency',
+                'hold_time'
+            ])
+            ->where(['is_active' => 1])
+            ->asArray();
+        $count = $stores->count();
+        $stores = $stores->limit($this->onPage)
+            ->offset($this->onPage * ($this->page - 1))
+            ->all();
 
-        return ['foo' => 'bar'];
+        return ['meta' => ['page' => $this->page, 'on-page' => $this->onPage, 'count' => $count], 'stores' => $stores];
+    }
+
+    protected function getRequest()
+    {
+        $request = Yii::$app->request;
+        $this->page = $request->get('page') && (int)$request->get('page') > 0 ? (int)$request->get('page') : 1;
+        $this->onPage = $request->get('on-page') && (int)$request->get('on-page') > 0 ?
+            (int)$request->get('on-page') : 100;
     }
 
 }
