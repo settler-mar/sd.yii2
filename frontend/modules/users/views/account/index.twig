@@ -53,7 +53,7 @@
           <tr>
             <th>ID</th>
             <th>E-mail</th>
-            <th>{{ t('account', 'users_avatar') }}</th>
+            {#<th>{{ t('account', 'users_avatar') }}</th>#}
             <th>{{ t('common', 'date_register') }}</th>
             <th>{{ t('common', 'status_loyalty') }}</th>
             <th>
@@ -77,11 +77,11 @@
                 <td class="email">
                     {{user.email}}
                 </td>
-                <td>
-                  <span class="avatar-wrap">
-                    <img class="avatar-image no_optomize" src="{{ user_avatar }}"/>
-                  </span>
-                </td>
+                {#<td>#}
+                  {#<span class="avatar-wrap">#}
+                    {#<img class="avatar-image no_optomize" src="{{ user_avatar }}"/>#}
+                  {#</span>#}
+                {#</td>#}
                 <td>{{user.added}}</td>
                 <td>
                   {{user.loyalty_status_data.display_name}}
