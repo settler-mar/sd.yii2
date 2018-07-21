@@ -54,7 +54,8 @@ class SiteController extends Controller
             ->select([
                 'name',
                 'concat("https://secretdiscounter.ru/images/logos/",logo) as logo',
-                'concat("https://secretdiscounter.ru/stores/", route, "?subid='.Yii::$app->user->id.'") as url', //пока непонятно куда ссылка и какого вида
+                'url',
+                'concat("'.Yii::$app->params['go_url'].'?route=", route, "&subid='.Yii::$app->user->id.'") as click_url', //пока непонятно куда ссылка и какого вида
                 'displayed_cashback as cashback',
                 'description',
                 'currency',
