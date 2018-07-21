@@ -26,7 +26,11 @@ class User extends Users
             ->orderBy('oatl.expires DESC')
             ->all();
         //ddd($tokens);
-        if (count($tokens) == 0 || $tokens[0]->access_token != $token || strtotime($tokens[0]->expires) < time()) {
+        if (count($tokens) == 0 ||
+            $tokens[0]->access_token != $token ||
+            strtotime($tokens[0]->expires) < time() ||
+            $tokens[0]->client->is_active == 0
+        ) {
             return null;
         }
 

@@ -105,8 +105,8 @@ class TestController extends Controller
           $url = 'sdapi/oauth2/default/token';
           $params = [
               'grant_type'=> 'password',
-              'client_id'=>'testclient',
-              'client_secret'=>'testpass'
+              'client_id'=>'0000074721',
+              'client_secret'=>'7bc5d5e85ffa645c125a2a0a5fe3f9de'
           ];
           $params = http_build_query($params);
 
@@ -147,7 +147,7 @@ class TestController extends Controller
               d(sprintf("Error connecting to Api request data: [%s] %s ", $errno, curl_error($ch)), $errno);
           }
           curl_close($ch);
-          ddd($response);
+          ddd(json_decode($response, true));
       }
 
 

@@ -40,6 +40,7 @@ class OauthClients extends \yii\db\ActiveRecord
             [['redirect_uri'], 'string', 'max' => 1000],
             [['grant_types'], 'string', 'max' => 100],
             [['scope'], 'string', 'max' => 2000],
+            [['is_active'], 'in', 'range' => [0, 1]],
         ];
     }
 
@@ -55,6 +56,7 @@ class OauthClients extends \yii\db\ActiveRecord
             'grant_types' => 'Grant Types',
             'scope' => 'Scope',
             'user_id' => 'User ID',
+            'is_active' => 'Is Active'
         ];
     }
 
@@ -65,6 +67,11 @@ class OauthClients extends \yii\db\ActiveRecord
             $this->grant_types = 'client_credentials authorization_code password implicit';
             $this->client_id = str_pad($this->user_id, 10, "0", STR_PAD_LEFT);
             $this->client_secret = md5(time());
+            $this->is_active = 1;
+        } else {
+            if (empty(Yii::$app->request->post('OauthClients')['is_active'])) {
+                $this->is_active = 0;
+            }
         }
         return parent::beforeValidate();
     }

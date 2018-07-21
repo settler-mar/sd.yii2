@@ -103,6 +103,13 @@
                                 <input class="form-control" id="oauth-client-grant_types" type="text" name="OauthClients[grant_types]" value="{{ api_client.grant_types }}">
                                 <div class="help-block"></div>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label" for="oauth-client-is_active">
+                                    <input id="oauth-client-is_active" type="checkbox" name="OauthClients[is_active]" value="1" {% if api_client.is_active == 1 %}checked{% endif %}>
+                                    Активен
+                                </label>
+                                <div class="help-block"></div>
+                            </div>
                             <input type="submit" class="btn btn-success" value="Изменить" />
 
                         </form>

@@ -22,7 +22,8 @@ class UserCredentials extends OAuthUserCredentials
         $userInfo = OauthClients::find()
             ->where([
                 'client_id' => $request->request("client_id"),
-                'client_secret' => $request->request("client_secret")
+                'client_secret' => $request->request("client_secret"),
+                'is_active' => 1,
             ])
             ->asArray()
             ->one();
