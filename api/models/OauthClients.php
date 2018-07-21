@@ -58,6 +58,17 @@ class OauthClients extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord) {
+            $this->redirect_uri = '-';
+            $this->grant_types = 'client_credentials authorization_code password implicit';
+            $this->client_id = str_pad($this->user_id, 10, "0", STR_PAD_LEFT);
+            $this->client_secret = md5(time());
+        }
+        return parent::beforeValidate();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -82,6 +82,40 @@
                     Пользователь еще не приглашал друзей
                 {% endif %}
             </div>
+            <div class="col-md-12">
+                <h3>API клиент</h3>
+                {% if api_client %}
+                    <div class="">
+                        <form action="admin/users/update-api-client" method="POST">
+                            <input type="hidden" name="OauthClients[user_id]" value="{{ model.uid }}">
+                            <div class="form-group">
+                                <label class="control-label" for="oauth-client-client_id">Client ID</label>
+                                <input class="form-control" id="oauth-client-client_id" type="text" name="OauthClients[client_id]" value="{{ api_client.client_id }}">
+                                <div class="help-block"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="oauth-client-client_secret">Client Secret</label>
+                                <input class="form-control" id="oauth-client-client_secret" type="text" name="OauthClients[client_secret]" value="{{ api_client.client_secret }}">
+                                <div class="help-block"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="oauth-client-grant_types">Grant Types</label>
+                                <input class="form-control" id="oauth-client-grant_types" type="text" name="OauthClients[grant_types]" value="{{ api_client.grant_types }}">
+                                <div class="help-block"></div>
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Изменить" />
+
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="">
+                        <form action="admin/users/create-api-client" method="POST">
+                            <input type="hidden" name="OauthClients[user_id]" value="{{ model.uid }}">
+                            <input type="submit" class="btn btn-primary" value="Создать" />
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </section>
 </div>

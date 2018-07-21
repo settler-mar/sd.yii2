@@ -22,6 +22,7 @@ use yii\helpers\Url;
 use frontend\components\Pagination as SdPagination;
 use yii\widgets\MaskedInput;
 use common\components\Help;
+use api\models\OauthClients;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -408,7 +409,8 @@ class AdminController extends Controller
           "pagination" => $pagination->getPagination('users/admin/update', ['id' => $id]),
           'refs_active' => $refsActive,
           'traffTypeList' => Users::trafficTypeList(),
-          'MaskedInput_class' => MaskedInput::class
+          'MaskedInput_class' => MaskedInput::className(),
+          'api_client' => OauthClients::findOne(['user_id' => $id])
       ]);
     }
   }
@@ -455,6 +457,36 @@ class AdminController extends Controller
       $data['actions'] = Actions::find()->select(['uid', 'name']) ->asArray()->all();
 
       return $this->render('export.twig', $data);
+  }
+
+  public function actionCreateApiClient()
+  {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserEdit')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+
+      $model = new OauthClients();
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          Yii::$app->session->addFlash('info', 'Клиент API создан');
+
+      }
+      return $this->redirect('/admin/users/update?id=' . $model->user_id);
+  }
+
+  public function actionUpdateApiClient()
+  {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserEdit')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+
+      $model = OauthClients::findOne(['user_id' => Yii::$app->request->post('OauthClients')['user_id']]);
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          Yii::$app->session->addFlash('info', 'Клиент API изменён');
+          return $this->redirect('/admin/users/update?id=' . $model->user_id);
+      }
+      return $this->redirect('/admin/users/update?id=' . $model->user_id);
   }
 
   /**
