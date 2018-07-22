@@ -20,8 +20,8 @@ class User extends Users
     {
         //авторизоваться только последним выданным токеном
         $tokens = OauthAccessTokens::find()
-            ->from(OauthAccessTokens::tableName().' oatl')
-            ->innerJoin(OauthAccessTokens::tableName().' oat', 'oat.client_id = oatl.client_id')
+            ->from(OauthAccessTokens::tableName() . ' oatl')
+            ->innerJoin(OauthAccessTokens::tableName() . ' oat', 'oat.client_id = oatl.client_id')
             ->where(['oat.access_token' => $token])
             ->orderBy('oatl.expires DESC')
             ->all();
@@ -34,7 +34,7 @@ class User extends Users
             return null;
         }
 
-        $user =  static::findOne($tokens[0]->client->user_id);
+        $user = static::findOne($tokens[0]->client->user_id);
         return $user;
     }
 

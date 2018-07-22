@@ -106,7 +106,7 @@ class TestController extends Controller
           $params = [
               'grant_type'=> 'password',
               'client_id'=>'0000074721',
-              'client_secret'=>'7bc5d5e85ffa645c125a2a0a5fe3f9de'
+              'client_secret'=>'3438f5ef787e1489d6743a9754dd32da'
           ];
           $params = http_build_query($params);
 

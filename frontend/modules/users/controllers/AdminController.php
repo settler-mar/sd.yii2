@@ -132,6 +132,9 @@ class AdminController extends Controller
         $query->andWhere(['cwau.action_id'=>(int) $get['joined_to']]);
       }
     }
+    if (isset($get['oauth_client']) && $get['oauth_client'] == 1 ) {
+        $query->innerJoin(OauthClients::tableName(). ' oc', 'oc.user_id = cw_users.uid');
+    }
 
 
     $search_range = Yii::$app->request->get('date_range_added');
