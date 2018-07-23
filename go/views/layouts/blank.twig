@@ -41,11 +41,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="shortcut icon" href="/favicon.ico">
+    {#<link rel="apple-touch-icon" href="/apple-touch-icon.png">#}
+    {#<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">#}
+    {#<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">#}
+    {#<link rel="icon" type="image/svg+xml" href="/favicon.svg">#}
+    {#<link rel="shortcut icon" href="/favicon.ico">#}
 
 
     {#{% for style in exclusionCSSheader %}#}
@@ -54,7 +54,7 @@
     {#{% for css_link in minifyCSS %}#}
         {#<link rel="stylesheet" href="{{css_link}}">#}
     {#{% endfor %}#}
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/{{ app.params.css_file }}">
 
     {#{% for scriptH in exclusionJSheader %}#}
         {#<script src="{{scriptH}}"></script>#}
@@ -67,12 +67,12 @@
 <body class=blank>
     {{ content|raw }}
 
-    {% for script in minifyJS %}
-        <script src="{{script}}"></script>
-    {% endfor %}
-    {% for scriptF in exclusionJSfooter %}
-    <script src="{{scriptF}}"></script>
-    {% endfor %}
+    {#{% for script in minifyJS %}#}
+        {#<script src="{{script}}"></script>#}
+    {#{% endfor %}#}
+    {#{% for scriptF in exclusionJSfooter %}#}
+    {#<script src="{{scriptF}}"></script>#}
+    {#{% endfor %}#}
 
     {{   void(this.endBody()) }}
 

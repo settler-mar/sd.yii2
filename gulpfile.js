@@ -46,6 +46,9 @@ var paths = {
       css: './b2b/web/css',
       js: './b2b/web/js'
     },
+    go: {
+      css: './go/web/css'
+    },
     plugin: {
         source: './plugin',
         browsers: {
@@ -85,7 +88,7 @@ gulp.task('default',['server']);
 
 gulp.task('js',['jsadmin', 'js_new']);
 
-gulp.task('css', ['cssadmin', 'css_new']);
+gulp.task('css', ['cssadmin', 'css_new', 'css_go']);
 
 gulp.task('cssadmin',  function() {
   return compileCss('/scss/admin/admin.scss', paths.app.css + '/admin')
@@ -97,6 +100,9 @@ gulp.task('cssb2b', function() {
 
 gulp.task('css_new', function() {
   return compileCss('/scss/new/style_main.scss', paths.app.css)
+});
+gulp.task('css_go', function() {
+  return compileCss('/scss/new/style_go.scss', paths.go.css)
 });
 
 gulp.task('jsadmin', compileJs([

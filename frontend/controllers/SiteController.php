@@ -385,7 +385,7 @@ class SiteController extends SdController
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);
-    ddd($data);
+    //ddd($data);
 
     $this->layout = '@app/views/layouts/blank.twig';
     return $this->render('goto', $data);

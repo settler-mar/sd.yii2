@@ -6,6 +6,7 @@ use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\users\models\Users;
+use frontend\modules\transitions\models\UsersVisits;
 
 class SiteController extends \yii\web\Controller
 {
@@ -14,10 +15,14 @@ class SiteController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
+        if (!in_array($action->id, ['go', 'store'])) {
+            throw new \yii\web\NotFoundHttpException;
+        }
         $validator = new yii\validators\NumberValidator();
         $validatorString  = new yii\validators\StringValidator();
+        $request = Yii::$app->request;
 
-        $path = explode('/', Yii::$app->request->pathInfo);
+        $path = explode('/', $request->pathInfo);
         $subid = (int) Yii::$app->request->get('subid');
         if (!isset($path[1]) || !isset($path[2])
            || !$validatorString->validate($path[1])
@@ -38,6 +43,15 @@ class SiteController extends \yii\web\Controller
         if (!$this->link) {
             throw new \yii\web\NotFoundHttpException;
         }
+        $visit = new UsersVisits();
+        $visit->source = $action->id == 'go' ? UsersVisits::TRANSITION_TYPE_PARTHNER :
+            UsersVisits::TRANSITION_TYPE_PARTHNER_CHECK_COOKIE;
+        $visit->store_id = $this->store->uid;
+        $visit->cpa_link_id = $this->store->active_cpa;
+        $visit->user_id = $user->uid;
+        $visit->subid = $subid ? $subid : null;
+        $visit->save();
+
         return parent::beforeAction($action);
     }
 

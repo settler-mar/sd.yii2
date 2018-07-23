@@ -20,7 +20,12 @@ use frontend\modules\stores\models\CpaLink;
  */
 class UsersVisits extends \yii\db\ActiveRecord
 {
-  /**
+   const TRANSITION_TYPE_STORE = 0;
+   const TRANSITION_TYPE_COUPON = 1;
+   const TRANSITION_TYPE_PARTHNER = 2;
+   const TRANSITION_TYPE_PARTHNER_CHECK_COOKIE = 3;
+
+    /**
    * @inheritdoc
    */
   public static function tableName()
@@ -37,10 +42,13 @@ class UsersVisits extends \yii\db\ActiveRecord
       [['user_id', 'visit_date'], 'required'],
       [['user_id', 'source', 'store_id'], 'integer'],
       [['visit_date'], 'safe'],
+      [['referrer'], 'string', 'max' => 256],
       [['user_ip'], 'string', 'max' => 16],
+      [['user_agent'], 'string'],
     ];
   }
 
+  /**
   /**
    * @inheritdoc
    */
@@ -53,6 +61,8 @@ class UsersVisits extends \yii\db\ActiveRecord
       'visit_date' => 'Visit Date',
       'store_id' => 'Store ID',
       'user_ip' => 'User Ip',
+      'user_agent' => 'User Agent',
+      'referrer' => 'Referrer',
       'cpa_name' => 'Cpa',
     ];
   }
@@ -69,9 +79,13 @@ class UsersVisits extends \yii\db\ActiveRecord
     }
 
     if ($this->isNewRecord) {
-      $this->user_ip = $_SERVER["REMOTE_ADDR"];
+      $this->user_ip = Yii::$app->request->getUserIP();
       $this->visit_date = date('Y-m-d H:i:s');
-      $this->user_id = (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+      $this->user_agent =Yii::$app->request->getUserAgent();
+      $this->referrer = Yii::$app->request->getReferrer();
+      if (empty($this->user_id)) {
+        $this->user_id = (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+      }
     }
     return true;
 
