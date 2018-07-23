@@ -6,6 +6,8 @@ use OAuth2\GrantType\UserCredentials as OauthUserCredentials;
 use OAuth2\RequestInterface;
 use OAuth2\ResponseInterface;
 use api\models\OauthClients;
+use api\models\OauthAccessTokens;
+use OAuth2\ResponseType\AccessTokenInterface;
 
 class UserCredentials extends OAuthUserCredentials
 {
@@ -51,5 +53,13 @@ class UserCredentials extends OAuthUserCredentials
     public function getScope()
     {
         return isset($this->client['scope']) ? $this->client['scope'] : null;
+    }
+
+    public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
+    {
+        //удаляем старые токены
+        OauthAccessTokens::deleteAll(['client_id' => $client_id]);
+
+        return parent::createAccessToken($accessToken, $client_id, $user_id, $scope);
     }
 }

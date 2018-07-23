@@ -19,23 +19,26 @@ class User extends Users
     public static function findIdentityByAccessToken($token, $type = null)
     {
         //авторизоваться только последним выданным токеном
-        $tokens = OauthAccessTokens::find()
-            ->from(OauthAccessTokens::tableName() . ' oatl')
-            ->innerJoin(OauthAccessTokens::tableName() . ' oat', 'oat.client_id = oatl.client_id')
-            ->where(['oat.access_token' => $token])
-            ->orderBy('oatl.expires DESC')
-            ->all();
-        //ddd($tokens);
-        if (count($tokens) == 0 ||
-            $tokens[0]->access_token != $token ||
-            strtotime($tokens[0]->expires) < time() ||
-            $tokens[0]->client->is_active == 0
-        ) {
-            return null;
-        }
+//        $tokens = OauthAccessTokens::find()
+//            ->from(OauthAccessTokens::tableName() . ' oatl')
+//            ->innerJoin(OauthAccessTokens::tableName() . ' oat', 'oat.client_id = oatl.client_id')
+//            ->where(['oat.access_token' => $token])
+//            ->orderBy('oatl.expires DESC')
+//            ->all();
+//        if (count($tokens) == 0 ||
+//            $tokens[0]->access_token != $token ||
+//            strtotime($tokens[0]->expires) < time() ||
+//            $tokens[0]->client->is_active == 0
+//        ) {
+//            return null;
+//        }
 
-        $user = static::findOne($tokens[0]->client->user_id);
-        return $user;
+        //$user = static::findOne($tokens[0]->client->user_id);
+        //теперь для юсера только один токен
+        $token = OauthAccessTokens::findOne(['access_token' => $token]);
+        if ($token) {
+            return static::findOne($token->client->user_id);
+        }
     }
 
 
