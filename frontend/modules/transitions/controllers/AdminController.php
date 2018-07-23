@@ -70,7 +70,16 @@ class AdminController extends Controller
                 return $out;
             },
             'source' => function ($model, $key, $index, $column) {
-                return $model->source == 1 ? 'Купоны' : 'Шопы';
+                switch ($model->source) {
+                    case (UsersVisits::TRANSITION_TYPE_COUPON):
+                        return 'Купоны';
+                    case (UsersVisits::TRANSITION_TYPE_PARTHNER):
+                        return 'Партнёры';
+                    case (UsersVisits::TRANSITION_TYPE_PARTHNER_CHECK_COOKIE):
+                        return 'Партнёры с проверкой';
+                    default:
+                        return 'Шопы';
+                }
             },
             'cpa_name' => function ($model) {
                 return $model->cpaLink->cpa->name;
