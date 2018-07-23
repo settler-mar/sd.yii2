@@ -1,4 +1,5 @@
 <?php
 return [
-    'go-url' => 'https://go.ru'
+    //домен - отработка кликов
+    'go_url' => 'https://go.ru'
 ];
