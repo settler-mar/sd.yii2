@@ -17,7 +17,7 @@ class m180720_120311_add_parram_to_payment extends Migration
 
       $this->addColumn('cw_payments', 'ip', $this->string()->null());
       $this->addColumn('cw_payments', 'sub_id', $this->integer()->null()->defaultValue(0));
-      $this->addColumn('cw_cpa', 'sub_id_template', $this->string()->null()->defaultValue("{{subid}}_{{sub_id2}}"));
+      $this->addColumn('cw_cpa', 'sub_id_template', $this->string()->null()->defaultValue("\{\{subid\}\}_\{\{sub_id2\}\}"));
     }
 
     /**

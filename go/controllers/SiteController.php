@@ -39,7 +39,7 @@ class SiteController extends \yii\web\Controller
         if (!$user) {
             throw new \yii\web\NotFoundHttpException;
         }
-        $this->link = CpaLink::clickUrl($this->store, $user->uid . ($subid > 0 ? '_' . $subid : ''));
+        $this->link = CpaLink::clickUrl($this->store, $user->uid, $subid);
         if (!$this->link) {
             throw new \yii\web\NotFoundHttpException;
         }
