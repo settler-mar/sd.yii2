@@ -55,7 +55,8 @@ class SiteController extends Controller
                 'name',
                 'concat("https://secretdiscounter.ru/images/logos/",logo) as logo',
                 'url',
-                'concat("'.Yii::$app->params['go_url'].'?route=", route, "&subid='.Yii::$app->user->id.'") as click_url', //пока непонятно куда ссылка и какого вида
+                'concat("'.Yii::$app->params['go_url'].'/go/", route, "/'.Yii::$app->user->id.'") as click_url', //пока непонятно куда ссылка и какого вида
+                'concat("'.Yii::$app->params['go_url'].'/store/", route, "/'.Yii::$app->user->id.'") as click_url_addblock', //пока непонятно куда ссылка и какого вида
                 'displayed_cashback as cashback',
                 'description',
                 'currency',

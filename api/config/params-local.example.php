@@ -1,4 +1,4 @@
 <?php
 return [
-    'go-url' => 'sdgo'
+    'go-url' => 'https://go.ru'
 ];
