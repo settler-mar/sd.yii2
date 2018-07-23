@@ -202,70 +202,72 @@ class PerformancehorizonController extends Controller
     $pf=new Performancehorizon();
     $payments = $pf->getPayments($params);
     while ($payments) {
-      foreach ($payments['conversions'] as $payment) {
-        $payment=$payment['conversion_data'];
-        //ddd($payment);
+      if (isset($payments['conversions'])) {
+          foreach ($payments['conversions'] as $payment) {
+              $payment = $payment['conversion_data'];
+              //ddd($payment);
 
-        if (!$payment['publisher_reference'] || (int)$payment['publisher_reference'] == 0) {
-          continue;
-        }
+              if (!$payment['publisher_reference'] || (int)$payment['publisher_reference'] == 0) {
+                  continue;
+              }
 
-        $adm_id=explode('l',$payment['campaign_id']);
-        $adm_id=$adm_id[1];
-        $store = $this->getStore($adm_id);
-        $user = $this->getUserData($payment['publisher_reference']);
+              $adm_id = explode('l', $payment['campaign_id']);
+              $adm_id = $adm_id[1];
+              $store = $this->getStore($adm_id);
+              $user = $this->getUserData($payment['publisher_reference']);
 
-        if (!$store || !$user) {
-          continue;
-        }
+              if (!$store || !$user) {
+                  continue;
+              }
 
-        $status=$payment['conversion_items'][0]['item_status'];
-        $status=isset($pay_status[$status]) ? $pay_status[$status] : 0;
+              $status = $payment['conversion_items'][0]['item_status'];
+              $status = isset($pay_status[$status]) ? $pay_status[$status] : 0;
 
-        $action_id=explode('l',$payment['conversion_id']);
-        $action_id=$action_id[1];
+              $action_id = explode('l', $payment['conversion_id']);
+              $action_id = $action_id[1];
 
-        $paymentsCount++;
-        $payment_sd=[
-          'cpa_id' => $this->cpa_id,
-          'affiliate_id' => $adm_id,
-          'subid'=>$user->uid,
-          'action_id'=>$action_id,
-          'status'=>$status,
-          'ip'=>$payment['referer_ip'],
-          'currency'=>$payment['currency'],//Валюта платежа
-          'cart'=>$payment['conversion_value']['value'],  //Сумма заказа в валюте
-          'payment'=>$payment['conversion_value']['publisher_commission'],  //Наш кешбек в валюте магазина
-          'click_date'=>$payment['click']['set_time'],
-          'action_date'=>$payment['conversion_time'],
-          'status_updated'=>$payment['last_modified'],
-          'closing_date'=>"",
-          'order_id'=>(String)$payment["conversion_reference"],
-          "tariff_id"=>"",
-        ];
+              $paymentsCount++;
+              $payment_sd = [
+                  'cpa_id' => $this->cpa_id,
+                  'affiliate_id' => $adm_id,
+                  'subid' => $user->uid,
+                  'action_id' => $action_id,
+                  'status' => $status,
+                  'ip' => $payment['referer_ip'],
+                  'currency' => $payment['currency'],//Валюта платежа
+                  'cart' => $payment['conversion_value']['value'],  //Сумма заказа в валюте
+                  'payment' => $payment['conversion_value']['publisher_commission'],  //Наш кешбек в валюте магазина
+                  'click_date' => $payment['click']['set_time'],
+                  'action_date' => $payment['conversion_time'],
+                  'status_updated' => $payment['last_modified'],
+                  'closing_date' => "",
+                  'order_id' => (String)$payment["conversion_reference"],
+                  "tariff_id" => "",
+              ];
 
-        //ddd($payment_sd);
-        $paymentStatus = Payments::makeOrUpdate(
-            $payment_sd,
-            $store,
-            $user,
-            $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
-            ['notify' => true, 'email' => true]
-        );
+              //ddd($payment_sd);
+              $paymentStatus = Payments::makeOrUpdate(
+                  $payment_sd,
+                  $store,
+                  $user,
+                  $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+                  ['notify' => true, 'email' => true]
+              );
 
-        if ($paymentStatus['save_status']) {
-          if ($paymentStatus['new_record']) {
-            $inserted++;
-          } else {
-            $updated++;
+              if ($paymentStatus['save_status']) {
+                  if ($paymentStatus['new_record']) {
+                      $inserted++;
+                  } else {
+                      $updated++;
+                  }
+              }
+
+              if (!in_array($user->uid, $users)) {
+                  $users[] = $user->uid;
+              }
+
+
           }
-        }
-
-        if (!in_array($user->uid, $users)) {
-          $users[] = $user->uid;
-        }
-
-
       }
 
       $params['limit']=$payments['limit'];
