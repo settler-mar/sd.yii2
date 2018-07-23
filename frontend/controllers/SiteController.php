@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\Cpa;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\reviews\models\Reviews;
 use frontend\components\SdController;
 use frontend\modules\users\models\Users;
@@ -336,7 +337,7 @@ class SiteController extends SdController
         return $this->redirect('/coupons');
       }
       //$data['link'] = $coupon->goto_link;
-      $data['link'] = $this->makeGotoLink($coupon->goto_link, ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+      $data['link'] = CpaLink::makeGotoLink($coupon->goto_link, ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
 
       $store = $coupon->store_id;
       $coupon->visit++;
@@ -353,26 +354,27 @@ class SiteController extends SdController
     }
 
     if ($data['link'] == '') {
-        $cpaLink = $store->cpaLink;
-        if ($cpaLink && $cpaLink->affiliate_link &&
-            !empty($cpaLink->cpa->name) &&
-            isset(Cpa::$user_id_params[$cpaLink->cpa->name])) {
-            //admitad shareasale sellaction
-            $data['link'] = $this->makeGotoLink(
-                $cpaLink->affiliate_link,
-                [Cpa::$user_id_params[$cpaLink->cpa->name] => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]
-            );
-        } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
-            in_array($cpaLink->cpa->name, Cpa::$user_id_in_template) && $cpaLink->affiliate_link ) {
-            //внешние подключения, cj.com - ссылка в виде шаблона в cpa->affiliate_link
-            $data['link'] = $this->makeOutstandLink($cpaLink->affiliate_link, ['subid' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id]);
-        } else if ($cpaLink && $cpaLink->affiliate_link) {
-            //не опознано cpa  но affiliate_link имеется
-            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-        } else {
-            //нет ничего подставляем store->url
-            $data['link'] = $this->makeGotoLink($store->url,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-        }
+        $data['link'] = CpaLink::clickUrl($store);
+//        $cpaLink = $store->cpaLink;
+//        if ($cpaLink && $cpaLink->affiliate_link &&
+//            !empty($cpaLink->cpa->name) &&
+//            isset(Cpa::$user_id_params[$cpaLink->cpa->name])) {
+//            //admitad shareasale sellaction
+//            $data['link'] = $this->makeGotoLink(
+//                $cpaLink->affiliate_link,
+//                [Cpa::$user_id_params[$cpaLink->cpa->name] => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]
+//            );
+//        } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
+//            in_array($cpaLink->cpa->name, Cpa::$user_id_in_template) && $cpaLink->affiliate_link ) {
+//            //внешние подключения, cj.com - ссылка в виде шаблона в cpa->affiliate_link
+//            $data['link'] = $this->makeOutstandLink($cpaLink->affiliate_link, ['subid' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id]);
+//        } else if ($cpaLink && $cpaLink->affiliate_link) {
+//            //не опознано cpa  но affiliate_link имеется
+//            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+//        } else {
+//            //нет ничего подставляем store->url
+//            $data['link'] = $this->makeGotoLink($store->url,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
+//        }
     }
 
     $data['store'] = $store;
@@ -383,7 +385,7 @@ class SiteController extends SdController
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);
-    //ddd($data);
+    ddd($data);
 
     $this->layout = '@app/views/layouts/blank.twig';
     return $this->render('goto', $data);
@@ -494,39 +496,39 @@ class SiteController extends SdController
 
 
   }
-
-  protected function makeGotoLink($link, $params)
-  {
-      if (!$link) {
-          return '';
-      }
-      if (empty($params)) {
-          return $link;
-      }
-
-      if(strpos($link,"{{") && strpos($link,"}}")){
-        $link=Yii::$app->TwigString->render(
-            $link,
-            $params
-        );
-      }else {
-        $link .= (strpos($link, '?') === false) ? '?' : '&';
-        $link .= http_build_query($params);
-      }
-      return $link;
-  }
-
-    /** cсылки для внешних cpa
-     * @param $paramsOffset
-     * @param array $params
-     * @return mixed|string
-     */
-  protected function makeOutstandLink($offset, $params = [])
-  {
-    $link=$offset;
-    foreach ($params as $key => $value) {
-        $link = str_replace('{{'.$key.'}}', $value, $link);
-    }
-    return $link;
-  }
+//
+//  protected function makeGotoLink($link, $params)
+//  {
+//      if (!$link) {
+//          return '';
+//      }
+//      if (empty($params)) {
+//          return $link;
+//      }
+//
+//      if(strpos($link,"{{") && strpos($link,"}}")){
+//        $link=Yii::$app->TwigString->render(
+//            $link,
+//            $params
+//        );
+//      }else {
+//        $link .= (strpos($link, '?') === false) ? '?' : '&';
+//        $link .= http_build_query($params);
+//      }
+//      return $link;
+//  }
+//
+//    /** cсылки для внешних cpa
+//     * @param $paramsOffset
+//     * @param array $params
+//     * @return mixed|string
+//     */
+//  protected function makeOutstandLink($offset, $params = [])
+//  {
+//    $link=$offset;
+//    foreach ($params as $key => $value) {
+//        $link = str_replace('{{'.$key.'}}', $value, $link);
+//    }
+//    return $link;
+//  }
 }

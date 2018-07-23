@@ -34,10 +34,8 @@ return [
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
-                //'<action:index|stores|payments>' => 'site/<action>'
-                //'/' => 'site/index'
-
-
+                'go/<store>/<user>' => 'site/go',
+                'store/<store>/<user>' => 'site/store',
             ],
         ],
         'session' => [
