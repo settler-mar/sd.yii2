@@ -28,7 +28,7 @@ class TransitionsSearch extends UsersVisits
     {
         return [
             [['uid', 'user_id', 'source', 'store_id','cpa_name', 'watched'], 'integer'],
-            [['visit_date', 'user_ip', 'user_agent', 'referrer'], 'safe'],
+            [['visit_date', 'user_ip', 'user_agent', 'referrer', 'subid'], 'safe'],
             [['visit_date_range'], 'safe'],
             [['visit_date_range'], 'default', 'value' => date('Y-m-d 00:00:00', time()) . ' - ' . date('Y-m-d H:i:s', time())],
         ];
@@ -93,6 +93,7 @@ class TransitionsSearch extends UsersVisits
         $query->andFilterWhere(['like', 'user_ip', $this->user_ip]);
         $query->andFilterWhere(['like', 'user_agent', $this->user_agent]);
         $query->andFilterWhere(['like', 'referrer', $this->referrer]);
+        $query->andFilterWhere(['subid' => $this->subid]);
 
         if (!empty($this->visit_date_range) && strpos($this->visit_date_range, '-') !== false) {
             list($start_date, $end_date) = explode(' - ', $this->visit_date_range);

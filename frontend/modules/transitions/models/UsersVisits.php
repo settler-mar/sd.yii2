@@ -57,6 +57,7 @@ class UsersVisits extends \yii\db\ActiveRecord
     return [
       'uid' => 'Uid',
       'user_id' => 'User ID',
+      'subid' => 'Sub ID',
       'source' => 'Source',
       'visit_date' => 'Visit Date',
       'store_id' => 'Store ID',
