@@ -10,10 +10,12 @@ use Yii;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use app\modules\payments\models\PaymentsSearch;
+use frontend\modules\stores\models\Cpa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\daterange\DateRangePicker;
+use yii\helpers\ArrayHelper;
 
 /**
  * AdminController implements the CRUD actions for Payments model.
@@ -112,6 +114,12 @@ class AdminController extends Controller
     $statWithdraw['success'] = $withdraw->where(['status' => 2])->all();
     $statWithdraw['revoked'] = $withdraw->where(['status' => 1])->all();
 
+    $cpaNames = ArrayHelper::map(Cpa::find()
+        ->select(['cw_cpa.id', 'cw_cpa.name'])
+        ->innerJoin('cw_payments', 'cw_payments.cpa_id = cw_cpa.id')
+        ->groupBy(['id', 'name'])
+        ->asArray()->all(), 'id', 'name');
+
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
@@ -150,6 +158,7 @@ class AdminController extends Controller
       'stats_query' => $statsQuery,
       'stats_result' => $statResults,
       'stats_withdraw' => $statWithdraw,
+      'cpaNames' => $cpaNames,
     ]);
   }
 

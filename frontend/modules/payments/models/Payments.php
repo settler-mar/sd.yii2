@@ -3,6 +3,7 @@
 namespace frontend\modules\payments\models;
 
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresActions;
 use frontend\modules\stores\models\TariffsRates;
@@ -123,6 +124,7 @@ class Payments extends \yii\db\ActiveRecord
         'shop_percent' => 'Shop Percent',
         'kurs' => 'kurs',
         'storeName' => 'Название магазина',
+        'cpaName' => 'CPA',
         'store_point_id' => 'ID точки продаж',
         'storePointName' => 'Точка продаж',
     ];
@@ -272,6 +274,11 @@ class Payments extends \yii\db\ActiveRecord
     return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id', 'cpa_id' => 'cpa_id']);
   }
 
+  public function getCpa()
+  {
+      return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+  }
+
   public function getStore()
   {
     return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
@@ -289,6 +296,11 @@ class Payments extends \yii\db\ActiveRecord
     };
     //return $this->store->name;
     return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '" rel="nofollow noopener">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+  }
+
+  public function getCpaName()
+  {
+      return $this->cpa->name;
   }
 
   public function getStoreCur()

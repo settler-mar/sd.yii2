@@ -15,8 +15,9 @@ use frontend\modules\users\models\Users;
 class PaymentsSearch extends Payments
 {
     public $storeName;
+    public $cpaName;
 
-  public $click_at_range;
+    public $click_at_range;
   /**
      * @inheritdoc
      */
@@ -26,7 +27,8 @@ class PaymentsSearch extends Payments
             [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id', 'ref_id', 'loyalty_status', 'shop_percent'], 'integer'],
             [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs'], 'number'],
             [['click_date', 'action_date', 'status_updated', 'closing_date', 'order_id', 'storeName', 'user_id'], 'safe'],
-          [['click_at_range'], 'safe'],
+            [['click_at_range'], 'safe'],
+            [['cpaName'], 'safe'],
         ];
     }
 
@@ -50,7 +52,9 @@ class PaymentsSearch extends Payments
     {
         $query = Payments::find()
             ->joinWith('store', false)
-            ->joinWith('user', false);
+            ->joinWith('user', false)
+            ->joinWith('cpa', false)
+        ;
 
         $dataProvider = new ActiveDataProvider([
           'query' => $query,
@@ -71,6 +75,10 @@ class PaymentsSearch extends Payments
         $dataProvider->sort->attributes['storeName'] = [
             'asc' => [Stores::tableName() . '.name' => SORT_ASC],
             'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['cpaName'] = [
+            'asc' => ['cw_cpa.name' => SORT_ASC],
+            'desc' => ['cw_cpa.name' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -118,6 +126,9 @@ class PaymentsSearch extends Payments
             Stores::tableName() . '.uid'=>$this->storeName
             ],
         ]);
+      }
+      if ($this->cpaName) {
+          $query->andFilterWhere(['cw_cpa.id' => $this->cpaName]);
       }
 
       if ($this->user_id) {
