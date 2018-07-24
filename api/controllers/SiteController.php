@@ -122,7 +122,7 @@ class SiteController extends Controller
         $this->onPage = $request->get('on-page') && (int)$request->get('on-page') > 0 ?
             (int)$request->get('on-page') : 100;
         $this->dateFrom = $request->get('date-from') && $request->get('date-from') != '' ?
-            $request->get('date-from') : false;
+            date('Y-m-d H:i:s', strtotime($request->get('date-from'))) : false;
     }
 
 }
