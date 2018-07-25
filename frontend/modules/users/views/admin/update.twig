@@ -104,6 +104,11 @@
                                 <div class="help-block"></div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label" for="oauth-client-redirect_uri">Redirect Uri</label>
+                                <input class="form-control" id="oauth-client-redirect_uri" type="text" name="OauthClients[redirect_uri]" value="{{ api_client.redirect_uri }}">
+                                <div class="help-block"></div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label" for="oauth-client-is_active">
                                     <input id="oauth-client-is_active" type="checkbox" name="OauthClients[is_active]" value="1" {% if api_client.is_active == 1 %}checked{% endif %}>
                                     Активен
