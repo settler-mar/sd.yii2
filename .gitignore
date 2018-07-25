@@ -63,6 +63,8 @@ package-lock.json
 /frontend/web/js/stores_list.json
 /frontend/config/params-local.php
 /api/config/start-params.php
+/go/config/params-local.php
+/go/config/start-params.php
 /api/config/params-local.php
 *-local.php
 *.lock
