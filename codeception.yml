@@ -3,6 +3,7 @@ include:
     - common
     - frontend
     - b2b
+    - api
 paths:
     log: console/runtime/logs
 settings:

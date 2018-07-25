@@ -2,6 +2,7 @@
 $twigFunction = require(dirname(dirname(__DIR__)) . '/common/components/twigFunctionList.php');
 $twigFunction['translate'] = '\Yii::t';
 
+include_once(__DIR__ . '/aliases.php');
 include_once(__DIR__ . '/start_param.php');
 $dict = require(__DIR__ . '/dictionary.php');
 $reCaptcha = include_once(__DIR__ . '/recaptcha-local.php');

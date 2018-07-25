@@ -13,7 +13,13 @@ use frontend\modules\actions\models\ActionsActions;
 
 class TestController extends Controller
 {
-
+    public function beforeAction($action)
+    {
+        if (Console::isRunningOnWindows()) {
+            shell_exec('chcp 65001');
+        }
+        return parent::beforeAction($action);
+    }
   /**
    * Тест почты. отправка письма на matuhinmax@mail.ru
    */
@@ -91,4 +97,61 @@ class TestController extends Controller
       ddd($service->test()) ;
 
   }
+
+  public function actionApi()
+  {
+      $cache = Yii::$app->cache;
+      $token = $cache->getOrSet('sdapi_access_token', function () {
+          $url = 'sdapi/oauth2/default/token';
+          $params = [
+              'grant_type'=> 'password',
+              'client_id'=>'testclient',
+              'client_secret'=>'testpass',
+          ];
+          $params = http_build_query($params);
+
+
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $url);
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $response = curl_exec($ch);
+          $errno = curl_errno($ch);
+          if ($errno !== 0) {
+              d(sprintf("Error connecting to Api request token: [%s] %s ", $errno, curl_error($ch)), $errno);
+          }
+          curl_close($ch);
+          d($response);
+          $token = json_decode($response, true);
+          if (isset($token['access_token'])) {
+              return $token;
+          } else return false;
+      });
+      d($token);
+      if ($token && isset($token['access_token'])) {
+          $url = 'sdapi/stores';
+          $params = [
+              'access-token'=> $token['access_token'],
+          ];
+          $params = http_build_query($params);
+          $url .= '?' . $params;
+          d($url);
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $url);
+          curl_setopt($ch, CURLOPT_POST, 0);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $response = curl_exec($ch);
+          $errno = curl_errno($ch);
+          if ($errno !== 0) {
+              d(sprintf("Error connecting to Api request data: [%s] %s ", $errno, curl_error($ch)), $errno);
+          }
+          curl_close($ch);
+          ddd(json_decode($response, true));
+      }
+
+
+  }
+
+
 }

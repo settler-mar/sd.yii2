@@ -17,7 +17,7 @@
     "irc": "irc://irc.freenode.net/yii",
     "source": "https://github.com/yiisoft/yii2"
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "require": {
     "php": ">=5.4.0",
     "yiisoft/yii2": "~2.0.6",
@@ -42,7 +42,8 @@
     "dominus77/yii2-tinymce-widget": "*",
     "webmil/text-language-detect": "dev-master",
     "keltstr/yii2-simplehtmldom": "dev-master",
-    "phpoffice/phpspreadsheet": "dev-master"
+    "phpoffice/phpspreadsheet": "dev-master",
+    "filsh/yii2-oauth2-server": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

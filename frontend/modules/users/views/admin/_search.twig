@@ -58,6 +58,13 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="select_oauth_client">Клиенты API</label>
+        <select name="oauth_client" id="select_oauth_client">
+            <option value="" ></option>
+            <option value="1" {% if get.oauth_client %} selected {% endif %} >Да</option>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="search_sort">Сортировать по</label>
         <select name="sort" id="search_sort">
             <option value="">Выберите поле</option>

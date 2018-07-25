@@ -3,6 +3,7 @@
 namespace frontend\modules\payments\models;
 
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\StoresActions;
 use frontend\modules\stores\models\TariffsRates;
@@ -87,6 +88,7 @@ class Payments extends \yii\db\ActiveRecord
         [['admin_comment'], 'string', 'max' => 255],
         [['category'], 'required', 'on' => 'offline', 'message' => 'Необходимо выбрать "Категория покупки"'],
         [['category'], 'integer'],
+        [['sub_id'], 'integer'],
     ];
   }
 
@@ -122,6 +124,7 @@ class Payments extends \yii\db\ActiveRecord
         'shop_percent' => 'Shop Percent',
         'kurs' => 'kurs',
         'storeName' => 'Название магазина',
+        'cpaName' => 'CPA',
         'store_point_id' => 'ID точки продаж',
         'storePointName' => 'Точка продаж',
     ];
@@ -271,6 +274,11 @@ class Payments extends \yii\db\ActiveRecord
     return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id', 'cpa_id' => 'cpa_id']);
   }
 
+  public function getCpa()
+  {
+      return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+  }
+
   public function getStore()
   {
     return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
@@ -288,6 +296,11 @@ class Payments extends \yii\db\ActiveRecord
     };
     //return $this->store->name;
     return '<a target="_blank" href="/admin/stores/update?id=' . $this->_store->uid . '" rel="nofollow noopener">' . $this->_store->name . ' (' . $this->store->uid . ')</a>';
+  }
+
+  public function getCpaName()
+  {
+      return $this->cpa->name;
   }
 
   public function getStoreCur()
@@ -455,6 +468,11 @@ class Payments extends \yii\db\ActiveRecord
     $newRecord = false;
     $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
     $email = isset($options['email']) && $options['email'] === false ? false : true;
+    if (strpos($payment['subid'], '_') !== false && !isset($payment['sub_id2'])) {
+        $subIds = explode('_', $payment['subid']);
+        $payment['subid'] = $subIds[0];
+        $payment['sub_id2'] = isset($subIds[1]) ? $subIds[1] : 0;
+    }
 
     if (isset($payment['positions']) && isset($payment['positions'][0]) && isset($payment['positions'][0]['rate_id'])) {
       $rate = TariffsRates::find()
@@ -489,12 +507,14 @@ class Payments extends \yii\db\ActiveRecord
       $ref = $ref ? $ref : ($user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null);
 
       $db_payment = new self(['scenario' => 'online']);
+      $db_payment->scenario = 'online';
 
       $userCashback = self::userCashback($db_payment, $payment, true, $user, $store, $ref);
 
       $db_payment->action_id = $payment['action_id'];
       $db_payment->is_showed = 1;
       $db_payment->user_id = $payment['subid'];
+      $db_payment->sub_id = $payment['sub_id2'];
       $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
       $db_payment->reward = $userCashback['reward'];//$reward;
       $db_payment->cashback = $userCashback['cashback'];

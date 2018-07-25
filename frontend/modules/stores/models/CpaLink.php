@@ -89,4 +89,85 @@ class CpaLink extends \yii\db\ActiveRecord
   {
     return $this->hasMany(StoresActions::className(), ['cpa_link_id' => 'id']);
   }
+
+    /**
+     * @param $store
+     * @param bool $userId
+     */
+  public static function clickUrl($store, $userId = false, $subid = false)
+  {
+      $userId = $userId ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+      $cpaLink = $store->cpaLink;
+
+
+      if ($subid && !empty($cpaLink->cpa->sub_id_template)) {
+          //формируем идентификатор пользователя по шаблону в cpa
+          $userLink = str_replace('{{subid}}', $userId, $cpaLink->cpa->sub_id_template);
+          $userLink = str_replace('{{sub_id2}}', $subid, $userLink);
+      } else {
+          //или только $userId
+          $userLink = $userId;
+      }
+
+      if ($cpaLink && $cpaLink->affiliate_link &&
+          !empty($cpaLink->cpa->name) &&
+          isset(Cpa::$user_id_params[$cpaLink->cpa->name])) {
+          //admitad shareasale sellaction
+          $link = self::makeGotoLink(
+              $cpaLink->affiliate_link,
+              [Cpa::$user_id_params[$cpaLink->cpa->name] => $userLink]
+          );
+      } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
+          in_array($cpaLink->cpa->name, Cpa::$user_id_in_template) && $cpaLink->affiliate_link ) {
+          //внешние подключения, cj.com - ссылка в виде шаблона в cpa->affiliate_link
+          $link = self::makeOutstandLink($cpaLink->affiliate_link, ['subid' => $userLink]);
+      } else if ($cpaLink && $cpaLink->affiliate_link) {
+          //не опознано cpa  но affiliate_link имеется
+          $link = self::makeGotoLink($cpaLink->affiliate_link,  ['subid' => $userLink]);
+      } else {
+          //нет ничего подставляем store->url
+          $link = self::makeGotoLink($store->url,  ['subid' => $userLink]);
+      }
+      return $link;
+  }
+
+    /**
+     * @param $link
+     * @param $params
+     * @return string
+     */
+    public static function makeGotoLink($link, $params)
+    {
+        if (!$link) {
+            return '';
+        }
+        if (empty($params)) {
+            return $link;
+        }
+
+        if(strpos($link,"{{") && strpos($link,"}}")){
+            $link=Yii::$app->TwigString->render(
+                $link,
+                $params
+            );
+        }else {
+            $link .= (strpos($link, '?') === false) ? '?' : '&';
+            $link .= http_build_query($params);
+        }
+        return $link;
+    }
+
+    /** cсылки для внешних cpa
+     * @param $paramsOffset
+     * @param array $params
+     * @return mixed|string
+     */
+    protected static function makeOutstandLink($offset, $params = [])
+    {
+        $link=$offset;
+        foreach ($params as $key => $value) {
+            $link = str_replace('{{'.$key.'}}', $value, $link);
+        }
+        return $link;
+    }
 }
