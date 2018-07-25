@@ -9,6 +9,7 @@ use frontend\modules\stores\models\StoresActions;
 use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
 use frontend\modules\notification\models\Notifications;
+use api\models\OauthClients;
 use yii;
 use frontend\modules\cache\models\Cache;
 use b2b\modules\stores_points\models\B2bStoresPoints;
@@ -261,6 +262,12 @@ class Payments extends \yii\db\ActiveRecord
     }
     Cache::clearName('account_payments' . $this->user_id);
     Cache::clearName('account_bonuses' . $this->user_id);
+
+    if (($insert || isset($changedAttributes['status']) && $changedAttributes['status'] != $this->attributes['status'])
+        && !empty($this->user->oauthClient) && !empty($this->user->oauthClient->redirect_uri)) {
+        //новый платёж или поменялся статус, и юсер клиент oauth, и есть redirect_uri
+        OauthClients::paymentCallback($this->user, $this);
+    }
   }
 
   public function afterDelete()

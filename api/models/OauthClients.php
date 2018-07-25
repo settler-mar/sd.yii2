@@ -34,7 +34,7 @@ class OauthClients extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['client_id', 'redirect_uri', 'grant_types'], 'required'],
+            [['client_id', 'grant_types', 'client_secret'], 'required'],
             [['user_id'], 'integer'],
             [['client_id', 'client_secret'], 'string', 'max' => 32],
             [['redirect_uri'], 'string', 'max' => 1000],
@@ -63,7 +63,6 @@ class OauthClients extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         if ($this->isNewRecord) {
-            $this->redirect_uri = '-';
             $this->grant_types = 'client_credentials authorization_code password implicit';
             $this->client_id = str_pad($this->user_id, 10, "0", STR_PAD_LEFT);
             $this->client_secret = md5(time());
@@ -87,16 +86,45 @@ class OauthClients extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-//    public function getOauthAuthorizationCodes()
-//    {
-//        return $this->hasMany(OauthAuthorizationCodes::className(), ['client_id' => 'client_id']);
-//    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getOauthRefreshTokens()
     {
         return $this->hasMany(OauthRefreshTokens::className(), ['client_id' => 'client_id']);
+    }
+
+    /**
+     * коллбэк при получении нового платежа или изменении статуса
+     * @param $client
+     * @param $payment
+     */
+    public static function paymentCallback($user, $payment)
+    {
+        $url = $user->oauthClient->redirect_uri;
+        $params = [
+            'store_id' => $payment->cpaLink->affiliate_id,
+            'action_id' => $payment->action_id,
+            'order_id' => $payment->action_id,
+            'click_date' => $payment->click_date,
+            'action_date' => $payment->action_date,
+            'status_updated' => $payment->status_updated,
+            'closing_date' => $payment->closing_date,
+            'order_price' => $payment->order_price,
+            'store_currency' => $payment->store->currency,
+            'reward' => $payment->reward,
+            'cashback' => $payment->cashback,
+            'user_currency' => $user->currency,
+            'kurs' => $payment->kurs,
+            'user_id' => $user->uid,
+            'sub_id' => $payment->sub_id,
+            'status' => $payment->status == 2 ? "Confirmed" : ($payment->status == 1 ? "Canceled" : "Waiting"),
+        ];
+        $requestParams = http_build_query($params);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $requestParams);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
     }
 }
