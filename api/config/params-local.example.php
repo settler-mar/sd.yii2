@@ -1,5 +1,5 @@
 <?php
 return [
     //домен - отработка кликов
-    'go_url' => 'https://go.ru'
+    'go_url' => 'https://go.secretdiscounter.ru'
 ];

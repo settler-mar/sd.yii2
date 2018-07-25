@@ -10,7 +10,7 @@ namespace common\models;
 class SdApi
 {
     protected $token;
-    protected $url = 'http://sdapi/';//надо поменять на реальный 'http://api.secretdiscounter.ru/'
+    protected $url = 'https://api.secretdiscounter.ru/';
     protected $client_id = 'testclient';//client_id пользователя
     protected $client_secret = 'testpass';//client_secret пользователя
     protected $grant_type = 'password';
@@ -39,11 +39,12 @@ class SdApi
             exit;
         }
         curl_close($ch);
+
         $token = json_decode($response, true);
         if (isset($token['access_token'])) {
             $this->token = $token;
         } else {
-            echo $response;
+            echo "Error connecting to host" . $response . "\n";
             exit;
         }
     }
