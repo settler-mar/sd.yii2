@@ -127,53 +127,54 @@ class PaymentsController extends Controller
     StatIdent Идентификатор позиции заказа string Уникальный идентификатор товара в каждом конкретном заказе клиента.
        Позволяет точно определять перемещение из принятых к обработке в выполненные.
 */
+    if (isset($stat['OrderItems'])) {
+      foreach ($stat['OrderItems'] as $order) {
+          $records++;
+          $user = $this->getUserData((string)$order['AgentId']);
+          if ($user == false) {
+            $noUser++;
+            continue;
+          }
+          if (!in_array($user->uid, $users)) {
+            $users[] = $user->uid;
+          }
 
-    foreach ($stat['OrderItems'] as $order) {
-      $records++;
-      $user = $this->getUserData((string)$order['AgentId']);
-      if ($user == false) {
-        $noUser++;
-        continue;
-      }
-      if (!in_array($user->uid, $users)) {
-        $users[] = $user->uid;
-      }
+          //подогнать под формат платёжа с адмитад пока предварительно !!!!
+          $payment = [
+              'status' => $order['State'] == 'done' ? 2 : (in_array($order['State'], ['canceled', 'wait-canceled']) ? 1 : 0),
+              'subid' => $user->uid,
+              'positions' => false, //для тарифа, видимо так
+              'action_id' => (string)$order['ItemId'],
+              'cart' => (float)$order['Price'] * ($order['Qty'] ? (int)$order['Qty'] : 1),
+              'payment' => (float)$order['Summ'],
+              'click_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
+              'action_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
+              'status_updated' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])),
+              'closing_date' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])), //??
+              'product_country_code' => null, // а может сюда StatIdent ??
+              'order_id' => (string)$order['StatIdent'],// тоже под вопросом??
+              'tariff_id' => null,
+              'currency' => 'RUB',
+              'affiliate_id' => $store->cpaLink->affiliate_id,
+              'cpa_id' => $store->cpaLink->cpa_id
+          ];
 
-      //подогнать под формат платёжа с адмитад пока предварительно !!!!
-      $payment = [
-          'status' => $order['State'] == 'done' ? 2 : (in_array($order['State'], ['canceled', 'wait-canceled']) ? 1 : 0),
-          'subid' => $user->uid,
-          'positions' => false, //для тарифа, видимо так
-          'action_id' => (string)$order['ItemId'],
-          'cart' => (float)$order['Price'] * ($order['Qty'] ? (int)$order['Qty'] : 1),
-          'payment' => (float)$order['Summ'],
-          'click_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
-          'action_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
-          'status_updated' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])),
-          'closing_date' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])), //??
-          'product_country_code' => null, // а может сюда StatIdent ??
-          'order_id' => (string)$order['StatIdent'],// тоже под вопросом??
-          'tariff_id' => null,
-          'currency' => 'RUB',
-          'affiliate_id' => $store->cpaLink->affiliate_id,
-          'cpa_id' => $store->cpaLink->cpa_id
-      ];
+          //d([(string) $order['ItemId'],$payment['status'],$order['State']]);
 
-      //d([(string) $order['ItemId'],$payment['status'],$order['State']]);
-
-      $paymentStatus = Payments::makeOrUpdate(
-          $payment,
-          $store,
-          $user,
-          $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
-          ['notify' => true, 'email' => true]
-      );
-      if ($paymentStatus['save_status']) {
-        if ($paymentStatus['new_record']) {
-          $inserted++;
-        } else {
-          $updated++;
-        }
+          $paymentStatus = Payments::makeOrUpdate(
+              $payment,
+              $store,
+              $user,
+              $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+              ['notify' => true, 'email' => true]
+          );
+          if ($paymentStatus['save_status']) {
+            if ($paymentStatus['new_record']) {
+              $inserted++;
+            } else {
+              $updated++;
+            }
+          }
       }
     }
 
