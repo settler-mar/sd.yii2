@@ -5,6 +5,7 @@ namespace console\controllers;
 use common\models\Admitad;
 use common\models\Travelpayouts;
 use common\models\Advertise;
+use common\models\SdApi;
 use yii\console\Controller;
 use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
@@ -98,60 +99,78 @@ class TestController extends Controller
 
   }
 
-  public function actionApi()
+  public function actionApiStores()
   {
-      $cache = Yii::$app->cache;
-      $token = $cache->getOrSet('sdapi_access_token', function () {
-          $url = 'sdapi/oauth2/default/token';
-          $params = [
-              'grant_type'=> 'password',
-              'client_id'=>'testclient',
-              'client_secret'=>'testpass',
-          ];
-          $params = http_build_query($params);
+      $service = new SdApi();
+      $page = 1;
+      $onPage = 100;
+      $count = $onPage;
+      do {
+          //в цикле делаем запросы
+          $response = $service->getStores($page, $onPage);
 
-
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $url);
-          curl_setopt($ch, CURLOPT_POST, 1);
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          $response = curl_exec($ch);
-          $errno = curl_errno($ch);
-          if ($errno !== 0) {
-              d(sprintf("Error connecting to Api request token: [%s] %s ", $errno, curl_error($ch)), $errno);
+          if ($page == 1 && isset($response['meta'])) {
+              echo print_r($response['meta']). "\n";
           }
-          curl_close($ch);
-          d($response);
-          $token = json_decode($response, true);
-          if (isset($token['access_token'])) {
-              return $token;
-          } else return false;
-      });
-      d($token);
-      if ($token && isset($token['access_token'])) {
-          $url = 'sdapi/stores';
-          $params = [
-              'access-token'=> $token['access_token'],
-          ];
-          $params = http_build_query($params);
-          $url .= '?' . $params;
-          d($url);
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $url);
-          curl_setopt($ch, CURLOPT_POST, 0);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          $response = curl_exec($ch);
-          $errno = curl_errno($ch);
-          if ($errno !== 0) {
-              d(sprintf("Error connecting to Api request data: [%s] %s ", $errno, curl_error($ch)), $errno);
-          }
-          curl_close($ch);
-          ddd(json_decode($response, true));
-      }
+          echo "Page " . $page . "\n";
 
+          $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
+          $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
+          $pageCount = ceil($count / $onPage);
+
+          if (isset($response['stores'])) {
+
+              foreach ($response['stores'] as $store) {
+                  //цикл по полученным шопам
+                  echo print_r($store, true)."\n";
+                  //что-то делаем с шопом
+
+              }
+          }
+
+          $page++;
+          //пока не прошли все страницы
+      } while ($page <= $pageCount);
 
   }
+
+    public function actionApiPayments()
+    {
+        $service = new SdApi();
+        $page = 1;
+        $onPage = 100;
+        $count = $onPage;
+        $dateFrom = date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 90);//за последние 3 месяца
+
+        do {
+            //в цикле делаем запросы
+            $response = $service->getPayments($page, $onPage, $dateFrom);
+
+            if ($page == 1 && isset($response['meta'])) {
+                echo print_r($response['meta']). "\n";
+            }
+            echo "Page " . $page . "\n";
+
+            $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
+            $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
+            $pageCount = ceil($count / $onPage);
+
+            if (isset($response['payments'])) {
+
+                foreach ($response['payments'] as $payment) {
+                    //цикл по полученным платежам
+                    echo print_r($payment, true)."\n";
+                    //что-то делаем с платежом
+
+                }
+            }
+
+            $page++;
+            //пока не прошли все страницы
+        } while ($page <= $pageCount);
+
+    }
+
 
 
 }
