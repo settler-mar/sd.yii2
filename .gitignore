@@ -62,6 +62,8 @@ package-lock.json
 /frontend/web/images/banners/
 /frontend/web/js/stores_list.json
 /frontend/config/params-local.php
+/api/config/start-params.php
+/api/config/params-local.php
 *-local.php
 *.lock
 common/config/socials.php

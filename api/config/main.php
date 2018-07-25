@@ -15,10 +15,10 @@ return [
     'modules' => [
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
-            'options' => [
+            //'options' => [
              //   'token_param_name' => 'accessToken',
-                'access_lifetime' => 3600 * 24,
-            ],
+            //    'access_lifetime' => 3600 * 24,
+           // ],
             'storageMap' => [
                // 'user_credentials' => 'api\models\User',
             ],
