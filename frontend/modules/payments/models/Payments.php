@@ -479,6 +479,8 @@ class Payments extends \yii\db\ActiveRecord
         $subIds = explode('_', $payment['subid']);
         $payment['subid'] = $subIds[0];
         $payment['sub_id2'] = isset($subIds[1]) ? $subIds[1] : 0;
+    } else {
+        $payment['sub_id2'] = null;
     }
 
     if (isset($payment['positions']) && isset($payment['positions'][0]) && isset($payment['positions'][0]['rate_id'])) {
