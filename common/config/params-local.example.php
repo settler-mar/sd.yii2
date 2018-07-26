@@ -55,6 +55,10 @@ return [
       "token"=>"AG9wKYuYbV",
       "publisher_id"=>"1100l32938",//Can be retrieved via the Partnerize console under Settings->Publisher
   ],
+  'awin' => [
+      'user' => '269073',
+      'password' => 'beac4d91f9a46c2f0194f4092612a784',
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
