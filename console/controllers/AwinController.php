@@ -8,17 +8,19 @@ use Yii;
 use common\models\Awin;
 use frontend\modules\stores\models\Cpa;
 //use frontend\modules\stores\models\CpaLink;
-//use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Stores;
 
 class AwinController extends Controller
 {
 
     private $cpa;
-    private $siteId;
+    private $userId;
 
     private $records=0;
     private $inserted=0;
+    private $storesFails=0;
     private $cpaLinkInserted=0;
+    private $cpaLinkErrors=0;
     private $affiliateList = [];
 
 
@@ -29,14 +31,47 @@ class AwinController extends Controller
             echo "Cpa Awin not found";
             return;
         }
+        $this->userId = isset(Yii::$app->params['awin']['user']) ? Yii::$app->params['awin']['user'] : false;
+        if (!$this->userId) {
+            ddd('Нет настройки "user" для Awin');
+        }
 
         $service = new Awin();
 
         $response = $service->getAffiliates();
-        if ($response->merchant) {
+        if (count($response->merchant)) {
             $this->records = count($response->merchant);
             foreach ($response->merchant as $store) {
-                d($store);
+                $attributes = $store->attributes();
+                $this->affiliateList[] = (string) $attributes['id'];
+                $storeDb = [
+                    'logo' => (string) $store->logo,
+                    'cpa_id' => $this->cpa->id,
+                    'affiliate_id' => (string) $attributes['id'],
+                    'url' => (string) $store-> displayurl,
+                    'name' => (string) $attributes['name'],
+                    'currency' => "USD", //пока непонятно
+                    'cashback' => 'до 1%',//пока нет
+                    'hold_time' => 30,
+                    'description' => (string) $store->description,
+                    'status' => 1,
+                    'affiliate_link' => (string) $store->clickthrough, //это один вариант, есть второй
+                    //'affiliate_link' => 'https://www.awin1.com/cread.php?awinmid=' . (string) $attributes['id'] .
+                     //   '&awinaffid=' . $this->userId,//второй вариант
+                ];
+                $result = Stores::addOrUpdate($storeDb);
+                if (!$result['result']) {
+                    $this->storesFails++;
+                }
+                if ($result['new']) {
+                    $this->inserted++;
+                }
+                if ($result['newCpa']) {
+                    $this->cpaLinkInserted++;
+                    if (!$result['resultCpa']) {
+                        $this->cpaLinkErrors++;
+                    }
+                }
             }
         }
 
@@ -50,8 +85,14 @@ class AwinController extends Controller
             Yii::$app->db->createCommand($sql)->execute();
         }
         echo 'Stores '.$this->records."\n";
+        if (!empty($this->storesFails)) {
+            echo 'Errors '.$this->storesFails . "\n";
+        }
         echo 'Inserted '.$this->inserted."\n";
         echo 'Inserted Cpa link '.$this->cpaLinkInserted."\n";
+        if (!empty($this->cpaLinkErrors)) {
+            echo 'Errors '. $this->cpaLinkErrors. "\n";
+        }
     }
 
 }

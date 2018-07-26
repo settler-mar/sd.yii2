@@ -73,8 +73,13 @@ class Awin
 
         if ($statusCode == 200) {
             d('Downloaded!');
-            $content = simplexml_load_string(file_get_contents($file));
-            return $content;
+            $content = file_get_contents($file);
+            $content = preg_replace(['/\<\!\[CDATA\[/', '/\]\]\>/'], '', $content);
+            $content = str_replace('&pound;', html_entity_decode('&pound;'), $content);
+
+            $xml = simplexml_load_string($content);
+
+            return $xml;
         } else {
             d("Status Code: " . $statusCode);
         }
