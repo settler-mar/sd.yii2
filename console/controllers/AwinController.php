@@ -95,10 +95,12 @@ class AwinController extends Controller
         }
     }
 
-    public function actionPayments()
+    public function actionPayments($options = false)
     {
+        $dateFrom = !empty($options['status_updated_start']) ? $options['status_updated_start'] : false;
+        $dateTo = !empty($options['status_updated_end']) ? $options['status_updated_end'] : false;
         $service = new Awin();
-        ddd($service->getPayments());
+        d($service->getPayments($dateFrom, $dateTo));
     }
 
 }
