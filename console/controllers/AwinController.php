@@ -95,4 +95,10 @@ class AwinController extends Controller
         }
     }
 
+    public function actionPayments()
+    {
+        $service = new Awin();
+        ddd($service->getPayments());
+    }
+
 }

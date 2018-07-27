@@ -14,6 +14,7 @@ class Awin
 {
     private $config;
     private $urlAffiliates = 'https://ui2.awin.com/affiliates/shopwindow/datafeed_metadata.php';
+    private $urlPublishers = 'https://api.awin.com/publishers';
 
     public function __construct()
     {
@@ -30,6 +31,17 @@ class Awin
             'filter' => 'SUBSCRIBED_ALL', //SUBSCRIBED_ALL|SUBSCRIBED_ENABLED|ALL_ALL|ALL_ENABLED
         ];
         return $this->getRequest($this->urlAffiliates, $params);
+    }
+
+    public function getPayments($dateFrom = false, $dateTo = false)
+    {
+        $dateFrom = $dateFrom ? $dateFrom : time() - 60 * 60 * 24 * 30;
+        $params = [
+            'endDate' => $dateTo ? date('Y-m-d', $dateTo).'T'.date('H:i:s', $dateTo) :
+                date('Y-m-d').'T'.date('H:i:s'),
+            'startDate' => date('Y-m-d', $dateFrom).'T'.date('H:i:s', $dateFrom),
+        ];
+        return $this->getRequestPublisher('transactions', $params);
     }
 
     private function getRequest($url, $params)
@@ -82,6 +94,33 @@ class Awin
             return $xml;
         } else {
             d("Status Code: " . $statusCode);
+        }
+    }
+
+    protected function getRequestPublisher($method, $params)
+    {
+        $url = $this->urlPublishers. '/'. $this->config['user'] .'/'.$method .'/';
+        $params['accessToken'] = $this->config['token'];
+        $url .= ('?'. http_build_query($params));
+        d($url);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $content = curl_exec($ch);
+        if (curl_errno($ch)) {
+            d(curl_error($ch). ' '.curl_errno($ch));
+        }
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($statusCode == 200) {
+            $json = json_decode($content, true);
+            return $json;
+        } else {
+            d("Status Code: " . $statusCode, $content);
         }
     }
 
