@@ -11,6 +11,7 @@ use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use Yii;
 use frontend\modules\actions\models\ActionsActions;
+use common\models\Webgains;
 
 class TestController extends Controller
 {
@@ -169,6 +170,12 @@ class TestController extends Controller
             //пока не прошли все страницы
         } while ($page <= $pageCount);
 
+    }
+
+    public function actionWebgains()
+    {
+        $service = new Webgains();
+        $service->test2();
     }
 
 
