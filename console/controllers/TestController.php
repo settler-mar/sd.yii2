@@ -16,13 +16,14 @@ use common\models\Mycommerce;
 
 class TestController extends Controller
 {
-    public function beforeAction($action)
-    {
-        if (Console::isRunningOnWindows()) {
-            shell_exec('chcp 65001');
-        }
-        return parent::beforeAction($action);
+  public function beforeAction($action)
+  {
+    if (Console::isRunningOnWindows()) {
+      shell_exec('chcp 65001');
     }
+    return parent::beforeAction($action);
+  }
+
   /**
    * Тест почты. отправка письма на matuhinmax@mail.ru
    */
@@ -84,35 +85,72 @@ class TestController extends Controller
 
   public function actionActionObserver()
   {
-      ActionsActions::observeActions([62053]);
+    ActionsActions::observeActions([62053]);
   }
 
   public function actionTravelpayouts()
   {
-      $service = new Travelpayouts();
-      ddd($service->getPeyments());
-      //ddd($service->getCompaings());
+    $service = new Travelpayouts();
+    ddd($service->getPeyments());
+    //ddd($service->getCompaings());
   }
 
   public function actionAdvertice()
   {
-      $service = new Advertise();
-      ddd($service->test()) ;
+    $service = new Advertise();
+    ddd($service->test());
 
   }
 
   public function actionApiStores()
   {
-      $service = new SdApi();
+    $service = new SdApi("USER_ID", "USER_SECRET");
+    $page = 1;
+    $onPage = 100;
+    $count = $onPage;
+    do {
+      //в цикле делаем запросы
+      $response = $service->getStores($page, $onPage);
+
+      if ($page == 1 && isset($response['meta'])) {
+        echo print_r($response['meta']) . "\n";
+      }
+      echo "Page " . $page . "\n";
+
+      $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
+      $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
+      $pageCount = ceil($count / $onPage);
+
+      if (isset($response['stores'])) {
+
+        foreach ($response['stores'] as $store) {
+          //цикл по полученным шопам
+          echo print_r($store, true) . "\n";
+          //что-то делаем с шопом
+
+        }
+      }
+
+      $page++;
+      //пока не прошли все страницы
+    } while ($page <= $pageCount);
+
+  }
+
+  public function actionApiPayments()
+  {
+      $service = new SdApi("USER_ID", "USER_SECRET");
       $page = 1;
       $onPage = 100;
       $count = $onPage;
+      $dateFrom = date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 90);//за последние 3 месяца
+
       do {
           //в цикле делаем запросы
-          $response = $service->getStores($page, $onPage);
+          $response = $service->getPayments($page, $onPage, $dateFrom);
 
           if ($page == 1 && isset($response['meta'])) {
-              echo print_r($response['meta']). "\n";
+              echo print_r($response['meta']) . "\n";
           }
           echo "Page " . $page . "\n";
 
@@ -120,12 +158,12 @@ class TestController extends Controller
           $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
           $pageCount = ceil($count / $onPage);
 
-          if (isset($response['stores'])) {
+          if (isset($response['payments'])) {
 
-              foreach ($response['stores'] as $store) {
-                  //цикл по полученным шопам
-                  echo print_r($store, true)."\n";
-                  //что-то делаем с шопом
+              foreach ($response['payments'] as $payment) {
+                  //цикл по полученным платежам
+                  echo print_r($payment, true) . "\n";
+                  //что-то делаем с платежом
 
               }
           }
@@ -133,45 +171,8 @@ class TestController extends Controller
           $page++;
           //пока не прошли все страницы
       } while ($page <= $pageCount);
-
   }
 
-    public function actionApiPayments()
-    {
-        $service = new SdApi();
-        $page = 1;
-        $onPage = 100;
-        $count = $onPage;
-        $dateFrom = date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 90);//за последние 3 месяца
-
-        do {
-            //в цикле делаем запросы
-            $response = $service->getPayments($page, $onPage, $dateFrom);
-
-            if ($page == 1 && isset($response['meta'])) {
-                echo print_r($response['meta']). "\n";
-            }
-            echo "Page " . $page . "\n";
-
-            $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
-            $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
-            $pageCount = ceil($count / $onPage);
-
-            if (isset($response['payments'])) {
-
-                foreach ($response['payments'] as $payment) {
-                    //цикл по полученным платежам
-                    echo print_r($payment, true)."\n";
-                    //что-то делаем с платежом
-
-                }
-            }
-
-            $page++;
-            //пока не прошли все страницы
-        } while ($page <= $pageCount);
-
-    }
 
     public function actionWebgains()
     {
@@ -190,7 +191,5 @@ class TestController extends Controller
         ddd($service->coupons());
         //$service->getToken();
     }
-
-
 
 }

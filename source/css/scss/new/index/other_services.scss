@@ -39,7 +39,7 @@
     transform: rotate3d(0, 0, 0, -90deg);
     transition: all .25s ease .25s;
     text-align: center;
-    font-weight: 700;
+    font-weight: 600;
     margin-top: 0px;
 
     @include media($tablets) {
@@ -119,9 +119,9 @@
 
   &-title {
     color: $text_color;
-    font-family: "Proxima Nova - Black";
+    //font-family: "Proxima Nova - Black";
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 800;
     z-index: 9;
 
     @include media($tablets) {

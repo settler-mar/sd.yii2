@@ -21,10 +21,15 @@ class SdUrlSlash implements UrlRuleInterface
       $url_test=str_replace($request->get("query"),"",$url_test);
     }
     //Для админки допускаем в адресе пробелы
-    if(strpos($request->pathInfo,"admin/")===0){
+    if(!Yii::$app->user->isGuest && strpos($request->pathInfo,"admin/")===0){
       //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
       $url_test=str_replace(" ",'',$url_test);
+
+      //Для админки допускаем в адресе русские буквы
+      $url_test = preg_replace('/[а-я]+/iu', '', $url_test);
+      //$url_test=str_replace(" ",'',$url_test);
     };
+
     //для запросов фильтра по алфавиту
     if($request->get("w") && strlen(trim($request->get("w")))<6){
       $url_test=str_replace($request->get("w"),"",$url_test);

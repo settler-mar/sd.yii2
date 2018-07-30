@@ -76,7 +76,7 @@
         span{
           color: #fefdfd;
           font-size: 60px;
-          font-weight: 700;
+          font-weight: 600;
 
           @include media($tablets){
             display: block;
@@ -309,7 +309,7 @@
           background: $btn_base_bg;
           margin: 7px 4px 7px 0;
           font-size: 44px;
-          font-weight: 700;
+          font-weight: 600;
           padding: 3px 5px 0 5px;
           border-radius: 4px;
           display: inline-block;
@@ -445,7 +445,7 @@
       white-space: nowrap;
 
       span{
-        font-weight: 700;
+        font-weight: 600;
         font-size: 28px;
         display: block;
       }

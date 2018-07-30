@@ -26,7 +26,10 @@ class Cpa extends \yii\db\ActiveRecord
         'Advertise'=> 'tid',
         //'Awin' => 'clickref',//такой вариант
         'Awin' => 'pref1',//второй вариант
+        "Linkconnector"=>'atid'
+
     ];
+
     /**
      * для таких спа subid подставляется в шаблоне
      * @var array
