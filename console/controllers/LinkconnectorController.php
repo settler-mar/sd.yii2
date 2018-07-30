@@ -9,6 +9,7 @@ use Yii;
 use frontend\modules\stores\models\Cpa;
 //use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CpaLink;
 
 class LinkconnectorController extends Controller
 {
@@ -22,6 +23,7 @@ class LinkconnectorController extends Controller
   private $cpaLinkInserted=0;
   private $cpaLinkErrors=0;
   private $affiliateList = [];
+  private $stores;
 
   public function beforeAction($action)
   {
@@ -31,6 +33,22 @@ class LinkconnectorController extends Controller
       return;
     }
     return parent::beforeAction($action);
+  }
+
+  /**
+   * Получает наш id магазина по id от адмитада
+   */
+  private function getStore($adm_id)
+  {
+    if (!isset($this->stores[$adm_id])) {
+      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa->id, 'affiliate_id' => $adm_id]);
+      if ($cpaLink) {
+        $this->stores[$adm_id] = $cpaLink->store;
+      } else {
+        $this->stores[$adm_id] = false;
+      }
+    }
+    return $this->stores[$adm_id];
   }
 
   /*
@@ -107,5 +125,14 @@ class LinkconnectorController extends Controller
     $service = new Linkconnector();
 
     $response = $service->getСoupons();
+    foreach ($response as $coupon) {
+      $store = $this->getStore($coupon['CampaignID']);
+      if (!$store) {
+        echo 'Store not found '.$coupon['CampaignName'].' '.$coupon['CampaignID']."\n";
+        continue;
+      }
+
+
+    }
   }
 }

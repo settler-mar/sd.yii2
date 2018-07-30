@@ -58,7 +58,7 @@ class Linkconnector
   }
 
   public function getСoupons(){
-    ddd($this->getFunction("getFeedProductInventoryStock"));
+    return $this->getFunction("getFeedPromotion");
   }
 
   private function getFunction($function_name){
