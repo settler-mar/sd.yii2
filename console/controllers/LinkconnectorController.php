@@ -23,15 +23,21 @@ class LinkconnectorController extends Controller
   private $cpaLinkErrors=0;
   private $affiliateList = [];
 
-
-  public function actionStores()
+  public function beforeAction($action)
   {
     $this->cpa = Cpa::find()->where(['name' => 'Linkconnector'])->one();
     if (!$this->cpa) {
       echo "Cpa Linkconnector not found";
       return;
     }
+    return parent::beforeAction($action);
+  }
 
+  /*
+   * Получение магазинов
+   */
+  public function actionStores()
+  {
     $service = new Linkconnector();
 
     $response = $service->getAffiliates();
@@ -91,4 +97,15 @@ class LinkconnectorController extends Controller
     }
   }
 
+
+  /*
+ * Получение купонов
+ */
+  public function actionCoupons()
+  {
+
+    $service = new Linkconnector();
+
+    $response = $service->getСoupons();
+  }
 }

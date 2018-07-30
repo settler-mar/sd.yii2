@@ -57,6 +57,10 @@ class Linkconnector
     return ($stores);
   }
 
+  public function getСoupons(){
+    ddd($this->getFunction("getFeedProductInventoryStock"));
+  }
+
   private function getFunction($function_name){
     $postVars = array(
         "Key"           => $this->config['user_api_key'],
