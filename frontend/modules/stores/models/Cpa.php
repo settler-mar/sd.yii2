@@ -24,7 +24,9 @@ class Cpa extends \yii\db\ActiveRecord
         'Sellaction' => 'SubID1',
         'Doublertrade' => 'epi',
         'Advertise'=> 'tid',
+        "Linkconnector"=>'atid'
     ];
+
     /**
      * для таких спа subid подставляется в шаблоне
      * @var array

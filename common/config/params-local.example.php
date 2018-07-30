@@ -55,6 +55,9 @@ return [
       "token"=>"AG9wKYuYbV",
       "publisher_id"=>"1100l32938",//Can be retrieved via the Partnerize console under Settings->Publisher
   ],
+  "linkconnector"=>[
+      "user_api_key"=>"d2cd686e8b2a4761d8ccaffcd1c05115",
+  ],
   'ebay' => [ //sandbox
       'AppID' => 'SecretDi-SecretDi-SBX-7c970d9ce-7cfe4b52',
       'DevID' => '7643d5f3-42ce-43cf-97d5-59bee643bca0',
