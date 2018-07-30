@@ -12,6 +12,7 @@ use frontend\modules\coupons\models\Coupons;
 use Yii;
 use frontend\modules\actions\models\ActionsActions;
 use common\models\Webgains;
+use common\models\Mycommerce;
 
 class TestController extends Controller
 {
@@ -176,6 +177,18 @@ class TestController extends Controller
     {
         $service = new Webgains();
         $service->test2();
+    }
+
+    public function actionMycommerce()
+    {
+        $service = new Mycommerce();
+        //$service->vendor();
+        //$service->category();
+        //$service->progucts();
+
+        //это точно что-то даёт
+        ddd($service->coupons());
+        //$service->getToken();
     }
 
 
