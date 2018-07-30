@@ -119,9 +119,9 @@
 
   &-title {
     color: $text_color;
-    font-family: "Proxima Nova - Black";
+    //font-family: "Proxima Nova - Black";
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 800;
     z-index: 9;
 
     @include media($tablets) {
