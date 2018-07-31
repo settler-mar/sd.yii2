@@ -23,6 +23,19 @@ class AwinController extends Controller
     private $cpaLinkErrors=0;
     private $affiliateList = [];
 
+    public function actionStoresNew()
+    {
+        $service = new Awin();
+        $stores = $service->getProgrammes();
+        foreach ($stores as $store) {
+            d($store);
+            $commissions = $service->getCommissions(['advertiserId' => $store['id']]);
+            $details = $service->getProgramDetails(['advertiserId' => $store['id']]);
+
+            d($commissions, $details);
+        }
+    }
+
 
     public function actionStores()
     {

@@ -15,6 +15,7 @@ class Awin
     private $config;
     private $urlAffiliates = 'https://ui2.awin.com/affiliates/shopwindow/datafeed_metadata.php';
     private $urlPublishers = 'https://api.awin.com/publishers';
+    private $regions = ['AT','AU','BE','BR','CA','CH','DE','DK','ES','FI','FR','GB','IE','IT','NL','NO','PL','SE','US'];
 
     public function __construct()
     {
@@ -31,6 +32,47 @@ class Awin
             'filter' => 'SUBSCRIBED_ALL', //SUBSCRIBED_ALL|SUBSCRIBED_ENABLED|ALL_ALL|ALL_ENABLED
         ];
         return $this->getRequest($this->urlAffiliates, $params);
+    }
+
+    /**
+     * некоторая статистика
+     * @param bool $dateFrom
+     * @param bool $dateTo
+     * @return array
+     */
+    public function getAdvetisers($dateFrom = false, $dateTo = false)
+    {
+        $dateFrom = $dateFrom ? $dateFrom : ($dateTo ? $dateTo - 3600 * 24 * 365 : time() - 3600 * 24 * 365);
+        $params = [
+            'endDate' => $dateTo ? date('Y-m-d', $dateTo) :
+                date('Y-m-d'),
+            'startDate' => date('Y-m-d', $dateFrom),
+        ];
+        $affiliates = [];
+        foreach ($this->regions as $region) {
+            $params['region'] = $region;
+            $response = $this->getRequestPublisher('reports/advertiser', $params);
+            if (count($response)) {
+                $affiliates = array_merge($affiliates, $response);
+            }
+        }
+        return $affiliates;
+    }
+
+    public function getProgrammes()
+    {
+        $params= ['relationship' => 'joined'];
+        return $this->getRequestPublisher('programmes', $params);
+    }
+
+    public function getProgramDetails($params = [])
+    {
+        return $this->getRequestPublisher('programmedetails', $params);
+    }
+
+    public function getCommissions($params = [])
+    {
+        return $this->getRequestPublisher('commissiongroups', $params);
     }
 
     public function getPayments($dateFrom = false, $dateTo = false)
