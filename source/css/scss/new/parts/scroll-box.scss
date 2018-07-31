@@ -17,7 +17,6 @@
       padding: 3px 10px 10px 3px;
       text-align: left;
     }
-
   }
 
   .max_text_hide {
@@ -155,6 +154,7 @@ tr:nth-child(2n) {
 
   &-title {
     display: flex;
+    font-size: 14px;
   }
 
   &-avatar {
@@ -168,14 +168,14 @@ tr:nth-child(2n) {
 
   &-user {
     &_name {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 600;
       padding-bottom: 5px;
     }
 
     &_cashback {
       color: #b6b6b6;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 14px;
 
       span {
@@ -191,6 +191,7 @@ tr:nth-child(2n) {
     flex-direction: column;
     justify-content: flex-start;
     max-height: 100%;
+    font-size: 14px;
   }
 
   &-text {
