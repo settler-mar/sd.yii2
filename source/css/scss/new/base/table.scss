@@ -54,17 +54,23 @@ th:first-child {
   text-align: left;
   //white-space: nowrap;
 
-  &:before {
+  display: flex;
+  min-height: 32px;
+  justify-content: left;
+  align-items: center;
+
+  /*&:before {
     content: '';
     height: 32px;
     display: inline-block;
     vertical-align: middle;
-  }
+  }*/
 
   &.align-center{
     text-align: center;
   }
 }
+
 th:first-child {
   white-space: nowrap;
 }

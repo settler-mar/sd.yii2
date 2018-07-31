@@ -43,7 +43,7 @@ return [
     'bonuses_in_our_social_groups' => 'А в наших группах в соцсетях вас всегда ждут конкурсы, призы и подарки',
     'users' => 'пользователей',
     'contacts' => 'Контакты',
-    'based_on_{count}_users_opinion' => '<span>на основании опроса</span><span property="v:votes">{count}</span><span>наших пользователей</span>',
+    'based_on_{count}_users_opinion' => '<span>на основании опроса</span><span property="v:votes"> {count} </span><span>наших пользователей</span>',
     'rating' => 'Рейтинг',
     'from' => 'из',
     'watch_video' => 'Посмотреть видео',
