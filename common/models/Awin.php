@@ -144,7 +144,7 @@ class Awin
         $url = $this->urlPublishers. '/'. $this->config['user'] .'/'.$method .'/';
         $params['accessToken'] = $this->config['token'];
         $url .= ('?'. http_build_query($params));
-        d($url);
+        echo $url . "\n";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -153,7 +153,7 @@ class Awin
 
         $content = curl_exec($ch);
         if (curl_errno($ch)) {
-            d(curl_error($ch). ' '.curl_errno($ch));
+            echo curl_error($ch). ' '.curl_errno($ch) . "\n";
         }
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -162,7 +162,7 @@ class Awin
             $json = json_decode($content, true);
             return $json;
         } else {
-            d("Status Code: " . $statusCode, $content);
+            echo "Status Code: " . $statusCode." ". $content. "\n";
         }
     }
 

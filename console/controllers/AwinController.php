@@ -23,20 +23,6 @@ class AwinController extends Controller
     private $cpaLinkErrors=0;
     private $affiliateList = [];
 
-    public function actionStoresNew()
-    {
-        $service = new Awin();
-        $stores = $service->getProgrammes();
-        foreach ($stores as $store) {
-            d($store);
-            $commissions = $service->getCommissions(['advertiserId' => $store['id']]);
-            $details = $service->getProgramDetails(['advertiserId' => $store['id']]);
-
-            d($commissions, $details);
-        }
-    }
-
-
     public function actionStores()
     {
         $this->cpa = Cpa::find()->where(['name' => 'Awin'])->one();
@@ -56,15 +42,26 @@ class AwinController extends Controller
             $this->records = count($response->merchant);
             foreach ($response->merchant as $store) {
                 $attributes = $store->attributes();
+                $storeDetails = $service->getProgramDetails(['advertiserId' =>  (string) $attributes['id']]);
+
                 $this->affiliateList[] = (string) $attributes['id'];
+                $currency =  isset($storeDetails['programmeInfo']['currencyCode']) ?
+                    $storeDetails['programmeInfo']['currencyCode'] : 'USD';
+                $commissionRange = isset($storeDetails['commissionRange'][0]) ? $storeDetails['commissionRange'][0] : false;
+                $cashback = $commissionRange && isset($commissionRange['min']) && isset($commissionRange['max']) &&
+                            $commissionRange['min'] != $commissionRange['max'] ? 'до ' : '';
+                $cashback .= ($commissionRange && isset($commissionRange['max']) ? $commissionRange['max'] : '');
+                $cashback .= ($commissionRange && isset($commissionRange['type']) && $commissionRange['type'] == 'percentage' ?
+                    '%' : '');
+
                 $storeDb = [
                     'logo' => (string) $store->logo,
                     'cpa_id' => $this->cpa->id,
                     'affiliate_id' => (string) $attributes['id'],
                     'url' => (string) $store-> displayurl,
                     'name' => (string) $attributes['name'],
-                    'currency' => "USD", //пока непонятно
-                    'cashback' => 'до 1%',//пока нет
+                    'currency' => $currency,
+                    'cashback' => $cashback,
                     'hold_time' => 30,
                     'description' => (string) $store->description,
                     'status' => 1,
