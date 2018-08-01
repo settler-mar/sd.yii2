@@ -1,0 +1,106 @@
+<?php
+
+namespace common\models;
+
+class Webgains
+{
+    private $url = 'http://ws.webgains.com/aws.php';
+    private $token = '111db64649c4a27576c799c7f40e4fca';
+    private $compaingId = '191491';
+    private $user = 'admin@secretdiscounter.com';
+    private $password = '2011odn';
+
+
+    public function test()
+    {
+        $message = '<message name="getProgramReportRequest">'.
+            '<part name="startdate" type="xsd:dateTime">'.date('Y-m-d H:i:s', time() - 3600 * 24 * 30 * 12).'</part>'.
+            '<part name="enddate" type="xsd:dateTime" >'.date('Y-m-d H:i:s').'</part>'.
+            '<part name="campaignid" type="xsd:int" >'.$this->compaingId.'</part>'.
+            '<part name="username" type="xsd:string" >'.$this->user.'</part>'.
+            '<part name="password" type="xsd:string" >'.$this->password.'</part>'.
+        '</message>';
+        return $this->request('http://ws.webgains.com/aws.php#getProgramReport', $message);
+    }
+
+    public function test2()
+    {
+        return $this->soapRequest();
+    }
+
+
+    private function request($action, $message)
+    {
+        $soap = '<?xml version="1.0"?>'.
+            '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'.
+                 $message .
+            '</soap:Body></soap:Envelope>';
+        $headers = [
+            "Content-type: text/xml;charset=\"utf-8\"",
+            "Accept: text/xml",
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+            "SOAPAction: " . $action.",",
+            "Content-length: ".strlen($soap),
+        ];
+
+        $url = $this->url;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->user.":".$this->password); // username and password - declared at the top of the doc
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $soap); // the SOAP request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        ddd($response);
+
+        // converting
+        $response1 = str_replace("<soap:Body>","",$response);
+        $response2 = str_replace("</soap:Body>","",$response1);
+
+        return simplexml_load_string($response2);
+
+    }
+
+    private function soapRequest()
+    {
+        //$dateStart = date('Y-m-d', time()-7*86400).' 00:00:00';
+        $dateStart = date('Y-m-d', 0).' 00:00:00';
+        $dateEnd   = date('Y-m-d H:i:s');
+
+        // create a new soap client
+        $webgainsClient = new \SoapClient (
+            NULL,
+            array (
+                "location"   => "http://ws.webgains.com/aws.php",
+                "uri"        => "urn:http://ws.webgains.com/aws.php",
+                "style"      => SOAP_RPC,
+                "use"        => SOAP_ENCODED,
+                'exceptions' => 0
+            )
+        );
+
+// send earnings request
+
+        $earningsResult = $webgainsClient->getProgramReport($dateStart, $dateEnd, $this->compaingId, $this->user, $this->password);
+        //$earningsResult = $webgainsClient->getFullUpdatedEarnings($dateStart, $dateEnd, $this->compaingId, $this->user, $this->password);
+
+        d($earningsResult);
+
+        if (is_soap_fault($earningsResult)) {
+            // error handling
+            ddd('error');
+        } else {
+            foreach ($earningsResult as $item) {
+                d($item);
+            }
+        }
+    }
+}

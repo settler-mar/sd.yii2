@@ -1,4 +1,9 @@
 .comments{
+
+  &_header {
+    font-size: $font_size_content_header;
+    font-weight: $font_weight_content_header;
+  }
   &-rating{
     margin-top: 5px;
     text-align: left;

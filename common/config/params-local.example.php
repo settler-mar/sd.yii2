@@ -55,6 +55,12 @@ return [
       "token"=>"AG9wKYuYbV",
       "publisher_id"=>"1100l32938",//Can be retrieved via the Partnerize console under Settings->Publisher
   ],
+  'awin' => [
+      'user' => '269073',
+      'password' => 'beac4d91f9a46c2f0194f4092612a784',
+      'token' => 'e9910287-7be9-471b-b907-7b1fe3dbed4b',
+      'tokenXXX' => 'ca3689d3c04019b0ae96ef9e10d728b1e38ac68a490b9553',
+    ],
   "linkconnector"=>[
       "user_api_key"=>"d2cd686e8b2a4761d8ccaffcd1c05115",
   ],

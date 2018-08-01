@@ -1,11 +1,11 @@
 <section class="margin">
   <div class="page-wrap">
     {% if additional_stores_category %}
-      <h2>
+      <h2 class="additional-stores_header">
           {{ t('main', 'popular_stores_from_{category}_cashback', {'category': additional_stores_category.name})|raw }}
       </h2>
     {% else %}
-      <h2>{{ t('main', 'other_popular_{shops}_cashback', {'shops': current_store.is_offline ? t('main','offline_shops_low') : t('main', 'online_shops_low')})|raw }}</h2>
+      <h2 class="additional-stores_header">{{ t('main', 'other_popular_{shops}_cashback', {'shops': current_store.is_offline ? t('main','offline_shops_low') : t('main', 'online_shops_low')})|raw }}</h2>
     {% endif %}
     <div class="shops">
       {% for store in additional_stores %}

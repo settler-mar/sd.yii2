@@ -45,7 +45,7 @@ class FixingController extends SdController
   {
     $cpa = Cpa::findOne(['name' => 'Performancehorizon']);
     if (!$cpa) {
-      ddd('CPA Advertise not found');
+      ddd('CPA Performancehorizon not found');
     }
 
     $request = Yii::$app->request;
@@ -59,6 +59,30 @@ class FixingController extends SdController
     $task->save();
 
     return true;
+  }
+
+    /**
+     * платежи из Awin добавляем задачу
+     * @return bool
+     */
+  public function actionAwin()
+  {
+      $cpa = Cpa::findOne(['name' => 'Awin']);
+      if (!$cpa) {
+          ddd('CPA Awin not found');
+      }
+
+      $request = Yii::$app->request;
+      $post = $request->post();
+
+      Yii::$app->logger->add(json_encode($post));
+      $task = new Task();
+      $task->task = 1;
+      $task->param = $cpa->id;
+      $task->add_time = time();
+      $task->save();
+
+      return true;
   }
 
   public function actionStores()

@@ -37,33 +37,27 @@ class TaskController extends Controller
     $sql = "SELECT param as cpa_id,MIN(add_time) as start_date,MAX(add_time) as end_date FROM cw_task WHERE task=1 AND add_time<" . (time() - 60).' GROUP BY param';
     $period = \Yii::$app->db->createCommand($sql)->queryOne();
 
-    $payment = \Yii::$app->createController('payments');
-    $admitad = \Yii::$app->createController('admitad');
-    $performancehorizon = \Yii::$app->createController('performancehorizon');
-
-    $cpa = Cpa::findOne(['name' => 'Performancehorizon']);
-    if ($cpa){
-      $pf_id=$cpa->id;
-    } else {
-      $pf_id=-1;
-    }
-
     while ($period['end_date'] > 0) {
       if ($period['end_date'] - $period['start_date'] > 2592000) {
         $period['end_date'] = $period['start_date'] + 2592000;
       }
       $options = array(
           'status_updated_start' =>  $period['start_date'] -4000,
-          'status_updated_end' => $period['end_date'] + 1240,
+          'status_updated_end' => $period['end_date'] + 1240 < time() ?  $period['end_date'] + 1240 : time(),//адмитад ругается, если дата больше, чем time()
       );
 
-      if($period['cpa_id']==1) {
-        $admitad[0]->actionPayments($options);
-      }elseif($period['cpa_id']==$pf_id) {
-        $performancehorizon[0]->actionPayments($options);
-      }else{
+      $cpa = Cpa::findOne($period['cpa_id']);
+
+      if ($cpa) {
+        $controller = \Yii::$app->createController(strtolower($cpa->name));
+        if (isset($controller[0])) {
+            $controller[0]->actionPayments($options);
+        }
+      } else {
+        $payment = \Yii::$app->createController('payments');
         $payment[0]->actionIndex($options);
       }
+
 
       $sql2 = "DELETE FROM `cw_task` WHERE
           task=1 AND 
@@ -72,7 +66,6 @@ class TaskController extends Controller
           add_time<=" . $period['end_date'] . "
           ";
 
-      //ddd($sql2);
       \Yii::$app->db->createCommand($sql2)->execute();
 
       $period = \Yii::$app->db->createCommand($sql)->queryOne();

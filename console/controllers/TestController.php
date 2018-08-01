@@ -11,6 +11,8 @@ use yii\helpers\Console;
 use frontend\modules\coupons\models\Coupons;
 use Yii;
 use frontend\modules\actions\models\ActionsActions;
+use common\models\Webgains;
+use common\models\Mycommerce;
 
 class TestController extends Controller
 {
@@ -137,40 +139,57 @@ class TestController extends Controller
 
   public function actionApiPayments()
   {
-    $service = new SdApi("USER_ID", "USER_SECRET");
-    $page = 1;
-    $onPage = 100;
-    $count = $onPage;
-    $dateFrom = date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 90);//за последние 3 месяца
+      $service = new SdApi("USER_ID", "USER_SECRET");
+      $page = 1;
+      $onPage = 100;
+      $count = $onPage;
+      $dateFrom = date('Y-m-d H:i:s', time() - 60 * 60 * 24 * 90);//за последние 3 месяца
 
-    do {
-      //в цикле делаем запросы
-      $response = $service->getPayments($page, $onPage, $dateFrom);
+      do {
+          //в цикле делаем запросы
+          $response = $service->getPayments($page, $onPage, $dateFrom);
 
-      if ($page == 1 && isset($response['meta'])) {
-        echo print_r($response['meta']) . "\n";
-      }
-      echo "Page " . $page . "\n";
+          if ($page == 1 && isset($response['meta'])) {
+              echo print_r($response['meta']) . "\n";
+          }
+          echo "Page " . $page . "\n";
 
-      $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
-      $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
-      $pageCount = ceil($count / $onPage);
+          $page = isset($response['meta']['page']) ? $response['meta']['page'] : $page;
+          $count = isset($response['meta']['count']) ? $response['meta']['count'] : $count;
+          $pageCount = ceil($count / $onPage);
 
-      if (isset($response['payments'])) {
+          if (isset($response['payments'])) {
 
-        foreach ($response['payments'] as $payment) {
-          //цикл по полученным платежам
-          echo print_r($payment, true) . "\n";
-          //что-то делаем с платежом
+              foreach ($response['payments'] as $payment) {
+                  //цикл по полученным платежам
+                  echo print_r($payment, true) . "\n";
+                  //что-то делаем с платежом
 
-        }
-      }
+              }
+          }
 
-      $page++;
-      //пока не прошли все страницы
-    } while ($page <= $pageCount);
-
+          $page++;
+          //пока не прошли все страницы
+      } while ($page <= $pageCount);
   }
 
+
+    public function actionWebgains()
+    {
+        $service = new Webgains();
+        $service->test2();
+    }
+
+    public function actionMycommerce()
+    {
+        $service = new Mycommerce();
+        //$service->vendor();
+        //$service->category();
+        //$service->progucts();
+
+        //это точно что-то даёт
+        ddd($service->coupons());
+        //$service->getToken();
+    }
 
 }
