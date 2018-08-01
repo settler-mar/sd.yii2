@@ -271,7 +271,9 @@
       }
 
       h2.accordion-title {
-        font-size: 2em;
+        //font-size: 2em;
+        font-size: $font_size_content_header;
+        font-weight: $font-weight_content_header;
         margin-bottom: 0;
         text-align: center;
         cursor: auto;

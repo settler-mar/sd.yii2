@@ -2,7 +2,7 @@
 
 <section id=reviews class="margin">
   <div class="page-wrap ">
-    <h2>{{ t('main', 'reviews_about_{store}', {'store': current_store.name})|raw }}</h2>
+    <h2 class="comments_header">{{ t('main', 'reviews_about_{store}', {'store': current_store.name})|raw }}</h2>
     {% if store_reviews|length == 0 %}
       <div class="comments_no-comments align-center">
         <p class="ntfnd">
