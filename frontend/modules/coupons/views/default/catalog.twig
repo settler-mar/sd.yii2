@@ -139,7 +139,7 @@
               <!--краткая информация категории-->
               {% if current_category.short_description %}
                 <div class="catalog_category-content margin">
-                  <div class="catalog_category-short-description">
+                  <div class="catalog_category-short-description catalog_category-content">
                     {{_tags_class(current_category.short_description,{'a':'blue'})|raw}}
                   </div>
                 </div>
@@ -148,7 +148,7 @@
               <!--краткая информация о магазине для купона-->
               {% if current_store.coupon_description and pagination_page==1 and expired != 1 %}
                 <div class="catalog_category-content margin">
-                  <div class="catalog_category-short-description">
+                  <div class="catalog_category-short-description catalog_category-content">
                     {{ _tags_class(current_store.coupon_description,{'a':'blue'})|raw }}
                   </div>
                 </div>
@@ -172,7 +172,7 @@
 
               {% if (is_root or new or top) and pagination_page==1 and expired == null %}
                 <div class="catalog_category-content">
-                  <div class="catalog_category-short-description">
+                  <div class="catalog_category-short-description catalog_category-content">
                     {% if is_root %}
                         {{ _constant('coupons_main') | raw}}
                     {% elseif new %}

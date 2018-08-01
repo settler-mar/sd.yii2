@@ -214,8 +214,6 @@ function compileCss (source, dest) {
   css
     .pipe(gcmq())
     .pipe(sourcemap.write())
-    .pipe(replace('Proxima Nova - Black', 'ProximaNovaBlack'))
-    .pipe(replace('Proxima Nova', 'ProximaNova'))
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
     .pipe(cleanCSS({compatibility: 'ie9'}))
