@@ -13,9 +13,9 @@
 {#краткая информация категории#}
 {% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
-      <section class="margin">
+      <section class="gray-box wrap-round margin">
         <h1 class="align-center laptop-no-margin-bottom" >{{ h1_final|raw }}</h1>
-        <div class="catalog_category-short-description laptop_hide">
+        <div class="catalog_category-short-description laptop_hide catalog_category-content">
           {{ _tags_class(short_description, {'a':'blue'})|raw }}
         </div>
       </section>
