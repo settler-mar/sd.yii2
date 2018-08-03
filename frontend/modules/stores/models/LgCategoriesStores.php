@@ -36,7 +36,8 @@ class LgCategoriesStores extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-        [['category_id', 'language', 'name'], 'required'],
+        [['category_id', 'language'], 'required'],
+        [['name'], 'required', 'enableClientValidation' => false],
         [['language', 'name'], 'trim'],
         [['category_id'], 'integer'],
         [['short_description', 'down_description', 'short_description_offline', 'down_description_offline'], 'string'],

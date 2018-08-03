@@ -26,6 +26,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
   const CATEGORY_STORE_SELECTED_PROMO = 1;
   const CATEGORY_STORE_SELECTED_GREEN = 2;
 
+  public $languagesArray;
+
   public static $translatedAttributes = ['name', 'short_description', 'down_description', 'short_description_offline',
       'down_description_offline'];
 
@@ -53,6 +55,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         [['route'], 'unique'],
         [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
       //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
+        [['languages'], 'string'],
     ];
   }
 
@@ -77,7 +80,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'icon_img' => "Маркер",
         'selected' => "Выделение в меню",
         'show_in_footer' => "Отображать в подвале",
+        'languages' => "Языки",
     ];
+  }
+
+  public function afterFind()
+  {
+    $this->languagesArray = $this->languages ? explode(',', $this->languages) : null;
   }
 
   public function getIcon()
@@ -115,6 +124,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
           ->one();
       $this->menu_index = intval($index['max']) + 1;
     }
+    $this->languages = Yii::$app->request->post('languages-array') ? implode(',', Yii::$app->request->post('languages-array')) : null;
     return true;
   }
 
