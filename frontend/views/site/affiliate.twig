@@ -1,13 +1,13 @@
 <section class="affiliate section-padding margin">
   <div class="container">
     <div class="margin">
-      <h1>{{ t('main', 'affiliate_h1')|raw }}</h1>
+      <h1 class="page-header">{{ t('main', 'affiliate_h1')|raw }}</h1>
       <p>
         {{ t('main', 'affiliate_we_want')|raw }}
       </p>
     </div>
 
-    <h2 class="text-center">
+    <h2 class="text-center content-header">
       {% if h1 %}
         {{ h1 | raw }}
       {% else %}
@@ -17,7 +17,7 @@
 
     {% include 'parts/principle-affiliate.twig' %}
 
-    <h2>{{ t('main', 'affiliate_invite_methods')|raw }}</h2>
+    <h2 class="content-header">{{ t('main', 'affiliate_invite_methods')|raw }}</h2>
     <div class="flex-line tablets_flex-col">
       <div class="instruction-item tablets_flex-row tablets_text-aling_left">
         <svg class="instruction-icon instruction-icon-mini svg-no-stroke" xmlns="http://www.w3.org/2000/svg"

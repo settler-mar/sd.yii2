@@ -3,7 +3,7 @@
     {% if background_image_full.image and background_image_full.class_name == 'narrow-page' %}
         {#имеем картинку и она  класса narrow-page - h1 и ниже картинка#}
 
-        <h1 class="align-center {{ h1_class }}">
+        <h1 class="align-center {{ h1_class }} page-header">
             {{ h1|raw }}
         </h1>
         <div class="static-page_background-image {% if background_image_full.class_name %} static-page_background-image-{{ background_image_full.class_name }}{% endif %}">
@@ -19,13 +19,13 @@
                     {{ h1|raw }}
                 </h1>
                 {% if h2 %}
-                    <h2 class="title-no-line">{{ h2|raw }}</h2>
+                    <h2 class="title-no-line content-header">{{ h2|raw }}</h2>
                 {% endif %}
             </div>
         </div>
     {% else %}
         {#картинки нет - только h1#}
-        <h1 class="align-center {{ h1_class }}">
+        <h1 class="align-center {{ h1_class }} page-header">
             {{ h1|raw }}
         </h1>
     {% endif %}
