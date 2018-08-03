@@ -15,7 +15,7 @@
     {#справа контент#}
     <div class="catalog-stores coupons">
 
-      <h1 >
+      <h1 class="page-header">
         {% if h1 %}
           <!--h1 из базы-->
           {{h1|raw}}
@@ -32,7 +32,7 @@
 
       <div class="coupons_mobile-relative">
         {% if stores_coupon|length > 0 %}
-          <h2>Еще больше промокодов {{ store.name }}</h2>
+          <h2 class="content-header">Еще больше промокодов {{ store.name }}</h2>
           <div  class="catalog-coupons margin">
             <div class="catalog_list catalog-coupons_list coupons-list margin-half narrow_off">
               {% for coupon in stores_coupon %}
