@@ -9,6 +9,21 @@
 }
 
 .catalog {
+
+  &_category {
+    &-down-description {
+
+      p {
+        font-size: $font-size-content;
+      }
+    }
+    &-content {
+      h2 {
+        font-weight: $font_weight_content_header;
+      }
+    }
+  }
+
   &-categories {
     width: 320px;
 
@@ -171,6 +186,7 @@
 
       &-header {
         margin: 0 0 10px;
+        font-weight: $font-weight_content_header;
       }
 
       &-content {

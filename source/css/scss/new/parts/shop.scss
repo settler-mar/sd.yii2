@@ -260,6 +260,10 @@
     background: url(/images/templates/polygonal-bg.jpg) repeat-x center 100% #999;
     color: $shop_header_color;
 
+    //&-item-head {
+    //  font-weight: $font-weight_page_header;
+    //}
+
     &-info_line{
       @include media($tablets) {
         margin-bottom: 30px;
@@ -392,6 +396,7 @@
       margin: 0;
       text-align: center;
       padding: 40px 0 40px 0;
+      font-weight: $font-weight_page_header;
 
       @include media($tablets) {
         background: $header_border_color;
@@ -512,7 +517,8 @@
       &-head{
         font-size: 26px;
         text-align: center;
-        font-weight: 600;
+        //font-weight: 600;
+        font-weight: $font_weight_content_header;
         //padding-bottom: 10px;
         margin-top: 15px;
         height: 50PX;
@@ -650,6 +656,8 @@
 
       &-header {
         margin: 10px 0 10px;
+        font-size: $font-size_content_header;
+        font-weight: $font-weight_content_header;
       }
 
       &-description{

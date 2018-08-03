@@ -1,7 +1,7 @@
 {% if visited_stores.stores | length > 0 %}
 <section>
     <div class="page-wrap">
-        <h2>{{ t('account', 'visited_stores')|raw }}</h2>
+        <h2 class="content-header">{{ t('account', 'visited_stores')|raw }}</h2>
         <div class="shops">
             {% for store in visited_stores.stores %}
                 {% include 'parts/shop.twig' %}

@@ -1,6 +1,6 @@
 <section class="margin">
     <div class="page-wrap">
-        <h2>{{ t('main', '{count}_popular_stores', {'count': total_all_stores})|raw }}</h2>
+        <h2 class="content-header">{{ t('main', '{count}_popular_stores', {'count': total_all_stores})|raw }}</h2>
         <div class="shops">
             {% for store in stores %}
                 {% include 'parts/shop.twig' %}
