@@ -630,6 +630,28 @@ $functionsList = [
   '_hide_email' => function($email) {
      return preg_replace('/.{2,4}\@/', '****@', $email);
   },
+  '_eol' => function($value, $width = 40) {
+    //меняем пробелы поблизе к $width на перевод строки
+      $result = '';
+      while (mb_strlen($value)) {
+          if (mb_strlen($value) <= $width) {
+              $pos = mb_strlen($value);
+
+          } else {
+              $value1 = mb_substr($value, 0, $width);
+              $pos = mb_strrpos($value1, ' ');
+          }
+
+          if ($pos === false) {
+              $result .= mb_substr($value, 0, $width);
+              $value = mb_substr($value, $width);
+          } else {
+              $result .= mb_substr($value, 0, $pos). "\n";
+              $value = mb_substr($value, $pos);
+          }
+      }
+     return $result;
+  },
 
 
 ];

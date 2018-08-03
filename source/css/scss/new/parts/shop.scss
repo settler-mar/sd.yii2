@@ -50,6 +50,7 @@
         max-width: 100%;
         max-height: 70px;
         object-fit: cover;
+        white-space: pre;
 
         @include media($phones) {
           //max-width: 100%;
