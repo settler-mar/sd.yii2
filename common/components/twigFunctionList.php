@@ -626,7 +626,10 @@ $functionsList = [
   },
     '_action' => function($id, $options =[]){
     return Action::widget(['id' => $id, 'options' => $options]);
-  }
+  },
+  '_hide_email' => function($email) {
+     return preg_replace('/.{2,4}\@/', '****@', $email);
+  },
 
 
 ];
