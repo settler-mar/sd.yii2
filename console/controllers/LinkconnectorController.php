@@ -180,4 +180,14 @@ class LinkconnectorController extends Controller
             echo 'Errors ' . $this->couponsErrors . "\n";
         }
     }
+
+    public function actionPayments()
+    {
+
+        $service = new Linkconnector();
+
+        $response = $service->getTransactions();
+
+        ddd($response);
+    }
 }

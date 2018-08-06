@@ -30,7 +30,6 @@ class Linkconnector
       $store_g[$store["CampaignID"]]=$store;
     }
 
-   // $stores=[];
     foreach ($links as $link){
       if (isset($store_g[$link['CampaignID']])) {
         $store_g[$link['CampaignID']]['DeepLinkURL']=$link['DeepLinkURL'].$link['CampaignURL'];
@@ -60,13 +59,23 @@ class Linkconnector
     return $this->getFunction("getFeedPromotion");
   }
 
-  private function getFunction($function_name){
+  public function getTransactions($startDate = false)
+  {
+      return $this->getFunction(
+          'getReportTransaction',
+          ['StartDate' => $startDate ? date('Y-m-d', $startDate): date('Y-m-d', time() - 3600 * 24 * 30)]
+      );
+  }
+
+  private function getFunction($function_name, $params = []){
     $postVars = array(
         "Key"           => $this->config['user_api_key'],
         "Function"      => $function_name,
         "Format"        => "JSON"
     );
-
+    if (!empty($params)) {
+        $postVars = array_merge($postVars, $params);
+    }
     $ch = curl_init ($this->urlAffiliates);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POST, 1);
