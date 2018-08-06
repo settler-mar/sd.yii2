@@ -26,6 +26,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
   const CATEGORY_STORE_SELECTED_PROMO = 1;
   const CATEGORY_STORE_SELECTED_GREEN = 2;
 
+  public $languagesArray;
+
   public static $translatedAttributes = ['name', 'short_description', 'down_description', 'short_description_offline',
       'down_description_offline'];
 
@@ -53,6 +55,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         [['route'], 'unique'],
         [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
       //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
+        [['languages'], 'string'],
     ];
   }
 
@@ -77,7 +80,13 @@ class CategoriesStores extends \yii\db\ActiveRecord
         'icon_img' => "Маркер",
         'selected' => "Выделение в меню",
         'show_in_footer' => "Отображать в подвале",
+        'languages' => "Языки",
     ];
+  }
+
+  public function afterFind()
+  {
+    $this->languagesArray = $this->languages ? explode(',', $this->languages) : null;
   }
 
   public function getIcon()
@@ -115,6 +124,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
           ->one();
       $this->menu_index = intval($index['max']) + 1;
     }
+    $this->languages = Yii::$app->request->post('languages-array') ? implode(',', Yii::$app->request->post('languages-array')) : null;
     return true;
   }
 
@@ -155,6 +165,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'category_tree';
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $languageCode = Yii::$app->language;
 
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
@@ -165,14 +176,15 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $casheName .= '_' . str_replace(' ', '_', $where);
     }
 
-    $data = $cache->getOrSet($casheName, function () use ($offline, $where, $as_array, $language) {
+    $data = $cache->getOrSet($casheName, function () use ($offline, $where, $as_array, $language, $languageCode) {
       $categories = self::languaged($language, ['uid', 'parent_id', 'name', 'route', 'menu_hidden', 'selected', 'menu_index'])
           ->leftJoin('cw_stores_to_categories  cstc', 'cstc.category_id = cwcs.uid')
           ->leftJoin(Stores::tableName() . ' cws', 'cws.uid = cstc.store_id')
-          ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'cwcs.uid' => SORT_ASC]);
+          ->orderBy(['selected' => SORT_DESC, 'menu_index' => SORT_ASC, 'cwcs.uid' => SORT_ASC])
+          ->where(['or', ['languages' => null], ['languages' => ''], ['like', 'languages', $languageCode]]);
 
       if (Yii::$app->params['stores_menu_separate'] == 1) {
-        $categories->where(['cws.is_offline' => $offline ? 1 : 0]);
+        $categories->andWhere(['cws.is_offline' => $offline ? 1 : 0]);
       }
 
       if ($where) {
@@ -536,7 +548,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
   {
       //общие для всех языков
       $selectAttributes = ['uid', 'parent_id', 'is_active', 'menu_index', 'route',
-          'menu_hidden', 'map_icon', 'selected', 'show_in_footer'];
+          'menu_hidden', 'map_icon', 'selected', 'show_in_footer', 'languages'];
       //атрибуты в запрос
       $resultAttributes = [];
       foreach ($selectAttributes as $attr){

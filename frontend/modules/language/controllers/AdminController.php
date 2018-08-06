@@ -165,7 +165,13 @@ class AdminController extends Controller
       //категории шопов
       foreach ($lg_list as $lg_k => $lg) {
           $data['lg'][$lg_k]['category_store'] = ['WARNING' => [], 'ERROR' => [], 'NOTICE' => [], 'TYPE' => 'database', 'PATH' => 'category_store','title'=>"Категории магазинов"];
-          $categories = CategoriesStores::find()->all();
+          $categories = CategoriesStores::find()
+              ->where([
+                  'or',
+                  ['languages' => null],
+                  ['languages' => ''],
+                  ['like', 'languages', $lg_k]
+              ])->all();
           foreach ($categories as $category) {
               $lang = LgCategoriesStores::find()->where(['category_id' => $category->uid, 'language' => $lg_k])->one();
               if (!$lang) {

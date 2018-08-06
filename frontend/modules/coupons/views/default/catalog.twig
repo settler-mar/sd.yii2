@@ -15,7 +15,7 @@
 
     {% if (content or current_category.description) and pagination_page==1%}
       <section class="gray-box wrap-round margin">
-        <h1 class="align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
+        <h1 class="align-center laptop-no-margin-bottom page-header">{{ h1_final|raw }}</h1>
           <div class="laptop_hide">
             {% if current_category.description %}
               {{ _tags_class(current_category.description,{'a':'blue'})| raw }}

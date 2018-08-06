@@ -1,15 +1,16 @@
 {% if coupons %}
+  <section class="margin">
   {% if not current_category %}
-    <section class="margin">
+
     <div class="page-wrap">
   {% endif %}
   {% if current_store.name %}
-    <h2>{{ t('main', 'coupons_for_{store}', {'store': current_store.name})|raw }}</h2>
+    <h2 class="content-header">{{ t('main', 'coupons_for_{store}', {'store': current_store.name})|raw }}</h2>
   {% else %}
     {% if current_category %}
-        <h2>{{ t('main', 'coupons_for_{category}', {'category': current_category.name != '' ?  '«'~current_category.name~'»' : ''})|raw }}</h2>
+        <h2 class="content-header">{{ t('main', 'coupons_for_{category}', {'category': current_category.name != '' ?  '«'~current_category.name~'»' : ''})|raw }}</h2>
     {% else %}
-      <h2>{{ t('main', 'coupons_new')|raw }}</h2>
+      <h2 class="content-header">{{ t('main', 'coupons_new')|raw }}</h2>
     {% endif %}
   {% endif %}
   <div class="coupons-list coupons-list-stores {{ _if(current_category.name,'','narrow list-4 ') }}narrow_off">
@@ -33,6 +34,7 @@
   </div>
   {% if not current_category %}
     </div>
-    </section>
+
   {% endif %}
+  </section>
 {% endif %}

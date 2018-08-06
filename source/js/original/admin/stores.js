@@ -54,5 +54,9 @@ $(function() {
     $.post("/admin/stores/ajax_insert/"+$this.attr('mode'),post,updateElement).fail(function() {
       alert( "Ошибка добавления" );
     })
+  });
+
+  $('body').on('click','.cpa_box_change_store', function(){
+    $('.edit_blk_store').toggleClass('hidden');
   })
 });

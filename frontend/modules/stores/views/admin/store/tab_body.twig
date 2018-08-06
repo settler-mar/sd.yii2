@@ -4,8 +4,13 @@
     <span class="ajax_remove" uid="{{tariff.id}}" mode="cpa" url="/admin/stores/ajax_remove/cpa">
       Удалить
     </span>
+    <span class="admin_tool cpa_box_change_store">Изменить шоп</span>
+
   </h4>
   <div class="edit_wrapper ajax_save" uid="{{tariff.id}}" save_url="/admin/stores/ajax_save/cpa">
+    <div class="edit_blk edit_blk_store hidden">
+      <p><span>Store ID:</span> <br><input type="text" mode="cpa" name="stores_id" value="{{tariff.stores_id}}"></p>
+    </div>
     <div class="edit_blk">
       <p>
         <span>Affiliate ID:</span> <br>

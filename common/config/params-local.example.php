@@ -108,6 +108,10 @@ return [
       'playeurolotto' => [
           'ip' => '78.46.47.243',
           'route' => 'playeurolotto-com'
-      ]
+      ],
+      'amazon' => [
+          'affiliate_id' => 'secretdiscoun-20',
+
+      ],
   ],
 ];

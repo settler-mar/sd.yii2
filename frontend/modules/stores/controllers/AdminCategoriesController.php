@@ -104,6 +104,7 @@ class AdminCategoriesController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+    $request = Yii::$app->request;
     $model = $this->findModel($id);
     $model_coupon_categories = [];
     foreach ($model->couponCategories as $category) {
@@ -116,6 +117,10 @@ class AdminCategoriesController extends Controller
 
     $languages = [];
     foreach ($lg_list as $lg_key => $lg_item) {
+        //если заданы доступные языки и данный не задан, то объект не создаём
+      if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
+          continue;
+      }
       $languages[$lg_key] = [
         'name' => $lg_item,
         'model' => $this->findLgCategory($id, $lg_key)
@@ -126,6 +131,10 @@ class AdminCategoriesController extends Controller
         Yii::$app->session->addFlash('info', 'Категория обновлена');
         //сохранение переводов
         foreach ($languages as $lg_key => $language) {
+            //проверяем что доступные языки не заданы, или язык задан
+            if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+                continue;
+            }
             if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
                 Yii::$app->session->addFlash('info', $language['name'] . '. Перевод категории обновлен');
             } else {

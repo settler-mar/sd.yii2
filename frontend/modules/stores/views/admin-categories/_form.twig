@@ -34,6 +34,18 @@
                         1:"Скрыть",
                     })|raw }}
 
+                    <h4>Доступно для языков</h4>
+                    {% for key, item in app.params.language_list %}
+                    <div class="form-group">
+                        <label for="categores-stores-languages-array-{{ key }}">
+                            <input type="checkbox" name="languages-array[]" id="categores-stores-languages-array-{{ key }}" value="{{ key }}"
+                                {% if key in model.languagesArray %}checked{% endif %}>
+                            {{ item }}
+                        </label>
+                        <div class="help-block"></div>
+                    </div>
+                    {% endfor %}
+
                 </div>
                 <div class="col-md-12">
 

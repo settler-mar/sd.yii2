@@ -54,10 +54,10 @@ th:first-child {
   text-align: left;
   //white-space: nowrap;
 
-  display: flex;
+  //display: flex;
   min-height: 32px;
-  justify-content: left;
-  align-items: center;
+  //justify-content: left;
+  //align-items: center;
 
   /*&:before {
     content: '';
@@ -70,6 +70,15 @@ th:first-child {
     text-align: center;
   }
 }
+.comparison {
+  td:first-child,
+  th:first-child {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+}
+
 
 th:first-child {
   white-space: nowrap;

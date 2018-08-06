@@ -4,7 +4,7 @@
     {% endif %}
     <div class="shop-logo">
         <a class="shop-logo_link" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">
-            <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{store.name}}">
+            <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
         </a>
     </div>
     <div class="shop_panel">
