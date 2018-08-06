@@ -1321,6 +1321,23 @@ td{
     background: red;
   }
 }
+.admin_tool{
+  color:black;
+  margin-left: 10px;
+  font-size: 0.8em;
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 2px 5px;
+  transition: all 0.3s;
+  text-decoration: none;
+
+  &:hover{
+    color: #fff;
+    background: black;
+  }
+}
+
+
 //набор кнопочек
 .content-wrapper .btn{
   text-decoration: none;
