@@ -1,5 +1,9 @@
 .static-page {
 
+  h1, h2{
+    font-weight: $font_weight_content_header;
+  }
+
   &_background-image {
     border-radius: 5px;
     overflow: hidden;
