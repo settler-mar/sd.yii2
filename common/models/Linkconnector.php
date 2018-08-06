@@ -30,31 +30,30 @@ class Linkconnector
       $store_g[$store["CampaignID"]]=$store;
     }
 
-    $stores=[];
+   // $stores=[];
     foreach ($links as $link){
-      if(isset($store_g[$link['CampaignID']])){
-        $data=$store_g[$link['CampaignID']];
-        $data['DeepLinkURL']=$link['DeepLinkURL'].$link['CampaignURL'];
+      if (isset($store_g[$link['CampaignID']])) {
+        $store_g[$link['CampaignID']]['DeepLinkURL']=$link['DeepLinkURL'].$link['CampaignURL'];
+        $cashback="";
 
-        $data['cashback']="";
         if(strlen($link['FixedMaximumCommission'])>2){
           if($link['FixedMinimumCommission']!=$link['FixedMaximumCommission']){
-            $data['cashback']="до ";
+            $cashback="до ";
           }
-          $data['cashback'].=$link['FixedMaximumCommission'];
+          $cashback.=$link['FixedMaximumCommission'];
         }else if(strlen($link['PercentMaximumCommission'])>2){
           if($link['PercentMaximumCommission']!=$link['PercentMaximumCommission']){
-            $data['cashback']="до ";
+            $cashback="до ";
           }
-          $data['cashback'].=$link['PercentMaximumCommission'];
+          $cashback.=$link['PercentMaximumCommission'];
         }else{
-          $data['cashback']=0;
+          $cashback=0;
         }
-        $stores[]=$data;
+        $store_g[$link['CampaignID']]['cashback'] = $cashback;
       }
     }
 
-    return ($stores);
+    return array_values($store_g);
   }
 
   public function getСoupons(){
