@@ -149,30 +149,26 @@ class LinkconnectorController extends Controller
             $this->coupons++;
             $promoCode = in_array($coupon['Coupon Code'], ['None Required' , 'No Code Needed']) ? '' :
                 $coupon['Coupon Code'];
-            $where = empty($promoCode) ? ['store_id' => $store->uid, 'coupon_id' => $coupon['PromoID']] : [
-                'or',
-                ['store_id' => $store->uid, 'coupon_id' => $coupon['PromoID']],
-                ['name' => $coupon['HeadLineTitle'], 'promocode' => $promoCode],
-            ];
-            $dbCoupon = Coupons::find()->where($where)->one();
-            if (!$dbCoupon) {
-                $this->couponsInserted++;
-                $dbCoupon = new Coupons;
-                $dbCoupon->store_id = $store->uid;
-                $dbCoupon->coupon_id = $coupon['PromoID'];
-            }
-            $dbCoupon->name = $coupon['HeadLineTitle'];
-            $dbCoupon->goto_link = $coupon['TrackingURL'];
-            $dbCoupon->date_start = $coupon['Entry Date'];
-            $dbCoupon->date_end = $coupon['Expires'] == 'Never' ? date('Y-m-d H:i:s', PHP_INT_MAX) : $coupon['Expires'];
-            $dbCoupon->promocode = $promoCode;
-            $dbCoupon->species = 0;
-            $dbCoupon->exclusive = 0;
-            if (!$dbCoupon->save()) {
-                $this->couponsErrors++;
-                d($coupon, $dbCoupon->errors);
-            }
 
+            $newCoupon = [
+                'promocode' => $promoCode,
+                'coupon_id' => $coupon['PromoID'],
+                'name' => $coupon['HeadLineTitle'],
+                'description' => null,
+                'link' => $coupon['TrackingURL'],
+                'date_start' => $coupon['Entry Date'],
+                'date_expire' => $coupon['Expires'] == 'Never' ?
+                    date('Y-m-d H:i:s', PHP_INT_SIZE == 4 ? PHP_INT_MAX : PHP_INT_MAX>>32) :
+                    $coupon['Expires'],
+            ];
+            $result = Coupons::makeOrUpdate($newCoupon, $store->uid);
+            if ($result['new']) {
+                $this->couponsInserted++;
+            }
+            if (!$result['status']) {
+                $this->couponsErrors++;
+                d($newCoupon, $result['coupon']->errors);
+            }
 
         }
         echo 'Coupons ' . $this->coupons . "\n";

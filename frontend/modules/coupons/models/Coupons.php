@@ -459,6 +459,41 @@ class Coupons extends \yii\db\ActiveRecord
     return $data;
   }
 
+  public static function makeOrUpdate($coupon, $storeId)
+  {
+      $where = empty($coupon['promoCode']) ? ['store_id' => $storeId, 'coupon_id' => $coupon['coupon_id']] : [
+          'or',
+          ['store_id' => $storeId, 'coupon_id' => $coupon['coupon_id']],
+          ['name' => $coupon['name'], 'promocode' => $coupon['promocode']],
+      ];
+      $dbCoupon = Coupons::find()->where($where)->one();
+      if (!$dbCoupon) {
+          $dbCoupon = new Coupons;
+          $dbCoupon->store_id = $storeId;
+          $dbCoupon->coupon_id = $coupon['coupon_id'];
+      }
+      $dbCoupon->name = $coupon['name'];
+      $dbCoupon->goto_link = $coupon['link'];
+      $dbCoupon->date_start = $coupon['date_start'];
+      $dbCoupon->date_end = $coupon['date_expire'];
+      $dbCoupon->promocode = $coupon['promocode'];
+      $dbCoupon->description = $coupon['description'];
+      $dbCoupon->species = 0;
+      $dbCoupon->exclusive = 0;
+      $result = [
+          'coupon' => $dbCoupon,
+          'new' => $dbCoupon->isNewRecord,
+      ];
+      $result['status'] = $dbCoupon->save();
+
+      if (isset($coupon['categories'])) {
+          //todo нужна загрузка категорий
+
+      }
+      return $result;
+
+  }
+
 
     /** все возможные языки для запроса
      * @param $languages
@@ -495,6 +530,8 @@ class Coupons extends \yii\db\ActiveRecord
     Cache::deleteName('categories_coupons');
     Cache::deleteName('popular_stores_with_promocodes');
   }
+  
+  
 
 
 }
