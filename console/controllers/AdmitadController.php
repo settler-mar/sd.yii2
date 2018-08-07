@@ -160,6 +160,8 @@ class AdmitadController extends Controller
         $paymentsCount++;
         $payment['cpa_id'] = 1;//задаём жёстко
         $payment['affiliate_id'] = $payment['advcampaign_id'];//задаём жёстко
+        $cpa_link=CpaLink::findOne(['affiliate_id'=>$payment['advcampaign_id'],'cpa_id'=>1]);
+        $payment['cpa_link_id']=$cpa_link->id;
 
         $payment['status'] = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 

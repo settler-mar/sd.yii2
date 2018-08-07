@@ -68,8 +68,8 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
         [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-            'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id', 'rate_id'], 'integer'],
-        [['recalc_json'], 'string'],
+            'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id', 'rate_id','cpa_link_id'], 'integer'],
+        [['recalc_json','currency'], 'string'],
         [['user_id'], 'integer', 'on' => 'online'],
         [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
             'message' => 'ID пользователя должно быть в формате SD-xxxxxxxx'],
@@ -87,6 +87,7 @@ class Payments extends \yii\db\ActiveRecord
 
         [['order_id'], 'string', 'max' => 50],
         [['admin_comment'], 'string', 'max' => 255],
+        [['currency'], 'string', 'max' => 3],
         [['category'], 'required', 'on' => 'offline', 'message' => 'Необходимо выбрать "Категория покупки"'],
         [['category'], 'integer'],
         [['sub_id'], 'integer'],
@@ -128,6 +129,7 @@ class Payments extends \yii\db\ActiveRecord
         'cpaName' => 'CPA',
         'store_point_id' => 'ID точки продаж',
         'storePointName' => 'Точка продаж',
+        'currency' => 'Валюта',
     ];
   }
 
@@ -278,7 +280,7 @@ class Payments extends \yii\db\ActiveRecord
 
   public function getCpaLink()
   {
-    return $this->hasOne(CpaLink::className(), ['affiliate_id' => 'affiliate_id', 'cpa_id' => 'cpa_id']);
+    return $this->hasOne(CpaLink::className(), ['id' => 'cpa_link_id']);
   }
 
   public function getCpa()
@@ -496,6 +498,15 @@ class Payments extends \yii\db\ActiveRecord
       $rate_id = 0;
     }
 
+    if(!isset($payment['cpa_link_id'])) {
+      $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => $payment['cpa_id']]);
+      $payment['cpa_link_id'] = $cpa_link->id;
+    }
+
+    if(!isset($payment['cpa_link_id'])){
+      $payment['currency'] = $store->currency;
+    }
+
     $db_payment = self::findOne(['action_id' => $payment['action_id'], 'affiliate_id' => $payment['affiliate_id']]);
     //$db_payment = self::findOne(['action_id' => $payment['action_id']]);
     if (!$db_payment) {
@@ -525,11 +536,13 @@ class Payments extends \yii\db\ActiveRecord
       $db_payment->user_id = $payment['subid'];
       $db_payment->sub_id = $payment['sub_id2'];
       $db_payment->order_price = ($payment['cart'] ? $payment['cart'] : 0);
+      $db_payment->currency = $payment['currency'];
       $db_payment->reward = $userCashback['reward'];//$reward;
       $db_payment->cashback = $userCashback['cashback'];
       $db_payment->status = $payment['status'];
       $db_payment->affiliate_id = $payment['affiliate_id'];
       $db_payment->cpa_id = $payment['cpa_id'];
+      $db_payment->cpa_link_id=$payment['cpa_link_id'];
       $db_payment->click_date = $payment['click_date'];
       $db_payment->action_date = $payment['action_date'];
       $db_payment->status_updated = $payment['status_updated'];
@@ -590,7 +603,12 @@ class Payments extends \yii\db\ActiveRecord
 
       $db_payment->kurs = $db_payment->kurs ? $db_payment->kurs : $userCashback['kurs'];
 
+      //нужно временно что б виксить старые платежи при необходимости
+      $db_payment->currency = $payment['currency'];
+      $db_payment->cpa_link_id=$payment['cpa_link_id'];
+
       if (isset($payment['ip'])) $db_payment->ip = $payment['ip'];
+
       //для подтвержденных заказов ни чего не меняем уже кроме отдельных ячеек
       if ($db_payment->status == 2) {
 

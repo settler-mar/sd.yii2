@@ -1,54 +1,56 @@
 {{ use('/yii/widgets/ActiveForm') }}
             <div class="payments-form">
                 {% set form = active_form_begin() %}
-                <div class="col-md-6">
-                    <div class="form-group field-payments-storename">
-                        <label class="control-label" for="payments-storename">Магазин</label>
-                        {{ model.storeName | raw }}
-                    </div>
-
-                    {% if model.store_point_id %}
-                    <div class="form-group field-payments-storename">
-                        <label class="control-label" for="payments-storename">Торговая точка</label>
-                        {{ model.storesPointText | raw }}
-                    </div>
-                    {% endif %}
-
-                    <div class="form-group field-payments-storename">
-                        <label class="control-label" for="payments-storename">Тариф</label>
-                        {{ model.tariffText | raw }}
-                    </div>
-
-                    {{ form.field(model, 'action_id').textInput()|raw }}
-
-                    {{ form.field(model, 'affiliate_id').textInput()|raw }}
-
-                    {{ form.field(model, 'user_id').textInput()|raw }}
-
-                    <div cur="{{ model.storeCur }}">
-                        {{ form.field(model, 'order_price').textInput()|raw }}
-                    </div>
-
-                    <div cur="RUB">
-                     {{ form.field(model, 'reward').textInput({})|raw }}
-                    </div>
-
-                    <div cur="RUB">
-                        {{ form.field(model, 'cashback').textInput()|raw }}
-                    </div>
-
-                    {{ form.field(model, 'status').dropDownList({
-                        '0':'В ожидании',
-                        '1':'Отклонён',
-                        '2':'Подтвержден'
-                    })|raw }}
-
-                    {{ form.field(model, 'click_date').textInput()|raw }}
-
-                    {{ form.field(model, 'action_date').textInput()|raw }}
-
-                    {{ form.field(model, 'status_updated').textInput()|raw }}
+              <div class="col-md-6">
+                <div class="form-group field-payments-storename">
+                  <label class="control-label" for="payments-storename">Магазин</label>
+                  {{ model.storeName | raw }}
                 </div>
+
+                {% if model.store_point_id %}
+                  <div class="form-group field-payments-storename">
+                    <label class="control-label" for="payments-storename">Торговая точка</label>
+                    {{ model.storesPointText | raw }}
+                  </div>
+                {% endif %}
+
+                <div class="form-group field-payments-storename">
+                  <label class="control-label" for="payments-storename">Тариф</label>
+                  {{ model.tariffText | raw }}
+                </div>
+
+                {{ form.field(model, 'action_id').textInput()|raw }}
+
+                {{ form.field(model, 'affiliate_id').textInput()|raw }}
+
+                {{ form.field(model, 'user_id').textInput()|raw }}
+
+                <div cur="{{ model.currency }}">
+                  {{ form.field(model, 'order_price').textInput()|raw }}
+                </div>
+
+                {{ form.field(model, 'currency').textInput()|raw }}
+
+                <div cur="RUB">
+                  {{ form.field(model, 'reward').textInput({})|raw }}
+                </div>
+
+                <div cur="RUB">
+                  {{ form.field(model, 'cashback').textInput()|raw }}
+                </div>
+
+                {{ form.field(model, 'status').dropDownList({
+                  '0':'В ожидании',
+                  '1':'Отклонён',
+                  '2':'Подтвержден'
+                })|raw }}
+
+                {{ form.field(model, 'click_date').textInput()|raw }}
+
+                {{ form.field(model, 'action_date').textInput()|raw }}
+
+                {{ form.field(model, 'status_updated').textInput()|raw }}
+              </div>
                 <div class="col-md-6">
                     {{ form.field(model, 'closing_date').textInput()|raw }}
 
@@ -76,5 +78,5 @@
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
                     </div>
                 </div>
-                {{ active_form_end() }}
+              {{ active_form_end() }}
             </div>
