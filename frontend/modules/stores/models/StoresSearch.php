@@ -130,6 +130,7 @@ class StoresSearch extends Stores
         if (!empty($this->cpa_id)) {
             $query->leftJoin(CpaLink::tableName().' cwclall', 'cw_stores.uid = cwclall.stores_id');
             $query->andFilterWhere(['cwclall.cpa_id' => $this->cpa_id]);
+            $query->distinct();
         }
         if (!empty($this->shop_type)) {
             if ($this->shop_type == 'offline') {
