@@ -24,8 +24,8 @@ class Cpa extends \yii\db\ActiveRecord
         'Sellaction' => 'SubID1',
         'Doublertrade' => 'epi',
         'Advertise'=> 'tid',
-        //'Awin' => 'clickref',//такой вариант
-        'Awin' => 'pref1',//второй вариант
+        'Awin' => 'clickref',//такой вариант
+        //'Awin' => 'pref1',//второй вариант
         "Linkconnector"=>'atid'
 
     ];
