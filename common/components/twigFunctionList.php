@@ -631,26 +631,28 @@ $functionsList = [
      return preg_replace('/.{2,4}\@/', '****@', $email);
   },
   '_eol' => function($value, $width = 40) {
+    $value=trim(strip_tags($value));
+
+    if(mb_strlen($value)<$width)return $value; //добавил что б лишний раз не гонять цикл
+
     //меняем пробелы поблизе к $width на перевод строки
-      $result = '';
-      while (mb_strlen($value)) {
-          if (mb_strlen($value) <= $width) {
-              $pos = mb_strlen($value);
+    //Причина создания: Нарушение вёрстки длинным alt-ом на карточке шопа
 
-          } else {
-              $value1 = mb_substr($value, 0, $width);
-              $pos = mb_strrpos($value1, ' ');
-          }
-
-          if ($pos === false) {
-              $result .= mb_substr($value, 0, $width);
-              $value = mb_substr($value, $width);
-          } else {
-              $result .= mb_substr($value, 0, $pos). "\n";
-              $value = mb_substr($value, $pos);
-          }
+    $value=explode(' ',$value);
+    $result = '';
+    $i=0;
+    while (mb_strlen($result)<$width && $i<count($value)) {
+      if(mb_strlen($value[$i])<1){
+        $i++;
+        continue;
       }
-     return $result;
+      if(mb_strlen($value[$i])+mb_strlen($result)>$width){
+        return trim($result);
+      }
+      $result.=' '.$value[$i];
+      $i++;
+    }
+    return trim($result);
   },
 
 
