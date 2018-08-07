@@ -31,11 +31,11 @@
 
                 {{ form.field(model, 'currency').textInput()|raw }}
 
-                <div cur="RUB">
+                <div cur="{{ model.user.currency }}">
                   {{ form.field(model, 'reward').textInput({})|raw }}
                 </div>
 
-                <div cur="RUB">
+                <div cur="{{ model.user.currency }}">
                   {{ form.field(model, 'cashback').textInput()|raw }}
                 </div>
 

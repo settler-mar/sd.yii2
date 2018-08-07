@@ -180,8 +180,14 @@ class PerformancehorizonController extends Controller
       //$params['status_updated_end'] = date('d.m.Y 00:00:00');
     }
 
-    if(is_numeric($params['status_updated_start']))$params['status_updated_start']=date('Y-m-d H:i:s',$params['status_updated_start']);
-    if(isset($params['status_updated_end']) && is_numeric($params['status_updated_end']))$params['status_updated_end']=date('Y-m-d H:i:s',$params['status_updated_end']);
+    if (is_numeric($params['status_updated_start'])) {
+        $params['status_updated_start']=date('Y-m-d H:i:s',$params['status_updated_start']);
+    }
+    if (isset($params['status_updated_end']) && is_numeric($params['status_updated_end'])) {
+        $params['status_updated_end']=date('Y-m-d H:i:s',$params['status_updated_end']);
+    } else {
+        $params['status_updated_end'] = date('Y-m-d H:i:s');
+    }
 
     //Проверить!!!
     $pay_status= [

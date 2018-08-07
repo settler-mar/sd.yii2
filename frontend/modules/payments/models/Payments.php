@@ -499,7 +499,7 @@ class Payments extends \yii\db\ActiveRecord
     }
 
     if(!isset($payment['cpa_link_id'])) {
-      $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => $payment['cpa_id']]);
+      $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['affiliate_id'], 'cpa_id' => $payment['cpa_id']]);
       $payment['cpa_link_id'] = $cpa_link->id;
     }
 
