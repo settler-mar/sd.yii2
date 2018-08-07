@@ -92,6 +92,16 @@ var megaslider = (function () {
   var btn_style = [
     'none',
     'bordo',
+    'black',
+    'blue',
+    'dark-blue',
+    'red',
+    'orange',
+    'green',
+    'light-green',
+    'dark-green',
+    'pink',
+    'yellow'
   ];
   var show_animations = [
     "not_animate",

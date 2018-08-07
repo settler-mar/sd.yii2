@@ -161,13 +161,108 @@
 .slider__href:hover{
   background: #9b9b9b;
 }
-.slider__href.bordo{
-  background: #990039;
+
+.slider__href {
   color: #fff;
-}
-.slider__href.bordo:hover{
-  background: #cc024d;
-  color: #afabab;
+
+  &:hover {
+    color: #d7d7d7;
+  }
+
+  &.bordo {
+    background: #990039;
+
+    &:hover {
+      background: #cc024d;
+    }
+  }
+
+  &.black {
+    background: #333333;
+
+    &:hover {
+      background: #161616;
+    }
+  }
+
+  &.blue {
+    background: #1e00ba;
+
+    &:hover {
+      background: #19009b;
+    }
+  }
+
+  &.dark-blue {
+    background: #0f005e;
+
+    &:hover {
+      background: #19009b;
+    }
+  }
+
+  &.red {
+    background: #ff0000;
+
+    &:hover {
+      background: #c20000;
+      color: #fff;
+    }
+  }
+
+  &.orange {
+    background: #ff8400;
+
+    &:hover {
+      background: #ff8f17;
+    }
+  }
+
+  &.green {
+    background: #008000;
+
+    &:hover {
+      background: #003b00;
+    }
+  }
+
+  &.light-green {
+    background: #22ff22;
+    color:#525252;
+
+    &:hover {
+      background: #008000;
+      color: #ffffff;
+    }
+  }
+
+  &.dark-green {
+    background: #024f02;
+
+    &:hover {
+      background: #003b00;
+    }
+  }
+
+  &.pink {
+    background: #ffc0cb;
+    color:#525252;
+
+    &:hover {
+      background: #ff91a4;
+      color: #d7d7d7;
+    }
+  }
+
+  &.yellow {
+    background: #f7c714;
+    color: #222;
+
+    &:hover {
+      background: #f7cc48;
+      color: #fff;
+    }
+  }
 }
 
 #mega_slider .slider-active .parallax__group{
