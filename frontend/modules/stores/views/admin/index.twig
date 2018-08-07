@@ -55,7 +55,7 @@
                                     <div class="value">
                                         <a href="/admin/stores?StoresSearch[cpa_id]={{ cpa_item.id }}">{{ cpa_item.count }}</a>
                                         {% if cpa_item.id > 0 %}
-                                            (<a href="/admin/stores?StoresSearch[active_cpa_type]={{ cpa_item.id }}">{{ cpa_item.count_active }}</a>)
+                                            (<a href="/admin/stores?StoresSearch[active_cpa_type]={{ cpa_item.id }}">{{ stat_cpa_active[key].count }}</a>)
                                         {% endif %}
                                     </div>
                                 </div>

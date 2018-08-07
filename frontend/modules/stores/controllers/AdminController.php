@@ -73,22 +73,35 @@ class AdminController extends Controller
     $stat['online'] = $stores->where(['and',['<>', 'cwcl.cpa_id', 2], ['is_offline' => 0]])->count();
     $stat['offline'] = $stores->where(['is_offline' => 1])->count();
 
-//    $statLinkStores = CpaLink::find()
-//        ->select(['cw_stores.uid', 'cw_cpa_link.cpa_id'])
-//        ->leftJoin(Stores::tableName(), 'cw_cpa_link.stores_id = cw_stores.uid')
-//        ->groupBy(['cw_stores.uid', 'cw_cpa_link.cpa_id']);
-
+    //подзапрос для количества по спа
+    $statLinkStores = CpaLink::find()
+        ->select(['cw_stores.uid', 'cw_cpa_link.cpa_id'])
+        ->leftJoin(Stores::tableName(), 'cw_cpa_link.stores_id = cw_stores.uid')
+        ->groupBy(['cw_stores.uid', 'cw_cpa_link.cpa_id']);
+    //подзапрос для количество по активным спа
+    $statLinkStoresActive = CpaLink::find()
+        ->select(['cw_stores.uid', 'cw_cpa_link.cpa_id'])
+        ->leftJoin(Stores::tableName(), 'cw_cpa_link.id = cw_stores.active_cpa')
+        ->groupBy(['cw_stores.uid', 'cw_cpa_link.cpa_id']);
+    //запрос для количества по спа
     $statCpa = Cpa::find()
         ->from(Cpa::tableName().' cwc')
-        ->select(['cwc.name', 'cwc.id', 'count(cws.uid) as count', 'count(cwsa.uid) as count_active'])
-        ->leftJoin(CpaLink::tableName(). ' cwcl', 'cwc.id = cwcl.cpa_id')
-        ->leftJoin(Stores::tableName(). ' cws', 'cws.uid = cwcl.stores_id')
-        //    ->leftJoin(['cws' => $statLinkStores], 'cws.cpa_id = cwc.id')
-        ->leftJoin(Stores::tableName(). ' cwsa', 'cwsa.active_cpa = cwcl.id')
+        ->select(['cwc.name', 'cwc.id', 'count(cws.uid) as count'])
+        ->leftJoin(['cws' => $statLinkStores], 'cws.cpa_id = cwc.id')
         ->groupBy(['cwc.name', 'cwc.id'])
         ->asArray()
         ->orderBy('cwc.id')
         ->all();
+     //запрос для количество по активным спа
+    $statCpaActive = Cpa::find()
+        ->from(Cpa::tableName().' cwc')
+        ->select(['cwc.name', 'cwc.id', 'count(cws.uid) as count'])
+        ->leftJoin(['cws' => $statLinkStoresActive], 'cws.cpa_id = cwc.id')
+        ->groupBy(['cwc.name', 'cwc.id'])
+        ->asArray()
+        ->orderBy('cwc.id')
+        ->all();
+    //ещё одна строка - шопы, не имеющие активных спа
     $cpaLinkId = CpaLink::find()->select(['id']);
     $statCpa[] = [
       'name' => 'Не задано',
@@ -100,8 +113,7 @@ class AdminController extends Controller
               ['is', 'active_cpa', null],
               ['not in', 'active_cpa', $cpaLinkId]
           ])->count(),
-    ];
-    //ddd($statCpa);
+  ];
 
 
     $cpaTypes = ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->orderBy('id')->all(), 'id', 'name');
@@ -156,6 +168,7 @@ class AdminController extends Controller
         },
       ],
       'stat_cpa' => $statCpa,
+      'stat_cpa_active' => $statCpaActive,
       'cpa_types' => $cpaTypes,
     ]);
   }
