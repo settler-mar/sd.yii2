@@ -1,4 +1,5 @@
 (function (w, d, $) {
+  var slide_interval=4000;
   var scrolls_block = $('.scroll_box');
 
   if (scrolls_block.length == 0) return;
@@ -54,7 +55,7 @@
     var $this = $(this);
     if (!$this.hasClass("scroll_box-active"))return;
 
-    var timeoutId = setTimeout(next_slide.bind($this), 2000);
+    var timeoutId = setTimeout(next_slide.bind($this), slide_interval);
     $this.data('slide-timeoutId', timeoutId)
   }
 
