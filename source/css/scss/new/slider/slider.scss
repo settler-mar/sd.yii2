@@ -144,7 +144,8 @@
 #mega_slider .fixed__full-height{
   height: 100%;
 }
-.slider__href{
+
+.content-wrapper .slider__href{
   position: absolute;
   left: 50%;
   top: 50%;
@@ -157,16 +158,10 @@
   /* font-weight: bold; */
   letter-spacing: 2px;
   transition: all 0.3s;
-}
-.slider__href:hover{
-  background: #9b9b9b;
-}
-
-.slider__href {
-  color: #fff;
 
   &:hover {
     color: #d7d7d7;
+    background: #9b9b9b;
   }
 
   &.bordo {
