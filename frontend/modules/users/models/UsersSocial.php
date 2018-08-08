@@ -285,9 +285,14 @@ class UsersSocial extends \yii\db\ActiveRecord
       ->send();
   }
 
-  public function getUser()
+  /*public function getUser()
   {
     $user = Users::findOne(['uid' => $this->user_id]);
     return $user;
+  }*/
+
+  public function getUser()
+  {
+    return $this->hasOne(Users::className(), ['uid' => 'user_id']);
   }
 }
