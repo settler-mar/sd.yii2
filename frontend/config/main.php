@@ -288,7 +288,10 @@ $config = [
       'class' => 'frontend\modules\actions\Module',
     ],
     'cpa' => [
-      'class' => 'app\modules\cpa\Module',
+      'class' => 'frontend\modules\cpa\Module',
+    ],
+    'products' => [
+      'class' => 'frontend\modules\products\Module',
     ],
   ],
   'params' => $params,

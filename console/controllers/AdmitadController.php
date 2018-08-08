@@ -18,6 +18,7 @@ use frontend\modules\actions\models\ActionsActions;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
+use frontend\modules\products\models\Products;
 
 class AdmitadController extends Controller
 {
@@ -175,6 +176,22 @@ class AdmitadController extends Controller
         if ($paymentStatus['save_status']) {
           if ($paymentStatus['new_record']) {
             $inserted++;
+            //новый платёж - пишем продукты
+              if (isset($payment['positions'])) {
+                  foreach ($payment['positions'] as $position) {
+                      Products::make([
+                          'product_id' => $position['product_id'],
+                          'store_id' => $store->uid,
+                          'price' => $position['amount'],
+                          'currency' => $payment['currency'],
+                          'title' => empty($position['product_name']) ? 'Не указано' : $position['product_name'],
+                          'description' => '',
+                          'image' => $position['product_image'],
+                          'url' => $position['product_url'],
+                      ]);
+                  }
+              }
+
           } else {
             $updated++;
           }

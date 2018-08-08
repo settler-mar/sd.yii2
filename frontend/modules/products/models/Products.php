@@ -1,0 +1,108 @@
+<?php
+
+namespace frontend\modules\products\models;
+
+use Yii;
+use frontend\modules\stores\models\Stores;
+
+/**
+ * This is the model class for table "cw_products".
+ *
+ * @property integer $uid
+ * @property integer $store_id
+ * @property string $product_id
+ * @property string $title
+ * @property string $description
+ * @property string $image
+ * @property string $url
+ * @property string $last_buy
+ * @property integer $buy_count
+ * @property string $last_price
+ * @property string $currency
+ * @property string $created_at
+ *
+ * @property CwStores $store
+ */
+class Products extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'cw_products';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['store_id', 'product_id', 'title'], 'required'],
+            [['store_id', 'buy_count'], 'integer'],
+            [['description'], 'string'],
+            [['last_buy', 'created_at'], 'safe'],
+            [['last_price'], 'number'],
+            [['product_id', 'title', 'image', 'url', 'currency'], 'string', 'max' => 255],
+            [['store_id', 'product_id'], 'unique', 'targetAttribute' => ['store_id', 'product_id'], 'message' => 'The combination of Store ID and Product ID has already been taken.'],
+            [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'uid']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'uid' => 'Uid',
+            'store_id' => 'Store ID',
+            'product_id' => 'Product ID',
+            'title' => 'Title',
+            'description' => 'Description',
+            'image' => 'Image',
+            'url' => 'Url',
+            'last_buy' => 'Последняя покупка',
+            'buy_count' => 'Покупок',
+            'last_price' => 'Последняя цена',
+            'currency' => 'Currency',
+            'created_at' => 'Created At',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStore()
+    {
+        return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+
+    /**
+     * если такой уже есть, то обновляется цена, валюта, количество покупок, время покупки
+     * т.е. нужно вызывать только для новых платежей
+     * обновление собственно продукта  - нет
+     * @param $product
+     */
+    public static function make($product)
+    {
+        $productDb = self::findOne(['store_id'=> $product['store_id'], 'product_id' =>$product['product_id']]);
+        if ($productDb) {
+            $productDb->buy_count++;
+        } else {
+            $productDb = new self();
+            $productDb->store_id = $product['store_id'];
+            $productDb->product_id = $product['product_id'];
+            $productDb->buy_count = 1;
+            $productDb->title = $product['title'];
+            $productDb->description = $product['description'];
+            $productDb->image = $product['image'];
+            $productDb->url = $product['url'];
+        }
+        $productDb->last_buy = date('Y-m-d H:i:s');
+        $productDb->last_price = $product['price'];
+        $productDb->currency = $product['currency'];
+        $productDb->save();
+    }
+}

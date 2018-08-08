@@ -1,0 +1,31 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="products-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'store_id').textInput()|raw }}
+
+        {{ form.field(model, 'product_id').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'title').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+        {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'last_buy').textInput()|raw }}
+
+        {{ form.field(model, 'buy_count').textInput()|raw }}
+
+        {{ form.field(model, 'last_price').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'created_at').textInput()|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>
