@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\products\models\Products;
+use frontend\modules\stores\models\Stores;
 
 /**
  * ProductsSearch represents the model behind the search form about `frontend\modules\products\models\Products`.
@@ -19,7 +20,7 @@ class ProductsSearch extends Products
     {
         return [
             [['uid', 'store_id', 'buy_count'], 'integer'],
-            [['product_id', 'title', 'description', 'image', 'url', 'last_buy', 'currency', 'created_at'], 'safe'],
+            [['product_id', 'title', 'description', 'image', 'url', 'last_buy', 'currency', 'created_at', 'storeName'], 'safe'],
             [['last_price'], 'number'],
         ];
     }
@@ -42,13 +43,20 @@ class ProductsSearch extends Products
      */
     public function search($params)
     {
-        $query = Products::find();
+        $query = Products::find()
+           ->joinWith('store');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['storeName'] = [
+            'asc' => [Stores::tableName() . '.name' => SORT_ASC],
+            'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['image'] = null;
 
         $this->load($params);
 
@@ -72,8 +80,16 @@ class ProductsSearch extends Products
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', self::tableName() .'.url', $this->url])
             ->andFilterWhere(['like', 'currency', $this->currency]);
+
+        if ($this->storeName) {
+            $query->andFilterWhere([
+                'or',
+                ['like', Stores::tableName(). '.name', $this->storeName],
+                ['like', Stores::tableName(). '.url', $this->storeName]
+            ]);
+        }
 
         return $dataProvider;
     }

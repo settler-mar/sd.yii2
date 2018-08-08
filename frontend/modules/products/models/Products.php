@@ -25,6 +25,7 @@ use frontend\modules\stores\models\Stores;
  */
 class Products extends \yii\db\ActiveRecord
 {
+    public $storeName;
     /**
      * @inheritdoc
      */
@@ -65,9 +66,10 @@ class Products extends \yii\db\ActiveRecord
             'url' => 'Url',
             'last_buy' => 'Последняя покупка',
             'buy_count' => 'Покупок',
-            'last_price' => 'Последняя цена',
-            'currency' => 'Currency',
-            'created_at' => 'Created At',
+            'last_price' => 'Цена',
+            'currency' => 'Валюта',
+            'created_at' => 'Создано',
+            'storeName' => 'Магазин'
         ];
     }
 

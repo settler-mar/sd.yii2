@@ -29,31 +29,38 @@
                             {'class': '\\yii\\grid\\SerialColumn'},
 
                             'uid',
-                            'store_id',
+                            {
+                                'format': 'raw',
+                                'attribute': 'storeName',
+                                'value': tableData.storeName
+                            },
                             'product_id',
                             'title',
-                            'image',
-                            'url:url',
+                            {
+                                'format': 'raw',
+                                'attribute': 'image',
+                                'value': tableData.image
+                            },
+                            {
+                                'format': 'raw',
+                                'attribute': 'url',
+                                'value': tableData.url
+                            },
                             'last_buy',
                             'buy_count',
                             'last_price',
                             'currency',
                             'created_at',
-
-
-                            {'class': '\\yii\\grid\\ActionColumn'},
+                            {'class': '\\yii\\grid\\ActionColumn',
+                                'template' : '{update} {delete}',
+                            },
                         ],
                     })
                 }}
 {#
-'image',
+
 'description:ntext',
-'url:url',
-'last_buy',
-'buy_count',
-'last_price',
-'currency',
-'created_at'
+
 #}
                 </div>
             </div>

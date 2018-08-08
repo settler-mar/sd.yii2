@@ -44,6 +44,17 @@ class AdminController extends Controller
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tableData' => [
+                'storeName' => function ($model) {
+                    return '<a href="'.$model->store->url.'" target="_blank">'.$model->store->name.'</a>';
+                },
+                'url' => function ($model) {
+                    return '<a href="'.$model->url.'" target="_blank">'.$model->url.'</a>';
+                },
+                'image' => function ($model) {
+                    return '<img style="object-fit:cover; max-width: 50px" src="'.$model->image.'">';
+                }
+            ],
         ]);
     }
 
