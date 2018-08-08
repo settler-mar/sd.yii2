@@ -18,8 +18,8 @@ class UsersSocialSearch extends UsersSocial
     public function rules()
     {
         return [
-            [['uid', 'user_id', 'status'], 'integer'],
-            [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'email_manual', 'created_at', 'updated_at'], 'safe'],
+            [['uid', 'status'], 'integer'],
+            [['social_name','user_id', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'email_manual', 'created_at', 'updated_at'], 'safe'],
             [['social_name'], 'in', 'range' => array_keys(Yii::$app->eauth->services)],
 
         ];
@@ -43,7 +43,8 @@ class UsersSocialSearch extends UsersSocial
      */
     public function search($params)
     {
-        $query = UsersSocial::find();
+        $query = UsersSocial::find()
+            ->joinWith('user', false);
 
         // add conditions that should always apply here
 
@@ -62,7 +63,6 @@ class UsersSocialSearch extends UsersSocial
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
-            'user_id' => $this->user_id,
             'status' => $this->status,
             'bdate' => $this->bdate,
             'created_at' => $this->created_at,
@@ -72,11 +72,24 @@ class UsersSocialSearch extends UsersSocial
         $query->andFilterWhere(['like', 'social_name', $this->social_name])
             ->andFilterWhere(['like', 'social_id', $this->social_id])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', UsersSocial::tableName().'.email', $this->email])
             ->andFilterWhere(['like', 'email_manual', $this->email_manual])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'photo', $this->photo])
             ->andFilterWhere(['like', 'sex', $this->sex]);
+
+      if ($this->user_id) {
+        if(is_numeric($this->user_id)){
+          $query->andFilterWhere([
+              'user_id'=>$this->user_id
+          ]);
+        }else{
+          $query->andFilterWhere([
+              'like', Users::tableName() . '.email', $this->user_id
+          ]);
+        }
+
+      }
 
         return $dataProvider;
     }

@@ -61,7 +61,7 @@ class AdminSocialController extends Controller
       'social_list' => $social_list,
       'table_value' => [
         'user' => function ($model, $key, $index, $column) {
-          $user = $model->getUser();
+          $user = $model->getUser()->one();
           if(!$user)return '-';
           $out = '<a href="/admin/users/update?id=';
           $out .= $user->uid;
