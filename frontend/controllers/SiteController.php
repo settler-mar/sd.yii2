@@ -351,6 +351,8 @@ class SiteController extends SdController
       if (!$products) {
         return $this->redirect('/products');
       }
+      $products->visit++;
+      $products->save();
       $store=$products->store_id;
     }
 
