@@ -1,0 +1,69 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Products' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="products-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+                <div class="col-md-12 user_data"></div>
+            </div>
+            <div class="row">
+                <div  class="col-md-12">
+
+                {#<p>#}
+                    {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Products' }}</a>#}
+                {#</p>#}
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+
+                            'uid',
+                            {
+                                'format': 'raw',
+                                'attribute': 'storeName',
+                                'value': tableData.storeName
+                            },
+                            'product_id',
+                            'title',
+                            {
+                                'format': 'raw',
+                                'attribute': 'image',
+                                'value': tableData.image
+                            },
+                            {
+                                'format': 'raw',
+                                'attribute': 'url',
+                                'value': tableData.url
+                            },
+                            'last_buy',
+                            'buy_count',
+                            'last_price',
+                            'currency',
+                            'created_at',
+                            {'class': '\\yii\\grid\\ActionColumn',
+                                'template' : '{update} {delete}',
+                            },
+                        ],
+                    })
+                }}
+{#
+
+'description:ntext',
+
+#}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

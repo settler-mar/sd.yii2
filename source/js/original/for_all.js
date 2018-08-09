@@ -186,11 +186,14 @@ $('.ajax-action').click(function(e) {
         status: status,
         id: ids
       }
-    }).success(function(data) {
+    }).done(function(data) {
       $('#grid-ajax-action').yiiGridView("applyFilter");
       if (data.error != false) {
-        notification.notifi({message:'Произошла ошибка!',type:'err'})
+          notification.notifi({message:'Произошла ошибка!',type:'err'})
+      } else {
+          notification.notifi({message:'Операция выполнена!',type:'success'})
       }
+
     }).fail(function(data){
       notification.notifi({message:'Произошла ошибка!',type:'err'})
     });

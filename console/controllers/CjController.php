@@ -75,6 +75,32 @@ class CjController extends Controller
         echo 'Inserted Cpa link '.$this->cpaLinkInserted."\n";
     }
 
+    public function actionPayments()
+    {
+        $cj = new Cj();
+        $response = $cj->getPayments();
+        d($response);
+        $count = isset($response['commissions']['@attributes']['total-matched']) ?
+            $response['commissions']['@attributes']['total-matched'] : false;
+        d($count);
+
+        if (isset($response['commissions']['commissions'])) {
+            if ($count == 1) {
+                $this->writePayment($response['commissions']['commissions']);
+            } else {
+                foreach ($response['commissions']['commissions'] as $commission) {
+                    $this->writePayment($commission);
+                }
+            }
+        }
+
+    }
+
+    private function writePayment($commission)
+    {
+        d($commission);
+    }
+
     private function writeStore($store)
     {
         //d($store);

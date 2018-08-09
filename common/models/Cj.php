@@ -19,18 +19,31 @@ class Cj
 
     public function getJoined($page, $perPage)
     {
-        return $this->getRequest([
+        return $this->getRequest($this->url, [
             'advertiser-ids'=>'joined',
             'page-number' => $page,
             'records-per-page' => $perPage,
         ]);
     }
 
+    public function getPayments($dateStart = false, $dateEnd = false)
+    {
+        $dateEnd = $dateEnd ? $dateEnd : time();
+        $dateStart = $dateStart ? $dateStart : $dateEnd - 3600 * 24 * 30;
+        return $this->getRequest($this->commissionUrl, [
+            'date-type'=>'event', //'posting'
+            //'end-date' => date('Y-m-d H:i:s', $dateEnd),
+            //'start-date' => date('Y-m-d H:i:s', $dateStart),
+           // 'action-types' => 'sale',
 
-    private function getRequest($params)
+        ]);
+    }
+
+
+    private function getRequest($url, $params)
     {
         $query = http_build_query($params);
-        $url = $this->url . ($query ? '?'.$query : '');
+        $url = $url . ($query ? '?'.$query : '');
 
         $headers = ["authorization:". $this->devKey];
         $ch = curl_init();
