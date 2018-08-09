@@ -195,7 +195,7 @@ class AdmitadController extends Controller
                   'description' => '',
                   'image' => $position['product_image'],
                   'url' => $position['product_url'],
-                  'reward'=>$position['payment']*100/$store['percent'],
+                  'reward'=>$position['payment']*$store['percent']/100,
               ];
               Products::make($product_data);
               $productsCount++;
