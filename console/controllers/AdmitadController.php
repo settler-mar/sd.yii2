@@ -183,20 +183,21 @@ class AdmitadController extends Controller
             $updated++;
           }
         }
-
         if(($paymentStatus['save_status']  && $paymentStatus['new_record']) || $this->allProducts){
           if (isset($payment['positions'])) {
             foreach ($payment['positions'] as $position) {
-              Products::make([
+              $product_data=[
                   'product_id' => $position['product_id'],
                   'store_id' => $store->uid,
                   'price' => $position['amount'],
                   'currency' => $payment['currency'],
-                  'title' => empty($position['product_name']) ? 'Не указано' : $position['product_name'],
+                  'title' => empty($position['product_name']) ? '-' : $position['product_name'],
                   'description' => '',
                   'image' => $position['product_image'],
                   'url' => $position['product_url'],
-              ]);
+                  'reward'=>$position['payment']*100/$store['percent'],
+              ];
+              Products::make($product_data);
               $productsCount++;
             }
           }

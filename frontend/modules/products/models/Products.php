@@ -101,7 +101,9 @@ class Products extends \yii\db\ActiveRecord
             $productDb->description = $product['description'];
             $productDb->image = $product['image'];
             $productDb->url = $product['url'];
+            $productDb->visits = 0;
         }
+        $productDb->reward = $product['reward'];
         $productDb->last_buy = date('Y-m-d H:i:s');
         $productDb->last_price = $product['price'];
         $productDb->currency = $product['currency'];
