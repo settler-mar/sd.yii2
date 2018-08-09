@@ -58,17 +58,6 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Products model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view.twig', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
     /**
      * Creates a new Products model.
@@ -80,7 +69,8 @@ class AdminController extends Controller
         $model = new Products();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+            //return $this->redirect(['edit', 'id' => $model->uid]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create.twig', [
                 'model' => $model,
@@ -99,7 +89,8 @@ class AdminController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+            return $this->redirect(['index']);
+            //return $this->redirect(['edit', 'id' => $model->uid]);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
