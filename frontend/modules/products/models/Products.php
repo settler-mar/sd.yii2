@@ -2,7 +2,6 @@
 
 namespace frontend\modules\products\models;
 
-use Yii;
 use frontend\modules\stores\models\Stores;
 
 /**
@@ -25,88 +24,91 @@ use frontend\modules\stores\models\Stores;
  */
 class Products extends \yii\db\ActiveRecord
 {
-    public $storeName;
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'cw_products';
-    }
+  public $storeName;
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['store_id', 'product_id', 'title'], 'required'],
-            [['store_id', 'buy_count'], 'integer'],
-            [['description'], 'string'],
-            [['last_buy', 'created_at'], 'safe'],
-            [['last_price'], 'number'],
-            [['product_id', 'title', 'image', 'url', 'currency'], 'string', 'max' => 255],
-            [['store_id', 'product_id'], 'unique', 'targetAttribute' => ['store_id', 'product_id'], 'message' => 'The combination of Store ID and Product ID has already been taken.'],
-            [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'uid']],
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'cw_products';
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'uid' => 'Uid',
-            'store_id' => 'Store ID',
-            'product_id' => 'Product ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'image' => 'Image',
-            'url' => 'Url',
-            'last_buy' => 'Последняя покупка',
-            'buy_count' => 'Покупок',
-            'last_price' => 'Цена',
-            'currency' => 'Валюта',
-            'created_at' => 'Создано',
-            'storeName' => 'Магазин'
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+        [['store_id', 'product_id', 'title'], 'required'],
+        [['store_id', 'buy_count', 'visit'], 'integer'],
+        [['description'], 'string'],
+        [['last_buy', 'created_at'], 'safe'],
+        [['last_price', 'reward'], 'number'],
+        [['product_id', 'title', 'image', 'url', 'currency'], 'string', 'max' => 255],
+        [['store_id', 'product_id'], 'unique', 'targetAttribute' => ['store_id', 'product_id'], 'message' => 'The combination of Store ID and Product ID has already been taken.'],
+        [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'uid']],
+    ];
+  }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStore()
-    {
-        return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
-    }
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+        'uid' => 'Uid',
+        'store_id' => 'Store ID',
+        'product_id' => 'Product ID',
+        'title' => 'Title',
+        'description' => 'Description',
+        'image' => 'Image',
+        'url' => 'Url',
+        'last_buy' => 'Последняя покупка',
+        'buy_count' => 'Покупок',
+        'last_price' => 'Цена',
+        'currency' => 'Валюта',
+        'created_at' => 'Создано',
+        'storeName' => 'Магазин',
+        'visit' => 'visits',
+        'reward' => 'reward',
+    ];
+  }
 
-    /**
-     * если такой уже есть, то обновляется цена, валюта, количество покупок, время покупки
-     * т.е. нужно вызывать только для новых платежей
-     * обновление собственно продукта  - нет
-     * @param $product
-     */
-    public static function make($product)
-    {
-        $productDb = self::findOne(['store_id'=> $product['store_id'], 'product_id' =>$product['product_id']]);
-        if ($productDb) {
-            $productDb->buy_count++;
-        } else {
-            $productDb = new self();
-            $productDb->store_id = $product['store_id'];
-            $productDb->product_id = $product['product_id'];
-            $productDb->buy_count = 1;
-            $productDb->title = $product['title'];
-            $productDb->description = $product['description'];
-            $productDb->image = $product['image'];
-            $productDb->url = $product['url'];
-            $productDb->visits = 0;
-        }
-        $productDb->reward = $product['reward'];
-        $productDb->last_buy = date('Y-m-d H:i:s');
-        $productDb->last_price = $product['price'];
-        $productDb->currency = $product['currency'];
-        $productDb->save();
+  /**
+   * @return \yii\db\ActiveQuery
+   */
+  public function getStore()
+  {
+    return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+  }
+
+  /**
+   * если такой уже есть, то обновляется цена, валюта, количество покупок, время покупки
+   * т.е. нужно вызывать только для новых платежей
+   * обновление собственно продукта  - нет
+   * @param $product
+   */
+  public static function make($product)
+  {
+    $productDb = self::findOne(['store_id' => $product['store_id'], 'product_id' => $product['product_id']]);
+    if ($productDb) {
+      $productDb->buy_count++;
+    } else {
+      $productDb = new self();
+      $productDb->store_id = $product['store_id'];
+      $productDb->product_id = $product['product_id'];
+      $productDb->buy_count = 1;
+      $productDb->title = $product['title'];
+      $productDb->description = $product['description'];
+      $productDb->image = $product['image'];
+      $productDb->url = $product['url'];
+      $productDb->visit = 0;
     }
+    $productDb->reward = $product['reward'];
+    $productDb->last_buy = date('Y-m-d H:i:s');
+    $productDb->last_price = $product['price'];
+    $productDb->currency = $product['currency'];
+    $productDb->save();
+  }
 }
