@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\products\models\Products;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
 use frontend\modules\transitions\models\UsersVisits;
@@ -313,9 +314,9 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function actionGoto($store = 0, $coupon = 0)
+  public function actionGoto($store = 0, $coupon = 0,$products = 0)
   {
-    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0) {
+    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products==0) {
       return $this->redirect('/stores');
     }
 
@@ -342,6 +343,17 @@ class SiteController extends SdController
       $store = $coupon->store_id;
       $coupon->visit++;
       $coupon->save();
+    }
+
+    if($products>0){
+      $visit->source = 2;
+      $products = Products::findOne(['uid' => $products,'store_id'=>93]);
+      if (!$products) {
+        return $this->redirect('/products');
+      }
+      $products->visit++;
+      $products->save();
+      $store=$products->store_id;
     }
 
     $store = Stores::findOne(['uid' => $store]);

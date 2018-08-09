@@ -523,6 +523,7 @@ class Payments extends \yii\db\ActiveRecord
             'remove_ref_bonus' => false,
         ];
       }
+
       //не задан реф и имеется rererrer_id у юсера то ищем
       $ref = $ref ? $ref : ($user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null);
 

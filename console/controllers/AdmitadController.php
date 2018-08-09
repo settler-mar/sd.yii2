@@ -33,6 +33,7 @@ class AdmitadController extends Controller
 
   //добавляем параметры для запуска
   public $day;
+  public $allProducts;
 
   public function beforeAction($action)
   {
@@ -56,7 +57,7 @@ class AdmitadController extends Controller
   public function options($actionID)
   {
     if ($actionID == 'payments') {
-      return ['day'];
+      return ['day','allProducts'];
     }
   }
 
@@ -143,6 +144,7 @@ class AdmitadController extends Controller
     $inserted = 0;
     $updated = 0;
     $paymentsCount = 0;
+    $productsCount = 0;
 
     $payments = $admitad->getPayments($params);
     while ($payments) {
@@ -177,23 +179,27 @@ class AdmitadController extends Controller
           if ($paymentStatus['new_record']) {
             $inserted++;
             //новый платёж - пишем продукты
-              if (isset($payment['positions'])) {
-                  foreach ($payment['positions'] as $position) {
-                      Products::make([
-                          'product_id' => $position['product_id'],
-                          'store_id' => $store->uid,
-                          'price' => $position['amount'],
-                          'currency' => $payment['currency'],
-                          'title' => empty($position['product_name']) ? 'Не указано' : $position['product_name'],
-                          'description' => '',
-                          'image' => $position['product_image'],
-                          'url' => $position['product_url'],
-                      ]);
-                  }
-              }
-
           } else {
             $updated++;
+          }
+        }
+        if(($paymentStatus['save_status']  && $paymentStatus['new_record']) || $this->allProducts){
+          if (isset($payment['positions'])) {
+            foreach ($payment['positions'] as $position) {
+              $product_data=[
+                  'product_id' => $position['product_id'],
+                  'store_id' => $store->uid,
+                  'price' => $position['amount'],
+                  'currency' => $payment['currency'],
+                  'title' => empty($position['product_name']) ? '-' : $position['product_name'],
+                  'description' => '',
+                  'image' => $position['product_image'],
+                  'url' => $position['product_url'],
+                  'reward'=>$position['payment']*100/$store['percent'],
+              ];
+              Products::make($product_data);
+              $productsCount++;
+            }
           }
         }
 
@@ -215,6 +221,7 @@ class AdmitadController extends Controller
     echo 'Payments ' . $paymentsCount . "\n";
     echo 'Inserted ' . $inserted . "\n";
     echo 'Updated ' . $updated . "\n";
+    echo 'Products add ' . $productsCount . "\n";
     //делаем пересчет бланса пользователей
     if (count($users) > 0) {
       Yii::$app->balanceCalc->setNotWork(false);
@@ -260,8 +267,6 @@ class AdmitadController extends Controller
     $stores = $this->getStores($params);
     while ($stores) {
       foreach ($stores['results'] as $store) {
-        //ddd($store);
-
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
@@ -527,6 +532,12 @@ class AdmitadController extends Controller
           $db_store->is_active = 1;
         }
         $db_store->save();
+
+        if(count($db_store->errors)>0) {
+          d($db_store->name);
+          d($db_store->route);
+          d($db_store->errors);
+        }
       }
       $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
       if ($params['offset'] < $stores['_meta']['count']) {
