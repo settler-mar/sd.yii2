@@ -266,8 +266,6 @@ class AdmitadController extends Controller
     $stores = $this->getStores($params);
     while ($stores) {
       foreach ($stores['results'] as $store) {
-        //ddd($store);
-
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
@@ -533,6 +531,12 @@ class AdmitadController extends Controller
           $db_store->is_active = 1;
         }
         $db_store->save();
+
+        if(count($db_store->errors)>0) {
+          d($db_store->name);
+          d($db_store->route);
+          d($db_store->errors);
+        }
       }
       $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
       if ($params['offset'] < $stores['_meta']['count']) {
