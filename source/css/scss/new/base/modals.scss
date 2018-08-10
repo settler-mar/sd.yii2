@@ -352,6 +352,7 @@
     animation-name: notification_box_show;
     animation-delay: 0.0s;
     overflow: auto;
+    min-height: 100vh;
   }
 
   .notify_box{
