@@ -18,7 +18,11 @@
 
         {{ form.field(model, 'buy_count').textInput()|raw }}
 
+        {{ form.field(model, 'visit').textInput()|raw }}
+
         {{ form.field(model, 'last_price').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'reward').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
 

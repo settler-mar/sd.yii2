@@ -70,8 +70,8 @@ class Products extends \yii\db\ActiveRecord
         'currency' => 'Валюта',
         'created_at' => 'Создано',
         'storeName' => 'Магазин',
-        'visit' => 'visits',
-        'reward' => 'reward',
+        'visit' => 'Посещений',
+        'reward' => 'Комиссия',
     ];
   }
 

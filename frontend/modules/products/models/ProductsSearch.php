@@ -19,8 +19,8 @@ class ProductsSearch extends Products
     public function rules()
     {
         return [
-            [['uid', 'store_id', 'buy_count'], 'integer'],
-            [['product_id', 'title', 'description', 'image', 'url', 'last_buy', 'currency', 'created_at', 'storeName'], 'safe'],
+            [['uid', 'store_id', 'buy_count', 'visit'], 'integer'],
+            [['product_id', 'title', 'description', 'image', 'url', 'last_buy', 'reward', 'currency', 'created_at', 'storeName'], 'safe'],
             [['last_price'], 'number'],
         ];
     }
@@ -72,7 +72,9 @@ class ProductsSearch extends Products
             'store_id' => $this->store_id,
             'last_buy' => $this->last_buy,
             'buy_count' => $this->buy_count,
+            self::tableName() . '.visit' => $this->visit,
             'last_price' => $this->last_price,
+            'reward' => $this->reward,
             'created_at' => $this->created_at,
         ]);
 
@@ -80,7 +82,7 @@ class ProductsSearch extends Products
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', self::tableName() .'.url', $this->url])
+            ->andFilterWhere(['like', self::tableName() . '.url', $this->url])
             ->andFilterWhere(['like', 'currency', $this->currency]);
 
         if ($this->storeName) {
@@ -90,6 +92,7 @@ class ProductsSearch extends Products
                 ['like', Stores::tableName(). '.url', $this->storeName]
             ]);
         }
+       // ddd($this, $query);
 
         return $dataProvider;
     }
