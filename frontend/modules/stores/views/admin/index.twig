@@ -81,11 +81,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
                     {# include('_search.twig', {'model': searchModel}) #}
-                    <p>
-                        <a href="/admin/stores/create" class="btn btn-success">Создать магазин</a>
-                    </p>
+                <div class="col-md-6">
+                    <a href="/admin/stores/create" class="btn btn-success">Создать магазин</a>
+                </div>
+                <div class="col-md-6" style="padding-top:5px;">
+                    <form action="/admin/stores/" method="get">
+                        <label for="stores-affiliate-id">Affiliate ID</label>
+                        <input id="stores-affiliate-id" type="text" class="form-control" style="display: inline-block; width: 50%" name="StoresSearch[affiliate_id]" value="{{ searchModel.affiliate_id }}">
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </form>
+                </div>
+                <div class="col-md-12">
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,

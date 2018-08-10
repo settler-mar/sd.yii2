@@ -17,13 +17,14 @@ class StoresSearch extends Stores
     public $cpa_id;
     public $active_cpa_type;
     public $shop_type;
+    public $affiliate_id;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id'], 'integer'],
+            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id', 'affiliate_id'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email', 'active_cpa_type'], 'safe'],
             ['shop_type', 'in', 'range' => ['online', 'offline', 'hubrid']]
         ];
@@ -141,6 +142,14 @@ class StoresSearch extends Stores
                 $query->andFilterWhere(['is_offline' => 0]);
                 $query->andFilterWhere(['<>', 'cwc.id', 2]);
             }
+        }
+        if (!empty($this->affiliate_id)) {
+            $query->innerJoin(CpaLink::tableName().' cwclall', 'cw_stores.uid = cwclall.stores_id')
+                ->andFilterWhere([
+                    'or',
+                    ['cwclall.affiliate_id' => $this->affiliate_id],
+                    ['cwclall.id' => $this->affiliate_id]
+                ]);
         }
         return $dataProvider;
     }
