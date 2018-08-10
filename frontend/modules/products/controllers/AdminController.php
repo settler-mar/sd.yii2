@@ -38,6 +38,10 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductsView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $searchModel = new ProductsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -64,19 +68,19 @@ class AdminController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new Products();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['edit', 'id' => $model->uid]);
-            return $this->redirect(['index']);
-        } else {
-            return $this->render('create.twig', [
-                'model' => $model,
-            ]);
-        }
-    }
+//    public function actionCreate()
+//    {
+//        $model = new Products();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            //return $this->redirect(['edit', 'id' => $model->uid]);
+//            return $this->redirect(['index']);
+//        } else {
+//            return $this->render('create.twig', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
 
     /**
      * Updates an existing Products model.
@@ -86,6 +90,10 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
