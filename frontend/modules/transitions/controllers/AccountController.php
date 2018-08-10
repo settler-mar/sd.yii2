@@ -44,7 +44,7 @@ class AccountController extends \yii\web\Controller
 
         $dataBase = UsersVisits::find()
             ->from(UsersVisits::tableName().' cuv')
-            ->select(['cws.*', 'cuv.visit_date', 'cuv.uid'])
+            ->select(['cws.*', 'cuv.visit_date', 'cuv.uid', 'cuv.source'])
             ->innerJoin(Stores::tableName().
                 ' cws', 'cws.uid = cuv.store_id')
             ->where(['cuv.user_id' => \Yii::$app->user->id])

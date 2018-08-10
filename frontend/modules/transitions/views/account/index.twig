@@ -10,6 +10,7 @@
                 <table class="table table-transition">
                         <tr>
                             <th>{{ t('common', 'transition_date')|raw }}</th>
+                            <th>{{ t('common', 'transition_type')|raw }}</th>
                             <th>{{ t('common', 'shop')|raw }}</th>
                         </tr>
 
@@ -17,6 +18,7 @@
                         {% for visit in visit_history %}
                         <tr>
                             <td>{{_local_date(visit.visit_date, date_format)|raw }}</td>
+                            <td>{{ t('common', 'transition_type_'~visit.source)|raw }}</td>
                             <td class="store"><a href="/stores/{{visit.route}}{{ _if(visit.is_offline,'-offline') }}">{{visit.name}}</a></td>
                         </tr>
                         {% endfor %}
