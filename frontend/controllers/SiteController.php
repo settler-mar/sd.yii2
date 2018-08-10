@@ -314,7 +314,7 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function actionGoto($store = 0, $coupon = 0,$products = 0)
+  public function actionGoto($store = 0, $coupon = 0, $products = 0)
   {
     if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products==0) {
       return $this->redirect('/stores');
@@ -332,7 +332,7 @@ class SiteController extends SdController
 
     $data['link'] = '';
     if ($coupon > 0) {
-      $visit->source = 1;
+      $visit->source = UsersVisits::TRANSITION_TYPE_COUPON;
       $coupon = Coupons::findOne(['uid' => $coupon]);
       if (!$coupon) {
         return $this->redirect('/coupons');
@@ -345,8 +345,8 @@ class SiteController extends SdController
       $coupon->save();
     }
 
-    if($products>0){
-      $visit->source = 2;
+    if ($products>0) {
+      $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS;
       $products = Products::findOne(['uid' => $products,'store_id'=>93]);
       if (!$products) {
         return $this->redirect('/products');
@@ -354,6 +354,10 @@ class SiteController extends SdController
       $products->visit++;
       $products->save();
       $store=$products->store_id;
+      $data['link']= CpaLink::makeGotoLink('https://alitems.com/g/1e8d1144942071538c7816525dc3e8/', [
+        'ulp'=> $products->url,
+        'subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)
+      ]);
     }
 
     $store = Stores::findOne(['uid' => $store]);
@@ -367,26 +371,6 @@ class SiteController extends SdController
 
     if ($data['link'] == '') {
         $data['link'] = CpaLink::clickUrl($store);
-//        $cpaLink = $store->cpaLink;
-//        if ($cpaLink && $cpaLink->affiliate_link &&
-//            !empty($cpaLink->cpa->name) &&
-//            isset(Cpa::$user_id_params[$cpaLink->cpa->name])) {
-//            //admitad shareasale sellaction
-//            $data['link'] = $this->makeGotoLink(
-//                $cpaLink->affiliate_link,
-//                [Cpa::$user_id_params[$cpaLink->cpa->name] => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]
-//            );
-//        } else if ($cpaLink && !empty($cpaLink->cpa->name) &&
-//            in_array($cpaLink->cpa->name, Cpa::$user_id_in_template) && $cpaLink->affiliate_link ) {
-//            //внешние подключения, cj.com - ссылка в виде шаблона в cpa->affiliate_link
-//            $data['link'] = $this->makeOutstandLink($cpaLink->affiliate_link, ['subid' => Yii::$app->user->isGuest ? 0 : Yii::$app->user->id]);
-//        } else if ($cpaLink && $cpaLink->affiliate_link) {
-//            //не опознано cpa  но affiliate_link имеется
-//            $data['link'] = $this->makeGotoLink($cpaLink->affiliate_link,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-//        } else {
-//            //нет ничего подставляем store->url
-//            $data['link'] = $this->makeGotoLink($store->url,  ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
-//        }
     }
 
     $data['store'] = $store;

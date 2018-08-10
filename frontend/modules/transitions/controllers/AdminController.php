@@ -77,6 +77,8 @@ class AdminController extends Controller
                         return 'Партнёры';
                     case (UsersVisits::TRANSITION_TYPE_PARTHNER_CHECK_COOKIE):
                         return 'Партнёры с проверкой';
+                    case (UsersVisits::TRANSITION_TYPE_PRODUCTS):
+                        return 'Продукты';
                     default:
                         return 'Шопы';
                 }
