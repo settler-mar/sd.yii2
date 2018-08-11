@@ -47,6 +47,7 @@ phpunit.phar
 /common/config/db.php
 
 /frontend/web/images/logo
+/frontend/web/images/products
 /frontend/web/images/account/avatars
 /frontend/web/img
 /frontend/web/thumbs

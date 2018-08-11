@@ -3,6 +3,7 @@
 namespace frontend\modules\products\models;
 
 use frontend\modules\stores\models\Stores;
+use yii;
 
 /**
  * This is the model class for table "cw_products".
@@ -101,7 +102,7 @@ class Products extends \yii\db\ActiveRecord
       $productDb->buy_count = 1;
       $productDb->title = $product['title'];
       $productDb->description = $product['description'];
-      $productDb->image = $product['image'];
+      $productDb->image = self::saveImage($product['image']);
       $productDb->url = $product['url'];
       $productDb->visit = 0;
     }
@@ -110,5 +111,30 @@ class Products extends \yii\db\ActiveRecord
     $productDb->last_price = $product['price'];
     $productDb->currency = $product['currency'];
     $productDb->save();
+  }
+
+  public static function saveImage($image)
+  {
+    if (!$image) {
+        return null;
+    }
+    $path = Yii::$app->getBasePath() . '/../frontend/web/images/products/';
+    $exch = explode('.', $image);
+    $exch = $exch[count($exch) - 1];
+    $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
+    $name .= ('.' . $exch);//имя и расширение
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+    try {
+        $file = file_get_contents($image);
+        file_put_contents($path.$name, $file);
+        return $name;
+    } catch (\Exception $e) {
+        if (Yii::$app instanceof Yii\console\Application) {
+            echo $e->getMessage() . "\n";
+        }
+        return null;
+    }
   }
 }

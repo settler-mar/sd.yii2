@@ -56,7 +56,11 @@ class AdminController extends Controller
                     return '<a href="'.$model->url.'" target="_blank">'.$model->url.'</a>';
                 },
                 'image' => function ($model) {
-                    return '<img style="object-fit:cover; max-width: 50px" src="'.$model->image.'">';
+                    if (!$model->image) {
+                        return '';
+                    }
+                    return '<img style="object-fit:cover; max-width: 50px" src="'.
+                        (strpos($model->image, 'http') !== 0 ? '/images/products/' : ''). $model->image.'">';
                 }
             ],
         ]);
