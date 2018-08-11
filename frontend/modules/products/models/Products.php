@@ -98,7 +98,7 @@ class Products extends \yii\db\ActiveRecord
     } else {
       $productDb = new self();
       $productDb->store_id = $product['store_id'];
-      $productDb->product_id = $product['product_id'];
+      $productDb->product_id = (string) $product['product_id'];
       $productDb->buy_count = 1;
       $productDb->title = $product['title'];
       $productDb->description = $product['description'];
