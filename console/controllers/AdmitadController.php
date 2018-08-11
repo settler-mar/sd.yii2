@@ -187,7 +187,7 @@ class AdmitadController extends Controller
           if (isset($payment['positions'])) {
             foreach ($payment['positions'] as $position) {
               $product_data=[
-                  'product_id' => $position['product_id'],
+                  'product_id' => $position['product_id'] ? $position['product_id'] : $position['id'],
                   'store_id' => $store->uid,
                   'price' => $position['amount'],
                   'currency' => $payment['currency'],
