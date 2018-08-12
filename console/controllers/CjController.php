@@ -15,6 +15,7 @@ use frontend\modules\coupons\models\CouponsToCategories;
 class CjController extends Controller
 {
 
+    private $allLinksAsCoupon = true;//все ссылки загрузить как купоны
     private $cpa;
     private $siteId;//наш ид в cj.com
     private $trackingServer = 'https://www.qksrv.net';
@@ -127,6 +128,9 @@ class CjController extends Controller
 
         $storeLink = strtolower(preg_replace('/^https?\:\/\//', '', $storeUrl));
         foreach ($this->links[$affiliate_id] as $link) {
+            if (empty($link['clickUrl'])) {
+                continue;
+            }
             $destination = strtolower(preg_replace('/^https?\:\/\//', '', $link['destination']));
             if (strpos($destination, $storeLink)) {
                 $store['link'] = $link;
@@ -188,8 +192,12 @@ class CjController extends Controller
         $pageCount = 1;
         $perPage = 100;
         do {
-            //ссылки, названные купонами
-            $response = $cj->getLinks($page, $perPage, ['promotion-type' => 'Coupon']);
+            $response = $cj->getLinks(
+                $page,
+                $perPage,
+                //или все ссылки, или ссылки, названные у cj.com купонами
+                $this->allLinksAsCoupon ? [] : ['promotion-type' => 'Coupon']
+            );
 
             $page = isset($response['links']['@attributes']['page-number']) ?
                 $response['links']['@attributes']['page-number'] : $page;
@@ -283,7 +291,9 @@ class CjController extends Controller
 
     private function writeCoupon($coupon)
     {
-       // d($coupon);
+        if (empty($coupon['clickUrl'])) {
+            return;
+        }
         $this->records++;
         $store = $this->getStore($coupon['advertiser-id']);
         if (!$store) {
@@ -296,12 +306,14 @@ class CjController extends Controller
             $dbCoupon = new Coupons();
             $dbCoupon->coupon_id = $coupon['link-id'];
             $dbCoupon->name = $coupon['link-name'];
-            $dbCoupon->description = $coupon['description'];
+            $dbCoupon->description = !empty($coupon['description']) ? (string) $coupon['description'] : null;
             $dbCoupon->store_id = $store->uid;
-            $dbCoupon->date_start = $coupon['promotion-start-date'];
-            $dbCoupon->date_end = $coupon['promotion-end-date'];
+            $dbCoupon->date_start = !empty($coupon['promotion-start-date']) ? (string) $coupon['promotion-start-date'] :
+                date('Y-m-d 00:00:00');
+            $dbCoupon->date_end = !empty($coupon['promotion-end-date']) ? (string) $coupon['promotion-end-date'] :
+                date('Y-m-d H:i:s', PHP_INT_SIZE == 4 ? PHP_INT_MAX : PHP_INT_MAX>>32);
             $dbCoupon->goto_link = $coupon['clickUrl'];
-            $dbCoupon->promocode = $coupon['coupon-code'];
+            $dbCoupon->promocode = !empty($coupon['coupon-code']) ? (string) $coupon['coupon-code'] : '';
             $dbCoupon->species = 0;
             $dbCoupon->exclusive = 0;
             if (!$dbCoupon->save()) {
@@ -311,11 +323,13 @@ class CjController extends Controller
             }
         } else {
             $dbCoupon->name = $coupon['link-name'];
-            $dbCoupon->description = $coupon['description'];
-            $dbCoupon->date_start = $coupon['promotion-start-date'];
-            $dbCoupon->date_end = $coupon['promotion-end-date'];
+            $dbCoupon->description = !empty($coupon['description']) ? (string) $coupon['description'] : $dbCoupon->description;
+            $dbCoupon->date_start = !empty($coupon['promotion-start-date']) ? (string) $coupon['promotion-start-date'] :
+                $dbCoupon->date_start;
+            $dbCoupon->date_end = !empty($coupon['promotion-end-date']) ? (string) $coupon['promotion-end-date'] :
+                $dbCoupon->date_end;
             $dbCoupon->goto_link = $coupon['clickUrl'];
-            $dbCoupon->promocode = $coupon['coupon-code'];
+            $dbCoupon->promocode = !empty($coupon['coupon-code']) ? (string) $coupon['coupon-code'] : '';
             if (!$dbCoupon->save()) {
                 d($dbCoupon->errors);
             }
