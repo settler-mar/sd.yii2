@@ -34,6 +34,7 @@ return [
       'site_id' => '8021356',
       //'site_id' => '8830337',
       'dev_key' => '00db98c1f867e5e431d7b64199fa93105a865509552ec153e0551545a8eb41cad21f551a0d0350a65b3f3f381b37b438264fda3795b698470fcdb145c36ac25cbf/1e017a87b1d2b4e2a6a20dc6b7797ee38fb570e805d27ede8961b5ba0623604e23031522a3e15464a5c3eaab243890266397bb5027d02221aa238be1ab09d6f1',
+      'categories_json' => '/common/config/json/cjcom_categories.json',
   ],
   'doublertrade' => [
     'affiliateId' => 3044873,

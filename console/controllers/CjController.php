@@ -9,6 +9,8 @@ use common\models\Cj;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\Coupons;
+use frontend\modules\coupons\models\CouponsToCategories;
 
 class CjController extends Controller
 {
@@ -23,6 +25,10 @@ class CjController extends Controller
     private $cpaLinkFails;
     private $affiliateList = [];
     private $links;
+    private $stores;
+    private $categoriesConfigFile;
+    private $categories = [];
+    private $config;
 
 
     public function actionStores()
@@ -30,13 +36,6 @@ class CjController extends Controller
         $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
         if (!$this->cpa) {
             echo "Cpa Cj.com not found";
-            return;
-        }
-        $config = Yii::$app->params['cj.com'];
-
-        $this->siteId = $config && isset($config['site_id']) ? $config['site_id'] : '';
-        if (!$this->siteId) {
-            echo "site_id in params not found";
             return;
         }
 
@@ -173,7 +172,46 @@ class CjController extends Controller
 
     public function actionCoupons()
     {
-        //'promotion-type' => 'Coupon',
+        $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
+        if (!$this->cpa) {
+            echo "Cpa Cj.com not found";
+            return;
+        }
+        $this->config = Yii::$app->params['cj.com'];
+        if (!$this->config || !isset($this->config['categories_json'])) {
+            echo "Config cj.com not found or cj.com->categories_json  not found";
+            return;
+        }
+
+        $cj = new Cj();
+        $page = 1;
+        $pageCount = 1;
+        $perPage = 100;
+        do {
+            //ссылки, названные купонами
+            $response = $cj->getLinks($page, $perPage, ['promotion-type' => 'Coupon']);
+
+            $page = isset($response['links']['@attributes']['page-number']) ?
+                $response['links']['@attributes']['page-number'] : $page;
+            $count = isset($response['links']['@attributes']['records-returned']) ?
+                $response['links']['@attributes']['records-returned'] : 1;
+            $all = isset($response['links']['@attributes']['total-matched']) ?
+                $response['links']['@attributes']['total-matched'] : 1;
+            $pageCount = (int)ceil($all / $perPage);
+            if (isset($response['links']['link'])) {
+                if ($count == 1) {
+                    $this->writeCoupon($response['links']['link']);
+                } else {
+                    foreach ($response['links']['link'] as $link) {
+                        $this->writeCoupon($link);
+                    }
+                }
+            }
+            $page++;
+        } while ($page <= $pageCount);
+        $this->saveCopuonCategory();
+        echo "Coupons ". $this->records."\n";
+        echo "Inserted ". $this->inserted."\n";
     }
 
     private function getJoinedLinks($options = [])
@@ -193,7 +231,7 @@ class CjController extends Controller
             $pageCount = (int)ceil($all / $perPage);
             if (isset($response['links']['link'])) {
                 if ($count == 1) {
-                    $this->writeStore($response['links']['link']);
+                    $this->links[$response['links']['link']['advertiser-id']] = $response['links']['link'];
                 } else {
                     foreach ($response['links']['link'] as $link) {
                         $this->links[$link['advertiser-id']][] = $link;
@@ -202,7 +240,6 @@ class CjController extends Controller
             }
             $page++;
         } while ($page <= $pageCount);
-
     }
 
     private function getCashback($store){
@@ -242,6 +279,98 @@ class CjController extends Controller
             $cashback = 'до '.$cashback;
         }
         return ['cashback' => $cashback, 'currency'=>$currency];
+    }
+
+    private function writeCoupon($coupon)
+    {
+       // d($coupon);
+        $this->records++;
+        $store = $this->getStore($coupon['advertiser-id']);
+        if (!$store) {
+            d('Store not found '. $coupon['advertiser-id']);
+            return;
+        }
+        $dbCoupon = Coupons::findOne(['coupon_id' => $coupon['link-id'], 'store_id' => $store->uid]);
+        //Проверяем что б купон был новый
+        if (!$dbCoupon) {
+            $dbCoupon = new Coupons();
+            $dbCoupon->coupon_id = $coupon['link-id'];
+            $dbCoupon->name = $coupon['link-name'];
+            $dbCoupon->description = $coupon['description'];
+            $dbCoupon->store_id = $store->uid;
+            $dbCoupon->date_start = $coupon['promotion-start-date'];
+            $dbCoupon->date_end = $coupon['promotion-end-date'];
+            $dbCoupon->goto_link = $coupon['clickUrl'];
+            $dbCoupon->promocode = $coupon['coupon-code'];
+            $dbCoupon->species = 0;
+            $dbCoupon->exclusive = 0;
+            if (!$dbCoupon->save()) {
+                d($dbCoupon->errors);
+            } else {
+                $this->inserted++;
+            }
+        } else {
+            $dbCoupon->name = $coupon['link-name'];
+            $dbCoupon->description = $coupon['description'];
+            $dbCoupon->date_start = $coupon['promotion-start-date'];
+            $dbCoupon->date_end = $coupon['promotion-end-date'];
+            $dbCoupon->goto_link = $coupon['clickUrl'];
+            $dbCoupon->promocode = $coupon['coupon-code'];
+            if (!$dbCoupon->save()) {
+                d($dbCoupon->errors);
+            }
+        }
+        if ($dbCoupon->errors == null && !empty($coupon['category'])) {
+            $categoryId = $this->getCouponCategory($coupon['category']);
+            $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $categoryId]);
+            if (!$couponToCategory) {
+                $couponToCategory = new CouponsToCategories();
+                $couponToCategory->coupon_id = $dbCoupon->uid;
+                $couponToCategory->category_id = $categoryId;
+                $couponToCategory->save();
+             }
+        }
+    }
+
+    private function getStore($affiliateId)
+    {
+        if (!isset($this->stores[$affiliateId])) {
+            $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa->id, 'affiliate_id' => $affiliateId]);
+            $this->stores[$affiliateId] = $cpaLink ? $cpaLink->store : false;
+        }
+        return $this->stores[$affiliateId];
+    }
+
+    private function getCouponCategory($category)
+    {
+        $result = false;
+        if (!$this->categories) {
+            $file = realpath(Yii::$app->basePath . '/../');
+            $file .= $this->config['categories_json'];
+            $this->categoriesConfigFile = $file;
+            if (file_exists($file)) {
+                $this->categories = json_decode(file_get_contents($file), true);
+            } else {
+                $this->categories = [];
+            }
+
+        }
+        if (!empty($this->categories[$category])) {
+            $result = isset($this->categories[$category]['id']) ? $this->categories[$category]['id'] : false;
+        } else {
+            //неизвестное значение - вписать в массив
+            $this->categories[$category] = [
+                'name' => $category,
+            ];
+        }
+
+        return $result;
+    }
+    private function saveCopuonCategory()
+    {
+        if ($this->categoriesConfigFile) {
+            file_put_contents($this->categoriesConfigFile, json_encode($this->categories));
+        }
     }
 
 

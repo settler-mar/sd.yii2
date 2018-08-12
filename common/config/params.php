@@ -47,6 +47,10 @@ return [
       'rakuten' => [
           'config' => 'rakute_categories.json',
           'title' => 'Категории Rakuten',
+      ],
+      'cj.com' => [
+          'config' => 'cjcom_categories.json',
+          'title' => 'Категории Cj.com',
       ]
   ],
 

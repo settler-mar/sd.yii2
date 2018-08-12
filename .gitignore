@@ -76,4 +76,5 @@ common/config/socials.php
 debug
 sellaction_categories.json
 rakute_categories.json
+cjcom_categories.json
 runtime
