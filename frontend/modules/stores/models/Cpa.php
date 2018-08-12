@@ -26,7 +26,8 @@ class Cpa extends \yii\db\ActiveRecord
         'Advertise'=> 'tid',
         'Awin' => 'clickref',//такой вариант
         //'Awin' => 'pref1',//второй вариант
-        "Linkconnector"=>'atid'
+        "Linkconnector"=>'atid',
+        'Cj.com' => 'sid',
 
     ];
 
@@ -34,7 +35,7 @@ class Cpa extends \yii\db\ActiveRecord
      * для таких спа subid подставляется в шаблоне
      * @var array
      */
-    public static $user_id_in_template = ['Внешние подключения', 'Cj.com'];
+    public static $user_id_in_template = ['Внешние подключения'];
 
     /**
      * @inheritdoc

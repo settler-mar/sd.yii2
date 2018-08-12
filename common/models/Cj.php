@@ -7,14 +7,17 @@ use yii;
 class Cj
 {
     private $devKey;
+    private $siteId;
     private $url = 'https://advertiser-lookup.api.cj.com/v3/advertiser-lookup';
     private $commissionUrl = 'https://commission-detail.api.cj.com/v3/commissions';
+    private $urlLinkSearch = 'https://linksearch.api.cj.com/v2/link-search';
 
 
     public function __construct()
     {
         $config = Yii::$app->params['cj.com'];
         $this->devKey = $config && isset($config['dev_key']) ? $config['dev_key'] : '';
+        $this->siteId = $config && isset($config['site_id']) ? $config['site_id'] : '';
     }
 
     public function getJoined($page, $perPage)
@@ -24,6 +27,16 @@ class Cj
             'page-number' => $page,
             'records-per-page' => $perPage,
         ]);
+    }
+
+    public function getLinks($page, $perPage, $options = [])
+    {
+        return $this->getRequest($this->urlLinkSearch, array_merge([
+            'website-id' => $this->siteId,
+            'advertiser-ids' => 'joined',
+            'page-number' => $page,
+            'records-per-page' => $perPage,
+        ], $options));
     }
 
     public function getPayments($dateStart = false, $dateEnd = false)
