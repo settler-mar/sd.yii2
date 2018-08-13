@@ -12,6 +12,9 @@ class m180813_070218_add_ip_to_cw_users_social extends Migration
      */
     public function safeUp()
     {
+      $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+      $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
       $this->addColumn('cw_users_social', 'ip', $this->string(20));
     }
 

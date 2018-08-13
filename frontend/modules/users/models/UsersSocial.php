@@ -45,6 +45,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     return [
       [['social_name', 'social_id', 'name'], 'required'],
       [['status', 'user_id'], 'integer'],
+      [['email_manual', 'email'], 'email'],
       [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
       [['sex'], 'string', 'max' => 1],
       [['created_at', 'updated_at', 'bdate','ip'], 'safe'],
