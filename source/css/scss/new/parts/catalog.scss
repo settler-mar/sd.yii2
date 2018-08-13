@@ -59,6 +59,10 @@
         > a {
           background-color: $header_sub_menu_color_hover;
           text-decoration: none;
+
+          @include media($tablets){
+            padding: 0 10px;
+          }
         }
 
         > span {
