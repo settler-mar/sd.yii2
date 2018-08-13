@@ -216,7 +216,7 @@ function compileCss (source, dest) {
     .pipe(sourcemap.write())
     .pipe(plugins.rename('styles.css'))
     .pipe(gulp.dest(dest))
-    .pipe(cleanCSS({compatibility: 'ie9'}))
+    //.pipe(cleanCSS({compatibility: 'ie9'}))
     .pipe(plugins.rename('styles.min.css'))
     .pipe(gulp.dest(dest));
 }

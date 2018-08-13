@@ -2,49 +2,49 @@
 {% set title = 'Связанные с пользователями социальные сети' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
-{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+  {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="content-wrapper">
-    <section>
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{ html.encode(this.title) }}</h1>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{ html.encode(this.title) }}</h1>
 
-                {{ grid_view_widget({
-                        'dataProvider': dataProvider,
-                        'filterModel': searchModel,
-                            'columns': [
-                            {'class': '\\yii\\grid\\SerialColumn'},
+        {{ grid_view_widget({
+          'dataProvider': dataProvider,
+          'filterModel': searchModel,
+          'columns': [
+            {'class': '\\yii\\grid\\SerialColumn'},
 
-                            'uid',
-                            {
-                                'format':'raw',
-                                'attribute':'user_id',
-                                'value' : table_value.user
-                            },
-                            {
-                                'format':'raw',
-                                'attribute':'social_name',
-                                'filter': social_list,
-                                'value': table_value.social
-                            },
-                            'social_id',
-                            'name',
-                            'email',
-                            'email_manual',
-                            'created_at',
-                            {'class': '\\yii\\grid\\ActionColumn',
-                                'template' : '{update}{delete}',
-                            },
-                        ],
-                    })
-                }}
-            </div>
-        </div>
-    </section>
+            'uid',
+            {
+              'format':'raw',
+              'attribute':'user_id',
+              'value' : table_value.user
+            },
+            {
+              'format':'raw',
+              'attribute':'social_name',
+              'filter': social_list,
+              'value': table_value.social
+            },
+            'social_id',
+            'name',
+            'email',
+            'email_manual',
+            'ip',
+            'created_at',
+            {'class': '\\yii\\grid\\ActionColumn',
+              'template' : '{update}{delete}',
+            },
+          ],
+        }) }}
+      </div>
+    </div>
+  </section>
 </div>
 {#
 'email:email',

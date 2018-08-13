@@ -45,8 +45,10 @@ class UsersSocial extends \yii\db\ActiveRecord
     return [
       [['social_name', 'social_id', 'name'], 'required'],
       [['status', 'user_id'], 'integer'],
+      [['email_manual', 'email'], 'email'],
       [['user_id'], 'exist', 'targetAttribute' => 'uid', 'targetClass' => Users::className()],
       [['sex'], 'string', 'max' => 1],
+      [['ip'], 'string', 'max' => 20],
       [['created_at', 'updated_at', 'bdate'], 'safe'],
       [['social_name', 'social_id', 'name', 'email', 'url', 'photo', 'sex'], 'string', 'max' => 255],
       [['social_name', 'social_id'], 'unique', 'targetAttribute' => ['social_name', 'social_id'],
@@ -75,6 +77,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       'sex' => 'Пол',
       'created_at' => 'Подключен к SD',
       'updated_at' => 'Updated At',
+      'ip' => 'Last ip',
     ];
   }
 
@@ -103,6 +106,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       $userSocial = new self;
       $userSocial->setAttributes($attributes);
       $userSocial->user_id = null;
+      $userSocial->logIp(false);
       if (!$userSocial->validate() || !$userSocial->save()) {
         //ddd($userSocial);
         $request = Yii::$app->request;
@@ -138,6 +142,7 @@ class UsersSocial extends \yii\db\ActiveRecord
         ]);
       }
     }else{
+      $userSocial->logIp();
       if ($userSocial->email == null) {
         Yii::$app->session->addFlash('info', Yii::t('account', 'social_account_need_email'));
         Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
@@ -162,6 +167,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     }
     //ddd($userSocial);
     //пользователь
+    $userSocial->logIp();
     $user = null;
     if ($userSocial->user_id != null) {
       $user = Users::findOne($userSocial->user_id);
@@ -229,6 +235,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     if ($userSocial) {
       $userSocial->email_verify_token = null;
       $userSocial->email = $email;
+      $userSocial->logIp(false);
       $userSocial->save();
       Yii::$app->session->addFlash('success', [
           'title' => Yii::t('common', 'thank_you'),
@@ -294,5 +301,25 @@ class UsersSocial extends \yii\db\ActiveRecord
   public function getUser()
   {
     return $this->hasOne(Users::className(), ['uid' => 'user_id']);
+  }
+
+  public function logIp($doSave=true)
+  {
+
+    if(Yii::$app->user->isGuest || Yii::$app->user->id==$this->user_id) {
+      if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $this->ip = $_SERVER['HTTP_CLIENT_IP'];
+      } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      } else {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+          $this->ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+          $this->ip = "0.0.0.0";
+        }
+      }
+
+      if($doSave)$this->save();
+    }
   }
 }
