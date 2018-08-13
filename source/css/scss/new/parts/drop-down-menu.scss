@@ -261,13 +261,18 @@
           padding: 16PX 0;
         }
       }
+
       span.active {
         //padding: 10px 15px;
         padding: 4px 15px;
+
         @include media($laptop_min) {
-          padding: 15px 15px;
+          //padding: 15px 15px;
+          padding: 16px 0;
+          margin: 0;
           border-bottom: 1px solid $menu_border_color;
         }
+
         color: $header_sub_menu_color_hover;
         font-size: 14px;
         display: flex;
@@ -432,6 +437,12 @@
     border-top: 1px solid $menu_border_color;
     margin: 0 5px;
     padding: 6px 10px;
+
+    @include media($laptop_min) {
+      padding: 16px 0;
+      color: $header_sub_menu_color_hover;
+      margin-left: 0;
+    }
   }
   .cat_bold {
     font-weight: bold;
