@@ -21,7 +21,7 @@ class UsersSocialSearch extends UsersSocial
             [['uid', 'status'], 'integer'],
             [['social_name','user_id', 'social_id', 'name', 'email', 'url', 'photo', 'sex', 'bdate', 'email_manual', 'created_at', 'updated_at'], 'safe'],
             [['social_name'], 'in', 'range' => array_keys(Yii::$app->eauth->services)],
-
+            [['ip'], 'string', 'max' => 20],
         ];
     }
 
@@ -76,6 +76,7 @@ class UsersSocialSearch extends UsersSocial
             ->andFilterWhere(['like', 'email_manual', $this->email_manual])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'photo', $this->photo])
+            ->andFilterWhere(['like', 'ip', $this->ip])
             ->andFilterWhere(['like', 'sex', $this->sex]);
 
       if ($this->user_id) {
