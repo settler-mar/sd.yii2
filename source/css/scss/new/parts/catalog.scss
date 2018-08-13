@@ -87,6 +87,10 @@
 
           &.active {
             color: $stores_menu_hover_color;
+
+            @include media($tablets){
+              padding: 0 10px;
+            }
           }
 
           &.cat_news {
@@ -323,7 +327,7 @@
         flex-direction: row;
         align-items: center;
         margin: 0 auto 20px auto;
-        width: 220px;
+        width: 280px;
         padding: 10px;
         background: $btn_base_bg;
         color: $btn_base_color;
@@ -546,9 +550,9 @@
           width: 244px;
           margin-bottom: 20px;
 
-          //@include media($phones) {
-          //  width: calc(80vw);
-          //}
+          @include media($tablets) {
+            width: 304px;
+          }
         }
         &-title {
           font-weight: bold;
