@@ -221,6 +221,8 @@ return [
     'wrong_recaptcha' => 'Неправильный проверочный код',
     'index-hello-link-image' => '/images/header_present.png',
     'breadcrumbs_stores_visited' => 'Просмотренные',
+    'breadcrumbs_products' => 'Продукты',
+    'products' => 'Продукты',
 
 
 

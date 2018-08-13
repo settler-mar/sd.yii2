@@ -27,6 +27,20 @@ class Products extends \yii\db\ActiveRecord
 {
   public $storeName;
 
+    /**
+     * @var string
+     */
+    public static $defaultSort = 'buy_count';
+    /**
+     * Possible sorting options with titles and default value
+     * @var array
+     */
+    public static $sortvars = [
+        'visit' => ["title" => "По популярности", "title_mobile" => "Популярности"],
+        'buy_count' => ["title" => "По покупкам", "title_mobile" => "Покупкам"],
+        'title' => ["title" => "По названию", "title_mobile" => "Названию"],
+    ];
+
   /**
    * @inheritdoc
    */
