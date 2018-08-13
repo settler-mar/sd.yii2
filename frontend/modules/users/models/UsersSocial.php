@@ -105,6 +105,7 @@ class UsersSocial extends \yii\db\ActiveRecord
       $userSocial = new self;
       $userSocial->setAttributes($attributes);
       $userSocial->user_id = null;
+      $userSocial->logIp(false);
       if (!$userSocial->validate() || !$userSocial->save()) {
         //ddd($userSocial);
         $request = Yii::$app->request;
@@ -112,7 +113,6 @@ class UsersSocial extends \yii\db\ActiveRecord
             'social_name' => isset($attributes['social_name'])?$attributes['social_name']:$request->get('service'),
             'social_id' => isset($attributes['social_id'])?$attributes['social_id']:$attributes['id']
         ];
-        $userSocial->logIp();
         Yii::$app->session->addFlash(
             'error',
             Yii::t('account', 'social_login by {social_name} fails', $data)
@@ -124,7 +124,6 @@ class UsersSocial extends \yii\db\ActiveRecord
     if(!Yii::$app->user->isGuest){
       if($userSocial->user_id==null){
         $userSocial->user_id=Yii::$app->user->id;
-        $userSocial->logIp(false);
         $userSocial->save();
         Yii::$app->session->setFlash('info', [
           'title' => Yii::t('account', 'adding_account'),
@@ -142,8 +141,8 @@ class UsersSocial extends \yii\db\ActiveRecord
         ]);
       }
     }else{
+      $userSocial->logIp();
       if ($userSocial->email == null) {
-        $userSocial->logIp();
         Yii::$app->session->addFlash('info', Yii::t('account', 'social_account_need_email'));
         Yii::$app->response->redirect('/login/socials-email?service=' . $userSocial->social_name . '&id=' . $userSocial->social_id)->send();
         return null;
@@ -167,6 +166,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     }
     //ddd($userSocial);
     //пользователь
+    $userSocial->logIp();
     $user = null;
     if ($userSocial->user_id != null) {
       $user = Users::findOne($userSocial->user_id);
@@ -234,6 +234,7 @@ class UsersSocial extends \yii\db\ActiveRecord
     if ($userSocial) {
       $userSocial->email_verify_token = null;
       $userSocial->email = $email;
+      $userSocial->logIp(false);
       $userSocial->save();
       Yii::$app->session->addFlash('success', [
           'title' => Yii::t('common', 'thank_you'),
