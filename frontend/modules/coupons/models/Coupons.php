@@ -214,7 +214,7 @@ class Coupons extends \yii\db\ActiveRecord
       $categories =  CategoriesCoupons::translated(['uid', 'name', 'route'])
           ->addSelect(['count(cwctc.coupon_id) as count'])
           ->innerJoin('cw_coupons_to_categories cwctc', "cwcc.uid = cwctc.category_id")
-          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.coupon_id')
+          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.uid')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
           //->where(['cws.is_active' => [0, 1]])
           ->where(['cws.is_active' => [1]])
