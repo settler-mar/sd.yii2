@@ -65,7 +65,7 @@ class DefaultController extends SdController
         ;
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
-        $cacheName = 'catalog_products_' . $page . '_' . $limit . '_' .
+        $cacheName = 'catalog_products'. $store->uid.'_' . $page . '_' . $limit . '_' .
             $sort . '_' . $order .
             ($language ? '_' . $language : '') . ($region? '_' . $region : '') ;
 
