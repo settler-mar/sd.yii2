@@ -223,6 +223,9 @@ return [
     'breadcrumbs_stores_visited' => 'Просмотренные',
     'breadcrumbs_products' => 'Продукты',
     'products' => 'Продукты',
+    'product_no_title' => 'Название не указано',
+    'product_price' => 'Цена без кэшбэка',
+    'product_buy' => 'Купить с кэшбэком',
 
 
 

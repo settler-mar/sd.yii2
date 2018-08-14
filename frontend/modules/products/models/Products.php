@@ -39,7 +39,7 @@ class Products extends \yii\db\ActiveRecord
     public static $sortvars = [
         'visit' => ["title" => "По популярности", "title_mobile" => "Популярности"],
         'buy_count' => ["title" => "По покупкам", "title_mobile" => "Покупкам"],
-        'title' => ["title" => "По названию", "title_mobile" => "Названию"],
+        'title' => ["title" => "По названию", "title_mobile" => "Названию", 'order' => 'ASC'],
     ];
 
   /**

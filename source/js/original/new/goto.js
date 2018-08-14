@@ -39,7 +39,7 @@
         '<p><b>'+lg("promocode_use_without_cashback_or_register")+'</b></p>' +
         '</div>' +
         '<div class="notify_box-buttons">' +
-        '<a href="' + that.attr('href') + '" target="_blank" class="btn">'+lg("use_promocode")+'</a>' +
+        '<a href="' + that.attr('href') + '" target="_blank" class="btn notification-close">'+lg("use_promocode")+'</a>' +
         '<a href="#registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
         '</div>'
       };
@@ -60,6 +60,22 @@
      }
   });
 
-
+  $('.catalog_product_link').click(function(){
+      var that = $(this);
+      notification.alert({
+        'buttonYes': false,
+            'notyfy_class': "notify_box-alert",
+            'title': lg("product_use"),
+            'question': '<div class="notify_box-coupon-noregister">' +
+        '<img src="/images/templates/swa.png" alt="">' +
+        '<p><b>'+lg("product_use_without_cashback_or_register")+'</b></p>' +
+        '</div>' +
+        '<div class="notify_box-buttons">' +
+        '<a href="' + that.attr('href') + '" target="_blank" class="btn notification-close">'+lg("product_use")+'</a>' +
+        '<a href="#registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
+        '</div>'}
+        );
+      return false;
+  });
 
 }());

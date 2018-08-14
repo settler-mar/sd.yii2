@@ -1,3 +1,32 @@
-<div>
-    {{ product.title }}
+<div class="catalog_products_item hover-box">
+    {% set url=_href('/goto/products:'~product.uid) %}
+    {% set href_class = user_id ? '' : 'catalog_product_link' %}
+    <div class="catalog_products_item_in">
+        <div class="catalog_products_item_image">
+            <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+             <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/products/{{ product.image }}" {% endif %} alt="{{ product.title }}">
+            </a>
+        </div>
+        <div class="catalog_products_item_text">
+            <div class="catalog_products_item_title">
+                <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+                    {% if product.title == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.title }} {% endif %}
+                </a>
+            </div>
+            <div class="catalog_products_item_description">
+                {{ product.description }}
+            </div>
+            <div class="catalog_products_item_price">
+                {{ t('main', 'product_price') }} {{ product.last_price }} {{ product.currency }}
+            </div>
+            <div class="catalog_products_item_cashback">
+                {{ t('common', 'cashback') }} {{ store.displayed_cashback}}
+            </div>
+            <a class="btn {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
+
+
+
+        </div>
+    </div>
+
 </div>

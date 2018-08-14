@@ -60,7 +60,12 @@ class DefaultController extends SdController
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
         }
         $dataBaseData = Products::find()
-            ->where(['store_id' => $store->uid])
+            ->where(['and',
+                ['store_id' => $store->uid],
+                ['is not', 'url', null],
+                ['>', 'url', ''],
+                ['<>', 'title', '-'],
+            ])
             ->orderBy($sort . ' ' . $order)
         ;
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
