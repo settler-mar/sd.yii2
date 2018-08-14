@@ -302,49 +302,23 @@ class CjController extends Controller
             d('Store not found '. $coupon['advertiser-id']);
             return;
         }
-        $dbCoupon = Coupons::findOne(['coupon_id' => $coupon['link-id'], 'store_id' => $store->uid]);
-        //Проверяем что б купон был новый
-        if (!$dbCoupon) {
-            $dbCoupon = new Coupons();
-            $dbCoupon->coupon_id = $coupon['link-id'];
-            $dbCoupon->name = $coupon['link-name'];
-            $dbCoupon->description = !empty($coupon['description']) ? (string) $coupon['description'] : null;
-            $dbCoupon->store_id = $store->uid;
-            $dbCoupon->date_start = !empty($coupon['promotion-start-date']) ? (string) $coupon['promotion-start-date'] :
-                date('Y-m-d 00:00:00');
-            $dbCoupon->date_end = !empty($coupon['promotion-end-date']) ? (string) $coupon['promotion-end-date'] :
-                date('Y-m-d H:i:s', PHP_INT_SIZE == 4 ? PHP_INT_MAX : PHP_INT_MAX>>32);
-            $dbCoupon->goto_link = $coupon['clickUrl'];
-            $dbCoupon->promocode = !empty($coupon['coupon-code']) ? (string) $coupon['coupon-code'] : '';
-            $dbCoupon->species = 0;
-            $dbCoupon->exclusive = 0;
-            if (!$dbCoupon->save()) {
-                d($dbCoupon->errors);
-            } else {
-                $this->inserted++;
-            }
-        } else {
-            $dbCoupon->name = $coupon['link-name'];
-            $dbCoupon->description = !empty($coupon['description']) ? (string) $coupon['description'] : $dbCoupon->description;
-            $dbCoupon->date_start = !empty($coupon['promotion-start-date']) ? (string) $coupon['promotion-start-date'] :
-                $dbCoupon->date_start;
-            $dbCoupon->date_end = !empty($coupon['promotion-end-date']) ? (string) $coupon['promotion-end-date'] :
-                $dbCoupon->date_end;
-            $dbCoupon->goto_link = $coupon['clickUrl'];
-            $dbCoupon->promocode = !empty($coupon['coupon-code']) ? (string) $coupon['coupon-code'] : '';
-            if (!$dbCoupon->save()) {
-                d($dbCoupon->errors);
-            }
+        $newCoupon = [
+            'store_id' => $store->uid,
+            'coupon_id' => $coupon['link-id'],
+            'name' =>  $coupon['link-name'],
+            'description' => $coupon['description'],
+            'promocode' => $coupon['coupon-code'],
+            'date_start' => $coupon['promotion-start-date'],
+            'date_expire' => $coupon['promotion-end-date'],
+            'link' => $coupon['clickUrl'],
+            'categories' => [$this->getCouponCategory($coupon['category'])],
+         ];
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new']) {
+            $this->inserted++;
         }
-        if ($dbCoupon->errors == null && !empty($coupon['category'])) {
-            $categoryId = $this->getCouponCategory($coupon['category']);
-            $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $categoryId]);
-            if (!$couponToCategory) {
-                $couponToCategory = new CouponsToCategories();
-                $couponToCategory->coupon_id = $dbCoupon->uid;
-                $couponToCategory->category_id = $categoryId;
-                $couponToCategory->save();
-            }
+        if (!$result['status']) {
+            d($newCoupon, $result['coupon']->errors);
         }
     }
 
