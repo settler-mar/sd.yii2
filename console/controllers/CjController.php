@@ -283,6 +283,8 @@ class CjController extends Controller
             }
             $currency = isset($valueArr[1]) ? $valueArr[0] : $currency;
         }
+        $value = preg_replace('/[^0123456789\.]/', '', $cashback);
+        $cashback = (string) ($value / 2) . (strpos($cashback, '%') && $value < 100 ? '%' : '');//value >=100 не может быть процент
         if (count($values)>1) {
             $cashback = 'до '.$cashback;
         }
@@ -342,7 +344,7 @@ class CjController extends Controller
                 $couponToCategory->coupon_id = $dbCoupon->uid;
                 $couponToCategory->category_id = $categoryId;
                 $couponToCategory->save();
-             }
+            }
         }
     }
 
