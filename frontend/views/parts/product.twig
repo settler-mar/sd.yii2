@@ -16,11 +16,18 @@
             <div class="catalog_products_item_description">
                 {{ product.description }}
             </div>
+            <div class=catalog_products_item_buy"">
+                {{ t('main', 'product_buy_count_{buy)_times', {'buy': product.buy})|raw }}
+            </div>
             <div class="catalog_products_item_price">
                 {{ t('main', 'product_price') }} {{ product.last_price }} {{ product.currency }}
             </div>
             <div class="catalog_products_item_cashback">
                 {{ t('common', 'cashback') }} {{ store.displayed_cashback}}
+                <a class="shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
+                   {#data-original-title="{{ store.conditions|raw }}"#}
+                   data-original-title-html="store_tariffs_id"
+                >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
             </div>
             <a target="_blank" class="btn {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
         </div>

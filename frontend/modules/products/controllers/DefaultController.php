@@ -60,6 +60,7 @@ class DefaultController extends SdController
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
         }
         $dataBaseData = Products::find()
+            ->select(['cw_products.*', 'round(abs(buy_count*4.67+sin(uid)*30))+1 as buy'])
             ->where(['and',
                 ['store_id' => $store->uid],
                 ['is not', 'url', null],
@@ -77,7 +78,7 @@ class DefaultController extends SdController
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
-            ['limit' => $limit, 'page' => $page]
+            ['limit' => $limit, 'page' => $page, 'asArray'=>true]
         );
 
         $paginateParams = [
@@ -92,6 +93,7 @@ class DefaultController extends SdController
             $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
         }
         $products = $pagination->data();
+        //ddd($products);
 
         $data = [
             'store' => $store,

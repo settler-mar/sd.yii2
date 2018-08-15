@@ -226,6 +226,7 @@ return [
     'product_no_title' => 'Название не указано',
     'product_price' => 'Цена без кэшбэка',
     'product_buy' => 'Купить с кэшбэком',
+    'product_buy_count_{buy)_times' => 'Купили {buy}',
 
 
 
