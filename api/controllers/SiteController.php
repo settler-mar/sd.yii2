@@ -52,7 +52,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return [1];
+        return 1;
     }
 
 
