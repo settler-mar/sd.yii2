@@ -1,3 +1,6 @@
+$media1: $laptop_min;
+$media2: $tablets;
+
 .catalog_products {
 
   &_item {
@@ -11,13 +14,21 @@
       flex-direction: row;
       justify-content: space-between;
       flex-grow: 2;
-      //padding-bottom: 15px;
+
+      @include media($media2) {
+        flex-direction: column;
+      }
 
       &_text {
         text-align: left;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        @include media($media2) {
+          text-align: center;
+          margin-bottom: 15px;
+        }
 
         &_title {
           font-weight: 700;
@@ -28,6 +39,10 @@
         flex-direction: column;
         justify-content: flex-end;
 
+        @include media($media2) {
+          text-align: center;
+        }
+
       }
     }
 
@@ -35,9 +50,17 @@
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
+
+      @include media($media1) {
+        flex-direction: column;
+      }
     }
 
     &_image{
+
+      @include media($media1) {
+        text-align: center;
+      }
 
       img {
         max-height: 150px;
@@ -51,15 +74,23 @@
       width: 100%;
       display: flex;
       flex-direction: column;
+
+      @include media($media1) {
+        margin-left: 0;
+      }
     }
     &_title {
       text-align: left;
-      //margin-bottom: 15px;
       font-size: 18px;
+
+      @include media($media1) {
+        text-align: center;
+        margin: 15px auto;
+      }
 
       a {
         font-size: 18px;
-        color: $btn_base_dark_bg;
+        color: $text_color;
         text-decoration: none;
 
         &:hover {
