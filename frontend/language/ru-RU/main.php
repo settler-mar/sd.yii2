@@ -226,7 +226,8 @@ return [
     'product_no_title' => 'Название не указано',
     'product_price' => 'Цена без кэшбэка',
     'product_buy' => 'Купить с кэшбэком',
-    'product_buy_count_{buy)_times_at_{time}' => '{buy} раз, последний раз {time}',
+    'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}' =>
+        '{buy, plural, few{# раза} other{# раз} }, последний раз {time}',
     'product_bought' => 'Куплено',
     'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление {time}',
 

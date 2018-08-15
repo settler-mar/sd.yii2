@@ -19,7 +19,10 @@
                         {{ product.description }}
                     </div>
                     <div class=catalog_products_item_buy">
-                        <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_bought') }}:</span> {{ t('main', 'product_buy_count_{buy)_times_at_{time}', {'buy': product.buy, 'time': _local_date(product.last_buy, t('dictionary', 'date_format_middle'))})|raw }}
+                        <span class="catalog_products_item_info_text_title">
+                            {{ t('main', 'product_bought') }}:
+                        </span>
+                        {{ t('main', 'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}', {'buy': product.buy, 'time': _local_date(product.last_buy, t('dictionary', 'date_format_middle'))})|raw }}
                     </div>
                     <div class="catalog_products_item_price">
                         <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ product.currency }}
