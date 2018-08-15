@@ -4,15 +4,26 @@
 {% else %}
   {#если нет, то#}
     {% set h1_final = t('main', 'products')~' '~store.name~' <span>('~total_v~')</span>' %}
+
 {% endif %}
       <section class="gray-box wrap-round margin">
-        <h1 class="page-header align-center laptop-no-margin-bottom" >{{ h1_final|raw }}</h1>
+        <h1 class="page-header align-center laptop-no-margin-bottom" >
+            {{ h1_final|raw }}
+            <a class="catalog_products_h1_question shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
+                    data-original-title="{{ t('main', 'bought_by_sd_updated_at{time}', {'time': _local_date(update_time, t('dictionary', 'date_format_middle'))})|raw }}"
+            >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+        </h1>
+        {% if content %}
+          <div class="catalog_category-short-description laptop_hide catalog_category-content">
+              {{ content|raw }}
+          </div>
+        {% endif %}
       </section>
 
 <section class="catalog margin">
   <div class="page-wrap page-wrap-flex">
 
-    <div class="catalog-stores ">
+    <div class="catalog-payments">
 
       {#выбор и отображение сортировки#}
       <div class="margin-half page-wrap-flex catalog-stores_sort">

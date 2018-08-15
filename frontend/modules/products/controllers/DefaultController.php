@@ -12,7 +12,8 @@ use yii;
 class DefaultController extends SdController
 {
 
-   // private $store;
+    //public $limitVars = [24, 50, 100];
+    public $defaultLimit = 10;
 
     public function createAction($id)
     {
@@ -60,7 +61,7 @@ class DefaultController extends SdController
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
         }
         $dataBaseData = Products::find()
-            ->select(['cw_products.*', 'round(abs(buy_count*4.67+sin(uid)*30))+1 as buy'])
+            ->select(['cw_products.*', 'last_price as price',  'round(abs(buy_count*4.67+sin(uid)*30))+1 as buy'])
             ->where(['and',
                 ['store_id' => $store->uid],
                 ['is not', 'url', null],
@@ -92,7 +93,16 @@ class DefaultController extends SdController
             $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
             $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
         }
+        $statProducts = clone $dataBaseData;
+        $updateTime = $statProducts
+            ->select('max(last_buy) as time')
+            ->orderBy(null)
+            ->asArray()
+            ->one();
+        $updateTime = $updateTime['time'];
+
         $products = $pagination->data();
+
         //ddd($products);
 
         $data = [
@@ -105,6 +115,7 @@ class DefaultController extends SdController
             "limit" => empty($limit) ? $this->defaultLimit : $limit,
             'sortlinks' => $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams),
             'limitlinks' => $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams),
+            'update_time' => $updateTime,
         ];
         if ($pagination->pages() > 1) {
             $data["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);

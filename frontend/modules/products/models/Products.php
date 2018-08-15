@@ -31,14 +31,14 @@ class Products extends \yii\db\ActiveRecord
     /**
      * @var string
      */
-    public static $defaultSort = 'buy_count';
+    public static $defaultSort = 'buy';
     /**
      * Possible sorting options with titles and default value
      * @var array
      */
     public static $sortvars = [
-        'visit' => ["title" => "По популярности", "title_mobile" => "Популярности"],
-        'buy' => ["title" => "По покупкам", "title_mobile" => "Покупкам"],
+        'buy' => ["title" => "По популярности", "title_mobile" => "Популярности"],
+        'price' => ["title" => "По цене", "title_mobile" => "Цене"],
         'title' => ["title" => "По названию", "title_mobile" => "Названию", 'order' => 'ASC'],
     ];
 
