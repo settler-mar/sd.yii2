@@ -94,13 +94,13 @@ class CjController extends Controller
         d($response);
         $count = isset($response['commissions']['@attributes']['total-matched']) ?
             $response['commissions']['@attributes']['total-matched'] : false;
-        d($count);
 
-        if (isset($response['commissions']['commissions'])) {
+
+        if (isset($response['commissions']['commission'])) {
             if ($count == 1) {
-                $this->writePayment($response['commissions']['commissions']);
+                $this->writePayment($response['commissions']['commission']);
             } else {
-                foreach ($response['commissions']['commissions'] as $commission) {
+                foreach ($response['commissions']['commission'] as $commission) {
                     $this->writePayment($commission);
                 }
             }

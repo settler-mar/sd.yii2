@@ -50,10 +50,10 @@ class SiteController extends Controller
         return parent::beforeAction($action);
     }
 
-    public function actionIndex()
-    {
-        return 1;
-    }
+//    public function actionIndex()
+//    {
+//        return 1;
+//    }
 
 
     public function actionStores()

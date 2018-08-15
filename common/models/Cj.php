@@ -45,9 +45,9 @@ class Cj
         $dateStart = $dateStart ? $dateStart : $dateEnd - 3600 * 24 * 30;
         return $this->getRequest($this->commissionUrl, [
             'date-type'=>'event', //'posting'
-            //'end-date' => date('Y-m-d H:i:s', $dateEnd),
-            //'start-date' => date('Y-m-d H:i:s', $dateStart),
-           // 'action-types' => 'sale',
+            'end-date' => date('Y-m-d H:i:s', $dateEnd),
+            'start-date' => date('Y-m-d H:i:s', $dateStart),
+            //'action-types' => 'sale',
 
         ]);
     }
