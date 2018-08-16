@@ -24,10 +24,12 @@ $media2: $tablets;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        flex-grow: 2;
+        margin-right: 20px;
 
         @include media($media2) {
           text-align: center;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
         }
 
         &_title {
@@ -39,8 +41,11 @@ $media2: $tablets;
         flex-direction: column;
         justify-content: flex-end;
 
-        @include media($media2) {
-          text-align: center;
+        text-align: center;
+
+
+        &_button {
+          margin-top: 15px;
         }
 
       }
@@ -78,6 +83,9 @@ $media2: $tablets;
       @include media($media1) {
         margin-left: 0;
       }
+      @include media($media2) {
+        margin-left: 0;
+      }
     }
     &_title {
       text-align: left;
@@ -100,12 +108,29 @@ $media2: $tablets;
 
     }
     &_cashback {
-      color: red;
-      //display: flex;
-      align-items: center;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+
+      @include media($media2) {
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      &_question {
+        cursor: pointer;
+      }
+
+      &_left {
+        color: red;
+        align-items: center;
+      }
+
 
       svg {
-        margin-left: 5px;
+        //margin-left: 5px;
         color: red;
         fill: red;
         stroke: red;
@@ -119,8 +144,8 @@ $media2: $tablets;
     color: $text_color;
     fill: $text_color;
     stroke: $text_color;
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     vertical-align: middle;
   }
 
