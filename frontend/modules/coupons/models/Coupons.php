@@ -214,7 +214,7 @@ class Coupons extends \yii\db\ActiveRecord
       $categories =  CategoriesCoupons::translated(['uid', 'name', 'route'])
           ->addSelect(['count(cwctc.coupon_id) as count'])
           ->innerJoin('cw_coupons_to_categories cwctc', "cwcc.uid = cwctc.category_id")
-          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.coupon_id')
+          ->innerJoin(self::tableName() . ' cwc', 'cwctc.coupon_id = cwc.uid')
           ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid')
           //->where(['cws.is_active' => [0, 1]])
           ->where(['cws.is_active' => [1]])
@@ -459,35 +459,51 @@ class Coupons extends \yii\db\ActiveRecord
     return $data;
   }
 
-  public static function makeOrUpdate($coupon, $storeId)
+  public static function makeOrUpdate($coupon)
   {
-      $where = empty($coupon['promoCode']) ? ['store_id' => $storeId, 'coupon_id' => $coupon['coupon_id']] : [
+      $where = empty($coupon['promoCode']) ? ['store_id' => $coupon['store_id'], 'coupon_id' => $coupon['coupon_id']] : [
           'or',
-          ['store_id' => $storeId, 'coupon_id' => $coupon['coupon_id']],
+          ['store_id' => $coupon['store_id'], 'coupon_id' => $coupon['coupon_id']],
           ['name' => $coupon['name'], 'promocode' => $coupon['promocode']],
       ];
       $dbCoupon = Coupons::find()->where($where)->one();
       if (!$dbCoupon) {
           $dbCoupon = new Coupons;
-          $dbCoupon->store_id = $storeId;
+          $dbCoupon->store_id = $coupon['store_id'];
           $dbCoupon->coupon_id = $coupon['coupon_id'];
+          $dbCoupon->date_start = empty($coupon['date_start']) ? date('Y-m-d 00:00:00') : $coupon['date_start'];
+          $dbCoupon->date_end = empty($coupon['date_exprire']) ?
+              date('Y-m-d H:i:s', PHP_INT_SIZE == 4 ? PHP_INT_MAX : PHP_INT_MAX>>32) :
+              $coupon['date_exprire'];
+          $dbCoupon->promocode = empty($coupon['promocode']) ? '' : (string) $coupon['promocode'];
+          $dbCoupon->description = empty($coupon['description']) ? null : $coupon['description'];
+          $dbCoupon->species = 0;
+          $dbCoupon->exclusive = 0;
       }
       $dbCoupon->name = $coupon['name'];
       $dbCoupon->goto_link = $coupon['link'];
-      $dbCoupon->date_start = $coupon['date_start'];
-      $dbCoupon->date_end = $coupon['date_expire'];
-      $dbCoupon->promocode = $coupon['promocode'];
-      $dbCoupon->description = $coupon['description'];
-      $dbCoupon->species = 0;
-      $dbCoupon->exclusive = 0;
+      $dbCoupon->date_start = empty($coupon['date_start']) ? $dbCoupon->date_start : $coupon['date_start'];
+      $dbCoupon->date_end = empty($coupon['date_expire']) ? $dbCoupon->date_end : $coupon['date_expire'];
+      $dbCoupon->promocode = empty($coupon['promocode']) ? $dbCoupon->promocode : $coupon['promocode'];
+      $dbCoupon->description = empty($coupon['description']) ? $dbCoupon->description : $coupon['description'];
+
       $result = [
           'coupon' => $dbCoupon,
           'new' => $dbCoupon->isNewRecord,
       ];
       $result['status'] = $dbCoupon->save();
 
-      if (isset($coupon['categories'])) {
-          //todo нужна загрузка категорий
+      if ($result['status'] && !empty($coupon['categories'])) {
+          //загрузка категорий
+          foreach ($coupon['categories'] as $category) {
+              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $category]);
+              if (!$couponToCategory) {
+                  $couponToCategory = new CouponsToCategories();
+                  $couponToCategory->coupon_id = $dbCoupon->uid;
+                  $couponToCategory->category_id = $category;
+                  $couponToCategory->save();
+              }
+          }
 
       }
       return $result;

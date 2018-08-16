@@ -1,0 +1,56 @@
+<div class="catalog_products_item hover-box">
+    {% set url=_href('/goto/products:'~product.uid) %}
+    {% set href_class = user_id ? '' : 'catalog_product_link' %}
+    <div class="catalog_products_item_in">
+        <div class="catalog_products_item_image">
+            <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+             <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/products/{{ product.image }}" {% endif %} alt="{{ product.title }}">
+            </a>
+        </div>
+        <div class="catalog_products_item_text">
+            <div class="catalog_products_item_title">
+                <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+                    {% if product.title == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.title }} {% endif %}
+                </a>
+            </div>
+            <div class="catalog_products_item_info">
+                <div class="catalog_products_item_info_text">
+                    <div class="catalog_products_item_description">
+                        {{ product.description }}
+                    </div>
+                    <div class=catalog_products_item_buy">
+                        <span class="catalog_products_item_info_text_title">
+                            {{ t('main', 'product_bought') }}:
+                        </span>
+                        {{ t('main', 'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}', {'buy': product.buy, 'time': _local_date(product.last_buy, t('dictionary', 'date_format_middle'))})|raw }}
+                    </div>
+                    <div class="catalog_products_item_price">
+                        <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ product.currency }}
+                    </div>
+                    <div class="catalog_products_item_cashback">
+                        <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ store.displayed_cashback}}
+                        <a class="shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
+                                {#data-original-title="{{ store.conditions|raw }}"#}
+                           data-original-html="store_tariffs_id"
+                        >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+                    </div>
+                </div>
+                <div class="catalog_products_item_info_actions">
+
+                        {% set product_name = str_replace('"', '',product.title) ~ '&nbsp;кэшбэк&nbsp;' ~ store.displayed_cashback %}
+                        <div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>
+                        <div class="share42init accauntSoc accauntSoc_32"
+                             data-image="{% if 'http' in product.image %}/{% else %}https://secretdiscounter.ru/images/products/{% endif %}{{ product.image }}"
+                             data-title="{{ product_name|raw }}"
+                             data-description="{{ this.description }}"
+                             data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
+                             data-icon-type="svg"
+                             data-icon-size=24
+                        >
+                        </div>
+                        <a target="_blank" class="btn {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

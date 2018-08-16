@@ -153,15 +153,14 @@ class LinkconnectorController extends Controller
             $newCoupon = [
                 'promocode' => $promoCode,
                 'coupon_id' => $coupon['PromoID'],
+                'store_id' => $store->uid,
                 'name' => $coupon['HeadLineTitle'],
                 'description' => null,
                 'link' => $coupon['TrackingURL'],
                 'date_start' => $coupon['Entry Date'],
-                'date_expire' => $coupon['Expires'] == 'Never' ?
-                    date('Y-m-d H:i:s', PHP_INT_SIZE == 4 ? PHP_INT_MAX : PHP_INT_MAX>>32) :
-                    $coupon['Expires'],
+                'date_expire' => $coupon['Expires'] == 'Never' ? '' : $coupon['Expires'],
             ];
-            $result = Coupons::makeOrUpdate($newCoupon, $store->uid);
+            $result = Coupons::makeOrUpdate($newCoupon);
             if ($result['new']) {
                 $this->couponsInserted++;
             }

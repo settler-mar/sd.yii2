@@ -34,20 +34,26 @@ var sdTooltip = function () {
 
     function tooltipShow(elem, displayTime) {
         clearTimeout(tooltipTimeOut);
-        //if ($(tooltip).hasClass(hideClass)) {
-            var title = $(elem).data('original-title');
-            var position = $(elem).data('placement') || 'bottom';
-            $(tooltip).removeClass("top_right_corner bottom_right_corner top_left_corner bottom_left_corner");
-            $(tooltip).find('.titso_title').html(title);
-            setPositon(elem, position);
-            $(tooltip).removeClass(hideClass);
-            currentElement = elem;
 
-            if (displayTime > 0) {
-                tooltipTimeOut = setTimeout(tooltipHide, displayTime);
-            }
-       // }
+        var title = $(elem).data('original-title');
+        var html = $('#'+$(elem).data('original-html')).html();
+        if (html) {
+            title = html;
+            $(tooltip).addClass('tipso_bubble_html');
+        } else {
+            $(tooltip).removeClass('tipso_bubble_html');
+        }
+        var position = $(elem).data('placement') || 'bottom';
+        $(tooltip).removeClass("top_right_corner bottom_right_corner top_left_corner bottom_left_corner");
 
+        $(tooltip).find('.titso_title').html(title);
+        setPositon(elem, position);
+        $(tooltip).removeClass(hideClass);
+        currentElement = elem;
+
+        if (displayTime > 0) {
+            tooltipTimeOut = setTimeout(tooltipHide, displayTime);
+        }
     }
     function tooltipHide() {
         clearTimeout(tooltipTimeOut);

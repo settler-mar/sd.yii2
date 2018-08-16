@@ -11,6 +11,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\users\models\Users;
 use frontend\modules\transitions\models\UsersVisits;
+use frontend\modules\products\models\Products;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -150,6 +151,7 @@ class Stores extends \yii\db\ActiveRecord
       [['videos', 'regions'], 'safe'],
       ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
       ['display_on_plugin', 'in', 'range' => [0, 1, 2, 3], 'skipOnEmpty' => 1],
+      ['show_products', 'in', 'range' => [0, 1], 'skipOnEmpty' => 1],
     ];
   }
 
@@ -197,6 +199,7 @@ class Stores extends \yii\db\ActiveRecord
       'region' => 'Регионы',
       'watch_transitions' => 'Отслеживать переходы',
       'desctiption_extend' => 'Дополнительное описание',
+      'show_products' => 'Отображать страницу с продуктами',
     ];
   }
 
@@ -235,6 +238,14 @@ class Stores extends \yii\db\ActiveRecord
      */
   public function getRatings(){
     return $this->hasMany(StoreRatings::className(), ['store_id' => 'uid']);
+  }
+
+    /**
+     * @return yii\db\ActiveQuery
+     */
+  public function getProducts()
+  {
+    return $this->hasMany(Products::className(), ['store_id' => 'uid']);
   }
 
   /*
@@ -913,7 +924,7 @@ class Stores extends \yii\db\ActiveRecord
       $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
         'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
-        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking'];
+        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products'];
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
           $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;

@@ -14,7 +14,7 @@ $data = [
     'pathToScript' => require __DIR__ . '/path_scripts.php',
     'coupons_languages_arrays' => [
         'ru' => ['ru', 'bg', 'sr', 'uk', 'mk', 'ro'],//русский болгарский и т.д.
-        'en' => ['en', 'la'],//английский латинский
+        'en' => ['en', 'la', 'fr', 'de', 'no', 'da', 'et', 'lt', 'sv'],//английский латинский
     ],
     'base_lang'=>'ru-RU',
     'language_list' => [

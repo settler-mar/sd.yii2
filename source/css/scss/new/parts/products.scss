@@ -1,0 +1,130 @@
+$media1: $laptop_min;
+$media2: $tablets;
+
+.catalog_products {
+
+  &_item {
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    width: 100%;
+
+    &_info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-grow: 2;
+
+      @include media($media2) {
+        flex-direction: column;
+      }
+
+      &_text {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        @include media($media2) {
+          text-align: center;
+          margin-bottom: 15px;
+        }
+
+        &_title {
+          font-weight: 700;
+        }
+      }
+      &_actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        @include media($media2) {
+          text-align: center;
+        }
+
+      }
+    }
+
+    &_in {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      @include media($media1) {
+        flex-direction: column;
+      }
+    }
+
+    &_image{
+
+      @include media($media1) {
+        text-align: center;
+      }
+
+      img {
+        max-height: 150px;
+        height: 150px;
+        object-fit: contain;
+      }
+    }
+
+    &_text {
+      margin-left: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      @include media($media1) {
+        margin-left: 0;
+      }
+    }
+    &_title {
+      text-align: left;
+      font-size: 18px;
+
+      @include media($media1) {
+        text-align: center;
+        margin: 15px auto;
+      }
+
+      a {
+        font-size: 18px;
+        color: $text_color;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+    }
+    &_cashback {
+      color: red;
+      //display: flex;
+      align-items: center;
+
+      svg {
+        margin-left: 5px;
+        color: red;
+        fill: red;
+        stroke: red;
+        vertical-align: middle;
+        margin-top: -4px;
+      }
+    }
+  }
+
+  &_h1_question svg{
+    color: $text_color;
+    fill: $text_color;
+    stroke: $text_color;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+  }
+
+  &_store_conditions {
+    display: none;
+  }
+}

@@ -168,7 +168,7 @@ class DefaultController extends SdController
       $contentData['category_id'] = $category;
       $contentData['current_category'] = $categoryCoupons;
       $databaseObj = Coupons::forList(false)
-        ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.coupon_id')
+        ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.uid')
         //->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
         ->andWhere(['cws.is_active' => [1], 'cctc.category_id' => $category])
         ->andWhere($dateRange)

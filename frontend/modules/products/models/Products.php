@@ -3,6 +3,7 @@
 namespace frontend\modules\products\models;
 
 use frontend\modules\stores\models\Stores;
+use frontend\modules\cache\models\Cache;
 use yii;
 
 /**
@@ -26,6 +27,20 @@ use yii;
 class Products extends \yii\db\ActiveRecord
 {
   public $storeName;
+
+    /**
+     * @var string
+     */
+    public static $defaultSort = 'buy';
+    /**
+     * Possible sorting options with titles and default value
+     * @var array
+     */
+    public static $sortvars = [
+        'buy' => ["title" => "По популярности", "title_mobile" => "Популярности"],
+        'price' => ["title" => "По цене", "title_mobile" => "Цене"],
+        'title' => ["title" => "По названию", "title_mobile" => "Названию", 'order' => 'ASC'],
+    ];
 
   /**
    * @inheritdoc
@@ -136,5 +151,22 @@ class Products extends \yii\db\ActiveRecord
         }
         return null;
     }
+  }
+
+  public function afterSave($insert, $changedAttributes)
+  {
+    parent::afterSave($insert, $changedAttributes);
+    $this->clearCache();
+  }
+
+  public function afterDelete()
+  {
+    parent::afterDelete();
+    $this->clearCache();
+  }
+
+  private function clearCache()
+  {
+    Cache::clearName('catalog_products' . $this->store_id);
   }
 }

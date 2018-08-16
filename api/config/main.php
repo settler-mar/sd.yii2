@@ -15,6 +15,11 @@ return [
     'modules' => [
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
+            'components' => [
+                'request' => function () {
+                    return \filsh\yii2\oauth2server\Request::createFromGlobals();
+                },
+            ],
             //'options' => [
              //   'token_param_name' => 'accessToken',
             //    'access_lifetime' => 3600 * 24,

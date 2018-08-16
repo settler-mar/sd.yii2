@@ -121,6 +121,10 @@ $tipso_shadow_color: rgba(15, 112, 155, .22);
     background-color: $tipso_bg_color;
     color: $tipso_color;
 
+    &_html {
+      max-width: 500px;
+    }
+
     &.hidden {
       display: none;
     }
