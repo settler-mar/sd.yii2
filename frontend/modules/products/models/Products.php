@@ -122,7 +122,7 @@ class Products extends \yii\db\ActiveRecord
       $productDb->visit = 0;
     }
     $productDb->reward = $product['reward'];
-    $productDb->last_buy = date('Y-m-d H:i:s');
+    $productDb->last_buy = $product['click_date'];//date('Y-m-d H:i:s');
     $productDb->last_price = $product['price'];
     $productDb->currency = $product['currency'];
     $productDb->save();
