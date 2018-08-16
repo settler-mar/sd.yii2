@@ -44,6 +44,11 @@
 
               {% include 'parts/product.twig' %}
 
+              {#{% if loop.index == loop.length or loop.index % 4 == 0 %}#}
+              {% if loop.index % 4 == 0 %}
+                {{ _constant('banner_google')|raw }}
+              {% endif %}
+
             {% endfor %}
           </div>
 
