@@ -69,6 +69,15 @@ return [
         'request' => [
             'cookieValidationKey' => '655wgregers555jyyrj65',
         ],
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if (isset($response->data['type'])) {
+                    unset($response->data['type']);
+                }
+            },
+        ],
     ],
     'params' => $params,
 ];
