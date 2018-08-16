@@ -24,6 +24,16 @@ class TestController extends Controller
     return parent::beforeAction($action);
   }
 
+  public $id,$code;
+
+  //добавляем параметры для запуска
+  public function options($actionID)
+  {
+    if (in_array($actionID,array('api-payments','api-stores'))) {
+      return ['id','code'];
+    }
+  }
+
   /**
    * Тест почты. отправка письма на matuhinmax@mail.ru
    */
@@ -102,9 +112,15 @@ class TestController extends Controller
 
   }
 
+  /**
+   * Тест API получения магазинов.
+   */
   public function actionApiStores()
   {
-    $service = new SdApi("USER_ID", "USER_SECRET");
+    if(!$this->id)$this->id=0;
+    if(!$this->code)$this->code=0;
+
+    $service = new SdApi($this->id, $this->code);
     $page = 1;
     $onPage = 100;
     $count = $onPage;
@@ -137,9 +153,15 @@ class TestController extends Controller
 
   }
 
+ /**
+ * Тест API получения платежа.
+ */
   public function actionApiPayments()
   {
-      $service = new SdApi("USER_ID", "USER_SECRET");
+      if(!$this->id)$this->id=0;
+      if(!$this->code)$this->code=0;
+
+      $service = new SdApi($this->id, $this->code);
       $page = 1;
       $onPage = 100;
       $count = $onPage;
