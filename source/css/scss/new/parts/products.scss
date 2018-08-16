@@ -126,17 +126,32 @@ $media2: $tablets;
       &_left {
         color: red;
         align-items: center;
+
+        svg {
+          //margin-left: 5px;
+          color: red;
+          fill: red;
+          stroke: red;
+          vertical-align: middle;
+          margin-top: -4px;
+        }
+      }
+      &_coupons {
+
+        svg {
+          width: 16px;
+          height: 16px;
+          color: $coupons_coupon_name_cashback;
+          fill: $coupons_coupon_name_cashback;
+          stroke: $coupons_coupon_name_cashback;
+          vertical-align: middle;
+
+        }
       }
 
 
-      svg {
-        //margin-left: 5px;
-        color: red;
-        fill: red;
-        stroke: red;
-        vertical-align: middle;
-        margin-top: -4px;
-      }
+
+
     }
   }
 
