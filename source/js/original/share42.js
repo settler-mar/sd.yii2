@@ -1,5 +1,5 @@
 //window.addEventListener('load', function() {
-share42 = function (){
+function share42(){
   e=document.getElementsByClassName('share42init');
   for (var k = 0; k < e.length; k++) {
     var u = "";
@@ -120,7 +120,9 @@ share42 = function (){
   }
   
 //}, false);
-}();
+}
+
+share42();
 
 function getIcon(s,j,t,f,fn,size) {
   if(!size){

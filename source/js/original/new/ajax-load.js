@@ -17,6 +17,7 @@
         $.get(url, {'g':'ajax_load'}, function(data){
             var content = $(data).find('#content-wrap').html();
             $('body').find('#content-wrap').html(content);
+            share42();//t отобразились кнопки Поделиться
             window.history.pushState("object or string", "Title", url);
 
             if (top > scrollTop) {
