@@ -166,5 +166,9 @@ $media2: $tablets;
 
   &_store_conditions {
     display: none;
+
+    &_content {
+      font-size: 14px;
+    }
   }
 }

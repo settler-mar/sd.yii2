@@ -18,6 +18,7 @@
             var content = $(data).find('#content-wrap').html();
             $('body').find('#content-wrap').html(content);
             share42();//t отобразились кнопки Поделиться
+            sdTooltip.setEvents();//работали тултипы
             window.history.pushState("object or string", "Title", url);
 
             if (top > scrollTop) {
