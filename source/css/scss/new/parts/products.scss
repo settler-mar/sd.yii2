@@ -90,6 +90,11 @@ $media2: $tablets;
     &_title {
       text-align: left;
       font-size: 18px;
+      text-decoration: underline;
+
+      a:hover {
+        color: $link_color;
+      }
 
       @include media($media1) {
         text-align: center;

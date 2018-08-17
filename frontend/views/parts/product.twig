@@ -35,7 +35,7 @@
                             >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
                         </div>
 
-                        <a class="catalog_products_item_cashback_coupons" href="{{ _href('/coupons/'~store.route) }}">
+                        <a class="catalog_products_item_cashback_coupons" target="_blank" href="{{ _href('/coupons/'~store.route) }}">
                             {{ svg('table')|raw }} {{ t('main', 'coupons_active_for{store}', {'store': store.name})|raw }}
                         </a>
                     </div>
