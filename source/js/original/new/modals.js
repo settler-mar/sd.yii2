@@ -33,5 +33,22 @@
 
     //console.log(this);
     return false;
+  });
+
+  $('body').on('click', '.modals_popup', function (e) {
+      //при клике всплывашка с текстом
+      var that = this;
+      e.preventDefault();
+      var html = $('#'+$(that).data('original-html')).html();
+      var title = html ? html : $(that).data('original-title');
+      var notyClass = $(that).data('notyclass');
+      var data = {
+          buttonYes: false,
+          notyfy_class: "loading notify_white "+notyClass,
+          question: title
+      };
+      notification.alert(data);
+
+      return false;
   })
 }());

@@ -5,6 +5,8 @@ namespace frontend\modules\products\models;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\cache\models\Cache;
 use yii;
+use  JBZoo\Image\Image;
+
 
 /**
  * This is the model class for table "cw_products".
@@ -121,19 +123,31 @@ class Products extends \yii\db\ActiveRecord
       $productDb->url = $product['url'];
       $productDb->visit = 0;
     }
+    $productDb->image = self::saveImage($product['image'], $productDb->image);
     $productDb->reward = $product['reward'];
-    $productDb->last_buy = date('Y-m-d H:i:s');
+    $productDb->last_buy = $product['click_date'];//date('Y-m-d H:i:s');
     $productDb->last_price = $product['price'];
     $productDb->currency = $product['currency'];
     $productDb->save();
   }
 
-  public static function saveImage($image)
+  public static function saveImage($image, $old = null)
   {
     if (!$image) {
-        return null;
+        return $old;
     }
+    $size = 300;//требуемая ширина и высота
     $path = Yii::$app->getBasePath() . '/../frontend/web/images/products/';
+    if ($old) {
+        try {
+            $imageSize = getimagesize($path . $old);
+        } catch (\Exception $e) {
+        }
+        if (isset($imageSize[0]) && $imageSize[0] == $size &&
+            isset($imageSize[1]) && $imageSize[1] == $size) {
+            return $old;
+        }
+    }
     $exch = explode('.', $image);
     $exch = $exch[count($exch) - 1];
     $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
@@ -143,13 +157,20 @@ class Products extends \yii\db\ActiveRecord
     }
     try {
         $file = file_get_contents($image);
-        file_put_contents($path.$name, $file);
+        $img = (new Image($file))
+            ->bestFit($size, $size)
+            ->saveAs($path . $name);
+        //file_put_contents($path.$name, $file);
+
+        if ($old && is_readable($path . $old) && is_file($path . $old)) {
+            unlink($path . $old);
+        }
         return $name;
     } catch (\Exception $e) {
         if (Yii::$app instanceof Yii\console\Application) {
             echo $e->getMessage() . "\n";
         }
-        return null;
+        return $old;
     }
   }
 

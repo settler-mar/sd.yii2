@@ -60,6 +60,7 @@
 
     .notify_title{
       position: relative;
+      min-height: 20px;
 
       span{
         padding: 10px;
@@ -208,7 +209,7 @@
       overflow: hidden;
 
       .notify_title {
-        padding: 10px 35px;
+        padding: 10px 45px 10px 35px;
         text-align: center;
         margin-bottom: 10px;
         background-color: $btn_base_dark_bg;

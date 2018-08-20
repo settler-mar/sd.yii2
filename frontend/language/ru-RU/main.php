@@ -140,6 +140,7 @@ return [
     'coupons_for_{category}' => 'Популярные промокоды в категории {category}',
     'coupons_new' => 'Новые купоны и промокоды',
     'coupons_all_for_{store}_' => 'Все промокоды {store} →',
+    'coupons_active_for{store}' => 'Действующие промокоды {store}',
     'coupons_all_{count}_' => 'Все промокоды {count} →',
     'coupon_not_active' => 'Промокод неактивен',
     'coupon_used' => 'Воспользовались',
@@ -229,7 +230,8 @@ return [
     'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}' =>
         '{buy, plural, few{# раза} other{# раз} }, последний раз {time}',
     'product_bought' => 'Куплено',
-    'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление {time}',
+    'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление &ndash; {time}',
+
 
 
 

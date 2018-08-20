@@ -1,4 +1,4 @@
-var sdTooltip = function () {
+var sdTooltip = (function () {
 
     var tooltipTimeOut = null;
     var displayTimeOver = 0;
@@ -9,10 +9,10 @@ var sdTooltip = function () {
     var tooltip;
     var size = 'small';
     var hideClass = 'hidden';
-    var tooltipElements = $('[data-toggle=tooltip]');
+    var tooltipElements;
     var currentElement;
 
-    var tooltipInit = function () {
+    function tooltipInit() {
         tooltip = document.createElement('div');
         $(tooltip).addClass('tipso_bubble').addClass(size).addClass(hideClass)
             .html('<div class="tipso_arrow"></div><div class="titso_title"></div><div class="tipso_content"></div>');
@@ -23,7 +23,7 @@ var sdTooltip = function () {
             checkMousePos(e);
         });
         $('body').append(tooltip);
-    };
+    }
 
     function checkMousePos(e) {
         if (e.clientX > $(currentElement).offset().left && e.clientX < $(currentElement).offset().left + $(currentElement).outerWidth()
@@ -111,36 +111,53 @@ var sdTooltip = function () {
     }
 
 
-    tooltipElements.on('click', function (e) {
-      if ($(this).data('clickable')) {
-          if ($(tooltip).hasClass(hideClass)) {
-              tooltipShow(this, displayTimeClick);
-          } else {
-              tooltipHide();
-          }
-
-      }
-    });
-
-    tooltipElements.on('mouseover', function (e) {
-        if (window.innerWidth >= 1024) {
-            tooltipShow(this, displayTimeOver);
-        }
-    });
-    tooltipElements.on('mousemove', function (e) {
-        if (window.innerWidth >= 1024) {
-            tooltipShow(this, displayTimeOver);
-        }
-    });
-    tooltipElements.on('mouseleave', function (){
-        if (window.innerWidth >= 1024) {
-            tooltipHide();
-        }
-    });
-
-    $(document).ready(function () {
-        tooltipInit();
-    });
 
 
-}();
+    function setEvents() {
+
+        tooltipElements = $('[data-toggle=tooltip]');
+
+        tooltipElements.on('click', function (e) {
+            if ($(this).data('clickable')) {
+                if ($(tooltip).hasClass(hideClass)) {
+                    tooltipShow(this, displayTimeClick);
+                } else {
+                    tooltipHide();
+                }
+
+            }
+        });
+
+        tooltipElements.on('mouseover', function (e) {
+            if (window.innerWidth >= 1024) {
+                tooltipShow(this, displayTimeOver);
+            }
+        });
+        tooltipElements.on('mousemove', function (e) {
+            if (window.innerWidth >= 1024) {
+                tooltipShow(this, displayTimeOver);
+            }
+        });
+        tooltipElements.on('mouseleave', function (){
+            if (window.innerWidth >= 1024) {
+                tooltipHide();
+            }
+        });
+    }
+
+    // $(document).ready(function () {
+    //     tooltipInit();
+    //     setEvents();
+    // });
+    //
+    return {
+        init: tooltipInit,
+        setEvents: setEvents
+    }
+})();
+
+$(document).ready(function() {
+    sdTooltip.init();
+    sdTooltip.setEvents();
+});
+

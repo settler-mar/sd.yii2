@@ -28,11 +28,16 @@
                         <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ product.currency }}
                     </div>
                     <div class="catalog_products_item_cashback">
-                        <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ store.displayed_cashback}}
-                        <a class="shop-name-question" data-placement="top" data-toggle="tooltip" data-clickable="1"
-                                {#data-original-title="{{ store.conditions|raw }}"#}
-                           data-original-html="store_tariffs_id"
-                        >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+                        <div class="catalog_products_item_cashback_left">
+                            <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ store.displayed_cashback}}
+                            <a class="catalog_products_item_cashback_question modals_popup"
+                               data-original-html="store_tariffs_id"
+                            >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
+                        </div>
+
+                        <a class="catalog_products_item_cashback_coupons" target="_blank" href="{{ _href('/coupons/'~store.route) }}">
+                            {{ svg('table')|raw }} {{ t('main', 'coupons_active_for{store}', {'store': store.name})|raw }}
+                        </a>
                     </div>
                 </div>
                 <div class="catalog_products_item_info_actions">
@@ -48,7 +53,7 @@
                              data-icon-size=24
                         >
                         </div>
-                        <a target="_blank" class="btn {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
+                        <a target="_blank" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
                 </div>
             </div>
         </div>
