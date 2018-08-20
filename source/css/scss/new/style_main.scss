@@ -873,6 +873,15 @@ input.link {
   }
 }
 
+
+.adsbygoogle{
+  width:50px;
+
+  @include media($laptop_min) {
+    width: 40px;
+  }
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';
