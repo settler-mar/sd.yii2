@@ -67,7 +67,14 @@
               })|raw }}
 
             </div>
-            {% if this.favorites %}
+              <div class="btn-header header-upline_plugin desctop">
+                  {{ get_menu_item({
+                      'href': '/plugin',
+                      'title': svg('puzzle', 'btn-header_button'),
+                      'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
+                  })|raw }}
+              </div>
+              {% if this.favorites %}
               {#если есть избранные#}
               <div class="btn-header btn-header_favorite">
                 {{ get_menu_item({
@@ -189,6 +196,12 @@
             {{ get_menu_item({
                 'href': '/stores/s-povyshennym-cashback',
                 'title': t('main', 'duble_cashback')
+            })|raw }}
+        </li>
+        <li class="drop-menu_bold">
+            {{ get_menu_item({
+                'href': '/products/aliexpress',
+                'title': t('main', 'top-ali')
             })|raw }}
         </li>
         <li class="drop-menu_group__up drop-menu_group__up-pointed">

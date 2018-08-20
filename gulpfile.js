@@ -166,6 +166,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/user_reviews.js',
         paths.source.js+'/original/new/placeholder.js',
         paths.source.js+'/original/new/ajax-load.js',
+        paths.source.js+'/original/new/banner.js',
 
   //for_all
         paths.source.js+'/original/notification.js',
