@@ -347,15 +347,17 @@
       &-id {
         color: $header_color_gray;
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
+        flex-direction: column;
+        //justify-content: flex-start;
         a {
           text-decoration: underline;
           font-weight: normal;
-          margin-left: 20px;
+          //margin-left: 20px;
           color: $text_color;
+          font-size: 14px;
           &:hover {
-            color: $coupons_a_hover_color;
+            //color: $coupons_a_hover_color;
+            text-decoration: none;
           }
         }
         @include media($laptop-min) {

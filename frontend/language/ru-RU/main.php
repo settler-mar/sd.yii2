@@ -15,7 +15,8 @@ return [
     'online_shops' => 'Интернет-магазины',
     'online_shops_low' => 'интернет-магазины',
     'online_shop' => 'Интернет-магазин',
-    'duble_cashback' => 'Двойной кэшбэк',
+    'duble_cashback' => '2x',
+    'top-ali' => 'Top Ali',
     'promocodes' => 'Промокоды',
     'promocode' => 'Промокод',
     'register_promocode' => 'Зарегистрировать промокод',
@@ -231,6 +232,7 @@ return [
         '{buy, plural, few{# раза} other{# раз} }, последний раз {time}',
     'product_bought' => 'Куплено',
     'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление &ndash; {time}',
+    'install-plugin' => 'Установить плагин'
 
 
 

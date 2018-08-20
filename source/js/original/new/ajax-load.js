@@ -19,6 +19,7 @@
             $('body').find('#content-wrap').html(content);
             share42();//t отобразились кнопки Поделиться
             sdTooltip.setEvents();//работали тултипы
+            banner.refresh();//обновить баннер от гугл
             window.history.pushState("object or string", "Title", url);
 
             if (top > scrollTop) {

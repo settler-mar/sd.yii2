@@ -7,3 +7,11 @@ div iframe#jivo_container{
 [id^="widget-1track-container"]{
   z-index: 1 !important;
 }
+
+.adsbygoogle {
+  overflow: hidden;
+
+  iframe {
+    width: 100%;
+  }
+}

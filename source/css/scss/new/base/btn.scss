@@ -265,6 +265,13 @@
       }
     }
 
+    &.desctop {
+
+      @include media($laptop-min) {
+        display: none;
+      }
+    }
+
     &-ballance {
       display: flex;
       align-items: center;
