@@ -181,7 +181,7 @@ $functionsList = [
     }
     $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
         (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
-    return '<a '.($className ? 'class="' . $className . '"' : '') . $attributes .
+    return '<a '.($className ? 'class="' . trim($className) . '"' : '') . $attributes .
         ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
   },

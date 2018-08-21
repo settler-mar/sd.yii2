@@ -1,6 +1,5 @@
 .catalog-categories-account {
 
-
   &_menu {
     margin-bottom: 15px;
     margin-top: 16px;
@@ -335,26 +334,32 @@
     &-info {
       flex-grow: 1;
       flex-shrink: 0;
+      width: 180px;
+      width: calc(100% - 100px);
 
       &-name {
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        //white-space: nowrap;
         margin-bottom: 2px;
         flex-wrap: wrap;
       }
+
       &-id {
         color: $header_color_gray;
         display: flex;
         flex-direction: column;
         //justify-content: flex-start;
+
         a {
           text-decoration: underline;
           font-weight: normal;
           //margin-left: 20px;
           color: $text_color;
           font-size: 14px;
+          margin-top: -10px;
+
           &:hover {
             //color: $coupons_a_hover_color;
             text-decoration: none;

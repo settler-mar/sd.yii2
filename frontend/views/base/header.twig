@@ -39,21 +39,23 @@
           </div>
         </div>
 
-       {{ lang_select_widget() }}
+        {{ lang_select_widget() }}
 
         <div class="header-upline_in-right">
 
           {% if this.user_id == 0 %}
             {{ get_menu_item({'href': '/howitworks','title': t('main', 'how_it_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
             <div class="header-authorization">
-                <a class = "header-authorization-btn header-authorization-enter modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
-                    <span class="header-authorization-enter-text"> {{ t('common', 'login')|raw }}</span>
-                    {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
-                </a>
-                <span class="header-authorization-separate header-authorization-separate-login">/</span>
-                <a class = "header-authorization-btn header-authorization-register modals_open" rel="nofollow" href="{{ _href('#registration')|raw }}">
-                   {{ t('common', 'register')|raw }}
-                </a>
+              <a class="header-authorization-btn header-authorization-enter modals_open" rel="nofollow"
+                 href="{{ _href('#login')|raw }}">
+                <span class="header-authorization-enter-text"> {{ t('common', 'login')|raw }}</span>
+                {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
+              </a>
+              <span class="header-authorization-separate header-authorization-separate-login">/</span>
+              <a class="header-authorization-btn header-authorization-register modals_open" rel="nofollow"
+                 href="{{ _href('#registration')|raw }}">
+                {{ t('common', 'register')|raw }}
+              </a>
             </div>
           {% else %}
             {#зарегистрирован#}
@@ -61,20 +63,20 @@
               {{ get_menu_item({
                 'href': '/account',
                 'title': svg('circle', 'btn-header_button_money') ~ '<span class="ballance-confirmed" data-toggle="tooltip" data-original-title="'~t('account', 'ballance_current')~'">'
-                  ~ _nf(this.balance.current) ~' '~app.user.identity.currency~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
-                  ~ _nf(this.balance.pending) ~' '~app.user.identity.currency~' </span>',
+                ~ _nf(this.balance.current) ~' '~app.user.identity.currency~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
+                ~ _nf(this.balance.pending) ~' '~app.user.identity.currency~' </span>',
                 'class':'btn-header-ballance'
               })|raw }}
 
             </div>
-              <div class="btn-header header-upline_plugin desctop">
-                  {{ get_menu_item({
-                      'href': '/plugin',
-                      'title': svg('puzzle', 'btn-header_button'),
-                      'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
-                  })|raw }}
-              </div>
-              {% if this.favorites %}
+            <div class="btn-header header-upline_plugin desctop">
+              {{ get_menu_item({
+                'href': '/plugin',
+                'title': svg('puzzle', 'btn-header_button'),
+                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
+              })|raw }}
+            </div>
+            {% if this.favorites %}
               {#если есть избранные#}
               <div class="btn-header btn-header_favorite">
                 {{ get_menu_item({
@@ -87,9 +89,9 @@
 
             <div class="header-logo_noty btn-header last">
               {{ get_menu_item({
-                  'href': '/account/notification',
-                  'title': svg('bell-o', 'btn-header_button'),
-                  'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
+                'href': '/account/notification',
+                'title': svg('bell-o', 'btn-header_button'),
+                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
               })|raw }}
 
             </div>
@@ -98,7 +100,8 @@
               <div class="avatar account-menu-toggle">
                 {% set user_avatar = _checkAvatar(this.user.photo) %}
                 <span class="avatar-wrap">
-                  <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}" alt="{{ this.user.name }}"/>
+                  <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}"
+                       alt="{{ this.user.name }}"/>
                 </span>
                 {{ svg('angle-down','avatar_angle-down')|raw }}
                 {{ svg('close', 'account-menu-toggle-close')|raw }}
@@ -117,39 +120,40 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-              <a class = "header-right_link mobile modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
-                  {{ t('common', 'do_login')|raw }}
-              </a>
+            <a class="header-right_link mobile modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
+              {{ t('common', 'do_login')|raw }}
+            </a>
 
           </li>
           <li class="mobile">
-              <a class = "header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow" href="{{ _href('#registration')|raw }}">
-                  {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
-              </a>
+            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow"
+               href="{{ _href('#registration')|raw }}">
+              {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
+            </a>
           </li>
           <li class="mobile">
             {#<a href="/howitworks" class="header-right_link mobile">Как это работает</a>#}
-              {{ get_menu_item({
-                  'href': '/howitworks',
-                  'title': t('main', 'how_it_works'),
-                  'class': 'header-right_link mobile'
-              })|raw }}
+            {{ get_menu_item({
+              'href': '/howitworks',
+              'title': t('main', 'how_it_works'),
+              'class': 'header-right_link mobile'
+            })|raw }}
           </li>
         {% else %}
           <li class="mobile">
-              {{ get_menu_item({
-                  'href': '/account',
-                  'title': t('account', 'menu_main_page'),
-                  'class': 'mobile'
-              })|raw }}
+            {{ get_menu_item({
+              'href': '/account',
+              'title': t('account', 'menu_main_page'),
+              'class': 'mobile'
+            })|raw }}
           </li>
         {% endif %}
         <li class="drop-menu_group__up">
-            {{ get_menu_item({
-                'href': '/stores',
-                'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down'),
-                'class': 'drop-menu_group__up-header'
-            })|raw }}
+          {{ get_menu_item({
+            'href': '/stores',
+            'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
 
           {{ use('frontend/components/CategoryMenu') }}
           {% set offline = app.params.stores_menu_separate ? 0 : null %}
@@ -181,9 +185,9 @@
         {% if app.params.stores_menu_separate %}
           <li class="drop-menu_group__up">
             {{ get_menu_item({
-                  'href': '/stores/offline',
-                  'title': t('main', 'offline_shops') ~ svg('angle-down','menu_angle-down'),
-                  'class': 'drop-menu_group__up-header'
+              'href': '/stores/offline',
+              'title': t('main', 'offline_shops') ~ svg('angle-down','menu_angle-down'),
+              'class': 'drop-menu_group__up-header'
             })|raw }}
 
             {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': 1 }) %}
@@ -193,16 +197,19 @@
           </li>
         {% endif %}
         <li class="desctop">
-            {{ get_menu_item({
-                'href': '/stores/s-povyshennym-cashback',
-                'title': t('main', 'duble_cashback')
-            })|raw }}
+          {{ get_menu_item({
+            'href': '/stores/s-povyshennym-cashback',
+            'title': t('main', 'duble_cashback'),
+          })|raw }}
         </li>
         <li class="drop-menu_bold">
-            {{ get_menu_item({
-                'href': '/products/aliexpress',
-                'title': t('main', 'top-ali')
-            })|raw }}
+          {{ get_menu_item({
+            'href': '/products/aliexpress',
+            'title': t('main', 'top-ali'),
+            'attributes':{
+              'target':"_blank"
+            }
+          })|raw }}
         </li>
         <li class="drop-menu_group__up drop-menu_group__up-pointed">
           <span class="drop-menu_group__up-header"> {{ t('main', 'services') }}
@@ -213,13 +220,13 @@
             {% for item in link_list %}
               {% if item.show==1 %}
                 <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
-                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null  %}
-                    {{ get_menu_item({
-                        'href': item.url,
-                        'outer': item.outer,
-                        'title': item.name,
-                        'attributes': attributes
-                    })|raw }}
+                  {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
+                  {{ get_menu_item({
+                    'href': item.url,
+                    'outer': item.outer,
+                    'title': item.name,
+                    'attributes': attributes
+                  })|raw }}
                 </li>
               {% endif %}
             {% endfor %}
@@ -233,13 +240,13 @@
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
-            'href':'/account/webmaster',
-            'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
+              'href':'/account/webmaster',
+              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
             } %}
           {% else %}
             {% set item= {
-            'href':'/affiliate-system',
-            'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_affiliate'),
+              'href':'/affiliate-system',
+              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_affiliate'),
             } %}
           {% endif %}
           {{ get_menu_item(item)|raw }}
@@ -254,8 +261,8 @@
               {% set link_list = _constant("main_menu_help") %}
               {% for item in link_list %}
                 {% if item.show==1 %}
-                  <li  {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
-                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null  %}
+                  <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
+                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
                     {{ get_menu_item({
                       'href': item.url,
                       'outer': item.outer,

@@ -1,5 +1,7 @@
 .accordion {
   text-align: left;
+  margin-bottom: 3px;
+  //max-width: 935px;
 
   &-wrap {
     position: relative;
@@ -8,8 +10,6 @@
     }
   }
 
-  margin-bottom: 3px;
-  //max-width: 935px;
   &-slim {
     @include media_min($laptop) {
       .accordion-title {
@@ -95,6 +95,7 @@
 
     p {
       margin-top: 8px;
+      margin-bottom: 15px;
       font-size: $font-size-content;
     }
     h3 {
