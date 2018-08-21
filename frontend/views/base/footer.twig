@@ -66,14 +66,12 @@
       </div>
       <div class="footer-withdraws flex-line">
         <div class="footer-withdraws-item">{{ t('main', 'withdraw_methods') }}:</div>
-        <div class="footer-withdraws-item footer-withdraws-visa"></div>
-        <div class="footer-withdraws-item footer-withdraws-mastercard"></div>
-        <div class="footer-withdraws-item footer-withdraws-qiwi"></div>
-        <div class="footer-withdraws-item footer-withdraws-mir"></div>
-        <div class="footer-withdraws-item footer-withdraws-phone"></div>
-        <div class="footer-withdraws-item footer-withdraws-ya"></div>
-        <div class="footer-withdraws-item footer-withdraws-wm"></div>
-        <div class="footer-withdraws-item footer-withdraws-paypal"></div>
+        {% set payment_system = _constant("payment_system") %}
+        {% for item in payment_system %}
+          {% if item.on_footer==1 %}
+            <div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>
+          {% endif %}
+        {% endfor %}
       </div>
       <div class="footer-docs  flex-line">
         <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="/sitemap">{{ t('main', 'site_map') }}</span>

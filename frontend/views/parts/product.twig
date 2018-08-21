@@ -35,7 +35,7 @@
                             >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
                         </div>
 
-                        <a class="catalog_products_item_cashback_coupons" target="_blank" href="{{ _href('/coupons/'~store.route) }}">
+                        <a class="catalog_products_item_cashback_coupons" target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/coupons/'~store.route) }}">
                             {{ svg('table')|raw }} {{ t('main', 'coupons_active_for{store}', {'store': store.name})|raw }}
                         </a>
                     </div>
@@ -53,7 +53,7 @@
                              data-icon-size=24
                         >
                         </div>
-                        <a target="_blank" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
+                        <a target="_blank" rel="noopener noreferrer nofollow" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
                 </div>
             </div>
         </div>

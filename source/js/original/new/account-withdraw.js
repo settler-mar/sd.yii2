@@ -27,6 +27,10 @@
       case 6:
         placeholder = lg("withdraw_phone_number");
         break;
+
+      case 7:
+        placeholder = lg("withdraw_skrill");
+        break;
     }
 
     $(this).parent().siblings().removeClass('active');

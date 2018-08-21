@@ -98,7 +98,27 @@ function ajaxForm(els) {
 
     //init(wrap);
 
+    var required = form.find('input.required, textarea.required, input[id="support-recaptcha"]');
+    for (var i = 0; i < required.length; i++) {
+      var helpBlock = required.eq(i).closest('.form-group').find('.help-block');
+      var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : lg('required');
+
+      if (required.eq(i).val().length < 1) {
+        helpBlock.html(helpMessage);
+        isValid = false;
+      } else {
+        helpBlock.html('');
+      }
+    }
+    if (!isValid) {
+      return false;
+    }
+
     if (form.yiiActiveForm) {
+      form.off('afterValidate')
+      form.on('afterValidate', yiiValidation.bind(data));
+
+      form.yiiActiveForm('validate', true);
       var d = form.data('yiiActiveForm');
       if (d) {
         d.validated = true;
@@ -106,6 +126,9 @@ function ajaxForm(els) {
         form.yiiActiveForm('validate');
         isValid = d.validated;
       }
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      return false
     }
 
     isValid = isValid && (form.find(data.param.error_class).length == 0);
@@ -113,32 +136,31 @@ function ajaxForm(els) {
     if (!isValid) {
       return false;
     } else {
-
       e.stopImmediatePropagation();
       e.stopPropagation();
-      var required = form.find('input.required, textarea.required, input[id="support-recaptcha"]');
-      for (var i = 0; i < required.length; i++) {
-        var helpBlock = required.eq(i).closest('.form-group').find('.help-block');
-        var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : lg('required');
 
-        if (required.eq(i).val().length < 1) {
-          helpBlock.html(helpMessage);
-          isValid = false;
-        } else {
-          helpBlock.html('');
-        }
-      }
-      if (!isValid) {
-        return false;
-      }
+      sendForm(data);
     }
+  }
+
+  function yiiValidation(e) {
+    var form = data.form;
+
+    if(form.find(data.param.error_class).length == 0){
+      sendForm(this);
+    }
+    return true;
+  }
+
+  function sendForm(data){
+    var form = data.form;
 
     if (!form.serializeObject)addSRO();
 
     var postData = form.serializeObject();
     form.addClass('loading');
     form.html('');
-    wrap.html('<div style="text-align:center;"><p>'+lg('sending_data')+'</p></div>');
+    data.wrap.html('<div style="text-align:center;"><p>'+lg('sending_data')+'</p></div>');
 
     data.url += (data.url.indexOf('?') > 0 ? '&' : '?') + 'rc=' + Math.random();
     //console.log(data.url);
@@ -153,8 +175,6 @@ function ajaxForm(els) {
       onPost.bind(data),
       'json'
     ).fail(onFail.bind(data));
-
-    return false;
   }
 
   function init(wrap) {

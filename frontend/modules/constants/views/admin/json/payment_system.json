@@ -1,0 +1,36 @@
+{
+  "allowEmptyList":false,
+  "columns": [
+    {
+      "name": "code",
+      "type": "dropDownList",
+      "title": "Система вывода",
+      "items": {
+        "visa": "VISA",
+        "mastercard": "Master Card",
+        "card": "Card",
+        "qiwi": "qiwi",
+        "mir": "MIR",
+        "phone": "phone",
+        "ya": "yandex money",
+        "wm": "WebMoney",
+        "paypal": "PayPal",
+        "skrill": "skrill"
+      }
+    },{
+      "name": "on_footer",
+      "type": "checkbox",
+      "title": "Вывод подвал"
+    },{
+      "name": "on_outer",
+      "type": "checkbox",
+      "title": "Вывод на странице вывода"
+    },{
+      "name": "regions",
+      "title": "Выводить в регионах",
+      "type": "checkboxlist",
+      "items": {
+      }
+    }
+  ]
+}

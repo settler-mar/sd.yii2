@@ -34,24 +34,26 @@ class UsersWithdraw extends \yii\db\ActiveRecord
    */
   public function rules()
   {
-      //$balanse=Yii::$app->user->identity->balance;
+      $balanse=Yii::$app->user->identity->balance;
       return [
       [['user_id', 'process_id', 'bill', 'request_date', 'amount'], 'required'],
       [['process_id'], 'required', 'message'=>Yii::t('account', 'withrdaw_method_wrong')],
-      [['process_id'], 'in', 'range' => [1, 2, 3, 4, 5, 6], 'message'=>Yii::t('account', 'withrdaw_choose_method')],
+      [['process_id'], 'in', 'range' => [1, 2, 3, 4, 5, 6,7], 'message'=>Yii::t('account', 'withrdaw_choose_method')],
       [['user_id', 'process_id', 'status'], 'integer'],
+
       [['bill'], 'integer', 'when' => function($model) {
         return in_array($model->process_id, [1, 3, 4, 6]);
       }, 'whenClient' => "function(attribute,value){return $.inArray(parseInt($('#userswithdraw-process_id').val()), [1, 3, 4, 6])>-1;}" ],
       [['bill'], 'match', 'pattern'=> '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', 'when' => function($model) {
-        return $model->process_id == 5;
-      }, 'whenClient' => "function(attribute,value){return parseInt($('#userswithdraw-process_id').val()) == 5;}" ,
+        return $model->process_id == 5 || $model->process_id == 7;
+      }, 'whenClient' => "function(attribute,value){var v=parseInt($('#userswithdraw-process_id').val());return  v==5||v==7;}" ,
       'message' => Yii::t('account', 'withrdaw_email_wrong')],
       [['bill'], 'match', 'pattern'=> '/^R[0-9]{12}$/', 'when' => function($model) {
         return $model->process_id == 2;
       }, 'whenClient' => "function(attribute,value){return parseInt($('#userswithdraw-process_id').val()) == 2;}" ,
       'message' => Yii::t('account', 'withrdaw_webmoney_wrong')],
-      [['amount'], 'number', 'min'=> 350/*, 'max' => ($balanse ? $balanse['current'] : null)*/],
+
+      [['amount'], 'number', 'min'=> 350, 'max' => ($balanse ? $balanse['current'] : null)],
       [['amount'], 'filter', 'filter' => function ($value) {
         return number_format($value, 2, ".", "");
       }],

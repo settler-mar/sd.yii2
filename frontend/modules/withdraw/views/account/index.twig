@@ -1,88 +1,86 @@
 {{ use('/yii/widgets/ActiveForm') }}
 {#<div class="content-wrapper">#}
-    <section class="account-text-block account-margin-top">
-        <div class="account-text-block_item account-text-block_item-bold">{{ t('account', 'withdraw_balance_for')}}:&nbsp;
-            <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}&nbsp{{ currencyIcon(app.user.identity.currency)|raw }}</span>
-        </div>
-        <div class="account-text-block_item"><a href="{{ _href('/account/withdraw/history')|raw }}">{{ t('account', 'withdraw_view_history')|raw }}</a></div>
-    </section>
-    <section class="account-text-block">
-        <div class="account-text-block_item">
-            {{ _constant('account_withdraw')|raw }}
-        </div>
-    </section>
-    <section class="account-withdraw account-text-block align-center">
-        {% if balance.withdraw_waiting > 0 %}
-                <div class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists')|raw }}</div>
-        {% elseif balance.current < 350 %}
-                <div class="account-text-block_item account-text-block_item-alert">{{ t('account', 'withrdaw_balance_little')|raw }}</div>
-        {% else %}
-                <div class="account-withdraw-methods">
-                    <h3 class="">{{ t('account', 'withrdaw_choose_method')|raw }}:</h3>
-                    <div class="account-withdraw-methods_list">
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="2" ><img src="/images/account/webmoney-l.png" at=""></a>
-                        </div>
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="1"><img src="/images/account/yandex-l.png" at=""></a>
-                        </div>
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="3"><img src="/images/account/qiwi-l.png" at=""></a>
-                        </div>
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="4"><img src="/images/account/cart-l.png" at=""></a>
-                        </div>
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="5"><img src="/images/account/paypal-l.jpg" at=""></a>
-                        </div>
-                        <div class="account-withdraw-methods_item">
-                            <a href="#" class="account-withdraw-methods_item-option" data-option-process="6"><img src="/images/account/sim-l.png" at=""></a>
-                        </div>
-                    </div>
-                </div>
+<section class="account-withdraw account-text-block align-center">
+  {% if balance.withdraw_waiting > 0 %}
+    <div
+        class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists')|raw }}</div>
+  {% elseif balance.current < 350 %}
+    <div
+        class="account-text-block_item account-text-block_item-alert">{{ t('account', 'withrdaw_balance_little')|raw }}</div>
+  {% else %}
+    {% set form = active_form_begin({'action': _href('/account/withdraw'), 'options':{'name':'withdraw-form', 'role':'form'},}) %}
+    <div class="account-withdraw-methods">
+      <h3 class="">{{ t('account', 'withrdaw_choose_method')|raw }}:</h3>
+      <div class="account-withdraw-methods_list">
+        {% set payment_system = _constant("payment_system") %}
+        {% set p_arr={
+          'wm':{'img':'account/webmoney-l.png','id':2},
+          'ya':{'img':'account/yandex-l.png','id':1},
+          'qiwi':{'img':'account/qiwi-l.png','id':3},
+          'card':{'img':'account/cart-l.png','id':4},
+          'paypal':{'img':'account/paypal-l.jpg','id':5},
+          'phone':{'img':'account/sim-l.png','id':6},
+          'skrill':{'img':'pays_system/skrill.svg','id':7},
+        } %}
 
-                    <h3 class="text-center">{{ t('account', 'withrdaw_fill_data')|raw }}:</h3>
-                    <div class="payment-info users-withdraw ajax_form">
-                        {% set cur = currencyIcon(app.user.identity.currency) %}
-                        {% set form = active_form_begin({'action': _href('/account/withdraw'), 'options':{'name':'withdraw-form', 'role':'form'},}) %}
+        {% for item in payment_system %}
+          {% if item.on_outer==1 %}
+            <div class="account-withdraw-methods_item">
+              <a href="#" class="account-withdraw-methods_item-option"
+                 data-option-process="{{ p_arr[item.code].id }}"><img src="/images/{{ p_arr[item.code].img }}"
+                                                                      at=""></a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
 
-                            {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
+    <h3 class="text-center">{{ t('account', 'withrdaw_fill_data')|raw }}:</h3>
+    <div class="payment-info users-withdraw ajax_form">
+      {% set cur = currencyIcon(app.user.identity.currency) %}
 
-                            {{ form.field(model, 'bill', {
-                                'template' :'<div class="form-input-group"><span>{{ svg("info-circle")|raw }}</span>{input}</div>{error}{hint}',
-                                'options': {'class':'form-group'},
-                            }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_cashe_number')}).label(false)|raw }}
+      {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
 
-                            {#{{ form.field(model, 'amount', {#}
-                                {#'template' :'<div class="form-input-group"><span>{{ svg("money")|raw }}</span> {input}<div class="withdraw_currency"></div></div>{error}{hint}',#}
-                                {#'options': {'class':'form-group'},#}
-                            {#}).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}#}
+      {{ form.field(model, 'bill', {
+        'template' :'<div class="form-input-group"><i>{{ svg("info-circle","form-icon")|raw }}</i>{input}</div>{error}{hint}',
+        'options': {'class':'form-group'},
+      }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_cashe_number')}).label(false)|raw }}
 
-                        <div class="form-group field-userswithdraw-amount required">
-                            <div class="form-input-group"><span>{{ svg("money")|raw }}</span>
-                            <input type="text" id="userswithdraw-amount" class="form-control" name="UsersWithdraw[amount]" placeholder="withrdaw_fill_amount" aria-required="true"/>
-                                <div class="user-currency">{{ cur|raw }}</div>
-                            </div>
-                            <div class="help-block"></div>
-                        </div>
+      {{ form.field(model, 'amount', {
+        'template' :'<div class="form-input-group"><i>{{ svg("money","form-icon")|raw }}</i>{input}<div class="user-currency">'~cur~'</div></div>{error}{hint}',
+        'options': {'class':'form-group'},
+      }).textInput({'maxlength':true, 'placeholder':t('account', 'withrdaw_fill_amount')}).label(false)|raw }}
 
 
-                        {{ form.field(model, 'user_comment', {
-                                'template' : '<div class="form-textarea-group">{input}</div>{error}{hint}',
-                                'options': {'class':'form-group'},
-                            }).textarea({
-                                'maxlength':true,
-                                'placeholder':t('account', 'withrdaw_fill_text'),
-                                'rows': '10',
-                                'cols': '30',
-                                'class': ''
-                            })|raw }}
+      {{ form.field(model, 'user_comment', {
+        'template' : '<div class="form-textarea-group">{input}</div>{error}{hint}',
+        'options': {'class':'form-group'},
+      }).textarea({
+        'maxlength':true,
+        'placeholder':t('account', 'withrdaw_fill_text'),
+        'rows': '10',
+        'cols': '30',
+        'class': ''
+      })|raw }}
 
-                            <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
-                            <input type="submit" class="btn" value="{{ t('account', 'withrdaw_form_button')|raw }}">
+      <input type="hidden" name="withdraw-process" id="account-withdraw-process" value="0">
+      <input type="submit" class="btn" value="{{ t('account', 'withrdaw_form_button')|raw }}">
 
-                        {{ active_form_end() }}
-                    </div>
-        {% endif %}
-    </section>
+    </div>
+    {{ active_form_end() }}
+  {% endif %}
+</section>
+<section class="account-text-block account-margin-top">
+  <div class="account-text-block_item account-text-block_item-bold">{{ t('account', 'withdraw_balance_for') }}:&nbsp;
+    <span class="account-text-block_item-money account-balance-confirm">{{ _nf(balance.current)|raw }}
+      &nbsp{{ currencyIcon(app.user.identity.currency)|raw }}</span>
+  </div>
+  <div class="account-text-block_item"><a
+        href="{{ _href('/account/withdraw/history')|raw }}">{{ t('account', 'withdraw_view_history')|raw }}</a></div>
+</section>
+<section class="account-text-block">
+  <div class="account-text-block_item">
+    {{ _constant('account_withdraw')|raw }}
+  </div>
+</section>
 {#</div>#}
