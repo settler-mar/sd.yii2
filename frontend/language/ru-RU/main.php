@@ -232,7 +232,7 @@ return [
         '{buy, plural, few{# раза} other{# раз} }, последний раз {time}',
     'product_bought' => 'Куплено',
     'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление &ndash; {time}',
-    'install-plugin' => 'Установить плагин'
+    'install-plugin' => 'Плагин  для браузера'
 
 
 
