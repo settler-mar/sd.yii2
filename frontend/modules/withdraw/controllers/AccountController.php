@@ -50,6 +50,7 @@ class AccountController extends \yii\web\Controller
         return json_encode([
           'error' => false,
           'message' => [Yii::t('account', 'withdraw_request_is_recieved')],
+          'html'=>Yii::t('account', 'withdraw_request_is_recieved'),
         ]);
       } else {
         return json_encode([

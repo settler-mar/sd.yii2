@@ -1,6 +1,6 @@
 {{ use('/yii/widgets/ActiveForm') }}
 {#<div class="content-wrapper">#}
-<section class="account-withdraw account-text-block align-center">
+<section class="account-balance account-text-block align-center ajax_form">
   {% if balance.withdraw_waiting > 0 %}
     <div
         class="account-text-block_item  account-text-block_item-alert ">{{ t('account', 'withrdaw_request_exists')|raw }}</div>
@@ -36,7 +36,7 @@
     </div>
 
     <h3 class="text-center">{{ t('account', 'withrdaw_fill_data')|raw }}:</h3>
-    <div class="payment-info users-withdraw ajax_form">
+    <div class="payment-info users-withdraw">
       {% set cur = currencyIcon(app.user.identity.currency) %}
 
       {{ form.field(model, 'process_id').textInput().hiddenInput({'value':'0'}).label(false)|raw }}
