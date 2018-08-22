@@ -376,7 +376,7 @@ class DefaultController extends SdController
     $contentData['wrap'] = 'index';
     Yii::$app->params['global_bg'] = "tablets_flex-col";
     $contentData['referrer_category'] = $this->referrerCategory();
-
+    
     return $this->render('shop', $contentData);
   }
 
