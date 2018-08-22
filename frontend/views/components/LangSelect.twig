@@ -3,12 +3,23 @@
       {% if regions|length>1 %}
       <ul class="header-upline_lang-list btn-header">
         <li>
-          {{ regions[active.region].name }}
+          {% if regions[active.region].code %}
+            {{ regions[active.region].code }}
+          {% else %}
+            {{ regions[active.region].name }}
+          {% endif %}
 
           <ul class="header-upline_lang-list-drap">
             {% for k,region in regions if region.active %}
               {% if k!=active.region %}
-                <li><a href="{{ region.url }}" class="header-upline_lang-link">{{ region.name|e }}</a></li>
+                <li>
+                  <a href="{{ region.url }}" class="header-upline_lang-link">
+                    {{ region.name|e }}
+                    {% if region.code %}
+                      ({{ region.code }})
+                    {% endif %}
+                  </a>
+                </li>
               {% endif %}
             {% endfor %}
           </ul>
@@ -20,12 +31,16 @@
       <ul class="header-upline_lang-list btn-header">
         <li>
           <img src="{{ langs[active.lang].icon|e }}" class="header-upline_lang-img">
-          {{ langs[active.lang].name }}
 
           <ul class="header-upline_lang-list-drap">
             {% for k,lang in langs if lang.active %}
               {% if k!=active.lang %}
-                <li><a href="{{ lang.url }}" class="header-upline_lang-link"><img src="{{ lang.icon|e }}" class="header-upline_lang-img">{{ lang.name|e }}</a></li>
+                <li>
+                  <a href="{{ lang.url }}" class="header-upline_lang-link">
+                    <img src="{{ lang.icon|e }}" class="header-upline_lang-img">
+                    {{ lang.name|e }}
+                  </a>
+                </li>
               {% endif %}
             {% endfor %}
           </ul>

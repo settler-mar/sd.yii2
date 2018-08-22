@@ -177,6 +177,12 @@
     &-ballance {
       position: relative;
       margin-left: 25px;
+
+      &-wrap{
+        text-align: center;
+        line-height: 1em;
+      }
+
       &:hover {
         .btn-header_button_money {
 

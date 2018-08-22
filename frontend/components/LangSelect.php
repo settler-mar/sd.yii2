@@ -40,6 +40,7 @@ class LangSelect extends Widget
         'name'=>$v['name'],
         'url'=>(isset($v['protocol'])?$v['protocol']:'https').'://'.(isset($v['url'])?$v['url']:$k).'/'.$path,
         'active' => $v['active'],
+        'code' => isset($v['code'])?$v['code']:false,
       ];
     }
 
@@ -54,7 +55,7 @@ class LangSelect extends Widget
     ];
 
     //ddd($path);
-    //ddd($data);
+    ///ddd($data);
     return $this->render('LangSelect',$data);
   }
 }
