@@ -61,7 +61,6 @@ class DefaultController extends SdController
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
         }
         $dataBaseData = Products::find()
-            ->select(['cw_products.*', 'last_price as price',  'round(abs(buy_count*4.67+sin(uid)*30))+1 as buy'])
             ->where(['and',
                 ['store_id' => $store->uid],
                 ['is not', 'url', null],
@@ -79,7 +78,7 @@ class DefaultController extends SdController
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
-            ['limit' => $limit, 'page' => $page, 'asArray'=>true]
+            ['limit' => $limit, 'page' => $page]
         );
 
         $paginateParams = [
@@ -102,8 +101,14 @@ class DefaultController extends SdController
         $updateTime = $updateTime['time'];
 
         $products = $pagination->data();
-
+        if($sort=='buy_count') {
+          usort($products, function ($a, $b) {
+            if ($a->buy == $b->buy) return 0;
+            return $a->buy > $b->buy ? -1 : 1;
+          });
+        }
         //ddd($products);
+        //ddd($sortvars);
 
         $data = [
             'store' => $store,

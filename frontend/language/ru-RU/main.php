@@ -94,6 +94,8 @@ return [
     'stores_menu_abc' => 'АЛФАВИТНЫЙ ПОИСК',
     'stores_menu_all_online' => 'Все магазины',
     'stores_menu_all_offline' => 'Все компании',
+    'shops_produncts_{store}' => 'Самые популярные товары на {store}',
+    'all_shops_produncts_{store}' => 'Показать все',
     'coupons_menu_new' => 'Новые промокоды',
     'coupons_menu_all' => 'Все промокоды',
     '{category} coupons default h1 category {date}' => '{category}: акции, скидки, распродажи и промкоды - {date}',

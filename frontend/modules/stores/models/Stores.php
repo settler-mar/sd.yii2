@@ -248,6 +248,20 @@ class Stores extends \yii\db\ActiveRecord
     return $this->hasMany(Products::className(), ['store_id' => 'uid']);
   }
 
+  /**
+   * @return yii\db\ActiveQuery
+   */
+  public function getTopProducts()
+  {
+    return $this->hasMany(Products::className(), ['store_id' => 'uid'])
+        ->limit(4)
+        ->orderBy('buy_count desc')
+        ->where(['and',
+            ['is not', 'url', null],
+            ['>', 'url', ''],
+            ['<>', 'title', '-'],
+        ]);
+  }
   /*
    * Выдает магазины сети автоматом добавдяя связанный онлайн-оффлайн магазин и удаляется текущий
    *

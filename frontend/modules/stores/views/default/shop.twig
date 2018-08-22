@@ -230,7 +230,36 @@
   {% include 'parts/stores/additional_stores.twig' %}
 {% endif %}
 
+{% if current_store.show_products==1 %}
+ <section class="margin">
+   <div class="page-wrap">
+     <h2 class="content-header">{{ t('main', 'shops_produncts_{store}', {'store': current_store.name})|raw }}</h2>
 
+     {% set products = current_store.topProducts  %}
+     {% if products|length > 0 %}
+       <div class="catalog-stores_list shops margin">
+         {% for product in products %}
+
+           {% include 'parts/product.twig' %}
+
+           {#{% if loop.index == loop.length or loop.index % 4 == 0 %}#}
+           {% if loop.index % 4 == 0 %}
+             {{ _constant('banner_google')|raw }}
+           {% endif %}
+
+         {% endfor %}
+       </div>
+
+     {% else %}
+       <p>{{ t('main', 'not_found')|raw }}</p>
+     {% endif %}
+
+     <div class="align-center">
+       <a href="/products/{{ current_store.route }}" class="btn btn-transform">{{ t('main', 'all_shops_produncts_{store}', {'store': current_store.name})|raw }} →</a>
+     </div>
+   </div>
+ </section>
+{% endif %}
 
 {% include 'parts/calc_cashback.twig' %}
 
