@@ -20,7 +20,10 @@ a.blue:hover {text-decoration: none; color: #1a8cff;}
 /*body {font-family: "roboto", sans-serif; font-size: 0.9rem;}*/
 
 /* --- БЛОКИ МАГАЗИНЫ  ---*/
-img.no_optomize {height: auto;}
+img.no_optomize {
+  height: auto;
+  max-height: 120px;
+}
 .shop {
   display: flex;
   flex-direction: column;

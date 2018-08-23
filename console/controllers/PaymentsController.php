@@ -92,6 +92,9 @@ class PaymentsController extends Controller
 
     echo "Payments from Performancehorizon\n";
     Yii::$app->runAction('performancehorizon/payments');
+
+    echo "Payments from Sellaction\n";
+    Yii::$app->runAction('sellaction/payments');
   }
 
   /**
