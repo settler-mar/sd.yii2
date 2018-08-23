@@ -28,6 +28,7 @@ class SdUrlPromo implements UrlRuleInterface
     $ref_href = false;
 
     if (isset($ref_cpec[$pathInfo])) {
+      Yii::$app->session->set('referrer_id',$ref_cpec[$pathInfo]);
       $params['r'] = $ref_cpec[$pathInfo];
       if (!$ref_href && isset($ref_cpec_redirect[$pathInfo])) {
         $ref_href = $ref_cpec_redirect[$pathInfo];
