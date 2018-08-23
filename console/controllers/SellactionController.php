@@ -219,6 +219,9 @@ class SellactionController extends Controller
 
       $store_id = $db_store->uid;
 
+      $db_store->displayed_cashback = $conditions['cashback']; //перезаписываем кешбек
+
+
       //если нет в базе CPA ЛИНК то создаем ее
       if (!$cpa_id) {
         $cpa_link = new CpaLink();
@@ -298,6 +301,7 @@ class SellactionController extends Controller
           (isset($tariffItem['processing_days']) ? ' Время обработки ' . $tariffItem['processing_days'] . ' дней.' : '') .
           '<br>';
     }
+    $tariff=$tariff/2;
     return [
         'cashback' => (count($tariffs) > 1 ? 'до ' : '') . $tariff . ($type == 'percent' ? '%' : ''),
         'text' => $text,
