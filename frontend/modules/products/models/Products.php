@@ -40,8 +40,8 @@ class Products extends \yii\db\ActiveRecord
    */
   public static $sortvars = [
       'buy_count' => ["title" => "Популярности", "title_mobile" => "Популярности"],
-      'last_price' => ["title" => "По цене", "title_mobile" => "Цене"],
-      'last_buy' => ["title" => "Дате", "title_mobile" => "Дате покупки"],
+      'last_price' => ["title" => "Цене", "title_mobile" => "Цене"],
+      'last_buy' => ["title" => "Дате покупки", "title_mobile" => "Дате"],
   ];
 
   /**
