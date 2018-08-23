@@ -14,6 +14,6 @@ class StoreController extends Controller
     Yii::$app->runAction('doublertrade/offers');
     Yii::$app->runAction('cj/stores');
     Yii::$app->runAction('sellaction/store');
-    //Yii::$app->runAction('performancehorizon/stores');
+    Yii::$app->runAction('performancehorizon/stores');
   }
 }

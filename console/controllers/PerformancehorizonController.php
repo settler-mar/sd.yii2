@@ -3,15 +3,15 @@
 namespace console\controllers;
 
 
-use frontend\modules\payments\models\Payments;
-use yii\console\Controller;
-use Yii;
 use common\models\Performancehorizon;
+use frontend\modules\actions\models\ActionsActions;
+use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
-use frontend\modules\actions\models\ActionsActions;
+use Yii;
+use yii\console\Controller;
 
 class PerformancehorizonController extends Controller
 {
@@ -19,10 +19,10 @@ class PerformancehorizonController extends Controller
   //добавляем параметры для запуска
   public $day;
 
-  private $cpa_id=-1;
+  private $cpa_id = -1;
 
-  private $stores=array();
-  private $users=array();
+  private $stores = array();
+  private $users = array();
 
   public function init()
   {
@@ -31,7 +31,7 @@ class PerformancehorizonController extends Controller
       ddd('CPA Advertise not found');
     }
 
-    $this->cpa_id=$cpa->id;
+    $this->cpa_id = $cpa->id;
   }
 
   //добавляем параметры для запуска
@@ -42,8 +42,9 @@ class PerformancehorizonController extends Controller
     }
   }
 
-  public function actionTest(){
-    $t=new Performancehorizon();
+  public function actionTest()
+  {
+    $t = new Performancehorizon();
     $t->test();
   }
 
@@ -86,8 +87,9 @@ class PerformancehorizonController extends Controller
   /**
    * Обновить шопы
    */
-  public function actionStores(){
-    $t=new Performancehorizon();
+  public function actionStores()
+  {
+    $t = new Performancehorizon();
     $stores = $t->getStores();
     $storesCount = 0;
     $storesInserted = 0;
@@ -95,15 +97,15 @@ class PerformancehorizonController extends Controller
     $cpaFails = 0;
     $storesFails = 0;
 
-    $storesCount=count($stores["campaigns"]);
-    foreach($stores["campaigns"] as $offer) {
+    $storesCount = count($stores["campaigns"]);
+    foreach ($stores["campaigns"] as $offer) {
       /*foreach($offer['campaign']['description'] as $code=>$r){
         echo $code."\n";
       }*/
       $offer = $offer['campaign'];
 
-      $affiliate_id=explode('l',$offer['campaign_id']);
-      $affiliate_id=$affiliate_id[1];
+      $affiliate_id = explode('l', $offer['campaign_id']);
+      $affiliate_id = $affiliate_id[1];
       $store = [
           'logo' => $offer['campaign_logo'],
           'cpa_id' => $this->cpa_id,
@@ -152,9 +154,10 @@ class PerformancehorizonController extends Controller
   /**
    * Обновить платежи
    */
-  public function actionPayments($options = false, $send_mail = true, $day = false){
+  public function actionPayments($options = false, $send_mail = true, $day = false)
+  {
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
-    //   $days=300;
+    $days = 100;
     $params = [
         'limit' => 500,
         'offset' => 0,
@@ -181,21 +184,21 @@ class PerformancehorizonController extends Controller
     }
 
     if (is_numeric($params['status_updated_start'])) {
-        $params['status_updated_start']=date('Y-m-d H:i:s',$params['status_updated_start']);
+      $params['status_updated_start'] = date('Y-m-d H:i:s', $params['status_updated_start']);
     }
     if (isset($params['status_updated_end']) && is_numeric($params['status_updated_end'])) {
-        $params['status_updated_end']=date('Y-m-d H:i:s',$params['status_updated_end']);
+      $params['status_updated_end'] = date('Y-m-d H:i:s', $params['status_updated_end']);
     } else {
-        $params['status_updated_end'] = date('Y-m-d H:i:s');
+      $params['status_updated_end'] = date('Y-m-d H:i:s');
     }
 
     //Проверить!!!
-    $pay_status= [
-        'pending' =>  0, //проверил 100%
-        'declined' =>  1,
-        'rejected' =>  1,//50/50
-        'success' =>  2,//50/50
-        'approved' =>  0,//50/50
+    $pay_status = [
+        'pending' => 0, //проверил 100% ожидание
+        'declined' => 1,
+        'rejected' => 1,//50/50
+        'success' => 2,//50/50
+        'approved' => 2,//проверил 100% подтвержден
     ];
 
     $users = array();
@@ -205,79 +208,81 @@ class PerformancehorizonController extends Controller
     $updated = 0;
     $paymentsCount = 0;
 
-    $pf=new Performancehorizon();
+    $pf = new Performancehorizon();
     $payments = $pf->getPayments($params);
     while ($payments) {
       if (isset($payments['conversions'])) {
-          foreach ($payments['conversions'] as $payment) {
-              $payment = $payment['conversion_data'];
-              //ddd($payment);
+        foreach ($payments['conversions'] as $payment) {
+          $payment = $payment['conversion_data'];
+          //ddd($payment);
 
-              if (!$payment['publisher_reference'] || (int)$payment['publisher_reference'] == 0) {
-                  continue;
-              }
-
-              $adm_id = explode('l', $payment['campaign_id']);
-              $adm_id = $adm_id[1];
-              $store = $this->getStore($adm_id);
-              $user = $this->getUserData($payment['publisher_reference']);
-
-              if (!$store || !$user) {
-                  continue;
-              }
-
-              $status = $payment['conversion_items'][0]['item_status'];
-              $status = isset($pay_status[$status]) ? $pay_status[$status] : 0;
-
-              $action_id = explode('l', $payment['conversion_id']);
-              $action_id = $action_id[1];
-
-              $paymentsCount++;
-              $payment_sd = [
-                  'cpa_id' => $this->cpa_id,
-                  'affiliate_id' => $adm_id,
-                  'subid' => $user->uid,
-                  'action_id' => $action_id,
-                  'status' => $status,
-                  'ip' => $payment['referer_ip'],
-                  'currency' => $payment['currency'],//Валюта платежа
-                  'cart' => $payment['conversion_value']['value'],  //Сумма заказа в валюте
-                  'payment' => $payment['conversion_value']['publisher_commission'],  //Наш кешбек в валюте магазина
-                  'click_date' => $payment['click']['set_time'],
-                  'action_date' => $payment['conversion_time'],
-                  'status_updated' => $payment['last_modified'],
-                  'closing_date' => "",
-                  'order_id' => (String)$payment["conversion_reference"],
-                  "tariff_id" => "",
-              ];
-
-              //ddd($payment_sd);
-              $paymentStatus = Payments::makeOrUpdate(
-                  $payment_sd,
-                  $store,
-                  $user,
-                  $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
-                  ['notify' => true, 'email' => true]
-              );
-
-              if ($paymentStatus['save_status']) {
-                  if ($paymentStatus['new_record']) {
-                      $inserted++;
-                  } else {
-                      $updated++;
-                  }
-              }
-
-              if (!in_array($user->uid, $users)) {
-                  $users[] = $user->uid;
-              }
-
-
+          if (!$payment['publisher_reference'] || (int)$payment['publisher_reference'] == 0) {
+            continue;
           }
+
+          $adm_id = explode('l', $payment['campaign_id']);
+          $adm_id = $adm_id[1];
+          $store = $this->getStore($adm_id);
+          $user = $this->getUserData($payment['publisher_reference']);
+
+          if (!$store || !$user) {
+            continue;
+          }
+
+          $status = $payment['conversion_items'][0]['item_status'];
+          //ddd($status);
+          $status = isset($pay_status[$status]) ? $pay_status[$status] : 0;
+          //$status = $payment['conversion_items'][0]['item_status_id']; //похоже совпадает с нашими. 2 - подтвержден
+
+          $action_id = explode('l', $payment['conversion_id']);
+          $action_id = $action_id[1];
+
+          $paymentsCount++;
+          $payment_sd = [
+              'cpa_id' => $this->cpa_id,
+              'affiliate_id' => $adm_id,
+              'subid' => $user->uid,
+              'action_id' => $action_id,
+              'status' => $status,
+              'ip' => $payment['referer_ip'],
+              'currency' => $payment['currency'],//Валюта платежа
+              'cart' => $payment['conversion_value']['value'],  //Сумма заказа в валюте
+              'payment' => $payment['conversion_value']['publisher_commission'],  //Наш кешбек в валюте магазина
+              'click_date' => $payment['click']['set_time'],
+              'action_date' => $payment['conversion_time'],
+              'status_updated' => $payment['last_modified'],
+              'closing_date' => "",
+              'order_id' => (String)$payment["conversion_reference"],
+              "tariff_id" => "",
+          ];
+
+          //ddd($payment_sd);
+          $paymentStatus = Payments::makeOrUpdate(
+              $payment_sd,
+              $store,
+              $user,
+              $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+              ['notify' => true, 'email' => true]
+          );
+
+          if ($paymentStatus['save_status']) {
+            if ($paymentStatus['new_record']) {
+              $inserted++;
+            } else {
+              $updated++;
+            }
+          }
+
+          if (!in_array($user->uid, $users)) {
+            $users[] = $user->uid;
+          }
+
+
+        }
       }
 
-      $params['limit']=$payments['limit'];
-      $params['offset']=$payments['offset']+$params['limit'];
+      $params['limit'] = $payments['limit'];
+      $params['offset'] = $payments['offset'] + $params['limit'];
       if ($params['offset'] < $payments['count']) {
         $payments = $pf->getPayments($params);
       } else {
