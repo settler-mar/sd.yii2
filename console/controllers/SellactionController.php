@@ -219,8 +219,7 @@ class SellactionController extends Controller
 
       $store_id = $db_store->uid;
 
-      $db_store->displayed_cashback = $conditions['cashback']; //перезаписываем кешбек
-
+      //$db_store->displayed_cashback = $conditions['cashback']; //перезаписываем кешбек
 
       //если нет в базе CPA ЛИНК то создаем ее
       if (!$cpa_id) {
