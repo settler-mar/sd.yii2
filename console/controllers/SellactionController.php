@@ -84,9 +84,14 @@ class SellactionController extends Controller
     $updated = 0;
     $paymentsCount = 0;
 
+    //https://sellaction.net/sellaction/doc/advertiser_api.php
     $pay_status = [
-        'wait' => 0, //проверил 100% ожидание
-
+        0 =>0,//- ожидает
+        1 =>2,// - подтвержден
+        2 =>1,// - отменен
+        3 =>0,// - ожидает подтверждения
+        4 =>1,// - ожидает отмены
+        5 =>0,// - оплачен
     ];
 
     $users=array();
