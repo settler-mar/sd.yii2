@@ -239,6 +239,7 @@
 
      {% if products|length > 0 %}
        <div class="catalog-stores_list shops margin">
+         {% set store = current_store %}
          {% for product in products %}
            {% include 'parts/product.twig' %}
          {% endfor %}
