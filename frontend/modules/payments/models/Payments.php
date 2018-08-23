@@ -477,6 +477,9 @@ class Payments extends \yii\db\ActiveRecord
     $newRecord = false;
     $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
     $email = isset($options['email']) && $options['email'] === false ? false : true;
+
+    if($payment['currency']=="RUR")$payment['currency']="RUB";
+
     if (strpos($payment['subid'], '_') !== false && !isset($payment['sub_id2'])) {
         $subIds = explode('_', $payment['subid']);
         $payment['subid'] = $subIds[0];

@@ -3,6 +3,8 @@
 namespace console\controllers;
 
 
+use frontend\modules\actions\models\ActionsActions;
+use frontend\modules\payments\models\Payments;
 use yii\console\Controller;
 use yii\helpers\Console;
 use Yii;
@@ -13,20 +15,156 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CouponsToCategories;
 use JBZoo\Image\Image;
+use frontend\modules\users\models\Users;
 
 class SellactionController extends Controller
 {
-  private $cpa;
+  private $cpa_id =-1;
   private $debug = false;
   private $categories;
   private $categoriesConfigFile;
+
+  private $stores = array();
+  private $users = array();
+
+
+  public function init()
+  {
+    $cpa = Cpa::findOne(['name' => 'Sellaction']);
+    if (!$cpa) {
+      ddd('CPA Advertise not found');
+    }
+
+    $this->cpa_id = $cpa->id;
+  }
+
+
+  private function getStore($adm_id)
+  {
+
+    if (!isset($this->stores[$adm_id])) {
+      $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $adm_id]);
+      if ($cpaLink) {
+        $this->stores[$adm_id] = $cpaLink->store;
+      } else {
+        $this->stores[$adm_id] = false;
+      }
+    }
+    return $this->stores[$adm_id];
+  }
+
+  /**
+   * @param $user_id
+   * @return mixed
+   *
+   * Получаем данные пользователя
+   */
+  private function getUserData($user_id)
+  {
+    if (!isset($this->users[$user_id])) {
+      $user = Users::findOne(['uid' => $user_id]);
+      if ($user) {
+        $this->users[$user_id] = $user;
+      } else {
+        $this->users[$user_id] = false;
+      }
+    }
+    return $this->users[$user_id];
+  }
 
   /**
    * Получение платежей
    */
   public function actionPayments()
   {
-    //
+
+    $sellaction = new Sellaction();
+
+    $inserted = 0;
+    $updated = 0;
+    $paymentsCount = 0;
+
+    $pay_status = [
+        'wait' => 0, //проверил 100% ожидание
+
+    ];
+
+    $users=array();
+    $page=0;
+    $page_cnt=0;
+    while ($page==0 || $page<$page_cnt){
+      $page++;
+      $payments = $sellaction->lostOrders($page);
+      $page_cnt=$payments['_meta']['pageCount'];
+
+      foreach ($payments['data'] as $payment){
+        //d($payment);
+
+        $store = $this->getStore($payment['campaign_id']);
+        $user = $this->getUserData($payment['sub_id1']);
+
+        if (!$store || !$user) {
+          continue;
+        }
+
+        $status = $payment['status_string'];
+        $status = isset($pay_status[$status]) ? $pay_status[$status] : 0;
+
+        $paymentsCount++;
+        $payment_sd = [
+            'cpa_id' => $this->cpa_id,
+            'affiliate_id' => $payment['campaign_id'],
+            'subid' => $user->uid,
+            'action_id' => $payment['id'],
+            'status' => $status,
+            'ip' => $payment['ip'],
+            'currency' => $payment['currency'],//Валюта платежа
+            'cart' => $payment['buy_sum'],  //Сумма заказа в валюте
+            'payment' => $payment['profit'],  //Наш кешбек в валюте магазина
+            'click_date' => $payment['click_date'].' '.$payment['click_time'],
+            'action_date' => $payment['click_date'].' '.$payment['click_time'],
+            'status_updated' => $payment['date'].' '.$payment['time'],
+            'closing_date' => "",
+            'order_id' => (String)$payment["order_id"],
+            "tariff_id" => $payment['tariff_id'],
+        ];
+
+        $paymentStatus = Payments::makeOrUpdate(
+            $payment_sd,
+            $store,
+            $user,
+            $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+            ['notify' => true, 'email' => true]
+        );
+
+        if ($paymentStatus['save_status']) {
+          if ($paymentStatus['new_record']) {
+            $inserted++;
+          } else {
+            $updated++;
+          }
+        }
+
+        if (!in_array($user->uid, $users)) {
+          $users[] = $user->uid;
+        }
+      }
+    }
+
+    echo 'Payments ' . $paymentsCount . "\n";
+    echo 'Inserted ' . $inserted . "\n";
+    echo 'Updated ' . $updated . "\n";
+    //делаем пересчет бланса пользователей
+    if (count($users) > 0) {
+      Yii::$app->balanceCalc->setNotWork(false);
+      Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+
+      try {
+        ActionsActions::observeActions($users);
+      } catch (\Exception $e) {
+        d('Error applying actions ' . $e->getMessage());
+      }
+    }
   }
 
   public function actionTest()
@@ -150,7 +288,7 @@ class SellactionController extends Controller
             $db_store->logo == $logo ||
             !$db_store->logo ||
             strpos($db_store->logo, 'cw1-') !== false ||
-            strpos($db_store->logo, 'cw'.$this->cpa->id.'-') !== false ||
+            strpos($db_store->logo, 'cw'.$this->cpa_id.'-') !== false ||
             strpos($db_store->logo, 'cw_') !== false
             )) {
           $test_logo = true;
@@ -224,7 +362,7 @@ class SellactionController extends Controller
       //если нет в базе CPA ЛИНК то создаем ее
       if (!$cpa_id) {
         $cpa_link = new CpaLink();
-        $cpa_link->cpa_id = $this->cpa->id;
+        $cpa_link->cpa_id = $this->cpa_id;
         $cpa_link->stores_id = $store_id;
         $cpa_link->affiliate_id = $affiliate_id;
         $cpa_link->affiliate_link = $store['default_link'];
