@@ -255,7 +255,7 @@ class Stores extends \yii\db\ActiveRecord
   {
     return $this->hasMany(Products::className(), ['store_id' => 'uid'])
         ->limit(4)
-        ->orderBy('buy_count desc')
+        ->orderBy('last_price desc')
         ->where(['and',
             ['is not', 'url', null],
             ['>', 'url', ''],
