@@ -21,7 +21,8 @@ class SdUrlSlash implements UrlRuleInterface
       $url_test=str_replace($request->get("query"),"",$url_test);
     }
     //Для админки допускаем в адресе пробелы
-    if(!Yii::$app->user->isGuest && strpos($request->pathInfo,"admin/")===0){
+    if(!Yii::$app->user->isGuest &&
+        (strpos($request->pathInfo,"admin/")===0 || strpos($request->pathInfo,"admin-categories/")===0)){
       //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
       $url_test=str_replace(" ",'',$url_test);
 
