@@ -38,6 +38,7 @@ return [
   ],
   'doublertrade' => [
     'affiliateId' => 3044873,
+    'organizationId' => 2166104,
     'reportKey' => '7b07b59a606f6349e64c100aff74d413',
     'tokenProducts' => 'F37CF4D9328741C32097539AA4E02D346BE0BEB6',
     'tokenVouchers' => '761C55597D6FFEA524A4AAFFE7E6D93A4F3DBD55',

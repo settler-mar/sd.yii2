@@ -9,6 +9,9 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\Coupons;
+use frontend\modules\users\models\Users;
+use frontend\modules\payments\models\Payments;
+use frontend\modules\actions\models\ActionsActions;
 use JBZoo\Image\Image;
 use common\models\Doubletrade;
 
@@ -17,8 +20,13 @@ class DoublertradeController extends Controller
     private $cpa;
     private $stores;
     private $affiliate_list;
+    private $records;
     private $inserted;
+    private $updated;
     private $insertedCpaLink;
+    private $users;
+    private $failsNotStore;
+    private $failsNotUser;
 
     public function beforeAction($action)
     {
@@ -165,9 +173,97 @@ class DoublertradeController extends Controller
 
     public function actionOrders()
     {
+        $pay_status = [
+            //пока со всем этим непонятно
+            "Auto-approve" => 2,
+        ];
+        $cpa = Cpa::find()->where(['name' => 'Doublertrade'])->one();
+        if (!$cpa) {
+            echo 'Cpa type Doublertrade not found';
+            return;
+        }
+        $this->cpa = $cpa;
+
         $service = new DoubleTrade();
 
-        ddd($service->conversions());
+        $conversions = $service->conversions();
+        if (isset($conversions['matrix']['rows']['row'])) {
+            foreach ($conversions['matrix']['rows']['row'] as $row) {
+                $this->records++;
+                d($row);
+                $store = $this->getStore($row['programId']);
+                if (!$store) {
+                    $this->failsNotStore++;
+                    continue;
+                }
+                //$user = $this->getUser(8);
+                $user = $this->getUser((int) $row['epi1']);
+                if (!$user) {
+                    $this->failsNotUser++;
+                    continue;
+                }
+                $date = date('Y-m-d H:i:s', strtotime($row['timeOfEvent']));
+                $status = isset($pay_status[$row['pendingRule']]) ? $pay_status[$row['pendingRule']] : 0;
+                $id = substr(str_replace('_', '', $row['orderNR']), -9);
+                $payment = [
+                    'cpa_id' => $this->cpa->id,
+                    'affiliate_id' => $row['programId'],
+                    'subid' => $user->uid,
+                    'action_id' => $id,
+                    'status' => $status,
+                    'ip' => null,
+                    'currency' => $store->currency,//Валюта платежа
+                    'cart' => $row['orderValue'],  //Сумма заказа в валюте
+                    'payment' => $row['affiliateCommission'],  //комиссия в валюте магазина
+                    'click_date' => $date,
+                    'action_date' =>  $date,
+                    'status_updated' => $date,
+                    'closing_date' => $row['validon'],
+                    'order_id' => (String)$row['orderNR'],
+                    "tariff_id" => null,
+                ];
+                $paymentStatus = Payments::makeOrUpdate(
+                    $payment,
+                    $store,
+                    $user,
+                    $user->referrer_id ? $this->getUser($user->referrer_id) : null,
+                    ['notify' => true, 'email' => true]
+                );
+
+                if ($paymentStatus['save_status']) {
+                    if ($paymentStatus['new_record']) {
+                        $this->inserted++;
+                    } else {
+                        $this->updated++;
+                    }
+                } else {
+                    d($paymentStatus['payment']->errors);
+                }
+
+            }
+            //делаем пересчет бланса пользователей
+            if (count($this->users) > 0) {
+                $users = array_keys($this->users);
+                Yii::$app->balanceCalc->setNotWork(false);
+                Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+
+                try {
+                    ActionsActions::observeActions($users);
+                } catch (\Exception $e) {
+                    d('Error applying actions ' . $e->getMessage());
+                }
+            }
+        }
+        echo 'Payments ' . $this->records . "\n";
+        echo 'Inserted ' . $this->inserted . "\n";
+        echo 'Updated ' . $this->updated . "\n";
+        if ($this->failsNotStore) {
+            echo 'Stores not found ' . $this->failsNotStore . "\n";
+        }
+        if ($this->failsNotUser) {
+            echo 'Users not found ' . $this->failsNotUser . "\n";
+        }
+
     }
 
     private function writeStore($store)
@@ -396,6 +492,16 @@ class DoublertradeController extends Controller
         }
         return $this->stores[$affiliateId];
     }
+
+    private function getUser($userId)
+    {
+        if (!isset($this->users[$userId])) {
+            $user = Users::findOne(['uid' => $userId]);
+            $this->users[$userId] = $user ? $user : false;
+        }
+        return $this->users[$userId];
+    }
+
 
 
 
