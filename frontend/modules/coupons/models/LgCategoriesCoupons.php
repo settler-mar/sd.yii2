@@ -37,7 +37,7 @@ class LgCategoriesCoupons extends \yii\db\ActiveRecord
   {
     return [
         [['category_id', 'language'], 'required'],
-        [['name'], 'required', 'enableClientValidation' => false],
+        [['name'], 'required'],
         [['language', 'name'], 'trim'],
         [['category_id'], 'integer'],
         [['short_description', 'description', 'short_description_offline'], 'string'],
