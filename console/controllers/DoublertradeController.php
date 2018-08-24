@@ -55,10 +55,10 @@ class DoublertradeController extends Controller
         if (isset($offers['matrix']['rows']['row'])) {
             foreach ($offers['matrix']['rows']['row'] as $store) {
                 $cashback =  is_array($store['programTariffAmount']) ? '' : ($store['programTariffAmount'] . (string) ($store['isPercentage'] == 'yes' ? '%' : ''));
-                if (!isset($this->stores[$store['AdvertiserWebsite']])) {
+                if (!isset($this->stores[$store['AdvertiserWebsite']]) && $store['status'] == "Accepted") {
                     $this->stores[$store['AdvertiserWebsite']] = $store;
                 }
-                if ($cashback != "") {
+                if ($cashback != "" && isset($this->stores[$store['AdvertiserWebsite']])) {
                     $this->stores[$store['AdvertiserWebsite']]['cashbacks'][] = [
                         'display' => $cashback,
                         'amount' => $store['programTariffAmount']
@@ -76,8 +76,8 @@ class DoublertradeController extends Controller
             WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
             Yii::$app->db->createCommand($sql)->execute();
         }
-        echo 'Stores '.count($offers['matrix']['rows']['row'])."\n";
-        echo 'Stores Unique '.count($this->stores)."\n";
+        //echo 'Stores '.count($offers['matrix']['rows']['row'])."\n";
+        echo 'Stores '.count($this->stores)."\n";
         echo 'Inserted '.$this->inserted."\n";
         echo 'InsertedCpaLink '.$this->insertedCpaLink."\n";
 
