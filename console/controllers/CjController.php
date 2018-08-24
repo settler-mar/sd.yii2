@@ -11,6 +11,9 @@ use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CouponsToCategories;
+use frontend\modules\users\models\Users;
+use frontend\modules\payments\models\Payments;
+use frontend\modules\actions\models\ActionsActions;
 
 class CjController extends Controller
 {
@@ -21,7 +24,10 @@ class CjController extends Controller
     private $trackingServer = 'https://www.qksrv.net';
     private $records;
     private $fails;
+    private $failsNotStore;
+    private $failsNotUser;
     private $inserted;
+    private $updated;
     private $cpaLinkInserted;
     private $cpaLinkFails;
     private $affiliateList = [];
@@ -30,6 +36,7 @@ class CjController extends Controller
     private $categoriesConfigFile;
     private $categories = [];
     private $config;
+    private $users;
 
 
     public function actionStores()
@@ -89,9 +96,14 @@ class CjController extends Controller
 
     public function actionPayments()
     {
+        $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
+        if (!$this->cpa) {
+            echo "Cpa Cj.com not found";
+            return;
+        }
+
         $cj = new Cj();
         $response = $cj->getPayments();
-        d($response);
         $count = isset($response['commissions']['@attributes']['total-matched']) ?
             $response['commissions']['@attributes']['total-matched'] : false;
 
@@ -106,11 +118,110 @@ class CjController extends Controller
             }
         }
 
+        echo 'Payments ' . $this->records . "\n";
+        echo 'Inserted ' . $this->inserted . "\n";
+        echo 'Updated ' . $this->updated . "\n";
+        if ($this->failsNotStore) {
+            echo 'Stores not found ' . $this->failsNotStore . "\n";
+        }
+        if ($this->failsNotUser) {
+            echo 'Users not found ' . $this->failsNotUser . "\n";
+        }
+        //делаем пересчет бланса пользователей
+        if (count($this->users) > 0) {
+            $users = array_keys($this->users);
+            Yii::$app->balanceCalc->setNotWork(false);
+            Yii::$app->balanceCalc->todo($users, 'cash,bonus');
+
+            try {
+                ActionsActions::observeActions($users);
+            } catch (\Exception $e) {
+                d('Error applying actions ' . $e->getMessage());
+            }
+        }
     }
 
     private function writePayment($commission)
     {
-        d($commission);
+        $this->records++;
+        $pay_status = [
+            //пока со всем этим непонятно
+            'new' => 2,
+            'extended' => 2,
+            'closed' => 2,
+            'locked' => 1,
+        ];
+        //d($commission);
+        /*      'action-status' => string (3) "new"
+                'action-type' => string (13) "advanced sale"
+                'aid' => string (8) "13378180"
+                'commission-id' => string (10) "2340790158"
+                'country' => string (2) "NO"
+                'event-date' => string (24) "2018-08-23T03:18:57-0700"
+                'locking-date' => string (10) "2018-09-10"
+                'order-id' => string (8) "53575420"
+                'original' => string (4) "true"
+                'original-action-id' => string (10) "2033406552"
+                'posting-date' => string (24) "2018-08-23T04:02:05-0700"
+                'website-id' => string (7) "8021356"
+                'action-tracker-id' => string (6) "377850"
+                'action-tracker-name' => string (21) "Banggood.com Purchase"
+                'cid' => string (7) "4498040"
+                'advertiser-name' => string (29) "Banggood CJ Affiliate Program"
+                'commission-amount' => string (4) "0.06"
+                'order-discount' => string (4) "0.00"
+                'sid' => string (1) "8"
+                'sale-amount' => string (4) "1.90"
+                'is-cross-device' => string (5) "false"*/
+        $store = $this->getStore($commission['cid']);
+        if (!$store) {
+            $this->failsNotStore++;
+            return;
+        }
+        $user = $this->getUser($commission['sid']);
+        if (!$user) {
+            $this->failsNotUser++;
+            return;
+        }
+        $status = isset($pay_status[$commission['action-status']]) ? $pay_status[$commission['action-status']] : 0;
+        $orderCommission = $commission['commission-amount'];
+        if ($store->route == 'booking-com' && !(float)$orderCommission) {
+            //для букинг пока так
+            $orderCommission = $commission['sale-amount'] * 0.04;
+            $status = 0;
+        }
+        $newPayment = [
+            'cpa_id' => $this->cpa->id,
+            'affiliate_id' => $commission['cid'],
+            'subid' => $user->uid,
+            'action_id' => $commission['original-action-id'],
+            'status' => $status,
+            'ip' => null,
+            'currency' => $store->currency,//Валюта платежа
+            'cart' => $commission['sale-amount'],  //Сумма заказа в валюте
+            'payment' => $orderCommission,  //комиссия в валюте магазина
+            'click_date' => date('Y-m-d H:i:s', strtotime($commission['event-date'])),
+            'action_date' =>  date('Y-m-d H:i:s', strtotime($commission['posting-date'])),
+            'status_updated' => date('Y-m-d H:i:s', strtotime($commission['posting-date'])),
+            'closing_date' => "",
+            'order_id' => (String)$commission["order-id"],
+            "tariff_id" => null,
+        ];
+        $paymentStatus = Payments::makeOrUpdate(
+            $newPayment,
+            $store,
+            $user,
+            $user->referrer_id ? $this->getUser($user->referrer_id) : null,
+            ['notify' => true, 'email' => true]
+        );
+
+        if ($paymentStatus['save_status']) {
+            if ($paymentStatus['new_record']) {
+                $this->inserted++;
+            } else {
+                $this->updated++;
+            }
+        }
     }
 
     private function writeStore($store)
@@ -331,6 +442,15 @@ class CjController extends Controller
         return $this->stores[$affiliateId];
     }
 
+    private function getUser($userId)
+    {
+        if (!isset($this->users[$userId])) {
+            $user = Users::findOne(['uid' => $userId]);
+            $this->users[$userId] = $user ? $user : false;
+        }
+        return $this->users[$userId];
+    }
+
     private function getCouponCategory($category)
     {
         $result = false;
@@ -362,7 +482,5 @@ class CjController extends Controller
             file_put_contents($this->categoriesConfigFile, json_encode($this->categories));
         }
     }
-
-
 
 }
