@@ -95,6 +95,9 @@ class PaymentsController extends Controller
 
     echo "Payments from Sellaction\n";
     Yii::$app->runAction('sellaction/payments');
+
+    echo "Payments from Cj.com\n";
+    Yii::$app->runAction('cj/payments');
   }
 
   /**
