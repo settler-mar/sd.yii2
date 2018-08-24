@@ -53,4 +53,16 @@ class ActionsTariffs extends \yii\db\ActiveRecord
   {
     return $this->hasMany(TariffsRates::className(), ['id_tariff' => 'uid']);
   }
+
+  public function beforeDelete()
+  {
+    //tariff rates
+    $tariffsRates = TariffsRates::find()
+        ->where(['id_tariff' => $this->uid])
+        ->all();
+    foreach ($tariffsRates as $tariffsRate) {
+        $tariffsRate->delete();
+    }
+    return parent::beforeDelete();
+  }
 }

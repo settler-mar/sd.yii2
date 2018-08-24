@@ -131,6 +131,18 @@ class CpaLink extends \yii\db\ActiveRecord
       return $link;
   }
 
+  public function beforeDelete()
+  {
+      //actions
+      $storesActions = StoresActions::find()
+          ->where(['cpa_link_id' => $this->id])
+          ->all();
+      foreach ($storesActions as $storesAction) {
+          $storesAction->delete();
+      }
+      return parent::beforeDelete();
+  }
+
     /**
      * @param $link
      * @param $params

@@ -60,4 +60,17 @@ class StoresActions extends \yii\db\ActiveRecord
   {
     return $this->hasMany(ActionsTariffs::className(), ['id_action' => 'uid']);
   }
+
+
+  public function beforeDelete()
+{
+    //tariffs
+    $actionTariffs = ActionsTariffs::find()
+        ->where(['id_action' => $this->uid])
+        ->all();
+    foreach ($actionTariffs as $actionTariff) {
+        $actionTariff->delete();
+    }
+    return parent::beforeDelete();
+}
 }

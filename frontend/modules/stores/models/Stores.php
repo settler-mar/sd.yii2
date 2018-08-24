@@ -550,28 +550,93 @@ class Stores extends \yii\db\ActiveRecord
     $deletedPage->new_page = '/coupons';
     $deletedPage->save();
 
-    //удаляем купоны
-    $coupons = Coupons::find()
-      ->where(['store_id' => $this->uid])
-      ->all();
-    foreach ($coupons as $coupon){
-      $coupon->delete();
-    }
-
-    //удаляем отзывы
-    $reviews = Reviews::find()
-      ->where(['store_id' => $this->uid])
-      ->all();
-    foreach ($reviews as $review){
-      $review->delete();
-    }
+//    //удаляем купоны
+//    $coupons = Coupons::find()
+//      ->where(['store_id' => $this->uid])
+//      ->all();
+//    foreach ($coupons as $coupon){
+//      $coupon->delete();
+//    }
+//
+//    //удаляем отзывы
+//    $reviews = Reviews::find()
+//      ->where(['store_id' => $this->uid])
+//      ->all();
+//    foreach ($reviews as $review){
+//      $review->delete();
+//    }
 
     $path = $this->getStorePath();// Путь для сохранения
     $bp=Yii::$app->getBasePath().'/web'.$path;
     $this->removeImage($bp.$this->logo);   // удаляем старое изображение
 
     $this->clearPhotos(); //чистим фотки магазина
-    B2bStoresPoints::deleteAll(['store_id'=>$this->uid]);//удаление торговых точек
+    //B2bStoresPoints::deleteAll(['store_id'=>$this->uid]);//удаление торговых точек
+  }
+  public function beforeDelete()
+  {
+      //удаляем купоны
+      $coupons = Coupons::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($coupons as $coupon){
+          $coupon->delete();
+      }
+
+      //удаляем отзывы
+      $reviews = Reviews::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($reviews as $review){
+          $review->delete();
+      }
+
+      //cpa links
+      $cpaLinks = CpaLink::find()
+          ->where(['stores_id' => $this->uid])
+          ->all();
+      foreach ($cpaLinks as $cpaLink) {
+          $cpaLink->delete();
+      }
+
+      //переводы
+      $langs = LgStores::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($langs as $lang) {
+          $lang->delete();
+      }
+
+      //торговые точки
+      $storePoints = B2bStoresPoints::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($storePoints as $storePoint) {
+          $storePoint->delete();
+      }
+      //продукты
+      $products = Products::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($products as $product) {
+          $product->delete();
+      }
+      //шоп к категории
+      $categoriesStores = StoresToCategories::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($categoriesStores as $categoriesStore) {
+          $categoriesStore->delete();
+      }
+      //рейтинг
+      $storeRatings = StoreRatings::find()
+          ->where(['store_id' => $this->uid])
+          ->all();
+      foreach ($storeRatings as $storeRating) {
+          $storeRating->delete();
+      }
+
+      return parent::beforeDelete();
   }
 
   /**
