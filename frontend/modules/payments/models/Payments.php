@@ -148,6 +148,8 @@ class Payments extends \yii\db\ActiveRecord
         if ($store) {
           $this->affiliate_id = $store->cpaLink->id;//affiliate_id;
           $this->cpa_id = $store->cpaLink->cpa_id;
+          $this->cpa_link_id = $store->cpaLink->id;
+          $this->currency = $store->currency;
         } else {
           Yii::$app->session->addFlash('err', 'Ошибка при проведении платежа');
           return false;
