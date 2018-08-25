@@ -232,6 +232,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->reward = $reward;
         $this->cashback = $cashback;
         $this->shop_percent = $store->percent;
+        $this->ip = Yii::$app->request->userIP;
       } else {
         $this->updateRecalcJson();
         $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
