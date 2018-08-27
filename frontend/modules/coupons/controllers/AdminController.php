@@ -53,6 +53,15 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
             'startDataRanger' => Help::DateRangePicker($searchModel, 'date_start_range', ['hideInput'=>false]),
             'endDataRanger' => Help::DateRangePicker($searchModel, 'date_end_range', ['hideInput'=>false]),
+            'tableData' => [
+                'reviewsCount' => function ($model) {
+                    $count = count($model->reviews);
+                    if ($count) {
+                        return '<a href="/admin/reviews?ReviewsSearch%5Bcoupon_id%5D='.$model->uid.'" target="_blank">'.$count.'</a>';
+                    }
+                    return 0;
+                }
+            ]
         ]);
     }
 

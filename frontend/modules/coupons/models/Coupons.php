@@ -7,6 +7,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\reviews\models\Reviews;
 
 
 /**
@@ -29,6 +30,8 @@ use frontend\modules\cache\models\Cache;
 class Coupons extends \yii\db\ActiveRecord
 {
   const NEW_COUPONS_SUB_DAYS = 7;//Новые купоны дней до
+
+    public $reviews_count;
 
   /**
    * @inheritdoc
@@ -137,7 +140,9 @@ class Coupons extends \yii\db\ActiveRecord
         'visit' => 'Visit',
         'store_id' => 'Store ID',
         'storeName' => 'Магазин',
-        'language' => 'Язык'
+        'language' => 'Язык',
+        'reviews_count' => 'Отзывов'
+
     ];
   }
 
@@ -191,6 +196,14 @@ class Coupons extends \yii\db\ActiveRecord
   {
     return $this->hasMany(CategoriesCoupons::className(), ['uid' => 'category_id'])
         ->viaTable('cw_coupons_to_categories', ['coupon_id' => 'uid']);
+  }
+
+    /** отзывы
+     * @return yii\db\ActiveQuery
+     */
+  public function getReviews()
+  {
+      return $this->hasMany(Reviews::className(), ['coupon_id' => 'uid']);
   }
 
   /**

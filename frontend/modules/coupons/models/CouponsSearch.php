@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 //use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
 
 /**
  * CouponsSearch represents the model behind the search form about `frontend\modules\coupons\models\Coupons`.
@@ -24,7 +25,7 @@ class CouponsSearch extends Coupons
         return [
             [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
             [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
-              'date_start_range', 'date_end_range'], 'safe'],
+              'date_start_range', 'date_end_range', 'reviews_count'], 'safe'],
         ];
     }
 
@@ -46,8 +47,12 @@ class CouponsSearch extends Coupons
      */
     public function search($params)
     {
+        $queryReviews = Reviews::find()
+            ->select(['coupon_id as coupon_id', 'count(uid) as reviews_count'])
+            ->groupBy(['coupon_id']);
         $query = Coupons::find()
-            ->joinWith(['store']);
+            ->joinWith(['store'])
+            ->leftJoin(['cwur' => $queryReviews], 'cw_coupons.uid = cwur.coupon_id');
 
         // add conditions that should always apply here
 
@@ -63,6 +68,11 @@ class CouponsSearch extends Coupons
                 'storeName' => [
                    'asc' => [Stores::tableName() . '.name' => SORT_ASC],
                    'desc' => [Stores::tableName(). '.name' => SORT_DESC],
+                ],
+                'reviews_count' => [
+                    'asc' => ['cwur.reviews_count' => SORT_ASC],
+                    'desc' => ['cwur.reviews_count' => SORT_DESC],
+
                 ],
                 'description',
                 'visit',
@@ -113,6 +123,12 @@ class CouponsSearch extends Coupons
             $start_date=date('Y-m-d', strtotime($start_date));
             $end_date=date('Y-m-d', strtotime($end_date));
             $query->andFilterWhere(['between', 'date_end', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+        if (!empty($this->reviews_count)) {
+            $query->andFilterWhere(['cwur.reviews_count' => $this->reviews_count]);
+        }
+        if ($this->reviews_count === '0') {
+            $query->andWhere(['is', 'cwur.reviews_count', null]);
         }
 
         return $dataProvider;
