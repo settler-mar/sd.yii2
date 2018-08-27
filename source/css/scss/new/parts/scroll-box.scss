@@ -86,6 +86,12 @@ tr:nth-child(2n) {
       padding: 0 !important;
     }
 
+    &-coupon-comment {
+      width: calc(50% - 74px);
+      min-width: calc(50% - 74px);
+      max-width: calc(50% - 74px);
+    }
+
     &-hide {
       display: none;
     }

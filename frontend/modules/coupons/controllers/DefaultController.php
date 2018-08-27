@@ -401,6 +401,7 @@ class DefaultController extends SdController
     $contentData["limit"] = empty($limit) ? $this->defaultLimit : $limit;
     //$contentData["expired"] = $request->get('expired') ? 1 : null;
     $contentData["popular_stores"] = $this->popularStores();
+    $contentData["coupons_reviews"] = Reviews::byStoreId(0, $coupon['uid']);
 
     $paginateParams = [
         //'limit' => $this->defaultLimit == $limit ? null : $limit,

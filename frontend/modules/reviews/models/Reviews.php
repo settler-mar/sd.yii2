@@ -3,6 +3,7 @@
 namespace frontend\modules\reviews\models;
 
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\Coupons;
 use yii;
 use frontend\modules\users\models\Users;
 use frontend\modules\cache\models\Cache;
@@ -38,7 +39,7 @@ class Reviews extends \yii\db\ActiveRecord
     return [
       [['title', 'text', 'rating', 'user_id'], 'required'],
       [['title', 'text'], 'trim'],
-      [['user_id', 'rating', 'is_active', 'is_top', 'store_id'], 'integer'],
+      [['user_id', 'rating', 'is_active', 'is_top', 'store_id', 'coupon_id'], 'integer'],
       [['added'], 'safe'],
       [['title'], 'string', 'max' => 100, 'min' => 5],
       [['text'], 'string', 'min' => 20],
@@ -62,6 +63,7 @@ class Reviews extends \yii\db\ActiveRecord
       'is_active' => 'Активный',
       'is_top' => 'Топ отзыв',
       'store_id' => 'ID магазина',
+      'coupon_id' => 'ID купона',
       'answer' => 'Ответ администратора',
       'language' => 'Язык',
     ];
@@ -96,6 +98,11 @@ class Reviews extends \yii\db\ActiveRecord
     $user = Stores::findOne(['uid' => $this->store_id]);
     return $user;
   }
+  public function getCoupon()
+  {
+    $user = Coupons::findOne(['uid' => $this->coupon_id]);
+    return $user;
+  }
 
   /**
    * @return array
@@ -126,24 +133,30 @@ class Reviews extends \yii\db\ActiveRecord
 
   /**
    * @param $storeId
+   * @param $couponId
    * @return mixed
    */
 
-  public static function byStoreId($storeId)
+  public static function byStoreId($storeId, $couponId = 0)
   {
+    if ($couponId > 0) {
+        //отзывы для купона
+        $storeId = 0;
+    }
     $cache = Yii::$app->cache;
     $dependencyName = 'reviews_catalog';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
     $language =  Yii::$app->language;
-    $cacheName = 'reviews_by_store_' . $storeId. (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . $language);
+    $cacheName = 'reviews_by_store_' . $storeId . '_' . $couponId .
+        (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . $language);
 
-    $data = $cache->getOrSet($cacheName, function () use ($storeId, $language) {
+    $data = $cache->getOrSet($cacheName, function () use ($storeId, $couponId, $language) {
       $reviews = Reviews::find()
         ->from(Reviews::tableName() . ' r')
         ->select(['r.*', 'u.name', 'u.photo', 'u.email', 'u.show_balance','u.sum_confirmed','u.sum_pending'])
         ->innerJoin(Users::tableName() . ' u', 'r.user_id = u.uid')
-        ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId])
+        ->where(['r.is_active' => 1, 'u.is_active' => 1, 'r.store_id' => $storeId, 'r.coupon_id' => $couponId])
         ->orderBy('added DESC')
         ->asArray();
       if ($language) {

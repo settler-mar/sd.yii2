@@ -5,6 +5,7 @@ namespace frontend\modules\reviews\controllers;
 use Yii;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\reviews\models\ReviewsSearch;
+use frontend\modules\coupons\models\Coupons;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -74,7 +75,9 @@ class AdminController extends Controller
         },
         'store'=>function ($model, $key, $index, $column) {
           $store = $model->getStore();
-          if(!$store){
+          if($model->coupon_id > 0){
+            return 'Купон';
+          } elseif (!$store) {
             return 'Общий';
           }
           $out = '<a href="/admin/stores/update?id=';
@@ -85,6 +88,20 @@ class AdminController extends Controller
           $out .= $store->uid;
           $out .= ')</a>';
           return $out;
+        },
+        'coupon' => function($model) {
+            $coupon =  $model->coupon_id > 0 ? Coupons::findOne($model->coupon_id) : null;
+            $store = $coupon ? $coupon->store : false;
+            if (!$coupon) {
+                return 'Нет';
+            }
+            $out = $coupon ? '<a href="/admin/coupons/update?id='.$coupon->uid .
+                '" target=_blank rel="nofollow noopener">Купон '.
+                '('. $coupon->uid .')</a>' : '';
+            $out .= ($store ? ' для магазина<br><a href="/admin/stores/update?id='.$store->uid .
+                '" target=_blank rel="nofollow noopener">' . $store->name . ' ('. $store->uid .
+                ')</a>' : '');
+            return $out;
         },
         'is_active' => function ($model, $key, $index, $column) {
           return $model->is_active==0?"Скрыт":"Активен";

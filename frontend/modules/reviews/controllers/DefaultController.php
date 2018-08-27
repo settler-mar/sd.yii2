@@ -5,6 +5,7 @@ namespace frontend\modules\reviews\controllers;
 use frontend\components\SdController;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\Coupons;
 use frontend\modules\users\models\Users;
 use frontend\components\Pagination;
 use yii\web\NotFoundHttpException;
@@ -58,7 +59,7 @@ class DefaultController extends SdController
     return $this->render('index', $contentData);
   }
 
-  public function actionSend($shop = 0)
+  public function actionSend($shop = 0, $coupon = 0)
   {
     $request = \Yii::$app->request;
     if (!$request->isAjax) {
@@ -73,8 +74,10 @@ class DefaultController extends SdController
     }
 
     $model=new Reviews();
+    $model->coupon_id = $coupon;
     $data=[
-      'shop'=>$shop
+      'shop' => $shop,
+      'coupon' => $coupon
     ];
 
     if($shop>0){
@@ -86,11 +89,20 @@ class DefaultController extends SdController
       $model->store_id=$shop;
       $data['store_name']=$store->name;
     }
+    if($coupon>0){
+      $coupon=Coupons::findOne(['uid'=>$coupon]);
+      if(!$coupon){
+        $data['html']='<h2 class="title-no-line">'.\Yii::t('main', 'review_add_coupon_not_found').'</h2>';
+        return json_encode($data);
+      }
+      $model->store_id = 0;
+      $data['coupon_name'] = $coupon->name;
+    }
 
     if($request->isPost) {
       if ($model->load($request->post())) {
         if ($model->store_id == null) {
-          $review = Reviews::findOne(['store_id' => 0, 'user_id' => \Yii::$app->user->id]);
+          $review = Reviews::findOne(['store_id' => 0, 'coupon_id' => 0, 'user_id' => \Yii::$app->user->id]);
           if ($review) {
             $data['html']='<h2 class="title-no-line">'.\Yii::t('common','error').
                 '!</h2><p style="text-align: center;">'.\Yii::t(

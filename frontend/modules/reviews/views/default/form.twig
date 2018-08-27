@@ -1,6 +1,8 @@
 <div class="feedback popup-content">
     <h2 class="title-no-line">
-        {% if(shop==0) %}
+        {% if (coupon > 0) %}
+            {{ t('main', 'review_add_form_coupon_{coupon}', {'coupon':coupon_name})|raw }}
+        {% elseif (shop==0) %}
             {{ t('main', 'review_add_form_site')|raw }}
         {% else %}
             {{ t('main', 'review_add_form_{store}', {'store':store_name })|raw }}
@@ -24,6 +26,7 @@
 
 
         {{ form.field(model, 'uid', {'template': '{input}'}).hiddenInput().label(false) | raw }}
+        {{ form.field(model, 'coupon_id', {'template': '{input}'}).hiddenInput().label(false) | raw }}
 
         {{ form.field(model, 'title',{
             'template' :

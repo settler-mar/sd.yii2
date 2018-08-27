@@ -1,0 +1,43 @@
+{% set comments_max_height = true %}
+
+<div class="coupons-list margin">
+    <h2 class="comments_header">{{ t('main', 'reviews_about_coupon')|raw }}</h2>
+    {% if coupons_reviews|length == 0 %}
+      <div class="comments_no-comments align-center">
+        <p class="ntfnd">
+            {{ t('main', 'reviews_about_coupon_empty')|raw }}
+        </p>
+      </div>
+    {% endif %}
+
+    <div class="flex-wrap shop-comments">
+      {% set i=0 %}
+      {% set user_cashbak_hide=true %}
+      {% set coupon_comment = 1 %}
+      {% set comments_max_height = 0 %}
+      {% for review in coupons_reviews %}
+        {% set i=i+1 %}
+        {% set comment_hide = (2 < i) %}
+
+        {% include 'parts/comment.twig' %}
+      {% endfor %}
+      <div class="scroll_box-item scroll_box-item-emty"></div>
+      <div class="scroll_box-item scroll_box-item-emty"></div>
+      <div class="scroll_box-item scroll_box-item-emty"></div>
+    </div>
+
+    <div class="align-center">
+      {% if coupons_reviews|length>2 %}
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini show_all" data-cntrl-class="scroll_box-item-hide" href="#">{{ t('main','reviews_show_all')|raw }}</a>
+        <a class="btn btn-mini btn-round btn-transform btn-margin btn-margin_vertical-mini hide_all" data-cntrl-class="scroll_box-item-hide" href="#" style="display: none;">{{ t('main','reviews_hide_all')|raw }}</a>
+      {% endif %}
+
+      {% if user_id %}
+        <a href="{{ _href('#reviews/send?coupon='~coupon.uid)|raw }}" class="btn btn-mini btn-round btn-margin btn-margin_vertical-mini modals_open">{{ t('main', 'reviews_add')|raw }}</a>
+      {% else %}
+        <p>
+            {{ t('main', 'you_need_<a href="{register}" class="modals_open">register</a>or<a href="{login}" class="modals_open">login</a>to_add_review', {'register': _href('#registration'),'login': _href('#login')})|raw }}
+        </p>
+      {% endif %}
+    </div>
+</div>

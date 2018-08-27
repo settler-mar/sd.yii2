@@ -18,7 +18,7 @@ class ReviewsSearch extends Reviews
     public function rules()
     {
         return [
-            [['uid', 'user_id', 'rating', 'is_active', 'is_top', 'store_id'], 'integer'],
+            [['uid', 'user_id', 'rating', 'is_active', 'is_top', 'store_id', 'coupon_id'], 'integer'],
             [['title', 'text', 'added'], 'safe'],
         ];
     }
@@ -75,6 +75,7 @@ class ReviewsSearch extends Reviews
             'is_active' => $this->is_active,
             'is_top' => $this->is_top,
             'store_id' => $this->store_id,
+            'coupon_id' => $this->coupon_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

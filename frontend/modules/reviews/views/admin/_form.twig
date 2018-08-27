@@ -21,16 +21,42 @@
         <div class="form-group">
             <label class="control-label" for="userswithdraw-user_id">
                 Магазин:
+                {% if model.store_id %}
+                    <a
+                            href="/admin/stores/update?id={{ model.store_id }}"
+                            target=_blank
+                            rel="nofollow noopener"
+                    >
+                        {{ model.store.name }}
+                        ({{ model.store_id }})
+                    </a>
+                {% endif %}
+            </label>
+            {{ form.field(model, 'store_id').textInput().label(false)|raw }}
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="userswithdraw-user_id">
+                Купон:
+                {% if model.coupon_id %}
                 <a
-                        href="/admin/stores/update?id={{ model.store_id }}"
+                        href="/admin/coupons/update?id={{ model.coupon_id }}"
                         target=_blank
                         rel="nofollow noopener"
                 >
-                    {{ model.store.name }}
-                    ({{ model.store_id }})
+                    {{ model.coupon.name }}
+                    ({{ model.coupon.uid }})
+                </a> магазина
+                <a
+                        href="/admin/stores/update?id={{ model.coupon.store.uid }}"
+                        target=_blank
+                        rel="nofollow noopener"
+                >
+                    {{ model.coupon.store.name }}
+                    ({{ model.coupon.store.uid }})
                 </a>
+                {% endif %}
             </label>
-            {{ form.field(model, 'store_id').textInput().label(false)|raw }}
+            {{ form.field(model, 'coupon_id').textInput().label(false)|raw }}
         </div>
         {{ form.field(model, 'added').textInput()|raw }}
     </div>
