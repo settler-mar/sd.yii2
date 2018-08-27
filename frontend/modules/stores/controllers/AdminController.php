@@ -26,6 +26,8 @@ use frontend\modules\stores\models\LgStores;
 use frontend\modules\stores\models\StoreRatings;
 use frontend\modules\stores\models\FileImport;
 use yii\helpers\ArrayHelper;
+use common\components\Help;
+
 /**
  * AdminController implements the CRUD actions for Stores model.
  */
@@ -170,6 +172,7 @@ class AdminController extends Controller
       'stat_cpa' => $statCpa,
       'stat_cpa_active' => $statCpaActive,
       'cpa_types' => $cpaTypes,
+      'data_ranger' => Help::DateRangePicker($searchModel,'status_update_range',['hideInput'=>false]),
     ]);
   }
 

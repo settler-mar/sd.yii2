@@ -170,7 +170,15 @@ class SiteController extends SdController
           ->orderBy('cws.name')
           ->asArray()
           ->all();
-
+    $stores_updated = Stores::find()
+        ->where(['>=', 'status_updated', date('Y-m-d 00:00:00', time())])
+        ->select(['is_active','count(*) as count'])
+        ->groupBy(['is_active'])
+        ->asArray()
+        ->all();
+    $stores_news = Stores::find()
+        ->where(['>=', 'added', date('Y-m-d 00:00:00', time())])
+        ->count();
 
     return $this->render('admin', [
         'users_count' => $usersCount,
@@ -182,6 +190,8 @@ class SiteController extends SdController
         'visits_cpa' => $visitsCpa,
         'visits_watcheds' => $visitsWatcheds,
         'visits_sources' => $visitsSource,
+        'stores_updated' => $stores_updated,
+        'stores_news' => $stores_news,
     ]);
   }
 

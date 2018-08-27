@@ -18,14 +18,18 @@ class StoresSearch extends Stores
     public $active_cpa_type;
     public $shop_type;
     public $affiliate_id;
+    public $status_update_range;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity', 'cpa_id', 'affiliate_id'], 'integer'],
-            [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions', 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email', 'active_cpa_type'], 'safe'],
+            [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity',
+                'cpa_id', 'affiliate_id'], 'integer'],
+            [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions',
+                'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email',
+                'active_cpa_type', 'status_update_range'], 'safe'],
             ['shop_type', 'in', 'range' => ['online', 'offline', 'hubrid']]
         ];
     }
@@ -89,7 +93,7 @@ class StoresSearch extends Stores
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
-            'added' => $this->added,
+            //'added' => $this->added,
             'visit' => $this->visit,
             'hold_time' => $this->hold_time,
             'is_active' => $this->is_active,
@@ -150,6 +154,19 @@ class StoresSearch extends Stores
                     ['cwclall.affiliate_id' => $this->affiliate_id],
                     ['cwclall.id' => $this->affiliate_id]
                 ]);
+        }
+
+        if (!empty($this->status_update_range) && strpos($this->status_update_range, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->status_update_range);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'status_updated', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+        if (!empty($this->added) && strpos($this->added, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->added);
+            $start_date=date('Y-m-d', strtotime($start_date));
+            $end_date=date('Y-m-d', strtotime($end_date));
+            $query->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
         }
         return $dataProvider;
     }

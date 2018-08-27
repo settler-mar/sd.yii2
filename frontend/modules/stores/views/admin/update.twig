@@ -51,6 +51,9 @@
                                     <p><span>Магазин активен:</span><br>
                                         {{ form.field(model, 'is_active').dropDownList({'-1' : 'Выключен','0' : 'Приостановлен','1' : 'Активен'}).label(false)|raw }}
                                     </p>
+                                    <p><span>Изменение статуса:</span><br>
+                                        {{ form.field(model, 'status_updated').textInput({'maxlength':true, 'readonly':'true'}).label(false)|raw }}
+                                    </p>
 
                                 </div>
                                 <div class="edit_blk">

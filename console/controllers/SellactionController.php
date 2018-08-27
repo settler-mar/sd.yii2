@@ -23,6 +23,7 @@ class SellactionController extends Controller
   private $debug = false;
   private $categories;
   private $categoriesConfigFile;
+  private $cpa;
 
   private $stores = array();
   private $users = array();

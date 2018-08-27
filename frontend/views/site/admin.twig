@@ -67,7 +67,21 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-
+                    {% if stores_updated or stores_new %}
+                        <div class="col-md-12 stat-block-actions">
+                            Шопы - изменение статусов сегодня
+                            {% for updated in stores_updated %}
+                                {% set statuses = {'0':'Приостановлен', '1': 'Активен', '-1': 'Выключен'} %}
+                                <a class="btn btn-primary"
+                                   href="/admin/stores?StoresSearch%5Bis_active%5D={{ updated.is_active }}&StoresSearch%5Bstatus_update_range%5D={{ _php_date('Y-m-d') }}+-+{{ _php_date('Y-m-d H:i:s') }}">
+                                    {{ statuses[updated.is_active] }} ({{ updated.count }})
+                                </a>
+                            {% endfor %}
+                            {% if stores_news %}
+                                <a class="btn btn-primary" href="/admin/stores?StoresSearch%5Badded%5D={{ _php_date('Y-m-d') }}+-+{{ _php_date('Y-m-d H:i:s') }}">Новые ({{ stores_news }})</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
         {% endif %}
 

@@ -558,6 +558,7 @@ $functionsList = [
   'sin' => 'sin',
   'str_replace' => 'str_replace',
   'in_array' => 'in_array',
+  '_php_date' => 'date',
   'svg' => function ($name, $class = false) {
     return Help::svg($name, $class);
   },

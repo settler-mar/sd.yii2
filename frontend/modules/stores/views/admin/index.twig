@@ -87,8 +87,14 @@
                 </div>
                 <div class="col-md-6" style="padding-top:5px;">
                     <form action="/admin/stores/" method="get">
-                        <label for="stores-affiliate-id">Affiliate ID</label>
-                        <input id="stores-affiliate-id" type="text" class="form-control" style="display: inline-block; width: 50%" name="StoresSearch[affiliate_id]" value="{{ searchModel.affiliate_id }}">
+                        <div class="form-group">
+                            <label for="stores-affiliate-id">Affiliate ID</label>
+                            <input id="stores-affiliate-id" type="text" class="form-control" style="display: inline-block; max-width: 420px;" name="StoresSearch[affiliate_id]" value="{{ searchModel.affiliate_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="storessearch-status_update_range">Изменение статуса</label>
+                            {{ data_ranger|raw }}
+                        </div>
                         <button type="submit" class="btn btn-primary">Поиск</button>
                     </form>
                 </div>

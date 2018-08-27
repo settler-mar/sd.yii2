@@ -200,6 +200,7 @@ class Stores extends \yii\db\ActiveRecord
       'watch_transitions' => 'Отслеживать переходы',
       'desctiption_extend' => 'Дополнительное описание',
       'show_products' => 'Отображать страницу с продуктами',
+      'status_updated' => 'Изменение статуса',
     ];
   }
 
@@ -514,6 +515,16 @@ class Stores extends \yii\db\ActiveRecord
       $routeChange->route_type = RouteChange::ROUTE_TYPE_STORES;
       $routeChange->save();
     }
+
+    if (in_array('is_active', array_keys($this->dirtyAttributes))) {
+      if (isset($this->oldAttributes['added']) && strtotime($this->oldAttributes['added']) < time() - 60) {
+          //только старые записи
+        if (!isset($this->oldAttributes['is_active']) || $this->attributes['is_active'] != $this->oldAttributes['is_active']) {
+          $this->status_updated = date('Y-m-d H:i:s');
+        }
+      }
+    }
+
     return true;
   }
 
