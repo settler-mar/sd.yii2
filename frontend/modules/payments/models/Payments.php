@@ -173,7 +173,7 @@ class Payments extends \yii\db\ActiveRecord
 
         //прочее
         $this->action_id = time();
-        $this->order_id = !empty($this->order_id) ? $this->order_id : time();
+        $this->order_id = !empty($this->order_id) ? substr($this->order_id, 0, 50) : time();
         $this->additional_id = 0;
         $this->is_showed = 1;
         $this->status = 0;
@@ -560,7 +560,7 @@ class Payments extends \yii\db\ActiveRecord
       }
       $db_payment->loyalty_status = $user->loyalty_status;
       $db_payment->shop_percent = $store->percent;
-      $db_payment->order_id = $payment['order_id'];
+      $db_payment->order_id = substr($payment['order_id'], 0, 50);
       $db_payment->kurs = $userCashback['kurs'];
       $db_payment->action_code = $payment['tariff_id'];
       $db_payment->rate_id = $rate_id;
