@@ -2,6 +2,7 @@
 
 namespace frontend\modules\coupons\models;
 
+use frontend\modules\stores\models\Cpa;
 use yii;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CategoriesStores;
@@ -81,7 +82,7 @@ class Coupons extends \yii\db\ActiveRecord
   {
     return [
         [['coupon_id', 'name', 'date_start', 'date_end', 'exclusive', 'species'], 'required'],
-        [['coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
+        [['coupon_id', 'exclusive', 'species', 'visit', 'store_id','cpa_id'], 'integer'],
         [['description', 'promocode', 'language'], 'string'],
         [['description', 'promocode'], 'trim'],
         [['date_start', 'date_end'], 'safe'],
@@ -141,6 +142,7 @@ class Coupons extends \yii\db\ActiveRecord
         'store_id' => 'Store ID',
         'storeName' => 'Магазин',
         'language' => 'Язык',
+        'cpaName' => 'CPA',
         'reviews_count' => 'Отзывов'
 
     ];
@@ -474,6 +476,7 @@ class Coupons extends \yii\db\ActiveRecord
 
   public static function makeOrUpdate($coupon)
   {
+ddd($coupon);
       $where = empty($coupon['promoCode']) ? ['store_id' => $coupon['store_id'], 'coupon_id' => $coupon['coupon_id']] : [
           'or',
           ['store_id' => $coupon['store_id'], 'coupon_id' => $coupon['coupon_id']],
@@ -523,7 +526,17 @@ class Coupons extends \yii\db\ActiveRecord
 
   }
 
+  public function getCpaName()
+  {
+    $cpa=$this->cpa;
+    if(!$cpa)return "-";
+    return $cpa->name;
+  }
 
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+  }
     /** все возможные языки для запроса
      * @param $languages
      * @return array

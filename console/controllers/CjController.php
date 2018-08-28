@@ -38,15 +38,18 @@ class CjController extends Controller
     private $config;
     private $users;
 
+    public function init()
+    {
+      $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
+      if (!$this->cpa) {
+        echo "Cpa Cj.com not found";
+        return;
+      }
+    }
+
 
     public function actionStores()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
-        if (!$this->cpa) {
-            echo "Cpa Cj.com not found";
-            return;
-        }
-
         $this->getJoinedLinks([]);
 
         $cj = new Cj();
@@ -96,12 +99,6 @@ class CjController extends Controller
 
     public function actionPayments()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
-        if (!$this->cpa) {
-            echo "Cpa Cj.com not found";
-            return;
-        }
-
         $cj = new Cj();
         $response = $cj->getPayments();
         $count = isset($response['commissions']['@attributes']['total-matched']) ?
@@ -287,11 +284,6 @@ class CjController extends Controller
 
     public function actionCoupons()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
-        if (!$this->cpa) {
-            echo "Cpa Cj.com not found";
-            return;
-        }
         $this->config = Yii::$app->params['cj.com'];
         if (!$this->config || !isset($this->config['categories_json'])) {
             echo "Config cj.com not found or cj.com->categories_json  not found";
@@ -414,15 +406,16 @@ class CjController extends Controller
             return;
         }
         $newCoupon = [
-            'store_id' => $store->uid,
-            'coupon_id' => $coupon['link-id'],
-            'name' =>  $coupon['link-name'],
-            'description' => $coupon['description'],
-            'promocode' => $coupon['coupon-code'],
-            'date_start' => $coupon['promotion-start-date'],
-            'date_expire' => $coupon['promotion-end-date'],
-            'link' => $coupon['clickUrl'],
-            'categories' => [$this->getCouponCategory($coupon['category'])],
+          'store_id' => $store->uid,
+          'coupon_id' => $coupon['link-id'],
+          'name' =>  $coupon['link-name'],
+          'description' => $coupon['description'],
+          'promocode' => $coupon['coupon-code'],
+          'date_start' => $coupon['promotion-start-date'],
+          'date_expire' => $coupon['promotion-end-date'],
+          'link' => $coupon['clickUrl'],
+          'categories' => [$this->getCouponCategory($coupon['category'])],
+          'cpa_id'=>$this->cpa->id,
          ];
         $result = Coupons::makeOrUpdate($newCoupon);
         if ($result['new']) {

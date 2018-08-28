@@ -2,11 +2,13 @@
 
 namespace frontend\modules\coupons\controllers;
 
+use frontend\modules\stores\models\Cpa;
 use Yii;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\coupons\models\CouponsSearch;
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\coupons\models\CouponsToCategories;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -48,6 +50,12 @@ class AdminController extends Controller
         $searchModel = new CouponsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+      $cpaNames = ArrayHelper::map(Cpa::find()
+          ->select(['cw_cpa.id', 'cw_cpa.name'])
+          ->innerJoin('cw_coupons', 'cw_coupons.cpa_id = cw_cpa.id')
+          ->groupBy(['id', 'name'])
+          ->asArray()->all(), 'id', 'name');
+
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -61,7 +69,8 @@ class AdminController extends Controller
                     }
                     return 0;
                 }
-            ]
+            ],
+            'cpaNames'=>$cpaNames,
         ]);
     }
 

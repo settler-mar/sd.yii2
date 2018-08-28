@@ -159,6 +159,7 @@ class LinkconnectorController extends Controller
                 'link' => $coupon['TrackingURL'],
                 'date_start' => $coupon['Entry Date'],
                 'date_expire' => $coupon['Expires'] == 'Never' ? '' : $coupon['Expires'],
+                'cpa_id' => $this->cpa->id,
             ];
             $result = Coupons::makeOrUpdate($newCoupon);
             if ($result['new']) {

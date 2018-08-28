@@ -57,7 +57,7 @@ class AdmitadController extends Controller
   public function options($actionID)
   {
     if ($actionID == 'payments') {
-      return ['day','allProducts'];
+      return ['day', 'allProducts'];
     }
   }
 
@@ -132,8 +132,8 @@ class AdmitadController extends Controller
     }
 
 
-    if(is_numeric($params['status_updated_start']))$params['status_updated_start']=date('d.m.Y H:i:s',$params['status_updated_start']);
-    if(isset($params['status_updated_end']) && is_numeric($params['status_updated_end']))$params['status_updated_end']=date('d.m.Y H:i:s',$params['status_updated_end']);
+    if (is_numeric($params['status_updated_start'])) $params['status_updated_start'] = date('d.m.Y H:i:s', $params['status_updated_start']);
+    if (isset($params['status_updated_end']) && is_numeric($params['status_updated_end'])) $params['status_updated_end'] = date('d.m.Y H:i:s', $params['status_updated_end']);
 
     $pay_status = Admitad::getStatus();
 
@@ -163,8 +163,8 @@ class AdmitadController extends Controller
         $paymentsCount++;
         $payment['cpa_id'] = 1;//задаём жёстко
         $payment['affiliate_id'] = $payment['advcampaign_id'];//задаём жёстко
-        $cpa_link=CpaLink::findOne(['affiliate_id'=>$payment['advcampaign_id'],'cpa_id'=>1]);
-        $payment['cpa_link_id']=$cpa_link->id;
+        $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => 1]);
+        $payment['cpa_link_id'] = $cpa_link->id;
 
         $payment['status'] = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
@@ -183,10 +183,10 @@ class AdmitadController extends Controller
             $updated++;
           }
         }
-        if(($paymentStatus['save_status']  && $paymentStatus['new_record']) || $this->allProducts){
+        if (($paymentStatus['save_status'] && $paymentStatus['new_record']) || $this->allProducts) {
           if (isset($payment['positions'])) {
             foreach ($payment['positions'] as $position) {
-              $product_data=[
+              $product_data = [
                   'product_id' => $position['product_id'] ? $position['product_id'] : $position['id'],
                   'store_id' => $store->uid,
                   'price' => $position['amount'],
@@ -195,7 +195,7 @@ class AdmitadController extends Controller
                   'description' => '',
                   'image' => $position['product_image'],
                   'url' => $position['product_url'],
-                  'reward'=>$position['payment']*$store['percent']/100,
+                  'reward' => $position['payment'] * $store['percent'] / 100,
                   'click_date' => $payment['click_date'],
               ];
               Products::make($product_data);
@@ -251,9 +251,9 @@ class AdmitadController extends Controller
     return $res;
   }
 
-    /*
-     * получение шопов
-     */
+  /*
+   * получение шопов
+   */
   public function actionStore()
   {
     $params = [
@@ -325,8 +325,8 @@ class AdmitadController extends Controller
             $file = file_get_contents($store['image']);
             file_put_contents($path . $logo, $file);
 
-            if($db_store){
-              $db_store->logo=$logo;
+            if ($db_store) {
+              $db_store->logo = $logo;
             }
           }
         }
@@ -534,7 +534,7 @@ class AdmitadController extends Controller
         }
         $db_store->save();
 
-        if(count($db_store->errors)>0) {
+        if (count($db_store->errors) > 0) {
           d($db_store->name);
           d($db_store->route);
           d($db_store->errors);
@@ -587,9 +587,10 @@ class AdmitadController extends Controller
       foreach ($coupons['results'] as $coupon) {
         $store = $this->getStore($coupon['campaign']['id']);
         if (!$store) {
-          echo 'Store not found '.$coupon['campaign']['id']."\n";
+          echo 'Store not found ' . $coupon['campaign']['id'] . "\n";
           continue;
         }
+
         $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id'], 'store_id' => $store->uid]);
         //Проверяем что б купон был новый
         if (!$db_coupons) {
@@ -605,7 +606,7 @@ class AdmitadController extends Controller
           $db_coupons->species = 0;
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
           if (!$db_coupons->save()) {
-              continue;
+            continue;
           }
 
           //Добавляем категорию в массив
@@ -662,22 +663,22 @@ class AdmitadController extends Controller
 
   private function writeCategory($category)
   {
-      if (!$this->helpMy) {
-          $this->helpMy = new Help();
+    if (!$this->helpMy) {
+      $this->helpMy = new Help();
+    }
+    if (!isset($this->categories[$category['id']])) {
+      //в массиве ещё нет, смотрим в базе
+      if (!CategoriesCoupons::findOne(['uid' => $category['id']])) {
+        //в базе нет - пишем
+        $cat = new CategoriesCoupons();
+        $cat->uid = $category['id'];
+        $cat->name = $category['name'];
+        $cat->route = $this->helpMy->str2url($category['name']);
+        $cat->save();
       }
-      if (!isset($this->categories[$category['id']])) {
-          //в массиве ещё нет, смотрим в базе
-          if (!CategoriesCoupons::findOne(['uid' => $category['id']])) {
-              //в базе нет - пишем
-              $cat = new CategoriesCoupons();
-              $cat->uid = $category['id'];
-              $cat->name =  $category['name'];
-              $cat->route = $this->helpMy->str2url($category['name']);
-              $cat->save();
-          }
-          //пишем в массив
-          $this->categories[$category['id']] = $category['name'];
-      }
+      //пишем в массив
+      $this->categories[$category['id']] = $category['name'];
+    }
   }
 
 
