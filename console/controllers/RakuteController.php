@@ -106,11 +106,6 @@ class RakuteController extends Controller
      */
     public function actionCoupons()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
-        if (!$this->cpa) {
-            echo "Cpa Rakuten not found";
-            return;
-        }
         $perPage = 100;
         $pageNumber = 1;
         $pageCount = 1;
@@ -316,6 +311,8 @@ class RakuteController extends Controller
         $dbCoupon->date_end = $coupon['offerenddate'];
         $dbCoupon->species = 0;
         $dbCoupon->exclusive = 0;
+        $dbCoupon->cpa_id = $this->cpa->id;
+
         if (!$dbCoupon->save()) {
             d($dbCoupon->errors);
         }
