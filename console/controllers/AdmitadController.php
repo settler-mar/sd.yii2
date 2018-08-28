@@ -262,8 +262,6 @@ class AdmitadController extends Controller
         'connection_status' => 'active',
     ];
 
-    d(time());
-
     $action_type = array_flip(Yii::$app->params['dictionary']['action_type']);
     $stores = $this->getStores($params);
     while ($stores) {
