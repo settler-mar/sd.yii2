@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 //use frontend\modules\coupons\models\Coupons;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\reviews\models\Reviews;
 
 /**
@@ -53,7 +54,8 @@ class CouponsSearch extends Coupons
             ->groupBy(['coupon_id']);
         $query = Coupons::find()
             ->joinWith(['store'])
-            ->leftJoin(['cwur' => $queryReviews], 'cw_coupons.uid = cwur.coupon_id');
+            ->leftJoin(['cwur' => $queryReviews], 'cw_coupons.uid = cwur.coupon_id')
+            ->leftJoin(Cpa::tableName(). ' cwc', 'cwc.id = cw_coupons.cpa_id');
 
         // add conditions that should always apply here
 
@@ -73,7 +75,10 @@ class CouponsSearch extends Coupons
                 'reviews_count' => [
                     'asc' => ['cwur.reviews_count' => SORT_ASC],
                     'desc' => ['cwur.reviews_count' => SORT_DESC],
-
+                ],
+                'cpaName' => [
+                    'asc' => ['cwc.name' => SORT_ASC],
+                    'desc' => ['cwc.name' => SORT_DESC],
                 ],
                 'description',
                 'visit',
