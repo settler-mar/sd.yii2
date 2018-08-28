@@ -22,17 +22,18 @@ class RakuteController extends Controller
     private $categories = [];
     private $categoriesConfigFile;
     private $stores;
-    private $cpa;
+    private $cpa_id;
     private $siteId;
     private $cpaLinkInserted;
 
   public function init()
   {
-    $this->cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
-    if (!$this->cpa) {
+    $cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
+    if (!$cpa) {
       echo "Cpa Rakuten not found";
       return;
     }
+    $this->cpa_id = $cpa->id;
   }
 
     public function actionTest()
@@ -90,7 +91,7 @@ class RakuteController extends Controller
             }
             if (!empty($this->affiliateList)) {
                 $sql = "UPDATE `cw_stores` cws
-                    LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa->id . " AND cws.`active_cpa`=cpl.id
+                    LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
                     SET `is_active` = '0'
                     WHERE cpl.affiliate_id NOT in(" . implode(',', $this->affiliateList) . ") AND is_active!=-1";
                 \Yii::$app->db->createCommand($sql)->execute();
@@ -162,7 +163,7 @@ class RakuteController extends Controller
         //$status = $merchant['applicationStatus'] == 'Approved' ? 1 : 0;
         $status = 1;
 
-        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa->id, 'affiliate_id' => $affiliate_id]);
+        $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $affiliate_id]);
 
         $cpa_id = false;
 
@@ -242,7 +243,7 @@ class RakuteController extends Controller
         if (!$cpa_id) {
             echo "new cpalink\n";
             $cpa_link = new CpaLink();
-            $cpa_link->cpa_id = $this->cpa->id;
+            $cpa_link->cpa_id = $this->cpa_id;
             $cpa_link->stores_id = $store_id;
             $cpa_link->affiliate_id = $affiliate_id;
             $cpa_link->affiliate_link = $linkurl;
@@ -284,7 +285,8 @@ class RakuteController extends Controller
     /** запись купона
      * @param $coupon
      */
-    private function writeCoupon($coupon) {
+    private function writeCoupon($coupon)
+    {
         $route = Yii::$app->help->str2url($coupon['advertisername']);
         $store = $this->getStore($route);
         if (!$store) {
@@ -293,44 +295,31 @@ class RakuteController extends Controller
         }
         preg_match('/&offerid=(.*?)&/', $coupon['clickurl'], $matches);
         $couponId = str_replace('.', '', $matches[1]);
-
-        $dbCoupon =  Coupons::find()->where(['store_id' => $store->uid, 'coupon_id' => $couponId])->one();
-        if (!$dbCoupon) {
-            $this->inserted++;
-            $dbCoupon  = new Coupons();
-            $dbCoupon->store_id = $store->uid;
-            $dbCoupon->coupon_id = $couponId;
-            $dbCoupon->cpa_id = $this->cpa->id;
-        }
         $couponName = $coupon['offerdescription'];
         $couponNameArr = explode(':', $couponName);
-        $dbCoupon->name = $couponNameArr[0];
-        $dbCoupon->description = isset($couponNameArr[1]) ? $couponNameArr[1] : '';
-        $dbCoupon->goto_link = str_replace('&subid=0', '', $coupon['clickurl']);
-        $dbCoupon->date_start = $coupon['offerstartdate'];
-        $dbCoupon->date_end = $coupon['offerenddate'];
-        $dbCoupon->species = 0;
-        $dbCoupon->exclusive = 0;
-        $dbCoupon->cpa_id = $this->cpa->id;
+        $newCoupon = [
+            'store_id' => $store->uid,
+            'coupon_id' => $couponId,
+            'name' => $couponNameArr[0],
+            'description' => isset($couponNameArr[1]) ? $couponNameArr[1] : '',
+            'promocode' => '',
+            'date_start' => $coupon['offerstartdate'],
+            'date_expire' => $coupon['offerenddate'],
+            'link' => str_replace('&subid=0', '', $coupon['clickurl']),
+            'cpa_id' => $this->cpa_id,
+            'exclusive' => 0,
+            'categories' => isset($coupon['categories']) ?
+                $this->getCategories($coupon['categories']) : [],
+        ];
 
-        if (!$dbCoupon->save()) {
-            d($dbCoupon->errors);
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new'] && $result['status']) {
+            $this->inserted++;
         }
-        $categories = isset($coupon['categories']) ?
-            $this->getCategories($coupon['categories']) : [];
-        foreach ($categories as $category) {
-            $categoryCoupon = CouponsToCategories::find()
-                ->where(['coupon_id' => $dbCoupon->uid, 'category_id' => $category])
-                ->one();
-            if (!$categoryCoupon) {
-                $categoryCoupon = new CouponsToCategories();
-                $categoryCoupon->coupon_id = $dbCoupon->uid;
-                $categoryCoupon->category_id = $category;
-                if (!$categoryCoupon->save()) {
-                    d($categoryCoupon->errors);
-                }
-            }
+        if (!$result['status']) {
+            d($coupon, $result['coupon']->errors);
         }
+
     }
 
     /**
