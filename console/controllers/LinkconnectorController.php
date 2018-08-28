@@ -78,6 +78,8 @@ class LinkconnectorController extends Controller
                     $cashbacks = explode(',', $store['Events'])[0];
                     $cashback = str_replace('Sale ', '', $cashbacks);
                 }
+                $value = (float) preg_replace('/[^01234567890\.]/', '', $cashback) / 2;
+                $cashback = $value . (strpos($cashback, '%') > 0 ? '%' : '');
 
                 $storeDb = [
                     'logo' => (string)$store['BannerLogo'],

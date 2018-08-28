@@ -89,6 +89,7 @@ class Coupons extends \yii\db\ActiveRecord
         [['date_start', 'date_end'], 'safe'],
         [['name', 'goto_link', 'promocode'], 'string', 'max' => 255],
         [['coupon_id'], 'unique', 'targetAttribute' => ['store_id', 'coupon_id']],
+        [['cpa_id'], 'exist', 'targetClass' => Cpa::className(), 'targetAttribute' => ['cpa_id' => 'id']],
     ];
   }
 
@@ -482,8 +483,10 @@ class Coupons extends \yii\db\ActiveRecord
           ['store_id' => $coupon['store_id'], 'coupon_id' => $coupon['coupon_id']],
           ['name' => $coupon['name'], 'promocode' => $coupon['promocode']],
       ];
+      $result = ['new' => false];
       $dbCoupon = Coupons::find()->where($where)->one();
       if (!$dbCoupon) {
+          $result['new'] = true;
           $dbCoupon = new Coupons;
           $dbCoupon->store_id = $coupon['store_id'];
           $dbCoupon->coupon_id = $coupon['coupon_id'];
@@ -504,10 +507,7 @@ class Coupons extends \yii\db\ActiveRecord
       $dbCoupon->promocode = empty($coupon['promocode']) ? $dbCoupon->promocode : $coupon['promocode'];
       $dbCoupon->description = empty($coupon['description']) ? $dbCoupon->description : $coupon['description'];
 
-      $result = [
-          'coupon' => $dbCoupon,
-          'new' => $dbCoupon->isNewRecord,
-      ];
+      $result['coupon'] = $dbCoupon;
       $result['status'] = $dbCoupon->save();
 
       if ($result['status'] && !empty($coupon['categories'])) {

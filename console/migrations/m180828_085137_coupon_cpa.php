@@ -25,6 +25,9 @@ class m180828_085137_coupon_cpa extends Migration
       );
 
       $this->execute('UPDATE `cw_coupons` SET `cpa_id` = \'1\' WHERE date_end<\'2018-08-29 23:59:00\'');
+      $sql = 'UPDATE `cw_coupons` cwc INNER JOIN `cw_stores` cws ON cws.uid = cwc.store_id '.
+        ' LEFT JOIN `cw_cpa_link` cwcl ON cwcl.id = cws.active_cpa set cwc.cpa_id = cwcl.cpa_id WHERE NOT cwcl.cpa_id IS NULL';
+      $this->execute($sql);
     }
 
     /**
@@ -34,6 +37,8 @@ class m180828_085137_coupon_cpa extends Migration
     {
       $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
       $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
+      $this->dropForeignKey('fk_cw_cpa_coupon_cpa_id','cw_coupons');
 
       $this->dropColumn('cw_coupons', 'cpa_id');
     }

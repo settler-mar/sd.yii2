@@ -34,7 +34,7 @@ class DefaultController extends SdController
       ->select(['ur.*', "u.email", "u.name", "u.photo", "u.sex" , "u.sum_confirmed", "u.sum_pending", "u.show_balance", "u.currency"])
       ->from(Reviews::tableName() . ' ur')
       ->innerJoin(Users::tableName() . ' u', 'ur.user_id = u.uid')
-      ->where(["u.is_active" => 1, "ur.is_active" => 1, "ur.store_id" => 0, ])
+      ->where(["u.is_active" => 1, "ur.is_active" => 1, "ur.store_id" => 0, "coupon_id" => 0])
       ->orderBy('added DESC');
     if ($language) {
         $databaseObj->andWhere(['ur.language' => $language]);
@@ -75,6 +75,8 @@ class DefaultController extends SdController
 
     $model=new Reviews();
     $model->coupon_id = $coupon;
+    $model->store_id = $shop;
+
     $data=[
       'shop' => $shop,
       'coupon' => $coupon
@@ -86,7 +88,7 @@ class DefaultController extends SdController
         $data['html']='<h2 class="title-no-line">'.\Yii::t('main', 'review_add_shop_not_found').'</h2>';
         return json_encode($data);
       }
-      $model->store_id=$shop;
+      //$model->store_id=$shop;
       $data['store_name']=$store->name;
     }
     if($coupon>0){
@@ -95,13 +97,13 @@ class DefaultController extends SdController
         $data['html']='<h2 class="title-no-line">'.\Yii::t('main', 'review_add_coupon_not_found').'</h2>';
         return json_encode($data);
       }
-      $model->store_id = 0;
+      //$model->store_id = 0;
       $data['coupon_name'] = $coupon->name;
     }
 
     if($request->isPost) {
       if ($model->load($request->post())) {
-        if ($model->store_id == null) {
+        if ($model->store_id == 0) {
           $review = Reviews::findOne(['store_id' => 0, 'coupon_id' => 0, 'user_id' => \Yii::$app->user->id]);
           if ($review) {
             $data['html']='<h2 class="title-no-line">'.\Yii::t('common','error').

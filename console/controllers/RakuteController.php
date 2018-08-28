@@ -106,6 +106,11 @@ class RakuteController extends Controller
      */
     public function actionCoupons()
     {
+        $this->cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
+        if (!$this->cpa) {
+            echo "Cpa Rakuten not found";
+            return;
+        }
         $perPage = 100;
         $pageNumber = 1;
         $pageCount = 1;
@@ -300,6 +305,7 @@ class RakuteController extends Controller
             $dbCoupon  = new Coupons();
             $dbCoupon->store_id = $store->uid;
             $dbCoupon->coupon_id = $couponId;
+            $dbCoupon->cpa_id = $this->cpa->id;
         }
         $couponName = $coupon['offerdescription'];
         $couponNameArr = explode(':', $couponName);

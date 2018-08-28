@@ -104,69 +104,31 @@ class DoublertradeController extends Controller
 
     $vouchers = $service->vouchers();
     foreach ($vouchers as $voucher) {
-      /*  'id' => integer 427073
-          'programId' => integer 232132
-          'programName' => string (7) "Bonprix"
-          'code' => string (5) "98308"
-          'updateDate' => string (13) "1527597121291"
-          'publishStartDate' => string (13) "1530396000000"
-          'publishEndDate' => string (13) "1533074399999"
-          'startDate' => string (13) "1530396000000"
-          'endDate' => string (13) "1533074399999"
-          'title' => string UTF-8 (20) "Бесплатная доставка!"
-          'shortDescription' => string UTF-8 (20) "Бесплатная доставка!"
-          'description' => string UTF-8 (55) "Действует при минимальной сумме заказе от 1 495 рублей."
-          'voucherTypeId' => integer 1
-          'defaultTrackUri' => string (61) "http://clk.tradedoubler.com/click?a(3044873)p(232132)ttid(13)"
-          'siteSpecific' => bool FALSE
-          'discountAmount' => float 0
-          'isPercentage' => bool FALSE
-          'publisherInformation' => string (0) ""
-          'languageId' => string (2) "ru"
-          'exclusive' => bool FALSE
-          'currencyId' => string (3) "RUB"
-          'logoPath' => string (55) "http://hst.tradedoubler.com/file/232132/logo_200x70.jpg"
-      */
       $store = $this->getStore($voucher['programId']);
       if (!$store) {
         echo 'Store ' . $voucher['programId'] . ' not found' . "\n";
         continue;
       }
-      $coupon = Coupons::findOne(['coupon_id' => $voucher['id'], 'store_id' => $store->uid]);
-      //Проверяем что б купон был новый
-      if (!$coupon) {
-        $coupon = new Coupons();
-        $coupon->coupon_id = $voucher['id'];
-        $coupon->name = $voucher['title'];
-        $coupon->description = $voucher['shortDescription'] .
-            ($voucher['description'] == $voucher['shortDescription'] ? '' : ' ' . $voucher['description']);
-        $coupon->store_id = $store->uid;
-        $coupon->date_start = date('Y-m-d H:i:s', (int)$voucher['startDate'] / 1000);
-        $coupon->date_end = date('Y-m-d H:i:s', (int)$voucher['endDate'] / 1000);
-        $coupon->goto_link = $voucher['defaultTrackUri'];
-        $coupon->promocode = $voucher['code'] == 'НЕ ТРЕБУЕТСЯ' ? '' : $voucher['code'];
-        $coupon->species = 0;
-        $coupon->exclusive = (bool)$voucher['exclusive'] ? 1 : 0;
-        $coupon->cpa_id = $this->cpa->id;
-        if (!$coupon->save()) {
-          d($coupon->errors);
-        } else {
-          $inserted++;
+      $coupon = [
+          'store_id' => $store->uid,
+          'coupon_id' => $voucher['id'],
+          'name' => $voucher['title'],
+          'description' => $voucher['shortDescription'] .
+              ($voucher['description'] == $voucher['shortDescription'] ? '' : ' ' . $voucher['description']),
+          'promocode' => $voucher['code'] == 'НЕ ТРЕБУЕТСЯ' ? '' : $voucher['code'],
+          'date_start' => date('Y-m-d H:i:s', (int)$voucher['startDate'] / 1000),
+          'date_expire' => date('Y-m-d H:i:s', (int)$voucher['endDate'] / 1000),
+          'link' => $voucher['defaultTrackUri'],
+          'cpa_id' => $this->cpa->id,
+          'exclusive' => (bool)$voucher['exclusive'] ? 1 : 0,
+      ];
+        $result = Coupons::makeOrUpdate($coupon);
+        if ($result['new'] && $result['status']) {
+            $inserted++;
         }
-      } else {
-        $coupon->name = $voucher['title'];
-        $coupon->description = $voucher['shortDescription'] .
-            ($voucher['description'] == $voucher['shortDescription'] ? '' : ' ' . $voucher['description']);
-        $coupon->date_start = date('Y-m-d H:i:s', (int)$voucher['startDate'] / 1000);
-        $coupon->date_end = date('Y-m-d H:i:s', (int)$voucher['endDate'] / 1000);
-        $coupon->goto_link = $voucher['defaultTrackUri'];
-        $coupon->promocode = $voucher['code'] == 'НЕ ТРЕБУЕТСЯ' ? '' : $voucher['code'];
-        $coupon->exclusive = (bool)$voucher['exclusive'] ? 1 : 0;
-        $coupon->cpa_id = $this->cpa->id;
-        if (!$coupon->save()) {
-          d($coupon->errors);
+        if (!$result['status']) {
+            d($coupon, $result['coupon']->errors);
         }
-      }
     }
     echo "Coupons " . count($vouchers) . "\n";
     echo "Inserted " . $inserted . "\n";
