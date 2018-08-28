@@ -23,7 +23,6 @@ class SellactionController extends Controller
   private $debug = false;
   private $categories;
   private $categoriesConfigFile;
-  private $cpa;
 
   private $stores = array();
   private $users = array();
@@ -33,7 +32,7 @@ class SellactionController extends Controller
   {
     $cpa = Cpa::findOne(['name' => 'Sellaction']);
     if (!$cpa) {
-      ddd('CPA Advertise not found');
+      ddd('CPA Sellaction not found');
     }
 
     $this->cpa_id = $cpa->id;
@@ -193,13 +192,6 @@ class SellactionController extends Controller
     $countCoupons = 0;
     $insertedCoupons = 0;
 
-    $cpa = Cpa::find()->where(['name' => 'Sellaction'])->one();
-    if (!$cpa) {
-      echo 'Cpa type Cellaction not found';
-      return;
-    }
-    $this->cpa = $cpa;
-
     $sellaction = new Sellaction();
     $page = 1;
     $pageCount = 2;
@@ -234,7 +226,7 @@ class SellactionController extends Controller
 
     if (!empty($affiliate_list)) {
       $sql = "UPDATE `cw_stores` cws
-            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $cpa->id . " AND cws.`active_cpa`=cpl.id
+            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
             SET `is_active` = '0'
             WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
       Yii::$app->db->createCommand($sql)->execute();
@@ -261,12 +253,12 @@ class SellactionController extends Controller
       $affiliate_list[] = $affiliate_id;
       $store['currency'] = $store['currency'] == 'RUR' ? 'RUB' : $store['currency'];
 
-      $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa->id, 'affiliate_id' => $affiliate_id]);
+      $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $affiliate_id]);
 
       $route = Yii::$app->help->str2url($store['name']);
 
       $logo = explode(".", $store['logo']);
-      $logo = 'cw' . $this->cpa->id . '_' .$route.'.'. $logo[count($logo) - 1];
+      $logo = 'cw' . $this->cpa_id . '_' .$route.'.'. $logo[count($logo) - 1];
       $logo = str_replace('_','-',$logo);
 
       $cpa_id = false;
@@ -494,39 +486,25 @@ class SellactionController extends Controller
       $categories = $this->getCategories($store['categories']);
       foreach ($store['coupons'] as $coupon) {
         $count++;
-        $dbCoupon = Coupons::find()->where(['store_id' => $storeId, 'coupon_id' => $coupon ['id']])->one();
-        if (!$dbCoupon) {
+        $newCoupon = [
+          'store_id' => $storeId,
+          'coupon_id' => $coupon['id'],
+          'name' => $coupon['name'],
+          'description' => $coupon['description'],
+          'promocode' => '',
+          'date_start' => $coupon['date_start'],
+          'date_expire' => $coupon['date_end'],
+          'link' => $coupon['url'],
+          'cpa_id' => $this->cpa_id,
+          'exclusive' => 0,
+          'categories' => $categories,
+        ];
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new'] && $result['status']) {
           $inserted++;
-          $dbCoupon = new Coupons;
-          $dbCoupon->store_id = $storeId;
-          $dbCoupon->coupon_id = $coupon['id'];
         }
-        $dbCoupon->name = $coupon['name'];
-        $dbCoupon->description = $coupon['description'];
-        $dbCoupon->goto_link = $coupon['url'];
-        $dbCoupon->date_start = $coupon['date_start'];
-        $dbCoupon->date_end = $coupon['date_end'];
-        $dbCoupon->species = 0;
-        $dbCoupon->exclusive = 0;
-        $dbCoupon->cpa_id = $this->cpa_id;
-        //$coupon['type'] campaign discount  - нет полей куда и зачем положить
-        if (!$dbCoupon->save()) {
-          d($dbCoupon->errors);
-        }
-        //категории  к купону
-        //d($dbCoupon->uid, $store['categories'], $categories);
-        foreach ($categories as $category) {
-          $categoryCoupon = CouponsToCategories::find()
-              ->where(['coupon_id' => $dbCoupon->uid, 'category_id' => $category])
-              ->one();
-          if (!$categoryCoupon) {
-            $categoryCoupon = new CouponsToCategories();
-            $categoryCoupon->coupon_id = $dbCoupon->uid;
-            $categoryCoupon->category_id = $category;
-            if (!$categoryCoupon->save()) {
-              d($categoryCoupon->errors);
-            }
-          }
+        if (!$result['status']) {
+          d($coupon, $result['coupon']->errors);
         }
       }
     }
