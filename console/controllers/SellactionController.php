@@ -508,6 +508,7 @@ class SellactionController extends Controller
         $dbCoupon->date_end = $coupon['date_end'];
         $dbCoupon->species = 0;
         $dbCoupon->exclusive = 0;
+        $dbCoupon->cpa_id = $this->cpa_id;
         //$coupon['type'] campaign discount  - нет полей куда и зачем положить
         if (!$dbCoupon->save()) {
           d($dbCoupon->errors);

@@ -33,7 +33,11 @@ class CouponsController extends Controller
   {
     echo "Coupons Admitad\n";
     Yii::$app->runAction('admitad/coupons');
+
     echo "Coupons Tradedoubler\n";
     Yii::$app->runAction('doublertrade/vouchers');
+
+    echo "Coupons CJ\n";
+    Yii::$app->runAction('cj/coupons');
   }
 }

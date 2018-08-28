@@ -581,73 +581,40 @@ class AdmitadController extends Controller
       d($coupons['_meta']);
     }
 
+    $inserted=0;
+    $records=0;
+
     while (
     $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
+        $records++;
         $store = $this->getStore($coupon['campaign']['id']);
         if (!$store) {
           echo 'Store not found ' . $coupon['campaign']['id'] . "\n";
           continue;
         }
 
-        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id'], 'store_id' => $store->uid]);
-        //Проверяем что б купон был новый
-        if (!$db_coupons) {
-          $db_coupons = new Coupons();
-          $db_coupons->coupon_id = $coupon['id'];
-          $db_coupons->name = $coupon['name'];
-          $db_coupons->description = $coupon['description'];
-          $db_coupons->store_id = $store->uid;
-          $db_coupons->date_start = $coupon['date_start'];
-          $db_coupons->date_end = $coupon['date_end'];
-          $db_coupons->goto_link = $coupon['frameset_link'];
-          $db_coupons->promocode = $coupon['promocode'];
-          $db_coupons->species = 0;
-          $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          if (!$db_coupons->save()) {
-            continue;
-          }
+        $newCoupon = [
+            'store_id' => $store->uid,
+            'coupon_id' => $coupon['id'],
+            'name' => $coupon['name'],
+            'description' => $coupon['description'],
+            'promocode' => $coupon['promocode'],
+            'date_start' => $coupon['date_start'],
+            'date_expire' => $coupon['date_end'],
+            'link' => $coupon['frameset_link'],
+            'exclusive' => $coupon['exclusive'] == 'true' ? 1 : 0,
+            'categories' => $coupon['categories'],
+            'cpa_id' => 1,
+        ];
 
-          //Добавляем категорию в массив
-          foreach ($coupon['categories'] as $categorie) {
-            $this->writeCategory($categorie);
-
-            $coupon_cat = new CouponsToCategories();
-            $coupon_cat->coupon_id = $db_coupons->uid;
-            $coupon_cat->category_id = $categorie['id'];
-            $coupon_cat->save();
-          }
-        } else {
-          $db_coupons->name = $coupon['name'];
-          $db_coupons->description = $coupon['description'];
-          $db_coupons->date_end = $coupon['date_end'];
-          $db_coupons->goto_link = $coupon['frameset_link'];
-          $db_coupons->promocode = $coupon['promocode'];
-          $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          $db_coupons->save();
-          //обновление категорий
-          if ($this->updateCategoriesCoupons) {
-            $cats = [];
-            foreach ($coupon['categories'] as $categorie) {
-              $this->writeCategory($categorie);
-
-              $cats[] = $categorie['id'];
-              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $db_coupons->uid, 'category_id' => $categorie['id']]);
-              if (!$couponToCategory) {
-                $coupon_cat = new CouponsToCategories();
-                $coupon_cat->coupon_id = $db_coupons->uid;
-                $coupon_cat->category_id = $categorie['id'];
-                $coupon_cat->save();
-              }
-            }
-            if (empty($cats)) {
-              CouponsToCategories::deleteAll(['coupon_id' => $db_coupons->uid]);
-            } else {
-              CouponsToCategories::deleteAll(['and', ['coupon_id' => $db_coupons->uid], ['not in', 'category_id', $cats]]);
-            }
-          }
-
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new']) {
+          $inserted++;
+        }
+        if (!$result['status']) {
+          d($newCoupon, $result['coupon']->errors);
         }
       }
       $params['offset'] = $coupons['_meta']['limit'] + $coupons['_meta']['offset'];
@@ -657,6 +624,9 @@ class AdmitadController extends Controller
         break;
       }
     }
+
+    echo "Coupons " . $records . "\n";
+    echo "Inserted " . $inserted . "\n";
 
     Coupons::deleteAll(['store_id' => 0]);
   }
