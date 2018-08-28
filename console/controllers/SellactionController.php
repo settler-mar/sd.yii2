@@ -33,9 +33,8 @@ class SellactionController extends Controller
   {
     $cpa = Cpa::findOne(['name' => 'Sellaction']);
     if (!$cpa) {
-      ddd('CPA Sellactioin not found');
+      ddd('CPA Advertise not found');
     }
-    $this->cpa = $cpa;
 
     $this->cpa_id = $cpa->id;
   }
@@ -194,12 +193,12 @@ class SellactionController extends Controller
     $countCoupons = 0;
     $insertedCoupons = 0;
 
-//    $cpa = Cpa::find()->where(['name' => 'Sellaction'])->one();
-//    if (!$cpa) {
-//      echo 'Cpa type Cellaction not found';
-//      return;
-//    }
-//    $this->cpa = $cpa;
+    $cpa = Cpa::find()->where(['name' => 'Sellaction'])->one();
+    if (!$cpa) {
+      echo 'Cpa type Cellaction not found';
+      return;
+    }
+    $this->cpa = $cpa;
 
     $sellaction = new Sellaction();
     $page = 1;
@@ -509,7 +508,7 @@ class SellactionController extends Controller
         $dbCoupon->date_end = $coupon['date_end'];
         $dbCoupon->species = 0;
         $dbCoupon->exclusive = 0;
-        $dbCoupon->cpa_id = $this->cpa->id;
+        $dbCoupon->cpa_id = $this->cpa_id;
         //$coupon['type'] campaign discount  - нет полей куда и зачем положить
         if (!$dbCoupon->save()) {
           d($dbCoupon->errors);

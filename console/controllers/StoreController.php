@@ -10,10 +10,21 @@ class StoreController extends Controller
 
   public function actionIndex()
   {
+    d(time());
+
+    echo "\nStores Admitad\n";
     Yii::$app->runAction('admitad/store');
+
+    echo "\nStores doublertrade\n";
     Yii::$app->runAction('doublertrade/offers');
+
+    echo "\nStores CJ\n";
     Yii::$app->runAction('cj/stores');
+
+    echo "\nStores and Coupons sellaction\n";
     Yii::$app->runAction('sellaction/store');
+
+    echo "\nStores performancehorizon\n";
     Yii::$app->runAction('performancehorizon/stores');
   }
 }

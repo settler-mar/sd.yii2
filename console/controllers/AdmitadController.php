@@ -57,7 +57,7 @@ class AdmitadController extends Controller
   public function options($actionID)
   {
     if ($actionID == 'payments') {
-      return ['day','allProducts'];
+      return ['day', 'allProducts'];
     }
   }
 
@@ -132,8 +132,8 @@ class AdmitadController extends Controller
     }
 
 
-    if(is_numeric($params['status_updated_start']))$params['status_updated_start']=date('d.m.Y H:i:s',$params['status_updated_start']);
-    if(isset($params['status_updated_end']) && is_numeric($params['status_updated_end']))$params['status_updated_end']=date('d.m.Y H:i:s',$params['status_updated_end']);
+    if (is_numeric($params['status_updated_start'])) $params['status_updated_start'] = date('d.m.Y H:i:s', $params['status_updated_start']);
+    if (isset($params['status_updated_end']) && is_numeric($params['status_updated_end'])) $params['status_updated_end'] = date('d.m.Y H:i:s', $params['status_updated_end']);
 
     $pay_status = Admitad::getStatus();
 
@@ -163,8 +163,8 @@ class AdmitadController extends Controller
         $paymentsCount++;
         $payment['cpa_id'] = 1;//задаём жёстко
         $payment['affiliate_id'] = $payment['advcampaign_id'];//задаём жёстко
-        $cpa_link=CpaLink::findOne(['affiliate_id'=>$payment['advcampaign_id'],'cpa_id'=>1]);
-        $payment['cpa_link_id']=$cpa_link->id;
+        $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => 1]);
+        $payment['cpa_link_id'] = $cpa_link->id;
 
         $payment['status'] = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
 
@@ -183,10 +183,10 @@ class AdmitadController extends Controller
             $updated++;
           }
         }
-        if(($paymentStatus['save_status']  && $paymentStatus['new_record']) || $this->allProducts){
+        if (($paymentStatus['save_status'] && $paymentStatus['new_record']) || $this->allProducts) {
           if (isset($payment['positions'])) {
             foreach ($payment['positions'] as $position) {
-              $product_data=[
+              $product_data = [
                   'product_id' => $position['product_id'] ? $position['product_id'] : $position['id'],
                   'store_id' => $store->uid,
                   'price' => $position['amount'],
@@ -195,7 +195,7 @@ class AdmitadController extends Controller
                   'description' => '',
                   'image' => $position['product_image'],
                   'url' => $position['product_url'],
-                  'reward'=>$position['payment']*$store['percent']/100,
+                  'reward' => $position['payment'] * $store['percent'] / 100,
                   'click_date' => $payment['click_date'],
               ];
               Products::make($product_data);
@@ -251,9 +251,9 @@ class AdmitadController extends Controller
     return $res;
   }
 
-    /*
-     * получение шопов
-     */
+  /*
+   * получение шопов
+   */
   public function actionStore()
   {
     $params = [
@@ -261,8 +261,6 @@ class AdmitadController extends Controller
         'offset' => 0,
         'connection_status' => 'active',
     ];
-
-    d(time());
 
     $action_type = array_flip(Yii::$app->params['dictionary']['action_type']);
     $stores = $this->getStores($params);
@@ -325,8 +323,8 @@ class AdmitadController extends Controller
             $file = file_get_contents($store['image']);
             file_put_contents($path . $logo, $file);
 
-            if($db_store){
-              $db_store->logo=$logo;
+            if ($db_store) {
+              $db_store->logo = $logo;
             }
           }
         }
@@ -534,7 +532,7 @@ class AdmitadController extends Controller
         }
         $db_store->save();
 
-        if(count($db_store->errors)>0) {
+        if (count($db_store->errors) > 0) {
           d($db_store->name);
           d($db_store->route);
           d($db_store->errors);
@@ -581,73 +579,40 @@ class AdmitadController extends Controller
       d($coupons['_meta']);
     }
 
+    $inserted=0;
+    $records=0;
+
     while (
     $coupons
     ) {
       foreach ($coupons['results'] as $coupon) {
+        $records++;
         $store = $this->getStore($coupon['campaign']['id']);
         if (!$store) {
-          echo 'Store not found '.$coupon['campaign']['id']."\n";
+          echo 'Store not found ' . $coupon['campaign']['id'] . "\n";
           continue;
         }
-        $db_coupons = Coupons::findOne(['coupon_id' => $coupon['id'], 'store_id' => $store->uid]);
-        //Проверяем что б купон был новый
-        if (!$db_coupons) {
-          $db_coupons = new Coupons();
-          $db_coupons->coupon_id = $coupon['id'];
-          $db_coupons->name = $coupon['name'];
-          $db_coupons->description = $coupon['description'];
-          $db_coupons->store_id = $store->uid;
-          $db_coupons->date_start = $coupon['date_start'];
-          $db_coupons->date_end = $coupon['date_end'];
-          $db_coupons->goto_link = $coupon['frameset_link'];
-          $db_coupons->promocode = $coupon['promocode'];
-          $db_coupons->cpa_id = 1;
-          $db_coupons->species = 0;
-          $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          if (!$db_coupons->save()) {
-              continue;
-          }
 
-          //Добавляем категорию в массив
-          foreach ($coupon['categories'] as $categorie) {
-            $this->writeCategory($categorie);
+        $newCoupon = [
+            'store_id' => $store->uid,
+            'coupon_id' => $coupon['id'],
+            'name' => $coupon['name'],
+            'description' => $coupon['description'],
+            'promocode' => $coupon['promocode'],
+            'date_start' => $coupon['date_start'],
+            'date_expire' => $coupon['date_end'],
+            'link' => $coupon['frameset_link'],
+            'exclusive' => $coupon['exclusive'] == 'true' ? 1 : 0,
+            'categories' => $coupon['categories'],
+            'cpa_id' => 1,
+        ];
 
-            $coupon_cat = new CouponsToCategories();
-            $coupon_cat->coupon_id = $db_coupons->uid;
-            $coupon_cat->category_id = $categorie['id'];
-            $coupon_cat->save();
-          }
-        } else {
-          $db_coupons->name = $coupon['name'];
-          $db_coupons->description = $coupon['description'];
-          $db_coupons->date_end = $coupon['date_end'];
-          $db_coupons->goto_link = $coupon['frameset_link'];
-          $db_coupons->promocode = $coupon['promocode'];
-          $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
-          $db_coupons->save();
-          //обновление категорий
-          if ($this->updateCategoriesCoupons) {
-            $cats = [];
-            foreach ($coupon['categories'] as $categorie) {
-              $this->writeCategory($categorie);
-
-              $cats[] = $categorie['id'];
-              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $db_coupons->uid, 'category_id' => $categorie['id']]);
-              if (!$couponToCategory) {
-                $coupon_cat = new CouponsToCategories();
-                $coupon_cat->coupon_id = $db_coupons->uid;
-                $coupon_cat->category_id = $categorie['id'];
-                $coupon_cat->save();
-              }
-            }
-            if (empty($cats)) {
-              CouponsToCategories::deleteAll(['coupon_id' => $db_coupons->uid]);
-            } else {
-              CouponsToCategories::deleteAll(['and', ['coupon_id' => $db_coupons->uid], ['not in', 'category_id', $cats]]);
-            }
-          }
-
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new']) {
+          $inserted++;
+        }
+        if (!$result['status']) {
+          d($newCoupon, $result['coupon']->errors);
         }
       }
       $params['offset'] = $coupons['_meta']['limit'] + $coupons['_meta']['offset'];
@@ -658,27 +623,30 @@ class AdmitadController extends Controller
       }
     }
 
+    echo "Coupons " . $records . "\n";
+    echo "Inserted " . $inserted . "\n";
+
     Coupons::deleteAll(['store_id' => 0]);
   }
 
   private function writeCategory($category)
   {
-      if (!$this->helpMy) {
-          $this->helpMy = new Help();
+    if (!$this->helpMy) {
+      $this->helpMy = new Help();
+    }
+    if (!isset($this->categories[$category['id']])) {
+      //в массиве ещё нет, смотрим в базе
+      if (!CategoriesCoupons::findOne(['uid' => $category['id']])) {
+        //в базе нет - пишем
+        $cat = new CategoriesCoupons();
+        $cat->uid = $category['id'];
+        $cat->name = $category['name'];
+        $cat->route = $this->helpMy->str2url($category['name']);
+        $cat->save();
       }
-      if (!isset($this->categories[$category['id']])) {
-          //в массиве ещё нет, смотрим в базе
-          if (!CategoriesCoupons::findOne(['uid' => $category['id']])) {
-              //в базе нет - пишем
-              $cat = new CategoriesCoupons();
-              $cat->uid = $category['id'];
-              $cat->name =  $category['name'];
-              $cat->route = $this->helpMy->str2url($category['name']);
-              $cat->save();
-          }
-          //пишем в массив
-          $this->categories[$category['id']] = $category['name'];
-      }
+      //пишем в массив
+      $this->categories[$category['id']] = $category['name'];
+    }
   }
 
 

@@ -2,82 +2,89 @@
 {% set title = 'Купоны' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
-{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+  {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="coupons-index">
-    <div class="content-wrapper">
-        <section>
-            <div class="row">
-                <h1>{{ html.encode(this.title) }}</h1>
-                <div class="col-md-12">
-                    <p class="add-item">Купоны автоматически удаляются раз в час и добавляются раз в сутки.</p>
-                    <p class="add-item">Функция удаления отключенна для отображения купонов в архиве.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    {{ grid_view_widget({
-                        'dataProvider': dataProvider,
-                        'pager' : {
-                            'firstPageLabel' : true,
-                            'lastPageLabel' : true,
-                            'maxButtonCount':20
-                        },
+  <div class="content-wrapper">
+    <section>
+      <div class="row">
+        <h1>{{ html.encode(this.title) }}</h1>
+        <div class="col-md-12">
+          <p class="add-item">Купоны автоматически удаляются раз в час и добавляются раз в сутки.</p>
+          <p class="add-item">Функция удаления отключенна для отображения купонов в архиве.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          {{ grid_view_widget({
+            'dataProvider': dataProvider,
+            'pager' : {
+              'firstPageLabel' : true,
+              'lastPageLabel' : true,
+              'maxButtonCount':20
+            },
 
-                        'filterModel': searchModel,
-                        'columns': [
-                            {'class': '\\yii\\grid\\SerialColumn'},
+            'filterModel': searchModel,
+            'columns': [
+              {'class': '\\yii\\grid\\SerialColumn'},
 
-                            'uid',
-                            'coupon_id',
-                            'name',
-                            {
-                                'format':'raw',
-                                'attribute':'storeName',
-                            },
-                            'description:ntext',
-                            'visit',
-                            {
-                                'format':'raw',
-                                'attribute': 'reviews_count',
-                                'value': tableData.reviewsCount
-                            },
-                            {
-                                'format':'raw',
-                                'attribute':'date_start',
-                                'headerOptions' : {
-                                    'class' : 'col-md-2'
-                                },
-                                'filter': startDataRanger
-                            },
-                            {
-                                'format':'raw',
-                                'attribute':'date_end',
-                                'headerOptions' : {
-                                    'class' : 'col-md-2'
-                                },
-                                'filter': endDataRanger
-                            },
-                            {'class': '\\yii\\grid\\ActionColumn',
-                                'template' : '{update} {delete}',
-                            },
-                            ],
-                        })
-                    }}
-                </div>
-            </div>
-        </section>
-    </div>
-{#
-'date_end',
-'goto_link',
-'promocode',
-'exclusive',
-'species',
-'visit',
-'store_id'
-#}
+              'uid',
+              'coupon_id',
+              'name',
+              {
+                'format':'raw',
+                'attribute':'storeName',
+              },
+              'description:ntext',
+              'visit',
+              {
+                'format':'raw',
+                'attribute': 'reviews_count',
+                'value': tableData.reviewsCount,
+                'filter':{
+                  1:"Нет",
+                  2:"Есть",
+                }
+              },
+              {
+                'format':'raw',
+                'attribute':'date_start',
+                'headerOptions' : {
+                'class' : 'col-md-2'
+              },
+                'filter': startDataRanger
+              },
+              {
+                'format':'raw',
+                'attribute':'date_end',
+                'headerOptions' : {
+                'class' : 'col-md-2'
+              },
+                'filter': endDataRanger
+              },{
+                'format':'raw',
+                'attribute':'cpaName',
+                'filter': cpaNames
+              },
+              {'class': '\\yii\\grid\\ActionColumn',
+                'template' : '{update} {delete}',
+              },
+            ],
+          }) }}
+        </div>
+      </div>
+    </section>
+  </div>
+  {#
+  'date_end',
+  'goto_link',
+  'promocode',
+  'exclusive',
+  'species',
+  'visit',
+  'store_id'
+  #}
 </div>

@@ -2,9 +2,10 @@
 
 namespace frontend\modules\coupons\models;
 
+use common\components\Help;
+use frontend\modules\stores\models\Cpa;
 use yii;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use frontend\modules\cache\models\Cache;
@@ -82,13 +83,12 @@ class Coupons extends \yii\db\ActiveRecord
   {
     return [
         [['coupon_id', 'name', 'date_start', 'date_end', 'exclusive', 'species'], 'required'],
-        [['coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
+        [['coupon_id', 'exclusive', 'species', 'visit', 'store_id','cpa_id'], 'integer'],
         [['description', 'promocode', 'language'], 'string'],
         [['description', 'promocode'], 'trim'],
         [['date_start', 'date_end'], 'safe'],
         [['name', 'goto_link', 'promocode'], 'string', 'max' => 255],
         [['coupon_id'], 'unique', 'targetAttribute' => ['store_id', 'coupon_id']],
-        [['cpa_id'], 'exist', 'targetClass' => Cpa::className(), 'targetAttribute' => ['cpa_id' => 'id']],
     ];
   }
 
@@ -143,8 +143,8 @@ class Coupons extends \yii\db\ActiveRecord
         'store_id' => 'Store ID',
         'storeName' => 'Магазин',
         'language' => 'Язык',
-        'reviews_count' => 'Отзывов',
-        'cpa_id' => 'Cpa ID'
+        'cpaName' => 'CPA',
+        'reviews_count' => 'Отзывов'
 
     ];
   }
@@ -494,15 +494,15 @@ class Coupons extends \yii\db\ActiveRecord
           $dbCoupon->promocode = empty($coupon['promocode']) ? '' : (string) $coupon['promocode'];
           $dbCoupon->description = empty($coupon['description']) ? null : $coupon['description'];
           $dbCoupon->species = 0;
-          $dbCoupon->exclusive = 0;
+          $dbCoupon->exclusive = empty($coupon['exclusive']) ? 0 : $coupon['exclusive'];;
       }
       $dbCoupon->name = $coupon['name'];
+      $dbCoupon->cpa_id = $coupon['cpa_id'];
       $dbCoupon->goto_link = $coupon['link'];
       $dbCoupon->date_start = empty($coupon['date_start']) ? $dbCoupon->date_start : $coupon['date_start'];
       $dbCoupon->date_end = empty($coupon['date_expire']) ? $dbCoupon->date_end : $coupon['date_expire'];
       $dbCoupon->promocode = empty($coupon['promocode']) ? $dbCoupon->promocode : $coupon['promocode'];
       $dbCoupon->description = empty($coupon['description']) ? $dbCoupon->description : $coupon['description'];
-      $dbCoupon->cpa_id = $coupon['cpa_id'];
 
       $result = [
           'coupon' => $dbCoupon,
@@ -511,23 +511,54 @@ class Coupons extends \yii\db\ActiveRecord
       $result['status'] = $dbCoupon->save();
 
       if ($result['status'] && !empty($coupon['categories'])) {
-          //загрузка категорий
-          foreach ($coupon['categories'] as $category) {
-              $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $category]);
-              if (!$couponToCategory) {
-                  $couponToCategory = new CouponsToCategories();
-                  $couponToCategory->coupon_id = $dbCoupon->uid;
-                  $couponToCategory->category_id = $category;
-                  $couponToCategory->save();
+        if($coupon['cpa_id']==1){
+          //Добавляем категорию в массив
+          foreach ($coupon['categories'] as $categorie) {
+            //Проверяем наличии купона в категории
+            if(!CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $categorie['id']])) {
+              //если в базе нет категории - создаем
+              if (!CategoriesCoupons::findOne(['uid' => $categorie['id']])) {
+                $cat = new CategoriesCoupons();
+                $cat->uid = $categorie['id'];
+                $cat->name = $categorie['name'];
+                $cat->route = Help::str2url($categorie['name']);
+                $cat->save();
               }
+              $coupon_cat = new CouponsToCategories();
+              $coupon_cat->coupon_id = $dbCoupon->uid;
+              $coupon_cat->category_id = $categorie['id'];
+              $coupon_cat->save();
+            }
           }
+        }else {
+          //загрузка категорий для прочих CPA
+          foreach ($coupon['categories'] as $category) {
+            $couponToCategory = CouponsToCategories::findOne(['coupon_id' => $dbCoupon->uid, 'category_id' => $category]);
+            if (!$couponToCategory) {
+              $couponToCategory = new CouponsToCategories();
+              $couponToCategory->coupon_id = $dbCoupon->uid;
+              $couponToCategory->category_id = $category;
+              $couponToCategory->save();
+            }
+          }
+        }
 
       }
       return $result;
 
   }
 
+  public function getCpaName()
+  {
+    $cpa=$this->cpa;
+    if(!$cpa)return "-";
+    return $cpa->name;
+  }
 
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+  }
     /** все возможные языки для запроса
      * @param $languages
      * @return array

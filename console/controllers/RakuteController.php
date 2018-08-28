@@ -26,6 +26,15 @@ class RakuteController extends Controller
     private $siteId;
     private $cpaLinkInserted;
 
+  public function init()
+  {
+    $this->cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
+    if (!$this->cpa) {
+      echo "Cpa Rakuten not found";
+      return;
+    }
+  }
+
     public function actionTest()
     {
         $client = new Rakute();
@@ -43,11 +52,6 @@ class RakuteController extends Controller
      */
     public function actionStores()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Rakuten'])->one();
-        if (!$this->cpa) {
-            echo "Cpa Rakuten not found";
-            return;
-        }
         $config = Yii::$app->params['rakute'];
         $this->siteId = isset($config['site_id']) ? $config['site_id'] : false;
         if (!$this->siteId) {

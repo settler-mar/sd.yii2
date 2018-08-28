@@ -17,13 +17,14 @@ class CouponsSearch extends Coupons
     public $storeName;
     public $date_start_range;
     public $date_end_range;
+    public $cpaName;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id'], 'integer'],
+            [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id','cpaName'], 'integer'],
             [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
               'date_start_range', 'date_end_range', 'reviews_count'], 'safe'],
         ];
@@ -98,6 +99,7 @@ class CouponsSearch extends Coupons
             'exclusive' => $this->exclusive,
             'species' => $this->species,
             'visit' => $this->visit,
+            'cpa_id' => $this->cpaName,
         ]);
 
         $query->andFilterWhere(['like', static::tableName() . '.name', $this->name])
@@ -124,11 +126,13 @@ class CouponsSearch extends Coupons
             $end_date=date('Y-m-d', strtotime($end_date));
             $query->andFilterWhere(['between', 'date_end', $start_date.' 00:00:00', $end_date.' 23:59:59']);
         }
+
         if (!empty($this->reviews_count)) {
-            $query->andFilterWhere(['cwur.reviews_count' => $this->reviews_count]);
-        }
-        if ($this->reviews_count === '0') {
+          if ($this->reviews_count === '1') {
             $query->andWhere(['is', 'cwur.reviews_count', null]);
+          }else{
+            $query->andFilterWhere(['>','cwur.reviews_count',"0"]);
+          }
         }
 
         return $dataProvider;
