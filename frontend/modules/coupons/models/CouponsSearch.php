@@ -126,11 +126,13 @@ class CouponsSearch extends Coupons
             $end_date=date('Y-m-d', strtotime($end_date));
             $query->andFilterWhere(['between', 'date_end', $start_date.' 00:00:00', $end_date.' 23:59:59']);
         }
+
         if (!empty($this->reviews_count)) {
-            $query->andFilterWhere(['cwur.reviews_count' => $this->reviews_count]);
-        }
-        if ($this->reviews_count === '0') {
+          if ($this->reviews_count === '1') {
             $query->andWhere(['is', 'cwur.reviews_count', null]);
+          }else{
+            $query->andFilterWhere(['>','cwur.reviews_count',"0"]);
+          }
         }
 
         return $dataProvider;
