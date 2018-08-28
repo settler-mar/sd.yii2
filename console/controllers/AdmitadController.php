@@ -602,6 +602,7 @@ class AdmitadController extends Controller
           $db_coupons->date_end = $coupon['date_end'];
           $db_coupons->goto_link = $coupon['frameset_link'];
           $db_coupons->promocode = $coupon['promocode'];
+          $db_coupons->cpa_id = 1;
           $db_coupons->species = 0;
           $db_coupons->exclusive = $coupon['exclusive'] == 'true' ? 1 : 0;
           if (!$db_coupons->save()) {

@@ -4,6 +4,7 @@ namespace frontend\modules\coupons\models;
 
 use yii;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CategoriesStores;
 use frontend\modules\stores\models\StoresCategoriesToCouponsCategories;
 use frontend\modules\cache\models\Cache;
@@ -87,6 +88,7 @@ class Coupons extends \yii\db\ActiveRecord
         [['date_start', 'date_end'], 'safe'],
         [['name', 'goto_link', 'promocode'], 'string', 'max' => 255],
         [['coupon_id'], 'unique', 'targetAttribute' => ['store_id', 'coupon_id']],
+        [['cpa_id'], 'exist', 'targetClass' => Cpa::className(), 'targetAttribute' => ['cpa_id' => 'id']],
     ];
   }
 
@@ -141,7 +143,8 @@ class Coupons extends \yii\db\ActiveRecord
         'store_id' => 'Store ID',
         'storeName' => 'Магазин',
         'language' => 'Язык',
-        'reviews_count' => 'Отзывов'
+        'reviews_count' => 'Отзывов',
+        'cpa_id' => 'Cpa ID'
 
     ];
   }
@@ -499,6 +502,7 @@ class Coupons extends \yii\db\ActiveRecord
       $dbCoupon->date_end = empty($coupon['date_expire']) ? $dbCoupon->date_end : $coupon['date_expire'];
       $dbCoupon->promocode = empty($coupon['promocode']) ? $dbCoupon->promocode : $coupon['promocode'];
       $dbCoupon->description = empty($coupon['description']) ? $dbCoupon->description : $coupon['description'];
+      $dbCoupon->cpa_id = $coupon['cpa_id'];
 
       $result = [
           'coupon' => $dbCoupon,

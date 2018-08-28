@@ -148,6 +148,7 @@ class DoublertradeController extends Controller
                 $coupon->promocode = $voucher['code'] == 'НЕ ТРЕБУЕТСЯ' ? '' : $voucher['code'];
                 $coupon->species = 0;
                 $coupon->exclusive = (bool) $voucher['exclusive'] ? 1 : 0;
+                $coupon->cpa_id = $this->cpa->id;
                 if (!$coupon->save()) {
                     d($coupon->errors);
                 } else {

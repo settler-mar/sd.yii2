@@ -78,6 +78,8 @@ class LinkconnectorController extends Controller
                     $cashbacks = explode(',', $store['Events'])[0];
                     $cashback = str_replace('Sale ', '', $cashbacks);
                 }
+                $value = (float) preg_replace('/[^01234567890\.]/', '', $cashback) / 2;
+                $cashback = $value . (strpos($cashback, '%') > 0 ? '%' : '');
 
                 $storeDb = [
                     'logo' => (string)$store['BannerLogo'],
@@ -159,6 +161,7 @@ class LinkconnectorController extends Controller
                 'link' => $coupon['TrackingURL'],
                 'date_start' => $coupon['Entry Date'],
                 'date_expire' => $coupon['Expires'] == 'Never' ? '' : $coupon['Expires'],
+                'cpa_id' => $this->cpa->id,
             ];
             $result = Coupons::makeOrUpdate($newCoupon);
             if ($result['new']) {

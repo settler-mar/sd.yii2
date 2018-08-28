@@ -423,6 +423,7 @@ class CjController extends Controller
             'date_expire' => $coupon['promotion-end-date'],
             'link' => $coupon['clickUrl'],
             'categories' => [$this->getCouponCategory($coupon['category'])],
+            'cpa_id' => $this->cpa->id,
          ];
         $result = Coupons::makeOrUpdate($newCoupon);
         if ($result['new']) {
