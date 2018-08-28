@@ -89,6 +89,7 @@ class Coupons extends \yii\db\ActiveRecord
         [['date_start', 'date_end'], 'safe'],
         [['name', 'goto_link', 'promocode'], 'string', 'max' => 255],
         [['coupon_id'], 'unique', 'targetAttribute' => ['store_id', 'coupon_id']],
+        [['cpa_id'], 'exist', 'targetClass' => Cpa::className(), 'targetAttribute' => ['cpa_id' => 'id']],
     ];
   }
 
