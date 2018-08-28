@@ -26,5 +26,8 @@ class StoreController extends Controller
 
     echo "\nStores performancehorizon\n";
     Yii::$app->runAction('performancehorizon/stores');
+
+    echo "\nStores linkconnector\n";
+    Yii::$app->runAction('linkconnector/stores');
   }
 }

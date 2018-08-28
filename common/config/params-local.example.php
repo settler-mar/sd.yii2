@@ -65,6 +65,7 @@ return [
       'tokenXXX' => 'ca3689d3c04019b0ae96ef9e10d728b1e38ac68a490b9553',
     ],
   "linkconnector"=>[
+      "user_id"=>"144884",
       "user_api_key"=>"d2cd686e8b2a4761d8ccaffcd1c05115",
   ],
   'ebay' => [ //sandbox

@@ -39,5 +39,8 @@ class CouponsController extends Controller
 
     echo "Coupons CJ\n";
     Yii::$app->runAction('cj/coupons');
+
+    echo "Coupons linkconnector\n";
+    Yii::$app->runAction('linkconnector/coupons');
   }
 }
