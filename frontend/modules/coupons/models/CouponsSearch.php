@@ -98,7 +98,7 @@ class CouponsSearch extends Coupons
         // grid filtering conditions
         $query->andFilterWhere([
             static::tableName(). '.uid' => $this->uid,
-            'coupon_id' => $this->coupon_id,
+            'cw_coupons.coupon_id' => $this->coupon_id,
             'date_start' => $this->date_start,
             'date_end' => $this->date_end,
             'exclusive' => $this->exclusive,
