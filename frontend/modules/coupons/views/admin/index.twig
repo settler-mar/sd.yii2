@@ -12,9 +12,13 @@
     <section>
       <div class="row">
         <h1>{{ html.encode(this.title) }}</h1>
-        <div class="col-md-12">
+        <div class="col-md-6">
           <p class="add-item">Купоны автоматически удаляются раз в час и добавляются раз в сутки.</p>
           <p class="add-item">Функция удаления отключенна для отображения купонов в архиве.</p>
+        </div>
+        <div class="col-md-6">
+          <a class="btn btn-primary" href="/admin/coupons?CouponsSearch%5Bis_active%5D=1">Активные ({{ active_count }})</a>
+          <a class="btn btn-primary" href="/admin/coupons">Сбросить фильтр</a>
         </div>
       </div>
       <div class="row">

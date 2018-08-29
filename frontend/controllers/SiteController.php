@@ -179,7 +179,16 @@ class SiteController extends SdController
     $stores_news = Stores::find()
         ->where(['>=', 'added', date('Y-m-d 00:00:00', time())])
         ->count();
-
+    $coupons_active = Cpa::find()
+        ->from(Cpa::tableName(). ' cwc')
+        ->leftJoin(Coupons::tableName(). ' coupons', 'cwc.id = coupons.cpa_id')
+        ->select(['cwc.id', 'cwc.name', 'count(coupons.uid) as count'])
+        ->groupBy(['cwc.id', 'cwc.name'])
+        ->orderBy('cwc.name')
+        ->where(['>=', 'coupons.date_end', date('Y-m-d H:i:s')])
+        ->having(['>', 'count', 0])
+        ->asArray()
+        ->all();
     return $this->render('admin', [
         'users_count' => $usersCount,
         'users_today_count' => $usersToday,
@@ -192,6 +201,7 @@ class SiteController extends SdController
         'visits_sources' => $visitsSource,
         'stores_updated' => $stores_updated,
         'stores_news' => $stores_news,
+        'coupons_active' => $coupons_active,
     ]);
   }
 

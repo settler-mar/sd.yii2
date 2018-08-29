@@ -82,6 +82,12 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    <div class="col-md-12 stat-block-actions">
+                        Активные купоны
+                        {% for cpa in coupons_active %}
+                            <a class="btn btn-primary" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}&CouponsSearch%5Bis_active%5D=1">{{ cpa.name }} ({{ cpa.count }})</a>
+                        {% endfor %}
+                    </div>
                 </div>
         {% endif %}
 

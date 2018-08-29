@@ -73,6 +73,7 @@ class AdminController extends Controller
             }
         ],
         'cpaNames' => $cpaNames,
+        'active_count' => Coupons::find()->where(['>=', 'date_end', date('Y-m-d H:i:s')])->count(),
     ]);
   }
 
