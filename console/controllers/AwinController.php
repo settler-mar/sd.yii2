@@ -50,7 +50,7 @@ class AwinController extends Controller
                 $commissionRange = isset($storeDetails['commissionRange'][0]) ? $storeDetails['commissionRange'][0] : false;
                 $cashback = $commissionRange && isset($commissionRange['min']) && isset($commissionRange['max']) &&
                             $commissionRange['min'] != $commissionRange['max'] ? 'до ' : '';
-                $cashback .= ($commissionRange && isset($commissionRange['max']) ? $commissionRange['max'] : '');
+                $cashback .= ($commissionRange && isset($commissionRange['max']) ? (float) $commissionRange['max'] / 2 : '');
                 $cashback .= ($commissionRange && isset($commissionRange['type']) && $commissionRange['type'] == 'percentage' ?
                     '%' : '');
 
