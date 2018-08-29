@@ -1196,6 +1196,7 @@ class Stores extends \yii\db\ActiveRecord
           'new' => $new,
           'newCpa' => $newCpa,
           'resultCpa' => $resultCpa,
+          'store' => $db_store,
       ];
   }
 
