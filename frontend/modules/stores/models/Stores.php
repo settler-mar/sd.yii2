@@ -1130,8 +1130,9 @@ class Stores extends \yii\db\ActiveRecord
           $db_store->currency = $store['currency'];
           $db_store->percent = 50;
           $db_store->hold_time =  $store['hold_time'];
-          $db_store->displayed_cashback = $store['cashback'];
-          $db_store->is_active = $store['status'];
+          $db_store->displayed_cashback = isset($store['cashback'])? $store['cashback'] : '';
+          $db_store->is_active = isset($store['status']) ? $store['status'] : 1;
+          $db_store->alias = !empty($store['alias']) ? $store['alias'] : null;
           if ($db_store->save()) {
               $result = true;
           } else {
@@ -1182,10 +1183,13 @@ class Stores extends \yii\db\ActiveRecord
           // спа активная, обновляем поля - какие - можно потом добавить
           $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
           $db_store->displayed_cashback = isset($store['cashback']) ? $store['cashback'] : $db_store->displayed_cashback;
-          $db_store->is_active = $store['status'];
           $db_store->description = !empty($store['description']) ? $store['description'] : $db_store->description;
           $db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : $db_store->short_description;
           $db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : $db_store->conditions;
+          $db_store->alias = !empty($store['alias']) ? $store['alias'] : $db_store->alias;
+          if ($db_store->is_active != -1 && isset($store['status'])) {
+              $db_store->is_active = $store['status'];
+          }
 
       }
       if ($db_store->save()) {
@@ -1197,6 +1201,7 @@ class Stores extends \yii\db\ActiveRecord
           'newCpa' => $newCpa,
           'resultCpa' => $resultCpa,
           'store' => $db_store,
+          'cpa_link' => $cpa_link,
       ];
   }
 
