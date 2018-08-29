@@ -134,6 +134,13 @@ class RakuteController extends Controller
         echo 'Inserted '.$this->inserted."\n";
     }
 
+    public function actionPayments()
+    {
+        $client = new Rakute();
+        ddd($client->events());
+    }
+
+
 
     /**
      * запись шопа
