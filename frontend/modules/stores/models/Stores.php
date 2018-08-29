@@ -1052,7 +1052,7 @@ class Stores extends \yii\db\ActiveRecord
 
       $route = Yii::$app->help->str2url($url);
 
-      if ($store['logo'] != '') {
+      if (!empty($store['logo'])) {
           $logo = explode(".", $store['logo']);
           $logo = 'cw' . $store['cpa_id'] . '_' .$route.'.'. $logo[count($logo) - 1];
           $logo = str_replace('_', '-', $logo);
@@ -1095,7 +1095,7 @@ class Stores extends \yii\db\ActiveRecord
 
 
       //если лого то проверяем его наличие и размер и при нобходимости обновляем
-      if ($test_logo && $logo) {
+      if ($test_logo && $logo && !empty($store['logo'])) {
           //обрабатываем лого и если обновление то меняем имя
           if(self::saveLogo($logo, $store['logo'], $db_store ? $db_store->logo : false) && $db_store){
               $db_store->logo=$logo;
