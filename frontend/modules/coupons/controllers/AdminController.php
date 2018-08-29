@@ -67,6 +67,9 @@ class AdminController extends Controller
                 return '<a href="/admin/reviews?ReviewsSearch%5Bcoupon_id%5D=' . $model->uid . '" target="_blank">' . $count . '</a>';
               }
               return 0;
+            },
+            'name' => function($model) {
+                return '<a href="/coupons/' . $model->store->route.'/'. $model->uid . '" target="_blank">' . $model->name . '</a>';
             }
         ],
         'cpaNames' => $cpaNames,

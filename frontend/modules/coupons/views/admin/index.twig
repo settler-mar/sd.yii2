@@ -33,7 +33,11 @@
 
               'uid',
               'coupon_id',
-              'name',
+              {
+                 'format': 'raw',
+                  'attribute':'name',
+                  'value': tableData.name
+              },
               {
                 'format':'raw',
                 'attribute':'storeName',

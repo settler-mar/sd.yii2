@@ -103,7 +103,7 @@ class DefaultController extends SdController
 
     if($request->isPost) {
       if ($model->load($request->post())) {
-        if ($model->store_id == 0) {
+        if ($model->store_id == 0 && $model->coupon_id == 0) {
           $review = Reviews::findOne(['store_id' => 0, 'coupon_id' => 0, 'user_id' => \Yii::$app->user->id]);
           if ($review) {
             $data['html']='<h2 class="title-no-line">'.\Yii::t('common','error').
