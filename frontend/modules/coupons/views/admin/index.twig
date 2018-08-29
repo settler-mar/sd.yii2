@@ -17,8 +17,29 @@
           <p class="add-item">Функция удаления отключенна для отображения купонов в архиве.</p>
         </div>
         <div class="col-md-6">
-          <a class="btn btn-primary" href="/admin/coupons?CouponsSearch%5Bis_active%5D=1">Активные ({{ active_count }})</a>
-          <a class="btn btn-primary" href="/admin/coupons">Сбросить фильтр</a>
+          <div class="sum_information">
+            <div class="line">
+              <div class="name wide">
+                Все (активные)
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons">{{ total }}</a>
+                (<a class="" href="/admin/coupons?CouponsSearch%5Bis_active%5D=1">{{ active_count }}</a>)
+              </div>
+            </div>
+
+          {% for cpa in stat_cpa %}
+            <div class="line">
+              <div class="name wide">
+                  {{ cpa.name }}
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}">{{ cpa.count }}</a>
+                (<a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}&CouponsSearch%5Bis_active%5D=1">{{ cpa.active }}</a>)
+              </div>
+            </div>
+          {% endfor %}
+          </div>
         </div>
       </div>
       <div class="row">

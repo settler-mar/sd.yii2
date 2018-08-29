@@ -55,6 +55,31 @@ class AdminController extends Controller
         ->innerJoin('cw_coupons', 'cw_coupons.cpa_id = cw_cpa.id')
         ->groupBy(['id', 'name'])
         ->asArray()->all(), 'id', 'name');
+    $stat_cpa_all = Cpa::find()
+      ->from(Cpa::tableName(). ' cwc')
+      ->leftJoin(Coupons::tableName(). ' coupons', 'cwc.id = coupons.cpa_id')
+      ->select(['cwc.id', 'cwc.name', 'count(coupons.uid) as count'])
+      ->groupBy(['cwc.id', 'cwc.name'])
+      ->orderBy('cwc.name')
+      ->having(['>', 'count', 0])
+      ->asArray()
+      ->all();
+    foreach ($stat_cpa_all as $cpa) {
+          $stat_cpa[$cpa['id']] = $cpa;
+    }
+    $stat_cpa_active = Cpa::find()
+          ->from(Cpa::tableName(). ' cwc')
+          ->leftJoin(Coupons::tableName(). ' coupons', 'cwc.id = coupons.cpa_id ')
+          ->select(['cwc.id', 'cwc.name', 'count(coupons.uid) as count'])
+          ->groupBy(['cwc.id', 'cwc.name'])
+          ->where(['>=', 'coupons.date_end', date('Y-m-d H:i:s')])
+          ->having(['>', 'count', 0])
+          ->asArray()
+          ->all();
+    foreach ($stat_cpa_active as $cpa) {
+        $stat_cpa[$cpa['id']]['active'] = $cpa['count'];
+    }
+
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
@@ -74,6 +99,8 @@ class AdminController extends Controller
         ],
         'cpaNames' => $cpaNames,
         'active_count' => Coupons::find()->where(['>=', 'date_end', date('Y-m-d H:i:s')])->count(),
+        'stat_cpa' => $stat_cpa,
+        'total' => Coupons::find()->count(),
     ]);
   }
 
