@@ -39,6 +39,16 @@
               </div>
             </div>
           {% endfor %}
+          {% for lang, lang_count in stat_lang %}
+            <div class="line">
+              <div class="name wide">
+                  {% if loop.index == 1 %}Языки {% endif %}{{ lang }}
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons{{ _getFilterAdd({'languages': lang}, app.request.get, 'CouponsSearch') }}">{{ lang_count }}</a>
+              </div>
+            </div>
+          {% endfor %}
             <div class="line">
               <div class="name wide">
                 Сбросить фильтр

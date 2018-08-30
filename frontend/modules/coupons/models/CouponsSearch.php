@@ -20,6 +20,7 @@ class CouponsSearch extends Coupons
     public $date_end_range;
     public $cpaName;
     public $is_active;
+    public $languages;
     /**
      * @inheritdoc
      */
@@ -30,6 +31,7 @@ class CouponsSearch extends Coupons
             [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
               'date_start_range', 'date_end_range', 'reviews_count'], 'safe'],
             ['is_active', 'in', 'range' => [0, 1]],
+            ['languages', 'in', 'range' => array_keys(Yii::$app->params['coupons_languages_arrays'])],
         ];
     }
 
@@ -145,6 +147,9 @@ class CouponsSearch extends Coupons
             $query->andFilterWhere(['>', 'date_end', date('Y-m-d H:i:s')]);
         } elseif ($this->is_active === "0") {
             $query->andFilterWhere(['<=', 'date_end', date('Y-m-d H:i:s')]);
+        }
+        if (!empty($this->languages)) {
+            $query->andFilterWhere(['language' => Yii::$app->params['coupons_languages_arrays'][$this->languages]]);
         }
 
         return $dataProvider;

@@ -99,6 +99,11 @@ class AdminController extends Controller
     foreach ($stat_cpa_inactive as $cpa) {
         $stat_cpa[$cpa['id']]['inactive'] = $cpa['count'];
     }
+    $statLang = [];
+    foreach (Yii::$app->params['coupons_languages_arrays'] as $key => $languages) {
+        $statLangQuery = clone $dataProvider->query;
+        $statLang[$key] = $statLangQuery->andFilterWhere(['language' => $languages])->count();
+    }
 
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
@@ -123,6 +128,7 @@ class AdminController extends Controller
         'total_filtered' => $statQueryAll->count(),
         'stat_cpa' => $stat_cpa,
         'total' => Coupons::find()->count(),
+        'stat_lang' => $statLang,
     ]);
   }
 
