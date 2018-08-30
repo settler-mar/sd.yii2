@@ -20,11 +20,11 @@
           <div class="sum_information">
             <div class="line">
               <div class="name wide">
-                Все (активные)
+                Все (активные/просроченные)
               </div>
               <div class="value">
-                <a class="" href="/admin/coupons">{{ total }}</a>
-                (<a class="" href="/admin/coupons?CouponsSearch%5Bis_active%5D=1">{{ active_count }}</a>)
+                <a class="" href="/admin/coupons{{ _getFilterAdd({}, app.request.get, 'CouponsSearch') }}">{{ total_filtered }}</a>
+                (<a class="" href="/admin/coupons{{ _getFilterAdd({'is_active': 1}, app.request.get, 'CouponsSearch') }}">{{ active_filtered }}</a>/<a class="" href="/admin/coupons{{ _getFilterAdd({'is_active': 0}, app.request.get, 'CouponsSearch') }}">{{ inactive_filtered }}</a>)
               </div>
             </div>
 
@@ -34,11 +34,19 @@
                   {{ cpa.name }}
               </div>
               <div class="value">
-                <a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}">{{ cpa.count }}</a>
-                (<a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}&CouponsSearch%5Bis_active%5D=1">{{ cpa.active }}</a>)
+                <a class="" href="/admin/coupons{{ _getFilterAdd({'cpaName': cpa.id}, app.request.get, 'CouponsSearch') }}">{{ cpa.count }}</a>
+                (<a class="" href="/admin/coupons{{ _getFilterAdd({'cpaName': cpa.id, 'is_active': 1}, app.request.get, 'CouponsSearch') }}">{{ cpa.active }}</a>{% if cpa.inactive %}/<a class="" href="/admin/coupons{{ _getFilterAdd({'cpaName': cpa.id, 'is_active': 0}, app.request.get, 'CouponsSearch') }}">{{ cpa.inactive }}</a>{% endif %})
               </div>
             </div>
           {% endfor %}
+            <div class="line">
+              <div class="name wide">
+                Сбросить фильтр
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons">{{ total }}</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

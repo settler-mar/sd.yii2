@@ -22,10 +22,10 @@
                 <div class="col-md-12">
                     {% set cpa_items = '' %}
                     {% for watch in watches %}
-                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?'~_getFilterAdd({'store_id':watch.uid}, app.request.get, 'TransitionsSearch')~'">'~watch.name~' ('~watch.count~')</a>' %}
+                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions'~_getFilterAdd({'store_id':watch.uid}, app.request.get, 'TransitionsSearch')~'">'~watch.name~' ('~watch.count~')</a>' %}
                     {% endfor %}
                     {% for cpa in stat %}
-                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions?'~_getFilterAdd({'cpa_name':cpa.id}, app.request.get, 'TransitionsSearch')~'">'~cpa.name~' ('~cpa.count~')</a>' %}
+                        {% set cpa_items = cpa_items~' <a class="btn btn-primary" href="/admin/transitions'~_getFilterAdd({'cpa_name':cpa.id}, app.request.get, 'TransitionsSearch')~'">'~cpa.name~' ('~cpa.count~')</a>' %}
                     {% endfor %}
                     {{ grid_view_widget({
                         'dataProvider': dataProvider,

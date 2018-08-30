@@ -623,7 +623,8 @@ $functionsList = [
       foreach ($get[$arrayName] as $key => $item) {
           $res[$arrayName.'['.$key.']'] = $item;
       }
-      return http_build_query($res);
+      $query = http_build_query($res);
+      return $query ? '?'.$query : '';
   },
     '_action' => function($id, $options =[]){
     return Action::widget(['id' => $id, 'options' => $options]);

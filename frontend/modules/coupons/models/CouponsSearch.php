@@ -29,7 +29,7 @@ class CouponsSearch extends Coupons
             [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id','cpaName'], 'integer'],
             [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
               'date_start_range', 'date_end_range', 'reviews_count'], 'safe'],
-            ['is_active', 'in', 'range' => [1]],
+            ['is_active', 'in', 'range' => [0, 1]],
         ];
     }
 
@@ -110,7 +110,7 @@ class CouponsSearch extends Coupons
         ]);
 
         $query->andFilterWhere(['like', static::tableName() . '.name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', static::tableName() . '.description', $this->description])
             ->andFilterWhere(['like', 'goto_link', $this->goto_link])
             ->andFilterWhere(['like', 'promocode', $this->promocode]);
         if ($this->storeName) {
@@ -142,7 +142,9 @@ class CouponsSearch extends Coupons
           }
         }
         if (!empty($this->is_active)) {
-            $query->andFilterWhere(['>=', 'date_end', date('Y-m-d H:i:s')]);
+            $query->andFilterWhere(['>', 'date_end', date('Y-m-d H:i:s')]);
+        } elseif ($this->is_active === "0") {
+            $query->andFilterWhere(['<=', 'date_end', date('Y-m-d H:i:s')]);
         }
 
         return $dataProvider;
