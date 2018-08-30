@@ -29,5 +29,13 @@ class StoreController extends Controller
 
     echo "\nStores linkconnector\n";
     Yii::$app->runAction('linkconnector/stores');
+
+    echo "\nStores shareasale\n";
+    Yii::$app->runAction('shareasale/store');
+
+    echo "\nStores rakute\n";
+    Yii::$app->runAction('rakute/stores');
+
+
   }
 }
