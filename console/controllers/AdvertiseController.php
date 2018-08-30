@@ -98,7 +98,7 @@ class AdvertiseController extends Controller
         if (isset($offer['actions'])) {
             foreach ($offer['actions'] as $action) {
                 if ((float) $action['payment_size'] > $cashback) {
-                    $cashback = $action['payment_size'];
+                    $cashback = (float) $action['payment_size'];
                     $percent = $action['percentage'];
                     $currency = $action['currency_id'];
                 }
@@ -106,7 +106,7 @@ class AdvertiseController extends Controller
         }
         return [
             'currency' => $currency,
-            'cashback' => (count($offer['actions']) > 1 ? 'до ': ''). $cashback . ($percent ? '%':''),
+            'cashback' => (count($offer['actions']) > 1 ? 'до ': ''). $cashback / 2 . ($percent ? '%':''),
         ];
     }
 

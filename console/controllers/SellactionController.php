@@ -23,7 +23,6 @@ class SellactionController extends Controller
   private $debug = false;
   private $categories;
   private $categoriesConfigFile;
-  private $cpa;
 
   private $stores = array();
   private $users = array();
@@ -33,7 +32,7 @@ class SellactionController extends Controller
   {
     $cpa = Cpa::findOne(['name' => 'Sellaction']);
     if (!$cpa) {
-      ddd('CPA Advertise not found');
+      ddd('CPA Sellaction not found');
     }
 
     $this->cpa_id = $cpa->id;
@@ -192,13 +191,8 @@ class SellactionController extends Controller
     $cpalinkInserted = 0;
     $countCoupons = 0;
     $insertedCoupons = 0;
-
-    $cpa = Cpa::find()->where(['name' => 'Sellaction'])->one();
-    if (!$cpa) {
-      echo 'Cpa type Cellaction not found';
-      return;
-    }
-    $this->cpa = $cpa;
+    $errors = 0;
+    $errorsCpaLink = 0;
 
     $sellaction = new Sellaction();
     $page = 1;
@@ -222,6 +216,8 @@ class SellactionController extends Controller
       $cpalinkInserted += $dataResult['cpalinkInserted'];
       $countCoupons += $dataResult['couponsCount'];
       $insertedCoupons += $dataResult['couponsInserted'];
+      $errors += $dataResult['errors'];
+      $errorsCpaLink += $dataResult['errorsCpaLink'];
 
       echo 'Page ' . $page . ' of ' . $pageCount . ' records ' . count($response['data']) . "\n";
       $page++;
@@ -234,7 +230,7 @@ class SellactionController extends Controller
 
     if (!empty($affiliate_list)) {
       $sql = "UPDATE `cw_stores` cws
-            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $cpa->id . " AND cws.`active_cpa`=cpl.id
+            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
             SET `is_active` = '0'
             WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
       Yii::$app->db->createCommand($sql)->execute();
@@ -242,7 +238,13 @@ class SellactionController extends Controller
     $this->saveCategories();
     echo 'Stores ' . $records . "\n";
     echo 'Inserted ' . $inserted . "\n";
+    if (!empty($errors)) {
+        echo "Errors ".$errors."n";
+    }
     echo 'Inserted Cpa link ' . $cpalinkInserted . "\n";
+    if (!empty($errorsCpaLink)) {
+      echo "Errors ".$errorsCpaLink."n";
+    }
     echo 'Coupons ' . $countCoupons . "\n";
     echo 'Inserted ' . $insertedCoupons . "\n";
   }
@@ -250,164 +252,50 @@ class SellactionController extends Controller
   private function writeStores($data)
   {
     $inserted = 0;
-    $insertedCpalink = 0;
+    $insertedCpaLink = 0;
     $affiliate_list = [];
     $countCoupons = 0;
     $insertedCoupons = 0;
+    $errors = 0;
+    $errorsCpaLink = 0;
 
     foreach ($data as $store) {
       //d($store);
       $affiliate_id = $store['id'];
       $affiliate_list[] = $affiliate_id;
       $store['currency'] = $store['currency'] == 'RUR' ? 'RUB' : $store['currency'];
-
-      $cpa_link = CpaLink::findOne(['cpa_id' => $this->cpa->id, 'affiliate_id' => $affiliate_id]);
-
-      $route = Yii::$app->help->str2url($store['name']);
-
-      $logo = explode(".", $store['logo']);
-      $logo = 'cw' . $this->cpa->id . '_' .$route.'.'. $logo[count($logo) - 1];
-      $logo = str_replace('_','-',$logo);
-
-      $cpa_id = false;
-
-      if ($cpa_link) {
-        //если CPA link нашли то проверяем ссылку и при необходимости обновляем ее
-        if ($cpa_link->affiliate_link != $store['default_link']) {
-          $cpa_link->affiliate_link = $store['default_link'];
-          $cpa_link->save();
-        }
-
-        $cpa_id = $cpa_link->id;
-
-        //переходим от ссылки СПА на магазин
-        $db_store = $cpa_link->store;
-
-        /*
-         * Лого обновляем если
-         * - лого был прописан данной CPA (тут подумать еще)
-         * - нет лого
-         * - лого от адмитада
-         */
-
-        if ($db_store && (
-            $db_store->logo == $logo ||
-            !$db_store->logo ||
-            strpos($db_store->logo, 'cw1-') !== false ||
-            strpos($db_store->logo, 'cw'.$this->cpa_id.'-') !== false ||
-            strpos($db_store->logo, 'cw_') !== false
-            )) {
-          $test_logo = true;
-        } else {
-          $test_logo = false;
-        }
-      } else {
-        $db_store = false;
-        $test_logo = true;
-      }
-
-
-      //если лого то проверяем его наличие и размер и при нобходимости обновляем
-      if ($test_logo) {
-        //обрабатываем лого и если обновление то меняем имя
-        if($this->saveLogo($logo, $store['logo'], $db_store ? $db_store->logo : false) && $db_store){
-          $db_store->logo=$logo;
-        };
-      }
-
-      //если магазин не нашли по прямому подключению пробуем найти по косвеным признакам
-
-      //поиск по ссылке на магазин
-      if (!$db_store) {
-        //Проверяем существования магазина на основании его адреса
-        //чистим URL
-        $url = str_replace("https://", "%", $store['url']);
-        $url = str_replace("http://", "%", $url);
-        $url = str_replace("www.", "", $url);
-        //$url=explode('/',$url);
-        //$url=$url[0].'%';
-        $url = trim($url, '/') . '%';
-        $db_store = Stores::find()->where(['like', 'url', $url, false])->one();
-      }
-
-      //поиск по ссылке на роуту
-      if (!$db_store) {
-        $db_store = Stores::find()->where(['route' => $route])->one();
-      }
-
       $conditions = $this->getConditions($store['tariffs'], $store['currency']);
+      $newStore = [
+          'logo' => $store['logo'],
+          'cpa_id' => $this->cpa_id,
+          'affiliate_id' => $affiliate_id,
+          'url' => $store['url'],
+          'name' => $store['name'],
+          'currency' => $store['currency'],
+          'cashback' => $conditions['cashback'],
+          'hold_time' => (integer)$conditions['process'] > 0 ? (integer)$conditions['process'] : 30,
+          'description' => $store['description'],
+          'short_description' => $store['short_description'] . '<br>' . $store['advantages_client'],
+          'conditions' => $conditions['text'],
+          'status' => 1,
+          'affiliate_link' => $store['default_link'],
+      ];
 
-      //Если магазин так и не нашли то создаем
-      if (!$db_store) {
-        $db_store = new Stores();
-        $db_store->name = $store['name'];
-        //    if (isset($store['name_aliases'])) {
-        //          $db_store->alias = $store['name_aliases'];
-        //     };
-        $db_store->route = $route;
-        $db_store->url = $store['url'];
-        $db_store->logo = $logo;
-        $db_store->currency = $store['currency'];
-        $db_store->percent = 50;
-        $db_store->description = $store['description'];
-        $db_store->short_description = $store['short_description'] . '<br>' . $store['advantages_client'];
-        $db_store->displayed_cashback = $conditions['cashback'];
-        $db_store->conditions = $conditions['text'];
-        $db_store->hold_time = (integer)$conditions['process'] > 0 ? (integer)$conditions['process'] : 30;
-        if ($db_store->save()) {
-          $inserted++;
-        } else {
-          d($db_store->errors);
+      $result = Stores::addOrUpdate($newStore);
+
+      if (!$result['result']) {
+        $errors++;
+      }
+      if ($result['new']) {
+        $inserted++;
+      }
+      if ($result['newCpa']) {
+        $insertedCpaLink++;
+        if (!$result['resultCpa']) {
+          $errorsCpaLink++;
         }
       }
-
-      $store_id = $db_store->uid;
-
-      //$db_store->displayed_cashback = $conditions['cashback']; //перезаписываем кешбек
-
-      //если нет в базе CPA ЛИНК то создаем ее
-      if (!$cpa_id) {
-        $cpa_link = new CpaLink();
-        $cpa_link->cpa_id = $this->cpa_id;
-        $cpa_link->stores_id = $store_id;
-        $cpa_link->affiliate_id = $affiliate_id;
-        $cpa_link->affiliate_link = $store['default_link'];
-        if (!$cpa_link->save()) continue;
-        $insertedCpalink++;
-
-        $cpa_id = $cpa_link->id;
-      } else {
-        //проверяем свяль CPA линк и магазина
-        if ($cpa_link->stores_id != $store_id) {
-          $cpa_link->stores_id = $store_id;
-          $cpa_link->save();
-        }
-      }
-
-      //если СPA не выбранна то выставляем текущую
-      if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
-        $db_store->active_cpa = (int)$cpa_id;
-      }
-      if ($db_store->active_cpa == (int)$cpa_id) {
-        // спа активная, обновляем поля - какие - можно потом добавить
-        $db_store->url = $store['url'];
-        //$db_store->logo = $test_logo && !empty($logo) ? $logo : $db_store->logo;
-        //$db_store->description = $store['description'];
-        //$db_store->short_description = $store['advantages_client'];
-        //$db_store->displayed_cashback = $conditions['cashback'];
-        //$db_store->conditions = $conditions['text'];
-        //$db_store->hold_time = $conditions['process'] > 0 ? $conditions['process'] : 30;
-      }
-
-      //надо определиться с полями, которые обновлять
-
-
-      $db_store->url = $store['url'];
-      if ($db_store->is_active != -1) {
-        $db_store->is_active = 1;
-      }
-      $db_store->save();
-      $coupons = $this->saveCoupons($db_store->uid, $store);
+      $coupons = $this->saveCoupons($result['store']->uid, $store);
       $countCoupons += $coupons['count'];
       $insertedCoupons += $coupons['inserted'];
 
@@ -416,9 +304,11 @@ class SellactionController extends Controller
     return [
         'inserted' => $inserted,
         'affiliate_list' => $affiliate_list,
-        'cpalinkInserted' => $insertedCpalink,
+        'cpalinkInserted' => $insertedCpaLink,
         'couponsCount' => $countCoupons,
         'couponsInserted' => $insertedCoupons,
+        'errors' => $errors,
+        'errorsCpaLink' => $errorsCpaLink,
     ];
   }
 
@@ -452,40 +342,6 @@ class SellactionController extends Controller
     ];
   }
 
-  private function saveLogo($logo, $logoNew, $db_logo)
-  {
-    //d([$logo,$logoNew]);
-    $needUpdate = false;
-    $path = Yii::$app->getBasePath() . '/../frontend/web/images/logos/';
-    if (!file_exists($path)) {
-      mkdir($path, 0777, true);
-    }
-    //echo $path .' '.$logo.' '.$logoNew."\n";
-    try {
-      if (file_exists($path . $logo)) {
-        $imageSize = getimagesize($path . $logo);
-        $needUpdate = (isset($imageSize[0]) && $imageSize[0] < 192) ||
-            (isset($imageSize[1]) && $imageSize[1] < 192);
-      }
-      //d($needUpdate);
-      if (!file_exists($path . $logo) || $needUpdate) {
-        if ($db_logo && file_exists($path . $db_logo)) {
-          unlink($path . $db_logo);
-        }
-        $file = file_get_contents($logoNew);
-        $image = new Image($file);
-        $image->bestFit(192, 192);
-        $image->saveAs($path . $logo);
-        return true;
-      }else{
-        return false;
-      }
-    } catch (\Exception $e) {
-      echo $e->getMessage() . "\n";
-      return false;
-    }
-  }
-
   private function saveCoupons($storeId, $store)
   {
     $count = 0;
@@ -494,39 +350,25 @@ class SellactionController extends Controller
       $categories = $this->getCategories($store['categories']);
       foreach ($store['coupons'] as $coupon) {
         $count++;
-        $dbCoupon = Coupons::find()->where(['store_id' => $storeId, 'coupon_id' => $coupon ['id']])->one();
-        if (!$dbCoupon) {
+        $newCoupon = [
+          'store_id' => $storeId,
+          'coupon_id' => $coupon['id'],
+          'name' => $coupon['name'],
+          'description' => $coupon['description'],
+          'promocode' => '',
+          'date_start' => $coupon['date_start'],
+          'date_expire' => $coupon['date_end'],
+          'link' => $coupon['url'],
+          'cpa_id' => $this->cpa_id,
+          'exclusive' => 0,
+          'categories' => $categories,
+        ];
+        $result = Coupons::makeOrUpdate($newCoupon);
+        if ($result['new'] && $result['status']) {
           $inserted++;
-          $dbCoupon = new Coupons;
-          $dbCoupon->store_id = $storeId;
-          $dbCoupon->coupon_id = $coupon['id'];
         }
-        $dbCoupon->name = $coupon['name'];
-        $dbCoupon->description = $coupon['description'];
-        $dbCoupon->goto_link = $coupon['url'];
-        $dbCoupon->date_start = $coupon['date_start'];
-        $dbCoupon->date_end = $coupon['date_end'];
-        $dbCoupon->species = 0;
-        $dbCoupon->exclusive = 0;
-        $dbCoupon->cpa_id = $this->cpa_id;
-        //$coupon['type'] campaign discount  - нет полей куда и зачем положить
-        if (!$dbCoupon->save()) {
-          d($dbCoupon->errors);
-        }
-        //категории  к купону
-        //d($dbCoupon->uid, $store['categories'], $categories);
-        foreach ($categories as $category) {
-          $categoryCoupon = CouponsToCategories::find()
-              ->where(['coupon_id' => $dbCoupon->uid, 'category_id' => $category])
-              ->one();
-          if (!$categoryCoupon) {
-            $categoryCoupon = new CouponsToCategories();
-            $categoryCoupon->coupon_id = $dbCoupon->uid;
-            $categoryCoupon->category_id = $category;
-            if (!$categoryCoupon->save()) {
-              d($categoryCoupon->errors);
-            }
-          }
+        if (!$result['status']) {
+          d($coupon, $result['coupon']->errors);
         }
       }
     }

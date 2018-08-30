@@ -12,9 +12,34 @@
     <section>
       <div class="row">
         <h1>{{ html.encode(this.title) }}</h1>
-        <div class="col-md-12">
+        <div class="col-md-6">
           <p class="add-item">Купоны автоматически удаляются раз в час и добавляются раз в сутки.</p>
           <p class="add-item">Функция удаления отключенна для отображения купонов в архиве.</p>
+        </div>
+        <div class="col-md-6">
+          <div class="sum_information">
+            <div class="line">
+              <div class="name wide">
+                Все (активные)
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons">{{ total }}</a>
+                (<a class="" href="/admin/coupons?CouponsSearch%5Bis_active%5D=1">{{ active_count }}</a>)
+              </div>
+            </div>
+
+          {% for cpa in stat_cpa %}
+            <div class="line">
+              <div class="name wide">
+                  {{ cpa.name }}
+              </div>
+              <div class="value">
+                <a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}">{{ cpa.count }}</a>
+                (<a class="" href="/admin/coupons?CouponsSearch%5BcpaName%5D={{ cpa.id }}&CouponsSearch%5Bis_active%5D=1">{{ cpa.active }}</a>)
+              </div>
+            </div>
+          {% endfor %}
+          </div>
         </div>
       </div>
       <div class="row">
@@ -33,7 +58,11 @@
 
               'uid',
               'coupon_id',
-              'name',
+              {
+                 'format': 'raw',
+                  'attribute':'name',
+                  'value': tableData.name
+              },
               {
                 'format':'raw',
                 'attribute':'storeName',

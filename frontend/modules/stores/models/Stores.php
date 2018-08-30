@@ -1052,7 +1052,7 @@ class Stores extends \yii\db\ActiveRecord
 
       $route = Yii::$app->help->str2url($url);
 
-      if ($store['logo'] != '') {
+      if (!empty($store['logo'])) {
           $logo = explode(".", $store['logo']);
           $logo = 'cw' . $store['cpa_id'] . '_' .$route.'.'. $logo[count($logo) - 1];
           $logo = str_replace('_', '-', $logo);
@@ -1095,7 +1095,7 @@ class Stores extends \yii\db\ActiveRecord
 
 
       //если лого то проверяем его наличие и размер и при нобходимости обновляем
-      if ($test_logo && $logo) {
+      if ($test_logo && $logo && !empty($store['logo'])) {
           //обрабатываем лого и если обновление то меняем имя
           if(self::saveLogo($logo, $store['logo'], $db_store ? $db_store->logo : false) && $db_store){
               $db_store->logo=$logo;
@@ -1130,8 +1130,9 @@ class Stores extends \yii\db\ActiveRecord
           $db_store->currency = $store['currency'];
           $db_store->percent = 50;
           $db_store->hold_time =  $store['hold_time'];
-          $db_store->displayed_cashback = $store['cashback'];
-          $db_store->is_active = $store['status'];
+          $db_store->displayed_cashback = isset($store['cashback'])? $store['cashback'] : '';
+          $db_store->is_active = isset($store['status']) ? $store['status'] : 1;
+          $db_store->alias = !empty($store['alias']) ? $store['alias'] : null;
           if ($db_store->save()) {
               $result = true;
           } else {
@@ -1181,11 +1182,14 @@ class Stores extends \yii\db\ActiveRecord
       if ($db_store->active_cpa == (int)$cpa_id) {
           // спа активная, обновляем поля - какие - можно потом добавить
           $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
-          //$db_store->displayed_cashback = $store['cashback'];
-          $db_store->is_active = $store['status'];
+          $db_store->displayed_cashback = isset($store['cashback']) ? $store['cashback'] : $db_store->displayed_cashback;
           $db_store->description = !empty($store['description']) ? $store['description'] : $db_store->description;
           $db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : $db_store->short_description;
           $db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : $db_store->conditions;
+          $db_store->alias = !empty($store['alias']) ? $store['alias'] : $db_store->alias;
+          if ($db_store->is_active != -1 && isset($store['status'])) {
+              $db_store->is_active = $store['status'];
+          }
 
       }
       if ($db_store->save()) {
@@ -1196,6 +1200,8 @@ class Stores extends \yii\db\ActiveRecord
           'new' => $new,
           'newCpa' => $newCpa,
           'resultCpa' => $resultCpa,
+          'store' => $db_store,
+          'cpa_link' => $cpa_link,
       ];
   }
 

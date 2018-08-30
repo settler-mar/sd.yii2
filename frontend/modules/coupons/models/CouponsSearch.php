@@ -19,6 +19,7 @@ class CouponsSearch extends Coupons
     public $date_start_range;
     public $date_end_range;
     public $cpaName;
+    public $is_active;
     /**
      * @inheritdoc
      */
@@ -28,6 +29,7 @@ class CouponsSearch extends Coupons
             [['uid', 'coupon_id', 'exclusive', 'species', 'visit', 'store_id','cpaName'], 'integer'],
             [['name', 'description', 'date_start', 'date_end', 'goto_link', 'promocode', 'storeName',
               'date_start_range', 'date_end_range', 'reviews_count'], 'safe'],
+            ['is_active', 'in', 'range' => [1]],
         ];
     }
 
@@ -138,6 +140,9 @@ class CouponsSearch extends Coupons
           }else{
             $query->andFilterWhere(['>','cwur.reviews_count',"0"]);
           }
+        }
+        if (!empty($this->is_active)) {
+            $query->andFilterWhere(['>=', 'date_end', date('Y-m-d H:i:s')]);
         }
 
         return $dataProvider;
