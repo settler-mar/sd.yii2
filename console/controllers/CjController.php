@@ -36,6 +36,7 @@ class CjController extends Controller
   private $categories = [];
   private $config;
   private $users;
+  private $languages;
 
   public function init()
   {
@@ -287,6 +288,7 @@ class CjController extends Controller
       echo "Config cj.com not found or cj.com->categories_json  not found";
       return;
     }
+    $this->languages = array_flip(Yii::$app->languageDetector->getLanguages());
 
     $cj = new Cj();
     $page = 1;
@@ -404,6 +406,8 @@ class CjController extends Controller
       d('Store not found ' . $coupon['advertiser-id']);
       return;
     }
+    $language = isset($coupon['language']) && isset($this->languages[$coupon['language']]) ?
+        $this->languages[$coupon['language']] : null;
     $newCoupon = [
         'store_id' => $store->uid,
         'coupon_id' => $coupon['link-id'],
@@ -415,6 +419,7 @@ class CjController extends Controller
         'link' => $coupon['clickUrl'],
         'categories' => [$this->getCouponCategory($coupon['category'])],
         'cpa_id' => $this->cpa->id,
+        'language' => $language,
     ];
     $result = Coupons::makeOrUpdate($newCoupon);
     if ($result['new']) {

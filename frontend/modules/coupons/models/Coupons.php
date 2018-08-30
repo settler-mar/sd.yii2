@@ -506,6 +506,7 @@ class Coupons extends \yii\db\ActiveRecord
       $dbCoupon->date_end = empty($coupon['date_expire']) ? $dbCoupon->date_end : $coupon['date_expire'];
       $dbCoupon->promocode = empty($coupon['promocode']) ? $dbCoupon->promocode : $coupon['promocode'];
       $dbCoupon->description = empty($coupon['description']) ? $dbCoupon->description : $coupon['description'];
+      $dbCoupon->language = empty($coupon['language']) ? $dbCoupon->language : $coupon['language'];
 
       $result['coupon'] = $dbCoupon;
       $result['status'] = $dbCoupon->save();
