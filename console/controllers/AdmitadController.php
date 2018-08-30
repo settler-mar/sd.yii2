@@ -496,7 +496,7 @@ class AdmitadController extends Controller
           }
         }
 
-        if (/*$is_new &&*/$db_store->active_cpa == $cpa_id) {
+        if ($is_new && $db_store->active_cpa == $cpa_id) {
           // :display cashback calculation
           $c_per = count($p_cback);
           $c_val = count($v_cback);

@@ -593,4 +593,14 @@ class TaskController extends Controller
       echo "Stores on Lety ".(count($data)). "\n";
       echo "Stores not on SD ".$count."\n";
   }
+
+  /*
+   * Всем шопам из категории благотворительность установить кешек = 0
+   */
+  public function actionStoresToCharity()
+  {
+    //$this->execute('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;');
+    //Yii::$app->db->createCommand('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;')->queryAll();
+    Yii::$app->db->execute("UPDATE `cw_stores` SET `displayed_cashback` = '0' WHERE `uid` in(SELECT store_id FROM `cw_stores_to_categories` where category_id = 203);");
+  }
 }
