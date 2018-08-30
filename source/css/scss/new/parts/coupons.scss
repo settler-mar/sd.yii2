@@ -387,6 +387,11 @@
         &-cashback {
           white-space: nowrap;
           color: $coupons_coupon_name_cashback;
+
+          &.old {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: line-through;
+          }
         }
 
         svg {
