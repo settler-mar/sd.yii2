@@ -1049,8 +1049,10 @@ class Stores extends \yii\db\ActiveRecord
       //$url=explode('/',$url);
       //$url=$url[0].'%';
 
-
+      $urlArr = explode('.', $url);
+      $urlShort =  implode('.', array_slice($urlArr, 0, count($urlArr) - 1));
       $route = Yii::$app->help->str2url($url);
+      $routeShort = Yii::$app->help->str2url($urlShort);
 
       if (!empty($store['logo'])) {
           $logo = explode(".", $store['logo']);
@@ -1113,7 +1115,7 @@ class Stores extends \yii\db\ActiveRecord
 
       //поиск по ссылке на роуту
       if (!$db_store) {
-          $db_store = self::find()->where(['route' => $route])->one();
+          $db_store = self::find()->where(['route' => [$route, $routeShort]])->one();
       }
 
       //Если магазин так и не нашли то создаем
