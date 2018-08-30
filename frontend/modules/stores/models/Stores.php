@@ -1181,7 +1181,7 @@ class Stores extends \yii\db\ActiveRecord
       if ($db_store->active_cpa == (int)$cpa_id) {
           // спа активная, обновляем поля - какие - можно потом добавить
           $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
-          //$db_store->displayed_cashback = $store['cashback'];
+          $db_store->displayed_cashback = $store['cashback'];
           $db_store->is_active = $store['status'];
           $db_store->description = !empty($store['description']) ? $store['description'] : $db_store->description;
           $db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : $db_store->short_description;

@@ -383,7 +383,7 @@ class DoublertradeController extends Controller
     if ($db_store->active_cpa == (int)$cpa_id) {
       // спа активная, обновляем поля - какие - можно потом добавить
       $db_store->url = $store['AdvertiserWebsite'];
-      $db_store->displayed_cashback = $cashback;
+      //$db_store->displayed_cashback = $cashback;
       $db_store->is_active = $status;
     }
 
