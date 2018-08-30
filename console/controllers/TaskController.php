@@ -601,6 +601,8 @@ class TaskController extends Controller
   {
     //$this->execute('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;');
     //Yii::$app->db->createCommand('DELETE FROM `cw_task` WHERE `tupe` = 2 and param<0;')->queryAll();
-    Yii::$app->db->execute("UPDATE `cw_stores` SET `displayed_cashback` = '0' WHERE `uid` in(SELECT store_id FROM `cw_stores_to_categories` where category_id = 203);");
+    Yii::$app->db
+        ->createCommand("UPDATE `cw_stores` SET `displayed_cashback` = '0' WHERE `uid` in(SELECT store_id FROM `cw_stores_to_categories` where category_id = 203);")
+    ->query();
   }
 }
