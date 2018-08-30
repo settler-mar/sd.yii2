@@ -126,7 +126,7 @@ class Awin
         curl_close($ch);
 
         if ($statusCode == 200) {
-            d('Downloaded!');
+            //d('Downloaded!');
             $content = file_get_contents($file);
             $content = preg_replace(['/\<\!\[CDATA\[/', '/\]\]\>/'], '', $content);
             $content = str_replace('&pound;', html_entity_decode('&pound;'), $content);
@@ -144,7 +144,7 @@ class Awin
         $url = $this->urlPublishers. '/'. $this->config['user'] .'/'.$method .'/';
         $params['accessToken'] = $this->config['token'];
         $url .= ('?'. http_build_query($params));
-        echo $url . "\n";
+        //echo $url . "\n";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

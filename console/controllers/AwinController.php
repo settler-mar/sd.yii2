@@ -13,7 +13,7 @@ use frontend\modules\stores\models\Stores;
 class AwinController extends Controller
 {
 
-    private $cpa;
+    private $cpa_id;
     private $userId;
 
     private $records=0;
@@ -23,13 +23,19 @@ class AwinController extends Controller
     private $cpaLinkErrors=0;
     private $affiliateList = [];
 
-    public function actionStores()
+    public function init()
     {
-        $this->cpa = Cpa::find()->where(['name' => 'Awin'])->one();
-        if (!$this->cpa) {
+        $cpa = Cpa::find()->where(['name' => 'Awin'])->one();
+        if (!$cpa) {
             echo "Cpa Awin not found";
             return;
         }
+        $this->cpa_id = $cpa->id;
+    }
+
+    public function actionStores()
+    {
+
         $this->userId = isset(Yii::$app->params['awin']['user']) ? Yii::$app->params['awin']['user'] : false;
         if (!$this->userId) {
             ddd('Нет настройки "user" для Awin');
@@ -56,7 +62,7 @@ class AwinController extends Controller
 
                 $storeDb = [
                     'logo' => (string) $store->logo,
-                    'cpa_id' => $this->cpa->id,
+                    'cpa_id' => $this->cpa_id,
                     'affiliate_id' => (string) $attributes['id'],
                     'url' => (string) $store-> displayurl,
                     'name' => (string) $attributes['name'],
@@ -89,7 +95,7 @@ class AwinController extends Controller
 
         if (!empty($this->affiliateList)) {
             $sql = "UPDATE `cw_stores` cws
-            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa->id . " AND cws.`active_cpa`=cpl.id
+            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
             SET `is_active` = '0'
             WHERE cpl.affiliate_id NOT in(" . implode(',', $this->affiliateList) . ") AND is_active!=-1";
             Yii::$app->db->createCommand($sql)->execute();
