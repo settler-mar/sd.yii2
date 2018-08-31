@@ -400,6 +400,9 @@ class CjController extends Controller
     if (empty($coupon['clickUrl'])) {
       return;
     }
+    if (in_array($coupon['link-type'], ['Banner'])) {
+        return;
+    }
     $this->records++;
     $store = $this->getStore($coupon['advertiser-id']);
     if (!$store) {
