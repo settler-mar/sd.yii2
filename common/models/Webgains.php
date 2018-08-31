@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use keltstr\simplehtmldom\SimpleHTMLDom as SHD;
+
 class Webgains
 {
     private $url = 'http://ws.webgains.com/aws.php';
@@ -9,13 +11,16 @@ class Webgains
     private $compaingId = '191491';
     private $user = 'admin@secretdiscounter.com';
     private $password = '2011odn';
-
+    private $loginUrl = 'https://www.webgains.com/loginform.html?action=login';
+    private $loginReferrer = 'https://www.webgains.com/front/user/login';
+    private $programUrl = 'https://www.webgains.com/publisher/191491/program/list/index/joined/joined';
+    private $cookie;
 
     public function test()
     {
         $message = '<message name="getProgramReportRequest">'.
-            '<part name="startdate" type="xsd:dateTime">'.date('Y-m-d H:i:s', time() - 3600 * 24 * 30 * 12).'</part>'.
-            '<part name="enddate" type="xsd:dateTime" >'.date('Y-m-d H:i:s').'</part>'.
+           // '<part name="startdate" type="xsd:dateTime">'.date('Y-m-d H:i:s', time() - 3600 * 24 * 30 * 12).'</part>'.
+           // '<part name="enddate" type="xsd:dateTime" >'.date('Y-m-d H:i:s').'</part>'.
             '<part name="campaignid" type="xsd:int" >'.$this->compaingId.'</part>'.
             '<part name="username" type="xsd:string" >'.$this->user.'</part>'.
             '<part name="password" type="xsd:string" >'.$this->password.'</part>'.
@@ -26,6 +31,28 @@ class Webgains
     public function test2()
     {
         return $this->soapRequest();
+    }
+
+    public function programs()
+    {
+        $this->login();
+        $response = $this->read($this->programUrl);
+        $html = SHD::str_get_html($response);
+        $programs = $html->find('tr');
+        $stores = [];
+        foreach ($programs as $program) {
+            d($program->tag);
+            //d($key, $program->tag, $program->nodetype);
+        }
+//        foreach ($programs as $key => $program) {
+//            if ($key == 0) {
+//                //continue;
+//            }
+//            d($key, $program->tag, count($program->children));
+//        }
+//        foreach ($programs[0]->children[1] as $key => $program) {
+//            d($key, $program);
+//        }
     }
 
 
@@ -59,7 +86,7 @@ class Webgains
 
         $response = curl_exec($ch);
         curl_close($ch);
-        ddd($response);
+        d($response);
 
         // converting
         $response1 = str_replace("<soap:Body>","",$response);
@@ -71,8 +98,8 @@ class Webgains
 
     private function soapRequest()
     {
-        //$dateStart = date('Y-m-d', time()-7*86400).' 00:00:00';
-        $dateStart = date('Y-m-d', 0).' 00:00:00';
+        $dateStart = date('Y-m-d', time()-7*86400).' 00:00:00';
+        //$dateStart = date('Y-m-d', 0).' 00:00:00';
         $dateEnd   = date('Y-m-d H:i:s');
 
         // create a new soap client
@@ -102,5 +129,62 @@ class Webgains
                 d($item);
             }
         }
+    }
+
+    private function login()
+    {
+        $ch = curl_init();
+        $url = $this->loginUrl;
+        if(strtolower((substr($url,0,5))=='https')) { // если соединяемся с https
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+        curl_setopt($ch, CURLOPT_URL, $url);
+        // откуда пришли на эту страницу
+        curl_setopt($ch, CURLOPT_REFERER, $this->loginReferrer);
+        // cURL будет выводить подробные сообщения о всех производимых действиях
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,"screenwidth=&screenheight=&colourdepth=&user_type=affiliateuser&username=".$this->user."&password=".$this->password);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //сохранять полученные COOKIE в файл
+        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . '/cookie.txt');
+        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . '/cookie.txt');
+        $result=curl_exec($ch);
+
+        curl_close($ch);
+
+        // вырезаем со страницы все куки которые пришли
+        //preg_match_all('~Set-Cookie: (***91;^\r\n***93;*)***91;\r\n***93;~i', $result, $mass);
+        //$this->cookie = $mass;
+
+        // собираем их в строчку для CURL
+        //$all_cookie_string = implode(" ", $mass***91;1***93;);
+
+        //d($result);
+        //d($mass);
+    }
+
+    private function read($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        // откуда пришли на эту страницу
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        //отсылаем серверу COOKIE полученные от него при авторизации
+        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) .'/cookie.txt');
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $result;
     }
 }
