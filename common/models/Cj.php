@@ -36,6 +36,7 @@ class Cj
             'advertiser-ids' => 'joined',
             'page-number' => $page,
             'records-per-page' => $perPage,
+            'link-type' => 'Text Link'
         ], $options));
     }
 
