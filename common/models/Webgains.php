@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use keltstr\simplehtmldom\SimpleHTMLDom as SHD;
-
 class Webgains
 {
     private $url = 'http://ws.webgains.com/aws.php';
@@ -14,6 +12,7 @@ class Webgains
     private $loginUrl = 'https://www.webgains.com/loginform.html?action=login';
     private $loginReferrer = 'https://www.webgains.com/front/user/login';
     private $programUrl = 'https://www.webgains.com/publisher/191491/program/list/index/joined/joined';
+    private $programUrlJson = 'https://www.webgains.com/publisher/191491/program/list/get-data/joined/joined/order/name/sort/asc/keyword//country//category//status/?columns%5B%5D=name&columns%5B%5D=averageNetworkCommission&columns%5B%5D=aov&columns%5B%5D=conversion&columns%5B%5D=status&columns%5B%5D=approvals&columns%5B%5D=categories&columns%5B%5D=cashback&columns%5B%5D=action&subcategory=&page=1';
     private $cookie;
 
     public function test()
@@ -36,23 +35,9 @@ class Webgains
     public function programs()
     {
         $this->login();
-        $response = $this->read($this->programUrl);
-        $html = SHD::str_get_html($response);
-        $programs = $html->find('tr');
-        $stores = [];
-        foreach ($programs as $program) {
-            d($program->tag);
-            //d($key, $program->tag, $program->nodetype);
-        }
-//        foreach ($programs as $key => $program) {
-//            if ($key == 0) {
-//                //continue;
-//            }
-//            d($key, $program->tag, count($program->children));
-//        }
-//        foreach ($programs[0]->children[1] as $key => $program) {
-//            d($key, $program);
-//        }
+        //$response = $this->read($this->programUrl);
+        return json_decode($this->read($this->programUrlJson), true);
+
     }
 
 

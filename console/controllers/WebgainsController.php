@@ -37,7 +37,7 @@ class WebgainsController extends Controller
 
         $service = new Webgains();
         $response = $service->programs();
-        //d($response);
+        d($response);
 
 //        $response = $service->getAffiliates();
 //        if (count($response->merchant)) {
