@@ -430,29 +430,21 @@ $functionsList = [
     }
     return date('Y',$date);
   },
-  'np_month'=> function ($date = false) use ($month) {
-    if ($date === 0) {
-      return '';
-    }
-    if ($date === false){
-      $date = time();
-    }
-    $m = date('m', $date);
+  'month'=> function ($d = 0) use ($month) {
+
+    $m = date('m');
 
     $month = $month[1];
 
-    $nm=$m+1;
+    $nm=$m+$d;
     if($nm>12)$nm-=12;
-    $pm=$m-1;
-    if($pm<1)$pm+=12;
+    if($nm<1)$nm+=12;
 
     if($nm<10)$nm="0".$nm;
-    if($pm<10)$pm="0".$pm;
     $nm = $month[$nm];
-    $pm = $month[$pm];
     //ddd($pm);
 
-    return mb_lcfirst($pm).' - '.mb_lcfirst($nm);
+    return mb_lcfirst($nm);
   },
   'date' => function ($date, $format_time = false, $locate_month = true) use ($month) {
     if ($date == 0) {
