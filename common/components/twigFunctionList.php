@@ -28,6 +28,14 @@ $month = [
     ],
 ];
 
+function mb_lcfirst($str){
+  $first = mb_substr($str,0,1);//первая буква
+  $last = mb_substr($str,1);//все кроме первой буквы
+  $first = mb_strtoupper($first);
+  $last = mb_strtolower($last);
+  return $first.$last;
+}
+
 function _hyphen_words_wbr(array &$m)
 {
   return _hyphen_words($m, true);
@@ -412,6 +420,31 @@ $functionsList = [
     $m = date('m', $date);
     $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', $date);
     return strftime(substr($format, 0, $monthRus), $date) . $currMonth . strftime(substr($format, $monthRus + 5), $date);
+  },
+  'year' => function ($date = false) {
+    if ($date === 0) {
+      return '';
+    }
+    if ($date === false){
+      $date = time();
+    }
+    return date('Y',$date);
+  },
+  'month'=> function ($d = 0) use ($month) {
+
+    $m = date('m');
+
+    $month = $month[1];
+
+    $nm=$m+$d;
+    if($nm>12)$nm-=12;
+    if($nm<1)$nm+=12;
+
+    if($nm<10)$nm="0".$nm;
+    $nm = $month[$nm];
+    //ddd($pm);
+
+    return mb_lcfirst($nm);
   },
   'date' => function ($date, $format_time = false, $locate_month = true) use ($month) {
     if ($date == 0) {
