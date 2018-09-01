@@ -14,7 +14,9 @@ class Webgains
     //пока оставил два урл - пока непонятно если шопов будет больше чем на одну страницу
     private $programUrlParams = '/program/list/get-data/joined/joined/order/name/sort/asc/keyword//country//category//status/?columns%5B%5D=name&columns%5B%5D=averageNetworkCommission&columns%5B%5D=aov&columns%5B%5D=conversion&columns%5B%5D=status&columns%5B%5D=approvals&columns%5B%5D=categories&columns%5B%5D=cashback&columns%5B%5D=action&subcategory=&page=1';
     private $programUrlParamsNoPage = '/program/list/get-data/joined/joined/order/name/sort/asc/keyword//country//category//status/?columns%5B%5D=name&columns%5B%5D=averageNetworkCommission&columns%5B%5D=aov&columns%5B%5D=conversion&columns%5B%5D=status&columns%5B%5D=approvals&columns%5B%5D=categories&columns%5B%5D=cashback&columns%5B%5D=action&subcategory=';
-    public $config;
+    private $voucherUrlParams = '/ad/vouchercodes/get-data/mode/joined?page=1';
+    private $voucherUrlParamsNoPage = '/ad/vouchercodes/get-data/mode/joined';
+    private $config;
 
     public function __construct()
     {
@@ -51,6 +53,20 @@ class Webgains
         //на странице тянутся айаксом
         return json_decode(
             $this->read($this->programUrl . $this->config['compaingId'] . $this->programUrlParamsNoPage),
+            true
+        );
+    }
+
+    /**
+     * купоны
+     * @return mixed
+     */
+    public function vouchers()
+    {
+        $this->login();
+        //на странице тянутся айаксом
+        return json_decode(
+            $this->read($this->programUrl . $this->config['compaingId'] . $this->voucherUrlParamsNoPage),
             true
         );
     }

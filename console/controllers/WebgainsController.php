@@ -7,8 +7,9 @@ use yii\console\Controller;
 use Yii;
 use common\models\Webgains;
 use frontend\modules\stores\models\Cpa;
-//use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\coupons\models\Coupons;
 
 class WebgainsController extends Controller
 {
@@ -18,9 +19,15 @@ class WebgainsController extends Controller
     private $records=0;
     private $inserted=0;
     private $storesFails=0;
+    private $errors = 0;
     private $cpaLinkInserted=0;
     private $cpaLinkErrors=0;
     private $affiliateList = [];
+    private $stores;
+    private $categoriesStores;
+    private $categories = [];
+    private $config;
+    private $categoriesConfigFile;
 
     public function init()
     {
@@ -30,12 +37,17 @@ class WebgainsController extends Controller
             return;
         }
         $this->cpa_id = $cpa->id;
+
+        $this->config = isset(Yii::$app->params['webgains']) ? Yii::$app->params['webgains'] : false;
+        if (!$this->config) {
+            ddd('Config Webgains not found');
+        }
     }
 
     public function actionStores()
     {
         $service = new Webgains();
-        $campaignId = $service->config['compaingId'];
+        $campaignId = $this->config['compaingId'];
         $response = $service->programs();
 
         if (isset($response['data'])) {
@@ -94,6 +106,72 @@ class WebgainsController extends Controller
         }
     }
 
+    public function actionCoupons()
+    {
+        $service = new Webgains();
+        //вначале шопы для получения категорий
+        $response = $service->programs();
+        if (isset($response['data'])) {
+            foreach ($response['data'] as $store) {
+                if (isset($store['categories']['short'])) {
+                    $this->categoriesStores[$store['id']] = $store['categories']['short'];
+                }
+            }
+        }
+        //собственно купоны
+        $response = $service->vouchers();
+        //d($response);
+        if (isset($response['data'])) {
+            foreach ($response['data'] as $store) {
+                $affilliateId = $store['program_id'];
+                $storeDb = $this->getStore($affilliateId);
+                if (!$storeDb) {
+                    echo 'Store not found ' . $affilliateId  . "\n";
+                    continue;
+                }
+                $categories = $this->getCouponCategories($this->categoriesStores[$affilliateId]);
+                if (isset($store['vcDetails'])) {
+                    $index = 0;
+                    foreach ($store['vcDetails'] as $key => $coupon) {
+                        $this->records++;
+                        $newCoupon = [
+                            'store_id' => $storeDb->uid,
+                            'coupon_id' => $coupon['id'],
+                            'name' => mb_strlen($coupon['discount']) > 10 ? $coupon['discount'] :
+                                substr($coupon['description'], 0, 256) ,
+                            'description' => $coupon['description'],
+                            'promocode' => $key,
+                            'date_start' => isset($store['grouped_vcStartDate_f'][$index]) ?
+                                \DateTime::createFromFormat('d/m/Y', $store['grouped_vcStartDate_f'][$index])->format('Y-m-d 00:00:00') : '',
+                            'date_expire' => isset($store['grouped_vcExpDate_f'][$index]) ?
+                                \DateTime::createFromFormat('d/m/Y', $store['grouped_vcExpDate_f'][$index])->format('Y-m-d 00:00:00') : '',
+                            'link' => $coupon['tracking_link'],
+                            'categories' => $categories,
+                            'cpa_id' => $this->cpa_id,
+                            'language' => 'en',
+                        ];
+                        $result = Coupons::makeOrUpdate($newCoupon);
+                        if ($result['new'] && $result['status']) {
+                            $this->inserted++;
+                        }
+                        if (!$result['status']) {
+                            $this->errors++;
+                            d($newCoupon, $result['coupon']->errors);
+                        }
+                        $index++;
+                    }
+                }
+
+            }
+        }
+        $this->saveCopuonCategory();
+        echo "Coupons " . $this->records . "\n";
+        echo "Inserted " . $this->inserted . "\n";
+        if (!empty($this->errors)) {
+            echo "Errors " . $this->errors . "\n";
+        }
+    }
+
     /**
      * приводим кэшбэк к виду
      * @param $data
@@ -108,6 +186,61 @@ class WebgainsController extends Controller
         $result = $result . $value . (strpos($data, '%') !== false ? '%' : '');
         return $result;
     }
+
+    private function getStore($id)
+    {
+        if (!isset($this->stores[$id])) {
+            $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $id]);
+            if ($cpaLink) {
+                $this->stores[$id] = $cpaLink->store;
+            } else {
+                $this->stores[$id] = false;
+            }
+        }
+        return $this->stores[$id];
+    }
+
+    private function getCouponCategories($categories)
+    {
+        $result = [];
+        $categories = explode(',', $categories);
+        if (empty($categories)) {
+            return $result;
+        }
+        if (!$this->categories) {
+            $file = realpath(Yii::$app->basePath . '/../');
+            $file .= $this->config['categories_json'];
+            $this->categoriesConfigFile = $file;
+            if (file_exists($file)) {
+                $this->categories = json_decode(file_get_contents($file), true);
+            } else {
+                $this->categories = [];
+            }
+
+        }
+        foreach ($categories as $category) {
+            $category = trim($category);
+            if (!empty($this->categories[$category])) {
+                if (!empty($this->categories[$category]['id'])) {
+                    $result[] = $this->categories[$category]['id'];
+                }
+            } else {
+                //неизвестное значение - вписать в массив
+                $this->categories[$category] = [
+                    'name' => $category,
+                ];
+            }
+        }
+        return array_unique($result);
+    }
+
+    private function saveCopuonCategory()
+    {
+        if ($this->categoriesConfigFile) {
+            file_put_contents($this->categoriesConfigFile, json_encode($this->categories));
+        }
+    }
+
 
 
 }

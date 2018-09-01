@@ -51,6 +51,10 @@ return [
       'cj.com' => [
           'config' => 'cjcom_categories.json',
           'title' => 'Категории Cj.com',
+      ],
+      'webgains' => [
+          'config' => 'webgains_categories.json',
+          'title' => 'Категории Webgains',
       ]
   ],
 

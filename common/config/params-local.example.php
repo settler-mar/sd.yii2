@@ -80,6 +80,7 @@ return [
     'compaingId' => '191491',
     'user' => 'admin@secretdiscounter.com',
     'password' => '2011odn',
+    'categories_json' => '/common/config/json/webgains_categories.json',
   ],
   'pays_update_period'=>1,
   'b2b_address' => '127.0.0.1:8080',
