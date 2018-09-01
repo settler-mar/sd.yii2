@@ -28,6 +28,7 @@ class Cpa extends \yii\db\ActiveRecord
         //'Awin' => 'pref1',//второй вариант
         "Linkconnector"=>'atid',
         'Cj.com' => 'sid',
+        'Webgains' => 'clickref',
 
     ];
 

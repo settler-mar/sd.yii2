@@ -24,87 +24,89 @@ class WebgainsController extends Controller
 
     public function init()
     {
-//        $cpa = Cpa::find()->where(['name' => 'Webgains'])->one();
-//        if (!$cpa) {
-//            echo "Cpa Webgains not found";
-//            return;
-//        }
-//        $this->cpa_id = $cpa->id;
+        $cpa = Cpa::find()->where(['name' => 'Webgains'])->one();
+        if (!$cpa) {
+            echo "Cpa Webgains not found";
+            return;
+        }
+        $this->cpa_id = $cpa->id;
     }
 
     public function actionStores()
     {
-
         $service = new Webgains();
+        $campaignId = $service->config['compaingId'];
         $response = $service->programs();
-        d($response);
 
-//        $response = $service->getAffiliates();
-//        if (count($response->merchant)) {
-//            $this->records = count($response->merchant);
-//            foreach ($response->merchant as $store) {
-//                $attributes = $store->attributes();
-//                $storeDetails = $service->getProgramDetails(['advertiserId' =>  (string) $attributes['id']]);
-//
-//                $this->affiliateList[] = (string) $attributes['id'];
-//                $currency =  isset($storeDetails['programmeInfo']['currencyCode']) ?
-//                    $storeDetails['programmeInfo']['currencyCode'] : 'USD';
-//                $commissionRange = isset($storeDetails['commissionRange'][0]) ? $storeDetails['commissionRange'][0] : false;
-//                $cashback = $commissionRange && isset($commissionRange['min']) && isset($commissionRange['max']) &&
-//                            $commissionRange['min'] != $commissionRange['max'] ? 'до ' : '';
-//                $cashback .= ($commissionRange && isset($commissionRange['max']) ? (float) $commissionRange['max'] / 2 : '');
-//                $cashback .= ($commissionRange && isset($commissionRange['type']) && $commissionRange['type'] == 'percentage' ?
-//                    '%' : '');
-//
-//                $storeDb = [
-//                    'logo' => (string) $store->logo,
-//                    'cpa_id' => $this->cpa_id,
-//                    'affiliate_id' => (string) $attributes['id'],
-//                    'url' => (string) $store-> displayurl,
-//                    'name' => (string) $attributes['name'],
-//                    'currency' => $currency,
-//                    'cashback' => $cashback,
-//                    'hold_time' => 30,
-//                    'description' => (string) $store->description,
-//                    'status' => 1,
-//                    'affiliate_link' => (string) $store->clickthrough, //это один вариант, есть второй
-//                    //'affiliate_link' => 'https://www.awin1.com/cread.php?awinmid=' . (string) $attributes['id'] .
-//                     //   '&awinaffid=' . $this->userId,//второй вариант
-//                ];
-//                $result = Stores::addOrUpdate($storeDb);
-//                if (!$result['result']) {
-//                    $this->storesFails++;
-//                }
-//                if ($result['new']) {
-//                    $this->inserted++;
-//                }
-//                if ($result['newCpa']) {
-//                    $this->cpaLinkInserted++;
-//                    if (!$result['resultCpa']) {
-//                        $this->cpaLinkErrors++;
-//                    }
-//                }
-//            }
-//        }
+        if (isset($response['data'])) {
+            foreach ($response['data'] as $store) {
+                $this->records++;
+                $programId = (string) $store['id'];
+                $storeDetails = $service->getStoreDetails($programId);
+                $affiliateId = $programId;
+                $this->affiliateList[] = $affiliateId;
+                $storeDb = [
+                    'logo' => $storeDetails['image'],
+                    'cpa_id' => $this->cpa_id,
+                    'affiliate_id' => $affiliateId,
+                    'url' => $storeDetails['url'],
+                    'name' => (string) $store['name'],
+                    'currency' => 'GBR',
+                    'cashback' => $this->getCashback($store['commissionString']),
+                    'hold_time' => 30,
+                    'description' => (string) $store['description'],
+                    'status' => 1,
+                    'affiliate_link' => 'https://track.webgains.com/click.html?wgcampaignid=' . $campaignId .
+                        '&wgprogramid=' . $programId,
+                ];
+                //d($storeDb);
+                $result = Stores::addOrUpdate($storeDb);
+                if (!$result['result']) {
+                    $this->storesFails++;
+                }
+                if ($result['new']) {
+                    $this->inserted++;
+                }
+                if ($result['newCpa']) {
+                    $this->cpaLinkInserted++;
+                    if (!$result['resultCpa']) {
+                        $this->cpaLinkErrors++;
+                    }
+                }
+            }
+        }
 
+        if (!empty($this->affiliateList)) {
+            $sql = "UPDATE `cw_stores` cws
+            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
+            SET `is_active` = '0'
+            WHERE cpl.affiliate_id NOT in(" . implode(',', $this->affiliateList) . ") AND is_active!=-1";
+            Yii::$app->db->createCommand($sql)->execute();
+        }
+        echo 'Stores '.$this->records."\n";
+        if (!empty($this->storesFails)) {
+            echo 'Errors '.$this->storesFails . "\n";
+        }
+        echo 'Inserted '.$this->inserted."\n";
+        echo 'Inserted Cpa link '.$this->cpaLinkInserted."\n";
+        if (!empty($this->cpaLinkErrors)) {
+            echo 'Errors '. $this->cpaLinkErrors. "\n";
+        }
+    }
 
-
-//        if (!empty($this->affiliateList)) {
-//            $sql = "UPDATE `cw_stores` cws
-//            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
-//            SET `is_active` = '0'
-//            WHERE cpl.affiliate_id NOT in(" . implode(',', $this->affiliateList) . ") AND is_active!=-1";
-//            Yii::$app->db->createCommand($sql)->execute();
-//        }
-//        echo 'Stores '.$this->records."\n";
-//        if (!empty($this->storesFails)) {
-//            echo 'Errors '.$this->storesFails . "\n";
-//        }
-//        echo 'Inserted '.$this->inserted."\n";
-//        echo 'Inserted Cpa link '.$this->cpaLinkInserted."\n";
-//        if (!empty($this->cpaLinkErrors)) {
-//            echo 'Errors '. $this->cpaLinkErrors. "\n";
-//        }
+    /**
+     * приводим кэшбэк к виду
+     * @param $data
+     * @return string
+     */
+    private function getCashback($data)
+    {
+        $dataArr = explode('-', $data);
+        $result = count($dataArr) == 2 ? 'до ' : '';
+        $data = isset($dataArr[1]) ? $dataArr[1] : $data;
+        $value = (float) preg_replace('/[^0-9\.\,]/', '', $data) / 2;
+        $result = $result . $value . (strpos($data, '%') !== false ? '%' : '');
+        return $result;
     }
 
 
