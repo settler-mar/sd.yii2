@@ -176,7 +176,7 @@ class Webgains
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, $this->loginReferrer);
         // cURL будет выводить подробные сообщения о всех производимых действиях
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        //curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,"screenwidth=&screenheight=&colourdepth=&user_type=affiliateuser&username=".$this->config['user']."&password=".$this->config['password']);
