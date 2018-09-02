@@ -46,47 +46,56 @@ class WebgainsController extends Controller
 
     public function actionStores()
     {
-        $service = new Webgains();
         $campaignId = $this->config['compaingId'];
-        $response = $service->programs();
 
-        if (isset($response['data'])) {
-            foreach ($response['data'] as $store) {
-                $this->records++;
-                $programId = (string) $store['id'];
-                $storeDetails = $service->getStoreDetails($programId);
-                $affiliateId = $programId;
-                $this->affiliateList[] = $affiliateId;
-                $storeDb = [
-                    'logo' => $storeDetails['image'],
-                    'cpa_id' => $this->cpa_id,
-                    'affiliate_id' => $affiliateId,
-                    'url' => $storeDetails['url'],
-                    'name' => (string) $store['name'],
-                    'currency' => 'GBR',
-                    'cashback' => $this->getCashback($store['commissionString']),
-                    'hold_time' => 30,
-                    'description' => (string) $store['description'],
-                    'status' => 1,
-                    'affiliate_link' => 'https://track.webgains.com/click.html?wgcampaignid=' . $campaignId .
-                        '&wgprogramid=' . $programId,
-                ];
-                //d($storeDb);
-                $result = Stores::addOrUpdate($storeDb);
-                if (!$result['result']) {
-                    $this->storesFails++;
-                }
-                if ($result['new']) {
-                    $this->inserted++;
-                }
-                if ($result['newCpa']) {
-                    $this->cpaLinkInserted++;
-                    if (!$result['resultCpa']) {
-                        $this->cpaLinkErrors++;
+        $service = new Webgains();
+        $page = 1;
+        $pageCount = 1;
+        do {
+            $response = $service->programs($page);
+            if (isset($response['pagesNumber'])) {
+                $pageCount = (int) $response['pagesNumber'];
+            }
+
+            if (isset($response['data'])) {
+                foreach ($response['data'] as $store) {
+                    $this->records++;
+                    $programId = (string) $store['id'];
+                    $storeDetails = $service->getStoreDetails($programId);
+                    $affiliateId = $programId;
+                    $this->affiliateList[] = $affiliateId;
+                    $storeDb = [
+                        'logo' => $storeDetails['image'],
+                        'cpa_id' => $this->cpa_id,
+                        'affiliate_id' => $affiliateId,
+                        'url' => $storeDetails['url'],
+                        'name' => (string) $store['name'],
+                        'currency' => 'GBR',
+                        'cashback' => $this->getCashback($store['commissionString']),
+                        'hold_time' => 30,
+                        'description' => (string) $store['description'],
+                        'status' => 1,
+                        'affiliate_link' => 'https://track.webgains.com/click.html?wgcampaignid=' . $campaignId .
+                            '&wgprogramid=' . $programId,
+                    ];
+                    $result = Stores::addOrUpdate($storeDb);
+                    if (!$result['result']) {
+                        $this->storesFails++;
+                    }
+                    if ($result['new']) {
+                        $this->inserted++;
+                    }
+                    if ($result['newCpa']) {
+                        $this->cpaLinkInserted++;
+                        if (!$result['resultCpa']) {
+                            $this->cpaLinkErrors++;
+                        }
                     }
                 }
             }
-        }
+
+            $page++;
+        } while ($page <= $pageCount);
 
         if (!empty($this->affiliateList)) {
             $sql = "UPDATE `cw_stores` cws
@@ -110,60 +119,82 @@ class WebgainsController extends Controller
     {
         $service = new Webgains();
         //вначале шопы для получения категорий
-        $response = $service->programs();
-        if (isset($response['data'])) {
-            foreach ($response['data'] as $store) {
-                if (isset($store['categories']['short'])) {
-                    $this->categoriesStores[$store['id']] = $store['categories']['short'];
-                }
+        $page = 1;
+        $pageCount = 1;
+        do {
+            $response = $service->programs($page);
+            if (isset($response['pagesNumber'])) {
+                $pageCount = (int) $response['pagesNumber'];
             }
-        }
-        //собственно купоны
-        $response = $service->vouchers();
-        //d($response);
-        if (isset($response['data'])) {
-            foreach ($response['data'] as $store) {
-                $affilliateId = $store['program_id'];
-                $storeDb = $this->getStore($affilliateId);
-                if (!$storeDb) {
-                    echo 'Store not found ' . $affilliateId  . "\n";
-                    continue;
-                }
-                $categories = $this->getCouponCategories($this->categoriesStores[$affilliateId]);
-                if (isset($store['vcDetails'])) {
-                    $index = 0;
-                    foreach ($store['vcDetails'] as $key => $coupon) {
-                        $this->records++;
-                        $newCoupon = [
-                            'store_id' => $storeDb->uid,
-                            'coupon_id' => $coupon['id'],
-                            'name' => mb_strlen($coupon['discount']) > 10 ? $coupon['discount'] :
-                                substr($coupon['description'], 0, 256) ,
-                            'description' => $coupon['description'],
-                            'promocode' => $key,
-                            'date_start' => isset($store['grouped_vcStartDate_f'][$index]) ?
-                                \DateTime::createFromFormat('d/m/Y', $store['grouped_vcStartDate_f'][$index])->format('Y-m-d 00:00:00') : '',
-                            'date_expire' => isset($store['grouped_vcExpDate_f'][$index]) ?
-                                \DateTime::createFromFormat('d/m/Y', $store['grouped_vcExpDate_f'][$index])->format('Y-m-d 00:00:00') : '',
-                            'link' => $coupon['tracking_link'],
-                            'categories' => $categories,
-                            'cpa_id' => $this->cpa_id,
-                            'language' => 'en',
-                        ];
-                        $result = Coupons::makeOrUpdate($newCoupon);
-                        if ($result['new'] && $result['status']) {
-                            $this->inserted++;
-                        }
-                        if (!$result['status']) {
-                            $this->errors++;
-                            d($newCoupon, $result['coupon']->errors);
-                        }
-                        $index++;
+
+            if (isset($response['data'])) {
+                foreach ($response['data'] as $store) {
+                    if (isset($store['categories']['short'])) {
+                        $this->categoriesStores[$store['id']] = $store['categories']['short'];
                     }
                 }
-
             }
-        }
+
+            $page++;
+        } while ($page <= $pageCount);
+
+        //собственно купоны
+        $page = 1;
+        $pageCount = 1;
+        do {
+            $response = $service->vouchers($page);
+            if (isset($response['pagesNumber'])) {
+                $pageCount = (int) $response['pagesNumber'];
+            }
+
+            if (isset($response['data'])) {
+                foreach ($response['data'] as $store) {
+                    $affilliateId = $store['program_id'];
+                    $storeDb = $this->getStore($affilliateId);
+                    if (!$storeDb) {
+                        echo 'Store not found ' . $affilliateId  . "\n";
+                        continue;
+                    }
+                    $categories = $this->getCouponCategories($this->categoriesStores[$affilliateId]);
+                    if (isset($store['vcDetails'])) {
+                        $index = 0;
+                        foreach ($store['vcDetails'] as $key => $coupon) {
+                            $this->records++;
+                            $newCoupon = [
+                                'store_id' => $storeDb->uid,
+                                'coupon_id' => $coupon['id'],
+                                'name' => mb_strlen($coupon['discount']) > 10 ? $coupon['discount'] :
+                                    substr($coupon['description'], 0, 256) ,
+                                'description' => $coupon['description'],
+                                'promocode' => $key,
+                                'date_start' => isset($store['grouped_vcStartDate_f'][$index]) ?
+                                    \DateTime::createFromFormat('d/m/Y', $store['grouped_vcStartDate_f'][$index])->format('Y-m-d 00:00:00') : '',
+                                'date_expire' => isset($store['grouped_vcExpDate_f'][$index]) ?
+                                    \DateTime::createFromFormat('d/m/Y', $store['grouped_vcExpDate_f'][$index])->format('Y-m-d 00:00:00') : '',
+                                'link' => $coupon['tracking_link'],
+                                'categories' => $categories,
+                                'cpa_id' => $this->cpa_id,
+                                'language' => 'en',
+                            ];
+                            $result = Coupons::makeOrUpdate($newCoupon);
+                            if ($result['new'] && $result['status']) {
+                                $this->inserted++;
+                            }
+                            if (!$result['status']) {
+                                $this->errors++;
+                                d($newCoupon, $result['coupon']->errors);
+                            }
+                            $index++;
+                        }
+                    }
+
+                }
+            }
+
+
+            $page++;
+        } while ($page <= $pageCount);
+
         $this->saveCopuonCategory();
         echo "Coupons " . $this->records . "\n";
         echo "Inserted " . $this->inserted . "\n";
