@@ -11,7 +11,7 @@ class Webgains
     private $loginUrl = 'https://www.webgains.com/loginform.html?action=login';
     private $loginReferrer = 'https://www.webgains.com/front/user/login';
     private $programUrl = 'https://www.webgains.com/publisher/';
-    private $programUrlParams = '/program/list/get-data/joined/joined/order/name/sort/asc/keyword//country//category//status/?columns%5B%5D=name&columns%5B%5D=averageNetworkCommission&columns%5B%5D=aov&columns%5B%5D=conversion&columns%5B%5D=status&columns%5B%5D=approvals&columns%5B%5D=categories&columns%5B%5D=cashback&columns%5B%5D=action&subcategory=';
+    private $programUrlParams = '/program/list/get-data/joined/joined/order/name/sort/asc/keyword//country//category//status/?columns%5B%5D=name&columns%5B%5D=conversion&columns%5B%5D=status&columns%5B%5D=approvals&columns%5B%5D=categories&columns%5B%5D=cashback&columns%5B%5D=action&columns%5B%5D=homepage_url&columns%5B%5D=currency&subcategory=';
     private $voucherUrlParams = '/ad/vouchercodes/get-data/mode/joined';
     private $config;
 

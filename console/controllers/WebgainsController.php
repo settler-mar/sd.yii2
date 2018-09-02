@@ -70,7 +70,7 @@ class WebgainsController extends Controller
                         'affiliate_id' => $affiliateId,
                         'url' => $storeDetails['url'],
                         'name' => (string) $store['name'],
-                        'currency' => 'GBR',
+                        'currency' => $store['currency'],
                         'cashback' => $this->getCashback($store['commissionString']),
                         'hold_time' => 30,
                         'description' => (string) $store['description'],
