@@ -117,6 +117,8 @@ class WebgainsController extends Controller
 
     public function actionCoupons()
     {
+        $languages = array_keys(Yii::$app->languageDetector->getLanguages());
+
         $service = new Webgains();
         //вначале шопы для получения категорий
         $page = 1;
@@ -149,6 +151,8 @@ class WebgainsController extends Controller
 
             if (isset($response['data'])) {
                 foreach ($response['data'] as $store) {
+                    $lang = isset($store['locale']) ? substr($store['locale'], 0, 2) : 'en';
+                    $lang = in_array($lang, $languages) ? $lang : 'en';
                     $affilliateId = $store['program_id'];
                     $storeDb = $this->getStore($affilliateId);
                     if (!$storeDb) {
@@ -174,7 +178,7 @@ class WebgainsController extends Controller
                                 'link' => $coupon['tracking_link'],
                                 'categories' => $categories,
                                 'cpa_id' => $this->cpa_id,
-                                'language' => 'en',
+                                'language' => $lang,
                             ];
                             $result = Coupons::makeOrUpdate($newCoupon);
                             if ($result['new'] && $result['status']) {
