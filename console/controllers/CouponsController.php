@@ -45,5 +45,8 @@ class CouponsController extends Controller
 
     echo "Coupons advertise\n";
     Yii::$app->runAction('advertise/coupons');
+
+    echo "\nStores Webgains\n";
+    Yii::$app->runAction('webgains/coupons');
   }
 }

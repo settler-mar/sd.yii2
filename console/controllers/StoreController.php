@@ -41,5 +41,8 @@ class StoreController extends Controller
 
     echo "\nStores advertise\n";
     Yii::$app->runAction('advertise/store');
+
+    echo "\nStores Webgains\n";
+    Yii::$app->runAction('webgains/stores');
   }
 }
