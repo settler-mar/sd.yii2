@@ -12,10 +12,9 @@
                     <div class="form-group row" style="margin-bottom:10px;">
                         <label class="col-sm-4 col-form-label" for="post-item-{{ key }}">{{ _if(key==item.name,loop.index~'.'~key,key~'.'~item.name) }}</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="Config[postItems][{{ key }}]" id="post-item-{{ key }}">
-                                <option value=""></option>
+                            <select class="form-control" name="Config[postItems][{{ key }}][]" id="post-item-{{ key }}" multiple>
                                 {% for index, category in categories %}
-                                    <option value="{{ index }}" {% if index == item.id %}selected{% endif %}>{{ index }}.{{ category }}</option>
+                                    <option value="{{ index }}" {% if index in item.id %}selected{% endif %}>{{ index }}.{{ category }}</option>
                                 {% endfor %}
                             </select>
                         </div>

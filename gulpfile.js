@@ -124,7 +124,8 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/admin/stores.js',
     paths.source.js+'/original/jquery.ajaxForm.js',
     paths.source.js+'/original/for_all.js',
-    paths.source.js+'/original/new/form.js'
+    paths.source.js+'/original/new/form.js',
+    paths.source.js+'/original/new/multiple-select.js'
 
     //paths.source.js+'/original/admin/meta-form.js'
     ], paths.app.js + '/admin')
@@ -188,7 +189,8 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/links.js',
         paths.source.js+'/original/new/store_points.js',
         paths.source.js+'/original/new/hashtags.js',
-        paths.source.js+'/original/new/plugins.js'
+        paths.source.js+'/original/new/plugins.js',
+        paths.source.js+'/original/new/multiple-select.js'
     ], paths.app.js)
 );
 
