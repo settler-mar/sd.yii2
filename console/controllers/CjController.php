@@ -400,18 +400,26 @@ class CjController extends Controller
     if (empty($coupon['clickUrl'])) {
       return;
     }
+    if (in_array($coupon['link-type'], ['Banner'])) {
+        return;
+    }
     $this->records++;
     $store = $this->getStore($coupon['advertiser-id']);
     if (!$store) {
       d('Store not found ' . $coupon['advertiser-id']);
       return;
     }
+
+    $coupon['link-name'] = trim($coupon['link-name']);
+    $name = strpos($coupon['link-name'], 'RU - ') === false ? $coupon['link-name'] :
+        substr($coupon['link-name'], 5);
     $language = isset($coupon['language']) && isset($this->languages[$coupon['language']]) ?
         $this->languages[$coupon['language']] : null;
+
     $newCoupon = [
         'store_id' => $store->uid,
         'coupon_id' => $coupon['link-id'],
-        'name' => $coupon['link-name'],
+        'name' => $name,
         'description' => $coupon['description'],
         'promocode' => $coupon['coupon-code'],
         'date_start' => $coupon['promotion-start-date'],
