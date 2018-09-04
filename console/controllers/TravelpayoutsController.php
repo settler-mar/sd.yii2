@@ -94,6 +94,7 @@ class TravelpayoutsController extends Controller{
         $sd_store=Stores::findOne(['uid'=>$sd_cpa->stores_id]);
       }
 
+      if(!isset($store['link']))continue;
       //ddd($store);
       //$affiliate_link=trim($sd_store->url,'/').'/?'.$store['required_params'];
       //$affiliate_link=str_replace('%(trace_id)',Yii::$app->params['travelpayouts']['user_id'].'.{{subid}}',$affiliate_link);
