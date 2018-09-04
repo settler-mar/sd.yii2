@@ -28,6 +28,8 @@
 
         {{ form.field(model, 'language').dropDownList(languages)|raw }}
 
+        {{ form.field(model, 'active').dropDownList({0:"Скрыть",1:"Отобразить"})|raw }}
+
          <p><span>Посещений:</span> {{model.visit}}</p>
 
     <div class="form-group">

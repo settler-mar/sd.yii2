@@ -195,6 +195,7 @@ $('.ajax-action').click(function(e) {
       }
 
     }).fail(function(data){
+      if(data.status==302)return;
       notification.notifi({message:'Произошла ошибка!',type:'err'})
     });
   } else {

@@ -120,7 +120,10 @@ class AdminController extends Controller
             },
             'name' => function($model) {
                 return '<a href="/coupons/' . $model->store->route.'/'. $model->uid . '" target="_blank">' . $model->name . '</a>';
-            }
+            },
+            'active' => function($model) {
+                return $model->active?"Активен":"Скрыт";
+            },
         ],
         'cpaNames' => $cpaNames,
         'active_filtered' => $statQueryActive->andWhere(['>=', 'date_end', date('Y-m-d H:i:s')])->count(),
@@ -155,15 +158,14 @@ class AdminController extends Controller
       return $this->redirect(['index']);
     } elseif ($request->post('type') == 'update_categories' &&
         $request->validateCsrfToken()
-        && $request->post('coupon_id') && $validator->validate($request->post('coupon_id'))
         && $request->post('category_id') && is_array($request->post('category_id'))
         && $validatorEach->validate($request->post('category_id'))
     ) {
       //изменение категорий купона
-      CouponsToCategories::deleteAll(['coupon_id' => $request->post('coupon_id')]);
+      CouponsToCategories::deleteAll(['coupon_id' => $id]);
       foreach ($request->post('category_id') as $categoryId) {
         $categoryCoupons = new CouponsToCategories;
-        $categoryCoupons->coupon_id = $request->post('coupon_id');
+        $categoryCoupons->coupon_id = $id;
         $categoryCoupons->category_id = $categoryId;
         $categoryCoupons->save();
       }
@@ -189,17 +191,50 @@ class AdminController extends Controller
    * @param integer $id
    * @return mixed
    */
-  public function actionDelete($id)
+  public function actionDelete($id=0)
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CouponsDelete')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
-    //$this->findModel($id)->delete();
-    $model = $this->findModel($id);
-    $model->date_end = date('Y-m-d', time());
-    $model->save();
 
+    if($id>0) {
+      //$this->findModel($id)->delete();
+      $model = $this->findModel($id);
+      $model->date_end = date('Y-m-d', time());
+      $model->save();
+    }else{
+      $request = Yii::$app->request;
+      if($request->isPost && $request->post('id')){
+        foreach ($request->post('id') as $id){
+          $model = $this->findModel($id);
+          $model->date_end = date('Y-m-d', time());
+          $model->save();
+        }
+      }
+    }
+
+    return $this->redirect(['index']);
+  }
+
+  public function actionRemove($id=0)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('CouponsDelete')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+
+    if($id>0) {
+      $this->findModel($id)->delete();
+
+    }else{
+      $request = Yii::$app->request;
+      if($request->isPost && $request->post('id')){
+        foreach ($request->post('id') as $id){
+          $this->findModel($id)->delete();
+        }
+      }
+    }
     return $this->redirect(['index']);
   }
 

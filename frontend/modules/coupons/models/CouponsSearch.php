@@ -109,6 +109,7 @@ class CouponsSearch extends Coupons
             'species' => $this->species,
             'visit' => $this->visit,
             'cpa_id' => $this->cpaName,
+            //'active' => $this->active,
         ]);
 
         $query->andFilterWhere(['like', static::tableName() . '.name', $this->name])

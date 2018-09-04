@@ -63,6 +63,7 @@
       <div class="row">
         <div class="col-md-12">
           {{ grid_view_widget({
+            'id': 'grid-ajax-action',
             'dataProvider': dataProvider,
             'pager' : {
               'firstPageLabel' : true,
@@ -72,6 +73,7 @@
 
             'filterModel': searchModel,
             'columns': [
+              {'class': '\\yii\\grid\\CheckboxColumn'},
               {'class': '\\yii\\grid\\SerialColumn'},
 
               'uid',
@@ -87,6 +89,15 @@
               },
               'description:ntext',
               'visit',
+              {
+                'format':'raw',
+                'attribute': 'is_active',
+                'value': tableData.active,
+                'filter':{
+                  0:"Скрытые",
+                  1:"Отображаемые",
+                }
+              },
               {
                 'format':'raw',
                 'attribute': 'reviews_count',
@@ -121,6 +132,10 @@
               },
             ],
           }) }}
+          С выделенными:
+          <a href="/admin/coupons/delete" class="ajax-action btn btn-danger"><span class="fa fa-trash"></span> Скрыть</a>
+          <a href="/admin/coupons/remove" class="ajax-action btn btn-danger"> Удалить</a>
+
         </div>
       </div>
     </section>

@@ -347,6 +347,7 @@ class SellactionController extends Controller
     $count = 0;
     $inserted = 0;
     if (isset($store['coupons'])) {
+      //d($store['categories']);
       $categories = $this->getCategories($store['categories']);
       foreach ($store['coupons'] as $coupon) {
         $count++;
@@ -389,7 +390,6 @@ class SellactionController extends Controller
       } else {
           $this->categories = [];
       }
-
     }
     $result = [];
     foreach ($categories as $category) {
@@ -407,6 +407,7 @@ class SellactionController extends Controller
          ];
       }
     }
+
     return array_unique($result);
   }
 
