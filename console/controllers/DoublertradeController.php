@@ -125,18 +125,20 @@ class DoublertradeController extends Controller
     echo "Coupons " . count($vouchers) . "\n";
     echo "Inserted " . $inserted . "\n";
   }
-  public function actionOrders()
+
+  public function actionPayments()
   {
     $pay_status = [
       //пока со всем этим непонятно
-        "Auto-approve" => 2,
+        //"Auto-approve" => 2,
+        //"P" => 2,  //подтвержден ??
     ];
     $service = new DoubleTrade();
     $conversions = $service->conversions();
     if (isset($conversions['matrix']['rows']['row'])) {
       foreach ($conversions['matrix']['rows']['row'] as $row) {
         $this->records++;
-        d($row);
+        //d($row);
         $store = $this->getStore($row['programId']);
         if (!$store) {
           $this->failsNotStore++;
@@ -149,7 +151,7 @@ class DoublertradeController extends Controller
           continue;
         }
         $date = date('Y-m-d H:i:s', strtotime($row['timeOfEvent']));
-        $status = isset($pay_status[$row['pendingRule']]) ? $pay_status[$row['pendingRule']] : 0;
+        $status = isset($pay_status[$row['pendingStatus']]) ? $pay_status[$row['pendingStatus']] : 0;
         $id = substr(str_replace('_', '', $row['orderNR']), -9);
         $payment = [
             'cpa_id' => $this->cpa_id,
@@ -207,6 +209,7 @@ class DoublertradeController extends Controller
       echo 'Users not found ' . $this->failsNotUser . "\n";
     }
   }
+
   private function writeStore($store)
   {
     $status = $store['status'] == "Accepted" ? 1 : 0;

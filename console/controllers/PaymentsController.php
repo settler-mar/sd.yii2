@@ -87,14 +87,51 @@ class PaymentsController extends Controller
     echo "Payments from Admitad\n";
     Yii::$app->runAction('admitad/payments');
 
-    echo "Payments from Ozon\n";
-    $this->actionOzon();
+    echo "Payments from doublertrade\n";
+    Yii::$app->runAction('doublertrade/payments');
+
+    echo "Payments from Cj.com\n";
+    Yii::$app->runAction('cj/payments');
+
+    echo "Payments from Sellaction\n";
+    Yii::$app->runAction('sellaction/payments');
 
     echo "Payments from Performancehorizon\n";
     Yii::$app->runAction('performancehorizon/payments');
 
-    echo "Payments from Sellaction\n";
-    Yii::$app->runAction('sellaction/payments');
+    //нужен тестовый
+    //echo "\nStores linkconnector\n";
+    //Yii::$app->runAction('linkconnector/payments');
+
+    //не делали
+    //echo "\nStores shareasale\n";
+    //Yii::$app->runAction('shareasale/payments');
+
+    //не делали
+    //echo "\nStores rakute\n";
+    //Yii::$app->runAction('rakute/payments');
+
+    //нужен тестовый
+    //echo "\nStores awin\n";
+    //Yii::$app->runAction('awin/payments');
+
+    //не делали
+    //echo "\nStores advertise\n";
+    //Yii::$app->runAction('advertise/payments');
+
+    //не делали
+    //echo "\nStores Travelpayouts\n";
+    //Yii::$app->runAction('advertise/Travelpayouts');
+
+    //не делали
+    //echo "\nStores Webgains\n";
+    //Yii::$app->runAction('advertise/Webgains');
+
+    echo "Payments from Ozon\n";
+    $this->actionOzon();
+
+
+
 
     echo "Payments from Cj.com\n";
     Yii::$app->runAction('cj/payments');
