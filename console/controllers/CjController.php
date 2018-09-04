@@ -249,6 +249,7 @@ class CjController extends Controller
       }
     }
 
+    if(!isset($store['link']))return;
     $linkurl = $store['link']['clickUrl'];
 
     $this->affiliateList[] = $affiliate_id;

@@ -130,9 +130,6 @@ class PaymentsController extends Controller
     echo "Payments from Ozon\n";
     $this->actionOzon();
 
-
-
-
     echo "Payments from Cj.com\n";
     Yii::$app->runAction('cj/payments');
   }
