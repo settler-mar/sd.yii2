@@ -145,6 +145,7 @@ class SdViewBASE extends View
     //ddd($this->all_params);
     //Проставление переменных только когда рендорится слой layout
     if (
+        //in_array(Yii::$app->response->getStatusCode(),[200,404])&&
         strpos($viewFile, 'layout') > 0 &&
         !(
         strpos($viewFile, 'admin.twig')

@@ -34,10 +34,18 @@ $params = [
           'text' => 'бел.руб',
           'icon' => 'бел.руб',
       ],
-      /*'GBR' => [
-          'text' => 'gbr',
-          'icon' => 'gbr',
-      ],*/
+      'GBP' => [
+          'text' => 'gbp',
+          'icon' => 'gbp',
+      ],
+      'INR' => [
+          'text' => 'INR',
+          'icon' => 'INR',
+      ],
+      'TRY' => [
+          'text' => 'TRY',
+          'icon' => 'TRY',
+      ],
   ],
   'regions_list' => require(__DIR__ . '/regions.config-local.php'),
 
