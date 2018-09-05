@@ -82,10 +82,13 @@ class TwigString extends Component
 
   public function render($string,$data){
     //ddd($data);
-
-    return $this->twig->render(
-      $string,
-      $data
-    );
+    try {
+      return $this->twig->render(
+          $string,
+          $data
+      );
+    } catch (Exception $e) {
+      return $string;
+    };
   }
 }
