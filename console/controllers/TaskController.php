@@ -317,6 +317,7 @@ class TaskController extends Controller
       $data2 = [];
       $data = ['RUB' => 1.0];
       $valuta_list = Yii::$app->params['valuta_list'];
+
       if (isset($xml->Valute)) {
         foreach ($xml->Valute as $valute) {
           $data[strval($valute->CharCode)] =
@@ -336,7 +337,8 @@ class TaskController extends Controller
         }
       }
     } catch (\Exception $e) {
-      ddd('Ошибка обработки');
+      d('Ошибка обработки');
+      ddd($e);
     }
 
     $out = ['data' => $data, 'dataOptions' => $data2];

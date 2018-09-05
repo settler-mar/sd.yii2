@@ -85,5 +85,25 @@
                 </div>
         {% endif %}
 
+        <div class="row stat-block-actions">
+            <h4 style="margin-bottom: 0;">Курсы валют</h4>
+              {% for from,to_list in fullCursList %}
+                  <div class="stat-block-cashback" style="margin-top: 0";>
+                      <div class="col-md-2">
+                          <table>
+                          <tr><td>
+                              <span style="font-size: 2rem;margin-bottom: 10px;margin-top: 20px;">{{from}}</span>
+                          </td></tr>
+                            {% for to,kurs in to_list %}
+                                <tr><td>
+                                    {{ _if(kurs,_nf(kurs,3),"-") }} {{ to }}
+                                </td></tr>
+                            {% endfor %}
+                          </table>
+                    </div>
+                  </div>
+              {% endfor %}
+        </div>
+
     </section>
 </div>

@@ -37,10 +37,4 @@ return [
             'defaultDuration' => 86400,
         ],
     ],
-    'params'=>[
-        'valuta' => "RUB",
-        'valuta_list' => [
-            'RUB','USD','EUR','KZT','UAN'
-        ]
-    ]
 ];

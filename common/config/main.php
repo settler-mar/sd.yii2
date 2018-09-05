@@ -135,8 +135,7 @@ $config = [
         ],
         'conversion' => [
             'class' => 'common\components\Conversion',
-            'cache_duration' => 7200,
-            'options' => ["USD", "EUR", "UAH", "KZT"]
+            'cache_duration' => 7200
         ],
         'balanceCalc' => [
             'class' => 'common\components\BalanceCalc',

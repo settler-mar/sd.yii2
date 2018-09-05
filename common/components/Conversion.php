@@ -46,6 +46,7 @@ class Conversion extends Component
       $cources = require ($path);
     }
 
+    $this->options = Yii::$app->params['valuta_list'];
     $this->data = $cources['data'];
     $this->dataOptions = $cources['dataOptions'];
   }
@@ -88,4 +89,19 @@ class Conversion extends Component
     return isset($this->data[$from]) && !empty($this->data[$to]) ? $this->data[$from] / $this->data[$to]  : null;
   }
 
+  public function getCursList($from){
+    $out = [];
+    foreach ($this->options as $to){
+      $out[$to]=$this->getCurs($to, $from);
+    }
+    return $out;
+  }
+
+  public function getFullCursList(){
+    $out = [];
+    foreach ($this->options as $from){
+      $out[$from]=$this->getCursList($from);
+    }
+    return $out;
+  }
 }

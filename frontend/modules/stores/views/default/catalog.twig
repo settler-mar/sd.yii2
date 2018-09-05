@@ -78,14 +78,12 @@
         {% endif %}
       </div>
 
-
       {% set down_description = offline and current_category.down_description_offline ? current_category.down_description_offline : current_category.down_description %}
       {% if down_description %}
         <div class="catalog_category-down-description margin">
           {{ _tags_class(down_description, {'a':'blue'})|raw }}
         </div>
       {% endif %}
-
 
       {% if content and  pagination_page==1 %}
         <div class="catalog_category-content margin">

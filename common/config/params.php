@@ -1,5 +1,5 @@
 <?php
-return [
+$params = [
   'user.passwordResetTokenExpire' => 3600,
   //'scriptVersion'=>YII_DEBUG?'':'.min.'.file_get_contents(__DIR__.'/script_version.data').'.',
   'scriptVersion'=>YII_DEBUG?'' : '.min.',
@@ -34,6 +34,10 @@ return [
           'text' => 'бел.руб',
           'icon' => 'бел.руб',
       ],
+      /*'GBR' => [
+          'text' => 'gbr',
+          'icon' => 'gbr',
+      ],*/
   ],
   'regions_list' => require(__DIR__ . '/regions.config-local.php'),
 
@@ -57,5 +61,9 @@ return [
           'title' => 'Категории Webgains',
       ]
   ],
-
+  'valuta'=>"RUB",
 ];
+
+$params['valuta_list']=array_keys($params['currencies']);
+
+return $params;

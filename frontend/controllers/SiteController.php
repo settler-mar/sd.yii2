@@ -179,6 +179,7 @@ class SiteController extends SdController
     $stores_news = Stores::find()
         ->where(['>=', 'added', date('Y-m-d 00:00:00', time())])
         ->count();
+
     return $this->render('admin', [
         'users_count' => $usersCount,
         'users_today_count' => $usersToday,
@@ -191,6 +192,7 @@ class SiteController extends SdController
         'visits_sources' => $visitsSource,
         'stores_updated' => $stores_updated,
         'stores_news' => $stores_news,
+        'fullCursList'=>Yii::$app->conversion->fullCursList,
     ]);
   }
 
