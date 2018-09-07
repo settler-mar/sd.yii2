@@ -3,7 +3,7 @@
         <span>
             {{ coupon.name }}
             <span class="coupons-list_item-name-cashback{% if coupon.store_action_id == 1 %} old {% endif %}">
-                     {{ _shop_cashback(coupon.store_cashback, coupon.store_currency, 0, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
+                    {{ _if(coupon.store_cashback ==0,'кэшбэк') }} {{ _shop_cashback(coupon.store_cashback, coupon.store_currency, 0, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
             </span>
             {% if coupon.store_action_id == 1 %}
                  <span class="coupons-list_item-name-cashback">&nbsp;
