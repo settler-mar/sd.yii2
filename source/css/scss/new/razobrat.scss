@@ -198,3 +198,22 @@ span.shop_header-title_description_extend {
 b, strong {
   font-weight: 600;
 }
+
+.kv-drp-dropdown{
+  input{
+    border: none;
+    outline: none;
+    margin: 0;
+    height: 100%;
+  }
+
+  .left-ind{
+    top:auto;
+    left: 3px;
+  }
+
+  .right-ind{
+    top: 2px;
+  }
+
+}

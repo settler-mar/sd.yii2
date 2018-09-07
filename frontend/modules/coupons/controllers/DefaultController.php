@@ -429,6 +429,8 @@ class DefaultController extends SdController
     $contentData['menu_subscribe'] = 0;//true;
     $contentData['posts'] = Posts::getLastPosts();
 
+    $contentData['products_store'] = Stores::findOne(['uid'=>93]);
+
     return $this->render('card', $contentData);
   }
   /**

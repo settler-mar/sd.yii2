@@ -823,6 +823,7 @@ input.link {
   border: none;
   cursor: pointer;
   margin-bottom: 10px;
+  background: $button_base_hover_bg;
 
   &-big {
     font-size: 2em;

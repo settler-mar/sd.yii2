@@ -79,7 +79,34 @@
           </div>
         </div>
 
+        {% if products_store.show_products==1 %}
+          <section class="margin">
+            <div class="page-wrap">
+              <h2 class="content-header">{{ t('main', 'shops_produncts_{store}', {'store': products_store.name})|raw }}</h2>
+
+              {% set products = products_store.topProducts  %}
+
+              {% if products|length > 0 %}
+                <div class="catalog-stores_list shops margin">
+                  {% set store = products_store %}
+                  {% for product in products %}
+                    {% include 'parts/product.twig' %}
+                  {% endfor %}
+                </div>
+
+              {% else %}
+                <p>{{ t('main', 'not_found')|raw }}</p>
+              {% endif %}
+
+              <div class="align-center">
+                <a href="/products/{{ products_store.route }}" class="btn btn-transform"  target="_blank" rel="noopener noreferrer nofollow">{{ t('main', 'all_shops_produncts_{store}', {'store': products_store.name})|raw }} →</a>
+              </div>
+            </div>
+          </section>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
+
+
