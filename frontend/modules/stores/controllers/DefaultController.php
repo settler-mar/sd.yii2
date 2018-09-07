@@ -70,6 +70,14 @@ class DefaultController extends SdController
       $store = Stores::byRoute($id);
       if ($store) {
         //есть магазин
+        $params = explode("/",trim(Yii::$app->request->url,"/"));
+        
+        if(count($params)==3) {
+          if ($params[2] == "get-link") {
+            echo $this->actionTestLink($store);
+            exit;
+          }
+        }
         //$this->Params($request->get(), ['page']);
         $cpaLink = $store->cpaLink;
 //        if ($cpaLink && $cpaLink->cpa_id == 2) {
@@ -524,6 +532,14 @@ class DefaultController extends SdController
       return json_encode($data);
   }
 
+  public function actionTestLink($store) {
+    $request = Yii::$app->request;
 
+    if(!$request->isAjax || !$request->isPost ){
+      throw new \yii\web\NotFoundHttpException;
+    }
+
+    return $store->testLink($request->post('url'));
+  }
 }
 

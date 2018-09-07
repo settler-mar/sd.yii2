@@ -2,6 +2,21 @@
 
 namespace common\models;
 
+/*
+ *
+ * Статьи
+ * https://suay.ru/?p=513
+ * http://shop-info.su/kak-prodavat-na-ebay/kak-zarabotat-s-pomoshhyu-ebay-nichego-ne-vkladyvaya/
+ * https://www.arserblog.com/amazon-vs-ebay-partnerskie-programmy-150/
+ *
+ * Это их сервис для создания партнерской ссылки
+https://epn.ebay.com/tools/link-generator
+
+Sergey Pavlovich SD, [06.09.18 15:02]
+купил
+на 0.99 долл на ебэе
+ *
+ */
 use yii;
 
 class Ebay

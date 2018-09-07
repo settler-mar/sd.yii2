@@ -53,6 +53,37 @@ class AdmitadController extends Controller
     ddd($test->test());
   }
 
+  /**
+   * Тест Адмтада ссылкс.
+   */
+  public function actionTestLink()
+  {
+    $test = new Admitad();
+
+    $url="https://ru.aliexpress.com/item/Leather-Wallet-Case-for-Huawei-Y6-2018-Honor-Play-7A-Standart-Y5-2018-holder-Cover-for/32891754791.html";
+    //$url="https://ru.aliexpress.com/item/Oyuncak-Squishe/32874305939.html";
+    $store_id="93";
+
+    $store=CpaLink::findOne(['stores_id'=>$store_id,'cpa_id'=>1]);
+
+    $options=[
+      'subid'=>0,
+      'ulp'=>$url,
+    ];
+
+    $dp_link=$test->getDeeplink($store->affiliate_id,$options);
+    if(count($dp_link)==0)return;
+    $options=[
+        'link'=>$dp_link[0]
+    ];/**/
+
+
+    $msg=$test->getTestLink($options);
+
+    ddd($msg);
+
+  }
+
   //добавляем параметры для запуска
   public function options($actionID)
   {
@@ -537,5 +568,4 @@ class AdmitadController extends Controller
 
     Coupons::deleteAll(['store_id' => 0]);
   }
-
 }

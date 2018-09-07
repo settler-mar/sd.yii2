@@ -3,7 +3,10 @@
 namespace common\models;
 
 use \Admitad\Api\Api;
+use Admitad\Api\Request;
+use Admitad\Api\Response;
 use Yii;
+use Buzz\Client\Curl;
 
 class Admitad{
 
@@ -57,6 +60,44 @@ class Admitad{
     $websiteId=$this->config['websiteId'];
     $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
+  }
+
+  public function getDeeplink($c_id,$options=array()){
+    $this->init('deeplink_generator');
+    $websiteId=$this->config['websiteId'];
+    $data=$this->admitad->get("/deeplink/".$websiteId.'/advcampaign/'.$c_id.'/', $options)->getArrayResult();
+    return $data;
+  }
+
+  public function getTestLink($options=array())
+  {
+    $this->init('validate_links');
+
+    $resource = '/validate_links/?' . http_build_query($options);
+    $request = new Request(Request::METHOD_GET, $resource);
+    $request->setHost("https://api.admitad.com");
+
+    $response = new Response();
+
+    $this->lastRequest = $request;
+    $this->lastResponse = $response;
+
+    $request->addHeader('Authorization: Bearer ' . $this->admitad->getAccessToken());
+
+
+    $client = new Curl();
+    $client->setTimeout(300);
+    $client->send($request, $response);
+
+
+    $data=$response->getResult()->getArrayCopy();/**/
+
+
+    $out = isset($data["message"])?
+              $data["message"]:
+              str_replace("links: ","",$data['error_description']);
+
+    return trim($out);
   }
 
   public static function getStatus(){

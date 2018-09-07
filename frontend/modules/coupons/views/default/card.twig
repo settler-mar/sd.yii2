@@ -94,6 +94,12 @@
                   {% endfor %}
                 </div>
 
+                <div class="catalog_products_store_conditions" id="store_tariffs_id">
+                  <div class="catalog_products_store_conditions_content">
+                    {{ store.conditions | raw}}
+                  </div>
+                </div>
+
               {% else %}
                 <p>{{ t('main', 'not_found')|raw }}</p>
               {% endif %}

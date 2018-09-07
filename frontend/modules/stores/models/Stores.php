@@ -2,6 +2,7 @@
 
 namespace frontend\modules\stores\models;
 
+use common\models\Admitad;
 use frontend\modules\ar_log\behaviors\ActiveRecordChangeLogBehavior;
 use yii;
 use frontend\modules\stores\models\CategoriesStores;
@@ -1246,5 +1247,25 @@ class Stores extends \yii\db\ActiveRecord
         return false;
     }
   }
-  
+
+  public function testLink($url){
+    $cpaLink = CpaLink::findOne(['stores_id'=>$this->uid,'cpa_id'=>1]);
+
+    $options=[
+        'subid'=>Yii::$app->user->isGuest?0:Yii::$app->user->id,
+        'ulp'=>$url,
+    ];
+
+    $admitad = new Admitad();
+
+    $dp_link=$admitad->getDeeplink($cpaLink->affiliate_id,$options);
+    if(count($dp_link)==0)return "Тест ссылок не поддерживается";
+    $options=[
+        'link'=>$dp_link[0]
+    ];
+
+    $msg=$admitad->getTestLink($options);
+
+    return $msg;
+  }
 }
