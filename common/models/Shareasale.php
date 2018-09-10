@@ -1,5 +1,5 @@
 <?php
-
+//https://account.shareasale.com/a-apimanager.cfm?#
 namespace common\models;
 
 use yii;
@@ -32,6 +32,26 @@ class Shareasale
     {
         //return $this->getData('merchantSearch', ['merchantId' => $id]);
         return $this->getData('merchantStatus', ['merchantid' => $id]);
+    }
+
+    public function getActivity($params=array()){
+      /*if(!isset($params['dateStart'])){
+        $params['dateStart']=date('m/d/Y',time()-60*60*24*30*3);
+      }
+      //return $this->getData('activity', $params);/**/
+
+      //return $this->getData('voidtrail', $params);
+      //$params['paymentDate']="09/08/2018";
+      //$params['merchantId']="32599";
+      //$params['orderNumber']="Sale - 54315413";
+      //return $this->getData('balance', $params);
+      $data = $this->getData('ledger', $params);
+
+      return json_decode(json_encode($data),true);
+    }
+
+    public function getCoupons($params=array()){
+      return $this->getData('couponDeals', $params);
     }
 
     protected function getData($actionVerb, $params = [])

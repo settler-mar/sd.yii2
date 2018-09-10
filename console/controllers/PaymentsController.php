@@ -22,7 +22,6 @@ class PaymentsController extends Controller
 {
   private $users = [];
 
-
   /**
    * Завершение платежей по close date
    */
@@ -190,7 +189,7 @@ class PaymentsController extends Controller
               'click_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
               'action_date' => date('Y-m-d H:i:s', strtotime($order['Date'])),
               'status_updated' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])),
-              'closing_date' => date('Y-m-d H:i:s', strtotime($order['StateChangeMoment'])), //??
+              'closing_date' => false, //??
               'product_country_code' => null, // а может сюда StatIdent ??
               'order_id' => (string)$order['StatIdent'],// тоже под вопросом??
               'tariff_id' => null,

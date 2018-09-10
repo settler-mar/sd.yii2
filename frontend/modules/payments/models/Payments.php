@@ -513,6 +513,10 @@ class Payments extends \yii\db\ActiveRecord
       $payment['currency'] = $store->currency;
     }
 
+    if($payment['action_id']){
+      $payment['action_id'] = (int)preg_replace('/[^0-9]/', '', $payment['action_id']);
+    }
+
     $db_payment = self::findOne(['action_id' => $payment['action_id'], 'affiliate_id' => $payment['affiliate_id']]);
     //$db_payment = self::findOne(['action_id' => $payment['action_id']]);
     if (!$db_payment) {
@@ -578,6 +582,7 @@ class Payments extends \yii\db\ActiveRecord
         $db_payment->closing_date = date("Y-m-d H:i:s", $time);
       }
       $saveStatus = $db_payment->save();
+
       if ($saveStatus && $notify) {
         self::makeNotification($payment['subid'], [
             'type_id' => 1,

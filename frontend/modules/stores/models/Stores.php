@@ -334,6 +334,7 @@ class Stores extends \yii\db\ActiveRecord
       }
       //$this->video = json_decode($this->video, true);
     }
+
     $regions = explode( ',', $this->region);
     foreach (Yii::$app->params['regions_list'] as $key => $region) {
         $this->regions[] = [
@@ -342,6 +343,13 @@ class Stores extends \yii\db\ActiveRecord
             'checked' => in_array($key, $regions)
         ];
     }
+
+
+    $displayed_cashback = preg_replace('/[^0-9\.\,]/', '', $this->displayed_cashback);
+    $displayed_cashback = str_replace(',','.',$displayed_cashback);
+    $in_curency=(strpos($this->displayed_cashback, '%') === false);
+    $displayed_cashback_filtred = round($displayed_cashback,$in_curency?0:2);
+    $this->displayed_cashback = str_replace($displayed_cashback,$displayed_cashback_filtred,$this->displayed_cashback);
   }
 
   /**
@@ -1033,6 +1041,8 @@ class Stores extends \yii\db\ActiveRecord
      */
   public static function addOrUpdate($store)
   {
+    $transaction = Yii::$app->getDb()->beginTransaction();
+
       $cpa_id = false;
       $db_store = false;
       $new = false;
@@ -1182,14 +1192,16 @@ class Stores extends \yii\db\ActiveRecord
       if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
           $db_store->active_cpa = (int)$cpa_id;
       }
+
       if ($db_store->active_cpa == (int)$cpa_id) {
           // спа активная, обновляем поля - какие - можно потом добавить
           $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
           //$db_store->displayed_cashback = isset($store['cashback']) ? $store['cashback'] : $db_store->displayed_cashback;
           //$db_store->description = !empty($store['description']) ? $store['description'] : $db_store->description;
           //$db_store->short_description = !empty($store['short_description']) ? $store['short_description'] : $db_store->short_description;
-          $db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : $db_store->conditions;
-          $db_store->alias = !empty($store['alias']) ? $store['alias'] : $db_store->alias;
+          //$db_store->conditions = !empty($store['conditions']) ? $store['conditions'] : $db_store->conditions;
+          //$db_store->alias = !empty($store['alias']) ? $store['alias'] : $db_store->alias;
+          $db_store->currency = $store['currency'];
           if ($db_store->is_active != -1 && isset($store['status'])) {
               $db_store->is_active = $store['status'];
           }
@@ -1198,6 +1210,13 @@ class Stores extends \yii\db\ActiveRecord
       if ($db_store->save()) {
           $result = true;
       };
+
+      if(!$result || ($newCpa && !$resultCpa)){
+
+      }else{
+        $transaction->commit();
+        $transaction->rollBack();
+      }
       return [
           'result' => $result,
           'new' => $new,
