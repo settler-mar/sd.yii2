@@ -365,7 +365,7 @@ class Coupons extends \yii\db\ActiveRecord
     $languages = self::languagesArray();
     $coupons = Coupons::find()
         ->from(Coupons::tableName() . ' cwc')
-        ->select(['cwc.*', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_active as store_is_active',
+        ->select(['cwc.*','`cwc`.`visit`*35.6+15*SIN(cwc.uid)+5*SIN(cwc.cpa_id+cwc.store_id) as visit', 'cws.name as store_name', 'cws.route as store_route', 'cws.is_active as store_is_active',
             'cws.currency as store_currency', 'cws.displayed_cashback as store_cashback',
             'cws.action_id as store_action_id', 'cws.logo as store_image'])
         ->innerJoin(Stores::tableName() . ' cws', 'cwc.store_id = cws.uid');

@@ -46,7 +46,7 @@
           {% endif %}
           <div class="coupons-list_item-visit">
             {{ t('main', 'coupon_used')|raw }}:
-            <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit*(35+15*sin(coupon.uid)),0) | raw }}</span>
+            <span class="coupons-list_item-visit-count">{{ _nf(coupon.visit,0) | raw }}</span>
           </div>
         </div>
         <div class="coupons-list_item-logo-info-share">
