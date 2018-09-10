@@ -58,6 +58,13 @@
                     'title': t('account', 'menu_history'
                     )})|raw }}
             </li>
+            <li>
+                {{ get_menu_item({
+                    'href':'/account/affiliate',
+                    'left-icon': 'money-bag',
+                    'title': t('account', 'affiliate_referrals_payments_confirmed'
+                    )})|raw }}
+            </li>
         {% else %}
             <li class="has-children bookmarks">
                 {{ get_menu_item({
@@ -96,43 +103,6 @@
                 })|raw }}
             </li>
         {% endif %}
-        {% if header == 1 %}
-            <li>
-                {{ get_menu_item({
-                    'href':'/account/support',
-                    'left-icon': 'question-circle-o',
-                    'title': t('account', 'menu_help'
-                    )})|raw }}
-            </li>
-        {% else %}
-            <li class="help-icon fasicon has-children">
-                {{ get_menu_item({
-                    'href':'/account/support',
-                    'title': t('account', 'menu_help'),
-                    'left-icon': 'question-circle-o',
-                    'right-icon': 'angle-right'
-                })|raw }}
-                <ul>
-                    <li>
-                        {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help_support')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'/howitworks', 'title': t('account', 'menu_help_howitworks')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'/faq', 'title': t('account', 'menu_help_faq')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'/loyalty', 'title': t('account', 'menu_help_loyalty')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'/recommendations', 'title': t('account', 'menu_help_recommendations')})|raw}}
-                    <li>
-                        {{ get_menu_item({'href':'/reviews', 'title': t('account', 'menu_help_reviews')})|raw }}
-                    </li>
-                </ul>
-            </li>
-        {% endif %}
 
         {% if header != 1 %}
             <li class="favorite-icon fasicon">
@@ -166,6 +136,43 @@
                 'left-icon': 'coins'
             })|raw }}
         </li>
+      {% if header == 1 %}
+          <li>
+            {{ get_menu_item({
+              'href':'/account/support',
+              'left-icon': 'question-circle-o',
+              'title': t('account', 'menu_help'
+              )})|raw }}
+          </li>
+      {% else %}
+          <li class="help-icon fasicon has-children">
+            {{ get_menu_item({
+              'href':'/account/support',
+              'title': t('account', 'menu_help'),
+              'left-icon': 'question-circle-o',
+              'right-icon': 'angle-right'
+            })|raw }}
+              <ul>
+                  <li>
+                    {{ get_menu_item({'href':'/account/support', 'title': t('account', 'menu_help_support')})|raw }}
+                  </li>
+                  <li>
+                    {{ get_menu_item({'href':'/howitworks', 'title': t('account', 'menu_help_howitworks')})|raw }}
+                  </li>
+                  <li>
+                    {{ get_menu_item({'href':'/faq', 'title': t('account', 'menu_help_faq')})|raw }}
+                  </li>
+                  <li>
+                    {{ get_menu_item({'href':'/loyalty', 'title': t('account', 'menu_help_loyalty')})|raw }}
+                  </li>
+                  <li>
+                    {{ get_menu_item({'href':'/recommendations', 'title': t('account', 'menu_help_recommendations')})|raw}}
+                  <li>
+                    {{ get_menu_item({'href':'/reviews', 'title': t('account', 'menu_help_reviews')})|raw }}
+                  </li>
+              </ul>
+          </li>
+      {% endif %}
         <li class="action-btn"> {{ get_menu_item({
                 'href':'/logout',
                 'title': t('common', 'logout'),
