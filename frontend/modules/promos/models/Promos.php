@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\promo\models;
+namespace frontend\modules\promos\models;
 
 use Yii;
 
@@ -18,7 +18,7 @@ use Yii;
  * @property integer $on_form
  * @property string $created_at
  */
-class Promo extends \yii\db\ActiveRecord
+class Promos extends \yii\db\ActiveRecord
 {
     public $attributesToUser = ['loyalty_status', 'referrer_id', 'bonus_status', 'new_loyalty_status_end'];
 

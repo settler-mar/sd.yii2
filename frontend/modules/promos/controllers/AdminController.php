@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\modules\promo\controllers;
+namespace frontend\modules\promos\controllers;
 
 use yii;
-use frontend\modules\promo\models\Promo;
-use frontend\modules\promo\models\SearchPromo;
+use frontend\modules\promos\models\Promos;
+use frontend\modules\promos\models\SearchPromos;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -43,7 +43,7 @@ class AdminController extends Controller
             return false;
         }
 
-        $searchModel = new SearchPromo();
+        $searchModel = new SearchPromos();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dictionary = Yii::$app->params['dictionary'];
         $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
@@ -94,7 +94,7 @@ class AdminController extends Controller
             return false;
         }
 
-        $model = new Promo();
+        $model = new Promos();
         $dictionary = Yii::$app->params['dictionary'];
         $loyaltyStatuses = isset($dictionary['loyalty_status']) ? $dictionary['loyalty_status'] : [];
         $loyaltyStatuses = array_map(function ($item, $key) {
@@ -177,7 +177,7 @@ class AdminController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Promo::findOne($id)) !== null) {
+        if (($model = Promos::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

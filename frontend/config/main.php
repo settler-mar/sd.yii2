@@ -281,8 +281,8 @@ $config = [
     'competitions' => [
       'class' => 'frontend\modules\competitions\Module',
     ],
-    'promo' => [
-      'class' => 'frontend\modules\promo\Module',
+    'promos' => [
+      'class' => 'frontend\modules\promos\Module',
     ],
     'actions' => [
       'class' => 'frontend\modules\actions\Module',

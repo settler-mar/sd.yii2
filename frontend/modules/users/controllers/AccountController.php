@@ -18,7 +18,7 @@ use yii\widgets\MaskedInput;
 use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsToUsers;
 use frontend\modules\notification\models\Notifications;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\promos\models\Promos;
 use frontend\modules\actions\models\ActionsActions;
 
 /**
@@ -377,7 +377,7 @@ class AccountController extends Controller
                   'account',
                   $promo ? 'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}' :
                       'you_confirmed_to_be_member_of_{action}',
-                  ['action' => $action['name'], 'advantages' => $promo ? Promo::resultText($promo): null]
+                  ['action' => $action['name'], 'advantages' => $promo ? Promos::resultText($promo): null]
               );
               $notify->save();
 

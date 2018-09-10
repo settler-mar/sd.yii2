@@ -4,7 +4,7 @@ namespace frontend\modules\users\models;
 
 use yii;
 use yii\base\Model;
-use frontend\modules\promo\models\Promo as DbPromo;
+use frontend\modules\promos\models\Promos as DbPromo;
 
 class Promo extends Model
 {

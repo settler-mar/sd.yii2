@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\modules\promo;
+namespace frontend\modules\promos;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'frontend\modules\promo\controllers';
+    public $controllerNamespace = 'frontend\modules\promos\controllers';
 
     public function init()
     {

@@ -12,7 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use frontend\modules\promo\models\Promo as DbPromo;
+use frontend\modules\promos\models\Promos as DbPromo;
 
 /**
  * AdminController implements the CRUD actions for Actions model.

@@ -1,16 +1,16 @@
 <?php
 
-namespace frontend\modules\promo\models;
+namespace frontend\modules\promos\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\promos\models\Promos;
 
 /**
  * SearchPromo represents the model behind the search form about `frontend\modules\promo\models\Promo`.
  */
-class SearchPromo extends Promo
+class SearchPromos extends Promos
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class SearchPromo extends Promo
      */
     public function search($params)
     {
-        $query = Promo::find();
+        $query = Promos::find();
 
         // add conditions that should always apply here
 

@@ -4,7 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 use frontend\modules\users\models\Users;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\promos\models\Promos;
 
 class SdUrlPromo implements UrlRuleInterface
 {
@@ -77,7 +77,7 @@ class SdUrlPromo implements UrlRuleInterface
 
       if (isset($params['promo'])) {
         $promo = trim($params['promo']);
-        $dbPromo = Promo::find()->where(['name' => $promo])->one();
+        $dbPromo = Promos::find()->where(['name' => $promo])->one();
         if ($dbPromo) {
           Yii::$app->session->set('referrer_promo', $promo);
         }

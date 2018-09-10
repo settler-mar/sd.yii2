@@ -6,7 +6,7 @@ use yii;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\users\models\Users;
 use frontend\modules\notification\models\Notifications;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\promos\models\Promos;
 
 /**
  * This is the model class for table "cw_actions_actions".
@@ -148,7 +148,7 @@ class ActionsActions extends \yii\db\ActiveRecord
                             'account',
                             $promo ? 'you_did_conditions_of_{action}_and_recieved_{advantages}':
                                 'you_did_conditions_of_{action}',
-                            ['action' => $action['action_name'], 'advantages' => $promo ? Promo::resultText($promo): null]
+                            ['action' => $action['action_name'], 'advantages' => $promo ? Promos::resultText($promo): null]
                         );
                         $notify->save();
                     };

@@ -2,6 +2,7 @@
 
 namespace frontend\modules\users\controllers;
 
+use frontend\modules\promos\models\Promos;
 use frontend\modules\users\models\RegistrationWebForm;
 use frontend\modules\users\models\ResetPasswordForm;
 use frontend\modules\users\models\Users;
@@ -497,7 +498,7 @@ class DefaultController extends Controller
     if (!Yii::$app->user->isGuest || !$request->isAjax) {
       throw new NotFoundHttpException();
     }
-    $model = new Promo();
+    $model = new Promos();
     if ($model->load($request->post()) && $model->validate()) {
         $model->save();
         if ($model->dbPromo) {
@@ -536,7 +537,7 @@ class DefaultController extends Controller
   public function actionReg()
   {
      $this->viewPath = '@app/views/site';
-     $model = new Promo();
+     $model = new Promos();
      return $this->render('static_page', [
          'model' => $model,
          'recaptcha' => Yii::$app->reCaptcha->siteKey,

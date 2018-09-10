@@ -3,7 +3,7 @@
 namespace frontend\modules\actions\models;
 
 use yii;
-use frontend\modules\promo\models\Promo;
+use frontend\modules\promos\models\Promos;
 use frontend\modules\cache\models\Cache;
 
 /**
@@ -56,8 +56,8 @@ class Actions extends \yii\db\ActiveRecord
             [['action_time', 'promo_start', 'promo_end'], 'integer'],
             [['name', 'image', 'page', 'inform_types'], 'string', 'max' => 255],
             [['active', 'page_disabled_for_disableds'], 'string', 'max' => 1],
-            [['promo_end'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_end' => 'uid']],
-            [['promo_start'], 'exist', 'skipOnError' => true, 'targetClass' => Promo::className(), 'targetAttribute' => ['promo_start' => 'uid']],
+            [['promo_end'], 'exist', 'skipOnError' => true, 'targetClass' => Promos::className(), 'targetAttribute' => ['promo_end' => 'uid']],
+            [['promo_start'], 'exist', 'skipOnError' => true, 'targetClass' => Promos::className(), 'targetAttribute' => ['promo_start' => 'uid']],
             [['inform_types_form'], 'in', 'range' => array_keys($this->inform_types_select), 'allowArray'=>true],
             //[['inform_types_form'], 'safe'],
         ];
@@ -104,7 +104,7 @@ class Actions extends \yii\db\ActiveRecord
      */
     public function getPromoEnd()
     {
-        return $this->hasOne(Promo::className(), ['uid' => 'promo_end']);
+        return $this->hasOne(Promos::className(), ['uid' => 'promo_end']);
     }
 
     /**
@@ -112,7 +112,7 @@ class Actions extends \yii\db\ActiveRecord
      */
     public function getPromoStart()
     {
-        return $this->hasOne(Promo::className(), ['uid' => 'promo_start']);
+        return $this->hasOne(Promos::className(), ['uid' => 'promo_start']);
     }
 
     /**

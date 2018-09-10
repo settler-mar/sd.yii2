@@ -9,7 +9,7 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\withdraw\models\UsersWithdraw;
-use frontend\modules\promo\models\Promo as DbPromo;
+use frontend\modules\promos\models\Promos as DbPromo;
 use api\models\OauthClients;
 use Yii;
 use yii\base\NotSupportedException;
