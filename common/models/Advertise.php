@@ -30,6 +30,16 @@ class Advertise
         return $this->getRequest('offers', ['connected_offers' => 1]);
     }
 
+    public function offersLink($offer_id)
+    {
+      $data= $this->getRequest('links_generator', [
+          'source_id' => $this->config['source_id'],
+          'offer_id'=>$offer_id
+      ]);
+
+      return $data;
+    }
+
     public function coupons()
     {
       return $this->getRequest('discounts', ['connected_offers' => 1]);
@@ -43,7 +53,7 @@ class Advertise
             'format' => 'json'
         ]);
         $url = $this->url.$method.'/&'. http_build_query($params);
-        echo $url."\n";
+        //echo $url."\n";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 0);
@@ -56,7 +66,7 @@ class Advertise
         curl_close($ch);
 
         return json_decode($response, true);
-
-
     }
+
+
 }

@@ -413,7 +413,8 @@ class AdminController extends Controller
           'refs_active' => $refsActive,
           'traffTypeList' => Users::trafficTypeList(),
           'MaskedInput_class' => MaskedInput::className(),
-          'api_client' => OauthClients::findOne(['user_id' => $id])
+          'api_client' => OauthClients::findOne(['user_id' => $id]),
+        'valuta_list'=>Yii::$app->params['valuta_list_dp']
       ]);
     }
   }

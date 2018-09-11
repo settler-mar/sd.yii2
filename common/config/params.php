@@ -74,4 +74,9 @@ $params = [
 
 $params['valuta_list']=array_keys($params['currencies']);
 
+$params['valuta_list_dp']=[];
+foreach ($params['currencies'] as $k=>$valuta){
+  $params['valuta_list_dp'][$k]=$valuta['text'];
+}
+
 return $params;

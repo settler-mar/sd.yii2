@@ -19,6 +19,10 @@ use yii;
  * https://habr.com/post/151917/
  *
  * купил за 1.17 доллара книгу 6/09/2018 14:30
+ *
+ * https://portal.aws.amazon.com
+ * bnpparibas2011@gmail.com
+ * bnpparibas2011@
  */
 class Amazon
 {

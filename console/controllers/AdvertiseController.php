@@ -36,8 +36,13 @@ class AdvertiseController extends Controller
         if (isset($response['response']['advcampaigns'])) {
             $storesCount = count($response['response']['advcampaigns']);
             foreach ($response['response']['advcampaigns'] as $offer) {
-                //d($offer);
                 $cashback = $this->getCashback($offer);
+                $links = $service->offersLink($offer['id']);
+                if(isset($links['error'])){
+                  d($offer['name'].': '.$links['error']);
+                  $storesFails++;
+                  continue;
+                }
                 $store = [
                     'logo' => $offer['logo'],
                     'cpa_id' => $this->cpa->id,
@@ -51,10 +56,9 @@ class AdvertiseController extends Controller
                     'short_description' => $offer['short_description'],//надо посмотреть что будет идти
                     'conditions' => $offer['rules'],//надо посмотреть что будет идти
                     'status' => 1,
-                    'affiliate_link' => 'http://glogo.ru/go/66bf13f70409426ba0eee42428aa9b3e365b64d1eb0a0b0b/?dpl=' .
-                        $offer['site_url'],
+                    'affiliate_link' => $links['links'][0],
                 ];
-                //d($store);
+                //ddd($store);
                 $result = Stores::addOrUpdate($store);
                 if (!$result['result']) {
                     $storesFails++;

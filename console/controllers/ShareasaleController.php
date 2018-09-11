@@ -144,6 +144,16 @@ class ShareasaleController extends Controller
     }
   }
 
+
+  /*
+   * Получение купонов
+   */
+  public function actionCoupons(){
+    $shareasale = new Shareasale();
+    $coupons = $shareasale->getCoupons();
+    ddd($coupons[0]);
+  }
+
   /**
    * получение шопов
    */

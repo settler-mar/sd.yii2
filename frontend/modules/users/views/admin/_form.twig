@@ -100,8 +100,11 @@
                     '1' : 'Ожидает подтверждение на Вебмастра'
                 })|raw }}
             </div>
-            {% if(not(model.isNewRecord)) %}
-                <div class="col-md-6">
+            <div class="col-md-6">
+
+                {{ form.field(model, 'currency').dropDownList(valuta_list)|raw }}
+
+                {% if(not(model.isNewRecord)) %}
 
                     {{ form.field(model, 'last_ip').textInput({'disabled':true})|raw }}
 
@@ -140,8 +143,8 @@
 
                     {{ form.field(model, 'delete_comment').textArea({'disabled':true, 'class':'form-control width_300'})|raw }}
 
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <input type="submit" value="{{ model.isNewRecord ? 'Создать' : 'Сохранить' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
