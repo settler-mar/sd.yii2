@@ -1,4 +1,5 @@
 {% set curr = currencyIcon(app.user.identity.currency) %}
+{% set user_curr = currencyIcon(ref_user.currency) %}
 <div class="content-wrapper">
             <h3>{{ t('account', 'users_referral_history') }}</h3>
         <div>
@@ -18,8 +19,8 @@
         </div>
         <div>
             {{ t('account', 'users_cashback_confirmed_expected') }}:
-            <b>{{ _nf(total.sum_confirm) | raw}} {{ curr | raw}}</b> /
-            <b>{{ _nf(total.sum_pending) | raw}} {{ curr | raw}}</b>
+            <b>{{ _nf(total.sum_confirm) | raw}} {{ user_curr | raw}}</b> /
+            <b>{{ _nf(total.sum_pending) | raw}} {{ user_curr | raw}}</b>
         </div>
         <div>
             {{ t('account', 'users_summ_confirmed_expected') }}:
@@ -55,7 +56,7 @@
                             </td>
                             <td>{{ _date(payment.action_date)}}</td>
                             <td>
-                                {{ _nf(payment.order_price * payment.kurs) | raw }} {{ curr | raw}}
+                                {{ _nf(payment.order_price * payment.kurs) | raw }} {{ user_curr | raw}}
                             </td>
                             <td>
                                 {{ _nf(payment.cashback) | raw }} {{ curr | raw}}

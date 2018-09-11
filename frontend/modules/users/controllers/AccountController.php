@@ -78,16 +78,24 @@ class AccountController extends Controller
       ->select([
         'count(*) as total',
         'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
-        'SUM(sum_pending) as sum_pending',
         'SUM(cnt_pending) as cnt_pending',
-        'SUM(sum_confirmed) as sum_confirmed',
         'SUM(cnt_confirmed) as cnt_confirmed',
         'SUM(sum_to_friend_pending) as sum_to_ref_pending',
         'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
       ])
-      ->asArray()
-      ->one();
+        ->asArray()
+        ->one();
 
+    $from_refQuery = clone $query;
+    $from_refQuery = $from_refQuery
+        ->select([
+          'currency',
+          'SUM(sum_confirmed) as sum_confirmed',
+          'SUM(sum_pending) as sum_pending',
+        ])
+        ->groupBy(['currency'])
+      ->asArray()
+      ->all();
 
     $dataBase = clone $query;
     $pagination = new Pagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
@@ -105,6 +113,7 @@ class AccountController extends Controller
       'pagination' => $pagination->getPagination('users/account', $paginateParams),
       'users_total' => $totQuery,
       'data_ranger' => $data_ranger,
+      'from_refQuery'=>  $from_refQuery,
     ]);
   }
   /**

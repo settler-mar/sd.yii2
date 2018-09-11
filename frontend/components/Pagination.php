@@ -137,12 +137,15 @@ class Pagination
     $pageName = preg_replace('/\/category:[0-9]*/', '', $pageName);
     $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
     $params['page'] = null;
+    $isAjaxLoad=isset($params['isAjax'])?$params['isAjax']:true;
     $pageName = array_merge(['/' . $pageName], $params);
     //d($pageName, array_merge($params, ['page' => 5]), Url::toRoute(array_merge($params, ['page' => 5]))) ;
 
+    $a_class=$isAjaxLoad?"ajax_load ":"";
+
     //предыдущая
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Предыдущая" class="ajax_load"  href="' .
+      ' data-original-title="Предыдущая" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
       Help::svg('caret-left', 'pagination_button pagination_button_left').'</a></li>' : '';
@@ -150,18 +153,18 @@ class Pagination
     //первая
     $first = $page >= $displayCount && $total > $displayCount ?
       '<li class="first"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Первая" class="ajax_load"  href="' .
+      ' data-original-title="Первая" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => 1])) . '">1' .
       '</a></li>' : '';
     //последняя
     $last = $total - $page >= $displayCount ? '<li class="last"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Последняя" class="ajax_load"  href="' .
+      ' data-original-title="Последняя" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $total])) . '">' . $total .
       '</a></li>' : '';
 
     //следующая
     $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Следующая" class="ajax_load"  href="' .
+      ' data-original-title="Следующая" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
         Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';
@@ -176,7 +179,7 @@ class Pagination
 
     for ($i = $pageStart; $i <= $pageEnd; $i++) {
       $pages .= ($i == $page ? '<li class="active"><span>' . $i . '</span></li>' :
-        '<li><a class="ajax_load"  href="' .
+        '<li><a class="'.$a_class.'"  href="' .
         Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
     };
 

@@ -52,7 +52,7 @@ class Doubletrade
             'endDate'=> date('d.m.y', $endDate),//'24.08.18',
             'startDate'=> date('d.m.y', $startDate),//'01.07.18',
         ]);
-        echo $url."\n";
+        //echo $url."\n";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 0);

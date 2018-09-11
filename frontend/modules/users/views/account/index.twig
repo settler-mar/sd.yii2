@@ -33,15 +33,29 @@
         <b>{{ _nf(users_total.cnt_confirmed,0) | raw}}</b> /
         <b>{{ _nf(users_total.cnt_pending,0) | raw}}</b>
       </div>
+      {% if from_refQuery %}
       <div>
-        {{ t('account', 'users_cashback_confirmed_expected') }}:
-        <b>{{ _nf(users_total.sum_confirmed,0) | raw}} {{ curr | raw}}</b> /
-        <b>{{ _nf(users_total.sum_pending,0) | raw}} {{ curr | raw}}</b>
+        <table class="no_style">
+          <tr>
+            <td>{{ t('account', 'users_cashback_confirmed_expected') }}:&nbsp;</td>
+            {% for n,total in from_refQuery %}
+              {% set user_curr = currencyIcon(total.currency) %}
+              {{ _if(n>0,'</tr><tr><td></td>')|raw }}
+              <td class="align-right">
+                <b>{{ _nf(total.sum_confirmed,2) | raw}}&nbsp;{{ user_curr | raw}}</b>
+              </td><td>&nbsp;/&nbsp;</td>
+              <td class="align-right">
+                <b>{{ _nf(total.sum_pending,2) | raw}}&nbsp;{{ user_curr | raw}}</b>
+              </td>
+            {% endfor %}
+          </tr>
+        </table>
       </div>
+      {% endif %}
       <div>
         {{ t('account', 'users_summ_confirmed_expected') }}:
-        <b>{{ _nf(users_total.sum_to_ref_confirmed,0) | raw}} {{ curr | raw}}</b> /
-        <b>{{ _nf(users_total.sum_to_ref_pending,0) | raw}} {{ curr | raw}}</b>
+        <b>{{ _nf(users_total.sum_to_ref_confirmed,2) | raw}}&nbsp;{{ curr | raw}}</b> /
+        <b>{{ _nf(users_total.sum_to_ref_pending,2) | raw}}&nbsp;{{ curr | raw}}</b>
       </div>
       <form method="get">
         {{ t('common', 'date_range') }}:
@@ -101,9 +115,9 @@
                   {{ _nf(user.sum_pending) | raw }} {{ user_curr | raw}}
                 </td>
                 <td>
-                  {{ _nf(user.sum_to_friend_confirmed) | raw }} {{ user_curr | raw}}
+                  {{ _nf(user.sum_to_friend_confirmed) | raw }} {{ curr | raw}}
                   /
-                  {{ _nf(user.sum_to_friend_pending) | raw }} {{ user_curr | raw}}
+                  {{ _nf(user.sum_to_friend_pending) | raw }} {{ curr | raw}}
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}

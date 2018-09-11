@@ -650,14 +650,14 @@ class Payments extends \yii\db\ActiveRecord
       } else {
         $saveStatus = false;
       }
-      if ($saveStatus && $notify && $user->referrer_id > 0 && $db_payment->status == 2) {
-        self::makeNotification($user->referrer_id, [
-            'type_id' => 3,
-            'status' => $db_payment->status,
-            'amount' => $db_payment->ref_bonus,
-            'payment_id' => $db_payment->uid,
-        ]);
-      }
+    }
+    if ($saveStatus && $notify && $user->referrer_id > 0 && $db_payment->status == 2) {
+      self::makeNotification($user->referrer_id, [
+          'type_id' => 3,
+          'status' => $db_payment->status,
+          'amount' => $db_payment->ref_bonus,
+          'payment_id' => $db_payment->uid,
+      ]);
     }
     //ddd($db_payment);
     return [

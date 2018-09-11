@@ -175,3 +175,18 @@ table.adaptive {
     }
   }
 }
+
+table.no_style{
+  background: initial;
+  text-align: initial;
+  font-size: initial;
+  width: auto;
+  color: $text_color;
+  margin: initial;
+
+  td,tr{
+    background: initial;
+    padding: initial;
+    color: $text_color;
+  }
+}

@@ -184,7 +184,9 @@ class DoublertradeController extends Controller
             $this->updated++;
           }
         } else {
-          d($paymentStatus['payment']->errors);
+          if(count($paymentStatus['payment']->errors)>0) {
+            d($paymentStatus['payment']->errors);
+          }
         }
       }
       //делаем пересчет бланса пользователей

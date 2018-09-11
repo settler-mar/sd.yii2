@@ -35,7 +35,7 @@ class CjController extends Controller
   private $categoriesConfigFile;
   private $categories = [];
   private $config;
-  private $users;
+  private $users=[];
   private $languages;
 
   public function init()
