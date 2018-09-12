@@ -229,6 +229,9 @@ $functionsList = [
         'currency-icon currency-icon-' . $currencyIcon[$currency]
     ) : $currency);
   },
+  'get_store' => function($store_id){
+    return \frontend\modules\stores\models\Stores::findOne(['uid'=>$store_id]);
+  },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {
     $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);

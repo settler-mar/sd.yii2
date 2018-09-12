@@ -239,7 +239,7 @@ return [
     'product_bought' => 'Куплено',
     'bought_by_sd_updated_at{time}' => 'Куплены пользователями SecretDiscounter. Последнее обновление &ndash; {time}',
     'install-plugin' => 'Плагин  для браузера',
-    'test_link_{store}_h' => "Тест ссылок для {store}",
+    'test_link_{store}_h' => "Проверка товара {store} на аффилиатность",
     'test_link' => "Проверить ссылку",
     'test_link_placeholder' => "Введите ссылку для проверки",
     'test_link_not_support' => "Тест ссылок не поддерживается",
