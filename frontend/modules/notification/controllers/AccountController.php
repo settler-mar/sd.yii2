@@ -50,13 +50,13 @@ class AccountController extends \yii\web\Controller
         ->where($where)
         ->orderBy('added DESC');
 
-
     $cacheName = 'account_notifications' . \Yii::$app->user->id . '_' . $type . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
     $data['notifications'] = $pagination->data();
 
+    $user = \Yii::$app->user->identity;
+
     if ($is_ajax || $plugin) {
-      $user = \Yii::$app->user->identity;
       $favorites = UsersFavorites::userFavorites();
       $out = [
         'btn' => Yii::t('common', 'look_more'),
@@ -76,6 +76,7 @@ class AccountController extends \yii\web\Controller
     }
 
     foreach ($data['notifications'] as &$notification) {
+      $notification['currency']=$user->currency;
       if ($is_ajax || $plugin) {
         $date = strtotime($notification['added']);
         $out['notifications'][]=[

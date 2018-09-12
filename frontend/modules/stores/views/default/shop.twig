@@ -212,6 +212,22 @@
   </section>
 {% endif %}
 
+
+{% if user_id and current_store.test_link==1 %}
+<section class="margin shop-tracker">
+  <div class="page-wrap gray-box wrap-round">
+    <h2 class="shop-tracker_header title-no-line">{{ t('main', 'test_link_{store}_h', {'store': current_store.name})|raw }}</h2>
+    <form action="/stores/{{ current_store.route }}/get-link" class="form-test-link">
+      <div class="header-search_form-group">
+        <input type="text" name="url" id="search" class="header-search_form-input search-form-input" value="" placeholder="{{ t('main','test_link_placeholder') }}" autocomplete="off">
+        <input type="submit" class="btn btn-mini" value="{{ t('main','test_link') }}">
+      </div>
+      <div class="help-block"></div>
+    </form>
+  </div>
+</section>
+{% endif %}
+
 {% if _is_empty(current_store.displayed_cashback) %}
   <section class="margin page-wrap">
     <div class="red_box red_box-border">

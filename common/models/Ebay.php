@@ -30,9 +30,10 @@ class Ebay
     private $verb;
     private $ProjectName;
     private $token;
-    private $role = 'Buyer';
+    private $role = 'Buyer';//Buyer  Seller
     private $perPage = 100;
-    private $createTimeTo='2030-12-10T20:34:44.000Z';
+    //private $createTimeTo='2030-12-10T20:34:44.000Z';
+    private $createTimeTo='2018-09-10T20:34:44.000Z';
 
 
     public function __construct()
@@ -56,7 +57,7 @@ class Ebay
 						  <RequesterCredentials>
 							<eBayAuthToken>'.$this->token.'</eBayAuthToken>
 						  </RequesterCredentials>
-						  <CreateTimeFrom>'.$createTimeFrom.'</CreateTimeFrom>
+						  <CreateTimeFrom>'.$createTimeFrom.'T20:34:44.000Z</CreateTimeFrom>
 						  <CreateTimeTo>'.$this->createTimeTo.'</CreateTimeTo>
 						  <OrderRole>'.$this->role.'</OrderRole>
 						  <OrderStatus>All</OrderStatus>
@@ -65,6 +66,7 @@ class Ebay
 							<PageNumber>'.$page.'</PageNumber>
 						  </Pagination>
 						</GetOrdersRequest>';
+        //ddd($requestXmlBody);
         $responseXml = simplexml_load_string($this->sendHttpRequest($requestXmlBody));
 
         return $responseXml;

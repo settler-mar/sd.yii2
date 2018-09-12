@@ -539,7 +539,15 @@ class DefaultController extends SdController
       throw new \yii\web\NotFoundHttpException;
     }
 
-    return $store->testLink($request->post('url'));
+    if(Yii::$app->user->isGuest){
+      return '<span class=has-error>'.Yii::t('main',"test_link_guest").'</span>';
+    }
+
+    $res =  $store->testLink($request->post('url'));
+    $res = ($res=="Ссылка успешно протестирована."?
+        Yii::t('main',"test_link_is_affill"):
+        '<span class=has-error>'.Yii::t('main',"test_link_is_not_affill").'</span>');
+    return $res;
   }
 }
 

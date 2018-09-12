@@ -37,6 +37,17 @@ form.loading {
   background: url(/images/preloader.gif) no-repeat 50% 50%;
   min-height: 60px;
   min-width: 60px;
+  position: relative;
+  opacity: 0.8;
+}
+
+form.loading:before{
+  content: "";
+  background: url(/images/preloader.gif) no-repeat 50% 50%;
+  z-index: 99;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 
 //для data-krajee-daterangepicker
@@ -565,8 +576,12 @@ input[name="roles[]"]{
       opacity: 1;
       font-size: 0.8em;
       height: 1em !important;
-      background: #fff;
+      background: transparent;
       padding: 0 5px;
+    }
+
+    &.header-search_form-input{
+      padding-left: 5px;
     }
 
     .form-input-group{

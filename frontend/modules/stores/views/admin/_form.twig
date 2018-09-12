@@ -51,6 +51,13 @@
                             '3' : 'Выводить только на странице шопа',
                         }, {'value': 1}).label(false)|raw }}
                     </p>
+                    <p><span>Тест ссылок:</span><br>
+                      {{ form.field(model, 'test_link').dropDownList({
+                        '0' : 'Не выводить',
+                        '1' : 'Выводить',
+                      }, {'value': 0}).label(false)|raw }}
+                    </p>
+
                 </div>
                 <div class="col-md-12">
                     <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>

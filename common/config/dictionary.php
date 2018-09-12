@@ -27,7 +27,6 @@ $dict = [
             ],
         'valuta'=>'RUB',
         'bonus'=>0,
-        'description'=>'Базовая ставка кэшбэка',
       ],
       1=>[
         'code'=>'bronze',

@@ -131,7 +131,7 @@ class Stores extends \yii\db\ActiveRecord
           'contact_email','video','network_name','coupon_description', 'region', 'description_extend'], 'trim'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related',
-          'cash_number', 'show_notify','show_tracking', 'watch_transitions'], 'integer'],
+          'cash_number', 'show_notify','show_tracking', 'watch_transitions','test_link'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
       [['currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
@@ -202,6 +202,7 @@ class Stores extends \yii\db\ActiveRecord
       'desctiption_extend' => 'Дополнительное описание',
       'show_products' => 'Отображать страницу с продуктами',
       'status_updated' => 'Изменение статуса',
+      'test_link' => 'Блок теста ссылок',
     ];
   }
 
@@ -1023,7 +1024,7 @@ class Stores extends \yii\db\ActiveRecord
       $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
         'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
-        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products'];
+        'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products','cws.test_link'];
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
           $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
@@ -1270,6 +1271,9 @@ class Stores extends \yii\db\ActiveRecord
   public function testLink($url){
     $cpaLink = CpaLink::findOne(['stores_id'=>$this->uid,'cpa_id'=>1]);
 
+    $url=explode('//',$url);
+    $url="https://".$url[count($url)-1];
+
     $options=[
         'subid'=>Yii::$app->user->isGuest?0:Yii::$app->user->id,
         'ulp'=>$url,
@@ -1278,11 +1282,10 @@ class Stores extends \yii\db\ActiveRecord
     $admitad = new Admitad();
 
     $dp_link=$admitad->getDeeplink($cpaLink->affiliate_id,$options);
-    if(count($dp_link)==0)return "Тест ссылок не поддерживается";
+    if(count($dp_link)==0)return Yii::t('main',"test_link_not_support");
     $options=[
         'link'=>$dp_link[0]
     ];
-
     $msg=$admitad->getTestLink($options);
 
     return $msg;

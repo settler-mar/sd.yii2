@@ -136,7 +136,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         'photo' => 'Фото',
         'new_photo' => 'Фото',
         'notice_email' => 'Уведомление на почту',
-        'notice_email_status' => 'Уведомление на почту о смене статуса',
+        'notice_email_status' => 'Уведомления на электронную почту при повышении статуса лояльности',
         'notice_account' => 'Внутренние уведомления',
         'referrer_id' => 'Referrer ID',
         'last_ip' => 'IP последнего входа',

@@ -364,7 +364,11 @@
       border: 3px solid #fff;
       width: 110PX;
       height: 110PX;
-      padding: 25px 18PX;
+      padding: 0px 16PX;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
       text-align: center;
       color: $account_notification_date;
       font-size: 13px;

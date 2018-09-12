@@ -50,7 +50,7 @@ return [
     'upload_avatar_max_size' => 'максимальный размер 2 МБ',
     'notify_settings' => 'Настройка уведомлений',
     'notify_settings_email' => 'Получать уведомления на электронную почту',
-    'notify_settings_email_status' => 'Получать уведомления на электронную почту при изменении статуса',
+    'notify_settings_email_status' => 'Получать уведомления на электронную почту при повышении статуса лояльности',
     'password_change' => 'Изменение пароля',
     'password_old' => 'Старый пароль',
     'password_new' => 'Новый пароль',
@@ -327,5 +327,6 @@ return [
     'visited_stores' => 'Просмотренные магазины',
     'all_visited_stores_{count}' => 'Все просмотренные ({count})',
     'loyalty_status_change' => 'Изменение статуса лояльности',
-
+    "base_bonus"=>"Базовая ставка кэшбэка",
+    "add_bonus"=>"+{bonus}% к базовой ставке кэшбэка",
 ];

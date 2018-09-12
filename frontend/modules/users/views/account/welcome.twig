@@ -98,9 +98,7 @@
                           account-circles-item-percent-{{ status.code }}
                           {{ _if(status.bonus <= this_tarif.bonus,'account-circles-item-percent-active') }}
                       "
-            {% if  status.description %}
-              data-toggle="tooltip" data-original-title="{{ status.description }}"
-            {% endif %}
+              data-toggle="tooltip" data-original-title="{{ t("account",_if(status.bonus,"add_bonus","base_bonus"),status) }}"
         >
                       <span class="account-circles-item-percent-text">
                           {% if  status.bonus>0 %}
