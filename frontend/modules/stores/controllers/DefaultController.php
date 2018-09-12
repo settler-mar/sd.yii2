@@ -535,15 +535,18 @@ class DefaultController extends SdController
   public function actionTestLink($store) {
     $request = Yii::$app->request;
 
-    if(!$request->isAjax || !$request->isPost ){
+    /*if(!$request->isAjax || !$request->isPost ){
       throw new \yii\web\NotFoundHttpException;
     }
 
     if(Yii::$app->user->isGuest){
       return '<span class=has-error>'.Yii::t('main',"test_link_guest").'</span>';
-    }
+    }*/
 
     $res =  $store->testLink($request->post('url'));
+    if($res===false){
+      return '<span class=has-error>'.Yii::t('main',"test_link_error").'</span>';
+    }
     $res = ($res=="Ссылка успешно протестирована."?
         Yii::t('main',"test_link_is_affill"):
         '<span class=has-error>'.Yii::t('main',"test_link_is_not_affill").'</span>');

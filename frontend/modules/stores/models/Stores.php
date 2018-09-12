@@ -1272,7 +1272,37 @@ class Stores extends \yii\db\ActiveRecord
     $cpaLink = CpaLink::findOne(['stores_id'=>$this->uid,'cpa_id'=>1]);
 
     $url=explode('//',$url);
-    $url="https://".$url[count($url)-1];
+    $url=trim($url[count($url)-1],'/');
+    $site=explode('/',$url);
+    $site=trim($site[0],'www.');
+
+    $is_normal=false;
+    $base_url = $this->url.(strlen($this->url_alternative)>5?','.$this->url_alternative:"");
+
+    $base_url=explode(",",$base_url);
+    foreach ($base_url as $link){
+      $link=explode('//',$link);
+      $link=trim($link[count($link)-1],'/');
+      $link=explode('/',$link);
+      $link=trim($link[0],'www.');
+
+      if($link==$site){
+        //совпал основной сайт
+        $is_normal=true;
+        break;
+      }
+      $link='.'.$link;
+      if(substr($site, strlen($site) - strlen($link)) == $link){
+        //совпал суб доменом
+        $is_normal=true;
+        break;
+      }
+    }
+
+    if(!$is_normal)return $is_normal;
+
+
+    $url="https://".$url;
 
     $options=[
         'subid'=>Yii::$app->user->isGuest?0:Yii::$app->user->id,
