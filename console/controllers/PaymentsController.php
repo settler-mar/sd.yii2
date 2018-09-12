@@ -83,18 +83,27 @@ class PaymentsController extends Controller
 
   public function actionIndex()
   {
+    $dir=realpath(dirname(__FILE__).'/../../').'/';
+    $fp = fopen($dir.'payment_'.date("Y_m_d_H:m:s").'.txt', 'w+');
+    fwrite($fp, "\n");
+
+    fwrite($fp, date("Y_m_d_H:m:s")." Admitad\n");
     echo "Payments from Admitad\n";
     Yii::$app->runAction('admitad/payments');
 
+    fwrite($fp, date("Y_m_d_H:m:s")." doublertrade\n");
     echo "Payments from doublertrade\n";
     Yii::$app->runAction('doublertrade/payments');
 
+    fwrite($fp, date("Y_m_d_H:m:s")." Cj\n");
     echo "Payments from Cj.com\n";
     Yii::$app->runAction('cj/payments');
 
+    fwrite($fp, date("Y_m_d_H:m:s")." Sellaction\n");
     echo "Payments from Sellaction\n";
     Yii::$app->runAction('sellaction/payments');
 
+    fwrite($fp, date("Y_m_d_H:m:s")." Performancehorizon\n");
     echo "Payments from Performancehorizon\n";
     Yii::$app->runAction('performancehorizon/payments');
 
@@ -126,11 +135,12 @@ class PaymentsController extends Controller
     //echo "\nStores Webgains\n";
     //Yii::$app->runAction('advertise/Webgains');
 
+    fwrite($fp, date("Y_m_d_H:m:s")." Ozon\n");
     echo "Payments from Ozon\n";
     $this->actionOzon();
 
-    echo "Payments from Cj.com\n";
-    Yii::$app->runAction('cj/payments');
+    fwrite($fp, date("Y_m_d_H:m:s")." END\n");
+    fclose($fp);
   }
 
   /**
