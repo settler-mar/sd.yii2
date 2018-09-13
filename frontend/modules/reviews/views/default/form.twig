@@ -1,67 +1,64 @@
 <div class="feedback popup-content">
+  {% if not isAjax %}
     <h2 class="title-no-line">
-        {% if (coupon > 0) %}
-            {{ t('main', 'review_add_form_coupon_{coupon}', {'coupon':coupon_name})|raw }}
-        {% elseif (shop==0) %}
-            {{ t('main', 'review_add_form_site')|raw }}
-        {% else %}
-            {{ t('main', 'review_add_form_{store}', {'store':store_name })|raw }}
-        {% endif %}
+      {{ title }}
     </h2>
-    <p class="align-center">{{ t('main', 'review_add_terms')|raw }}</p>
-    {% set form = active_form_begin({
-        'id' : 'reviews-form',
-        'action' : action,
-        'layout' : 'horizontal',
-        'fieldConfig':{
-            'horizontalCssClasses':{
-                'wrapper':'form-input-group',
-            }
-        },
-        'options' : {
-            'class' : 'feedback-form',
-            'role' : 'form'
-        },
-    }) %}
+  {% endif %}
+  <p class="align-center">{{ t('main', 'review_add_terms')|raw }}</p>
+  {% set form = active_form_begin({
+    'id' : 'reviews-form',
+    'action' : action,
+    'layout' : 'horizontal',
+    'fieldConfig':{
+      'horizontalCssClasses':{
+        'wrapper':'form-input-group',
+      }
+    },
+    'options' : {
+      'class' : 'feedback-form',
+      'role' : 'form'
+    },
+  }) %}
 
 
-        {{ form.field(model, 'uid', {'template': '{input}'}).hiddenInput().label(false) | raw }}
-        {{ form.field(model, 'coupon_id', {'template': '{input}'}).hiddenInput().label(false) | raw }}
+  {{ form.field(model, 'uid', {'template': '{input}'}).hiddenInput().label(false) | raw }}
+  {{ form.field(model, 'coupon_id', {'template': '{input}'}).hiddenInput().label(false) | raw }}
 
-        {{ form.field(model, 'title',{
-            'template' :
-            '{beginWrapper}<i>'~svg("info",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
-        }).textInput({'placeholder': t('main', 'review_title'),'required':true}) | raw }}
+  {{ form.field(model, 'title',{
+    'template' :
+    '{beginWrapper}<i>'~svg("info",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
+  }).textInput({'placeholder': t('main', 'review_title'),'required':true}) | raw }}
 
-        {{ form.field(model, 'text',{
-            'template' :
-            '<div class="form-textarea-group">{input}</div>\n{error}'
-        }).textarea({'placeholder': t('main', 'review_text'),'required':true}) | raw }}
+  {{ form.field(model, 'text',{
+    'template' :
+    '<div class="form-textarea-group">{input}</div>\n{error}'
+  }).textarea({'placeholder': t('main', 'review_text'),'required':true}) | raw }}
 
 
-        <div class="rating rating-editor">
-            <span class="rating-title">{{ t('main', 'review_rating')|raw }}:</span>
-            <span class="rating-wrapper">
+  <div class="rating rating-editor">
+    <span class="rating-title">{{ t('main', 'review_rating')|raw }}:</span>
+    <span class="rating-wrapper">
               {% if model.rating > 0 %}
                 {% for i in range(1, model.rating|round()) %}
                   {{ svg('star', 'rating-star site-rating_star-icon')|raw }}
                 {% endfor %}
               {% endif %}
 
-              {% set estar =  5 - model.rating|round() %}
-              {% if estar != 0 %}
-                {% for i in range(1, estar) %}
-                  {{ svg('star', 'rating-star site-rating-open site-rating_star-icon')|raw }}
-                {% endfor %}
-              {% endif %}
+      {% set estar =  5 - model.rating|round() %}
+      {% if estar != 0 %}
+        {% for i in range(1, estar) %}
+          {{ svg('star', 'rating-star site-rating-open site-rating_star-icon')|raw }}
+        {% endfor %}
+      {% endif %}
             </span>
-        </div>
+  </div>
 
-        {{ form.field(model, 'rating',{
-            'template' :
-            '{input}'
-        }).hiddenInput().label(false) | raw}}
+  {{ form.field(model, 'rating',{
+    'template' :
+    '{input}'
+  }).hiddenInput().label(false) | raw }}
 
-        <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('main', 'review_add')|raw }}</button>
-    {{ active_form_end() }}
+  <button type="submit"
+          class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('main', 'review_add')|raw }}</button>
+  {{ active_form_end() }}
 </div>

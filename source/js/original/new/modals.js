@@ -28,6 +28,9 @@
     $.get('/' + href, function (data) {
       $('.notify_box').removeClass('loading');
       $('.notify_box .notify_content').html(data.html);
+      if (data.title) {
+        $('.notify_box .notify_title div').html(data.title);
+      }
       ajaxForm($('.notify_box .notify_content'));
     }, 'json');
 
@@ -36,19 +39,22 @@
   });
 
   $('body').on('click', '.modals_popup', function (e) {
-      //при клике всплывашка с текстом
-      var that = this;
-      e.preventDefault();
-      var html = $('#'+$(that).data('original-html')).html();
-      var title = html ? html : $(that).data('original-title');
-      var notyClass = $(that).data('notyclass');
-      var data = {
-          buttonYes: false,
-          notyfy_class: "loading notify_white "+notyClass,
-          question: title
-      };
-      notification.alert(data);
+    //при клике всплывашка с текстом
+    var that = this;
+    e.preventDefault();
+    var title = $(that).data('original-h');
+    if(!title)title="";
+    var html = $('#' + $(that).data('original-html')).html();
+    var content = html ? html : $(that).data('original-title');
+    var notyClass = $(that).data('notyclass');
+    var data = {
+      buttonYes: false,
+      notyfy_class: "notify_white " + notyClass,
+      question: content,
+      title: title
+    };
+    notification.alert(data);
 
-      return false;
+    return false;
   })
 }());

@@ -248,11 +248,18 @@ td {
   select::-ms-expand {
     display: none;
   }
-  .help-block-error {
-    margin: 0px auto 10px auto;
-    width: 100%;
-    text-align: center;
-    max-width: calc(100% - 20px);
+  .help-block{
+    &-down{
+      margin-bottom: -16px;
+      margin-top: 8px;
+    }
+
+    &-error {
+      margin: 0px auto 10px auto;
+      width: 100%;
+      text-align: center;
+      max-width: calc(100% - 20px);
+    }
   }
 
 }

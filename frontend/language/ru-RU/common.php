@@ -17,6 +17,7 @@ return [
     'do_login' => 'Войти',
     'do_login_by_socials' => 'Или при помощи соцсетей',
     'do_logout' => 'Выйти',
+    'password_reset'=>"Сброс пароля",
     'shops' => 'Магазины',
     'shop' => 'Магазин',
     'coupons' => 'Купоны',

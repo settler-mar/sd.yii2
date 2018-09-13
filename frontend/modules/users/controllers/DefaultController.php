@@ -53,6 +53,9 @@ class DefaultController extends Controller
 
     $model = new LoginForm();
 
+    $data=[
+        'title'=>"",
+    ];
     if ($request->isPost) {
       if ($model->load($request->post()) && $model->login()) {   // уже логинимся или только что зашли?
         $data['html'] = '<div><p>'. Yii::t('account','authorize_success').
@@ -65,6 +68,7 @@ class DefaultController extends Controller
       }
     }
 
+    $data['title']=Yii::t('common', 'login_to_site');
     $data['html'] = $this->renderAjax('login', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
       'isAjax' => true
@@ -126,6 +130,7 @@ class DefaultController extends Controller
       }
     }
 
+    $data['title']="";
     $isIndex = $request->get('index');
     if ($isIndex) {
       $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
@@ -137,6 +142,7 @@ class DefaultController extends Controller
         return json_encode($data);
       }
     } else {
+      $data['title']=Yii::t('common', 'register');
       $data['html'] = $this->renderAjax('registration', [      // рисуем форму для ввода имени и пароля
         'model' => $model,
         'isAjax' => true,
@@ -162,6 +168,7 @@ class DefaultController extends Controller
     if (!$request->isAjax) {
       return $this->goHome();
     }
+    $data['title']="";
 
     $model = new RegistrationWebForm();
     if ($request->isPost) {
@@ -186,7 +193,7 @@ class DefaultController extends Controller
     }
 
 
-
+    $data['title']=Yii::t('common', 'register');
     $data['html'] = $this->renderAjax('registration-web', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
       'isAjax' => true,
@@ -304,7 +311,7 @@ class DefaultController extends Controller
 
     //Восстановление пароля
     $forget = new ResetPasswordForm();
-
+    $data['title']="";
     if ($forget->load(Yii::$app->request->post()) && $forget->sendEmail()) {
       $data['question'] = $this->renderAjax('resetpassword_sendmail_ok.twig');
       $data['render'] = 'true';
@@ -312,7 +319,7 @@ class DefaultController extends Controller
       return json_encode($data);
     }
 
-
+    $data['title']=Yii::t('common', 'password_reset');
     $data['html'] = $this->renderAjax('resetpassword', [      // рисуем форму для ввода имени и пароля
       'model' => $forget,
       'isAjax' => true,
@@ -484,7 +491,8 @@ class DefaultController extends Controller
     $email = (Yii::$app->request->get('email'));
     return $this->render('emailResult', [
       'new' => $new,
-      'email' => $email
+      'email' => $email,
+      //'isAjax' => true
     ]);
   }
 

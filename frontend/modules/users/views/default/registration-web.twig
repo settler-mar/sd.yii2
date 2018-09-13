@@ -1,5 +1,7 @@
 <div class="sign-up popup-sign-up" style="opacity: 1;">
-  <h2  class="title-no-line">{{ t('common', 'register') }}</h2>
+  {% if not isAjax %}
+    <h2 class="title-no-line">{{ t('common', 'register')|raw }}</h2>
+  {% endif %}
   {% set form = active_form_begin({
     'id' : 'registration-web-form-ajax',
     'layout' : 'horizontal',

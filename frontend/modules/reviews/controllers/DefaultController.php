@@ -79,7 +79,8 @@ class DefaultController extends SdController
 
     $data=[
       'shop' => $shop,
-      'coupon' => $coupon
+      'coupon' => $coupon,
+      'title' => ""
     ];
 
     if($shop>0){
@@ -131,9 +132,19 @@ class DefaultController extends SdController
 
     $data['model'] = $model;
     $data['action'] = Help::href($request->url);
+    $data['isAjax'] = true;
+
+    if ($data['coupon']>0)
+      $data['title']=\Yii::t('main', 'review_add_form_coupon_{coupon}', ['coupon'=>$data['coupon_name']]);
+    elseif ($data['shop']==0)
+      $data['title']=\Yii::t('main', 'review_add_form_site');
+    else
+      $data['title']=\Yii::t('main', 'review_add_form_{store}', ['store'=>$data['store_name']]);
+
 
     $model->rating=5;
     $data=[
+      'title'=> $data['title'],
       'html'=>$this->renderAjax('form', $data)
     ];
     return json_encode($data);

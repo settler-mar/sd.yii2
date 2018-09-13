@@ -1,7 +1,8 @@
 <section>
 <div class="sign-up noajax result social">
-    <h2 class="title-no-line">{{ t('account', 'email_is_send')|raw }}</h2>
-
+  {% if not isAjax %}
+      <h2 class="title-no-line">{{ t('common', 'email_is_send')|raw }}</h2>
+  {% endif %}
     <p class="message">
         {{ t('account', 'email_with_confirmation sent_to_{email}_', {'email': email})|raw }}
     </p>

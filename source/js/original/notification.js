@@ -117,7 +117,7 @@ var notification = (function () {
 
     box_html = '<div class="' + notyfy_class + '">';
     box_html += '<div class="notify_title">';
-    box_html += data.title;
+    box_html += '<div>'+data.title+'</div>';
     box_html += '<span class="notify_close"></span>';
     box_html += '</div>';
 

@@ -21,7 +21,6 @@
     margin: 0;
   }
 
-
   .sign-up.popup-sign-up {
     width: 530px;
 
@@ -49,6 +48,9 @@
     min-height: 70px;
     max-width: 700px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 20px);
 
     &-wide {
       max-width: 1024px;
@@ -61,6 +63,14 @@
     .notify_title{
       position: relative;
       min-height: 20px;
+
+      div{
+        font-size: 32px;
+        color: #333;
+        text-align: center;
+        padding: 5px 40px;
+        font-weight: 600;
+      }
 
       span{
         padding: 10px;
@@ -94,9 +104,11 @@
     }
 
     .notify_content{
-      padding: 15px 10px;
+      padding: 5px 10px 15px 10px;
+      margin-top: 15px;
       height: 100%;
       box-sizing: border-box;
+      overflow-y: auto;
 
       .gray-box{
         background-color: #eee;
