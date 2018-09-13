@@ -32,6 +32,7 @@
                             <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ store.displayed_cashback}}
                             <a class="catalog_products_item_cashback_question modals_popup"
                                data-original-html="store_tariffs_id"
+                               data-original-h="{{ t('main', 'tarifs_terms_store',{'store': store.name}) }}"
                             >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
                         </div>
 

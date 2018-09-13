@@ -121,6 +121,7 @@ return [
     'store_instruction_online' => 'Для получения кэшбэка следуйте <a href="#howgetcashback" class="shop-howgetcashback scroll_to">инструкции</a>',
     'store_instruction_offline' => 'Для получения кэшбэка покажите кассиру свой <a href="#howgetcashback" class="shop-howgetcashback scroll_to">штрихкод</a>',
     'read_all_tarifs_terms' => '<span class="color-red">Читать обязательно:&nbsp;</span>все тарифы и условия',
+    'tarifs_terms_store' => 'Все тарифы и условия {store}',
     'extended_tarifs_for_{store}_is_empty_cashback_{cashback}' => 'Дополнительные тарифы для магазина {store} отсутствуют. Текущая ставка кэшбэка – {cashback}.',
     'cashback_will_be_active_in_{timie}_day' => 'Кэшбэк станет активным для вывода через <span>{time}&nbsp;дней</span>',
     'average_process_time' => '(среднее время обработки)',
