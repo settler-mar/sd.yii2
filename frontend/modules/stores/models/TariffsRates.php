@@ -35,7 +35,7 @@ class TariffsRates extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_tariff_out', 'id_rate', 'is_percentage', 'auto_update', 'id_tariff'], 'integer'],
+            [['id_rate', 'is_percentage', 'auto_update', 'id_tariff'], 'integer'],
             [['id_rate', 'price_s', 'size', 'our_size', 'is_percentage'], 'required'],
             [['price_s', 'size', 'our_size'], 'number'],
             [['date_s'], 'safe'],
@@ -50,7 +50,6 @@ class TariffsRates extends \yii\db\ActiveRecord
     {
         return [
             'uid' => 'Uid',
-            'id_tariff_out' => 'Id Tariff Out',
             'id_rate' => 'Id Rate',
             'price_s' => 'Price S',
             'size' => 'Size',

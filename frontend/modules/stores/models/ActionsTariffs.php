@@ -30,7 +30,7 @@ class ActionsTariffs extends \yii\db\ActiveRecord
     {
         return [
             [['id_tariff', 'id_action', 'name'], 'required'],
-            [['id_tariff', 'id_action', 'id_action_out'], 'integer'],
+            [['id_tariff', 'id_action'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -45,7 +45,6 @@ class ActionsTariffs extends \yii\db\ActiveRecord
             'id_tariff' => 'Id Tariff',
             'id_action' => 'Id Action',
             'name' => 'Name',
-            'id_action_out' => 'Id Action Out',
         ];
     }
 

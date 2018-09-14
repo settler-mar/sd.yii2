@@ -345,6 +345,9 @@ class Stores extends \yii\db\ActiveRecord
         ];
     }
 
+    if($this->currency=="RUR"){
+      $this->currency="RUB";
+    }
 
     $displayed_cashback = preg_replace('/[^0-9\.\,]/', '', $this->displayed_cashback);
     $displayed_cashback = str_replace(',','.',$displayed_cashback);
@@ -1189,12 +1192,14 @@ class Stores extends \yii\db\ActiveRecord
           }
       }
 
+      $cpa_id=(int)$cpa_id;
+
       //если СPA не выбранна то выставляем текущую
       if ((int)$db_store->active_cpa == 0 || empty($db_store->active_cpa)) {
-          $db_store->active_cpa = (int)$cpa_id;
+          $db_store->active_cpa = $cpa_id;
       }
 
-      if ($db_store->active_cpa == (int)$cpa_id) {
+      if ($db_store->active_cpa == $cpa_id) {
           // спа активная, обновляем поля - какие - можно потом добавить
           $db_store->url = $store['url'] ? $store['url'] : $db_store->url;
           //$db_store->displayed_cashback = isset($store['cashback']) ? $store['cashback'] : $db_store->displayed_cashback;
@@ -1215,6 +1220,87 @@ class Stores extends \yii\db\ActiveRecord
       if(!$result || ($newCpa && !$resultCpa)){
 
       }else{
+
+        if($store['actions']){
+          foreach ($store['actions'] as $action){
+            $is_new_action = $newCpa;
+
+            //если магазин был в базе то проверяем есть у него данное событие
+            if (!$is_new_action) {
+              $action_r = StoresActions::findOne(['cpa_link_id' => $cpa_id, 'action_id' => $action['action_id']]);
+            }
+
+            //если магазин новый или не нашли событие то создаем его
+            if ($is_new_action || !$action_r) {
+              $action_r = new StoresActions();
+              $action_r->cpa_link_id = $cpa_id;
+              $action_r->action_id = $action['action_id'];
+              $action_r->name = $action['name'];
+              $action_r->hold_time = $action['hold_time'];
+              $action_r->type = $action['type'];
+              if (!$action_r->save()) {
+                continue;
+              };
+              $is_new_action = true;
+            }
+
+            $action_id = $action_r->uid;// код события
+            foreach ($action['tariffs'] as $tariff) {
+              $is_new_tarif = $is_new_action;
+
+              if (!$is_new_action) {
+                $tariff_r = ActionsTariffs::findOne(['id_tariff' => $tariff['tariff_id'], 'id_action' => $action_id]);
+              }
+
+              if ($is_new_action || !$tariff_r) {
+                $tariff_r = new ActionsTariffs();
+                $tariff_r->id_tariff = $tariff['tariff_id'];
+                $tariff_r->id_action = $action_id;
+                $tariff_r->name = $tariff['name'];
+                $tariff_r->validate();
+                if (!$tariff_r->save()) {
+                  continue;
+                };
+                $is_new_tarif = true;
+              }
+
+              $tariff_id = $tariff_r->uid;
+              foreach ($tariff['rates'] as $rate) {
+                if (!$is_new_tarif) {
+                  $f_value = [
+                      'id_tariff' => $tariff_id,
+                      'id_rate' => $rate['rate_id']
+                  ];
+                  if (isset($rate['additional_id']) && strlen($rate['additional_id']) > 1) {
+                    $f_value['additional_id'] = $rate['additional_id'];
+                  }
+                  $rate_r = TariffsRates::findOne($f_value);
+                }
+
+                //если запись новая
+                if ($is_new_tarif || !$rate_r) {
+                  $rate_r = new TariffsRates;
+                  $rate_r->auto_update = 1;
+                  $rate_r->id_tariff = $tariff_id;
+                  $rate_r->id_rate = $rate['rate_id'];
+                  $rate_r->is_percentage = $rate['is_percentage']?1:0;
+                  $rate_r->additional_id = isset($rate['additional_id']) ? $rate['additional_id'] : '';
+                  $rate_r->date_s = $rate['date_s'];
+                }
+
+                if ($rate_r->auto_update == 0) { //при запрете автообновления
+                  continue;
+                }
+                $rate_r->size = $rate['size'];
+                $rate_r->price_s = $rate['price_s'];
+                $rate_r->our_size = $rate['size']/2;
+                $rate_r->save();
+                //ddd($rate_r);
+              }
+
+            }
+          }
+        }
         $transaction->commit();
         $transaction->rollBack();
       }

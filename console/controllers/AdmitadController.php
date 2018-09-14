@@ -2,23 +2,17 @@
 
 namespace console\controllers;
 
-use common\components\Help;
 use common\models\Admitad;
-use frontend\modules\coupons\models\CategoriesCoupons;
+use frontend\modules\actions\models\ActionsActions;
 use frontend\modules\coupons\models\Coupons;
-use frontend\modules\coupons\models\CouponsToCategories;
 use frontend\modules\payments\models\Payments;
-use frontend\modules\stores\models\ActionsTariffs;
+use frontend\modules\products\models\Products;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\StoresActions;
-use frontend\modules\stores\models\TariffsRates;
 use frontend\modules\users\models\Users;
-use frontend\modules\actions\models\ActionsActions;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
-use frontend\modules\products\models\Products;
 
 class AdmitadController extends Controller
 {
@@ -60,25 +54,25 @@ class AdmitadController extends Controller
   {
     $test = new Admitad();
 
-    $url="https://ru.aliexpress.com/item/Leather-Wallet-Case-for-Huawei-Y6-2018-Honor-Play-7A-Standart-Y5-2018-holder-Cover-for/32891754791.html";
+    $url = "https://ru.aliexpress.com/item/Leather-Wallet-Case-for-Huawei-Y6-2018-Honor-Play-7A-Standart-Y5-2018-holder-Cover-for/32891754791.html";
     //$url="https://ru.aliexpress.com/item/Oyuncak-Squishe/32874305939.html";
-    $store_id="93";
+    $store_id = "93";
 
-    $store=CpaLink::findOne(['stores_id'=>$store_id,'cpa_id'=>1]);
+    $store = CpaLink::findOne(['stores_id' => $store_id, 'cpa_id' => 1]);
 
-    $options=[
-      'subid'=>0,
-      'ulp'=>$url,
+    $options = [
+        'subid' => 0,
+        'ulp' => $url,
     ];
 
-    $dp_link=$test->getDeeplink($store->affiliate_id,$options);
-    if(count($dp_link)==0)return;
-    $options=[
-        'link'=>$dp_link[0]
+    $dp_link = $test->getDeeplink($store->affiliate_id, $options);
+    if (count($dp_link) == 0) return;
+    $options = [
+        'link' => $dp_link[0]
     ];/**/
 
 
-    $msg=$test->getTestLink($options);
+    $msg = $test->getTestLink($options);
 
     ddd($msg);
 
@@ -306,17 +300,19 @@ class AdmitadController extends Controller
         $affiliate_id = $store['id'];
         $affiliate_list[] = $affiliate_id;
 
+        $cashBack = $this->getCashback($store);
         $newStore = [
-          'logo' => $store['image'],
-          'cpa_id' => $this->cpa_id,
-          'affiliate_id' => $affiliate_id,
-          'url' => $store['site_url'],
-          'name' => $store['name'],
-          'alias' => isset($store['name_aliases']) ? $store['name_aliases'] : null,
-          'currency' => $store['currency'],
-          'cashback' => '',
-          'hold_time' => (int) $store['max_hold_time'] ? (int)$store['max_hold_time'] : 30,
-          'affiliate_link' => $store['gotolink'],
+            'logo' => $store['image'],
+            'cpa_id' => $this->cpa_id,
+            'affiliate_id' => $affiliate_id,
+            'url' => $store['site_url'],
+            'name' => $store['name'],
+            'alias' => isset($store['name_aliases']) ? $store['name_aliases'] : null,
+            'currency' => $store['currency'],
+            'cashback' => $cashBack['cashback'],
+            'hold_time' => (int)$store['max_hold_time'] ? (int)$store['max_hold_time'] : 30,
+            'affiliate_link' => $store['gotolink'],
+            'actions' => $cashBack['actions']
         ];
 
         $storeResult = Stores::addOrUpdate($newStore);
@@ -332,143 +328,8 @@ class AdmitadController extends Controller
             $errorsCpaLink++;
           }
         }
+      }
 
-        $is_new = $storeResult['new'];
-        $cpa_id = isset($storeResult['cpa_link']) ? $storeResult['cpa_link']->id : false;
-
-        $p_cback = [];
-        $v_cback = [];
-        foreach ($store['actions_detail'] AS $action) {
-          $is_new_action = $is_new;
-          //если магазин был в базе то проверяем есть у него данное событие
-          if (!$is_new) {
-            $action_r = StoresActions::findOne(['cpa_link_id' => $cpa_id, 'action_id' => $action['id']]);
-          }
-
-          //если магазин новый или не нашли событие то создаем его
-          if ($is_new || !$action_r) {
-            $action_r = new StoresActions();
-            $action_r->cpa_link_id = $cpa_id;
-            $action_r->action_id = $action['id'];
-            $action_r->name = $action['name'];
-            $action_r->hold_time = $action['hold_size'];
-            $action_r->type = $action_type[$action['type']];
-            if (!$action_r->save()) {
-              continue;
-            };
-            $is_new_action = true;
-          }
-
-          $action_id = $action_r->uid;// код события
-          foreach ($action['tariffs'] as $tariff) {
-            $is_new_tarif = $is_new_action;
-
-            if (!$is_new_action) {
-              $tariff_r = ActionsTariffs::findOne(['id_tariff' => $tariff['id'], 'id_action' => $action_id]);
-            }
-
-            if ($is_new_action || !$tariff_r) {
-              $tariff_r = new ActionsTariffs();
-              $tariff_r->id_tariff = $tariff['id'];
-              $tariff_r->id_action = $action_id;
-              $tariff_r->name = $tariff['name'];
-              $tariff_r->id_action_out = $tariff['action_id'];
-
-              $tariff_r->validate();
-              if (!$tariff_r->save()) {
-                continue;
-              };
-              $is_new_tarif = true;
-            }
-            $tariff_id = $tariff_r->uid;
-            foreach ($tariff['rates'] as $rate) {
-              $isPercentage = in_array($rate['is_percentage'], ["true", "True"]) ? 1 : 0;
-              $our_size = floatval(str_replace(",", ".", $rate['size'])) / 2;
-              if ($isPercentage) {
-                if (is_float($our_size)) {
-                  $our_size = round($our_size, 1);
-                } else {
-                  $our_size = round($our_size, 0);
-                }
-                $p_cback[] = $our_size;
-              } else {
-                $our_size = round($our_size, 2);
-                $v_cback[] = $our_size;
-              }
-
-              $f_value = [
-                  'id_tariff' => $tariff_id,
-                  'id_rate' => $rate['id']
-              ];
-              if (isset($rate['country']) && strlen($rate['country']) > 1) {
-                $f_value['additional_id'] = $rate['country'];
-              }
-
-              if (!$is_new_tarif) {
-                $rate_r = TariffsRates::findOne($f_value);
-              }
-
-              //если запись старая то проверяем ее на актуальность
-              if (!$is_new_tarif && $rate_r) {
-                if ($rate_r->auto_update == 0) { //при запрете автообновления
-                  continue;
-                }
-
-                $rate_r->size = $rate['size'];
-                $rate_r->price_s = $rate['price_s'];
-                $rate_r->our_size = $our_size;
-                $rate_r->save();
-
-                continue;
-              }
-
-              $rate_r = new TariffsRates;
-              $rate_r->id_tariff_out = $rate['tariff_id'];
-              $rate_r->id_tariff = $tariff_id;
-              $rate_r->id_rate = $rate['id'];
-              $rate_r->price_s = $rate['price_s'];
-              $rate_r->our_size = $our_size;
-              $rate_r->size = $rate['size'];
-              $rate_r->is_percentage = $isPercentage;
-              $rate_r->additional_id = isset($rate['country']) ? $rate['country'] : '';
-              $rate_r->date_s = $rate['date_s'];
-              $rate_r->save();
-            }
-          }
-        }
-
-        if ($is_new && $storeResult['store'] && $storeResult['store']->active_cpa == $cpa_id) {
-          // :display cashback calculation
-          $c_per = count($p_cback);
-          $c_val = count($v_cback);
-          $additional = "";
-          if ($c_per > 0) {
-            if ($c_val > 0 || $c_per > 1) {
-              $result = "до " . max($p_cback) . "%";
-              $additional .= "* (count)";
-            } else {
-              $result = $p_cback[0] . "%";
-            }
-          } else {
-            if ($c_val > 0) {
-              if ($c_val > 1) {
-                $v = max($v_cback);
-                $result = "до ";
-                $additional .= "* (count)";
-              } else {
-                $v = $v_cback[0];
-                $result = "";
-              }
-              $result .= $v;
-            } else {
-              $result = 0;
-            }
-          }
-          $storeResult['store']->displayed_cashback = $result;
-          $storeResult['store']->save();
-        }
-
-      }//foreach stores
       $params['offset'] = $stores['_meta']['limit'] + $stores['_meta']['offset'];
       if ($params['offset'] < $stores['_meta']['count']) {
         $stores = $this->getStores($params);
@@ -478,18 +339,18 @@ class AdmitadController extends Controller
     }
 
     $sql = "UPDATE `cw_stores` cws
-        LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=".$this->cpa_id." AND cws.`active_cpa`=cpl.id
+        LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
         SET `is_active` = '0'
         WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
     Yii::$app->db->createCommand($sql)->execute();
-    echo 'Stores '.$storesAll."\n";
-    echo 'Inserted '.$inserted."\n";
+    echo 'Stores ' . $storesAll . "\n";
+    echo 'Inserted ' . $inserted . "\n";
     if (!empty($errors)) {
-      echo 'Stores fails '.$errors."\n";
+      echo 'Stores fails ' . $errors . "\n";
     }
-    echo 'Inserted Cpa link '.$insertedCpaLink."\n";
+    echo 'Inserted Cpa link ' . $insertedCpaLink . "\n";
     if (!empty($errorsCpaLink)) {
-      echo 'Cpa link fails '.$errorsCpaLink."\n";
+      echo 'Cpa link fails ' . $errorsCpaLink . "\n";
     }
   }
 
@@ -519,8 +380,8 @@ class AdmitadController extends Controller
       d($coupons['_meta']);
     }
 
-    $inserted=0;
-    $records=0;
+    $inserted = 0;
+    $records = 0;
 
     while (
     $coupons
@@ -567,5 +428,82 @@ class AdmitadController extends Controller
     echo "Inserted " . $inserted . "\n";
 
     Coupons::deleteAll(['store_id' => 0]);
+  }
+
+  private function getCashback($store)
+  {
+    $diapazon = [
+        'cash' => [
+            'min' => false,
+            'max' => false,
+        ],
+        'pers' => [
+            'min' => false,
+            'max' => false,
+        ],
+    ];
+    $actions = [];
+    $hasPersent = false;
+
+    $action_type = array_flip(Yii::$app->params['dictionary']['action_type']);
+
+    foreach ($store['actions_detail'] AS $action) {
+      $tariffs = [];
+
+      foreach ($action['tariffs'] as $tariff) {
+        $rates = [];
+
+        foreach ($tariff['rates'] as $rate) {
+          $isPercentage = in_array($rate['is_percentage'], ["true", "True"]) ? 1 : 0;
+          $val = (float)$rate['size'];
+
+          $hasPersent = $isPercentage || $hasPersent;
+          $code = $isPercentage ? 'pers' : 'cash';
+          if ($diapazon[$code]['min'] == false || $diapazon[$code]['min'] > $val) {
+            $diapazon[$code]['min'] = $val;
+          }
+          if ($diapazon[$code]['max'] == false || $diapazon[$code]['max'] < $val) {
+            $diapazon[$code]['max'] = $val;
+          };
+
+          $rates[] = [
+              'rate_id' => $rate['id'],
+              'price_s' => $rate['price_s'],//для адма какая то хрень
+              'size' => $rate['size'],
+              'is_percentage' => $isPercentage,
+              'additional_id' => isset($rate['country']) && strlen($rate['country']) > 1 ? $rate['country'] : "",
+              'date_s' => $rate['date_s']
+          ];
+        }
+
+        $tariffs[] = [
+            'tariff_id' => $tariff['id'],
+            'name' => $tariff['name'],
+            'rates' => $rates
+        ];
+      }
+
+      $actions[] = [
+          'action_id' => $action['id'],
+          'name' => $action['name'],
+          'hold_time' => $action['hold_size'],
+          'type' => $action_type[$action['type']],
+          'tariffs' => $tariffs
+      ];
+    }
+
+    $code = $hasPersent ? 'pers' : 'cash';
+    $cashback = "";
+    if ($diapazon[$code]['min'] < $diapazon[$code]['max']) {
+      $cashback = "до ";
+    }
+    $cashback .= ($diapazon[$code]['max']/2) . ($hasPersent ? '%' : '');
+
+    return [
+        'cashback' => $cashback,
+        'actions' => $actions,
+        'diapazon' => $diapazon,
+        'hasParsent' => $hasPersent,
+    ];
   }
 }

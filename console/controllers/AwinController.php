@@ -33,6 +33,9 @@ class AwinController extends Controller
         $this->cpa_id = $cpa->id;
     }
 
+    /*
+     * Получить магазины с сервера
+     */
     public function actionStores()
     {
 
