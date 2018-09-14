@@ -25,7 +25,7 @@ return [
         'notification_title_1_1'=>'Cash back declined',
         'notification_text_1'=>'Unfortunately, your cash back from <b>{{shop_name}}</b> (order No.{{order_id}}) of  <b>{{amount}}</b> руб. was declined.',//'Declined',//'declined',
 
-        'notification_title_1_2'=>''New cash back confirmed',
+        'notification_title_1_2'=>'New cash back confirmed',
         'notification_text_2'=>'Congratulations! {{added}} you have made order No.{{order_id}} at <b>{{shop_name}}</b>, that has accumulated <b>{{amount}} руб.</b> of cash back.',//'Confirmed',//'confirmed'
 
         'notification_title_ref_0'=>'Affiliate bonus pending',

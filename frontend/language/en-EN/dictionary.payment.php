@@ -1,4 +1,4 @@
 <?php
 return [
-  'Example text...' => ‘Sample text...',
+  'Example text...' => 'Sample text...',
 ];
