@@ -27,7 +27,7 @@
         },
         testAd: function () {
             var adDetect = document.querySelector('.ad-detect');
-            this.adblockEnabled = (adDetect.style.display !== 'none');
+            this.adblockEnabled = adDetect && (adDetect.style.display !== 'none');
 
             if((!this.adblockEnabled)){
                 enabledTransition = false;

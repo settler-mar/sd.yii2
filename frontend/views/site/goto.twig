@@ -36,5 +36,5 @@
     </div>
     <div id="transition-message" style="display: none;">{{ _constant('goto_adblock')|raw }}</div>
 </div>
-<img class="ad-detect" src="/images/ad.gif" style="position: absolute;" data-store-route="{{ store_route }}"/>
+<img class="ad-detect" src="/images/banner_468x60.png" style="position: absolute;top:-100px;" data-store-route="{{ store_route }}" onerror="this.parentElement.removeChild(this)"/>
 {{ this.registerJsFile('/js/cookie_check.js') }}
