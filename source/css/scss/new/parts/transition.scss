@@ -1,14 +1,16 @@
 /* Transition
 ------------------------------------*/
 .transition {
-  width: 100%;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
 
   .center-block {
     position: relative;
     width: 50%;
     text-align: center;
-    margin: 100px auto;
-    height: 300px;
+    margin: auto auto;
+    min-height: 300px;
     max-width: 685px;
     border-radius: 50px;
     background-size: cover;
@@ -113,11 +115,13 @@
   }
   //заставка адблок
   .transition-message {
+    box-sizing: content-box;
     height: auto;
     background-position: center bottom;
     width: 100%;
     color: #fff;
     padding: 30px;
+
     a {
       color: $transition-color;
       text-decoration: underline;
