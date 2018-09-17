@@ -72,6 +72,8 @@ class AdminController extends Controller
               continue;
             }
 
+            if(!is_string($transl[$k]))continue;
+
             if(trim($transl[$k])==$item){
               $data['lg'][$lg_k][$file]['NOTICE'][]=['title'=>'Параметр <b>'.$k.'</b> совпадает с оригинальным языком'];
               continue;

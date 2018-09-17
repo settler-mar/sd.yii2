@@ -76,24 +76,24 @@
                           {% for item in data.WARNING %}
                             <tr>
                               <td><img src="/images/svg/error.svg" height="12px"></td>
-                              <td>{{ item.title }}</td>
-                              <td>{{ item.message }}</td>
+                              <td>{{ item.title | raw }}</td>
+                              <td>{{ item.message | raw }}</td>
                               <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
                           {% for item in data.ERROR %}
                             <tr>
                               <td><img src="/images/svg/warning.svg" height="12px"></td>
-                              <td>{{ item.title }}</td>
-                              <td>{{ item.message }}</td>
+                              <td>{{ item.title | raw }}</td>
+                              <td>{{ item.message | raw }}</td>
                               <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
                           {% for item in data.NOTICE %}
                             <tr>
                               <td><img src="/images/svg/information.svg" height="12px"></td>
-                              <td>{{ item.title }}</td>
-                              <td>{{ item.message }}</td>
+                              <td>{{ item.title | raw }}</td>
+                              <td>{{ item.message | raw }}</td>
                               <td>{% if item.href %}<a class="" href="{{ item.href }}">Исправить</a>{% endif %}</td>
                             </tr>
                           {% endfor %}
@@ -126,4 +126,5 @@
   }
 
   {% endfor %}
+  b{font-weight: 700;}
 </style>
