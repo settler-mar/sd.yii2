@@ -9,15 +9,21 @@
 
 <div class="eauth sd-eauth" id="{{ id }}">
   <ul class="eauth-list{{ dop_class }}">
-    {% for name, service in services  %}
-      <li class="eauth-service {% if vertical %} vertical {% endif %}">
+    {% for service in services  %}
+      {% if region in service.regions %}
         {% set title = vertical ? service.title : '' %}
-        {% set link = action~'?service='~name %}
-        {{ html.a(svg(service.id~'-round','eauth-icon')~title, link,{
-          'class': 'eauth-service-link_sd '~name,
-          'data-eauth-service': service.id,
-        })|raw }}
-      </li>
+        {% set source = service.source %}
+        {% set id = _if(replace[source][service.code],replace[source][service.code],service.code) %}
+        {% set icon = _if(replace["nodge"][service.code],replace["nodge"][service.code],service.code) %}
+        {% set link = action[source]~id %}
+
+        <li class="eauth-service {% if vertical %} vertical {% endif %}">
+          {{ html.a(svg(icon~'-round','eauth-icon')~title, link,{
+            'class': 'eauth-service-link_sd '~id,
+            'data-eauth-service': id,
+          })|raw }}
+        </li>
+      {% endif %}
     {% endfor %}
   </ul>
 </div>

@@ -1,0 +1,33 @@
+{
+  "allowEmptyList":false,
+  "columns": [
+    {
+      "name": "code",
+      "type": "dropDownList",
+      "title": "Код соц сети",
+      "items": {
+        "vkontakte": "VK",
+        "facebook": "fb",
+        "odnoklassniki": "Одноклассники",
+        "google": "Google",
+        "mailru": "mail.ru",
+        "twitter": "twitter"
+      }
+    },
+    {
+      "name": "source",
+      "type": "dropDownList",
+      "title": "Обработчик",
+      "items": {
+        "yii": "Yii",
+        "nodge": "nodge"
+      }
+    }, {
+      "name": "regions",
+      "title": "Выводить в регионах",
+      "type": "checkboxlist",
+      "items": {
+      }
+    }
+  ]
+}

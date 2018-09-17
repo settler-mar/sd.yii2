@@ -231,69 +231,6 @@ class DefaultController extends Controller
     }*/
 
 
-  public function actionSocials()
-  {
-    $serviceName = Yii::$app->getRequest()->getQueryParam('service');
-    $serviceName = $serviceName ? $serviceName : ($this->serviceName ? $this->serviceName : null);
-    //ddd($serviceName);
-    if (isset($serviceName)) {
-      /** @var $eauth \nodge\eauth\ServiceBase */
-      $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
-
-      $url = Yii::$app->getUser()->getReturnUrl();
-      if (strpos($url, 'g=plugin') !== false || strlen($url) < 3) {
-          $url = null;
-      }
-      $eauth->setRedirectUrl($url);
-      $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl(Help::href('site/login')));
-      //ddd($eauth);
-      try {
-        if ($eauth->authenticate()) {
-          //ddd($eauth);
-          //получаем юсера нашего
-          $user = UsersSocial::authenticate($eauth->getAttributes());
-          //ddd($user);
-          if (!empty($user)) {
-            if (!Yii::$app->user->isGuest) {
-              $eauth->redirect(Help::href('/account/settings'));
-            }
-
-            Yii::$app->getUser()->login($user);
-            //$this->redirect(['/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')])->send();
-            $url = Yii::$app->user->getReturnUrl();
-            //$url = explode('//',$url);
-            //$url=$url[count($url)-1];
-            $url=str_replace(Yii::$app->request->getHostInfo(),'',$url);
-
-            if(strpos($url, 'g=plugin') !== false)$url=null;
-            if (strlen($url) < 3) {
-              $url = null;
-            }
-            $eauth->redirect(!empty($url) ? $url : Help::href('/account' . ((time() - strtotime($user->added) < 60) ? '?new=1' : '')));
-          } else {
-            $eauth->cancel();
-          }
-          // special redirect with closing popup window
-          $eauth->redirect();
-        } else {
-          // close popup window and redirect to cancelUrl
-          $eauth->cancel();
-        }
-      } catch (\nodge\eauth\ErrorException $e) {
-        // save error to show it later
-        Yii::$app->getSession()->setFlash('error', 'EAuthException: ' . $e->getMessage());
-
-        // close popup window and redirect to cancelUrl
-//              $eauth->cancel();
-        $eauth->redirect($eauth->getCancelUrl());
-      }
-    } else {
-      throw new NotFoundHttpException();
-    }
-
-    // default authorization code through login/password .
-  }
-
   /**
    * Сброс пароля
    * @return string|\yii\web\Response

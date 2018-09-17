@@ -77,7 +77,7 @@ $config = [
                     'class' => 'yii\authclient\clients\Google',
                     'clientId' => '1072995925898-jsaggqqbc8sp77556p81kjq1hlr9hdjf.apps.googleusercontent.com',
                     'clientSecret' => 'H_plJn2-doHMPQs4nFy6oMVl',
-                    'returnUrl' => 'http://127.0.0.1:8080/auth?authclient=google',
+                    'returnUrl' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http").'://'.DOMAIN_FRONT.'/socials-auth?authclient=google',
                 ],
             ],
         ],
@@ -161,9 +161,11 @@ $config = [
 
                 '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
                     'users/default/<action>',
-                'login/socials' => 'users/default/socials',
+                'login/socials' => 'users/social/socials',
                 'login/socials-email' => 'users/default/socialemail',
                 'login/socials-result' => 'users/default/socialemailresult',
+                'socials-auth' => 'users/social/socials-auth',
+
                 'account' => 'users/account/welcome',
                 'account/settings' => 'users/account/settings',
                 'account/<action:offline>' => 'account/<action>',
@@ -179,8 +181,7 @@ $config = [
                 'search/<action>' => '404',
                 'coupons/search' => '404',
 
-                'auth/<action>' => 'site/auth/<action>',
-                '<action:(admin|offline|auth)>' => 'site/<action>',
+                '<action:(admin|offline)>' => 'site/<action>',
                 'affiliate-system' => 'site/affiliate',
                 'offline-system' => 'site/offline-system',
                 'account-blocked' => 'site/accountblocked',

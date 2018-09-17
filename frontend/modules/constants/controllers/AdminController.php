@@ -96,17 +96,19 @@ class AdminController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       Yii::$app->session->addFlash('info', 'Константа обновлена');
 
-      foreach ($languages as $lg_key => $language) {
-        if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
-          Yii::$app->session->addFlash('info', $language['name'] . '. Перевод констант обновлен');
-        } else {
-          Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода констант');
-          header("X-XSS-Protection: 1;");
-          return $this->render('update.twig', [
-              'model' => $model,
-              'languages' => $languages,
-              'mp_class' =>MultipleInput::className()
-          ]);
+      if($model->has_lang==1) {
+        foreach ($languages as $lg_key => $language) {
+          if ($language['model']->load(Yii::$app->request->post()) && $language['model']->save()) {
+            Yii::$app->session->addFlash('info', $language['name'] . '. Перевод констант обновлен');
+          } else {
+            Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновления перевода констант');
+            header("X-XSS-Protection: 1;");
+            return $this->render('update.twig', [
+                'model' => $model,
+                'languages' => $languages,
+                'mp_class' => MultipleInput::className()
+            ]);
+          }
         }
       }
 

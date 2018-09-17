@@ -146,7 +146,7 @@ class Constants extends \yii\db\ActiveRecord
         return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index, $language) {
             $const = self::find()->from(self::tableName() . ' cwc')->where(['name' => $name])->asArray();
             if ($language) {
-                $const->select(['if(lgc.text > "", lgc.text, cwc.text) as text', 'ftype'])
+                $const->select(['if(lgc.text > "" and cwc.has_lang=1, lgc.text, cwc.text) as text', 'ftype'])
                     ->leftJoin(
                         LgConstants::tableName() . ' lgc',
                         'lgc.const_id = cwc.uid and lgc.language="'.$language.'"'
