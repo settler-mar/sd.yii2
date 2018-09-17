@@ -69,5 +69,23 @@ class SocialEmail extends \yii\db\ActiveRecord
     ];
   }
 
+  public function logIp($doSave=true)
+  {
 
+    if(Yii::$app->user->isGuest || Yii::$app->user->id==$this->user_id) {
+      if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $this->ip = $_SERVER['HTTP_CLIENT_IP'];
+      } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      } else {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+          $this->ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+          $this->ip = "0.0.0.0";
+        }
+      }
+
+      if($doSave)$this->save();
+    }
+  }
 }
