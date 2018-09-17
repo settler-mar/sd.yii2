@@ -78,3 +78,4 @@ common/config/socials.php
 debug
 /common/config/json/*
 runtime
+socials_yii.php
