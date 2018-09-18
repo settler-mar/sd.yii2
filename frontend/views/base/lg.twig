@@ -1,0 +1,17 @@
+<style>
+  .accordion .angle-down:before{
+    content:"{{ t('main','read_mode') }}"
+  }
+  .accordion .angle-up:before{
+    content:"{{ t('main','read_less') }}"
+  }
+  .footer-app-waiting:after{
+    content:"{{ t('main','wait_app') }}"
+  }
+</style>
+
+<script>
+  lang_base= {
+    'currency': "{{ params('valuta') }}"
+  };
+</script>

@@ -9,7 +9,7 @@
                 <span property="v:best">5 </span>
             </span>
         </span>
-        <a class="site-rating modals_open" href="#reviews/send">
+        <a class="site-rating modals_open" href="{{ _href('#reviews/send') }}">
             {% if this.site_rating.value > 0 %}
                 {% for i in range(1, this.site_rating.value|round()) %}
                     {{ svg('star', 'site-rating_star-icon')|raw }}

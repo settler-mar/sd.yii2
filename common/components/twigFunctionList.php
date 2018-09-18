@@ -11,23 +11,6 @@ $currencyIcon = [
 //    'USD' => 'dollar',
 ];
 
-$month = [
-    0 => [
-        '00' => '',
-        '01' => 'января', '02' => 'февраля', '03' => 'марта',
-        '04' => 'апреля', '05' => 'мая', '06' => 'июня',
-        '07' => 'июля', '08' => 'августа', '09' => 'сентября',
-        '10' => 'октября', '11' => 'ноября', '12' => 'декабря'
-    ],
-    1 => [
-        '00' => '',
-        '01' => 'январь', '02' => 'февраль', '03' => 'март',
-        '04' => 'апрель', '05' => 'май', '06' => 'июнь',
-        '07' => 'июль', '08' => 'август', '09' => 'сентябрь',
-        '10' => 'октябрь', '11' => 'ноябрь', '12' => 'декабрь'
-    ],
-];
-
 function mb_lcfirst($str){
   $first = mb_substr($str,0,1);//первая буква
   $last = mb_substr($str,1);//все кроме первой буквы
@@ -53,7 +36,7 @@ function create_flash($type, $flashe)
     $txt = $flashe;
   }
   if ($txt == 'Просмотр данной страницы запрещен.' && Yii::$app->user->isGuest) {
-    $txt = 'Для доступа к личному кабинету вам необходимо <a href="#login">авторизоваться</a> на сайте.';
+    $txt = Yii::t('common','not_found_mast_login',['href'=>Help::href("#login")]);
   }
   if (mb_strlen($txt) < 5) {
     return '';
@@ -194,6 +177,10 @@ $functionsList = [
   },
 //ссылка на внутренний ресурс с учётом языка
    '_href' => function($href, $basePath = ''){
+      //$is_hash=($href[0]=='#');
+     //mb_internal_encoding("UTF-8");
+      //if($is_hash)$href=mb_substr( $href, 1);
+      //ddd($href);
        return Help::href($href, $basePath);
    },
 //функция or - вывод первого непустого аргумента
@@ -391,28 +378,27 @@ $functionsList = [
       return ($else ? $else : '');
     }
   },
-  '_date' => function ($date, $format_time = "%H:%M:%S", $locate_month = true) use ($month) {
+  '_date' => function ($date, $format_time = "%H:%M:%S", $locate_month = true) {
     if (!$date) {
       return false;
     };
     $d = explode(" ", $date)[0];
     $m = explode("-", $d);
     if ($locate_month) {
-      $month = $month[0];
-      $currMonth = (isset($month[$m[1]])) ? $month[$m[1]] : strftime('%B', strtotime($date));
+      $currMonth = Yii::t('common','months_'.$m[1]);
       $sep = ' ';
     } else {
       $currMonth = $m[1];
       $sep = '/';
     }
     if ($format_time) {
-      return strftime("%e " . $currMonth . " %G в " . $format_time, strtotime($date));
+      return strftime("%e " . $currMonth . " %G ".Yii::t('common','months_in')." " . $format_time, strtotime($date));
     } else {
       return strftime("%e " . $currMonth . " %G", strtotime($date));
     }
   },
-  '_local_date' => function ($date = '', $format = "%G %B %e %H:%I:%S", $nominative = false) use ($month) {
-    $month = $nominative ? $month[1] : $month[0];
+  '_local_date' => function ($date = '', $format = "%G %B %e %H:%I:%S", $nominative = false) {
+    $month = $nominative ? "month_" : "months_";
     $date = $date == '' ? date('Y-m-d H:i:s', time()) : $date;
     $monthRus = strpos($format, '%BRUS');
     $date = strtotime($date);
@@ -420,7 +406,7 @@ $functionsList = [
       return strftime($format, $date);
     }
     $m = date('m', $date);
-    $currMonth = (isset($month[$m])) ? $month[$m] : strftime('%B', $date);
+    $currMonth = Yii::t('common',$month.$m);
     return strftime(substr($format, 0, $monthRus), $date) . $currMonth . strftime(substr($format, $monthRus + 5), $date);
   },
   'year' => function ($date = false) {
@@ -432,23 +418,23 @@ $functionsList = [
     }
     return date('Y',$date);
   },
-  'month'=> function ($d = 0) use ($month) {
+  'month'=> function ($d = 0) {
 
     $m = date('m');
 
-    $month = $month[1];
+    $month = "month_";
 
     $nm=$m+$d;
     if($nm>12)$nm-=12;
     if($nm<1)$nm+=12;
 
     if($nm<10)$nm="0".$nm;
-    $nm = $month[$nm];
+    $nm = Yii::t('common',$month.$nm);
     //ddd($pm);
 
     return mb_lcfirst($nm);
   },
-  'date' => function ($date, $format_time = false, $locate_month = true) use ($month) {
+  'date' => function ($date, $format_time = false, $locate_month = true) {
     if ($date == 0) {
       return '';
     }
@@ -456,8 +442,7 @@ $functionsList = [
     $m = date('m', $date);
 
     if ($locate_month) {
-      $month = $month[0];
-      $currMonth = (isset($month[$m])) ? $month[$m] : date('F', $date);
+      $currMonth = Yii::t('common',"months_".$m);
       $sep = ' ';
     } else {
       $currMonth = $m;
@@ -594,18 +579,32 @@ $functionsList = [
   'str_replace' => 'str_replace',
   'in_array' => 'in_array',
   '_php_date' => 'date',
+  'is_empty' =>  function ($data) {
+    $data = trim($data);
+    return empty($data);
+  },
+  'not_zero' =>  function ($str) {
+    $str=preg_match_all('!\d+!', $str, $matches);
+    foreach ($matches[0] as $n){
+      if($n!=0)return true;
+    }
+    return false;
+  },
   'svg' => function ($name, $class = false) {
     return Help::svg($name, $class);
   },
-  'params' => function ($name) {
-    if (isset(Yii::$app->params[$name])) {
-      return Yii::$app->params[$name];
-    } else {
-      return null;
+  'params' => function () {
+    $names=func_get_args();
+    if(count($names)==0)return "";
+    $params=Yii::$app->params;
+    foreach ($names as $name){
+      if (isset($params[$name])) {
+        $params = $params[$name];
+      } else {
+        return null;
+      }
     }
-  },
-  'year' => function () {
-    return date('Y');
+    return $params;
   },
   'getOperatorLogo' => function ($data) {
     $cash_name = 'mobile_'.$data['country'] . '_' . $data['operator'];
@@ -691,8 +690,6 @@ $functionsList = [
     }
     return trim($result);
   },
-
-
 ];
 
 return $functionsList;

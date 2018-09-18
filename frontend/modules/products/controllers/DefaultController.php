@@ -35,7 +35,7 @@ class DefaultController extends SdController
         $limit = $request->get('limit');
         $sort = $request->get('sort');
 
-        $sortvars = Products::$sortvars;
+        $sortvars = (new Products)->sortvars;
         $defaultSort = Products::$defaultSort;
 
         $validator = new \yii\validators\NumberValidator();

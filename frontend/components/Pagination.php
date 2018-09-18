@@ -145,7 +145,7 @@ class Pagination
 
     //предыдущая
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Предыдущая" class="'.$a_class.'"  href="' .
+      ' data-original-title="'.Yii::t('main','previous_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
       Help::svg('caret-left', 'pagination_button pagination_button_left').'</a></li>' : '';
@@ -153,18 +153,18 @@ class Pagination
     //первая
     $first = $page >= $displayCount && $total > $displayCount ?
       '<li class="first"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Первая" class="'.$a_class.'"  href="' .
+      ' data-original-title="'.Yii::t('main','first_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => 1])) . '">1' .
       '</a></li>' : '';
     //последняя
     $last = $total - $page >= $displayCount ? '<li class="last"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Последняя" class="'.$a_class.'"  href="' .
+      ' data-original-title="'.Yii::t('main','last_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $total])) . '">' . $total .
       '</a></li>' : '';
 
     //следующая
     $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
-      ' data-original-title="Следующая" class="'.$a_class.'"  href="' .
+      ' data-original-title="'.Yii::t('main','next_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
         Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';

@@ -18,9 +18,7 @@ class DefaultController extends SdController
     public function actionIndex()
     {
 
-        $contentData['funds'] = Foundations::find()
-            ->where(["is_active" => 1])
-            ->orderBy("uid ASC")
+        $contentData['funds'] = Foundations::translated()
             ->asArray()
             ->all();
 

@@ -44,5 +44,8 @@
   "favorites_shop_remove": "Удалить магазин из Избранного",
   "error_querying_data": "Ошибка обращения к серверу",
   "product_use_without_cashback_or_register": "Если вы хотите получать КЭШБЭК (возврат денег), вам необходимо зарегистрироваться на нашем сайте. Но можете и просто купить товар, без кэшбэка.",
-  "product_use": "Перейти к покупкам"
+  "product_use": "Перейти к покупкам",
+  "msg_new_cashback_content":"{user} только что {shop_discount} и заработал(a) {discount} кэшбэка в {store}",
+  "msg_new_cashback_shop_discount":"купил(a) со скидкой {value}% и ",
+  "msg_new_cashback_title":"Новый кэшбэк"
 }

@@ -13,13 +13,11 @@
 
 {% if funds|length > 0 %}
   <section class="dobro-funds margin">
-    <h2 class="align-items">{{ t('main', 'dobro_funds')|raw }}:</h2>
+    <h2 class="align-items">{{ t('main', 'dobro_funds')|raw }}</h2>
     {% include('parts/dobro_list.twig') %}
   </section>
 {% endif %}
-
 <section class="dobro margin">
-
   <h2>{{ t('main','dobro_do_together')|raw }}</h2>
   <div class="dobro-advantages margin">
       {{ _constant('dobro_process')|raw }}

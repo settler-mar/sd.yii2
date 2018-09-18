@@ -517,13 +517,16 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       @include media($laptop_min) {
         flex-direction: row;
       }
+
       @include media($tablets) {
         flex-direction: column;
         align-items: center;
       }
+
       &-desctop,
       &-mobile {
         > ul {
@@ -551,6 +554,7 @@
             }
           }
         }
+
         &-select {
           width: 244px;
           margin-bottom: 20px;
@@ -563,12 +567,17 @@
           font-weight: bold;
         }
       }
+
       &-desctop {
         display: flex;
         justify-content: flex-start;
+        flex-grow: 2;
+        margin-left: 20px;
+
         @include media($tablets) {
           display: none;
         }
+
         > ul {
           display: flex;
           flex-direction: row;

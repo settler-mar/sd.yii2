@@ -50,11 +50,7 @@ class Coupons extends \yii\db\ActiveRecord
    * Possible sorting options with titles and default value
    * @var array
    */
-  public static $sortvars = [
-      'visit' => ["title" => "Популярности", "title_mobile" => "Популярности"],
-      'date_start' => ["title" => "Новизне", "title_mobile" => "Новизне"],
-      'date_end' => ["title" => "Сроку действия", "title_mobile" => "Сроку действия", 'order' => 'DESC'],
-  ];
+
 
   public static function sortvars()
   {

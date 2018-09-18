@@ -121,7 +121,7 @@
                 </td>
                 <td>
                   {% if (user.cnt_confirmed + user.cnt_pending) > 0 %}
-                   <a  class="blue" href="/account/payments/ref/id:{{ user.uid }}">{{ t('account', 'users_payments_details') }}</a>
+                   <a  class="blue" href="{{ _href("/account/payments/ref/id:"~user.uid) }}">{{ t('account', 'users_payments_details') }}</a>
                   {% endif %}
                 </td>
 

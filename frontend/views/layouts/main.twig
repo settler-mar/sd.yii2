@@ -122,6 +122,8 @@
     {% include 'base/footer_include.twig' %}
 
     {% if app.params.plugin_install_panel %} <div id="plugin-install-panel"></div>{% endif %}
+
+    {% include 'base/lg.twig' %}
   </body>
 </html>
 {{ void(this.endPage()) }}

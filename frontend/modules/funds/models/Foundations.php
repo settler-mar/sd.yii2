@@ -155,7 +155,11 @@ class Foundations extends \yii\db\ActiveRecord
               'IF(lgf.'.$attribute.' > "", lgf.'.$attribute.', cwf.'.$attribute.') as '.$attribute :
               'cwf.'.$attribute;
       }
-      $funds = self::find()->from(self::tableName(). ' cwf')->select($selectAttributes);
+      $funds = self::find()
+          ->from(self::tableName(). ' cwf')
+          ->select($selectAttributes)
+          ->where(["is_active" => 1])
+          ->orderBy("uid ASC");
       if ($language) {
           $funds->leftJoin(LgFoundations::tableName() .' lgf', 'cwf.uid = lgf.foundation_id and lgf.language = "'.$language.'"');
       }

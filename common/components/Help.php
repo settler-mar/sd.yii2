@@ -1,10 +1,11 @@
 <?php
 
 namespace common\components;
+
 use kartik\daterange\DateRangePicker;
+use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use Yii;
 
 /**
  * Class Help
@@ -38,28 +39,28 @@ class Help extends Component
   private static function rus2translit($string)
   {
     $converter = [
-      'а' => 'a', 'б' => 'b', 'в' => 'v',
-      'г' => 'g', 'д' => 'd', 'е' => 'e',
-      'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
-      'и' => 'i', 'й' => 'y', 'к' => 'k',
-      'л' => 'l', 'м' => 'm', 'н' => 'n',
-      'о' => 'o', 'п' => 'p', 'р' => 'r',
-      'с' => 's', 'т' => 't', 'у' => 'u',
-      'ф' => 'f', 'х' => 'h', 'ц' => 'c',
-      'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch',
-      'ь' => '', 'ы' => 'y', 'ъ' => '',
-      'э' => 'e', 'ю' => 'yu', 'я' => 'ya',
-      'А' => 'A', 'Б' => 'B', 'В' => 'V',
-      'Г' => 'G', 'Д' => 'D', 'Е' => 'E',
-      'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
-      'И' => 'I', 'Й' => 'Y', 'К' => 'K',
-      'Л' => 'L', 'М' => 'M', 'Н' => 'N',
-      'О' => 'O', 'П' => 'P', 'Р' => 'R',
-      'С' => 'S', 'Т' => 'T', 'У' => 'U',
-      'Ф' => 'F', 'Х' => 'H', 'Ц' => 'C',
-      'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Sch',
-      'Ь' => '', 'Ы' => 'Y', 'Ъ' => '',
-      'Э' => 'E', 'Ю' => 'Yu', 'Я' => 'Ya',
+        'а' => 'a', 'б' => 'b', 'в' => 'v',
+        'г' => 'g', 'д' => 'd', 'е' => 'e',
+        'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
+        'и' => 'i', 'й' => 'y', 'к' => 'k',
+        'л' => 'l', 'м' => 'm', 'н' => 'n',
+        'о' => 'o', 'п' => 'p', 'р' => 'r',
+        'с' => 's', 'т' => 't', 'у' => 'u',
+        'ф' => 'f', 'х' => 'h', 'ц' => 'c',
+        'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch',
+        'ь' => '', 'ы' => 'y', 'ъ' => '',
+        'э' => 'e', 'ю' => 'yu', 'я' => 'ya',
+        'А' => 'A', 'Б' => 'B', 'В' => 'V',
+        'Г' => 'G', 'Д' => 'D', 'Е' => 'E',
+        'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
+        'И' => 'I', 'Й' => 'Y', 'К' => 'K',
+        'Л' => 'L', 'М' => 'M', 'Н' => 'N',
+        'О' => 'O', 'П' => 'P', 'Р' => 'R',
+        'С' => 'S', 'Т' => 'T', 'У' => 'U',
+        'Ф' => 'F', 'Х' => 'H', 'Ц' => 'C',
+        'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Sch',
+        'Ь' => '', 'Ы' => 'Y', 'Ъ' => '',
+        'Э' => 'E', 'Ю' => 'Yu', 'Я' => 'Ya',
     ];
     return strtr($string, $converter);
   }
@@ -82,9 +83,9 @@ class Help extends Component
   {
     if (!$status_list) {
       $status_list = [
-        'В ожидании',
-        'Отклонён',
-        'Подтверждён',
+          'В ожидании',
+          'Отклонён',
+          'Подтверждён',
       ];
 //      $status_list = [
 //        \Yii::t('common', 'color_status_waiting'),
@@ -93,9 +94,9 @@ class Help extends Component
 //      ];
     };
     $icon_list = [
-      '<span class="fa fa-clock-o"></span>',
-      '<span class="fa fa-times"></span>',
-      '<span class="fa fa-check"></span>',
+        '<span class="fa fa-clock-o"></span>',
+        '<span class="fa fa-times"></span>',
+        '<span class="fa fa-check"></span>',
     ];
     if (!isset($status_list[$status])) return '!!! ОШИБКА !!!';
     $out = '<span class="status_' . $status . '"">';
@@ -111,54 +112,55 @@ class Help extends Component
   public static function dateRanges()
   {
     return [
-      'Сегодня' => ["moment().startOf('day')", "moment()"],
-      'Вчера' => ["moment().startOf('day').subtract(1,'days')", "moment().endOf('day').subtract(1,'days')"],
-      'Текущая неделя' => ["moment().startOf('weak')", "moment()"],
-      'Последние 7 дней' => ["moment().startOf('day').subtract(6, 'days')", "moment()"],
-      'Последние 30 дней' => ["moment().startOf('day').subtract(29, 'days')", "moment()"],
-      'Этот месяц' => ["moment().startOf('month')", "moment()"],
-      'Последний месяц' => ["moment().subtract(1, 'month').startOf('month')", "moment().subtract(1, 'month').endOf('month')"],
-      'Этот год' => ["moment().startOf('year')", "moment()"],
-      'Прошлый год' => ["moment().subtract(1, 'year').startOf('year')", "moment().subtract(1, 'year').endOf('year')"],
+        Yii::t('common', 'today') => ["moment().startOf('day')", "moment()"],
+        Yii::t('common', 'yesterday') => ["moment().startOf('day').subtract(1,'days')", "moment().endOf('day').subtract(1,'days')"],
+        Yii::t('common', 'this_week') => ["moment().startOf('weak')", "moment()"],
+        Yii::t('common', 'last_n_days',['n'=>7]) => ["moment().startOf('day').subtract(6, 'days')", "moment()"],
+        Yii::t('common', 'last_n_days',['n'=>30]) => ["moment().startOf('day').subtract(29, 'days')", "moment()"],
+        Yii::t('common', 'this_month') => ["moment().startOf('month')", "moment()"],
+        Yii::t('common', 'last_month') => ["moment().subtract(1, 'month').startOf('month')", "moment().subtract(1, 'month').endOf('month')"],
+        Yii::t('common', 'this_year') => ["moment().startOf('year')", "moment()"],
+        Yii::t('common', 'last_year') => ["moment().subtract(1, 'year').startOf('year')", "moment().subtract(1, 'year').endOf('year')"],
     ];
   }
 
-  public static function DateRangePicker($Model,$attrName,$option=array()){
-    $option=ArrayHelper::merge([
-      'convertFormat'=>true,
-      'pluginOptions' => [
-        'timePicker'=>false,
-        'locale'=>[
-          'format'=>'d-m-Y',
+  public static function DateRangePicker($Model, $attrName, $option = array())
+  {
+    $option = ArrayHelper::merge([
+        'convertFormat' => true,
+        'pluginOptions' => [
+            'timePicker' => false,
+            'locale' => [
+                'format' => 'd-m-Y',
+            ],
+            'ranges' => self::dateRanges(),
+          //'opens'=>'left',
+            'showDropdowns' => true,
+          //'autoUpdateInput' => true,
+            'todayHighlight' => true,
         ],
-        'ranges'=>self::dateRanges(),
-        //'opens'=>'left',
-        'showDropdowns'=>true,
-        //'autoUpdateInput' => true,
-        'todayHighlight' => true,
-      ],
       //'presetDropdown'=>true,
-      'hideInput'=>true,
-      'pluginEvents' => [
-        /*"show.daterangepicker" => "function(ev,range) {
-          ranges=range.element.text().trim().split(' - ')
-          console.log(ranges);
-          ranges[0]='05-09-2017'
-          ranges[1]='05-09-2017'
-          range.setStartDate(ranges[0])
-          range.setEndDate(ranges[1])
-          }",
-        /*"hide.daterangepicker" => "function() { console.log(\"hide.daterangepicker\"); }",
-        "apply.daterangepicker" => "function() { console.log(\"apply.daterangepicker\"); }",
-        "cancel.daterangepicker" => "function() { console.log(\"cancel.daterangepicker\"); }",*/
-      ],
-    ],$option);
+        'hideInput' => true,
+        'pluginEvents' => [
+          /*"show.daterangepicker" => "function(ev,range) {
+            ranges=range.element.text().trim().split(' - ')
+            console.log(ranges);
+            ranges[0]='05-09-2017'
+            ranges[1]='05-09-2017'
+            range.setStartDate(ranges[0])
+            range.setEndDate(ranges[1])
+            }",
+          /*"hide.daterangepicker" => "function() { console.log(\"hide.daterangepicker\"); }",
+          "apply.daterangepicker" => "function() { console.log(\"apply.daterangepicker\"); }",
+          "cancel.daterangepicker" => "function() { console.log(\"cancel.daterangepicker\"); }",*/
+        ],
+    ], $option);
 
-    if(is_string($Model)){
+    if (is_string($Model)) {
       $option['value'] = $Model;
       $option['name'] = $attrName;
       //$option['useWithAddon'] = true;
-    }else{
+    } else {
       $option['model'] = $Model;
       $option['attribute'] = $attrName;
     };
@@ -169,48 +171,49 @@ class Help extends Component
 
   public static function svg($name, $class = false)
   {
-      $path=Yii::getAlias('@app').'/views/svg/'.$name.'.svg';
+    $path = Yii::getAlias('@app') . '/views/svg/' . $name . '.svg';
 
-      if(!is_readable($path)){
-          return '<pre>Фаил не найден '.$path.'</pre>';
-      }
+    if (!is_readable($path)) {
+      return '<pre>Фаил не найден ' . $path . '</pre>';
+    }
 
-      $output=file_get_contents($path);
-      if($class){
-          $output=str_replace('<svg','<svg class="'.$class.'" ',$output);
-      }
-      return $output;
+    $output = file_get_contents($path);
+    if ($class) {
+      $output = str_replace('<svg', '<svg class="' . $class . '" ', $output);
+    }
+    return $output;
   }
+
   public static function href($href, $basePath = '')
   {
-      $lang = isset(Yii::$app->params['lang_code']) ?
-          Yii::$app->params['lang_code'] :
-          Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'];
-      $lang = $lang == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lang;
-      if ($lang == '') {
-          return $basePath . $href;
-      }
-      if (substr($href, 0, 1) == '#') {
-          return ($basePath != '' ? $basePath . '/' : '')  . substr($href, 0, 1) . $lang . '/'. substr($href, 1);
-      } else {
-          return $basePath . '/' .  $lang . $href;
-      }
+    $lang = isset(Yii::$app->params['lang_code']) ?
+        Yii::$app->params['lang_code'] :
+        Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'];
+    $lang = $lang == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lang;
+    if ($lang == '') {
+      return $basePath . $href;
+    }
+    if (substr($href, 0, 1) == '#') {
+      return ($basePath != '' ? $basePath . '/' : '') . substr($href, 0, 1) . $lang . '/' . substr($href, 1);
+    } else {
+      return $basePath . '/' . $lang . $href;
+    }
   }
 
 
-    /**ищем в тектсте url, переделываем в <a hrer="...">...</a>
-     * @param $text
-     * @return null|string|string[]
-     */
+  /**ищем в тектсте url, переделываем в <a hrer="...">...</a>
+   * @param $text
+   * @return null|string|string[]
+   */
   public static function makeHrefs($text)
   {
-      $pattern = '/\s((http(s)?:\/\/)|(www\.))([^\.]+)\.([^\s()]+)/i';
-      return preg_replace_callback($pattern, function($replace) {
-          $href = trim($replace[0]);
-          $hrefArr = explode('/', $href);
-          $text = strlen($href) < 40 ? $href : $hrefArr[count($hrefArr)-1];
-          return ' <a target="_blank" rel="nofollow noreferrer"  class="blue" href="' . $href . '">' . $text . '</a> ';
-      }, $text);
+    $pattern = '/\s((http(s)?:\/\/)|(www\.))([^\.]+)\.([^\s()]+)/i';
+    return preg_replace_callback($pattern, function ($replace) {
+      $href = trim($replace[0]);
+      $hrefArr = explode('/', $href);
+      $text = strlen($href) < 40 ? $href : $hrefArr[count($hrefArr) - 1];
+      return ' <a target="_blank" rel="nofollow noreferrer"  class="blue" href="' . $href . '">' . $text . '</a> ';
+    }, $text);
   }
 
 

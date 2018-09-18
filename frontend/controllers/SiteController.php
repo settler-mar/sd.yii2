@@ -207,10 +207,8 @@ class SiteController extends SdController
       throw new HttpException(404, 'User not found');
     }
 
-    $page = Meta::find()
-        ->where(['page' => $page])
-        ->asArray()
-        ->one();
+    $page = Meta::findByUrl($page);
+
     if (!$page) {
       throw new HttpException(404, 'User not found');
     }
@@ -220,8 +218,10 @@ class SiteController extends SdController
       throw new HttpException(404, 'User not found');
     }
 
-    $page['pre_footer'] = '<h2>'.\Yii::t('main', 'offline_how_to_get_cashback').'</h2>{{_include(\'stores/instruction_offline\') | raw}}';
+    $page['pre_footer'] = '<h2>'.\Yii::t('main', 'offline_how_to_get_cashback').'</h2>
+        {{_include(\'stores/instruction_offline\') | raw}}';
     $page['infotitle'] = \Yii::t('main', 'offline_how_to_get_cashback_infotitle');
+    //$page['title']=json_decode($page['title'],true);
     $this->params['breadcrumbs'][] = $page['title'];
 
     Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";

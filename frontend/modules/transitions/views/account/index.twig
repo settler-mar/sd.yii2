@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{_local_date(visit.visit_date, date_format)|raw }}</td>
                             <td>{{ t('common', 'transition_type_'~visit.source)|raw }}</td>
-                            <td class="store"><a href="/stores/{{visit.route}}{{ _if(visit.is_offline,'-offline') }}">{{visit.name}}</a></td>
+                            <td class="store"><a href="{{ _href("/stores/"~visit.route~_if(visit.is_offline,'-offline')) }}">{{visit.name}}</a></td>
                         </tr>
                         {% endfor %}
                 </table>

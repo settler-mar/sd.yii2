@@ -29,7 +29,7 @@
                     </div>
                     <div class="catalog_products_item_cashback">
                         <div class="catalog_products_item_cashback_left">
-                            <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ store.displayed_cashback}}
+                            <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ _cashback(store.displayed_cashback) }}
                             <a class="catalog_products_item_cashback_question modals_popup"
                                data-original-html="store_tariffs_id"
                                data-original-h="{{ t('main', 'tarifs_terms_store',{'store': store.name}) }}"

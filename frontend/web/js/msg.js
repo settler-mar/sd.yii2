@@ -143,19 +143,23 @@
   };
 
   function randomMSG(user) {
-    msg = user.name + ' только что ';
-    shop = shops[Math.floor(Math.random() * shops.length)];
+    var data={
+      "currency":lang_base['currency'],
+      "user":user.name
+    };
+    var shop = shops[Math.floor(Math.random() * shops.length)];
 
     if (shop.discount.search(' ') > 0) {
-      discount = shop.discount;
+      data.discount = shop.discount;
     } else {
-      msg +='купил(a) со скидкой '+ shop.discount + '% и ';
+      lg('msg_new_cashback_content',data)
+      data.shop_discount =lg("msg_new_cashback_shop_discount",{"value":shop.discount});
       discount = Math.round(Math.random() * 100000) / 100;
-      discount = discount.toFixed(2) + ' руб.';
+      discount = discount.toFixed(2) + ' '+lang_base['currency']+'.';
     }
-    msg += 'заработал(a) ' + discount + ' кэшбэка в ';
-    msg += '<a href="' + shop.href + '">' + shop.name + '</a>';
-    return msg;
+    data.discount = discount;
+    data.store = '<a href="' + lang['href_prefix']+shop.href + '">' + shop.name + '</a>';
+    return lg('msg_new_cashback_content',data);
   };
 
   function showMSG() {
@@ -166,7 +170,7 @@
       notification.notifi({
         message: this.randomMSG(user),
         img: user.photo,
-        title: 'Новый кэшбэк',
+        title: lg('msg_new_cashback_title'),
       });
     }
     setTimeout(f, 60000 + Math.round(Math.random() * 120000));

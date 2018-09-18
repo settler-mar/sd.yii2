@@ -11,7 +11,7 @@
     {% set h1_final = h1_final~'<span>('~total_v~')</span>' %}
 {% endif %}
 {#краткая информация категории#}
-{% set short_description = offline and current_category.short_description_offline ? current_category.short_description_offline : current_category.short_description %}
+{% set short_description = offline ? current_category.short_description_offline : current_category.short_description %}
     {% if short_description %}
       <section class="gray-box wrap-round margin">
         <h1 class="page-header align-center laptop-no-margin-bottom" >{{ h1_final|raw }}</h1>
