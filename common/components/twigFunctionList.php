@@ -155,7 +155,6 @@ function _hyphen_words(array &$m, $wbr = false)
  * @return string
  */
 function getConstant($name, $json_col = false, $json_index = 0) {
-
     $constant = Constants::byName($name, $json_col, $json_index);
     if ($constant && isset($constant['ftype']) && in_array($constant['ftype'], ['textarea', 'reachtext'])) {
         return Yii::$app->TwigString->render($constant['text'], Yii::$app->view->all_params);
