@@ -34,7 +34,7 @@ class Actionpay
     $url = $this->url. '/'.$method .'/';
     $params['key'] = $this->apiKey;
     $url .= ('?'. http_build_query($params));
-    echo $url . "\n";
+    //echo $url . "\n";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

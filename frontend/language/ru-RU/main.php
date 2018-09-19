@@ -194,7 +194,7 @@ return [
     'review_text' => 'Текст отзыва',
     'review_rating' => 'Рейтинг',
     'review_add_shop_not_found' => 'Ошибка!!! Магазин не найден.',
-    'review_add_coupon_not_found' => 'Ошибка!!! Купон не найденю',
+    'review_add_coupon_not_found' => 'Ошибка!!! Купон не найден.',
     'review_not_found' => 'Отзыв не найден.',
     'review_exists_you_can_only_<br>_<a class="modals_open" href="{edit}">edit</a>_previesly_added_review' => 'Вы уже оставили отзыв о сайте.<br> Теперь вы можете только <a href="{edit}" class="modals_open">изменить</a> или <a href="{edit}" class="modals_open">дополнить</a><br>ранее оставленный <a href="{edit}" class="ajaxFormOpen">отзыв</a>',
     'review_add_successfull' => 'Ваш отзыв успешно добавлен и будет<br>опубликован на сайте после модерации.',

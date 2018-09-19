@@ -72,7 +72,7 @@ class ActionpayController extends Controller
             'promocode' => "",
           //'date_start' => $coupon['date_start'],
           //'date_expire' => $coupon['date_end'],
-            'link' => $link['url'],
+            'link' => str_replace("subaccount","{{subid}}",$gotolink),
           //'exclusive' => $coupon['exclusive'] == 'true' ? 1 : 0,
           //'categories' => $coupon['categories'],
             'cpa_id' => $this->cpa_id,
@@ -80,7 +80,7 @@ class ActionpayController extends Controller
       }
 
       if (!$gotolink) continue;
-
+      if(!strpos($gotolink,"subaccount")) ddd($gotolink);
       $newStore = [
           'logo' => $store['logo'],
           'cpa_id' => $this->cpa_id,

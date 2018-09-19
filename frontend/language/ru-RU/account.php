@@ -168,6 +168,7 @@ return [
     'affiliate_referrals' => 'Друзей',
     'affiliate_referrals_payments_confirmed' => 'Доход от друзей',
     'affiliate_referrals_payments_expected' => 'Ожидаемый доход',
+    'affiliate_referrals_payments' => 'Доход от друзей',
     'affiliate_h1_default' => 'Принцип работы партнёрской программы',
     'affiliate_how_to_share' => 'А пригласить можно так',
     'affiliate_do_share' => 'Расскажите о нас в соцсетях',

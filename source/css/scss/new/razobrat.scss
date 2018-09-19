@@ -23,6 +23,10 @@ a.blue:hover {text-decoration: none; color: #1a8cff;}
 img.no_optomize {
   height: auto;
   max-height: 120px;
+
+  &.howitworks-img{
+    max-height: auto;
+  }
 }
 .shop {
   display: flex;

@@ -44,5 +44,8 @@
   "favorites_shop_remove": "Delete from My Favorites",
   "error_querying_data": "Server Error Request",
   "product_use_without_cashback_or_register": "If you want to get a CASH BACK, you need to sign up on our website. But you can just buy a product without cash back.",
-  "product_use": "Buy with cash back"
+  "product_use": "Buy with cash back",
+  "msg_new_cashback_content":"{user} just {shop_discount} earned {discount} cash back at {store}",
+  "msg_new_cashback_shop_discount":"bought at a discount {value}% and ",
+  "msg_new_cashback_title":"New cash back"
 }
