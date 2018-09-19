@@ -72,7 +72,7 @@ class ActionpayController extends Controller
             'promocode' => "",
           //'date_start' => $coupon['date_start'],
           //'date_expire' => $coupon['date_end'],
-            'link' => str_replace("subaccount","{{subid}}",$gotolink),
+            'link' => str_replace("subaccount","{{subid}}",$link['url']),
           //'exclusive' => $coupon['exclusive'] == 'true' ? 1 : 0,
           //'categories' => $coupon['categories'],
             'cpa_id' => $this->cpa_id,
@@ -91,7 +91,7 @@ class ActionpayController extends Controller
           'currency' => $cashBack['currency'],
           'cashback' => $cashBack['cashback'],
           'hold_time' => $cashBack['diapazon']['hold']['max'] ? (int)$cashBack['diapazon']['hold']['max'] : 30,
-          'affiliate_link' => $gotolink,
+          'affiliate_link' => str_replace("subaccount","{{subid}}",$gotolink),
           'actions' => $cashBack['actions']
       ];
 
