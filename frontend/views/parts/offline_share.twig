@@ -65,7 +65,7 @@
                         {{ svg('printer')|raw }}
                     </div>
                     <div class="affiliate-invitation_printer">
-                        <p class="intro-content_header"><a class="blue" href="/offline?ref={{user_id}}" {{ print | raw }}>{{ t('account', 'offline_pr_code_print') }}</a></p>
+                        <p class="intro-content_header"><a class="blue" href="{{ _href('/offline?ref='~user_id) }}" {{ print | raw }}>{{ t('account', 'offline_pr_code_print') }}</a></p>
                     </div>
                 </div>
             {% endif %}

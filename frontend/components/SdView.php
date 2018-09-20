@@ -25,14 +25,17 @@ class SdView extends SdViewBASE
   public $sd_counter;
   public $favorites = false;//количество изрбанных
   public $layout_mode = 'default';
+  public $currency;
 
   public function init_param()
   {
     $this->first_init = false;
+    $this->currency = Yii::$app->params['valuta'];
 
     if (!Yii::$app->user->isGuest) {
       $this->user_id = Yii::$app->user->id;
       $user = Yii::$app->user->identity;
+      $this->currency = $user->currency;
       $this->user = (array)$user->getIterator();
       $this->balance = $user->getBalance();
       $this->favorites = $this->user_id ? UsersFavorites::userFavoriteCount($this->user_id) : false;

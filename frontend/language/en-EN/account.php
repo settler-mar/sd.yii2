@@ -129,7 +129,7 @@ return [
     'withrdaw_fill_data' => 'Fill in payment information',
     'withrdaw_fill_cashe_number' => 'Enter account number',
     'withrdaw_fill_amount' => 'Enter the amount',
-    'withrdaw_fill_text' => 'Additional information (optional). For example, the name of the mobile operator or the type of card (Visa, Mastercard).',
+    'withrdaw_fill_text' => 'Additional information (optional).| For example, the name of the mobile operator or the type of card (Visa, Mastercard).',
     'withrdaw_form_button' => 'Pay me',
     'withrdaw_method_wrong' => 'Wrong payment method',
     'withrdaw_email_wrong' => 'Enter the correct email',
@@ -327,7 +327,7 @@ return [
     'visited_stores' => 'Recently viewed stores',
     'all_visited_stores_{count}' => 'All viewed ({count})',
     'loyalty_status_change' => 'Your loyalty level has been changed',
-    'affiliate_referrals_payments' => 'Income from friends',
+    'affiliate_referrals_payments' => 'Income from Friends',
     "base_bonus"=>"Base сash back rate",
     "add_bonus"=>"+{bonus}% to base сash back rate",
 ];

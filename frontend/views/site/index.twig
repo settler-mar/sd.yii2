@@ -10,7 +10,9 @@
 
 {% if user_id %}
   {% include 'index/visited_shop.twig' %}
-  {% include 'index/blog_posts.twig' %}
+  {%  if params('lang_code')=='ru' %}
+    {% include 'index/blog_posts.twig' %}
+  {% endif %}
   {% include 'parts/stores/coupons.twig' %}
   {% include 'index/install_plugin.twig' %}
 {% else %}

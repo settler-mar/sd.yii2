@@ -25,7 +25,7 @@ img.no_optomize {
   max-height: 120px;
 
   &.howitworks-img{
-    max-height: auto;
+    max-height: none;
   }
 }
 .shop {
@@ -86,7 +86,7 @@ img.no_optomize {
 /*.wrap-round {padding: 0 !important;}*/
 a.blue {color: #1a8cff; }
 a.blue:hover {text-decoration: none; color: #1a8cff;}
-.static-page h1 {line-height: 1.1; margin-bottom: 40px;}
+h1 {line-height: 1.1; margin-bottom: 40px;}
 .static-page-content-narrow-page {width: 80%; margin: 60px auto 80px auto; font-size: 19px;}
 .mail_ru {color: #33a0b5;}
 

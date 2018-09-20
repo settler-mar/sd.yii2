@@ -129,7 +129,7 @@ return [
     'withrdaw_fill_data' => 'Заполните платёжные данные',
     'withrdaw_fill_cashe_number' => 'Введите номер счёта',
     'withrdaw_fill_amount' => 'Введите сумму для вывода',
-    'withrdaw_fill_text' => 'Дополнительная информация (необязательно). Например, имя мобильного оператора или тип карты (Visa, Mastercard).',
+    'withrdaw_fill_text' => 'Дополнительная информация (необязательно).| Например, имя мобильного оператора или тип карты (Visa, Mastercard).',
     'withrdaw_form_button' => 'Сделать запрос на вывод денег',
     'withrdaw_method_wrong' => 'Неправильный способ вывода',
     'withrdaw_email_wrong' => 'Введите правильный email',

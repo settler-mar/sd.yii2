@@ -50,7 +50,8 @@
           </div>
         </div>
         <div class="coupons-list_item-logo-info-share">
-          {% set coupon_name = coupon.name ~ " +&nbsp;"~t('main','cashback_in_share')~"&nbsp;" ~ _cashback(coupon.store_cashback, '',coupon.store_action_id)~"&nbsp;"~coupon.store_currency %}
+          {% set coupon_name = coupon.name ~ " +&nbsp;"~t('main','cashback_in_share')~"&nbsp;" ~  _shop_cashback(coupon.store_cashback, coupon.store_currency, 0, '',false) %}
+
           <div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>
           <div class="share42init accauntSoc accauntSoc_32"
                data-url="{{ _href('/coupons/'~coupon.store_route~'/'~coupon.uid, 'https://secretdiscounter.ru') }}"

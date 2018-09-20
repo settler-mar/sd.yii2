@@ -214,10 +214,12 @@ class Meta extends \yii\db\ActiveRecord
                 if ($model) {
                     return $page_meta->limit(1);
                 }
-                $result = self::languageMeta($page_meta->one(), $language)->toArray();
-                $result['background_image_full'] = self::extractImage($result['background_image']);
-                return $result;
-
+                $result = self::languageMeta($page_meta->one(), $language);
+                if($result){
+                  $result=$result->toArray();
+                  $result['background_image_full'] = self::extractImage($result['background_image']);
+                  return $result;
+                }
             }
 
             //прямого совпадения нет ищем по плейсхолдерам
@@ -237,10 +239,12 @@ class Meta extends \yii\db\ActiveRecord
                         return $metadataArray->limit(1);
                     }
 
-                    $result = self::languageMeta($metadataArray->one(), $language)->toArray();
-                    $result['background_image_full'] = self::extractImage($result['background_image']);
-                    return $result;
-
+                    $result = self::languageMeta($metadataArray->one(), $language);
+                    if($result){
+                      $result=$result->toArray();
+                      $result['background_image_full'] = self::extractImage($result['background_image']);
+                      return $result;
+                    }
                 }
 
                 while ($pageArr[count($pageArr) - 1] != '*' && count($pageArr) > 2) {
@@ -253,9 +257,12 @@ class Meta extends \yii\db\ActiveRecord
                         if ($model) {
                             return $metadataArray->limit(1);
                         }
-                        $result = self::languageMeta($metadataArray->one(), $language)->toArray();
-                        $result['background_image_full'] = self::extractImage($result['background_image']);
-                        return $result;
+                        $result = self::languageMeta($metadataArray->one(), $language);
+                        if($result){
+                          $result=$result->toArray();
+                          $result['background_image_full'] = self::extractImage($result['background_image']);
+                          return $result;
+                        }
                     }
                 }
             }
@@ -283,6 +290,7 @@ class Meta extends \yii\db\ActiveRecord
      */
     private static function languageMeta($meta, $language)
     {
+      //if(!$meta)return false;
         $languageMeta = !empty($language) ?
             LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one()
             : false;
@@ -292,6 +300,8 @@ class Meta extends \yii\db\ActiveRecord
                     $meta->$attribute = $languageMeta->$attribute;
                 }
             }
+        }else{
+          return false;
         }
         return $meta;
     }

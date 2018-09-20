@@ -56,9 +56,11 @@
         {% endif %}
 
         {% if posts %}
+          {%  if params('lang_code')=='ru' %}
             <div class="catalog-categories_blogposts">
                 {% include('parts/blog_posts.twig') %}
             </div>
+            {% endif %}
         {% endif %}
 
         {% set item_low = 1 %}

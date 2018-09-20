@@ -35,9 +35,14 @@ var placeholder = (function(){
         el.attr('id',el_id)
       }
 
+      if(text.indexOf('|')>0){
+        text=text.split('|');
+        text=text[0]+"<span>"+text[1]+"</span>"
+      }
+
       var div = $('<label/>',{
         'class':'placeholder',
-        'text': text,
+        'html': text,
         'for':el_id
       });
       el.before(div);

@@ -559,9 +559,12 @@ class CategoriesStores extends \yii\db\ActiveRecord
       //переводимые
       foreach (self::$translatedAttributes as $attr) {
           if (empty($attributes) || in_array($attr, $attributes)) {
-              $resultAttributes[] = $lang ?
+              /*$resultAttributes[] = $lang ?
                   'if (lgcs.' . $attr . '>"",lgcs.' . $attr . ',cwcs.' . $attr . ') as ' . $attr :
-                  'cwcs.' . $attr;
+                  'cwcs.' . $attr;*/
+            $resultAttributes[] = $lang ?
+                'lgcs.'.$attr . ' as ' . $attr :
+                'cwcs.' . $attr;
           }
       }
       $category = self::find()

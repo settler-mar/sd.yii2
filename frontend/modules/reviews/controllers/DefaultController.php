@@ -107,8 +107,8 @@ class DefaultController extends SdController
         if ($model->store_id == 0 && $model->coupon_id == 0) {
           $review = Reviews::findOne(['store_id' => 0, 'coupon_id' => 0, 'user_id' => \Yii::$app->user->id]);
           if ($review) {
-            $data['html']='<h2 class="title-no-line">'.\Yii::t('common','error').
-                '!</h2><p style="text-align: center;">'.\Yii::t(
+            $data['title']=\Yii::t('common','error').'!';
+            $data['html']='<p style="text-align: center;">'.\Yii::t(
                 'main',
                 'review_exists_you_can_only_<br>_<a class="modals_open" href="{edit}">edit</a>_previesly_added_review',
                 ['edit'=>Help::href('#reviews/edit?id='.$review->uid)]
@@ -119,8 +119,8 @@ class DefaultController extends SdController
         //ddd($model);
         $model->language = \Yii::$app->language;
         if ($model->save()) {
-          $data['html']='<h2 class="title-no-line">'.\Yii::t('common','thank_you').'!</h2>'.
-              '<p style="text-align: center;">'.\Yii::t('main','review_add_successfull').'</p>';
+          $data['title']=\Yii::t('common','thank_you');
+          $data['html']='<p style="text-align: center;">'.\Yii::t('main','review_add_successfull').'</p>';
           return json_encode($data);
         }
         \Yii::info(print_r($model->getErrors(), true));
@@ -156,17 +156,17 @@ class DefaultController extends SdController
     if (!$request->isAjax || \Yii::$app->user->isGuest) {
       throw new NotFoundHttpException();
     }
-
+    $data['title']=\Yii::t('main','review_edit');
     if($request->isPost) {
       $model = Reviews::findOne(isset($request->post('Reviews')['uid']) ? $request->post('Reviews')['uid'] : 0);
       if ($model == null || $model->user_id != \Yii::$app->user->id || $model->store_id != 0) {
-        $data['html']='<h3 style="text-align: center;">'.\Yii::t('common','error').'!</h3>'.
-            '<p style="text-align: center;">'.\Yii::t('main','review_not_found').'</p>';
+        $data['title'] = \Yii::t('common','error').'!';
+        $data['html']='<p style="text-align: center;">'.\Yii::t('main','review_not_found').'</p>';
         return json_encode($data);
       }
       if ($model->load($request->post()) && $model->save()) {
-        $data['html']='<h3 style="text-align: center;">'.\Yii::t('common','thank_you').'!</h3>'.
-            '<p style="text-align: center;">'.\Yii::t('main','review_edit_successfull').'</p>';
+        $data['title'] = \Yii::t('common','thank_you').'!';
+        $data['html']='<p style="text-align: center;">'.\Yii::t('main','review_edit_successfull').'</p>';
         return json_encode($data);
 
       }
@@ -176,16 +176,14 @@ class DefaultController extends SdController
 
     $review = Reviews::findOne(['uid' => $id>0 ? $id : null, 'user_id' => \Yii::$app->user->id]);
     if(!$review){
-      $data['html']='<h3 style="text-align: center;">'.\Yii::t('common','error').'!</h3>'.
-          '<p style="text-align: center;">'.\Yii::t('main','review_not_found').'</p>';
+      $data['title']=\Yii::t('common','error');
+      $data['html']='<p style="text-align: center;">'.\Yii::t('main','review_not_found').'</p>';
       return json_encode($data);
     }
-    $data=[
-      'html'=>$this->renderAjax('form', [
+    $data['html']=$this->renderAjax('form', [
           'model' => $review,
           'action' => Help::href($request->url)
-      ])
-    ];
+      ]);
     return json_encode($data);
   }
 

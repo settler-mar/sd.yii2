@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="footer-withdraws flex-line">
-        <div class="footer-withdraws-item">{{ t('main', 'withdraw_methods') }}:</div>
+        <div class="footer-withdraws-item">{{ t('main', 'withdraw_methods') }}</div>
         {% set payment_system = _constant("payment_system") %}
         {% for item in payment_system %}
           {% if item.on_footer==1 %}
@@ -74,9 +74,9 @@
         {% endfor %}
       </div>
       <div class="footer-docs  flex-line">
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="/sitemap">{{ t('main', 'site_map') }}</span>
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="/privacy-policy">{{ t('main', 'policy_terms') }}</span>
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="/terms">{{ t('main', 'terms_of_use') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/sitemap')}}">{{ t('main', 'site_map') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/privacy-policy')}}">{{ t('main', 'policy_terms') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/terms')}}">{{ t('main', 'terms_of_use') }}</span>
       </div>
       <div class="footer-copyright">
           <img src="/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
@@ -89,7 +89,7 @@
     </div>
     <div class="footer-right">
       <div class="footer-right-item footer-share">
-        <div class="footer-share-text">{{ t('main', 'share_to_friends') }}:</div>
+        <div class="footer-share-text">{{ t('main', 'share_to_friends') }}</div>
         <div class="share42init accauntSoc accauntSoc_32"
              data-url="https://secretdiscounter.ru/"
              data-title="{{ html.encode(this.title) }}"
@@ -102,7 +102,7 @@
       </div>
 
       <div class="footer-right-item footer-social_links">
-        <div class="footer-social_links-title">{{ t('main', 'bonuses_in_our_social_groups') }}:
+        <div class="footer-social_links-title">{{ t('main', 'bonuses_in_our_social_groups') }}
         </div>
         <a class="footer-social_links-item">
           {{ svg("color/sd",'footer-social_links-icon')|raw }}
@@ -120,7 +120,7 @@
       </div>
 
       <div class="footer-right-item footer-contacts">
-        <p class="footer-contacts_title">{{ t('main', 'contacts') }}:</p>
+        <p class="footer-contacts_title">{{ t('main', 'contacts') }}</p>
         {{ _constant('footer_contacts')|raw }}
       </div>
       <div class="footer-right-item footer-app">

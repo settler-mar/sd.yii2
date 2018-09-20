@@ -570,6 +570,10 @@ input[name="roles[]"]{
   color: $placeholder_color;
   font-size: 1em;
 
+  span{
+    transition: all 0.3s;
+  }
+
   +*:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #fff inset;
   }
@@ -585,6 +589,10 @@ input[name="roles[]"]{
       height: 1em !important;
       background: transparent;
       padding: 0 5px;
+
+      span{
+        opacity: 0;
+      }
     }
 
     &.header-search_form-input{

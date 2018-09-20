@@ -155,7 +155,7 @@
       lg('msg_new_cashback_content',data)
       data.shop_discount =lg("msg_new_cashback_shop_discount",{"value":shop.discount});
       discount = Math.round(Math.random() * 100000) / 100;
-      discount = discount.toFixed(2) + ' '+lang_base['currency']+'.';
+      discount = discount.toFixed(2) + ' '+lang_base['currency'];
     }
     data.discount = discount;
     data.store = '<a href="' + lang['href_prefix']+shop.href + '">' + shop.name + '</a>';

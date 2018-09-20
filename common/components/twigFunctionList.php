@@ -240,7 +240,7 @@ $functionsList = [
     return trim($cashback . $cur);
   },
 //функция - вывести кэшбек шопа в списках если нулевой, то сердечки $pre - символы перед, если не благотворительный
-  '_shop_cashback' => function ($cashback, $currency = '', $action = 0, $pre = '') use ($currencyIcon) {
+  '_shop_cashback' => function ($cashback, $currency = '', $action = 0, $pre = '',$heart_if_zero = true) use ($currencyIcon) {
     $cashback = str_replace('до', Yii::t('main', 'up_to'), $cashback);
     $value = preg_replace('/[^\.\,0-9]/', '', $cashback);
     if ($value=="")$value=0;
@@ -251,7 +251,7 @@ $functionsList = [
       //$v=$v/10;
       $cashback = str_replace($value, $v, $cashback);
     }
-    if ($value == 0) {
+    if ($heart_if_zero && $value == 0) {
       $out = '{{svg("heart","heart-red shop-heart-red")|raw}}';
     } elseif (strpos($cashback, '%') === false) {
       $out = $pre . $cashback .
@@ -579,6 +579,10 @@ $functionsList = [
   'str_replace' => 'str_replace',
   'in_array' => 'in_array',
   '_php_date' => 'date',
+  'exchange' => function ($val,$on,$to){
+      $kurs = Yii::$app->conversion->getCurs($to,$on);
+      return ($kurs*$val);
+  },
   'is_empty' =>  function ($data) {
     $data = trim($data);
     return empty($data);

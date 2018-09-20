@@ -1030,7 +1030,8 @@ class Stores extends \yii\db\ActiveRecord
         'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products','cws.test_link'];
       $translated = [];
       foreach (self::$translated_attributes as $attr) {
-          $translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
+          //$translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
+          $translated[] = $language ? 'lgs.' . $attr. ' as '.$attr : 'cws.'.$attr;
           $translated[] = $language ? "concat('/".Yii::$app->params['lang_code']."/stores/',cws.route) as store_href" :
               "concat('/stores/',cws.route) as store_href";
       }
