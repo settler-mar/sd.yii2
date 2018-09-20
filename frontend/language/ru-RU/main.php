@@ -265,4 +265,11 @@ return [
   'read_mode'=>"Подробнее",
     'read_less'=>"Скрыть",
     'wait_app'=>"скоро",
+  "loyalty_status_not_found"=>"Статус лояльности не найден",
+  "bay_loyalty_title"=>"Покупка {status} статуса лояльности",
+  "loyalty_status_bay_no_bonuc"=>"Покупаемые бонусы меньше чем текущее.",
+  "loyalty_status_bay_no_price"=>"Статус не продается.",
+  "loyalty_status_bay_no_money"=>"Не хватает денег на покупку статуса. стоимость статуса {price}{currency}. Доступно средств {balance}{currency}",
+  "loyalty_status_bay_yes_content"=>"стоимость статуса {price}{currency}. Доступно средств {balance}{currency}. Действительно купить на месяц?",
+
 ];

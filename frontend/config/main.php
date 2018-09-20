@@ -166,6 +166,7 @@ $config = [
                 'account/email-success' => 'users/account/emailsuccess',
                 'account/webmaster' => 'affiliate/account/index',
                 'account/promo' => 'users/default/promo',
+                'account/bay-loyalty/<id>'=>'/users/account/bay-loyalty',
                 'deleteaccount' => 'users/account/delete',
                 'reg' => 'users/default/reg',
 

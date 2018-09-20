@@ -18,19 +18,30 @@
     var href = this.href.split('#');
     href = href[href.length - 1];
     var notyClass = $(this).data('notyclass');
+    var class_name=(href.indexOf('video') === 0 ? 'modals-full_screen' : 'notify_white') + ' ' + notyClass;
     var data = {
       buttonYes: false,
-      notyfy_class: "loading " + (href.indexOf('video') === 0 ? 'modals-full_screen' : 'notify_white') + ' ' + notyClass,
+      notyfy_class: "loading " + class_name,
       question: ''
     };
     notification.alert(data);
 
     $.get('/' + href, function (data) {
-      $('.notify_box').removeClass('loading');
-      $('.notify_box .notify_content').html(data.html);
+
+      var data_msg = {
+        buttonYes: false,
+        notyfy_class: class_name,
+        question: data.html,
+      };
+
       if (data.title) {
-        $('.notify_box .notify_title div').html(data.title);
+        data_msg['title']=data.title;
       }
+
+      /*if(data.buttonYes){
+        data_msg['buttonYes']=data.buttonYes;
+      }*/
+      notification.alert(data_msg);
       ajaxForm($('.notify_box .notify_content'));
     }, 'json');
 

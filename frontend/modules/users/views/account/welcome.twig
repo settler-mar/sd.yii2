@@ -121,13 +121,8 @@
               {{ t('account', 'user_loyalty_current_status') }}
             </div>
           {% else %}
-            {% if key==4 %}
-              <a href="#"
-                 data-question="{{ t('common', 'sorry_this_is_in_develop') }}"
-                 data-button_yes="ОК"
-                 data-notyfy_class="notify_box-alert"
-                 data-title="<br>"
-                 class="disabled blue" >
+            {% if status.price_ %}
+              <a href="{{ _href("#account/bay-loyalty/"~status.code) }}" class="modals_open" >
                 {{ t('common', 'add_right_now') }}
               </a>
             {% endif %}

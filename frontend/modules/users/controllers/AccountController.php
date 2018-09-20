@@ -116,6 +116,7 @@ class AccountController extends Controller
       'from_refQuery'=>  $from_refQuery,
     ]);
   }
+
   /**
    * Lists all Users models.
    * @return mixed
@@ -403,5 +404,54 @@ class AccountController extends Controller
           'title' => Yii::t('common', 'error').'!',
           'message' => Yii::t('account', 'user_joined_to_action_error')
       ]);
+  }
+
+  public function actionBayLoyalty($id=0){
+    $request = Yii::$app->request;
+    if (!$request->isAjax && !YII_DEBUG) {
+      return $this->goHome();
+    }
+
+    $can_bay = false;
+    $data=[];
+    foreach(Yii::$app->params['dictionary']['loyalty_status'] as $loyalty_status){
+      if(!isset($loyalty_status['code']) || $loyalty_status['code']!=$id)continue;
+      $data['status'] = $loyalty_status['name'];
+      $data['code']=$loyalty_status['code'];
+      $data['title']=Yii::t('main',"bay_loyalty_title",$data);
+
+      $user_loyalty_status=Yii::$app->user->identity->loyalty_status;
+      if(Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus']>=$loyalty_status['bonus']){
+        $data['html'] = Yii::t('main',"loyalty_status_bay_no_bonuc",$data);
+        return json_encode($data);
+      }
+
+      if(empty($loyalty_status['price'])){
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_price",$data);
+        return json_encode($data);
+      }
+
+      $cur=Yii::$app->user->identity['currency'];
+      $balabce = Yii::$app->user->identity->getBalance();
+
+      $data['price']=$loyalty_status['price'][$cur];
+      $data['balance']=$balabce['total'];
+      $data['currency']=$cur;
+
+      if($data['price']>$balabce['total']) {
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_money",$data);
+        return json_encode($data);
+      }
+      $can_bay=true;
+    };
+
+    if(!$can_bay){
+      $data['html'] = Yii::t('main',"loyalty_status_not_found",$data);
+      return json_encode($data);
+    }
+
+
+    $data['html']=$this->renderAjax('bay_loyalty', array_merge($data,['data'=>$data]));
+    return json_encode($data);
   }
 }

@@ -3,7 +3,7 @@
   "success" : "Successfully",
   "error" : "Error",
   "data_copied_to_clipboard": "Data successfully copied to clipboard",
-  "sorry_not_expected_error": "Oooppps... An unexpected error occurred",
+  "sorry_not_expected_error": "Oooppps... An unexpected error occurred.»,
   "it_happens_sometimes": "<p>Often this happens if you incorrectly entered your credentials several times in a row. But there are other possible reasons. In any case, don’t be upset and just contact our support team.</p><br><p>Thank you.</p>",
   "required": "You need to fill",
   "sending_data": "Sending data",
@@ -46,6 +46,6 @@
   "product_use_without_cashback_or_register": "If you want to get a CASH BACK, you need to sign up on our website. But you can just buy a product without cash back.",
   "product_use": "Buy with cash back",
   "msg_new_cashback_content":"{user} just {shop_discount} earned {discount} cash back at {store}",
-  "msg_new_cashback_shop_discount":"bought at a discount {value}% and ",
-  "msg_new_cashback_title":"New cash back"
+  "msg_new_cashback_shop_discount":"bought with {value}% discount and ",
+  "msg_new_cashback_title":"New Cash Back"
 }

@@ -39,8 +39,6 @@ $dict = [
             'USD' => 20,
             'EUR' => 20,
           ],
-        'valuta'=>'RUB',
-        'description'=>'+10% к базовой ставке кэшбэка',
         ],
       2=>[
         'code'=>'silver',
@@ -52,8 +50,6 @@ $dict = [
           'USD' => 100,
           'EUR' => 100,
         ],
-        'valuta'=>'RUB',
-        'description'=>'+15% к базовой ставке кэшбэка',
       ],
       3=>[
         'code'=>'gold',
@@ -65,8 +61,6 @@ $dict = [
             'USD' => 200,
             'EUR' => 200,
           ],
-        'valuta'=>'RUB',
-        'description'=>'+20% к базовой ставке кэшбэка',
         ],
       4=>[
         'code'=>'platinum',
@@ -78,8 +72,11 @@ $dict = [
               'USD' => 300,
               'EUR' => 300,
           ],
-        'valuta'=>'RUB',
-        'description'=>'+30% к базовой ставке кэшбэка',
+          'price' =>  [
+              'RUB' => 100,
+              'USD' => 300,
+              'EUR' => 300,
+          ],
         'is_vip'=>0,
         ],
       5=>[
