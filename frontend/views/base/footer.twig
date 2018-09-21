@@ -53,37 +53,43 @@
         </div>
 
         <div class="footer-menu-col">
-            {% set footer_links_list = _constant("footer_help") %}
-            {% set links_title = t('main', 'footer_menu_help') %}
-            {% set class_menu = '' %}
-            {% include('parts/footer_links_list.twig') %}
-
+          {% set footer_links_list = _constant("footer_help") %}
+          {% set links_title = t('main', 'footer_menu_help') %}
+          {% set class_menu = '' %}
+          {% include('parts/footer_links_list.twig') %}
           {% set footer_links_list = _constant("footer_links_4") %}
           {% set links_title = t('main', 'footer_menu_col_4') %}
           {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
+
+          <div class="footer-menu-lists">
+            <div class="footer-withdraws flex-col">
+              <div class="footer-menu-title">{{ t('main', 'withdraw_methods') }}</div>
+              {% set payment_system = _constant("payment_system") %}
+              {% for item in payment_system %}
+                {% if item.on_footer==1 %}
+                  <div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+          </div>
         </div>
       </div>
-      <div class="footer-withdraws flex-line">
-        <div class="footer-withdraws-item">{{ t('main', 'withdraw_methods') }}</div>
-        {% set payment_system = _constant("payment_system") %}
-        {% for item in payment_system %}
-          {% if item.on_footer==1 %}
-            <div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>
-          {% endif %}
-        {% endfor %}
-      </div>
       <div class="footer-docs  flex-line">
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/sitemap')}}">{{ t('main', 'site_map') }}</span>
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/privacy-policy')}}">{{ t('main', 'policy_terms') }}</span>
-        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow" data-link="{{ _href('/terms')}}">{{ t('main', 'terms_of_use') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/sitemap') }}">{{ t('main', 'site_map') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/privacy-policy') }}">{{ t('main', 'policy_terms') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/terms') }}">{{ t('main', 'terms_of_use') }}</span>
       </div>
       <div class="footer-copyright">
-          <img src="/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
+        <img src="/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
         {{ get_menu_item({
-            'href': _href('/about'),
-            'class': 'footer-copyright_text',
-            'title': _constant('footer_copyright')
+          'href': _href('/about'),
+          'class': 'footer-copyright_text',
+          'title': _constant('footer_copyright')
         })|raw }}
       </div>
     </div>

@@ -304,11 +304,13 @@
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
+        //justify-content: space-between;
+        justify-content: space-evenly;
       }
 
       &_item {
         width: 28%;
+        min-width: 200px;
         box-sizing: border-box;
         margin: 0 2% 2%;
         border: 2px solid $menu_border_color;
@@ -316,6 +318,12 @@
         border-radius: 25px;
         transition: 0.4s ease-out;
         min-height: 150px;
+
+        &_empty{
+          border:none;
+          height: 0;
+          min-height: 0;
+        }
 
         &-option {
           padding: 15px;

@@ -154,8 +154,9 @@ span.shop_header-title_description_extend {
   border-radius: 18px;
   border: 1px solid #dedede;
   padding: 10px 20px;
+  width: 280px;
 }
-.catalog-categories ul {width: 280px;}
+.catalog-categories ul {width: auto;}
 .catalog-categories ul > li > a, .catalog-categories ul > li span {font-size: 0.8rem; min-height: 38px;}
 .catalog-categories ul > li.open > ul {
   background: #f6f6f6;

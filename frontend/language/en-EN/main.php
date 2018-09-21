@@ -156,6 +156,7 @@ return [
     'coupon_and_{store}_temporary_unavailabe' => '{store} store and its coupons are temporarily inactive',
     'enter_shop_name' => 'Enter store name',
     'popular_stores_from_{category}_cashback' => 'Popular stores in {category} with&nbsp;cash back',
+    'popular_stores_from_{category}_cashback_offline' => 'Other popular offline stores with cash back',
     'other_popular_{shops}_cashback' => 'Other popular {shops} with&nbsp;cash back',
     'share_width_friends' =>'Share with friends',
     'track_package_for_{store}_here' =>'Here you can track the parcel from {store} by tracking number',
@@ -270,6 +271,14 @@ return [
     'read_mode'=>"Read more",
     'read_less'=>"Read less",
     'wait_app'=>"soon",
-
+    'круглосуточно'=>'круглосуточно',
+    'перерыв'=>'перерыв',
+    'Пн'=>'Mon',
+    'Вт'=>'Tue',
+    'Ср'=>'Wen',
+    'Чт'=>'Thu',
+    'Пт'=>'Fri',
+    'Сб'=>'Sat',
+    'Вс'=>'Sun',
 
 ];

@@ -80,13 +80,17 @@ var paths = {
 //version должна совпадать с Settings.php -> paths -> assets_version
 
 gulp.task('compile',['clear', 'css', 'js']);
+//let compile = gulp.series(clean, css, js);
 
 gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
+//let b2b = gulp.series(clearb2b, cssb2b, jsb2b);
 
 //сервер и слежение -
 gulp.task('default',['server']);
+//let default_ = gulp.series(server);
 
 gulp.task('js',['jsadmin', 'js_new']);
+//let default_ = gulp.series(server);
 
 gulp.task('css', ['cssadmin', 'css_new', 'css_go']);
 

@@ -2,14 +2,21 @@
     <ul class="store-points__store_time">
     {% for work_day in work_times %}
         <li>
-            {% if work_day.work_time_day_1  %}Пн {% endif %}{% if work_day.work_time_day_2 %}Вт {% endif %}{% if work_day.work_time_day_3 %}Ср {% endif %}{% if work_day.work_time_day_4 %}Чт {% endif %}{% if work_day.work_time_day_5 %}Пт {% endif %}{% if work_day.work_time_day_6 %}<span>Сб</span> {% endif %}{% if work_day.work_time_day_7 %}<span>Вс</span>{% endif %}
-            {% if work_day.hour_24 %}
-               - круглосуточно
+            {% if work_day.work_time_day_1 %}{{ t('main','Пн') }} {% endif %}
+            {% if work_day.work_time_day_2 %}{{ t('main','Вт') }} {% endif %}
+            {% if work_day.work_time_day_3 %}{{ t('main','Ср') }} {% endif %}
+            {% if work_day.work_time_day_4 %}{{ t('main','Чт') }} {% endif %}
+            {% if work_day.work_time_day_5 %}{{ t('main','Пт') }} {% endif %}
+            {% if work_day.work_time_day_6 %}<span>{{ t('main','Сб') }}</span> {% endif %}
+            {% if work_day.work_time_day_7 %}<span>{{ t('main','Вс') }}</span>{% endif %}
+
+          {% if work_day.hour_24 %}
+               - {{ t('main','круглосуточно')  }}
             {% elseif  work_day.work_time_start and work_day.work_time_end %}
                - {{ work_day.work_time_start }}-{{ work_day.work_time_end }}
             {% endif %}
             {% if work_day.work_time_lunch_start  and work_day.work_time_lunch_end %}
-               (перерыв {{ work_day.work_time_lunch_start }}-{{ work_day.work_time_lunch_end }})
+               ({{ t('main','перерыв')  }} {{ work_day.work_time_lunch_start }}-{{ work_day.work_time_lunch_end }})
             {% endif %}
         </li>
     {% endfor %}

@@ -156,6 +156,7 @@ return [
     'coupon_and_{store}_temporary_unavailabe' => 'Магазин {store} и промокоды к нему временно неактивны',
     'enter_shop_name' => 'Введите название магазина',
     'popular_stores_from_{category}_cashback' => 'Популярные магазины из раздела {category} с&nbsp;кэшбэком',
+    'popular_stores_from_{category}_cashback_offline' => 'Популярные магазины из раздела {category} с&nbsp;кэшбэком',
     'other_popular_{shops}_cashback' => 'Другие популярные {shops} с&nbsp;кэшбэком',
     'share_width_friends' => 'Поделиться с друзьями',
     'track_package_for_{store}_here' => 'Отследить посылку с {store} по трек-номеру можно здесь',
@@ -273,5 +274,13 @@ return [
   "loyalty_status_bay_no_price"=>"Статус не продается.",
   "loyalty_status_bay_no_money"=>"Не хватает денег на покупку статуса. стоимость статуса {price}{currency}. Доступно средств {balance}{currency}",
   "loyalty_status_bay_yes_content"=>"стоимость статуса {price}{currency}. Доступно средств {balance}{currency}. Действительно купить на месяц?",
-
+  'круглосуточно'=>'круглосуточно',
+  'перерыв'=>'перерыв',
+  'Пн'=>'Пн',
+  'Вт'=>'Вт',
+  'Ср'=>'Ср',
+  'Чт'=>'Чт',
+  'Пт'=>'Пт',
+  'Сб'=>'Сб',
+  'Вс'=>'Вс',
 ];

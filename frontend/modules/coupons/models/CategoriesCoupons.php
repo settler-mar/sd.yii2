@@ -175,7 +175,8 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         $attributes = empty($attributes) ? $allAttributes : $attributes;
         foreach ($attributes as $attribute) {
             $selectAttributes[] = $language && in_array($attribute, self::$translatedAttributes) ?
-                'IF(lgcc.'.$attribute.' > "", lgcc.'.$attribute.', cwcc.'.$attribute.') as '.$attribute :
+                //'IF(lgcc.'.$attribute.' > "", lgcc.'.$attribute.', cwcc.'.$attribute.') as '.$attribute :
+                'lgcc.'.$attribute.' as '.$attribute :
                 'cwcc.'.$attribute;
         }
         $categories = self::find()->from(self::tableName(). ' cwcc')->select($selectAttributes);

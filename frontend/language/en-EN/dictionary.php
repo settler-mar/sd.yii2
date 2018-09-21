@@ -20,7 +20,7 @@ return [
         'notification_text'=>'You have been assigned <b>({{amount}} {{currency}})</b> of bonus for signing up on our website.',// Sign-Up Bonus
 
         'notification_title_1_0'=>'New cash back detected',
-        'notification_text_0'=>'Your cash back of <b>{{amount}}</b> {{currency}} at <b>{{shop_name}}</b> (order No.{{order_id}}) has been detected by our system.',//'pending',//'pending',
+        'notification_text_0'=>'Your cash back of <b>{{amount}} {{currency}}</b> at <b>{{shop_name}}</b> (order No.{{order_id}}) has been detected by our system.',//'pending',//'pending',
 
         'notification_title_1_1'=>'Cash back declined',
         'notification_text_1'=>'Unfortunately, your cash back from <b>{{shop_name}}</b> (order No.{{order_id}}) of  <b>{{amount}}</b> {{currency}} was declined.',//'Declined',//'declined',

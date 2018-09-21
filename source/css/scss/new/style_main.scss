@@ -286,10 +286,17 @@ h2, h3, h4 {
     }
   }
 
+  &-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   &-wrap {
     flex-wrap: wrap;
     justify-content: space-around;
   }
+
   &-align-center {
     align-items: center;
   }

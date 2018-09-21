@@ -23,6 +23,10 @@ search = function () {
             }
             if (data.suggestions.length) {
               data.suggestions.forEach(function (item) {
+                if(lang["href_prefix"].length>0 && item.data.route.indexOf(lang["href_prefix"])==-1){
+                  item.data.route='/'+lang["href_prefix"]+item.data.route;
+                  item.data.route=item.data.route.replace('//','/');
+                }
                 var html = '<a class="autocomplete_link" href="' + item.data.route + '"' + '>' + item.value + item.cashback + '</a>';
                 var li = document.createElement('li');
                 li.innerHTML = html;

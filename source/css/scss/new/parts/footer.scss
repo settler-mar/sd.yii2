@@ -191,12 +191,13 @@
 
     &-item {
       width: 88px;
-      //height: 16px;
+      min-height: 1em;
       color: $footer_text2_color;
       background-position: 50% 50%;
       background-repeat: no-repeat;
       background-size: contain;
       white-space: nowrap;
+      margin-bottom: 9px;
 
       @include media($tablets) {
         margin-bottom: 15px;

@@ -27,11 +27,13 @@
           {% if item.on_outer==1 %}
             <div class="account-withdraw-methods_item">
               <a href="#" class="account-withdraw-methods_item-option"
-                 data-option-process="{{ p_arr[item.code].id }}"><img src="/images/{{ p_arr[item.code].img }}"
-                                                                      at=""></a>
+                 data-option-process="{{ p_arr[item.code].id }}"><img src="/images/{{ p_arr[item.code].img }}" at=""></a>
             </div>
           {% endif %}
         {% endfor %}
+
+        <div class="account-withdraw-methods_item account-withdraw-methods_item_empty"></div>
+        <div class="account-withdraw-methods_item account-withdraw-methods_item_empty"></div>
       </div>
     </div>
 

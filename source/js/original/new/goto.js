@@ -9,7 +9,7 @@
 
     if (inactive) {
       var title = data_message ? data_message : lg("promocode_is_inactive");
-      var message = lg("promocode_view_all");
+      var message = lg("promocode_view_all",{"url":"/"+lang["href_prefix"]+"coupons"});
       notification.alert({
         'title': title,
         'question': message,
@@ -20,7 +20,7 @@
       return false;
     } else if (expired.length > 0) {
       var title = lg("promocode_is_expires");
-      var message = lg("promocode_view_all");
+      var message = lg("promocode_view_all",{"url":"/"+lang["href_prefix"]+"coupons"});
       notification.alert({
         'title': title,
         'question': message,
@@ -40,7 +40,7 @@
         '</div>' +
         '<div class="notify_box-buttons">' +
         '<a href="' + that.attr('href') + '" target="_blank" class="btn notification-close">'+lg("use_promocode")+'</a>' +
-        '<a href="#registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
+        '<a href="#'+lang["href_prefix"]+'registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
         '</div>'
       };
       notification.alert(data);

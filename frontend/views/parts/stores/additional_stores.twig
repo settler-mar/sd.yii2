@@ -2,7 +2,7 @@
   <div class="page-wrap">
     {% if additional_stores_category %}
       <h2 class="additional-stores_header">
-          {{ t('main', 'popular_stores_from_{category}_cashback', {'category': additional_stores_category.name})|raw }}
+          {{ t('main', 'popular_stores_from_{category}_cashback'~_if(current_store.is_offline,"","_offline"), {'category': additional_stores_category.name})|raw }}
       </h2>
     {% else %}
       <h2 class="additional-stores_header">{{ t('main', 'other_popular_{shops}_cashback', {'shops': current_store.is_offline ? t('main','offline_shops_low') : t('main', 'online_shops_low')})|raw }}</h2>
