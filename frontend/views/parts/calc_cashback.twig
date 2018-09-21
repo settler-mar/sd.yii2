@@ -11,13 +11,13 @@
                 type="text"
                 value="100"
                 data-cashback-currency="{{ current_store.currency }}"
-                data-cashback="{{current_store.displayed_cashback}}"
+                data-cashback="{{ _cashback(current_store.displayed_cashback, '',0) }}"
                 data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
             >
         <select class="ctrl">
           {% for item in curs %}
             <option
-                value="{{item.value}}"
+                value="{{ exchange(1,item.code,currency)}}"
                 code="{{item.code}}"
                 {% if item.code== current_store.currency %}
                   selected
@@ -29,7 +29,7 @@
         </select>
       </div>
       <div class="shop-calc-cashback_content-result">
-        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name})|raw }}
+        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':currency})|raw }}
           {% if current_store.displayed_cashback ends with '%' %}
           {% else %}
             {{ t('main','calc_cashback_fixed')|raw }}

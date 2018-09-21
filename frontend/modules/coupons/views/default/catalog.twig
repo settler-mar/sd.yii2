@@ -128,7 +128,7 @@
                                     <a class="btn btn-transform  btn-mini btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_store.routeUrl)|raw }}"><span>{{ t('main', 'coupons_show_all_for_shop')|raw }} ({{ counts.actual }})</span></a>
                                 {% endif %}
                                 {% if current_category %}
-                                    <a class="btn bnt-mini btn-transform btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_category.route)|raw }}"><span>{{ t('main','coupons_show_all_for_category')|raw }} ({{ counts.actual }})</span></a>
+                                    <a class="btn btn-mini btn-transform btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_category.route)|raw }}"><span>{{ t('main','coupons_show_all_for_category')|raw }} ({{ counts.actual }})</span></a>
                                 {% endif %}
                             {% endif %}
                             <a class="btn btn-mini  btn-round coupons_buttons-margin" href="{{ _href('/coupons') }}"><span>{{ t('main', 'coupons_all')|raw }} ({{ total_all_coupons }})</span></a>

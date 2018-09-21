@@ -101,6 +101,7 @@ return [
     '{category} coupons default h1 category {date}' => '{category}: акции, скидки, распродажи и промкоды - {date}',
     'coupons default h1 {store} - {date}' => 'Акции, скидки, распродажи и промкоды {store} - {date}',
     'coupons default h1 <a href="{href}">stores</a>' => 'Лучшие акции, скидки, распродажи и промокоды от наших <a href="{href}">интернет-магазинов</a>',
+    'coupons no_description'=>'Дополнительная информация о промокоде отсутствует.',
     'coupons_show_all_expired' => 'Показать все завершившиеся акции',
     'coupons_show_all_for_shop' => 'Все промокоды этого магазина',
     'coupons_show_all_for_category' => 'Все промокоды этой категории',

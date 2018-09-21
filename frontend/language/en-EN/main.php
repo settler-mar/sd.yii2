@@ -102,6 +102,7 @@ return [
     '{category} coupons default h1 category {date}' => '{category}: Deals, Discounts, Coupons & Promo Codes - {date}',
     'coupons default h1 {store} - {date}' => 'Coupons and Promo Codes, Deals & Discounts {store} - {date}',
     'coupons default h1 <a href="{href}">stores</a>' => 'Only Working Coupons & Promo Codes, Deals & Discounts from our <a href="{href}">Online Stores</a>',
+    'coupons no_description'=>'There is no further information about the promotional code.',
     'coupons_show_all_expired' => 'Show all ended deals',
     'coupons_show_all_for_shop' => 'All coupons of this store',
     'coupons_show_all_for_category' => 'All coupons in this category',

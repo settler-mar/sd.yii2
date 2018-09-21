@@ -214,10 +214,7 @@ class DefaultController extends SdController
     $categoryMenuItem = isset(\Yii::$app->params['category_menu_item']) ? \Yii::$app->params['category_menu_item'] : null;
 
     if ($categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline') {
-      $storesData['current_category'] = CategoriesStores::find()
-          ->where(['route' => 'favorite'])
-          ->asArray()
-          ->one();
+      $storesData['current_category'] = CategoriesStores::byRoute('favorite');
 
       $cacheName .= '_favorites_' . Yii::$app->user->id;
       $url = Help::href('/stores/favorite');
@@ -248,10 +245,7 @@ class DefaultController extends SdController
     }
 
     if ($actionId == "") {
-          $storesData['current_category'] = CategoriesStores::find()
-              ->where(['route' => '/'])
-              ->asArray()
-              ->one();
+          $storesData['current_category'] = CategoriesStores::byRoute('/');
     };
 
     if (Yii::$app->params['stores_menu_separate'] == 1) {

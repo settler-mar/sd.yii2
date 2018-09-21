@@ -1,4 +1,4 @@
-<h2 class="content-header">Завершившиеся акции, купоны и промокоды</h2>
+<h2 class="content-header">{{ t('main','coupons_all_expired') }}</h2>
 <div  class="catalog-coupons margin-half">
   {% for coupon in coupon_ended %}
     <div class="accordion">
@@ -7,7 +7,7 @@
         {% if  coupon.description%}
           {{ coupon.description }}
         {% else %}
-          Дополнительная информация о промокоде отсутствует.
+          {{ t("main","no_description") }}
         {% endif %}
       </div>
     </div>

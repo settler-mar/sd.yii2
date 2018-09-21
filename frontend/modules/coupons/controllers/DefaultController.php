@@ -292,6 +292,14 @@ class DefaultController extends SdController
       $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
     }
 
+    if($request->get('expired')){
+      foreach ($sortvars as $k=>$item){
+        if($k=='date_start'){
+          unset ($sortvars[$k]);
+        }
+      }
+    }
+
     $contentData['sortlinks'] =
       $this->getSortLinks($paginatePath, $sortvars, Coupons::$defaultSort, $paginateParams);
     $contentData['limitlinks'] =
