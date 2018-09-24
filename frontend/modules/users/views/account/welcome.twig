@@ -121,7 +121,7 @@
               {{ t('account', 'user_loyalty_current_status') }}
             </div>
           {% else %}
-            {% if status.price_ %}
+            {% if status.price %}
               <a href="{{ _href("#account/bay-loyalty/"~status.code) }}" class="modals_open" >
                 {{ t('common', 'add_right_now') }}
               </a>

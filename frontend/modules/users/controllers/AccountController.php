@@ -2,24 +2,22 @@
 
 namespace frontend\modules\users\controllers;
 
-use frontend\modules\users\models\SetPasswordForm;
-use frontend\modules\users\models\UsersSocial;
-use Yii;
-use frontend\modules\users\models\Users;
-use frontend\modules\users\models\UsersSearch;
-use frontend\components\Pagination;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use frontend\modules\users\models\UserSetting;
-use frontend\modules\users\models\ValidateEmail;
 use common\components\Help;
-use yii\widgets\MaskedInput;
+use frontend\components\Pagination;
+use frontend\models\Task;
 use frontend\modules\actions\models\Actions;
 use frontend\modules\actions\models\ActionsToUsers;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\promos\models\Promos;
-use frontend\modules\actions\models\ActionsActions;
+use frontend\modules\users\models\SetPasswordForm;
+use frontend\modules\users\models\Users;
+use frontend\modules\users\models\UserSetting;
+use frontend\modules\users\models\UsersSocial;
+use frontend\modules\users\models\ValidateEmail;
+use Yii;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\widgets\MaskedInput;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -29,12 +27,12 @@ class AccountController extends Controller
 
   function beforeAction($action)
   {
-      if (Yii::$app->user->isGuest) {
+    if (Yii::$app->user->isGuest) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
 
-    $this->view->layout_mode='account';
+    $this->view->layout_mode = 'account';
     return true;
   }
 
@@ -43,10 +41,10 @@ class AccountController extends Controller
    * Lists all Users models.
    * @return mixed
    */
-  public function actionIndex($page=1)
+  public function actionIndex($page = 1)
   {
     $query = Users::find()
-      ->where(['referrer_id' => Yii::$app->user->id]);
+        ->where(['referrer_id' => Yii::$app->user->id]);
 
     $search_range = Yii::$app->request->get('date');
     if (empty($search_range) || strpos($search_range, '-') === false) {
@@ -56,15 +54,15 @@ class AccountController extends Controller
 
     list($start_date, $end_date) = explode(' - ', $search_range);
     $data_ranger = Help::DateRangePicker(
-      $start_date . ' - ' . $end_date,
-      'date', [
-      'pluginEvents' => [
-        "apply.daterangepicker" => "function(ev, picker) { 
+        $start_date . ' - ' . $end_date,
+        'date', [
+        'pluginEvents' => [
+            "apply.daterangepicker" => "function(ev, picker) { 
             picker.element.closest('form').submit(); 
           }",
-        "show.daterangepicker" => "function(ev, picker) {".
-            " picker.element.closest('form').attr('action','/account/users/');}"
-      ],
+            "show.daterangepicker" => "function(ev, picker) {" .
+                " picker.element.closest('form').attr('action','/account/users/');}"
+        ],
 
 
     ]);
@@ -75,27 +73,27 @@ class AccountController extends Controller
 
     $totQuery = clone $query;
     $totQuery = $totQuery
-      ->select([
-        'count(*) as total',
-        'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
-        'SUM(cnt_pending) as cnt_pending',
-        'SUM(cnt_confirmed) as cnt_confirmed',
-        'SUM(sum_to_friend_pending) as sum_to_ref_pending',
-        'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
-      ])
+        ->select([
+            'count(*) as total',
+            'SUM(if((sum_pending>0 OR sum_confirmed>0 OR sum_from_ref_pending>0 OR sum_from_ref_confirmed>0)>0,1,0)) as active',
+            'SUM(cnt_pending) as cnt_pending',
+            'SUM(cnt_confirmed) as cnt_confirmed',
+            'SUM(sum_to_friend_pending) as sum_to_ref_pending',
+            'SUM(sum_to_friend_confirmed) as sum_to_ref_confirmed',
+        ])
         ->asArray()
         ->one();
 
     $from_refQuery = clone $query;
     $from_refQuery = $from_refQuery
         ->select([
-          'currency',
-          'SUM(sum_confirmed) as sum_confirmed',
-          'SUM(sum_pending) as sum_pending',
+            'currency',
+            'SUM(sum_confirmed) as sum_confirmed',
+            'SUM(sum_pending) as sum_pending',
         ])
         ->groupBy(['currency'])
-      ->asArray()
-      ->all();
+        ->asArray()
+        ->all();
 
     $dataBase = clone $query;
     $pagination = new Pagination($dataBase, false, ['page' => $page, 'limit' => 20, 'asArray' => false]);
@@ -105,15 +103,15 @@ class AccountController extends Controller
     //$pages = new Pagination(['totalCount' => $countQuery->count()]);
     $models = $pagination->data(false);
     $paginateParams = [
-      'date' => Yii::$app->request->get('date') ? Yii::$app->request->get('date') : null,
+        'date' => Yii::$app->request->get('date') ? Yii::$app->request->get('date') : null,
     ];
 
     return $this->render('index', [
-      'users' => $models,
-      'pagination' => $pagination->getPagination('users/account', $paginateParams),
-      'users_total' => $totQuery,
-      'data_ranger' => $data_ranger,
-      'from_refQuery'=>  $from_refQuery,
+        'users' => $models,
+        'pagination' => $pagination->getPagination('users/account', $paginateParams),
+        'users_total' => $totQuery,
+        'data_ranger' => $data_ranger,
+        'from_refQuery' => $from_refQuery,
     ]);
   }
 
@@ -129,34 +127,34 @@ class AccountController extends Controller
 
     Yii::$app->user->identity->testLoyality();
 
-    $status_id=Yii::$app->user->identity->loyalty_status;
+    $status_id = Yii::$app->user->identity->loyalty_status;
 
     $status = $statuses[$status_id];
 
     $total = Yii::$app->user->identity->balance['total'];
-    $total_p = Yii::$app->user->identity->balance['pending']+$total;
+    $total_p = Yii::$app->user->identity->balance['pending'] + $total;
 
     $data = [
-      'newuser' => Yii::$app->request->get('new'),
-      'this_tarif' => $status,
-      't_satus_id' => $status_id,
-      'actions' => Actions::byUser(Yii::$app->user->id),
+        'newuser' => Yii::$app->request->get('new'),
+        'this_tarif' => $status,
+        't_satus_id' => $status_id,
+        'actions' => Actions::byUser(Yii::$app->user->id),
     ];
 
-    $prev_min=0;
+    $prev_min = 0;
     foreach ($statuses as $k => $status_k) {
       if (isset($status_k['min_sum'][Yii::$app->user->identity->currency])) {
         $t_total = $total - $prev_min;
-        $t_total_p=$total_p-$prev_min;
-        $prev_min=$status_k['min_sum'][Yii::$app->user->identity->currency];
+        $t_total_p = $total_p - $prev_min;
+        $prev_min = $status_k['min_sum'][Yii::$app->user->identity->currency];
         $status_k['id'] = $k;
-        $status_k['total'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total)?1:$t_total/$status_k['min_sum'][Yii::$app->user->identity->currency]);
-        $status_k['total_p'] = 100*(($status_k['min_sum'][Yii::$app->user->identity->currency]<=$t_total_p)?1:$t_total_p/$status_k['min_sum'][Yii::$app->user->identity->currency]);
+        $status_k['total'] = 100 * (($status_k['min_sum'][Yii::$app->user->identity->currency] <= $t_total) ? 1 : $t_total / $status_k['min_sum'][Yii::$app->user->identity->currency]);
+        $status_k['total_p'] = 100 * (($status_k['min_sum'][Yii::$app->user->identity->currency] <= $t_total_p) ? 1 : $t_total_p / $status_k['min_sum'][Yii::$app->user->identity->currency]);
         $statuses_marafon[$k] = $status_k;
         if (
-          $total < $status_k['min_sum'][Yii::$app->user->identity->currency] &&
-          $status['bonus'] < $status_k['bonus'] &&
-          (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'][Yii::$app->user->identity->currency])
+            $total < $status_k['min_sum'][Yii::$app->user->identity->currency] &&
+            $status['bonus'] < $status_k['bonus'] &&
+            (!$next_tarif || $next_tarif_min_sum > $status_k['min_sum'][Yii::$app->user->identity->currency])
         ) {
           $next_tarif = $status_k;
           $next_tarif_min_sum = $status_k['min_sum'][Yii::$app->user->identity->currency];
@@ -173,9 +171,9 @@ class AccountController extends Controller
       $data["left"] = "";
     }
 
-    if (\Yii::$app->request->get('new') ==  1) {
-        //на страницу выводятся скрипты из константы
-        Yii::$app->session->addFlash('constant','account_new_1');
+    if (\Yii::$app->request->get('new') == 1) {
+      //на страницу выводятся скрипты из константы
+      Yii::$app->session->addFlash('constant', 'account_new_1');
     }
 
     return $this->render('welcome.twig', $data);
@@ -187,60 +185,61 @@ class AccountController extends Controller
     $post = Yii::$app->request->post();
 
     $user_pass = SetPasswordForm::find()
-      ->where(['uid' => Yii::$app->user->id])
-      ->one();
+        ->where(['uid' => Yii::$app->user->id])
+        ->one();
 
     if (Yii::$app->request->isPost && !isset($post['UserSetting']['notice_email'])) {
       $post['UserSetting']['notice_email'] = 0;
     }
     $user = UserSetting::find()
-      ->where(['uid' => Yii::$app->user->id])
-      ->one();
+        ->where(['uid' => Yii::$app->user->id])
+        ->one();
 
     if (!empty($post['SetPasswordForm']['password_change'])) {
 
-        if ($post && $user_pass->load($post) && $user_pass->save()) {
-            Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
-            return $this->redirect('/account/settings');
-        }
+      if ($post && $user_pass->load($post) && $user_pass->save()) {
+        Yii::$app->session->addFlash('info', Yii::t('account', 'user_password_updated'));
+        return $this->redirect('/account/settings');
+      }
     } else {
-        if ($post && $user->load($post) && $user->save()) {
-            Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
-            return $this->redirect('/account/settings');
-        }
+      if ($post && $user->load($post) && $user->save()) {
+        Yii::$app->session->addFlash('info', Yii::t('account', 'user_settings_updated'));
+        return $this->redirect('/account/settings');
+      }
     }
 
-    $user_pass->old_password='';
-    $user_pass->new_password='';
-    $user_pass->r_new_password='';
+    $user_pass->old_password = '';
+    $user_pass->new_password = '';
+    $user_pass->r_new_password = '';
 
-    $socials=UsersSocial::find()
-      ->where(['user_id'=>$user->uid])
-      ->all();
+    $socials = UsersSocial::find()
+        ->where(['user_id' => $user->uid])
+        ->all();
 
     return $this->render('setting.twig', [
-      'model' => $user,
-      'model_pas' => $user_pass,
-      'socials'=> $socials,
-      'MaskedInput_class'=>MaskedInput::class
+        'model' => $user,
+        'model_pas' => $user_pass,
+        'socials' => $socials,
+        'MaskedInput_class' => MaskedInput::class
     ]);
   }
 
-  public function actionSocialDelete(){
+  public function actionSocialDelete()
+  {
     $request = Yii::$app->request;
-    if(!$request->isAjax || !$request->isPost){
+    if (!$request->isAjax || !$request->isPost) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
 
-    $socials=UsersSocial::find()
-      ->where([
-        'user_id'=>Yii::$app->user->id,
-        'uid'=>$request->post('id')
-      ])
-      ->one();
+    $socials = UsersSocial::find()
+        ->where([
+            'user_id' => Yii::$app->user->id,
+            'uid' => $request->post('id')
+        ])
+        ->one();
 
-    if(!$socials){
+    if (!$socials) {
       return 'err';
     }
 
@@ -266,7 +265,7 @@ class AccountController extends Controller
     $user = Users::findOne(Yii::$app->user->id);
 
     if ($request->getIsPost()) {
-      if($user->load($request->post()) && $user->save()) {
+      if ($user->load($request->post()) && $user->save()) {
         if (ValidateEmail::validateEmail($user, $request->post('path'))) {
           Yii::$app->session->addFlash(null, Yii::t('account', 'email_confirm_sent'));
         } else {
@@ -274,8 +273,8 @@ class AccountController extends Controller
         }
         //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/account');
         $url = !empty(Yii::$app->request->referrer) &&
-          strpos(Yii::$app->request->referrer,'/account/sendverifyemail') === false ?
-          Yii::$app->request->referrer : Help::href('/account');
+        strpos(Yii::$app->request->referrer, '/account/sendverifyemail') === false ?
+            Yii::$app->request->referrer : Help::href('/account');
         return $this->redirect($url)->send();
       }
     }
@@ -293,165 +292,199 @@ class AccountController extends Controller
       throw new NotFoundHttpException();
     }
     return $this->render('email-success', [
-      'success' => Yii::$app->user->identity->email_verified,
+        'success' => Yii::$app->user->identity->email_verified,
     ]);
   }
 
-    /**
-     * user по клику присваивает себе статус
-     */
-/*  public function actionPromo()
-  {
-    $request = Yii::$app->request;
-    if (Yii::$app->user->isGuest || !$request->isAjax) {
-       throw new NotFoundHttpException();
-    }
-    $promo = $request->post('promo');
-    $refs = Yii::$app->params['ref_promo'];
-    $ref = isset($refs[$promo]) ? array_diff($refs[$promo], ['']) : [];
-    if (empty($ref)) {
-        return '';
-    }
-    Yii::$app->DB->createCommand()->update(Users::tableName(), $ref, ['uid' => Yii::$app->user->id])->execute();
-    return json_encode([
-        'title' => Yii::t('common', 'congratulations'),
-        'message'=> Yii::t('account', 'user_loyalty_status_set').' '.ucfirst($promo),
-    ]);
+  /**
+   * user по клику присваивает себе статус
+   */
+  /*  public function actionPromo()
+    {
+      $request = Yii::$app->request;
+      if (Yii::$app->user->isGuest || !$request->isAjax) {
+         throw new NotFoundHttpException();
+      }
+      $promo = $request->post('promo');
+      $refs = Yii::$app->params['ref_promo'];
+      $ref = isset($refs[$promo]) ? array_diff($refs[$promo], ['']) : [];
+      if (empty($ref)) {
+          return '';
+      }
+      Yii::$app->DB->createCommand()->update(Users::tableName(), $ref, ['uid' => Yii::$app->user->id])->execute();
+      return json_encode([
+          'title' => Yii::t('common', 'congratulations'),
+          'message'=> Yii::t('account', 'user_loyalty_status_set').' '.ucfirst($promo),
+      ]);
 
 
-  }*/
+    }*/
 
   public function actionDelete()
   {
 
-      if (Yii::$app->user->isGuest) {
-          return $this->goHome();
-      }
+    if (Yii::$app->user->isGuest) {
+      return $this->goHome();
+    }
 
-      $request = Yii::$app->request;
-      if (!$request->isAjax) {
-          return $this->goHome();
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      return $this->goHome();
+    }
+    $errors = [];
+    if ($request->isPost) {
+      //удаление оккаунта
+      if (strlen(trim(strip_tags($request->post('user_comment')))) < 10) {
+        $errors['user_comment'] = Yii::t('common', 'you_should_fill_here');
+      } else {
+        $user = Users::findOne(Yii::$app->user->id);
+        if ($user) {
+          $user->is_active = 0;
+          $user->delete_comment = $request->post('user_comment');
+          $user->save();
+          Yii::$app->session->remove('admin_id');
+          Yii::$app->user->logout();
+          $data['html'] = Yii::t('account', 'account_is_deleted') . '<script>login_redirect("/");</script>';
+          return json_encode($data);
+        }
       }
-      $errors=[];
-      if ($request->isPost) {
-        //удаление оккаунта
-          if (strlen(trim(strip_tags($request->post('user_comment'))))<10) {
-            $errors['user_comment']= Yii::t('common', 'you_should_fill_here');
-          } else {
-              $user = Users::findOne(Yii::$app->user->id);
-              if ($user) {
-                  $user->is_active = 0;
-                  $user->delete_comment = $request->post('user_comment');
-                  $user->save();
-                  Yii::$app->session->remove('admin_id');
-                  Yii::$app->user->logout();
-                  $data['html'] = Yii::t('account', 'account_is_deleted').'<script>login_redirect("/");</script>';
-                  return json_encode($data);
-              }
-          }
-      }
+    }
 
-      //вывод формы
-      $data['html'] = $this->renderAjax('delete', [
-          'isAjax' => true,
-          'errors' => $errors,
-      ]);
-      return json_encode($data);
+    //вывод формы
+    $data['html'] = $this->renderAjax('delete', [
+        'isAjax' => true,
+        'errors' => $errors,
+    ]);
+    return json_encode($data);
 
   }
 
-    /**
-     * подключение юсера к акции
-     * @return string
-     */
+  /**
+   * подключение юсера к акции
+   * @return string
+   */
   public function actionJoinAction()
   {
-      $actions = Actions::byUser(Yii::$app->user->id);
-      if (isset($actions['enabled'][(int) Yii::$app->request->post('action_id')])) {
-          $action = $actions['enabled'][(int) Yii::$app->request->post('action_id')];
-          $userAction = new ActionsToUsers();
-          $userAction->user_id = Yii::$app->user->id;
-          $userAction->date_start = date('Y-m-d H:i:s', time());
-          $userAction->action_id = $action['uid'];
-          if ($userAction->save()) {
-              $user = Users::findOne(Yii::$app->user->id);
-              $promo = $user->applyPromo($action['promo_start']);
-              if ($promo) {
-                  $user->save();
-              }
-              //уведомления пользователю
-              $notify = new Notifications();
-              $notify->user_id = Yii::$app->user->id;
-              $notify->type_id = 0;//Прочее
-              $notify->text = Yii::t(
-                  'account',
-                  $promo ? 'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}' :
-                      'you_confirmed_to_be_member_of_{action}',
-                  ['action' => $action['name'], 'advantages' => $promo ? Promos::resultText($promo): null]
-              );
-              $notify->save();
+    $actions = Actions::byUser(Yii::$app->user->id);
+    if (isset($actions['enabled'][(int)Yii::$app->request->post('action_id')])) {
+      $action = $actions['enabled'][(int)Yii::$app->request->post('action_id')];
+      $userAction = new ActionsToUsers();
+      $userAction->user_id = Yii::$app->user->id;
+      $userAction->date_start = date('Y-m-d H:i:s', time());
+      $userAction->action_id = $action['uid'];
+      if ($userAction->save()) {
+        $user = Users::findOne(Yii::$app->user->id);
+        $promo = $user->applyPromo($action['promo_start']);
+        if ($promo) {
+          $user->save();
+        }
+        //уведомления пользователю
+        $notify = new Notifications();
+        $notify->user_id = Yii::$app->user->id;
+        $notify->type_id = 0;//Прочее
+        $notify->text = Yii::t(
+            'account',
+            $promo ? 'you_confirmed_to_be_member_of_{action}_and_recieved_{advantages}' :
+                'you_confirmed_to_be_member_of_{action}',
+            ['action' => $action['name'], 'advantages' => $promo ? Promos::resultText($promo) : null]
+        );
+        $notify->save();
 
-              return json_encode([
-                  'error' => false,
-                  'title' => Yii::t('common', 'successfull') . '!',
-                  'message' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
-                  'html' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
-              ]);
-          }
+        return json_encode([
+            'error' => false,
+            'title' => Yii::t('common', 'successfull') . '!',
+            'message' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
+            'html' => Yii::t('account', 'user_joined_to_action') . ' ' . $action['name'],
+        ]);
       }
-      return json_encode([
-          'error' => true,
-          'title' => Yii::t('common', 'error').'!',
-          'message' => Yii::t('account', 'user_joined_to_action_error')
-      ]);
+    }
+    return json_encode([
+        'error' => true,
+        'title' => Yii::t('common', 'error') . '!',
+        'message' => Yii::t('account', 'user_joined_to_action_error')
+    ]);
   }
 
-  public function actionBayLoyalty($id=0){
+  public function actionBayLoyalty($id = 0, $stat = false)
+  {
     $request = Yii::$app->request;
     if (!$request->isAjax && !YII_DEBUG) {
       return $this->goHome();
     }
 
     $can_bay = false;
-    $data=[];
-    foreach(Yii::$app->params['dictionary']['loyalty_status'] as $loyalty_status){
-      if(!isset($loyalty_status['code']) || $loyalty_status['code']!=$id)continue;
+    $data = [];
+    foreach (Yii::$app->params['dictionary']['loyalty_status'] as $status_id=>$loyalty_status) {
+      if (!isset($loyalty_status['code']) || $loyalty_status['code'] != $id) continue;
       $data['status'] = $loyalty_status['name'];
-      $data['code']=$loyalty_status['code'];
-      $data['title']=Yii::t('main',"bay_loyalty_title",$data);
+      $data['code'] = $loyalty_status['code'];
+      $data['title'] = Yii::t('main', "bay_loyalty_title", $data);
 
-      $user_loyalty_status=Yii::$app->user->identity->loyalty_status;
-      if(Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus']>=$loyalty_status['bonus']){
-        $data['html'] = Yii::t('main',"loyalty_status_bay_no_bonuc",$data);
+      $user_loyalty_status = Yii::$app->user->identity->loyalty_status;
+      if (Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus'] >= $loyalty_status['bonus']) {
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_bonuc", $data);
         return json_encode($data);
       }
 
-      if(empty($loyalty_status['price'])){
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_price",$data);
+      if (empty($loyalty_status['price'])) {
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_price", $data);
         return json_encode($data);
       }
 
-      $cur=Yii::$app->user->identity['currency'];
+      $cur = Yii::$app->user->identity['currency'];
       $balabce = Yii::$app->user->identity->getBalance();
 
-      $data['price']=$loyalty_status['price'][$cur];
-      $data['balance']=$balabce['total'];
-      $data['currency']=$cur;
+      $data['price'] = $loyalty_status['price'][$cur];
+      $data['balance'] = $balabce['total'];
+      $data['currency'] = $cur;
+      $data['bonus'] = $loyalty_status['bonus'];
+      $data['status_id'] = $status_id;
 
-      if($data['price']>$balabce['total']) {
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_money",$data);
+      if ($data['price'] > $balabce['total']) {
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_money", $data);
         return json_encode($data);
       }
-      $can_bay=true;
+      $can_bay = true;
     };
 
-    if(!$can_bay){
-      $data['html'] = Yii::t('main',"loyalty_status_not_found",$data);
+    if (!$can_bay) {
+      $data['html'] = Yii::t('main', "loyalty_status_not_found", $data);
       return json_encode($data);
     }
 
 
-    $data['html']=$this->renderAjax('bay_loyalty', array_merge($data,['data'=>$data]));
+    if ($stat == "yes") {
+      $notif = new Notifications();
+      $notif->user_id = Yii::$app->user->id;
+      $notif->type_id = 4;
+      $notif->amount = -$data['price'];
+      $notif->text = json_encode([
+          'date' => date("d.m.Y", strtotime("+1 month")),
+          'status_name' => $id,
+          'status_bonus' => $data['bonus']
+      ]);
+      $notif->status = 2;
+      $notif->twig_template = 5;
+      $notif->save();
+      $task = new Task();
+      $task->task = 2;
+      $task->param = Yii::$app->user->id;
+      $task->add_time = strtotime("+1 month");
+      $task->save();
+
+      $user = Yii::$app->user->identity;
+      $user->old_loyalty_status=$user->loyalty_status;
+      $user->loyalty_status=$data['status_id'];
+      $user->new_loyalty_status_end=strtotime("+1 month");
+      $user->save();
+
+      Yii::$app->balanceCalc->todo(Yii::$app->user->id);
+
+      $data['html'] = Yii::t('main', "loyalty_status_bay_thanks");
+      return json_encode($data);
+    }
+
+    $data['html'] = $this->renderAjax('bay_loyalty', array_merge($data, ['data' => $data]));
     return json_encode($data);
   }
 }

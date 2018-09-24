@@ -274,6 +274,7 @@ return [
   "loyalty_status_bay_no_price"=>"Статус не продается.",
   "loyalty_status_bay_no_money"=>"Не хватает денег на покупку статуса. стоимость статуса {price}{currency}. Доступно средств {balance}{currency}",
   "loyalty_status_bay_yes_content"=>"стоимость статуса {price}{currency}. Доступно средств {balance}{currency}. Действительно купить на месяц?",
+  'loyalty_status_bay_thanks'=>'Спасибо за покупку.',
   'круглосуточно'=>'круглосуточно',
   'перерыв'=>'перерыв',
   'Пн'=>'Пн',

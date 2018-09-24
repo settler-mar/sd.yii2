@@ -83,7 +83,7 @@ class BalanceCalc extends Component
           LEFT JOIN (
             SELECT SUM(amount) as sum_bonus,user_id
                 FROM cw_users_notification
-                WHERE type_id=2
+                WHERE type_id in (2,4)
                 GROUP BY user_id
             ) cwn on cwn.user_id=u1.uid";
       $set[]='u1.sum_bonus =cwn.sum_bonus';

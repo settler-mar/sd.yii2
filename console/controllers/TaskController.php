@@ -89,7 +89,7 @@ class TaskController extends Controller
         continue;
       };
 
-      //если это был бонус за регистрацию то долаем нотификацию
+      //долаем нотификацию
       if ($task->param < 0) {
         $notify = new Notifications();
         $notify->user_id = $user->uid;
@@ -99,7 +99,18 @@ class TaskController extends Controller
         $notify->payment_id = 0;
         $notify->twig_template = 4;
         $notify->save();
+      }else{
+        //если это был бонус за регистрацию
+        $notify = new Notifications();
+        $notify->user_id = $user->uid;
+        $notify->type_id = 5;
+        $notify->status = 2;
+        $notify->amount = 0;
+        $notify->payment_id = 0;
+        $notify->twig_template = 6;
+        $notify->save();
       }
+
 
       $user->new_loyalty_status_end = 0;
       $user->loyalty_status = $user->old_loyalty_status;

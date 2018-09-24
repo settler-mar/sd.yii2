@@ -48,6 +48,12 @@ return [
 
         'notification_title_manual_4'=>'Бонус за регистрацию отключен',
         'notification_text_manual_4'=>'Ваш премиум-аккаунт отключен по истечении 10 дней после регистрации. Подробнее о нашей накопительной системе лояльности читайте <a href="https://secretdiscounter.ru/loyalty">здесь</a>.',
+
+        'notification_title_manual_5'=>'Покупка статуса',
+        'notification_text_manual_5'=>'Вы приобрели <b>{{text.status_name}}</b> статус лояльности (+{{text.status_bonus}}% от кэшбэка) за <b>{{amount*(-1)}} {{currency}}</b>. Срок его действия – 1 месяц с момента покупки (до {{text.date}}).',
+
+        'notification_title_manual_6'=>'Покупка статуса',
+        'notification_text_manual_6'=>'Срок действия купленного статуса завершен.',
     ],
 
 

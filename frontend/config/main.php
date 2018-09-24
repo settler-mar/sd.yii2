@@ -167,6 +167,7 @@ $config = [
                 'account/webmaster' => 'affiliate/account/index',
                 'account/promo' => 'users/default/promo',
                 'account/bay-loyalty/<id>'=>'/users/account/bay-loyalty',
+                'account/bay-loyalty/<id>/<stat>'=>'/users/account/bay-loyalty',
                 'deleteaccount' => 'users/account/delete',
                 'reg' => 'users/default/reg',
 
