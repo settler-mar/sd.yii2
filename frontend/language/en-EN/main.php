@@ -288,4 +288,5 @@ return [
     "loyalty_status_bay_description"=>"This loyalty level will allow you to get a higher {bonus}% cash back (compared to the base rate).",
     "loyalty_status_not_found"=>"Loyalty level not found",
     "bay_loyalty_title"=>"Buy {status} level",
+    'buy'=>"Buy",
 ];
