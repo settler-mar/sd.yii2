@@ -414,12 +414,20 @@ class AccountController extends Controller
 
     $can_bay = false;
     $data = [];
-    $data['html'] ="<p>".Yii::t('main',"loyalty_status_bay_description",$data)."</p>";
     foreach (Yii::$app->params['dictionary']['loyalty_status'] as $status_id=>$loyalty_status) {
       if (!isset($loyalty_status['code']) || $loyalty_status['code'] != $id) continue;
       $data['status'] = $loyalty_status['display_name'];
       $data['code'] = $loyalty_status['code'];
       $data['title'] = Yii::t('main', "bay_loyalty_title", $data);
+
+      $cur = Yii::$app->user->identity['currency'];
+      $balabce = Yii::$app->user->identity->getBalance();
+      $data['price'] = $loyalty_status['price'][$cur];
+      $data['balance'] = $balabce['total'];
+      $data['currency'] = $cur;
+      $data['bonus'] = $loyalty_status['bonus'];
+      $data['status_id'] = $status_id;
+      $data['html'] ="<p>".Yii::t('main',"loyalty_status_bay_description",$data)."</p>";
 
       $user_loyalty_status = Yii::$app->user->identity->loyalty_status;
       if (Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus'] >= $loyalty_status['bonus']) {
@@ -432,13 +440,6 @@ class AccountController extends Controller
         return json_encode($data);
       }
 
-      $cur = Yii::$app->user->identity['currency'];
-      $balabce = Yii::$app->user->identity->getBalance();
-      $data['price'] = $loyalty_status['price'][$cur];
-      $data['balance'] = $balabce['total'];
-      $data['currency'] = $cur;
-      $data['bonus'] = $loyalty_status['bonus'];
-      $data['status_id'] = $status_id;
 
       if ($data['price'] > $balabce['total']) {
         $data['html'] .= Yii::t('main', "loyalty_status_bay_no_money", $data);
