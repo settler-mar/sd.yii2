@@ -1222,7 +1222,7 @@ class Stores extends \yii\db\ActiveRecord
 
       }else{
 
-        if($store['actions']){
+        if(isset($store['actions']) && $store['actions']){
           foreach ($store['actions'] as $action){
             $is_new_action = $newCpa;
 

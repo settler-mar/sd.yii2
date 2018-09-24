@@ -83,64 +83,48 @@ class PaymentsController extends Controller
 
   public function actionIndex()
   {
-    $dir=realpath(dirname(__FILE__).'/../../').'/';
-    $fp = fopen($dir.'payment_'.date("Y_m_d_H:m:s").'.txt', 'w+');
-    fwrite($fp, "\n");
+    //$dir=realpath(dirname(__FILE__).'/../../').'/';
+    //$fp = fopen($dir.'payment_'.date("Y_m_d_H:m:s").'.txt', 'w+');
+    //fwrite($fp, "\n");
 
-    fwrite($fp, date("Y_m_d_H:m:s")." Admitad\n");
-    echo "Payments from Admitad\n";
-    Yii::$app->runAction('admitad/payments');
+    //fwrite($fp, date("Y_m_d_H:m:s")." Admitad\n");
+    //echo date("Y_m_d_H:m:s")."Payments from Admitad\n";
+    //Yii::$app->runAction('admitad/payments');
 
-    fwrite($fp, date("Y_m_d_H:m:s")." doublertrade\n");
-    echo "Payments from doublertrade\n";
-    Yii::$app->runAction('doublertrade/payments');
+    $tasks=[
+        'admitad/payments'=>'Admitad',
+        'doublertrade/payments'=> 'doublertrade',
+        'cj/payments'=>'Cj.com',
+        'sellaction/payments'=>'Sellaction',
+        'performancehorizon/payments'=>'Performancehorizon',
+        //'linkconnector/payments'=>'linkconnector',//нужен тестовый
+        //'awin/payments'=>'awin',//нужен тестовый
+        //'shareasale/payments' => 'shareasale',//не делали
+        //'rakute/payments' => 'rakute',//не делали
+        //'advertise/payments' => 'advertise',//не делали
+        //'travelpayouts/payments' => 'Travelpayouts',//не делали
+        //'webgains/payments' => 'Webgains',//не делали
+        'payments/ozon' => 'Webgains',//не делали
+    ];
 
-    fwrite($fp, date("Y_m_d_H:m:s")." Cj\n");
-    echo "Payments from Cj.com\n";
-    Yii::$app->runAction('cj/payments');
+    echo date("Y_m_d_H:m:s")." Start\n";
+    foreach ($tasks as $task=>$name){
+      echo date("Y_m_d_H:m:s")." Payments from $name\n";
+      try {
+        Yii::$app->runAction($task);
+      } catch (Exception $e) {
+        d($e->getMessage());
+      } catch (yii\base\ErrorException $e){
+        d($e->getMessage());
+      }
+      echo "\n";
+    }
 
-    fwrite($fp, date("Y_m_d_H:m:s")." Sellaction\n");
-    echo "Payments from Sellaction\n";
-    Yii::$app->runAction('sellaction/payments');
+    echo date("Y_m_d_H:m:s")." END\n";
 
-    fwrite($fp, date("Y_m_d_H:m:s")." Performancehorizon\n");
-    echo "Payments from Performancehorizon\n";
-    Yii::$app->runAction('performancehorizon/payments');
 
-    //нужен тестовый
-    //echo "\nStores linkconnector\n";
-    //Yii::$app->runAction('linkconnector/payments');
-
-    //не делали
-    //echo "\nStores shareasale\n";
-    //Yii::$app->runAction('shareasale/payments');
-
-    //не делали
-    //echo "\nStores rakute\n";
-    //Yii::$app->runAction('rakute/payments');
-
-    //нужен тестовый
-    //echo "\nStores awin\n";
-    //Yii::$app->runAction('awin/payments');
-
-    //не делали
-    //echo "\nStores advertise\n";
-    //Yii::$app->runAction('advertise/payments');
-
-    //не делали
-    //echo "\nStores Travelpayouts\n";
-    //Yii::$app->runAction('advertise/Travelpayouts');
-
-    //не делали
-    //echo "\nStores Webgains\n";
-    //Yii::$app->runAction('advertise/Webgains');
-
-    fwrite($fp, date("Y_m_d_H:m:s")." Ozon\n");
-    echo "Payments from Ozon\n";
-    $this->actionOzon();
-
-    fwrite($fp, date("Y_m_d_H:m:s")." END\n");
-    fclose($fp);
+    //fwrite($fp, date("Y_m_d_H:m:s")." END\n");
+    //fclose($fp);
   }
 
   /**
