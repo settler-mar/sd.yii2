@@ -48,6 +48,12 @@ return [
 
         'notification_title_manual_4'=>'Sign-Up Bonus is off',
         'notification_text_manual_4'=>'Your premium account has been disabled after 10 days after sign up. Read more about our <a href="https://secretdiscounter.com/loyalty">cumulative loyalty system</a>.',
+
+        'notification_title_manual_5'=>'Buying a loyalty status',
+        'notification_text_manual_5'=>'You have  bought the <b>{{text.status_name}}</b> loyalty level (+{{text.status_bonus}}% to cash back) for <b>{{amount*(-1)}} {{currency}}</b>. Its validity period is 1 month from the date of purchase (up to {{text.date}}).',
+
+        'notification_title_manual_6'=>'Buying a loyalty status',
+        'notification_text_manual_6'=>'The purchased loyalty status has expired.',
     ],
 
 

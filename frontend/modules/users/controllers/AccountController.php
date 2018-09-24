@@ -416,13 +416,13 @@ class AccountController extends Controller
     $data = [];
     foreach (Yii::$app->params['dictionary']['loyalty_status'] as $status_id=>$loyalty_status) {
       if (!isset($loyalty_status['code']) || $loyalty_status['code'] != $id) continue;
-      $data['status'] = $loyalty_status['name'];
+      $data['status'] = $loyalty_status['display_name'];
       $data['code'] = $loyalty_status['code'];
       $data['title'] = Yii::t('main', "bay_loyalty_title", $data);
 
       $user_loyalty_status = Yii::$app->user->identity->loyalty_status;
       if (Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus'] >= $loyalty_status['bonus']) {
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_bonuc", $data);
+        $data['html'] = Yii::t('main', "loyalty_status_bay_no_bonus", $data);
         return json_encode($data);
       }
 
@@ -433,7 +433,6 @@ class AccountController extends Controller
 
       $cur = Yii::$app->user->identity['currency'];
       $balabce = Yii::$app->user->identity->getBalance();
-
       $data['price'] = $loyalty_status['price'][$cur];
       $data['balance'] = $balabce['total'];
       $data['currency'] = $cur;
@@ -460,7 +459,7 @@ class AccountController extends Controller
       $notif->amount = -$data['price'];
       $notif->text = json_encode([
           'date' => date("d.m.Y", strtotime("+1 month")),
-          'status_name' => $id,
+          'status_name' => $data['status'],
           'status_bonus' => $data['bonus']
       ]);
       $notif->status = 2;
@@ -480,7 +479,7 @@ class AccountController extends Controller
 
       Yii::$app->balanceCalc->todo(Yii::$app->user->id);
 
-      $data['html'] = Yii::t('main', "loyalty_status_bay_thanks");
+      $data['html'] = Yii::t('main', "loyalty_status_bay_thanks",$data);
       return json_encode($data);
     }
 
