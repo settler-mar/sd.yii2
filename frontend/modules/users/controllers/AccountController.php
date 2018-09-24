@@ -414,6 +414,7 @@ class AccountController extends Controller
 
     $can_bay = false;
     $data = [];
+    $data['html'] ="<p>".Yii::t('main',"loyalty_status_bay_description",$data)."</p>";
     foreach (Yii::$app->params['dictionary']['loyalty_status'] as $status_id=>$loyalty_status) {
       if (!isset($loyalty_status['code']) || $loyalty_status['code'] != $id) continue;
       $data['status'] = $loyalty_status['display_name'];
@@ -422,12 +423,12 @@ class AccountController extends Controller
 
       $user_loyalty_status = Yii::$app->user->identity->loyalty_status;
       if (Yii::$app->params['dictionary']['loyalty_status'][$user_loyalty_status]['bonus'] >= $loyalty_status['bonus']) {
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_bonus", $data);
+        $data['html'] .= Yii::t('main', "loyalty_status_bay_no_bonus", $data);
         return json_encode($data);
       }
 
       if (empty($loyalty_status['price'])) {
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_price", $data);
+        $data['html'] .= Yii::t('main', "loyalty_status_bay_no_price", $data);
         return json_encode($data);
       }
 
@@ -440,7 +441,7 @@ class AccountController extends Controller
       $data['status_id'] = $status_id;
 
       if ($data['price'] > $balabce['total']) {
-        $data['html'] = Yii::t('main', "loyalty_status_bay_no_money", $data);
+        $data['html'] .= Yii::t('main', "loyalty_status_bay_no_money", $data);
         return json_encode($data);
       }
       $can_bay = true;
@@ -483,7 +484,7 @@ class AccountController extends Controller
       return json_encode($data);
     }
 
-    $data['html'] = $this->renderAjax('bay_loyalty', array_merge($data, ['data' => $data]));
+    $data['html'] .= $this->renderAjax('bay_loyalty', array_merge($data, ['data' => $data]));
     return json_encode($data);
   }
 }
