@@ -86,7 +86,7 @@ $( document ).ready(function() {
 });
 
 (function() {
-  els=$('.ajax_load');
+  els=$('.ajax_load').not('a');
   for(i=0;i<els.length;i++){
     el=els.eq(i);
     url=el.attr('res');
