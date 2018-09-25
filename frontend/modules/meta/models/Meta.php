@@ -291,19 +291,21 @@ class Meta extends \yii\db\ActiveRecord
     private static function languageMeta($meta, $language)
     {
       //if(!$meta)return false;
-        $languageMeta = !empty($language) ?
+      $languageMeta = !empty($language) ?
             LgMeta::find()->where(['meta_id' => $meta->uid, 'language' => $language])->one()
             : false;
-        if ($languageMeta) {
+
+
+      if ($languageMeta) {
             foreach (self::$translated_attributes as $attribute) {
                 if ($languageMeta->$attribute) {
                     $meta->$attribute = $languageMeta->$attribute;
                 }
             }
         }else{
-          return false;
+          return $meta;
         }
-        return $meta;
+
     }
 
     /**
