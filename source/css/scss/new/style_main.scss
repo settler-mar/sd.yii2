@@ -897,6 +897,10 @@ input.link {
   }
 }
 
+.modals_popup{
+  cursor: pointer;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';

@@ -122,7 +122,7 @@ return [
     'store_default_h1_{store}_name' => 'Cash Back from&nbsp;purchases at&nbsp;{store}',
     'store_instruction_online' => 'To get a cash back, follow <a href="#howgetcashback" class="shop-howgetcashback scroll_to">this instruction</a>',
     'store_instruction_offline' => 'To get a cash back just show the cashier <a href="#howgetcashback" class="shop-howgetcashback scroll_to">your barcode</a>',
-    'read_all_tarifs_terms' => '<span class="color-red">Read required:&nbsp;</span>all rates and terms',
+    'read_all_tarifs_terms' => 'All rates and terms',
     'extended_tarifs_for_{store}_is_empty_cashback_{cashback}' => 'There are no additional tariffs for {store}. Current cashback rate is 5% – {cashback}.',
     'cashback_will_be_active_in_{timie}_day' => 'Cash back will be active for payout after <span>{time}&nbsp;days</span>',
     'average_process_time' => '(average processing time)',

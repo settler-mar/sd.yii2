@@ -10,7 +10,7 @@
                    class="ctrl"
                 type="text"
                 value="100"
-                data-cashback-currency="{{ current_store.currency }}"
+                data-cashback-currency="{{ t('main', current_store.currency) }}"
                 data-cashback="{{ _cashback(current_store.displayed_cashback, '',0) }}"
                 data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
             >
@@ -23,13 +23,13 @@
                   selected
                 {% endif %}
             >
-              {{item.code}}
+              {{ t('main', item.code) }}
             </option>
           {% endfor %}
         </select>
       </div>
       <div class="shop-calc-cashback_content-result">
-        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':currency})|raw }}
+        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':t('main', currency)})|raw }}
           {% if current_store.displayed_cashback ends with '%' %}
           {% else %}
             {{ t('main','calc_cashback_fixed')|raw }}

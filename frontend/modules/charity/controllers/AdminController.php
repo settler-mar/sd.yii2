@@ -72,7 +72,7 @@ class AdminController extends Controller
                 return Yii::$app->help->colorStatus($model->is_listed);
             },
             'amount' => function ($model, $key, $index, $column) {
-                return $model->amount. ' '.$model->user->currency;
+                return $model->amount. ' '.Yii::t('main',$model->user->currency);
             }
 
         ];

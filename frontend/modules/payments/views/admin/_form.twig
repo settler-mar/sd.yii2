@@ -25,17 +25,17 @@
 
                 {{ form.field(model, 'user_id').textInput()|raw }}
 
-                <div cur="{{ model.currency }}">
+                <div cur="{{ t('main',model.currency) }}">
                   {{ form.field(model, 'order_price').textInput()|raw }}
                 </div>
 
                 {{ form.field(model, 'currency').textInput()|raw }}
 
-                <div cur="{{ model.user.currency }}">
+                <div cur="{{ t('main',model.user.currency) }}">
                   {{ form.field(model, 'reward').textInput({})|raw }}
                 </div>
 
-                <div cur="{{ model.user.currency }}">
+                <div cur="{{ t('main',model.user.currency) }}">
                   {{ form.field(model, 'cashback').textInput()|raw }}
                 </div>
 

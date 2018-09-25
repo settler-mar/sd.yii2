@@ -12,25 +12,7 @@
     <div class="shop_header_big-wrap">
       <div class="shop_header_big-item shop_header_big-item_ticket">
 
-        <div class="shop_header_big-item_ticket-wrap">
-          <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
-            <div class="promo">
-              {{ t('main', 'cashback')|raw }}
-              {% if current_store.action_id != 0 %}
-                <span class="old">{{ _cashback(current_store.displayed_cashback, current_store.currency)|raw }}</span>
-              {% endif %}
-              <span
-                  class="promo">{{ _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)|raw }}</span>
-            </div>
-          </div>
-          <div href="#howgetcashback" class="shop_header_big-item_ticket-down scroll_to">
-            {% if current_store.is_offline==0 %}
-              {{ t('main', 'store_instruction_online')|raw }}
-            {% else %}
-              {{ t('main', 'store_instruction_offline')|raw }}
-            {% endif %}
-          </div>
-        </div>
+        {{ cashback(current_store,'store') | raw}}
 
         <div class="shop_header_big-share">
           <div class="footer-share-text">{{ t('common', 'share')|raw }}:</div>
@@ -102,36 +84,12 @@
           {{ _if(current_store.is_offline==0, t('main', 'online_shop'), t('main', 'offline_shop')) | raw }}
         </div>
         <div class="shop_header_big-item-body">
-          <div
-              class="accordion accordion-only_one shop_header_big-accordion {{ _if(current_store.is_active!=0 and current_store.conditions=='','tablets_hide') }} accordion_fullscrean_close">
-            {% if _is_empty(current_store.displayed_cashback) %}
-              <div class="accordion-control accordion-title accordion-title-red">
-                {{ _constant('shop_offline_text','title_dop_blog')|raw }}
-              </div>
-            {% elseif current_store.is_active==0 %}
-              <div class="accordion-control accordion-title accordion-title-red accordion-title-disabled">
-                {{ _constant('shop_offline_text','title_dop')|raw }}
-              </div>
+          <div href="#howgetcashback" class="scroll_to">
+            {% if current_store.is_offline==0 %}
+              {{ t('main', 'store_instruction_online')|raw }}
             {% else %}
-              <div class="accordion-control accordion-title">
-               {{ t('main', 'read_all_tarifs_terms')|raw }}
-              </div>
+              {{ t('main', 'store_instruction_offline')|raw }}
             {% endif %}
-
-            <div class="accordion-content">
-              <noindex>
-                {% if current_store.conditions != '' %}
-                  {{ _no_br(current_store.conditions)|raw }}
-                {% else %}
-                    {{ t('main', 'extended_tarifs_for_{store}_is_empty_cashback_{cashback}', {'store': current_store.name,'cashback': _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)})|raw }}
-                {% endif %}
-
-                <div class="accordion-control tablets_hide">
-                  <a class="angle-up" href="#"></a>
-                </div>
-              </noindex>
-            </div>
-
           </div>
 
           <div class="accordion accordion-only_one shop_header_big-info_line">
@@ -248,12 +206,6 @@
          {% for product in products %}
            {% include 'parts/product.twig' %}
          {% endfor %}
-       </div>
-
-       <div class="catalog_products_store_conditions" id="store_tariffs_id">
-         <div class="catalog_products_store_conditions_content">
-           {{ store.conditions | raw}}
-         </div>
        </div>
      {% else %}
        <p>{{ t('main', 'not_found')|raw }}</p>
@@ -382,6 +334,17 @@
   </div>
 {% endif %}
 
+<noindex>
+  <div class="catalog_products_store_conditions" id="store_tariffs_id">
+    <div class="catalog_products_store_conditions_content">
+      {% if current_store.conditions != '' %}
+        {{ _no_br(current_store.conditions)|raw }}
+      {% else %}
+        {{ t('main', 'extended_tarifs_for_{store}_is_empty_cashback_{cashback}', {'store': current_store.name,'cashback': _cashback(current_store.displayed_cashback, current_store.currency, current_store.action_id)})|raw }}
+      {% endif %}
+    </div>
+  </div>
+</noindex>
 {#
   {% include 'parts/store_rating_microdata.twig' %}
   <a name="reviews"></a>

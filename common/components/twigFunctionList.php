@@ -210,13 +210,68 @@ $functionsList = [
     return getConstant($name, $json_col, $json_index);
   },
   'currencyIcon' => function ($currency) use ($currencyIcon) {
-    return (isset($currencyIcon[$currency]) ? Help::svg(
+    return Yii::t('main',$currency);
+    /*return (isset($currencyIcon[$currency]) ? Help::svg(
         $currencyIcon[$currency],
         'currency-icon currency-icon-' . $currencyIcon[$currency]
-    ) : $currency);
+    ) : $currency);*/
   },
   'get_store' => function($store_id){
     return \frontend\modules\stores\models\Stores::findOne(['uid'=>$store_id]);
+  },
+  //Универсальная ф-я вывода блока ставки кэшбэка в ависимости от типа
+  'cashback' =>function($store,$params_id){
+    $params=Yii::$app->params['cashback_render'][$params_id];
+    if(is_object($store))$store=$store->getAttributes();
+
+    //$cashback = str_replace('до', Yii::t('main', 'up_to'), $store['displayed_cashback']);
+    $cashback = $store['displayed_cashback'];
+    $currency = Yii::t('main',$store['currency']);
+    $cashback = str_replace(',','.',$cashback);
+    $value = preg_replace('/[^0-9\.\,]/', '', $cashback);
+    $value_n = $value;
+    $is_persent = strpos($cashback, '%')!==false;
+    $has_up_to = strpos($cashback, 'до')!==false;
+    $is_num = true;
+    if(!$is_persent){
+      $value=round($value);
+    }
+
+    if(isset($params['show_charity']) && $params['show_charity'] && $value==0){
+      $value = Help::svg("heart","heart-red shop-heart-red");
+      $value_n = $value;
+      $has_up_to = false;
+      $is_num = false;
+    }else {
+      if ($store['action_id'] == 1) {
+        $value_n = $value * 2;
+      }
+      if (!Yii::$app->user->isGuest) {
+        $user = Yii::$app->user->identity;
+        if ($user->loyalty_status > 0) {
+          $status_data = $user->getLoyalty_status_data();
+          $value_n = $value_n * (1 + $status_data['bonus'] / 100);
+        }
+      }
+    }
+
+    if($is_num){
+      if($is_persent){
+        $value = round($value, 2)."%";
+        $value_n = round($value_n, 2)."%";
+      }else {
+        $value = number_format($value_n, 0, '.', "&nbsp;")."&nbsp;".$currency;
+        $value_n = number_format($value_n, 2, '.', "&nbsp;")."&nbsp;".$currency;
+      }
+    }
+
+    return Yii::$app->view->render('@app/views/parts/cashback/'.$params['view'],[
+        'store'=>$store,
+        'value'=>$value,
+        'value_new'=>$value_n,
+        'has_up_to'=>$has_up_to,
+    ]);
+    //ddd($store);
   },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {

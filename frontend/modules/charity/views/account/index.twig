@@ -13,7 +13,7 @@
         <th class="sum">{{ t('common', 'amount')|raw }}</th>
         <th></th>
       </tr>
-      {% set curr = currencyIcon(app.user.identity.currency) %}
+      {% set curr = t('main',app.user.identity.currency) %}
       {% for chty in charity %}
         <tr {% if chty.is_listed==1 %}class="status_bg_{{ chty.is_listed }}"{% endif %}>
           <td>

@@ -68,7 +68,7 @@ class Payments extends \yii\db\ActiveRecord
   {
     return [
         [['uid', 'is_showed', 'action_id', 'affiliate_id', 'status', 'cpa_id', 'additional_id', 'ref_bonus_id',
-            'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id', 'rate_id','cpa_link_id'], 'integer'],
+            'ref_id', 'loyalty_status', 'shop_percent', 'action_code', 'store_point_id', 'rate_id','cpa_link_id','store_action'], 'integer'],
         [['recalc_json','currency'], 'string'],
         [['user_id'], 'integer', 'on' => 'online'],
         [['user_id'], 'match', 'pattern' => '/^SD-\d*$/', 'on' => 'offline',
@@ -481,7 +481,7 @@ class Payments extends \yii\db\ActiveRecord
     $notify = isset($options['notify']) && $options['notify'] === false ? false : true;
     $email = isset($options['email']) && $options['email'] === false ? false : true;
 
-    if($payment['currency']=="RUR")$payment['currency']="RUB";
+    if($payment['currency']=="RUR")$payment['currency']=$store->currency;
 
     if (strpos($payment['subid'], '_') !== false && !isset($payment['sub_id2'])) {
         $subIds = explode('_', $payment['subid']);
@@ -539,6 +539,7 @@ class Payments extends \yii\db\ActiveRecord
 
       $db_payment = new self(['scenario' => 'online']);
       $db_payment->scenario = 'online';
+      $db_payment->store_action = $store->action_id;
 
       $userCashback = self::userCashback($db_payment, $payment, true, $user, $store, $ref);
 
@@ -684,8 +685,9 @@ class Payments extends \yii\db\ActiveRecord
     $notifi->save();
   }
 
-  protected static function userCashback($db_payment, $payment, $new = false, $user = null, $store = null, $ref = null)
+  protected static function userCashback(&$db_payment, $payment, $new = false, $user = null, $store = null, $ref = null)
   {
+
     $percent = $new ? $store->percent : $db_payment->shop_percent;
 
     $kurs = $new ? Yii::$app->conversion->getCurs($user->currency, $payment['currency'])
@@ -695,18 +697,23 @@ class Payments extends \yii\db\ActiveRecord
       $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
     }
 
-    //ddd($kurs);
-    $loyalty_bonus = $new ? $user->loyalty_status_data['bonus'] :
-        Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
-
+    $db_payment->store_action=0;//Если надо будует брать что то одно то раскоментироывть.
+    if($db_payment->store_action==0) {
+      $loyalty_bonus = $new ? $user->loyalty_status_data['bonus'] :
+          Yii::$app->params['dictionary']['loyalty_status'][$db_payment->loyalty_status]['bonus'];
+    }else{
+      $loyalty_bonus=0;
+    }
     $reward = $kurs * $payment['payment'];
 
     $cashback = $reward * $percent / 100;
     $cashback = $cashback + $cashback * $loyalty_bonus / 100;
 
     if ($ref || (!$new && $db_payment->ref_id)) {
-      $ref_kurs = $new ? Yii::$app->conversion->getCurs($ref->currency, $user->currency) : $db_payment->ref_kurs;;
+      $ref_kurs = $new ? Yii::$app->conversion->getCurs($ref->currency, $user->currency) : $db_payment->ref_kurs;
       $ref_kurs = $ref_kurs ? $ref_kurs : 1;
+
+      $db_payment->ref_kurs = $ref_kurs;
 
       $ref_bonus_data = $new ? $ref->bonus_status_data :
           Yii::$app->params['dictionary']['bonus_status'][$db_payment->ref_bonus_id];

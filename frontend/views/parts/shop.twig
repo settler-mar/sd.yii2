@@ -80,14 +80,14 @@
             {{ t('main', 'cashback')|raw }}
         {% if store.action_id == 1 %}
             <span class="shop-cashback-link_cashback_old shop-cashback_old">
-                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
+                {{ _shop_cashback(store.displayed_cashback, t('main', store.currency))|raw }}
             </span>
             <span class="shop-cashback-link_cashback">
                 {{ _shop_cashback(store.displayed_cashback, store.currency,store.action_id)|raw }}
             </span>
         {% else %}
             <span class="shop-cashback-link_cashback">
-                {{ _shop_cashback(store.displayed_cashback, store.currency)|raw }}
+                {{ _shop_cashback(store.displayed_cashback, t('main', store.currency))|raw }}
             </span>
 
         {% endif %}

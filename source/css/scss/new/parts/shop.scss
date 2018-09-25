@@ -453,7 +453,7 @@
 
         &-wrap{
           overflow: hidden;
-          width: 270px;
+          width: 300px;
           margin: 0 auto;
           color: #fff;
 
@@ -522,11 +522,17 @@
         font-weight: $font_weight_content_header;
         //padding-bottom: 10px;
         margin-top: 15px;
-        height: 50PX;
+        min-height: 50PX;
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-bottom: 12px;
+
+        &-link{
+          font-size: 16px;
+          margin-top: -7px;
+          margin-bottom: 6px;
+        }
 
         @include media_min($tablets - 1) {
           border-bottom: 1px solid;

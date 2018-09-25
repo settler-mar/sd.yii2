@@ -3,11 +3,11 @@
         <span>
             {{ coupon.name }}
             <span class="coupons-list_item-name-cashback{% if coupon.store_action_id == 1 %} old {% endif %}">
-                    {{ _if(not_zero(coupon.store_cashback) ,'',' + '~t('main','cashback_befor_zero')) }} {{ _shop_cashback(coupon.store_cashback, coupon.store_currency, 0, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
+                    {{ _if(not_zero(coupon.store_cashback) ,'',' + '~t('main','cashback_befor_zero')) }} {{ _shop_cashback(coupon.store_cashback, t('main', coupon.store_currency), 0, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
             </span>
             {% if coupon.store_action_id == 1 %}
                  <span class="coupons-list_item-name-cashback">&nbsp;
-                      {{ _shop_cashback(coupon.store_cashback, coupon.store_currency,coupon.store_action_id, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
+                      {{ _shop_cashback(coupon.store_cashback, t('main', coupon.store_currency),coupon.store_action_id, '+&nbsp;'~t('main', 'cashback_low')~'&nbsp;')|raw }}
                  </span>
             {% endif %}
         </span>
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="coupons-list_item-logo-info-share">
-          {% set coupon_name = coupon.name ~ " +&nbsp;"~t('main','cashback_in_share')~"&nbsp;" ~  _shop_cashback(coupon.store_cashback, coupon.store_currency, 0, '',false) %}
+          {% set coupon_name = coupon.name ~ " +&nbsp;"~t('main','cashback_in_share')~"&nbsp;" ~  _shop_cashback(coupon.store_cashback, t('main', coupon.store_currency), 0, '',false) %}
 
           <div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>
           <div class="share42init accauntSoc accauntSoc_32"

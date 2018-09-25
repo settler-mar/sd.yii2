@@ -48,6 +48,7 @@ class MessageParser extends Component
       $store=CpaLink::findOne(['cpa_id'=>$cpa_id,'affiliate_id'=>$affiliate_id]);
       if(count($store)>0){
         $store=$store->store->toArray(['name','route','currency']);
+        $store['currency']=Yii::t('main',$store['currency']);
         $this->stores[$code]=[];
         foreach ($store as $k=>$val){
           $this->stores[$code]['shop_'.$k]=$val;
@@ -128,12 +129,21 @@ class MessageParser extends Component
       };
       $this->DataNotification[$uid]=$data;
     }
-    return $this->DataNotification[$uid];
+    $data = $this->DataNotification[$uid];
+
+    if(isset($data['currency'])){
+      $data['currency']=Yii::t('main',$data['currency']);
+    }
+    $json=json_decode($data['text'], true);
+    $data['text']=is_array($json)?$json:$data['text'];
+
+    return $data;
   }
 
   public function notificationTitle($data){
     $data=(array)$data;
     $data=$this->getFullDataNotification($data['uid'],$data);
+
     if($data['twig_template']!=0){
       return $this->render('notification_title_manual_'.$data['twig_template'], $data);
     }
@@ -156,9 +166,6 @@ class MessageParser extends Component
   {
     $data=(array)$data;
     $data=$this->getFullDataNotification($data['uid'],$data);
-
-    $json=json_decode($data['text'], true);
-    $data['text']=is_array($json)?$json:$data['text'];
 
     if ($data['twig_template'] != 0) {
       $code='notification_text_manual_'.$data['twig_template'];

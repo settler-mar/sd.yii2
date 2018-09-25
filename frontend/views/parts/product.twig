@@ -25,7 +25,7 @@
                         {{ t('main', 'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}', {'buy': product.buy, 'time': _local_date(product.last_buy, t('dictionary', 'date_format_middle'))})|raw }}
                     </div>
                     <div class="catalog_products_item_price">
-                        <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ product.currency }}
+                        <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ t('main', product.currency) }}
                     </div>
                     <div class="catalog_products_item_cashback">
                         <div class="catalog_products_item_cashback_left">

@@ -101,7 +101,7 @@
                                         <strong><?php
                                           $cashback=$store['displayed_cashback'];
                                           $action=$store['action_id'];
-                                          $currency=$store['currency'];
+                                          $currency=Yii::t('main',$store['currency']);
                                             if($action == 1){
                                               $value = preg_replace('/[^0-9\.]/', '', $cashback);
                                               $cashback = str_replace($value,$value*2,$cashback);

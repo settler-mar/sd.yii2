@@ -23,7 +23,7 @@ return [
         'notification_text_0'=>'Ваш кэшбэк на <b>{{amount}} {{currency}}</b> в <b>{{shop_name}}</b> (заказ №{{order_id}}) зафиксирован в нашей системе.',//'в ожидании',//'pending',
 
         'notification_title_1_1'=>'Кэшбэк отклонен',
-        'notification_text_1'=>'К сожалению, ваш кэшбэк в <b>{{shop_name}}</b> (заказ №{{order_id}}) на сумму <b>{{amount}}</b> {{currency}} отклонен.',//'Отменен',//'declined',
+        'notification_text_1'=>'К сожалению, ваш кэшбэк в <b>{{shop_name}}</b> (заказ №{{order_id}}) на сумму <b>{{amount}} {{currency}}</b> отклонен.',//'Отменен',//'declined',
 
         'notification_title_1_2'=>'Зафиксирован новый кэшбэк',
         'notification_text_2'=>'Поздравляем! {{added}} вами был сделан заказ №{{order_id}} в <b>{{shop_name}}</b>, за который вам было начислено <b>{{amount}} {{currency}}</b> кэшбэка.',//'Подтвержден',//'confirmed'

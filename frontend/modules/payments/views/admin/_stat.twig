@@ -23,7 +23,7 @@
                 {#{{ _nf(stats_query.all.order_price)|raw }}#}
                 {% for key, item in stats_result.order_price.all %}
                     <div>
-                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                        {{ _nf(item.order_price)|raw }} {{ t('main',item.currency) }}
                     </div>
                 {% endfor %}
             </td>
@@ -31,7 +31,7 @@
                 {#{{ _nf(stats_query.all.reward)|raw }}#}
                 {% for key, item in stats_result.reward.all %}
                     <div>
-                        {{ _nf(item.reward)|raw }} {{ item.currency }}
+                        {{ _nf(item.reward)|raw }} {{ t('main',item.currency) }}
                     </div>
                 {% endfor %}
             </td>
@@ -39,7 +39,7 @@
                 {#{{ _nf(stats_query.all.cashback)|raw }}#}
                 {% for key, item in stats_result.reward.all %}
                     <div>
-                       {{ _nf(item.cashback)|raw }} {{ item.currency }}
+                       {{ _nf(item.cashback)|raw }} {{ t('main',item.currency) }}
                     </div>
                 {% endfor %}
             </td>
@@ -47,7 +47,7 @@
                 {#{{ _nf(stats_query.all.ref_bonus)|raw }}#}
                 {% for key, item in stats_result.ref_bonus.all %}
                     <div>
-                        {{ _nf(item.ref_bonus)|raw }} {{ item.currency }}
+                        {{ _nf(item.ref_bonus)|raw }} {{ t('main',item.currency) }}
                     </div>
                 {% endfor %}
             </td>
@@ -58,7 +58,7 @@
                 {#{{ _nf(stats_query.wait.order_price)|raw }}#}
                 {% for key, item in stats_result.order_price.wait %}
                     <div>
-                        {{ _nf(item.order_price)|raw }} {{ item.currency }}
+                        {{ _nf(item.order_price)|raw }} {{ t('main',item.currency) }}
                     </div>
                 {% endfor %}
             </td>

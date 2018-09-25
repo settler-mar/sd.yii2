@@ -66,8 +66,8 @@
                 svg('circle', 'btn-header_button_money')
                 ~ '<span class="btn-header-ballance-wrap">'
                 ~ '<span class="ballance-confirmed" data-toggle="tooltip" data-original-title="'~t('account', 'ballance_current')~'">'
-                ~ _nf(this.balance.current) ~'&nbsp;'~app.user.identity.currency~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
-                ~ _nf(this.balance.pending) ~'&nbsp;'~app.user.identity.currency~' </span>'
+                ~ _nf(this.balance.current) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
+                ~ _nf(this.balance.pending) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span>'
                 ~ '</span>',
                 'class':'btn-header-ballance'
               })|raw }}

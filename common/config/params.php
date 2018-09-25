@@ -4,7 +4,12 @@ $params = [
   //'scriptVersion'=>YII_DEBUG?'':'.min.'.file_get_contents(__DIR__.'/script_version.data').'.',
   'scriptVersion'=>YII_DEBUG?'' : '.min.',
   'exportDir' => 'export',
-
+  'cashback_render'=>[
+      'store'=>[ //используется в карточке шопа
+        'show_charity' => true,
+        'view'  => 'shop'
+      ]
+  ],
   'currencies' => [
       'RUB' => [
           'text' => 'руб',
@@ -78,5 +83,4 @@ $params['valuta_list_dp']=[];
 foreach ($params['currencies'] as $k=>$valuta){
   $params['valuta_list_dp'][$k]=$valuta['text'];
 }
-
 return $params;

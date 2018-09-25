@@ -10,7 +10,7 @@
         <tr>
           <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 15px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
             Hello!
-            <?=$payment->action_date;?> our system detected your cashback in the amount of <?=$payment->cashback;?> <?=$payment->user->currency;?> from
+            <?=$payment->action_date;?> our system detected your cashback in the amount of <?=$payment->cashback;?> <?=Yii::t('main',$payment->user->currency);?> from
             <a href="<?=$payment->store->url;?>"><?=$payment->store->name;?></a>
             (order №<?=$payment->uid;?>).
           </td>
