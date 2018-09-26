@@ -1,0 +1,1 @@
+<span class="coupons-list_item-name-cashback">+&nbsp;{{ t('main','cashback_befor_zero') }} {% if has_up_to %}{{ t('main', 'up_to') }}&nbsp;{% endif %}{% if value != value_new %}<span class="coupons-list_item-name-cashback old">&nbsp;{{ value |raw }}&nbsp;</span>&nbsp;{% endif %}{{ value_new |raw }}</span>

@@ -15,7 +15,7 @@
       {% endif %}
     </div>
       {% if _is_empty(store.displayed_cashback) %}
-        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="Все тарифы и условия {{ store.name }}">
+        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="{{ t('main','tarifs_terms_store',{store:store.name}) }}">
           {{ _constant('shop_offline_text','title_dop_blog')|raw }}
         </a>
       {% elseif store.is_active==0 %}
@@ -23,7 +23,7 @@
           {{ _constant('shop_offline_text','title_dop')|raw }}
         </a>
       {% else %}
-        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="Все тарифы и условия {{ store.name }}">
+        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="{{ t('main','tarifs_terms_store',{store:store.name}) }}">
             {{ t('main', 'read_all_tarifs_terms')|raw }}
         </a>
       {% endif %}

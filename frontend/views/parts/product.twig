@@ -27,19 +27,7 @@
                     <div class="catalog_products_item_price">
                         <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ t('main', product.currency) }}
                     </div>
-                    <div class="catalog_products_item_cashback">
-                        <div class="catalog_products_item_cashback_left">
-                            <span class="catalog_products_item_info_text_title">{{ t('common', 'cashback') }}:</span> {{ _cashback(store.displayed_cashback) }}
-                            <a class="catalog_products_item_cashback_question modals_popup"
-                               data-original-html="store_tariffs_id"
-                               data-original-h="{{ t('main', 'tarifs_terms_store',{'store': store.name}) }}"
-                            >{{ svg('question-circle-o', 'shop_header_big-question_icon')|raw }}</a>
-                        </div>
-
-                        <a class="catalog_products_item_cashback_coupons" target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/coupons/'~store.route) }}">
-                            {{ svg('table')|raw }} {{ t('main', 'coupons_active_for{store}', {'store': store.name})|raw }}
-                        </a>
-                    </div>
+                    {{ cashback(store,"product") | raw }}
                 </div>
                 <div class="catalog_products_item_info_actions">
 

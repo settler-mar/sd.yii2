@@ -901,6 +901,11 @@ input.link {
   cursor: pointer;
 }
 
+.old{
+  text-decoration: line-through;
+  font-size: 0.8em;
+}
+
 @import 'base/error_pages';
 @import 'parts/header';
 @import 'parts/drop-down-menu';

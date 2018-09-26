@@ -119,7 +119,7 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/external/jquery.mockjax.js',
     paths.source.js+'/external/jquery.autocomplete.js',
     paths.source.js+'/original/admin/select2.full.min.js',
-    //paths.source.js+'/original/admin/main_admin.js', //отключил 24.09.2018
+    paths.source.js+'/original/admin/main_admin.js', //отключил 24.09.2018
     //paths.source.js+'/original/admin/editor_init.js',
     paths.source.js+'/original/new/slider.js',
     paths.source.js+'/original/admin/ajax_save.js',

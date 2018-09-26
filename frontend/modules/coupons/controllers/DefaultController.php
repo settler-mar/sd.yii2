@@ -59,7 +59,7 @@ class DefaultController extends SdController
         //если есть одна из них
 
         if($coupon_id){
-          $coupon=Coupons::forList()->andWhere(['cwc.uid'=>$coupon_id])->one();
+          $coupon=Coupons::forList(false)->andWhere(['cwc.uid'=>$coupon_id])->one();
           if(!$coupon || $store->uid!=$coupon['store_id']){
             throw new \yii\web\NotFoundHttpException;
           }
@@ -190,7 +190,7 @@ class DefaultController extends SdController
             ->from(Coupons::tableName() . ' cwc')
             ->where(['store_id' => $store->uid])
             ->andWhere($expiredData)
-            ->asArray()
+            //->asArray()
             ->limit(10)
             ->all();
       }
@@ -255,7 +255,7 @@ class DefaultController extends SdController
 
     \Yii::$app->params['url_mask'] .= ($request->get('expired') ? '/expired' : '');
     //\Yii::$app->params['url_mask'] .=  ($request->get('all') ? '/all' : '');//на будущее, если нужны будут метатеги для /all/
-    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true, 'one_page'=> $this->top]);
+    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'one_page'=> $this->top]);
 
     $contentData["coupons"] = $pagination->data();
     $contentData["total_v"] = $pagination->count();
@@ -383,7 +383,7 @@ class DefaultController extends SdController
     $contentData['coupon_ended']=Coupons::find()
         ->where(['store_id' => $coupon['store_id']])
         ->andWhere($expiredData)
-        ->asArray()
+        //->asArray()
         ->limit(10)
         ->all();
 
@@ -398,7 +398,7 @@ class DefaultController extends SdController
         ->orderBy($sort . ' ' . $order)
         ->andWhere(['!=','cwc.uid',$coupon['uid']]);
 
-    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'asArray' => true, 'one_page'=> $this->top]);
+    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => $limit, 'page' => $page, 'one_page'=> $this->top]);
 
     $contentData["stores_coupon"] = $pagination->data();
     $contentData["total_v"] = $pagination->count();
@@ -507,7 +507,7 @@ class DefaultController extends SdController
           $databaseObj->andWhere(Stores::makeQueryArray($query));
       }
 
-      $pagination = new Pagination($databaseObj, false, ['limit' => $limit, 'page' => $page, 'asArray' => true]);
+      $pagination = new Pagination($databaseObj, false, ['limit' => $limit, 'page' => $page, ]);
       $contentData['coupons'] = $pagination->data();
       $contentData["total_v"] = $pagination->count();
       $contentData["show_coupons"] = count($contentData["coupons"]);

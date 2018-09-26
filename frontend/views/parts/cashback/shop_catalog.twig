@@ -1,0 +1,23 @@
+{{ t('main', 'cashback')|raw }}
+<span class="shop-cashback-link_cashback">
+  {% if has_up_to %}
+    {{ t('main', 'up_to') }}
+  {% endif %}
+  {% if value != value_new %}
+    {% if is_persent %}
+      <span class="shop-cashback-link_cashback_old shop-cashback_old">
+        {{ value |raw }}
+      </span>
+      {{ value_new |raw }}
+    {% else %}
+      <span class="shop-cashback-link_cashback_old shop-cashback_old_cash">
+        {{ value |raw }}
+        <span>
+          {{ value_new |raw }}
+        </span>
+      </span>
+    {% endif %}
+  {% else %}
+    {{ value_new |raw }}
+  {% endif %}
+</span>

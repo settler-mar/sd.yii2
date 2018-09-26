@@ -178,6 +178,22 @@
     &_old{
       text-decoration: line-through;
       color: rgba($shop_cashback_old_color,0.7);
+      font-size: 1em;
+      margin-right: 5px;
+
+      &_cash{
+        color: rgba($shop_cashback_old_color,0.7);
+        position: relative;
+        text-decoration: line-through;
+        margin-bottom: -1em;
+
+        span{
+          color: $shop_cashback_link_color;
+          text-decoration: none;
+          margin-top: -1em;
+          position: absolute;
+        }
+      }
     }
 
   }

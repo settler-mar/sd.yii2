@@ -42,14 +42,9 @@ class DefaultController extends SdController
       $out["suggestions"] = [];
       $out["query"] = $query;
       foreach ($stores as $k => $v) {
-        $cashback = $v['displayed_cashback'];
-        $cashbackNum = preg_replace('/[^0-9.,]/', '', $cashback);
-        $cashbackNum = $v['action_id'] == 1 ? $cashbackNum * 2 : $cashbackNum;//акция - 1 Двойной кэшбэк
-        $cashback = preg_replace('/[0-9.,]+/', $cashbackNum, $cashback);
         $out["suggestions"][] = [
           "value" => $v['name'],
-          "cashback" =>'<span class="cashback">'.$cashback.
-            (strpos($cashback, '%') === false ? ' '.$v['currency']: '').'</span>',
+          "cashback" =>Yii::$app->help->cashback($v,"search_line"),
           "data" => [
             'name' => $v['name'],
             'route' => $baseURL.$v['route_url']

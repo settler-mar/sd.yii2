@@ -115,8 +115,8 @@ class Help extends Component
         Yii::t('common', 'today') => ["moment().startOf('day')", "moment()"],
         Yii::t('common', 'yesterday') => ["moment().startOf('day').subtract(1,'days')", "moment().endOf('day').subtract(1,'days')"],
         Yii::t('common', 'this_week') => ["moment().startOf('weak')", "moment()"],
-        Yii::t('common', 'last_n_days',['n'=>7]) => ["moment().startOf('day').subtract(6, 'days')", "moment()"],
-        Yii::t('common', 'last_n_days',['n'=>30]) => ["moment().startOf('day').subtract(29, 'days')", "moment()"],
+        Yii::t('common', 'last_n_days', ['n' => 7]) => ["moment().startOf('day').subtract(6, 'days')", "moment()"],
+        Yii::t('common', 'last_n_days', ['n' => 30]) => ["moment().startOf('day').subtract(29, 'days')", "moment()"],
         Yii::t('common', 'this_month') => ["moment().startOf('month')", "moment()"],
         Yii::t('common', 'last_month') => ["moment().subtract(1, 'month').startOf('month')", "moment().subtract(1, 'month').endOf('month')"],
         Yii::t('common', 'this_year') => ["moment().startOf('year')", "moment()"],
@@ -216,5 +216,85 @@ class Help extends Component
     }, $text);
   }
 
+  public function cashback($store, $params_id)
+  {
+    if(!$store)return "";
+    $params = Yii::$app->params['cashback_render'][$params_id];
+    if (is_object($store)) $store = $store->getAttributes();
+
+    //$cashback = str_replace('до', Yii::t('main', 'up_to'), $store['displayed_cashback']);
+    $cashback = $store['displayed_cashback'];
+    $currency = Yii::t('main', $store['currency']);
+    $cashback = str_replace(',', '.', $cashback);
+    $value = preg_replace('/[^0-9\.\,]/', '', $cashback);
+    $value_n = $value;
+    $is_persent = strpos($cashback, '%') !== false;
+    $has_up_to = strpos($cashback, 'до') !== false;
+    $is_num = true;
+    if (!$is_persent) {
+      $value = round($value);
+    }
+    $text = Yii::t('main', "action_description_not", ['url' => Help::href("/loyalty")]);
+
+    if (isset($params['show_charity']) && $params['show_charity'] && $value == 0) {
+      if(isset($params['replace_charity'])){
+        $value = $params['replace_charity'];
+      }else{
+        $value = Help::svg("heart", "heart-red shop-heart-red");
+      }
+      $value_n = $value;
+      $has_up_to = false;
+      $is_num = false;
+    } else {
+      if ($store['action_id'] == 1) {
+        $value_n = $value * 2;
+        $text = "action_description_action";
+        $text .= !empty($store['action_end_date']) ? '_to' : '';
+        $text = Yii::t('main', $text, [
+            'date' => date('d.m.Y', strtotime($store['action_end_date'])),
+        ]);
+      }
+      if (!Yii::$app->user->isGuest) {
+        $user = Yii::$app->user->identity;
+        if ($user->loyalty_status > 0) {
+          $status_data = $user->getLoyalty_status_data();
+          $value_n = $value_n * (1 + $status_data['bonus'] / 100);
+          $status_data['url'] = Help::href("/loyalty");
+          $status_data['to'] = date('d.m.Y', $user->new_loyalty_status_end);
+          if (empty($user->new_loyalty_status_end) || $user->new_loyalty_status_end < time()) {
+            $text = Yii::t('main', 'action_description_loyality', $status_data);
+          } elseif ($user->getIsBuyStatus()) {
+            $text = Yii::t('main', 'action_description_loyality', $status_data);
+          } else {
+            $status_data['url'] = Help::href("/signup-bonus");
+            $text = Yii::t('main', 'action_description_loyality_reg', $status_data);
+          }
+        }
+      }
+    }
+
+    $params['only_number']=isset($params['only_number'])&&$params['only_number'];
+    if ($is_num && !$params['only_number']) {
+      if ($is_persent) {
+        $value = round($value, 2) . "%";
+        $value_n = round($value_n, 2) . "%";
+      } else {
+        $k = (round($value_n) == round($value_n,2)) ? 0 : 2;
+        $value = number_format($value, 0, '.', "&nbsp;") . "&nbsp;" . $currency;
+        $value_n = number_format($value_n, $k, '.', "&nbsp;") . "&nbsp;" . $currency;
+      }
+    }
+
+    return Yii::$app->view->render('@app/views/parts/cashback/' . $params['view'], [
+        'store' => $store,
+        'value' => $value,
+        'value_new' => $value_n,
+        'has_up_to' => $has_up_to,
+        'text' => $text,
+        'is_persent'=>$is_persent,
+        'is_num'=>$is_num,
+    ]);
+    //ddd($store);
+  }
 
 }

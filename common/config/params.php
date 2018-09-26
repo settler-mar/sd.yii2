@@ -8,7 +8,33 @@ $params = [
       'store'=>[ //используется в карточке шопа
         'show_charity' => true,
         'view'  => 'shop'
-      ]
+      ],
+    'shop_catalog'=>[//Плитка магазина
+        'show_charity' => true,
+        'view'  => 'shop_catalog'
+    ],
+    'calck_cashback'=>[ //калькулятор кэшбэка
+        'show_charity' => false,
+        'view'  => 'calck_cashback',
+        'only_number' => true,
+    ],
+    'search_line'=>[ // используется для результатов поиска в выпадашке
+        'show_charity' => true,
+        'view'  => 'search_line'
+    ],
+    'product'=>[ // квадратик каталога продуктов
+        'show_charity' => true,
+        'view'  => 'product'
+    ],
+    'coupon'=>[ // квадратик купона
+        'show_charity' => true,
+        'view'  => 'coupons_title'
+    ],
+    'coupon_share'=>[ // квадратик купона тайтл для поделится
+        'show_charity' => true,
+        'replace_charity' => "10%",
+        'view'  => 'coupons_share'
+    ],
   ],
   'currencies' => [
       'RUB' => [

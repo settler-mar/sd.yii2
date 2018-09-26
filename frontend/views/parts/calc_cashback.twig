@@ -10,9 +10,8 @@
                    class="ctrl"
                 type="text"
                 value="100"
-                data-cashback-currency="{{ t('main', current_store.currency) }}"
-                data-cashback="{{ _cashback(current_store.displayed_cashback, '',0) }}"
-                data-cashback-promo="{{ _cashback(current_store.displayed_cashback, '',current_store.action_id) }}"
+                data-cashback-currency="{{ current_store.currency }}"
+                {{ cashback(current_store,'calck_cashback')|raw }}
             >
         <select class="ctrl">
           {% for item in curs %}
