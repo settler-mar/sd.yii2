@@ -1,0 +1,34 @@
+<div class="shop_header_big-item_ticket-wrap">
+  <div class="shop_header_big-item-head shop_header_big-item_ticket-up cashback">
+    <div class="promo">
+      {{ t('main', 'cashback')|raw }}
+
+      {% if has_up_to %}
+        {{ t('main', 'up_to') }}
+      {% endif %}
+      <br>
+      {% if value != value_new %}
+        <span class="old">{{ value |raw }}</span>
+        <span class="promo">{{ value_new |raw }}</span>
+      {% else %}
+        <span class="promo">{{ value |raw }}</span>
+      {% endif %}
+    </div>
+      {% if _is_empty(store.displayed_cashback) %}
+        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="Все тарифы и условия {{ store.name }}">
+          {{ _constant('shop_offline_text','title_dop_blog')|raw }}
+        </a>
+      {% elseif store.is_active==0 %}
+        <a class="shop_header_big-item-head-link" ref="confirm" href="#shop_not_active">
+          {{ _constant('shop_offline_text','title_dop')|raw }}
+        </a>
+      {% else %}
+        <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="Все тарифы и условия {{ store.name }}">
+            {{ t('main', 'read_all_tarifs_terms')|raw }}
+        </a>
+      {% endif %}
+  </div>
+  <div class="shop_header_big-item_ticket-down">
+    {{ text | raw }}
+  </div>
+</div>

@@ -141,6 +141,7 @@ class Stores extends \yii\db\ActiveRecord
       [['related'], 'compare', 'compareAttribute' => 'uid', 'operator' => '!='],
       [['related'], 'exist', 'targetAttribute' => 'uid'],
       ['!logoImage', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+      ['action_end_date', 'match', 'pattern' => '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/i','message'=>"Формат даты YYYY-MM-DD"],
       [['logoImage'], 'image',
         'minHeight' => 80,
         'minWidth' => 192,
@@ -349,6 +350,9 @@ class Stores extends \yii\db\ActiveRecord
       $this->currency="RUB";
     }
 
+    if($this->action_id>0 && !empty($this->action_end_date) && strtotime($this->action_end_date.' 23:59:59')<time()){
+      $this->action_id=0;
+    }
     $displayed_cashback = preg_replace('/[^0-9\.\,]/', '', $this->displayed_cashback);
     $displayed_cashback = str_replace(',','.',$displayed_cashback);
     $in_curency=(strpos($this->displayed_cashback, '%') === false);
@@ -1025,7 +1029,7 @@ class Stores extends \yii\db\ActiveRecord
   private static function selectAttributes($language = false)
   {
       $attributes = ['cws.uid','cws.name','cws.route', 'cws.alias', 'cws.url', 'cws.logo', 'cws.currency', 'cws.displayed_cashback',
-        'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
+        'cws.added'	, 'cws.visit', 'cws.hold_time', 'cws.is_active', 'cws.action_end_date', 'cws.active_cpa', 'cws.percent', 'cws.action_id',
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
         'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products','cws.test_link'];
       $translated = [];

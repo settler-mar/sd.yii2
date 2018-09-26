@@ -1030,4 +1030,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
   }
 
 
+  public function getIsBuyStatus(){
+    if(empty($this->new_loyalty_status_end) || $this->new_loyalty_status_end<time())return false;
+    $isBuy=Notifications::find()
+      ->where(['and',
+        'user_id='.$this->uid,
+        'type_id=4',
+        'STR_TO_DATE(JSON_EXTRACT(text,\'$.date\'), \'"%d.%m.%Y"\')>NOW()'
+      ])->one();
+    return $isBuy?true:false;
+  }
 }

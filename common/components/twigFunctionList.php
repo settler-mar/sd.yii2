@@ -236,6 +236,7 @@ $functionsList = [
     if(!$is_persent){
       $value=round($value);
     }
+    $text=Yii::t('main',"action_description_not",['url'=>Help::href("/loyalty")]);
 
     if(isset($params['show_charity']) && $params['show_charity'] && $value==0){
       $value = Help::svg("heart","heart-red shop-heart-red");
@@ -245,12 +246,27 @@ $functionsList = [
     }else {
       if ($store['action_id'] == 1) {
         $value_n = $value * 2;
+        $text="action_description_action";
+        $text.=!empty($store['action_end_date'])?'_to':'';
+        $text=Yii::t('main',$text,[
+            'date'=>date('d.m.Y',strtotime($store['action_end_date'])),
+        ]);
       }
       if (!Yii::$app->user->isGuest) {
         $user = Yii::$app->user->identity;
         if ($user->loyalty_status > 0) {
           $status_data = $user->getLoyalty_status_data();
           $value_n = $value_n * (1 + $status_data['bonus'] / 100);
+          $status_data['url']=Help::href("/loyalty");
+          $status_data['to']=date('d.m.Y',$user->new_loyalty_status_end);
+          if(empty($user->new_loyalty_status_end) || $user->new_loyalty_status_end<time()){
+            $text=Yii::t('main','action_description_loyality',$status_data);
+          }elseif ($user->getIsBuyStatus()){
+            $text=Yii::t('main','action_description_loyality',$status_data);
+          }else{
+            $status_data['url']=Help::href("/signup-bonus");
+            $text=Yii::t('main','action_description_loyality_reg',$status_data);
+          }
         }
       }
     }
@@ -260,8 +276,9 @@ $functionsList = [
         $value = round($value, 2)."%";
         $value_n = round($value_n, 2)."%";
       }else {
-        $value = number_format($value_n, 0, '.', "&nbsp;")."&nbsp;".$currency;
-        $value_n = number_format($value_n, 2, '.', "&nbsp;")."&nbsp;".$currency;
+        $k=(round($value_n)==$value_n)?0:2;
+        $value = number_format($value, 0, '.', "&nbsp;")."&nbsp;".$currency;
+        $value_n = number_format($value_n, $k, '.', "&nbsp;")."&nbsp;".$currency;
       }
     }
 
@@ -270,6 +287,7 @@ $functionsList = [
         'value'=>$value,
         'value_new'=>$value_n,
         'has_up_to'=>$has_up_to,
+      'text'=>$text,
     ]);
     //ddd($store);
   },
@@ -748,6 +766,21 @@ $functionsList = [
       $i++;
     }
     return trim($result);
+  },
+  'loyalty' => function($name, $code) {
+    $cur=Yii::$app->user->isGuest?Yii::$app->params['valuta']:Yii::$app->user->identity->currency;
+    $loyalty_status=(Yii::$app->params['dictionary']['loyalty_status']);
+    foreach ($loyalty_status as $data){
+      if($data['name']==$name) break;
+    }
+    if($data['name']!=$name) return '';
+    if(!isset($data[$code])) return '';
+    if(is_array($data[$code])){
+      if(!isset($data[$code][$cur]))return '';
+      return $data[$code][$cur].' '.Yii::t('main',$cur);
+    }else{
+      return $data[$code];
+    };
   },
 ];
 

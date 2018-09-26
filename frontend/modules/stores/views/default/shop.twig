@@ -14,19 +14,6 @@
 
         {{ cashback(current_store,'store') | raw}}
 
-        <div class="shop_header_big-share">
-          <div class="footer-share-text">{{ t('common', 'share')|raw }}:</div>
-          <div class="share42init accauntSoc accauntSoc_32"
-               data-url="{{ _href('/stores/'~current_store.route ~ (current_store.is_offline ? '-offline' : ''), 'https://secretdiscounter.ru')|raw }}"
-               data-title="{{ html.encode(this.title) }}"
-               data-description="{{ this.description }}"
-               data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
-               data-icon-type="svg"
-               data-icon-size=28
-          >
-          </div>
-        </div>
-
       </div>
 
       <div class="shop_header_big-item shop_header_big-item-logo_box">
@@ -84,15 +71,27 @@
           {{ _if(current_store.is_offline==0, t('main', 'online_shop'), t('main', 'offline_shop')) | raw }}
         </div>
         <div class="shop_header_big-item-body">
-          <div href="#howgetcashback" class="scroll_to">
-            {% if current_store.is_offline==0 %}
-              {{ t('main', 'store_instruction_online')|raw }}
-            {% else %}
-              {{ t('main', 'store_instruction_offline')|raw }}
-            {% endif %}
+
+          <div class="shop_header_big-share">
+            <div class="footer-share-text">{{ t('common', 'share')|raw }}:</div>
+            <div class="share42init accauntSoc accauntSoc_32"
+                 data-url="{{ _href('/stores/'~current_store.route ~ (current_store.is_offline ? '-offline' : ''), 'https://secretdiscounter.ru')|raw }}"
+                 data-title="{{ html.encode(this.title) }}"
+                 data-description="{{ this.description }}"
+                 data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
+                 data-icon-type="svg"
+                 data-icon-size=28
+            >
+            </div>
           </div>
 
-          <div class="accordion accordion-only_one shop_header_big-info_line">
+          <div class="shop-howgetcashback">
+            <a href="#howgetcashback" class="btn scroll_to">
+              {{ t('main', 'store_instruction')|raw }}
+            </a>
+          </div>
+
+          <div class="shop_header_big-info_line">
             <div class="align-center">
               {{ t('main', 'cashback_will_be_active_in_{timie}_day', {'time': current_store.hold_time})|raw }}
               <span class="avg">

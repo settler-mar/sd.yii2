@@ -22,6 +22,10 @@
         width: 90%;
       }
 
+      &-full {
+        width: 92.2%;
+      }
+
       &-bronze {
         background-color: $loyalty_status_color_bronze;
         .loyalty-items_item-title {
@@ -76,6 +80,20 @@
         }
         .loyalty-items_item-text {
           background-color: $loyalty_status_inner_color_platinum;
+        }
+      }
+      &-grean {
+        background-color: $loyalty_status_color_grean;
+        .loyalty-items_item-title {
+          color: $loyalty_status_header_color_grean;
+          svg {
+            color: $loyalty_status_header_color_grean;
+            stroke: $loyalty_status_header_color_grean;
+            fill: $loyalty_status_header_color_grean;
+          }
+        }
+        .loyalty-items_item-text {
+          background-color: $loyalty_status_inner_color_grean;
         }
       }
       &-title {
