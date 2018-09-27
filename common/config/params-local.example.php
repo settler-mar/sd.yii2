@@ -88,12 +88,6 @@ return [
     ],
     'pays_update_period' => 1,
     'b2b_address' => '127.0.0.1:8080',
-    'coupons_languages' => ['ru'],
-    'coupons_languages_arrays' => [
-        'ru' => ['ru', 'bg', 'sr', 'uk', 'mk'],//русский болгарский и т.д.
-        'en' => ['en', 'la'],//английский латинский
-    ],
-
     'outstand_cpa' => [
         'ozon' => [
             'parthnerId' => '',
