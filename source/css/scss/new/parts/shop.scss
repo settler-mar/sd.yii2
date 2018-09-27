@@ -291,7 +291,8 @@
 
     &-share{
       display: flex;
-      justify-content: space-evenly;
+      //justify-content: space-evenly;
+      justify-content: center;
       align-items: center;
       margin-bottom: 12px;
 
@@ -301,6 +302,7 @@
 
       .footer-share-text{
         //margin-top: 12px;
+        margin-right: 15px;
 
         @include media_min($tablets - 1) {
           color: $footer_link_color;
