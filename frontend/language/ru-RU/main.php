@@ -294,9 +294,9 @@ return [
     'GBP' => 'GBR',
     'INR' => 'INR',
     'TRY' => 'TRY',
-    'action_description_not'=>"<a href='{url}'>Как повысить кэшбэк?</a>",
+    'action_description_not'=>'<a target="_blank" href="{url}">Как повысить кэшбэк?</a>',
     'action_description_action'=>'Ставка кэшбэка увеличена магазином',
     'action_description_action_to'=>'Ставка кэшбэка увеличена магазином до {date}',
-  'action_description_loyality'=>'<a href=\'{url}\'>Ваш кэшбэк увеличен на {bonus}% в соответствии с нашей программой лояльности</a>',
-  'action_description_loyality_reg'=>'<a href=\'{url}\'>Ваш кэшбэк увеличен на {bonus}% в связи с бонусом за регистрацию</a>',
+    'action_description_loyality'=>'Ваш кэшбэк увеличен на {bonus}% в соответствии с нашей <a target="_blank" href="{url}">программой лояльности</a>',
+    'action_description_loyality_reg'=>'Ваш кэшбэк увеличен на {bonus}% в связи с <a target="_blank" href="{url}">бонусом за регистрацию</a>',
 ];
