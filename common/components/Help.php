@@ -250,9 +250,11 @@ class Help extends Component
         $value_n = $value * 2;
         $text = "action_description_action";
         $text .= !empty($store['action_end_date']) ? '_to' : '';
-        $text = Yii::t('main', $text, [
-            'date' => date('d.m.Y', strtotime($store['action_end_date'])),
-        ]);
+        if(isset($store['action_end_date'])){
+          $text = Yii::t('main', $text, [
+              'date' => date('d.m.Y', strtotime($store['action_end_date'])),
+          ]);
+        }
       }
       if (!Yii::$app->user->isGuest) {
         $user = Yii::$app->user->identity;
