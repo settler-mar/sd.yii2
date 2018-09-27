@@ -302,5 +302,5 @@ return [
   'action_description_action_to'=>'Cash back rate was increased by the store until {date}',
       'action_description_loyality'=>'<a href=\'{url}\'>Your cash back increased by {bonus}% due to our loyalty program</a>',
   'action_description_loyality_reg'=>'<a href=\'{url}\'>Your cashback increased to {bonus}% due to the registration bonus</a>',
-'more_promo_codes'=>'More promo codes {store}',
+'more_promo_codes'=>'More {store} coupons and promo codes',
     ];
