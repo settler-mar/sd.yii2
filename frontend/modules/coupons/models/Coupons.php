@@ -571,15 +571,8 @@ class Coupons extends \yii\db\ActiveRecord
    */
   protected static function languagesArray()
   {
-    if (empty(\Yii::$app->params['coupons_languages'])) {
-      return [];
-    }
-    $result = [];
-    foreach (\Yii::$app->params['coupons_languages'] as $language) {
-      if (!empty(Yii::$app->params['coupons_languages_arrays'][$language])) {
-        $result = array_merge($result, Yii::$app->params['coupons_languages_arrays'][$language]);
-      }
-    }
+    $result = empty(Yii::$app->params['coupons_languages_arrays'][Yii::$app->params['lang_code']]) ? [] :
+        Yii::$app->params['coupons_languages_arrays'][Yii::$app->params['lang_code']];
     return $result;
   }
 

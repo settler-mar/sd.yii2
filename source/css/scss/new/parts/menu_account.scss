@@ -58,6 +58,7 @@
           top: -1px;
           border: 1px solid $menu_border_color;
           z-index: 100;
+          min-width: 215px;
           >li>a:hover {
             color: $yellow_box_bg;
             background-color: $header_bg_second;

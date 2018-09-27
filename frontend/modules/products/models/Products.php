@@ -33,7 +33,7 @@ class Products extends \yii\db\ActiveRecord
   /**
      * @var string
      */
-    public static $defaultSort = 'buy_count';
+    public static $defaultSort = 'last_price';
   /**
    * Possible sorting options with titles and default value
    * @var array
