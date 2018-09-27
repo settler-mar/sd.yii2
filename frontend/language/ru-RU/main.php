@@ -299,4 +299,5 @@ return [
     'action_description_action_to'=>'Ставка кэшбэка увеличена магазином до {date}',
   'action_description_loyality'=>'<a href=\'{url}\'>Ваш кэшбэк увеличен на {bonus}% в соответствии с нашей программой лояльности</a>',
   'action_description_loyality_reg'=>'<a href=\'{url}\'>Ваш кэшбэк увеличен на {bonus}% в связи с бонусом за регистрацию</a>',
-];
+    'more_promo_codes'=>'Еще больше промокодов  {store}',
+    ];
