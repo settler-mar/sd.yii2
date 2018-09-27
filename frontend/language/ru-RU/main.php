@@ -223,7 +223,7 @@ return [
     'dobro_do_breadcrumbs' => 'Делаем добро',
     'search_result_empty' => 'По вашему запросу ничего не найдено.',
     'search_result' => 'Результаты поиска',
-    'search_result_with_{query}_' => 'Результаты поиска по запросу {query}',
+    'search_result_with_{query}_' => 'Результаты поиска по запросу "{query}"',
     'search_result_breadcrumbs' => 'Поиск',
     'make_sure_not_robot' => 'Докажите, что вы не робот',
     'recaptcha' => 'Проверочный код',
