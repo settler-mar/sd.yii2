@@ -271,7 +271,9 @@ class Meta extends \yii\db\ActiveRecord
       }
 
       //пробуем получить метатеги из параметров
-      $meta = Yii::$app->params['meta'];
+      //$meta = Yii::$app->params['meta'];
+      //чтобы действовали перводы, получаем конфиг здесь
+      $meta = require(Yii::getAlias('@app') . '/config/meta.php');
       if (isset($meta[$page])) {
         return $meta[$page];
       };

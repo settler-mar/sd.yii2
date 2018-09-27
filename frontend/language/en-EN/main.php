@@ -302,4 +302,5 @@ return [
     'action_description_action_to'=>'Cash back rate was increased by the store until {date}',
     'action_description_loyality'=>'Your cash back increased by {bonus}% due to our <a target="_blank" href="{url}">loyalty program</a>',
     'action_description_loyality_reg'=>'Your cashback increased to {bonus}% due to the <a target="_blank" href="{url}">registration bonus</a>',
+    'reviews_title' => 'Reviews – SecretDiscounter',
 ];

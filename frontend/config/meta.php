@@ -44,40 +44,43 @@ return [
     'title' => 'Советы по совершению покупок - SecretDiscounter'
   ],
   'reviews' => [
-    'title' => 'Отзывы о Кэшбэк-сервисе SecretDiscounter'
+    'title' => Yii::t('main', 'reviews_title'),//'Отзывы о Кэшбэк-сервисе SecretDiscounter'
   ],
   'account' => [
-    'title' => 'Личный кабинет - SecretDiscounter'
+    'title' =>  Yii::t('account', 'account_welcome_title'),//Личный кабинет - SecretDiscounter'
+  ],
+  'account/payments' => [
+    'title' => Yii::t('account', 'account_payments_title'),
+  ],
+  'account/bonuses' => [
+    'title' => Yii::t('account', 'account_bonuses_title'),
+  ],
+  'account/transitions' => [
+    'title' => Yii::t('account', 'account_transitions_title'),
+  ],
+  'account/withdraw/history' => [
+    'title' => Yii::t('account', 'account_withdraw_history_title'),
+  ],
+  'account/withdraw' => [
+    'title' => Yii::t('account', 'account_withdraw_title'),
+  ],
+  'account/charity' => [
+    'title' => Yii::t('account', 'account_charity_title'),
+  ],
+  'account/notification' => [
+    'title' => Yii::t('account', 'account_notifications_title'),
+  ],
+  'account/favorites' => [
+    'title' => Yii::t('account', 'account_favorites_title'),
+  ],
+  'account/settings' => [
+    'title' => Yii::t('account', 'account_settings_title'),
+  ],
+  'account/support' => [
+    'title' => Yii::t('account', 'account_support_title'),
   ],
   'affiliate' => [
     'title' => 'Принцип работы партнёрской программы - SecretDiscounter'
-  ],
-  'favorites' => [
-    'title' => 'Избранные магазины - SecretDiscounter'
-  ],
-  'notification' => [
-    'title' => 'Уведомления - SecretDiscounter'
-  ],
-  'payments' => [
-    'title' => 'История заказов - SecretDiscounter'
-  ],
-  'bonuses' => [
-    'title' => 'История бонусов - SecretDiscounter'
-  ],
-  'settings' => [
-    'title' => 'Настройка аккаунта - SecretDiscounter'
-  ],
-  'support' => [
-    'title' => 'Служба поддержки - SecretDiscounter'
-  ],
-  'transitions' => [
-    'title' => 'История переходов в магазины - SecretDiscounter'
-  ],
-  'withdraw' => [
-    'title' => 'Вывод денежных средств - SecretDiscounter'
-  ],
-  'withdraw-history' => [
-    'title' => 'История запросов на вывод денег - SecretDiscounter'
   ],
   'admin' => [
     'title' => 'Администраторская панель - SecretDiscounter'
