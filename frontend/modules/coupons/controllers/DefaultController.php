@@ -342,7 +342,7 @@ class DefaultController extends SdController
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort = $request->get('sort');
-    $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>'/coupons'];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>Help::href('/coupons')];
     $this->params['breadcrumbs'][] = ['label' => $store->name, 'url'=>Help::href('/coupons/'.$store->getRouteUrl())];
     $this->params['breadcrumbs'][] = [
         'label' => $coupon['name'],
