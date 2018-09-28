@@ -93,6 +93,14 @@
                                     <a href="/admin/stores?StoresSearch[shop_type]=hubrid">{{ stat.hubrid }}</a>
                                 </div>
                             </div>
+                            {% if actions_end %}
+                                <div class="line">
+                                    <div class="name wide">Закончилось время акции</div>
+                                    <div class="value">
+                                        <a href="/admin/stores?StoresSearch%5Baction_end%5D=1">{{ actions_end }}</a>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

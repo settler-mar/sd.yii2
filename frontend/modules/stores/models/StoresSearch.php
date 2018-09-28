@@ -19,6 +19,7 @@ class StoresSearch extends Stores
     public $shop_type;
     public $affiliate_id;
     public $status_update_range;
+    public $action_end;
     /**
      * @inheritdoc
      */
@@ -26,7 +27,7 @@ class StoresSearch extends Stores
     {
         return [
             [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity',
-                'cpa_id', 'affiliate_id'], 'integer'],
+                'cpa_id', 'affiliate_id', 'action_end'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions',
                 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email',
                 'active_cpa_type', 'status_update_range'], 'safe'],
@@ -167,6 +168,9 @@ class StoresSearch extends Stores
             $start_date=date('Y-m-d', strtotime($start_date));
             $end_date=date('Y-m-d', strtotime($end_date));
             $query->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
+        }
+        if (!empty($this->action_end)) {
+            $query->andFilterWhere(['<=', 'action_end_date', date('Y-m-d H:i:s', time())]);
         }
         return $dataProvider;
     }

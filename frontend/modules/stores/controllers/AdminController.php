@@ -116,6 +116,9 @@ class AdminController extends Controller
               ['not in', 'active_cpa', $cpaLinkId]
           ])->count(),
   ];
+    $actionsEnd = Stores::find()
+      ->where(['<=', 'action_end_date', date('Y-m-d H:i:s', time())])
+      ->count();
 
 
     $cpaTypes = ArrayHelper::map(Cpa::find()->select(['id', 'name'])->asArray()->orderBy('id')->all(), 'id', 'name');
@@ -173,6 +176,7 @@ class AdminController extends Controller
       'stat_cpa_active' => $statCpaActive,
       'cpa_types' => $cpaTypes,
       'data_ranger' => Help::DateRangePicker($searchModel,'status_update_range',['hideInput'=>false]),
+      'actions_end' => $actionsEnd,
     ]);
   }
 

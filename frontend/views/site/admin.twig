@@ -38,7 +38,6 @@
                 </div>
             </div>
         </div>
-        {% if notes.users_reviews or notes.users_withdraw or notes.users_charity or notes.b2b_users_requests %}
                 <div class="row">
                     <div class="col-md-12 stat-block-actions">
                         Ожидает действий администратора
@@ -53,8 +52,8 @@
                             </a>
                         {% endif %}
                     </div>
-                    {% if visits_watcheds > 0 or visits_cpa > 0 or visits_sources > 0 %}
-                        <div class="col-md-12 stat-block-actions">
+                    {% if visits_watcheds or visits_cpa or visits_sources %}
+                         <div class="col-md-12 stat-block-actions">
                             Переходы сегодня
                             {% for visit in visits_sources %}
                                 <a class="btn btn-primary" href="/admin/transitions{{ _getFilterAdd({'source':visit.source}, {}, 'TransitionsSearch')|raw }}">{{ _if(visit.source, 'Купоны', 'Магазины') }} ({{ visit.count}})</a>
@@ -67,7 +66,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    {% if stores_updated or stores_new %}
+                    {% if stores_updated or stores_new or stores_actions_end %}
                         <div class="col-md-12 stat-block-actions">
                             Шопы - изменение статусов сегодня
                             {% for updated in stores_updated %}
@@ -80,10 +79,12 @@
                             {% if stores_news %}
                                 <a class="btn btn-primary" href="/admin/stores?StoresSearch%5Badded%5D={{ _php_date('Y-m-d') }}+-+{{ _php_date('Y-m-d H:i:s') }}">Новые ({{ stores_news }})</a>
                             {% endif %}
+                            {% if stores_actions_end %}
+                                <a class="btn btn-primary" href="/admin/stores?StoresSearch%5Baction_end%5D=1">Закончилось время акции ({{ stores_actions_end }})</a>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
-        {% endif %}
 
         <div class="row stat-block-actions">
             <h4 style="margin-bottom: 0;">Курсы валют</h4>
