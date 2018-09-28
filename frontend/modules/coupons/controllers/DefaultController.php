@@ -351,7 +351,7 @@ class DefaultController extends SdController
     $contentData["coupons_categories"] = Coupons::getActiveCategoriesCoupons();
     $contentData["popular_stores"] = $this->popularStores();
     $contentData["total_v"] = Coupons::activeCount();
-    $contentData['store']=$store;
+    //$contentData['store']=$store;
     $contentData['coupon']=$coupon;
 
     $actionId=$store->route;

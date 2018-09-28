@@ -21,7 +21,7 @@
           {{h1|raw}}
         {% else %}
           <!--если нет, то -->
-          {{ store.name }}: {{coupon.name}}
+          {{ current_store.name }}: {{coupon.name}}
         {% endif%}
       </h1>
 
@@ -33,7 +33,7 @@
 
       <div class="coupons_mobile-relative">
         {% if stores_coupon|length > 0 %}
-          <h2 class="content-header">{{ t('main','more_promo_codes',{'store':store.name}) }}</h2>
+          <h2 class="content-header">{{ t('main','more_promo_codes',{'store':current_store.name}) }}</h2>
           <div  class="catalog-coupons margin">
             <div class="catalog_list catalog-coupons_list coupons-list margin-half narrow_off">
               {% for coupon in stores_coupon %}
@@ -67,12 +67,12 @@
         <div class="coupons_buttons align-center">
           {% if counts.expired > 0 %}
             <div class="coupons_buttons-top">
-                <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="{{ _href('/coupons/'~store.routeUrl~'/expired')|raw }}"><span>{{ t('main', 'coupons_show_all_expired')|raw }} ({{ counts.expired}})</span></a>
+                <a class="btn btn-transform btn-narrow coupons_buttons-margin" href="{{ _href('/coupons/'~current_store.routeUrl~'/expired')|raw }}"><span>{{ t('main', 'coupons_show_all_expired')|raw }} ({{ counts.expired}})</span></a>
             </div>
           {% endif %}
           <div class="coupons_buttons-bottom">
             {% if counts.actual > 0 %}
-              <a class="btn btn-mini btn-transform btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~store.routeUrl)|raw }}"><span>{{ t('main', 'coupons_show_all_for_shop')|raw }} ({{ total_v }})</span></a>
+              <a class="btn btn-mini btn-transform btn-round coupons_buttons-margin" href="{{ _href('/coupons/'~current_store.routeUrl)|raw }}"><span>{{ t('main', 'coupons_show_all_for_shop')|raw }} ({{ total_v }})</span></a>
             {% endif %}
 
             <a class="btn btn-mini btn-round coupons_buttons-margin" href="{{ _href('/coupons')|raw }}"><span>{{ t('main', 'coupons_show_all')|raw }} ({{ total_all_coupons }})</span></a>
