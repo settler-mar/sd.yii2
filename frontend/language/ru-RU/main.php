@@ -287,7 +287,7 @@ return [
     'Вс' => 'Вс',
     'buy' => "Купить",
     'RUB' => 'руб',
-    'USD' => '$',
+    'USD' => 'USD',
     'EUR' => 'EUR',
     'KZT' => 'KZT',
     'UAH' => 'грн',
@@ -302,4 +302,6 @@ return [
     'action_description_loyality_reg'=>'Ваш кэшбэк увеличен на {bonus}% в связи с <a target="_blank" href="{url}">бонусом за регистрацию</a>',
     'reviews_title' => 'Отзывы о Кэшбэк-сервисе SecretDiscounter',
     'more_promo_codes'=>'Еще больше промокодов  {store}',
+    'search_title' => "Поиск - SecretDiscounter",
+    'search_coupon_title' => "Поиск. Купоны - SecretDiscounter",
 ];

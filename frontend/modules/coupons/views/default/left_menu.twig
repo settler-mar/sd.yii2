@@ -16,7 +16,7 @@
                         {% if app.request.pathinfo == 'coupons/'~store.route %}
                             <span>{{ store.name }}</span>
                         {% else %}
-                            <a href="/coupons/{{ store.route }}">{{ store.name }}</a>
+                            <a href="{{ _href('/coupons/'~store.route)|raw }}">{{ store.name }}</a>
                         {% endif %}
                         {#<a href="/coupons/{{ store.route }}" {% if app.request.pathinfo == 'coupons/'~store.route %}class="active"{% endif %}>{{ store.name }}</a>#}
                     {% endfor %}
@@ -33,7 +33,7 @@
                     {% endfor %}
                 </div>
                 <div class="catalog-categories_popular-stores-links">
-                    <a href="/coupons">{{ t('main', 'coupons_left_menu_show_all')|raw }}</a>
+                    <a href="{{ _href('/coupons')|raw }}">{{ t('main', 'coupons_left_menu_show_all')|raw }}</a>
                 </div>
             </div>
         {% endif %}

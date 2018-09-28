@@ -23,7 +23,10 @@ return [
     'h1' => 'Лучшие скидочные купоны и промокоды',
   ],
   'search' => [
-    'title' => "Поиск - SecretDiscounter"
+    'title' => Yii::t('main', 'search_title'),//"Поиск - SecretDiscounter"
+  ],
+  'search/coupon' => [
+    'title' => Yii::t('main', 'search_coupon_title'),
   ],
   'faq' => [
     'title' => 'Ответы на часто задаваемые вопросы - SecretDiscounter'
