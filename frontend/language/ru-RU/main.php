@@ -301,4 +301,5 @@ return [
     'action_description_loyality'=>'Ваш кэшбэк увеличен на {bonus}% в соответствии с нашей <a target="_blank" href="{url}">программой лояльности</a>',
     'action_description_loyality_reg'=>'Ваш кэшбэк увеличен на {bonus}% в связи с <a target="_blank" href="{url}">бонусом за регистрацию</a>',
     'reviews_title' => 'Отзывы о Кэшбэк-сервисе SecretDiscounter',
+    'more_promo_codes'=>'Еще больше промокодов  {store}',
 ];

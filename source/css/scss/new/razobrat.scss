@@ -132,7 +132,9 @@ span.shop_header-title_description_extend {
 
 .catalog-categories-account_menu > ul > li > a > span,
 .catalog-categories-account_menu > ul > li > ul > li a {
-  padding: 0 10px; justify-content: left; width: 100%;}
+  padding: 0 10px; justify-content: left; width: 100%;
+  white-space: nowrap;
+}
 .catalog-categories ul > li > a {
   background-color: #fff;}
 .catalog-categories ul li a:hover {background: none !important; color:#999;}
