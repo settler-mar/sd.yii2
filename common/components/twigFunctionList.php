@@ -268,7 +268,7 @@ $functionsList = [
     }
     return trim($out);
   },
-//для шопов - благотворительность, если кэебэк не возвращается, то 10% в метатегах
+//для шопов - благотворительность, если кэебэк не возвращается, то 10% в метатегах и перевод "до "
   '_check_charity' => function ($cashback, $currency = '') {
     if (empty($cashback)) {
       return '10%';
@@ -277,11 +277,11 @@ $functionsList = [
     if (empty($value)) {
       return '10%';
     }
+    $result = strpos($cashback, 'до') !== false ? Yii::t('main', 'up_to') . ' ' : '';
+    $result .= $value;
+    $result .= strpos($cashback, '%') !== false ? '%' : ($currency ? ' ' . $currency : '');
 
-    if ((strpos($cashback, '%') === false)) {
-      return $cashback . ' ' . $currency;
-    }
-    return $cashback;
+    return $result;
   },
 //проверка, что значение null или 0 или цифровая часть 0 0.0
   '_is_empty' => function ($value) {
