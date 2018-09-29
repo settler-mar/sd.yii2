@@ -19,7 +19,7 @@
             <a class="shop_header_big-item-head-link modals_popup" data-original-html="store_tariffs_id" data-original-h="{{ t('main','tarifs_terms_store',{store:store.name}) }}">
                 {{ _constant('shop_offline_text','title_dop_blog')|raw }}
             </a>
-        {% elseif store.is_active==0 %}
+        {#{% elseif store.is_active==0 %}#}
             {#<a class="shop_header_big-item-head-link" ref="confirm" href="#shop_not_active">#}
                 {#{{ _constant('shop_offline_text','title_dop')|raw }}#}
             {#</a>#}
@@ -32,9 +32,9 @@
   <div class="shop_header_big-item_ticket-down">
       <div class="shop_header_big-item_ticket-down-text">
       {% if store.is_active==0 %}
-          <a class="shop_header_big-item-head-link" ref="confirm" href="#shop_not_active">
+          {#<a class="shop_header_big-item-head-link" ref="confirm" href="#shop_not_active">#}
             {{ _constant('shop_offline_text','title_dop')|raw }}
-          </a>
+          {#</a>#}
       {% else %}
             {{ text | raw }}
       {% endif %}
