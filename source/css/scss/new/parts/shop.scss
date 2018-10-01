@@ -135,6 +135,8 @@
       line-height: 20px;
       text-decoration: none;
       border-radius: 0 0 12px 12px;
+      padding-left: 0;
+      padding-right: 0;
 
       &_cashback{
         display: flex;
@@ -142,6 +144,10 @@
         margin-left: 3px;
         word-spacing: 1px;
         font-weight: bold;
+        font-size: 14px;
+        padding-left: 0;
+        padding-right: 0;
+
 
         &_old {
           display: flex;
