@@ -1,12 +1,7 @@
 <div id="transition-wrapper" class="transition">
     <div class="center-block">
         <div class="phrase">
-            <p>
-                {{ t('main', 'goto_to_{store}', {'store': store.name})|raw }}
-            </p>
-            <p class="phrase_cashback">
-                {{ t('main', 'goto_you_ll_get_{cashback}', {'cashback': _cashback(store.displayed_cashback, store.currency,store.action_id)})|raw }}
-            </p>
+            {{ cashback(store,'goto') | raw }}
             <div class="manual-shift">{{ t('main', 'push_to_<a id="transition-href" href="{link}">here</a>_if_not_redirected', {'link': link})|raw }}</div>
         </div>
         <div class="svg-container">

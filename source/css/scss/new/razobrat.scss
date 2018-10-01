@@ -224,3 +224,17 @@ b, strong {
   }
 
 }
+
+
+.sp-form .btn.sp-button{
+  background: #f7c714;
+  color: #000;
+  border: 2px solid #f7c714;
+
+  &:hover {
+    color: #121212;
+    background: #f3bf00;
+    border-color: #f7c714;
+    top: 0px;
+  }
+}

@@ -30,6 +30,11 @@ $params = [
         'show_charity' => true,
         'view'  => 'coupons_title'
     ],
+    'goto'=>[ // квадратик купона
+        'show_charity' => true,
+        'replace_charity' => "0",
+        'view'  => 'goto'
+    ],
     'coupon_share'=>[ // квадратик купона тайтл для поделится
         'show_charity' => true,
         'replace_charity' => "10%",
