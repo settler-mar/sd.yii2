@@ -3,6 +3,7 @@ namespace frontend\components;
 
 use Yii;
 use yii\web\UrlRuleInterface;
+use common\models\GeoIpCountry;
 
 class SdUrlLocalisation implements UrlRuleInterface{
   private $params;
@@ -10,6 +11,9 @@ class SdUrlLocalisation implements UrlRuleInterface{
   ///private $url_pref='/';
 
   public function parseRequest($manager, $request){
+
+    //$location = GeoIpCountry::byIp($request->userIP);
+
     $host=$request->headers['host'];
     $this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';
     Yii::$app->params['region']=$this->region;
@@ -26,6 +30,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
             Yii::$app->params['transform_language_list'][$lang_key]['regions'][$key] = $region;
         }
     }
+
 
     $lg=explode('/',$request->pathInfo)[0];
     $url=$request->url;

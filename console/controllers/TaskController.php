@@ -618,4 +618,27 @@ class TaskController extends Controller
         ->createCommand("UPDATE `cw_stores` SET `displayed_cashback` = '0' WHERE `uid` in(SELECT store_id FROM `cw_stores_to_categories` where category_id = 203);")
     ->query();
   }
+
+    /**
+     * Загрузка/обновление базы геолокации страны по IP
+     */
+  public function actionLoadGeoIpCountry()
+  {
+      Yii::$app->db->createCommand("TRUNCATE TABLE `geo_ip_country`")->execute();
+      $archive = file_get_contents('http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip');
+      file_put_contents(Yii::getAlias('@runtime') . '/GeoIPCountryCSV.zip', $archive);
+      $zip = new \ZipArchive();
+      $zip->open(Yii::getAlias('@runtime') . '/GeoIPCountryCSV.zip');
+      $zip->extractTo(Yii::getAlias('@runtime'));
+      $zip->close();
+      if (($csv = fopen(Yii::getAlias('@runtime'). "/GeoIPCountryWhois.csv", "r")) !== FALSE) {
+          while (($data = fgetcsv($csv, 1000, ",")) !== FALSE) {
+              $sql = "INSERT INTO `geo_ip_country` (`ip_from`,`ip_to`,`ip_from_int`,`ip_to_int`,`code`,`country`) ".
+                  " VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."','".$data[4]."','".str_replace("'", "\'", $data[5])."')";
+              Yii::$app->db->createCommand($sql)->execute();
+          }
+          fclose($csv);
+      }
+  }
+
 }
