@@ -170,7 +170,7 @@ class StoresSearch extends Stores
             $query->andFilterWhere(['between', 'added', $start_date.' 00:00:00', $end_date.' 23:59:59']);
         }
         if (!empty($this->action_end)) {
-            $query->andFilterWhere(['<=', 'action_end_date', date('Y-m-d H:i:s', time())]);
+            $query->andFilterWhere(['<=', 'action_end_date', date('Y-m-d H:i:s', time() + 3600 * 24 * 3)]);//подходит срок окончания
         }
         return $dataProvider;
     }
