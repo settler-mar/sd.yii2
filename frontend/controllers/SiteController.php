@@ -29,6 +29,7 @@ use frontend\modules\charity\models\Charity;
 use frontend\modules\b2b_users\models\B2bUsers;
 use yii\helpers\Url;
 use yii\web\HttpException;
+use common\components\Mailer;
 
 /**
  * Site controller
@@ -486,27 +487,30 @@ class SiteController extends SdController
           throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
           return false;
       }
-    $user=Users::findOne(['uid'=>8]);
-    $db_payment=Payments::findOne(['user_id'=>8]);
-    $store = Stores::top12(12);
-    $userSocial=UsersSocial::findOne(['user_id'=>8]);
-      Yii::$app
-          ->mailer
-          ->compose(
-//              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
-//              ['user' => $userSocial]
-//              ['html' => 'welcome-html', 'text' => 'welcome-text'],
-//              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
-              ['html' => 'status-html', 'text' => 'status-text'],
-              ['user' => Yii::$app->user->identity]
-          )
-          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('oxygenn@list.ru')
-          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
-          ->send();
-      return 'Отправлено тестовое письмо';
-
-
+    //$user=Users::findOne(['uid'=>8]);
+    //$db_payment=Payments::findOne(['user_id'=>8]);
+    //$store = Stores::top12(12);
+    //$userSocial=UsersSocial::findOne(['user_id'=>8]);
+//      Yii::$app
+//          ->mailer
+//          ->compose(
+////              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+////              ['user' => $userSocial]
+////              ['html' => 'welcome-html', 'text' => 'welcome-text'],
+////              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+//              ['html' => 'status-html', 'text' => 'status-text'],
+//              ['user' => Yii::$app->user->identity]
+//          )
+//          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+//          ->setTo('oxygenn@list.ru')
+//          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
+//          ->send();
+      $mailer = Mailer::send('oxygenn@list.ru', 'mail_welcome', ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]);
+      if ($mailer) {
+        return 'Отправлено тестовое письмо';
+      } else {
+        return 'Ошибка при отправке письма';
+      }
   }
 //
 //  protected function makeGotoLink($link, $params)
