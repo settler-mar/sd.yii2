@@ -301,6 +301,9 @@ $config = [
         'products' => [
             'class' => 'frontend\modules\products\Module',
         ],
+        'template' => [
+            'class' => 'frontend\modules\template\Module',
+        ],
     ],
     'params' => $params,
 
