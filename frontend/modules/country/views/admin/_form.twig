@@ -1,0 +1,24 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="country-to-language-form">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ html.encode(this.title) }}</h1>
+                <div class="template-form">
+                {% set form = active_form_begin() %}
+
+                    {{ form.field(model, 'country').dropDownList(countries, {'prompt':'Выберите страну'})|raw }}
+
+                    {{ form.field(model, 'region').dropDownList(model.regions, {'prompt':'Выберите регион'})|raw }}
+
+                    {{ form.field(model, 'language').dropDownList(model.languages, {'prompt':'Выберите язык'})|raw }}
+
+                <div class="form-group">
+                    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                </div>
+                {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

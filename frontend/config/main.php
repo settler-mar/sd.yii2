@@ -305,6 +305,9 @@ $config = [
         'template' => [
             'class' => 'frontend\modules\template\Module',
         ],
+        'country' => [
+            'class' => 'frontend\modules\country\Module',
+        ],
     ],
     'params' => $params,
 

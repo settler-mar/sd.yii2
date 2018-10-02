@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "geo_ip_country".
@@ -64,5 +65,24 @@ class GeoIpCountry extends \yii\db\ActiveRecord
             ->createCommand("SELECT `code`, `country` FROM `".self::tableName()."` WHERE `ip_to_int` >= INET_ATON('".$ip."') ORDER BY `ip_to_int` ASC LIMIT 1")
             //->createCommand("SELECT * FROM `".self::tableName()."` WHERE `ip_to_int` >= INET_ATON('".$ip."') ORDER BY `ip_to_int` ASC LIMIT 1")
             ->queryOne();
+    }
+
+    public static function countryList()
+    {
+        return ArrayHelper::map(
+            self::find()
+                ->select(['code', 'country'])
+                ->groupBy(['code', 'country'])
+                ->orderBy(['code' => SORT_ASC])
+                ->asArray()
+                ->all(),
+            'code',
+            'country'
+        );
+    }
+    public static function countryName($code)
+    {
+        $row = self::find()->select(['country'])->where(['code'=>$code])->asArray()->one();
+        return $row ? $row['country'] : '';
     }
 }

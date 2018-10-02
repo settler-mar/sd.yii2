@@ -1,0 +1,49 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Country To Languages' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="country-to-language-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                    <div class="col-sm-6">
+                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Country To Language' }}</a>
+                    </div>
+                    <div class="col-sm-6" id="check-ip">
+                        <form method="post" class="" style="display:flex;flex-direction: row;align-items:center">
+                                <label for="country-check-ip">IP</label>
+                                <input id="country-check-ip" value="{{ ip }}" class="form-control" style="width:50%;" type="text" name="ip" required>
+                                {#<div class="help-block"></div>#}
+                                <input class="btn btn-primary" type="submit" value="Проверить IP">
+                        </form>
+                        {% if country %}
+                            <div>{{ country }}</div>
+                        {% endif %}
+                    </div>
+                    {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                        'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+
+                            'id',
+                            {'attribute':'country', 'format':'raw', 'value': table_data.country_name},
+                            'region',
+                            'language',
+
+                            {'class': '\\yii\\grid\\ActionColumn'},
+                        ],
+                    })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
