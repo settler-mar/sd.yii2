@@ -175,6 +175,7 @@ $config = [
                 'search/coupon' => 'search/default/coupon',
                 'search/<action>' => '404',
                 'coupons/search' => '404',
+                'tpls' => 'template/admin/tpls',
 
                 '<action:(admin|offline)>' => 'site/<action>',
                 'affiliate-system' => 'site/affiliate',

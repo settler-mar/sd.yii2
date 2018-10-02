@@ -13,9 +13,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>{{ html.encode(this.title) }}</h1>
-                    <p>
-                        <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Promo' }}</a>
-                    </p>
                     {{ grid_view_widget({
                             'dataProvider': dataProvider,
                             'filterModel': searchModel,
@@ -28,7 +25,7 @@
                                 'data:ntext',
                                 'test_data:ntext',
 
-                                {'class': '\\yii\\grid\\ActionColumn','template' : '{update} {delete}'},
+                                {'class': '\\yii\\grid\\ActionColumn','template' : '{update}'},
                             ],
                         })
                     }}

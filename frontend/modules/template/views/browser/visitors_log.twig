@@ -1,0 +1,23 @@
+<div class="tile duble-width {{ color }}{% if  pause_start %} pause{% endif %}" type="{{ type }}" code="{{ id }}">
+  <a class="ajax view fg-white" role="modal-remote" href="/visits/view?id={{ id }}">
+    <div class="tile-content">
+      <div class="text-right padding-10 padding-off-top">
+        <h6 class="margin-off">{{ f_name }}</h6>
+        <h6 class="margin-off">{{ l_name }}</h6>
+        <h4 class="margin-off time">
+          {{ start_time }}
+          <span class="date">{{ visit_cnt }}</span>
+        </h4>
+        <p class="margin-off">{{ type_str }}</p>
+        <p class="margin-off">{{ user }}</p>
+      </div>
+    </div>
+    <div class="brand">
+      <div class="tile-label">
+        <h4 class="margin-off">
+          <span class="{{ icon }}"></span>
+        </h4>
+      </div>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,16 @@
+<td style="text-align: center; background:{{ background }};padding:{{ margin_v }}px {{ margin_h }}px {{ margin_v }}px {{ margin_h }}px">
+  <a style="
+      background:{{ button_background }};
+      color: {{ color }};
+      padding:{{ padding_v }}px {{ padding_h }}px {{ padding_v }}px {{ padding_h }}px;
+      font-size: {{ font_size }}px;
+      font-family: {{ font }};
+      border-radius: {{ border_r }}px;
+      text-align: center;
+      display: inline-block;
+      "
+    href="{{ href[language] | trim }}"
+  >
+    {{ text[language] | raw }}
+  </a>
+</td>

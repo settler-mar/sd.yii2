@@ -28,18 +28,6 @@ class m181002_074845_RBAC_template extends Migration
             'Шаблоны - редактирование',
             [$role]
         );
-
-        $this->createPermission(
-            'TemplateDelete',
-            'Шаблоны - удаление',
-            [$role]
-        );
-
-        $this->createPermission(
-            'TemplateCreate',
-            'Шаблоны - создание',
-            [$role]
-        );
     }
 
 

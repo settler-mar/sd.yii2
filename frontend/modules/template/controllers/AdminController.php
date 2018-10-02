@@ -8,6 +8,7 @@ use frontend\modules\template\models\TemplateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AdminController implements the CRUD actions for Template model.
@@ -57,38 +58,38 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
-        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-            return false;
-        }
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+//    public function actionView($id)
+//    {
+//        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
+//            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+//            return false;
+//        }
+//        return $this->render('view', [
+//            'model' => $this->findModel($id),
+//        ]);
+//    }
 
     /**
      * Creates a new Template model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateCreate')) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-            return false;
-        }
-        $model = new Template();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+//    public function actionCreate()
+//    {
+//        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateCreate')) {
+//            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+//            return false;
+//        }
+//        $model = new Template();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
 
     /**
      * Updates an existing Template model.
@@ -119,15 +120,37 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+//    public function actionDelete($id)
+//    {
+//        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateDelete')) {
+//            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+//            return false;
+//        }
+//        $this->findModel($id)->delete();
+//
+//        return $this->redirect(['index']);
+//    }
+
+    /**
+     * @return array
+     */
+    public function actionTpls()
     {
-        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateDelete')) {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $out=[];
+        $path= __DIR__ . '/../views/browser/';
+        $files=scandir($path);
+        foreach ($files as $key => $value) {
+            if (!in_array($value, [".",".."])) {
+                $name=str_replace('.twig', '', $value);
+                $out[$name]= file_get_contents($path.$value);
+            }
+        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $out;
     }
 
     /**

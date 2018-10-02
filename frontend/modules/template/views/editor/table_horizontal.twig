@@ -1,0 +1,11 @@
+{% if label=="display" %}
+<table class="table" width="100%">
+  <tr>
+    {% for item in items %}
+      {% if not (item in hidden) %}
+        <th>{{ t('editor_render',item) }}</th>
+      {% endif %}
+    {% endfor %}
+  </tr>
+ </table> 
+{% endif %}
