@@ -1,37 +1,37 @@
 //Редактор
 editor = function () {
-    var template = false;
-    init_template();
+  var template = false;
+  init_template();
 
-    function init_template() {
-        if (template) return;
-        template = (function () {
-            var ready = false;
-            var tpls = {};
+  function init_template() {
+    if (template) return;
+    template = (function () {
+      var ready = false;
+      var tpls = {};
 
-            $.get('/tpls', function (data) {
-                for (index in data) {
-                    tpls[index] = Twig.twig({
-                        data: data[index],
-                    });
-                }
-                ready=true;
-            }, 'json');
+      $.get('/admin/template/tpls', function (data) {
+        for (index in data) {
+          tpls[index] = Twig.twig({
+            data: data[index],
+          });
+        }
+        ready=true;
+      }, 'json');
 
-            function render(tpl, data) {
-                if (!tpls[tpl]) return '';
-                return tpls[tpl].render(data);
-            }
+      function render(tpl, data) {
+        if (!tpls[tpl]) return '';
+        return tpls[tpl].render(data);
+      }
 
-            function isReady(){
-                return ready;
-            }
-            return {
-                render: render,
-                ready: isReady
-            }
-        })();
-    }
+      function isReady(){
+        return ready;
+      }
+      return {
+        render: render,
+        ready: isReady
+      }
+    })();
+  }
 
   var editor_ctnr = 0;
 
@@ -95,6 +95,7 @@ editor = function () {
 
   $('.editor-content').on('click', 'a', function (e) {
     e.preventDefault();
+    e.preventDefault();
     e.stopPropagation();
     return false;
   });
@@ -140,14 +141,22 @@ editor = function () {
           CKEDITOR.instances[params[name].editor_id].setData(data[name][lg]);
           continue;
         }
+        var val = typeof (data[name])!="undefined"&&typeof (data[name][lg])!="undefined"?data[name][lg]:'';
         liveChange.bind({
           name: name,
-          value: data[name][lg],
+          value: val,
           el: el
         })();
       }
+    };
+
+    hasLanguage = $('#content-subject,#content-text').find('.hasLanguage');
+    for (var i = 0; i < hasLanguage.length; i++) {
+      var el = hasLanguage.eq(i);
+      var data = el.data('data');
+      var val = typeof (data[lg])!="undefined"?data[lg]:'';
+      el.val(val);
     }
-    ;
   });
 
   function getArrayKey(arr) {
@@ -356,7 +365,6 @@ editor = function () {
       data = Object.assign(data);
     }
     data.editor = true;
-    data.cafe_logo = cafe_logo;
     if (type == "table") {
       if (!table_list[sub_type]) {
         return false;
@@ -646,7 +654,17 @@ editor = function () {
   }
 
   function getData() {
-    return getDataLavel($('.editor-content'));
+    data= {
+      "data":getDataLavel($('.editor-content'))
+    };
+    els=$('#content-subject,#content-text').find('.hasLanguage');
+    for (var i = 0; i < els.length; i++) {
+      var el = els.eq(i);
+      var d = el.data('data');
+      data[el.attr('name')]=d;
+    }
+
+    return data;
   }
 
   function generateUl(ul, data){
@@ -670,12 +688,51 @@ editor = function () {
       data = JSON.parse(data);
     }
     var ul = $('.editor-content');
-    generateUl(ul,data);
+
+    if(typeof(data.data)!="undefined"){
+      generateUl(ul,data.data);
+    }
+    if(typeof(data.subject)!="undefined"){
+      $('#content-subject input').data('data',data.subject)
+    }
+    if(typeof(data.text)!="undefined"){
+      $('#content-text input').data('data',data.text)
+    }
+    $('[name=language]').change();
   }
+
+  function setInputData() {
+    var lg = $('[name=language]:checked').val();
+    var $this = $(this);
+    var data = $this.data('data');
+    data[lg] = $this.val();
+    $this.data('data', data)
+  }
+
+    var input = $('<input/>',{
+      'class':"hasLanguage",
+      'name':'subject'
+    })
+    .data('data',{})
+    .on('keyup',setInputData);
+  $('#content-subject')
+    .append('Тема письма')
+    .append(input);
+
+  var input = $('<textarea/>',{
+    'class':"hasLanguage",
+    'name':'text'
+  })
+    .data('data',{})
+    .on('keyup',setInputData);
+  $('#content-text')
+    .append(input);
 
   var tx=$('.w_editor');
   if(tx.length==1){
     tx.hide();
+
+    setData(JSON.parse(tx.val()));
 
     $('.editor-panel .btn-save').on('click',function(){
       $('.w_editor').val(JSON.stringify(getData()));

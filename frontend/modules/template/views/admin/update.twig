@@ -26,9 +26,22 @@
 
           <div class="row">
              <div class="col-md-8 wrap-editor-content">
-             <div class="col-md-12 editor-full" style="background-color:white;padding: 40px 0;">
-              <ul class="editor-content" style="width:600px;"></ul>
-            </div>
+               <ul class="nav nav-tabs">
+                <li class="active">
+                  <a data-toggle="tab" href="#content-html">HTML</a>
+                </li>
+                 <li>
+                   <a data-toggle="tab" href="#content-text">TEXT</a>
+                 </li>
+               </ul>
+               <div class="tab-content">
+                 <div class="col-md-12 editor-full tab-pane fade in active" id="content-html" style="padding: 40px 0;">
+                   <ul class="editor-content" style="width:600px;"></ul>
+                 </div>
+                 <div id="content-text" class="tab-pane fade">
+
+                 </div>
+               </div>
             </div>
             <div class="col-md-4 editor-panel">
               <div class="row">
@@ -59,14 +72,16 @@
                     <div class="col-md-12">
                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         {% for code,language in languageList %}
-                          <label class="btn btn-science-blue{{ _if(code|lower==user.lg|lower,' active') }}">
-                            <input type="radio" name="language" value="{{ code }}" autocomplete="off" {{ _if(code|lower==user.lg|lower,' checked') }}> {{ language }}
+                          <label class="btn btn-science-blue{{ _if(code|lower=='ru-ru',' active') }}">
+                            <input type="radio" name="language" value="{{ code }}" autocomplete="off" {{ _if(code|lower=='ru-ru',' checked') }}> {{ language }}
                           </label>
                         {% endfor %}
                       </div>
                     </div>
                   </div><br>
+                  <div id="content-subject">
 
+                  </div>
                   <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#editor-components">{{ t('main','Components') }}</a></li>
                     <li><a data-toggle="tab" href="#editor-vars">{{ t('main','Vars') }}</a></li>
@@ -78,14 +93,15 @@
                       <ul class="editor_components">
                         <li data-tag="button">{{ svg('/editor/button')|raw }}<span>{{ t('main','button') }}</span></li>
                         <li data-tag="driver">{{ svg('/editor/driver')|raw }}<span>{{ t('main','driver') }}</span></li>
-                        <li data-tag="logo">{{ svg('/editor/logo')|raw }}<span>{{ t('main','logo') }}</span></li>
                         <li data-tag="text">{{ svg('/editor/text')|raw }}<span>{{ t('main','text') }}</span></li>
                         {#
+                        <li data-tag="logo">{{ svg('/editor/logo')|raw }}<span>{{ t('main','logo') }}</span></li>
                         <li data-tag="table" data-sub-tag="score">{{ svg('/editor/score')|raw }}<span>{{ t('main','score') }}</span></li>
-                        #}
+
                         <li data-tag="table" data-sub-tag="visits">{{ svg('/editor/visits')|raw }}<span>{{ t('main','Visits') }}</span></li>
                         <li data-tag="table" data-sub-tag="cart">{{ svg('/editor/cart')|raw }}<span>{{ t('main','cart') }}</span></li>
                         <li data-tag="table" data-sub-tag="total">{{ svg('/editor/sum')|raw }}<span>{{ t('main','table_total') }}</span></li>
+                                              #}
                       </ul>
                     </div>
                     <div id="editor-row" class="tab-pane fade">
@@ -152,7 +168,6 @@
 
 
 <script>
-  cafe_logo="{{ cafe.logo }}";
   var align_list={
     'left':  "{{ t('main','Left') }}",
     'center':"{{ t('main','Center') }}",
@@ -385,62 +400,6 @@
         ]
       }
     ],
-    "logo": [
-      {
-        "name": "{{ t('main','Global') }}",
-        "items": [
-          {
-            'name': "align",
-            'title': "{{ t('main','Align') }}",
-            'type': "align",
-            'element': "div",
-            'param': "style.text-align",
-            'default': "center"
-          },
-          {
-            'name': "height",
-            'title': "{{ t('main','Height') }}",
-            'type': "number",
-            'element': "img",
-            'param': "style.height",
-            'default': "120",
-            'sufix': 'px'
-          },
-          {
-            'name': "background",
-            'title': "{{ t('main','Background') }}",
-            'type': "color",
-            'element': "this",
-            'param': "style.background",
-            'default': "#ffffff"
-          }
-        ]
-      },
-      {
-        'name': "{{ t('main','Padding') }}",
-        "items": [
-          {
-            'name': "padding_v",
-            'title': "{{ t('main','Vertical') }}",
-            'type': "number",
-            'element': "img",
-            'param': "style.margin-top|style.margin-bottom",
-            'default': "20",
-            'sufix': 'px'
-          },
-          {
-            'name': "padding_h",
-            'title': "{{ t('main','Horizontal') }}",
-            'type': "number",
-            'class': "",
-            'element': "img",
-            'param': "style.margin-left|style.margin-right",
-            'default': "40",
-            'sufix': 'px'
-          },
-        ]
-      }
-    ],
     "table": [
       {
         "name": "{{ t('main','Global') }}",
@@ -575,47 +534,6 @@
     ],
   };
 
-  var table_list = {
-    'total': {
-      type: "vertical",
-      hide:{
-        render: "total"
-      },
-      list: {
-        'cost':   "{{ t('main','cost') }}",
-        'vat':   "{{ t('main','vat') }}",
-        'vat_total':   "{{ t('main','Total vat') }}",
-        'sum':   "{{ t('main','sum') }}",
-      }
-    },
-    'cart': {
-      type: "horizontal",
-      list: {
-        'counter': "{{ t('main','#') }}",
-        'name':    "{{ t('main','item_name') }}",
-        'sum':     "{{ t('main','sum') }}",
-        'vat':     "{{ t('main','vat') }}",
-        'count':   "{{ t('main','count') }}",
-        'total':   "{{ t('main','total') }}"
-      }
-    },
-    'visits': {
-      type: "vertical",
-      list: {
-        'counter': "{{ t('main','#') }}",
-        'add_time':    "{{ t('main','add time') }}",
-        'finish_time':     "{{ t('main','finish time') }}",
-        'duration':     "{{ t('main','duration') }}",
-        'pause':     "{{ t('main','Pause duration') }}",
-        'cost':   "{{ t('main','cost') }}",
-        'vat':   "{{ t('main','vat') }}",
-        'vat_total':   "{{ t('main','Total vat') }}",
-        'guest_m':   "{{ t('main','guest man') }}",
-        'guest_chi':   "{{ t('main','guest children') }}",
-        'certificate':   "{{ t('main','certificate') }}",
-        'sum':   "{{ t('main','sum') }}",
-      }
-    },
-  };
+  var table_list = {};
 
 </script>

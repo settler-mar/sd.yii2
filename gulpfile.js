@@ -131,7 +131,8 @@ gulp.task('jsadmin', compileJs([
     paths.source.js+'/original/new/form.js',
     paths.source.js+'/original/new/multiple-select.js',
     paths.source.js+'/original/admin/jquery-ui.min.js',
-    paths.source.js+'/original/admin/editor.js'
+    paths.source.js+'/original/admin/editor.js',
+    paths.source.js+'/external/twig.min.js'
 
     //paths.source.js+'/original/admin/meta-form.js'
     ], paths.app.js + '/admin')
