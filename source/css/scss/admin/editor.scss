@@ -4,8 +4,15 @@
 
 .wrap-editor-content,.editor-content-row {
   display: flex;
+  flex-direction: row;
   align-content: center;
   justify-content: center;
+}
+.wrap-editor-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
 }
 .editor-content-row{margin: 0;padding: 0;display: inline-block;}
 
@@ -86,6 +93,19 @@
 
 .editor-content .li_wrap:hover:before, .editor-content .li_wrap.on_edit:before {
   display: block;
+}
+
+.editor-content-textarea {
+  width: 600px;
+  margin: 40px auto 0;
+  min-height: 400px;
+  outline: 1px dashed #ccc;
+  outline-offset: -1px;
+  border: none;
+}
+
+.editor-content-subject {
+  padding: 0 20px 10px;
 }
 
 .editor_components {

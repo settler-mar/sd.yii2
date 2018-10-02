@@ -710,7 +710,7 @@ editor = function () {
   }
 
     var input = $('<input/>',{
-      'class':"hasLanguage",
+      'class':"hasLanguage form-control",
       'name':'subject'
     })
     .data('data',{})
@@ -720,7 +720,7 @@ editor = function () {
     .append(input);
 
   var input = $('<textarea/>',{
-    'class':"hasLanguage",
+    'class':"hasLanguage editor-content-textarea",
     'name':'text'
   })
     .data('data',{})
