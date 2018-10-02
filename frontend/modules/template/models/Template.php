@@ -15,6 +15,7 @@ use Yii;
  */
 class Template extends \yii\db\ActiveRecord
 {
+    protected $_params;
     /**
      * @inheritdoc
      */
@@ -48,4 +49,14 @@ class Template extends \yii\db\ActiveRecord
             'test_data' => 'Test Data',
         ];
     }
+
+    public function getParams()
+    {
+        if (!$this->_params) {
+            //$file = $this->config_files[$this->type_id] . ".json";
+            //$this->_params = Yii::$app->helper->load_json($file);
+        }
+        return $this->_params;
+    }
+
 }

@@ -1,16 +1,626 @@
-{% set title = 'Update Template: ' ~ model.name %}
+{{ use('yii/bootstrap/ActiveForm') }}
+{{ use('yii/widgets/Pjax') }}
+{% set title = 'Редактировать template: ' ~ model.name %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
-{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+    {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
 {% endif %}
 {% set breadcrumbs = this.params.breadcrumbs %}
-{% set breadcrumbs = breadcrumbs|merge([{'label': 'Templates', 'url': path(['index'])}]) %}
+{% set breadcrumbs = breadcrumbs|merge([{'label': 'Promos', 'url': path(['index'])}]) %}
 {% set breadcrumbs = breadcrumbs|merge([{'label': model.name, 'url': path('view', {'id': model.id})}]) %}
 {% set breadcrumbs = breadcrumbs|merge(['Update']) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="template-update">
-        {{ include('_form.twig', {
-                'model': model,
-            })
-        }}
+  <div class="content-wrapper">
+    <section>
+          <h1>{{ html.encode(this.title) }}</h1>
+
+
+
+          {% set form = active_form_begin({}) %}
+
+
+            {{ form.field(model, 'data').textarea({
+              class:"w_editor hidden"
+            }).label(false) | raw }}
+
+          <div class="row">
+             <div class="col-md-8 wrap-editor-content">
+             <div class="col-md-12 editor-full" style="background-color:white;padding: 40px 0;">
+              <ul class="editor-content" style="width:600px;"></ul>
+            </div>
+            </div>
+            <div class="col-md-4 editor-panel">
+              <div class="row">
+                <div class="col-md-12" id="crud-datatable-pjax">
+                  {{ pjax_begin({'id':"pjaxButton"}) }}
+
+                    {{ html.button(t('app','Save'), {
+                      'class': 'btn btn-success btn-save',
+                    }) | raw }}
+
+
+                     {{ html.button(
+                        t('app', 'Send'),{
+                         'class': 'btn btn-warning modal_open ',
+                         "href":"send-on-email/"~model.id~'?db=1',
+                         'role':"modal-remote",
+                          "data":{
+                           "link":"send-on-email/"~model.id~'?db=1',
+                           "type":"send"
+                          }
+                        }) | raw
+                     }}
+
+                    {{ html.a(t('app', 'Is used'), "used/"~model.id, {
+                      'role' : 'modal-remote',
+                      'class': 'btn btn-info',
+                    }) | raw }}
+
+                  {{  pjax_end() }}
+                </div>
+
+                    <div class="col-md-12">{{ t('main','Language') }}</div>
+                    <div class="col-md-12">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        {% for code,language in languageList %}
+                          <label class="btn btn-science-blue{{ _if(code|lower==user.lg|lower,' active') }}">
+                            <input type="radio" name="language" value="{{ code }}" autocomplete="off" {{ _if(code|lower==user.lg|lower,' checked') }}> {{ language }}
+                          </label>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div><br>
+
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#editor-components">{{ t('main','Components') }}</a></li>
+                    <li><a data-toggle="tab" href="#editor-vars">{{ t('main','Vars') }}</a></li>
+                    <li><a data-toggle="tab" href="#editor-row">{{ t('main','Row') }}</a></li>
+                    <li class="hidden"><a data-toggle="tab" href="#editor-option">{{ t('main','Options') }}</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div id="editor-components" class="tab-pane fade in active">
+                      <ul class="editor_components">
+                        <li data-tag="button">{{ svg('/editor/button')|raw }}<span>{{ t('main','button') }}</span></li>
+                        <li data-tag="driver">{{ svg('/editor/driver')|raw }}<span>{{ t('main','driver') }}</span></li>
+                        <li data-tag="logo">{{ svg('/editor/logo')|raw }}<span>{{ t('main','logo') }}</span></li>
+                        <li data-tag="text">{{ svg('/editor/text')|raw }}<span>{{ t('main','text') }}</span></li>
+                        {#
+                        <li data-tag="table" data-sub-tag="score">{{ svg('/editor/score')|raw }}<span>{{ t('main','score') }}</span></li>
+                        #}
+                        <li data-tag="table" data-sub-tag="visits">{{ svg('/editor/visits')|raw }}<span>{{ t('main','Visits') }}</span></li>
+                        <li data-tag="table" data-sub-tag="cart">{{ svg('/editor/cart')|raw }}<span>{{ t('main','cart') }}</span></li>
+                        <li data-tag="table" data-sub-tag="total">{{ svg('/editor/sum')|raw }}<span>{{ t('main','table_total') }}</span></li>
+                      </ul>
+                    </div>
+                    <div id="editor-row" class="tab-pane fade">
+                      <ul class="editor_components">
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-6"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-6"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-8"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-8"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                        <li class="row blockbuilder-row-tool" data-tag="row">
+                          <div class="blockbuilder-column col-2"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-2"><div class="blockbuilder-column-content"></div></div>
+                          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div id="editor-option" class="tab-pane fade">
+
+                    </div>
+                    <div id="editor-vars" class="tab-pane fade">
+                      {{ t('main','List of available variables. To output, drag to a text box or type in any convenient location.') }}
+                      <div id="tokensList">
+                        {% for group in model.params.vars %}
+                          <h5>{{ t('main',group.name) }}</h5>
+                          <ul class="list-unstyled">
+                            {% for key,title in group.items %}
+                              <li>
+                                <span class="cke_token" draggable="true">{ {{ group.prefix }}{{ key }} }</span> - {{ t('main',title) }}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {{ active_form_end() }}
+
+    </section>
+  </div>
 </div>
+
+
+
+
+<script>
+  cafe_logo="{{ cafe.logo }}";
+  var align_list={
+    'left':  "{{ t('main','Left') }}",
+    'center':"{{ t('main','Center') }}",
+    'right': "{{ t('main','Right') }}"
+  };
+  var options_list = {
+    "button": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "text",
+            'title': "{{ t('main','Text') }}",
+            'type': "text",
+            'element': ".button",
+            'param': "innerHTML",
+            'default': "Button text",
+            'isLanguage': true
+          },
+          {
+            'name': "font",
+            'title': "{{ t('main','font') }}",
+            'type': "font",
+            'element': ".button",
+            'param': "style.font-family",
+            'default': "Arial"
+          },
+          {
+            'name': "href",
+            'title': "{{ t('main','href') }}",
+            'type': "text",
+            'element': ".button",
+            'param': "href",
+            'default': "",
+            'isLanguage': true
+          },
+          {
+            'name': "color",
+            'title': "{{ t('main','Color') }}",
+            'type': "color",
+            'element': ".button",
+            'param': "style.color",
+            'default': "#FFFFFF"
+          },
+          {
+            'name': "button_background",
+            'title': "{{ t('main','Button background') }}",
+            'type': "color",
+            'element': ".button",
+            'param': "style.background",
+            'default': "#006ac1"
+          },
+          {
+            'name': "font_size",
+            'title': "{{ t('main','Font size') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.font-size",
+            'default': "25",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.padding-left|style.padding-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      },
+      {
+        'name': "{{ t('main','Margin') }}",
+        "items": [
+          {
+            'name': "margin_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "10",
+            'sufix': 'px'
+          },
+          {
+            'name': "margin_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.margin-left|style.margin-right",
+            'default': "0",
+            'sufix': 'px'
+          },
+        ]
+      },
+      {
+        'name': "{{ t('main','Border') }}",
+        "items": [
+          {
+            'name': "border_r",
+            'title': "{{ t('main','Radius') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.border-radius",
+            'default': "12",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "driver": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "color",
+            'title': "{{ t('main','Color') }}",
+            'type': "color",
+            'element': "hr",
+            'param': "style.border-color",
+            'default': "#999999"
+          },
+          {
+            'name': "width",
+            'title': "{{ t('main','Width') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.border-width",
+            'default': "3",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.margin-left|style.margin-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "text": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "html",
+            'type': "ckeditor",
+            'default': "sample text",
+            'element': ".text_wrap textarea",
+            'isLanguage': true
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': ".text_wrap",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': ".text_wrap .cke_editable",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "0",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'element': ".text_wrap .cke_editable",
+            'param': "style.padding-left|style.padding-right",
+            'default': "5",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "logo": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('main','Align') }}",
+            'type': "align",
+            'element': "div",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "height",
+            'title': "{{ t('main','Height') }}",
+            'type': "number",
+            'element': "img",
+            'param': "style.height",
+            'default': "120",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': "img",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "img",
+            'param': "style.margin-left|style.margin-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "table": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('main','Align') }}",
+            'type': "align",
+            'element': "div",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "direction",
+            'title': "{{ t('main','Direction') }}",
+            'type': "select",
+            'element': ".sort_list",
+            'prefix':'sort_list-',
+            'param': "class",
+            'list':{
+              "vertical":"{{ t('main','Vertical') }}",
+              "horizontal":"{{ t('main','Horizontal') }}",
+            }
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Visual') }}",
+        "items": [
+          {
+            'name': "render",
+            'title': "{{ t('main','Render') }}",
+            'type': "select",
+            'list': {
+              "all": "{{ t('main','All') }}",
+              "table": "{{ t('main','table') }}",
+              "total": "{{ t('main','total') }}"
+            },
+            'default': "all",
+          },
+          {
+            'name': "label",
+            'title': "{{ t('main','Labels') }}",
+            'type': "select",
+            'list': {
+              "display": "{{ t('main','Display') }}",
+              "hide": "{{ t('main','Hide') }}"
+            },
+            'default': "display",
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': "ul",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "ul",
+            'param': "style.margin-left|style.margin-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "row": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('main','Align') }}",
+            'type': "align",
+            'element': "this",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': "this",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "this",
+            'param': "style.padding-left|style.padding-right",
+            'default': "10",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+  };
+
+  var table_list = {
+    'total': {
+      type: "vertical",
+      hide:{
+        render: "total"
+      },
+      list: {
+        'cost':   "{{ t('main','cost') }}",
+        'vat':   "{{ t('main','vat') }}",
+        'vat_total':   "{{ t('main','Total vat') }}",
+        'sum':   "{{ t('main','sum') }}",
+      }
+    },
+    'cart': {
+      type: "horizontal",
+      list: {
+        'counter': "{{ t('main','#') }}",
+        'name':    "{{ t('main','item_name') }}",
+        'sum':     "{{ t('main','sum') }}",
+        'vat':     "{{ t('main','vat') }}",
+        'count':   "{{ t('main','count') }}",
+        'total':   "{{ t('main','total') }}"
+      }
+    },
+    'visits': {
+      type: "vertical",
+      list: {
+        'counter': "{{ t('main','#') }}",
+        'add_time':    "{{ t('main','add time') }}",
+        'finish_time':     "{{ t('main','finish time') }}",
+        'duration':     "{{ t('main','duration') }}",
+        'pause':     "{{ t('main','Pause duration') }}",
+        'cost':   "{{ t('main','cost') }}",
+        'vat':   "{{ t('main','vat') }}",
+        'vat_total':   "{{ t('main','Total vat') }}",
+        'guest_m':   "{{ t('main','guest man') }}",
+        'guest_chi':   "{{ t('main','guest children') }}",
+        'certificate':   "{{ t('main','certificate') }}",
+        'sum':   "{{ t('main','sum') }}",
+      }
+    },
+  };
+
+</script>
