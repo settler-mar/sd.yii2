@@ -169,4 +169,13 @@ class AdminController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+  public function actionView($id)
+  {
+    /*if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateUpdate')) {
+      throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
+    }*/
+    $model = $this->findModel($id);
+    return $model->getTemplate();
+  }
 }
