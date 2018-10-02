@@ -505,12 +505,7 @@ class SiteController extends SdController
 //          ->setTo('oxygenn@list.ru')
 //          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
 //          ->send();
-      $mailer = Mailer::send('oxygenn@list.ru', 'mail_welcome', ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]);
-      if ($mailer) {
-        return 'Отправлено тестовое письмо';
-      } else {
-        return 'Ошибка при отправке письма';
-      }
+
   }
 //
 //  protected function makeGotoLink($link, $params)
