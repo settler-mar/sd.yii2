@@ -100,11 +100,12 @@
 
 .editor-content-textarea {
   width: 600px;
-  margin: 40px;
+  margin: 40px auto 0;
   min-height: 400px;
   outline: 1px dashed #ccc;
   outline-offset: -1px;
   border: none;
+  text-align: left;
 }
 
 .editor-content-subject {
@@ -166,6 +167,10 @@
 
 .editor-content .button {
   display: inline-block;
+}
+.editor-vars-list li {
+  list-style-type: none;
+  cursor: pointer;
 }
 
 .isLanguage span:after {

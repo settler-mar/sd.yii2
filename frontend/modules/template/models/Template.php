@@ -15,7 +15,7 @@ use Yii;
  */
 class Template extends \yii\db\ActiveRecord
 {
-  protected $_params;
+  protected $_params = [];
 
   public $subject;
   public $text;
@@ -57,9 +57,12 @@ class Template extends \yii\db\ActiveRecord
 
   public function getParams()
   {
-    if (!$this->_params) {
-      //$file = $this->config_files[$this->type_id] . ".json";
-      //$this->_params = Yii::$app->helper->load_json($file);
+    if (empty($this->_params)) {
+      $file = __DIR__ . '/../vars/'.$this->code . ".json";
+        if (file_exists($file)) {
+          $json = file_get_contents($file);
+          $this->_params = json_decode($json, true);
+        }
     }
     return $this->_params;
   }

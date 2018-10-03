@@ -156,6 +156,7 @@ editor = function () {
       var data = el.data('data');
       var val = typeof (data[lg])!="undefined"?data[lg]:'';
       el.val(val);
+      el.text(val);
     }
   });
 
@@ -699,20 +700,25 @@ editor = function () {
       $('#content-subject input').data('data',data.subject)
     }
     if(typeof(data.text)!="undefined"){
-      $('#content-text textarea').data('data',data.text)
+      $('#content-text .editor-content-textarea').data('data',data.text);
     }
     $('[name=language]').change();
   }
 
   function setInputData() {
     var lg = $('[name=language]:checked').val();
-    var $this = $(this);
-    var data = $this.data('data');
-    data[lg] = $this.val();
-    $this.data('data', data)
+    var value;
+    if (this.nodeName === "DIV") {
+      value = $(this).text();
+     } else {
+      value = $(this).val();
+    }
+    var data = $(this).data('data');
+    data[lg] = value;
+    $(this).data('data', data);
   }
 
-    var input = $('<input/>',{
+  var input = $('<input/>',{
       'class':"hasLanguage form-control",
       'name':'subject'
     })
@@ -722,10 +728,11 @@ editor = function () {
     .append('Тема письма')
     .append(input);
 
-  var input = $('<textarea/>',{
+  var input = $('<div/>',{
     'class':"hasLanguage editor-content-textarea",
+    'contenteditable':"true",
     'name':'text'
-  })
+    })
     .data('data',{})
     .on('keyup',setInputData);
   $('#content-text')

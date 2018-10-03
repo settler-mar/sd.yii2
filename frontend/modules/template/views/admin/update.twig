@@ -144,11 +144,12 @@
 
                     </div>
                     <div id="editor-vars" class="tab-pane fade">
-                      {{ t('main','List of available variables. To output, drag to a text box or type in any convenient location.') }}
+                      Список доступных переменных. Для включения в шаблон перетащите в текстовый блок или напечатайте в нужное место.
+                      {#{{ t('main','List of available variables. To output, drag to a text box or type in any convenient location.') }}#}
                       <div id="tokensList">
                         {% for group in model.params.vars %}
                           <h5>{{ t('main',group.name) }}</h5>
-                          <ul class="list-unstyled">
+                          <ul class="editor-vars-list">
                             {% for key,title in group.items %}
                               <li>
                                 <span class="cke_token" draggable="true">{ {{ group.prefix }}{{ key }} }</span> - {{ t('main',title) }}
@@ -581,7 +582,7 @@
           },
         ]
       }
-    ],
+    ]
   };
 
   var table_list = {};
