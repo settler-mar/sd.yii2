@@ -678,7 +678,7 @@ editor = function () {
   }
 
   function setData(data) {
-    console.log(data);
+
     if(!template.ready()){
       setTimeout(function(){
         editor.setData(this)
@@ -697,7 +697,7 @@ editor = function () {
       $('#content-subject input').data('data',data.subject)
     }
     if(typeof(data.text)!="undefined"){
-      $('#content-text input').data('data',data.text)
+      $('#content-text textarea').data('data',data.text)
     }
     $('[name=language]').change();
   }
