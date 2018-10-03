@@ -152,7 +152,8 @@ $config = [
               /*'users/<action>/<action>'=>'404',
               'users/<action>/<action>/<action>'=>'404',*/
 
-              //'el-finder/connector'=>'el-finder/connector',
+                'elfinder/connect'=>'elfinder/connect',
+                'elfinder/manager' => 'elfinder/manager',
               //'connector/el-finder/manager'=>'el-finder/connector/manager',
 
                 '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
@@ -349,7 +350,7 @@ $config = [
               'access' => ['read' => '*', 'write' => 'UserFilesAccess'] // * - для всех, иначе проверка доступа в даааном примере все могут видет а редактировать могут пользователи только с правами UserFilesAccess
               ]*/
             ],
-        ]
+        ],
     ],
 
   //для возврата с авторизации через соц. сети на предыдущую страницу

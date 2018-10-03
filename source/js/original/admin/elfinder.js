@@ -203,77 +203,77 @@ function testImgPrew() {
   })
 }
 
-// $(function () {
-//   $('body').on('click','button.file_select',function(e){
-//     var csrfParam = $('meta[name=csrf-param]').attr('content');
-//     var csrfToken = $('meta[name=csrf-token]').attr('content');
-//     var customData = {};
-//     customData[csrfParam] = csrfToken;
-//
-//     param = {
-//       startPathHash: "",
-//       customData: customData,
-//       useBrowserHistory: false,
-//       resizable: false,
-//       width: '100%',
-//       height: '100%',
-//       zIndex: 99999,
-//       url: "/elfinder/connect?filter=image",
-//       lang: app.language.split('-')[0].toLowerCase(),
-//       dialogContained: true,
-//       getFileCallback: function (file) {
-//         var $this = $(this);
-//         var for_el = $this.attr('for');
-//         var input = $('[name="'+for_el+'"]');
-//         var img = $('img[for="'+for_el+'"]');
-//         input.val(file.url);
-//         if (img.length > 0) {
-//           img.attr('src', file.url)
-//         }
-//         jQuery('button.ui-dialog-titlebar-close').click();
-//       }.bind(this)
-//     };
-//
-//     jQuery('<div \>').dialog({
-//       modal: true, width: "80%", title: app.i18n.insert_img, zIndex: 99999,
-//       create: function (event, ui) {
-//         jQuery(this).elfinder(param).elfinder('instance')
-//       }
-//     });
-//
-//     $('.ui-dialog').css({
-//       'z-index':999999,
-//       //'top':'10vh'
-//     })
-//   });
-// });
+$(function () {
+  $('body').on('click','button.file_select',function(e){
+    var csrfParam = $('meta[name=csrf-param]').attr('content');
+    var csrfToken = $('meta[name=csrf-token]').attr('content');
+    var customData = {};
+    customData[csrfParam] = csrfToken;
 
-// //Обновление часов на стартовой
-// function upd_clock() {
-//   if (!typeof(difference) == 'undefined') return;
-//   d = new Date()
-//   d.setTime(d.getTime() + difference);
-//   h = d.getHours();
-//
-//   if(app.time24Hour){
-//     pr="";
-//   }else{
-//     if (h > 11) {
-//       pr = ' PM'
-//     } else {
-//       pr = ' AM'
-//     }
-//     if (h == 0) h = 12;
-//     if (h > 12) h -= 12;
-//   };
-//
-//   i = d.getSeconds();
-//   /* i=(((i%2)==1)?' ':':')*/
-//   $('#clock h3')[0].innerHTML = h + '<span class=clock_razdel>:</span>' + first_null(d.getMinutes()) + pr
-//   $('#clock h5')[0].innerText = d.getDate() + ' ' + GetMonth(d.getMonth()) + ', ' + d.getFullYear()
-//
-//   $('.clock_razdel').css('opacity', (i % 2))
-// }
+    param = {
+      startPathHash: "",
+      customData: customData,
+      useBrowserHistory: false,
+      resizable: false,
+      width: '100%',
+      height: '100%',
+      zIndex: 99999,
+      url: "/elfinder/connect?filter=image",
+      lang: app.language.split('-')[0].toLowerCase(),
+      dialogContained: true,
+      getFileCallback: function (file) {
+        var $this = $(this);
+        var for_el = $this.attr('for');
+        var input = $('[name="'+for_el+'"]');
+        var img = $('img[for="'+for_el+'"]');
+        input.val(file.url);
+        if (img.length > 0) {
+          img.attr('src', file.url)
+        }
+        jQuery('button.ui-dialog-titlebar-close').click();
+      }.bind(this)
+    };
+
+    jQuery('<div \>').dialog({
+      modal: true, width: "80%", title: app.i18n.insert_img, zIndex: 99999,
+      create: function (event, ui) {
+        jQuery(this).elfinder(param).elfinder('instance')
+      }
+    });
+
+    $('.ui-dialog').css({
+      'z-index':999999,
+      //'top':'10vh'
+    })
+  });
+});
+
+//Обновление часов на стартовой
+function upd_clock() {
+  if (!typeof(difference) == 'undefined') return;
+  d = new Date()
+  d.setTime(d.getTime() + difference);
+  h = d.getHours();
+
+  if(app.time24Hour){
+    pr="";
+  }else{
+    if (h > 11) {
+      pr = ' PM'
+    } else {
+      pr = ' AM'
+    }
+    if (h == 0) h = 12;
+    if (h > 12) h -= 12;
+  };
+
+  i = d.getSeconds();
+  /* i=(((i%2)==1)?' ':':')*/
+  $('#clock h3')[0].innerHTML = h + '<span class=clock_razdel>:</span>' + first_null(d.getMinutes()) + pr
+  $('#clock h5')[0].innerText = d.getDate() + ' ' + GetMonth(d.getMonth()) + ', ' + d.getFullYear()
+
+  $('.clock_razdel').css('opacity', (i % 2))
+}
 
 function first_null(i) {
   if (i < 10) return '0' + i;
@@ -789,9 +789,9 @@ $(function () {
       "removePlugins": "elementspath",
       "extraPlugins": "sourcedialog,token,imageresizerowandcolumn",
       "resize_enabled": false,
-      //"filebrowserBrowseUrl": "/elfinder/manager",
-      //"filebrowserImageBrowseUrl": "/elfinder/manager?filter=image",
-      //"filebrowserFlashBrowseUrl": "/elfinder/manager?filter=flash",
+      "filebrowserBrowseUrl": "/elfinder/manager",
+      "filebrowserImageBrowseUrl": "/elfinder/manager?filter=image",
+      "filebrowserFlashBrowseUrl": "/elfinder/manager?filter=flash",
       "on": {
         "instanceReady": function (ev) {
           mihaildev.ckEditor.registerOnChange(container_id);
@@ -1017,184 +1017,184 @@ $(function () {
   customData[csrfParam] = csrfToken;
 
   // Setup upload tab in CKEditor dialog
-  // CKEDITOR.on('dialogDefinition', function (event) {
-  //   var editor = event.editor,
-  //       dialogDefinition = event.data.definition,
-  //       tabCount = dialogDefinition.contents.length,
-  //       browseButton, uploadButton, submitButton, inputId;
-  //
-  //   for (var i = 0; i < tabCount; i++) {
-  //     try {
-  //       browseButton = dialogDefinition.contents[i].get('browse');
-  //       uploadButton = dialogDefinition.contents[i].get('upload');
-  //       submitButton = dialogDefinition.contents[i].get('uploadButton');
-  //     } catch (e) {
-  //       browseButton = uploadButton = null;
-  //     }
-  //
-  //     if (browseButton !== null) {
-  //       browseButton.hidden = false;
-  //       browseButton.onClick = function (dialog, i) {
-  //         dialogName = CKEDITOR.dialog.getCurrent()._.name;
-  //         if (dialogName === 'image2') {
-  //           dialogName = 'image';
-  //         }
-  //         if (elfNode) {
-  //           if (elfDirHashMap[dialogName] && elfDirHashMap[dialogName] != elfInsrance.cwd().hash) {
-  //             elfInsrance.request({
-  //               data: {cmd: 'open', target: elfDirHashMap[dialogName]},
-  //               notify: {type: 'open', cnt: 1, hideCnt: true},
-  //               syncOnFail: true
-  //             });
-  //           }
-  //           elfNode.dialog('open');
-  //         }
-  //       }
-  //     }
-  //
-  //     if (uploadButton !== null && submitButton !== null) {
-  //       uploadButton.hidden = false;
-  //       submitButton.hidden = false;
-  //       uploadButton.onChange = function () {
-  //         inputId = this.domId;
-  //       }
-  //       // upload a file to elFinder connector
-  //       submitButton.onClick = function (e) {
-  //         dialogName = CKEDITOR.dialog.getCurrent()._.name;
-  //         if (dialogName === 'image2') {
-  //           dialogName = 'image';
-  //         }
-  //         var target = elfDirHashMap[dialogName] ? elfDirHashMap[dialogName] : elfDirHashMap['fb'],
-  //             name = $('#' + inputId),
-  //             input = name.find('iframe').contents().find('form').find('input:file'),
-  //             error = function (err) {
-  //               alert(elfInsrance.i18n(err).replace('<br>', '\n'));
-  //             };
-  //
-  //         if (input.val()) {
-  //           var fd = new FormData();
-  //           fd.append('cmd', 'upload');
-  //           fd.append('target', target);
-  //           fd.append('overwrite', 0); // Instruction to save alias when same name file exists
-  //           $.each(customData, function (key, val) {
-  //             fd.append(key, val);
-  //           });
-  //           fd.append('upload[]', input[0].files[0]);
-  //           $.ajax({
-  //             url: editor.config.filebrowserUploadUrl,
-  //             type: "POST",
-  //             data: fd,
-  //             processData: false,
-  //             contentType: false,
-  //             dataType: 'json'
-  //           })
-  //               .done(function (data) {
-  //                 if (data.added && data.added[0]) {
-  //                   elfInsrance.exec('reload');
-  //                   setDialogValue(data.added[0]);
-  //                 } else {
-  //                   error(data.error || data.warning || 'errUploadFile');
-  //                 }
-  //               })
-  //               .fail(function () {
-  //                 error('errUploadFile');
-  //               })
-  //               .always(function () {
-  //                 input.val('');
-  //               });
-  //         }
-  //         return false;
-  //       }
-  //     }
-  //   }
-  // });
+  CKEDITOR.on('dialogDefinition', function (event) {
+    var editor = event.editor,
+        dialogDefinition = event.data.definition,
+        tabCount = dialogDefinition.contents.length,
+        browseButton, uploadButton, submitButton, inputId;
 
-  // Create elFinder dialog for CKEditor
-  // CKEDITOR.on('instanceReady', function (e) {
-  //   elfNode = $('<div style="padding:0;">');
-  //   elfNode.dialog({
-  //     autoOpen: false,
-  //     modal: true,
-  //     width: '80%',
-  //     title: 'Server File Manager',
-  //     create: function (event, ui) {
-  //       var startPathHash = (elfDirHashMap[dialogName] && elfDirHashMap[dialogName]) ? elfDirHashMap[dialogName] : '';
-  //       // elFinder configure
-  //       elfInsrance = $(this).elfinder({
-  //         startPathHash: startPathHash,
-  //         useBrowserHistory: false,
-  //         resizable: false,
-  //         width: '100%',
-  //         url: elfUrl,
-  //         lang: app.language,
-  //         dialogContained: true,
-  //         getFileCallback: function (file, fm) {
-  //           setDialogValue(file, fm);
-  //           elfNode.dialog('close');
-  //         }
-  //       }).elfinder('instance');
-  //     },
-  //     open: function () {
-  //       elfNode.find('div.elfinder-toolbar input').blur();
-  //       setTimeout(function () {
-  //         elfInsrance.enable();
-  //       }, 100);
-  //     },
-  //     resizeStop: function () {
-  //       elfNode.trigger('resize');
-  //     }
-  //   }).parent().css({'zIndex': '11000'});
-  //
-  //   // CKEditor instance
-  //   var cke = e.editor;
-  //
-  //   // Setup the procedure when DnD image upload was completed
-  //   /*cke.widgets.registered.uploadimage.onUploaded = function (upload) {
-  //     var self = this;
-  //     setShowImgSize(upload.url, function (size) {
-  //       self.replaceWith('<img src="' + encodeURI(upload.url) + '" width="' + size.width + '" height="' + size.height + '"></img>');
-  //     });
-  //   }*/
-  //
-  //   // Setup the procedure when send DnD image upload data to elFinder's connector
-  //   cke.on('fileUploadRequest', function (e) {
-  //     var target = elfDirHashMap['image'] ? elfDirHashMap['image'] : elfDirHashMap['fb'],
-  //         fileLoader = e.data.fileLoader,
-  //         xhr = fileLoader.xhr,
-  //         formData = new FormData();
-  //     e.stop();
-  //     xhr.open('POST', fileLoader.uploadUrl, true);
-  //     formData.append('cmd', 'upload');
-  //     formData.append('target', target);
-  //     formData.append('upload[]', fileLoader.file, fileLoader.fileName);
-  //     xhr.send(formData);
-  //   }, null, null, 4);
-  //
-  //   // Setup the procedure when got DnD image upload response
-  //   cke.on('fileUploadResponse', function (e) {
-  //     var file;
-  //     e.stop();
-  //     var data = e.data,
-  //         res = JSON.parse(data.fileLoader.xhr.responseText);
-  //     if (!res.added || res.added.length < 1) {
-  //       data.message = 'Can not upload.';
-  //       e.cancel();
-  //     } else {
-  //       elfInsrance.exec('reload');
-  //       file = res.added[0];
-  //       if (file.url && file.url != '1') {
-  //         data.url = file.url;
-  //         try {
-  //           data.url = decodeURIComponent(data.url);
-  //         } catch (e) {
-  //         }
-  //       } else {
-  //         data.url = elfInsrance.options.url + ((elfInsrance.options.url.indexOf('?') === -1) ? '?' : '&') + 'cmd=file&target=' + file.hash;
-  //       }
-  //       data.url = elfInsrance.convAbsUrl(data.url);
-  //     }
-  //   });
-  // });
+    for (var i = 0; i < tabCount; i++) {
+      try {
+        browseButton = dialogDefinition.contents[i].get('browse');
+        uploadButton = dialogDefinition.contents[i].get('upload');
+        submitButton = dialogDefinition.contents[i].get('uploadButton');
+      } catch (e) {
+        browseButton = uploadButton = null;
+      }
+
+      if (browseButton !== null) {
+        browseButton.hidden = false;
+        browseButton.onClick = function (dialog, i) {
+          dialogName = CKEDITOR.dialog.getCurrent()._.name;
+          if (dialogName === 'image2') {
+            dialogName = 'image';
+          }
+          if (elfNode) {
+            if (elfDirHashMap[dialogName] && elfDirHashMap[dialogName] != elfInsrance.cwd().hash) {
+              elfInsrance.request({
+                data: {cmd: 'open', target: elfDirHashMap[dialogName]},
+                notify: {type: 'open', cnt: 1, hideCnt: true},
+                syncOnFail: true
+              });
+            }
+            elfNode.dialog('open');
+          }
+        }
+      }
+
+      if (uploadButton !== null && submitButton !== null) {
+        uploadButton.hidden = false;
+        submitButton.hidden = false;
+        uploadButton.onChange = function () {
+          inputId = this.domId;
+        }
+        // upload a file to elFinder connector
+        submitButton.onClick = function (e) {
+          dialogName = CKEDITOR.dialog.getCurrent()._.name;
+          if (dialogName === 'image2') {
+            dialogName = 'image';
+          }
+          var target = elfDirHashMap[dialogName] ? elfDirHashMap[dialogName] : elfDirHashMap['fb'],
+              name = $('#' + inputId),
+              input = name.find('iframe').contents().find('form').find('input:file'),
+              error = function (err) {
+                alert(elfInsrance.i18n(err).replace('<br>', '\n'));
+              };
+
+          if (input.val()) {
+            var fd = new FormData();
+            fd.append('cmd', 'upload');
+            fd.append('target', target);
+            fd.append('overwrite', 0); // Instruction to save alias when same name file exists
+            $.each(customData, function (key, val) {
+              fd.append(key, val);
+            });
+            fd.append('upload[]', input[0].files[0]);
+            $.ajax({
+              url: editor.config.filebrowserUploadUrl,
+              type: "POST",
+              data: fd,
+              processData: false,
+              contentType: false,
+              dataType: 'json'
+            })
+                .done(function (data) {
+                  if (data.added && data.added[0]) {
+                    elfInsrance.exec('reload');
+                    setDialogValue(data.added[0]);
+                  } else {
+                    error(data.error || data.warning || 'errUploadFile');
+                  }
+                })
+                .fail(function () {
+                  error('errUploadFile');
+                })
+                .always(function () {
+                  input.val('');
+                });
+          }
+          return false;
+        }
+      }
+    }
+  });
+
+  //Create elFinder dialog for CKEditor
+  CKEDITOR.on('instanceReady', function (e) {
+    elfNode = $('<div style="padding:0;">');
+    elfNode.dialog({
+      autoOpen: false,
+      modal: true,
+      width: '80%',
+      title: 'Server File Manager',
+      create: function (event, ui) {
+        var startPathHash = (elfDirHashMap[dialogName] && elfDirHashMap[dialogName]) ? elfDirHashMap[dialogName] : '';
+        // elFinder configure
+        elfInsrance = $(this).elfinder({
+          startPathHash: startPathHash,
+          useBrowserHistory: false,
+          resizable: false,
+          width: '100%',
+          url: elfUrl,
+          lang: app.language,
+          dialogContained: true,
+          getFileCallback: function (file, fm) {
+            setDialogValue(file, fm);
+            elfNode.dialog('close');
+          }
+        }).elfinder('instance');
+      },
+      open: function () {
+        elfNode.find('div.elfinder-toolbar input').blur();
+        setTimeout(function () {
+          elfInsrance.enable();
+        }, 100);
+      },
+      resizeStop: function () {
+        elfNode.trigger('resize');
+      }
+    }).parent().css({'zIndex': '11000'});
+
+    // CKEditor instance
+    var cke = e.editor;
+
+    // Setup the procedure when DnD image upload was completed
+    /*cke.widgets.registered.uploadimage.onUploaded = function (upload) {
+      var self = this;
+      setShowImgSize(upload.url, function (size) {
+        self.replaceWith('<img src="' + encodeURI(upload.url) + '" width="' + size.width + '" height="' + size.height + '"></img>');
+      });
+    }*/
+
+    // Setup the procedure when send DnD image upload data to elFinder's connector
+    cke.on('fileUploadRequest', function (e) {
+      var target = elfDirHashMap['image'] ? elfDirHashMap['image'] : elfDirHashMap['fb'],
+          fileLoader = e.data.fileLoader,
+          xhr = fileLoader.xhr,
+          formData = new FormData();
+      e.stop();
+      xhr.open('POST', fileLoader.uploadUrl, true);
+      formData.append('cmd', 'upload');
+      formData.append('target', target);
+      formData.append('upload[]', fileLoader.file, fileLoader.fileName);
+      xhr.send(formData);
+    }, null, null, 4);
+
+    // Setup the procedure when got DnD image upload response
+    cke.on('fileUploadResponse', function (e) {
+      var file;
+      e.stop();
+      var data = e.data,
+          res = JSON.parse(data.fileLoader.xhr.responseText);
+      if (!res.added || res.added.length < 1) {
+        data.message = 'Can not upload.';
+        e.cancel();
+      } else {
+        elfInsrance.exec('reload');
+        file = res.added[0];
+        if (file.url && file.url != '1') {
+          data.url = file.url;
+          try {
+            data.url = decodeURIComponent(data.url);
+          } catch (e) {
+          }
+        } else {
+          data.url = elfInsrance.options.url + ((elfInsrance.options.url.indexOf('?') === -1) ? '?' : '&') + 'cmd=file&target=' + file.hash;
+        }
+        data.url = elfInsrance.convAbsUrl(data.url);
+      }
+    });
+  });
 
   //
   // CKEditor - Twig Token support implementation - END

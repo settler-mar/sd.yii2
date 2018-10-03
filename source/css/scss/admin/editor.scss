@@ -94,10 +94,13 @@
 .editor-content .li_wrap:hover:before, .editor-content .li_wrap.on_edit:before {
   display: block;
 }
+.editor-content-text-wrap {
+  text-align: center;
+}
 
 .editor-content-textarea {
   width: 600px;
-  margin: 40px auto 0;
+  margin: 40px;
   min-height: 400px;
   outline: 1px dashed #ccc;
   outline-offset: -1px;

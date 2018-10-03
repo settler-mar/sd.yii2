@@ -12,7 +12,7 @@ editor = function () {
       $.get('/admin/template/tpls', function (data) {
         for (index in data) {
           tpls[index] = Twig.twig({
-            data: data[index],
+            data: data[index]
           });
         }
         ready=true;
@@ -83,14 +83,14 @@ editor = function () {
     connectToSortable: ".editor-content,.editor-content-row",
     helper: "clone",
     revert: "invalid",
-    opacity: 0.5,
+    opacity: 0.5
   }).disableSelection();
 
   $('#editor-row li').draggable({
     connectToSortable: ".editor-content",
     helper: "clone",
     revert: "invalid",
-    opacity: 0.5,
+    opacity: 0.5
   }).disableSelection();
 
   $('.editor-content').on('click', 'a', function (e) {
@@ -116,7 +116,7 @@ editor = function () {
     $inputs.val(color);
 
     $(".editor-full").css('background-color', color)
-  };
+  }
 
   $('[name=language]').on('change', function () {
     var in_edit = $('.editor-content .on_edit');
@@ -148,7 +148,7 @@ editor = function () {
           el: el
         })();
       }
-    };
+    }
 
     hasLanguage = $('#content-subject,#content-text').find('.hasLanguage');
     for (var i = 0; i < hasLanguage.length; i++) {
@@ -261,7 +261,7 @@ editor = function () {
           }
           data.items = list;
           wrap.data('data', data);
-        },
+        }
       }).disableSelection();
 
       var data = Object.assign(wrap.data('data'));
@@ -334,7 +334,7 @@ editor = function () {
       e.preventDefault();
       e.stopPropagation();
       var $this = $(this);
-      var el = $this.closest('.tag_wrap')
+      var el = $this.closest('.tag_wrap');
       if ($this.closest('.li_wrap').hasClass('on_edit')) {
         var ok = $('.editor-panel [href="#editor-option"]');
         if (ok.parent().hasClass('active')) {
@@ -342,9 +342,9 @@ editor = function () {
         }
         ok.parent().addClass('hidden');
       }
-      ;
 
-      var row = $this.closest('.editor-content-row')
+
+      var row = $this.closest('.editor-content-row');
       if (row.length > 0) {
         if (row.find('.tag_wrap').length == 1) {
           row.addClass("col-empty");
@@ -390,7 +390,7 @@ editor = function () {
       if (typeof(data.rows) == "undefined") {
         data.rows = sub_type;
       }
-    };
+    }
 
     if(sub_type){
       data['sub_type']=sub_type;
@@ -729,6 +729,7 @@ editor = function () {
     .data('data',{})
     .on('keyup',setInputData);
   $('#content-text')
+    .find('div')
     .append(input);
 
   var tx=$('.w_editor');
