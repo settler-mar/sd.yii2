@@ -88,12 +88,12 @@ $(function () {
 
   //работа бутстраповских радио кнопок
   //$('.btn-group-toggle')
-  $('body').on('change', '[type=radio]', function () {
-    var parent = $(this).parent();
-    if(!parent.hasClass('btn'))return true;
-    parent.closest('.btn-group').find('.active').removeClass('active');
-    parent.addClass('active');
-  });
+  // $('body').on('change', '[type=radio]', function () {
+  //   var parent = $(this).parent();
+  //   if(!parent.hasClass('btn'))return true;
+  //   parent.closest('.btn-group').find('.active').removeClass('active');
+  //   parent.addClass('active');
+  // });
 
   //фикс для календаря
   if(typeof moment !== 'undefined') {
