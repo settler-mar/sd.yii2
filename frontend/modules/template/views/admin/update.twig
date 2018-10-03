@@ -94,6 +94,7 @@
                         <li data-tag="button">{{ svg('/editor/button')|raw }}<span>{{ t('main','button') }}</span></li>
                         <li data-tag="driver">{{ svg('/editor/driver')|raw }}<span>{{ t('main','driver') }}</span></li>
                         <li data-tag="text">{{ svg('/editor/text')|raw }}<span>{{ t('main','text') }}</span></li>
+                        <li data-tag="twig_function" data-sub-tag="top_store">{{ svg('/shop2')|raw }}<span>{{ t('main','Top store') }}</span></li>
                         {#
                         <li data-tag="logo">{{ svg('/editor/logo')|raw }}<span>{{ t('main','logo') }}</span></li>
                         <li data-tag="table" data-sub-tag="score">{{ svg('/editor/score')|raw }}<span>{{ t('main','score') }}</span></li>
@@ -457,6 +458,53 @@
               "hide": "{{ t('main','Hide') }}"
             },
             'default': "display",
+          }
+        ]
+      },
+      {
+        'name': "{{ t('main','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('main','Vertical') }}",
+            'type': "number",
+            'element': "ul",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('main','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "ul",
+            'param': "style.margin-left|style.margin-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "twig_function": [
+      {
+        "name": "{{ t('main','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('main','Align') }}",
+            'type': "align",
+            'element': "div",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "background",
+            'title': "{{ t('main','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
           }
         ]
       },

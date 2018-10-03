@@ -390,9 +390,11 @@ editor = function () {
       if (typeof(data.rows) == "undefined") {
         data.rows = sub_type;
       }
-    }
-    ;
+    };
 
+    if(sub_type){
+      data['sub_type']=sub_type;
+    }
     var out = template.render('editor_' + type, data);
     if (!out) return false;
 
@@ -678,7 +680,7 @@ editor = function () {
   }
 
   function setData(data) {
-    console.log(data);
+    //console.log(data);
     if(!template.ready()){
       setTimeout(function(){
         editor.setData(this)
