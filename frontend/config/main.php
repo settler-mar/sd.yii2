@@ -32,6 +32,9 @@ $config = [
                         '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
                     ]
                 ],
+                'mihaildev\ckeditor\Assets' => [
+                    'sourcePath' => '@common/components/ckeditor/editor'
+                ],
                 'bootstrap.js' => false,
                 'bootstrap.css' => false,
             ]

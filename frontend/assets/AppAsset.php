@@ -41,6 +41,9 @@ class AppAsset extends AssetBundle
     } else {
       $path_script = $path_scripts['default'];
     }
+    if ($dir=='admin') {
+        $this->depends[] = 'mihaildev\ckeditor\Assets';
+    }
 
     $bp=Yii::$app->getBasePath().'/web/';
     //прописываем js

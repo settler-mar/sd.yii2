@@ -678,6 +678,7 @@ editor = function () {
   }
 
   function setData(data) {
+    console.log(data);
     if(!template.ready()){
       setTimeout(function(){
         editor.setData(this)
