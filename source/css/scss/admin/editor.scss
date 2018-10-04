@@ -116,6 +116,7 @@
   span{
     background: #f8f4bb;
     margin: 0 3px;
+    white-space: nowrap;
   }
 }
 
@@ -125,7 +126,13 @@
   span{
     background: #f8f4bb;
     margin: 0 3px;
+    white-space: nowrap;
   }
+}
+
+.cke_token{
+  background: #f8f4bb;
+  white-space: nowrap;
 }
 
 .editor-content-subject {

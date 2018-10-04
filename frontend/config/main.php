@@ -130,6 +130,7 @@ $config = [
                         'AppAsset' => 'frontend\assets\AppAsset',
                         'Fotorama' => '\kotchuprik\fotorama\Widget',
                         'TinyMce' => TinyMce::className(),
+                        'html' => '\yii\helpers\Html',
                     ]
                 ]
             ]

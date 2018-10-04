@@ -179,6 +179,8 @@ class AdminController extends Controller
                 'id' =>  $id,
                 'data' => $data,
                 'language' => $language,
+                'languageList' => Yii::$app->params['language_list'],
+              'email'=>Yii::$app->user->identity->email,
             ])
         ];
 

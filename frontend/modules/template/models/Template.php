@@ -73,7 +73,7 @@ class Template extends \yii\db\ActiveRecord
       $vars = [];
       foreach ($this->params['vars'] as $group) {
           foreach($group['items'] as $var => $title) {
-              $vars[strtolower($group['name'])][$var] = '"'.$title.'"';
+              $vars[strtolower($group['name'])][$var] = $title;
           }
       }
       return $vars;
@@ -206,14 +206,18 @@ class Template extends \yii\db\ActiveRecord
 
   public function sendMail($mail, $data = [], $language = false)
   {
+    $subject = str_replace('}', '}}', $this->subject);
+    $subject = str_replace('{', '{{', $subject);
     $subject = Yii::$app->TwigString->render(
-        $this->subject,
+        $subject,
         $data
     );
+
     $text = Yii::$app->TwigString->render(
         $this->text,
         $data
     );
+
     $html = Yii::$app->TwigString->render(
         $this->html,
         $data
