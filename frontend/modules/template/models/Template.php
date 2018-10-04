@@ -169,6 +169,7 @@ class Template extends \yii\db\ActiveRecord
     $site_url = isset(Yii::$app->params['site_url']) ?
         Yii::$app->params['site_url'] :
         (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"];
+
     preg_match_all('/(img|src)=("|\')[^"\'>]+/i', $content, $result);
     $result = preg_replace('/(img|src)("|\'|="|=\')(.*)/i', "$3", $result[0]);
     foreach ($result as $img_base) {
@@ -184,11 +185,19 @@ class Template extends \yii\db\ActiveRecord
 
   public function sendMail($mail, $data = [], $language = false)
   {
+    $subject = Yii::$app->TwigString->render(
+        $this->subject,
+        $data
+    );
+    $text = Yii::$app->TwigString->render(
+        $this->text,
+        $data
+    );
     return Yii::$app->mailer->compose()
         ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo($mail)
-        ->setSubject($this->subject)
-        ->setTextBody($this->text)
+        ->setSubject($subject)
+        ->setTextBody($text)
         ->setHtmlBody($this->renderTemplateLevel($data, $language))
         ->send();
   }
