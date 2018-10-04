@@ -697,7 +697,7 @@ editor = function () {
       generateUl(ul,data.data);
     }
     if(typeof(data.subject)!="undefined"){
-      $('#content-subject input').data('data',data.subject)
+      $('#content-subject .editor-content-input').data('data',data.subject)
     }
     if(typeof(data.text)!="undefined"){
       $('#content-text .editor-content-textarea').data('data',data.text);
