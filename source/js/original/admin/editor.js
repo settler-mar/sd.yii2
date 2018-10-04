@@ -156,7 +156,7 @@ editor = function () {
       var data = el.data('data');
       var val = typeof (data[lg])!="undefined"?data[lg]:'';
       el.val(val);
-      el.text(val);
+      el.html(test_editor(val).split("\n").join("<br>\n"));
     }
   });
 
@@ -709,7 +709,7 @@ editor = function () {
     var lg = $('[name=language]:checked').val();
     var value;
     if (this.nodeName === "DIV") {
-      value = $(this).text();
+      value = html_to_text($(this).html());
      } else {
       value = $(this).val();
     }
@@ -718,11 +718,53 @@ editor = function () {
     $(this).data('data', data);
   }
 
-  var input = $('<input/>',{
-      'class':"hasLanguage form-control",
+  function test_editor_e(e){
+    el=this;
+    var str =  test_editor(el.innerHTML, el.classList.contains("is_string"));
+    if(el.innerHTML != str){
+      el.innerHTML=str;
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  function test_editor(str,is_line){
+    //str=str.replace(/^<p>/g,'').replace(/<\/p>$/g,'');
+    var twig = /\{\/?([a-z0-9\ ]*)\}/gi;
+    str=str.replace(twig, function ($0, $1) {
+      return "<span contentEditable = false>{ <span>"+$1.trim()+"</span> }</span>";
+    });
+
+    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+    str = str.replace(tags, function ($0, $1) {
+      if ("<span>".indexOf('<' + $1.toLowerCase() + '>') > -1) return $0;
+      if (!is_line && "<div><p><br>".indexOf('<' + $1.toLowerCase() + '>') > -1) return $0;
+      return "";
+    });
+    return str;
+    //return "<p>"+str+"</p>"
+  }
+
+  function html_to_text(str){
+    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+    str = str.replace(tags, function ($0, $1) {
+      if ("<div><p><br>".indexOf('<' + $1.toLowerCase() + '>') > -1) return "\n";
+      return "";
+    });
+    return str;
+  }
+
+  var input = $('<div/>',{
+      'class':"hasLanguage editor-content-input form-control is_string",
+      'contenteditable':"true",
       'name':'subject'
     })
     .data('data',{})
+    .on('input',test_editor_e)
     .on('keyup',setInputData);
   $('#content-subject')
     .append('Тема письма')
@@ -734,6 +776,7 @@ editor = function () {
     'name':'text'
     })
     .data('data',{})
+    .on('input',test_editor_e)
     .on('keyup',setInputData);
   $('#content-text')
     .find('div')
@@ -756,4 +799,4 @@ editor = function () {
     setData: setData,
     sort_params: sort_params
   }
-}();
+}()

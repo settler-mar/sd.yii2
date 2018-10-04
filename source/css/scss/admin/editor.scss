@@ -98,6 +98,10 @@
   text-align: center;
 }
 
+.cke_widget_wrapper{
+  background: #f8f4bb;;
+}
+
 .editor-content-textarea {
   width: 600px;
   margin: 40px auto 0;
@@ -106,6 +110,20 @@
   outline-offset: -1px;
   border: none;
   text-align: left;
+  padding: 10px 5px;
+  line-height: 1.5em;
+
+  span{
+    background: #f8f4bb;
+    margin: 0 3px;
+  }
+}
+
+.editor-content-input{
+  span{
+    background: #f8f4bb;
+    margin: 0 3px;
+  }
 }
 
 .editor-content-subject {
