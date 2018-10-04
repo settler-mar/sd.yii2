@@ -48,26 +48,28 @@
             <div class="col-md-4 editor-panel">
               <div class="row">
                 <div class="col-md-12" id="crud-datatable-pjax">
-                  {{ pjax_begin({'id':"pjaxButton"}) }}
+                  {#{{ pjax_begin({'id':"pjaxButton"}) }}#}
 
-                    {{ html.button(t('app','Save'), {
-                      'class': 'btn btn-success btn-save',
-                    }) | raw }}
+                    {#{{ html.button(t('app','Save'), {#}
+                      {#'class': 'btn btn-success btn-save',#}
+                    {#}) | raw }}#}
 
 
-                     {{ html.button(
-                        t('app', 'Send'),{
-                         'class': 'btn btn-warning modal_open ',
-                         "href":"send-on-email/"~model.id~'?db=1',
-                         'role':"modal-remote",
-                          "data":{
-                           "link":"send-on-email/"~model.id~'?db=1',
-                           "type":"send"
-                          }
-                        }) | raw
-                     }}
+                     {#{{ html.button(#}
+                        {#t('app', 'Send'),{#}
+                         {#'class': 'btn btn-warning modal_open ',#}
+                         {#"href":"send-on-email/"~model.id~'?db=1',#}
+                         {#'role':"modal-remote",#}
+                          {#"data":{#}
+                           {#"link":"send-on-email/"~model.id~'?db=1',#}
+                           {#"type":"send"#}
+                          {#}#}
+                        {#}) | raw#}
+                     {#}}#}
 
-                  {{  pjax_end() }}
+                  {#{{  pjax_end() }}#}
+                  <button type="button" class="btn btn-success btn-save">Сохранить</button>
+                  <button type="button" class="btn btn-warning btn-send">Отправить</button>
                 </div>
 
                     <div class="col-md-12">{{ t('main','Language') }}</div>

@@ -169,7 +169,7 @@ function ajaxForm(els) {
       postData.returnUrl=location.href;
     }*/
 
-    if(data.url.indexOf(lang["href_prefix"])==-1){
+    if(typeof lang != "undefined" && data.url.indexOf(lang["href_prefix"])==-1){
       data.url="/"+lang["href_prefix"]+data.url;
       data.url=data.url.replace('//','/').replace('//','/');
     }

@@ -1,0 +1,29 @@
+<div class="template-send popup-content">
+  {% set form = active_form_begin({
+    'id' : 'send-form',
+    'action' : 'admin/template/send',
+    'layout' : 'horizontal',
+    'fieldConfig':{
+      'horizontalCssClasses':{
+        'wrapper':'form-input-group',
+      }
+    },
+    'options' : {
+      'class' : 'template-send-form',
+      'role' : 'form'
+    },
+  }) %}
+    <input type="hidden" name="id" value="{{ id }}">
+    <input type="hidden" name="language" value="{{ language }}">
+    <input type="hidden" name="data" value="{{ data }}">
+    <div class="form-group">
+        <label for="template-send-email">Email</label>
+        <input class="form-control" type="email" id="template-send-email" name="email" required>
+        <div class="help-block"></div>
+    </div>
+
+
+  <button type="submit"
+          class="btn block_margin-auto btn-min_width240 btn-margin_top">Отправить</button>
+  {{ active_form_end() }}
+</div>

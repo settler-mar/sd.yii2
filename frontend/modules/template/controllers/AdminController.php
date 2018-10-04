@@ -154,6 +154,70 @@ class AdminController extends Controller
         return $out;
     }
 
+    public function actionPreview()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new yii\web\NotFoundHttpException();
+        }
+        $id = explode(':', $request->post('action'));
+        $id = isset($id[1]) ? $id[1] : 0;
+//        Yii::$app->session->set('tpl_' . $id, [
+//            'data' => $request->post('data'),
+//            'language' => $request->post('language')
+//        ]);
+        $data = $request->post('data');
+        $language = $request->post('language');
+
+        $data = [
+            'title' => 'Отправить на email',
+            'html' => $this->renderAjax('send', [
+                'id' =>  $id,
+                'data' => $data,
+                'language' => $language,
+            ])
+        ];
+
+
+        return json_encode($data);
+    }
+
+    public function actionSend()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new yii\web\NotFoundHttpException();
+        }
+        $id = $request->post('id');
+        //$tpl = Yii::$app->session->get('tpl_' . $id);
+        $data = $request->post('data');
+        $language = $request->post('language');
+        $email = $request->post('email');
+
+        $model = $this->findModel($id);
+        $model->data = $data;
+        $model->getTemplate($language);
+
+        if ($model->sendMail($email, $model->varsSamples, $language)) {
+            $message = 'Письмо успешно отправлено';
+        } else {
+             $message = 'Ошибка при отправке письма';
+        }
+        $data = [
+            'title' => 'Отправка email',
+            'html' => '<div>'.$message.'</div>',
+        ];
+        return json_encode($data);
+    }
+
     /**
      * Finds the Template model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

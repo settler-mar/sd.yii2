@@ -794,9 +794,32 @@ editor = function () {
     });
   }
 
+  $('.editor-panel .btn-send').on('click', function(){
+      var data = {
+          'action': $('.w_editor').closest('form').attr('action'),
+          'language': $('[name=language]:checked').val(),
+          'data': JSON.stringify(getData()),
+          '_csrf-frontend': $('.w_editor').closest('form').find('[name=_csrf-frontend]').val()
+      };
+      $.post('/admin/template/preview?db=1', data, function (data) {
+
+          var data_msg = {
+              buttonYes: false,
+              notyfy_class: 'send-email',
+              question: data.html
+          };
+
+          if (data.title) {
+              data_msg['title']=data.title;
+          }
+          notification.alert(data_msg);
+          ajaxForm($('.notify_box .notify_content'));
+      }, 'json');
+  });
+
   return {
     getData: getData,
     setData: setData,
     sort_params: sort_params
   }
-}()
+}();

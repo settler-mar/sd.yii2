@@ -19,6 +19,7 @@ class Template extends \yii\db\ActiveRecord
 
   public $subject;
   public $text;
+  public $html;
   public $tpl_data;
 
   /**
@@ -67,6 +68,17 @@ class Template extends \yii\db\ActiveRecord
     return $this->_params;
   }
 
+  public function getVarsSamples()
+  {
+      $vars = [];
+      foreach ($this->params['vars'] as $group) {
+          foreach($group['items'] as $var => $title) {
+              $vars[strtolower($group['name'])][$var] = '"'.$title.'"';
+          }
+      }
+      return $vars;
+  }
+
   public function getTemplate($language = false)
   {
     if (!$language) {
@@ -80,7 +92,15 @@ class Template extends \yii\db\ActiveRecord
     }
 
     $this->subject = isset($content['subject'][$language]) ? $content['subject'][$language] : "";
-    $this->text = isset($content['text'][$language]) ? $content['text'][$language] : "";
+    $text = isset($content['text'][$language]) ? $content['text'][$language] : "";
+    $text = str_replace('}', '}}', $text);
+    $text = str_replace('{', '{{', $text);
+    $text = str_replace('\{{', '{', $text);
+    $text = str_replace('\}}', '}', $text);
+    $text = str_replace('{{\%', '{%', $text);
+    $text = str_replace('%\}}', '%}', $text);
+    $this->text = $text;
+
     $content = $content['data'];
 
     $this->tpl_data = [
@@ -104,6 +124,7 @@ class Template extends \yii\db\ActiveRecord
     $content = str_replace('\}}', '}', $content);
     $content = str_replace('{{\%', '{%', $content);
     $content = str_replace('%\}}', '%}', $content);
+    $this->html = $content;
     // load our document into a DOM object
     /*$dom = new \DOMDocument();
     // we want nice output
@@ -193,12 +214,16 @@ class Template extends \yii\db\ActiveRecord
         $this->text,
         $data
     );
+    $html = Yii::$app->TwigString->render(
+        $this->html,
+        $data
+    );
     return Yii::$app->mailer->compose()
         ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo($mail)
         ->setSubject($subject)
         ->setTextBody($text)
-        ->setHtmlBody($this->renderTemplateLevel($data, $language))
+        ->setHtmlBody($html)
         ->send();
   }
 }
