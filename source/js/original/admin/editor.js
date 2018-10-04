@@ -734,17 +734,18 @@ editor = function () {
 
   function test_editor(str,is_line){
     //str=str.replace(/^<p>/g,'').replace(/<\/p>$/g,'');
-    var twig = /\{\/?([a-z0-9\ ]*)\}/gi;
-    str=str.replace(twig, function ($0, $1) {
-      return "<span contentEditable = false>{ <span>"+$1.trim()+"</span> }</span>";
-    });
-
     var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
     str = str.replace(tags, function ($0, $1) {
       if ("<span>".indexOf('<' + $1.toLowerCase() + '>') > -1) return $0;
       if (!is_line && "<div><p><br>".indexOf('<' + $1.toLowerCase() + '>') > -1) return $0;
       return "";
     });
+
+    var twig = /\{\/?([a-z0-9\.\ _]*)\}/gi;
+    str=str.replace(twig, function ($0, $1) {
+      return "<span contentEditable = false>{ <span>"+$1.trim()+"</span> }</span>";
+    });
+
     return str;
     //return "<p>"+str+"</p>"
   }
