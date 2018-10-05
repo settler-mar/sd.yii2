@@ -204,6 +204,13 @@ class Template extends \yii\db\ActiveRecord
     return $content;
   }
 
+  public function getHTML($data){
+    return Yii::$app->TwigString->render(
+        $this->html,
+        $data
+    );
+  }
+
   public function sendMail($mail, $data = [], $language = false)
   {
     $subject = str_replace('}', '}}', $this->subject);

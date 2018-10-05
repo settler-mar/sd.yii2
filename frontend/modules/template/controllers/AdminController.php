@@ -220,6 +220,27 @@ class AdminController extends Controller
         return json_encode($data);
     }
 
+  public function actionTest($id)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
+    $request = Yii::$app->request;
+
+    //$id = $request->post('id');
+    //$tpl = Yii::$app->session->get('tpl_' . $id);
+    //$data = $request->post('data');
+    $language = $request->get('language');
+    //$email = $request->post('email');
+
+    $model = $this->findModel($id);
+    //$model->data = $data;
+    $model->getTemplate($language);
+
+    return $model->getHTML($model->varsSamples);
+  }
+
     /**
      * Finds the Template model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
