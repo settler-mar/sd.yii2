@@ -1,0 +1,12 @@
+{
+  "vars":[
+    {
+      "name": "User",
+      "prefix": "user.",
+      "items": {
+        "name": "User name",
+        "email":"User email"
+      }
+    }
+  ]
+}
