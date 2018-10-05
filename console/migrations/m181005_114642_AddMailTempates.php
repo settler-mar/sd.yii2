@@ -36,7 +36,7 @@ class m181005_114642_AddMailTempates extends Migration
                             "type" => "text",
                             "data"=> [
                                 "html" => [
-                                    "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>Вы получили это письмо потому, что зарегистрировались в кэшбэк-сервисе SecretDiscounter.ru.",
+                                    "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>Вы получили это письмо потому, что зарегистрировались в кэшбэк-сервисе SecretDiscounter.ru.</p>",
                                     "en-EN" => "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>Вы получили это письмо потому, что зарегистрировались в кэшбэк-сервисе SecretDiscounter.ru.</p>",
                                 ]
                             ],
