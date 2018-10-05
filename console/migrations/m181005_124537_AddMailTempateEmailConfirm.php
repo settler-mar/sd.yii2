@@ -39,7 +39,7 @@ class m181005_124537_AddMailTempateEmailConfirm extends Migration
                                     "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>
                                         На сайте SecretDiscounter.ru был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
                                          </p>",
-                                    "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>
+                                    "en-EN"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>
                                         На сайте SecretDiscounter.ru был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
                                          </p>",
                                 ]
