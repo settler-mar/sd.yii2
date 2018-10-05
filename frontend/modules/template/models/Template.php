@@ -205,7 +205,7 @@ class Template extends \yii\db\ActiveRecord
       $content = str_replace($img_base, $img, $content);
     }
 
-    //$site_url
+    //$site_url="//";
     preg_match_all('/(href)=("|\')[^"\'>]+/i', $content, $result);
     $result = preg_replace('/(href)("|\'|="|=\')(.*)/i', "$3", $result[0]);
     foreach ($result as $href_base) {
@@ -214,7 +214,8 @@ class Template extends \yii\db\ActiveRecord
         $href_base=explode('//',$href_base);
         $href_base=$href_base[1];
         $href_base=explode('/',$href_base);
-        if(strpos($href_base[0], 'secretdiscounter') !== false){
+        //if(strpos($href_base[0], 'secretdiscounter') !== false){
+        if($href_base[0]!='secretdiscounter.ru'){
           continue;
         }
         $href_base[0]="";
