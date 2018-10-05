@@ -104,9 +104,9 @@ class Template extends \yii\db\ActiveRecord
     $content = $content['data'];
 
     $this->tpl_data = [
-        "width" => "700px",
+        "width" => "600px",
         "bg" => "#fff",
-        'padding' => "40px 0",
+        'padding' => "40px 10px",
         'subject' => $this->subject
     ];
 
@@ -142,6 +142,7 @@ class Template extends \yii\db\ActiveRecord
       $data = [];
     };
     $viewFolder = Yii::$app->controller->module->viewPath . '/editor/';
+    $layout = Yii::$app->controller->module->viewPath . '/layouts/'.$language .'/html.twig';
     foreach ($data as $item) {
       $item['data']['language'] = $language;
       $item['data']['path'] = $viewFolder;
@@ -168,10 +169,10 @@ class Template extends \yii\db\ActiveRecord
     }
 
 
-    $out = '<table width="' . ($level == 0 ? "{{ width }}" : "100%") . '" border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
+    //$out = '<table width="' . ($level == 0 ? "{{ width }}" : "100%") . '" border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 
     if ($level == 0) {
-      $tpl = file_get_contents($viewFolder . 'layout.twig');
+      $tpl = file_get_contents($layout);
       $this->tpl_data['content'] = $out;
       $out = Yii::$app->TwigString->render($tpl, $this->tpl_data);
     }

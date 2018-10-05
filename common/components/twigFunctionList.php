@@ -714,6 +714,11 @@ $functionsList = [
       return $data[$code];
     };
   },
+  '_void' => function($argument) {
+    return '';
+  }
+
+
 ];
 
 return $functionsList;
