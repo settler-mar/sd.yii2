@@ -222,7 +222,7 @@ class Template extends \yii\db\ActiveRecord
       }
       if ($href_base[0] != "/") $href_base = "/" . $href_base;
       $href_base = $site_url . $href_base;
-      ddd($start_href, $href_base);
+      //ddd($start_href, $href_base);
       $content = str_replace($start_href, $href_base, $content);
     }
     return $content;
