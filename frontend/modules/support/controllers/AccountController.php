@@ -60,8 +60,10 @@ class AccountController extends \yii\web\Controller
                 ->compose(
                     ['html' => 'support-html', 'text' => 'support-text'],
                     [
-                        'title' => $model->title,
-                        'message' => $model->message,
+                        'message' => [
+                            'title' => $model->title,
+                            'text' => $model->message,
+                        ],
                         'user'=>Yii::$app->user->identity,
                     ]
                 )
