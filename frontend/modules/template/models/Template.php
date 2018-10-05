@@ -124,7 +124,7 @@ class Template extends \yii\db\ActiveRecord
     $content = str_replace('\}}', '}', $content);
     $content = str_replace('{{\%', '{%', $content);
     $content = str_replace('%\}}', '%}', $content);
-    $this->html = $content;
+
     // load our document into a DOM object
     /*$dom = new \DOMDocument();
     // we want nice output
@@ -143,6 +143,9 @@ class Template extends \yii\db\ActiveRecord
     };
     $viewFolder = Yii::$app->controller->module->viewPath . '/editor/';
     $layout = Yii::$app->controller->module->viewPath . '/layouts/'.$language .'/html.twig';
+    if(!is_readable($layout)){
+      $layout = Yii::$app->controller->module->viewPath . '/layouts/ru-RU/html.twig';
+    }
     foreach ($data as $item) {
       $item['data']['language'] = $language;
       $item['data']['path'] = $viewFolder;
@@ -202,18 +205,34 @@ class Template extends \yii\db\ActiveRecord
       $content = str_replace($img_base, $img, $content);
     }
 
+    //$site_url
+    preg_match_all('/(href)=("|\')[^"\'>]+/i', $content, $result);
+    $result = preg_replace('/(href)("|\'|="|=\')(.*)/i', "$3", $result[0]);
+    foreach ($result as $href_base) {
+      $start_href=$href_base;
+      if (strpos($href_base, '//') !== false){
+        $href_base=explode('//',$href_base);
+        $href_base=$href_base[1];
+        $href_base=explode('/',$href_base);
+        if(strpos($href_base[0], 'secretdiscounter') !== false){
+          continue;
+        }
+        $href_base[0]="";
+        $href_base=implode("/",$href_base);
+      }
+      if ($href_base[0] != "/") $href_base = "/" . $href_base;
+      $href_base = $site_url . $href_base;
+      ddd($start_href, $href_base);
+      $content = str_replace($start_href, $href_base, $content);
+    }
     return $content;
   }
 
-  public function getHTML($data){
-    return Yii::$app->TwigString->render(
-        $this->html,
-        $data
-    );
-  }
 
   public function sendMail($mail, $data = [], $language = false)
   {
+    $html = $this->renderTemplate($data, $language);
+
     $subject = str_replace('}', '}}', $this->subject);
     $subject = str_replace('{', '{{', $subject);
     $subject = Yii::$app->TwigString->render(
@@ -226,10 +245,6 @@ class Template extends \yii\db\ActiveRecord
         $data
     );
 
-    $html = Yii::$app->TwigString->render(
-        $this->html,
-        $data
-    );
     return Yii::$app->mailer->compose()
         ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
         ->setTo($mail)

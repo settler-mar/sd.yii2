@@ -206,7 +206,6 @@ class AdminController extends Controller
 
         $model = $this->findModel($id);
         $model->data = $data;
-        $model->getTemplate($language);
 
         if ($model->sendMail($email, $model->varsSamples, $language)) {
             $message = 'Письмо успешно отправлено';
@@ -236,9 +235,8 @@ class AdminController extends Controller
 
     $model = $this->findModel($id);
     //$model->data = $data;
-    $model->getTemplate($language);
 
-    return $model->getHTML($model->varsSamples);
+    return $model->renderTemplate($model->varsSamples,$language);
   }
 
     /**
