@@ -63,22 +63,13 @@ class m181005_151054_AddMailTemplateNewPayment extends Migration
                                 "border_r" => "5"
                             ],
                         ],
-                        [
-                            "type" => "text",
-                            "data"=> [
-                                "html" => [
-                                    "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>После нажатия на кнопку вашим паролем станет:<br><b>{ user.password }</b></p>",
-                                    "en-EN"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>После нажатия на кнопку вашим паролем станет:<br><b>{ user.password }</b></p>",
-                                ]
-                            ],
-                        ],
                     ],
                 "subject" => [
                     "ru-RU" => "SecretDiscounter. Зафиксирован новый кэшбэк",
                     "en-EN" => "SecretDiscounter. New cashback is made.",
                 ],
                 "text" => [
-                    "ru-RU" => "Здравствуйте! {payment.action_date} ваш кэшбэк на { payment.cashback} { user.currency} в {payment.store.name} (заказ №{payment.uid}) зафиксирован в нашей системе.
+                    "ru-RU" => "Здравствуйте! {payment.action_date} ваш кэшбэк на { payment.cashback} { user.currency} в { payment.store.name } (заказ №{payment.uid}) зафиксирован в нашей системе.
                         <a href=\"https://secretdiscounter.ru/account/payments\">История заказов</a>",
                     "en-EN" => "Здравствуйте! {payment.action_date} ваш кэшбэк на { payment.cashback} { user.currency} в {payment.store.name} (заказ №{payment.uid}) зафиксирован в нашей системе.
                         <a href=\"https://secretdiscounter.ru/account/payments\">История заказов</a>",
