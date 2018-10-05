@@ -65,6 +65,7 @@ class Template extends \yii\db\ActiveRecord
           $this->_params = json_decode($json, true);
         }
     }
+    //ddd($this->_params, $this->code, $file, file_exists($file), $json);
     return $this->_params;
   }
 
