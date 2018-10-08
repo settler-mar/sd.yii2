@@ -29,7 +29,7 @@ use frontend\modules\charity\models\Charity;
 use frontend\modules\b2b_users\models\B2bUsers;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use common\components\Mailer;
+use frontend\modules\template\models\Template;
 
 /**
  * Site controller
@@ -491,20 +491,24 @@ class SiteController extends SdController
     //$db_payment=Payments::findOne(['user_id'=>8]);
     //$store = Stores::top12(12);
     //$userSocial=UsersSocial::findOne(['user_id'=>8]);
-    $mail = Yii::$app
-          ->mailer
-          ->compose(
-//              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
-//              ['user' => $userSocial]
-              ['html' => 'welcome-html', 'text' => 'welcome-text'],
-              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
-           //   ['html' => 'status-html', 'text' => 'status-text'],
-           //   ['user' => Yii::$app->user->identity]
-          )
-          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-          ->setTo('oxygenn@list.ru')
-          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
-          ->send();
+//    $mail = Yii::$app
+//          ->mailer
+//          ->compose(
+////              ['html' => 'userSocialValidateEmail-html', 'text' => 'userSocialValidateEmail-text'],
+////              ['user' => $userSocial]
+//              ['html' => 'welcome-html', 'text' => 'welcome-text'],
+//              ['user' => Yii::$app->user->identity, 'stores' => Stores::find()->limit(10)->all()]
+//           //   ['html' => 'status-html', 'text' => 'status-text'],
+//           //   ['user' => Yii::$app->user->identity]
+//          )
+//          ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
+//          ->setTo('oxygenn@list.ru')
+//          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
+//          ->send();
+      $mail = Template::mail('welcome', 'oxygenn@list.ru', [
+          'user' => Yii::$app->user->identity,
+          'stores' => Stores::find()->limit(10)->all()
+      ]);
 
       return $mail ? 'Письмо отправлено' : 'Ошибка при отправлении email';
 

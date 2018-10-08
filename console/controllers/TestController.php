@@ -13,6 +13,7 @@ use Yii;
 use frontend\modules\actions\models\ActionsActions;
 use common\models\Webgains;
 use common\models\Mycommerce;
+use frontend\modules\template\models\Template;
 
 class TestController extends Controller
 {

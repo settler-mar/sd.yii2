@@ -3,6 +3,7 @@
 namespace frontend\modules\template\models;
 
 use Yii;
+use frontend\modules\users\models\Users;
 
 /**
  * This is the model class for table "cw_template".
@@ -142,10 +143,12 @@ class Template extends \yii\db\ActiveRecord
     if (!is_array($data)) {
       $data = [];
     };
-    $viewFolder = Yii::$app->controller->module->viewPath . '/editor/';
-    $layout = Yii::$app->controller->module->viewPath . '/layouts/'.$language .'/html.twig';
+    $viewPath = realpath(__DIR__ . '/../views');
+    $viewFolder = $viewPath . '/editor/';
+
+    $layout = $viewPath . '/layouts/'.$language .'/html.twig';
     if(!is_readable($layout)){
-      $layout = Yii::$app->controller->module->viewPath . '/layouts/ru-RU/html.twig';
+      $layout = $viewPath . '/layouts/ru-RU/html.twig';
     }
     foreach ($data as $item) {
       $item['data']['language'] = $language;
@@ -231,7 +234,7 @@ class Template extends \yii\db\ActiveRecord
   }
 
 
-  public function sendMail($mail, $data = [], $language = false)
+  public function sendMail($mail, $data = [], $language = false, $region = 'default')
   {
     $html = $this->renderTemplate($data, $language);
 
@@ -254,5 +257,21 @@ class Template extends \yii\db\ActiveRecord
         ->setTextBody($text)
         ->setHtmlBody($html)
         ->send();
+  }
+
+  public static function mail($name, $mail, $data)
+  {
+      $template = self::findOne(['code' => $name]);
+      if (Yii::$app instanceof Yii\console\Application){
+          $user = Users::findOne(8);
+          $language = $user->language;
+          $region = $user->region;
+          $data['user'] = $user;
+      } else {
+          $language = Yii::$app->language;
+          $region = Yii::$app->params['region'];
+      }
+      return $template->sendMail($mail, $data, $language, $region);
+
   }
 }
