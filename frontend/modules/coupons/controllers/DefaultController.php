@@ -498,7 +498,7 @@ class DefaultController extends SdController
 
       $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;
 
-      $databaseObj = Coupons::forList(true)
+      $databaseObj = Coupons::forList(false)
           //->andWhere(['cws.is_active' => [0, 1]])
           ->andWhere(['cws.is_active' => [1]])
           ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
