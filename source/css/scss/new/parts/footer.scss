@@ -139,11 +139,21 @@
             transform: rotate3d(0, 0, -1, 90deg);
           }
 
-          & ~ a {
+          & ~ a  {
             max-height: 20px !important;
             line-height: 26px;
             padding-top: 5px;
             padding-bottom: 5px;
+          }
+          & ~ .footer-withdraws-item {
+            min-height: 14px !important;
+            margin-bottom: 15px !important;
+          }
+
+          &.footer-menu-title-margin {
+            @include media($tablets) {
+              margin-bottom: 10px;
+            }
           }
         }
       }
@@ -162,7 +172,7 @@
         padding-bottom: 16px;
         margin-top: 0px;
 
-        a {
+        a  {
           overflow: hidden;
           max-height: 0;
           margin: 0 0 0 20px;
@@ -173,6 +183,14 @@
             display: none;
           }
         }
+        .footer-withdraws-item {
+          min-height: 0;
+          overflow: hidden;
+          margin: 0;
+          transition: all .4s ease;
+        }
+
+
       }
     }
   }

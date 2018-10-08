@@ -62,9 +62,12 @@
           {% set class_menu = 'laptop-min_hide' %}
           {% include('parts/footer_links_list.twig') %}
 
+        </div>
+        <div class="footer-menu-col">
+
           <div class="footer-menu-lists">
-            <div class="footer-withdraws flex-col">
-              <div class="footer-menu-title">{{ t('main', 'withdraw_methods') }}</div>
+            {#<div class="footer-withdraws flex-col">#}
+              <div class="footer-menu-title footer-menu-title-margin">{{ t('main', 'withdraw_methods') }}</div>
               {% set payment_system = _constant("payment_system") %}
               {% for item in payment_system %}
                 {% if item.on_footer==1 %}
@@ -73,8 +76,9 @@
               {% endfor %}
             </div>
 
-          </div>
+          {#</div>#}
         </div>
+
       </div>
       <div class="footer-docs  flex-line">
         <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
