@@ -22,6 +22,7 @@ class Template extends \yii\db\ActiveRecord
   public $text;
   public $html;
   public $tpl_data;
+  public $region = 'default';
 
   /**
    * @inheritdoc
@@ -167,7 +168,7 @@ class Template extends \yii\db\ActiveRecord
           ];
         }
       }
-      //d($item);
+      $item['data']['region'] = $this->region;
       $tpl = file_get_contents($viewFolder . $item['type'] . '.twig');
       $out .= '<tr>' . Yii::$app->TwigString->render(
               $tpl,
@@ -234,7 +235,7 @@ class Template extends \yii\db\ActiveRecord
   }
 
 
-  public function sendMail($mail, $data = [], $language = false, $region = 'default')
+  public function sendMail($mail, $data = [], $language = false)
   {
     $html = $this->renderTemplate($data, $language);
 
@@ -271,7 +272,10 @@ class Template extends \yii\db\ActiveRecord
           $language = Yii::$app->language;
           $region = Yii::$app->params['region'];
       }
-      return $template->sendMail($mail, $data, $language, $region);
+      if ($region) {
+          $template->region = $region;
+      }
+      return $template->sendMail($mail, $data, $language);
 
   }
 }

@@ -10,6 +10,7 @@ return [
 
     'share_about_us' => 'Расскажите о нас в соцсетях',
     'share_your_friends_url' => 'Отправьте друзьям ссылку',
+    'link_to_shop' => 'Перейти в магазин',
     'find_shop' => 'Найти магазин',
     'how_it_works' => 'Как это работает',
     'online_shops' => 'Интернет-магазины',

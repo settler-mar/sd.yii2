@@ -387,7 +387,7 @@ class Stores extends \yii\db\ActiveRecord
    * теперь 10 шопов
    * @return mixed
    */
-  public static function top12()
+  public static function top12($region = 'defaut')
   {
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
     $cache = Yii::$app->cache;

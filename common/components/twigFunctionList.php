@@ -4,6 +4,7 @@ use frontend\components\Action;
 use common\components\Help;
 use common\components\TagsClasses;
 use yii\db\Query;
+use frontend\modules\stores\models\Stores;
 
 $currencyIcon = [
 //    'RUB' => 'ruble',
@@ -716,6 +717,15 @@ $functionsList = [
   },
   '_void' => function($argument) {
     return '';
+  },
+  'top_store' => function($region = 'default') {
+    $stores = Stores::top12($region);
+    $layout = Yii::$app->viewPath . '/parts/stores/mail_top.twig';
+    if (!file_exists($layout)) {
+        return 'file not fount '.$layout;
+    }
+    $layout = file_get_contents($layout);
+    return Yii::$app->TwigString->render($layout, ['stores' => $stores]);
   }
 
 
