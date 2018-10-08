@@ -16,6 +16,12 @@ class DefaultController extends SdController
   {
 
     $query = strip_tags($query);
+    $request = Yii::$app->request;
+    if ($request->get('module') && $request->get('module') == 'coupon') {
+        $params['url'] ='/coupons/';
+        $params['limit'] = 100;
+        $params['store_active'] = [1];
+    }
 
     $limit = isset($params['limit']) ? $params['limit'] :
       (Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') :

@@ -29,7 +29,11 @@
         <div class="header-search stores_search">
           <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
             <div class="header-search_form-group">
-              <input type="text" name="query" id="search" class="header-search_form-input search-form-input" value=""
+              <select  name="module" class="header-search_form-input header-search_form-input-module">
+                  <option value="store">{{ t('common', 'shops') }}</option>
+                  <option value="coupon">{{ t('main', 'promocodes') }}</option>
+              </select>
+              <input type="text" name="query" id="search" class="header-search_form-input header-search_form-input-query search-form-input" value=""
                      placeholder="{{ t('main', 'find_shop') }}" autocomplete="off">
               {{ svg('search','header-search_form-button')|raw }}
             </div>
