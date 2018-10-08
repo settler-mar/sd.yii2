@@ -1,4 +1,4 @@
 От <?=$user->email;?> (<?=$user->uid;?>)
-Тема: <?=$title;?>
+Тема: <?=$message['title'];?>
 Сообщение:
-<?=$message;?>
+<?=$message['text'];?>

@@ -1,0 +1,21 @@
+{
+  "vars":[
+    {
+      "name": "User",
+      "prefix": "user.",
+      "items": {
+        "uid": "ID",
+        "name": "User name",
+        "email":"User email"
+      }
+    },
+    {
+      "name": "Message",
+      "prefix": "message.",
+      "items": {
+        "title": "Тема сообщения",
+        "text": "Содержание сообщения"
+      }
+    }
+  ]
+}

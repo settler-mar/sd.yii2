@@ -1,0 +1,23 @@
+{
+  "vars":[
+    {
+      "name": "User",
+      "prefix": "user.",
+      "items": {
+        "name": "User name",
+        "email":"User email",
+        "currency":"User currency"
+      }
+    },
+    {
+      "name": "Payment",
+      "prefix": "payment.",
+      "items": {
+        "action_date": "Payment action date",
+        "cashback":"Payment cashback",
+        "uid":"Payment ID",
+        "store.name":"Payment store name"
+      }
+    }
+  ]
+}

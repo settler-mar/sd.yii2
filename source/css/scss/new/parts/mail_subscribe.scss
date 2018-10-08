@@ -61,7 +61,17 @@
   padding-bottom: 0 !important;
   //margin-bottom: 15px;
 }
+.sp-full-width.flex-line {
+  align-items: center;
 
+  .sp-button,
+  .sp-buttons {
+    background-color: $btn-base_bg !important;
+    color: $btn-base-color !important;
+    font-weight: 500 !important;
+  }
+
+}
 
 /*
 .sp-form[sp-id="92106"] .sp-button-container {

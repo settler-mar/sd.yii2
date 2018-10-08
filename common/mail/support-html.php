@@ -9,12 +9,12 @@
         </tr>
         <tr>
           <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; font-size: 32px; font-weight: 700; line-height: normal; padding: 35px 0 25px; color: #4d4d4d;">
-            <?=$title;?>
+            <?=$message['title'];?>
           </td>
         </tr>
         <tr>
           <td style="text-align: center; padding: 0 40px;">
-            <?=$message;?>
+            <?=$message['text'];?>
           </td>
         </tr>
       </table>
