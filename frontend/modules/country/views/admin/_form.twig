@@ -7,7 +7,7 @@
                 <div class="template-form">
                 {% set form = active_form_begin() %}
 
-                    {{ form.field(model, 'country').dropDownList(countries, {'prompt':'Выберите страну'})|raw }}
+                    {{ form.field(model, 'country').dropDownList(countries, {'prompt':'Выберите страну', 'class':'form-control select2'})|raw }}
 
                     {{ form.field(model, 'region').dropDownList(model.regions, {'prompt':'Выберите регион'})|raw }}
 

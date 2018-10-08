@@ -56,6 +56,7 @@ class CountryToLanguageSearch extends CountryToLanguage
             // $query->where('0=1');
             return $dataProvider;
         }
+        $dataProvider->sort->defaultOrder = ['country' => SORT_ASC];
 
         // grid filtering conditions
         $query->andFilterWhere([

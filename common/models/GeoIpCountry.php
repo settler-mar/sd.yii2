@@ -73,7 +73,7 @@ class GeoIpCountry extends \yii\db\ActiveRecord
             self::find()
                 ->select(['code', 'country'])
                 ->groupBy(['code', 'country'])
-                ->orderBy(['code' => SORT_ASC])
+                ->orderBy(['country' => SORT_ASC])
                 ->asArray()
                 ->all(),
             'code',

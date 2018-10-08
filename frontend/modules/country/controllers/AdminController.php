@@ -104,6 +104,8 @@ class AdminController extends Controller
             return false;
         }
         $model = new CountryToLanguage();
+        $model->region = Yii::$app->params['country_to_region_default_region'];
+        $model->language = substr(Yii::$app->params['country_to_region_default_language'], 0, 2);
 
         //ddd(GeoIpCountry::countryList());
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
