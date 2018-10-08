@@ -21,6 +21,7 @@ use JBZoo\Image\Image;
 use common\components\SdImage;
 use common\components\DataValidator;
 use common\components\Help;
+use frontend\modules\template\models\Template;
 
 /**
  * This is the model class for table "cw_users".
@@ -291,16 +292,10 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     if ($this->save() && $loyalty_status  != $this->loyalty_status && $this->notice_email_status) {
         //изменился статус лояльности - письмо пользователю, если задано в настройках
       try {
-      Yii::$app
-        ->mailer
-        ->compose(
-          ['html' => 'status-html', 'text' => 'status-text'],
-          ['user' => $this]
-        )
-        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-        ->setTo($this->email)
-        ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
-        ->send();
+          Template::mail('loyalty_status', $this->email, [
+              'user' => $this,
+          ]);
+
       } catch (\Exception $e) {
       }
 
@@ -415,20 +410,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       try {
          // пока отключили письмо при регистрации
-
-//        Yii::$app
-//            ->mailer
-//            ->compose(
-//                ['html' => 'welcome-html', 'text' => 'welcome-text'],
-//                [
-//                    'user' => $this,
-//                    'stores' => $store,
-//                ]
-//            )
-//            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-//            ->setTo($this->email)
-//            ->setSubject(Yii::$app->name . ': '. Yii::t('common', 'register'))
-//            ->send();
+//          Template::mail('welcome', $this->email, [
+//              'user' => $this,
+//          ]);
       } catch (\Exception $e) {
       }
     } else {
@@ -437,15 +421,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
           $changedAttributes['email_verified'] == 0 && $this->email_verified == '1') {
         //админ поменял статус емейл на подтверждён
         try {
-          Yii::$app
-              ->mailer
-              ->compose(
-                  ['html' => 'verifyEmailSuccess-html', 'text' => 'verifyEmailSuccess-text'],
-                  ['user' => $this])
-              ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-              ->setTo($this->email)
-              ->setSubject(Yii::$app->name . ': ' . Yii::t('account', 'email_confirm'))
-              ->send();
+            Template::mail('verify_email_success', $this->email, [
+                'user' => $this,
+            ]);
           Yii::$app->session->addFlash('info', Yii::t('account', 'email_confirm_email_message'));
         } catch (\Exception $e) {
         }

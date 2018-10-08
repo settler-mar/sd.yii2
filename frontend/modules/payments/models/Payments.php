@@ -14,6 +14,7 @@ use yii;
 use frontend\modules\cache\models\Cache;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use common\models\Admitad;
+use frontend\modules\template\models\Template;
 
 /**
  * This is the model class for table "cw_payments".
@@ -594,19 +595,10 @@ class Payments extends \yii\db\ActiveRecord
       }
       if ($saveStatus && $email) {
         try {
-          Yii::$app
-              ->mailer
-              ->compose(
-                  ['html' => 'newPayment-html', 'text' => 'newPayment-text'],
-                  [
-                      'user' => $user,
-                      'payment' => $db_payment,
-                  ]
-              )
-              ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-              ->setTo($user->email)
-              ->setSubject(Yii::$app->name . ': Зафиксирован новый кэшбэк')
-              ->send();
+          Template::mail('new_payment', $user->email, [
+            'user' => $user,
+            'payment' => $db_payment,
+          ]);
         } catch (\Exception $e) {
         }
       }

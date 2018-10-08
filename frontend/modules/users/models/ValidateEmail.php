@@ -7,6 +7,7 @@ use frontend\modules\users\models\Users;
 use Yii;
 use Yii\helpers\Url;
 use common\components\Help;
+use frontend\modules\template\models\Template;
 
 /**
  * Password reset form
@@ -134,15 +135,12 @@ class ValidateEmail extends Model
     $validateSuccess = !empty($options['validate_success']) ? $options['validate_success'] : false;
     $path = !empty($options['path']) ? $options['path'] : false;
 
-    $templateName = 'verifyEmailToken';
-    $subject = Yii::t('account', 'email_confirm_email_subject_confirm');
+    $templateName = 'verify_email_token';
     if ($newUser) {
-      $templateName = 'verifyEmailTokenNewUser';
-      $subject = Yii::t('account', 'email_confirm_email_subject_activate');
+      $templateName = 'verify_email_token_new_user';
     }
     if ($validateSuccess) {
-      $templateName = 'verifyEmailSuccess';
-      $subject = Yii::t('account', 'email_confirm_email_subject_how_to_save');
+      $templateName = 'verify_email_success';
     }
     $sessionVar = 'sd_verify_mail_time_'.$user->email;
     $lastMailTime = Yii::$app->session->get($sessionVar, false);
@@ -157,18 +155,10 @@ class ValidateEmail extends Model
     }
     Yii::$app->session->set($sessionVar, time());
 
-    return Yii::$app
-      ->mailer
-      ->compose(
-        [
-          'html' => $templateName . '-html',
-          'text' => $templateName . '-text'],
-        ['user' => $user, 'path' => $path]
-      )
-      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-      ->setTo($user->email)
-      ->setSubject($subject)
-      ->send();
+    return Template::mail($templateName, $user->email, [
+      'user' => $user,
+      'path' => $path
+    ]);
   }
 
   /**

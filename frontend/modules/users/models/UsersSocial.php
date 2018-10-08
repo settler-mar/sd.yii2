@@ -5,6 +5,7 @@ namespace frontend\modules\users\models;
 use Yii;
 use frontend\modules\users\models\Users;
 use yii\web\IdentityInterface;
+use frontend\modules\template\models\Template;
 
 /**
  * This is the model class for table "cw_users_social".
@@ -278,18 +279,10 @@ class UsersSocial extends \yii\db\ActiveRecord
   {
     $userSocial->email_verify_token = Yii::$app->security->generateRandomString() . '_' . time();
     $userSocial->save();
-    return Yii::$app
-      ->mailer
-      ->compose(
-        [
-          'html' => 'userSocialValidateEmail-html',
-          'text' => 'userSocialValidateEmail-text'],
-        ['user' => $userSocial]
-      )
-      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-      ->setTo($userSocial->email_manual)
-      ->setSubject(Yii::t('account', 'confirm_social_email'))
-      ->send();
+    return Template::mail('verify_email_social', $userSocial->email_manual, [
+      'user' => $userSocial,
+    ]);
+
   }
 
   /*public function getUser()

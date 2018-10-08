@@ -5,6 +5,7 @@ use yii\base\Model;
 use yii\base\InvalidParamException;
 use frontend\modules\users\models\Users;
 use Yii;
+use frontend\modules\template\models\Template;
 
 /**
  * Password reset form
@@ -98,15 +99,8 @@ class ResetPasswordForm extends Model
 
     $user->password=$this->password;
 
-    return Yii::$app
-      ->mailer
-      ->compose(
-        ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-        ['user' => $user]
-      )
-      ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['adminName']])
-      ->setTo($this->email)
-      ->setSubject(Yii::t('account', 'password_reset_on_sd'))
-      ->send();
+    return Template::mail('password_reset_token', $this->email, [
+        'user' => $user,
+    ]);
   }
 }
