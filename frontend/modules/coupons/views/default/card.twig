@@ -88,7 +88,6 @@
 
               {% if products|length > 0 %}
                 <div class="catalog-stores_list shops margin">
-                  {% set store = products_store %}
                   {% for product in products %}
                     {% include 'parts/product.twig' %}
                   {% endfor %}
@@ -96,7 +95,7 @@
 
                 <div class="catalog_products_store_conditions" id="store_tariffs_id">
                   <div class="catalog_products_store_conditions_content">
-                    {{ store.conditions | raw}}
+                    {{ products_store.conditions | raw}}
                   </div>
                 </div>
 

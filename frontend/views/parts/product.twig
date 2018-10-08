@@ -1,3 +1,7 @@
+{% if not products_store %}
+    {% set products_store = store %}
+{% endif %}
+
 <div class="catalog_products_item hover-box">
     {% set url=_href('/goto/products:'~product.uid) %}
     {% set href_class = user_id ? '' : 'catalog_product_link' %}
@@ -27,11 +31,11 @@
                     <div class="catalog_products_item_price">
                         <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.last_price }} {{ t('main', product.currency) }}
                     </div>
-                    {{ cashback(store,"product") | raw }}
+                    {{ cashback(products_store,"product") | raw }}
                 </div>
                 <div class="catalog_products_item_info_actions">
 
-                        {% set product_name = str_replace('"', '',product.title) ~ '&nbsp;кэшбэк&nbsp;' ~ store.displayed_cashback %}
+                        {% set product_name = str_replace('"', '',product.title) ~ '&nbsp;кэшбэк&nbsp;' ~ products_store.displayed_cashback %}
                         <div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>
                         <div class="share42init accauntSoc accauntSoc_32"
                              data-image="{% if 'http' in product.image %}/{% else %}https://secretdiscounter.ru/images/products/{% endif %}{{ product.image }}"
