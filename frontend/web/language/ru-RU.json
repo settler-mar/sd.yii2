@@ -47,5 +47,7 @@
   "product_use": "Перейти к покупкам",
   "msg_new_cashback_content":"{user} только что {shop_discount} и заработал(a) {discount} кэшбэка в {store}",
   "msg_new_cashback_shop_discount":"купил(a) со скидкой {value}% и ",
-  "msg_new_cashback_title":"Новый кэшбэк"
+  "msg_new_cashback_title":"Новый кэшбэк",
+  "store_input_placeholder":"Найти магазин",
+  "coupon_input_placeholder":"Найти промокод"
 }

@@ -64,5 +64,10 @@ search = function () {
     if (val.length < 2) {
       return false;
     }
-  })
+  });
+
+  $('.header-search_form-input-module').on('change', function() {
+    var module = $(this).find('option:selected').attr('value');
+    $('.search-form-input').attr('placeholder', lg(module+'_input_placeholder'));
+  });
 }();
