@@ -20,7 +20,7 @@ class CountrySelect extends Widget
       $this->countries[$country['country']] = isset($countryList[$country['country']]) ? $countryList[$country['country']] : '';
     }
 
-    $dialogCloseDate  = isset($_COOKIE['sd_country_dialog_close']) ? $_COOKIE['sd_country_dialog_close'] : false;
+    $dialogCloseDate  = isset($_COOKIE['_sd_country_dialog_close']) ? $_COOKIE['_sd_country_dialog_close'] : false;
     if (Yii::$app->user->isGuest) {
         //неавторизован - нет значения в куки или время больше недели
         $this->showDialog = !$dialogCloseDate || time() - $dialogCloseDate > 3600 * 24 * 7;
