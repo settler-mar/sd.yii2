@@ -5,9 +5,9 @@
       "prefix": "user.",
       "items": {
         "name": "User name",
-        "email":"User email",
-        "password_reset_token":"Password reset token",
-        "password":"Password"
+        "social_name": "User social name",
+        "email_manual":"User email manual",
+        "email_verify_token":"Email verify token"
       }
     },
     {

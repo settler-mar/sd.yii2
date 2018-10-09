@@ -8,6 +8,14 @@
         "email":"User email",
         "uid": "User ID"
       }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
+      }
     }
+
   ]
 }

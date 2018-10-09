@@ -18,6 +18,14 @@
         "uid":"Payment ID",
         "store.name":"Payment store name"
       }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
+      }
     }
+
   ]
 }
