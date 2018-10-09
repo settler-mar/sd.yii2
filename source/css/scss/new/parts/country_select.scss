@@ -1,0 +1,77 @@
+.header-countries {
+  //position: relative;
+
+  &_dialog {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #fff;
+    border: 1px solid $menu_border_color;
+    padding: 10px;
+    border-radius: 5px;
+    width: 475px;
+
+    &-wrap {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      position: relative;
+    }
+
+    &-image svg {
+      width: 40px;
+      height: 40px;
+      color: #ccc;
+      fill: #ccc;
+      stroke: #ccc;
+      padding: 10px 20px 10px 10px;
+    }
+
+    &-close {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      &-button {
+        cursor: pointer;
+
+        svg {
+          width: 20px;
+          height: 20px;
+          color: #ccc;
+          fill: #ccc;
+          stroke: #ccc;
+          padding-left: 10px;
+        }
+      }
+
+
+    }
+
+    &-dialog {
+
+      margin-right: 30px;
+
+      &-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      &-text {
+        margin-bottom: 10px;
+      }
+      &-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        .btn {
+          margin: 0 10px;
+          text-wrap: none;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}

@@ -63,7 +63,6 @@ class GeoIpCountry extends \yii\db\ActiveRecord
     {
         return Yii::$app->db
             ->createCommand("SELECT `code`, `country` FROM `".self::tableName()."` WHERE `ip_to_int` >= INET_ATON('".$ip."') ORDER BY `ip_to_int` ASC LIMIT 1")
-            //->createCommand("SELECT * FROM `".self::tableName()."` WHERE `ip_to_int` >= INET_ATON('".$ip."') ORDER BY `ip_to_int` ASC LIMIT 1")
             ->queryOne();
     }
 

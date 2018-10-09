@@ -4,6 +4,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\UrlRuleInterface;
 use common\models\GeoIpCountry;
+use frontend\modules\country\models\CountryToLanguage;
 
 class SdUrlLocalisation implements UrlRuleInterface{
   private $params;
@@ -12,7 +13,16 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
   public function parseRequest($manager, $request){
 
-    //$location = GeoIpCountry::byIp($request->userIP);
+    $location = GeoIpCountry::byIp($request->userIP);
+    $countryToLanguge = false;
+    if ($location) {
+        $countryToLanguge = CountryToLanguage::findOne(['country'=>$location['code']]);
+    }
+    $location['region'] = $countryToLanguge ? $countryToLanguge->region :
+        Yii::$app->params['country_to_region_default_region'];
+    $location['language'] = $countryToLanguge ? $countryToLanguge->language :
+        Yii::$app->params['country_to_region_default_language'];
+    Yii::$app->params['location'] = $location;
 
     $host=$request->headers['host'];
     $this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';

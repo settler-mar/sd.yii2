@@ -309,4 +309,8 @@ return [
     'more_promo_codes'=>'More {store} coupons and promo codes',
     'search_title' => "Search - SecretDiscounter",
     'search_coupon_title' => "Search. Coupons - SecretDiscounter",
+    'country_select_dialog_title' => 'Make sure the country is selected correctly',
+    'country_select_dialog_text' => 'The choice of country affects the issuance of stores and coupons.',
+    'country_select_dialog_apply' => 'Yes, right',
+    'country_select_dialog_select' => 'Choose another country',
  ];
