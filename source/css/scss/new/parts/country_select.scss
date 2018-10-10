@@ -4,19 +4,51 @@
   &_dialog {
     position: absolute;
     top: 45px;
-    right: 0;
+    left: 0;
     background: #fff;
     border: 1px solid $menu_border_color;
-    padding: 10px;
     border-radius: 5px;
     width: 475px;
+    color: $text-color;
+    z-index: 100;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 9px solid;
+      pointer-events: none;
+      border-bottom-color: $menu_border_color;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      border-top-color: transparent;
+      top: -18PX;
+      left: 23PX;
+    }
 
     &-wrap {
+      padding: 10px;
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: center;
       position: relative;
+
+      &:before {
+        content: " ";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 9px solid;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        top: -16.5PX;
+        left: 23PX;
+      }
     }
 
     &-image svg {
@@ -31,8 +63,8 @@
     &-close {
       cursor: pointer;
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 10px;
+      right: 10px;
 
       &-button {
         cursor: pointer;

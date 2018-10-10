@@ -12,7 +12,13 @@ var country_select = function(){
     });
 
     $('.header-countries_dialog-dialog-button-choose').click(function() {
+        //добавляем класс, имитировать hover
+        $('#header-upline-region-select-button').addClass("open");
         dialogClose(this);
+    });
+
+    $('.header-upline_lang-list').on('mouseenter', function(){
+        $(this).removeClass('open');
     });
 
     var dialogClose = function(elem) {
