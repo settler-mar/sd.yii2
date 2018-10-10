@@ -13,6 +13,7 @@ use frontend\modules\users\models\Users;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
+use frontend\modules\product\models\Product;
 
 class AdmitadController extends Controller
 {
@@ -505,5 +506,41 @@ class AdmitadController extends Controller
         'diapazon' => $diapazon,
         'hasParsent' => $hasPersent,
     ];
+  }
+
+  public function actionProduct()
+  {
+      $count = 0;
+      $insert = 0;
+      $error = 0;
+      $categories = 0;
+      $admitad = new Admitad();
+      $products = $admitad->getProducts();
+      foreach ($products as $product) {
+          $count++;
+          $params = explode('|', (string) $product['param']);
+          $paramsArray = [];
+          foreach ($params as $param) {
+              $item  = explode(':', $param);
+              if (isset($item[1])) {
+                  $paramsArray[$item[0]] = $item[1];
+              }
+          }
+          $product['param'] = empty($paramsArray) ? null : json_encode($paramsArray);
+          $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
+          $product['categories'] = explode('/', (string) $product['categoryId']);
+          $result = Product::addOrUpdate($product);
+          $insert += $result['insert'];
+          $error += $result['error'];
+          $categories += $result['categories'];
+      }
+      echo 'Products ' . $count . "\n";
+      echo 'Inserted ' . $insert . "\n";
+      if ($categories) {
+        echo 'Inserted categories ' . $categories . "\n";
+      }
+      if ($error) {
+        echo 'Errors ' . $error . "\n";
+      }
   }
 }
