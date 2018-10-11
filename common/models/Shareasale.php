@@ -34,6 +34,13 @@ class Shareasale
         return $this->getData('merchantStatus', ['merchantid' => $id]);
     }
 
+    public function getProducts()
+    {
+        return $this->getData('getProducts', [
+
+        ]);
+    }
+
     public function getActivity($params=array()){
       /*if(!isset($params['dateStart'])){
         $params['dateStart']=date('m/d/Y',time()-60*60*24*30*3);

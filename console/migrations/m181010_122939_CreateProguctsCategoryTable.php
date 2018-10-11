@@ -17,7 +17,9 @@ class m181010_122939_CreateProguctsCategoryTable extends Migration
 
         $this->createTable('cw_products_category', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()
+            'name' => $this->string(),
+            'parent' =>$this->integer(),
+            'crated_at' => $this->timestamp() . ' default NOW()',
         ]);
     }
 
