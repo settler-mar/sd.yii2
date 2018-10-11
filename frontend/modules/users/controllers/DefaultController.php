@@ -71,7 +71,8 @@ class DefaultController extends Controller
     $data['title']=Yii::t('common', 'login_to_site');
     $data['html'] = $this->renderAjax('login', [      // рисуем форму для ввода имени и пароля
       'model' => $model,
-      'isAjax' => true
+      'isAjax' => true,
+      'reCaptcha' => \himiklab\yii2\recaptcha\ReCaptcha::className(),
     ]);
 
     return json_encode($data);
