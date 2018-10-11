@@ -316,6 +316,10 @@ $config = [
         'product' => [
             'class' => 'frontend\modules\product\Module',
         ],
+        'params' => [
+            'class' => 'frontend\modules\params\Module',
+        ],
+
     ],
     'params' => $params,
 
