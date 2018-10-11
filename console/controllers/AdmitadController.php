@@ -533,7 +533,6 @@ class AdmitadController extends Controller
           $insert += $result['insert'];
           $error += $result['error'];
           $categories += $result['categories'];
-          if ($count > 5) break;
       }
       echo 'Products ' . $count . "\n";
       echo 'Inserted ' . $insert . "\n";

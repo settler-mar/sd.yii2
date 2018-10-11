@@ -4,6 +4,7 @@ namespace frontend\modules\product\models;
 
 use Yii;
 use common\components\JsonBehavior;
+use  JBZoo\Image\Image;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -121,6 +122,7 @@ class Product extends \yii\db\ActiveRecord
         if (!$productDb) {
             $productDb = new self();
             $productDb->article = $article;
+            $productDb->image = self::saveImage((string) $product['picture']);
             $new = 1;
         }
         $productDb->available = $product['available'];
@@ -131,7 +133,7 @@ class Product extends \yii\db\ActiveRecord
         $productDb->old_price = (float) $product['oldprice'];
         $productDb->price = (float) $product['price'];
         $productDb->params = $product['param'];
-        $productDb->image = (string) $product['picture'];
+        $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
         if (!$productDb->save()) {
@@ -170,5 +172,46 @@ class Product extends \yii\db\ActiveRecord
             }
         }
         return $result;
+    }
+
+    public static function saveImage($image, $old = null)
+    {
+        if (!$image) {
+            return $old;
+        }
+        $size = 300;//требуемая ширина и высота
+        $path = Yii::$app->getBasePath() . '/../frontend/web/images/product/';
+        if ($old) {
+            try {
+                $imageSize = getimagesize($path . $old);
+            } catch (\Exception $e) {
+            }
+            if (isset($imageSize[0]) && $imageSize[0] == $size &&
+                isset($imageSize[1]) && $imageSize[1] == $size) {
+                return $old;
+            }
+        }
+        $exch = explode('.', $image);
+        $exch = $exch[count($exch) - 1];
+        $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
+        $name .= ('.' . $exch);//имя и расширение
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        try {
+            $file = file_get_contents($image);
+            $img = (new Image($file))
+                ->bestFit($size, $size)
+                ->saveAs($path . $name);
+            if ($old && is_readable($path . $old) && is_file($path . $old)) {
+                unlink($path . $old);
+            }
+            return $name;
+        } catch (\Exception $e) {
+            if (Yii::$app instanceof Yii\console\Application) {
+                echo $e->getMessage() . "\n";
+            }
+            return $old;
+        }
     }
 }

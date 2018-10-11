@@ -20,9 +20,21 @@
 
         {{ form.field(model, 'price').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'params').textarea({'rows':6})|raw }}
+        <div class="form-group">
+            <label>Params</label>
+            <ul style="margin: 10px 0;">
+            {% for key,param in model.params %}
+                <li style="list-style-type:none">
+                    {{ key }}:{{ param }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
 
         {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+        <div class="form-group">
+            <img src="/images/product/{{ model.image }}" >
+        </div>
 
         {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
 
