@@ -18,6 +18,11 @@ use Yii;
  */
 class ProductParameters extends \yii\db\ActiveRecord
 {
+    const PRODUCT_PARAMETER_ACTIVE_YES = 1;
+    const PRODUCT_PARAMETER_ACTIVE_NO = 0;
+    const PRODUCT_PARAMETER_ACTIVE_WAITING = 2;
+
+    protected static $params = [];
     /**
      * @inheritdoc
      */
@@ -36,6 +41,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             [['active'], 'integer'],
             [['created_at'], 'safe'],
             [['code', 'name'], 'string', 'max' => 255],
+            [['code'], 'unique'],
         ];
     }
 
@@ -58,7 +64,7 @@ class ProductParameters extends \yii\db\ActiveRecord
      */
     public function getCwProductParametersSynonyms()
     {
-        return $this->hasMany(CwProductParametersSynonyms::className(), ['parameter_id' => 'id']);
+        return $this->hasMany(ProductParametersSynonyms::className(), ['parameter_id' => 'id']);
     }
 
     /**
@@ -66,6 +72,57 @@ class ProductParameters extends \yii\db\ActiveRecord
      */
     public function getCwProductParametersValues()
     {
-        return $this->hasMany(CwProductParametersValues::className(), ['parameter_id' => 'id']);
+        return $this->hasMany(ProductParametersValues::className(), ['parameter_id' => 'id']);
     }
+
+    /**
+     * приводим параметры и значения к стандартизованному виду
+     * @param $params
+     * @return array
+     */
+    public static function standarted($params)
+    {
+        $out = [];
+        foreach ($params as $param => $value) {
+            $paramStandarted = self::standartedParam($param);
+            $out[$paramStandarted->code] = ProductParametersValues::standartedValue($paramStandarted->id, $value);
+        }
+        return $out;
+    }
+
+    public static function standartedParam($param)
+    {
+        if (isset(self::$params[$param])) {
+            return self::$params[$param];
+        }
+        $out = self::findOne([
+            'code'=>$param,
+            'active' => [self::PRODUCT_PARAMETER_ACTIVE_YES, self::PRODUCT_PARAMETER_ACTIVE_WAITING]
+        ]);
+        if ($out) {
+            self::$params[$param] = $out;
+            return $out;
+        }
+        $synonym = ProductParametersSynonyms::findOne([
+            'text' => $param,
+            'active'=> ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES
+        ]);
+        if ($synonym) {
+            $out = self::findOne(['id'=>$synonym->parameter_id, 'active' => self::PRODUCT_PARAMETER_ACTIVE_YES]);
+            self::$params[$param] = $out;
+            return $out;
+        }
+        $out = new self();
+        $out->code = $param;
+        $out->name = $param;
+        $out->active = self::PRODUCT_PARAMETER_ACTIVE_WAITING;
+        if ($out->save()) {
+            self::$params[$param] = $out;
+        } else {
+            d($out->errors);
+        }
+        return $out;
+    }
+
+
 }

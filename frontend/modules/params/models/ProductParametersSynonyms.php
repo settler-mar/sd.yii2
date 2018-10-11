@@ -17,6 +17,9 @@ use Yii;
  */
 class ProductParametersSynonyms extends \yii\db\ActiveRecord
 {
+    const PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES = 1;
+    const PRODUCT_PARAMETER_SYNONYM_ACTIVE_NO = 0;
+    const PRODUCT_PARAMETER_SYNONYM_ACTIVE_WAITING = 2;
     /**
      * @inheritdoc
      */
@@ -35,7 +38,8 @@ class ProductParametersSynonyms extends \yii\db\ActiveRecord
             [['parameter_id', 'active'], 'integer'],
             [['created_at'], 'safe'],
             [['text'], 'string', 'max' => 255],
-            [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => CwProductParameters::className(), 'targetAttribute' => ['parameter_id' => 'id']],
+            [['parameter_id', 'text'], 'unique', 'targetAttribute' => ['parameter_id', 'text'], 'message' => 'The combination of Parameter ID and Text has already been taken.'],
+            [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductParameters::className(), 'targetAttribute' => ['parameter_id' => 'id']],
         ];
     }
 
@@ -58,6 +62,6 @@ class ProductParametersSynonyms extends \yii\db\ActiveRecord
      */
     public function getParameter()
     {
-        return $this->hasOne(CwProductParameters::className(), ['id' => 'parameter_id']);
+        return $this->hasOne(ProductParameters::className(), ['id' => 'parameter_id']);
     }
 }

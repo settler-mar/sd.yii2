@@ -22,6 +22,12 @@ class m181011_104259_AddProductParamsTable extends Migration
             'active' => $this->smallInteger(),
             'created_at' => $this->timestamp(). ' default NOW()',
         ]);
+        $this->createIndex(
+            'unique_cw_product_parameters_code',
+            'cw_product_parameters',
+            'code',
+            true
+        );
     }
 
     /**

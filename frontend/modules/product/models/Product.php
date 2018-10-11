@@ -4,7 +4,8 @@ namespace frontend\modules\product\models;
 
 use Yii;
 use common\components\JsonBehavior;
-use  JBZoo\Image\Image;
+use JBZoo\Image\Image;
+use frontend\modules\params\models\ProductParameters;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -132,7 +133,7 @@ class Product extends \yii\db\ActiveRecord
         $productDb->name = (string) $product['name'];
         $productDb->old_price = (float) $product['oldprice'];
         $productDb->price = (float) $product['price'];
-        $productDb->params = $product['param'];
+        $productDb->params = ProductParameters::standarted($product['params']);
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];

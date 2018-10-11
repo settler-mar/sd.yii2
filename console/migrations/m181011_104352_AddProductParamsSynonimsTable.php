@@ -22,6 +22,12 @@ class m181011_104352_AddProductParamsSynonimsTable extends Migration
             'active' => $this->smallInteger(),
             'created_at' => $this->timestamp(). ' default NOW()',
         ]);
+        $this->createIndex(
+            'unique_cw_product_parameters_synonyms_text',
+            'cw_product_parameters_synonyms',
+            ['parameter_id', 'text'],
+            true
+        );
         $this->addForeignKey(
             'fk_product_parameters_synonyms_parameter_id',
             'cw_product_parameters_synonyms',

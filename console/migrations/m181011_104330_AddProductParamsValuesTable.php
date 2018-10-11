@@ -22,6 +22,12 @@ class m181011_104330_AddProductParamsValuesTable extends Migration
             'active' => $this->smallInteger(),
             'created_at' => $this->timestamp(). ' default NOW()',
         ]);
+        $this->createIndex(
+            'unique_cw_product_parameters_values_name',
+            'cw_product_parameters_values',
+            ['parameter_id', 'name'],
+            true
+        );
         $this->addForeignKey(
             'fk_product_parameters_values_parameter_id',
                 'cw_product_parameters_values',

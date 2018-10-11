@@ -526,10 +526,14 @@ class AdmitadController extends Controller
                   $paramsArray[$item[0]] = $item[1];
               }
           }
-          $product['param'] = empty($paramsArray) ? null : $paramsArray;
+          $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
-          $result = Product::addOrUpdate($product);
+          try {
+              $result = Product::addOrUpdate($product);
+          } catch (\Exception $e) {
+              d($product, $e->getMessage());
+          }
           $insert += $result['insert'];
           $error += $result['error'];
           $categories += $result['categories'];
