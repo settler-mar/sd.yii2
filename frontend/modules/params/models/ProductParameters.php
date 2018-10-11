@@ -22,6 +22,9 @@ class ProductParameters extends \yii\db\ActiveRecord
     const PRODUCT_PARAMETER_ACTIVE_NO = 0;
     const PRODUCT_PARAMETER_ACTIVE_WAITING = 2;
 
+    public $possibles_synonyms = [];
+    public $exists_synonyms = [];
+
     protected static $params = [];
     /**
      * @inheritdoc
@@ -42,6 +45,8 @@ class ProductParameters extends \yii\db\ActiveRecord
             [['created_at'], 'safe'],
             [['code', 'name'], 'string', 'max' => 255],
             [['code'], 'unique'],
+            ['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
+            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersSynonyms::className()]
         ];
     }
 
@@ -62,7 +67,7 @@ class ProductParameters extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwProductParametersSynonyms()
+    public function getSynonyms()
     {
         return $this->hasMany(ProductParametersSynonyms::className(), ['parameter_id' => 'id']);
     }
@@ -70,9 +75,36 @@ class ProductParameters extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwProductParametersValues()
+    public function getValues()
     {
         return $this->hasMany(ProductParametersValues::className(), ['parameter_id' => 'id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $synonyms = ProductParametersSynonyms::find()->where(['parameter_id' => $this->id])->all();
+        foreach ($synonyms as $synonym) {
+            $synonym->active = in_array($synonym->id, $this->exists_synonyms) ?
+                ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES :
+                ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_NO;
+            $synonym->save();
+        }
+        if (!empty($this->possibles_synonyms)) {
+            $possibles = self::find()->where(['id' => $this->possibles_synonyms])->all();
+            foreach ($possibles as $possible) {
+                $possible->active = self::PRODUCT_PARAMETER_ACTIVE_NO;
+                $possible->save();
+                $synonym = ProductParametersSynonyms::find()->where(['text'=>$possible->code])->one();
+                if (!$synonym) {
+                    $synonym = new ProductParametersSynonyms();
+                    $synonym->parameter_id = $this->id;
+                    $synonym->text = $possible->code;
+                    $synonym->active = ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES;
+                    $synonym->save();
+                }
+            }
+        }
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**

@@ -1,0 +1,56 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="product-parameters-form">
+                    {% set form = active_form_begin() %}
+
+                        {{ form.field(model, 'code').textInput({'maxlength':true})|raw }}
+
+                        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+                        <div class="form-group">
+                            <label>Синонимы</label>
+                            <ul>
+                                {% for synonym in model.synonyms %}
+                                    <li style="list-style-type:none;">
+                                        <label for="synonyms_exists_{{ symonym.code }}">
+                                            <input id="synonyms_exists_{{ symonym.code }}" type="checkbox" name="ProductParameters[exists_synonyms][]" value="{{ synonym.id }}"
+                                                   {% if synonym.active == 1 %}checked{% endif %} >
+                                            {{ synonym.text }}
+                                        </label>
+
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="form-group">
+                            <label>Могут быть синонимами</label>
+                            <ul>
+                                {% for possible in possibles %}
+                                    <li style="list-style-type:none;">
+                                        <label for="synonyms_possible_{{ possible.code }}">
+                                            <input id="synonyms_possible_{{ possible.code }}" type="checkbox" name="ProductParameters[possibles_synonyms][]" value="{{ possible.id }}"
+                                             {% if possible.checked %}checked{% endif %} >
+                                            {{ possible.code }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
+
+                        {{ form.field(model, 'created_at').textInput()|raw }}
+
+                    <div class="form-group">
+                        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+                    </div>
+                    {{ active_form_end() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
