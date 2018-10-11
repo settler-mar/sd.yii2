@@ -26,7 +26,7 @@ class m181010_121804_CreateProguctsTable extends Migration
             'name' => $this->string()->notNull(),
             'old_price' => $this->decimal(10,2),
             'price' => $this->decimal(10,2),
-            'params'=> $this->text(),
+            'params'=> $this->json(),
             'image' => $this->string(),
             'url' => $this->string(),
             'vendor' => $this->string()

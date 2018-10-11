@@ -38,9 +38,12 @@ class m181010_160822_RBAC_product extends Migration
      */
     public function safeDown()
     {
-        echo "m181010_160822_RBAC_product cannot be reverted.\n";
+        $this->auth = \Yii::$app->authManager;
+        $role = $this->auth->getRole('admin');
 
-        return false;
+        $this->removePermission('ProductView', [$role]);
+        $this->removePermission('ProductEdit', [$role]);
+        $this->removePermission('ProductDelete', [$role]);
     }
 
     /*
@@ -66,4 +69,14 @@ class m181010_160822_RBAC_product extends Migration
             $this->auth->addChild($role, $permit);//Связываем роль и привелегию
         }
     }
+
+    private function removePermission($name, $roles=[])
+    {
+        $permit = $this->auth->getPermission($name);
+        foreach ($roles as $role) {
+            $this->auth->removeChild($role, $permit);
+        }
+        $this->auth->remove($permit);
+    }
+
 }

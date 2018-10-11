@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use common\components\JsonBehavior;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -45,7 +46,8 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['article', 'name'], 'required'],
             [['available', 'store'], 'integer'],
-            [['description', 'params'], 'string'],
+            [['description'], 'string'],
+            [['params'], 'safe'],
             [['modified_time'], 'safe'],
             [['old_price', 'price'], 'number'],
             [['article', 'name', 'image', 'url', 'vendor'], 'string', 'max' => 255],
@@ -76,6 +78,17 @@ class Product extends \yii\db\ActiveRecord
             'vendor' => 'Производитель',
             'categories' => 'Категории',
             'product_categories' => 'Категории',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => JsonBehavior::className(),
+                'property' => 'params',
+                'jsonField' => 'params'
+            ]
         ];
     }
 
@@ -117,7 +130,7 @@ class Product extends \yii\db\ActiveRecord
         $productDb->name = (string) $product['name'];
         $productDb->old_price = (float) $product['oldprice'];
         $productDb->price = (float) $product['price'];
-        $productDb->params = (string) $product['param'];
+        $productDb->params = $product['param'];
         $productDb->image = (string) $product['picture'];
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
