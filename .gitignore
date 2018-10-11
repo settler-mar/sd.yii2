@@ -50,6 +50,7 @@ phpunit.phar
 
 /frontend/web/images/logo
 /frontend/web/images/products
+/frontend/web/images/product
 /frontend/web/images/account/avatars
 /frontend/web/img
 /frontend/web/thumbs
