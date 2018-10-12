@@ -67,6 +67,7 @@ class LoginForm extends Model
                     ['count'=>Yii::$app->params['login_attemps_count']]
                 )
             );
+            return false;
         }
         return parent::beforeValidate();
     }
@@ -78,7 +79,10 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
+        if (
+            $this->beforeValidate() &&
+            $this->validate()
+        ) {
             UserLoginAttemps::attemp(true);//запись успешного логин
             return Yii::$app->user->login($this->getUser(), 3600 * 24 * 30);
         } else {
