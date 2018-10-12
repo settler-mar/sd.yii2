@@ -4,6 +4,7 @@ $params = [
   //'scriptVersion'=>YII_DEBUG?'':'.min.'.file_get_contents(__DIR__.'/script_version.data').'.',
   'scriptVersion'=>YII_DEBUG?'' : '.min.',
   'exportDir' => 'export',
+  'country_select_active'=>false,
   'cashback_render'=>[
       'store'=>[ //используется в карточке шопа
         'show_charity' => true,
