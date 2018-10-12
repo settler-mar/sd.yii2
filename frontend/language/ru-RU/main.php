@@ -309,4 +309,5 @@ return [
     'country_select_dialog_text' => 'Выбор страны влияет на выдачу магазинов и акций.',
     'country_select_dialog_apply' => 'Да, верно',
     'country_select_dialog_select' => 'Выбрать другую страну',
+    'number_attempts_login_{count}_exceeded' => 'Превышено количество попыток для входа {count}'
 ];

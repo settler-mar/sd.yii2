@@ -56,6 +56,21 @@ class LoginForm extends Model
         }
     }
 
+    public function beforeValidate()
+    {
+        if (!UserLoginAttemps::attemp()) {
+            $this->addError(
+                'email',
+                Yii::t(
+                    'main',
+                    'number_attempts_login_{count}_exceeded',
+                    ['count'=>Yii::$app->params['login_attemps_count']]
+                )
+            );
+        }
+        return parent::beforeValidate();
+    }
+
     /**
      * Logs in a user using the provided username and password.
      *
@@ -64,6 +79,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+            UserLoginAttemps::attemp(true);//запись успешного логин
             return Yii::$app->user->login($this->getUser(), 3600 * 24 * 30);
         } else {
             return false;
