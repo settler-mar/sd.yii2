@@ -8,6 +8,14 @@
         "email":"User email",
         "email_verify_token":"Email verify token"
       }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
+      }
     }
+
   ]
 }

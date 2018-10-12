@@ -1,0 +1,109 @@
+.header-countries {
+  //position: relative;
+
+  &_dialog {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    background: #fff;
+    border: 1px solid $menu_border_color;
+    border-radius: 5px;
+    width: 475px;
+    color: $text-color;
+    z-index: 100;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 9px solid;
+      pointer-events: none;
+      border-bottom-color: $menu_border_color;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      border-top-color: transparent;
+      top: -18PX;
+      left: 23PX;
+    }
+
+    &-wrap {
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      position: relative;
+
+      &:before {
+        content: " ";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 9px solid;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        top: -16.5PX;
+        left: 23PX;
+      }
+    }
+
+    &-image svg {
+      width: 40px;
+      height: 40px;
+      color: #ccc;
+      fill: #ccc;
+      stroke: #ccc;
+      padding: 10px 20px 10px 10px;
+    }
+
+    &-close {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+
+      &-button {
+        cursor: pointer;
+
+        svg {
+          width: 20px;
+          height: 20px;
+          color: #ccc;
+          fill: #ccc;
+          stroke: #ccc;
+          padding-left: 10px;
+        }
+      }
+
+
+    }
+
+    &-dialog {
+
+      margin-right: 30px;
+
+      &-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      &-text {
+        margin-bottom: 10px;
+      }
+      &-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        .btn {
+          margin: 0 10px;
+          text-wrap: none;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}

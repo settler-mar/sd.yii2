@@ -1,0 +1,56 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Product Parameters' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="product-parameters-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div  class="col-md-12">
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+                            'id',
+                            'code',
+                            'name',
+                            {
+                                'attribute':'active',
+                                'format': 'raw',
+                                'value': tableData.active,
+                                'filter': activeFilter
+                            },
+                            {
+                                'attribute':'synonym_names',
+                                'format': 'raw',
+                                'value': tableData.synonyms,
+                                'label': 'Синонимы'
+                            },
+                            {
+                                'attribute':'synonym_values',
+                                'format': 'raw',
+                                'value': tableData.values,
+                                'label': 'Значения'
+                            },
+
+                            'created_at',
+                            {'class': '\\yii\\grid\\ActionColumn', 'template': '{update}'},
+                        ],
+                    })
+                }}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

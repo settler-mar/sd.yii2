@@ -456,6 +456,20 @@ table .status_1 {
   color: #F44336;
 }
 
+li {
+  &.status_0 {
+    background-color: #f4d6ce;
+  }
+  &.status_1 {
+    background-color: #c4e0a4;
+  }
+  &.status_2 {
+    background-color: #ffe4a8;
+  }
+}
+
+
+
 table .status_bg_0 {
   background: rgba(255, 152, 0, 0.22)!important;
 }

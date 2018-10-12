@@ -305,4 +305,8 @@ return [
     'more_promo_codes'=>'Еще больше промокодов  {store}',
     'search_title' => "Поиск - SecretDiscounter",
     'search_coupon_title' => "Поиск. Купоны - SecretDiscounter",
+    'country_select_dialog_title' => 'Убедитесь, что страна выбрана верно',
+    'country_select_dialog_text' => 'Выбор страны влияет на выдачу магазинов и акций.',
+    'country_select_dialog_apply' => 'Да, верно',
+    'country_select_dialog_select' => 'Выбрать другую страну',
 ];

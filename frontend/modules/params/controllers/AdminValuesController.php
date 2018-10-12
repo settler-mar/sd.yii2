@@ -1,0 +1,164 @@
+<?php
+
+namespace frontend\modules\params\controllers;
+
+use Yii;
+use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\params\models\ProductParameters;
+use frontend\modules\params\models\ProductParametersValuesSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+
+/**
+ * AdminValuesController implements the CRUD actions for ProductParametersValues model.
+ */
+class AdminValuesController extends Controller
+{
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+    public function beforeAction($action)
+    {
+        $this->layout = '@app/views/layouts/admin.twig';
+        return true;
+    }
+
+    /**
+     * Lists all ProductParametersValues models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new ProductParametersValuesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index.twig', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'activeFilter' => $this->activeFilter(),
+            'parameterFilter' => ArrayHelper::map(ProductParameters::find()->asArray()->all(), 'id', 'name'),
+            'tableData' => [
+                'active' => function ($model) {
+                    switch ($model->active) {
+                        case ($model::PRODUCT_PARAMETER_VALUES_ACTIVE_NO):
+                            return '<span class="status_1"><span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                        case ($model::PRODUCT_PARAMETER_VALUES_ACTIVE_YES):
+                            return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
+                        default:
+                            return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
+                    }
+                },
+                'synonyms' => function ($model) {
+                    $out = '';
+                    $loop = 0;
+                    foreach ($model->synonyms as $synonym) {
+                        $out .= $loop ? ', ': '';
+                        $out .= ('<span class="'.ProductParameters::activeClass($synonym->active).'">'.$synonym->text.'</span>');
+                        $loop++;
+                    }
+                    return $out;
+                },
+            ],
+
+        ]);
+    }
+
+    /**
+     * Displays a single ProductParametersValues model.
+     * @param integer $id
+     * @return mixed
+     */
+//    public function actionView($id)
+//    {
+//        return $this->render('view.twig', [
+//            'model' => $this->findModel($id),
+//        ]);
+//    }
+
+    /**
+     * Creates a new ProductParametersValues model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+//    public function actionCreate()
+//    {
+//        $model = new ProductParametersValues();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create.twig', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
+
+    /**
+     * Updates an existing ProductParametersValues model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update.twig', [
+                'model' => $model,
+                'activeFilter' => $this->activeFilter(),
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing ProductParametersValues model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+//    public function actionDelete($id)
+//    {
+//        $this->findModel($id)->delete();
+//
+//        return $this->redirect(['index']);
+//    }
+
+    /**
+     * Finds the ProductParametersValues model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return ProductParametersValues the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = ProductParametersValues::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function activeFilter()
+    {
+        return [
+            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO => 'Неактивен',
+            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES => 'Активен',
+            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING => 'Ожидает проверки',
+        ];
+    }
+}

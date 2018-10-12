@@ -5,8 +5,16 @@
       "prefix": "user.",
       "items": {
         "name": "User name",
-        "email":"User email",
+        "email":"User email"
+      }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
       }
     }
+
   ]
 }

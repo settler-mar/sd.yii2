@@ -47,5 +47,7 @@
   "product_use": "Buy with cash back",
   "msg_new_cashback_content":"{user} just {shop_discount} earned {discount} cash back at {store}",
   "msg_new_cashback_shop_discount":"bought with {value}% discount and ",
-  "msg_new_cashback_title":"New Cash Back"
+  "msg_new_cashback_title":"New Cash Back",
+  "store_input_placeholder":"Find a store",
+  "coupon_input_placeholder":"Find a coupon"
 }

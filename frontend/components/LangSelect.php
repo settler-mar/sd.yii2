@@ -6,9 +6,24 @@ use Yii;
 
 class LangSelect extends Widget
 {
+  protected $showDialog = false;
+
   public function init()
   {
-    //$this->viewPath='@frontend/view/components';
+      //включить в настройках панель-подсказку
+    if (!Yii::$app->params['country_select_active']) {
+       $this->showDialog = true;
+    } else {
+      $dialogCloseDate  = isset($_COOKIE['_sd_country_dialog_close']) ? $_COOKIE['_sd_country_dialog_close'] : false;
+      if (Yii::$app->user->isGuest) {
+        //неавторизован - нет значения в куки или время больше недели
+        $this->showDialog = !$dialogCloseDate || time() - $dialogCloseDate > 3600 * 24 * 7;
+      } else {
+        //авторизован - находится не в своей стране и нет куки или время куки больше недели
+        $this->showDialog = (!isset(Yii::$app->params['location']['region']) || Yii::$app->user->identity->region != Yii::$app->params['location']['region'])
+           && (!$dialogCloseDate || time() - $dialogCloseDate > 3600 * 24 * 7);
+        }
+    }
     parent::init();
   }
 
@@ -51,11 +66,9 @@ class LangSelect extends Widget
       ],
       'langs' => $lang,
       'regions' => $regions,
-      'langlist' => json_encode(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])
+      'langlist' => json_encode(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']),
+      'show_dialog_panel' => $this->showDialog,
     ];
-
-    //ddd($path);
-    ///ddd($data);
     return $this->render('LangSelect',$data);
   }
 }

@@ -7,6 +7,14 @@
         "name": "User name",
         "email":"User email"
       }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
+      }
     }
+
   ]
 }

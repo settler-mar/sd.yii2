@@ -355,6 +355,7 @@
     margin-left: 15px;
     display: flex;
     color: #fff;
+    position: relative;
 
     @include media($laptop-min) {
       margin-right: 15px;
@@ -372,9 +373,11 @@
         margin: 5px 0;
       }
 
-      &:hover{
+      &:hover,&.open{
         .header-upline_lang-link{
           color: #000;
+          display: flex;
+          align-items: center;
         }
 
         .header-upline_lang-list-drap{

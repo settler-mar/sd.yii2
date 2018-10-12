@@ -1,7 +1,7 @@
 {% if app.params.lang_select_active == 1 %}
   <div class="header-upline_lang">
       {% if regions|length>1 %}
-      <ul class="header-upline_lang-list btn-header">
+      <ul class="header-upline_lang-list btn-header" id="header-upline-region-select-button">
         <li>
           {% if regions[active.region].code %}
             {{ regions[active.region].code }}
@@ -9,7 +9,7 @@
             {{ regions[active.region].name }}
           {% endif %}
 
-          <ul class="header-upline_lang-list-drap">
+          <ul class="header-upline_lang-list-drap" >
             {% for k,region in regions if region.active %}
               {% if k!=active.region %}
                 <li>
@@ -46,6 +46,30 @@
           </ul>
         </li>
       </ul>
+      {% endif %}
+      {% if show_dialog_panel %}
+          <div class="header-countries_dialog">
+              <div class="header-countries_dialog-wrap">
+                  <div class="header-countries_dialog-image">
+                      {{ svg('global')|raw }}
+                  </div>
+                  <div class="header-countries_dialog-dialog">
+                      <div class="header-countries_dialog-dialog-title">
+                          {{ t('main', 'country_select_dialog_title') }}
+                      </div>
+                      <p class="header-countries_dialog-dialog-text">
+                          {{ t('main', 'country_select_dialog_text') }}
+                      </p>
+                      <div class="header-countries_dialog-dialog-buttons">
+                          <button class="btn btn-mini header-countries_dialog-dialog-button-apply">{{ t('main', 'country_select_dialog_apply') }}</button>
+                          <button class="btn btn-mini header-countries_dialog-dialog-button-choose">{{ t('main', 'country_select_dialog_select') }}</button>
+                      </div>
+                  </div>
+                  <div class="header-countries_dialog-close">
+                      <a class="header-countries_dialog-close-button">{{ svg('close')|raw }}</a>
+                  </div>
+              </div>
+          </div>
       {% endif %}
   </div>
 {% endif %}

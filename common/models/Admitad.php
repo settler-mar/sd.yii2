@@ -100,6 +100,70 @@ class Admitad{
     return trim($out);
   }
 
+  public function getProducts()
+  {
+      $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products.csv');
+      if ($this->downloadProducts($csv)){
+          return $this->getCsv($csv);
+      };
+
+  }
+
+  private function downloadProducts($file)
+    {
+        $url = 'http://export.admitad.com/ru/webmaster/websites/411618/products/export_adv_products/?user=versus23&code=cf62a27023&feed_id=14299&format=csv';
+
+        $start = time();
+        //Open file handler.
+        $fp = fopen($file, 'w+');
+
+        if (!empty($params)) {
+            $url .= http_build_query($params);
+        }
+        d($url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+
+        //Timeout if the file doesn't download after 120 seconds.
+        curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+        $response = curl_exec($ch);
+
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        fclose($fp);
+
+        if ($statusCode == 200) {
+            echo 'Downloaded, ' . (time() - $start) .' seconds!'."\n";
+            return true;
+        } else {
+            d("Status Code: " . $statusCode, $response);
+            return false;
+        }
+
+  }
+
+  protected function getCsv($filename, $delimiter = ';')
+  {
+    $data = [];
+    try {
+        if (($handle = fopen($filename, "r")) !== false) {
+            $headers = fgetcsv($handle, 0, $delimiter);
+            while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+                $data[] = array_combine($headers, $row);
+            }
+            fclose($handle);
+        } else {
+            Yii::info('File not found. ' . $filename);
+        }
+        return $data;
+    } catch (\Exception $e) {
+        ddd('Ошибка при загрузке файла csv '.$e->getMessage().'<br>');
+    }
+    return $data;
+  }
+
   public static function getStatus(){
     return array(
       'pending' => 0,

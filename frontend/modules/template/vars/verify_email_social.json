@@ -1,0 +1,22 @@
+{
+  "vars":[
+    {
+      "name": "User",
+      "prefix": "user.",
+      "items": {
+        "name": "User name",
+        "social_name": "User social name",
+        "email_manual":"User email manual",
+        "email_verify_token":"Email verify token"
+      }
+    },
+    {
+      "name": "Global",
+      "prefix": "",
+      "items": {
+        "user": "User"
+      }
+    }
+
+  ]
+}

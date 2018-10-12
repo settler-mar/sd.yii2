@@ -233,5 +233,12 @@ class ShareasaleController extends Controller
     }
   }
 
+  public function actionProduct()
+  {
+      $shareasale = new Shareasale();
+      $products = $shareasale->getProducts();
+      ddd($products);
+  }
+
 
 }

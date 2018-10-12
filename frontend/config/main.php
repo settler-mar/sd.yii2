@@ -313,6 +313,13 @@ $config = [
         'country' => [
             'class' => 'frontend\modules\country\Module',
         ],
+        'product' => [
+            'class' => 'frontend\modules\product\Module',
+        ],
+        'params' => [
+            'class' => 'frontend\modules\params\Module',
+        ],
+
     ],
     'params' => $params,
 
