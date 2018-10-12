@@ -71,7 +71,7 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCwProductParametersValuesSynonyms()
+    public function getSynonyms()
     {
         return $this->hasMany(ProductParametersValuesSynonyms::className(), ['value_id' => 'id']);
     }
