@@ -65,6 +65,5 @@ return [
     ],
     'plugin_install_panel' => 1,
     'lang_select_active' => 1,
-    'country_select_active' => 0,
 
 ];

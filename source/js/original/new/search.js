@@ -66,8 +66,17 @@ search = function () {
     }
   });
 
-  $('.header-search_form-input-module').on('change', function() {
-    var module = $(this).find('option:selected').attr('value');
-    $('.search-form-input').attr('placeholder', lg(module+'_input_placeholder'));
+  $('.form-popup-select li').on('click', function(){
+
+    var hidden = $(this).data('id2');
+    $('#'+hidden).attr('value', $(this).data('value2'));
+    var text = $(this).data('id1');
+    $('#'+text).html($(this).data('value1'));
+    var searchtext = $(this).data('id3');
+    $('#'+searchtext).attr('placeholder', $(this).data('value3'));
+  });
+
+  $('.header-search_form-input-module').on('click', function(){
+    $(this).closest('.header-search_form-input-module-label').toggleClass('active');
   });
 }();
