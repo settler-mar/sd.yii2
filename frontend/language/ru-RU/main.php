@@ -12,6 +12,7 @@ return [
     'share_your_friends_url' => 'Отправьте друзьям ссылку',
     'link_to_shop' => 'Перейти в магазин',
     'find_shop' => 'Найти магазин',
+    'find_promocode' => 'Найти промокод',
     'how_it_works' => 'Как это работает',
     'online_shops' => 'Интернет-магазины',
     'online_shops_low' => 'интернет-магазины',

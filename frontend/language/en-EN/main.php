@@ -12,6 +12,7 @@ return [
     'share_your_friends_url'  => 'Send the link to your friends',
     'link_to_shop' => 'Visit a store',
     'find_shop' => 'Find a store',
+    'find_promocode' => 'Find a promocode',
     'how_it_works' => 'How it works',
     'online_shops' => 'Online Stores',
     'online_shops_low' => 'online stores',
