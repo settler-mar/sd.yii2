@@ -24,6 +24,9 @@ $data = [
     ],
     'country_to_region_default_language' => 'en-EN',
     'country_to_region_default_region' => 'default',
+    'login_attemps_count' => 3,
+    'login_attemps_period' => 15,//минут, когда считаем попытки
+    'login_attemps_block_period' => 30,//минут, время блокировки
 
 ];
 

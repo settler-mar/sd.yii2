@@ -305,4 +305,5 @@ return [
     'more_promo_codes'=>'Еще больше промокодов  {store}',
     'search_title' => "Поиск - SecretDiscounter",
     'search_coupon_title' => "Поиск. Купоны - SecretDiscounter",
+    'number_attempts_login_{count}_exceeded' => 'Превышено количество попыток для входа {count}'
 ];
