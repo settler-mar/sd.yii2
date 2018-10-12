@@ -15,13 +15,12 @@
                             <label>Синонимы</label>
                             <ul>
                                 {% for synonym in model.synonyms %}
-                                    <li style="list-style-type:none;">
+                                    <li class="status_{{ synonym.active }}" style="list-style-type:none;padding-left: 10px;">
                                         <label for="synonyms_exists_{{ symonym.code }}">
                                             <input id="synonyms_exists_{{ symonym.code }}" type="checkbox" name="ProductParameters[exists_synonyms][]" value="{{ synonym.id }}"
                                                    {% if synonym.active == 1 %}checked{% endif %} >
                                             {{ synonym.text }}
                                         </label>
-
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -30,7 +29,7 @@
                             <label>Могут быть синонимами</label>
                             <ul>
                                 {% for possible in possibles %}
-                                    <li style="list-style-type:none;">
+                                    <li class="status_{{ possible.active }}" style="list-style-type:none;padding-left: 10px;">
                                         <label for="synonyms_possible_{{ possible.code }}">
                                             <input id="synonyms_possible_{{ possible.code }}" type="checkbox" name="ProductParameters[possibles_synonyms][]" value="{{ possible.id }}"
                                              {% if possible.checked %}checked{% endif %} >

@@ -51,22 +51,19 @@ class AdminController extends Controller
                 'active' => function ($model) {
                     switch ($model->active) {
                         case ($model::PRODUCT_PARAMETER_ACTIVE_NO):
-                            return 'Неактивен';
+                            return '<span class="status_1"><span class="fa fa-times"></span>&nbsp;Неактивен</span>';
                         case ($model::PRODUCT_PARAMETER_ACTIVE_YES):
-                            return 'Активен';
+                            return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
                         default:
-                            return 'Ожидает проверки';
+                            return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
                     }
                 },
                 'synonyms' => function ($model) {
                     $out = '';
                     $loop = 0;
                     foreach ($model->synonyms as $synonym) {
-                        if ($synonym->active != ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES) {
-                            continue;
-                        }
                         $out .= $loop ? ', ': '';
-                        $out .= $synonym->text;
+                        $out .= ('<span class="'.ProductParameters::activeClass($synonym->active).'">'.$synonym->text.'</span>');
                         $loop++;
                     }
                     return $out;
@@ -75,11 +72,8 @@ class AdminController extends Controller
                     $out = '';
                     $loop = 0;
                     foreach ($model->values as $value) {
-                        if ($value->active != ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES) {
-                            continue;
-                        }
                         $out .= $loop ? ', ': '';
-                        $out .= $value->name;
+                        $out .= ('<span class="'.ProductParameters::activeClass($value->active).'">'.$value->name.'</span>');
                         $loop++;
                     }
                     return $out;

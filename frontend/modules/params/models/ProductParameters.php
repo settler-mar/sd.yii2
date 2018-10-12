@@ -156,5 +156,17 @@ class ProductParameters extends \yii\db\ActiveRecord
         return $out;
     }
 
+    public static function activeClass($active)
+    {
+        switch ($active) {
+            case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO):
+                return 'status_1';
+            case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES):
+                return 'status_2';
+            default:
+                return 'status_0';
+        }
+    }
+
 
 }
