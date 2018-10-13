@@ -353,15 +353,9 @@
               transform: rotate(90deg);
               width: 16px;
               height: 16px;
-
               position: absolute;
               top: 8px;
               right: 0;
-              //background-position: 0;
-              //background: red;
-              //z-index: 100000;
-              //opacity: 1;
-
             }
             &:hover ~ .header-search_form-popup {
               display: block;
@@ -369,6 +363,10 @@
             &.active ~ .header-search_form-popup {
               display: block;
             }
+            &.close ~ .header-search_form-popup {
+              display: none;
+            }
+
           }
 
           @include media ($laptop-min) {

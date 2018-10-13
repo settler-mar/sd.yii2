@@ -74,9 +74,16 @@ search = function () {
     $('#'+text).html($(this).data('value1'));
     var searchtext = $(this).data('id3');
     $('#'+searchtext).attr('placeholder', $(this).data('value3'));
+
+    $(this).closest('.header-search_form-group').find('.header-search_form-input-module-label').addClass('close').removeClass('active');
   });
 
   $('.header-search_form-input-module').on('click', function(){
-    $(this).closest('.header-search_form-input-module-label').toggleClass('active');
+    $(this).closest('.header-search_form-input-module-label').toggleClass('active').removeClass('close');
   });
+
+  $('.header-search_form-input-module-label').on('mouseover', function(){
+        $(this).removeClass('close');
+  });
+
 }();
