@@ -62,7 +62,12 @@ class AdminController extends Controller
                     }
                 },
                 'image' => function ($model) {
-                    return $model->image ? '<img height="100" src="/images/product/'.$model->image.'">' : '';
+                    if (!$model->image) {
+                        return '';
+                    }
+                    $src = (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
+                        '/images/product/'.$model->image;
+                    return '<img height="100" src="'.$src.'">';
                 },
                 'categories' => function ($model) {
                     $out = '';

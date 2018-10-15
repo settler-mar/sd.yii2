@@ -177,6 +177,10 @@ class Product extends \yii\db\ActiveRecord
 
     public static function saveImage($image, $old = null)
     {
+        if (!Yii::$app->params['product_load_images']) {
+            //задано не грузить фото - возвращаем исходное
+            return $image ? $image : $old;
+        }
         if (!$image) {
             return $old;
         }
