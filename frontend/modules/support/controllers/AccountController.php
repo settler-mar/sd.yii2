@@ -58,6 +58,10 @@ class AccountController extends \yii\web\Controller
         try{
           Template::mail('support_message', Yii::$app->params['supportEmail'], [
             'user' => Yii::$app->user->identity,
+            'message' => [
+              'title' => $model->title,
+              'text' => $model->message,
+            ],
           ]);
           return json_encode(['error' => false, 'message'=> Yii::t('account', 'message_to_admin_successfully_sent')]);
         } catch (\Exception $e) {
