@@ -351,11 +351,11 @@
               background: url(../images/svg/angle-right-black.svg) 0 0 no-repeat;
               background-size: 100%;
               transform: rotate(90deg);
-              width: 16px;
-              height: 16px;
+              width: 12PX;
+              height: 16PX;
               position: absolute;
-              top: 8px;
-              right: 0;
+              top: 8PX;
+              right: 4PX;
             }
             &:hover ~ .header-search_form-popup {
               display: block;
