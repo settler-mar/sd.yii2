@@ -108,40 +108,48 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         return parent::afterSave($insert, $changedAttributes);
     }
 
-    public static function standartedValue($paramId, $value)
+    public static function standartedValues($paramId, $values)
     {
-        if (isset(self::$values[$paramId][$value])) {
-            return self::$values[$paramId][$value];
-        }
-        $out = self::findOne([
-            'name'=>$value,
-            'parameter_id' => $paramId,
-            'active' => [self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES, self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING]
-        ]);
-        if ($out) {
-            self::$values[$paramId][$value] = $out->name;
-            return $out->name;
-        }
-        $synonym = ProductParametersValuesSynonyms::findOne([
-            'text' => $value,
-            'active'=> ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES
-        ]);
-        if ($synonym) {
+        $result = [];
+        foreach ($values as $value) {
+            $value = (string) $value;
+            if (isset(self::$values[$paramId][$value])) {
+                $result[] = self::$values[$paramId][$value];
+                continue;
+            }
             $out = self::findOne([
-                'id'=>$synonym->value_id, 'active' => self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES]);
+                'name' => $value,
+                'parameter_id' => $paramId,
+                'active' => [self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES, self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING]
+            ]);
+            if ($out) {
+                self::$values[$paramId][$value] = $out->name;
+                $result[] =  $out->name;
+                continue;
+            }
+            $synonym = ProductParametersValuesSynonyms::findOne([
+                'text' => $value,
+                'active' => ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES
+            ]);
+            if ($synonym) {
+                $out = self::findOne([
+                    'id' => $synonym->value_id, 'active' => self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES]);
+                self::$values[$paramId][$value] = $out->name;
+                $result[] = $out->name;
+                continue;
+            }
+            $out = new self();
+            $out->name = $value;
+            $out->parameter_id = $paramId;
+            $out->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
+            if ($out->save()) {
+                self::$values[$paramId][$value] = $out->name;
+            } else {
+                d($out->errors);
+            }
             self::$values[$paramId][$value] = $out->name;
-            return $out->name;
+            $result[] =  $out->name;
         }
-        $out = new self();
-        $out->name = $value;
-        $out->parameter_id = $paramId;
-        $out->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
-        if ($out->save()) {
-            self::$values[$value] = $out->name;
-        } else {
-            d($out->errors);
-        }
-        self::$values[$paramId][$value] = $out->name;
-        return $out->name;
+        return $result;
     }
 }

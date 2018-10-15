@@ -117,15 +117,17 @@ class Product extends \yii\db\ActiveRecord
         $error = 0;
         $newCategories = 0;
         $article = (string) $product['id'];
-        $productDb = self::findOne(['article' => $article]);
+        $productDb = self::findOne(['article' => $article, 'cpa_id' => $product['cpa_id']]);
         $currency = (string) $product['currencyId'];
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
         if (!$productDb) {
             $productDb = new self();
             $productDb->article = $article;
             $productDb->image = self::saveImage((string) $product['picture']);
+            $productDb->cpa_id = $product['cpa_id'];
             $new = 1;
         }
+        $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];
         $productDb->currency = $currency;
         $productDb->description = (string) $product['description'];
@@ -137,16 +139,24 @@ class Product extends \yii\db\ActiveRecord
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
-        if (!$productDb->save()) {
-            d($productDb->errors);
-            $error = 1;
-        } else {
-            $newCategories = $productDb->writeCategories($product['categories']);
+
+        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name . $productDb->image);
+
+        if ($productHash != $productDb->data_hash) {
+            //echo $productHash." ".$productDb->data_hash."\n";
+            $productDb->data_hash = $productHash;
+            if (!$productDb->save()) {
+                d($productDb->errors);
+                $error = 1;
+            } else {
+                $newCategories = $productDb->writeCategories($product['categories']);//вернуло количество новых
+            }
         }
         return [
             'insert' => $new,
             'error' => $error,
             'categories' => $newCategories,
+            'product' => $productDb,
         ];
     }
 

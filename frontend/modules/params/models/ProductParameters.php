@@ -115,9 +115,9 @@ class ProductParameters extends \yii\db\ActiveRecord
     public static function standarted($params)
     {
         $out = [];
-        foreach ($params as $param => $value) {
-            $paramStandarted = self::standartedParam($param);
-            $out[$paramStandarted->code] = ProductParametersValues::standartedValue($paramStandarted->id, $value);
+        foreach ($params as $param => $values) {
+            $paramStandarted = self::standartedParam((string) $param);
+            $out[$paramStandarted->code] = ProductParametersValues::standartedValues($paramStandarted->id, $values);
         }
         return $out;
     }

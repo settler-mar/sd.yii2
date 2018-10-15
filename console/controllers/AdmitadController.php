@@ -523,20 +523,23 @@ class AdmitadController extends Controller
           foreach ($params as $param) {
               $item  = explode(':', $param);
               if (isset($item[1])) {
-                  $paramsArray[$item[0]] = $item[1];
+                  $paramsArray[$item[0]] = preg_split('/[\/,]+/', $item[1]);
               }
+              //d($item[1], $paramsArray[$item[0]]);
           }
           $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
-          try {
-              $result = Product::addOrUpdate($product);
-          } catch (\Exception $e) {
-              d($product, $e->getMessage());
+          $product['params_original'] = $product['param'];
+          $product['cpa_id'] = 1;//admitad
+          $result = Product::addOrUpdate($product);
+          if ($result['error']) {
+              d($result['product']->errors);
           }
           $insert += $result['insert'];
           $error += $result['error'];
           $categories += $result['categories'];
+          echo $count."\n";
       }
       echo 'Products ' . $count . "\n";
       echo 'Inserted ' . $insert . "\n";
