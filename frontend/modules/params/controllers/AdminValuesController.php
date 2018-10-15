@@ -47,7 +47,7 @@ class AdminValuesController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'activeFilter' => $this->activeFilter(),
-            'parameterFilter' => ArrayHelper::map(ProductParameters::find()->asArray()->all(), 'id', 'name'),
+            'parameterFilter' => $this->parameterList(),
             'tableData' => [
                 'active' => function ($model) {
                     switch ($model->active) {
@@ -120,6 +120,7 @@ class AdminValuesController extends Controller
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
+                'parameterList' => $this->parameterList(),
             ]);
         }
     }
@@ -160,5 +161,17 @@ class AdminValuesController extends Controller
             ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES => 'Активен',
             ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING => 'Ожидает проверки',
         ];
+    }
+
+    protected function parameterList($disableInActive = false)
+    {
+        $parameters = ProductParameters::find()->select(['id', 'name'])->asArray();
+        if ($disableInActive) {
+            $parameters->where(['active'=>[
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES,
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING
+            ]]);
+        }
+        return ArrayHelper::map($parameters->all(), 'id', 'name');
     }
 }

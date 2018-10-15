@@ -2,11 +2,11 @@
 <div class="product-parameters-values-form">
     {% set form = active_form_begin() %}
 
-        {{ form.field(model, 'parameter_id').textInput()|raw }}
+        {{ form.field(model, 'parameter_id').dropDownList(parameterList, {'prompt':'Выберите параметр'})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'active').textInput()|raw }}
+        {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
         {{ form.field(model, 'created_at').textInput()|raw }}
 

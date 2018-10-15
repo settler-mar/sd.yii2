@@ -9,9 +9,18 @@
 {% set breadcrumbs = breadcrumbs|merge(['Update']) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
 <div class="product-parameters-values-update">
-    <h1>{{ html.encode(this.title) }}</h1>
-        {{ include('_form.twig', {
-                'model': model,
-            })
-        }}
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+
+                    {{ include('_form.twig', {
+                            'model': model,
+                        })
+                    }}
+                </div>
+            </div>
+        </section>
+    </div>
 </div>

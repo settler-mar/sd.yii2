@@ -53,9 +53,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'parameter_id' => 'Parameter ID',
-            'name' => 'Name',
-            'active' => 'Active',
+            'parameter_id' => 'Параметр',
+            'name' => 'Значение',
+            'active' => 'Активен',
             'created_at' => 'Created At',
         ];
     }
