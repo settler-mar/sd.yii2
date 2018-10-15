@@ -22,6 +22,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     const PRODUCT_PARAMETER_VALUES_ACTIVE_NO = 0;
     const PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING = 2;
 
+    public $possibles_synonyms = [];
+    public $exists_synonyms = [];
+
     protected static $values = [];
     /**
      * @inheritdoc
@@ -43,6 +46,8 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 255],
             [['parameter_id', 'name'], 'unique', 'targetAttribute' => ['parameter_id', 'name'], 'message' => 'The combination of Parameter ID and Name has already been taken.'],
             [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductParameters::className(), 'targetAttribute' => ['parameter_id' => 'id']],
+            ['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
+            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()]
         ];
     }
 
@@ -74,6 +79,33 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     public function getSynonyms()
     {
         return $this->hasMany(ProductParametersValuesSynonyms::className(), ['value_id' => 'id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $synonyms = ProductParametersValuesSynonyms::find()->where(['value_id' => $this->id])->all();
+        foreach ($synonyms as $synonym) {
+            $synonym->active = in_array($synonym->id, $this->exists_synonyms) ?
+                ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES :
+                ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_NO;
+            $synonym->save();
+        }
+        if (!empty($this->possibles_synonyms)) {
+            $possibles = self::find()->where(['id' => $this->possibles_synonyms])->all();
+            foreach ($possibles as $possible) {
+                $possible->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_NO;
+                $possible->save();
+                $synonym = ProductParametersValuesSynonyms::find()->where(['text'=>$possible->name])->one();
+                if (!$synonym) {
+                    $synonym = new ProductParametersValuesSynonyms();
+                    $synonym->value_id = $this->id;
+                    $synonym->text = $possible->name;
+                    $synonym->active = ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES;
+                    $synonym->save();
+                }
+            }
+        }
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     public static function standartedValue($paramId, $value)

@@ -5,6 +5,35 @@
         {{ form.field(model, 'parameter_id').dropDownList(parameterList, {'prompt':'Выберите параметр'})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Синонимы</label>
+            <ul>
+                {% for synonym in model.synonyms %}
+                    <li class="status_{{ synonym.active }}" style="list-style-type:none;padding-left: 10px;">
+                        <label for="synonyms_exists_{{ symonym.code }}">
+                            <input id="synonyms_exists_{{ symonym.code }}" type="checkbox" name="ProductParametersValues[exists_synonyms][]" value="{{ synonym.id }}"
+                                   {% if synonym.active == 1 %}checked{% endif %} >
+                            {{ synonym.text }}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Могут быть синонимами</label>
+            <ul>
+                {% for possible in possibles %}
+                    <li class="status_{{ possible.active }}" style="list-style-type:none;padding-left: 10px;">
+                        <label for="synonyms_possible_{{ possible.id }}">
+                            <input id="synonyms_possible_{{ possible.id }}" type="checkbox" name="ProductParametersValues[possibles_synonyms][]" value="{{ possible.id }}"
+                                   {% if possible.checked %}checked{% endif %} >
+                            {{ possible.name }}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
 
         {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 

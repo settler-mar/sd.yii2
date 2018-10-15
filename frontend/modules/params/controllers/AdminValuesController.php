@@ -115,12 +115,24 @@ class AdminValuesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
+            $possibles = ProductParametersValues::find()
+                ->where(['parameter_id'=>$model->parameter_id])
+                ->andWhere(['<>', 'id', $id])
+                ->andWhere(['<>', 'active', ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO])
+                ->asArray()
+                ->all();
+            $synonyms = array_column($model->synonyms, 'text');
+            foreach ($possibles as &$possible) {
+                $possible['checked']= in_array($possible['name'], $synonyms);
+            }
+            //ddd($possibles, $synonyms);
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'parameterList' => $this->parameterList(),
+                'possibles' => $possibles,
             ]);
         }
     }
