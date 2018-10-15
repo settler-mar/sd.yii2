@@ -14,6 +14,7 @@ use Yii;
  */
 class UserLoginAttemps extends \yii\db\ActiveRecord
 {
+    public static $count;
     /**
      * @inheritdoc
      */
@@ -47,6 +48,12 @@ class UserLoginAttemps extends \yii\db\ActiveRecord
             'count' => 'Count',
             'last_date' => 'Last Date',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        self::$count = $this->count;
+        return parent::beforeSave($insert);
     }
 
     /**

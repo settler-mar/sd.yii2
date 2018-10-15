@@ -396,6 +396,11 @@ td {
     margin: auto;
   }
 
+  &-wrap {
+    width: 75%;
+    margin: auto;
+  }
+
   @include media($phones) {
     width: 100%;
     display: flex;

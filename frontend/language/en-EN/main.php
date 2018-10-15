@@ -314,5 +314,6 @@ return [
     'country_select_dialog_text' => 'The choice of country affects the issuance of stores and coupons.',
     'country_select_dialog_apply' => 'Yes, right',
     'country_select_dialog_select' => 'Choose another country',
-    'number_attempts_login_{count}_exceeded' => 'Number of attempts to login {count} exceeded'
+    'number_attempts_login_{count}_exceeded_try_in_{interval}_minute' => 'Number of attempts to login exceeded ({count}). Try again in {interval} minute.',
+
  ];
