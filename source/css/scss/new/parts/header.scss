@@ -486,6 +486,13 @@
         }
       }
 
+      &.disabled:hover {
+
+        .header-upline_lang-list-drap{
+          display: none;
+        }
+      }
+
       &-drap {
         display: none;
         position: absolute;

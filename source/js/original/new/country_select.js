@@ -22,6 +22,7 @@ var country_select = function(){
     });
 
     var dialogClose = function(elem) {
+        $('.header-upline_lang-list').removeClass('disabled');
         $(elem).closest('.header-countries_dialog').fadeOut();
     };
 }();

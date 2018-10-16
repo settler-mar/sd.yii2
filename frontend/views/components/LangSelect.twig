@@ -1,7 +1,7 @@
 {% if app.params.lang_select_active == 1 %}
   <div class="header-upline_lang">
       {% if regions|length>1 %}
-      <ul class="header-upline_lang-list btn-header" id="header-upline-region-select-button">
+      <ul class="header-upline_lang-list {% if show_dialog_panel  %}disabled{% endif %} btn-header" id="header-upline-region-select-button">
         <li>
           {% if regions[active.region].code %}
             {{ regions[active.region].code }}
@@ -28,7 +28,7 @@
       {% endif %}
 
       {% if langs|length>1 %}
-      <ul class="header-upline_lang-list btn-header">
+      <ul class="header-upline_lang-list {% if show_dialog_panel  %}disabled{% endif %} btn-header">
         <li>
           <img src="{{ langs[active.lang].icon|e }}" class="header-upline_lang-img">
 
