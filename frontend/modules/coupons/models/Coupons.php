@@ -398,7 +398,8 @@ class Coupons extends \yii\db\ActiveRecord
         ($store ? '_store_' . $store : '') .
         ($new ? '_new' : '') .
         ($offline ? '_offline' : '') .
-        ($unique_store ? '_unique_store' : '');
+        ($unique_store ? '_unique_store' : '').
+        (!empty($languages) ? '_languages_' . implode('_', $languages) : '');
     $dependencyName = 'coupons_counts';
     $dependency = new yii\caching\DbDependency;
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
