@@ -508,13 +508,13 @@ class AdmitadController extends Controller
     ];
   }
 
-  public function actionProduct()
+  public function actionProductSample()
   {
       $count = 0;
       $insert = 0;
       $error = 0;
       $admitad = new Admitad();
-      $products = $admitad->getProducts();
+      $products = $admitad->getProductsSample();
       foreach ($products as $product) {
           $count++;
           $params = explode('|', (string) $product['param']);
@@ -544,5 +544,12 @@ class AdmitadController extends Controller
       if ($error) {
         echo 'Errors ' . $error . "\n";
       }
+  }
+
+  public function actionProduct()
+  {
+      $admitad = new Admitad();
+      $products = $admitad->getProducts(6115);
+      ddd($products['gotolink'], $products['products_csv_link']);
   }
 }

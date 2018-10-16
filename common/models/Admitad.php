@@ -69,6 +69,15 @@ class Admitad{
     return $data;
   }
 
+  public function getProducts($affiliateId, $options=[])
+  {
+      $this->init('advcampaigns_for_website');
+      $websiteId=$this->config['websiteId'];
+      $data=$this->admitad->get('/advcampaigns/'.$affiliateId.'/website/'.$websiteId.'/', $options)->getArrayResult();
+      return $data;
+
+  }
+
   public function getTestLink($options=array())
   {
     $this->init('validate_links');
@@ -100,7 +109,7 @@ class Admitad{
     return trim($out);
   }
 
-  public function getProducts()
+  public function getProductsSample()
   {
       $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products.csv');
       //if ($this->downloadProducts($csv)){
