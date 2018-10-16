@@ -135,12 +135,20 @@ class AdminController extends Controller
             return false;
         }
         $model = $this->findModel($id);
+        $categories = ProductsCategory::find()->asArray()->all();
+        $model_categories = array_column($model->categories, 'id');
+        foreach ($categories as &$category) {
+            $category['checked'] = in_array($category['id'], $model_categories);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
+                'categories' => $categories,
+                'img' => (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
+                    '/images/product/'.$model->image
             ]);
         }
     }

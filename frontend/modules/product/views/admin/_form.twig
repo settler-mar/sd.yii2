@@ -23,9 +23,9 @@
         <div class="form-group">
             <label>Params</label>
             <ul style="margin: 10px 0;">
-            {% for key,param in model.params %}
+            {% for key,params in model.params %}
                 <li style="list-style-type:none">
-                    {{ key }}:{{ param }}
+                    {{ key }}:{% for param in params %} {{ param }}{% if loop.last == false %},{% endif %} {% endfor %}
                 </li>
             {% endfor %}
             </ul>
@@ -33,7 +33,7 @@
 
         {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
         <div class="form-group">
-            <img src="/images/product/{{ model.image }}" >
+            <img src="{{ img }}" style="max-height: 200px;" >
         </div>
 
         {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
@@ -44,4 +44,15 @@
         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>
     {{ active_form_end() }}
+
+    <div class="form-group">
+        <label>Категории</label>
+        <ul style="margin: 10px 0;">
+            {% for category in categories %}
+                <li style="list-style-type:none">
+                    <label for="categories_{{ category.id }}"><input id="categories_{{ category.id }}" type="checkbox" {% if category.checked %}checked{% endif %}> {{ category.name }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
