@@ -7,6 +7,7 @@ use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
 use frontend\modules\params\models\ProductParametersSynonyms;
 use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\product\models\ProductsCategory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -134,10 +135,16 @@ class AdminController extends Controller
             foreach ($possibles as &$possible) {
                 $possible['checked']= in_array($possible['code'], $synonyms);
             }
+            $productCategories = ProductsCategory::find()->asArray()->all();
+            foreach ($productCategories as &$category) {
+                $category['checked'] = $model->categories && in_array($category['id'], $model->categories);
+            }
+            //ddd($productCategories);
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'possibles' => $possibles,
+                'product_categories' => $productCategories,
             ]);
         }
     }

@@ -103,9 +103,9 @@ class Admitad{
   public function getProducts()
   {
       $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products.csv');
-      if ($this->downloadProducts($csv)){
+      //if ($this->downloadProducts($csv)){
           return $this->getCsv($csv);
-      };
+      //};
 
   }
 

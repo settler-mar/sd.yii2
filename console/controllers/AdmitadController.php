@@ -513,7 +513,6 @@ class AdmitadController extends Controller
       $count = 0;
       $insert = 0;
       $error = 0;
-      $categories = 0;
       $admitad = new Admitad();
       $products = $admitad->getProducts();
       foreach ($products as $product) {
@@ -538,14 +537,10 @@ class AdmitadController extends Controller
           }
           $insert += $result['insert'];
           $error += $result['error'];
-          $categories += $result['categories'];
           echo $count."\n";
       }
       echo 'Products ' . $count . "\n";
       echo 'Inserted ' . $insert . "\n";
-      if ($categories) {
-        echo 'Inserted categories ' . $categories . "\n";
-      }
       if ($error) {
         echo 'Errors ' . $error . "\n";
       }

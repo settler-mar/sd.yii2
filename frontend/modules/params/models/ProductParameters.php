@@ -3,6 +3,8 @@
 namespace frontend\modules\params\models;
 
 use Yii;
+use common\components\JsonBehavior;
+use frontend\modules\product\models\ProductsCategory;
 
 /**
  * This is the model class for table "cw_product_parameters".
@@ -24,6 +26,7 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public $possibles_synonyms = [];
     public $exists_synonyms = [];
+    public $possible_categories = [];
 
     protected static $params = [];
     /**
@@ -46,7 +49,9 @@ class ProductParameters extends \yii\db\ActiveRecord
             [['code', 'name'], 'string', 'max' => 255],
             [['code'], 'unique'],
             ['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
-            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersSynonyms::className()]
+            ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
+            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersSynonyms::className()],
+            [['categories'], 'safe'],
         ];
     }
 
@@ -60,7 +65,19 @@ class ProductParameters extends \yii\db\ActiveRecord
             'code' => 'Code',
             'name' => 'Name',
             'active' => 'Active',
+            'categories' => 'Категории',
             'created_at' => 'Created At',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => JsonBehavior::className(),
+                'property' => 'categories',
+                'jsonField' => 'categories'
+            ]
         ];
     }
 
@@ -78,6 +95,13 @@ class ProductParameters extends \yii\db\ActiveRecord
     public function getValues()
     {
         return $this->hasMany(ProductParametersValues::className(), ['parameter_id' => 'id']);
+    }
+
+    public function beforeValidate()
+    {
+        //ddd($this->possible_categories);
+        $this->categories = !empty($this->possible_categories) ? $this->possible_categories : null;
+        return parent::beforeValidate();
     }
 
     public function afterSave($insert, $changedAttributes)

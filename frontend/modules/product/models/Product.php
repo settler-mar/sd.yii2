@@ -32,6 +32,8 @@ class Product extends \yii\db\ActiveRecord
     const PRODUCT_AVAILABLE_YES = 1;
     const PRODUCT_AVAILABLE_REQUEST = 2;
 
+    protected static $categories = [];
+
     /**
      * @inheritdoc
      */
@@ -115,11 +117,11 @@ class Product extends \yii\db\ActiveRecord
     {
         $new = 0;
         $error = 0;
-        $newCategories = 0;
         $article = (string) $product['id'];
         $productDb = self::findOne(['article' => $article, 'cpa_id' => $product['cpa_id']]);
         $currency = (string) $product['currencyId'];
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
+        $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
         if (!$productDb) {
             $productDb = new self();
             $productDb->article = $article;
@@ -149,13 +151,12 @@ class Product extends \yii\db\ActiveRecord
                 d($productDb->errors);
                 $error = 1;
             } else {
-                $newCategories = $productDb->writeCategories($product['categories']);//вернуло количество новых
+                $productDb->writeCategories($categories);//пишем - товар-категории
             }
         }
         return [
             'insert' => $new,
             'error' => $error,
-            'categories' => $newCategories,
             'product' => $productDb,
         ];
     }
@@ -164,23 +165,26 @@ class Product extends \yii\db\ActiveRecord
     {
         $result = 0;
         foreach ($categories as $category) {
-            $categoryDb = ProductsCategory::findOne(['name'=> $category]);
-            if (!$categoryDb) {
-                $categoryDb = new ProductsCategory();
-                $categoryDb->name = $category;
-                $categoryDb->save();
-                $result++;
-            }
             $productToCategoryDb = ProductsToCategory::findOne([
                 'product_id'=>$this->id,
-                'category_id'=>$categoryDb->id
+                'category_id'=>$category
             ]);
             if (!$productToCategoryDb) {
                 $productToCategoryDb = new ProductsToCategory();
                 $productToCategoryDb->product_id = $this->id;
-                $productToCategoryDb->category_id = $categoryDb->id;
+                $productToCategoryDb->category_id = $category;
                 $productToCategoryDb->save();
             }
+        }
+        return $result;
+    }
+
+    protected function makeCategories($categories)
+    {
+        $result = [];
+        foreach ($categories as $category) {
+            $cat = $this->productCategory($category);
+            $result[] = $cat['id'];
         }
         return $result;
     }
@@ -228,5 +232,19 @@ class Product extends \yii\db\ActiveRecord
             }
             return $old;
         }
+    }
+
+    protected function productCategory($name)
+    {
+        if (!isset(static::$categories[$name])) {
+            $categoryDb = ProductsCategory::findOne(['name'=> $name]);
+            if (!$categoryDb) {
+                $categoryDb = new ProductsCategory();
+                $categoryDb->name = $name;
+                $categoryDb->save();
+            }
+            static::$categories[$name] = $categoryDb->toArray();
+        }
+        return static::$categories[$name];
     }
 }
