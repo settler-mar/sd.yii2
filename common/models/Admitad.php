@@ -69,15 +69,6 @@ class Admitad{
     return $data;
   }
 
-  public function getProducts($affiliateId, $options=[])
-  {
-      $this->init('advcampaigns_for_website');
-      $websiteId=$this->config['websiteId'];
-      $data=$this->admitad->get('/advcampaigns/'.$affiliateId.'/website/'.$websiteId.'/', $options)->getArrayResult();
-      return $data;
-
-  }
-
   public function getTestLink($options=array())
   {
     $this->init('validate_links');
@@ -109,18 +100,33 @@ class Admitad{
     return trim($out);
   }
 
-  public function getProductsSample()
+  public function getAdvacampaing($affiliateId, $options=[])
   {
-      $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products.csv');
-      //if ($this->downloadProducts($csv)){
-          return $this->getCsv($csv);
-      //};
-
+    $this->init('advcampaigns_for_website');
+    $websiteId=$this->config['websiteId'];
+    $data=$this->admitad->get('/advcampaigns/'.$affiliateId.'/website/'.$websiteId.'/', $options)->getArrayResult();
+    return $data;
   }
 
-  private function downloadProducts($file)
+
+  public function getProduct($csvLink, $affiliate_id, $refreshFile)
+  {
+      $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_'.$affiliate_id.'.csv');
+      //или если не обновлять и уже скачано, или качаем
+      $data = [];
+      if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)){
+          $data =  $this->getCsv($csv);
+      };
+      if ($refreshFile && file_exists($csv)) {
+          //если обновлять, то удаляем файл
+          unlink($csv);
+      }
+      return $data;
+  }
+
+  private function downloadProducts($file, $url)
     {
-        $url = 'http://export.admitad.com/ru/webmaster/websites/411618/products/export_adv_products/?user=versus23&code=cf62a27023&feed_id=14299&format=csv';
+        //$url = 'http://export.admitad.com/ru/webmaster/websites/411618/products/export_adv_products/?user=versus23&code=cf62a27023&feed_id=14299&format=csv';
 
         $start = time();
         //Open file handler.

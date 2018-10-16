@@ -121,14 +121,15 @@ class Product extends \yii\db\ActiveRecord
         $productDb = self::findOne(['article' => $article, 'cpa_id' => $product['cpa_id']]);
         $currency = (string) $product['currencyId'];
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
-        $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
         if (!$productDb) {
             $productDb = new self();
             $productDb->article = $article;
             $productDb->image = self::saveImage((string) $product['picture']);
             $productDb->cpa_id = $product['cpa_id'];
+            $productDb->store = $product['store'];
             $new = 1;
         }
+        $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
         $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];
         $productDb->currency = $currency;

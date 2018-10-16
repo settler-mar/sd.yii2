@@ -508,13 +508,38 @@ class AdmitadController extends Controller
     ];
   }
 
-  public function actionProductSample()
+  public function actionProduct()
+  {
+      $config = Yii::$app->params['products_import'];
+
+      $cpaLinks = CpaLink::find()->where(['cpa_id' => 1])->all();
+      $admitad = new Admitad();
+
+      foreach ($cpaLinks as $cpaLink) {
+          if (!empty($config['stores_only']) && !in_array($cpaLink->affiliate_id, $config['stores_only'])) {
+              continue;
+          }
+
+          $advacampaing = $admitad->getAdvacampaing($cpaLink->affiliate_id);
+
+          if (isset($advacampaing['products_csv_link'])) {
+              $products = $admitad->getProduct($advacampaing['products_csv_link'], $cpaLink->affiliate_id, $config['refresh_csv']);
+              echo "Store ".$cpaLink->affiliate_id." Products\n";
+              $this->writeProducts($products, $cpaLink->affiliate_id);
+          } else {
+              echo "Store ".$cpaLink->affiliaate_id." products link does not exists\n";
+          }
+
+      }
+  }
+
+  protected function writeProducts($products, $affiliate_id)
   {
       $count = 0;
       $insert = 0;
       $error = 0;
-      $admitad = new Admitad();
-      $products = $admitad->getProductsSample();
+      //$admitad = new Admitad();
+      //$products = $admitad->getProductsSample();
       foreach ($products as $product) {
           $count++;
           $params = explode('|', (string) $product['param']);
@@ -531,6 +556,7 @@ class AdmitadController extends Controller
           $product['categories'] = explode('/', (string) $product['categoryId']);
           $product['params_original'] = $product['param'];
           $product['cpa_id'] = 1;//admitad
+          $product['store'] = $affiliate_id;
           $result = Product::addOrUpdate($product);
           if ($result['error']) {
               d($result['product']->errors);
@@ -546,10 +572,5 @@ class AdmitadController extends Controller
       }
   }
 
-  public function actionProduct()
-  {
-      $admitad = new Admitad();
-      $products = $admitad->getProducts(6115);
-      ddd($products['gotolink'], $products['products_csv_link']);
-  }
+
 }
