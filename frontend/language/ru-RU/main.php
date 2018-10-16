@@ -309,7 +309,7 @@ return [
     'search_title' => "Поиск - SecretDiscounter",
     'search_coupon_title' => "Поиск. Купоны - SecretDiscounter",
     'country_select_dialog_title' => 'Убедитесь, что страна выбрана верно',
-    'country_select_dialog_text' => 'Выбор страны влияет на выдачу магазинов и акций.',
+    'country_select_dialog_text' => 'Выбор страны влияет на выдачу магазинов и акций',
     'country_select_dialog_apply' => 'Да, верно',
     'country_select_dialog_select' => 'Выбрать другую страну',
     'number_attempts_login_{count}_exceeded_try_in_{interval}_minute' => 'Превышено максимальное количество неудачных попыток входа ({count}). Попробуйте снова через {interval} минут.'

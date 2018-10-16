@@ -260,7 +260,7 @@
     width: 100%;
     margin-right: auto;
     margin-left: 15px;
-    max-width: 400px;
+    max-width: 480px;
 
     @include media($laptop-min) {
       //flex-grow: 1;
@@ -315,6 +315,13 @@
         flex-direction: row;
         align-items: center;
         width: 100%;
+
+        &-affiliation {
+
+          @include media($tablets) {
+            flex-direction: column;
+          }
+        }
       }
 
       &-input {
@@ -399,6 +406,17 @@
 
           @include media ($laptop-min) {
             width: 70%;
+          }
+        }
+
+        &-affiliation {
+          width: 100%;
+          margin-right: 20px;
+
+          @include media($tablets) {
+            width: 90%;
+            margin-right: 0;
+            margin-bottom: 15px;
           }
         }
 
