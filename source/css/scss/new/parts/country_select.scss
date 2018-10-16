@@ -4,13 +4,24 @@
   &_dialog {
     position: absolute;
     top: 45px;
-    left: 0;
+    left: -100PX;
     background: #fff;
     border: 1px solid $menu_border_color;
     border-radius: 5px;
-    width: 475px;
+    width: 425px;
     color: $text-color;
     z-index: 100;
+
+    @include media($laptop-min) {
+      left: -200px;
+    }
+    @include media($tablets) {
+      left: 0;
+      position: fixed;
+      top: 50PX;
+      width: 100%;
+    }
+
 
     &:before {
       content: " ";
@@ -24,7 +35,14 @@
       border-left-color: transparent;
       border-top-color: transparent;
       top: -18PX;
-      left: 23PX;
+      left: 123PX;
+
+      @include media($laptop-min) {
+        left: 223PX;
+      }
+      @include media($tablets) {
+        left: 60%;
+      }
     }
 
     &-wrap {
@@ -47,7 +65,14 @@
         border-left-color: transparent;
         border-top-color: transparent;
         top: -16.5PX;
-        left: 23PX;
+        left: 123PX;
+
+        @include media($laptop-min) {
+          left: 223PX;
+        }
+        @include media($tablets) {
+          left: 60%;
+        }
       }
     }
 
@@ -85,6 +110,11 @@
     &-dialog {
 
       margin-right: 30px;
+      width: 100%;
+
+      @include media($tablets) {
+        text-align: center;
+      }
 
       &-title {
         font-weight: 600;
@@ -97,11 +127,18 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
+        justify-content: space-around;
 
         .btn {
-          margin: 0 10px;
+          margin: 0;
           text-wrap: none;
-          padding: 10px 15px;
+          //padding: 10px 15px;
+          padding: 8px 10px;
+          font-size: 15px;
+
+          &:first-child {
+            margin-right: 10px;
+          }
         }
       }
     }
