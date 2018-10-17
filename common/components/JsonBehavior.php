@@ -36,7 +36,8 @@ class JsonBehavior extends Behavior
         $model = $event->sender;
         $jsonField = $this->getJsonField($model);
 
-        $model->{$this->property} = Json::decode($model->getAttribute($jsonField));
+        //$model->{$this->property} = Json::decode($model->getAttribute($jsonField));
+        $model->{$this->property} = json_decode($model->getAttribute($jsonField), 1);
     }
 
     public function onBeforeSave(Event $event)
@@ -45,7 +46,8 @@ class JsonBehavior extends Behavior
         $model = $event->sender;
         $jsonField = $this->getJsonField($model);
 
-        $model->setAttribute($jsonField, Json::encode($model->{$this->property}));
+        //$model->setAttribute($jsonField, Json::encode($model->{$this->property}));
+        $model->setAttribute($jsonField, json_encode($model->{$this->property}));
     }
 
     protected function getJsonField(ActiveRecord $model)

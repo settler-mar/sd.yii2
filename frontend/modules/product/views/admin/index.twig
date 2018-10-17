@@ -16,11 +16,28 @@
                 </div>
             </div>
             <div class="row">
+                <form method="get">
+                    <div class="col-md-4">
+                        <select id="form-product-select-param" class="form-control " name="ProductSearch[param]" >
+                            <option value="">Выберите параметр</option>
+                            {% for param in params %}
+                            <option value="{{ param.id }}" data-values="{{ param.values }}">{{ param.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="form-product-select-value" class="form-control" name="ProductSearch[value]" >
+                            <option value="">Выберите значение</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="btn btn-primary" type="submit" value="Поиск">
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+
                 <div  class="col-md-12">
-                {# include('_search.twig', {'model': searchModel}) #}
-                {#<p>#}
-                    {#<a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Product' }}</a>#}
-                {#</p>#}
                 {{ grid_view_widget({
                         'dataProvider': dataProvider,
                         'filterModel': searchModel,

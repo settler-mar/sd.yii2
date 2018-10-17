@@ -3,6 +3,8 @@
 namespace frontend\modules\product\controllers;
 
 use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\params\models\ProductParameters;
+use frontend\modules\params\models\ProductParametersValues;
 use Yii;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductSearch;
@@ -40,12 +42,28 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        $get = Yii::$app->request->get();
         if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductView')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $sql = 'select id,name from '.ProductParameters::tableName();
+        if (!empty($get['ProductSearch']['product_categories'])) {
+            $sql .= (' where JSON_CONTAINS(categories,\'"'.$get['ProductSearch']['product_categories'].'"\',"$") '.
+                'or categories is null or categories = "null"');
+        }
+        $params = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach ($params as &$param) {
+            $sql = 'select id,name from '.ProductParametersValues::tableName(). ' where parameter_id =' . $param['id'];
+            if (!empty($get['ProductSearch']['product_categories'])) {
+                $sql .= (' and ( JSON_CONTAINS(categories,\'"'.$get['ProductSearch']['product_categories'].'"\',"$") '.
+                    'or categories is null or categories = "null" )');
+            }
+            $param['values'] = json_encode(Yii::$app->db->createCommand($sql)->queryAll());
+        }
+        //ddd($get, $params);
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -89,6 +107,7 @@ class AdminController extends Controller
                 $searchModel::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
             ],
             'categories' => ArrayHelper::map(ProductsCategory::find()->asArray()->all(),'id', 'name'),
+            'params'=>$params,
         ]);
     }
 

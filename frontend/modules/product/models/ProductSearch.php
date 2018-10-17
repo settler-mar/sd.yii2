@@ -12,6 +12,8 @@ use frontend\modules\product\models\Product;
  */
 class ProductSearch extends Product
 {
+    public $param;
+    public $value;
     public $product_categories;
     /**
      * @inheritdoc
@@ -23,6 +25,7 @@ class ProductSearch extends Product
             [['article', 'currency', 'description', 'modified_time', 'name', 'params', 'image', 'url', 'vendor',
                 'product_categories'], 'safe'],
             [['old_price', 'price'], 'number'],
+            [['param','value'], 'integer'],
         ];
     }
 
@@ -82,6 +85,10 @@ class ProductSearch extends Product
         if (!empty($this->product_categories)) {
             $query->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = cw_product.id');
             $query->andFilterWhere(['ptc.category_id' => $this->product_categories]);
+        }
+
+        if (!empty($this->param) && !empty($this->value)) {
+            //select params, JSON_EXTRACT(params, '$.\"Пол\"'), JSON_CONTAINS(params, '"Женский"', '$.\"Пол\"'),'{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}',  JSON_EXTRACT('{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}', '$.\"Пол\"'), JSON_CONTAINS('{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}', '"Женский"', '$.\"Пол\"') from cw_product limit 10
         }
 
         return $dataProvider;
