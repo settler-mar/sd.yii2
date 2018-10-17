@@ -14,6 +14,7 @@ use Yii;
  */
 class ProductsCategory extends \yii\db\ActiveRecord
 {
+    public $parentName;
     /**
      * @inheritdoc
      */
@@ -29,6 +30,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['parent'], 'exist', 'targetAttribute' => 'id'],
         ];
     }
 
@@ -39,7 +41,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Название',
+            'parent' => 'Родительская категория',
+            'parentName' => 'Родительская категория'
         ];
     }
 
@@ -50,4 +54,5 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProductsToCategory::className(), ['category_id' => 'id']);
     }
+
 }
