@@ -39,6 +39,29 @@
 
         {{ form.field(model, 'created_at').textInput()|raw }}
 
+        <div class="form-group">
+            <label>Категории</label>
+            <ul>
+                <li style="list-style-type:none">
+                    <label for="items_toggle_check" >
+                        <input id="items_toggle_check" class="toggle_items_check" type="checkbox" name="items_toggle_check" value="1" >
+                        Выбрать всё/отменить выбор
+                    </label>
+                </li>
+                {% for category in product_categories %}
+                    <li class="" style="list-style-type:none;padding-left: 10px;">
+                        <label for="product_categories_{{ category.id }}">
+                            <input id="product_categories_{{ category.id }}" type="checkbox" name="ProductParametersValues[possible_categories][]" value="{{ category.id }}"
+                                   {% if category.checked %}checked{% endif %} >
+                            {{ category.name }}
+                        </label>
+                    </li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
     <div class="form-group">
         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
     </div>

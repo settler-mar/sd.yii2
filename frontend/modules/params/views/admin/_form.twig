@@ -47,6 +47,12 @@
                         <div class="form-group">
                             <label>Категории</label>
                             <ul>
+                                <li style="list-style-type:none">
+                                    <label for="items_toggle_check" >
+                                        <input id="items_toggle_check" class="toggle_items_check" type="checkbox" name="items_toggle_check" value="1" >
+                                        Выбрать всё/отменить выбор
+                                    </label>
+                                </li>
                                 {% for category in product_categories %}
                                     <li class="" style="list-style-type:none;padding-left: 10px;">
                                         <label for="product_categories_{{ category.id }}">
@@ -56,9 +62,6 @@
                                         </label>
                                     </li>
                                 {% endfor %}
-                                <li style="list-style-type:none;padding-left: 10px;">
-                                    <button class="btn btn-primary toggle_items_check">Выбрать всё/отменить выбор</button>
-                                </li>
                             </ul>
 
                         </div>

@@ -3,6 +3,8 @@
 namespace frontend\modules\params\models;
 
 use Yii;
+use common\components\JsonBehavior;
+use frontend\modules\product\models\ProductsCategory;
 
 /**
  * This is the model class for table "cw_product_parameters_values".
@@ -24,6 +26,8 @@ class ProductParametersValues extends \yii\db\ActiveRecord
 
     public $possibles_synonyms = [];
     public $exists_synonyms = [];
+
+    public $possible_categories = [];
 
     protected static $values = [];
     /**
@@ -47,7 +51,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             [['parameter_id', 'name'], 'unique', 'targetAttribute' => ['parameter_id', 'name'], 'message' => 'The combination of Parameter ID and Name has already been taken.'],
             [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductParameters::className(), 'targetAttribute' => ['parameter_id' => 'id']],
             ['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
-            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()]
+            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()],
+            [['categories'], 'safe'],
+            ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
         ];
     }
 
@@ -63,6 +69,24 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             'active' => 'Активен',
             'created_at' => 'Created At',
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => JsonBehavior::className(),
+                'property' => 'categories',
+                'jsonField' => 'categories'
+            ]
+        ];
+    }
+
+    public function beforeValidate()
+    {
+        //ddd($this, $this->possible_categories);
+        $this->categories = !empty($this->possible_categories) ? $this->possible_categories : null;
+        return parent::beforeValidate();
     }
 
     /**

@@ -81,7 +81,11 @@ $(function() {
 			'obj':$this
 		};
 		notification.confirm(data)
-	})
+	});
+
+	$('ul input.toggle_items_check').on('click', function(e) {
+		$(this).closest('ul').find('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+	});
 });
 
 /*$(function() {
