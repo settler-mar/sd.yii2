@@ -10,7 +10,7 @@ class LangSelect extends Widget
 
   public function init()
   {
-    $dialogCloseDate  = isset($_COOKIE['_sd_country_dialog_close']) ? $_COOKIE['_sd_country_dialog_close'] : false;
+    $dialogCloseDate  =  Yii::$app->request->cookies->getValue('_sd_country_dialog_close');
     if (Yii::$app->user->isGuest) {
       //неавторизован - нет значения в куки или время больше недели
       $this->showDialog = !$dialogCloseDate || time() - $dialogCloseDate > 3600 * 24 * 7;

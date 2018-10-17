@@ -19,3 +19,12 @@ function eraseCookie(name){
 }
 
 document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+
+
+function setCookieAjax(name, value, days) {
+    $.post('/cookie', {name:name, value:value, days:days}, function(data){
+        if (data.error !== false) {
+            console.log(data);
+        }
+    });
+}

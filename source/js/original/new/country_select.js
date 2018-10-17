@@ -6,8 +6,8 @@ var country_select = function(){
 
     $('.header-countries_dialog-dialog-button-apply').click(function() {
         var date = new(Date);
-        date = date.getTime();
-        setCookie('_sd_country_dialog_close', Math.round(date/1000), 7);
+        date = Math.round(date.getTime()/1000);
+        setCookieAjax('_sd_country_dialog_close', date, 7);
         dialogClose(this);
     });
 

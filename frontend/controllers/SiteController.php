@@ -30,6 +30,9 @@ use frontend\modules\b2b_users\models\B2bUsers;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use frontend\modules\template\models\Template;
+use yii\web\NotFoundHttpException;
+use yii\validators\NumberValidator;
+use yii\validators\StringValidator;
 
 /**
  * Site controller
@@ -548,4 +551,29 @@ class SiteController extends SdController
 //    }
 //    return $link;
 //  }
+
+    public function actionCookie()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isAjax || !$request->post()) {
+            throw new NotFoundHttpException();
+        }
+        $validator = new StringValidator();
+        $numberValidator = new NumberValidator();
+        $name = $request->post('name');
+        $value = $request->post('value');
+        $days = $request->post('days');
+        if (!$validator->validate($name) || !$validator->validate($value) ||
+            (!$days && !$numberValidator->validate($days))) {
+            throw new NotFoundHttpException();
+        }
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => $name,
+            'value' => $value,
+            'expire' => !$days ? 0 : time() + 3600*24 * $days,
+        ]));
+
+        return json_encode(['error' => false]);
+    }
 }
