@@ -574,6 +574,6 @@ class SiteController extends SdController
             'expire' => !$days ? 0 : time() + 3600*24 * $days,
         ]));
 
-        return json_encode(['error' => false]);
+        return json_encode(['error' => 0]);
     }
 }

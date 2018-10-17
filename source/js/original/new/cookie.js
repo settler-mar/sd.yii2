@@ -23,8 +23,8 @@ document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ 
 
 function setCookieAjax(name, value, days) {
     $.post('/cookie', {name:name, value:value, days:days}, function(data){
-        if (data.error !== false) {
+        if (data.error !== 0) {
             console.log(data);
         }
-    });
+    }, 'json');
 }
