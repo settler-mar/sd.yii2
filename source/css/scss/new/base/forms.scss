@@ -399,6 +399,17 @@ td {
   &-wrap {
     width: 75%;
     margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+
+    @include media($tablets) {
+      width: 100%;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
   }
 
   @include media($phones) {
