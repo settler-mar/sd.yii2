@@ -542,7 +542,7 @@ class AdmitadController extends Controller
       //$products = $admitad->getProductsSample();
       foreach ($products as $product) {
           $count++;
-          $params = explode('|', (string) $product['param']);
+          $params = isset($product['param']) ? explode('|', (string) $product['param']) : [];
           $paramsArray = [];
           foreach ($params as $param) {
               $item  = explode(':', $param);
@@ -563,7 +563,10 @@ class AdmitadController extends Controller
           }
           $insert += $result['insert'];
           $error += $result['error'];
-          echo $count."\n";
+          if ($count % 100 == 0) {
+              echo $count."\n";
+          }
+
       }
       echo 'Products ' . $count . "\n";
       echo 'Inserted ' . $insert . "\n";
