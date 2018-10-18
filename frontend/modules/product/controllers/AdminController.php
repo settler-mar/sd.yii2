@@ -61,7 +61,8 @@ class AdminController extends Controller
                 $sql .= (' and ( JSON_CONTAINS(categories,\'"'.$get['ProductSearch']['product_categories'].'"\',"$") '.
                     'or categories is null or categories = "null" )');
             }
-            $param['values'] = json_encode(Yii::$app->db->createCommand($sql)->queryAll());
+            $values = Yii::$app->db->createCommand($sql)->queryAll();
+            $param['values'] = $values;
         }
         //ddd($get, $params);
 
@@ -108,6 +109,7 @@ class AdminController extends Controller
             ],
             'categories' => ArrayHelper::map(ProductsCategory::find()->asArray()->all(),'id', 'name'),
             'params'=>$params,
+            'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
         ]);
     }
 

@@ -17,21 +17,32 @@
             </div>
             <div class="row">
                 <form method="get">
+                    {% for key, value in get if key != 'param' and key !='value' and value %}
+                        <input type="hidden" name="ProductSearch[{{ key }}]" value="{{ value }}">
+                    {% endfor %}
                     <div class="col-md-4">
+                        {% set values_option = '' %}
                         <select id="form-product-select-param" class="form-control " name="ProductSearch[param]" >
                             <option value="">Выберите параметр</option>
                             {% for param in params %}
-                            <option value="{{ param.id }}" data-values="{{ param.values }}">{{ param.name }}</option>
+                                {% set values_options = '<option value="">Выберите значение</option>' %}
+                                {% for param_values in param.values %}
+                                    {% set values_options = values_options~'<option '~(get and param_values.name == get.value ? 'selected' : '')~' value="'~param_values.name~'" data-id="'~param_values.id~'">'~param_values.name~'</option>' %}
+                                {% endfor %}
+                                <option value="{{ param.name }}" data-id="{{ param.id }}" data-options="{{ values_options}}"
+                                     {% if get and param.name == get.param %} selected {% set values_option = values_options %} {% endif %}>{{ param.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-4">
                         <select id="form-product-select-value" class="form-control" name="ProductSearch[value]" >
                             <option value="">Выберите значение</option>
+                            {{ values_option|raw }}
                         </select>
                     </div>
                     <div class="col-md-4">
                         <input class="btn btn-primary" type="submit" value="Поиск">
+                        <a class="btn btn-primary" href="/admin/product" >Сбросить фильтр</a>
                     </div>
                 </form>
             </div>

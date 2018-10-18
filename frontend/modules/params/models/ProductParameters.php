@@ -70,16 +70,16 @@ class ProductParameters extends \yii\db\ActiveRecord
         ];
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => JsonBehavior::className(),
-                'property' => 'categories',
-                'jsonField' => 'categories'
-            ]
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class' => JsonBehavior::className(),
+//                'property' => 'categories',
+//                'jsonField' => 'categories'
+//            ]
+//        ];
+//    }
 
     /**
      * @return \yii\db\ActiveQuery

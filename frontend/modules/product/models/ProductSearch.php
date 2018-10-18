@@ -25,7 +25,7 @@ class ProductSearch extends Product
             [['article', 'currency', 'description', 'modified_time', 'name', 'params', 'image', 'url', 'vendor',
                 'product_categories'], 'safe'],
             [['old_price', 'price'], 'number'],
-            [['param','value'], 'integer'],
+            [['param','value'], 'string'],
         ];
     }
 
@@ -88,8 +88,9 @@ class ProductSearch extends Product
         }
 
         if (!empty($this->param) && !empty($this->value)) {
-            //select params, JSON_EXTRACT(params, '$.\"Пол\"'), JSON_CONTAINS(params, '"Женский"', '$.\"Пол\"'),'{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}',  JSON_EXTRACT('{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}', '$.\"Пол\"'), JSON_CONTAINS('{\"age\":[\"Взрослый\"],\"Пол\":[\"Женский\"]}', '"Женский"', '$.\"Пол\"') from cw_product limit 10
+            $query->andWhere('JSON_CONTAINS(params, \'"'.$this->value.'"\', \'$."'.$this->param.'"\')');
         }
+        //ddd($query->where);
 
         return $dataProvider;
     }

@@ -85,16 +85,16 @@ class Product extends \yii\db\ActiveRecord
         ];
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => JsonBehavior::className(),
-                'property' => 'params',
-                'jsonField' => 'params'
-            ]
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class' => JsonBehavior::className(),
+//                'property' => 'params',
+//                'jsonField' => 'params'
+//            ]
+//        ];
+//    }
 
     /**
      * @return \yii\db\ActiveQuery
