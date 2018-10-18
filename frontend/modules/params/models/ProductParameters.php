@@ -126,6 +126,7 @@ class ProductParameters extends \yii\db\ActiveRecord
                     $synonym->active = ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES;
                     $synonym->save();
                 }
+                $possible->moveValues($this->id);
             }
         }
         return parent::afterSave($insert, $changedAttributes);
@@ -192,5 +193,28 @@ class ProductParameters extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * перенос значений из параметра к
+     * @param $targetParameterId
+     */
+    public function moveValues($targetParameterId)
+    {
+        $values = $this->values;
+        foreach ($values as $value) {
+            $value->active = ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO;
+            $value->save();
+            $newValue = ProductParametersValues::findOne(['parameter_id'=>$targetParameterId, 'name'=>$value->name]);
+            if (!$newValue) {
+                $newValue = new ProductParametersValues();
+                $newValue->parameter_id = $targetParameterId;
+                $newValue->name = $value->name;
+                $newValue->active =  ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
+            } else {
+                $newValue->active = ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO ?
+                    ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING : $newValue->active;
+            }
+            $newValue->save();
+        }
+    }
 
 }
