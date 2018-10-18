@@ -134,13 +134,17 @@ class ProductParametersValues extends \yii\db\ActiveRecord
 
     public static function standartedValues($paramId, $values)
     {
+        //на входе массив значений
         $result = [];
         foreach ($values as $value) {
             $value = (string) $value;
+            //по каждому элементу
+            //пробуем найти в памяти
             if (isset(self::$values[$paramId][$value])) {
                 $result[] = self::$values[$paramId][$value];
                 continue;
             }
+            //ищем в таблице
             $out = self::findOne([
                 'name' => $value,
                 'parameter_id' => $paramId,
@@ -151,17 +155,28 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                 $result[] =  $out->name;
                 continue;
             }
+            //ищем синонимах
             $synonym = ProductParametersValuesSynonyms::findOne([
                 'text' => $value,
-                'active' => ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES
+                'active' => [
+                    ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES,
+                    ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_WAITING
+                ]
             ]);
             if ($synonym) {
+                //есть синоним, ищем от чего синоним
                 $out = self::findOne([
-                    'id' => $synonym->value_id, 'active' => self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES]);
-                self::$values[$paramId][$value] = $out->name;
-                $result[] = $out->name;
-                continue;
+                    'id' => $synonym->value_id, 'active' =>[
+                        self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES,
+                        self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING
+                    ]]);
+                if ($out) {
+                    self::$values[$paramId][$value] = $out->name;
+                    $result[] = $out->name;
+                    continue;
+                }
             }
+            //нет нигде, пишем значение
             $out = new self();
             $out->name = $value;
             $out->parameter_id = $paramId;

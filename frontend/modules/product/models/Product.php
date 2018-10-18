@@ -76,7 +76,7 @@ class Product extends \yii\db\ActiveRecord
             'name' => 'Наименование',
             'old_price' => 'Старая цена',
             'price' => 'Цена',
-            'params' => 'Params',
+            'params' => 'Параметры',
             'image' => 'Изображение',
             'url' => 'Url',
             'vendor' => 'Производитель',

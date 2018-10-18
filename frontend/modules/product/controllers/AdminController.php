@@ -49,22 +49,40 @@ class AdminController extends Controller
         }
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $sql = 'select id,name from '.ProductParameters::tableName();
-        if (!empty($get['ProductSearch']['product_categories'])) {
-            $sql .= (' where JSON_CONTAINS(categories,\'"'.$get['ProductSearch']['product_categories'].'"\',"$") '.
-                'or categories is null or categories = "null"');
+        $category = empty($get['ProductSearch']['product_categories']) ? false :
+            $get['ProductSearch']['product_categories'];
+
+        //нужно ли включить в выборку параметров родительские категории??? или наоборот, дочерние??
+
+        //параметры с учётом фильтра по категориям
+        $params = ProductParameters::find()
+            ->where(['<>', 'active', ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO])
+            ->select(['id', 'name'])
+            ->asArray();
+        if ($category) {
+            $params->andWhere([
+                'or',
+                ['categories' => null],
+                'JSON_CONTAINS(categories,\'"'.$category.'"\',"$")'
+            ]);
         }
-        $params = Yii::$app->db->createCommand($sql)->queryAll();
+        $params = $params->all();
         foreach ($params as &$param) {
-            $sql = 'select id,name from '.ProductParametersValues::tableName(). ' where parameter_id =' . $param['id'];
-            if (!empty($get['ProductSearch']['product_categories'])) {
-                $sql .= (' and ( JSON_CONTAINS(categories,\'"'.$get['ProductSearch']['product_categories'].'"\',"$") '.
-                    'or categories is null or categories = "null" )');
+            //для каждого параметра его значения с учётом фильтра по категориям
+            $values = ProductParametersValues::find()
+                ->select(['id', 'name'])
+                ->where(['<>', 'active', ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO])
+                ->andWhere(['parameter_id' => $param['id']])
+                ->asArray();
+            if ($category) {
+                $values->andWhere([
+                    'or',
+                    ['categories' => null],
+                    'JSON_CONTAINS(categories,\'"'.$category.'"\',"$")'
+                ]);
             }
-            $values = Yii::$app->db->createCommand($sql)->queryAll();
-            $param['values'] = $values;
+            $param['values'] = $values->all();
         }
-        //ddd($get, $params);
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -100,6 +118,17 @@ class AdminController extends Controller
                 },
                 'url' => function ($model) {
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
+                },
+                'params' => function ($model) {
+                    $out = '';
+                    foreach ($model->params as $param=>$values) {
+                        $out .= $param .':';
+                        foreach ($values as $value) {
+                            $out .= $value . ',';
+                        }
+                        $out .= '<br>';
+                    }
+                    return $out;
                 }
             ],
             'availableFilter' => [
@@ -107,7 +136,7 @@ class AdminController extends Controller
                 $searchModel::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
                 $searchModel::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
             ],
-            'categories' => ArrayHelper::map(ProductsCategory::find()->asArray()->all(),'id', 'name'),
+            'categories' => ArrayHelper::map(ProductsCategory::find()->asArray()->all(), 'id', 'name'),
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
         ]);

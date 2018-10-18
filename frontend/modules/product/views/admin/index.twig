@@ -36,7 +36,6 @@
                     </div>
                     <div class="col-md-4">
                         <select id="form-product-select-value" class="form-control" name="ProductSearch[value]" >
-                            <option value="">Выберите значение</option>
                             {{ values_option|raw }}
                         </select>
                     </div>
@@ -72,6 +71,12 @@
                                 'attribute':'product_categories',
                                 'value':tableData.categories,
                                 'filter':categories,
+                            },
+                            {
+                                'attribute':'params',
+                                'format': 'raw',
+                                'filter': null,
+                                'value': tableData.params
                             },
                             {
                                 'format':'raw',

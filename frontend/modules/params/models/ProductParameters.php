@@ -149,9 +149,11 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public static function standartedParam($param)
     {
+        //пробуем найти в памяти
         if (isset(self::$params[$param])) {
             return self::$params[$param];
         }
+        //ищем в таблице
         $out = self::findOne([
             'code'=>$param,
             'active' => [self::PRODUCT_PARAMETER_ACTIVE_YES, self::PRODUCT_PARAMETER_ACTIVE_WAITING]
@@ -160,15 +162,26 @@ class ProductParameters extends \yii\db\ActiveRecord
             self::$params[$param] = $out;
             return $out;
         }
+        //ищем в синоимах
         $synonym = ProductParametersSynonyms::findOne([
             'text' => $param,
-            'active'=> ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES
+            'active'=> [
+                ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_YES,
+                ProductParametersSynonyms::PRODUCT_PARAMETER_SYNONYM_ACTIVE_WAITING
+            ]
         ]);
         if ($synonym) {
-            $out = self::findOne(['id'=>$synonym->parameter_id, 'active' => self::PRODUCT_PARAMETER_ACTIVE_YES]);
-            self::$params[$param] = $out;
-            return $out;
+            //если нашили, то ищем оригинал
+            $out = self::findOne([
+                'id'=>$synonym->parameter_id,
+                'active' => [self::PRODUCT_PARAMETER_ACTIVE_YES, self::PRODUCT_PARAMETER_ACTIVE_WAITING]
+            ]);
+            if ($out) {
+                self::$params[$param] = $out;
+                return $out;
+            }
         }
+        //создаём новый параметр
         $out = new self();
         $out->code = $param;
         $out->name = $param;

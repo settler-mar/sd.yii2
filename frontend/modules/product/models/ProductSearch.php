@@ -22,7 +22,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'available', 'store'], 'integer'],
-            [['article', 'currency', 'description', 'modified_time', 'name', 'params', 'image', 'url', 'vendor',
+            [['article', 'currency', 'description', 'modified_time', 'name', 'image', 'url', 'vendor',
                 'product_categories'], 'safe'],
             [['old_price', 'price'], 'number'],
             [['param','value'], 'string'],
@@ -62,6 +62,7 @@ class ProductSearch extends Product
             // $query->where('0=1');
             return $dataProvider;
         }
+        $dataProvider->sort->attributes['params'] = null;
 
         // grid filtering conditions
         $query->andFilterWhere([
