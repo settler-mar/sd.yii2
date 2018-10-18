@@ -14,9 +14,12 @@ class Admitad{
   private $admitad;
   private $authorizeData;
 
-  public function init($scope){
-    $this->config=Yii::$app->params['admitad'];
+  public function __construct($config)
+  {
+      $this->config = $config;
+  }
 
+  public function init($scope){
     $this->admitad =  Yii::$app->cache->getOrSet('admitad_'.$scope,function() use ($scope){
       $api = new Api();
       $this->authorizeData = $api->authorizeClient(

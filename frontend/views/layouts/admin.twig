@@ -64,6 +64,7 @@
           <a href="/admin/stores">Магазины</a>
           <ul>
             <li><a href="/admin-categories/stores">Категории</a></li>
+            <li><a href="/admin/products">Продукты</a></li>
           </ul>
         </li>
         <li class="no-icon  has-children" style="display:none">
@@ -81,7 +82,14 @@
             {% endfor %}
           </ul>
         </li>
-        <li class="no-icon"><a href="/admin/products">Продукты</a></li>
+        <li class="no-icon has-children">
+          <a href="/admin/product">Каталоги</a>
+          <ul>
+            <li><a href="/admin-category/product">Категории</a></li>
+            <li><a href="/admin/params">Параметры</a></li>
+            <li><a href="/admin-values/params">Значения параметров</a></li>
+          </ul>
+        </li>
         <li class="no-icon has-children">
           <a href="/admin/users">Пользователи</a>
           <ul>

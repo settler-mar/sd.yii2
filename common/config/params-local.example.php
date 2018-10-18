@@ -10,6 +10,13 @@ return [
         'clientSecret' => '',
         'websiteId' => '',
     ],
+    'admitad-prod'=>[
+        'user' => '',
+        'code' => '',
+        'clientId'=>'',
+        'clientSecret'=>'',
+        'websiteId'=>'',
+    ],
     'actionpay' => [
         'apiKey' => 'pPet0aJOhlewujTH',
     ],

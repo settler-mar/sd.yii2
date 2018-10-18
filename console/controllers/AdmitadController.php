@@ -8,6 +8,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\products\models\Products;
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
 use Yii;
@@ -22,7 +23,10 @@ class AdmitadController extends Controller
   private $users = [];
   private $categories = [];
   private $helpMy = false;
-  private $cpa_id = 1;//admitad
+  protected $cpa_id;
+  protected $config;
+  protected $cpaName = 'Admitad';
+  protected $configName = 'admitad';
 
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
@@ -35,6 +39,15 @@ class AdmitadController extends Controller
     if (Console::isRunningOnWindows()) {
       shell_exec('chcp 65001');
     }
+    if (!isset(Yii::$app->params[$this->configName])) {
+        ddd('Config "'.$this->configName. '" not found');
+    }
+    $this->config = Yii::$app->params[$this->configName];
+    $cpa = Cpa::findOne(['name'=>$this->cpaName]);
+    if (!$cpa) {
+        ddd('Cpa "'.$this->cpaName. '" not found');
+    }
+    $this->cpa_id = $cpa->id;
     return parent::beforeAction($action);
   }
 
@@ -44,7 +57,7 @@ class AdmitadController extends Controller
    */
   public function actionTest()
   {
-    $test = new Admitad();
+    $test = new Admitad($this->config);
     ddd($test->test());
   }
 
@@ -53,13 +66,13 @@ class AdmitadController extends Controller
    */
   public function actionTestLink()
   {
-    $test = new Admitad();
+    $test = new Admitad($this->config);
 
     $url = "https://ru.aliexpress.com/item/Leather-Wallet-Case-for-Huawei-Y6-2018-Honor-Play-7A-Standart-Y5-2018-holder-Cover-for/32891754791.html";
     //$url="https://ru.aliexpress.com/item/Oyuncak-Squishe/32874305939.html";
     $store_id = "93";
 
-    $store = CpaLink::findOne(['stores_id' => $store_id, 'cpa_id' => 1]);
+    $store = CpaLink::findOne(['stores_id' => $store_id, 'cpa_id' => $this->cpa_id]);
 
     $options = [
         'subid' => 0,
@@ -129,7 +142,7 @@ class AdmitadController extends Controller
   {
     Yii::$app->balanceCalc->setNotWork(true);
 
-    $admitad = new Admitad();
+    $admitad = new Admitad($this->config);
     $days = isset(Yii::$app->params['pays_update_period']) ? Yii::$app->params['pays_update_period'] : 3;
     //   $days=300;
     $params = [
@@ -189,7 +202,7 @@ class AdmitadController extends Controller
         $paymentsCount++;
         $payment['cpa_id'] = $this->cpa_id;
         $payment['affiliate_id'] = $payment['advcampaign_id'];//задаём жёстко
-        $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => 1]);
+        $cpa_link = CpaLink::findOne(['affiliate_id' => $payment['advcampaign_id'], 'cpa_id' => $this->cpa_id]);
         $payment['cpa_link_id'] = $cpa_link->id;
 
         $payment['status'] = isset($pay_status[$payment['status']]) ? $pay_status[$payment['status']] : 0;
@@ -265,7 +278,7 @@ class AdmitadController extends Controller
 
   private function getStores($params, $count = 5)
   {
-    $admitad = new Admitad();
+    $admitad = new Admitad($this->config);
     if ($count <= 0) return false;
 
     try {
@@ -277,8 +290,8 @@ class AdmitadController extends Controller
     return $res;
   }
 
-  /*
-   * получение шопов
+  /**
+   * Получение шопов
    */
   public function actionStore()
   {
@@ -361,7 +374,7 @@ class AdmitadController extends Controller
    */
   public function actionCoupons()
   {
-    $admitad = new Admitad();
+    $admitad = new Admitad($this->config);
     $params = [
       //'region' => '00',
       //'campaign'=>'12026',
@@ -406,7 +419,7 @@ class AdmitadController extends Controller
             'link' => $coupon['frameset_link'],
             'exclusive' => $coupon['exclusive'] == 'true' ? 1 : 0,
             'categories' => $coupon['categories'],
-            'cpa_id' => 1,
+            'cpa_id' => $this->cpa_id,
         ];
 
         $result = Coupons::makeOrUpdate($newCoupon);
@@ -508,12 +521,16 @@ class AdmitadController extends Controller
     ];
   }
 
+    /**
+     * Обновление каталога продуктов
+     *
+     */
   public function actionProduct()
   {
       $config = Yii::$app->params['products_import'];
 
-      $cpaLinks = CpaLink::find()->where(['cpa_id' => 1])->all();
-      $admitad = new Admitad();
+      $cpaLinks = CpaLink::find()->where(['cpa_id' => $this->cpa_id])->all();
+      $admitad = new Admitad($this->config);
 
       foreach ($cpaLinks as $cpaLink) {
           if (!empty($config['stores_only']) && !in_array($cpaLink->affiliate_id, $config['stores_only'])) {
@@ -533,7 +550,7 @@ class AdmitadController extends Controller
       }
   }
 
-  protected function writeProducts($products, $affiliate_id)
+  private function writeProducts($products, $affiliate_id)
   {
       $count = 0;
       $insert = 0;
@@ -555,7 +572,7 @@ class AdmitadController extends Controller
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
           $product['params_original'] = $product['param'];
-          $product['cpa_id'] = 1;//admitad
+          $product['cpa_id'] = $this->cpa_id;
           $product['store'] = $affiliate_id;
           $result = Product::addOrUpdate($product);
           if ($result['error']) {
