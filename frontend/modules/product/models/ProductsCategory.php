@@ -69,4 +69,22 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
 
+    /**
+     * дерево категорий
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function tree()
+    {
+        return self::childs();
+    }
+
+    public static function childs($parent = null)
+    {
+        $childs =  self::find()->where(['parent'=>$parent])->asArray()->all();
+        foreach ($childs as &$child) {
+            $child['childs'] = self::childs($child['id']);
+        }
+        return $childs;
+    }
+
 }

@@ -139,7 +139,7 @@ class AdminValuesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             $possibles = ProductParametersValues::find()
                 ->where(['parameter_id'=>$model->parameter_id])
@@ -151,17 +151,12 @@ class AdminValuesController extends Controller
             foreach ($possibles as &$possible) {
                 $possible['checked']= in_array($possible['name'], $synonyms);
             }
-            //ddd($possibles, $synonyms);
-            $productCategories = ProductsCategory::find()->asArray()->all();
-            foreach ($productCategories as &$category) {
-                $category['checked'] = $model->categories && in_array($category['id'], $model->categories);
-            }
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'parameterList' => $this->parameterList(),
                 'possibles' => $possibles,
-                'product_categories' => $productCategories,
+                'product_categories_tree' => ProductsCategory::tree(),
             ]);
         }
     }

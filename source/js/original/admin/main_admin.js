@@ -83,8 +83,8 @@ $(function() {
 		notification.confirm(data)
 	});
 
-	$('ul input.toggle_items_check').on('click', function(e) {
-		$(this).closest('ul').find('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+	$('.form-group input.toggle_items_check').on('click', function(e) {
+		$(this).closest('.form-group').find('input[type=checkbox]').prop('checked', $(this).prop('checked'));
 	});
 });
 
