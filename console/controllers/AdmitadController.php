@@ -542,7 +542,7 @@ class AdmitadController extends Controller
           if (isset($advacampaing['products_csv_link'])) {
               $products = $admitad->getProduct($advacampaing['products_csv_link'], $cpaLink->affiliate_id, $config['refresh_csv']);
               echo "Store ".$cpaLink->affiliate_id." Products\n";
-              $this->writeProducts($products, $cpaLink->affiliate_id);
+              $this->writeProducts($products, $cpaLink->affiliate_id, $advacampaing['modified_date']);
           } else {
               echo "Store ".$cpaLink->affiliaate_id." products link does not exists\n";
           }
@@ -550,7 +550,7 @@ class AdmitadController extends Controller
       }
   }
 
-  private function writeProducts($products, $affiliate_id)
+  private function writeProducts($products, $affiliate_id, $refresh_date)
   {
       $count = 0;
       $insert = 0;
@@ -568,6 +568,7 @@ class AdmitadController extends Controller
               }
               //d($item[1], $paramsArray[$item[0]]);
           }
+          $product['refresh_date'] = $refresh_date;
           $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);

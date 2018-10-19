@@ -49,7 +49,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['article', 'name'], 'required'],
-            [['available', 'store'], 'integer'],
+            [['available', 'store', 'cpa_id'], 'integer'],
             [['description'], 'string'],
             [['params'], 'safe'],
             [['modified_time'], 'safe'],
@@ -85,17 +85,6 @@ class Product extends \yii\db\ActiveRecord
         ];
     }
 
-//    public function behaviors()
-//    {
-//        return [
-//            [
-//                'class' => JsonBehavior::className(),
-//                'property' => 'params',
-//                'jsonField' => 'params'
-//            ]
-//        ];
-//    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -113,20 +102,29 @@ class Product extends \yii\db\ActiveRecord
             ->viaTable(ProductsToCategory::tableName(), ['product_id' => 'id']);
     }
 
+    /**
+     * @param $product
+     * @return array
+     */
     public static function addOrUpdate($product)
     {
+        CatalogStores::refreshStore($product);
         $new = 0;
         $error = 0;
         $article = (string) $product['id'];
-        $productDb = self::findOne(['article' => $article, 'cpa_id' => $product['cpa_id']]);
+        $productDb = self::findOne([
+            'cpa_id' => $product['cpa_id'],
+            'store' => $product['store'],
+            'article' => $article
+        ]);
         $currency = (string) $product['currencyId'];
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
         if (!$productDb) {
             $productDb = new self();
-            $productDb->article = $article;
-            $productDb->image = self::saveImage((string) $product['picture']);
             $productDb->cpa_id = $product['cpa_id'];
             $productDb->store = $product['store'];
+            $productDb->article = $article;
+            $productDb->image = self::saveImage((string) $product['picture']);
             $new = 1;
         }
         $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
@@ -248,4 +246,5 @@ class Product extends \yii\db\ActiveRecord
         }
         return static::$categories[$name];
     }
+
 }
