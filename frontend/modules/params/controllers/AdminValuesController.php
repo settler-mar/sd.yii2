@@ -74,7 +74,22 @@ class AdminValuesController extends Controller
                     }
                     return $out;
                 },
+                'categories' => function ($model) {
+                    $out = '';
+                    if ($model->categories) {
+                        foreach ($model->categories as $category) {
+                            $productCategory = ProductsCategory::findOne($category);
+                            $out .= ($productCategory ? $productCategory->name .'; ' : '');
+                        }
+                    }
+                    return $out;
+                },
             ],
+            'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
+                ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
+                'id',
+                'name'
+            )),
 
         ]);
     }

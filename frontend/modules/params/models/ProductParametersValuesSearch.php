@@ -13,13 +13,14 @@ use frontend\modules\params\models\ProductParametersValues;
 class ProductParametersValuesSearch extends ProductParametersValues
 {
     public $synonyms_list;
+    public $product_categories;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'parameter_id', 'active'], 'integer'],
+            [['id', 'parameter_id', 'active', 'product_categories'], 'integer'],
             [['name', 'created_at'], 'safe'],
             [['synonyms_list'], 'safe'],
         ];
@@ -72,6 +73,12 @@ class ProductParametersValuesSearch extends ProductParametersValues
         if (!empty($this->synonyms_list)) {
             $query->leftJoin(ProductParametersValuesSynonyms::tableName(). ' ppvs', 'ppvs.value_id = '.$this->tableName().'.id');
             $query->andFilterWhere(['like', 'ppvs.text', $this->synonyms_list]);
+        }
+
+        if ($this->product_categories === "0") {
+            $query->andWhere(['categories' => null]);
+        } elseif (!empty($this->product_categories)) {
+            $query->andWhere('JSON_CONTAINS('.$this->tableName().'.categories,\'"'.$this->product_categories.'"\',"$")');
         }
 
         return $dataProvider;

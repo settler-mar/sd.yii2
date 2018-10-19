@@ -94,7 +94,7 @@ class AdminController extends Controller
                     if ($model->categories) {
                         foreach ($model->categories as $category) {
                             $productCategory = ProductsCategory::findOne($category);
-                            $out .= ($productCategory ? $productCategory->name .',' : '');
+                            $out .= ($productCategory ? $productCategory->name .'; ' : '');
                         }
                     }
                     return $out;

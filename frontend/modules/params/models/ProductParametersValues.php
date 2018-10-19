@@ -67,6 +67,7 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             'parameter_id' => 'Параметр',
             'name' => 'Значение',
             'active' => 'Активен',
+            'product_categories' => 'Категории',
             'created_at' => 'Created At',
         ];
     }
