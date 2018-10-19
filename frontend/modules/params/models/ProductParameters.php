@@ -110,6 +110,7 @@ class ProductParameters extends \yii\db\ActiveRecord
                 if ($standartedValues) {
                     $out[$paramStandarted->code] = empty($out[$paramStandarted->code]) ? $standartedValues:
                         array_merge($out[$paramStandarted->code], $standartedValues);
+                    $out[$paramStandarted->code] = array_unique($out[$paramStandarted->code]);
                 }
             }
         }

@@ -12,7 +12,6 @@ use frontend\modules\params\models\ProductParametersValues;
  */
 class ProductParametersValuesSearch extends ProductParametersValues
 {
-    public $synonyms_list;
     public $product_categories;
     /**
      * @inheritdoc
@@ -21,7 +20,7 @@ class ProductParametersValuesSearch extends ProductParametersValues
     {
         return [
             [['id', 'parameter_id', 'active', 'product_categories'], 'integer'],
-            [['name', 'created_at'], 'safe'],
+            [['name', 'created_at', 'synonym'], 'safe'],
             [['synonyms_list'], 'safe'],
         ];
     }
@@ -62,23 +61,22 @@ class ProductParametersValuesSearch extends ProductParametersValues
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'parameter_id' => $this->parameter_id,
-            'active' => $this->active,
-            'created_at' => $this->created_at,
+            $this->tableName().'.id' => $this->id,
+            $this->tableName().'.parameter_id' => $this->parameter_id,
+            $this->tableName().'.active' => $this->active,
+            $this->tableName().'.created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
-
-        if (!empty($this->synonyms_list)) {
-            $query->leftJoin(ProductParametersValuesSynonyms::tableName(). ' ppvs', 'ppvs.value_id = '.$this->tableName().'.id');
-            $query->andFilterWhere(['like', 'ppvs.text', $this->synonyms_list]);
-        }
+        $query->andFilterWhere(['like', $this->tableName().'.name', $this->name]);
 
         if ($this->product_categories === "0") {
             $query->andWhere(['categories' => null]);
         } elseif (!empty($this->product_categories)) {
             $query->andWhere('JSON_CONTAINS('.$this->tableName().'.categories,\'"'.$this->product_categories.'"\',"$")');
+        }
+        if (!empty($this->synonym)) {
+            $query->leftJoin($this->tableName().' syn', 'syn.id = '.$this->tableName().'.synonym');
+            $query->andWhere(['like', 'syn.name', $this->synonym]);
         }
 
         return $dataProvider;

@@ -24,8 +24,8 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     const PRODUCT_PARAMETER_VALUES_ACTIVE_NO = 0;
     const PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING = 2;
 
-    public $possibles_synonyms = [];
-    public $exists_synonyms = [];
+    //public $possibles_synonyms = [];
+    //public $exists_synonyms = [];
 
     public $possible_categories = [];
 
@@ -45,13 +45,13 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     {
         return [
             [['parameter_id', 'name'], 'required'],
-            [['parameter_id', 'active'], 'integer'],
+            [['parameter_id', 'active', 'synonym'], 'integer'],
             [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['parameter_id', 'name'], 'unique', 'targetAttribute' => ['parameter_id', 'name'], 'message' => 'The combination of Parameter ID and Name has already been taken.'],
             [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductParameters::className(), 'targetAttribute' => ['parameter_id' => 'id']],
-            ['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
-            ['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()],
+            //['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
+            //['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()],
             [['categories'], 'safe'],
             ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
         ];
@@ -68,24 +68,13 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             'name' => 'Значение',
             'active' => 'Активен',
             'product_categories' => 'Категории',
+            'synonym' => 'Является синонимом для',
             'created_at' => 'Created At',
         ];
     }
 
-//    public function behaviors()
-//    {
-//        return [
-//            [
-//                'class' => JsonBehavior::className(),
-//                'property' => 'categories',
-//                'jsonField' => 'categories'
-//            ]
-//        ];
-//    }
-
     public function beforeValidate()
     {
-        //ddd($this, $this->possible_categories);
         $this->categories = !empty($this->possible_categories) ? $this->possible_categories : null;
         return parent::beforeValidate();
     }
@@ -101,36 +90,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSynonyms()
+    public function getSynonymValue()
     {
-        return $this->hasMany(ProductParametersValuesSynonyms::className(), ['value_id' => 'id']);
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        $synonyms = ProductParametersValuesSynonyms::find()->where(['value_id' => $this->id])->all();
-        foreach ($synonyms as $synonym) {
-            $synonym->active = in_array($synonym->id, $this->exists_synonyms) ?
-                ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES :
-                ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_NO;
-            $synonym->save();
-        }
-        if (!empty($this->possibles_synonyms)) {
-            $possibles = self::find()->where(['id' => $this->possibles_synonyms])->all();
-            foreach ($possibles as $possible) {
-                $possible->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_NO;
-                $possible->save();
-                $synonym = ProductParametersValuesSynonyms::find()->where(['text'=>$possible->name])->one();
-                if (!$synonym) {
-                    $synonym = new ProductParametersValuesSynonyms();
-                    $synonym->value_id = $this->id;
-                    $synonym->text = $possible->name;
-                    $synonym->active = ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES;
-                    $synonym->save();
-                }
-            }
-        }
-        return parent::afterSave($insert, $changedAttributes);
+        return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
 
     public static function standartedValues($paramId, $values)
@@ -142,40 +104,40 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             //по каждому элементу
             //пробуем найти в памяти
             if (isset(self::$values[$paramId][$value])) {
-                $result[] = self::$values[$paramId][$value];
+                if (self::$values[$paramId][$value] !== false) {
+                    $result[] = self::$values[$paramId][$value];
+                }
                 continue;
             }
             //ищем в таблице
             $out = self::findOne([
                 'name' => $value,
                 'parameter_id' => $paramId,
-                'active' => [self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES, self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING]
             ]);
             if ($out) {
-                self::$values[$paramId][$value] = $out->name;
-                $result[] =  $out->name;
-                continue;
-            }
-            //ищем синонимах
-            $synonym = ProductParametersValuesSynonyms::findOne([
-                'text' => $value,
-                'active' => [
-                    ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_YES,
-                    ProductParametersValuesSynonyms::PRODUCT_PARAMETER_VALUES_SYNONYM_ACTIVE_WAITING
-                ]
-            ]);
-            if ($synonym) {
-                //есть синоним, ищем от чего синоним
-                $out = self::findOne([
-                    'id' => $synonym->value_id, 'active' =>[
-                        self::PRODUCT_PARAMETER_VALUES_ACTIVE_YES,
-                        self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING
-                    ]]);
-                if ($out) {
+                //нашли
+                if ($out->synonymValue) {
+                    //имеется синоним
+                    if ($out->synonymValue->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+                        //синоним активен
+                        self::$values[$paramId][$value] = $out->synonymValue->name;
+                        $result[] = $out->synonymValue->name;
+                        continue;
+                    }
+                    //если неактивен то false
+                    self::$values[$paramId][$value] = false;
+                    continue;
+                }
+                //нет синонима
+                if ($out->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+                    //само значение активно
                     self::$values[$paramId][$value] = $out->name;
                     $result[] = $out->name;
                     continue;
                 }
+                //если неактивен то false
+                self::$values[$paramId][$value] = false;
+                continue;
             }
             //нет нигде, пишем значение
             $out = new self();
@@ -184,11 +146,11 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             $out->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
             if ($out->save()) {
                 self::$values[$paramId][$value] = $out->name;
+                $result[] =  $out->name;
             } else {
                 d($out->errors);
             }
-            self::$values[$paramId][$value] = $out->name;
-            $result[] =  $out->name;
+
         }
         return $result;
     }

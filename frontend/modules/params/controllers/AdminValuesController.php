@@ -47,7 +47,6 @@ class AdminValuesController extends Controller
         }
         $searchModel = new ProductParametersValuesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -64,16 +63,6 @@ class AdminValuesController extends Controller
                             return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
                     }
                 },
-                'synonyms' => function ($model) {
-                    $out = '';
-                    $loop = 0;
-                    foreach ($model->synonyms as $synonym) {
-                        $out .= $loop ? ', ': '';
-                        $out .= ('<span class="'.ProductParameters::activeClass($synonym->active).'">'.$synonym->text.'</span>');
-                        $loop++;
-                    }
-                    return $out;
-                },
                 'categories' => function ($model) {
                     $out = '';
                     if ($model->categories) {
@@ -83,6 +72,9 @@ class AdminValuesController extends Controller
                         }
                     }
                     return $out;
+                },
+                'synonym_name' => function ($model) {
+                    return $model->synonymValue ? $model->synonymValue->name.' ('.$model->synonymValue->id.')' : '';
                 },
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
@@ -141,21 +133,19 @@ class AdminValuesController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            $possibles = ProductParametersValues::find()
-                ->where(['parameter_id'=>$model->parameter_id])
-                ->andWhere(['<>', 'id', $id])
-                ->andWhere(['<>', 'active', ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO])
-                ->asArray()
-                ->all();
-            $synonyms = array_column($model->synonyms, 'text');
-            foreach ($possibles as &$possible) {
-                $possible['checked']= in_array($possible['name'], $synonyms);
-            }
+            $valuesList = ArrayHelper::map(
+                ProductParametersValues::find()
+                    ->where(['parameter_id'=>$model->parameter_id])
+                    ->andWhere(['<>', 'id', $id])
+                    ->asArray()->all(),
+                'id',
+                'name'
+            );
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'parameterList' => $this->parameterList(),
-                'possibles' => $possibles,
+                'valuesList' => $valuesList,
                 'product_categories_tree' => ProductsCategory::tree(),
             ]);
         }

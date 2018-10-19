@@ -12,7 +12,6 @@ use frontend\modules\params\models\ProductParameters;
  */
 class ProductParametersSearch extends ProductParameters
 {
-    //public $synonym_names;
     public $values;
     public $product_categories;
     /**
@@ -84,8 +83,6 @@ class ProductParametersSearch extends ProductParameters
         } elseif (!empty($this->synonym)) {
             $query->andWhere([$this->tableName().'.synonym' => $this->synonym]);
         }
-
-        //ddd($this, $query->where);
 
         return $dataProvider;
     }

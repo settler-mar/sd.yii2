@@ -25,7 +25,8 @@ class m181015_123136_ChangeForeignKeyProductToCategorieTable extends Migration
             'cw_products_to_category',
             'product_id',
             'cw_product',
-            'id'
+            'id',
+            'cascade'
         );
     }
 
@@ -47,8 +48,7 @@ class m181015_123136_ChangeForeignKeyProductToCategorieTable extends Migration
             'cw_products_to_category',
             'product_id',
             'cw_product',
-            'id',
-            'cascade'
+            'id'
         );
     }
 
