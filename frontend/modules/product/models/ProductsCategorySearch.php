@@ -57,6 +57,8 @@ class ProductsCategorySearch extends ProductsCategory
             return $dataProvider;
         }
 
+        $dataProvider->sort->attributes['categories'] = null;
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

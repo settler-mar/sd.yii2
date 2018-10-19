@@ -11,6 +11,7 @@ use frontend\modules\product\models\ProductsCategory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * AdminController implements the CRUD actions for ProductParameters model.
@@ -67,24 +68,43 @@ class AdminController extends Controller
                 'synonyms' => function ($model) {
                     $out = '';
                     $loop = 0;
-                    foreach ($model->synonyms as $synonym) {
-                        $out .= $loop ? ', ': '';
-                        $out .= ('<span class="'.ProductParameters::activeClass($synonym->active).'">'.$synonym->text.'</span>');
-                        $loop++;
+                    if ($model->synonyms) {
+                        foreach ($model->synonyms as $synonym) {
+                            $out .= $loop ? ', ' : '';
+                            $out .= ('<span class="' . ProductParameters::activeClass($synonym->active) . '">' . $synonym->text . '</span>');
+                            $loop++;
+                        }
                     }
                     return $out;
                 },
                 'values' => function ($model) {
                     $out = '';
                     $loop = 0;
-                    foreach ($model->values as $value) {
-                        $out .= $loop ? ', ': '';
-                        $out .= ('<span class="'.ProductParameters::activeClass($value->active).'">'.$value->name.'</span>');
-                        $loop++;
+                    if ($model->values) {
+                        foreach ($model->values as $value) {
+                            $out .= $loop ? ', ' : '';
+                            $out .= ('<span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span>');
+                            $loop++;
+                        }
+                    }
+                    return $out;
+                },
+                'categories' => function ($model) {
+                    $out = '';
+                    if ($model->categories) {
+                        foreach ($model->categories as $category) {
+                            $productCategory = ProductsCategory::findOne($category);
+                            $out .= ($productCategory ? $productCategory->name .',' : '');
+                        }
                     }
                     return $out;
                 }
             ],
+            'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
+                ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
+                'id',
+                'name'
+            )),
         ]);
     }
 

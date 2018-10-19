@@ -66,6 +66,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             'name' => 'Name',
             'active' => 'Active',
             'categories' => 'Категории',
+            'product_categories' => 'Категории',
             'created_at' => 'Created At',
         ];
     }

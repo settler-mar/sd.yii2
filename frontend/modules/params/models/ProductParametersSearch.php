@@ -14,13 +14,14 @@ class ProductParametersSearch extends ProductParameters
 {
     public $synonym_names;
     public $synonym_values;
+    public $product_categories;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'active'], 'integer'],
+            [['id', 'active', 'product_categories'], 'integer'],
             [['code', 'name', 'created_at', 'synonym_names', 'synonym_values'], 'safe'],
         ];
     }
@@ -78,6 +79,13 @@ class ProductParametersSearch extends ProductParameters
             $query->leftJoin(ProductParametersValues::tableName(). ' ppv', 'ppv.parameter_id = '.$this->tableName().'.id');
             $query->andFilterWhere(['like', 'ppv.name', $this->synonym_values]);
         }
+        if ($this->product_categories === "0") {
+            $query->andWhere(['categories' => null]);
+        } elseif (!empty($this->product_categories)) {
+            $query->andWhere('JSON_CONTAINS('.$this->tableName().'.categories,\'"'.$this->product_categories.'"\',"$")');
+        }
+
+        //ddd($this, $query->where);
 
         return $dataProvider;
     }
