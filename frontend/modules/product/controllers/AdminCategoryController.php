@@ -51,8 +51,10 @@ class AdminCategoryController extends Controller
             'dataProvider' => $dataProvider,
             'tableData' => [
                 'parent' => function ($model) {
-                    $parent = ProductsCategory::findOne($model->parent);
-                    return $parent ? $parent->name.' ('.$parent->id.')' : '';
+                    return isset($model->parentCategory->name) ? $model->parentCategory->name : '';
+                },
+                'synonym' => function ($model) {
+                    return isset($model->synonymCategory->name) ? $model->synonymCategory->name : '';
                 },
                 'active' => function ($model) {
                     switch ($model->active) {
@@ -65,7 +67,7 @@ class AdminCategoryController extends Controller
                     }
                 }
             ],
-            'parents' => array_merge([0 => 'Нет родительской'], ArrayHelper::map(
+            'parents' => array_merge([0 => 'Нет'], ArrayHelper::map(
                 ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
                 'id',
                 'name'

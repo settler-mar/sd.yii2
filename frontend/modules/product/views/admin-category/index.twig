@@ -22,12 +22,11 @@
                         'filterModel': searchModel,
                             'columns': [
                             {'class': '\\yii\\grid\\SerialColumn'},
-
                             'id',
                             'name',
                             {'attribute':'parent','format':'raw','value':tableData.parent,'filter':parents},
                             {'attribute':'active','format':'raw','value':tableData.active,'filter':activeFilter},
-                            'synonym',
+                            {'attribute':'synonym','format':'raw','value':tableData.synonym,'filter':parents},
                             'crated_at',
                             {'class': '\\yii\\grid\\ActionColumn', 'template':'{update}'},
                         ],

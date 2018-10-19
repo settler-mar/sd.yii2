@@ -60,9 +60,13 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $this->hasMany(ProductsToCategory::className(), ['category_id' => 'id']);
     }
 
-    public function getParent()
+    public function getParentCategory()
     {
-        return $this->hasOne();
+        return $this->hasOne(self::className(), ['id' => 'parent']);
+    }
+    public function getSynonymCategory()
+    {
+        return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
 
 }
