@@ -109,10 +109,12 @@ class AdminController extends Controller
                 'categories' => function ($model) {
                     $out = '';
                     $loop = 0;
-                    foreach ($model->categories as $category) {
-                        $out .= $category->name;
-                        $loop++;
-                        $out .= ($loop<count($model->categories) ? '<br>' : '');
+                    if ($model->categories) {
+                        foreach ($model->categories as $category) {
+                            $out .= $category->name;
+                            $loop++;
+                            $out .= ($loop < count($model->categories) ? '<br>' : '');
+                        }
                     }
                     return $out;
                 },
@@ -121,12 +123,14 @@ class AdminController extends Controller
                 },
                 'params' => function ($model) {
                     $out = '';
-                    foreach ($model->params as $param=>$values) {
-                        $out .= $param .':';
-                        foreach ($values as $value) {
-                            $out .= $value . ',';
+                    if ($model->params) {
+                        foreach ($model->params as $param => $values) {
+                            $out .= $param . ':';
+                            foreach ($values as $value) {
+                                $out .= $value . ',';
+                            }
+                            $out .= '<br>';
                         }
-                        $out .= '<br>';
                     }
                     return $out;
                 }

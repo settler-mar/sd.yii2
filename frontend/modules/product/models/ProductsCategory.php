@@ -14,7 +14,10 @@ use Yii;
  */
 class ProductsCategory extends \yii\db\ActiveRecord
 {
-    public $parentName;
+    const PRODUCT_CATEGORY_ACTIVE_NOT = 0;
+    const PRODUCT_CATEGORY_ACTIVE_YES = 1;
+    const PRODUCT_CATEGORY_ACTIVE_WAITING = 2;
+
     /**
      * @inheritdoc
      */
@@ -31,6 +34,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return [
             [['name'], 'string', 'max' => 255],
             [['parent'], 'exist', 'targetAttribute' => 'id'],
+            [['active', 'synonym'], 'integer']
         ];
     }
 
@@ -43,7 +47,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Название',
             'parent' => 'Родительская категория',
-            'parentName' => 'Родительская категория'
+            'synonym' => 'Является синонимом для',
+            'active' => 'Активна'
         ];
     }
 
@@ -53,6 +58,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
     public function getProductsToCategories()
     {
         return $this->hasMany(ProductsToCategory::className(), ['category_id' => 'id']);
+    }
+
+    public function getParent()
+    {
+        return $this->hasOne();
     }
 
 }

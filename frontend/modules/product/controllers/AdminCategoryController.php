@@ -54,12 +54,24 @@ class AdminCategoryController extends Controller
                     $parent = ProductsCategory::findOne($model->parent);
                     return $parent ? $parent->name.' ('.$parent->id.')' : '';
                 },
+                'active' => function ($model) {
+                    switch ($model->active) {
+                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
+                            return 'Активна';
+                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
+                            return 'Не активна';
+                        default:
+                            return 'Ожидает подтверждения';
+                    }
+                }
             ],
             'parents' => array_merge([0 => 'Нет родительской'], ArrayHelper::map(
                 ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
                 'id',
                 'name'
             )),
+            'activeFilter' => $this->activeFilter(),
+
         ]);
     }
 
@@ -120,6 +132,7 @@ class AdminCategoryController extends Controller
             return $this->render('update.twig', [
                 'model' => $model,
                 'all' => $all,
+                'activeFilter' => $this->activeFilter(),
             ]);
         }
     }
@@ -151,5 +164,14 @@ class AdminCategoryController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function activeFilter()
+    {
+        return  [
+            ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES => 'Активна',
+            ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT => 'Не активна',
+            ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING => 'Ожидает подтверждения'
+        ];
     }
 }

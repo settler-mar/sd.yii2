@@ -18,8 +18,8 @@ class ProductsCategorySearch extends ProductsCategory
     public function rules()
     {
         return [
-            [['id', 'parent'], 'integer'],
-            [['name', 'crated_at', 'parentName'], 'safe'],
+            [['id', 'parent', 'active','synonym'], 'integer'],
+            [['name', 'crated_at'], 'safe'],
         ];
     }
 
@@ -61,14 +61,18 @@ class ProductsCategorySearch extends ProductsCategory
         $query->andFilterWhere([
             'id' => $this->id,
             'crated_at' => $this->crated_at,
+            'active' => $this->active,
+            'synonym' => $this->synonym,
         ]);
-        if ($this->parentName === '0') {
+        if ($this->parent === '0') {
             $query->andWhere(['parent' => null]);
         } else {
-            $query->andFilterWhere(['parent'=>$this->parentName]);
+            $query->andFilterWhere(['parent'=>$this->parent]);
         }
 
+
         $query->andFilterWhere(['like', 'name', $this->name]);
+        //ddd($this->attributes, $query->where);
         return $dataProvider;
     }
 }

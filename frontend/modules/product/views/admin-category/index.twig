@@ -25,7 +25,9 @@
 
                             'id',
                             'name',
-                            {'attribute':'parentName','format':'raw','value':tableData.parent,'filter':parents},
+                            {'attribute':'parent','format':'raw','value':tableData.parent,'filter':parents},
+                            {'attribute':'active','format':'raw','value':tableData.active,'filter':activeFilter},
+                            'synonym',
                             'crated_at',
                             {'class': '\\yii\\grid\\ActionColumn', 'template':'{update}'},
                         ],

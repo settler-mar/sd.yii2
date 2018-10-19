@@ -571,7 +571,7 @@ class AdmitadController extends Controller
           $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
-          $product['params_original'] = $product['param'];
+          $product['params_original'] = isset($product['param']) ? $product['param'] : null;
           $product['cpa_id'] = $this->cpa_id;
           $product['store'] = $affiliate_id;
           $result = Product::addOrUpdate($product);
