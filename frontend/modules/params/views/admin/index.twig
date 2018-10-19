@@ -26,16 +26,16 @@
                             'code',
                             'name',
                             {
+                                'attribute':'synonym',
+                                'format':'raw',
+                                'filter':parameter_filter,
+                                'value': tableData.synonym_name,
+                            },
+                            {
                                 'attribute':'active',
                                 'format': 'raw',
                                 'value': tableData.active,
                                 'filter': activeFilter
-                            },
-                            {
-                                'attribute':'synonym_names',
-                                'format': 'raw',
-                                'value': tableData.synonyms,
-                                'label': 'Синонимы'
                             },
                             {
                                 'attribute': 'product_categories',
@@ -44,7 +44,7 @@
                                 'filter': product_categories
                             },
                             {
-                                'attribute':'synonym_values',
+                                'attribute':'values',
                                 'format': 'raw',
                                 'value': tableData.values,
                                 'label': 'Значения'

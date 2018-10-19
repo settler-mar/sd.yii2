@@ -65,18 +65,6 @@ class AdminController extends Controller
                             return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
                     }
                 },
-                'synonyms' => function ($model) {
-                    $out = '';
-                    $loop = 0;
-                    if ($model->synonyms) {
-                        foreach ($model->synonyms as $synonym) {
-                            $out .= $loop ? ', ' : '';
-                            $out .= ('<span class="' . ProductParameters::activeClass($synonym->active) . '">' . $synonym->text . '</span>');
-                            $loop++;
-                        }
-                    }
-                    return $out;
-                },
                 'values' => function ($model) {
                     $out = '';
                     $loop = 0;
@@ -98,6 +86,9 @@ class AdminController extends Controller
                         }
                     }
                     return $out;
+                },
+                'synonym_name' => function ($model) {
+                    return $model->synonymParam ? $model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
                 }
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
@@ -105,6 +96,15 @@ class AdminController extends Controller
                 'id',
                 'name'
             )),
+            'parameter_filter' => array_merge(
+                [0=>'Не задано'],
+                arrayHelper::map(
+                    ProductParameters::find()->select(['id', 'name'])->asArray()->all(),
+                    'id',
+                    'name'
+                )
+            ),
+
         ]);
     }
 
@@ -155,20 +155,14 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            $possibles = ProductParameters::find()
-                ->where(['<>', 'id', $id])
-                ->andWhere(['<>', 'active', ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO])
-                ->asArray()
-                ->all();
-            $synonyms = array_column($model->synonyms, 'text');
-            foreach ($possibles as &$possible) {
-                $possible['checked']= in_array($possible['code'], $synonyms);
-            }
-            //ddd($productCategories);
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
-                'possibles' => $possibles,
+                'possible_synonym' => arrayHelper::map(
+                    ProductParameters::find()->select(['id', 'name'])->where(['<>', 'id', $id])->asArray()->all(),
+                    'id',
+                    'name'
+                ),
                 'product_categories_tree' => ProductsCategory::tree(),
             ]);
         }
