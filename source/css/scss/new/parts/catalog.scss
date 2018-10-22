@@ -30,7 +30,8 @@
   }
 
   &-categories {
-    width: 280px;
+    //width: 280px;
+    width: 322px;
 
     @include media($laptop-min) {
       width: 100%;
@@ -489,7 +490,8 @@
   }
 
   &-stores {
-    margin-left: 5%;
+    //margin-left: 5%;
+    margin-left: 2%;
     flex-grow: 2;
 
     @include media($laptop_min) {
