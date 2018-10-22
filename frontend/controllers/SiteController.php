@@ -8,6 +8,7 @@ use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\users\models\RegistrationForm;
+use frontend\modules\notification\models\Notifications;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\Query;
@@ -188,6 +189,17 @@ class SiteController extends SdController
         ->where(['<=', 'action_end_date', date('Y-m-d H:i:s', time() + 3600 * 24 * 3)])//подходит срок окончания
         ->count();
 
+    $buyPlatinum = Users::find()->from(Users::tableName().' cwu')
+        ->select(['cwun.uid', 'cwu.currency', 'cwu.email', 'cwun.added', 'cwun.text', ' (-cwun.amount) as amount'])
+        ->leftJoin(Notifications::tableName(). ' cwun', 'cwu.uid = cwun.user_id')
+        ->where(['cwun.type_id' => 4])
+        //->andWhere('JSON_CONTAINS(text, \'"Platinum"\', \'$."status_name"\')') //если понадобится только Platinum
+        ->asArray()
+        ->all();
+    foreach($buyPlatinum as &$buy) {
+        $buy = array_merge($buy, json_decode($buy['text'], 1));
+    }
+
     return $this->render('admin', [
         'users_count' => $usersCount,
         'users_today_count' => $usersToday,
@@ -202,6 +214,7 @@ class SiteController extends SdController
         'stores_news' => $stores_news,
         'fullCursList'=>Yii::$app->conversion->fullCursList,
         'stores_actions_end' => $actionsEnd,
+        'buy_platinum' => $buyPlatinum,
     ]);
   }
 

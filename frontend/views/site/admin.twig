@@ -84,6 +84,15 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    {% if buy_platinum %}
+                    <div class="col-md-12 stat-block-actions">
+                        Покупка статусов
+                        {% for buy in buy_platinum %}
+                            <a href="/admin/notification?NotificationsSearch%5Buid%5D={{ buy.uid }}"
+                               title="{{ buy.email }} купил {{ buy.status_name }} {{ buy.added }} до {{ buy.date }} за {{ buy.amount }} {{ buy.currency }}" class="btn btn-primary">{{ buy.email }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
 
         <div class="row stat-block-actions">
