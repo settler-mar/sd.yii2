@@ -4,7 +4,7 @@
 <section class="margin shop-tracker shop_information page-wrap">
   <div class="page-wrap gray-box wrap-round">
     <h2 class="shop-tracker_header title-no-line">{{ t('main', 'test_link_{store}_h', {'store': current_store.name})|raw }}</h2>
-    <form action="/stores/{{ current_store.route }}/get-link" class="form-test-link">
+    <form action="{{ _href('/stores/'~current_store.route~'/get-link')|raw }}" class="form-test-link">
       <div class="header-search_form-group header-search_form-group-affiliation">
         <input type="text" name="url" id="search" class="header-search_form-input header-search_form-input-affiliation search-form-input" value="" placeholder="{{ t('main','test_link_placeholder') }}" autocomplete="off">
         <input type="submit" class="btn btn-mini" value="{{ t('main','test_link') }}">
