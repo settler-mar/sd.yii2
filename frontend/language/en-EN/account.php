@@ -306,7 +306,7 @@ return [
     'email_confirm_error'  => 'Email confirmation error',
     'email_is_send'  => 'Email sent',
     'if_you_mistake_retun_<a{back}>back</a>' => 'If you entered an e-mail incorrectly, <a {back}>go back</a>.',
-    'email_with_confirmation sent_to_{email}_' => 'A letter with a link to verify your account was sent to {email}.'.
+    'email_with_confirmation sent_to_{email}_' => 'A letter with a link to verify your account was sent to {email}. '.
         'In case the email hasn\'t arrived within 5 minutes, please check your Spam folder.'.
         'In case you haven\'t received the confirmation email (make sure to check the Spam folder), please notify the administrator online and he will activate it for you manually',
     'email_with_confirmation sent_to' => 'Password recovery instructions have been successfully sent to the specified email address.'.
