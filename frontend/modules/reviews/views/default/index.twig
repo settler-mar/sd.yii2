@@ -9,7 +9,7 @@
       {% set comments_max_height=true %}
       {% for review in reviews %}
         {% set i=i+1 %}
-        {% set comment_hide = (6 < i) %}
+        {% set comment_hide = false %}
         {% include 'parts/comment.twig' %}
       {% endfor %}
       <div class="scroll_box-item scroll_box-item-emty"></div>

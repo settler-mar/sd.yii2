@@ -40,7 +40,7 @@ class DefaultController extends SdController
         $databaseObj->andWhere(['ur.language' => $language]);
     }
 
-    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => 10, 'page' => $page, 'asArray' => true]);
+    $pagination = new Pagination($databaseObj, $cacheName, ['limit' => 6, 'page' => $page, 'asArray' => true]);
     $contentData["reviews"] = $pagination->data();
 
     if ($pagination->pages() > 1) {

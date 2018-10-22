@@ -6,7 +6,7 @@
             {% if not user_cashbak_hide %}
                 <div class="scroll_box-user_cashback">
                     <span>
-                        {{ t('main', '{sum}_{currency}_of_cashback', {'sum': _nf(max(review.sum_confirmed+review.sum_pending,review.show_balance)) ,'currency': review.currency})|raw }}
+                        {{ t('main', '{sum}_{currency}_of_cashback', {'sum': _nf(max(review.sum_confirmed+review.sum_pending+review.sum_bonus,review.show_balance)) ,'currency': review.currency})|raw }}
                     </span>
                 </div>
             {% endif %}
