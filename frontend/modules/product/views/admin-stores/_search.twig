@@ -1,0 +1,28 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="catalog-stores-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'id')|raw }}
+
+    {{ form.field(model, 'cpa_id')|raw }}
+
+    {{ form.field(model, 'affiliate_id')|raw }}
+
+    {{ form.field(model, 'active')|raw }}
+
+    {{ form.field(model, 'date_import')|raw }}
+
+    {# form.field(model, 'date_update')|raw #}
+
+    {# form.field(model, 'crated_at')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

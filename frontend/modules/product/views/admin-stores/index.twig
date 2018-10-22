@@ -1,0 +1,45 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Catalog Stores' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="catalog-stores-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div  class="col-md-12">
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+                            'id',
+                            {'attribute':'cpaName','format':'raw','value':'cpa.name','filter':cpaFilter},
+                            {'attribute':'storeName','format':'raw','value':'store.name'},
+                            {'attribute':'active','format':'raw','value':tableData.active, 'filter':activeFilter},
+                            'date_update',
+                            'date_import',
+
+                            {'class': '\\yii\\grid\\ActionColumn', 'template':'{update}'},
+                        ],
+                    })
+                }}
+                </div>
+            </div>
+        </section>
+    </div>
+
+{#
+'date_update',
+'crated_at'
+#}
+</div>
