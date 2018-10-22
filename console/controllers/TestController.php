@@ -84,7 +84,7 @@ class TestController extends Controller
 
     d($params);
 
-    $admitad = new Admitad();
+    $admitad = new Admitad(Yii::$app->params['admitad']);
     $payments = $admitad->getPayments($params);
     if ($payments) {
       d($payments['_meta']);

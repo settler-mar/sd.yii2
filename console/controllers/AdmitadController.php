@@ -555,8 +555,6 @@ class AdmitadController extends Controller
       $count = 0;
       $insert = 0;
       $error = 0;
-      //$admitad = new Admitad();
-      //$products = $admitad->getProductsSample();
       foreach ($products as $product) {
           $count++;
           $params = isset($product['param']) ? explode('|', (string) $product['param']) : [];

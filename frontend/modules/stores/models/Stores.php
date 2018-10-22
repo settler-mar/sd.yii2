@@ -1400,7 +1400,7 @@ class Stores extends \yii\db\ActiveRecord
         'ulp'=>$url,
     ];
 
-    $admitad = new Admitad();
+    $admitad = new Admitad(Yii::$app->params['admitad']);
 
     $dp_link=$admitad->getDeeplink($cpaLink->affiliate_id,$options);
     if(count($dp_link)==0)return Yii::t('main',"test_link_not_support");

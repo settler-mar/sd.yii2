@@ -201,7 +201,7 @@ class AdminController extends Controller
       }
     }
 
-    $admitad = new Admitad();
+    $admitad = new Admitad(Yii::$app->params['admitad']);
     $pay_status = Admitad::getStatus();
 
     $params = [
