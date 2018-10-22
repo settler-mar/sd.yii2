@@ -132,7 +132,7 @@ class Banners extends \yii\db\ActiveRecord
             $this->updated_at = date('Y-m-d H:i:s');
         }
         if ($this->banner_regions) {
-            $this->regions = implode(',', $this->banner_regions);
+            $this->regions = json_encode($this->banner_regions);
         }
         return true;
     }
@@ -143,13 +143,13 @@ class Banners extends \yii\db\ActiveRecord
         foreach ($this->places_array as $place_key => &$place) {
             $place['checked'] = in_array($place_key, $places) ? 1 : 0;
         }
-        $regions = !empty($this->regions) ? explode(',', $this->regions) : [];
+        $regions = !empty($this->regions) ? json_decode($this->regions, 1) : [];
 
         foreach (Yii::$app->params['regions_list'] as $key => $value) {
             $this->regions_array[] = [
                 'code' => $key,
                 'name' => $value['name'],
-                'checked' => in_array($key, $regions) ? 1 : 0
+                'checked' => $regions && in_array($key, $regions) ? 1 : 0
             ];
         }
     }
@@ -234,7 +234,7 @@ class Banners extends \yii\db\ActiveRecord
         $language =  Yii::$app->language;
         $region = Yii::$app->params['region'];
 
-        $cacheName = 'banners' . ($place ? '_' . implode(',', $place) : '') .
+        $cacheName = 'banners' . ($place ? '_' . implode('_', $place) : '') .
             (Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_'. $language)
             . ( Yii::$app->params['region'] == 'default' ? '' : '_'.$region);
         $dependencyName = 'banners';
@@ -253,14 +253,14 @@ class Banners extends \yii\db\ActiveRecord
                 }
                 if ($language) {
                     $banners->andWhere(['or',
-                        ['like', 'language', $language],
+                        ['language' => $language],
                         ['=', 'language', ''],
                         ['is', 'language', null]
                     ]);
                 }
                 if ($region) {
                     $banners->andWhere(['or',
-                        ['like', 'regions', $region],
+                        'JSON_CONTAINS(regions,\'"'.$region.'"\',"$")',
                         ['=', 'regions', ''],
                         ['is', 'regions', null]
                     ]);
