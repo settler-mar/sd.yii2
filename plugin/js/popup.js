@@ -9,9 +9,23 @@ function getUser(callback) {
     action: 'sd_xhttp',
     url: siteUrl + utils.href(userUrl)
   }, function (responseData) {
-    usersData = responseData;
-    //console.log(usersData);
-    callback()
+      var lng = false;
+      usersData = responseData;
+      if (responseData.user) {
+          lng = usersData && usersData.user && usersData.user.language ? usersData.user.language : false;
+      } else if (responseData.language) {
+          lng = responseData.language;
+      }
+      if (lng) {
+          //получили из оккаунта язык
+          language = lng;
+          //cохранить в storage;
+          Storage.set(storageDataKeyLanguageCurrent, language);
+      }
+      if (debug) {
+          console.log(lng, language);
+      }
+      callback();
   });
 }
 function getCoupons(shop, callback) {
@@ -30,8 +44,15 @@ function getCoupons(shop, callback) {
 
 
 var displayUser = function () {
-  //console.log(usersData);
   if (usersData && usersData.user) {
+    var lng = usersData.user.language;
+    if (lng) {
+      //получили из оккаунта язык
+      language = lng;
+      //cохранить в storage;
+      Storage.set(storageDataKeyLanguageCurrent, language);
+    }
+
     document.querySelector('.secretdiscounter-pupup').classList.remove('logout');
     document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="' + utils.getAvatar(usersData.user.photo) + '"/>';
     document.querySelector('.secretdiscounter-pupup__info-balance').innerHTML =
@@ -221,18 +242,23 @@ displayShop(false);//пустой магазин
 
 getUser(displayUser);
 
+var appVersion = chrome.runtime.getManifest().version;
+
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     tabUrl = tabs[0].url;
     if (debug) {
         console.log('получили урл текущей вкладки' + tabUrl);
     }
-    var appVersion = chrome.runtime.getManifest().version;
 
     Storage.load(function () {
         storageDataDate = Storage.get(storageDataKeyDate);
         storageDataStores = Storage.get(storageDataKeyStores);
         storageDataVersion = Storage.get(storageDataKeyVersion);
         storageDataLanguage = Storage.get(storageDataKeyLanguage);
+        var lng = Storage.get(storageDataKeyLanguageCurrent);
+        if (lng) {
+            language = lng;
+        }
         if (debug) {
             console.log('storage load');
         }

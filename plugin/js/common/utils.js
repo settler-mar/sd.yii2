@@ -34,11 +34,6 @@ var utils = (function(){
         return result;
     }
 
-    // function makeCashbackNum(displayedCashback, action){
-    //     var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
-    //     return action == 1 ? cashbackNum * 2 : cashbackNum;
-    // }
-
     function ucfirst(str) {   // Make a string&#039;s first character uppercase
         var f = str.charAt(0).toUpperCase();
         return f + str.substr(1, str.length - 1);
@@ -129,11 +124,9 @@ var utils = (function(){
         return language.substr(0, 2)+'/'+url;
     }
 
-
     return {
         replaceTemplate: replaceTemplate,
         makeCashback: makeCashback,
-        //makeCashbackNum: makeCashbackNum,
         ucfirst: ucfirst,
         makeHrefs: makeHrefs,
         //storeIsActivate: storeIsActivate,

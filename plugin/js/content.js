@@ -50,8 +50,19 @@ function getUsers() {
       if (debug) {
         console.log('getusers success', responseData);
       }
+      var lng = false;
       usersData = responseData;
-
+      if (responseData.user) {
+          lng = usersData && usersData.user && usersData.user.language ? usersData.user.language : false;
+      } else if (responseData.language) {
+          lng = responseData.language;
+      }
+      if (lng) {
+          //получили из оккаунта язык
+          language = lng;
+          //cохранить в storage;
+          Storage.set(storageDataKeyLanguageCurrent, language);
+      }
   });
 }
 
@@ -84,17 +95,33 @@ function changeFavorite(e) {
 }
 
 function displayFavoriteLinks(storeId) {
+  var elemAdd = document.querySelector('.secretdiscounter-extension__shop .favorite-add');
+  var elemRemove = document.querySelector('.secretdiscounter-extension__shop .favorite-remove');
+  console.log(elemAdd, elemRemove);
+
   if (!usersData || !usersData.user) {
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_add"]').className = 'sd_hidden';
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_remove"]').className = 'sd_hidden';
+    if (elemAdd) {
+      elemAdd.classList.add('sd_hidden');
+    }
+    if (elemRemove) {
+      elemRemove.classList.add('sd_hidden');
+    }
     return null;
   }
   if (!usersData.user.favorites || usersData.user.favorites.indexOf(storeId) < 0) {
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_add"]').className = '';
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_remove"]').className = 'sd_hidden';
+    if (elemAdd) {
+      elemAdd.classList.remove('sd_hidden');
+    }
+    if (elemRemove) {
+      elemRemove.classList.add('sd_hidden')
+    }
   } else {
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_add"]').className = 'sd_hidden';
-    document.querySelector('.secretdiscounter-extension__shop a[href="#vaforite_remove"]').className = '';
+    if (elemAdd) {
+      elemAdd.classList.add('sd_hidden');
+    }
+    if (elemRemove) {
+      elemRemove.classList.remove('sd_hidden');
+    }
   }
 
 }
@@ -164,8 +191,8 @@ function displayShop(item) {
       url = siteUrl + utils.href('goto/store:' + item.uid);
       storesUrl = siteUrl + utils.href('stores');
       pluginSiteUrl = siteUrl + utils.href('');
-      favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="" href="'+utils.href('#vaforite_add')+'">' + iconFavoriteClose + '</a>' +
-        '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="'+utils.href('#vaforite_remove')+'">' + iconFavoriteOpen + '</a>';
+      favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="favorite-add" href="'+utils.href('#vaforite_add')+'">' + iconFavoriteClose + '</a>' +
+        '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden favorite-remove" href="'+utils.href('#vaforite_remove')+'">' + iconFavoriteOpen + '</a>';
     } else {
       url = siteUrl + utils.href('stores/' + item.store_route + '#login');
       pluginSiteUrl = siteUrl + utils.href('#login');
@@ -204,8 +231,8 @@ function displayShop(item) {
         body.insertBefore(div, body.firstChild);
         document.querySelector('.secretdiscounter-extension__button_close').onclick = closeClick;
         if (usersData && usersData.user) {
-          document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_add"]').onclick = changeFavorite;
-          document.querySelector('.secretdiscounter-extension__shop-favorites  [href="#vaforite_remove"]').onclick = changeFavorite;
+          document.querySelector('.secretdiscounter-extension__shop-favorites .favorite-add').onclick = changeFavorite;
+          document.querySelector('.secretdiscounter-extension__shop-favorites .favorite-remove').onclick = changeFavorite;
         }
         displayFavoriteLinks(item.uid);
         utils.makeHrefs(document.querySelector('.secretdiscounter-extension__buttons'), utils.doClickPlugunClose);//меняем отработчик ссылки не активацию на свой
@@ -248,8 +275,12 @@ Storage.load(function () {
   storageDataStores = Storage.get(storageDataKeyStores);
   storageDataVersion = Storage.get(storageDataKeyVersion);
   storageDataLanguage = Storage.get(storageDataKeyLanguage);
+  var lng = Storage.get(storageDataKeyLanguageCurrent);
+  if (lng) {
+    language = lng;
+  }
   if (debug) {
-    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion, storageDataLanguage);
+    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion, storageDataLanguage, lng);
     console.log(appVersion);
   }
   if (!storageDataDate || !storageDataStores || !storageDataVersion|| !storageDataLanguage

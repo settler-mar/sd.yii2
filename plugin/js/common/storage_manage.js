@@ -2,10 +2,11 @@ var storageDataKeyStores = 'secretdiscounter_local_stores';
 var storageDataKeyDate = 'secretdiscounter_local_date';
 var storageDataKeyVersion = 'secretdiscounter_local_version';
 var storageDataKeyLanguage = 'secretdiscounter_local_language';
+var storageDataKeyLanguageCurrent = 'secretdiscounter_local_language_current';
 var storageDataStores = false;
 var storageDataDate = false;
 var storageDataVersion = false;
-
+var storageDataLanguage = false;
 
 function getData(callback) {
     if (debug) {

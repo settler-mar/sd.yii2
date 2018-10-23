@@ -17,7 +17,8 @@ class AccountController extends \yii\web\Controller
    */
   public function beforeAction($action)
   {
-    if (Yii::$app->user->isGuest) {
+    $request = Yii::$app->request;
+    if (Yii::$app->user->isGuest && $request->get('g') != 'plugin')  {
       throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
       return false;
     }
@@ -28,6 +29,16 @@ class AccountController extends \yii\web\Controller
   public function actionIndex()
   {
     $request = Yii::$app->request;
+    if (Yii::$app->user->isGuest && $request->get('g') == 'plugin') {
+        //из плагина запрос от неавторизованного
+        return json_encode([
+            'language' => isset(Yii::$app->params['location']['language']) ?
+                Yii::$app->params['location']['language']:false
+        ]);
+
+    }
+
+
     $page = $request->get('page');
     $type = $request->get('type');
     $plugin = $request->get('g') == 'plugin';
@@ -72,6 +83,7 @@ class AccountController extends \yii\web\Controller
             'favorites_full' => $favorites,
             'favorites' =>array_column($favorites, 'uid'),
             'currency' => $user->currency,
+            'language' => $user->language
         ],
       ];
     }
