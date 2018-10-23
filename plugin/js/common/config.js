@@ -1,5 +1,5 @@
-var siteUrl = 'https://secretdiscounter.ru/';
-//var siteUrl = 'http://sdyii/';
+//var siteUrl = 'https://secretdiscounter.ru/';
+var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
@@ -8,4 +8,4 @@ var storeActiveInterval = 30;//минут
 var storePopupCloseInterval = 60;//минут
 var storeActiveStorageName = 'secretdiscounter-extension-store-';// + store_route
 var storePopupClosedStorageName = 'secretdiscounter-extension-popup-closed-store-';// + store_route
-var debug = false;
+var debug = true;

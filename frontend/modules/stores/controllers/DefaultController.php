@@ -513,9 +513,8 @@ class DefaultController extends SdController
               ->asArray()
               ->all();
           $data = [
-             // "text" => 'Сэкономьте {{cashback}} в <span class="secretdiscounter-extension__here">{{storename}}</span> с SecretDiscounter',
-              "searchtext" => "Кэшбэк {{cashback}}",
               "stores" => $stores,
+              "languages" => require(Yii::getAlias('@frontend/language/plugin.php')),
           ];
           return $data;
 

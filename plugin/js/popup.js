@@ -74,7 +74,7 @@ function resetStyles() {
   document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content').innerHTML = '';
   document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'block';
   //document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-checkboxtab').checked = true;
-  document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = 'Обновление данных.';
+  document.querySelector('.secretdiscounter-pupup__tab-favorites .secretdiscounter-pupup__tab-content').innerHTML = lg('refreshing_data');
 }
 
 
@@ -82,7 +82,7 @@ function makeFavorites() {
   //console.log(usersData.user);
   if (!usersData || !usersData.user.favorites_full || usersData.user.favorites_full.length == 0) {
     //document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-checkboxtab').checked = true;
-    return 'На данный момент у Вас нет избранных магазинов.';
+    return lg('you_have_not_favorites');
   }
   result = '';
   for (var i = 0; i < usersData.user.favorites_full.length; i++) {
@@ -96,10 +96,12 @@ function makeFavorites() {
       ),
       'storeUrl': siteUrl + 'goto/store:' + usersData.user.favorites_full[i].uid,
       'storeRoute' : usersData.user.favorites_full[i].route,
-      'buttonClass' : storeIsActivate ? 'sd_hidden' : ''
+      'buttonClass' : storeIsActivate ? 'sd_hidden' : '',
+      'cashback': lg('cashback'),
+      'buttonText': lg('activate_cashback_to_line')
     });
   }
-  result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + '/stores">Все магазины</a></div>';
+  result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + '/stores">'+lg('all_stores')+'</a></div>';
   return result;
 
 }
@@ -147,16 +149,22 @@ var displayShop = function (shop) {
                   shop.action_id
               ),
               'storeUrl': siteUrl + 'goto/store:' + shop.uid,
-              'btnText': usersData && usersData.user ? 'Активировать&nbsp;кэшбэк' : 'Активировать&nbsp;кэшбэк',
+              'btnText': lg('activate_cashback'),
               'storeTariffs': shop.conditions ?
-                  '<div class="secretdiscounter-extension__buttons-tariffs-header">Все тарифы и условия:</div>' + shop.conditions : '',
+                  '<div class="secretdiscounter-extension__buttons-tariffs-header">'+lg('terms_and_conditions')+':</div>' + shop.conditions : '',
               'storeRoute' : shop.store_route,
-              'buttonsClass': storeIsActivate ? 'sd_hidden' : ''
+              'buttonsClass': storeIsActivate ? 'sd_hidden' : '',
+              'cashback': lg('cashback'),
+              'buttonMessage': lg('store_will_open_in_new_window')
           });
       getCoupons(shop, displayCoupons);//запрос на купоны для шопа
   } else {
     //вывод пустого шопа, если находимся на любой странице
-      document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML = storeHtmlEmpty;
+      document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
+          utils.replaceTemplate(storeHtmlEmpty, {
+              'emptyCashbackMessage':lg('this_store_has_no_cashback'),
+              'allStores':lg('all_stores_with_cashback')
+          });
   }
   utils.makeHrefs(tabShop);
 };
@@ -174,11 +182,14 @@ var displayCoupons = function (response) {
         'couponDateEnd': response.coupons[i].date_end,
         //'couponUsed': response.coupons[i].visit,
         'couponPromocode': response.coupons[i].promocode ?
-            response.coupons[i].promocode+'<span title="Скопировать в буфер обмена"  class="secretdiscounter-extension__coupon-promocode-text-copy sd_button copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
-            'Не требуется',
+            response.coupons[i].promocode+'<span title="'+lg('copy_to_clipboard')+'"  class="secretdiscounter-extension__coupon-promocode-text-copy sd_button copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
+            lg('code_not_required'),
         'couponUseLink': siteUrl + 'goto/coupon:' + response.coupons[i].uid,
         'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid,
-        'storeRoute': response.coupons[i].store_route
+        'storeRoute': response.coupons[i].store_route,
+        'dateExpireMessage': lg('coupon_date_end'),
+        'promocodeText': lg('coupon'),
+        'usePromocode': lg('use_coupon_code')
       });
     }
     var tabCoupons = document.querySelector('.secretdiscounter-pupup__tab-coupons .secretdiscounter-pupup__tab-content');
@@ -188,6 +199,20 @@ var displayCoupons = function (response) {
     document.querySelector('.secretdiscounter-pupup__tab-coupons').style.display = 'block';
   }
 
+};
+//смена языка для html
+var htmlLanguage = function(){
+  var items = document.getElementsByClassName('language_item');
+  var text;
+  for (var i=0 ; i < items.length ; i++) {
+      text = lg(items[i].getAttribute('data-language'));
+      items[i].innerHTML = text;
+  }
+};
+//после загрузки данных
+var refreshData = function(){
+    htmlLanguage();
+    storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop);
 };
 
 resetStyles();
@@ -213,12 +238,13 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if (!storageDataDate || !storageDataStores || !storageDataVersion
             || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
             || storageDataVersion !== appVersion) {
-            getData(storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop));
-            //поиск шопа или после загрузки данных
+            getData(refreshData());
+            //поиск шопа и смена языка или после загрузки данных
         } else {
-            storeUtil.findShop(storageDataStores.stores, tabUrl, displayShop);
+            refreshData();
             //или сразу
         }
+
     });
 });
 

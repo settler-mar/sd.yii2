@@ -164,14 +164,15 @@ function displayShop(item) {
       url = siteUrl + 'goto/store:' + item.uid;
       storesUrl = siteUrl + 'stores';
       pluginSiteUrl = siteUrl;
-      favoritesLink = '<a title="Добавить в избранное" data-id="' + item.uid + '" data-type="add" class="" href="#vaforite_add">' + iconFavoriteClose + '</a>' +
-        '<a title="Убрать из избранных" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="#vaforite_remove">' + iconFavoriteOpen + '</a>';
+      favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="" href="#vaforite_add">' + iconFavoriteClose + '</a>' +
+        '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="#vaforite_remove">' + iconFavoriteOpen + '</a>';
     } else {
       url = siteUrl + 'stores/' + item.store_route + '#login';
       pluginSiteUrl = siteUrl + '#login';
       storesUrl = siteUrl + 'stores#login';
     }
-    var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
+    //var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
+    var message = lg('searchtext {{cashback}}', {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var storeIsActivate = storeUtil.isActivated(item.store_route);
     //var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
     var shopDiv = utils.replaceTemplate(storePluginHtml, {
@@ -183,7 +184,9 @@ function displayShop(item) {
       'logoImage': logoImage,
       'storeRoute' : item.store_route,
       'buttonsClass' : storeIsActivate ? 'sd_hidden' : '',
-      'storesUrl' : storesUrl
+      'storesUrl' : storesUrl,
+      'buttonText': lg('activate_cashback'),
+      'buttonMessage': lg('store_will_open_in_new_window')
     });
     div = document.createElement('div');
     div.className = 'secretdiscounter-extension';

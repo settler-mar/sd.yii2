@@ -1,0 +1,13 @@
+var languages = false;
+
+var language = 'en-EN';
+
+function lg(code, params) {
+    if (!languages) {
+        languages = storageDataStores.languages ? storageDataStores.languages : false;
+    }
+    var out = languages && languages[language] && languages[language][code] ? languages[language][code] : code;
+    out = utils.replaceTemplate(out, params);
+
+    return out;
+}
