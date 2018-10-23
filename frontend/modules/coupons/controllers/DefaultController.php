@@ -127,6 +127,7 @@ class DefaultController extends SdController
     $limit = $request->get('limit');
     $sort = $request->get('sort');
     $storeFrom = $request->get('w');
+    $json = $request->isAjax && $request->get('g') != 'ajax_load' || $request->get('g') == 'plugin';
 
     $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'breadcrumbs_coupons'), 'url'=>Help::href('/coupons')];
     if ($this->top) {
@@ -167,7 +168,7 @@ class DefaultController extends SdController
       $cacheName .= '_' . $category;
       $contentData['category_id'] = $category;
       $contentData['current_category'] = $categoryCoupons;
-      $databaseObj = Coupons::forList(false)
+      $databaseObj = Coupons::forList($json)
         ->innerJoin('cw_coupons_to_categories cctc', 'cctc.coupon_id = cwc.uid')
         //->where(['cws.is_active' => [0, 1], 'cctc.category_id' => $category])
         ->andWhere(['cws.is_active' => [1], 'cctc.category_id' => $category])
@@ -196,7 +197,7 @@ class DefaultController extends SdController
       }
       $cacheName .= '_' . $storeId;
       $contentData['affiliate_id'] = $storeId;
-      $databaseObj = Coupons::forList(false)
+      $databaseObj = Coupons::forList($json)
         //->where(['cws.is_active' => [0, 1], 'cwc.store_id' => $storeId])
         ->andWhere(['cws.is_active' => [1], 'cwc.store_id' => $storeId])
         ->andWhere($dateRange)
@@ -207,7 +208,7 @@ class DefaultController extends SdController
     } else {
       $contentData["counts"] = Coupons::counts();
       \Yii::$app->params['url_mask'] = 'coupons';
-      $databaseObj = Coupons::forList(false)
+      $databaseObj = Coupons::forList($json)
         //->where(['cws.is_active' => [0, 1]])
         ->andWhere(['cws.is_active' => [1]])
         ->andWhere($dateRange)
@@ -321,7 +322,7 @@ class DefaultController extends SdController
     $contentData['stores_abc_w'] = $storeFrom ? $storeFrom : null;
     $contentData["users_reviews"] = Reviews::top();
 
-    if ($request->isAjax && $request->get('g') != 'ajax_load' || $request->get('g') == 'plugin') {
+    if ($json) {
       return json_encode([
         'coupons' => $contentData["coupons"],
         'coupon_ended' => $contentData["coupon_ended"],

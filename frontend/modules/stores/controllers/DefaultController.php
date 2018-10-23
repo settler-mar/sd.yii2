@@ -500,18 +500,15 @@ class DefaultController extends SdController
   public function actionData()
   {
       $cache = \Yii::$app->cache;
-      $cacheName = 'stores_plugin_data';
+      $cacheName = 'stores_plugin_data_' . Yii::$app->params['lang_code'];
 
       $data = $cache->getOrSet($cacheName, function(){
 
-          $stores = Stores::find()
-              ->select(['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
-                  'cws.displayed_cashback', 'cws.logo', 'cws.conditions','cws.url_alternative',
-                  'display_on_plugin as display'])
-              ->from(Stores::tableName(). ' cws')
-              ->where(['cws.is_active'=> '1'])
-              ->asArray()
-              ->all();
+          $fields = ['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
+              'cws.displayed_cashback', 'cws.logo', 'cws.conditions', 'cws.url_alternative',
+              'display_on_plugin as display'];
+          $stores = Stores::items([1])->select($fields)->all();
+
           $data = [
               "stores" => $stores,
               "languages" => require(Yii::getAlias('@frontend/language/plugin.php')),

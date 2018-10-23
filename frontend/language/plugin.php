@@ -23,7 +23,8 @@ return [
         "favorites" => "Избранные",
         "notifications" => "Уведомления",
         "login" => "Войти",
-        "searchtext {{cashback}}" => "Кэшбэк {{cashback}}"
+        "searchtext {{cashback}}" => "Кэшбэк {{cashback}}",
+        "upto" => "до"
     ],
 
     "en-EN" => [
@@ -49,6 +50,7 @@ return [
         "favorites" => "Favorites",
         "notifications" => "Notifications",
         "login" => "Login",
-        "searchtext {{cashback}}" => "Cashback {{cashback}}"
+        "searchtext {{cashback}}" => "Cashback {{cashback}}",
+        "upto" => "up to"
     ]
 ];

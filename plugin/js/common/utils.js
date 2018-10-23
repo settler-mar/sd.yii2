@@ -12,11 +12,13 @@ var utils = (function(){
         //simple = simple || false;//просто кешбек без тэгов
         var cashbackNum = parseFloat(displayedCashback.replace(/[^\d.]+/g,""));
         var cashbackNumFinal = action == 1 ? cashbackNum * 2 : cashbackNum;
+        displayedCashback = displayedCashback.replace(/до /, lg('upto')+' ');
 
         //если простой вывод то отсекаем лишние символы
         if(simple){
             displayedCashback=cashbackNum+(displayedCashback.indexOf('%')>0?' %':'');
         }
+        result = '';
 
         if (cashbackNum > 0) {
             result = displayedCashback.replace(/[\d.]+/, cashbackNumFinal) + (displayedCashback.match(/\%/) ? "" : " " + currency);
@@ -120,6 +122,13 @@ var utils = (function(){
         }
     }
 
+    function href(url){
+        if (language == "ru-RU") {
+            return url;
+        }
+        return language.substr(0, 2)+'/'+url;
+    }
+
 
     return {
         replaceTemplate: replaceTemplate,
@@ -132,7 +141,8 @@ var utils = (function(){
         copyToClipboard:copyToClipboard,
         getAvatar: getAvatar,
         log: log,
-        doClickPlugunClose: doClickPlugunClose
+        doClickPlugunClose: doClickPlugunClose,
+        href: href
     }
 
 })();

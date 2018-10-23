@@ -1,6 +1,7 @@
 var storageDataKeyStores = 'secretdiscounter_local_stores';
 var storageDataKeyDate = 'secretdiscounter_local_date';
 var storageDataKeyVersion = 'secretdiscounter_local_version';
+var storageDataKeyLanguage = 'secretdiscounter_local_language';
 var storageDataStores = false;
 var storageDataDate = false;
 var storageDataVersion = false;
@@ -14,7 +15,7 @@ function getData(callback) {
 
     chrome.runtime.sendMessage({
         action: 'sd_xhttp',
-        url: siteUrl + storesUrl
+        url: siteUrl + utils.href(storesUrl)
     }, function (responseData) {
         if (debug) {
             console.log(siteUrl+storesUrl, 'data is ready', responseData);
@@ -23,6 +24,7 @@ function getData(callback) {
         Storage.set(storageDataKeyStores, responseData);
         Storage.set(storageDataKeyVersion, chrome.runtime.getManifest().version);
         Storage.set(storageDataKeyDate, new Date().getTime());
+        Storage.set(storageDataKeyLanguage, language);
         if (callback) {
             callback();
         }

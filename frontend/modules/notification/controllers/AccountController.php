@@ -71,6 +71,7 @@ class AccountController extends \yii\web\Controller
             'sex' => $user->sex,
             'favorites_full' => $favorites,
             'favorites' =>array_column($favorites, 'uid'),
+            'currency' => $user->currency,
         ],
       ];
     }

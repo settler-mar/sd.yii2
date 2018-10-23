@@ -45,7 +45,7 @@ function getUsers() {
   }
   chrome.runtime.sendMessage({
     action: 'sd_xhttp',
-    url: siteUrl + userUrl
+    url: siteUrl + utils.href(userUrl)
   }, function (responseData) {
       if (debug) {
         console.log('getusers success', responseData);
@@ -64,7 +64,7 @@ function changeFavorite(e) {
   chrome.runtime.sendMessage({
     action: 'sd_xhttp',
     method: 'POST',
-    url: siteUrl + userFavoriteUrl,
+    url: siteUrl + utils.href(userFavoriteUrl),
     data: {'affiliate_id': storeId, 'type': type}
   }, function (responseData) {
     //console.log('changeFavorites success', responseData);
@@ -161,15 +161,15 @@ function displayShop(item) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {
-      url = siteUrl + 'goto/store:' + item.uid;
-      storesUrl = siteUrl + 'stores';
-      pluginSiteUrl = siteUrl;
-      favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="" href="#vaforite_add">' + iconFavoriteClose + '</a>' +
-        '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="#vaforite_remove">' + iconFavoriteOpen + '</a>';
+      url = siteUrl + utils.href('goto/store:' + item.uid);
+      storesUrl = siteUrl + utils.href('stores');
+      pluginSiteUrl = siteUrl + utils.href('');
+      favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="" href="'+utils.href('#vaforite_add')+'">' + iconFavoriteClose + '</a>' +
+        '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden" href="'+utils.href('#vaforite_remove')+'">' + iconFavoriteOpen + '</a>';
     } else {
-      url = siteUrl + 'stores/' + item.store_route + '#login';
-      pluginSiteUrl = siteUrl + '#login';
-      storesUrl = siteUrl + 'stores#login';
+      url = siteUrl + utils.href('stores/' + item.store_route + '#login');
+      pluginSiteUrl = siteUrl + utils.href('#login');
+      storesUrl = siteUrl + utils.href('stores#login');
     }
     //var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var message = lg('searchtext {{cashback}}', {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
@@ -247,13 +247,16 @@ Storage.load(function () {
   storageDataDate = Storage.get(storageDataKeyDate);
   storageDataStores = Storage.get(storageDataKeyStores);
   storageDataVersion = Storage.get(storageDataKeyVersion);
+  storageDataLanguage = Storage.get(storageDataKeyLanguage);
   if (debug) {
-    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion);
+    console.log('storage load', storageDataStores, storageDataDate, storageDataVersion, storageDataLanguage);
     console.log(appVersion);
   }
-  if (!storageDataDate || !storageDataStores || !storageDataVersion
+  if (!storageDataDate || !storageDataStores || !storageDataVersion|| !storageDataLanguage
     || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
-    || storageDataVersion !== appVersion) {
+    || storageDataVersion !== appVersion
+    || storageDataLanguage !== language
+  ) {
     //||storageData.date + 100 < new Date().getTime() ) {
     getData(findShop);
     //поиск шопа или после загрузки данных

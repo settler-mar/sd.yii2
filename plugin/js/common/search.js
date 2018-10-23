@@ -160,16 +160,14 @@ var searchAnalize = (function() {
         if(el.querySelectorAll('.sd_link_finder').length>0) return;
 
         var div = document.createElement('div');
-        message = utils.replaceTemplate(storageDataStores.searchtext, {
+        message = utils.replaceTemplate(lg('searchtext {{cashback}}'), {
             'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id),
-            'currentUrl': siteUrl + item.url,
-            'storename': utils.ucfirst(item.name)
         });
         var url = '';
         if (usersData && usersData.user) {
-            url = siteUrl + 'goto/store:' + item.uid;
+            url = siteUrl + utils.href('goto/store:' + item.uid);
         } else {
-            url = siteUrl + 'stores/' + item.store_route + '#login';
+            url = siteUrl + utils.href('stores/' + item.store_route + '#login');
         }
         div.innerHTML = "<a data-store='"+item.store_route+"' href='" + url + "'target='_blank' class='sd_link_finder'>" +
             // "<span style='margin-right:5px;height:18px;vertical-align:middle'>"+searchFormImage+"</span>"+message;

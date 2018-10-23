@@ -7,7 +7,7 @@ function getUser(callback) {
   //вызываем событие для запроса из background.js
   chrome.runtime.sendMessage({
     action: 'sd_xhttp',
-    url: siteUrl + userUrl
+    url: siteUrl + utils.href(userUrl)
   }, function (responseData) {
     usersData = responseData;
     //console.log(usersData);
@@ -21,9 +21,9 @@ function getCoupons(shop, callback) {
   }
   chrome.runtime.sendMessage({
     action: 'sd_xhttp',
-    url: siteUrl + couponUrl + '/' + shop.store_route
+    url: siteUrl + utils.href(couponUrl + '/' + shop.store_route)
   }, function (responseData) {
-    //console.log(usersData);
+    console.log(siteUrl + utils.href(couponUrl + '/' + shop.store_route),responseData);
     callback(responseData);
   });
 }
@@ -38,12 +38,12 @@ var displayUser = function () {
         '<span class="secretdiscounter-pupup__info-balance-current">'+usersData.user.balance.current+'</span>'+
         '<span class="secretdiscounter-pupup__info-balance-pending">'+
         (usersData.user.balance.pending ? '&nbsp;/&nbsp;'+usersData.user.balance.pending: '')+
-        '&nbsp;руб.</span>';
+        '&nbsp;'+usersData.user.currency+'</span>';
     //document.querySelector('.secretdiscounter-pupup__tab-favorites').style.display = 'block';
     document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'block';
     //document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'block';
     document.querySelector('.secretdiscounter-pupup__login').style.display = 'none';
-    document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl);
+    document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + utils.href(''));
     document.querySelector('.secretdiscounter-pupup__info').style.display = 'flex';
     var tabNotifications = document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content');
     tabNotifications.innerHTML = makeNotifications();
@@ -62,7 +62,7 @@ var displayUser = function () {
 
 function resetStyles() {
   document.querySelector('.secretdiscounter-pupup').classList.add('logout');
-  document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + '#login');
+  document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + utils.href('#login'));
   document.querySelector('.secretdiscounter-pupup__logo-link').innerHTML = logoImage;
   document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
@@ -94,8 +94,8 @@ function makeFavorites() {
         usersData.user.favorites_full[i].currency,
         usersData.user.favorites_full[i].action_id
       ),
-      'storeUrl': siteUrl + 'goto/store:' + usersData.user.favorites_full[i].uid,
-      'storeRoute' : usersData.user.favorites_full[i].route,
+      'storeUrl': siteUrl + utils.href('goto/store:' + usersData.user.favorites_full[i].uid),
+      'storeRoute' : utils.href(usersData.user.favorites_full[i].route),
       'buttonClass' : storeIsActivate ? 'sd_hidden' : '',
       'cashback': lg('cashback'),
       'buttonText': lg('activate_cashback_to_line')
@@ -119,7 +119,7 @@ function makeNotifications() {
     });
   }
   if (usersData.btn) {
-    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + userUrl + '">' + usersData.btn + '</a></div>';
+    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + utils.href(userUrl) + '">' + usersData.btn + '</a></div>';
   }
   return result;
 }
@@ -148,11 +148,11 @@ var displayShop = function (shop) {
                   shop.currency,
                   shop.action_id
               ),
-              'storeUrl': siteUrl + 'goto/store:' + shop.uid,
+              'storeUrl': siteUrl + utils.href('goto/store:' + shop.uid),
               'btnText': lg('activate_cashback'),
               'storeTariffs': shop.conditions ?
                   '<div class="secretdiscounter-extension__buttons-tariffs-header">'+lg('terms_and_conditions')+':</div>' + shop.conditions : '',
-              'storeRoute' : shop.store_route,
+              'storeRoute' : utils.href(shop.store_route),
               'buttonsClass': storeIsActivate ? 'sd_hidden' : '',
               'cashback': lg('cashback'),
               'buttonMessage': lg('store_will_open_in_new_window')
@@ -184,9 +184,9 @@ var displayCoupons = function (response) {
         'couponPromocode': response.coupons[i].promocode ?
             response.coupons[i].promocode+'<span title="'+lg('copy_to_clipboard')+'"  class="secretdiscounter-extension__coupon-promocode-text-copy sd_button copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
             lg('code_not_required'),
-        'couponUseLink': siteUrl + 'goto/coupon:' + response.coupons[i].uid,
-        'couponUrl': siteUrl + 'coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid,
-        'storeRoute': response.coupons[i].store_route,
+        'couponUseLink': siteUrl + utils.href('goto/coupon:' + response.coupons[i].uid),
+        'couponUrl': siteUrl + utils.href('coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid),
+        'storeRoute': utils.href(response.coupons[i].store_route),
         'dateExpireMessage': lg('coupon_date_end'),
         'promocodeText': lg('coupon'),
         'usePromocode': lg('use_coupon_code')
@@ -232,12 +232,15 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         storageDataDate = Storage.get(storageDataKeyDate);
         storageDataStores = Storage.get(storageDataKeyStores);
         storageDataVersion = Storage.get(storageDataKeyVersion);
+        storageDataLanguage = Storage.get(storageDataKeyLanguage);
         if (debug) {
             console.log('storage load');
         }
         if (!storageDataDate || !storageDataStores || !storageDataVersion
             || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
-            || storageDataVersion !== appVersion) {
+            || storageDataVersion !== appVersion
+            || storageDataLanguage !== language
+        ) {
             getData(refreshData());
             //поиск шопа и смена языка или после загрузки данных
         } else {
