@@ -341,5 +341,6 @@ return [
     'account_favorites_title' => 'Favorite Stores - SecretDiscounter',
     'account_settings_title' => 'Account Settings - SecretDiscounter',
     'account_support_title' => 'Tech Support - SecretDiscounter',
-    'login_your_account_deleted' => 'Your account is deleted. Call to administrator',
+    'login_your_account_deleted' => 'Your account is blocked. Contact us by support@secretdiscounter.com',
+    'login_your_account_deleted_message' => 'Your account is blocked. Contact us by <a href="mailto:support@secretdiscounter.com">support@secretdiscounter.com</a>',
 ];
