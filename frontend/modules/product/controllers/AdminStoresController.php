@@ -40,6 +40,10 @@ class AdminStoresController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $searchModel = new CatalogStoresSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -112,6 +116,10 @@ class AdminStoresController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
