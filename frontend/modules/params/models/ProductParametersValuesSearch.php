@@ -79,6 +79,11 @@ class ProductParametersValuesSearch extends ProductParametersValues
             $query->leftJoin($this->tableName().' syn', 'syn.id = '.$this->tableName().'.synonym');
             $query->andWhere(['like', 'syn.name', $this->synonym]);
         }
+        if (!empty($this->synonyms_names)) {
+            $query->leftJoin($this->tableName().' syn', 'syn.synonym = '.$this->tableName().'.id');
+            $query->andWhere(['like', 'syn.name', $this->synonyms_names]);
+
+        }
 
         return $dataProvider;
     }

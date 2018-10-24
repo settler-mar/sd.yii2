@@ -66,9 +66,9 @@ class AdminValuesController extends Controller
                 'categories' => function ($model) {
                     $out = '';
                     if ($model->categories) {
-                        foreach ($model->categories as $category) {
+                        foreach ($model->categories as $key => $category) {
                             $productCategory = ProductsCategory::findOne($category);
-                            $out .= ($productCategory ? $productCategory->name .'; ' : '');
+                            $out .= ($productCategory ? ($key ? '; ':'') . $productCategory->name : '');
                         }
                     }
                     return $out;
@@ -77,7 +77,7 @@ class AdminValuesController extends Controller
                     return $model->synonymValue ? $model->synonymValue->name.' ('.$model->synonymValue->id.')' : '';
                 },
                 'synonyms' => function ($model) {
-                    return '';
+                    return implode('; ', array_column($model->synonyms, 'name'));
                 }
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
