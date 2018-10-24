@@ -127,7 +127,7 @@
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
       {% endif %}
     {% else %}
-      <a href="#login" class="btn btn-round tablets-btn-red tablets-btn-big modals_open">{{ btn_text }}</a>
+      <a href="{{ _href('#login')|raw }}" class="btn btn-round tablets-btn-red tablets-btn-big modals_open">{{ btn_text }}</a>
     {% endif %}
   {% endif %}
 
