@@ -18,7 +18,7 @@
             <option
                 value="{{ exchange(1,item.code,currency)}}"
                 code="{{item.code}}"
-                {% if item.code== user.currency %}
+                {% if item.code== (user ? user.currency : current_store.currency) %}
                   selected
                 {% endif %}
             >
@@ -28,7 +28,7 @@
         </select>
       </div>
       <div class="shop-calc-cashback_content-result">
-        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':t('main', user.currency)})|raw }}
+        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':t('main', user ? user.currency : current_store.currency)})|raw }}
           {% if current_store.displayed_cashback ends with '%' %}
           {% else %}
             {{ t('main','calc_cashback_fixed')|raw }}
