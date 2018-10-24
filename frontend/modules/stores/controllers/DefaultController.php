@@ -511,7 +511,6 @@ class DefaultController extends SdController
 
           $data = [
               "stores" => $stores,
-              "languages" => require(Yii::getAlias('@frontend/language/plugin.php')),
           ];
           return $data;
 

@@ -97,7 +97,6 @@ function changeFavorite(e) {
 function displayFavoriteLinks(storeId) {
   var elemAdd = document.querySelector('.secretdiscounter-extension__shop .favorite-add');
   var elemRemove = document.querySelector('.secretdiscounter-extension__shop .favorite-remove');
-  console.log(elemAdd, elemRemove);
 
   if (!usersData || !usersData.user) {
     if (elemAdd) {

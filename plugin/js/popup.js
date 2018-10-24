@@ -37,7 +37,7 @@ function getCoupons(shop, callback) {
     action: 'sd_xhttp',
     url: siteUrl + utils.href(couponUrl + '/' + shop.store_route)
   }, function (responseData) {
-    console.log(siteUrl + utils.href(couponUrl + '/' + shop.store_route),responseData);
+    //console.log(siteUrl + utils.href(couponUrl + '/' + shop.store_route),responseData);
     callback(responseData);
   });
 }
@@ -224,12 +224,18 @@ var displayCoupons = function (response) {
 //смена языка для html
 var htmlLanguage = function(){
   var items = document.getElementsByClassName('language_item');
-  var text;
+  var text, href;
   for (var i=0 ; i < items.length ; i++) {
       text = lg(items[i].getAttribute('data-language'));
       items[i].innerHTML = text;
   }
+  items = document.getElementsByClassName('language_item-href');
+  for (i=0 ; i < items.length ; i++) {
+      href = lg(items[i].getAttribute('data-href'));
+      items[i].setAttribute('href', siteUrl + utils.href(href));
+  }
 };
+
 //после загрузки данных
 var refreshData = function(){
     htmlLanguage();
