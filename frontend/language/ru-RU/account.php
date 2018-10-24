@@ -341,4 +341,5 @@ return [
     'account_favorites_title' => 'Избранные магазины - SecretDiscounter',
     'account_settings_title' => 'Настройки профиля - SecretDiscounter',
     'account_support_title' => 'Служба поддержки - SecretDiscounter',
+    'login_your_account_deleted' => 'Ваш аккаунт удалён. Свяжитесь с администратором',
 ];

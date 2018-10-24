@@ -51,6 +51,10 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+            if ($user && $user->is_active == Users::STATUS_DELETED) {
+                $this->addError('email', Yii::t('account', 'login_your_account_deleted'));
+                return;
+            }
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, Yii::t('account', 'password_or_email_is_wrong'));
                 if ($this->attemps == Yii::$app->params['login_attemps_count']) {
@@ -116,7 +120,8 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = Users::findByEmail($this->email);
+            //$this->_user = Users::findByEmail($this->email);
+            $this->_user = Users::findOne(['email' => $this->email]);
         }
 
         return $this->_user;

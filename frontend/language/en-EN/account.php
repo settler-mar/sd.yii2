@@ -341,4 +341,5 @@ return [
     'account_favorites_title' => 'Favorite Stores - SecretDiscounter',
     'account_settings_title' => 'Account Settings - SecretDiscounter',
     'account_support_title' => 'Tech Support - SecretDiscounter',
+    'login_your_account_deleted' => 'Your account is deleted. Call to administrator',
 ];
