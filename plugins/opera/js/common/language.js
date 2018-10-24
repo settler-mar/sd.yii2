@@ -1,1 +1,1 @@
-function lg(a,g){languages||(languages=!!storageDataStores.languages&&storageDataStores.languages);var e=languages&&languages[language]&&languages[language][a]?languages[language][a]:a;return e=utils.replaceTemplate(e,g)}var languages=!1,language=navigator.language?navigator.language:"ru-RU";
+function lg(a,g){var e=languages&&languages[language]&&languages[language][a]?languages[language][a]:a;return e=utils.replaceTemplate(e,g)}var language=navigator.language?navigator.language:"ru-RU";

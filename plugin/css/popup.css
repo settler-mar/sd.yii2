@@ -315,6 +315,10 @@ button {
   align-items: center;
   justify-content: space-between;
 }
+.secretdiscounter-extension__shop-logo {
+  min-width: 143px;
+  max-width: 143px;
+}
 .secretdiscounter-extension__shop-text {
   display: flex;
   flex-direction: column;
