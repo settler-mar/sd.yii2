@@ -76,6 +76,9 @@ class AdminValuesController extends Controller
                 'synonym_name' => function ($model) {
                     return $model->synonymValue ? $model->synonymValue->name.' ('.$model->synonymValue->id.')' : '';
                 },
+                'synonyms' => function ($model) {
+                    return '';
+                }
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
                 ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),

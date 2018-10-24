@@ -95,6 +95,11 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
 
+//    public function getSynomyns()
+//    {
+//        return $this->hasMany();
+//    }
+
     public static function standartedValues($paramId, $values)
     {
         //на входе массив значений

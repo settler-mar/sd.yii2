@@ -88,6 +88,11 @@ class ProductParameters extends \yii\db\ActiveRecord
         return $this->hasMany(ProductParametersValues::className(), ['parameter_id' => 'id']);
     }
 
+    public function getSynonyms()
+    {
+        return $this->hasMany(self::className(), ['synonym' => 'id']);
+    }
+
     public function beforeValidate()
     {
         //ddd($this->possible_categories);

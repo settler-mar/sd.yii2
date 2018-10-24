@@ -13,6 +13,7 @@ use frontend\modules\params\models\ProductParametersValues;
 class ProductParametersValuesSearch extends ProductParametersValues
 {
     public $product_categories;
+    public $synonyms_names;
     /**
      * @inheritdoc
      */
@@ -20,7 +21,7 @@ class ProductParametersValuesSearch extends ProductParametersValues
     {
         return [
             [['id', 'parameter_id', 'active', 'product_categories'], 'integer'],
-            [['name', 'created_at', 'synonym'], 'safe'],
+            [['name', 'created_at', 'synonym', 'synonyms_names'], 'safe'],
             [['synonyms_list'], 'safe'],
         ];
     }

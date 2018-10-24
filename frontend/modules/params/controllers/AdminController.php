@@ -67,12 +67,10 @@ class AdminController extends Controller
                 },
                 'values' => function ($model) {
                     $out = '';
-                    $loop = 0;
                     if ($model->values) {
-                        foreach ($model->values as $value) {
-                            $out .= $loop ? ', ' : '';
+                        foreach ($model->values as $key => $value) {
+                            $out .= $key ? '; ' : '';
                             $out .= ('<span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span>');
-                            $loop++;
                         }
                     }
                     return $out;
@@ -80,15 +78,18 @@ class AdminController extends Controller
                 'categories' => function ($model) {
                     $out = '';
                     if ($model->categories) {
-                        foreach ($model->categories as $category) {
+                        foreach ($model->categories as $key => $category) {
                             $productCategory = ProductsCategory::findOne($category);
-                            $out .= ($productCategory ? $productCategory->name .'; ' : '');
+                            $out .= ($productCategory ? ($key ? '; ' : '').$productCategory->name : '');
                         }
                     }
                     return $out;
                 },
                 'synonym_name' => function ($model) {
                     return $model->synonymParam ? $model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
+                },
+                'synonyms' => function ($model) {
+                    return implode('; ', array_column($model->synonyms, 'name'));
                 }
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(

@@ -14,13 +14,14 @@ class ProductParametersSearch extends ProductParameters
 {
     public $values;
     public $product_categories;
+    public $synonyms_names;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'active', 'product_categories', 'synonym'], 'integer'],
+            [['id', 'active', 'product_categories', 'synonym', 'synonyms_names'], 'integer'],
             [['code', 'name', 'created_at', 'values'], 'safe'],
         ];
     }
@@ -82,6 +83,13 @@ class ProductParametersSearch extends ProductParameters
             $query->andWhere([$this->tableName().'.synonym' => null]);
         } elseif (!empty($this->synonym)) {
             $query->andWhere([$this->tableName().'.synonym' => $this->synonym]);
+        }
+        if ($this->synonyms_names === "0") {
+            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+            $query->andWhere(['syn.id' => null]);
+        } elseif (!empty($this->synonyms_names)) {
+            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+            $query->andWhere(['syn.id' => $this->synonyms_names]);
         }
 
         return $dataProvider;
