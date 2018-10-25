@@ -654,6 +654,15 @@ $functionsList = [
     }
     return $params;
   },
+  '_regions_constant_config' => function(){
+      $out = ['allowEmptyList'=> true, 'columns' =>[['name'=>'code', 'title'=>'Code']]];
+      foreach (Yii::$app->params['regions_list'] as $regionKey => $region) {
+
+          $out['columns'][] = ['name' => $regionKey, 'title' => $region['name']];
+      }
+      //ddd($out);
+      return $out;
+  },
   '_render' => function($content){
     return Yii::$app->TwigString->render($content, Yii::$app->view->all_params);
   },

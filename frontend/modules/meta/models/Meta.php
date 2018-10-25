@@ -96,6 +96,11 @@ class Meta extends \yii\db\ActiveRecord
     ];
   }
 
+  public function getLanguages()
+  {
+    return $this->hasMany(LgMeta::className(), ['meta_id' => 'uid']);
+  }
+
   public function beforeValidate()
   {
 

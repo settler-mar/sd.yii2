@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\meta\models\LgMeta;
 /**
  * Class m181025_111336_ChangeMetadataNoRegions
  */
@@ -28,6 +29,17 @@ class m181025_111336_ChangeMetadataNoRegions extends Migration
                 }
             }
             $meta->save();
+            $languages = $meta->languages;
+            foreach ($languages as $language) {
+                foreach ($this->json_attributes as $attribute) {
+                    $json = json_decode($language->$attribute, 1);
+                    $value = $json && isset($json['default']) && !empty($json['default']) ? $json['default'] :
+                        $meta->$attribute;
+                   // d($language->uid .' '.$attribute.' '. $value);
+                    $language->$attribute = $value;
+                }
+                $language->save();
+            }
         }
     }
 
@@ -50,6 +62,18 @@ class m181025_111336_ChangeMetadataNoRegions extends Migration
                 $meta->$attribute = json_encode(['default'=>$value]);
             }
             $meta->save();
+        }
+        $languages = LgMeta::find()->all();
+        foreach ($languages as $language) {
+            foreach ($this->json_attributes as $attribute) {
+                $value = $language->$attribute;
+                $json = json_decode($value, 1);
+                if ($json) {
+                    continue;
+                }
+                $language->$attribute = json_encode(['default'=>$value]);
+            }
+            $language->save();
         }
     }
 

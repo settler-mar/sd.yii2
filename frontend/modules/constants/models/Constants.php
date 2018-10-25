@@ -26,6 +26,7 @@ class Constants extends \yii\db\ActiveRecord
         5 => 'Списки',
         6 => 'Ссылки',
         7 => 'Системные',
+        8 => 'Региональные'
     ];
 
   protected static $translated_attributes = ['text'];
@@ -79,6 +80,14 @@ class Constants extends \yii\db\ActiveRecord
         'ftype' => 'Ftype',
         'updated_at' => 'Updated At',
     ];
+  }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+  public function getLanguages()
+  {
+      return $this->hasMany(LgConstants::className(), ['const_id' => 'uid']);
   }
 
   public function afterFind()
@@ -141,29 +150,43 @@ class Constants extends \yii\db\ActiveRecord
     {
 
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $cash_name = $name . '_' . $json_col . '_' . $json_index . ($language ? '_' . $language : '');
+        $cash_name = $name . '_' . $json_col . '_' . $json_index
+            . ($language ? '_' . $language : '')
+            . (Yii::$app->params['region'] != 'default' ? '_' . Yii::$app->params['region'] : '');
 
         return Yii::$app->cache->getOrSet($cash_name, function () use ($name, $json_col, $json_index, $language) {
             $const = self::find()->from(self::tableName() . ' cwc')->where(['name' => $name])->asArray();
             if ($language) {
-                $const->select(['if(lgc.text > "" and cwc.has_lang=1, lgc.text, cwc.text) as text', 'ftype'])
+                $const->select(['if(lgc.text > "" and cwc.has_lang=1, lgc.text, cwc.text) as text', 'ftype', 'category'])
                     ->leftJoin(
                         LgConstants::tableName() . ' lgc',
                         'lgc.const_id = cwc.uid and lgc.language="'.$language.'"'
                     );
             } else {
-                $const->select(['text', 'ftype']);
+                $const->select(['text', 'ftype', 'category']);
             }
             $const = $const->one();
             if ($const) {
                 if ($const['ftype'] == 'json' && is_string($const['text'])) {
                     $const['text'] = json_decode($const['text'], true);
                 }
+                if ($const['category'] == 8) {
+                    //региональные,
+                    $json_index = array_search($json_index, array_column($const['text'], 'code'));
+                    $json_col = Yii::$app->params['region'];
+                    if ($json_index === false) {
+                        return false;
+                    }
+                }
                 if ($json_col !== false) {
                     if (isset($const['text'][$json_index])) {
                         if (is_array($const['text'][$json_index]) && isset($const['text'][$json_index][$json_col])) {
                             return ['text' => $const['text'][$json_index][$json_col], 'ftype' => $const['ftype']];
                         } else {
+                            if ($const['category'] == 8) {
+                                //можно только значение, не массив
+                                return false;
+                            }
                             return ['text' => $const['text'][$json_index], 'ftype'=> $const['ftype']];
                         }
                     } else {
