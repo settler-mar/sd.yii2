@@ -53,34 +53,18 @@
                         {% set loop_model = lang.code == app.params.base_lang ? model : lang.model %}
 
                         <div class="cpa_box tab_{{ lang.code }}">
-                            {% for r, region in lang.regions %}
-                                <input type="radio" class="controls_option" value="{{ lang.code }}_{{ str_replace('.', '_', r) }}" id="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}"
-                                       name="tabs_open_{{ lang.code }}" {% if loop.first %}checked{% endif %}>
-                            {% endfor %}
-                            <ul class="tab_control">
-                                {% for r,region in lang.regions %}
-                                    <li class="tab_butt_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
-                                        <label for="option_tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
-                                            {{ region.name }} {{ lang.name }}
-                                        </label>
-                                    </li>
-                                {% endfor %}
-                            </ul>
 
-                            <div class="content_tab">
-                                {% for r,region in lang.regions %}
-                                    <div class="tab_{{ lang.code }}_{{ str_replace('.', '_', r) }}">
-                                        {{ form.field(loop_model, 'regionsPostData[title]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.title[r]}).label('Title')|raw }}
-                                        {{ form.field(loop_model, 'regionsPostData[h1]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.h1[r]}).label('H1')|raw }}
-                                        {{ form.field(loop_model, 'regionsPostData[description]['~r~']').textInput({'maxlength':true, 'value': loop_model.regionsData.description[r]}).label('Description')|raw }}
-                                        {{ form.field(loop_model, 'regionsPostData[head]['~r~']').textarea({'rows':6, 'value': loop_model.regionsData.head[r]}).label('head')|raw }}
-                                    </div>
-                                {% endfor %}
-                            </div>
+                            {{ form.field(loop_model, 'title').textInput({'maxlength':true})|raw }}
+
+                            {{ form.field(loop_model, 'h1').textInput({'maxlength':true})|raw }}
+
+                            {{ form.field(loop_model, 'description').textarea({'rows':6})|raw }}
 
                             {{ form.field(loop_model, 'keywords').textarea({'rows':6})|raw }}
 
                             {{ form.field(loop_model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
+                            {{ form.field(loop_model, 'head').textInput({'maxlength':true})|raw }}
 
                             <h4>Изображение заставка</h4>
                             <p>

@@ -22,6 +22,11 @@ $data = [
         'en-EN'=> 'English',
         'lt'=> 'Литовский',
     ],
+    'language_list_active' => [
+        'ru-RU'=>1,
+        'en-EN'=>1,
+        'lt'=> 0,
+    ],
     'country_to_region_default_language' => 'en-EN',
     'country_to_region_default_region' => 'default',
     'login_attemps_count' => 3,
