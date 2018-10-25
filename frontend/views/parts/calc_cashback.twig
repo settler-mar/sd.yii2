@@ -4,6 +4,8 @@
 
       <h3 class="shop-calc-cashback_content-header">{{ t('main', 'calc_cashback_in_{store}', {'store': current_store.name})|raw }}</h3>
 
+       {% set system_currency = app.params.regions_list[app.params.region].params.valuta %}
+
         <div class="shop-calc-cashback_content-form">
           <label for="shop-calc-summ">{{ t('main','calc_cashback_price')|raw }}</label>
             <input id="shop-calc-summ"
@@ -18,7 +20,7 @@
             <option
                 value="{{ exchange(1,item.code,currency)}}"
                 code="{{item.code}}"
-                {% if item.code== (user ? user.currency : current_store.currency) %}
+                {% if item.code== (current_store.currency) %}
                   selected
                 {% endif %}
             >
@@ -28,7 +30,7 @@
         </select>
       </div>
       <div class="shop-calc-cashback_content-result">
-        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':t('main', user ? user.currency : current_store.currency)})|raw }}
+        {{ t('main', 'calc_cashback_{store}_cashback <span class="shop-calc-cashback_content-result-value calc-result_value">0</span> cur', {'store': current_store.name,'currency':t('main', user ? user.currency : system_currency)})|raw }}
           {% if current_store.displayed_cashback ends with '%' %}
           {% else %}
             {{ t('main','calc_cashback_fixed')|raw }}
