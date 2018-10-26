@@ -260,9 +260,9 @@ class Banners extends \yii\db\ActiveRecord
                 }
                 if ($region) {
                     $banners->andWhere(['or',
-                        'JSON_CONTAINS(regions,\'"'.$region.'"\',"$")',
                         ['=', 'regions', ''],
-                        ['is', 'regions', null]
+                        ['is', 'regions', null],
+                        'JSON_CONTAINS(regions,\'"'.$region.'"\',"$")',
                     ]);
                 }
                 return $banners
