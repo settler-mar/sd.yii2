@@ -1,0 +1,317 @@
+{#{{ use('frontend/components/LangSelect') }}#}
+
+<section id="header" class="header">
+  <div class="header-upline">
+    <div class="header-upline_inner page-wrap-flex">
+
+      <div class="header-upline_in">
+        <div class="header-upline_in-left">
+
+          <div class="menu-toggle">
+            <a href="/">
+              {{ svg('bars-slim', 'menu-toggle_button open')|raw }}
+              {{ svg('close', 'menu-toggle_button close')|raw }}
+            </a>
+
+          </div>
+
+          <div class="search-toggle  btn-header mobile">
+            <a href="/">{{ svg('search', 'search-toggle_button btn-header_button')|raw }}</a>
+          </div>
+        </div>
+
+        <div class="header-upline_logo">
+          {{ get_menu_item({'href': '/','title': '<img class="header-upline_logo-pc" src="/images/templates/sd_logo.png" alt="secretdiscounter logo">
+            <img class="header-upline_logo-mobile" src="/images/svg/mini-logo-2.svg" alt="secretdiscounter logo">' })|raw }}
+        </div>
+
+
+        <div class="header-search stores_search">
+          <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
+            <div class="header-search_form-group">
+              {#<select  name="module" class="header-search_form-input header-search_form-input-module">#}
+                  {#<option value="store">{{ t('common', 'shops') }}</option>#}
+                  {#<option value="coupon">{{ t('main', 'promocodes') }}</option>#}
+              {#</select>#}
+              <input type="hidden" id="header-search_form-module-hidden" name="module" value="store">
+              <label class="header-search_form-input-module-label" for="header-search_form-module-text">
+                <span  id="header-search_form-module-text" class="header-search_form-input header-search_form-input-module">{{ t('common', 'shops') }}</span>
+              </label>
+
+              <div class="header-search_form-popup">
+                  <ul class="form-popup-select">
+                      <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'shops') }}"
+                          data-id2="header-search_form-module-hidden" data-value2="store"
+                          data-id3="search" data-value3="{{ t('main', 'find_shop') }}">
+                          {{ t('common', 'shops') }}
+                      </li>
+                      <li data-id1="header-search_form-module-text" data-value1="{{ t('main', 'promocodes') }}"
+                          data-id2="header-search_form-module-hidden" data-value2="coupon"
+                          data-id3="search" data-value3="{{ t('main', 'find_promocode') }}">
+                          {{ t('main', 'promocodes') }}
+                      </li>
+                  </ul>
+              </div>
+
+                <input type="text" name="query" id="search" class="header-search_form-input header-search_form-input-query search-form-input" value=""
+                     placeholder="{{ t('main', 'find_shop') }}" autocomplete="off">
+              {{ svg('search','header-search_form-button')|raw }}
+            </div>
+          </form>
+          <div class="header-autocomplete autocomplete-wrap">
+            <ul class="autocomplete_list"></ul>
+          </div>
+        </div>
+
+        {#{{ lang_select_widget() }}#}
+
+        <div class="header-upline_in-right">
+
+          {% if this.user_id == 0 %}
+            {{ get_menu_item({'href': '/howitworks','title': t('main', 'how_it_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
+            <div class="header-authorization">
+              <a class="header-authorization-btn header-authorization-enter modals_open" rel="nofollow"
+                 href="{{ _href('#login')|raw }}">
+                <span class="header-authorization-enter-text"> {{ t('common', 'login')|raw }}</span>
+                {{ svg('sign-in', 'header-authorization-enter-icon')|raw }}
+              </a>
+              <span class="header-authorization-separate header-authorization-separate-login">/</span>
+              <a class="header-authorization-btn header-authorization-register modals_open" rel="nofollow"
+                 href="{{ _href('#registration')|raw }}">
+                {{ t('common', 'register')|raw }}
+              </a>
+            </div>
+          {% else %}
+            {#зарегистрирован#}
+            <div class="btn-header header-upline_ballance">
+              {{ get_menu_item({
+                'href': '/account',
+                'title':
+                svg('circle', 'btn-header_button_money')
+                ~ '<span class="btn-header-ballance-wrap">'
+                ~ '<span class="ballance-confirmed" data-toggle="tooltip" data-original-title="'~t('account', 'ballance_current')~'">'
+                ~ _nf(this.balance.current) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
+                ~ _nf(this.balance.pending) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span>'
+                ~ '</span>',
+                'class':'btn-header-ballance'
+              })|raw }}
+
+            </div>
+            <div class="btn-header header-upline_plugin desctop">
+              {{ get_menu_item({
+                'href': '/plugin',
+                'title': svg('puzzle', 'btn-header_button'),
+                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
+              })|raw }}
+            </div>
+            {% if this.favorites %}
+              {#если есть избранные#}
+              <div class="btn-header btn-header_favorite">
+                {{ get_menu_item({
+                  'href': '/account/favorites',
+                  'title': svg('heart-o', 'btn-header_button'),
+                  'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
+                })|raw }}
+              </div>
+            {% endif %}
+
+            <div class="header-logo_noty btn-header last">
+              {{ get_menu_item({
+                'href': '/account/notification',
+                'title': svg('bell-o', 'btn-header_button'),
+                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
+              })|raw }}
+
+            </div>
+
+            <div class="account-menu-wrap">
+              <div class="avatar account-menu-toggle">
+                {% set user_avatar = _checkAvatar(this.user.photo) %}
+                <span class="avatar-wrap">
+                  <img class="avatar_image account-menu-toggle-image" src="{{ user_avatar }}"
+                       alt="{{ this.user.name }}"/>
+                </span>
+                {{ svg('angle-down','avatar_angle-down')|raw }}
+                {{ svg('close', 'account-menu-toggle-close')|raw }}
+              </div>
+              {% include 'parts/account_menu.twig' %}
+            </div>
+
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="header-secondline">
+    <div class="page-wrap-flex header-secondline_inner">
+      <ul class="page-wrap-flex drop-menu">
+        {% if this.user_id == 0 %}
+          <li class="mobile">
+            <a class="header-right_link mobile modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
+              {{ t('common', 'do_login')|raw }}
+            </a>
+
+          </li>
+          <li class="mobile">
+            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow"
+               href="{{ _href('#registration')|raw }}">
+              {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
+            </a>
+          </li>
+          <li class="mobile">
+            {#<a href="/howitworks" class="header-right_link mobile">Как это работает</a>#}
+            {{ get_menu_item({
+              'href': '/howitworks',
+              'title': t('main', 'how_it_works'),
+              'class': 'header-right_link mobile'
+            })|raw }}
+          </li>
+        {% else %}
+          <li class="mobile">
+            {{ get_menu_item({
+              'href': '/account',
+              'title': t('account', 'menu_main_page'),
+              'class': 'mobile'
+            })|raw }}
+          </li>
+        {% endif %}
+        <li class="drop-menu_group__up">
+          {{ get_menu_item({
+            'href': '/stores',
+            'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
+
+          {{ use('frontend/components/CategoryMenu') }}
+          {% set offline = app.params.stores_menu_separate ? 0 : null %}
+          {% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items':'favorite,all_shops,visited', 'offline': offline}) %}
+          {% if category_tree %}
+            {{ category_tree|raw }}
+          {% endif %}
+        </li>
+        <li class="mobile">
+          {{ get_menu_item({
+            'href': '/stores/double-cashback-stores',
+            'title': t('main', 'duble_cashback'),
+            'class': 'link_mobile_bold'
+          })|raw }}
+        </li>
+        <li class="drop-menu_group__up">
+          {{ get_menu_item({
+            'href': '/coupons',
+            'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
+          {{ use('frontend/components/CategoryCouponsMenu') }}
+          {% set category_coupons = category_coupons_menu_widget({'where': {'hide_high_menu': 0}}) %}
+          {% if category_coupons %}
+            {{ category_coupons|raw }}
+          {% endif %}
+        </li>
+        {#если есть в настройках, выводим меню шопов оффлайн#}
+        {% if app.params.stores_menu_separate %}
+          <li class="drop-menu_group__up">
+            {{ get_menu_item({
+              'href': '/stores/offline',
+              'title': t('main', 'offline_shops') ~ svg('angle-down','menu_angle-down'),
+              'class': 'drop-menu_group__up-header'
+            })|raw }}
+
+            {% set category_tree = category_menu_widget({'show_hidden': false, 'ext_items':'favorite,all_shops', 'offline': 1 }) %}
+            {% if category_tree %}
+              {{ category_tree|raw }}
+            {% endif %}
+          </li>
+        {% endif %}
+        <li class="desctop">
+          {{ get_menu_item({
+            'href': '/stores/double-cashback-stores',
+            'title': t('main', 'duble_cashback'),
+          })|raw }}
+        </li>
+        <li class="drop-menu_bold">
+          {{ get_menu_item({
+            'href': '/products/aliexpress',
+            'title': t('main', 'top-ali'),
+            'attributes':{
+              'target':"_blank",
+              'rel': "noopener noreferrer nofollow",
+            }
+          })|raw }}
+        </li>
+        <li class="drop-menu_group__up drop-menu_group__up-pointed">
+          <span class="drop-menu_group__up-header"> {{ t('main', 'services') }}
+            {{ svg('angle-down','menu_angle-down')|raw }}
+          </span>
+          <ul>
+            {% set link_list = _constant("main_menu_service") %}
+            {% for item in link_list %}
+              {% if item.show==1 %}
+                <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
+                  {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
+                  {{ get_menu_item({
+                    'href': item.url,
+                    'outer': item.outer,
+                    'title': item.name,
+                    'attributes': attributes
+                  })|raw }}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+      <ul class="header-right page-wrap-flex drop-menu">
+        <li>
+          {{ get_menu_item({'href': '/dobro','title': svg('heart', 'header-heart heart-red') ~ t('main', 'we_make_good')})|raw }}
+        </li>
+        <li>
+          {% if this.isWebMaster or this.user.waitModeration==1 %}
+            {% set item= {
+              'href':'/account/webmaster',
+              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
+            } %}
+          {% else %}
+            {% set item= {
+              'href':'/affiliate-system',
+              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_affiliate'),
+            } %}
+          {% endif %}
+          {{ get_menu_item(item)|raw }}
+
+        </li>
+        {% if this.user_id > 0 %}
+          <li class="drop-menu_group__up">
+          <span class="dashed drop-menu_group__up-header">{{ t('main', 'help') }}
+            {{ svg('angle-down','menu_angle-down')|raw }}
+          </span>
+            <ul class="left-">
+              {% set link_list = _constant("main_menu_help") %}
+              {% for item in link_list %}
+                {% if item.show==1 %}
+                  <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
+                    {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
+                    {{ get_menu_item({
+                      'href': item.url,
+                      'outer': item.outer,
+                      'title': item.name,
+                      'attributes': attributes
+                    })|raw }}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="mobile">
+            {{ get_menu_item({'href': '/logout','title': t('common', 'do_logout')})|raw }}
+          </li>
+        {% else %}
+          <li>
+            {{ get_menu_item({'href': '/help-center','title': t('main', 'help')})|raw }}
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</section>

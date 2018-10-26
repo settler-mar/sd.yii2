@@ -1,84 +1,104 @@
-{{ use('yii/bootstrap') }}
-{{ use('yii\bootstrap\ActiveForm') }}
-{{ use('yii/helpers/Html') }}
-{{ use('yii/bootsrap/Nav') }}
-{{ use('yii/bootsrap/NavBar') }}
-{{ use('yii/widgets/Breadcrumbs') }}
-{{ use('b2b/components/ContentMenu') }}
-{#{{ use('common/widgets/Alert') }}#}
-{{ register_asset_bundle('b2b/assets/AppAsset') }}
-
-{{ void(this.beginPage()) }}
+{{ register_asset_bundle('shop/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
 <!DOCTYPE html>
-<html lang="{{ app.language }}">
-<head>
-    <meta charset="{{ app.charset }}">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ html.encode(this.title) }}</title>
-    {{ html.csrfMetaTags | raw }}
-    {{   void(this.head) }}
-</head>
-<body>
-{{ void(this.beginBody()) }}
-<div class="wrap">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="{{ app.language }}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta name="theme-color" content="#000">
 
-    {{ nav_bar_begin({
-        'brandLabel': '<img src="/images/templates/secretdiscounter-logo.png" width="170" alt="Secretdiscounter logo">',
-        'brandUrl' : '/',
-        'options' : {'class': 'navbar-inverse navbar-fixed-top'}
-    })  }}
-    {% if app.storePointUser.id %}
-        {% set menuItems = [{'label': 'Добавить платёж', 'url': ['/stores_points/payments']}] %}
-        {% set label='Выход ('~app.storePointUser.name~')' %}
-        {% set menuItems = menuItems|merge([{'label': label, 'url': ['/stores_points/logout']}]) %}
-    {% elseif app.user.isGuest %}
-        {% set menuItems = [{'label': 'Личный кабинет', 'url': ['/login']}] %}
-        {% set menuItems = menuItems|merge([{'label': 'Личный кабинет точки продаж', 'url': ['/stores_points/login']}]) %}
-        {% set menuItems = menuItems|merge([{'label': 'Подключить магазин', 'url': ['/registration']}]) %}
-    {% else %}
-        {%  set menuItems = [{'label': 'Личный кабинет', 'url': ['/home']}] %}
-        {% set label='Выход ('~app.user.identity.username~')' %}
-        {% set menuItems = menuItems|merge([{'label': 'Платежи', 'url': ['/payments']}]) %}
-        {% set menuItems = menuItems|merge([{'label': label, 'url': ['/logout']}]) %}
+    <base href="/">
+
+    <title>{{ this.title |raw}}</title>
+
+    <!-- SEO -->
+    {% if app.controller.pagination_tags.prev_page != null %}
+      <link rel="prev" href="{{site_url}}{{app.controller.pagination_tags.prev_page}}">
     {% endif %}
-    {{ nav_widget({'options': {'class': 'navbar-nav navbar-right'}, 'items': menuItems,}) }}
-    {{ nav_bar_end() }}
+    {% if app.controller.pagination_tags.next_page != null %}
+      <link rel="next" href="{{site_url}}{{app.controller.pagination_tags.next_page}}">
+    {% endif %}
+    {{ html.csrfMetaTags | raw }}
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700" rel="stylesheet">
+
+    {% for style in exclusionCSSheader %}
+      <link rel="stylesheet" href="{{style}}">
+    {% endfor %}
+    {% for css_link in minifyCSS %}
+      <link rel="stylesheet" href="{{css_link}}">
+    {% endfor %}
+    {% for scriptH in exclusionJSheader %}
+      <script src="{{scriptH}}" {% if scriptH starts with 'http' %} async="async" {% endif %}></script>
+    {% endfor %}
+
+    {{ void(this.head()) }}
+
+  </head>
+  <body>
+  {{ void(this.beginBody()) }}
+  {{ this.meta_head | raw }}
+
+    <!--[if lt IE 9]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    {#{% include 'base/header.twig' %}#}
+
+    {% set slider=this.all_params.slider %}
+
+    <div id="content-wrap"  class="content-wrap{{ _if(params('global_bg'),' '~params('global_bg')) }}
+      {% if slider|length == 0 and this.all_params.search_form == null and this.all_params.wrap !='index' %} margin-top{% endif %}">
+
+      {% if slider|length > 0 %}
+        {#{% include 'parts/slider.twig' %}#}
+      {% endif %}
 
 
-    <div class="container">
-        {{ breadcrumbs_widget({'links': this.params.breadcrumbs}) }}
-        {#{{ alert_widget() }}#}
-        {% set content_menu = content_menu_widget({'current_item':this.title, 'is_guests':app.user.isGuest}) %}
+      {% if this.all_params.wrap=='index' %}
+          {{ content|raw }}
+      {% else %}
+        {#{% include 'parts/catalog_breadcrumbs.twig' %}#}
+        <div class="page-wrap
+          {{ _if(params('global_wrap'),' '~params('global_wrap')) }}
+          {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">
 
-        {% if content_menu and  app.request.pathinfo|slice(0,8) != 'payments' and app.request.pathinfo != 'home' %}
-            <div class="col-sm-3">
-                {{ content_menu|raw }}
-            </div>
-            <div class="col-sm-9">
-                {{ content|raw }}
-            </div>
-        {% else %}
-            <div class="col-sm-12">
-                {{ content|raw }}
-            </div>
-        {% endif %}
+            {{ content|raw }}
 
+        </div>
+      {% endif %}
     </div>
-</div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; Secret Discounter Ltd., 2016–{{ year() }}. Все права защищены</p>
-        <p class="pull-right">
-            <a class="footer__href" href="">Политика конфиденциальности</a> | <a class="footer__href" href="">Условия использования</a>
-        </p>
-    </div>
-</footer>
 
-{{   void(this.endBody()) }}
-</body>
-{{ Notification()|raw }}
+
+
+    {% include 'base/footer.twig' %}
+
+    {{   void(this.endBody()) }}
+
+    {% for script in minifyJS %}
+      <script src="{{script}}"></script>
+    {% endfor %}
+
+    {% for scriptF in exclusionJSfooter %}
+      <script src="{{scriptF}}" {% if scriptF starts with 'http' %} async="async" {% endif %}></script>
+    {% endfor %}
+
+
+    {% if not this.user_id %}
+      <script charset="UTF-8" src="/js/msg.js" async></script>
+    {% endif %}
+
+  </body>
 </html>
-{{   void(this.endPage()) }}
-
+{{ void(this.endPage()) }}

@@ -16,16 +16,16 @@ return [
             'csrfParam' => '_csrf-shop',
                 // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
         ],
-//      'view'=>[
-//        'class' => 'shop\components\SdView',
-//        'renderers' => [
-//          'twig' => [
-//            'globals' => [
-//              'ActiveForm'=>'/yii/widgets/ActiveForm'
-//            ]
-//          ]
-//        ]
-//      ],
+      'view'=>[
+        'class' => 'shop\components\SdView',
+        'renderers' => [
+          'twig' => [
+            'globals' => [
+              'ActiveForm'=>'/yii/widgets/ActiveForm'
+            ]
+          ]
+        ]
+      ],
       'user' => [
             'identityClass' => 'frontend\modules\users\models\Users',
             'enableAutoLogin' => true,
@@ -53,12 +53,17 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                '/' => 'site/index',
+             //   '/' => 'site/index',
             //   '/index' => '404',
             //    '/home' =>'users/default/index',
             //    '<action:(login|logout|resetpassword|reset|register)>' => 'users/default/<action>',
 
             ],
+        ],
+        'assetManager' => [
+            //'class' => 'yii\web\AssetManager',
+            //'class' => 'shop\assets\AppAsset',
+            'linkAssets' => false,
         ],
     ],
     'params' => $params,
