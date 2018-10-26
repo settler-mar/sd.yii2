@@ -33,8 +33,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
                 Yii::$app->response->redirect($url)->send();
             }
             Yii::$app->params['region'] = $key;
-            unset($path[0]);
-            sort($path);
+            array_splice($path, 0, 1);
             break;
         }
     }
@@ -51,7 +50,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
             }
             Yii::$app->language = $key;
             Yii::$app->params['lang_code'] = $keyCode;
-            unset($path[0]);
+            array_splice($path, 0, 1);
             break;
         }
     }

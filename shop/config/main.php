@@ -56,6 +56,9 @@ return [
                 [ // обработка локализации сайта
                     'class' => 'shop\components\SdUrlLocalisation',
                 ],
+                '<module>/default/<action>' => '404',
+                '<module>/default' => '404',
+
                 //   '/' => 'site/index',
             //   '/index' => '404',
             //    '/home' =>'users/default/index',
@@ -71,7 +74,9 @@ return [
     ],
     'params' => $params,
     'modules' => [
-
+        'category' => [
+            'class' => 'shop\modules\category\Module',
+        ],
     ],
 ]
 ;
