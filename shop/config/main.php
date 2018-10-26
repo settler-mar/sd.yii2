@@ -53,7 +53,10 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-             //   '/' => 'site/index',
+                [ // обработка локализации сайта
+                    'class' => 'shop\components\SdUrlLocalisation',
+                ],
+                //   '/' => 'site/index',
             //   '/index' => '404',
             //    '/home' =>'users/default/index',
             //    '<action:(login|logout|resetpassword|reset|register)>' => 'users/default/<action>',
