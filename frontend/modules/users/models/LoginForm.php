@@ -53,6 +53,7 @@ class LoginForm extends Model
             $user = $this->getUser();
             if ($user && $user->is_active == Users::STATUS_DELETED) {
                 $this->addError('email', Yii::t('account', 'login_your_account_deleted'));
+                Yii::$app->session->addFlash('err', Yii::t('account', 'login_your_account_deleted_message'));
                 return;
             }
             if (!$user || !$user->validatePassword($this->password)) {

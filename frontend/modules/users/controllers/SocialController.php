@@ -5,6 +5,7 @@ namespace frontend\modules\users\controllers;
 use common\components\Help;
 use frontend\components\socials\Google;
 use frontend\modules\users\models\UsersSocial;
+use frontend\modules\users\models\Users;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -101,6 +102,16 @@ class SocialController extends Controller
   private function testUser($user, $eauth = false)
   {
     //ddd($user);
+    if ($user && $user->is_active == Users::STATUS_DELETED) {
+      Yii::$app->session->addFlash('err', Yii::t('account', 'login_your_account_deleted_message'));
+      if ($eauth) {
+        $eauth->redirect(Help::href('/'));
+      } else {
+        Yii::$app->response->redirect(Help::href('/'));
+        return;
+      }
+
+    }
     if (!empty($user)) {
       if (!Yii::$app->user->isGuest) {
         if ($eauth) {

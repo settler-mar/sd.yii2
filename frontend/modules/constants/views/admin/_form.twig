@@ -42,6 +42,8 @@
           {{ form.field(model, 'text').textarea({'rows':6}).label('')|raw }}
         {% elseif(model.ftype=='reachtext') %}
           {{ form.field(model, 'text').widget(TinyMce.className(),params('TinyMce')).label('')|raw }}
+        {% elseif (model.ftype=='json' and model.category == 8) %}
+            {{ form.field(model, 'text').widget(mp_class,_regions_constant_config()).label('')|raw }}
         {% elseif(model.ftype=='json') %}
           {% set param = include('json/'~model.editor_param~'.json', {
             'model': model,
@@ -56,6 +58,8 @@
               {{ form.field(lang.model, 'text').textarea({'rows':6}).label('')|raw }}
             {% elseif(model.ftype=='reachtext') %}
               {{ form.field(lang.model, 'text').widget(TinyMce.className(),params('TinyMce')).label('')|raw }}
+            {% elseif (model.ftype=='json' and model.category == 8) %}
+                {{ form.field(lang.model, 'text').widget(mp_class,_regions_constant_config()).label('')|raw }}
             {% elseif(model.ftype=='json') %}
               {% set param = include('json/'~model.editor_param~'.json', {
                 'model': lang.model,

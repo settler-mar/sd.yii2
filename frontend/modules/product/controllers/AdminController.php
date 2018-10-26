@@ -108,12 +108,10 @@ class AdminController extends Controller
                 },
                 'categories' => function ($model) {
                     $out = '';
-                    $loop = 0;
                     if ($model->categories) {
-                        foreach ($model->categories as $category) {
+                        foreach ($model->categories as $key => $category) {
                             $out .= $category->name;
-                            $loop++;
-                            $out .= ($loop < count($model->categories) ? '<br>' : '');
+                            $out .= ($key < count($model->categories) ? '<br>' : '');
                         }
                     }
                     return $out;
@@ -122,17 +120,13 @@ class AdminController extends Controller
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
                 },
                 'params' => function ($model) {
-                    $out = '';
+                    $out = [];
                     if ($model->params) {
                         foreach ($model->params as $param => $values) {
-                            $out .= $param . ':';
-                            foreach ($values as $value) {
-                                $out .= $value . ',';
-                            }
-                            $out .= '<br>';
+                            $out[] = $param . ':' . implode(';', $values);
                         }
                     }
-                    return $out;
+                    return !empty($out) ? implode('<br>', $out) : '';
                 }
             ],
             'availableFilter' => [

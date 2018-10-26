@@ -341,5 +341,6 @@ return [
     'account_favorites_title' => 'Избранные магазины - SecretDiscounter',
     'account_settings_title' => 'Настройки профиля - SecretDiscounter',
     'account_support_title' => 'Служба поддержки - SecretDiscounter',
-    'login_your_account_deleted' => 'Ваш аккаунт удалён. Свяжитесь с администратором',
+    'login_your_account_deleted' => 'Аккаунт заблокирован. Для выяснения – support@secretdiscounter.com',
+    'login_your_account_deleted_message' => 'Аккаунт заблокирован. Для выяснения – <a href="mailto:support@secretdiscounter.com">support@secretdiscounter.com</a>',
 ];

@@ -88,6 +88,7 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     }
 
     /**
+     * является синонимом для
      * @return \yii\db\ActiveQuery
      */
     public function getSynonymValue()
@@ -95,10 +96,13 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
 
-//    public function getSynomyns()
-//    {
-//        return $this->hasMany();
-//    }
+    /**синонимы значения
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSynonyms()
+    {
+        return $this->hasMany(ProductParametersValues::className(), ['synonym' => 'id']);
+    }
 
     public static function standartedValues($paramId, $values)
     {
