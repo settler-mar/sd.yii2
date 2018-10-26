@@ -639,6 +639,9 @@ $functionsList = [
   '_tags_class' => function($content, $tags_list = [], $options = []){
     return TagsClasses::add($content, $tags_list, $options);
   },
+  '_region' =>  function($name = 'name'){
+    return getConstant('region_names',0, $name);
+  },
   '_regions_include' => function($params){
     //на форму редактирования констант json регионы из настроек
     if (isset($params['columns'])) {
