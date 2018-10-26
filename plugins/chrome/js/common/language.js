@@ -1,1 +1,1 @@
-function lg(a,g){var e=languages&&languages[language]&&languages[language][a]?languages[language][a]:a;return e=utils.replaceTemplate(e,g)}var language=navigator.language?navigator.language:"ru-RU";
+var language=navigator.language?navigator.language:"ru-RU";function lg(a,g){var e=languages&&languages[language]&&languages[language][a]?languages[language][a]:a;return e=utils.replaceTemplate(e,g)}

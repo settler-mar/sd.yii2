@@ -1,4 +1,4 @@
-var siteUrl = 'https://secretdiscounter.ru/';
+var siteUrl = 'https://secretdiscounter.com/';
 //var siteUrl = 'http://sdyii/';
 var userUrl = 'account/notification';
 var storesUrl = 'stores/data';

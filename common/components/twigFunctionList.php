@@ -639,6 +639,9 @@ $functionsList = [
   '_tags_class' => function($content, $tags_list = [], $options = []){
     return TagsClasses::add($content, $tags_list, $options);
   },
+  '_region' =>  function($name = 'name'){
+    return getConstant('region_names',0, $name);
+  },
   '_regions_include' => function($params){
     //на форму редактирования констант json регионы из настроек
     if (isset($params['columns'])) {
@@ -653,6 +656,15 @@ $functionsList = [
       }
     }
     return $params;
+  },
+  '_regions_constant_config' => function(){
+      $out = ['allowEmptyList'=> true, 'columns' =>[['name'=>'code', 'title'=>'Code']]];
+      foreach (Yii::$app->params['regions_list'] as $regionKey => $region) {
+
+          $out['columns'][] = ['name' => $regionKey, 'title' => $region['name']];
+      }
+      //ddd($out);
+      return $out;
   },
   '_render' => function($content){
     return Yii::$app->TwigString->render($content, Yii::$app->view->all_params);

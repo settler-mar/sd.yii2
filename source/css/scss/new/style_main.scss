@@ -708,7 +708,7 @@ svg.svg-no-stroke {
     height: 40px;
     width: 100%;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 75%);
   }
 
@@ -726,6 +726,10 @@ svg.svg-no-stroke {
     &:before {
       display: none;
     }
+  }
+  &-history {
+    height: auto;
+    padding: 3px 5px !important;
   }
 }
 

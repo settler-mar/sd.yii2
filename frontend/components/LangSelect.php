@@ -29,13 +29,16 @@ class LangSelect extends Widget
 
   public function run()
   {
-    $lang=array_flip(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']);
+    $regionLangs=array_flip(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']);
     $langs_active = Yii::$app->params['regions_list'][Yii::$app->params['region']]['langListActive'];
     $this_reg=Yii::$app->params['regions_list'][Yii::$app->params['region']];
     $path=Yii::$app->request->pathInfo;
 
-    //if($this_reg['langDefault']==$lang[Yii::$app->language]){}
-    foreach ($lang as $k=>$v){
+    $lang = [];
+    foreach ($regionLangs as $k=>$v){
+      if (empty(Yii::$app->params['language_list_active'][$k])) {
+        continue;
+      }
       $lang[$k]=[
         'name'=>Yii::$app->params['language_list'][$k],
         'url'=>'/'.(($this_reg['langDefault']==$v)?$path:$v.'/'.$path),

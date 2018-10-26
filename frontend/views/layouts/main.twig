@@ -13,7 +13,7 @@
 
     <base href="/">
 
-    <title>{{ this.title |raw}}</title>
+    <title>{{ this.title |raw}} {{ _constant('region_names', 0, 'name')|raw }}</title>
 
     <!-- SEO -->
     {% if app.controller.pagination_tags.prev_page != null %}
@@ -48,6 +48,8 @@
 
   </head>
   <body>
+
+  {{ _region() }}
   {{ void(this.beginBody()) }}
   {{ this.meta_head | raw }}
 
