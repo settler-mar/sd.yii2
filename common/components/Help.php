@@ -169,9 +169,9 @@ class Help extends Component
     return DateRangePicker::widget($option);
   }
 
-  public static function svg($name, $class = false)
+  public static function svg($name, $class = false, $alias = '@app')
   {
-    $path = Yii::getAlias('@app') . '/views/svg/' . $name . '.svg';
+    $path = Yii::getAlias($alias) . '/views/svg/' . $name . '.svg';
 
     if (!is_readable($path)) {
       return '<pre>Фаил не найден ' . $path . '</pre>';

@@ -76,7 +76,7 @@
 
         {#</div>#}
 
-      {#</div>#}
+      </div>
       {#<div class="footer-docs  flex-line">#}
         {#<span class="footer-docs-item hidden-link" data-rel="nooper nofollow"#}
               {#data-link="{{ _href('/sitemap') }}">{{ t('main', 'site_map') }}</span>#}
@@ -86,7 +86,7 @@
               {#data-link="{{ _href('/terms') }}">{{ t('main', 'terms_of_use') }}</span>#}
       {#</div>#}
       <div class="footer-copyright">
-        <img src="/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
+        <img src="https://secretdiscounter.com/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
         {{ get_menu_item({
           'href': _href('/about'),
           'class': 'footer-copyright_text',
@@ -132,12 +132,12 @@
       </div>
       <div class="footer-right-item footer-app">
         <div class="footer-app-img footer-app-waiting">
-          {{ svg('app_store')|raw }}
-          {{ svg('app_w','footer-app-waiting-label')|raw }}
+          {{ svg('app_store', '', '@frontend')|raw }}
+          {{ svg('app_w','footer-app-waiting-label', '@frontend')|raw }}
         </div>
         <div class="footer-app-img footer-app-waiting">
-          {{ svg('play_market')|raw }}
-          {{ svg('app_w','footer-app-waiting-label')|raw }}
+          {{ svg('play_market', '', '@frontend')|raw }}
+          {{ svg('app_w','footer-app-waiting-label', '@frontend')|raw }}
         </div>
       </div>
 
