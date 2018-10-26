@@ -370,6 +370,11 @@ gulp.task('plugin', function(){
         gulp.src(paths.plugin.source + '/img/'+ paths.plugin.images[i])
             .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/img'));
     }
+
+    //_locales
+    gulp.src(paths.plugin.source + '/_locales/**/*')
+      .pipe(gulp.dest(paths.plugin.browsers[key].dest + '/_locales'));
+
     //файлы в корне
     for (var i = 0; i < paths.plugin.browsers[key].rootFiles.length; i++) {
         gulp.src(paths.plugin.source + '/' + paths.plugin.browsers[key].rootFiles[i])
