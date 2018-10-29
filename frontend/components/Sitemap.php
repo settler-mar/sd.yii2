@@ -76,6 +76,7 @@ class Sitemap
     ];
     protected $languages = [];
     protected $url;
+    protected $out = [];
 
     public function __construct()
     {
@@ -89,13 +90,11 @@ class Sitemap
 
 
 
-    public function getXml()
+    public function getMap()
     {
         $cacheName = 'sitemap_xml';
         $cache = Yii::$app->cache;
         return $cache->getOrSet($cacheName, function () {
-            $out = '<?xml version="1.0" encoding="UTF-8"?>'."\n".
-                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
             foreach ($this->map as $mapItem) {
                 $priority = isset($mapItem['priority']) ? $mapItem['priority'] : 1;
@@ -126,10 +125,10 @@ class Sitemap
                                 $urlPriority = isset($urlItem['priority']) ? $urlItem['priority'] : $priority;
                                 $urlFriquency = isset($urlItem['friquency']) ? $urlItem['friquency'] : $friquency;
                                 $updated = isset($urlItem['updated']) ? $urlItem['updated'] : $lastMod;
-                                $out .= $this->byUrl($item, $urlItem['url'], $updated, $urlPriority, $urlFriquency);
+                                $this->addByUrl($item, $urlItem['url'], $updated, $urlPriority, $urlFriquency);
                             }
                         } else {
-                            $out .= $this->byUrl($item, $url, $lastMod, $priority, $friquency);
+                            $this->addByUrl($item, $url, $lastMod, $priority, $friquency);
                         }
 
                     }
@@ -141,16 +140,15 @@ class Sitemap
                             $updated = $row['updated_at'];
                         }
                     }
-                    $out .= $this->byUrl([], $mapItem['url'], $updated, $priority, $friquency);
+                    $this->addByUrl([], $mapItem['url'], $updated, $priority, $friquency);
 
                 }
             }
-            $out .= '</urlset>'."\n";
-            return $out;
+            return $this->out;
         });
     }
 
-    protected function byUrl($item, $url, $lastMod, $priority, $friquency)
+    protected function addByUrl($item, $url, $lastMod, $priority, $friquency)
     {
         foreach ($item as $key => $value) {
             $url = str_replace('{{'.$key.'}}', $value, $url);
@@ -158,16 +156,15 @@ class Sitemap
         if (!empty($mapItem['replaces']) && isset($mapItem['replaces'][$url])) {
             $url = $mapItem['replaces'][$url];
         }
-        $out = '';
         foreach ($this->languages as $lang) {
             $urlFinal = $this->url . $lang . $url;
-            $out .= '<url><loc>' . $urlFinal . '</loc>' ."\n".
-                '<lastmod>' . gmDate(\DateTime::W3C, strtotime($lastMod)) . '</lastmod>' ."\n".
-                '<changefreq>'.$friquency.'</changefreq>' ."\n".
-                '<priority>' . $priority . '</priority>' ."\n".
-                '</url>'."\n";
+            $this->out[] = [
+                'loc' => $urlFinal,
+                'changefreq' => $friquency,
+                'priority' => $priority,
+                'lastmod' => gmDate(\DateTime::W3C, strtotime($lastMod)),
+            ];
         }
-        return $out;
     }
 
 }

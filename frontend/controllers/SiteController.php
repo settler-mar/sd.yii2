@@ -595,7 +595,17 @@ class SiteController extends SdController
     {
         $sitemap = new Sitemap;
         Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+        Yii::$app->response->formatters = [
+            'xml' => [
+                'class' => 'common\components\SdXmlResponseFormatter',
+                'rootTag' => 'urlset',
+                'itemTag' => 'url',
+                'rootAttributes' => [
+                    'xmlns'=> 'http://www.sitemaps.org/schemas/sitemap/0.9',
+                ]
+            ],
+        ];
         header("Content-type: text/xml");
-        return $sitemap->getXml();
+        return $sitemap->getMap();
     }
 }
