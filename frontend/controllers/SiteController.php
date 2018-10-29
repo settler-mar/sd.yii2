@@ -34,6 +34,7 @@ use frontend\modules\template\models\Template;
 use yii\web\NotFoundHttpException;
 use yii\validators\NumberValidator;
 use yii\validators\StringValidator;
+use frontend\components\Sitemap;
 
 /**
  * Site controller
@@ -588,5 +589,13 @@ class SiteController extends SdController
         ]));
 
         return json_encode(['error' => 0]);
+    }
+
+    public function actionSitemap()
+    {
+        $sitemap = new Sitemap;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+        header("Content-type: text/xml");
+        return $sitemap->getXml();
     }
 }
