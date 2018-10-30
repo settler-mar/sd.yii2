@@ -591,21 +591,13 @@ class SiteController extends SdController
         return json_encode(['error' => 0]);
     }
 
-//    public function actionSitemap()
-//    {
-//        $sitemap = new Sitemap;
-//        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
-//        Yii::$app->response->formatters = [
-//            'xml' => [
-//                'class' => 'common\components\SdXmlResponseFormatter',
-//                'rootTag' => 'urlset',
-//                'itemTag' => 'url',
-//                'rootAttributes' => [
-//                    'xmlns'=> 'http://www.sitemaps.org/schemas/sitemap/0.9',
-//                ]
-//            ],
-//        ];
-//        header("Content-type: text/xml");
-//        return $sitemap->getMap();
-//    }
+    public function actionRobots()
+    {
+        $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
+        $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
+        $url = (isset($region['protocol']) ? $region['protocol'] : 'http').'://'.
+            (isset($region['url']) ? $region['url'] :Yii::$app->params['region']).'/';
+        $content .= "\nHost: ".$url."  \nSitemap: ".$url."sitemap.".Yii::$app->params['region'].".xml\n";
+        return $content;
+    }
 }
