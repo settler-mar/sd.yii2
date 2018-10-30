@@ -15,37 +15,51 @@ class Sitemap
     protected $files;
     protected $itemCount = 0;
     protected $fileCount = 49500;
+    protected $baseLang;
 
-    public function __construct($map, $region, $baseLang = 'ru-RU')
+    /**
+     * @param $map
+     * @param $region
+     * @param string $baseLang
+     */
+    public function __construct($map, $regions, $baseLang = 'ru-RU')
     {
         $this->map = $map;
-        $this->url = (isset($region['protocol'])? $region['protocol'] : 'http').'://'.$region['url'];
-
-        foreach ($region['langList'] as $key => $language) {
-            if (!in_array($key, $region['langListActive'])) {
-                continue;
-            }
-            $this->languages[] = $language == $baseLang ? '' : '/'. $key;
-        }
+        $this->regions = $regions;
+        $this->baseLang = $baseLang;
     }
 
-    public function clear()
+    public function getMaps($file)
     {
-        $dir = dirname($this->fileName);
-        $files = scandir($dir);
-        $fileName = substr($this->fileName, strlen($dir)+1);
-        foreach ($files as $file) {
-            if (strpos($file, $fileName) === 0 && strpos($file, 'bak') === false) {
-                unlink($dir.'/'.$file);
+        $out = [];
+        foreach ($this->regions as $key => $region) {
+            $this->fileName = $file.'.'.$key;
+            $this->fileIndex = 0;
+
+            $this->url = (isset($region['protocol'])? $region['protocol'] : 'http').'://'.
+                (isset($region['url']) ? $region['url'] : $key);
+
+            $this->languages = [];
+            foreach ($region['langList'] as $langKey => $language) {
+                if (!in_array($langKey, $region['langListActive'])) {
+                    continue;
+                }
+                $this->languages[] = $language == $this->baseLang ? '' : '/'. $langKey;
             }
+            $out[]  = $this->getMap();
         }
+        return $out;
     }
 
-    public function getMap($fileName)
+    /**
+     * @param $fileName
+     * @return mixed
+     * @throws yii\db\Exception
+     */
+    protected function getMap()
     {
-        $this->fileName = $fileName;
         $this->clear();
-
+        $this->files = [];
         $this->startFile();
 
         foreach ($this->map as $mapItem) {
@@ -107,6 +121,19 @@ class Sitemap
         return $this->files;
     }
 
+    protected function clear()
+    {
+        $dir = dirname($this->fileName);
+        $files = scandir($dir);
+        $fileName = substr($this->fileName, strlen($dir)+1);
+        foreach ($files as $file) {
+            if (strpos($file, $fileName) === 0 && strpos($file, 'bak') === false) {
+                unlink($dir.'/'.$file);
+            }
+        }
+    }
+
+
     protected function addByUrl($item, $url, $lastMod, $priority, $friquency)
     {
         foreach ($item as $key => $value) {
@@ -143,7 +170,7 @@ class Sitemap
     {
         $this->out .= '</urlset>';
         $this->fileIndex++;
-        $fileName = $this->fileName . $this->fileIndex.'.xml';
+        $fileName = $this->fileName .'.'. $this->fileIndex.'.xml';
         file_put_contents($fileName, $this->out);
         $this->files[] = $this->url.'/'.basename($fileName);
     }

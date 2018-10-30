@@ -647,17 +647,16 @@ class TaskController extends Controller
       $map = require(Yii::getAlias($alias . '/config/sitemap.php'));
       $file = Yii::getAlias($alias . '/web/sitemap');
 
-      $region = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]) ?
-          Yii::$app->params['regions_list'][Yii::$app->params['region']] : false;
+      $regions = isset(Yii::$app->params['regions_list']) ? Yii::$app->params['regions_list'] : false;
       if (empty($map)) {
           ddd('empty map config');
       }
-      if (empty($region)) {
-          ddd('empty region config');
+      if (empty($regions)) {
+          ddd('empty regions config');
       }
 
-      $sitemap = new Sitemap($map, $region);
-      ddd($sitemap->getMap($file));
+      $sitemap = new Sitemap($map, $regions);
+      d($sitemap->getMaps($file));
   }
 
 }
