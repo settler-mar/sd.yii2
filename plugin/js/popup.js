@@ -1,6 +1,7 @@
 utils.makeHrefs(document);//события для ссылок на форме
 
 var usersData;
+var userLanguage = false;
 
 
 function getUser(callback) {
@@ -19,8 +20,12 @@ function getUser(callback) {
       if (lng) {
           //получили из оккаунта язык
           language = lng;
-          //cохранить в storage;
-          Storage.set(storageDataKeyLanguageCurrent, language);
+          userLanguage = lng;
+
+          if (Storage._loaded) {
+              //cохранить в storage;
+             Storage.set(storageDataKeyLanguageCurrent, language);
+          }
       }
       if (debug) {
           console.log(lng, language);
@@ -45,13 +50,13 @@ function getCoupons(shop, callback) {
 
 var displayUser = function () {
   if (usersData && usersData.user) {
-    var lng = usersData.user.language;
-    if (lng) {
-      //получили из оккаунта язык
-      language = lng;
-      //cохранить в storage;
-      Storage.set(storageDataKeyLanguageCurrent, language);
-    }
+    // var lng = usersData.user.language;
+    // if (lng) {
+    //   //получили из оккаунта язык
+    //   language = lng;
+    //   //cохранить в storage;
+    //   Storage.set(storageDataKeyLanguageCurrent, language);
+    // }
 
     document.querySelector('.secretdiscounter-pupup').classList.remove('logout');
     document.querySelector('.secretdiscounter-pupup__info-logo-circle').innerHTML = '<img class="secretdiscounter-pupup__info-logo-img" src="' + utils.getAvatar(usersData.user.photo) + '"/>';
@@ -262,6 +267,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         storageDataVersion = Storage.get(storageDataKeyVersion);
         storageDataLanguage = Storage.get(storageDataKeyLanguage);
         var lng = Storage.get(storageDataKeyLanguageCurrent);
+        if (userLanguage && lng !== userLanguage) {
+            lng = userLanguage;
+            Storage.set(storageDataKeyLanguageCurrent, lng);
+        }
         if (lng) {
             language = lng;
         }
