@@ -79,29 +79,29 @@ class Sitemap
             'url' => '/coupons/{{route}}',
             'friquency' => 'daily'
         ],
-//        [
-//            //купоны шопа - 2 url
-//            'model' => 'frontend\modules\stores\models\Stores',
-//            'priority' => 1,
-//            'join' => [['cw_coupons cwc', 'cwc.store_id = cw_stores.uid']],
-//            'condition' => ['and', ['cw_stores.is_active' => [0, 1]], ['is not', 'cwc.uid', null]],
-//            'select' => ['route', 'cw_stores.updated_at'],
-//            'url' => [
-//                ['url' => '/coupons/{{route}}', 'priority' => 1, 'friquency' => 'daily'],
-//                ['url' => '/coupons/{{route}}/expired', 'priority' => 1, 'friquency' => 'daily']
-//            ],
-//            'friquency' => 'daily'
-//        ],
-//        [
-//            //купоны пока ограничить по времени
-//            'model' => 'frontend\modules\coupons\models\Coupons',
-//            'priority' => 1,
-//            'join' => [['cw_stores cws', 'cws.uid = cw_coupons.store_id']],
-//            'condition' => ['and',['cws.is_active' => [0, 1]], ['>', 'cw_coupons.date_end', '2018-10-01']],
-//            'select' => ['cws.route as route', 'cw_coupons.uid', 'cw_coupons.updated_at'],
-//            'url' => '/coupons/{{route}}/{{uid}}',
-//            'friquency' => 'daily'
-//        ],
+        [
+            //купоны шопа - 2 url
+            'model' => 'frontend\modules\stores\models\Stores',
+            'priority' => 1,
+            'join' => [['cw_coupons cwc', 'cwc.store_id = cw_stores.uid']],
+            'condition' => ['and', ['cw_stores.is_active' => [0, 1]], ['is not', 'cwc.uid', null]],
+            'select' => ['route', 'cw_stores.updated_at'],
+            'url' => [
+                ['url' => '/coupons/{{route}}', 'priority' => 1, 'friquency' => 'daily'],
+                ['url' => '/coupons/{{route}}/expired', 'priority' => 1, 'friquency' => 'daily']
+            ],
+            'friquency' => 'daily'
+        ],
+        [
+            //купоны
+            'model' => 'frontend\modules\coupons\models\Coupons',
+            'priority' => 1,
+            'join' => [['cw_stores cws', 'cws.uid = cw_coupons.store_id']],
+            'condition' => ['cws.is_active' => [0, 1]],
+            'select' => ['cws.route as route', 'cw_coupons.uid', 'cw_coupons.updated_at'],
+            'url' => '/coupons/{{route}}/{{uid}}',
+            'friquency' => 'daily'
+        ],
         [
             //единичный юрл
             'url' => '/reviews',
