@@ -103,6 +103,7 @@ class Sitemap
             }
         }
         $this->endFile();
+        $this->writeResult();
         return $this->files;
     }
 
@@ -144,7 +145,21 @@ class Sitemap
         $this->fileIndex++;
         $fileName = $this->fileName . $this->fileIndex.'.xml';
         file_put_contents($fileName, $this->out);
-        $this->files[] = $fileName;
+        $this->files[] = $this->url.'/'.basename($fileName);
+    }
+
+    protected function writeResult()
+    {
+        $out = '<?xml version="1.0" encoding="UTF-8"?>'.
+            '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        foreach ($this->files as $file) {
+            $out .= '<sitemap>'.
+                '<loc>'.$file.'</loc>'.
+                '<lastmod>'.gmDate(\DateTime::W3C, time()).'</lastmod>'.
+                '</sitemap>';
+        }
+        $out .= '</sitemapindex>';
+        file_put_contents($this->fileName.'.xml', $out);
     }
 
 }
