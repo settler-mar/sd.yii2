@@ -183,7 +183,7 @@ $config = [
                 'tpls' => 'template/admin/tpls',
 
                 '<action:(admin|offline)>' => 'site/<action>',
-                'sitemap.xml' => 'site/sitemap',
+                //'sitemap.xml' => 'site/sitemap',
                 'affiliate-system' => 'site/affiliate',
                 'offline-system' => 'site/offline-system',
                 'account-blocked' => 'site/accountblocked',

@@ -131,4 +131,5 @@ return [
         ],
     ],
     'product_load_images' => 0,
+    'region' => 'default',
 ];

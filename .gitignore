@@ -65,7 +65,7 @@ package-lock.json
 /frontend/web/images/account/funds/
 /frontend/web/images/banners/
 /frontend/web/js/stores_list.json
-/frontend/web/sitemap.xml
+/frontend/web/sitemap*.xml
 /frontend/config/params-local.php
 /api/config/start-params.php
 /go/config/params-local.php
