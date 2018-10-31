@@ -600,8 +600,8 @@ $functionsList = [
     }
     return false;
   },
-  'svg' => function ($name, $class = false) {
-    return Help::svg($name, $class);
+  'svg' => function ($name, $class = false, $alias = '@app') {
+    return Help::svg($name, $class, $alias);
   },
   'params' => function () {
     $names=func_get_args();

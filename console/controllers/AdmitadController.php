@@ -329,9 +329,14 @@ class AdmitadController extends Controller
             'actions' => $cashBack['actions']
         ];
 
+        //CatalogStores
         $storeResult = Stores::addOrUpdate($newStore);
         if (!$storeResult['result']) {
           $errors++;
+        }else{
+          if($this->config['getCatalog']){
+            //тут добавить обработку каталогов с адмитада
+          }
         }
         if ($storeResult['new']) {
           $inserted++;

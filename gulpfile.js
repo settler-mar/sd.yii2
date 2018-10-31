@@ -49,6 +49,10 @@ var paths = {
     go: {
       css: './go/web/css'
     },
+    shop: {
+      css: './shop/web/css',
+      js: './shop/web/js'
+    },
     plugin: {
         source: './plugin',
         browsers: {
@@ -85,6 +89,10 @@ gulp.task('compile',['clear', 'css', 'js']);
 gulp.task('b2b',['clearb2b', 'cssb2b', 'jsb2b']);
 //let b2b = gulp.series(clearb2b, cssb2b, jsb2b);
 
+gulp.task('shop',['clear_shop', 'css_shop', 'js_shop']);
+//let b2b = gulp.series(clearb2b, cssb2b, jsb2b);
+
+
 //сервер и слежение -
 gulp.task('default',['server']);
 //let default_ = gulp.series(server);
@@ -92,7 +100,7 @@ gulp.task('default',['server']);
 gulp.task('js',['jsadmin', 'js_new']);
 //let default_ = gulp.series(server);
 
-gulp.task('css', ['cssadmin', 'css_new', 'css_go']);
+gulp.task('css', ['cssadmin', 'css_new', 'css_go', 'css_shop', 'cssb2b']);
 
 gulp.task('cssadmin',  function() {
   return compileCss('/scss/admin/admin.scss', paths.app.css + '/admin')
@@ -100,6 +108,10 @@ gulp.task('cssadmin',  function() {
 
 gulp.task('cssb2b', function() {
   return compileCss('/scss/b2b.scss', paths.b2b.css)
+});
+
+gulp.task('css_shop', function() {
+  return compileCss('/scss/new/style_main.scss', paths.shop.css)
 });
 
 gulp.task('css_new', function() {
@@ -203,6 +215,60 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/plugins.js',
         paths.source.js+'/original/new/multiple-select.js'
     ], paths.app.js)
+);
+
+gulp.task('js_shop', compileJs([
+        paths.source.js+'/original/language.js',
+        paths.source.js+'/original/new/lang.js',
+        paths.source.js+'/original/new/functions.js',
+        paths.source.js+'/original/new/scroll.js',
+        paths.source.js+'/original/new/accordion.js',
+        paths.source.js+'/original/jquery.ajaxForm.js',
+        //paths.source.js+'/external/jquery.flexslider-min.js',
+        paths.source.js+'/original/new/tooltip.js',
+        paths.source.js+'/original/new/account_notification.js',
+        paths.source.js+'/original/new/slider.js',
+        paths.source.js+'/original/new/header_menu_and_search.js',
+        paths.source.js+'/original/new/calc-cashback.js',
+        paths.source.js+'/original/new/auto_hide_control.js',
+        paths.source.js+'/original/new/hide_show_all.js',
+        paths.source.js+'/original/new/clock.js',
+        paths.source.js+'/original/new/list_type_switcher.js',
+        paths.source.js+'/original/new/select.js',
+        paths.source.js+'/original/new/search.js',
+        paths.source.js+'/original/new/goto.js',
+        paths.source.js+'/original/new/account-withdraw.js',
+        paths.source.js+'/original/new/ajax.js',
+        paths.source.js+'/original/new/dobro.js',
+        paths.source.js+'/original/new/left-menu-toggle.js',
+        paths.source.js+'/original/share42.js',
+        paths.source.js+'/original/new/user_reviews.js',
+        paths.source.js+'/original/new/placeholder.js',
+        paths.source.js+'/original/new/ajax-load.js',
+        paths.source.js+'/original/new/banner.js',
+        paths.source.js+'/original/new/country_select.js',
+
+        //for_all
+        paths.source.js+'/original/notification.js',
+        paths.source.js+'/original/new/modals.js',
+        paths.source.js+'/original/new/footer_menu.js',
+        paths.source.js+'/original/new/rating.js',
+        paths.source.js+'/original/new/favorites.js',
+        paths.source.js+'/original/new/scroll_to.js',
+        paths.source.js+'/original/new/copy_to_clipboard.js',
+        paths.source.js+'/original/new/img.js',
+        paths.source.js+'/original/new/parents_open_windows.js',
+        paths.source.js+'/original/new/forms.js',
+        paths.source.js+'/original/new/cookie.js',
+        paths.source.js+'/original/new/table.js',
+        paths.source.js+'/original/admin/ajax_remove.js',
+        paths.source.js+'/original/new/fixes.js',
+        paths.source.js+'/original/new/links.js',
+        paths.source.js+'/original/new/store_points.js',
+        paths.source.js+'/original/new/hashtags.js',
+        paths.source.js+'/original/new/plugins.js',
+        paths.source.js+'/original/new/multiple-select.js'
+    ], paths.shop.js)
 );
 
 function compileCss (source, dest) {
@@ -336,6 +402,17 @@ gulp.task('clearb2b', function(){
    var files = [
        paths.b2b.css+'/styles*.css',
        paths.b2b.js+'/scripts*.js'
+   ];
+    files.forEach(function(file){
+        console.log(file);
+        gulp.src(file, { read: true }) // much faster
+            .pipe(rimraf({force: false}));
+    });
+});
+gulp.task('clear_shop', function(){
+   var files = [
+       paths.shop.css+'/styles*.css',
+       paths.shop.js+'/scripts*.js'
    ];
     files.forEach(function(file){
         console.log(file);

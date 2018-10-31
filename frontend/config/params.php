@@ -2,36 +2,38 @@
 use zxbodya\yii2\elfinder\TinyMceElFinder;
 
 $data = [
-    'stores_menu_accordeon_collapsed' => 1,
-    'stores_menu_separate' => 0,
-    'stores_menu_abc' => 0,//выводить в меню алфавитный поиск
-    'coupons_menu_abc' => 0,//выводить в меню алфавитный поиск
-    'auth_page_redirect' => [
-        'affiliate-system' => 'account/affiliate',
-        'offline-system' => 'account/offline',
-        'webmaster' => 'account/webmaster'
-    ],
+//    'stores_menu_accordeon_collapsed' => 1,
+//    'stores_menu_separate' => 0,
+//    'stores_menu_abc' => 0,//выводить в меню алфавитный поиск
+//    'coupons_menu_abc' => 0,//выводить в меню алфавитный поиск
+//    'auth_page_redirect' => [
+//        'affiliate-system' => 'account/affiliate',
+//        'offline-system' => 'account/offline',
+//        'webmaster' => 'account/webmaster'
+//    ],
     'pathToScript' => require __DIR__ . '/path_scripts.php',
-    'coupons_languages_arrays' => [
-        'ru' => ['ru', 'bg', 'sr', 'uk', 'mk', 'ro'],//русский болгарский и т.д.
-        'en' => ['en', 'la', 'fr', 'de', 'no', 'da', 'et', 'lt', 'sv'],//английский латинский
-    ],
-    'base_lang'=>'ru-RU',
-    'language_list' => [
-        'ru-RU'=> 'Русский',
-        'en-EN'=> 'English',
-        'lt'=> 'Литовский',
-    ],
-    'language_list_active' => [
-        'ru-RU'=>1,
-        'en-EN'=>1,
-        'lt'=> 0,
-    ],
-    'country_to_region_default_language' => 'en-EN',
-    'country_to_region_default_region' => 'default',
-    'login_attemps_count' => 3,
-    'login_attemps_period' => 15,//минут, когда считаем попытки
-    'login_attemps_block_period' => 30,//минут, время блокировки
+
+//    'coupons_languages_arrays' => [
+//        'ru' => ['ru', 'bg', 'sr', 'uk', 'mk', 'ro'],//русский болгарский и т.д.
+//        'en' => ['en', 'la', 'fr', 'de', 'no', 'da', 'et', 'lt', 'sv'],//английский латинский
+//    ],
+//    'base_lang'=>'ru-RU',
+//    'language_list' => [
+//        'ru-RU'=> 'Русский',
+//        'en-EN'=> 'English',
+//        'lt'=> 'Литовский',
+//    ],
+//    'language_list_active' => [
+//        'ru-RU'=>1,
+//        'en-EN'=>1,
+//        'lt'=> 0,
+//    ],
+//    'country_to_region_default_language' => 'en-EN',
+//    'country_to_region_default_region' => 'default',
+//    'login_attemps_count' => 3,
+//    'login_attemps_period' => 15,//минут, когда считаем попытки
+//    'login_attemps_block_period' => 30,//минут, время блокировки
+
 
 ];
 

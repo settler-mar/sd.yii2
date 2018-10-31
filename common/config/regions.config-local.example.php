@@ -13,6 +13,7 @@ return [
         ],
         'socialsShareList' => '1,0,2,4,3,5,6',//vk,fb,ok,g+,tw,mali.ru,lj
         'active' => 1,
+        'code' => 'rus'
     ],
     'usa.secretdiscounter.com'=>[
         'name'=>'USA',
@@ -24,5 +25,6 @@ return [
         ],
         'socialsShareList' => '0,4,3,6',//fb,g+,tw,lj
         'active' => 1,
+        'code' => 'eng'
     ]
 ];
