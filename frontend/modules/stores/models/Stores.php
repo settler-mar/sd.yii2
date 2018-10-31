@@ -1344,8 +1344,8 @@ class Stores extends \yii\db\ActiveRecord
     try {
         if (file_exists($path . $logo)) {
             $imageSize = getimagesize($path . $logo);
-            $needUpdate = (isset($imageSize[0]) && $imageSize[0] < $imageSizeNeed) ||
-                (isset($imageSize[1]) && $imageSize[1] < $imageSizeNeed);
+            $needUpdate = !isset($imageSize[0]) || !isset($imageSize[1]) ||
+                    ($imageSize[0] < $imageSizeNeed && $imageSize[1] < $imageSizeNeed);
         }
         if (!file_exists($path . $logo) || $needUpdate) {
             $file = file_get_contents($logoNew);
