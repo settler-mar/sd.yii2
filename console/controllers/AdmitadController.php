@@ -27,6 +27,7 @@ class AdmitadController extends Controller
   protected $config;
   protected $cpaName = 'Admitad';
   protected $configName = 'admitad';
+  protected $admitad = null;
 
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
@@ -278,7 +279,10 @@ class AdmitadController extends Controller
 
   private function getStores($params, $count = 5)
   {
-    $admitad = new Admitad($this->config);
+    if (!$this->admitad) {
+        $this->admitad = new Admitad($this->config);
+    }
+    $admitad = $this->admitad;
     if ($count <= 0) return false;
 
     try {
@@ -295,7 +299,9 @@ class AdmitadController extends Controller
    */
   public function actionStore()
   {
-    $params = [
+    $configProductsImport = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
+
+      $params = [
         'limit' => 500,
         'offset' => 0,
         'connection_status' => 'active',
@@ -334,8 +340,21 @@ class AdmitadController extends Controller
         if (!$storeResult['result']) {
           $errors++;
         }else{
-          if($this->config['getCatalog']){
-            //тут добавить обработку каталогов с адмитада
+          if (!empty($this->config['getCatalog'])) {
+            //обработка каталогов с адмитада
+            if (empty($configProductsImport['stores_only']) || in_array($affiliate_id, $configProductsImport['stores_only'])) {
+              $refresh = empty($configProductsImport['refresh_csv']);
+
+              $advacampaing = $this->admitad->getAdvacampaing($affiliate_id);
+
+              if (!empty($advacampaing['products_csv_link'])) {
+                $products = $this->admitad->getProduct($advacampaing['products_csv_link'], $affiliate_id, $refresh);
+                echo "Store ". $store['name']." Products ".count($products)."\n";
+                $this->writeProducts($products, $affiliate_id, $advacampaing['modified_date']);
+              } else {
+                //echo "Store ".$store['name']." products link does not exists\n";
+              }
+            }
           }
         }
         if ($storeResult['new']) {
@@ -532,7 +551,7 @@ class AdmitadController extends Controller
      */
   public function actionProduct()
   {
-      $config = Yii::$app->params['products_import'];
+      $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
       $cpaLinks = CpaLink::find()->where(['cpa_id' => $this->cpa_id])->all();
       $admitad = new Admitad($this->config);

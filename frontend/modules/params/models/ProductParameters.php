@@ -4,7 +4,7 @@ namespace frontend\modules\params\models;
 
 use Yii;
 use common\components\JsonBehavior;
-use frontend\modules\product\models\ProductsCategory;
+use shop\modules\category\models\ProductsCategory;
 
 /**
  * This is the model class for table "cw_product_parameters".

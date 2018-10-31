@@ -6,6 +6,7 @@ use Yii;
 use common\components\JsonBehavior;
 use JBZoo\Image\Image;
 use frontend\modules\params\models\ProductParameters;
+use frontend\modules\product\models\CatalogStores;
 use shop\modules\category\models\ProductsCategory;
 
 /**
