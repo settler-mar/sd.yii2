@@ -67,6 +67,7 @@ class Meta extends \yii\db\ActiveRecord
         [['meta_tags_type'], 'integer'],
         [['backgroundImageImage', 'backgroundImageClassName', 'metaTagArray'], 'safe'],
         ['regionsPostData', 'safe'],
+        [['updated_at'], 'safe'],
     ];
   }
 
@@ -111,6 +112,10 @@ class Meta extends \yii\db\ActiveRecord
           'image' => $this->metaImage,
       ]);
     }
+    if (in_array('updated_at', array_keys($this->attributes))) {
+      //чтобы не работало у дочерних классов
+      $this->updated_at = date('Y-m-d H:i:s');
+    }
     return parent::beforeValidate();
   }
 
@@ -140,6 +145,7 @@ class Meta extends \yii\db\ActiveRecord
   {
     $this->saveImage();
     Cache::clearName('metadata_' . $this->page);
+    Cache::deleteName('sitemap_xml');
   }
 
   public static function findByUrl($url, $model = false)

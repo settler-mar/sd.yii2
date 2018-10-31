@@ -207,6 +207,8 @@ class Reviews extends \yii\db\ActiveRecord
   {
       //обновляем зависимости
       Cache::clearName('reviews_catalog');
+      //ключ sitemap
+      Cache::deleteName('sitemap_xml');
   }
 
   /**

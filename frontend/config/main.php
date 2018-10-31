@@ -150,6 +150,7 @@ $config = [
                 [ // обработка перехода после авторизации из админки под пользователем обратно в админку
                     'class' => 'frontend\components\SdUrlAdmin',
                 ],
+                'robots.txt' => 'site/robots',
               /*'users/<action>/<action>'=>'404',
               'users/<action>/<action>/<action>'=>'404',*/
 
@@ -183,6 +184,7 @@ $config = [
                 'tpls' => 'template/admin/tpls',
 
                 '<action:(admin|offline)>' => 'site/<action>',
+                'robots.txt' => 'site/robots',
                 'affiliate-system' => 'site/affiliate',
                 'offline-system' => 'site/offline-system',
                 'account-blocked' => 'site/accountblocked',

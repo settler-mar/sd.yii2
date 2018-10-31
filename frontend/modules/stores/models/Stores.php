@@ -154,6 +154,7 @@ class Stores extends \yii\db\ActiveRecord
       ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
       ['display_on_plugin', 'in', 'range' => [0, 1, 2, 3], 'skipOnEmpty' => 1],
       ['show_products', 'in', 'range' => [0, 1], 'skipOnEmpty' => 1],
+      [['updated_at'], 'safe'],
     ];
   }
 
@@ -540,6 +541,9 @@ class Stores extends \yii\db\ActiveRecord
           $this->status_updated = date('Y-m-d H:i:s');
         }
       }
+    }
+    if (in_array('updated_at', array_keys($this->attributes))) {
+        $this->updated_at = date('Y-m-d H:i:s');
     }
 
     return true;
@@ -987,6 +991,7 @@ class Stores extends \yii\db\ActiveRecord
     Cache::clearName('stores_by_column');
     Cache::clearName('stores_visited');
 
+
       //много зависимостей сразу
     Cache::clearAllNames('catalog_storesfavorite');
     //ключи
@@ -999,6 +1004,7 @@ class Stores extends \yii\db\ActiveRecord
       Cache::deleteName('store_by_route_' . $route);
     }
     Cache::deleteName('popular_stores_with_promocodes');
+    Cache::deleteName('sitemap_xml');
   }
 
     /**

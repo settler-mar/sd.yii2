@@ -1,4 +1,5 @@
 var usersData = false;
+var userLanguage = false;
 //var appCookieName = 'secretdiscounter-extension-window';
 //var appCookieValue = 'hidden';
 var isOpera = navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -60,8 +61,12 @@ function getUsers() {
       if (lng) {
           //получили из оккаунта язык
           language = lng;
-          //cохранить в storage;
-          Storage.set(storageDataKeyLanguageCurrent, language);
+          userLanguage = lng;
+          if (Storage._loaded) {
+              //cохранить в storage;
+              Storage.set(storageDataKeyLanguageCurrent, language);
+          }
+
       }
   });
 }
@@ -275,6 +280,10 @@ Storage.load(function () {
   storageDataVersion = Storage.get(storageDataKeyVersion);
   storageDataLanguage = Storage.get(storageDataKeyLanguage);
   var lng = Storage.get(storageDataKeyLanguageCurrent);
+  if (userLanguage && lng !== userLanguage) {
+     lng = userLanguage;
+     Storage.set(storageDataKeyLanguageCurrent, lng);
+  }
   if (lng) {
     language = lng;
   }

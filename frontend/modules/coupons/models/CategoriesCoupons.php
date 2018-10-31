@@ -55,6 +55,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
             [['name', 'route'], 'string', 'max' => 255],
             [['route'], 'unique'],
             [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
+            [['updated_at'], 'safe'],
         ];
     }
 
@@ -83,6 +84,9 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         if (empty($this->route)) {
             $help = new Help();
             $this->route = $help->str2url($this->name);
+        }
+        if (in_array('updated_at', array_keys($this->attributes))) {
+            $this->updated_at = date('Y-m-d H:i:s');
         }
         return true;
     }
@@ -163,7 +167,7 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         //ключи
         Cache::deleteName('total_all_coupons');
         Cache::deleteName('total_all_coupons_expired');
-
+        Cache::deleteName('sitemap_xml');
     }
 
     public static function translated($attributes = [])
