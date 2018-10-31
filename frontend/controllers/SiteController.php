@@ -1,40 +1,33 @@
 <?php
+
 namespace frontend\controllers;
 
+use frontend\components\SdController;
+use frontend\components\Sitemap;
+use frontend\modules\b2b_users\models\B2bUsers;
+use frontend\modules\charity\models\Charity;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
+use frontend\modules\notification\models\Notifications;
+use frontend\modules\payments\models\Payments;
 use frontend\modules\products\models\Products;
+use frontend\modules\reviews\models\Reviews;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
-use frontend\modules\transitions\models\UsersVisits;
-use frontend\modules\users\models\RegistrationForm;
-use frontend\modules\notification\models\Notifications;
-use Yii;
-use yii\base\InvalidParamException;
-use yii\db\Query;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use frontend\modules\stores\models\Stores;
-use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
-use frontend\modules\reviews\models\Reviews;
-use frontend\components\SdController;
-use frontend\modules\users\models\Users;
-use frontend\modules\users\models\UsersSocial;
-use frontend\modules\users\models\ValidateEmail;
-use frontend\modules\payments\models\Payments;
-use frontend\modules\withdraw\models\UsersWithdraw;
-use frontend\modules\charity\models\Charity;
-use frontend\modules\b2b_users\models\B2bUsers;
-use yii\helpers\Url;
-use yii\web\HttpException;
+use frontend\modules\stores\models\Stores;
 use frontend\modules\template\models\Template;
-use yii\web\NotFoundHttpException;
+use frontend\modules\transitions\models\UsersVisits;
+use frontend\modules\users\models\Users;
+use frontend\modules\withdraw\models\UsersWithdraw;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\validators\NumberValidator;
 use yii\validators\StringValidator;
-use frontend\components\Sitemap;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -112,11 +105,11 @@ class SiteController extends SdController
     ];
 
     if (!Yii::$app->user->isGuest) {
-      $data['slider'] = Slider::get(['place'=>'index']);
+      $data['slider'] = Slider::get(['place' => 'index']);
       $data['posts'] = Posts::getLastPosts();
-      $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1,'unique_store'=>true]);
+      $data['coupons'] = Coupons::top(['limit' => 8, 'new' => 1, 'unique_store' => true]);
       $data['visited_stores'] = Stores::visited(Yii::$app->user->id, 5);
-    }else{
+    } else {
       $reviews = Reviews::top();
       $data['top_reviews'] = $reviews;
     }
@@ -151,34 +144,34 @@ class SiteController extends SdController
     $notes['users_wait_moderation'] = Users::waitModerationCount();
     $notes['users_on_actions'] = Users::onActionCount();
 
-      //свежие переходы
+    //свежие переходы
     $visitsCpa = UsersVisits::find()
-          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
-          ->innerJoin('cw_cpa_link', 'cw_cpa_link.id = cw_users_visits.cpa_link_id')
-          ->innerJoin('cw_cpa', 'cw_cpa.id = cw_cpa_link.cpa_id')
-          ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
-          ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
-          ->orderBy('cw_cpa.id')
-          ->asArray()
-          ->all();
+        ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+        ->innerJoin('cw_cpa_link', 'cw_cpa_link.id = cw_users_visits.cpa_link_id')
+        ->innerJoin('cw_cpa', 'cw_cpa.id = cw_cpa_link.cpa_id')
+        ->select(['cw_cpa.name', 'cw_cpa.id', 'count(*) as count'])
+        ->groupBy(['cw_cpa.name', 'cw_cpa.id'])
+        ->orderBy('cw_cpa.id')
+        ->asArray()
+        ->all();
     $visitsSource = UsersVisits::find()
-          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
-          ->select(['source', 'count(*) as count'])
-          ->groupBy(['source'])
-          ->asArray()
-          ->all();
+        ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+        ->select(['source', 'count(*) as count'])
+        ->groupBy(['source'])
+        ->asArray()
+        ->all();
     $visitsWatcheds = UsersVisits::find()
-          ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
-          ->innerJoin(Stores::tableName().' cws', UsersVisits::tableName(). '.store_id = cws.uid')
-          ->select(['cws.uid', 'cws.name', 'count(*) as count'])
-          ->andWhere(['cws.watch_transitions' => 1])
-          ->groupBy(['cws.uid', 'cws.name'])
-          ->orderBy('cws.name')
-          ->asArray()
-          ->all();
+        ->where(['>=', 'visit_date', date('Y-m-d 00:00:00', time())])
+        ->innerJoin(Stores::tableName() . ' cws', UsersVisits::tableName() . '.store_id = cws.uid')
+        ->select(['cws.uid', 'cws.name', 'count(*) as count'])
+        ->andWhere(['cws.watch_transitions' => 1])
+        ->groupBy(['cws.uid', 'cws.name'])
+        ->orderBy('cws.name')
+        ->asArray()
+        ->all();
     $stores_updated = Stores::find()
         ->where(['>=', 'status_updated', date('Y-m-d 00:00:00', time())])
-        ->select(['is_active','count(*) as count'])
+        ->select(['is_active', 'count(*) as count'])
         ->groupBy(['is_active'])
         ->asArray()
         ->all();
@@ -190,15 +183,15 @@ class SiteController extends SdController
         ->where(['<=', 'action_end_date', date('Y-m-d H:i:s', time() + 3600 * 24 * 3)])//подходит срок окончания
         ->count();
 
-    $buyPlatinum = Users::find()->from(Users::tableName().' cwu')
+    $buyPlatinum = Users::find()->from(Users::tableName() . ' cwu')
         ->select(['cwun.uid', 'cwu.currency', 'cwu.email', 'cwun.added', 'cwun.text', ' (-cwun.amount) as amount'])
-        ->leftJoin(Notifications::tableName(). ' cwun', 'cwu.uid = cwun.user_id')
+        ->leftJoin(Notifications::tableName() . ' cwun', 'cwu.uid = cwun.user_id')
         ->where(['cwun.type_id' => 4])
         //->andWhere('JSON_CONTAINS(text, \'"Platinum"\', \'$."status_name"\')') //если понадобится только Platinum
         ->asArray()
         ->all();
-    foreach($buyPlatinum as &$buy) {
-        $buy = array_merge($buy, json_decode($buy['text'], 1));
+    foreach ($buyPlatinum as &$buy) {
+      $buy = array_merge($buy, json_decode($buy['text'], 1));
     }
 
     return $this->render('admin', [
@@ -213,7 +206,7 @@ class SiteController extends SdController
         'visits_sources' => $visitsSource,
         'stores_updated' => $stores_updated,
         'stores_news' => $stores_news,
-        'fullCursList'=>Yii::$app->conversion->fullCursList,
+        'fullCursList' => Yii::$app->conversion->fullCursList,
         'stores_actions_end' => $actionsEnd,
         'buy_platinum' => $buyPlatinum,
     ]);
@@ -241,7 +234,7 @@ class SiteController extends SdController
       throw new HttpException(404, 'User not found');
     }
 
-    $page['pre_footer'] = '<h2>'.\Yii::t('main', 'offline_how_to_get_cashback').'</h2>
+    $page['pre_footer'] = '<h2>' . \Yii::t('main', 'offline_how_to_get_cashback') . '</h2>
         {{_include(\'stores/instruction_offline\') | raw}}';
     $page['infotitle'] = \Yii::t('main', 'offline_how_to_get_cashback_infotitle');
     //$page['title']=json_decode($page['title'],true);
@@ -350,7 +343,7 @@ class SiteController extends SdController
    */
   public function actionGoto($store = 0, $coupon = 0, $products = 0)
   {
-    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products==0) {
+    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products == 0) {
       return $this->redirect('/stores');
     }
 
@@ -379,18 +372,18 @@ class SiteController extends SdController
       $coupon->save();
     }
 
-    if ($products>0) {
+    if ($products > 0) {
       $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS;
-      $products = Products::findOne(['uid' => $products,'store_id'=>93]);
+      $products = Products::findOne(['uid' => $products, 'store_id' => 93]);
       if (!$products) {
         return $this->redirect('/products');
       }
       $products->visit++;
       $products->save();
-      $store=$products->store_id;
-      $data['link']= CpaLink::makeGotoLink('https://alitems.com/g/1e8d1144942071538c7816525dc3e8/', [
-        'ulp'=> $products->url,
-        'subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)
+      $store = $products->store_id;
+      $data['link'] = CpaLink::makeGotoLink('https://alitems.com/g/1e8d1144942071538c7816525dc3e8/', [
+          'ulp' => $products->url,
+          'subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)
       ]);
     }
 
@@ -404,7 +397,7 @@ class SiteController extends SdController
     }
 
     if ($data['link'] == '') {
-        $data['link'] = CpaLink::clickUrl($store);
+      $data['link'] = CpaLink::clickUrl($store);
     }
 
     $data['store'] = $store;
@@ -468,7 +461,7 @@ class SiteController extends SdController
    */
   public function actionStaticPage($action)
   {
-    $page = Meta::findByUrl($action,false);
+    $page = Meta::findByUrl($action, false);
 
     if (!$page || !isset($page['content'])) {
       throw new HttpException(404, 'User not found');
@@ -481,7 +474,7 @@ class SiteController extends SdController
       $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
 
       if ($page['show_breadcrumbs']) {
-          $this->params['breadcrumbs'][] = $page['title'];
+        $this->params['breadcrumbs'][] = $page['title'];
       }
       $page['app_params'] = \Yii::$app->params;
       return $this->render('static_page', $page);
@@ -499,11 +492,11 @@ class SiteController extends SdController
 
   public function actionTestmail()
   {
-    if(!YII_DEBUG)exit;
-      if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
-          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-          return false;
-      }
+    if (!YII_DEBUG) exit;
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('UserView')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
+    }
     //$user=Users::findOne(['uid'=>8]);
     //$db_payment=Payments::findOne(['user_id'=>8]);
     //$store = Stores::top12(12);
@@ -522,12 +515,12 @@ class SiteController extends SdController
 //          ->setTo('oxygenn@list.ru')
 //          ->setSubject(Yii::$app->name . ': '. Yii::t('account', 'loyalty_status_change'))
 //          ->send();
-      $mail = Template::mail('welcome', 'oxygenn@list.ru', [
-          'user' => Yii::$app->user->identity,
-          'stores' => Stores::find()->limit(10)->all()
-      ]);
+    $mail = Template::mail('welcome', 'oxygenn@list.ru', [
+        'user' => Yii::$app->user->identity,
+        'stores' => Stores::find()->limit(10)->all()
+    ]);
 
-      return $mail ? 'Письмо отправлено' : 'Ошибка при отправлении email';
+    return $mail ? 'Письмо отправлено' : 'Ошибка при отправлении email';
 
   }
 //
@@ -566,38 +559,38 @@ class SiteController extends SdController
 //    return $link;
 //  }
 
-    public function actionCookie()
-    {
-        $request = Yii::$app->request;
-        if (!$request->isAjax || !$request->post()) {
-            throw new NotFoundHttpException();
-        }
-        $validator = new StringValidator();
-        $numberValidator = new NumberValidator();
-        $name = $request->post('name');
-        $value = $request->post('value');
-        $days = $request->post('days');
-        if (!$validator->validate($name) || !$validator->validate($value) ||
-            (!$days && !$numberValidator->validate($days))) {
-            throw new NotFoundHttpException();
-        }
-        $cookies = Yii::$app->response->cookies;
-        $cookies->add(new \yii\web\Cookie([
-            'name' => $name,
-            'value' => $value,
-            'expire' => !$days ? 0 : time() + 3600*24 * $days,
-        ]));
-
-        return json_encode(['error' => 0]);
+  public function actionCookie()
+  {
+    $request = Yii::$app->request;
+    if (!$request->isAjax || !$request->post()) {
+      throw new NotFoundHttpException();
     }
-
-    public function actionRobots()
-    {
-        $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
-        $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-        $url = (isset($region['protocol']) ? $region['protocol'] : 'http').'://'.
-            (isset($region['url']) ? $region['url'] :Yii::$app->params['region']).'/';
-        $content .= "\nHost: ".$url."  \nSitemap: ".$url."sitemap.".Yii::$app->params['region'].".xml\n";
-        return $content;
+    $validator = new StringValidator();
+    $numberValidator = new NumberValidator();
+    $name = $request->post('name');
+    $value = $request->post('value');
+    $days = $request->post('days');
+    if (!$validator->validate($name) || !$validator->validate($value) ||
+        (!$days && !$numberValidator->validate($days))) {
+      throw new NotFoundHttpException();
     }
+    $cookies = Yii::$app->response->cookies;
+    $cookies->add(new \yii\web\Cookie([
+        'name' => $name,
+        'value' => $value,
+        'expire' => !$days ? 0 : time() + 3600 * 24 * $days,
+    ]));
+
+    return json_encode(['error' => 0]);
+  }
+
+  public function actionRobots()
+  {
+    $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
+    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
+    $url = (isset($region['protocol']) ? $region['protocol'] : 'http') . '://' .
+        (isset($region['url']) ? $region['url'] : Yii::$app->params['region']) . '/';
+    $content .= "\nHost: " . $url . "  \nSitemap: " . $url . "sitemap." . Yii::$app->params['region'] . ".xml\n";
+    return $content;
+  }
 }
