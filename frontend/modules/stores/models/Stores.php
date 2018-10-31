@@ -1348,13 +1348,16 @@ class Stores extends \yii\db\ActiveRecord
                 (isset($imageSize[1]) && $imageSize[1] < $imageSizeNeed);
         }
         if (!file_exists($path . $logo) || $needUpdate) {
-            if ($db_logo && file_exists($path . $db_logo)) {
-                unlink($path . $db_logo);
-            }
             $file = file_get_contents($logoNew);
+            if (!$file) {
+                return false;
+            }
             $image = new Image($file);
             $image->bestFit($imageSizeNeed, $imageSizeNeed);
             $image->saveAs($path . $logo);
+            if ($db_logo && file_exists($path . $db_logo)) {
+                unlink($path . $db_logo);
+            }
             return true;
         } else {
             return false;
