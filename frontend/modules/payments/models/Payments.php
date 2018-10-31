@@ -201,20 +201,20 @@ class Payments extends \yii\db\ActiveRecord
           Yii::$app->session->addFlash('err', 'Ошибка - не найденна ставка кешбека для категории');
           return false;
         }
-        $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
+//        $this->kurs = Yii::$app->conversion->getRUB(1, $store->currency);
         $this->rate_id = $rates->uid;
-
+//
         $this->updateRecalcJson($action, $tariff, $rates);
-
-        if ($rates->is_percentage) {
-          $reward = $this->order_price * $rates->size * $this->kurs / 100;
-          $cashback = $this->order_price * $rates->our_size * $this->kurs / 100;
-        } else {
-          $reward = $rates->size;
-          $cashback = $rates->our_size;
-        }
-
-        $reward = round($reward, 2);
+//
+//        if ($rates->is_percentage) {
+//          $reward = $this->order_price * $rates->size * $this->kurs / 100;
+//          $cashback = $this->order_price * $rates->our_size * $this->kurs / 100;
+//        } else {
+//          $reward = $rates->size;
+//          $cashback = $rates->our_size;
+//        }
+//
+//        $reward = round($reward, 2);
 
         // просчет лояльности
         $user_id = intval(preg_replace('/[^0-9\.]/', '', $this->user_id));
@@ -223,17 +223,38 @@ class Payments extends \yii\db\ActiveRecord
           Yii::$app->session->addFlash('err', 'Ошибка - не найден пользователь!');
           return false;
         }
+        $ref = $user->referrer_id ? Users::findOne(['uid' => $user->referrer_id]) : null;
+        $userCashback = self::userCashback(
+            $this,
+            [
+                'currency' => $store->currency,
+                'payment' => $this->order_price * $rates->size
+            ],
+            true,
+            $user,
+            $store,
+            $ref
+        );
 
         $loyalty_bonus = $user->loyalty_status_data['bonus'];
         $this->loyalty_status = $user->loyalty_status;
 
-        $cashback = $cashback + $cashback * $loyalty_bonus / 100;
-        $cashback = round($cashback, 2);
+        //$cashback = $cashback + $cashback * $loyalty_bonus / 100;
+        //$cashback = round($cashback, 2);
 
-        $this->reward = $reward;
-        $this->cashback = $cashback;
+        //$this->reward = $reward;
+        //$this->cashback = $cashback;
+        $this->reward = $userCashback['reward'];
+        $this->cashback = $userCashback['cashback'];
+        $this->kurs = $userCashback['kurs'];
         $this->shop_percent = $store->percent;
         $this->ip = Yii::$app->request->userIP;
+        if ($ref) {
+              $this->ref_id = $user->referrer_id;
+              $this->ref_bonus_id = $ref->bonus_status;
+              $this->ref_kurs = $userCashback['ref_kurs'];
+              $this->ref_bonus = $userCashback['ref_bonus'];
+        }
       } else {
         $this->updateRecalcJson();
         $this->store_point_id = $this->store_point_id ? (int)$this->store_point_id : 0;
