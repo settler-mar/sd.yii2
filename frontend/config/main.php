@@ -151,12 +151,12 @@ $config = [
                     'class' => 'frontend\components\SdUrlAdmin',
                 ],
                 'robots.txt' => 'site/robots',
-              /*'users/<action>/<action>'=>'404',
-              'users/<action>/<action>/<action>'=>'404',*/
+                /*'users/<action>/<action>'=>'404',
+                'users/<action>/<action>/<action>'=>'404',*/
 
                 'elfinder/connect'=>'elfinder/connect',
                 'elfinder/manager' => 'elfinder/manager',
-              //'connector/el-finder/manager'=>'el-finder/connector/manager',
+                //'connector/el-finder/manager'=>'el-finder/connector/manager',
 
                 '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
                     'users/default/<action>',
