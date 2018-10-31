@@ -25,7 +25,7 @@
                 <i>{{ svg('city-hall','form-icon')|raw }}</i>
                 <select class="store-points__point-selects-select form-control select2-select" data-placeholder="{{ t('main', 'store_points_city')|raw }}" name="store_point_city" id="store_point_city">
                     {% for city in store_points.cities %}
-                      <option value="{{ city }}">{{ city }}"</option>
+                      <option value="{{ city }}">{{ city }}</option>
                     {% endfor %}
                 </select>
               </div>

@@ -56,6 +56,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         [['route'], 'unique', 'targetAttribute' => 'route', 'targetClass' => Stores::className()],
       //[['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesCoupons::className()],
         [['languages'], 'string'],
+        [['updated_at'], 'safe'],
     ];
   }
 
@@ -125,6 +126,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
       $this->menu_index = intval($index['max']) + 1;
     }
     $this->languages = Yii::$app->request->post('languages-array') ? implode(',', Yii::$app->request->post('languages-array')) : null;
+    if (in_array('updated_at', array_keys($this->attributes))) {
+      //чтобы не работало у дочерних классов
+      $this->updated_at = date('Y-m-d H:i:s');
+    }
     return true;
   }
 
@@ -537,6 +542,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
     if ($route) {
       Cache::deleteName('store_category_byroute_' . $route);
     }
+    Cache::deleteName('sitemap_xml');
   }
 
     /**

@@ -215,4 +215,25 @@ class TestController extends Controller
         //$service->getToken();
     }
 
+    public function actionSitemap()
+    {
+        $url = 'http://sdyii/sitemap.xml';
+        d($url);
+        //echo $url."\n";
+        $start = time();
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $errno = curl_errno($ch);
+        if ($errno !== 0) {
+            d(sprintf("Error connecting to Advertise API: [%s] %s ", $errno, curl_error($ch)), $errno);
+        }
+        curl_close($ch);
+        d('download ' . (time() - $start) . ' second');
+        file_put_contents(Yii::getAlias('@runtime/sitemap.xml'), $response);
+        d('saved');
+    }
+
 }

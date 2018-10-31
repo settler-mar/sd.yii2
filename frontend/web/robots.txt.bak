@@ -1,0 +1,27 @@
+User-agent: *
+Disallow: /search/
+Disallow: /search
+Disallow: /catalog/
+Disallow: /catalog/shop/
+Disallow: /account/
+Disallow: /account/payments/
+Disallow: /account/withdraw/
+Disallow: /account/withdraw-history/
+Disallow: /account/transitions/
+Disallow: /account/affiliate/
+Disallow: /account/notification/
+Disallow: /account/favorites/
+Disallow: /account/support/
+Disallow: /account/settings/
+Disallow: /goto/
+Disallow: /logout/
+Disallow: /vendor/
+Disallow: /application/
+Disallow: /admin/
+Disallow: /terms/
+Disallow: /new30/
+Disallow: *?sort*
+Disallow: *?limit*
+
+Host: https://secretdiscounter.ru/
+Sitemap: https://secretdiscounter.ru/sitemap.xml

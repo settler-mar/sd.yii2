@@ -143,6 +143,10 @@
 
                     {{ form.field(model, 'delete_comment').textArea({'disabled':true, 'class':'form-control width_300'})|raw }}
 
+                    {{ form.field(model, 'region').textInput({'disabled':true})|raw }}
+
+                    {{ form.field(model, 'language').textInput({'disabled':true})|raw }}
+
                 {% endif %}
             </div>
             <div class="col-md-12">
