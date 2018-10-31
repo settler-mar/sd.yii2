@@ -136,9 +136,9 @@ class Product extends \yii\db\ActiveRecord
         $productDb->description = (string) $product['description'];
         $productDb->modified_time = date('Y-m-d H:i:s', (int) $product['modified_time']);
         $productDb->name = (string) $product['name'];
-        $productDb->old_price = (float) $product['oldprice'];
+        $productDb->old_price = isset($product['oldprice']) ? (float) $product['oldprice'] : null;
         $productDb->price = (float) $product['price'];
-        $productDb->params = ProductParameters::standarted($product['params']);
+        $productDb->params = !empty($product['params']) ?  ProductParameters::standarted($product['params']) : null;
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
