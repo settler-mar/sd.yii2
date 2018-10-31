@@ -1,11 +1,12 @@
 <?php
 
-namespace frontend\modules\product\models;
+namespace shop\modules\product\models;
 
 use Yii;
 use common\components\JsonBehavior;
 use JBZoo\Image\Image;
 use frontend\modules\params\models\ProductParameters;
+use shop\modules\category\models\ProductsCategory;
 
 /**
  * This is the model class for table "cw_admitad_products".

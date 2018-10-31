@@ -1,8 +1,9 @@
 <?php
 
-namespace frontend\modules\product\models;
+namespace shop\modules\category\models;
 
 use Yii;
+use shop\modules\product\models\ProductsToCategory;
 
 /**
  * This is the model class for table "cw_products_category".

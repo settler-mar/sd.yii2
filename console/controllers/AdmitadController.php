@@ -14,7 +14,7 @@ use frontend\modules\users\models\Users;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
-use frontend\modules\product\models\Product;
+use shop\modules\product\models\Product;
 
 class AdmitadController extends Controller
 {
