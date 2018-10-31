@@ -228,7 +228,7 @@ class Payments extends \yii\db\ActiveRecord
             $this,
             [
                 'currency' => $store->currency,
-                'payment' => $this->order_price * $rates->size
+                'payment' => $this->order_price * $rates->size / 100,
             ],
             true,
             $user,
