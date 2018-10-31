@@ -150,7 +150,7 @@ $config = [
                 [ // обработка перехода после авторизации из админки под пользователем обратно в админку
                     'class' => 'frontend\components\SdUrlAdmin',
                 ],
-                'robots_' => 'site/robots',
+                'robots.txt' => 'site/robots',
               /*'users/<action>/<action>'=>'404',
               'users/<action>/<action>/<action>'=>'404',*/
 
