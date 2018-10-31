@@ -57,9 +57,9 @@ class Product extends \yii\db\ActiveRecord
             [['params'], 'safe'],
             [['modified_time'], 'safe'],
             [['old_price', 'price'], 'number'],
-            [['article', 'name', 'image', 'url', 'vendor'], 'string', 'max' => 255],
+            [['article', 'name', 'image', 'vendor'], 'string', 'max' => 255],
+            [['url'], 'string'],
             [['currency'], 'string', 'max' => 3],
-            [['article'], 'unique'],
         ];
     }
 
@@ -253,7 +253,7 @@ class Product extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $this->clearCache;
+        $this->clearCache();
     }
 
     protected function clearCache()

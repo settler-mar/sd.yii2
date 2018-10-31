@@ -126,7 +126,7 @@ class AdminCategoryController extends Controller
             return $this->redirect(['index']);
         } else {
             $all = ArrayHelper::map(
-                ProductsCategory::find()->where(['<>', 'id', $id])->select(['id', 'name'])->asArray()->all(),
+                ProductsCategory::find()->where(['<>', 'id', $id])->select(['id', 'name'])->orderBy(['name' => SORT_ASC])->asArray()->all(),
                 'id',
                 'name'
             );

@@ -35,9 +35,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'string', 'max' => 255],
+            [['name', 'route'], 'trim'],
+            [['name', 'route'], 'required'],
+            [['name', 'route'], 'string', 'max' => 255],
             [['parent'], 'exist', 'targetAttribute' => 'id'],
-            [['active', 'synonym'], 'integer']
+            [['active', 'synonym'], 'integer'],
+            ['route', 'unique'],
         ];
     }
 
@@ -81,12 +84,20 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return self::childs($params);
     }
 
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord) {
+            $this->route = Yii::$app->help->str2url($this->name);
+        }
+        return parent::beforeValidate();
+    }
+
     public static function childs($params, $parent = null, $level = 0)
     {
         $level++;
         $childs =  self::find()
             ->from(self::tableName() . ' pc')
-            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym'])
+            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route'])
             ->where([
             'parent'=>$parent,
             'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
@@ -97,11 +108,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
             $childs->leftJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id');
             $childs->leftJoin(Product::tableName().' p', 'p.id=ptc.product_id');
             $childs->addSelect(['count(p.id) as count']);
-            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym']);
+            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route']);
         }
         $childs = $childs->all();
         foreach ($childs as &$child) {
-            $child['lever'] = $level;
+            $child['level'] = $level;
             $child['childs'] = self::childs($params, $child['id'], $level);
         }
         return $childs;
@@ -110,7 +121,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $this->clearCache;
+        $this->clearCache();
     }
 
     protected function clearCache()

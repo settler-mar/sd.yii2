@@ -31,7 +31,7 @@ class CategoryMenu extends Widget
         //ddd($categoryTree);
         return $this->render('category_menu.twig', [
             'categories' => $categoryTree,
-            'level' => 0
+            'level' => '0'
         ]);
     });
     return $out;
