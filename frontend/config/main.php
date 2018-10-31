@@ -150,12 +150,13 @@ $config = [
                 [ // обработка перехода после авторизации из админки под пользователем обратно в админку
                     'class' => 'frontend\components\SdUrlAdmin',
                 ],
-              /*'users/<action>/<action>'=>'404',
-              'users/<action>/<action>/<action>'=>'404',*/
+                'robots.txt' => 'site/robots',
+                /*'users/<action>/<action>'=>'404',
+                'users/<action>/<action>/<action>'=>'404',*/
 
                 'elfinder/connect'=>'elfinder/connect',
                 'elfinder/manager' => 'elfinder/manager',
-              //'connector/el-finder/manager'=>'el-finder/connector/manager',
+                //'connector/el-finder/manager'=>'el-finder/connector/manager',
 
                 '<action:(login|logout|registration|registration-web|resetpassword|reset|verifyemail|verifysocialemail)>' =>
                     'users/default/<action>',

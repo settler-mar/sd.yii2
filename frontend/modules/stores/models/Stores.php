@@ -463,7 +463,8 @@ class Stores extends \yii\db\ActiveRecord
       $where['is_offline']=0;
       $where['route']=$route;
     }
-    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+
+    $language = isset(Yii::$app->params['base_lang']) && Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $cache = Yii::$app->cache;
     $cacheName = 'store_by_route_' . $route . ($language ? '_'.$language : '');
     $dependency = new yii\caching\DbDependency;
@@ -1039,10 +1040,11 @@ class Stores extends \yii\db\ActiveRecord
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
         'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products','cws.test_link'];
       $translated = [];
+      $lang_code=isset(Yii::$app->params['lang_code'])?Yii::$app->params['lang_code']:Yii::$app->language;
       foreach (self::$translated_attributes as $attr) {
           //$translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
           $translated[] = $language ? 'lgs.' . $attr. ' as '.$attr : 'cws.'.$attr;
-          $translated[] = $language ? "concat('/".Yii::$app->params['lang_code']."/stores/',cws.route) as store_href" :
+          $translated[] = $language ? "concat('/".$lang_code."/stores/',cws.route) as store_href" :
               "concat('/stores/',cws.route) as store_href";
       }
       return array_merge($attributes, $translated);
