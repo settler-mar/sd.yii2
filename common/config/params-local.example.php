@@ -16,6 +16,7 @@ return [
         'clientId'=>'',
         'clientSecret'=>'',
         'websiteId'=>'',
+        'getCatalog'=>true,
     ],
     'actionpay' => [
         'apiKey' => 'pPet0aJOhlewujTH',

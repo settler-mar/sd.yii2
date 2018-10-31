@@ -586,6 +586,7 @@ class SiteController extends SdController
 
   public function actionRobots()
   {
+    Yii::$app->response->format=\yii\web\Response::FORMAT_RAW;
     $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
     $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
     $url = (isset($region['protocol']) ? $region['protocol'] : 'http') . '://' .
