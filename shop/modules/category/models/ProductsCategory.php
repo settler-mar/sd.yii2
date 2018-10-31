@@ -4,6 +4,8 @@ namespace shop\modules\category\models;
 
 use Yii;
 use shop\modules\product\models\ProductsToCategory;
+use shop\modules\product\models\Product;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_products_category".
@@ -74,18 +76,46 @@ class ProductsCategory extends \yii\db\ActiveRecord
      * дерево категорий
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function tree()
+    public static function tree($params=[])
     {
-        return self::childs();
+        return self::childs($params);
     }
 
-    public static function childs($parent = null)
+    public static function childs($params, $parent = null, $level = 0)
     {
-        $childs =  self::find()->where(['parent'=>$parent])->asArray()->all();
+        $level++;
+        $childs =  self::find()
+            ->from(self::tableName() . ' pc')
+            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym'])
+            ->where([
+            'parent'=>$parent,
+            'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
+        ])
+            ->orderBy(['name' => SORT_ASC])
+            ->asArray();
+        if (!empty($params['counts'])) {
+            $childs->leftJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id');
+            $childs->leftJoin(Product::tableName().' p', 'p.id=ptc.product_id');
+            $childs->addSelect(['count(p.id) as count']);
+            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym']);
+        }
+        $childs = $childs->all();
         foreach ($childs as &$child) {
-            $child['childs'] = self::childs($child['id']);
+            $child['lever'] = $level;
+            $child['childs'] = self::childs($params, $child['id'], $level);
         }
         return $childs;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->clearCache;
+    }
+
+    protected function clearCache()
+    {
+        Cache::deleteName('product_category_menu');
     }
 
 }

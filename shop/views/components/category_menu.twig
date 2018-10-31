@@ -1,0 +1,14 @@
+{% if categories|length %}
+    <ul class="shops-category-menu_list{% if level == 0 %} root{% endif %} level_{{ level }}" >
+        {% for category in categories  %}
+            <li class="shops-category-menu_item{% if level == 0 %} root_category{% endif %} level_{{ category.level }}">
+                <a class="shops-category-menu_link" href="/category/{{ category.id }}">{{ category.name }} ({{ category.count }})</a>
+                {% if category.childs|length %}
+                    {% set categories = category.childs %}
+                    {% set level = category.level %}
+                    {% include('category_menu.twig') %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

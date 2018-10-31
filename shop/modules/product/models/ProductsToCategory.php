@@ -4,6 +4,7 @@ namespace shop\modules\product\models;
 
 use Yii;
 use shop\modules\category\models\ProductsCategory;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_products_to_category".
@@ -64,5 +65,16 @@ class ProductsToCategory extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->clearCache;
+    }
+
+    protected function clearCache()
+    {
+        Cache::deleteName('product_category_menu');
     }
 }

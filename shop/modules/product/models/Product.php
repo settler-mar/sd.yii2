@@ -8,6 +8,7 @@ use JBZoo\Image\Image;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\product\models\CatalogStores;
 use shop\modules\category\models\ProductsCategory;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -247,6 +248,17 @@ class Product extends \yii\db\ActiveRecord
             static::$categories[$name] = $categoryDb->toArray();
         }
         return static::$categories[$name];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->clearCache;
+    }
+
+    protected function clearCache()
+    {
+        Cache::deleteName('product_category_menu');
     }
 
 }
