@@ -6,26 +6,23 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\product\models\CatalogStores;
-use frontend\modules\stores\models\Cpa;
-use frontend\modules\stores\models\CpaLink;
-use frontend\modules\stores\models\Stores;
 
 /**
  * CatalogStoresSearch represents the model behind the search form about `frontend\modules\product\models\CatalogStores`.
  */
 class CatalogStoresSearch extends CatalogStores
 {
-    public $storeName;
-    public $cpaName;
+
+  public $store;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'cpa_id', 'affiliate_id', 'active', 'cpaName'], 'integer'],
-            [['date_import', 'date_update', 'crated_at'], 'safe'],
-            [['storeName', 'cpaName'], 'string'],
+            [['id', 'cpa_link_id', 'products_count', 'product_count', 'active'], 'integer'],
+            [['name', 'csv', 'date_update', 'crated_at','store'], 'safe'],
         ];
     }
 
@@ -48,8 +45,6 @@ class CatalogStoresSearch extends CatalogStores
     public function search($params)
     {
         $query = CatalogStores::find();
-        $query->joinWith('cpa', false);
-        $query->joinWith('store', false);
 
         // add conditions that should always apply here
 
@@ -64,29 +59,31 @@ class CatalogStoresSearch extends CatalogStores
             // $query->where('0=1');
             return $dataProvider;
         }
-        $dataProvider->sort->attributes['cpaName'] = [
-            'asc' => [Cpa::tableName().'.name' => SORT_ASC],
-            'desc' => [Cpa::tableName().'.name' => SORT_DESC],
-        ];
-        $dataProvider->sort->attributes['storeName'] = [
-            'asc' => [Stores::tableName().'.name' => SORT_ASC],
-            'desc' => [Stores::tableName().'.name' => SORT_DESC],
-        ];
+
+        if(!empty($this->store)){
+          $query->joinWith('cpaLink');
+          $query->leftJoin('cw_stores','stores_id=cw_stores.uid');
+          if(is_numeric($this->store)){
+            $query->andFilterWhere(['cw_stores.uid'=>$this->store]);
+          }else{
+            $query->andFilterWhere(['like', 'cw_stores.alias', $this->store]);
+          }
+        }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'cpa_id' => $this->cpa_id,
-            'affiliate_id' => $this->affiliate_id,
+            'cpa_link_id' => $this->cpa_link_id,
+            'products_count' => $this->products_count,
+            'product_count' => $this->product_count,
             'active' => $this->active,
             'date_import' => $this->date_import,
             'date_update' => $this->date_update,
             'crated_at' => $this->crated_at,
         ]);
 
-        if (!empty($this->storeName)) {
-            $query->andFilterWhere(['like', Stores::tableName().'.name', $this->storeName]);
-        }
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'csv', $this->csv]);
 
         return $dataProvider;
     }

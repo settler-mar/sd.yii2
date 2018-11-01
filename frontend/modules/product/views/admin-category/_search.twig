@@ -1,5 +1,5 @@
 {{ use('/yii/widgets/ActiveForm') }}
-<div class="products-category-search">
+<div class="catalog-stores-search">
     {% set form = active_form_begin({
             'action': ['index'],
             'method': 'get',
@@ -8,11 +8,23 @@
 
     {{ form.field(model, 'id')|raw }}
 
+    {{ form.field(model, 'cpa_link_id')|raw }}
+
     {{ form.field(model, 'name')|raw }}
 
-    {{ form.field(model, 'parent')|raw }}
+    {{ form.field(model, 'products_count')|raw }}
 
-    {{ form.field(model, 'crated_at')|raw }}
+    {{ form.field(model, 'csv')|raw }}
+
+    {# form.field(model, 'product_count')|raw #}
+
+    {# form.field(model, 'active')|raw #}
+
+    {# form.field(model, 'date_import')|raw #}
+
+    {# form.field(model, 'date_update')|raw #}
+
+    {# form.field(model, 'crated_at')|raw #}
 
     <div class="form-group">
         <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">

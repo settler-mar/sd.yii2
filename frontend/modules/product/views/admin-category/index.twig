@@ -1,5 +1,5 @@
 {{ use('/yii/grid/GridView') }}
-{% set title = 'Products Categories' %}
+{% set title = 'Catalog Stores' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
@@ -7,33 +7,34 @@
 {% set breadcrumbs = this.params.breadcrumbs %}
 {% set breadcrumbs = breadcrumbs|merge([title]) %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
-<div class="products-category-index">
-    <div class="content-wrapper">
-        <section>
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>{{ html.encode(this.title) }}</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div  class="col-md-12">
-                {{ grid_view_widget({
-                        'dataProvider': dataProvider,
-                        'filterModel': searchModel,
-                            'columns': [
-                            {'class': '\\yii\\grid\\SerialColumn'},
-                            'id',
-                            'name',
-                            {'attribute':'parent','format':'raw','value':tableData.parent,'filter':parents},
-                            {'attribute':'active','format':'raw','value':tableData.active,'filter':activeFilter},
-                            {'attribute':'synonym','format':'raw','value':tableData.synonym,'filter':parents},
-                            'crated_at',
-                            {'class': '\\yii\\grid\\ActionColumn', 'template':'{update}'},
-                        ],
-                    })
-                }}
-                </div>
-            </div>
-        </section>
-    </div>
+<div class="catalog-stores-index">
+    <h1>{{ html.encode(this.title) }}</h1>
+    {# include('_search.twig', {'model': searchModel}) #}
+
+    {{ grid_view_widget({
+            'dataProvider': dataProvider,
+            'filterModel': searchModel,
+                'columns': [
+                {'class': '\\yii\\grid\\SerialColumn'},
+
+                'id',
+                'store',
+                'name',
+                'products_count',
+                'date_import',
+
+                {
+                  'class': '\\yii\\grid\\ActionColumn',
+                  'template': '{update} {delete}'
+                },
+            ],
+        })
+    }}
+{#
+'product_count',
+'active',
+'date_import',
+'date_update',
+'crated_at'
+#}
 </div>

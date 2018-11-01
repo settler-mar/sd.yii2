@@ -6,6 +6,7 @@ use common\models\Admitad;
 use frontend\modules\actions\models\ActionsActions;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
+use frontend\modules\product\models\CatalogStores;
 use frontend\modules\products\models\Products;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Cpa;
@@ -340,19 +341,33 @@ class AdmitadController extends Controller
         if (!$storeResult['result']) {
           $errors++;
         }else{
-          if (!empty($this->config['getCatalog'])) {
-            //обработка каталогов с адмитада
-            if (empty($configProductsImport['stores_only']) || in_array($affiliate_id, $configProductsImport['stores_only'])) {
-              $refresh = empty($configProductsImport['refresh_csv']);
-              $advacampaing = $this->admitad->getAdvacampaing($affiliate_id);
-              ddd($advacampaing,$affiliate_id,$configProductsImport,$store);
-              if (!empty($advacampaing['products_csv_link'])) {
-                //$products = $this->admitad->getProduct($advacampaing['products_csv_link'], $affiliate_id, $refresh);
-                //echo "Store ". $store['name']." Products ".count($products)."\n";
-                //$this->writeProducts($products, $affiliate_id, $advacampaing['modified_date']);
-              } else {
-                //echo "Store ".$store['name']." products link does not exists\n";
+          if (!empty($this->config['getCatalog']) && !empty($store['feeds_info'])) {
+            foreach ($store['feeds_info'] as $catalog) {
+              $catalog_db = CatalogStores::find()
+                  ->where([
+                      'cpa_link_id'=>$storeResult['cpa_link']->id,
+                      'name'=>$catalog['name'],
+                  ])
+                  ->one();
+              if(!$catalog_db){
+                $catalog_db = new CatalogStores();
+                $catalog_db->cpa_link_id=$storeResult['cpa_link']->id;
+                $catalog_db->name=$catalog['name'];
+                $catalog_db->active=2;
               }
+              //ddd($catalog_db,$catalog);
+              $d=strtotime($catalog['advertiser_last_update']);
+              if($d<100){
+                $d=strtotime($catalog['admitad_last_update']);
+                if($d<100){
+                  d($catalog);
+                  continue;
+                }
+              }
+              $catalog_db->date_update=date("Y-m-d H:i:s",$d);
+              $catalog_db->csv=$catalog['csv_link'];
+
+              $catalog_db->save();
             }
           }
         }
@@ -555,21 +570,22 @@ class AdmitadController extends Controller
       $cpaLinks = CpaLink::find()->where(['cpa_id' => $this->cpa_id])->all();
       $admitad = new Admitad($this->config);
 
-      foreach ($cpaLinks as $cpaLink) {
-          if (!empty($config['stores_only']) && !in_array($cpaLink->affiliate_id, $config['stores_only'])) {
-              continue;
-          }
-
-          $advacampaing = $admitad->getAdvacampaing($cpaLink->affiliate_id);
-
-          if (isset($advacampaing['products_csv_link'])) {
-              $products = $admitad->getProduct($advacampaing['products_csv_link'], $cpaLink->affiliate_id, $config['refresh_csv']);
-              echo "Store ".$cpaLink->affiliate_id." Products\n";
-              $this->writeProducts($products, $cpaLink->affiliate_id, $advacampaing['modified_date']);
-          } else {
-              echo "Store ".$cpaLink->affiliaate_id." products link does not exists\n";
-          }
-
+      $csvLinks = CatalogStores::find()
+          ->where([
+              'and',
+              'active='.CatalogStores::CATALOG_STORE_ACTIVE_YES,
+              ['or',
+                '`date_import`=`crated_at`',
+                '`date_import`<`date_update`',
+              ]
+          ])->one();
+      foreach ($csvLinks as $cpaLink) {
+        $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
+        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from cap link ".$cpaLink->cpa_link_id." Products\n";
+        //$this->writeProducts($products, $cpaLink->id, $cpaLink->date_update);
+        $cpaLink->date_import=$cpaLink->date_update;
+        $cpaLink->product_count=count($products);
+        $cpaLink->save();
       }
   }
 
