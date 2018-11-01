@@ -344,13 +344,12 @@ class AdmitadController extends Controller
             //обработка каталогов с адмитада
             if (empty($configProductsImport['stores_only']) || in_array($affiliate_id, $configProductsImport['stores_only'])) {
               $refresh = empty($configProductsImport['refresh_csv']);
-
               $advacampaing = $this->admitad->getAdvacampaing($affiliate_id);
-
+              ddd($advacampaing,$affiliate_id,$configProductsImport,$store);
               if (!empty($advacampaing['products_csv_link'])) {
-                $products = $this->admitad->getProduct($advacampaing['products_csv_link'], $affiliate_id, $refresh);
-                echo "Store ". $store['name']." Products ".count($products)."\n";
-                $this->writeProducts($products, $affiliate_id, $advacampaing['modified_date']);
+                //$products = $this->admitad->getProduct($advacampaing['products_csv_link'], $affiliate_id, $refresh);
+                //echo "Store ". $store['name']." Products ".count($products)."\n";
+                //$this->writeProducts($products, $affiliate_id, $advacampaing['modified_date']);
               } else {
                 //echo "Store ".$store['name']." products link does not exists\n";
               }

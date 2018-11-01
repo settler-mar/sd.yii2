@@ -145,6 +145,7 @@ class Payments extends \yii\db\ActiveRecord
         if (!$this->_store) {
           $this->_store = B2bStoresPoints::findOne(Yii::$app->storePointUser->id)->store;
         }
+
         $store = $this->_store;
         if ($store) {
           $this->affiliate_id = $store->cpaLink->id;//affiliate_id;
