@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m181101_071437_modifecate_catalog_stores
  */
-class m181101_071437_modifecate_catalog_stores extends Migration
+class m181101_071437_ModifecateCatalogStores extends Migration
 {
     /**
      * {@inheritdoc}
@@ -18,13 +18,13 @@ class m181101_071437_modifecate_catalog_stores extends Migration
       $this->dropForeignKey('fk_catalog_stores_cpa_id','cw_catalog_stores');
       $this->dropIndex('unuque_catalog_stores_cpa_affiliate', 'cw_catalog_stores');
 
-
       $this->addColumn('cw_catalog_stores', 'csv', $this->string()->after('cpa_id'));
       $this->addColumn('cw_catalog_stores', 'name', $this->string()->after('cpa_id'));
+      $this->addColumn('cw_catalog_stores', 'products_count', $this->integer()->null()->after('name'));
       $this->dropColumn('cw_catalog_stores', 'affiliate_id');
       $this->dropColumn('cw_catalog_stores', 'cpa_id');
       $this->addColumn('cw_catalog_stores', 'cpa_link_id', $this->integer()->after('id'));
-      $this->addColumn('cw_catalog_stores', 'product_count', $this->integer());
+      $this->addColumn('cw_catalog_stores', 'product_count', $this->integer()->after('csv'));
       $this->addForeignKey(
           'fk_product_cpa_link_id',
           'cw_catalog_stores',
@@ -45,6 +45,7 @@ class m181101_071437_modifecate_catalog_stores extends Migration
 
       $this->dropColumn('cw_catalog_stores', 'csv');
       $this->dropColumn('cw_catalog_stores', 'name');
+      $this->dropColumn('cw_catalog_stores', 'products_count');
         $this->dropForeignKey(
             'fk_product_cpa_link_id',
             'cw_catalog_stores'

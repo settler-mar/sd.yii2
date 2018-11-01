@@ -68,13 +68,13 @@ class AdminStoresController extends Controller
                 CatalogStores::CATALOG_STORE_ACTIVE_NOT => 'Не активен',
                 CatalogStores::CATALOG_STORE_ACTIVE_WAITING => 'Ожидает подтверждения'
             ],
-            'cpaFilter' => ArrayHelper::map(
+            /*'cpaFilter' => ArrayHelper::map(
                 Cpa::find()->from(Cpa::tableName().' cpa')->select(['cpa.id', 'name'])
                      ->innerJoin(CatalogStores::tableName().' cs', 'cs.cpa_id=cpa.id')
                      ->asArray()->all(),
                 'id',
                 'name'
-            ),
+            ),*/
         ]);
     }
 
