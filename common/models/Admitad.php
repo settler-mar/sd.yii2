@@ -169,15 +169,19 @@ class Admitad{
         if (($handle = fopen($filename, "r")) !== false) {
             $headers = fgetcsv($handle, 0, $delimiter);
             while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
-                $data[] = array_combine($headers, $row);
+                if (count($headers) != count($row)) {
+                    //таких немного, можно пропустить
+                } else {
+                    $data[] = array_combine($headers, $row);
+                }
             }
             fclose($handle);
         } else {
-            Yii::info('File not found. ' . $filename);
+            d('File not found. ' . $filename);
         }
         return $data;
     } catch (\Exception $e) {
-        ddd('Ошибка при загрузке файла csv '.$e->getMessage().'<br>');
+        d('Ошибка при загрузке файла csv ' . $filename . ' ' .$e->getMessage());
     }
     return $data;
   }

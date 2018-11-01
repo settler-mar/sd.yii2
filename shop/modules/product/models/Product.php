@@ -1,11 +1,14 @@
 <?php
 
-namespace frontend\modules\product\models;
+namespace shop\modules\product\models;
 
 use Yii;
 use common\components\JsonBehavior;
 use JBZoo\Image\Image;
 use frontend\modules\params\models\ProductParameters;
+use frontend\modules\product\models\CatalogStores;
+use shop\modules\category\models\ProductsCategory;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -54,9 +57,9 @@ class Product extends \yii\db\ActiveRecord
             [['params'], 'safe'],
             [['modified_time'], 'safe'],
             [['old_price', 'price'], 'number'],
-            [['article', 'name', 'image', 'url', 'vendor'], 'string', 'max' => 255],
+            [['article', 'name', 'image', 'vendor'], 'string', 'max' => 255],
+            [['url'], 'string'],
             [['currency'], 'string', 'max' => 3],
-            [['article'], 'unique'],
         ];
     }
 
@@ -134,9 +137,9 @@ class Product extends \yii\db\ActiveRecord
         $productDb->description = (string) $product['description'];
         $productDb->modified_time = date('Y-m-d H:i:s', (int) $product['modified_time']);
         $productDb->name = (string) $product['name'];
-        $productDb->old_price = (float) $product['oldprice'];
+        $productDb->old_price = isset($product['oldprice']) ? (float) $product['oldprice'] : null;
         $productDb->price = (float) $product['price'];
-        $productDb->params = ProductParameters::standarted($product['params']);
+        $productDb->params = !empty($product['params']) ?  ProductParameters::standarted($product['params']) : null;
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
@@ -245,6 +248,17 @@ class Product extends \yii\db\ActiveRecord
             static::$categories[$name] = $categoryDb->toArray();
         }
         return static::$categories[$name];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->clearCache();
+    }
+
+    protected function clearCache()
+    {
+        Cache::deleteName('product_category_menu');
     }
 
 }
