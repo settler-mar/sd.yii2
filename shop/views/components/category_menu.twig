@@ -1,8 +1,12 @@
 {% if categories|length %}
     <ul class="shops-category-menu_list level_{{ level }}" >
         {% for category in categories  %}
-            <li class="shops-category-menu_item level_{{ category.level }}">
-                <a class="shops-category-menu_link" href="/category/{{ category.route }}">{{ category.name }} ({{ category.count }})</a>
+            <li class="shops-category-menu_item level_{{ category.level }}{% if category.childs|length %} menu-group{% endif %}">
+                <a class="shops-category-menu_link" href="/category/{{ category.route }}">{{ category.name }} ({{ category.count }})
+                    {% if category.childs|length %}
+                        {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
+                    {% endif %}
+                </a>
                 {% if category.childs|length %}
                     {% set categories = category.childs %}
                     {% set level = category.level %}

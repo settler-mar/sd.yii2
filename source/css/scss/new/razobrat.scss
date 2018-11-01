@@ -163,16 +163,30 @@ span.shop_header-title_description_extend {
 .catalog-categories ul > li.open > ul {
   background: #f6f6f6;
   padding: 4px;
-  width: calc(100% + 10px);
+  //padding: 4px 4px 4px 15px;
+  //width: calc(100% + 10px);
+  width: calc(100% + 20px);
+  box-sizing: border-box;
   left: -10px;
   position: relative;
   border-radius: 10px;
-  margin-bottom: 10px;}
+  margin-bottom: 10px;
+  //margin-left: 10px;
+}
+.catalog-categories ul>li>ul>li.open>ul {
+  left: 0;
+  width: 100%;
+  >li {
+    border-top: thin solid #ebebeb;
+  }
+
+}
+
 .catalog-categories ul > li.open > ul li a {
   background: none;
   padding: 10px 14px;
   min-height: auto;
-  display: block;
+  //display: block;
   font-size: 0.7rem;}
 .catalog-categories ul > li.open > ul .active {
   background: none;

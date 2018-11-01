@@ -143,13 +143,16 @@
           }
         }
         &.open {
-          > ul {
+          >ul {
+            //padding-left: 15px !important;
+
+
             @include menu-open;
             //max-height: 9999px;
             //transition: max-height 0.3s cubic-bezier(1,.05,1,0);
           }
 
-          .menu_angle-down {
+          >a>.menu_angle-down {
             transform: rotate(-180deg);
           }
         }
