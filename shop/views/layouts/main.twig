@@ -44,6 +44,7 @@
     {% endfor %}
 
     {{ void(this.head()) }}
+    {% include 'base/header_include.twig' %}
 
   </head>
   <body>
@@ -98,6 +99,8 @@
     {% if not this.user_id %}
       <script charset="UTF-8" src="/js/msg.js" async></script>
     {% endif %}
+
+  {% include 'base/footer_include.twig' %}
 
   </body>
 </html>
