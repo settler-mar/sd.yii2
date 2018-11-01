@@ -2,7 +2,7 @@
 
 namespace shop\modules\category\models;
 
-use Yii;
+use yii;
 use shop\modules\product\models\ProductsToCategory;
 use shop\modules\product\models\Product;
 use frontend\modules\cache\models\Cache;
@@ -124,9 +124,29 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $this->clearCache();
     }
 
+    /**
+     * @param $route
+     * @return mixed
+     */
+    public static function byRoute($route)
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_category_byroute_' . $route . ($language ? '_'.$language: '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $category = $cache->getOrSet($casheName, function () use ($route) {
+            return self::find()->where(['route' => $route])->one();
+        }, $cache->defaultDuration, $dependency);
+        return $category;
+    }
+
     protected function clearCache()
     {
         Cache::deleteName('product_category_menu');
+        Cache::clearName('catalog_product');
     }
 
 }

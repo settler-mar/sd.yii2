@@ -68,7 +68,7 @@
       {% if this.all_params.wrap=='index' %}
           {{ content|raw }}
       {% else %}
-        {#{% include 'parts/catalog_breadcrumbs.twig' %}#}
+        {% include 'parts/catalog_breadcrumbs.twig' %}
         <div class="page-wrap
           {{ _if(params('global_wrap'),' '~params('global_wrap')) }}
           {{ _if(this.layout_mode=="account",' page-wrap-flex') }}">

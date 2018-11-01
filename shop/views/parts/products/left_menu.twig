@@ -1,0 +1,16 @@
+{{ use('shop/components/CategoryMenu') }}
+
+{% set category_tree = category_menu_widget() %}
+
+{% if category_tree %}
+
+    <div class="catalog-categories_tree-cat accordeon">
+        <div class="catalog-categories_tree-cat-close">
+            {{ svg('close', 'catalog-categories_tree-cat-close-icon', '@frontend')|raw }}
+            <span class="catalog-categories_tree-cat-close-tittle">{{ t('main', 'shops_left_menu_categories')|raw }}</span>
+        </div>
+        {{ category_tree|raw }}
+    </div>
+
+
+{% endif %}

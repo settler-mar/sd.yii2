@@ -37,6 +37,9 @@ class Product extends \yii\db\ActiveRecord
 
     protected static $categories = [];
 
+    public static $defaultSort = 'name';
+    public static $defaultLimit = 48;
+
     /**
      * @inheritdoc
      */
@@ -85,6 +88,22 @@ class Product extends \yii\db\ActiveRecord
             'vendor' => 'Производитель',
             'categories' => 'Категории',
             'product_categories' => 'Категории',
+        ];
+    }
+
+    public static function sortvars()
+    {
+        return [
+            'name' => [
+                "title" => Yii::t('main', 'sort_by_abc'),
+                "title_mobile" => Yii::t('main', 'sort_by_abc_mobile'),
+                'order' => 'ASC'
+            ],
+            'price' => [
+                "title" => Yii::t('main', 'by_price'),
+                "title_mobile" => Yii::t('main', 'sort_by_price_mobile'),
+                'order' => 'ASC'
+            ],
         ];
     }
 
@@ -256,9 +275,21 @@ class Product extends \yii\db\ActiveRecord
         $this->clearCache();
     }
 
+    public static function activeCount()
+    {
+        $cache = Yii::$app->cache;
+        return $cache->getOrSet('products_active_count', function () {
+            return self::find()
+                ->where(['available'=>[self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]])
+                ->count();
+        });
+    }
+
     protected function clearCache()
     {
         Cache::deleteName('product_category_menu');
+        Cache::deleteName('products_active_count');
+        Cache::clearName('catalog_product');
     }
 
 }
