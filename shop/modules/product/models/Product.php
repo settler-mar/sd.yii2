@@ -130,7 +130,6 @@ class Product extends \yii\db\ActiveRecord
      */
     public static function addOrUpdate($product)
     {
-        CatalogStores::refreshStore($product);
         $new = 0;
         $error = 0;
         $article = (string) $product['id'];

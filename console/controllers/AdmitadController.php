@@ -567,7 +567,6 @@ class AdmitadController extends Controller
   {
       $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
-      $cpaLinks = CpaLink::find()->where(['cpa_id' => $this->cpa_id])->all();
       $admitad = new Admitad($this->config);
 
       $csvLinks = CatalogStores::find()
@@ -577,19 +576,25 @@ class AdmitadController extends Controller
               ['or',
                 '`date_import`=`crated_at`',
                 '`date_import`<`date_update`',
+                ['date_import' => null],
               ]
-          ])->one();
+          ])->all();
+
+      if (!$csvLinks) {
+          echo "There ara no catalogs for refresh";
+          return;
+      }
       foreach ($csvLinks as $cpaLink) {
         $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
-        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from cap link ".$cpaLink->cpa_link_id." Products\n";
-        //$this->writeProducts($products, $cpaLink->id, $cpaLink->date_update);
+        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from cap link ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
+        $this->writeProducts($products, $cpaLink->id, $cpaLink->date_update);
         $cpaLink->date_import=$cpaLink->date_update;
         $cpaLink->product_count=count($products);
         $cpaLink->save();
       }
   }
 
-  private function writeProducts($products, $affiliate_id, $refresh_date)
+  private function writeProducts($products, $catalog_id, $refresh_date)
   {
       $count = 0;
       $insert = 0;
@@ -611,7 +616,7 @@ class AdmitadController extends Controller
           $product['categories'] = explode('/', (string) $product['categoryId']);
           $product['params_original'] = isset($product['param']) ? $product['param'] : null;
           $product['cpa_id'] = $this->cpa_id;
-          $product['store'] = $affiliate_id;
+          $product['store'] = $catalog_id;
           $result = Product::addOrUpdate($product);
           if ($result['error']) {
               d($result['product']->errors);
@@ -628,6 +633,7 @@ class AdmitadController extends Controller
       if ($error) {
         echo 'Errors ' . $error . "\n";
       }
+
   }
 
 
