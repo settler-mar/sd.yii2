@@ -2,10 +2,13 @@
 var language = navigator.language ? navigator.language : 'ru-RU';
 
 function lg(code, params) {
-    // if (!languages) {
-    //     languages = storageDataStores.languages ? storageDataStores.languages : false;
-    // }
-    var out = languages && languages[language] && languages[language][code] ? languages[language][code] : code;
+    var out;
+    if (!languages) {
+        out = code;
+    } else {
+        var langArray = languages[language] ? languages[language] : languages['ru-RU'];
+        out = langArray[code] ? langArray[code] : code;
+    }
     out = utils.replaceTemplate(out, params);
 
     return out;
