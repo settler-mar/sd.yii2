@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\components\SdController;
-use frontend\components\Sitemap;
+use common\components\Sitemap;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
 use frontend\modules\coupons\models\Coupons;
@@ -591,7 +591,8 @@ class SiteController extends SdController
     $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
     $url = (isset($region['protocol']) ? $region['protocol'] : 'http') . '://' .
         (isset($region['url']) ? $region['url'] : Yii::$app->params['region']) . '/';
-    $content .= "\nHost: " . $url . "  \nSitemap: " . $url . "sitemap." . Yii::$app->params['region'] . ".xml\n";
+    $content .= "\nHost: " . $url . "  \nSitemap: " . $url . "/" . Sitemap::$path . "/" . Sitemap::$file .
+        "." . Yii::$app->params['region'] . ".xml\n";
     return $content;
   }
 }

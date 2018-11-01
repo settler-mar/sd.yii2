@@ -645,7 +645,7 @@ class TaskController extends Controller
   public function actionSitemap($alias = '@frontend')
   {
       $map = require(Yii::getAlias($alias . '/config/sitemap.php'));
-      $file = Yii::getAlias($alias . '/web/sitemap');
+      $path = Yii::getAlias($alias . '/web');
 
       $regions = isset(Yii::$app->params['regions_list']) ? Yii::$app->params['regions_list'] : false;
       if (empty($map)) {
@@ -656,7 +656,7 @@ class TaskController extends Controller
       }
 
       $sitemap = new Sitemap($map, $regions);
-      d($sitemap->getMaps($file));
+      d($sitemap->getMaps($path));
   }
 
 }

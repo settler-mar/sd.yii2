@@ -5,6 +5,9 @@ use yii;
 
 class Sitemap
 {
+    public static $path = 'sitemap';
+    public static $file = 'sitemap';
+
     protected $languages = [];
     protected $url;
     protected $out = '';
@@ -29,11 +32,16 @@ class Sitemap
         $this->baseLang = $baseLang;
     }
 
-    public function getMaps($file)
+    public function getMaps($alias)
     {
+        $this->clear($alias);
         $out = [];
         foreach ($this->regions as $key => $region) {
-            $this->fileName = $file.'.'.$key;
+            $path = $alias.'/'.self::$path;
+            if (!file_exists($path)) {
+                mkdir($path);
+            }
+            $this->fileName = $path.'/'.self::$file.'.'.$key;
             $this->fileIndex = 0;
 
             $this->url = (isset($region['protocol'])? $region['protocol'] : 'http').'://'.
@@ -58,7 +66,6 @@ class Sitemap
      */
     protected function getMap()
     {
-        $this->clear();
         $this->files = [];
         $this->startFile();
 
@@ -121,13 +128,12 @@ class Sitemap
         return $this->files;
     }
 
-    protected function clear()
+    protected function clear($alias)
     {
-        $dir = dirname($this->fileName);
+        $dir = $alias.'/'.self::$path;
         $files = scandir($dir);
-        $fileName = substr($this->fileName, strlen($dir)+1);
         foreach ($files as $file) {
-            if (strpos($file, $fileName) === 0 && strpos($file, 'bak') === false) {
+            if (strpos($file, self::$file) === 0) {
                 unlink($dir.'/'.$file);
             }
         }
@@ -172,7 +178,7 @@ class Sitemap
         $this->fileIndex++;
         $fileName = $this->fileName .'.'. $this->fileIndex.'.xml';
         file_put_contents($fileName, $this->out);
-        $this->files[] = $this->url.'/'.basename($fileName);
+        $this->files[] = $this->url.'/'.self::$path.'/'.basename($fileName);
     }
 
     protected function writeResult()
