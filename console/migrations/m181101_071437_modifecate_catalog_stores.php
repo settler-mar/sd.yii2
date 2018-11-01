@@ -15,12 +15,16 @@ class m181101_071437_modifecate_catalog_stores extends Migration
       $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
       $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
+      $this->dropForeignKey('fk_catalog_stores_cpa_id','cw_catalog_stores');
+      $this->dropIndex('unuque_catalog_stores_cpa_affiliate', 'cw_catalog_stores');
+
+
       $this->addColumn('cw_catalog_stores', 'csv', $this->string()->after('cpa_id'));
       $this->addColumn('cw_catalog_stores', 'name', $this->string()->after('cpa_id'));
       $this->dropColumn('cw_catalog_stores', 'affiliate_id');
-      $this->dropForeignKey('fk_catalog_stores_cpa_id', 'cw_catalog_stores');
       $this->dropColumn('cw_catalog_stores', 'cpa_id');
       $this->addColumn('cw_catalog_stores', 'cpa_link_id', $this->integer()->after('id'));
+      $this->addColumn('cw_catalog_stores', 'product_count', $this->integer());
       $this->addForeignKey(
           'fk_product_cpa_link_id',
           'cw_catalog_stores',
@@ -28,6 +32,7 @@ class m181101_071437_modifecate_catalog_stores extends Migration
           'cw_cpa_link',
           'id'
       );
+
     }
 
     /**
@@ -40,17 +45,30 @@ class m181101_071437_modifecate_catalog_stores extends Migration
 
       $this->dropColumn('cw_catalog_stores', 'csv');
       $this->dropColumn('cw_catalog_stores', 'name');
-      $this->dropColumn('cw_catalog_stores', 'cw_cpa_link');
+        $this->dropForeignKey(
+            'fk_product_cpa_link_id',
+            'cw_catalog_stores'
+        );
+
+      $this->dropColumn('cw_catalog_stores', 'cpa_link_id');
+      $this->dropColumn('cw_catalog_stores', 'product_count');
       $this->addColumn('cw_catalog_stores', 'cpa_id', $this->integer()->after('id'));
       $this->addColumn('cw_catalog_stores', 'affiliate_id', $this->integer()->after('cpa_id'));
 
-      $this->addForeignKey(
-          'fk_catalog_stores_cpa_id',
-          'cw_catalog_stores',
-          'cpa_id',
-          'cw_cpa',
-          'id'
+      $this->createIndex(
+        'unuque_catalog_stores_cpa_affiliate',
+        'cw_catalog_stores',
+        ['cpa_id', 'affiliate_id'],
+        true
       );
+      $this->addForeignKey(
+        'fk_catalog_stores_cpa_id',
+        'cw_catalog_stores',
+        'cpa_id',
+        'cw_cpa',
+        'id'
+      );
+//
     }
 
     /*
