@@ -148,7 +148,7 @@ class Pagination
       ' data-original-title="'.Yii::t('main','previous_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
-      Help::svg('caret-left', 'pagination_button pagination_button_left').'</a></li>' : '';
+      Help::svg('caret-left', 'pagination_button pagination_button_left', '@frontend').'</a></li>' : '';
 
     //первая
     $first = $page >= $displayCount && $total > $displayCount ?
@@ -167,7 +167,7 @@ class Pagination
       ' data-original-title="'.Yii::t('main','next_page').'" class="'.$a_class.'"  href="' .
       Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
-        Help::svg('caret-right', 'pagination_button pagination_button_right').'</a>' : '';
+        Help::svg('caret-right', 'pagination_button pagination_button_right', '@frontend').'</a>' : '';
 
     $pages = ($page >= $displayCount && $total > $displayCount  + 1 ? '...' : '');
     $pageStart = floor($page / ($displayCount - 1)) * ($displayCount - 1) == $page ?

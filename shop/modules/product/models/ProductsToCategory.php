@@ -76,5 +76,6 @@ class ProductsToCategory extends \yii\db\ActiveRecord
     protected function clearCache()
     {
         Cache::deleteName('product_category_menu');
+        Cache::clearName('catalog_product');
     }
 }
