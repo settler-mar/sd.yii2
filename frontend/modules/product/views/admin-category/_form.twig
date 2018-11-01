@@ -1,27 +1,17 @@
 {{ use('/yii/widgets/ActiveForm') }}
-<div class="catalog-stores-form">
-    {% set form = active_form_begin() %}
+<div class="products-category-form">
+  {% set form = active_form_begin() %}
 
-        {{ form.field(model, 'cpa_link_id').textInput()|raw }}
+  {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+  {{ form.field(model, 'parent').dropDownList(all, {'prompt':'Выберите родительсую категорию'})|raw }}
 
-        {{ form.field(model, 'products_count').textInput()|raw }}
+  {{ form.field(model, 'synonym').dropDownList(all, {'prompt':'Выберите категорию синоним'})|raw }}
 
-        {{ form.field(model, 'csv').textInput({'maxlength':true})|raw }}
+  {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
-        {{ form.field(model, 'product_count').textInput()|raw }}
-
-        {{ form.field(model, 'active').textInput()|raw }}
-
-        {{ form.field(model, 'date_import').textInput()|raw }}
-
-        {{ form.field(model, 'date_update').textInput()|raw }}
-
-        {{ form.field(model, 'crated_at').textInput()|raw }}
-
-    <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-    </div>
-    {{ active_form_end() }}
+  <div class="form-group">
+    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+  </div>
+  {{ active_form_end() }}
 </div>

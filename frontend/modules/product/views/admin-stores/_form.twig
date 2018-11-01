@@ -1,38 +1,30 @@
 {{ use('/yii/widgets/ActiveForm') }}
 <div class="catalog-stores-form">
-    {% set form = active_form_begin() %}
+  {% set form = active_form_begin() %}
 
-    <div class="form-group">
-        <label class="control-label" for="catalogstores-cpa">Cpa</label>
-        <input type="text" id="catalogstores-cpa" class="form-control" value="{{ model.cpa.name }}" readonly>
-    </div>
+  {{ form.field(model, 'cpa_link_id').textInput()|raw }}
+  <div>
+    <b>Магазин:</b>
+    {{ model.store }}
+  </div>
 
-    <div class="form-group">
-        <label class="control-label" for="catalogstores-store">Store</label>
-        <input type="text" id="catalogstores-store" class="form-control" value="{{ model.store.name }}" readonly>
-    </div>
+  {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-    <div class="form-group">
-        <label class="control-label" for="catalogstores-date_import">Дата импорта</label>
-        <input type="text" id="catalogstores-date_import" class="form-control" value="{{ model.date_import }}" readonly>
-    </div>
+  {{ form.field(model, 'csv').textInput({'maxlength':true})|raw }}
 
-    <div class="form-group">
-        <label class="control-label" for="catalogstores-date_update">Дата обновления</label>
-        <input type="text" id="catalogstores-date_update" class="form-control" value="{{ model.date_update }}" readonly>
-    </div>
+  {{ form.field(model, 'product_count').textInput()|raw }}
 
+  {{ form.field(model, 'active').dropDownList(activeFilter)|raw }}
 
-    <div class="form-group">
-        <label class="control-label" for="catalogstores-created_at">Дата создания</label>
-        <input type="text" id="catalogstores-created_at" class="form-control" value="{{ model.crated_at }}" readonly>
-    </div>
+  {{ form.field(model, 'date_import').textInput()|raw }}
 
-    {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
+  {{ form.field(model, 'date_update').textInput()|raw }}
 
+  {{ form.field(model, 'crated_at').textInput()|raw }}
 
-    <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-    </div>
-    {{ active_form_end() }}
+  <div class="form-group">
+    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"
+           class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+  </div>
+  {{ active_form_end() }}
 </div>

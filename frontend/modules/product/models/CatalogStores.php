@@ -3,7 +3,6 @@
 namespace frontend\modules\product\models;
 
 use frontend\modules\stores\models\CpaLink;
-use Yii;
 
 /**
  * This is the model class for table "cw_catalog_stores".
