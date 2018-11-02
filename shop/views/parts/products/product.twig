@@ -2,7 +2,7 @@
     {% set products_store = store %}
 {% endif %}
 
-<div class="catalog_products_item hover-box">
+<div class="catalog_products_item hover-box ">
     {% set url=product.url %}
     {% set href_class = user_id ? '' : 'catalog_product_link' %}
     <div class="catalog_products_item_in">
@@ -18,10 +18,15 @@
                 </a>
             </div>
             <div class="catalog_products_item_info">
-                <div class="catalog_products_item_info_text">
-                    <div class="catalog_products_item_description">
-                        {{ product.description }}
+                <div class="catalog_products_item_info_text scroll_box-item">
+                    {% if product.description %}
+                    <div class=" scroll_box-content auto_hide_control">
+                        <div class="catalog_products_item_description scroll_box-text max_text_hide max_text_hide">
+                            {{ product.description }}
+                        </div>
+                        <a class="blue scroll_box-show_more">{{ t('common', 'read_all_topic')|raw }}</a>
                     </div>
+                    {% endif %}
                     {#<div class=catalog_products_item_buy">#}
                         {#<span class="catalog_products_item_info_text_title">#}
                             {#{{ t('main', 'product_bought') }}:#}
