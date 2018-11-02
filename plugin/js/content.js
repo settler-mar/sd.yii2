@@ -138,7 +138,9 @@ function findShop() {
   //надо дождаться, когда будут пользователи
   if (usersData !== false) {
     //находим в данных текущий шоп, если нашли то коллбэк
-    storeUtil.findShop(storageDataStores.stores, false, displayShop);
+      if(storageDataStores && storageDataStores.stores) {
+          storeUtil.findShop(storageDataStores.stores, false, displayShop);
+      }
   } else {
     //если пользователей нет, то ждём
     var tryCount = 10;
@@ -149,7 +151,9 @@ function findShop() {
       }
       if (usersData !== false) {
         //находим в данных текущий шоп, если нашли то коллбэк
-        storeUtil.findShop(storageDataStores.stores, false, displayShop);
+        if(storageDataStores && storageDataStores.stores) {
+              storeUtil.findShop(storageDataStores.stores, false, displayShop);
+        }
         clearInterval(findShopInterval);
       }
       if (tryCount < 0) {
