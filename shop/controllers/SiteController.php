@@ -48,14 +48,19 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                //'class' => 'yii\web\ErrorAction',
+                'class' => 'shop\components\SdErrorHandler',
             ],
         ];
     }
 
     public function actionIndex()
     {
-        return $this->render('index');
+        Yii::$app->params['global_bg']='gray-box';
+        Yii::$app->params['global_wrap']='page-404';
+        Yii::$app->params['pre_footer_hide']=true;
+        return $this->render('under_development.twig');
     }
+
 
 }
