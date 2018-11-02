@@ -132,6 +132,15 @@ function _hyphen_words(array &$m, $wbr = false)
   return $s;
 }
 
+function getChildCurrent($category) {
+    foreach ($category['childs'] as $child ) {
+        if ($child['current']) {
+            return true;
+        }
+        return getChildCurrent($child);
+    }
+}
+
 /**константу или так отдаём или рендерим
  * @param $name
  * @param bool $json_col
@@ -738,6 +747,10 @@ $functionsList = [
     }
     $layout = file_get_contents($layout);
     return Yii::$app->TwigString->render($layout, ['stores' => $stores]);
+  },
+  '_is_category_open' => function($category) {
+    //проходим по всем дочерним категориям, если есть current возвращаем true
+      return getChildCurrent($category);
   }
 
 

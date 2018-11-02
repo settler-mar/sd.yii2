@@ -24,11 +24,12 @@ class CategoryMenu extends Widget
 
   public function run()
   {
+    $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
+        Yii::$app->controller->category->id : false;
 
     $cache = Yii::$app->cache;
-    $out = $cache->getOrSet('product_category_menu', function () {
-        $categoryTree = ProductsCategory::tree(['counts' => true]);
-        //ddd($categoryTree);
+    $out = $cache->getOrSet('product_category_menu', function () use ($current) {
+        $categoryTree = ProductsCategory::tree(['counts' => true, 'current' => $current]);
         return $this->render('category_menu.twig', [
             'categories' => $categoryTree,
             'level' => '0'

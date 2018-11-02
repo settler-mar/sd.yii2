@@ -114,6 +114,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         foreach ($childs as &$child) {
             $child['level'] = $level;
             $child['childs'] = self::childs($params, $child['id'], $level);
+            $child['current'] = isset($params['current']) && $child['id'] == $params['current'];
         }
         return $childs;
     }

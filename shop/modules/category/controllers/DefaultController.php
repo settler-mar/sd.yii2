@@ -11,7 +11,7 @@ use yii;
 
 class DefaultController extends SdController
 {
-    protected $category = null;
+    public $category = null;
 
     public function beforeAction($action)
     {
