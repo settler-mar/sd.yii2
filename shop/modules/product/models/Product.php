@@ -9,6 +9,7 @@ use frontend\modules\params\models\ProductParameters;
 use frontend\modules\product\models\CatalogStores;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
+use frontend\modules\stores\models\Stores;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -55,7 +56,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['article', 'name'], 'required'],
-            [['available', 'store', 'cpa_id'], 'integer'],
+            [['available', 'store_id', 'cpa_id', 'catalog_id'], 'integer'],
             [['description'], 'string'],
             [['params'], 'safe'],
             [['modified_time'], 'safe'],
@@ -125,6 +126,14 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStore()
+    {
+        return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+
+    /**
      * @param $product
      * @return array
      */
@@ -135,7 +144,7 @@ class Product extends \yii\db\ActiveRecord
         $article = (string) $product['id'];
         $productDb = self::findOne([
             'cpa_id' => $product['cpa_id'],
-            'store' => $product['store'],
+            'store_id' => $product['store_id'],
             'article' => $article
         ]);
         $currency = (string) $product['currencyId'];
@@ -143,7 +152,8 @@ class Product extends \yii\db\ActiveRecord
         if (!$productDb) {
             $productDb = new self();
             $productDb->cpa_id = $product['cpa_id'];
-            $productDb->store = $product['store'];
+            $productDb->store_id = $product['store_id'];
+            $productDb->catalog_id = $product['catalog_id'];
             $productDb->article = $article;
             $productDb->image = self::saveImage((string) $product['picture']);
             $new = 1;

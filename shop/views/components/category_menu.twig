@@ -3,13 +3,13 @@
         {% for category in categories  %}
             <li class="shops-category-menu_item level_{{ category.level }}{% if category.childs|length %} menu-group{% endif %} {{ _if(_is_category_open(category),'open','') }}">
                 {% if category.current %}
-                    <span class="active">{{ category.name }} ({{ category.count }})
+                    <span class="active">{{ category.name|raw }} ({{ category.count }})
                         {% if category.childs|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}
                     </span>
                 {% else %}
-                    <a class="shops-category-menu_link" href="/category/{{ category.route }}">{{ category.name }} ({{ category.count }})
+                    <a class="shops-category-menu_link" href="/category/{{ category.route }}">{{ category.name|raw }} ({{ category.count }})
                         {% if category.childs|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}

@@ -586,15 +586,15 @@ class AdmitadController extends Controller
       }
       foreach ($csvLinks as $cpaLink) {
         $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
-        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from cap link ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
-        $this->writeProducts($products, $cpaLink->id, $cpaLink->date_update);
+        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from CpaLink ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
+        $this->writeProducts($products, $cpaLink);
         $cpaLink->date_import=$cpaLink->date_update;
         $cpaLink->product_count=count($products);
         $cpaLink->save();
       }
   }
 
-  private function writeProducts($products, $catalog_id, $refresh_date)
+  private function writeProducts($products, $catalog)
   {
       $count = 0;
       $insert = 0;
@@ -610,13 +610,13 @@ class AdmitadController extends Controller
               }
               //d($item[1], $paramsArray[$item[0]]);
           }
-          $product['refresh_date'] = $refresh_date;
           $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
           $product['params_original'] = isset($product['param']) ? $product['param'] : null;
           $product['cpa_id'] = $this->cpa_id;
-          $product['store'] = $catalog_id;
+          $product['catalog_id'] = $catalog->id;
+          $product['store_id'] = $catalog->cpaLink->store->uid;
           $result = Product::addOrUpdate($product);
           if ($result['error']) {
               d($result['product']->errors);

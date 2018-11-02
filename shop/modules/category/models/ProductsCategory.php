@@ -111,12 +111,16 @@ class ProductsCategory extends \yii\db\ActiveRecord
 //            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route']);
 //        }
         $childs = $childs->all();
-        foreach ($childs as &$child) {
+        foreach ($childs as $key => &$child) {
             $child['level'] = $level;
             $child['childs'] = self::childs($params, $child['id'], $level);
             $child['current'] = isset($params['current']) && $child['id'] == $params['current'];
             //чтобы считать количество в т.ч. по дочерним категориям
             $child['count'] = !empty($params['counts']) ? count(self::productIds($child['id'])) : false;
+            if (isset($params['empty']) && $params['empty'] === false && $child['count'] === 0) {
+                //если задано, то пустые не выводить
+                unset($childs[$key]);
+            }
         }
         return $childs;
     }
