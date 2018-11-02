@@ -159,7 +159,10 @@ span.shop_header-title_description_extend {
   width: 280px;
 }
 .catalog-categories ul {width: auto;}
-.catalog-categories ul > li > a, .catalog-categories ul > li span {font-size: 0.8rem; min-height: 38px;}
+.catalog-categories ul > li > a,
+.catalog-categories ul > li span {
+  font-size: 0.8rem; min-height: 38px;
+}
 .catalog-categories ul > li.open > ul {
   background: #f6f6f6;
   padding: 4px;
@@ -182,7 +185,8 @@ span.shop_header-title_description_extend {
 
 }
 
-.catalog-categories ul > li.open > ul li a {
+.catalog-categories ul > li.open > ul li a,
+.catalog-categories ul > li.open > ul li span {
   background: none;
   padding: 10px 14px;
   min-height: auto;
@@ -190,7 +194,7 @@ span.shop_header-title_description_extend {
   font-size: 0.7rem;}
 .catalog-categories ul > li.open > ul .active {
   background: none;
-  padding: 4px 7px;
+  //padding: 4px 7px;
   min-height: auto;
   color: #3c98ff;}
 .catalog-categories ul > li > ul > li:not(:first-child) {

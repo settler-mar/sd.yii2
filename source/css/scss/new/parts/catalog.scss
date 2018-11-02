@@ -152,7 +152,8 @@
             //transition: max-height 0.3s cubic-bezier(1,.05,1,0);
           }
 
-          >a>.menu_angle-down {
+          >a>.menu_angle-down,
+          >span>.menu_angle-down {
             transform: rotate(-180deg);
           }
         }
