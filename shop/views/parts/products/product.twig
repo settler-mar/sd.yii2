@@ -4,16 +4,17 @@
 
 <div class="catalog_products_item hover-box ">
     {% set url=product.url %}
+    {% set product_url='/category/product/'~product.id %}
     {% set href_class = user_id ? '' : 'catalog_product_link' %}
     <div class="catalog_products_item_in">
         <div class="catalog_products_item_image">
-            <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+            <a href="{{ product_url }}" target="_blank" class="">
              <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/products/{{ product.image }}" {% endif %} alt="{{ product.name }}">
             </a>
         </div>
         <div class="catalog_products_item_text">
             <div class="catalog_products_item_title">
-                <a href="{{ url }}" target="_blank" class="{{ href_class }}">
+                <a href="{{ product_url }}" target="_blank" class="">
                     {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
                 </a>
             </div>

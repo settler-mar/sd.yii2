@@ -16,7 +16,7 @@ class DefaultController extends SdController
     public function beforeAction($action)
     {
         $categoryRoute = explode('/', Yii::$app->request->pathInfo);
-        if (isset($categoryRoute[1])) {
+        if ($categoryRoute[0] == 'category' && count($categoryRoute) == 2) {
             $this->category = ProductsCategory::byRoute($categoryRoute[1]);
             if (!$this->category) {
                 throw new yii\web\NotFoundHttpException();
@@ -37,13 +37,14 @@ class DefaultController extends SdController
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
 
-//        $validator = new \yii\validators\NumberValidator();
-//        //$validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
-//        if (!empty($limit) && !$validator->validate($limit) ||
-//            !empty($sort) && !$validatorIn->validate($sort)
-//        ) {
-//            throw new \yii\web\NotFoundHttpException;
-//        };
+        $validator = new \yii\validators\NumberValidator();
+        $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
+        if (!empty($limit) && !$validator->validate($limit) ||
+            !empty($page) && !$validator->validate($page) ||
+            !empty($sort) && !$validatorIn->validate($sort)
+        ) {
+            throw new \yii\web\NotFoundHttpException;
+        };
 
         $sort = (!empty($sort)) ? $sort : Product::$defaultSort;
         $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
@@ -119,6 +120,18 @@ class DefaultController extends SdController
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
         return $this->render('index', $storesData);
+    }
+
+    public function actionProduct($id)
+    {
+        $product = Product::findOne($id);
+        if (!$product) {
+            throw new yii\web\NotFoundHttpException();
+        }
+        return $this->render('product', [
+            'product' => $product,
+        ]);
+
     }
 
 
