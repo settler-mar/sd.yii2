@@ -46,6 +46,7 @@ class Sitemap
 
             $this->url = (isset($region['protocol'])? $region['protocol'] : 'http').'://'.
                 (isset($region['url']) ? $region['url'] : $key);
+            $this->url = preg_replace('/\/*$/', '', $this->url);
 
             $this->languages = [];
             foreach ($region['langList'] as $langKey => $language) {
@@ -131,6 +132,9 @@ class Sitemap
     protected function clear($alias)
     {
         $dir = $alias.'/'.self::$path;
+        if (!file_exists($dir)) {
+            return;
+        }
         $files = scandir($dir);
         foreach ($files as $file) {
             if (strpos($file, self::$file) === 0) {
