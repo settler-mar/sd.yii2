@@ -63,17 +63,15 @@ class DefaultController extends SdController
 
         if ($this->category) {
             //категория товара
-
-            //чтобы виджет мог получить current_category_id в main.twig
-            //\Yii::$app->controller->current_category_id = $category;
             $this->params['breadcrumbs'][] = [
                 'label' => $this->category->name,
                 'url' => ('/category/' . $this->category->route),
             ];
 
-            $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
-                ->andWhere(['pc.category_id' => $this->category->id]);
-            //по идее нужно ещё дочерние категории - пока хз
+//            $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
+//                ->andWhere(['pc.category_id' => $this->category->id]);
+            //получить в т.ч. по дочерним категориям
+            $dataBaseData->andWhere(['prod.id' => ProductsCategory::productIds($this->category->id)]);
 
             $cacheName .= '_category_' . $this->category->route;
         }

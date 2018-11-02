@@ -104,19 +104,54 @@ class ProductsCategory extends \yii\db\ActiveRecord
         ])
             ->orderBy(['name' => SORT_ASC])
             ->asArray();
-        if (!empty($params['counts'])) {
-            $childs->leftJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id');
-            $childs->leftJoin(Product::tableName().' p', 'p.id=ptc.product_id');
-            $childs->addSelect(['count(p.id) as count']);
-            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route']);
-        }
+//        if (!empty($params['counts'])) {
+//            $childs->leftJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id');
+//            $childs->leftJoin(Product::tableName().' p', 'p.id=ptc.product_id');
+//            $childs->addSelect(['count(p.id) as count']);
+//            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route']);
+//        }
         $childs = $childs->all();
         foreach ($childs as &$child) {
             $child['level'] = $level;
             $child['childs'] = self::childs($params, $child['id'], $level);
             $child['current'] = isset($params['current']) && $child['id'] == $params['current'];
+            //чтобы считать количество в т.ч. по дочерним категориям
+            $child['count'] = !empty($params['counts']) ? count(self::productIds($child['id'])) : false;
         }
         return $childs;
+    }
+
+    /**
+     * @param null $categoryId
+     * @param null $parentId
+     * @return array массив ид продуктов заданной категории или дочерних
+     */
+    public static function productIds($categoryId = null, $parentId = null)
+    {
+        $out = [];
+        if (!$categoryId && !$parentId) {
+            return $out;
+        }
+        $category = self::find()
+            ->from(self::tableName() . ' pc')
+            ->innerJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id')
+            ->innerJoin(Product::tableName().' p', 'p.id=ptc.product_id')
+            ->where(['pc.active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
+            ->select(['pc.id as category_id', 'p.id as product_id']);
+        if ($categoryId) {
+            $category->andWhere(['pc.id'=>$categoryId]);
+        }
+        if ($parentId) {
+            $category->andWhere(['pc.parent'=>$parentId]);
+        }
+
+        $category = $category->asArray()->all();
+        $ids = array_unique(array_column($category, 'category_id'));
+        foreach ($ids as $id) {
+            $out = array_unique(array_merge($out, self::productIds(null, $id)));
+        }
+        $out = array_unique(array_merge($out, array_column($category, 'product_id')));
+        return $out;
     }
 
     public function afterSave($insert, $changedAttributes)
