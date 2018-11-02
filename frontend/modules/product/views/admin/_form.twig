@@ -47,12 +47,6 @@
 
     <div class="form-group">
         <label>Категории</label>
-        <ul style="margin: 10px 0;">
-            {% for category in categories %}
-                <li style="list-style-type:none">
-                    <label for="categories_{{ category.id }}"><input id="categories_{{ category.id }}" type="checkbox" {% if category.checked %}checked{% endif %}> {{ category.name }}</label>
-                </li>
-            {% endfor %}
-        </ul>
+        {% include('category_tree.twig') %}
     </div>
 </div>

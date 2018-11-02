@@ -10,6 +10,7 @@ use frontend\modules\product\models\CatalogStores;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Cpa;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -131,6 +132,20 @@ class Product extends \yii\db\ActiveRecord
     public function getStore()
     {
         return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCpa()
+    {
+        return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCatalog()
+    {
+        return $this->hasOne(CatalogStores::className(), ['id' => 'catalog_id']);
     }
 
     /**

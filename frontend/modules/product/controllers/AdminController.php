@@ -3,8 +3,11 @@
 namespace frontend\modules\product\controllers;
 
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\ProductsToCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\stores\models\Cpa;
+use frontend\modules\product\models\CatalogStores;
 use Yii;
 use shop\modules\product\models\Product;
 use shop\modules\product\models\ProductSearch;
@@ -134,9 +137,31 @@ class AdminController extends Controller
                 $searchModel::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
                 $searchModel::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
             ],
-            'categories' => ArrayHelper::map(ProductsCategory::find()->asArray()->all(), 'id', 'name'),
+            'categories' => ArrayHelper::map(
+                ProductsCategory::find()
+                    ->from(ProductsCategory::tableName(). ' pc')
+                    ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+                    ->select(['pc.id', 'pc.name'])
+                    ->asArray()
+                    ->orderBy(['name'=>SORT_ASC])
+                    ->all()
+                , 'id'
+                ,'name'
+            ),
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
+            'filterCpa' => ArrayHelper::map(
+                Cpa::find()->select(['cw_cpa.id', 'cw_cpa.name'])
+                    ->innerJoin(Product::tableName().' p', 'p.cpa_id = cw_cpa.id')->asArray()->all(),
+                'id',
+                'name'
+            ),
+            'filterCatalog' => ArrayHelper::map(
+                CatalogStores::find()->from(CatalogStores::tableName().' cs')->select(['cs.id', 'cs.name'])
+                    ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')->asArray()->all(),
+                'id',
+                'name'
+            ),
         ]);
     }
 
@@ -183,18 +208,14 @@ class AdminController extends Controller
             return false;
         }
         $model = $this->findModel($id);
-        $categories = ProductsCategory::find()->asArray()->all();
-        $model_categories = array_column($model->categories, 'id');
-        foreach ($categories as &$category) {
-            $category['checked'] = in_array($category['id'], $model_categories);
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
-                'categories' => $categories,
+                'product_categories_tree' => ProductsCategory::tree(),
+                'model_categories' => array_column($model->categories, 'id'),
                 'img' => (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
                     '/images/product/'.$model->image
             ]);

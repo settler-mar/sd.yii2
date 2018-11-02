@@ -57,6 +57,16 @@
                             'id',
                             'name',
                             {
+                                'attribute':'cpa_id',
+                                'value': 'cpa.name',
+                                'filter': filterCpa
+                            },
+                            {
+                                'attribute':'catalog_id',
+                                'value': 'catalog.name',
+                                'filter': filterCatalog
+                            },
+                            {
                                 'format':'raw',
                                 'attribute':'image',
                                 'value':tableData.image,

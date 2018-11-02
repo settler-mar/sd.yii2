@@ -1,0 +1,15 @@
+{% if product_categories_tree|length %}
+    <ul>
+    {% for category in product_categories_tree %}
+        <li class="" style="list-style-type:none;padding-left: 20px;">
+            <label for="product_categories_{{ category.id }}">
+                <input id="product_categories_{{ category.id }}" type="checkbox"
+                       {% if category.id in model_categories %}checked{% endif %} >
+                {{ category.name }}
+            </label>
+            {% set product_categories_tree = category.childs %}
+            {% include('category_tree.twig') %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
