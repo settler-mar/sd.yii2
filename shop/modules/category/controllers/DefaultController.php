@@ -68,11 +68,9 @@ class DefaultController extends SdController
                 'label' => $this->category->name,
                 'url' => ('/category/' . $this->category->route),
             ];
-
-//            $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
-//                ->andWhere(['pc.category_id' => $this->category->id]);
             //получить в т.ч. по дочерним категориям
-            $dataBaseData->andWhere(['prod.id' => ProductsCategory::productIds($this->category->id)]);
+            $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
+                ->andWhere(['pc.category_id' => ProductsCategory::childsId($this->category->id)]);
 
             $cacheName .= '_category_' . $this->category->route;
         }

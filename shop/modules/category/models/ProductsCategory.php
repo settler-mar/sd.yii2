@@ -101,60 +101,44 @@ class ProductsCategory extends \yii\db\ActiveRecord
             ->where([
             'parent'=>$parent,
             'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
-        ])
+            ])
             ->orderBy(['name' => SORT_ASC])
             ->asArray();
-//        if (!empty($params['counts'])) {
-//            $childs->leftJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id');
-//            $childs->leftJoin(Product::tableName().' p', 'p.id=ptc.product_id');
-//            $childs->addSelect(['count(p.id) as count']);
-//            $childs->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route']);
-//        }
         $childs = $childs->all();
         foreach ($childs as $key => &$child) {
             $child['level'] = $level;
             $child['childs'] = self::childs($params, $child['id'], $level);
             $child['current'] = isset($params['current']) && $child['id'] == $params['current'];
             //чтобы считать количество в т.ч. по дочерним категориям
-            $child['count'] = !empty($params['counts']) ? count(self::productIds($child['id'])) : false;
-            if (isset($params['empty']) && $params['empty'] === false && $child['count'] === 0) {
+            $child['count'] = false;
+            if (!empty($params['counts'])) {
+                $child['count'] = Product::find()->from(Product::tableName().' p')
+                    ->innerJoin(ProductsToCategory::tableName().' ptc', 'p.id=ptc.product_id')
+                    ->where(['category_id' => self::childsId($child['id'])])
+                    ->count();
+            }
+            if (isset($params['empty']) && $params['empty'] === false &&
+                ($child['count'] === '0' || $child['count'] === null )) {
                 //если задано, то пустые не выводить
                 unset($childs[$key]);
             }
         }
         return $childs;
     }
-
     /**
-     * @param null $categoryId
-     * @param null $parentId
-     * @return array массив ид продуктов заданной категории или дочерних
+     * @param $id
+     * @return array сама категория и все дочерние категории
      */
-    public static function productIds($categoryId = null, $parentId = null)
+    public static function childsId($id)
     {
-        $out = [];
-        if (!$categoryId && !$parentId) {
-            return $out;
+        $out = [$id];
+        $categories = self::find()->select(['id'])->where([
+            'parent' => $id,
+            'active'=> [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
+        ])->asArray()->all();
+        foreach ($categories as $category) {
+            $out = array_merge($out, self::childsId($category['id']));
         }
-        $category = self::find()
-            ->from(self::tableName() . ' pc')
-            ->innerJoin(ProductsToCategory::tableName().' ptc', 'pc.id=ptc.category_id')
-            ->innerJoin(Product::tableName().' p', 'p.id=ptc.product_id')
-            ->where(['pc.active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
-            ->select(['pc.id as category_id', 'p.id as product_id']);
-        if ($categoryId) {
-            $category->andWhere(['pc.id'=>$categoryId]);
-        }
-        if ($parentId) {
-            $category->andWhere(['pc.parent'=>$parentId]);
-        }
-
-        $category = $category->asArray()->all();
-        $ids = array_unique(array_column($category, 'category_id'));
-        foreach ($ids as $id) {
-            $out = array_unique(array_merge($out, self::productIds(null, $id)));
-        }
-        $out = array_unique(array_merge($out, array_column($category, 'product_id')));
         return $out;
     }
 
