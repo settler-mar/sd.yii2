@@ -24,13 +24,15 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
     $path = explode('/',$request->pathInfo);
     $url = $request->url;
+    $regionKey = '';
     Yii::$app->params['region'] = 'default';
     foreach(Yii::$app->params['regions_list'] as $key => $region) {
         if (isset($region['code']) && $path[0] == $region['code']) {
-            $url = substr($url, strlen('/'.$path[0]));
+            $regionKey = '/'.$path[0];
+            $url = substr($url, strlen('/'. $path[0]));
             if ($key == 'default') {
                 //регион  совпадает с default - делать редирект
-                Yii::$app->response->redirect($url)->send();
+                Yii::$app->response->redirect($this->makeUrl($url))->send();
             }
             Yii::$app->params['region'] = $key;
             array_splice($path, 0, 1);
@@ -43,10 +45,10 @@ class SdUrlLocalisation implements UrlRuleInterface{
     foreach(Yii::$app->params['language_list'] as $key => $language) {
         $keyCode = substr($key, 0, 2);
         if ($path[0] == $keyCode) {
-            $url = substr($url, strlen('/'.$path[0]));
+            $url = substr($url, strlen('/' . $path[0]));
             if ($keyCode == $baseLangCode) {
                 //язык  совпадает с default - делать редирект
-                Yii::$app->response->redirect($url)->send();
+                Yii::$app->response->redirect($this->makeUrl($regionKey . $url))->send();
             }
             Yii::$app->language = $key;
             Yii::$app->params['lang_code'] = $keyCode;
@@ -69,8 +71,16 @@ class SdUrlLocalisation implements UrlRuleInterface{
     return false;
   }
 
+
   public function createUrl($route, $params=array(), $ampersand='&')
   {
     return false;
+  }
+
+
+  private function makeUrl($url)
+  {
+      $out = Yii::$app->request->hostInfo . $url;
+      return $out;
   }
 }
