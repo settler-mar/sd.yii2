@@ -53,7 +53,12 @@ class Sitemap
                 if (!in_array($langKey, $region['langListActive'])) {
                     continue;
                 }
-                $this->languages[] = $language == $this->baseLang ? '' : '/'. $langKey;
+                $this->languages[$langKey] = [
+                    'url' => $language == $this->baseLang ? '' : '/'. $langKey,
+                    'conditions' => [
+                        'coupon_languages' => Yii::$app->params['coupons_languages_arrays'][$langKey]
+                    ],
+                ];
             }
             $out[]  = $this->getMap();
         }
@@ -75,42 +80,78 @@ class Sitemap
             $priority = isset($mapItem['priority']) ? $mapItem['priority'] : 1;
             $friquency = isset($mapItem['friquency']) ? $mapItem['friquency'] : 'daily';
             if (isset($mapItem['model'])) {
-                $model = $mapItem['model'];
+
                 $itemUrl = $mapItem['url'];
 
-                $model = $model::find()->asArray();
-                if (!empty($mapItem['condition'])) {
-                    $model->where($mapItem['condition']);
-                }
-                if (!empty($mapItem['join'])) {
-                    foreach ($mapItem['join'] as $join) {
-                        $model->leftJoin($join[0], $join[1]);
-                    }
-                }
-                if (!empty($mapItem['select'])) {
-                    $model->select($mapItem['select']);
-                }
-                if (!empty($mapItem['group_by'])) {
-                    $model->groupBy($mapItem['group_by']);
-                }
-                $model = $model->all();
 
-                foreach ($model as $item) {
-                    $lastMod = isset($item['updated_at']) ? $item['updated_at'] : date('Y-m-d', time() - 3600 * 24 * 7);
+                $requestItems = [1];
+                if (!empty($mapItem['lang_request'])) {
+                    //для каждого языка свой запрос
+                    $requestItems = $this->languages;
+                }
+                foreach ($requestItems as $requestItem) {
+                    $model = $mapItem['model'];
+                    $model = $model::find()->asArray();
 
-                    $url = $itemUrl;
-
-                    if (is_array($url)) {
-                        foreach ($url as $urlItem) {
-                            $urlPriority = isset($urlItem['priority']) ? $urlItem['priority'] : $priority;
-                            $urlFriquency = isset($urlItem['friquency']) ? $urlItem['friquency'] : $friquency;
-                            $updated = isset($urlItem['updated']) ? $urlItem['updated'] : $lastMod;
-                            $this->addByUrl($item, $urlItem['url'], $updated, $urlPriority, $urlFriquency);
+                    $conditions = isset($mapItem['condition']) ? $mapItem['condition'] : false;
+                    if ($conditions && isset($requestItem['conditions'])) {
+                        //Условия для запроса по языкам
+                        foreach ($requestItem['conditions'] as $key => $value) {
+                            foreach ($conditions as &$condition) {
+                                if ($condition == '{{' . $key . '}}') {
+                                    $condition = $value;
+                                }
+                            }
                         }
-                    } else {
-                        $this->addByUrl($item, $url, $lastMod, $priority, $friquency);
                     }
 
+                    if (!empty($conditions)) {
+                        $model->where($conditions);
+                    }
+                    if (!empty($mapItem['join'])) {
+                        foreach ($mapItem['join'] as $join) {
+                            $model->leftJoin($join[0], $join[1]);
+                        }
+                    }
+                    if (!empty($mapItem['select'])) {
+                        $model->select($mapItem['select']);
+                    }
+                    if (!empty($mapItem['group_by'])) {
+                        $model->groupBy($mapItem['group_by']);
+                    }
+                    $model = $model->all();
+
+                    foreach ($model as $item) {
+                        $lastMod = isset($item['updated_at']) ? $item['updated_at'] : date('Y-m-d', time() - 3600 * 24 * 7);
+
+                        $url = $itemUrl;
+
+                        if (is_array($url)) {
+                            foreach ($url as $urlItem) {
+                                $urlPriority = isset($urlItem['priority']) ? $urlItem['priority'] : $priority;
+                                $urlFriquency = isset($urlItem['friquency']) ? $urlItem['friquency'] : $friquency;
+                                $updated = isset($urlItem['updated']) ? $urlItem['updated'] : $lastMod;
+                                $this->addByUrl(
+                                    $item,
+                                    $urlItem['url'],
+                                    $updated,
+                                    $urlPriority,
+                                    $urlFriquency,
+                                    $requestItem == 1 ? null : [$requestItem]
+                                );
+                            }
+                        } else {
+                            $this->addByUrl(
+                                $item,
+                                $url,
+                                $lastMod,
+                                $priority,
+                                $friquency,
+                                $requestItem == 1 ? null : [$requestItem]
+                            );
+                        }
+
+                    }
                 }
             } elseif (isset($mapItem['url'])) {
                 $updated = date('Y-m-d');
@@ -144,7 +185,7 @@ class Sitemap
     }
 
 
-    protected function addByUrl($item, $url, $lastMod, $priority, $friquency)
+    protected function addByUrl($item, $url, $lastMod, $priority, $friquency, $languages = null)
     {
         foreach ($item as $key => $value) {
             $url = str_replace('{{'.$key.'}}', $value, $url);
@@ -152,8 +193,9 @@ class Sitemap
         if (!empty($mapItem['replaces']) && isset($mapItem['replaces'][$url])) {
             $url = $mapItem['replaces'][$url];
         }
-        foreach ($this->languages as $lang) {
-            $urlFinal = $this->url . $lang . $url;
+        $languages = $languages ? $languages : $this->languages;
+        foreach ($languages as $lang) {
+            $urlFinal = $this->url . $lang['url'] . $url;
             $this->count++;
             $this->itemCount++;
             $this->out .= '<url>'.

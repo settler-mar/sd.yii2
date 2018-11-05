@@ -93,8 +93,10 @@ return [
         //купоны
         'model' => 'frontend\modules\coupons\models\Coupons',
         'priority' => 1,
+        'lang_request' => 1,//для каждого языка свой запрос
         'join' => [['cw_stores cws', 'cws.uid = cw_coupons.store_id']],
-        'condition' => ['cws.is_active' => [0, 1]],
+        //в условие запроса - языки купонов
+        'condition' => ['cws.is_active' => [0, 1], 'cw_coupons.language'=> '{{coupon_languages}}'],
         'select' => ['cws.route as route', 'cw_coupons.uid', 'cw_coupons.updated_at'],
         'url' => '/coupons/{{route}}/{{uid}}',
         'friquency' => 'daily'
