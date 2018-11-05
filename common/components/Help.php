@@ -232,7 +232,7 @@ class Help extends Component
     $has_up_to = strpos($cashback, 'до') !== false;
     $is_num = true;
     if (!$is_persent) {
-      $value = round($value);
+      $value = round($value, 2);
     }
     $text = Yii::t('main', "action_description_not", ['url' => Help::href("/loyalty")]);
 
@@ -278,11 +278,11 @@ class Help extends Component
     $params['only_number']=isset($params['only_number'])&&$params['only_number'];
     if ($is_num && !$params['only_number']) {
       if ($is_persent) {
-        $value = round($value, 2) . "%";
-        $value_n = round($value_n, 2) . "%";
+        $value = number_format((float) $value, 2, '.', '&nbsp;') . "%";
+        $value_n = number_format((float) $value, 2, '.', '&nbsp;') . "%";
       } else {
-        $k = (round($value_n) == round($value_n,2)) ? 0 : 2;
-        $value = number_format($value, 0, '.', "&nbsp;") . "&nbsp;" . $currency;
+        $k = 2;//($this->round($value_n) == $this->round($value_n,2)) ? 0 : 2;
+        $value = number_format($value, $k, '.', "&nbsp;") . "&nbsp;" . $currency;
         $value_n = number_format($value_n, $k, '.', "&nbsp;") . "&nbsp;" . $currency;
       }
     }
