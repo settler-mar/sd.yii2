@@ -26,7 +26,7 @@
         </div>
 
 
-        <div class="header-search stores_search">
+        <div class="header-search stores_search" style="display: none;">
           <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
             <div class="header-search_form-group">
               {#<select  name="module" class="header-search_form-input header-search_form-input-module">#}
@@ -68,16 +68,16 @@
         <div class="header-upline_in-right">
 
           {% if this.user_id == 0 %}
-            {{ get_menu_item({'href': '/howitworks','title': t('main', 'how_it_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
+            {{ get_menu_item({'href': 'https://secretdiscounter.com//howitworks','title': t('main', 'how_it_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
             <div class="header-authorization">
-              <a class="header-authorization-btn header-authorization-enter modals_open" rel="nofollow"
-                 href="{{ _href('#login')|raw }}">
+              <a class="header-authorization-btn header-authorization-enter modals_open_" rel="nofollow"
+                 href="https://secretdiscounter.com/{{ _href('#login')|raw }}">
                 <span class="header-authorization-enter-text"> {{ t('common', 'login')|raw }}</span>
                 {{ svg('sign-in', 'header-authorization-enter-icon', '@frontend')|raw }}
               </a>
               <span class="header-authorization-separate header-authorization-separate-login">/</span>
-              <a class="header-authorization-btn header-authorization-register modals_open" rel="nofollow"
-                 href="{{ _href('#registration')|raw }}">
+              <a class="header-authorization-btn header-authorization-register modals_open_" rel="nofollow"
+                 href="https://secretdiscounter.com/{{ _href('#registration')|raw }}">
                 {{ t('common', 'register')|raw }}
               </a>
             </div>
@@ -85,7 +85,7 @@
             {#зарегистрирован#}
             <div class="btn-header header-upline_ballance">
               {{ get_menu_item({
-                'href': '/account',
+                'href': 'https://secretdiscounter.com/account',
                 'title':
                 svg('circle', 'btn-header_button_money', '@frontend')
                 ~ '<span class="btn-header-ballance-wrap">'
@@ -99,7 +99,7 @@
             </div>
             <div class="btn-header header-upline_plugin desctop">
               {{ get_menu_item({
-                'href': '/plugin',
+                'href': 'https://secretdiscounter.com/plugin',
                 'title': svg('puzzle', 'btn-header_button'),
                 'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
               })|raw }}
@@ -108,7 +108,7 @@
               {#если есть избранные#}
               <div class="btn-header btn-header_favorite">
                 {{ get_menu_item({
-                  'href': '/account/favorites',
+                  'href': 'https://secretdiscounter.com/account/favorites',
                   'title': svg('heart-o', 'btn-header_button'),
                   'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
                 })|raw }}
@@ -117,7 +117,7 @@
 
             <div class="header-logo_noty btn-header last">
               {{ get_menu_item({
-                'href': '/account/notification',
+                'href': 'https://secretdiscounter.com/account/notification',
                 'title': svg('bell-o', 'btn-header_button'),
                 'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
               })|raw }}
@@ -148,21 +148,21 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-            <a class="header-right_link mobile modals_open" rel="nofollow" href="{{ _href('#login')|raw }}">
+            <a class="header-right_link mobile modals_open_" rel="nofollow" href="https://secretdiscounter.com/{{ _href('#login')|raw }}">
               {{ t('common', 'do_login')|raw }}
             </a>
 
           </li>
           <li class="mobile">
-            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow"
-               href="{{ _href('#registration')|raw }}">
+            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open_" rel="nofollow"
+               href="https://secretdiscounter.com/{{ _href('#registration')|raw }}">
               {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
             </a>
           </li>
           <li class="mobile">
             {#<a href="/howitworks" class="header-right_link mobile">Как это работает</a>#}
             {{ get_menu_item({
-              'href': '/howitworks',
+              'href': 'https://secretdiscounter.com/howitworks',
               'title': t('main', 'how_it_works'),
               'class': 'header-right_link mobile'
             })|raw }}
@@ -170,7 +170,7 @@
         {% else %}
           <li class="mobile">
             {{ get_menu_item({
-              'href': '/account',
+              'href': 'https://secretdiscounter.com/account',
               'title': t('account', 'menu_main_page'),
               'class': 'mobile'
             })|raw }}
@@ -224,15 +224,15 @@
             {#{% endif %}#}
           {#</li>#}
         {#{% endif %}#}
-        <li class="desctop">
+        {#<li class="desctop">
           {{ get_menu_item({
             'href': '/stores/double-cashback-stores',
             'title': t('main', 'duble_cashback'),
           })|raw }}
-        </li>
+        </li>#}
         <li class="drop-menu_bold">
           {{ get_menu_item({
-            'href': '/products/aliexpress',
+            'href': 'https://secretdiscounter.com/products/aliexpress',
             'title': t('main', 'top-ali'),
             'attributes':{
               'target':"_blank",
@@ -251,7 +251,7 @@
                 <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
                   {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
                   {{ get_menu_item({
-                    'href': item.url,
+                    'href': 'https://secretdiscounter.com/'~item.url,
                     'outer': item.outer,
                     'title': item.name,
                     'attributes': attributes
@@ -264,17 +264,17 @@
       </ul>
       <ul class="header-right page-wrap-flex drop-menu">
         <li>
-          {{ get_menu_item({'href': '/dobro','title': svg('heart', 'header-heart heart-red', '@frontend') ~ t('main', 'we_make_good')})|raw }}
+          {{ get_menu_item({'href': 'https://secretdiscounter.com/dobro','title': svg('heart', 'header-heart heart-red', '@frontend') ~ t('main', 'we_make_good')})|raw }}
         </li>
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
-              'href':'/account/webmaster',
+              'href':'https://secretdiscounter.com/account/webmaster',
               'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
             } %}
           {% else %}
             {% set item= {
-              'href':'/affiliate-system',
+              'href':'https://secretdiscounter.com/affiliate-system',
               'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\', \'@frontend\')|raw }}  '~t('account', 'menu_affiliate'),
             } %}
           {% endif %}
@@ -293,7 +293,7 @@
                   <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
                     {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
                     {{ get_menu_item({
-                      'href': item.url,
+                      'href': 'https://secretdiscounter.com/'~item.url,
                       'outer': item.outer,
                       'title': item.name,
                       'attributes': attributes
@@ -304,11 +304,11 @@
             </ul>
           </li>
           <li class="mobile">
-            {{ get_menu_item({'href': '/logout','title': t('common', 'do_logout')})|raw }}
+            {{ get_menu_item({'href': 'https://secretdiscounter.com/logout','title': t('common', 'do_logout')})|raw }}
           </li>
         {% else %}
           <li>
-            {{ get_menu_item({'href': '/help-center','title': t('main', 'help')})|raw }}
+            {{ get_menu_item({'href': 'https://secretdiscounter.com/help-center','title': t('main', 'help')})|raw }}
           </li>
         {% endif %}
       </ul>

@@ -59,6 +59,7 @@ class SiteController extends Controller
         Yii::$app->params['global_bg']='gray-box';
         Yii::$app->params['global_wrap']='page-404';
         Yii::$app->params['pre_footer_hide']=true;
+        Yii::$app->params['wrap']='index';
         return $this->render('under_development.twig');
     }
 
