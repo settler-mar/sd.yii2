@@ -358,7 +358,8 @@ class Stores extends \yii\db\ActiveRecord
     $displayed_cashback = str_replace(',','.', $displayed_cashback);
     $upto = (strpos($this->displayed_cashback, 'до') === 0);
     $in_curency=(strpos($this->displayed_cashback, '%') === false);
-    $displayed_cashback_filtred = round((float) $displayed_cashback,$in_curency ? 2 : 0);
+    //$displayed_cashback_filtred = round((float) $displayed_cashback,$in_curency ? 2 : 0);
+    $displayed_cashback_filtred = round((float) $displayed_cashback,2);
     $this->displayed_cashback = ($upto ? 'до ' : '') . $displayed_cashback_filtred . ($in_curency ? '': '%');
   }
 
