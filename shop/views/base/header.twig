@@ -76,7 +76,7 @@
                 {{ svg('sign-in', 'header-authorization-enter-icon', '@frontend')|raw }}
               </a>
               <span class="header-authorization-separate header-authorization-separate-login">/</span>
-              <a class="header-authorization-btn header-authorization-register modals_open" rel="nofollow"
+              <a class="header-authorization-btn header-authorization-register modals_open_" rel="nofollow"
                  href="https://secretdiscounter.com/{{ _href('#registration')|raw }}">
                 {{ t('common', 'register')|raw }}
               </a>
@@ -148,13 +148,13 @@
       <ul class="page-wrap-flex drop-menu">
         {% if this.user_id == 0 %}
           <li class="mobile">
-            <a class="header-right_link mobile modals_open" rel="nofollow" href="https://secretdiscounter.com/{{ _href('#login')|raw }}">
+            <a class="header-right_link mobile modals_open_" rel="nofollow" href="https://secretdiscounter.com/{{ _href('#login')|raw }}">
               {{ t('common', 'do_login')|raw }}
             </a>
 
           </li>
           <li class="mobile">
-            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open" rel="nofollow"
+            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open_" rel="nofollow"
                href="https://secretdiscounter.com/{{ _href('#registration')|raw }}">
               {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
             </a>
