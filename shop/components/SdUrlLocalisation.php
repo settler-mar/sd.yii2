@@ -26,7 +26,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
     $url = $request->url;
     Yii::$app->params['region'] = 'default';
     foreach(Yii::$app->params['regions_list'] as $key => $region) {
-        if ($path[0] == $region['code']) {
+        if (!empty($region['code']) && $path[0] == $region['code']) {
             $url = substr($url, strlen('/'.$path[0]));
             if ($key == 'default') {
                 //регион  совпадает с default - делать редирект

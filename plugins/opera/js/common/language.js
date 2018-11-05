@@ -1,1 +1,1 @@
-function lg(a,g){var e;if(languages){var l=languages[language]?languages[language]:languages["ru-RU"];e=l[a]?l[a]:a}else e=a;return e=utils.replaceTemplate(e,g)}var language=navigator.language?navigator.language:"ru-RU";
+var language=navigator.language?navigator.language:"ru-RU";function lg(a,g){var e;if(languages){var l=languages[language]?languages[language]:languages["ru-RU"];e=l[a]?l[a]:a}else e=a;return e=utils.replaceTemplate(e,g)}
