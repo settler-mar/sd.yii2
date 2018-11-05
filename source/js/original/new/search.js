@@ -74,6 +74,12 @@ search = function () {
     $('#'+text).html($(this).data('value1'));
     var searchtext = $(this).data('id3');
     $('#'+searchtext).attr('placeholder', $(this).data('value3'));
+    var limit = $(this).data('id4');
+    $('#'+limit).attr('value', $(this).data('value4'));
+
+    var action = $(this).data('action');
+
+    $(this).closest('form').attr('action', action);
 
     $(this).closest('.header-search_form-group').find('.header-search_form-input-module-label').addClass('close').removeClass('active');
   });
