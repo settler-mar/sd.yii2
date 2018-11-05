@@ -128,6 +128,18 @@ class ProductParameters extends \yii\db\ActiveRecord
         if (isset(self::$params[$param])) {
             return self::$params[$param];
         }
+        //проверка на стоп-слова
+        if (isset(Yii::$app->params['product_params_stop_list'])) {
+            foreach (Yii::$app->params['product_params_stop_list'] as $stopWord) {
+                $stopWord = trim($stopWord);
+                $paramCompare = substr($stopWord, -1) == '*' ? substr($param, 0, strlen($stopWord) -1).'*' : $param;
+                if ($stopWord == $paramCompare) {
+                    self::$params[$param] = '';
+                    return '';
+                }
+            }
+        }
+        d($param);
         //ищем в таблице
         $out = self::findOne([
             'code'=>$param,
@@ -166,6 +178,8 @@ class ProductParameters extends \yii\db\ActiveRecord
         }
         return $out;
     }
+
+
 
     public static function activeClass($active)
     {

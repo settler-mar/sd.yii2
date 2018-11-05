@@ -588,7 +588,7 @@ class AdmitadController extends Controller
         $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
         echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from CpaLink ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
         $this->writeProducts($products, $cpaLink);
-        $cpaLink->date_import=$cpaLink->date_update;
+        $cpaLink->date_import = $cpaLink->date_update;//date('Y-m-d H:i:s');
         $cpaLink->product_count=count($products);
         $cpaLink->save();
       }

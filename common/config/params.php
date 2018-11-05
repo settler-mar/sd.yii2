@@ -132,6 +132,10 @@ $params = [
   'login_attemps_count' => 3,
   'login_attemps_period' => 15,//минут, когда считаем попытки
   'login_attemps_block_period' => 30,//минут, время блокировки
+  'product_params_stop_list' => [//при загрузке товаров такие параметры игнорировать
+      'Отзывы', 'Отзыв_*', 'Группа товаров',
+  ],
+  'product_params_values_max_length' => 64,//при загрузке товаров максимальная длина значения параметра
 ];
 
 $params['valuta_list']=array_keys($params['currencies']);

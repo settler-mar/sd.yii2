@@ -118,6 +118,11 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                 }
                 continue;
             }
+            //проверка на максимальную длину
+            if (mb_strlen($value) > Yii::$app->params['product_params_values_max_length']) {
+                self::$values[$paramId][$value] = '';
+                continue;
+            }
             //ищем в таблице
             $out = self::findOne([
                 'name' => $value,
