@@ -38,9 +38,9 @@ class Charity extends \yii\db\ActiveRecord
   {
     return [
       [['user_id', 'foundation_id', 'added'], 'required'],
+      [['foundation_id'], 'required', 'message'=> Yii::t('account', 'dobro_fund_required')],
       [['foundation_id'], 'exist', 'targetClass' => Foundations::className(), 'targetAttribute'=>'uid', 'filter'=>['is_active' => 1]],
       ['amount', 'required', 'message' => Yii::t('account', 'dobro_summ_required')],
-      ['foundation', 'required', 'message' => Yii::t('account', 'dobro_fund_required')],
       [['user_id', 'foundation_id', 'is_showed', 'is_listed'], 'integer'],
       [['amount'], 'number', 'min'=>1],
       [['amount'], 'filter', 'on' => 'account',  'filter' => function ($value) {

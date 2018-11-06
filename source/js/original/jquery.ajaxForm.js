@@ -106,10 +106,12 @@ function ajaxForm(els) {
       if (required.eq(i).val().length < 1) {
         $(helpBlock).closest('.form-group').addClass('has-error');
         helpBlock.html(helpMessage);
+        helpBlock.addClass('help-block-error');
         isValid = false;
       } else {
         helpBlock.html('');
         $(helpBlock).closest('.form-group').removeClass('has-error');
+        helpBlock.removeClass('help-block-error');
       }
     }
     if (!isValid) {
