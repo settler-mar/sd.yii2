@@ -27,7 +27,6 @@ class AccountController extends \yii\web\Controller
 
   public function actionTransfer()
   {
-    //$funds=Foundations::find()
     $funds=Foundations::translated()
       ->asArray()
       ->all();
@@ -40,6 +39,7 @@ class AccountController extends \yii\web\Controller
     return $this->render('index',[
       'autopayment'=>$auto,//автоплатеж
       'funds'=>$funds,//фонды
+      'model' => new Charity(),
     ]);
   }
 
@@ -49,54 +49,14 @@ class AccountController extends \yii\web\Controller
       return $this->redirect('/account/dobro/transfer');
     }
 
-    $balans=Yii::$app->user->identity->balance;
-    $amount=$request->post('amount');
-
-    if(
-      !$request->post('charity-process')!= null ||
-      (int)$request->post('charity-process') == 0
-    ){
-      return json_encode([
-          'error' => [Yii::t('account', 'dobro_found_not_choosen')
-          ]]);
-    }
-
-    $funds=Foundations::find()
-      ->where(['uid'=>$request->post('charity-process')])
-      ->asArray()
-      ->one();
-
-    if(!$funds){
-      return json_encode([
-          'error' => [Yii::t('account', 'dobro_found_choose_error')
-          ]]);
-    }
-
-    if($amount>$balans['max_fundation']){
-      return json_encode([
-        'error' => [
-            Yii::t('account','dobro_max_summ').' '.number_format($balans['max_fundation'],2,'.',' ').'р.'
-        ]
-      ]);
-    }
-//    if($amount>$balans['current']){
-//      return json_encode([
-//        'error' => ['Максимальная сумма для пожертвования '.number_format($balans['current'],2,'.',' ').'р.']
-//      ]);
-//    }
-
-    if($amount<1){
-      return json_encode([
-          'error' => [Yii::t('account','dobro_max_summ')]
-      ]);
-    }
-
     $charity = new Charity();
-    $charity->foundation_id = $request->post('charity-process');
-    $charity->amount = number_format($request->post('amount'), 2, ".", "");
-    $charity->save();
-
-    Yii::$app->balanceCalc->todo([$charity->user_id], 'foundation');
+    $charity->scenario = Charity::SCENARIO_ACCOUNT;
+    if ($charity->load($request->post()) && $charity->save()) {
+        Yii::$app->balanceCalc->todo([$charity->user_id], 'foundation');
+    } else {
+        $data['html'] = $this->renderAjax('form.twig', ['model' => $charity]);
+        return json_encode($data);
+    }
 
     return json_encode(['error' => false, 'message' => Yii::t('account', 'charity_is_sent')]);
   }

@@ -53,27 +53,28 @@
         {#<h3 class="text-center to-fund">{{ t('account', 'dobro_all_summ_will_payed') }} <span></span></h3>#}
         <h3 class="text-center hpreform">2. {{ t('account', 'dobro_summ')|raw }}:</h3>
         <div class="payment-info ajax_form">
-          <form class="dobro-form" action="{{ _href('/account/dobro/send')|raw }}" method="post" role="form"
-                name="fund-transfer-form">
+            {% include('form.twig') %}
+          {#<form class="dobro-form" action="{{ _href('/account/dobro/send')|raw }}" method="post" role="form"#}
+                {#name="fund-transfer-form">#}
             {#<div>#}
-              <div class="form-group form-input-group">
-                <i>{{ svg("money",'form-icon') |raw }}</i>
-                <input name="amount" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder')|raw }}"
-                       required>
-                <div class="user-currency">{{ currencyIcon(app.user.identity.currency)|raw }}</div>
-                <div class="help-block help-block-error align-center"
-                     data-message="{{ t('account', 'dobro_summ_required')|raw }}"></div>
-              </div>
+              {#<div class="form-group form-input-group">#}
+                {#<i>{{ svg("money",'form-icon') |raw }}</i>#}
+                {#<input name="Charity[amount]" type="text" placeholder="{{ t('account', 'dobro_summ_placeholder')|raw }}"#}
+                       {#required>#}
+                {#<div class="user-currency">{{ currencyIcon(app.user.identity.currency)|raw }}</div>#}
+                {#<div class="help-block help-block-error align-center"#}
+                     {#data-message="{{ t('account', 'dobro_summ_required')|raw }}"></div>#}
+              {#</div>#}
 
-              <div class="form-group form-group-hidden">
-                <input type="hidden" name="charity-process" id="dobro-send-form-charity-process" value="" required>
-                <div class="help-block help-block-error aling-center"
-                     data-message="{{ t('account', 'dobro_fund_required')|raw }}"></div>
-              </div>
+              {#<div class="form-group form-group-hidden">#}
+                {#<input type="hidden" name="Charity[foundation_id]" id="dobro-send-form-charity-process" value="" required>#}
+                {#<div class="help-block help-block-error aling-center"#}
+                     {#data-message="{{ t('account', 'dobro_fund_required')|raw }}"></div>#}
+              {#</div>#}
             {#</div>#}
-            <br>
-            <button type="submit" class="btn">{{ t('account', 'dobro_button')|raw }}</button>
-          </form>
+            {#<br>#}
+            {#<button type="submit" class="btn">{{ t('account', 'dobro_button')|raw }}</button>#}
+          {#</form>#}
         </div>
       </div>
       {% if not autopayment %}

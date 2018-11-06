@@ -21,7 +21,9 @@ use frontend\modules\funds\models\Foundations;
  */
 class Charity extends \yii\db\ActiveRecord
 {
-  /**
+  const SCENARIO_ACCOUNT = 'account';
+
+    /**
    * @inheritdoc
    */
   public static function tableName()
@@ -35,9 +37,24 @@ class Charity extends \yii\db\ActiveRecord
   public function rules()
   {
     return [
-      [['user_id', 'foundation_id', 'amount', 'added'], 'required'],
+      [['user_id', 'foundation_id', 'added'], 'required'],
+      [['foundation_id'], 'exist', 'targetClass' => Foundations::className(), 'targetAttribute'=>'uid', 'filter'=>['is_active' => 1]],
+      ['amount', 'required', 'message' => Yii::t('account', 'dobro_summ_required')],
+      ['foundation', 'required', 'message' => Yii::t('account', 'dobro_fund_required')],
       [['user_id', 'foundation_id', 'is_showed', 'is_listed'], 'integer'],
-      [['amount'], 'number'],
+      [['amount'], 'number', 'min'=>1],
+      [['amount'], 'filter', 'on' => 'account',  'filter' => function ($value) {
+          $maxAmount = Yii::$app->user->identity->balance['max_fundation'];
+          if ($value > $maxAmount) {
+              $this->addError(
+                  'amount',
+                  Yii::t('account','dobro_max_summ') . ' ' .
+                  number_format($maxAmount,2,'.',' ') . ' '.
+                  Yii::$app->user->identity->currency
+              );
+          }
+          return $value;
+      }],
       [['added'], 'safe'],
       [['note'], 'string', 'max' => 255],
       [['note'], 'trim'],

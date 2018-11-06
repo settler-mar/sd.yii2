@@ -104,10 +104,12 @@ function ajaxForm(els) {
       var helpMessage = helpBlock && helpBlock.data('message') ? helpBlock.data('message') : lg('required');
 
       if (required.eq(i).val().length < 1) {
+        $(helpBlock).closest('.form-group').addClass('has-error');
         helpBlock.html(helpMessage);
         isValid = false;
       } else {
         helpBlock.html('');
+        $(helpBlock).closest('.form-group').removeClass('has-error');
       }
     }
     if (!isValid) {
@@ -115,7 +117,7 @@ function ajaxForm(els) {
     }
 
     if (form.yiiActiveForm) {
-      form.off('afterValidate')
+      form.off('afterValidate');
       form.on('afterValidate', yiiValidation.bind(data));
 
       form.yiiActiveForm('validate', true);
