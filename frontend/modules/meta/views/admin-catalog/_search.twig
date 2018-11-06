@@ -1,0 +1,28 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="cat-meta-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'uid')|raw }}
+
+    {{ form.field(model, 'page')|raw }}
+
+    {{ form.field(model, 'title')|raw }}
+
+    {{ form.field(model, 'description')|raw }}
+
+    {{ form.field(model, 'keyword')|raw }}
+
+    {# form.field(model, 'content')|raw #}
+
+    {# form.field(model, 'updated_at')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

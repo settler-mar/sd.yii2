@@ -15,7 +15,6 @@ use frontend\modules\notification\models\Notifications;
 
 class SdView extends SdViewBASE
 {
-  public $contentBD;
 
   public $user_id = false;
   public $user = [];

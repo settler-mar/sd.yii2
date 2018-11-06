@@ -15,6 +15,7 @@ use frontend\modules\notification\models\Notifications;
 
 class SdViewBASE extends View
 {
+  public $contentBD;
 
   public $all_params = [];
   public $first_init = true;
@@ -24,6 +25,8 @@ class SdViewBASE extends View
   public $type = 'frontend';
   public $counters_header = [];
   public $counters_footer = [];
+
+  protected $metaClass = 'frontend\modules\meta\models\Meta';
 
   private $def_meta=[
       'frontend'=> [
@@ -56,9 +59,10 @@ class SdViewBASE extends View
     }
     Yii::$app->view->metaTags = [];
 
-    if($this->type=='frontend') {
+    if (in_array($this->type, ['frontend', 'shop'])) {
       $request = Yii::$app->request;
-      $arr = Meta::findByUrl($request->pathInfo);
+      $metaClass = $this->metaClass;
+      $arr = $metaClass::findByUrl($request->pathInfo);
 
       //ddd($request->pathInfo, $arr);
       if ($arr && is_array($arr)) {
@@ -83,7 +87,7 @@ class SdViewBASE extends View
           $metaTagImage = !empty($metaTags['image']) ? $metaTags['image'] : false;
         }
       }
-    }else{
+    } else {
       if(isset($this->all_params['title'])) {
         $this->title = $this->all_params['title'];
       }

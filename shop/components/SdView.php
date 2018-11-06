@@ -10,6 +10,8 @@ use yii\twig\ViewRenderer;
 class SdView extends SdViewBASE
 {
 
+  protected $metaClass = 'frontend\modules\meta\models\CatMeta';
+
 
   public function init_param()
   {

@@ -146,6 +146,7 @@ class Meta extends \yii\db\ActiveRecord
     $this->saveImage();
     Cache::clearName('metadata_' . $this->page);
     Cache::deleteName('sitemap_xml');
+    parent::afterSave($insert, $changedAttributes);
   }
 
   public static function findByUrl($url, $model = false)
@@ -254,13 +255,15 @@ class Meta extends \yii\db\ActiveRecord
       //пробуем получить метатеги из параметров
       //$meta = Yii::$app->params['meta'];
       //чтобы действовали перводы, получаем конфиг здесь
-      $meta = require(Yii::getAlias('@app') . '/config/meta.php');
+      $meta = require(Yii::getAlias('@app/config/meta.php'));
       if (isset($meta[$page])) {
         return $meta[$page];
+      } elseif (isset($meta['index'])) {
+        return $meta['index'];
       };
 
       //если ни чего не нашлось подходящего то возвращаем как для index
-      return Yii::$app->params['meta']['index'];
+      return isset(Yii::$app->params['meta']['index']) ? Yii::$app->params['meta']['index'] : null;
     }, $cache->defaultDuration, $dependency);
   }
 
