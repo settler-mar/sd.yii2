@@ -1,21 +1,18 @@
+{% set form = active_form_begin({
+        'action':_href('/account/dobro/send'),
+        'options':{'class': 'dobro-form'},
+    }) %}
 
+    {{ form.field(model, 'amount', {
+        'template':'<i>'~svg("money",'form-icon')~'</i>\n{input}<div class="user-currency">'~currencyIcon(app.user.identity.currency)~'</div>\n{error}',
+        'options':{'class': 'form-group form-input-group field-charity-amount'},
+    }).textInput({'placeholeder':t('account', 'dobro_summ_placeholder')}).label(false)|raw }}
 
-    {% set form = active_form_begin({
-            'action':_href('/account/dobro/send'),
-            'options':{'class': 'dobro-form'},
-        }) %}
+    {{ form.field(model, 'foundation_id', {
+        'template':'{input}\n{error}',
+        'options':{'class': 'form-group form-group-hidden'},
+    }).hiddenInput({'id':'dobro-send-form-charity-process'}).label(false)|raw }}
 
-        {{ form.field(model, 'amount', {
-            'template':'<i>'~svg("money",'form-icon')~'</i>\n<input name="Charity[amount]" type="text" placeholder="'~t('account', 'dobro_summ_placeholder')~'" value="'~model.amount~'"  required ><div class="user-currency">'~currencyIcon(app.user.identity.currency)~'</div>\n{error}',
-            'options':{'class': 'form-group form-input-group field-charity-amount'},
-        }).textInput().label(false)|raw }}
-
-        {{ form.field(model, 'foundation_id', {
-
-            'template':'<input type="hidden" name="Charity[foundation_id]" id="dobro-send-form-charity-process" value="'~model.foundation_id~'" required>\n<div class="help-block" data-message="'~t('account', 'dobro_fund_required')~'"></div>',
-            'options':{'class': 'form-group form-group-hidden'},
-        }).hiddenInput().label(false)|raw }}
-
-        <br>
-        <button type="submit" class="btn">{{ t('account', 'dobro_button')|raw }}</button>
-    {{ active_form_end() }}
+    <br>
+    <button type="submit" class="btn">{{ t('account', 'dobro_button')|raw }}</button>
+{{ active_form_end() }}

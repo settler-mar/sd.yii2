@@ -58,7 +58,14 @@ class AccountController extends \yii\web\Controller
         return json_encode($data);
     }
 
-    return json_encode(['error' => false, 'message' => Yii::t('account', 'charity_is_sent')]);
+    return json_encode([
+        'error' => false,
+        'html' => $this->renderAjax(
+            'form.twig',
+            ['model' => $charity]
+        ),
+        'message' => Yii::t('account', 'charity_is_sent')
+    ]);
   }
 
   public function actionAutoSend()
