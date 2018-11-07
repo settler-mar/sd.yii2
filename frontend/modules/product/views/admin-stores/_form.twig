@@ -5,7 +5,7 @@
   {{ form.field(model, 'cpa_link_id').textInput()|raw }}
   <div>
     <b>Магазин:</b>
-    {{ model.store }}
+    {{ model.store.name }}
   </div>
 
   {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
