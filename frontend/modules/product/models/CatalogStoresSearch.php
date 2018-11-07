@@ -4,6 +4,7 @@ namespace frontend\modules\product\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use frontend\modules\stores\models\Stores;
 
 /**
  * CatalogStoresSearch represents the model behind the search form about `frontend\modules\product\models\CatalogStores`.
@@ -20,7 +21,7 @@ class CatalogStoresSearch extends CatalogStores
   {
     return [
         [['id', 'cpa_link_id', 'products_count', 'product_count', 'active'], 'integer'],
-        [['name', 'csv', 'date_update', 'crated_at', 'store'], 'safe'],
+        [['name', 'csv', 'date_update', 'date_import', 'crated_at', 'store'], 'safe'],
     ];
   }
 
@@ -42,7 +43,8 @@ class CatalogStoresSearch extends CatalogStores
    */
   public function search($params)
   {
-    $query = CatalogStores::find();
+    $query = CatalogStores::find()
+        ->joinWith('store', false);
 
     // add conditions that should always apply here
 
@@ -58,15 +60,10 @@ class CatalogStoresSearch extends CatalogStores
       return $dataProvider;
     }
 
-    if (!empty($this->store)) {
-      $query->joinWith('cpaLink');
-      $query->leftJoin('cw_stores', 'stores_id=cw_stores.uid');
-      if (is_numeric($this->store)) {
-        $query->andFilterWhere(['cw_stores.uid' => $this->store]);
-      } else {
-        $query->andFilterWhere(['like', 'cw_stores.alias', $this->store]);
-      }
-    }
+      $dataProvider->sort->attributes['store'] = [
+          'asc' => [Stores::tableName().'.name' => SORT_ASC],
+          'desc' => [Stores::tableName().'.name' => SORT_DESC],
+      ];
 
     // grid filtering conditions
     $query->andFilterWhere([
@@ -78,6 +75,7 @@ class CatalogStoresSearch extends CatalogStores
         'date_import' => $this->date_import,
         'date_update' => $this->date_update,
         'crated_at' => $this->crated_at,
+        Stores::tableName().'.uid' => $this->store,
     ]);
 
     $query->andFilterWhere(['like', 'name', $this->name])

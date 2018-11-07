@@ -18,15 +18,21 @@
                 {'class': '\\yii\\grid\\SerialColumn'},
 
                 'id',
-                'store',
+                {
+                    'attribute':'store',
+                    'format':'raw',
+                    'filter':storeFilter,
+                    'value': 'store.name'
+                },
                 'name',
-                'products_count',
-        {
-          'format':'raw',
-          'attribute': 'active',
-          'value': tableData.active,
-          'filter':activeFilter
-        },
+                'product_count',
+                {
+                  'format':'raw',
+                  'attribute': 'active',
+                  'value': tableData.active,
+                  'filter':activeFilter
+                },
+                'date_update',
                 'date_import',
 
                 {

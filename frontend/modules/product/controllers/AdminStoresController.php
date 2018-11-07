@@ -2,10 +2,13 @@
 namespace frontend\modules\product\controllers;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\product\models\CatalogStoresSearch;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CpaLink;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 
 /**
  * AdminStoresController implements the CRUD actions for CatalogStores model.
@@ -38,6 +41,18 @@ class AdminStoresController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+    $storeFilter = ArrayHelper::map(
+            Stores::find()
+            ->from(Stores::tableName().' s')
+            ->innerJoin(CpaLink::tableName(). ' cl', 'cl.stores_id = s.uid')
+            ->innerJoin(CatalogStores::tableName(). ' cs', 'cs.cpa_link_id = cl.id')
+            ->select(['s.uid', 's.name'])
+            ->groupBy(['s.uid', 's.name'])
+            ->orderBy(['s.name' => SORT_ASC])
+            ->asArray()
+            ->all(),
+        'uid', 'name'
+    );
     $searchModel = new CatalogStoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     return $this->render('index.twig', [
@@ -60,13 +75,7 @@ class AdminStoresController extends Controller
             CatalogStores::CATALOG_STORE_ACTIVE_NOT => 'Не активен',
             CatalogStores::CATALOG_STORE_ACTIVE_WAITING => 'Ожидает подтверждения'
         ],
-      /*'cpaFilter' => ArrayHelper::map(
-          Cpa::find()->from(Cpa::tableName().' cpa')->select(['cpa.id', 'name'])
-               ->innerJoin(CatalogStores::tableName().' cs', 'cs.cpa_id=cpa.id')
-               ->asArray()->all(),
-          'id',
-          'name'
-      ),*/
+        'storeFilter' => $storeFilter,
     ]);
   }
   /**

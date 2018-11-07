@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Stores;
 
 /**
  * This is the model class for table "cw_catalog_stores".
@@ -55,15 +56,15 @@ class CatalogStores extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'cpa_link_id' => 'Cpa Link ID',
-            'name' => 'Name',
+            'name' => 'Каталог',
             'products_count' => 'Products Count',
             'csv' => 'Csv',
-            'product_count' => 'Product Count',
+            'product_count' => 'Количество продуктов',
             'active' => 'Active',
-            'date_import' => 'Date Import',
-            'date_update' => 'Date Update',
+            'date_import' => 'Дата обновления',
+            'date_update' => 'Дата каталога',
             'crated_at' => 'Crated At',
-            'store' => 'Store',
+            'store' => 'Магазин',
         ];
     }
 
@@ -75,8 +76,12 @@ class CatalogStores extends \yii\db\ActiveRecord
         return $this->hasOne(CpaLink::className(), ['id' => 'cpa_link_id']);
     }
 
-  public function getStore()
-  {
-    return $this->cpaLink->store->name;
-  }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStore()
+    {
+        return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
+            ->viaTable(CpaLink::tableName(), ['id' => 'cpa_link_id']);
+    }
 }
