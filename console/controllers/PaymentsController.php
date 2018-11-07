@@ -255,5 +255,31 @@ class PaymentsController extends Controller
     return $this->users[$user_id];
   }
 
+//  public function actionTestPayment()
+//  {
+//      $cpaLink = CpaLink::findOne(['stores_id' => 1192]);
+//      $user = Users::findOne(8);
+//      $payment = [
+//          'status' => 0,
+//          'subid' => 8,
+//          'positions' => false, //для тарифа, видимо так
+//          'action_id' => (string) time(),
+//          'cart' => 100,
+//          'payment' => 7,
+//          'click_date' => date('Y-m-d H:i:s',time()),
+//          'action_date' => date('Y-m-d H:i:s', time()),
+//          'status_updated' => date('Y-m-d H:i:s', time()),
+//          'closing_date' => false, //??
+//          'product_country_code' => null, // а может сюда StatIdent ??
+//          'order_id' => microtime(),// тоже под вопросом??
+//          'tariff_id' => null,
+//          'currency' => $cpaLink->store->currency,
+//          'affiliate_id' => $cpaLink->affiliate_id,
+//          'cpa_id' => $cpaLink->cpa_id,
+//      ];
+//      ddd(Payments::makeOrUpdate($payment, $cpaLink->store, $user));
+//
+//  }
+
 
 }
