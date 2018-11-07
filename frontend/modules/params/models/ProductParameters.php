@@ -208,8 +208,6 @@ class ProductParameters extends \yii\db\ActiveRecord
                 self::$originalValues[$original] = false;
             }
         }
-        d($out);
-        d(self::$originalValues);
         return !empty($out) ? $out : null;
     }
 
