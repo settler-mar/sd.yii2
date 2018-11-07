@@ -61,7 +61,32 @@ class Admitad{
   public function getStore($options=array()){ // не работает
     $this->init('advcampaigns_for_website');
     $websiteId=$this->config['websiteId'];
-    $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
+
+    $resource = "/advcampaigns/website/".$websiteId.'/?' . http_build_query($options);
+    $request = new Request(Request::METHOD_GET, $resource);
+    $request->setHost("https://api.admitad.com");
+
+    $response = new Response();
+
+    $this->lastRequest = $request;
+    $this->lastResponse = $response;
+
+    $request->addHeader('Authorization: Bearer ' . $this->admitad->getAccessToken());
+
+
+    $client = new Curl();
+    $client->setTimeout(300);
+    $client->send($request, $response);
+
+
+    $data=$response->getResult()->getArrayCopy();/**/
+
+    //ddd($data);
+    //$out = isset($data["message"])?
+    //    $data["message"]:
+    //    str_replace("links: ","",$data['error_description']);
+
+    //$data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
   }
 
