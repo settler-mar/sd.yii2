@@ -279,7 +279,7 @@ class Help extends Component
     if ($is_num && !$params['only_number']) {
       if ($is_persent) {
         $value = number_format((float) $value, 2, '.', '&nbsp;') . "%";
-        $value_n = number_format((float) $value, 2, '.', '&nbsp;') . "%";
+        $value_n = number_format((float) $value_n, 2, '.', '&nbsp;') . "%";
       } else {
         $k = 2;//($this->round($value_n) == $this->round($value_n,2)) ? 0 : 2;
         $value = number_format($value, $k, '.', "&nbsp;") . "&nbsp;" . $currency;
