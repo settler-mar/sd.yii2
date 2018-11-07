@@ -62,7 +62,7 @@ class SdViewBASE extends View
     if (in_array($this->type, ['frontend', 'shop'])) {
       $request = Yii::$app->request;
       $metaClass = $this->metaClass;
-      $arr = $metaClass::findByUrl($request->pathInfo);
+      $arr = $metaClass::findByUrl($this->commonMetaUrl($request->pathInfo));
 
       //ddd($request->pathInfo, $arr);
       if ($arr && is_array($arr)) {
@@ -244,5 +244,27 @@ class SdViewBASE extends View
               $this->registerMetaTag([$attribute => $name, "content" => $content]);
           }
       }
+  }
+
+    /**
+     * получаем урл для поиска в мета
+     * @param $url
+     * @return string
+     */
+  protected function commonMetaUrl($url)
+  {
+      if (isset(Yii::$app->params['url_mask'])) {
+          $page = Yii::$app->params['url_mask'];
+          $page = str_replace('default/', '', $page);
+          $page = str_replace('/default', '', $page);
+      } elseif (isset(Yii::$app->params['url_no_page'])) {
+          $page = Yii::$app->params['url_no_page'];
+      } else {
+          $page = preg_replace('/\/$/', '', $url);
+      }
+
+      if ($page == '') $page = 'index';
+
+      return $page;
   }
 }

@@ -149,26 +149,13 @@ class Meta extends \yii\db\ActiveRecord
     parent::afterSave($insert, $changedAttributes);
   }
 
-  public static function findByUrl($url, $model = false)
+  public static function findByUrl($page, $model = false)
   {
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
 
-    if (isset(Yii::$app->params['url_mask'])) {
-      $page = Yii::$app->params['url_mask'];
-      $page = str_replace('default/', '', $page);
-      $page = str_replace('/default', '', $page);
-    } elseif (isset(Yii::$app->params['url_no_page'])) {
-      $page = Yii::$app->params['url_no_page'];
-    } else {
-      $page = preg_replace('/\/$/', '', $url);
-    }
-
-    if ($page == '') $page = 'index';
-
-    $page = str_replace('-offline', '/offline', $page);//добавляем поддержку офлайна
-
     if (!isset(Yii::$app->params['region'])) return;
 
+    $page = str_replace('-offline', '/offline', $page);//добавляем поддержку офлайна
     $page = preg_replace('/[^a-zA-Z0-9\/\-]/', '', $page);
 
     $cache = Yii::$app->cache;

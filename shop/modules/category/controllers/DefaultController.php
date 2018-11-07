@@ -21,6 +21,7 @@ class DefaultController extends SdController
             if (!$this->category) {
                 throw new yii\web\NotFoundHttpException();
             }
+            Yii::$app->params['url_mask'] = 'category/*';
         }
         return parent::beforeAction($action);
     }
@@ -126,6 +127,7 @@ class DefaultController extends SdController
         if (!$product) {
             throw new yii\web\NotFoundHttpException();
         }
+        Yii::$app->params['url_mask'] = 'category/product/*';
         return $this->render('product', [
             'product' => $product,
         ]);

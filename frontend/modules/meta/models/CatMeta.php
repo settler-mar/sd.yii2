@@ -63,11 +63,12 @@ class CatMeta extends \yii\db\ActiveRecord
     }
 
 
-    public function findByUrl($url)
+    public function findByUrl($page)
     {
+        $page = preg_replace('/[^a-zA-Z0-9\/\-\*]/', '', $page);
+
         $cache = Yii::$app->cache;
-        return $cache->getOrSet('product_catalog_meta', function () use ($url) {
-            $page = $url;
+        return $cache->getOrSet('product_catalog_meta', function () use ($page) {
             $meta = CatMeta::find()->where(['page'=> $page])->asArray()->one();
             if ($meta) {
                 return $meta;
