@@ -15,7 +15,7 @@ class m181107_132020_tracker_full extends Migration
       $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
       $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-      $constant = new Constants();
+      $constant = new \frontend\modules\constants\models\Constants();
       $constant->name = "trackers-full";
       $constant->title = "Полный блок отслеживания";
       $constant->ftype = "textarea";
