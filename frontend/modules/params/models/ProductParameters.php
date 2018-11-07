@@ -182,8 +182,13 @@ class ProductParameters extends \yii\db\ActiveRecord
     public static function fromValues($originals)
     {
         $out = [];
-        $originals = explode(',', $originals);
+        $originals = preg_split('/[\/,]+/', $originals);
+
         foreach ($originals as $original) {
+            $original = trim($original);
+            if (!$original) {
+                continue;
+            }
             //пробуем найти в памяти
             if (isset(self::$originalValues[$original])) {
                 if (self::$originalValues[$original] !== false) {
@@ -208,6 +213,7 @@ class ProductParameters extends \yii\db\ActiveRecord
                 self::$originalValues[$original] = false;
             }
         }
+        d($out, self::$originalValues);
         return !empty($out) ? $out : null;
     }
 
