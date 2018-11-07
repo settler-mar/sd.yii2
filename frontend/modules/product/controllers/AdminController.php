@@ -7,6 +7,7 @@ use shop\modules\product\models\ProductsToCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\stores\models\Cpa;
+use frontend\modules\stores\models\Stores;
 use frontend\modules\product\models\CatalogStores;
 use Yii;
 use shop\modules\product\models\Product;
@@ -86,7 +87,6 @@ class AdminController extends Controller
             }
             $param['values'] = $values->all();
         }
-
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -150,10 +150,18 @@ class AdminController extends Controller
             ),
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
-            'filterCpa' => ArrayHelper::map(
-                Cpa::find()->select(['cw_cpa.id', 'cw_cpa.name'])
-                    ->innerJoin(Product::tableName().' p', 'p.cpa_id = cw_cpa.id')->asArray()->all(),
-                'id',
+//            'filterCpa' => ArrayHelper::map(
+//                Cpa::find()->select(['cw_cpa.id', 'cw_cpa.name'])
+//                    ->innerJoin(Product::tableName().' p', 'p.cpa_id = cw_cpa.id')->asArray()->all(),
+//                'id',
+//                'name'
+//            ),
+            'filterStores' => ArrayHelper::map(
+                Stores::find()->select(['cw_stores.uid', 'cw_stores.name'])
+                    ->innerJoin(Product::tableName().' p', 'p.store_id = cw_stores.uid')
+                    ->groupBy(['cw_stores.uid', 'cw_stores.name'])
+                    ->asArray()->all(),
+                'uid',
                 'name'
             ),
             'filterCatalog' => ArrayHelper::map(
@@ -217,7 +225,12 @@ class AdminController extends Controller
                 'product_categories_tree' => ProductsCategory::tree(),
                 'model_categories' => array_column($model->categories, 'id'),
                 'img' => (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
-                    '/images/product/'.$model->image
+                    '/images/product/'.$model->image,
+                'availableFilter' => [
+                    Product::PRODUCT_AVAILABLE_YES => 'В наличии',
+                    Product::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
+                    Product::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
+                ],
             ]);
         }
     }
