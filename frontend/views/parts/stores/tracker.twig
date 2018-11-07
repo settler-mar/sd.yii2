@@ -1,6 +1,8 @@
   <section class="margin shop-tracker">
       <div class="page-wrap gray-box wrap-round">
+        {% if current_store %}
           <h2 class="shop-tracker_header title-no-line">{{ t('main', 'track_package_for_{store}_here', {'store': current_store.name})|raw }}</h2>
+        {% endif %}
           <p>
               {{ t('main', 'track_package_push_button')|raw }}
           </p>
@@ -11,7 +13,6 @@
           </p>
       </div>
   </section>
-
 
 
   <script>
