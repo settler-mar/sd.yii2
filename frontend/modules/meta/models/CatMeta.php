@@ -63,7 +63,7 @@ class CatMeta extends \yii\db\ActiveRecord
     }
 
 
-    public function findByUrl($page)
+    public static function findByUrl($page)
     {
         $page = preg_replace('/[^a-zA-Z0-9\/\-\*]/', '', $page);
 
