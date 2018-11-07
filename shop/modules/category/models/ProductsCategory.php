@@ -84,12 +84,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return self::childs($params);
     }
 
-    public function beforeValidate()
+    public function beforeSave($insert)
     {
-        if ($this->isNewRecord) {
+        if ($insert) {
             $this->route = Yii::$app->help->str2url($this->name);
         }
-        return parent::beforeValidate();
+        return parent::beforeSave($insert);
     }
 
     public static function childs($params, $parent = null, $level = 0)
