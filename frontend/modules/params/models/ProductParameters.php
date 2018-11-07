@@ -29,6 +29,7 @@ class ProductParameters extends \yii\db\ActiveRecord
     public $possible_categories = [];
 
     protected static $params = [];
+    protected static $originalValues = [];
     /**
      * @inheritdoc
      */
@@ -139,7 +140,6 @@ class ProductParameters extends \yii\db\ActiveRecord
                 }
             }
         }
-        d($param);
         //ищем в таблице
         $out = self::findOne([
             'code'=>$param,
@@ -177,6 +177,48 @@ class ProductParameters extends \yii\db\ActiveRecord
             d($out->errors);
         }
         return $out;
+    }
+
+    public static function fromValues($originals)
+    {
+        $out = [];
+        $originals = explode(',', $originals);
+        foreach ($originals as $original) {
+            //пробуем найти в памяти
+            if (isset(self::$originalValues[$original])) {
+                if (self::$originalValues[$original] !== false) {
+                    foreach (self::$originalValues[$original] as $key => $value) {
+                        $out[$key][] = $value;
+                    }
+                }
+                continue;
+            }
+            $value = ProductParametersValues::findOne(['name' => $original]);
+            $value = $value ? ProductParametersValues::valueSynonym($value) : false;
+            if ($value && $value->active != ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+                $parameter = self::findOne($value->parameter_id);
+                $parameter = $parameter ? self::parameterSynonym($parameter) : false;
+                if ($parameter && $parameter->active != self::PRODUCT_PARAMETER_ACTIVE_NO) {
+                    $out[$parameter->name][] = $value->name;
+                    self::$originalValues[$original] = [$parameter->name => $value->name];
+                } else {
+                    self::$originalValues[$original] = false;
+                }
+            } else {
+                self::$originalValues[$original] = false;
+            }
+        }
+        d($out);
+        d(self::$originalValues);
+        return !empty($out) ? $out : null;
+    }
+
+    public static function parameterSynonym($parameter)
+    {
+        if ($parameter->synonymParam) {
+            return self::parameterSynonym($parameter->synonymParam);
+        }
+        return $parameter;
     }
 
 

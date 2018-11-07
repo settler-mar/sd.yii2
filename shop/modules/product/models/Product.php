@@ -173,6 +173,9 @@ class Product extends \yii\db\ActiveRecord
             $productDb->image = self::saveImage((string) $product['picture']);
             $new = 1;
         }
+        if (empty($product['params']) && !empty($product['params_original'])) {
+            $product['params'] = ProductParameters::fromValues($product['params_original']);
+        }
         $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
         $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];

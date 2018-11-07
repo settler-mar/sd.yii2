@@ -168,4 +168,12 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         }
         return $result;
     }
+
+    public static function valueSynonym($value)
+    {
+        if ($value->synonymValue) {
+            return self::valueSynonym($value->synonymValue);
+        }
+        return $value;
+    }
 }
