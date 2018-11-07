@@ -705,6 +705,16 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     return $loyalty_status_list[$ls];
   }
 
+  public function getLoyalty_status_text()
+  {
+    $ls = $this->loyalty_status;
+    $loyalty_status_list = Yii::$app->params['dictionary']['loyalty_status'];
+    if (!isset($loyalty_status_list[$ls])) {
+      return 'Ошибка';
+    }
+    return $loyalty_status_list[$ls]['display_name'];
+  }
+
   public function getOld_loyalty_status_data()
   {
     $ls = $this->old_loyalty_status;
