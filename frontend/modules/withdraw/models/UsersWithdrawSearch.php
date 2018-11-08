@@ -19,7 +19,7 @@ class UsersWithdrawSearch extends UsersWithdraw
   {
     return [
       [['uid', 'user_id', 'process_id', 'status'], 'integer'],
-      [['bill', 'request_date', 'user_comment', 'admin_comment'], 'safe'],
+      [['bill', 'request_date', 'user_comment', 'admin_comment', 'ip'], 'safe'],
       [['amount'], 'number'],
     ];
   }
@@ -82,7 +82,8 @@ class UsersWithdrawSearch extends UsersWithdraw
 
     $query->andFilterWhere(['like', 'bill', $this->bill])
       ->andFilterWhere(['like', 'user_comment', $this->user_comment])
-      ->andFilterWhere(['like', 'admin_comment', $this->admin_comment]);
+      ->andFilterWhere(['like', 'admin_comment', $this->admin_comment])
+      ->andFilterWhere(['like', 'ip', $this->ip]);
 
     return $dataProvider;
   }
