@@ -16,6 +16,7 @@ class m181108_070742_AddUserIpColumnWithdrawTable extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $this->addColumn('cw_users_withdraw', 'ip', $this->string());
+        $this->addColumn('cw_users_withdraw', 'user_agent', $this->text());
     }
 
     /**
@@ -27,6 +28,7 @@ class m181108_070742_AddUserIpColumnWithdrawTable extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $this->dropColumn('cw_users_withdraw', 'ip');
+        $this->dropColumn('cw_users_withdraw', 'user_agent');
     }
 
     /*

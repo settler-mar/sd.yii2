@@ -58,7 +58,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
         return number_format($value, 2, ".", "");
       }],
       [['request_date'], 'safe'],
-      [['user_comment', 'admin_comment', 'ip'], 'string'],
+      [['user_comment', 'admin_comment', 'ip', 'user_agent'], 'string'],
       //[['bill'], 'string', 'max' => 255],
     ];
   }
@@ -76,6 +76,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
       'amount' => Yii::t('common', 'amount'),
       'status' => 'Статус',
       'ip' => 'IP пользователя',
+      'user_agent' => 'Browser',
       'request_date' => 'Дата запроса',
       'user_comment' => 'Комментарий пользователя',
       'admin_comment' => 'Комментарий админа',
@@ -93,6 +94,7 @@ class UsersWithdraw extends \yii\db\ActiveRecord
       $this->request_date = date('Y-m-d H:i:s');
       $this->status = 0;
       $this->ip = Yii::$app->request->userIP;
+      $this->user_agent = Yii::$app->request->userAgent;
     }
     return true;
   }
