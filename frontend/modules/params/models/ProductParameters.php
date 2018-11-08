@@ -5,6 +5,7 @@ namespace frontend\modules\params\models;
 use Yii;
 use common\components\JsonBehavior;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\Product;
 
 /**
  * This is the model class for table "cw_product_parameters".
@@ -29,6 +30,7 @@ class ProductParameters extends \yii\db\ActiveRecord
     public $possible_categories = [];
 
     protected static $params = [];
+    protected static $paramsProcessing = [];
     protected static $originalValues = [];
     /**
      * @inheritdoc
@@ -89,6 +91,11 @@ class ProductParameters extends \yii\db\ActiveRecord
         return $this->hasMany(ProductParametersValues::className(), ['parameter_id' => 'id']);
     }
 
+    public function getParamsProcessing()
+    {
+        return $this->hasMany(ProductParametersProcessing::className(), ['param_id' => 'id']);
+    }
+
     public function getSynonyms()
     {
         return $this->hasMany(self::className(), ['synonym' => 'id']);
@@ -101,6 +108,16 @@ class ProductParameters extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        foreach ($this->paramsProcessing as $paramProcessing) {
+            //по параметрам в обработке
+            $product = $paramProcessing->product;
+            $product->updateParams();
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * приводим параметры и значения к стандартизованному виду
      * @param $params
@@ -109,25 +126,59 @@ class ProductParameters extends \yii\db\ActiveRecord
     public static function standarted($params)
     {
         $out = [];
+        $processingOut = [];
         foreach ($params as $param => $values) {
             $paramStandarted = self::standartedParam((string) $param);
-            if ($paramStandarted) {
-                $standartedValues = ProductParametersValues::standartedValues($paramStandarted->id, $values);
-                if ($standartedValues) {
-                    $out[$paramStandarted->code] = empty($out[$paramStandarted->code]) ? $standartedValues:
-                        array_merge($out[$paramStandarted->code], $standartedValues);
-                    $out[$paramStandarted->code] = array_unique($out[$paramStandarted->code]);
+            if (!$paramStandarted || empty($paramStandarted['param'])) {
+                //вернуло false или нет параметра
+                continue;
+            }
+            $processing = !empty($paramStandarted['processing']);
+            $param = $paramStandarted['param'];
+
+            $standartedValues = ProductParametersValues::standartedValues($param->id, $values);
+            if ($standartedValues) {
+                if (!$processing) {
+                    //параметр ОК - выбираем значения или в обработку, или в запись
+                    foreach ($standartedValues as $value) {
+                        if (empty($value['value'])) {
+                            continue;
+                        }
+                        if (!empty($value['processing'])) {
+                            //значение в процессинг
+                            $processingOut[$param->id][] = $value['value'];
+                        } else {
+                            //значение в запись
+                            $out[$param->code][] = $value['value'];
+                        }
+                    }
+                    if (isset($out[$param->code])) {
+                        $out[$param->code] = array_unique($out[$param->code]);
+                    }
+                } else {
+                    //параметр в обработке - все значеня в обработку
+                    $processingOut[$param->id] = empty($processingOut[$param->id]) ?
+                        array_column($standartedValues, 'value') :
+                        array_merge($processingOut[$param->id], array_column($standartedValues, 'value'));
+                    $processingOut[$param->id] = array_unique($processingOut[$param->id]);
                 }
             }
         }
-        return $out;
+        return [
+            'params' => !empty($out) ? $out : null,//готовые в запись
+            'params_processing' => $processingOut,//в обработку
+        ];
     }
 
     public static function standartedParam($param)
     {
         //пробуем найти в памяти
         if (isset(self::$params[$param])) {
-            return self::$params[$param];
+            return ['param' =>  self::$params[$param], 'processing' => false];
+        }
+        //и те что в процессе
+        if (isset(self::$paramsProcessing[$param])) {
+            return ['param' =>  self::$paramsProcessing[$param], 'processing' => true];
         }
         //проверка на стоп-слова
         if (isset(Yii::$app->params['product_params_stop_list'])) {
@@ -136,7 +187,7 @@ class ProductParameters extends \yii\db\ActiveRecord
                 $paramCompare = substr($stopWord, -1) == '*' ? substr($param, 0, strlen($stopWord) -1).'*' : $param;
                 if ($stopWord == $paramCompare) {
                     self::$params[$param] = '';
-                    return '';
+                    return false;
                 }
             }
         }
@@ -148,19 +199,29 @@ class ProductParameters extends \yii\db\ActiveRecord
             //нашли
             if ($out->synonymParam) {
                 //есть синоним
-                if ($out->synonymParam->active !== self::PRODUCT_PARAMETER_ACTIVE_NO) {
+                if ($out->synonymParam->active == self::PRODUCT_PARAMETER_ACTIVE_YES) {
                     //синоним активен
                     self::$params[$param] = $out->synonymParam;
-                    return $out->synonymParam;
+                    return ['param' => $out->synonymParam, 'processing' => false];
+                }
+                if ($out->synonymParam->active == self::PRODUCT_PARAMETER_ACTIVE_WAITING) {
+                    //синоним активен
+                    self::$params[$param] = $out->synonymParam;
+                    return ['param' => $out->synonymParam, 'processing' => true];
                 }
                 //cиноним неактивен - возращаем пусто
                 self::$params[$param] = false;
                 return false;
             }
-            if ($out->active !== self::PRODUCT_PARAMETER_ACTIVE_NO) {
+            if ($out->active == self::PRODUCT_PARAMETER_ACTIVE_YES) {
                 //параметр активен
                 self::$params[$param] = $out;
-                return $out;
+                return ['param' => $out, 'processing' => false];
+            }
+            if ($out->active == self::PRODUCT_PARAMETER_ACTIVE_WAITING) {
+                //параметр в ожидании
+                self::$paramsProcessing[$param] = $out;
+                return ['param' => $out, 'processing' => true];
             }
             //параметр неактивен - возращаем пусто
             self::$params[$param] = false;
@@ -172,11 +233,12 @@ class ProductParameters extends \yii\db\ActiveRecord
         $out->name = $param;
         $out->active = self::PRODUCT_PARAMETER_ACTIVE_WAITING;
         if ($out->save()) {
-            self::$params[$param] = $out;
+            self::$paramsProcessing[$param] = $out;
+            return ['param' => $out, 'processing' => true];
         } else {
             d($out->errors);
+            return false;
         }
-        return $out;
     }
 
     public static function fromValues($originals)

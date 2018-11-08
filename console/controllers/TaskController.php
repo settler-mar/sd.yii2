@@ -666,7 +666,7 @@ class TaskController extends Controller
       $products = Product::find()->all();
       echo 'Parse products params '.count($products). "\n";
       foreach ($products as $key => $product) {
-          $updated = $updated + Product::updateParams($product);
+          $updated = $updated + $product->updateParams();
           if ($key > 0 && ($key % 1000 == 0)) {
               echo $key." updated " . $updated . "\n";
           }

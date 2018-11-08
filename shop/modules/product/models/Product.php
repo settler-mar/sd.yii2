@@ -6,6 +6,7 @@ use Yii;
 use common\components\JsonBehavior;
 use JBZoo\Image\Image;
 use frontend\modules\params\models\ProductParameters;
+use frontend\modules\params\models\ProductParametersProcessing;
 use frontend\modules\product\models\CatalogStores;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
@@ -36,6 +37,12 @@ class Product extends \yii\db\ActiveRecord
     const PRODUCT_AVAILABLE_NOT = 0;
     const PRODUCT_AVAILABLE_YES = 1;
     const PRODUCT_AVAILABLE_REQUEST = 2;
+
+    /**
+     * @var array при загрузке необработанные параметры
+     */
+    protected $paramsProcessing = [];
+
 
     protected static $categories = [];
 
@@ -149,6 +156,39 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+//    public function getDbParamsProcessing()
+//    {
+//        return $this->hasMany(ProductParametersProcessing::className(), ['product_id' => 'id']);
+//    }
+
+    /**
+     * @return int
+     */
+    public function updateParams()
+    {
+        $product = $this;
+        $params = self::makeParams($product->params_original);
+        if (!empty($params)) {
+            $standarted = ProductParameters::standarted($params);
+            $product->params = !empty($standarted['params']) ? $standarted['params'] : null;
+            $product->paramsProcessing = !empty($standarted['params_processing']) ? $standarted['params_processing'] : [];
+        } else {
+            $product->params = null;
+            $product->paramsProcessing = [];
+        }
+        $dataHash = hash('sha256', json_encode($product->params) . $product->name . $product->image);
+        if ($dataHash != $product->data_hash) {
+            $product->data_hash = $dataHash;
+            $product->save();
+            $product->writeParamsProcessing();
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
      * @param $product
      * @return array
      */
@@ -186,7 +226,8 @@ class Product extends \yii\db\ActiveRecord
         $productDb->name = (string) $product['name'];
         $productDb->old_price = isset($product['oldprice']) ? (float) $product['oldprice'] : null;
         $productDb->price = (float) $product['price'];
-        $productDb->params = $standartedParams;
+        $productDb->params = $standartedParams['params'];
+        $productDb->paramsProcessing = $standartedParams['params_processing'];
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
@@ -200,6 +241,7 @@ class Product extends \yii\db\ActiveRecord
                 d($productDb->errors);
                 $error = 1;
             } else {
+                $productDb->writeParamsProcessing();
                 $productDb->writeCategories($categories);//пишем - товар-категории
             }
         }
@@ -210,22 +252,6 @@ class Product extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @param $product
-     * @return int
-     */
-    public static function updateParams($product)
-    {
-        $params = self::makeParams($product->params_original);
-        $standarted = !empty($params) ?  ProductParameters::standarted($params) : null;
-        if ($standarted != $product->params) {
-            $product->params = $standarted;
-            $product->data_hash = hash('sha256', json_encode($product->params) . $product->name . $product->image);
-            $product->save();
-            return 1;
-        }
-        return 0;
-    }
 
     /**
      * делаем параметры из того что идёт из адмитад
@@ -373,6 +399,41 @@ class Product extends \yii\db\ActiveRecord
         Cache::deleteName('product_category_menu');
         Cache::deleteName('products_active_count');
         Cache::clearName('catalog_product');
+    }
+
+    /**
+     * необработанные параметры пишем из сохранённых, лишние удаляем
+     */
+    protected function writeParamsProcessing()
+    {
+        $ids = [];
+        foreach ($this->paramsProcessing as $code => $values) {
+            foreach ($values as $valueId) {
+                $paramProcessing = ProductParametersProcessing::findOne([
+                    'product_id' => $this->id,
+                    'param_id' => $code,
+                    'value_id' => $valueId
+                ]);
+                if (!$paramProcessing) {
+                    $paramProcessing = new ProductParametersProcessing();
+                    $paramProcessing->product_id = $this->id;
+                    $paramProcessing->param_id = $code;
+                    $paramProcessing->value_id = $valueId;
+                    if (!$paramProcessing->save() && Yii::$app instanceof Yii\console\Application) {
+                        d($paramProcessing->errors);
+                    }
+                }
+                if (isset($paramProcessing->id)) {
+                    $ids[] = $paramProcessing->id;
+                }
+            }
+
+        }
+        if (empty($ids)) {
+            ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
+        } else {
+            ProductParametersProcessing::deleteAll(['and', ['product_id' => $this->id], ['not in', 'id', $ids]]);
+        }
     }
 
 }
