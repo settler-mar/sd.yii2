@@ -16,16 +16,16 @@ class Admitad{
 
   public function __construct($config)
   {
-      $this->config = $config;
+    $this->config = $config;
   }
 
   public function init($scope){
     $this->admitad =  Yii::$app->cache->getOrSet('admitad_'.$scope,function() use ($scope){
       $api = new Api();
       $this->authorizeData = $api->authorizeClient(
-        $this->config['clientId'],
-        $this->config['clientSecret'],
-        $scope
+          $this->config['clientId'],
+          $this->config['clientSecret'],
+          $scope
       )->getArrayResult();
       //ddd($this->authorizeData);
       return new Api($this->authorizeData ['access_token']);
@@ -61,7 +61,33 @@ class Admitad{
   public function getStore($options=array()){ // не работает
     $this->init('advcampaigns_for_website');
     $websiteId=$this->config['websiteId'];
-    $data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
+
+    $resource = "/advcampaigns/website/".$websiteId.'/?' . http_build_query($options);
+    d($resource);
+    $request = new Request(Request::METHOD_GET, $resource);
+    $request->setHost("https://api.admitad.com");
+
+    $response = new Response();
+
+    $this->lastRequest = $request;
+    $this->lastResponse = $response;
+
+    $request->addHeader('Authorization: Bearer ' . $this->admitad->getAccessToken());
+
+
+    $client = new Curl();
+    $client->setTimeout(300);
+    $client->send($request, $response);
+
+
+    $data=$response->getResult()->getArrayCopy();/**/
+
+    //ddd($data);
+    //$out = isset($data["message"])?
+    //    $data["message"]:
+    //    str_replace("links: ","",$data['error_description']);
+
+    //$data=$this->admitad->get("/advcampaigns/website/".$websiteId.'/', $options)->getArrayResult();
     return $data;
   }
 
@@ -97,8 +123,8 @@ class Admitad{
 
 
     $out = isset($data["message"])?
-              $data["message"]:
-              str_replace("links: ","",$data['error_description']);
+        $data["message"]:
+        str_replace("links: ","",$data['error_description']);
 
     return trim($out);
   }
@@ -114,51 +140,51 @@ class Admitad{
 
   public function getProduct($csvLink, $affiliate_id, $refreshFile)
   {
-      $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_'.$affiliate_id.'.csv');
-      //или если не обновлять и уже скачано, или качаем
-      $data = [];
-      if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)){
-          $data =  $this->getCsv($csv);
-      };
-      if ($refreshFile && file_exists($csv)) {
-          //если обновлять, то удаляем файл
-          unlink($csv);
-      }
-      return $data;
+    $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_'.$affiliate_id.'.csv');
+    //или если не обновлять и уже скачано, или качаем
+    $data = [];
+    if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)){
+      $data =  $this->getCsv($csv);
+    };
+    if ($refreshFile && file_exists($csv)) {
+      //если обновлять, то удаляем файл
+      unlink($csv);
+    }
+    return $data;
   }
 
   private function downloadProducts($file, $url)
-    {
-        //$url = 'http://export.admitad.com/ru/webmaster/websites/411618/products/export_adv_products/?user=versus23&code=cf62a27023&feed_id=14299&format=csv';
+  {
+    //$url = 'http://export.admitad.com/ru/webmaster/websites/411618/products/export_adv_products/?user=versus23&code=cf62a27023&feed_id=14299&format=csv';
 
-        $start = time();
-        //Open file handler.
-        $fp = fopen($file, 'w+');
+    $start = time();
+    //Open file handler.
+    $fp = fopen($file, 'w+');
 
-        if (!empty($params)) {
-            $url .= http_build_query($params);
-        }
-        d($url);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 0);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
+    if (!empty($params)) {
+      $url .= http_build_query($params);
+    }
+    d($url);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 0);
+    curl_setopt($ch, CURLOPT_FILE, $fp);
 
-        //Timeout if the file doesn't download after 120 seconds.
-        curl_setopt($ch, CURLOPT_TIMEOUT, 200);
-        $response = curl_exec($ch);
+    //Timeout if the file doesn't download after 120 seconds.
+    curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+    $response = curl_exec($ch);
 
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        fclose($fp);
+    fclose($fp);
 
-        if ($statusCode == 200) {
-            echo 'Downloaded, ' . (time() - $start) .' seconds!'."\n";
-            return true;
-        } else {
-            d("Status Code: " . $statusCode, $response);
-            return false;
-        }
+    if ($statusCode == 200) {
+      echo 'Downloaded, ' . (time() - $start) .' seconds!'."\n";
+      return true;
+    } else {
+      d("Status Code: " . $statusCode, $response);
+      return false;
+    }
 
   }
 
@@ -166,32 +192,32 @@ class Admitad{
   {
     $data = [];
     try {
-        if (($handle = fopen($filename, "r")) !== false) {
-            $headers = fgetcsv($handle, 0, $delimiter);
-            while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
-                if (count($headers) != count($row)) {
-                    //таких немного, можно пропустить
-                } else {
-                    $data[] = array_combine($headers, $row);
-                }
-            }
-            fclose($handle);
-        } else {
-            d('File not found. ' . $filename);
+      if (($handle = fopen($filename, "r")) !== false) {
+        $headers = fgetcsv($handle, 0, $delimiter);
+        while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+          if (count($headers) != count($row)) {
+            //таких немного, можно пропустить
+          } else {
+            $data[] = array_combine($headers, $row);
+          }
         }
-        return $data;
+        fclose($handle);
+      } else {
+        d('File not found. ' . $filename);
+      }
+      return $data;
     } catch (\Exception $e) {
-        d('Ошибка при загрузке файла csv ' . $filename . ' ' .$e->getMessage());
+      d('Ошибка при загрузке файла csv ' . $filename . ' ' .$e->getMessage());
     }
     return $data;
   }
 
   public static function getStatus(){
     return array(
-      'pending' => 0,
-      'declined' => 1,
-      'confirmed' => 2,
-      'approved' => 2,
+        'pending' => 0,
+        'declined' => 1,
+        'confirmed' => 2,
+        'approved' => 2,
     );
   }
 }

@@ -1,17 +1,18 @@
   <section class="margin shop-tracker">
       <div class="page-wrap gray-box wrap-round">
+        {% if current_store %}
           <h2 class="shop-tracker_header title-no-line">{{ t('main', 'track_package_for_{store}_here', {'store': current_store.name})|raw }}</h2>
+        {% endif %}
           <p>
               {{ t('main', 'track_package_push_button')|raw }}
           </p>
-          <div class="widget_1track" data-width="100%" data-lang="{{ app.params.lang_code }}"></div>
+          <div class="widget_1track" data-width="100%" data-lang="{{ params('lang_code') }}"></div>
           <div class="shop-tracker_example test_track">{{ t('main', 'track_package_example')|raw }}: RB673410396RU, RM759395483CN</div>
           <p>
               {{ _constant('trackers')|raw}}
           </p>
       </div>
   </section>
-
 
 
   <script>
