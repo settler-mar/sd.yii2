@@ -173,9 +173,10 @@ class Product extends \yii\db\ActiveRecord
             $productDb->image = self::saveImage((string) $product['picture']);
             $new = 1;
         }
-        if (empty($product['params']) && !empty($product['params_original'])) {
-            $product['params'] = ProductParameters::fromValues($product['params_original']);
-        }
+
+        $params = empty($product['params']) ? self::makeParams($product['params_original']) : $product['params'];
+        $standartedParams = !empty($params) ?  ProductParameters::standarted($params) : null;
+
         $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
         $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];
@@ -185,7 +186,7 @@ class Product extends \yii\db\ActiveRecord
         $productDb->name = (string) $product['name'];
         $productDb->old_price = isset($product['oldprice']) ? (float) $product['oldprice'] : null;
         $productDb->price = (float) $product['price'];
-        $productDb->params = !empty($product['params']) ?  ProductParameters::standarted($product['params']) : null;
+        $productDb->params = $standartedParams;
         $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
@@ -207,6 +208,56 @@ class Product extends \yii\db\ActiveRecord
             'error' => $error,
             'product' => $productDb,
         ];
+    }
+
+    /**
+     * @param $product
+     * @return int
+     */
+    public static function updateParams($product)
+    {
+        $params = self::makeParams($product->params_original);
+        $standarted = !empty($params) ?  ProductParameters::standarted($params) : null;
+        if ($standarted != $product->params) {
+            $product->params = $standarted;
+            $product->data_hash = hash('sha256', json_encode($product->params) . $product->name . $product->image);
+            $product->save();
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * делаем параметры из того что идёт из адмитад
+     * @param $paramOriginals
+     * @return array|null
+     */
+    protected static function makeParams($paramOriginals)
+    {
+        if (!trim($paramOriginals)) {
+            return null;
+        }
+        $params = explode('|', (string) $paramOriginals);
+        $paramsArray = [];
+        foreach ($params as $param) {
+            $item  = explode(':', $param);
+            $key = trim($item[0]);
+            $values = isset($item[1]) ? trim($item[1]) : false;
+            if ($key & $values) {
+                $paramsArray[$key] = preg_split('/[\/,]+/', $values);
+                foreach ($paramsArray[$key] as $valueKey => &$value) {
+                    $value = trim($value);
+                    if (!$value) {
+                        unset($paramsArray[$key][$valueKey]);
+                    }
+                }
+            }
+        }
+        if (empty($paramsArray)) {
+            //если просто значения без параметров
+            $paramsArray = ProductParameters::fromValues($paramOriginals);
+        }
+        return $paramsArray;
     }
 
     protected function writeCategories($categories)
@@ -232,7 +283,9 @@ class Product extends \yii\db\ActiveRecord
         $result = [];
         foreach ($categories as $category) {
             $cat = $this->productCategory($category);
-            $result[] = $cat['id'];
+            if ($cat) {
+                $result[] = $cat['id'];
+            }
         }
         return $result;
     }
@@ -285,11 +338,14 @@ class Product extends \yii\db\ActiveRecord
     protected function productCategory($name)
     {
         if (!isset(static::$categories[$name])) {
-            $categoryDb = ProductsCategory::findOne(['name'=> $name]);
+            $categoryDb = ProductsCategory::findOne(['route'=> Yii::$app->help->str2url($name)]);
             if (!$categoryDb) {
                 $categoryDb = new ProductsCategory();
                 $categoryDb->name = $name;
-                $categoryDb->save();
+                if (!$categoryDb->save()) {
+                    d($categoryDb->errors);
+                    static::$categories[$name] = false;
+                }
             }
             static::$categories[$name] = $categoryDb->toArray();
         }
