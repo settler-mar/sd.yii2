@@ -2,13 +2,14 @@
 
 namespace common\models;
 
-use \Admitad\Api\Api;
+use Admitad\Api\Api;
 use Admitad\Api\Request;
 use Admitad\Api\Response;
-use Yii;
 use Buzz\Client\Curl;
+use Yii;
 
-class Admitad{
+class Admitad
+{
 
   private $config;
   private $admitad;
@@ -19,8 +20,10 @@ class Admitad{
     $this->config = $config;
   }
 
-  public function init($scope){
-    $this->admitad =  Yii::$app->cache->getOrSet('admitad_'.$scope,function() use ($scope){
+  public function init($scope)
+  {
+    $cash_id = 'admitad_' . $this->config['websiteId'] . '_' . $scope;
+    $this->admitad = Yii::$app->cache->getOrSet($cash_id, function () use ($scope) {
       $api = new Api();
       $this->authorizeData = $api->authorizeClient(
           $this->config['clientId'],
@@ -33,36 +36,41 @@ class Admitad{
 
   }
 
-  public function test(){
+  public function test()
+  {
     $this->init('public_data');
-    return $this->authorizeData ;
+    return $this->authorizeData;
   }
 
-  public function getCoupons($options=array()){
+  public function getCoupons($options = array())
+  {
     $this->init('coupons_for_website');
 
-    $websiteId=$this->config['websiteId'];
-    $data=$this->admitad->get("/coupons/website/$websiteId/", $options)->getResult();
+    $websiteId = $this->config['websiteId'];
+    $data = $this->admitad->get("/coupons/website/$websiteId/", $options)->getResult();
     return $data;
   }
 
-  public function getRegion($options=array()){ // не работает
+  public function getRegion($options = array())
+  { // не работает
     $this->init('public_data');
-    $data=$this->admitad->get("/regions/", $options)->getArrayResult();
+    $data = $this->admitad->get("/regions/", $options)->getArrayResult();
     return $data;
   }
 
-  public function getPayments($options=array()){
+  public function getPayments($options = array())
+  {
     $this->init('statistics');
-    $data=$this->admitad->get("/statistics/actions/", $options)->getArrayResult();
+    $data = $this->admitad->get("/statistics/actions/", $options)->getArrayResult();
     return $data;
   }
 
-  public function getStore($options=array()){ // не работает
+  public function getStore($options = array())
+  { // не работает
     $this->init('advcampaigns_for_website');
-    $websiteId=$this->config['websiteId'];
+    $websiteId = $this->config['websiteId'];
 
-    $resource = "/advcampaigns/website/".$websiteId.'/?' . http_build_query($options);
+    $resource = "/advcampaigns/website/" . $websiteId . '/?' . http_build_query($options);
     d($resource);
     $request = new Request(Request::METHOD_GET, $resource);
     $request->setHost("https://api.admitad.com");
@@ -80,7 +88,7 @@ class Admitad{
     $client->send($request, $response);
 
 
-    $data=$response->getResult()->getArrayCopy();/**/
+    $data = $response->getResult()->getArrayCopy();/**/
 
     //ddd($data);
     //$out = isset($data["message"])?
@@ -91,14 +99,15 @@ class Admitad{
     return $data;
   }
 
-  public function getDeeplink($c_id,$options=array()){
+  public function getDeeplink($c_id, $options = array())
+  {
     $this->init('deeplink_generator');
-    $websiteId=$this->config['websiteId'];
-    $data=$this->admitad->get("/deeplink/".$websiteId.'/advcampaign/'.$c_id.'/', $options)->getArrayResult();
+    $websiteId = $this->config['websiteId'];
+    $data = $this->admitad->get("/deeplink/" . $websiteId . '/advcampaign/' . $c_id . '/', $options)->getArrayResult();
     return $data;
   }
 
-  public function getTestLink($options=array())
+  public function getTestLink($options = array())
   {
     $this->init('validate_links');
 
@@ -119,32 +128,32 @@ class Admitad{
     $client->send($request, $response);
 
 
-    $data=$response->getResult()->getArrayCopy();/**/
+    $data = $response->getResult()->getArrayCopy();/**/
 
 
-    $out = isset($data["message"])?
-        $data["message"]:
-        str_replace("links: ","",$data['error_description']);
+    $out = isset($data["message"]) ?
+        $data["message"] :
+        str_replace("links: ", "", $data['error_description']);
 
     return trim($out);
   }
 
-  public function getAdvacampaing($affiliateId, $options=[])
+  public function getAdvacampaing($affiliateId, $options = [])
   {
     $this->init('advcampaigns_for_website');
-    $websiteId=$this->config['websiteId'];
-    $data=$this->admitad->get('/advcampaigns/'.$affiliateId.'/website/'.$websiteId.'/', $options)->getArrayResult();
+    $websiteId = $this->config['websiteId'];
+    $data = $this->admitad->get('/advcampaigns/' . $affiliateId . '/website/' . $websiteId . '/', $options)->getArrayResult();
     return $data;
   }
 
 
   public function getProduct($csvLink, $affiliate_id, $refreshFile)
   {
-    $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_'.$affiliate_id.'.csv');
+    $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_' . $affiliate_id . '.csv');
     //или если не обновлять и уже скачано, или качаем
     $data = [];
-    if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)){
-      $data =  $this->getCsv($csv);
+    if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)) {
+      $data = $this->getCsv($csv);
     };
     if ($refreshFile && file_exists($csv)) {
       //если обновлять, то удаляем файл
@@ -179,7 +188,7 @@ class Admitad{
     fclose($fp);
 
     if ($statusCode == 200) {
-      echo 'Downloaded, ' . (time() - $start) .' seconds!'."\n";
+      echo 'Downloaded, ' . (time() - $start) . ' seconds!' . "\n";
       return true;
     } else {
       d("Status Code: " . $statusCode, $response);
@@ -207,12 +216,13 @@ class Admitad{
       }
       return $data;
     } catch (\Exception $e) {
-      d('Ошибка при загрузке файла csv ' . $filename . ' ' .$e->getMessage());
+      d('Ошибка при загрузке файла csv ' . $filename . ' ' . $e->getMessage());
     }
     return $data;
   }
 
-  public static function getStatus(){
+  public static function getStatus()
+  {
     return array(
         'pending' => 0,
         'declined' => 1,
