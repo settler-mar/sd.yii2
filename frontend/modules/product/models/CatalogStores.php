@@ -16,7 +16,7 @@ use frontend\modules\stores\models\Stores;
  * @property integer $product_count
  * @property integer $active
  * @property string $date_import
- * @property string $date_update
+ * @property string $date_download
  * @property string $crated_at
  *
  * @property CwCpaLink $cpaLink
@@ -42,7 +42,7 @@ class CatalogStores extends \yii\db\ActiveRecord
     {
         return [
             [['cpa_link_id', 'products_count', 'product_count', 'active'], 'integer'],
-            [['date_import', 'date_update', 'crated_at'], 'safe'],
+            [['date_import', 'date_download', 'crated_at'], 'safe'],
             [['name', 'csv'], 'string', 'max' => 255],
             [['cpa_link_id'], 'exist', 'skipOnError' => true, 'targetClass' => CpaLink::className(), 'targetAttribute' => ['cpa_link_id' => 'id']],
         ];
@@ -62,7 +62,7 @@ class CatalogStores extends \yii\db\ActiveRecord
             'product_count' => 'Количество продуктов',
             'active' => 'Active',
             'date_import' => 'Дата обновления',
-            'date_update' => 'Дата каталога',
+            'date_download' => 'Последняя загрузка',
             'crated_at' => 'Crated At',
             'store' => 'Магазин',
         ];

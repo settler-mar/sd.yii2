@@ -21,7 +21,7 @@ class CatalogStoresSearch extends CatalogStores
   {
     return [
         [['id', 'cpa_link_id', 'products_count', 'product_count', 'active'], 'integer'],
-        [['name', 'csv', 'date_update', 'date_import', 'crated_at', 'store'], 'safe'],
+        [['name', 'csv', 'date_download', 'date_import', 'crated_at', 'store'], 'safe'],
     ];
   }
 
@@ -73,7 +73,7 @@ class CatalogStoresSearch extends CatalogStores
         'product_count' => $this->product_count,
         'active' => $this->active,
         'date_import' => $this->date_import,
-        'date_update' => $this->date_update,
+        'date_download' => $this->date_download,
         'crated_at' => $this->crated_at,
         Stores::tableName().'.uid' => $this->store,
     ]);
