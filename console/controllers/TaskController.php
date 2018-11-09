@@ -15,6 +15,7 @@ use frontend\modules\cache\models\Cache;
 use JBZoo\Image\Image;
 use yii\base\ErrorException;
 use common\components\Sitemap;
+use shop\modules\product\models\Product;
 
 
 class TaskController extends Controller
@@ -657,6 +658,20 @@ class TaskController extends Controller
 
       $sitemap = new Sitemap($map, $regions);
       d($sitemap->getMaps($path));
+  }
+
+  public function actionProductParams()
+  {
+      $updated = 0;
+      $products = Product::find()->all();
+      echo 'Parse products params '.count($products). "\n";
+      foreach ($products as $key => $product) {
+          $updated = $updated + $product->updateParams();
+          if ($key > 0 && ($key % 1000 == 0)) {
+              echo $key." updated " . $updated . "\n";
+          }
+      }
+      echo 'Updated '.$updated;
   }
 
 }

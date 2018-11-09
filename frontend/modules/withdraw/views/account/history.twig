@@ -9,6 +9,7 @@
 
       <tr>
         <th>{{ t('common', 'date_request')|raw }}</th>
+        {#<th>IP</th>#}
         <th>{{ t('common', 'method')|raw }}</th>
         <th>{{ t('common', 'cashe_nomber_email')|raw }}</th>
         <th>{{ t('common', 'amount')|raw }}</th>
@@ -19,6 +20,7 @@
       {% for w in withdraw %}
         <tr>
           <td>{{ _local_date(w.request_date, t('dictionary', 'date_format_long'))|raw }}</td>
+          {#<td>{{ w.ip }}</td>#}
           <td>{{ w.name }}</td>
           <td>{{ w.bill }}</td>
           <td class="cashback {{ w.status }}">

@@ -5,6 +5,7 @@ namespace frontend\modules\params\models;
 use Yii;
 use common\components\JsonBehavior;
 use shop\modules\category\models\ProductsCategory;
+use frontend\modules\params\models\ProductParametersProcessing;
 
 /**
  * This is the model class for table "cw_product_parameters_values".
@@ -30,6 +31,7 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     public $possible_categories = [];
 
     protected static $values = [];
+    protected static $valuesProcessing = [];
     /**
      * @inheritdoc
      */
@@ -104,6 +106,30 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         return $this->hasMany(ProductParametersValues::className(), ['synonym' => 'id']);
     }
 
+    /**
+     * значения параметров в обработке
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProcessingParamters()
+    {
+        return $this->hasMany(ProductParametersProcessing::className(), ['value_id' =>'id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        foreach ($this->processingParamters as $paramProcessing) {
+            //по параметрам в обработке
+            $product = $paramProcessing->product;
+            $product->updateParams();
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @param $paramId
+     * @param $values
+     * @return array [..[(string|inteder)'value', (bool) 'processing']..]
+     */
     public static function standartedValues($paramId, $values)
     {
         //на входе массив значений
@@ -114,13 +140,20 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             //пробуем найти в памяти
             if (isset(self::$values[$paramId][$value])) {
                 if (self::$values[$paramId][$value] !== false) {
-                    $result[] = self::$values[$paramId][$value];
+                    $result[] = ['value' => self::$values[$paramId][$value], 'processing' => false];
+                }
+                continue;
+            }
+            //нашли в памяти значение в обработке
+            if (isset(self::$valuesProcessing[$paramId][$value])) {
+                if (self::$valuesProcessing[$paramId][$value] !== false) {
+                    $result[] = ['value' => self::$valuesProcessing[$paramId][$value], 'processing' => true];
                 }
                 continue;
             }
             //проверка на максимальную длину
             if (mb_strlen($value) > Yii::$app->params['product_params_values_max_length']) {
-                self::$values[$paramId][$value] = '';
+                self::$values[$paramId][$value] = false;
                 continue;
             }
             //ищем в таблице
@@ -132,10 +165,16 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                 //нашли
                 if ($out->synonymValue) {
                     //имеется синоним
-                    if ($out->synonymValue->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+                    if ($out->synonymValue->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES) {
                         //синоним активен
                         self::$values[$paramId][$value] = $out->synonymValue->name;
-                        $result[] = $out->synonymValue->name;
+                        $result[] = ['value' => $out->synonymValue->name, 'processing' => false];
+                        continue;
+                    }
+                    if ($out->synonymValue->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING) {
+                        //синоним в ожидании
+                        self::$valuesProcessing[$paramId][$value] = $out->synonymValue->id;
+                        $result[] = ['value' => $out->synonymValue->id, 'processing' => true];
                         continue;
                     }
                     //если неактивен то false
@@ -143,10 +182,16 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                     continue;
                 }
                 //нет синонима
-                if ($out->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+                if ($out->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES) {
                     //само значение активно
                     self::$values[$paramId][$value] = $out->name;
-                    $result[] = $out->name;
+                    $result[] = ['value' => $out->name, 'processing' => false];
+                    continue;
+                }
+                if ($out->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING) {
+                    //само значение в ожидании
+                    self::$valuesProcessing[$paramId][$value] = $out->id;
+                    $result[] = ['value' => $out->id, 'processing' => true];
                     continue;
                 }
                 //если неактивен то false
@@ -159,8 +204,8 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             $out->parameter_id = $paramId;
             $out->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
             if ($out->save()) {
-                self::$values[$paramId][$value] = $out->name;
-                $result[] =  $out->name;
+                self::$valuesProcessing[$paramId][$value] = $out->id;
+                $result[] =  ['value' => $out->id, 'processing' => true];
             } else {
                 d($out->errors);
             }

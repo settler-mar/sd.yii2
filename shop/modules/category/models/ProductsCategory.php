@@ -86,7 +86,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if ($this->isNewRecord) {
+        if ($this->isNewRecord && (!isset(Yii::$app->request->pathInfo) || strpos(Yii::$app->request->pathInfo, 'admin') !== 0)) {
             $this->route = Yii::$app->help->str2url($this->name);
         }
         return parent::beforeValidate();

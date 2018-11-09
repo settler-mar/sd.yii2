@@ -33,15 +33,19 @@
             {{ form.field(model, 'bill').textInput({'maxlength':true})|raw }}
 
             {{ form.field(model, 'amount').textInput()|raw }}
-        </div>
-        <div class="col-md-6">
+
             {{ form.field(model, 'status').dropDownList({
                 0:"В ожидании",
                 1:"Отменён",
                 2:"Подтвержден",
             })|raw }}
+        </div>
+        <div class="col-md-6">
 
-            {{ form.field(model, 'request_date').textInput()|raw }}
+
+            {{ form.field(model, 'request_date').textInput({'disabled':true})|raw }}
+            {{ form.field(model, 'ip').textInput({'disabled':true})|raw }}
+            {{ form.field(model, 'user_agent').textInput({'disabled':true})|raw }}
         </div>
     </div>
     <div class="row">

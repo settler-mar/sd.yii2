@@ -57,20 +57,22 @@
                             'id',
                             'name',
                             {
-                                'attribute':'cpa_id',
-                                'value': 'cpa.name',
-                                'filter': filterCpa
+                                'attribute':'store_id',
+                                'value': 'store.name',
+                                'format': 'raw',
+                                'filter': filterStores
                             },
                             {
                                 'attribute':'catalog_id',
                                 'value': 'catalog.name',
+                                'format':'raw',
                                 'filter': filterCatalog
                             },
                             {
                                 'format':'raw',
                                 'attribute':'image',
                                 'value':tableData.image,
-                                'filter':false,
+                                'filter':false
                             },
                             'article',
                             'old_price',
@@ -118,5 +120,10 @@
 'image',
 'url:url',
 'vendor'
+                            {
+                                'attribute':'cpa_id',
+                                'value': 'cpa.name',
+                                'filter': filterCpa
+                            },
 #}
 </div>

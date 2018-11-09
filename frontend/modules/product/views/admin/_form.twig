@@ -4,34 +4,20 @@
 
         {{ form.field(model, 'article').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'available').textInput()|raw }}
-
-        {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'description').textarea({'rows':6})|raw }}
 
-        {{ form.field(model, 'store').textInput()|raw }}
-
-        {{ form.field(model, 'modified_time').textInput()|raw }}
-
-        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+        {{ form.field(model, 'price').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'old_price').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'price').textInput({'maxlength':true})|raw }}
+        {{ form.field(model, 'currency').textInput({'maxlength':true})|raw }}
 
-        <div class="form-group">
-            <label>Params</label>
-            <ul style="margin: 10px 0;">
-            {% for key,params in model.params %}
-                <li style="list-style-type:none">
-                    {{ key }}:{% for param in params %} {{ param }}{% if loop.last == false %},{% endif %} {% endfor %}
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
+        {{ form.field(model, 'available').dropDownList(availableFilter, {'prompt':'Выберите доступность'})|raw }}
 
         {{ form.field(model, 'image').textInput({'maxlength':true})|raw }}
+
         <div class="form-group">
             <img src="{{ img }}" style="max-height: 200px;" >
         </div>
@@ -39,6 +25,25 @@
         {{ form.field(model, 'url').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'vendor').textInput({'maxlength':true})|raw }}
+
+        <div class="form-group">
+            <label>Params</label>
+            <ul style="margin: 10px 0;">
+                {% for key,params in model.params %}
+                    <li style="list-style-type:none">
+                        {{ key }}:{% for param in params %} {{ param }}{% if loop.last == false %},{% endif %} {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {{ form.field(model, 'params_original').textInput({'maxlength':true, 'disabled':true})|raw }}
+        <div class="form-group field-product-store">
+            <label class="control-label" for="product-store">Магазин</label>
+            <span id="product-store" class="form-control" disabled>{{ model.store.name }}</span>
+        </div>
+
+        {{ form.field(model, 'modified_time').textInput({'disabled': true})|raw }}
 
     <div class="form-group">
         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">

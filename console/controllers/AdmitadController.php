@@ -602,16 +602,6 @@ class AdmitadController extends Controller
       $error = 0;
       foreach ($products as $product) {
           $count++;
-          $params = isset($product['param']) ? explode('|', (string) $product['param']) : [];
-          $paramsArray = [];
-          foreach ($params as $param) {
-              $item  = explode(':', $param);
-              if (isset($item[1])) {
-                  $paramsArray[$item[0]] = preg_split('/[\/,]+/', $item[1]);
-              }
-              //d($item[1], $paramsArray[$item[0]]);
-          }
-          $product['params'] = empty($paramsArray) ? null : $paramsArray;
           $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
           $product['categories'] = explode('/', (string) $product['categoryId']);
           $product['params_original'] = isset($product['param']) ? $product['param'] : null;
