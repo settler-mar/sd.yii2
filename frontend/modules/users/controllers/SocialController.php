@@ -102,7 +102,7 @@ class SocialController extends Controller
   private function testUser($user, $eauth = false)
   {
     //ddd($user);
-    if ($user && $user->is_active == Users::STATUS_DELETED) {
+    if ($user && !$user->isNewRecord && $user->is_active == Users::STATUS_DELETED) {
       Yii::$app->session->addFlash('err', Yii::t('account', 'login_your_account_deleted_message'));
       if ($eauth) {
         $eauth->redirect(Help::href('/'));

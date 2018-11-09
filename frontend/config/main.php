@@ -116,7 +116,7 @@ $config = [
                 'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : DOMAIN_FRONT,
             ],
             'on afterLogin' => function ($event) {
-              frontend\modules\users\models\Users::afterLogin($event->identity->id);
+              frontend\modules\users\models\Users::afterLogin($event->identity->id,$event);
             },
         ],
         'errorHandler' => [

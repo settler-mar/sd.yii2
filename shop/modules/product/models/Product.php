@@ -269,7 +269,7 @@ class Product extends \yii\db\ActiveRecord
             $item  = explode(':', $param);
             $key = trim($item[0]);
             $values = isset($item[1]) ? trim($item[1]) : false;
-            d($key,$values);
+            //d($key,$values);
             if ( !empty($key) & !empty($values)) {
                 $paramsArray[$key] = preg_split('/[\/,]+/', $values);
                 foreach ($paramsArray[$key] as $valueKey => &$value) {
