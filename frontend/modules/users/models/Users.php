@@ -662,7 +662,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
           $this->sum_foundation - $this->sum_withdraw;
-      if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
+      if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 0) {
         $bl['max_fundation'] = 0;
       } else if ($balance < 0) {
         $bl['max_fundation'] = 0;
