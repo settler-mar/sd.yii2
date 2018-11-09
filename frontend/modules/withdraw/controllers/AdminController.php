@@ -102,6 +102,21 @@ class AdminController extends Controller
         },
         'amount' => function($model, $key, $index, $column) {
             return $model->amount. ' '.$model->user->currency;
+        },
+        'ip' => function($model, $key, $index, $column) {
+          $out=[];
+          if(!empty($model->ip)){
+            $out[]='вывод:'.$model->ip;
+          }
+          $user=$model->user;
+          if(!empty($user->last_ip)){
+            $out[]='login:'.$user->last_ip;
+          }
+          if(!empty($user->reg_ip)){
+            $out[]='reg:'.$user->reg_ip;
+          }
+          //ddd($model->user);
+          return implode('<br>',$out);
         }
       )
       ,

@@ -27,3 +27,5 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/50960684" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+
+<script charset="UTF-8" src="//cdn.sendpulse.com/js/push/a757bc19c16f779b35a8178b5b84ddbc_1.js" async></script>
