@@ -272,6 +272,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       if (!isset($this->auth_key)) {
         $this->auth_key = '';
       }
+
+      $this->is_active = self::STATUS_ACTIVE;
     }
 
     if ($this->new_password) {
