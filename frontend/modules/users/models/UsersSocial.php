@@ -218,6 +218,9 @@ class UsersSocial extends \yii\db\ActiveRecord
         $userSocial->email = $userSocial->email_manual;
         $userSocial->save();
       }
+
+      //автовход при регистрации с соц.сети
+      Yii::$app->user->login($user, 3600 * 24 * 30);
     }
     //перенос информации к юсеру, заодно ещё кое-что
     self::fillAttributes($user, $userSocial, ['sex', 'photo']);
