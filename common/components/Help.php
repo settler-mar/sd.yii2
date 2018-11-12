@@ -138,6 +138,7 @@ class Help extends Component
             'showDropdowns' => true,
           //'autoUpdateInput' => true,
             'todayHighlight' => true,
+            'linkedCalendars' => false,
         ],
       //'presetDropdown'=>true,
         'hideInput' => true,
