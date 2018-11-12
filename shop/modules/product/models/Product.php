@@ -270,7 +270,8 @@ class Product extends \yii\db\ActiveRecord
             $item  = explode(':', $param);
             $key = trim($item[0]);
             $values = isset($item[1]) ? trim($item[1]) : false;
-            if ($key & $values) {
+            //d($key,$values);
+            if ( !empty($key) & !empty($values)) {
                 $paramsArray[$key] = preg_split('/[\/,]+/', $values);
                 foreach ($paramsArray[$key] as $valueKey => &$value) {
                     $value = trim($value);
@@ -428,6 +429,7 @@ class Product extends \yii\db\ActiveRecord
      */
     protected function writeParamsProcessing()
     {
+
         $ids = [];
         if (!empty($this->paramsProcessing)) {
             foreach ($this->paramsProcessing as $code => $values) {
@@ -451,8 +453,6 @@ class Product extends \yii\db\ActiveRecord
                     }
                 }
 
-            }
-        }
         if (empty($ids)) {
             ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
         } else {

@@ -42,12 +42,12 @@ class AdmitadController extends Controller
       shell_exec('chcp 65001');
     }
     if (!isset(Yii::$app->params[$this->configName])) {
-        ddd('Config "'.$this->configName. '" not found');
+      ddd('Config "'.$this->configName. '" not found');
     }
     $this->config = Yii::$app->params[$this->configName];
     $cpa = Cpa::findOne(['name'=>$this->cpaName]);
     if (!$cpa) {
-        ddd('Cpa "'.$this->cpaName. '" not found');
+      ddd('Cpa "'.$this->cpaName. '" not found');
     }
     $this->cpa_id = $cpa->id;
     return parent::beforeAction($action);
@@ -281,7 +281,7 @@ class AdmitadController extends Controller
   private function getStores($params, $count = 5)
   {
     if (!$this->admitad) {
-        $this->admitad = new Admitad($this->config);
+      $this->admitad = new Admitad($this->config);
     }
     $admitad = $this->admitad;
     if ($count <= 0) return false;
@@ -302,7 +302,7 @@ class AdmitadController extends Controller
   {
     $configProductsImport = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
-      $params = [
+    $params = [
         'limit' => 500,
         'offset' => 0,
         'connection_status' => 'active',
@@ -364,7 +364,7 @@ class AdmitadController extends Controller
                   continue;
                 }
               }
-              $catalog_db->date_update=date("Y-m-d H:i:s",$d);
+              $catalog_db->date_download=date("Y-m-d H:i:s",$d);
               $catalog_db->csv=$catalog['csv_link'];
 
               $catalog_db->save();
@@ -559,71 +559,72 @@ class AdmitadController extends Controller
     ];
   }
 
-    /**
-     * Обновление каталога продуктов
-     *
-     */
+  /**
+   * Обновление каталога продуктов
+   *
+   */
   public function actionProduct()
   {
-      $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
+    $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
-      $admitad = new Admitad($this->config);
+    $admitad = new Admitad($this->config);
 
-      $csvLinks = CatalogStores::find()
-          ->where([
-              'and',
-              'active='.CatalogStores::CATALOG_STORE_ACTIVE_YES,
-              ['or',
+    $csvLinks = CatalogStores::find()
+        ->where([
+            'and',
+            'active='.CatalogStores::CATALOG_STORE_ACTIVE_YES,
+            ['or',
                 '`date_import`=`crated_at`',
-                '`date_import`<`date_update`',
+                '`date_import`>`date_download`',
                 ['date_import' => null],
-              ]
-          ])->all();
+                ['product_count' => null],
+            ]
+        ])->all();
 
-      if (!$csvLinks) {
-          echo "There ara no catalogs for refresh";
-          return;
-      }
-      foreach ($csvLinks as $cpaLink) {
-        $dateUpdate = time();//запомнили дату обращения за каталогом
-        $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
-        echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from CpaLink ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
-        $this->writeProducts($products, $cpaLink);
-        $cpaLink->date_import = date('Y-m-d H:i:s', $dateUpdate);//$cpaLink->date_update;;
-        $cpaLink->product_count=count($products);
-        $cpaLink->save();
-      }
+    if (!$csvLinks) {
+      echo "There ara no catalogs for refresh";
+      return;
+    }
+    foreach ($csvLinks as $cpaLink) {
+      $dateUpdate = time();//запомнили дату обращения за каталогом
+      $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
+      echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from CpaLink ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
+      $this->writeProducts($products, $cpaLink);
+      $cpaLink->date_import = date('Y-m-d H:i:s', $dateUpdate);//$cpaLink->date_download;;
+      $cpaLink->product_count=count($products);
+      $cpaLink->save();
+    }
   }
 
   private function writeProducts($products, $catalog)
   {
-      $count = 0;
-      $insert = 0;
-      $error = 0;
-      foreach ($products as $product) {
-          $count++;
-          $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
-          $product['categories'] = explode('/', (string) $product['categoryId']);
-          $product['params_original'] = isset($product['param']) ? $product['param'] : null;
-          $product['cpa_id'] = $this->cpa_id;
-          $product['catalog_id'] = $catalog->id;
-          $product['store_id'] = $catalog->cpaLink->store->uid;
-          $result = Product::addOrUpdate($product);
-          if ($result['error']) {
-              d($result['product']->errors);
-          }
-          $insert += $result['insert'];
-          $error += $result['error'];
-          if ($count % 100 == 0) {
-              echo $count."\n";
-          }
+    $count = 0;
+    $insert = 0;
+    $error = 0;
+    foreach ($products as $product) {
+      $count++;
+      $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
+      $product['categories'] = explode('/', (string) $product['categoryId']);
+      $product['params_original'] = isset($product['param']) ? $product['param'] : null;
+      $product['cpa_id'] = $this->cpa_id;
+      $product['catalog_id'] = $catalog->id;
+      $product['store_id'] = $catalog->cpaLink->store->uid;
+      $result = Product::addOrUpdate($product);
+      if ($result['error']) {
+        d($result['product']->errors);
+      }
+      $insert += $result['insert'];
+      $error += $result['error'];
+      if ($count % 100 == 0) {
+        echo $count."\n";
+      }
 
-      }
-      echo 'Products ' . $count . "\n";
-      echo 'Inserted ' . $insert . "\n";
-      if ($error) {
-        echo 'Errors ' . $error . "\n";
-      }
+    }
+    echo 'Products ' . $count . "\n";
+    echo 'Inserted ' . $insert . "\n";
+    if ($error) {
+      echo 'Errors ' . $error . "\n";
+    }
 
   }
 

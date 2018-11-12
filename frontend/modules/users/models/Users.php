@@ -189,8 +189,9 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
    * компонента user в конфигурационном файле.
    * @param $id - ID пользователя
    */
-  public static function afterLogin($id)
+  public static function afterLogin($id,$event=false)
   {
+    if(strpos(Yii::$app->request->url,'logout'))return;
     if (
         !Yii::$app->session->get('admin_id') ||
         Yii::$app->session->get('admin_id') != Yii::$app->user->id
@@ -199,6 +200,14 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
           'last_ip' => get_ip(),
           'last_login' => date('Y-m-d H:i:s'),
       ], ['uid' => $id])->execute();
+
+      if(strpos(Yii::$app->request->url,'login') || strpos(Yii::$app->request->url,'socials-auth')){
+        $ip_log = new UserIpLog();
+        $ip_log->user_id = $id;
+        $ip_log->ip = get_ip();
+        $ip_log->save();
+      }
+
     }
 
   }
@@ -263,6 +272,8 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       if (!isset($this->auth_key)) {
         $this->auth_key = '';
       }
+
+      $this->is_active = self::STATUS_ACTIVE;
     }
 
     if ($this->new_password) {
@@ -653,7 +664,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
       $balance = $this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus -
           $this->sum_foundation - $this->sum_withdraw;
-      if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 350) {
+      if ($this->sum_confirmed + $this->sum_from_ref_confirmed + $this->sum_bonus < 0) {
         $bl['max_fundation'] = 0;
       } else if ($balance < 0) {
         $bl['max_fundation'] = 0;
