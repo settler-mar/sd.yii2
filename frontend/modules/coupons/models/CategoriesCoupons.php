@@ -170,6 +170,10 @@ class CategoriesCoupons extends \yii\db\ActiveRecord
         Cache::deleteName('sitemap_xml');
     }
 
+    /**
+     * @param array $attributes
+     * @return yii\db\ActiveQuery
+     */
     public static function translated($attributes = [])
     {
         $allAttributes = ['uid', 'name', 'route', 'description', 'short_description', 'short_description_offline'];

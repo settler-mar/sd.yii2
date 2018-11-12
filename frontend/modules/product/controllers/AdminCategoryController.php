@@ -40,6 +40,11 @@ class AdminCategoryController extends Controller
     }
     $searchModel = new ProductsCategorySearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//    ddd(ArrayHelper::map(
+//        ProductsCategory::find()->select(['id', 'name'])->orderBy(['name'=>SORT_ASC])->asArray()->all(),
+//        'id',
+//        'name'
+//    ));
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
@@ -61,11 +66,11 @@ class AdminCategoryController extends Controller
               }
             }
         ],
-        'parents' => array_merge([0 => 'Нет'], ArrayHelper::map(
-            ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
+        'parents' => ['0' => 'Нет'] + ArrayHelper::map(
+            ProductsCategory::find()->select(['id', 'name'])->orderBy(['name'=>SORT_ASC])->asArray()->all(),
             'id',
             'name'
-        )),
+        ),
         'activeFilter' => $this->activeFilter(),
     ]);
   }

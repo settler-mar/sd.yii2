@@ -232,7 +232,8 @@ class Product extends \yii\db\ActiveRecord
         $productDb->url = (string) $product['url'];
         $productDb->vendor = (string) $product['vendor'];
 
-        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name . $productDb->image);
+        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
+            $productDb->image . json_encode($categories));
 
         if ($productHash != $productDb->data_hash) {
             //echo $productHash." ".$productDb->data_hash."\n";
@@ -242,7 +243,7 @@ class Product extends \yii\db\ActiveRecord
                 $error = 1;
             } else {
                 $productDb->writeParamsProcessing();
-                $productDb->writeCategories($categories);//пишем - товар-категории
+                $productToCategories = $productDb->writeCategories(count($categories) ?  [$categories[count($categories) - 1]] : []);//пишем - товар-категории только последнюю категорию
             }
         }
         return [
@@ -288,29 +289,39 @@ class Product extends \yii\db\ActiveRecord
 
     protected function writeCategories($categories)
     {
-        $result = 0;
+        $result = [];
+        $ids = [];
         foreach ($categories as $category) {
-            $productToCategoryDb = ProductsToCategory::findOne([
+            $result[] = $productToCategoryDb = ProductsToCategory::findOne([
                 'product_id'=>$this->id,
                 'category_id'=>$category
             ]);
             if (!$productToCategoryDb) {
-                $productToCategoryDb = new ProductsToCategory();
+                $result[] = $productToCategoryDb = new ProductsToCategory();
                 $productToCategoryDb->product_id = $this->id;
                 $productToCategoryDb->category_id = $category;
                 $productToCategoryDb->save();
             }
+            $ids[] = $productToCategoryDb->id;
         }
+        $deleteWhereCondition = empty($ids) ? ['product_id' => $this->id] :
+            ['and', ['product_id' => $this->id], ['not in', 'id', $ids]];
+        ProductsToCategory::deleteAll($deleteWhereCondition);
         return $result;
     }
 
     protected function makeCategories($categories)
     {
         $result = [];
-        foreach ($categories as $category) {
-            $cat = $this->productCategory($category);
+        $parent = null;
+        //каждая посдедующая будет дочерней к предыдущей
+        foreach ($categories as  $index => $category) {
+            $cat = $this->productCategory($category, $parent);
             if ($cat) {
                 $result[] = $cat['id'];
+                $parent = $cat['id'];
+            } else {
+                $parent = null;
             }
         }
         return $result;
@@ -361,16 +372,27 @@ class Product extends \yii\db\ActiveRecord
         }
     }
 
-    protected function productCategory($name)
+    /**
+     * @param $name
+     * @param null $parent - если задано, то категория должна быть дочерней к parent
+     * @return mixed
+     */
+    protected function productCategory($name, $parent = null)
     {
         if (!isset(static::$categories[$name])) {
             $categoryDb = ProductsCategory::findOne(['route'=> Yii::$app->help->str2url($name)]);
             if (!$categoryDb) {
                 $categoryDb = new ProductsCategory();
                 $categoryDb->name = $name;
+                $categoryDb->parent = $parent;
                 if (!$categoryDb->save()) {
                     d($categoryDb->errors);
                     static::$categories[$name] = false;
+                }
+            } else {
+                if ($categoryDb->parent == null && $parent) {
+                    $categoryDb->parent =$parent;
+                    $categoryDb->save();
                 }
             }
             static::$categories[$name] = $categoryDb->toArray();
@@ -407,27 +429,29 @@ class Product extends \yii\db\ActiveRecord
     protected function writeParamsProcessing()
     {
         $ids = [];
-        foreach ($this->paramsProcessing as $code => $values) {
-            foreach ($values as $valueId) {
-                $paramProcessing = ProductParametersProcessing::findOne([
-                    'product_id' => $this->id,
-                    'param_id' => $code,
-                    'value_id' => $valueId
-                ]);
-                if (!$paramProcessing) {
-                    $paramProcessing = new ProductParametersProcessing();
-                    $paramProcessing->product_id = $this->id;
-                    $paramProcessing->param_id = $code;
-                    $paramProcessing->value_id = $valueId;
-                    if (!$paramProcessing->save() && Yii::$app instanceof Yii\console\Application) {
-                        d($paramProcessing->errors);
+        if (!empty($this->paramsProcessing)) {
+            foreach ($this->paramsProcessing as $code => $values) {
+                foreach ($values as $valueId) {
+                    $paramProcessing = ProductParametersProcessing::findOne([
+                        'product_id' => $this->id,
+                        'param_id' => $code,
+                        'value_id' => $valueId
+                    ]);
+                    if (!$paramProcessing) {
+                        $paramProcessing = new ProductParametersProcessing();
+                        $paramProcessing->product_id = $this->id;
+                        $paramProcessing->param_id = $code;
+                        $paramProcessing->value_id = $valueId;
+                        if (!$paramProcessing->save() && Yii::$app instanceof Yii\console\Application) {
+                            d($paramProcessing->errors);
+                        }
+                    }
+                    if (isset($paramProcessing->id)) {
+                        $ids[] = $paramProcessing->id;
                     }
                 }
-                if (isset($paramProcessing->id)) {
-                    $ids[] = $paramProcessing->id;
-                }
-            }
 
+            }
         }
         if (empty($ids)) {
             ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
