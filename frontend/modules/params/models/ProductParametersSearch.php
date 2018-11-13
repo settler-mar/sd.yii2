@@ -13,7 +13,7 @@ use frontend\modules\params\models\ProductParameters;
 class ProductParametersSearch extends ProductParameters
 {
     public $values;
-    public $product_categories;
+    //public $product_categories;
     public $synonyms_names;
     /**
      * @inheritdoc
@@ -21,7 +21,7 @@ class ProductParametersSearch extends ProductParameters
     public function rules()
     {
         return [
-            [['id', 'active', 'product_categories', 'synonym', 'synonyms_names'], 'integer'],
+            [['id', 'active', 'category_id', 'synonym', 'synonyms_names'], 'integer'],
             [['code', 'name', 'created_at', 'values'], 'safe'],
         ];
     }
@@ -68,17 +68,14 @@ class ProductParametersSearch extends ProductParameters
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name]);
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['category_id' => $this->category_id]);
 
         if (!empty($this->values)) {
             $query->leftJoin(ProductParametersValues::tableName(). ' ppv', 'ppv.parameter_id = '.$this->tableName().'.id');
             $query->andFilterWhere(['like', 'ppv.name', $this->values]);
         }
-        if ($this->product_categories === "0") {
-            $query->andWhere(['categories' => null]);
-        } elseif (!empty($this->product_categories)) {
-            $query->andWhere('JSON_CONTAINS('.$this->tableName().'.categories,\'"'.$this->product_categories.'"\',"$")');
-        }
+
         if ($this->synonym === "0") {
             $query->andWhere([$this->tableName().'.synonym' => null]);
         } elseif (!empty($this->synonym)) {

@@ -33,6 +33,12 @@
                             },
                             'name',
                             {
+                                'attribute':'product_categories',
+                                'format':'raw',
+                                'value' : 'parameter.categoryTree',
+                                'filter': product_categories
+                            },
+                            {
                                 'attribute':'synonyms_names',
                                 'value': tableData.synonyms,
                                 'format': 'raw',
@@ -42,12 +48,6 @@
                                 'attribute':'synonym',
                                 'format':'raw',
                                 'value': tableData.synonym_name,
-                            },
-                            {
-                                'attribute':'product_categories',
-                                'format':'raw',
-                                'value' : tableData.categories,
-                                'filter': product_categories
                             },
                             {
                                 'attribute':'active',

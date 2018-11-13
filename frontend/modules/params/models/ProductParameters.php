@@ -55,7 +55,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             //['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
             ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
             //['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersSynonyms::className()],
-            [['categories'], 'safe'],
+            [['category_id'], 'integer'],
         ];
     }
 
@@ -69,7 +69,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             'code' => 'Code',
             'name' => 'Name',
             'active' => 'Active',
-            'categories' => 'Категории',
+            'category_id' => 'Категория',
             'synonym' => 'Является синонимом для',
             'product_categories' => 'Категории',
             'created_at' => 'Created At',
@@ -102,12 +102,9 @@ class ProductParameters extends \yii\db\ActiveRecord
         return $this->hasMany(self::className(), ['synonym' => 'id']);
     }
 
-    public function beforeValidate()
+    public function getCategory()
     {
-        if (empty($this->categories)) {
-            $this->categories = !empty($this->possible_categories) ? $this->possible_categories : null;
-        }
-        return parent::beforeValidate();
+        return $this->hasOne(ProductsCategory::className(), ['id' => 'category_id']);
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -119,6 +116,16 @@ class ProductParameters extends \yii\db\ActiveRecord
         }
         return parent::afterSave($insert, $changedAttributes);
     }
+    public function getCategoryTree()
+    {
+        $categories = ProductsCategory::parents([$this->category]);
+        $out = '';
+        for ($i=count($categories)-1; $i>=0; $i--) {
+            $out .= $categories[$i]->name. '.';
+        }
+        return $out;
+    }
+
 
     /**
      * приводим параметры и значения к стандартизованному виду
@@ -175,6 +182,7 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public static function standartedParam($param, $categories = false)
     {
+        //d(self::$params, self::$paramsProcessing);
         $categoriesString = $categories ? implode('.', $categories) . '|' : '';
         //пробуем найти в памяти
         if (isset(self::$params[$categoriesString.$param])) {
@@ -196,14 +204,17 @@ class ProductParameters extends \yii\db\ActiveRecord
             }
         }
         //ищем в таблице
-        $where = ['code'=>$param];
+        //последовательно по категориям сверху вниз
         if ($categories) {
-            $where = ['and', $where, 'JSON_CONTAINS(categories,\''.preg_replace('/\"/', '\\"', json_encode($categories)).'\', \'$\')'];
+            foreach ($categories as $category) {
+                $out = self::find()->where(['code'=>$param, 'category_id'=> $category])->one();
+                //d($category, $out);
+            }
+        } else {
+            $out = self::findOne(['code'=>$param, 'category_id' => null]);
         }
-        $out = self::find()->where($where);
-        //d($out->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
-        $out = $out->one();
-        //ddd($out, $where);
+
+        //ddd($out);
         if ($out) {
             //нашли
             if ($out->synonymParam) {
@@ -241,7 +252,7 @@ class ProductParameters extends \yii\db\ActiveRecord
         $out->load(['ProductParameters' => [
             'code' => $param,
             'name' => $param,
-            'categories' => $categories ? $categories : null,
+            'category_id' => $categories ? $categories[count($categories) -1] : null,
             'active' => self::PRODUCT_PARAMETER_ACTIVE_WAITING,
         ]]);
         if ($out->save()) {

@@ -92,6 +92,23 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    /**
+     * сама категория и все родительские по очереди
+     * @param $categories
+     * @return array
+     */
+    public static function parents($categories)
+    {
+        if ($categories[count($categories)-1]->parent != null) {
+            $parent = self::findOne($categories[count($categories)-1]->parent);
+            if ($parent) {
+                $categories[] = $parent;
+                $categories = static::parents($categories);
+            }
+        }
+        return $categories;
+    }
+
     public static function childs($params, $parent = null, $level = 0)
     {
         $level++;

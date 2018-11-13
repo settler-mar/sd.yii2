@@ -26,6 +26,12 @@
                             'code',
                             'name',
                             {
+                                'attribute': 'category_id',
+                                'format': 'raw',
+                                'value': 'categoryTree',
+                                'filter': product_categories
+                            },
+                            {
                                 'attribute':'synonyms_names',
                                 'value': tableData.synonyms,
                                 'format': 'raw',
@@ -44,12 +50,7 @@
                                 'value': tableData.active,
                                 'filter': activeFilter
                             },
-                            {
-                                'attribute': 'product_categories',
-                                'format': 'raw',
-                                'value': tableData.categories,
-                                'filter': product_categories
-                            },
+
                             {
                                 'attribute':'values',
                                 'format': 'raw',

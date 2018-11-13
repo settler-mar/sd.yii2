@@ -91,19 +91,18 @@ class AdminController extends Controller
                     return implode('; ', array_column($model->synonyms, 'name'));
                 }
             ],
-            'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
-                ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
+            'product_categories' => [0=>'Не задано'] + ArrayHelper::map(
+                ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
                 'id',
                 'name'
-            )),
-            'parameter_filter' => array_merge(
-                [0=>'Не задано'],
+            ),
+            'parameter_filter' => [0=>'Не задано'] +
                 arrayHelper::map(
-                    ProductParameters::find()->select(['id', 'name'])->asArray()->all(),
+                    ProductParameters::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
                     'id',
                     'name'
                 )
-            ),
+            ,
 
         ]);
     }
@@ -159,11 +158,17 @@ class AdminController extends Controller
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'possible_synonym' => arrayHelper::map(
-                    ProductParameters::find()->select(['id', 'name'])->where(['<>', 'id', $id])->asArray()->all(),
+                    ProductParameters::find()->select(['id', 'name'])->where(['<>', 'id', $id])
+                        ->orderBy(['name' => SORT_ASC])->asArray()->all(),
                     'id',
                     'name'
                 ),
-                'product_categories_tree' => ProductsCategory::tree(),
+                //'product_categories_tree' => ProductsCategory::tree(),
+                'product_categories' => ArrayHelper::map(
+                    ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
+                    'id',
+                    'name'
+                ),
             ]);
         }
     }

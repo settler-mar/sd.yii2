@@ -7,7 +7,7 @@
                 <div class="product-parameters-form">
                     {% set form = active_form_begin() %}
 
-                    {{ form.field(model, 'code').textInput({'maxlength':true})|raw }}
+                    {{ form.field(model, 'code').textInput({'maxlength':true,'disabled':true})|raw }}
 
                     {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
@@ -15,19 +15,21 @@
 
                     {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
 
-                    {{ form.field(model, 'created_at').textInput()|raw }}
+                    {{ form.field(model, 'category_id').dropDownList(product_categories, {'prompt':'Выберите категорию'})|raw }}
 
-                    <div class="form-group">
-                        <label>Категории</label>
-                        <div>
-                            <label for="items_toggle_check" style="padding: 10px 20px;">
-                                <input id="items_toggle_check" class="toggle_items_check" type="checkbox"
-                                       name="items_toggle_check" value="1">
-                                Выбрать всё/отменить выбор
-                            </label>
-                        </div>
-                        {% include('category_tree.twig') %}
-                    </div>
+                    {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}
+
+                    {#<div class="form-group">#}
+                        {#<label>Категории</label>#}
+                        {#<div>#}
+                            {#<label for="items_toggle_check" style="padding: 10px 20px;">#}
+                                {#<input id="items_toggle_check" class="toggle_items_check" type="checkbox"#}
+                                       {#name="items_toggle_check" value="1">#}
+                                {#Выбрать всё/отменить выбор#}
+                            {#</label>#}
+                        {#</div>#}
+                        {#{% include('category_tree.twig') %}#}
+                    {#</div>#}
 
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"
