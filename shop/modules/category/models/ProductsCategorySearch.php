@@ -64,12 +64,23 @@ class ProductsCategorySearch extends ProductsCategory
             'id' => $this->id,
             'crated_at' => $this->crated_at,
             'active' => $this->active,
-            'synonym' => $this->synonym,
          ]);
         if ($this->parent === '0') {
             $query->andWhere(['parent' => null]);
+        } elseif ($this->parent) {
+            $childsId = ProductsCategory::childsId($this->parent, false);
+            $query->andFilterWhere(['parent'=>$childsId]);
+        }
+        if ($this->synonym === null) {
+            $this->synonym = '-1';
+        }
+        if ($this->synonym === '-1') {
+            //без синонимов
+            $query->andWhere(['synonym' => null]);
+        } elseif ($this->synonym === '0') {
+            //любое значение
         } else {
-            $query->andFilterWhere(['parent'=>$this->parent]);
+            $query->andFilterWhere(['synonym'=>$this->synonym]);
         }
 
 

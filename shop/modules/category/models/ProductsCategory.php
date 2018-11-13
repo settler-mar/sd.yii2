@@ -74,6 +74,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(self::className(), ['id' => 'synonym']);
     }
+    public function getSynonyms()
+    {
+        return $this->hasMany(self::className(), ['synonym' => 'id']);
+    }
 
     /**
      * дерево категорий
@@ -146,13 +150,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
      * @param $id
      * @return array сама категория и все дочерние категории
      */
-    public static function childsId($id)
+    public static function childsId($id, $activeOnly = true)
     {
         $out = [$id];
-        $categories = self::find()->select(['id'])->where([
-            'parent' => $id,
-            'active'=> [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
-        ])->asArray()->all();
+        $where = ['parent' => $id];
+        if ($activeOnly) {
+            $where = [
+                'parent' => $id,
+                'active'=> [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
+            ];
+        }
+        $categories = self::find()->select(['id'])->where($where)->asArray()->all();
         foreach ($categories as $category) {
             $out = array_merge($out, self::childsId($category['id']));
         }

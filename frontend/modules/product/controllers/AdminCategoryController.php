@@ -32,47 +32,83 @@ class AdminCategoryController extends Controller
    * Lists all ProductsCategory models.
    * @return mixed
    */
-  public function actionIndex()
-  {
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductView')) {
-      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-      return false;
-    }
-    $searchModel = new ProductsCategorySearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//    ddd(ArrayHelper::map(
-//        ProductsCategory::find()->select(['id', 'name'])->orderBy(['name'=>SORT_ASC])->asArray()->all(),
-//        'id',
-//        'name'
-//    ));
-    return $this->render('index.twig', [
-        'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider,
-        'tableData' => [
-            'parent' => function ($model) {
-              return isset($model->parentCategory->name) ? $model->parentCategory->name : '';
-            },
-            'synonym' => function ($model) {
-              return isset($model->synonymCategory->name) ? $model->synonymCategory->name : '';
-            },
-            'active' => function ($model) {
-              switch ($model->active) {
-                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-                  return 'Активна';
-                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-                  return 'Не активна';
-                default:
-                  return 'Ожидает подтверждения';
-              }
-            }
-        ],
-        'parents' => ['0' => 'Нет'] + ArrayHelper::map(
-            ProductsCategory::find()->select(['id', 'name'])->orderBy(['name'=>SORT_ASC])->asArray()->all(),
+    public function actionIndex()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductView')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $searchModel = new ProductsCategorySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $parents = ArrayHelper::map(
+            ProductsCategory::find()->select(['id', 'name'])->orderBy(['name' => SORT_ASC])->asArray()->all(),
             'id',
             'name'
-        ),
-        'activeFilter' => $this->activeFilter(),
-    ]);
+        );
+        return $this->render('index.twig', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'tableData' => [
+                'parents' => function ($model) {
+                    $out = '';
+                    $parents = ProductsCategory::parents([$model]);
+                    if (count($parents) > 1) {
+                        for ($i = count($parents) - 1; $i > 0; $i--) {
+                            $out .= '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">';
+                            switch ($parents[$i]->active) {
+                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
+                                    $out .= '<span class="status_1">';
+                                    break;
+                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
+                                    $out .= '<span class="status_2">';
+                                    break;
+                                default:
+                                    $out .= '<span class="status_0">';
+                            }
+                            $out .= $parents[$i]->name;
+                            $out .= '</span></a>/';
+                        }
+                    }
+                    return $out;
+                },
+                'synonym' => function ($model) {
+                    return isset($model->synonymCategory->name) ? $model->synonymCategory->name : '';
+                },
+                'active' => function ($model) {
+                    switch ($model->active) {
+                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
+                            return '<span class="status_1"><span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
+                            return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
+                        default:
+                            return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
+                    }
+                },
+                'name' => function ($model) {
+                    $out = '<span';
+                    if ($model->synonyms) {
+                        $out .= ' style="cursor:pointer" ';
+                        $out .= ' title="Синонимы: ' . implode('/', array_column($model->synonyms, 'name')) . '" ';
+                    }
+//                    switch ($model->active) {
+//                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
+//                            $out .= ' class="status_1"';
+//                            break;
+//                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
+//                            $out .= ' class="status_2"';
+//                            break;
+//                        default:
+//                            $out .= ' class="status_0"';
+//                    }
+                    $out .= '>' . $model->name;
+                    $out .= '</span>';
+                    return $out;
+                }
+            ],
+            'parents' => ['0' => 'Нет'] + $parents,
+            'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parents,
+            'activeFilter' => $this->activeFilter(),
+        ]);
   }
   /**
    * Displays a single ProductsCategory model.
