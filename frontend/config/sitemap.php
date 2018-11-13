@@ -24,6 +24,7 @@ return [
             ['cw_categories_stores.is_active' => 1],
             ['cws.is_active' => [0,1]],
             ['cws.is_offline' => 0],
+            ['hide_on_site' => 0],
             ['is not', 'cws.uid', null]
         ],
         'select' => ['cw_categories_stores.route', 'cw_categories_stores.updated_at'],
@@ -43,6 +44,7 @@ return [
             ['cw_categories_stores.is_active' => 1],
             ['cws.is_active' => [0,1]],
             ['cws.is_offline' => 1],
+            ['hide_on_site' => 0],
             ['is not', 'cws.uid', null]
         ],
         'select' => ['cw_categories_stores.route', 'cw_categories_stores.updated_at'],
@@ -54,7 +56,7 @@ return [
         //шопы
         'model' => 'frontend\modules\stores\models\Stores',
         'priority' => 1,
-        'condition' => ['and', ['is_active' => [0, 1]], ['is_offline' => 0]],
+        'condition' => ['and', ['is_active' => [0, 1]], ['is_offline' => 0], ['hide_on_site' => 0]],
         'select' => ['route', 'updated_at'],
         'url' => '/stores/{{route}}',
         'friquency' => 'daily'
@@ -63,7 +65,7 @@ return [
         //шопы offline
         'model' => 'frontend\modules\stores\models\Stores',
         'priority' => 1,
-        'condition' => ['and', ['is_active' => [0, 1]], ['is_offline' => 1]],
+        'condition' => ['and', ['is_active' => [0, 1]], ['is_offline' => 1], ['hide_on_site' => 0]],
         'select' => ['route', 'updated_at'],
         'url' => '/stores/{{route}}-offline',
         'friquency' => 'daily'
@@ -80,7 +82,12 @@ return [
         'model' => 'frontend\modules\stores\models\Stores',
         'priority' => 1,
         'join' => [['cw_coupons cwc', 'cwc.store_id = cw_stores.uid']],
-        'condition' => ['and', ['cw_stores.is_active' => [0, 1]], ['is not', 'cwc.uid', null]],
+        'condition' => [
+            'and',
+            ['cw_stores.is_active' => [0, 1]],
+            ['is not', 'cwc.uid', null],
+            ['cw_stores.hide_on_site' => 0]
+        ],
         'select' => ['route', 'cw_stores.updated_at'],
         'group_by' => ['route', 'cw_stores.updated_at'],
         'url' => [
@@ -96,7 +103,11 @@ return [
         'lang_request' => 1,//для каждого языка свой запрос
         'join' => [['cw_stores cws', 'cws.uid = cw_coupons.store_id']],
         //в условие запроса - языки купонов
-        'condition' => ['cws.is_active' => [0, 1], 'cw_coupons.language'=> '{{coupon_languages}}'],
+        'condition' => [
+            'cws.is_active' => [0, 1],
+            'cws.hide_on_site' => 0,
+            'cw_coupons.language'=> '{{coupon_languages}}'
+        ],
         'select' => ['cws.route as route', 'cw_coupons.uid', 'cw_coupons.updated_at'],
         'url' => '/coupons/{{route}}/{{uid}}',
         'friquency' => 'daily'

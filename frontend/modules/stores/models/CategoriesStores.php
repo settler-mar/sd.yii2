@@ -198,7 +198,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
       } else {
         $categories
             ->addSelect(['count(cstc.category_id) as count'])
-            ->andWhere(['cws.is_active' => [0, 1], 'cwcs.is_active' => 1])
+            ->andWhere(['cws.is_active' => [0, 1], 'cwcs.is_active' => 1, 'cws.hide_on_site' => 0])
             ->groupBy(['cwcs.name', 'cwcs.parent_id', 'cwcs.uid']);
       }
       $categories = $categories->asArray()->all();

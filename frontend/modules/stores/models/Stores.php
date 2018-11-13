@@ -153,7 +153,7 @@ class Stores extends \yii\db\ActiveRecord
       [['videos', 'regions'], 'safe'],
       ['regions_list', 'in', 'allowArray' => true, 'range' => array_keys(Yii::$app->params['regions_list'])],
       ['display_on_plugin', 'in', 'range' => [0, 1, 2, 3], 'skipOnEmpty' => 1],
-      ['show_products', 'in', 'range' => [0, 1], 'skipOnEmpty' => 1],
+      [['show_products', 'hide_on_site'], 'in', 'range' => [0, 1], 'skipOnEmpty' => 1],
       [['updated_at'], 'safe'],
     ];
   }
@@ -205,6 +205,7 @@ class Stores extends \yii\db\ActiveRecord
       'show_products' => 'Отображать страницу с продуктами',
       'status_updated' => 'Изменение статуса',
       'test_link' => 'Блок теста ссылок',
+      'hide_on_site' => 'Скрывать на основном сайте',
     ];
   }
 
@@ -379,7 +380,7 @@ class Stores extends \yii\db\ActiveRecord
     }
     $data = $cache->getOrSet($cache_name, function () use ($filters) {
       return self::find()
-        ->where(array_merge(['is_active' => [0, 1]], $filters))
+        ->where(array_merge(['is_active' => [0, 1], 'hide_on_site' => 0], $filters))
         ->count();
     }, $cache->defaultDuration, $dependency);
 
@@ -477,7 +478,8 @@ class Stores extends \yii\db\ActiveRecord
       $store =  self::find()
         ->from(self::tableName() . ' cws')
         ->select(self::selectAttributes($language))
-        ->where($where);
+        ->where($where)
+        ->andWhere(['hide_on_site' => 0]);
       if ($language) {
           $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
       }
@@ -836,7 +838,7 @@ class Stores extends \yii\db\ActiveRecord
       ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
       ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid and cwsr.region = "'.Yii::$app->params['region'].'"')
-      ->where(['cws.is_active' => $active])
+      ->where(['cws.is_active' => $active, 'cws.hide_on_site' => 0])
       ->asArray();
     if ($language) {
         $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . Yii::$app->language . '"');
@@ -894,7 +896,7 @@ class Stores extends \yii\db\ActiveRecord
             $storesObj = self::find()
                 ->from(self::tableName() . ' cws')
                 ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline'])
-                ->where(['cws.is_active' => [0, 1]])
+                ->where(['cws.is_active' => [0, 1], 'hide_on_site' => 0])
                 ->asArray();
             if ($categoryId) {
                 $storesObj->innerJoin('cw_stores_to_categories cstc', 'cws.uid = cstc.store_id')
@@ -919,7 +921,7 @@ class Stores extends \yii\db\ActiveRecord
                 ->from(Coupons::tableName() . ' cwc')
                 ->select(['cws.name', 'cws.uid', 'cws.route', 'cws.is_offline', 'count(cwc.uid) as count'])
                 ->innerJoin(self::tableName() . ' cws', 'cwc.store_id = cws.uid')
-                ->where(['cws.is_active' => [0, 1]])
+                ->where(['cws.is_active' => [0, 1], 'hide_on_site' => 0])
                 ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
                 ->groupBy('cwc.store_id')
                 ->asArray();
