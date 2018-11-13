@@ -13,7 +13,7 @@ use dominus77\tinymce\TinyMce;
 $config = [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','minifyManager'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -134,6 +134,12 @@ $config = [
                     ]
                 ]
             ]
+        ],
+        'minifyManager' => [
+            'class' => 'maybeworks\minify\MinifyManager',
+            'html' => !YII_DEBUG,
+            'css' => false,
+            'js' => false,
         ],
         'urlManager' => [
             'rules' => [
