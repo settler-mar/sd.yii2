@@ -22,11 +22,11 @@ return [
       'targets' => [
         [
           'class' => 'yii\log\FileTarget',
-          'levels' => ['error', 'warning', 'info'],
-          'categories' => [
-                'yii\db\*',
-                'yii\web\HttpException:*',
-            ],
+          'levels' => ['error', 'warning'],//, 'info'],
+//          'categories' => [
+//                'yii\db\*',
+//                'yii\web\HttpException:*',
+//            ],
         ],
 
 
