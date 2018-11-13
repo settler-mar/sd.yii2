@@ -167,54 +167,49 @@ class DefaultController extends Controller
     $sum = (float)$request->post('sum');
     if ($rates->is_percentage) {
       $reward = $sum * $rates->size * $kurs / 100;
-      $cashback = $sum * $rates->our_size * $kurs / 100;
+      //$cashback = $sum * $rates->our_size * $kurs / 100;
     } else {
       $reward = $rates->size;
-      $cashback = $rates->our_size;
+      //$cashback = $rates->our_size;
     }
 
     // просчет лояльности
     $loyalty_bonus = $user->loyalty_status_data['bonus'];
-    $cashback = $cashback + $cashback * $loyalty_bonus / 100;
+    //$cashback = $cashback + $cashback * $loyalty_bonus / 100;
 
-    $cashback = round($cashback, 2);
+    //$cashback = round($cashback, 2);
     $reward = round($reward, 2);
 
-    $pay = new Payments();
-    $pay->cpa_id = $cpa->cpa_id;
-    $pay->store_point_id = (int)Yii::$app->session->get('point');
-    $pay->click_date = date("Y-m-d H:i:s");
-    $pay->action_date = date("Y-m-d H:i:s");
-    $pay->status_updated = date("Y-m-d H:i:s");
-    $pay->closing_date = date("Y-m-d H:i:s", strtotime("+" . $action->hold_time . " day"));
-    $pay->action_id = time();
-    $pay->additional_id = 0;
-    $pay->affiliate_id = $cpa->id;
-    $pay->is_showed = 1;
-    $pay->status = 0;
-    $pay->user_id = $user->uid;
-    $pay->order_price = $sum;
-    $pay->reward = $reward;
-    $pay->cashback = $cashback;
-    $pay->order_id = $store->cash_number != 1 ? $request->post('order_number') : (string)time();
-    $pay->shop_percent = $store->percent;
-    $pay->loyalty_status = $user->loyalty_status;
-    $pay->kurs = $kurs;
-    $pay->action_code = $action->uid;
-    $pay->rate_id = $rates->uid;
+    $date = date("Y-m-d H:i:s");
+    $payment = [
+        'cpa_id' => $cpa->cpa_id,
+        'affiliate_id' => $cpa->id,
+        'subid' => $user->uid,
+        'action_id' => time(),
+        'status' => 0,
+        'ip' => get_ip(),
+        'currency' => $store->currency,//Валюта платежа
+        'cart' => $sum,  //Сумма заказа в валюте
+        'payment' => $reward,  //комиссия в валюте магазина
+        'click_date' => $date,
+        'action_date' => $date,
+        'status_updated' => $date,
+        'closing_date' => date("Y-m-d H:i:s", strtotime("+" . $action->hold_time . " day")),
+        'order_id' => $store->cash_number != 1 ? $request->post('order_number') : (string)time(),
+        "tariff_id" => null,
+    ];
 
-    if ($user->referrer_id > 0) {
-      $ref = $this->getUserData($user->referrer_id);
-      $pay->ref_id = $user->referrer_id;
-      $pay->ref_bonus_id = $ref->bonus_status;
-      $ref_bonus_data = $ref->bonus_status_data;
+    $paymentStatus = Payments::makeOrUpdate(
+        $payment,
+        $store,
+        $user,
+        $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+        ['notify' => true, 'email' => true]
+    );
 
-      if (isset($ref_bonus_data['is_webmaster']) && $ref_bonus_data['is_webmaster'] == 1) {
-        $pay->ref_bonus = ($reward - $cashback) * $ref_bonus_data['bonus'] / 100;
-      } else {
-        $pay->ref_bonus = $cashback * $ref_bonus_data['bonus'] / 100;
-      }
-      $pay->ref_bonus = round($pay->ref_bonus, 2);
+
+    if(!$paymentStatus['payment']){
+      return 'Непредвиденная ошибка';
     }
 
     $action=$action->toArray();
@@ -232,9 +227,9 @@ class DefaultController extends Controller
       ],
       'rate' => $rates,
     ];
-    $pay->recalc_json = json_encode($recalc_json);
+    $paymentStatus['payment']->recalc_json = json_encode($recalc_json);
 
-    if (!$pay->save()) {
+    if (!$paymentStatus['payment']->save()) {
       //var_dump($pay->getErrors());
       return 'Непредвиденная ошибка';
     }
