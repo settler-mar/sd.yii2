@@ -78,7 +78,22 @@ class AdminValuesController extends Controller
                 },
                 'synonyms' => function ($model) {
                     return implode('; ', array_column($model->synonyms, 'name'));
+                },
+                'parameter' => function($model) {
+                    $out = '<a href="/admin/params/update/id:'.$model->parameter->id.'">';
+                    switch ($model->active) {
+                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO):
+                            $out .= ('<span class="status_1">'.$model->parameter->name.'</span>');
+                            break;
+                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES):
+                            $out .= ('<span class="status_2">'.$model->parameter->name.'</span>');
+                            break;
+                        default:
+                            $out .= ('<span class="status_0">'.$model->parameter->name.'</span>');
+                    }
+                    return $out . '</a>';
                 }
+
             ],
             'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
                 ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),

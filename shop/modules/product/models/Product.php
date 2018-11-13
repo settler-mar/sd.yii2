@@ -172,8 +172,18 @@ class Product extends \yii\db\ActiveRecord
     {
         $product = $this;
         $params = self::makeParams($product->params_original);
+        $categories = [];//массив id категорий
+        $category = $product->categories;
+        if (!empty($category)) {
+            $parents = ProductsCategory::parents($category);
+            if ($parents) {
+                for ($i = count($parents) - 1; $i >= 0; $i--) {
+                    $categories[] = $parents[$i]->id;
+                }
+            }
+        }
         if (!empty($params)) {
-            $standarted = ProductParameters::standarted($params);
+            $standarted = ProductParameters::standarted($params, $categories);
             $product->params = !empty($standarted['params']) ? $standarted['params'] : null;
             $product->paramsProcessing = !empty($standarted['params_processing']) ? $standarted['params_processing'] : [];
         } else {
@@ -220,7 +230,6 @@ class Product extends \yii\db\ActiveRecord
             $product['params'];
         $standartedParams = !empty($params) ? ProductParameters::standarted($params, $categories) : null;
 
-
         $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];
         $productDb->currency = $currency;
@@ -236,7 +245,7 @@ class Product extends \yii\db\ActiveRecord
         $productDb->vendor = (string)$product['vendor'];
 
         $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
-            $productDb->image . json_encode($categories));
+            $productDb->image);
 
         if ($productHash != $productDb->data_hash) {
             //echo $productHash." ".$productDb->data_hash."\n";
@@ -288,7 +297,6 @@ class Product extends \yii\db\ActiveRecord
             //если просто значения без параметров
             $paramsArray = ProductParameters::fromValues($paramOriginals, $categories);
         }
-        //d($paramsArray);
         return $paramsArray;
     }
 
@@ -433,7 +441,6 @@ class Product extends \yii\db\ActiveRecord
      */
     protected function writeParamsProcessing()
     {
-
         $ids = [];
         if (!empty($this->paramsProcessing)) {
             foreach ($this->paramsProcessing as $code => $values) {
@@ -456,14 +463,12 @@ class Product extends \yii\db\ActiveRecord
                         $ids[] = $paramProcessing->id;
                     }
                 }
-
-                if (empty($ids)) {
-                    ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
-                } else {
-                    ProductParametersProcessing::deleteAll(['and', ['product_id' => $this->id], ['not in', 'id', $ids]]);
-                }
             }
-
+        }
+        if (empty($ids)) {
+            ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
+        } else {
+            ProductParametersProcessing::deleteAll(['and', ['product_id' => $this->id], ['not in', 'id', $ids]]);
         }
     }
 }

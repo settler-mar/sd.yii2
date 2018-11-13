@@ -69,7 +69,7 @@ class AdminController extends Controller
                     if ($model->values) {
                         foreach ($model->values as $key => $value) {
                             $out .= $key ? '; ' : '';
-                            $out .= ('<span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span>');
+                            $out .= ('<a href="/admin-values/params/update/id:'.$value->id.'"><span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span></a>');
                         }
                     }
                     return $out;

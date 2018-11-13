@@ -118,10 +118,13 @@ class ProductParameters extends \yii\db\ActiveRecord
     }
     public function getCategoryTree()
     {
-        $categories = ProductsCategory::parents([$this->category]);
+
         $out = '';
-        for ($i=count($categories)-1; $i>=0; $i--) {
-            $out .= $categories[$i]->name. '.';
+        if ($this->category) {
+            $categories = ProductsCategory::parents([$this->category]);
+            for ($i = count($categories) - 1; $i >= 0; $i--) {
+                $out .= $categories[$i]->name . '.';
+            }
         }
         return $out;
     }
@@ -182,7 +185,6 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public static function standartedParam($param, $categories = false)
     {
-        //d(self::$params, self::$paramsProcessing);
         $categoriesString = $categories ? implode('.', $categories) . '|' : '';
         //пробуем найти в памяти
         if (isset(self::$params[$categoriesString.$param])) {
@@ -208,13 +210,10 @@ class ProductParameters extends \yii\db\ActiveRecord
         if ($categories) {
             foreach ($categories as $category) {
                 $out = self::find()->where(['code'=>$param, 'category_id'=> $category])->one();
-                //d($category, $out);
             }
         } else {
             $out = self::findOne(['code'=>$param, 'category_id' => null]);
         }
-
-        //ddd($out);
         if ($out) {
             //нашли
             if ($out->synonymParam) {
@@ -298,7 +297,6 @@ class ProductParameters extends \yii\db\ActiveRecord
                 self::$originalValues[$categories . $original] = false;
             }
         }
-        //d($out, self::$originalValues);
         return !empty($out) ? $out : null;
     }
 
