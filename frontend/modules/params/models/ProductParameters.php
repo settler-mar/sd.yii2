@@ -118,12 +118,11 @@ class ProductParameters extends \yii\db\ActiveRecord
     }
     public function getCategoryTree()
     {
-
         $out = '';
         if ($this->category) {
             $categories = ProductsCategory::parents([$this->category]);
             for ($i = count($categories) - 1; $i >= 0; $i--) {
-                $out .= $categories[$i]->name . '.';
+                $out .= $categories[$i]->name . '/';
             }
         }
         return $out;

@@ -48,7 +48,11 @@ class AdminController extends Controller
 
         $searchModel = new ProductParametersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //todo $parameterFilter = категории/.../параметры
+        $parameterFilter = [];
+        $parameters = ProductParameters::find()->orderBy(['name' => SORT_ASC])->all();
+        foreach ($parameters as $parameter) {
+            $parameterFilter[$parameter->id] = $parameter->CategoryTree.$parameter->code.'('.$parameter->id.')';
+        }
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -98,7 +102,7 @@ class AdminController extends Controller
                     return $out;
                 },
                 'synonym_name' => function ($model) {
-                    return $model->synonymParam ? $model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
+                    return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
                 },
                 'code' => function ($model) {
                     $out = '<span';
@@ -119,13 +123,7 @@ class AdminController extends Controller
                 'id',
                 'name'
             ),
-            'parameter_filter' => [0=>'Не задано'] +
-                arrayHelper::map(
-                    ProductParameters::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
-                    'id',
-                    'name'
-                )
-            ,
+            'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
 
         ]);
     }

@@ -77,18 +77,25 @@ class ProductParametersSearch extends ProductParameters
             $query->andFilterWhere(['like', 'ppv.name', $this->values]);
         }
 
-        if ($this->synonym === "0") {
+        if ($this->synonym === null) {
+            $this->synonym = '-1';
+        }
+        if ($this->synonym == '-1') {
+            //без синонимов
             $query->andWhere([$this->tableName().'.synonym' => null]);
-        } elseif (!empty($this->synonym)) {
+        } elseif ($this->synonym === '0') {
+            //любое значение
+        } else {
             $query->andWhere([$this->tableName().'.synonym' => $this->synonym]);
         }
-        if ($this->synonyms_names === "0") {
-            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
-            $query->andWhere(['syn.id' => null]);
-        } elseif (!empty($this->synonyms_names)) {
-            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
-            $query->andWhere(['syn.id' => $this->synonyms_names]);
-        }
+
+//        if ($this->synonyms_names === "0") {
+//            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+//            $query->andWhere(['syn.id' => null]);
+//        } elseif (!empty($this->synonyms_names)) {
+//            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+//            $query->andWhere(['syn.id' => $this->synonyms_names]);
+//        }
         if ($this->category_id === "0") {
             $query->andWhere(['category_id' => null]);
         } elseif ($this->category_id > 0) {
