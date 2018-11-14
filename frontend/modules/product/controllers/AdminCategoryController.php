@@ -50,26 +50,27 @@ class AdminCategoryController extends Controller
             'dataProvider' => $dataProvider,
             'tableData' => [
                 'parents' => function ($model) {
-                    $out = '';
+                    $out = array();
                     $parents = ProductsCategory::parents([$model]);
                     if (count($parents) > 1) {
                         for ($i = count($parents) - 1; $i > 0; $i--) {
-                            $out .= '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">';
+                            $item = '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">';
                             switch ($parents[$i]->active) {
                                 case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-                                    $out .= '<span class="status_1">';
+                                  $item .= '<span class="status_1">';
                                     break;
                                 case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-                                    $out .= '<span class="status_2">';
+                                  $item .= '<span class="status_2">';
                                     break;
                                 default:
-                                    $out .= '<span class="status_0">';
+                                  $item .= '<span class="status_0">';
                             }
-                            $out .= $parents[$i]->name;
-                            $out .= '</span></a>/';
+                          $item .= $parents[$i]->name;
+                          $item .= '</span></a>';
+                          $out[]=$item;
                         }
                     }
-                    return $out;
+                    return implode(' / ',$out);
                 },
                 'synonym' => function ($model) {
                     return isset($model->synonymCategory->name) ? $model->synonymCategory->name : '';

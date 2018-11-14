@@ -80,26 +80,27 @@ class AdminController extends Controller
                     return $out;
                 },
                 'categories' => function ($model) {
-                    $out = '';
+                    $out = array();
                     if ($model->category) {
                         $categories = ProductsCategory::parents([$model->category]);
                         for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $out .= '<a href="/admin-category/product/update/id:'.$categories[$i]->id.'">';
+                            $item = '<a href="/admin-category/product/update/id:'.$categories[$i]->id.'">';
                             switch ($categories[$i]->active) {
                                 case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-                                    $out .= '<span class="status_1">';
+                                  $item .= '<span class="status_1">';
                                     break;
                                 case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-                                    $out .= '<span class="status_2">';
+                                  $item .= '<span class="status_2">';
                                     break;
                                 default:
-                                    $out .= '<span class="status_0">';
+                                  $item .= '<span class="status_0">';
                             }
-                            $out .= $categories[$i]->name;
-                            $out .= '</span></a>'.($i ? '/': '');
+                          $item .= $categories[$i]->name;
+                          $item .= '</span></a>';
+                          $out[]=$item;
                         }
                     }
-                    return $out;
+                    return implode(' / ', $out);
                 },
                 'synonym_name' => function ($model) {
                     return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
