@@ -9,6 +9,8 @@ use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
+use shop\modules\product\models\ProductsToCategory;
+use shop\modules\category\models\ProductsCategory;
 use yii\console\Controller;
 use yii;
 use frontend\modules\cache\models\Cache;
@@ -16,6 +18,9 @@ use JBZoo\Image\Image;
 use yii\base\ErrorException;
 use common\components\Sitemap;
 use shop\modules\product\models\Product;
+use frontend\modules\params\models\ProductParameters;
+use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\params\models\ProductParametersProcessing;
 
 
 class TaskController extends Controller
@@ -643,6 +648,9 @@ class TaskController extends Controller
       }
   }
 
+    /**
+     * Создание sitemap
+     */
   public function actionSitemap($alias = '@frontend')
   {
       $map = require(Yii::getAlias($alias . '/config/sitemap.php'));
@@ -660,6 +668,9 @@ class TaskController extends Controller
       d($sitemap->getMaps($path));
   }
 
+    /**
+     * Перезапись параметров продуктов Каталога
+     */
   public function actionProductParams()
   {
       $updated = 0;
@@ -672,6 +683,39 @@ class TaskController extends Controller
           }
       }
       echo 'Updated '.$updated;
+  }
+
+    /**
+     * Очистка продуктов, категорий, параметров, значений параметров Каталога
+     */
+  public function actionProductClear()
+  {
+      echo "Будет выполнена очистка продуктов, категорий, параметров, значений параметров Каталога\n";
+      $continue = $this->prompt('Действительно хотите продолжить? No/Yes', ['required' => true]);
+      if ($continue != 'Yes') {
+          echo "Прервано\n";
+          return ;
+      }
+
+      $db = Yii::$app->db;
+      $db->createCommand('delete from  '.ProductsToCategory::tableName())->execute();
+      $db->createCommand('alter table '.ProductsToCategory::tableName().' AUTO_INCREMENT = 1')->execute();
+
+      $db->createCommand('delete  from '.ProductsCategory::tableName())->execute();
+      $db->createCommand('alter table '.ProductsCategory::tableName().' AUTO_INCREMENT = 1')->execute();
+
+      $db->createCommand('delete from  '.Product::tableName())->execute();
+      $db->createCommand('alter table '.Product::tableName().' AUTO_INCREMENT = 1')->execute();
+
+      $db->createCommand('delete from  ' . ProductParametersProcessing::tableName())->execute();
+      $db->createCommand('alter table ' . ProductParametersProcessing::tableName(). ' AUTO_INCREMENT = 1')->execute();
+
+      $db->createCommand('delete from '.ProductParametersValues::tableName())->execute();
+      $db->createCommand('alter table '.ProductParametersValues::tableName().' AUTO_INCREMENT = 1')->execute();
+
+      $db->createCommand('delete from '.ProductParameters::tableName())->execute();
+      $db->createCommand('alter table '.ProductParameters::tableName().' AUTO_INCREMENT = 1')->execute();
+
   }
 
 }
