@@ -23,21 +23,19 @@
                             'columns': [
                             {'class': '\\yii\\grid\\SerialColumn'},
                             'id',
-                            'code',
-                            'name',
                             {
                                 'attribute': 'category_id',
                                 'format': 'raw',
-                                'value': 'categoryTree',
-                                'filter': product_categories
+                                'value': tableData.categories,
+                                'filter': product_categories,
+                                'label': 'Категории',
                             },
                             {
-                                'attribute':'synonyms_names',
-                                'value': tableData.synonyms,
+                                'attribute':'code',
                                 'format': 'raw',
-                                'filter':parameter_filter,
-                                'label': 'Синонимы'
+                                'value': tableData.code,
                             },
+                            'name',
                             {
                                 'attribute':'synonym',
                                 'format':'raw',

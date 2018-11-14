@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\params\models\ProductParameters;
+use shop\modules\category\models\ProductsCategory;
 
 /**
  * ProductParametersSearch represents the model behind the search form about `frontend\modules\params\models\ProductParameters`.
@@ -68,8 +69,8 @@ class ProductParametersSearch extends ProductParameters
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['category_id' => $this->category_id]);
+            ->andFilterWhere(['like', 'name', $this->name]);
+            //->andFilterWhere(['category_id' => $this->category_id]);
 
         if (!empty($this->values)) {
             $query->leftJoin(ProductParametersValues::tableName(). ' ppv', 'ppv.parameter_id = '.$this->tableName().'.id');
@@ -87,6 +88,12 @@ class ProductParametersSearch extends ProductParameters
         } elseif (!empty($this->synonyms_names)) {
             $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
             $query->andWhere(['syn.id' => $this->synonyms_names]);
+        }
+        if ($this->category_id === "0") {
+            $query->andWhere(['category_id' => null]);
+        } elseif ($this->category_id > 0) {
+            $childsId = ProductsCategory::childsId($this->category_id, false);
+            $query->andFilterWhere(['category_id'=>$childsId]);
         }
 
         return $dataProvider;
