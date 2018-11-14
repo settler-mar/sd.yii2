@@ -23,19 +23,23 @@
                             'columns': [
                             {'class': '\\yii\\grid\\SerialColumn'},
                             'id',
-                            'code',
-                            'name',
                             {
-                                'attribute':'synonyms_names',
-                                'value': tableData.synonyms,
+                                'attribute': 'category_id',
                                 'format': 'raw',
-                                'filter':parameter_filter,
-                                'label': 'Синонимы'
+                                'value': tableData.categories,
+                                'filter': product_categories,
+                                'label': 'Категории',
                             },
+                            {
+                                'attribute':'code',
+                                'format': 'raw',
+                                'value': tableData.code,
+                            },
+                            'name',
                             {
                                 'attribute':'synonym',
                                 'format':'raw',
-                                'filter':parameter_filter,
+                                'filter':synonym_filter,
                                 'value': tableData.synonym_name,
                             },
                             {
@@ -44,12 +48,7 @@
                                 'value': tableData.active,
                                 'filter': activeFilter
                             },
-                            {
-                                'attribute': 'product_categories',
-                                'format': 'raw',
-                                'value': tableData.categories,
-                                'filter': product_categories
-                            },
+
                             {
                                 'attribute':'values',
                                 'format': 'raw',

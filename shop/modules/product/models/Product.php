@@ -129,7 +129,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(ProductsCategory::className(), ['id'=>'category_id'])
+        return $this->hasMany(ProductsCategory::className(), ['id' => 'category_id'])
             ->viaTable(ProductsToCategory::tableName(), ['product_id' => 'id']);
     }
 
@@ -140,6 +140,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -147,6 +148,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -170,8 +172,18 @@ class Product extends \yii\db\ActiveRecord
     {
         $product = $this;
         $params = self::makeParams($product->params_original);
+        $categories = [];//массив id категорий
+        $category = $product->categories;
+        if (!empty($category)) {
+            $parents = ProductsCategory::parents($category);
+            if ($parents) {
+                for ($i = count($parents) - 1; $i >= 0; $i--) {
+                    $categories[] = $parents[$i]->id;
+                }
+            }
+        }
         if (!empty($params)) {
-            $standarted = ProductParameters::standarted($params);
+            $standarted = ProductParameters::standarted($params, $categories);
             $product->params = !empty($standarted['params']) ? $standarted['params'] : null;
             $product->paramsProcessing = !empty($standarted['params_processing']) ? $standarted['params_processing'] : [];
         } else {
@@ -196,13 +208,13 @@ class Product extends \yii\db\ActiveRecord
     {
         $new = 0;
         $error = 0;
-        $article = (string) $product['id'];
+        $article = (string)$product['id'];
         $productDb = self::findOne([
             'cpa_id' => $product['cpa_id'],
             'store_id' => $product['store_id'],
             'article' => $article
         ]);
-        $currency = (string) $product['currencyId'];
+        $currency = (string)$product['currencyId'];
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
         if (!$productDb) {
             $productDb = new self();
@@ -210,29 +222,30 @@ class Product extends \yii\db\ActiveRecord
             $productDb->store_id = $product['store_id'];
             $productDb->catalog_id = $product['catalog_id'];
             $productDb->article = $article;
-            $productDb->image = self::saveImage((string) $product['picture']);
+            $productDb->image = self::saveImage((string)$product['picture']);
             $new = 1;
         }
-
-        $params = empty($product['params']) ? self::makeParams($product['params_original']) : $product['params'];
-        $standartedParams = !empty($params) ?  ProductParameters::standarted($params) : null;
-
         $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
+        $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
+            $product['params'];
+        $standartedParams = !empty($params) ? ProductParameters::standarted($params, $categories) : null;
+
         $productDb->params_original = $product['params_original'];
         $productDb->available = $product['available'];
         $productDb->currency = $currency;
-        $productDb->description = (string) $product['description'];
-        $productDb->modified_time = date('Y-m-d H:i:s', (int) $product['modified_time']);
-        $productDb->name = (string) $product['name'];
-        $productDb->old_price = isset($product['oldprice']) ? (float) $product['oldprice'] : null;
-        $productDb->price = (float) $product['price'];
+        $productDb->description = (string)$product['description'];
+        $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
+        $productDb->name = (string)$product['name'];
+        $productDb->old_price = isset($product['oldprice']) ? (float)$product['oldprice'] : null;
+        $productDb->price = (float)$product['price'];
         $productDb->params = $standartedParams['params'];
         $productDb->paramsProcessing = $standartedParams['params_processing'];
-        $productDb->image = self::saveImage((string) $product['picture'], $productDb->image);
-        $productDb->url = (string) $product['url'];
-        $productDb->vendor = (string) $product['vendor'];
+        $productDb->image = self::saveImage((string)$product['picture'], $productDb->image);
+        $productDb->url = (string)$product['url'];
+        $productDb->vendor = (string)$product['vendor'];
 
-        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name . $productDb->image);
+        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
+            $productDb->image);
 
         if ($productHash != $productDb->data_hash) {
             //echo $productHash." ".$productDb->data_hash."\n";
@@ -242,7 +255,7 @@ class Product extends \yii\db\ActiveRecord
                 $error = 1;
             } else {
                 $productDb->writeParamsProcessing();
-                $productDb->writeCategories($categories);//пишем - товар-категории
+                $productToCategories = $productDb->writeCategories(count($categories) ? [$categories[count($categories) - 1]] : []);//пишем - товар-категории только последнюю категорию
             }
         }
         return [
@@ -258,19 +271,19 @@ class Product extends \yii\db\ActiveRecord
      * @param $paramOriginals
      * @return array|null
      */
-    protected static function makeParams($paramOriginals)
+    protected static function makeParams($paramOriginals, $categories = false)
     {
         if (!trim($paramOriginals)) {
             return null;
         }
-        $params = explode('|', (string) $paramOriginals);
+        $categories = $categories ? implode('.', $categories) . '|' : '';
+        $params = explode('|', (string)$paramOriginals);
         $paramsArray = [];
         foreach ($params as $param) {
-            $item  = explode(':', $param);
+            $item = explode(':', $param);
             $key = trim($item[0]);
             $values = isset($item[1]) ? trim($item[1]) : false;
-            //d($key,$values);
-            if ( !empty($key) & !empty($values)) {
+            if (!empty($key) & !empty($values)) {
                 $paramsArray[$key] = preg_split('/[\/,]+/', $values);
                 foreach ($paramsArray[$key] as $valueKey => &$value) {
                     $value = trim($value);
@@ -282,36 +295,46 @@ class Product extends \yii\db\ActiveRecord
         }
         if (empty($paramsArray)) {
             //если просто значения без параметров
-            $paramsArray = ProductParameters::fromValues($paramOriginals);
+            $paramsArray = ProductParameters::fromValues($paramOriginals, $categories);
         }
         return $paramsArray;
     }
 
     protected function writeCategories($categories)
     {
-        $result = 0;
+        $result = [];
+        $ids = [];
         foreach ($categories as $category) {
-            $productToCategoryDb = ProductsToCategory::findOne([
-                'product_id'=>$this->id,
-                'category_id'=>$category
+            $result[] = $productToCategoryDb = ProductsToCategory::findOne([
+                'product_id' => $this->id,
+                'category_id' => $category
             ]);
             if (!$productToCategoryDb) {
-                $productToCategoryDb = new ProductsToCategory();
+                $result[] = $productToCategoryDb = new ProductsToCategory();
                 $productToCategoryDb->product_id = $this->id;
                 $productToCategoryDb->category_id = $category;
                 $productToCategoryDb->save();
             }
+            $ids[] = $productToCategoryDb->id;
         }
+        $deleteWhereCondition = empty($ids) ? ['product_id' => $this->id] :
+            ['and', ['product_id' => $this->id], ['not in', 'id', $ids]];
+        ProductsToCategory::deleteAll($deleteWhereCondition);
         return $result;
     }
 
     protected function makeCategories($categories)
     {
         $result = [];
-        foreach ($categories as $category) {
-            $cat = $this->productCategory($category);
+        $parent = null;
+        //каждая посдедующая будет дочерней к предыдущей
+        foreach ($categories as $index => $category) {
+            $cat = $this->productCategory($category, $parent);
             if ($cat) {
-                $result[] = $cat['id'];
+                $result[] = (string) $cat['id'];
+                $parent = $cat['id'];
+            } else {
+                $parent = null;
             }
         }
         return $result;
@@ -362,16 +385,27 @@ class Product extends \yii\db\ActiveRecord
         }
     }
 
-    protected function productCategory($name)
+    /**
+     * @param $name
+     * @param null $parent - если задано, то категория должна быть дочерней к parent
+     * @return mixed
+     */
+    protected function productCategory($name, $parent = null)
     {
         if (!isset(static::$categories[$name])) {
-            $categoryDb = ProductsCategory::findOne(['route'=> Yii::$app->help->str2url($name)]);
+            $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name)]);
             if (!$categoryDb) {
                 $categoryDb = new ProductsCategory();
                 $categoryDb->name = $name;
+                $categoryDb->parent = $parent;
                 if (!$categoryDb->save()) {
                     d($categoryDb->errors);
                     static::$categories[$name] = false;
+                }
+            } else {
+                if ($categoryDb->parent == null && $parent) {
+                    $categoryDb->parent = $parent;
+                    $categoryDb->save();
                 }
             }
             static::$categories[$name] = $categoryDb->toArray();
@@ -390,7 +424,7 @@ class Product extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         return $cache->getOrSet('products_active_count', function () {
             return self::find()
-                ->where(['available'=>[self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]])
+                ->where(['available' => [self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]])
                 ->count();
         });
     }
@@ -407,30 +441,29 @@ class Product extends \yii\db\ActiveRecord
      */
     protected function writeParamsProcessing()
     {
-        $ids = array();
-
-        if(!empty($this->paramsProcessing))
-        foreach ($this->paramsProcessing as $code => $values) {
-            foreach ($values as $valueId) {
-                $paramProcessing = ProductParametersProcessing::findOne([
-                    'product_id' => $this->id,
-                    'param_id' => $code,
-                    'value_id' => $valueId
-                ]);
-                if (!$paramProcessing) {
-                    $paramProcessing = new ProductParametersProcessing();
-                    $paramProcessing->product_id = $this->id;
-                    $paramProcessing->param_id = $code;
-                    $paramProcessing->value_id = $valueId;
-                    if (!$paramProcessing->save() && Yii::$app instanceof Yii\console\Application) {
-                        d($paramProcessing->errors);
+        $ids = [];
+        if (!empty($this->paramsProcessing)) {
+            foreach ($this->paramsProcessing as $code => $values) {
+                foreach ($values as $valueId) {
+                    $paramProcessing = ProductParametersProcessing::findOne([
+                        'product_id' => $this->id,
+                        'param_id' => $code,
+                        'value_id' => $valueId
+                    ]);
+                    if (!$paramProcessing) {
+                        $paramProcessing = new ProductParametersProcessing();
+                        $paramProcessing->product_id = $this->id;
+                        $paramProcessing->param_id = $code;
+                        $paramProcessing->value_id = $valueId;
+                        if (!$paramProcessing->save() && Yii::$app instanceof Yii\console\Application) {
+                            d($paramProcessing->errors);
+                        }
+                    }
+                    if (isset($paramProcessing->id)) {
+                        $ids[] = $paramProcessing->id;
                     }
                 }
-                if (isset($paramProcessing->id)) {
-                    $ids[] = $paramProcessing->id;
-                }
             }
-
         }
         if (empty($ids)) {
             ProductParametersProcessing::deleteAll(['product_id' => $this->id]);
@@ -438,5 +471,4 @@ class Product extends \yii\db\ActiveRecord
             ProductParametersProcessing::deleteAll(['and', ['product_id' => $this->id], ['not in', 'id', $ids]]);
         }
     }
-
 }

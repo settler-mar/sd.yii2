@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\params\models\ProductParameters;
+use shop\modules\category\models\ProductsCategory;
 
 /**
  * ProductParametersSearch represents the model behind the search form about `frontend\modules\params\models\ProductParameters`.
@@ -13,7 +14,7 @@ use frontend\modules\params\models\ProductParameters;
 class ProductParametersSearch extends ProductParameters
 {
     public $values;
-    public $product_categories;
+    //public $product_categories;
     public $synonyms_names;
     /**
      * @inheritdoc
@@ -21,7 +22,7 @@ class ProductParametersSearch extends ProductParameters
     public function rules()
     {
         return [
-            [['id', 'active', 'product_categories', 'synonym', 'synonyms_names'], 'integer'],
+            [['id', 'active', 'category_id', 'synonym', 'synonyms_names'], 'integer'],
             [['code', 'name', 'created_at', 'values'], 'safe'],
         ];
     }
@@ -69,27 +70,37 @@ class ProductParametersSearch extends ProductParameters
 
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name]);
+            //->andFilterWhere(['category_id' => $this->category_id]);
 
         if (!empty($this->values)) {
             $query->leftJoin(ProductParametersValues::tableName(). ' ppv', 'ppv.parameter_id = '.$this->tableName().'.id');
             $query->andFilterWhere(['like', 'ppv.name', $this->values]);
         }
-        if ($this->product_categories === "0") {
-            $query->andWhere(['categories' => null]);
-        } elseif (!empty($this->product_categories)) {
-            $query->andWhere('JSON_CONTAINS('.$this->tableName().'.categories,\'"'.$this->product_categories.'"\',"$")');
+
+        if ($this->synonym === null) {
+            $this->synonym = '-1';
         }
-        if ($this->synonym === "0") {
+        if ($this->synonym == '-1') {
+            //без синонимов
             $query->andWhere([$this->tableName().'.synonym' => null]);
-        } elseif (!empty($this->synonym)) {
+        } elseif ($this->synonym === '0') {
+            //любое значение
+        } else {
             $query->andWhere([$this->tableName().'.synonym' => $this->synonym]);
         }
-        if ($this->synonyms_names === "0") {
-            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
-            $query->andWhere(['syn.id' => null]);
-        } elseif (!empty($this->synonyms_names)) {
-            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
-            $query->andWhere(['syn.id' => $this->synonyms_names]);
+
+//        if ($this->synonyms_names === "0") {
+//            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+//            $query->andWhere(['syn.id' => null]);
+//        } elseif (!empty($this->synonyms_names)) {
+//            $query->leftJoin(ProductParameters::tableName().' syn', self::tableName().'.id = syn.synonym');
+//            $query->andWhere(['syn.id' => $this->synonyms_names]);
+//        }
+        if ($this->category_id === "0") {
+            $query->andWhere(['category_id' => null]);
+        } elseif ($this->category_id > 0) {
+            $childsId = ProductsCategory::childsId($this->category_id, false);
+            $query->andFilterWhere(['category_id'=>$childsId]);
         }
 
         return $dataProvider;

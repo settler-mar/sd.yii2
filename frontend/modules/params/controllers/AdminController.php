@@ -48,6 +48,11 @@ class AdminController extends Controller
 
         $searchModel = new ProductParametersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $parameterFilter = [];
+        $parameters = ProductParameters::find()->orderBy(['name' => SORT_ASC])->all();
+        foreach ($parameters as $parameter) {
+            $parameterFilter[$parameter->id] = $parameter->CategoryTree.$parameter->code.'('.$parameter->id.')';
+        }
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -69,41 +74,56 @@ class AdminController extends Controller
                     if ($model->values) {
                         foreach ($model->values as $key => $value) {
                             $out .= $key ? '; ' : '';
-                            $out .= ('<span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span>');
+                            $out .= ('<a href="/admin-values/params/update/id:'.$value->id.'"><span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span></a>');
                         }
                     }
                     return $out;
                 },
                 'categories' => function ($model) {
                     $out = '';
-                    if ($model->categories) {
-                        foreach ($model->categories as $key => $category) {
-                            $productCategory = ProductsCategory::findOne($category);
-                            $out .= ($productCategory ? ($key ? '; ' : '').$productCategory->name : '');
+                    if ($model->category) {
+                        $categories = ProductsCategory::parents([$model->category]);
+                        for ($i = count($categories) - 1; $i >= 0; $i--) {
+                            $out .= '<a href="/admin-category/product/update/id:'.$categories[$i]->id.'">';
+                            switch ($categories[$i]->active) {
+                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
+                                    $out .= '<span class="status_1">';
+                                    break;
+                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
+                                    $out .= '<span class="status_2">';
+                                    break;
+                                default:
+                                    $out .= '<span class="status_0">';
+                            }
+                            $out .= $categories[$i]->name;
+                            $out .= '</span></a>'.($i ? '/': '');
                         }
                     }
                     return $out;
                 },
                 'synonym_name' => function ($model) {
-                    return $model->synonymParam ? $model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
+                    return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
                 },
-                'synonyms' => function ($model) {
-                    return implode('; ', array_column($model->synonyms, 'name'));
+                'code' => function ($model) {
+                    $out = '<span';
+                    if ($model->synonyms) {
+                        $out .= ' style="cursor:pointer" title="Синонимы: ';
+                        foreach ($model->synonyms as $key => $synonym) {
+                            $out .= ($key ? ',':'');
+                            $out .= $synonym->code;
+                        }
+                        $out .= '"';
+                    }
+                    $out .= '>'.$model->code.'</span>';
+                    return $out;
                 }
             ],
-            'product_categories' => array_merge([0=>'Не задано'], ArrayHelper::map(
-                ProductsCategory::find()->select(['id', 'name'])->asArray()->all(),
+            'product_categories' => [0=>'Не задано'] + ArrayHelper::map(
+                ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
                 'id',
                 'name'
-            )),
-            'parameter_filter' => array_merge(
-                [0=>'Не задано'],
-                arrayHelper::map(
-                    ProductParameters::find()->select(['id', 'name'])->asArray()->all(),
-                    'id',
-                    'name'
-                )
             ),
+            'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
 
         ]);
     }
@@ -159,11 +179,19 @@ class AdminController extends Controller
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'possible_synonym' => arrayHelper::map(
-                    ProductParameters::find()->select(['id', 'name'])->where(['<>', 'id', $id])->asArray()->all(),
+                    ProductParameters::find()->select(['id', 'name'])
+                        ->where(['<>', 'id', $id])
+                        ->andWhere(['category_id' => $model->category_id])
+                        ->orderBy(['name' => SORT_ASC])->asArray()->all(),
                     'id',
                     'name'
                 ),
-                'product_categories_tree' => ProductsCategory::tree(),
+                //'product_categories_tree' => ProductsCategory::tree(),
+                'product_categories' => ArrayHelper::map(
+                    ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
+                    'id',
+                    'name'
+                ),
             ]);
         }
     }
