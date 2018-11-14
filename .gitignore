@@ -83,3 +83,4 @@ debug
 /common/config/json/*
 runtime
 socials_yii.php
+manifest.appcache

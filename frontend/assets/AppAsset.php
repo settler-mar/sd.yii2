@@ -13,6 +13,7 @@ class AppAsset extends AssetBundle
 {
   public $basePath = '@webroot';
   public $baseUrl = '@web';
+  public $max_v = 0;
   public $css = [
   ];
   public $js = [
@@ -30,6 +31,8 @@ class AppAsset extends AssetBundle
     $url = Url::current();
     $script_version = YII_DEBUG?'':'.min';
     $path_scripts = Yii::$app->params['pathToScript'];
+
+    $file_list = array();
 
     $path = trim($url, '/');
     $dir = str_replace('-','/', $path);
@@ -53,7 +56,7 @@ class AppAsset extends AssetBundle
         $js = str_replace('{{script_version}}', $script_version, $js);
         $js = str_replace('..', '.', $js);
         $v=$this->getV($bp.$js);
-
+        $file_list[]=$js;
         $this->js[] = $js.$v;
       }
     }
@@ -64,19 +67,37 @@ class AppAsset extends AssetBundle
         $css = str_replace('{{script_version}}', $script_version, $css);
         $css = str_replace('..', '.', $css);
         $v=$this->getV($bp.$css);
-
+        $file_list[]=$css;
         $this->css[] = $css.$v;
       }
     }
+
+    //if($this->max_v>$this->getV($bp.'manifest.appcache',true)){
+      $fp = fopen($bp.'manifest.appcache', "w"); // Открываем файл в режиме записи
+      $mytext = "CACHE MANIFEST\r\n".
+          "# ".date('d-m-Y',$this->max_v)." v".date('y.m.d',$this->max_v)."\r\n";
+      $mytext .= implode("\r\n",$file_list)."\r\n";
+      $mytext .= "\r\n".
+         "NETWORK:\r\n".
+          "*\r\n\r\n".
+          "FALLBACK:\r\n";
+      fwrite($fp, $mytext); // Запись в файл
+      fclose($fp); //Закрытие файла
+    //}
   }
 
-  private function getV($filename){
+  private function getV($filename,$only_date = false){
     $filename=str_replace('//','/',$filename);
     if (!file_exists($filename)) {
-      return '';
+      return $only_date?0:'';
     }
     $v=filemtime($filename);
 
+    if($only_date){
+      return $v;
+    };
+
+    if($this->max_v<$v)$this->max_v=$v;
     return '?v='.$v;
   }
 }

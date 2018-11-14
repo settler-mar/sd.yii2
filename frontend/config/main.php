@@ -138,8 +138,8 @@ $config = [
         'minifyManager' => [
             'class' => 'maybeworks\minify\MinifyManager',
             'html' => !YII_DEBUG,
-            'css' => false,
-            'js' => false,
+            'css' => !YII_DEBUG,
+            'js' => !YII_DEBUG,
         ],
         'urlManager' => [
             'rules' => [
