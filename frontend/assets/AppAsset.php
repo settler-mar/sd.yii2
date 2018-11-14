@@ -72,7 +72,7 @@ class AppAsset extends AssetBundle
       }
     }
 
-    //if($this->max_v>$this->getV($bp.'manifest.appcache',true)){
+    if(!YII_DEBUG && $this->max_v>$this->getV($bp.'manifest.appcache',true)){
       $fp = fopen($bp.'manifest.appcache', "w"); // Открываем файл в режиме записи
       $mytext = "CACHE MANIFEST\r\n".
           "# ".date('d-m-Y',$this->max_v)." v".date('y.m.d',$this->max_v)."\r\n";
@@ -83,7 +83,7 @@ class AppAsset extends AssetBundle
           "FALLBACK:\r\n";
       fwrite($fp, $mytext); // Запись в файл
       fclose($fp); //Закрытие файла
-    //}
+    }
   }
 
   private function getV($filename,$only_date = false){

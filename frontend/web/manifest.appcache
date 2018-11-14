@@ -1,0 +1,9 @@
+CACHE MANIFEST
+# 13-11-2018 v18.11.13
+/js/scripts.js
+/css/styles.css
+
+NETWORK:
+*
+
+FALLBACK:
