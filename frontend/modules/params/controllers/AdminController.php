@@ -48,11 +48,18 @@ class AdminController extends Controller
 
         $searchModel = new ProductParametersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         $parameterFilter = [];
-        $parameters = ProductParameters::find()->where(['synonym' => null])->orderBy(['name' => SORT_ASC])->all();
-        foreach ($parameters as $parameter) {
-            $parameterFilter[$parameter->id] = $parameter->CategoryTree. ' / '.$parameter->code.' ('.$parameter->id.')';
+        if ($searchModel->allCategories) {
+            //выбрана категория - в фильтр выводим синонимы - без категрии их слишком много
+            $parameters = ProductParameters::find()->where(['synonym' => null, 'category_id' => $searchModel->allCategories])->orderBy(['name' => SORT_ASC])->all();
+            if ($parameters) {
+                foreach ($parameters as $parameter) {
+                    $parameterFilter[$parameter->id] = $parameter->CategoryTree. ' / '.$parameter->code.' ('.$parameter->id.')';
+                }
+            }
         }
+
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,

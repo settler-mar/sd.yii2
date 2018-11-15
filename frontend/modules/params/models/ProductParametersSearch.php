@@ -16,6 +16,8 @@ class ProductParametersSearch extends ProductParameters
     public $values;
     //public $product_categories;
     public $synonyms_names;
+
+    public $allCategories;
     /**
      * @inheritdoc
      */
@@ -100,7 +102,10 @@ class ProductParametersSearch extends ProductParameters
             $query->andWhere(['category_id' => null]);
         } elseif ($this->category_id > 0) {
             $childsId = ProductsCategory::childsId($this->category_id, false);
-            $query->andFilterWhere(['category_id'=>$childsId]);
+            $parents = array_column(ProductsCategory::parents([ProductsCategory::findOne($this->category_id)]), 'id');
+            //ddd($childsId, $parents, array_unique(array_merge($childsId, $parents)));
+            $this->allCategories = array_unique(array_merge($childsId, $parents));
+            $query->andFilterWhere(['category_id'=>array_unique(array_merge($childsId, $this->allCategories))]);
         }
 
         return $dataProvider;

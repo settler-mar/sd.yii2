@@ -40,7 +40,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
             [['name', 'route'], 'string', 'max' => 255],
             [['parent'], 'exist', 'targetAttribute' => 'id'],
             [['active', 'synonym'], 'integer'],
-            ['route', 'unique'],
+            ['route', 'unique', 'targetAttribute' => ['route', 'parent']],
         ];
     }
 
@@ -166,6 +166,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         }
         return $out;
     }
+
 
     public function afterSave($insert, $changedAttributes)
     {

@@ -327,14 +327,14 @@ class Product extends \yii\db\ActiveRecord
     {
         $result = [];
         $parent = null;
-        //каждая посдедующая будет дочерней к предыдущей
+        //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
         foreach ($categories as $index => $category) {
             $cat = $this->productCategory($category, $parent);
             if ($cat) {
                 $result[] = (string) $cat['id'];
                 $parent = $cat['id'];
             } else {
-                $parent = null;
+                return $result;
             }
         }
         return $result;
@@ -392,8 +392,8 @@ class Product extends \yii\db\ActiveRecord
      */
     protected function productCategory($name, $parent = null)
     {
-        if (!isset(static::$categories[$name])) {
-            $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name)]);
+        if (!isset(static::$categories[$name.($parent ? '|'.$parent :'')])) {
+            $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
             if (!$categoryDb) {
                 $categoryDb = new ProductsCategory();
                 $categoryDb->name = $name;
@@ -408,9 +408,9 @@ class Product extends \yii\db\ActiveRecord
                     $categoryDb->save();
                 }
             }
-            static::$categories[$name] = $categoryDb->toArray();
+            static::$categories[$name.($parent ? '|'.$parent :'')] = $categoryDb->toArray();
         }
-        return static::$categories[$name];
+        return static::$categories[$name . ($parent ? '|'.$parent :'')];
     }
 
     public function afterSave($insert, $changedAttributes)

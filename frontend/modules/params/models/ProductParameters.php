@@ -110,6 +110,7 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+        //$synonyms = $this->synonyms;todo возможно сделать для синонимов
         foreach ($this->paramsProcessing as $paramProcessing) {
             //по параметрам в обработке
             $product = $paramProcessing->product;
@@ -191,7 +192,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             return ['param' =>  self::$params[$categoriesString.$param], 'processing' => false];
         }
         //и те что в процессе
-        if (isset(self::$paramsProcessing[$param])) {
+        if (isset(self::$paramsProcessing[$categoriesString.$param])) {
             return ['param' =>  self::$paramsProcessing[$categoriesString.$param], 'processing' => true];
         }
         //проверка на стоп-слова
@@ -200,7 +201,7 @@ class ProductParameters extends \yii\db\ActiveRecord
                 $stopWord = trim($stopWord);
                 $paramCompare = substr($stopWord, -1) == '*' ? substr($param, 0, strlen($stopWord) -1).'*' : $param;
                 if ($stopWord == $paramCompare) {
-                    self::$params[$param] = '';
+                    self::$params[$categoriesString.$param] = '';
                     return false;
                 }
             }

@@ -364,7 +364,7 @@ class AdmitadController extends Controller
                   continue;
                 }
               }
-              $catalog_db->date_download=date("Y-m-d H:i:s",$d);
+              $catalog_db->date_download=date("Y-m-d H:i:s", $d);
               $catalog_db->csv=$catalog['csv_link'];
 
               $catalog_db->save();
@@ -575,7 +575,7 @@ class AdmitadController extends Controller
             'active='.CatalogStores::CATALOG_STORE_ACTIVE_YES,
             ['or',
                 '`date_import`=`crated_at`',
-                '`date_import`>`date_download`',
+                '`date_import`<`date_download`',
                 ['date_import' => null],
                 ['product_count' => null],
             ]
