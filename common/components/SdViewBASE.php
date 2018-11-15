@@ -30,17 +30,17 @@ class SdViewBASE extends View
 
   private $def_meta=[
       'frontend'=> [
-          'url'=>'https://secretdiscounter.ru/',
-          'image'=>'https://secretdiscounter.ru/images/share_img.png'
+          'url'=>'https://secretdiscounter.com/',
+          'image'=>'https://secretdiscounter.com/images/share_img.png'
           //"https://secretdiscounter.ru/images/templates/woman_600.png"
       ],
       'b2b'=>[
-          'url'=>'https://b2b.secretdiscounter.ru/',
-          'image'=>'https://secretdiscounter.ru/images/share_img.png'
+          'url'=>'https://b2b.secretdiscounter.com/',
+          'image'=>'https://secretdiscounter.com/images/share_img.png'
       ],
       'shop'=>[
-          'url'=>'https://shop.secretdiscounter.ru/',
-          'image'=>'https://secretdiscounter.ru/images/share_img.png'
+          'url'=>'https://shop.secretdiscounter.com/',
+          'image'=>'https://secretdiscounter.com/images/share_img.png'
       ]
   ];
 
