@@ -110,8 +110,23 @@ class ProductParameters extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        //$synonyms = $this->synonyms;todo возможно сделать для синонимов
-        foreach ($this->paramsProcessing as $paramProcessing) {
+        //параметры в обработке свои, синонимов или для кого является синонимом
+        $synonymParam = $this->synonymParam;
+        if (!$synonymParam && !empty($changedAttributes['synonym'])) {
+            $synonymParam = self::findOne($changedAttributes['synonym']);
+        }
+        $paramsProcessing = $this->paramsProcessing ? $this->paramsProcessing : [];
+        if ($synonymParam && $synonymParam->paramsProcessing) {
+            $paramsProcessing = array_merge($paramsProcessing, $synonymParam->paramsProcessing);
+        }
+        if ($this->synonyms) {
+            foreach ($this->synonyms as $synonym) {
+                if ($synonym->paramsProcessing) {
+                    $paramsProcessing = array_merge($paramsProcessing, $synonym->paramsProcessing);
+                }
+            }
+        }
+        foreach ($paramsProcessing as $paramProcessing) {
             //по параметрам в обработке
             $product = $paramProcessing->product;
             $product->updateParams();
@@ -141,8 +156,8 @@ class ProductParameters extends \yii\db\ActiveRecord
         //$categoriesString = $categories ? implode('.', $categories) . '|' : '';
         $out = [];
         $processingOut = [];
-        foreach ($params as $param => $values) {
-            $paramStandarted = self::standartedParam((string) $param, $categories);
+        foreach ($params as $paramKey => $values) {
+            $paramStandarted = self::standartedParam((string) $paramKey, $categories);
             if (!$paramStandarted || empty($paramStandarted['param'])) {
                 //вернуло false или нет параметра
                 continue;

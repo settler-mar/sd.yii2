@@ -170,6 +170,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function updateParams()
     {
+        $out = false;
         $product = $this;
         $params = self::makeParams($product->params_original);
         $categories = [];//массив id категорий
@@ -194,10 +195,10 @@ class Product extends \yii\db\ActiveRecord
         if ($dataHash != $product->data_hash) {
             $product->data_hash = $dataHash;
             $product->save();
-            $product->writeParamsProcessing();
-            return 1;
+            $out = true;
         }
-        return 0;
+        $product->writeParamsProcessing();
+        return $out;
     }
 
     /**

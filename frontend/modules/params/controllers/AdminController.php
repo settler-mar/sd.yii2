@@ -80,7 +80,9 @@ class AdminController extends Controller
                     $values = [];
                     if ($model->values) {
                         foreach ($model->values as $key => $value) {
-                            if ($value->synonym != null) continue;
+                            if ($value->synonym != null) {
+                                continue;
+                            }
                             $valueStr = '<a href="/admin-values/params/update/id:'.$value->id.'">'.
                                 '<span class="' . ProductParametersValues::activeClass($value->active) . '">' .
                                 $value->name . '</span></a>';
@@ -95,7 +97,8 @@ class AdminController extends Controller
                             $values[] = $valueStr . (!empty($valueSynonyms)? '('.implode(';', $valueSynonyms).')': '');
                         }
                     }
-                    return implode('; ', $values);
+                    $out = implode('; ', $values);//значения со своими синонимами
+                    return $out;
                 },
                 'categories' => function ($model) {
                     $out = array();

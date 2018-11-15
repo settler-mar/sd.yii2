@@ -117,7 +117,24 @@ class ProductParametersValues extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        foreach ($this->processingParamters as $paramProcessing) {
+        //параметры в обработке свои, синонимов или для кого является синонимом
+        $synonymVal = $this->synonymValue;
+        if (!$synonymVal && !empty($changedAttributes['synonym'])) {
+            $synonymVal = self::findOne($changedAttributes['synonym']);
+        }
+        $paramsProcessing = $this->processingParamters ? $this->processingParamters : [];
+        if ($synonymVal  && $synonymVal->processingParamters) {
+            $paramsProcessing = array_merge($paramsProcessing, $synonymVal->processingParamters);
+        }
+        if ($this->synonyms) {
+            foreach ($this->synonyms as $synonym) {
+                if ($synonym->rocessingParamters) {
+                    $paramsProcessing = array_merge($paramsProcessing, $synonym->processingParamters);
+                }
+            }
+        }
+        //ddd($paramsProcessing, $synonymVal);
+        foreach ($paramsProcessing as $paramProcessing) {
             //по параметрам в обработке
             $product = $paramProcessing->product;
             $product->updateParams();
