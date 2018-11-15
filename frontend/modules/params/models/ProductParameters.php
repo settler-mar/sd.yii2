@@ -73,6 +73,7 @@ class ProductParameters extends \yii\db\ActiveRecord
             'synonym' => 'Является синонимом для',
             'product_categories' => 'Категории',
             'created_at' => 'Created At',
+            'created_at' => 'Created At',
         ];
     }
 
@@ -320,6 +321,5 @@ class ProductParameters extends \yii\db\ActiveRecord
                 return 'status_0';
         }
     }
-
 
 }

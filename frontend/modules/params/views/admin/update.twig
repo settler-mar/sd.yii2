@@ -1,4 +1,4 @@
-{% set title = 'Update Product Parameters: ' ~ model.name %}
+{% set title = 'Update Product Parameters: ' ~ model.name~' ('~model.id~')' %}
 {{ set(this, 'title', title) }}
 {% if not this.params.breadcrumbs %}
 {{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}

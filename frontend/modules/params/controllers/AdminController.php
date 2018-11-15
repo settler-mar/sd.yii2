@@ -49,9 +49,9 @@ class AdminController extends Controller
         $searchModel = new ProductParametersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $parameterFilter = [];
-        $parameters = ProductParameters::find()->orderBy(['name' => SORT_ASC])->all();
+        $parameters = ProductParameters::find()->where(['synonym' => null])->orderBy(['name' => SORT_ASC])->all();
         foreach ($parameters as $parameter) {
-            $parameterFilter[$parameter->id] = $parameter->CategoryTree.$parameter->code.'('.$parameter->id.')';
+            $parameterFilter[$parameter->id] = $parameter->CategoryTree. ' / '.$parameter->code.' ('.$parameter->id.')';
         }
 
         return $this->render('index.twig', [
@@ -70,52 +70,65 @@ class AdminController extends Controller
                     }
                 },
                 'values' => function ($model) {
-                    $out = '';
+                    $values = [];
                     if ($model->values) {
                         foreach ($model->values as $key => $value) {
-                            $out .= $key ? '; ' : '';
-                            $out .= ('<a href="/admin-values/params/update/id:'.$value->id.'"><span class="' . ProductParameters::activeClass($value->active) . '">' . $value->name . '</span></a>');
+                            if ($value->synonym != null) continue;
+                            $valueStr = '<a href="/admin-values/params/update/id:'.$value->id.'">'.
+                                '<span class="' . ProductParametersValues::activeClass($value->active) . '">' .
+                                $value->name . '</span></a>';
+                            $valueSynonyms = [];
+                            if ($value->synonyms) {
+                                foreach ($value->synonyms as $valueSynonym) {
+                                    $valueSynonyms[] = '<a title="Синоним" href="/admin-values/params/update/id:'.$valueSynonym->id.'">'.
+                                        '<span class="' . ProductParametersValues::activeClass($valueSynonym->active) .
+                                        '">' . $valueSynonym->name . '</span></a>';
+                                }
+                            }
+                            $values[] = $valueStr . (!empty($valueSynonyms)? '('.implode(';', $valueSynonyms).')': '');
                         }
                     }
-                    return $out;
+                    return implode('; ', $values);
                 },
                 'categories' => function ($model) {
                     $out = array();
                     if ($model->category) {
                         $categories = ProductsCategory::parents([$model->category]);
                         for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $item = '<a href="/admin-category/product/update/id:'.$categories[$i]->id.'">';
-                            switch ($categories[$i]->active) {
-                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-                                  $item .= '<span class="status_1">';
-                                    break;
-                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-                                  $item .= '<span class="status_2">';
-                                    break;
-                                default:
-                                  $item .= '<span class="status_0">';
-                            }
-                          $item .= $categories[$i]->name;
-                          $item .= '</span></a>';
-                          $out[]=$item;
+                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]->id . '">' .
+                                '<span class="'.ProductsCategory::activeClass($categories[$i]->active).'">' .
+                                $categories[$i]->name . '</span></a>';
                         }
                     }
                     return implode(' / ', $out);
                 },
                 'synonym_name' => function ($model) {
-                    return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name.' ('.$model->synonymParam->id.')' : '';
+                    return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name .
+                        ' ('.$model->synonymParam->id.')' : '';
                 },
                 'code' => function ($model) {
-                    $out = '<span';
-                    if ($model->synonyms) {
-                        $out .= ' style="cursor:pointer" title="Синонимы: ';
-                        foreach ($model->synonyms as $key => $synonym) {
-                            $out .= ($key ? ',':'');
-                            $out .= $synonym->code;
-                        }
-                        $out .= '"';
+                    $out = '<a href="admin/params/update/id:'.$model->id.'"><span class="';
+                    switch ($model->active) {
+                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO):
+                            $out .= 'status_1>';
+                            break;
+                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES):
+                            $out .= 'status_2';
+                            break;
+                        default:
+                            $out .= 'status_0';
                     }
-                    $out .= '>'.$model->code.'</span>';
+                    $out .= '">'.$model->code.'</span></a>';
+                    if ($model->synonyms) {
+                        $synonyms = [];
+                        foreach ($model->synonyms as $synonym) {
+                            $synonyms[] = '<a title="Синоним '.$synonym->code.' '.$synonym->name.'" '.
+                                'href="admin/params/update/id:'.$synonym->id.'">'.
+                                '<span class="'.ProductParameters::activeClass($synonym->active).'">' .
+                                $synonym->code.'</span></a>';
+                        }
+                        $out .= ' ('.implode('; ', $synonyms).')';
+                    }
                     return $out;
                 }
             ],

@@ -15,6 +15,8 @@
 
                     {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
 
+                    {{ form.field(model, 'CategoryTree').textInput({'disabled':true}).label('Категории')|raw }}
+
                     {{ form.field(model, 'category_id').dropDownList(product_categories, {'prompt':'Выберите категорию'})|raw }}
 
                     {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}

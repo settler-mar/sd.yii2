@@ -41,7 +41,9 @@ class AdminCategoryController extends Controller
         $searchModel = new ProductsCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $parents = ArrayHelper::map(
-            ProductsCategory::find()->select(['id', 'name'])->orderBy(['name' => SORT_ASC])->asArray()->all(),
+            ProductsCategory::find()->select(['id', 'name'])
+                ->where(['synonym' => null])
+                ->orderBy(['name' => SORT_ASC])->asArray()->all(),
             'id',
             'name'
         );
@@ -50,27 +52,27 @@ class AdminCategoryController extends Controller
             'dataProvider' => $dataProvider,
             'tableData' => [
                 'parents' => function ($model) {
-                    $out = array();
+                    $out = [];
                     $parents = ProductsCategory::parents([$model]);
                     if (count($parents) > 1) {
                         for ($i = count($parents) - 1; $i > 0; $i--) {
-                            $item = '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">';
-                            switch ($parents[$i]->active) {
-                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-                                  $item .= '<span class="status_1">';
-                                    break;
-                                case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-                                  $item .= '<span class="status_2">';
-                                    break;
-                                default:
-                                  $item .= '<span class="status_0">';
+                            $item = '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">' .
+                                '<span class="'.ProductsCategory::activeClass($parents[$i]->active).'">' .
+                                $parents[$i]->name .'</span></a>';
+                            $synonyms = [];
+                            if ($parents[$i]->synonyms) {
+                                foreach ($parents[$i]->synonyms as $synonym) {
+                                    $synonyms[] = '<a title="Синоним" ' .
+                                        ' href="/admin-category/product/update/id:'.$synonym->id.'">' .
+                                        '<span class="'.ProductsCategory::activeClass($synonym->active).'">' .
+                                        $synonym->name.'</span></a>';
+                                }
+                                $item .= '('.implode(';', $synonyms).')';
                             }
-                          $item .= $parents[$i]->name;
-                          $item .= '</span></a>';
-                          $out[]=$item;
+                            $out[] = $item;
                         }
                     }
-                    return implode(' / ',$out);
+                    return implode(' / ', $out);
                 },
                 'synonym' => function ($model) {
                     return isset($model->synonymCategory->name) ? $model->synonymCategory->name : '';
@@ -86,23 +88,18 @@ class AdminCategoryController extends Controller
                     }
                 },
                 'name' => function ($model) {
-                    $out = '<span';
+                    $out = '<a href="/admin-category/product/update/id:'.$model->id.'">' .
+                        '<span class="'.ProductsCategory::activeClass($model->active).'">'.$model->name.'</span></a>';
+                    $synonyms = [];
                     if ($model->synonyms) {
-                        $out .= ' style="cursor:pointer" ';
-                        $out .= ' title="Синонимы: ' . implode('/', array_column($model->synonyms, 'name')) . '" ';
+                        foreach ($model->synonyms as $synonym) {
+                            $synonyms[] = '<a title="Синоним" ' .
+                                ' href="/admin-category/product/update/id:'.$synonym->id.'">' .
+                                '<span class="'.ProductsCategory::activeClass($synonym->active).'">' .
+                                $synonym->name.'</span></a>';
+                        }
+                        $out .= '('.implode(';', $synonyms).')';
                     }
-//                    switch ($model->active) {
-//                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT):
-//                            $out .= ' class="status_1"';
-//                            break;
-//                        case (ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES):
-//                            $out .= ' class="status_2"';
-//                            break;
-//                        default:
-//                            $out .= ' class="status_0"';
-//                    }
-                    $out .= '>' . $model->name;
-                    $out .= '</span>';
                     return $out;
                 }
             ],

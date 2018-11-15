@@ -198,4 +198,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
         Cache::clearName('catalog_product');
     }
 
+    public static function activeClass($active)
+    {
+        switch ($active) {
+            case (self::PRODUCT_CATEGORY_ACTIVE_NOT):
+                return 'status_1';
+            case (self::PRODUCT_CATEGORY_ACTIVE_YES):
+                return 'status_2';
+            default:
+                return 'status_0';
+        }
+    }
+
+
 }
