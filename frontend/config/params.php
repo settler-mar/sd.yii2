@@ -100,7 +100,7 @@ $data['plugin'] = [
            // 'button_text' => 'Установить для Chrome&nbsp;&rarr;',
         ],
         'firefox' => [
-            'url' => 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
+            'url' => 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-cashback/',
             'svg' => 'firefox',
             'status' => 'enabled',
            // 'button_text' => 'Установить для Firefox&nbsp;&rarr;',
