@@ -454,15 +454,24 @@
 
     &-img {
       //height: 50px;
-      stroke: rgba(#fff, 0.6);
-      fill: rgba(#fff, 0.6);
-      color: rgba(#fff, 0.6);
+      //stroke: rgba(#fff, 0.6);
+      //fill: rgba(#fff, 0.6);
+      //color: rgba(#fff, 0.6);
       position: relative;
       width: calc(49% - 10px);
       display: inline-block;
       margin-right: 10px;
 
+      a:hover svg{
+        stroke: $btn_base_bg;
+        fill: $btn_base_bg;
+        color: $btn_base_bg;
+      }
+
       svg {
+        stroke: rgba(#fff, 0.6);
+        fill: rgba(#fff, 0.6);
+        color: rgba(#fff, 0.6);
         width: 100%;
         height: auto;
       }
@@ -475,8 +484,8 @@
         top: -3px;
         height: 34PX;
         width: 34PX !important;
-        stroke: rgba(#AE0404, 0.6);
-        fill: rgba(#AE0404, 1);
+        stroke: rgba(#AE0404, 0.6)!important;
+        fill: rgba(#AE0404, 1)!important;
       }
 
       &:after {

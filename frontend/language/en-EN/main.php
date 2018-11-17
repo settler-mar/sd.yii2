@@ -316,5 +316,9 @@ return [
     'country_select_dialog_apply' => 'Yes, right',
     'country_select_dialog_select' => 'Choose another country',
     'number_attempts_login_{count}_exceeded_try_in_{interval}_minute' => 'Number of attempts to login exceeded ({count}). Try again in {interval} minute.',
-
- ];
+    'mobile_app' => 'Mobile app',
+    'mobile_app_text' => 'In your smartfon now. Available on GooglePlay and soon on AppStore',
+    'affiliate_system' => 'Affiliate system',
+    'affiliate_system_text' => 'Invite our friends and get 15% cash back from them. Friends get cashback too.',
+    'go' => 'Go',
+];

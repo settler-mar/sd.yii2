@@ -311,5 +311,10 @@ return [
     'country_select_dialog_text' => 'Выбор страны влияет на выдачу магазинов и акций',
     'country_select_dialog_apply' => 'Да, верно',
     'country_select_dialog_select' => 'Выбрать другую страну',
-    'number_attempts_login_{count}_exceeded_try_in_{interval}_minute' => 'Превышено максимальное количество неудачных попыток входа ({count}). Попробуйте снова через {interval} минут.'
+    'number_attempts_login_{count}_exceeded_try_in_{interval}_minute' => 'Превышено максимальное количество неудачных попыток входа ({count}). Попробуйте снова через {interval} минут.',
+    'mobile_app' => 'Мобильное приложение',
+    'mobile_app_text' => 'Теперь и в вашем смартфоне. Доступно в Google Play и совсем скоро в AppStore.',
+    'affiliate_system' => 'Партнёрская программа',
+    'affiliate_system_text' => 'Приглашайте друзей и получайте 15% от их кэшбэка. Друзья при этом не получат меньше – мы выплачиваем из собственных средств.',
+    'go' => 'Перейти',
 ];

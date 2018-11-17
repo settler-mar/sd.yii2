@@ -167,4 +167,31 @@
   display: none;
 }
 
+.index-app{
+
+  &-img {
+    position: relative;
+    //width: calc(49% - 10px);
+    //display: inline-block;
+    //margin-right: 10px;
+    @include media($phones) {
+      width: 45%;
+    }
+    a:hover svg{
+      stroke: $btn_base_bg;
+      fill: $btn_base_bg;
+      color: $btn_base_bg;
+    }
+
+    svg {
+      stroke: $text_color;
+      fill: $text_color;
+      color: $text_color;
+      width: 100%;
+      height: auto;
+    }
+
+  }
+}
+
 

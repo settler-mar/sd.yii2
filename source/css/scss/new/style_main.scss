@@ -517,6 +517,7 @@ svg.svg-no-stroke {
 .padding-box-h {
   padding-left: 15px;
   padding-right: 15px;
+  box-sizing: border-box;
 }
 
 .padding-box-mini {
