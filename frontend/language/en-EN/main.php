@@ -320,5 +320,4 @@ return [
     'mobile_app_text' => 'In your smartfon now. Available on GooglePlay and soon on AppStore',
     'affiliate_system' => 'Affiliate system',
     'affiliate_system_text' => 'Invite our friends and get 15% cash back from them. Friends get cashback too.',
-    'go' => 'Go',
 ];
