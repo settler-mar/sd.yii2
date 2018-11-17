@@ -32,6 +32,9 @@ if (navigator.userAgent.indexOf(' OPR/') >= 0) {
 } else if (typeof InstallTrigger !== 'undefined') {
   currentBrowser = 'firefox';
 }
+if (debug) {
+  console.log(currentBrowser)
+}
 
 
 function closeClick() {
@@ -311,9 +314,13 @@ Storage.load(function () {
 
 chrome.runtime.sendMessage({action: 'icon_flash_clear'});
 
-window.onload = analizPage;
+//window.onload = analizPage;
+document.addEventListener("DOMContentLoaded", analizPage);//в firefox window.onload = не хочет работать
 
 function analizPage() {
+  if (debug) {
+    console.log('analize Page');
+  }
 
   storeUtil.analizeActivated();//проверка что goto пройдено
 

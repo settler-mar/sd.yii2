@@ -27,7 +27,8 @@ var plugins = (function(){
             'div_id': 'sd_firefox_app',
             'used':  typeof InstallTrigger !== 'undefined',
             //'text':lg("install_plugin_and_it_will_notice_about_cashback"),
-            'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
+            //'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-%D0%BA%D1%8D%D1%88%D0%B1%D1%8D%D0%BA-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81/',
+            'href': 'https://addons.mozilla.org/ru/firefox/addon/secretdiscounter-cashback',
             'install_button_class': 'plugin-browsers-link-firefox'
         },
         'opera': {
