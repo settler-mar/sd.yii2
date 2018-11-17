@@ -40,6 +40,9 @@ $phones: 380px;
     display: flex;
     flex-direction: column;
   }
+  &_block {
+    display: block;
+  }
 
   &_order-2{
     order:-2;

@@ -77,6 +77,20 @@ th:first-child {
     //justify-content: left;
     //align-items: center;
   }
+
+  td:nth-child(n + 5),
+  th:nth-child(n + 5){
+    @include media($tablets) {
+      display: none;
+    }
+  }
+
+  td:nth-child(n + 4),
+  th:nth-child(n + 4){
+    @include media($phones) {
+      display: none;
+    }
+  }
 }
 
 
