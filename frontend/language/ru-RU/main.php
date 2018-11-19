@@ -161,7 +161,7 @@ return [
     'popular_stores_from_{category}_cashback' => 'Популярные магазины из раздела {category} с&nbsp;кэшбэком',
     'popular_stores_from_{category}_cashback_offline' => 'Популярные магазины из раздела {category} с&nbsp;кэшбэком',
     'other_popular_online_shops_cashback' => 'Другие популярные интернет-магазины с&nbsp;кэшбэком',
-    'other_popular_offline_shops_cashback' => 'Другие популярные оффлайн магазины с&nbsp;кэшбэком',
+    'other_popular_offline_shops_cashback' => 'Другие популярные оффлайн-магазины с&nbsp;кэшбэком',
     'share_width_friends' => 'Поделиться с друзьями',
     'track_package_for_{store}_here' => 'Отследить посылку с {store} по трек-номеру можно здесь',
     'track_package_push_button' => 'Просто вставьте номер отслеживания вашего почтового отправления в форму ниже и нажмите кнопку &laquo;Отследить&raquo;',
