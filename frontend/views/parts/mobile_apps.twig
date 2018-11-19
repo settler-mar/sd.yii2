@@ -1,25 +1,27 @@
 <section class="margin install-application install-application-index">
     <div class="page-wrap">
         <div class="install-plugin-index_border align-center">
-            <div class="flex-line flex-line-untill-tablets flex-2col">
+            <div class="flex-line flex-line-around flex-line-untill-tablets {% if show_affiliate %}flex-2col flex-2col-until-tablets{% endif %}">
                 <div class="margin-half padding-box-h border-double-in">
                     <h3 class="content-header">{{ t('main','mobile_app')|raw }}</h3>
                     <p>{{ t('main','mobile_app_text')|raw }} </p>
                     <div class="flex-line flex-line-around index-app">
-                        <div class="index-app-img footer-app-waiting">
-                            {{ svg('app_store')|raw }}
-                            {{ svg('app_w','footer-app-waiting-label')|raw }}
-                        </div>
                         <div class="index-app-img">
-                            <a rel="nooper nofollow noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.secretdiscounter.cashback">{{ svg('play_market')|raw }}</a>
+                            <a rel="nooper nofollow noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.secretdiscounter.cashback">{{ svg('playmarket')|raw }}</a>
+                        </div>
+                        <div class="index-app-img footer-app-waiting">
+                            {{ svg('itunes')|raw }}
+                            {{ svg('app_w','footer-app-waiting-label')|raw }}
                         </div>
                     </div>
                 </div>
-                <div class="margin-half padding-box-h border-double-in">
-                    <h3 class="content-header">{{ t('main', 'affiliate_system')|raw }}</h3>
-                    <p>{{ t('main', 'affiliate_system_text')|raw }}</p>
-                    <p><a rel="nooper nofollow noreferrer" target="_blank" class="btn" href="{{ _href('/affiliate-system')|raw }}">{{ t('common', 'read_more')|raw }}</a></p>
-                </div>
+                {% if show_affiliate %}
+                    <div class="margin-half padding-box-h border-double-in">
+                        <h3 class="content-header">{{ t('main', 'affiliate_system')|raw }}</h3>
+                        <p>{{ t('main', 'affiliate_system_text')|raw }}</p>
+                        <p><a rel="nooper nofollow noreferrer" target="_blank" class="btn" href="{{ _href('/affiliate-system')|raw }}">{{ t('common', 'read_more')|raw }}</a></p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
