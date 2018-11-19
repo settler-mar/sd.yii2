@@ -1,6 +1,6 @@
 {{ use('frontend/components/CategoryMenu') }}
 
-{% set ext_menu_items = 'favorite,all_shops,visited'~(app.params.stores_menu_abc ? ',abc':'') %}
+{% set ext_menu_items = 'favorite,all_shops,visited'~(app.params.stores_menu_abc ? ',abc':''~(offline ? ',strih_code' : '')) %}
 {% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items': ext_menu_items, 'offline': offline}) %}
 {% if category_tree %}
 

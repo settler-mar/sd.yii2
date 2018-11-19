@@ -269,9 +269,24 @@ class CategoriesStores extends \yii\db\ActiveRecord
       return json_encode($cats);
     }
 
-    //избранные шопы
+
     $cats[0] = isset($cats[0]) ? $cats[0] : [];
+    if (in_array('strih_code', $extItems)) {
+        array_unshift($cats[0], [
+            'name' => Yii::t('main', 'shtrih_code'),
+            'parent_id' => 0,
+            'route' => '/offline-system',
+            'menu_hidden' => 0,
+            'selected' => '0',
+            'count' => null,
+            'uid' => null,
+            'menu_index' => -1000,
+            'class' => '',
+            'route_offline' => false,
+        ]);
+    }
     if (in_array('favorite', $extItems)) {
+        //избранные шопы
       $favoriteCount = UsersFavorites::userFavoriteCount(false, $offline);
       if ($favoriteCount > 0) {
         array_unshift($cats[0], [
@@ -282,7 +297,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'selected' => '0',
             'count' => $favoriteCount,
             'uid' => null,
-            'menu_index' => -1000,
+            'menu_index' => -950,
             'class' => 'cat_bold',
         ]);
       }
@@ -299,7 +314,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'selected' => '0',
             'count' => $visited['count'],
             'uid' => null,
-            'menu_index' => -999,
+            'menu_index' => -900,
             'class' => 'cat_bold',
         ]);
       }
@@ -314,7 +329,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'selected' => '0',
             'count' => null,
             'uid' => null,
-            'menu_index' => -1001,
+            'menu_index' => -850,
             'class' => 'cat_bold',
         ]);
     }
@@ -343,10 +358,10 @@ class CategoriesStores extends \yii\db\ActiveRecord
 
     //перемещаем выделенные категории вверх
     usort($cats[0], function ($current, $next) {
-      if ($next['selected'] != $current['selected']) {
-        if ($next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO) return 1;
-        if ($current['selected'] == self::CATEGORY_STORE_SELECTED_PROMO) return -1;
-      }
+//      if ($next['selected'] != $current['selected']) {
+//        if ($next['selected'] == self::CATEGORY_STORE_SELECTED_PROMO) return 1;
+//        if ($current['selected'] == self::CATEGORY_STORE_SELECTED_PROMO) return -1;
+//      }
       if ($current['menu_index'] > $next['menu_index']) return 1;
       if ($current['menu_index'] < $next['menu_index']) return -1;
       return 0;
@@ -446,7 +461,8 @@ class CategoriesStores extends \yii\db\ActiveRecord
         } else {
           $c = '';
         }
-        $catURL = Help::href("/stores" . (($cat['route'] != '') ? '/' . $cat['route'] : ''));
+        $catURL = Help::href(strpos($cat['route'], '/')===0 ? $cat['route'] :
+            "/stores" . ($cat['route'] != '' ? '/' . $cat['route'] : ''));
 
         //имеются дочерние категрии
         $childCategories = $parent_id == 0 && isset($cat['uid']) && isset($cats[$cat['uid']]) && count($cats[$cat['uid']]) > 0;
@@ -476,7 +492,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
         }
         $tree .= '<li ' . $itemClass . '>';
 
-        if ($offline === 1) {
+        if ($offline === 1 && (!isset($cat['route_offline']) || $cat['route_offline']!==false)) {
           $onlineLink = ($cat['uid'] == null ? '/' : '-') . 'offline';
         } elseif ($offline === 0) {
           $onlineLink = '';//'-online';
