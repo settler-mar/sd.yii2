@@ -6,9 +6,10 @@ use frontend\modules\charity\models\Charity;
 use frontend\modules\dobro\models\Autopayments;
 use frontend\modules\funds\models\Foundations;
 use yii;
+use frontend\components\AccountController as Controller;
 
 
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
   /**
    * @param yii\base\Action $action
@@ -22,6 +23,10 @@ class AccountController extends \yii\web\Controller
       return false;
     }
     $this->view->layout_mode='account';
+    if (isset($this->params['breadcrumbs'][1])) {
+        //из крошек убить ссылку на index
+        unset($this->params['breadcrumbs'][1]);
+    }
     return true;
   }
 

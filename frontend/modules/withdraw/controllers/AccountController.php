@@ -6,13 +6,14 @@ use yii;
 use frontend\modules\withdraw\models\UsersWithdraw;
 use frontend\modules\withdraw\models\WithdrawProcess;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 use common\components\Help;
 
 /**
  * Class AccountController
  * @package frontend\modules\withdraw_history\controllers
  */
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
 
   /**

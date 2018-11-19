@@ -6,8 +6,9 @@ use yii;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
 use common\components\Help;
+use frontend\components\AccountController as Controller;
 
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
   /**
    * @param yii\base\Action $action

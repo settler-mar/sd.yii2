@@ -6,12 +6,13 @@ use yii;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 
 /**
  * Class AccountController
  * @package frontend\modules\transitions\controllers
  */
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
     /**
      * @param yii\base\Action $action

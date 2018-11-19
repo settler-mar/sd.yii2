@@ -5,10 +5,11 @@ namespace frontend\modules\notification\controllers;
 use yii;
 use frontend\modules\notification\models\Notifications;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 use frontend\modules\users\models\Users;
 use frontend\modules\favorites\models\UsersFavorites;
 
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
   /**
    * @param yii\base\Action $action

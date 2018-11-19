@@ -1,6 +1,6 @@
 {% if app.controller.params['breadcrumbs']  %}
     <section class=" page-wrap ">
-        <div class="breadcrumbs breadcumbs_catalog">
+        <div class="breadcrumbs breadcumbs_catalog {% if app.controller.params['breadcrumbs_class'] %}{{ app.controller.params['breadcrumbs_class'] }}{% endif %}">
             {{ use('yii\\widgets\\Breadcrumbs') }}
             {{ breadcrumbs_widget({
                 'links': app.controller.params['breadcrumbs'],

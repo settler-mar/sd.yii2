@@ -6,12 +6,13 @@ use yii;
 use frontend\modules\support\models\Support;
 use common\components\Help;
 use frontend\modules\template\models\Template;
+use frontend\components\AccountController as Controller;
 
 /**
  * Class AccountController
  * @package frontend\modules\support\controllers
  */
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
 
   /**
