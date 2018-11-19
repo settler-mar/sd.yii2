@@ -429,7 +429,8 @@ class DefaultController extends SdController
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
     $cacheName = 'additional_stores' . ($category ? '_by_categories_' . $category->uid : '') .'_except_' . $store->uid .
-        ($language ? '_' . $language : '') . ($region? '_' . $region : '') ;
+        ($language ? '_' . $language : '') . ($region? '_' . $region : '') .
+        ($store->is_offline ? '_offline' : '');
 
       if (!$category) {
       //если нет категории
@@ -451,6 +452,7 @@ class DefaultController extends SdController
                 ->innerJoin('cw_stores_to_categories cwstc', 'cws.uid = cwstc.store_id')
                 ->andWhere(['<>', 'cws.uid', $store->uid])
                 ->andWhere(['cwstc.category_id' => $category->uid])
+                ->andWhere(['cws.is_offline' => $store->is_offline])
                 ->orderBy('region_rating DESC')
                 ->limit(5)
                 ->all();
