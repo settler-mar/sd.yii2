@@ -4,9 +4,18 @@
 
   {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-  {{ form.field(model, 'parent').dropDownList(all, {'prompt':'Выберите родительсую категорию'})|raw }}
+  <div class="form-group field-productscategory-synonym">
+    <label class="control-label" for="productscategory-synonym">Родительская категория</label>
+    <input id="productscategory-parent_hidden" type="hidden" name="ProductsCategory[parent]" value="{{ model.parent }}"/>
+    <div class="help-block"></div>
+  </div>
 
-  {{ form.field(model, 'synonym').dropDownList(all, {'prompt':'Выберите категорию синоним'})|raw }}
+
+  <div class="form-group field-productscategory-synonym">
+    <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
+    <input id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}"/>
+    <div class="help-block"></div>
+  </div>
 
   {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
@@ -15,3 +24,81 @@
   </div>
   {{ active_form_end() }}
 </div>
+
+
+    {% set script  = "
+    (function ($) {
+        var data = JSON.parse('"~data~"');
+
+        make_list('#productscategory-parent_hidden', data);
+        make_list('#productscategory-synonym_hidden', data);
+
+        function make_list(input, data) {
+            input = $(input);
+            input.hide();
+            input.data('data', data);
+            var id = input.val();
+            el = get_el_by_id(id, data);
+
+            input.after(getSelectByParent(el.id, data));
+            while (el) {
+                input.after(getSelectByParent(el.parent, data, el.id));
+                if (el.parent == 0) break;
+                el = get_el_by_id(el.parent, data);
+            }
+
+            function get_el_by_id(id, data) {
+                if (!data) {
+                  return false;
+                }
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id == id) return data[i];
+                }
+                return false;
+            }
+
+            function getSelectByParent(id, data, sel) {
+                if (!data) {
+                  return false;
+                }
+                var k = 0;
+                var out = '<select class=\"form-control\" style=\"margin-top:5px;margin-bottom:5px;\">';
+                if (id > 0) {
+                    out += '<option value=0>Вся категория</option>';
+                } else {
+                    out += '<option value=\"\">Выберите категорию</option>';
+                }
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].parent == id) {
+                        k++;
+                        out += '<option value=' + data[i].id + ' data-index=' + i + '  ' + (data[i].id == sel ? 'selected' : '') + '>' + data[i].name + '</option>';
+                    }
+                }
+                out += '</select>';
+                if (k == 0) {
+                    return false;
+                }
+                out = $(out);
+                out.on('change', function () {
+                    var $this = $(this);
+                    $this.nextAll().remove();
+                    var input = $this.closest('.form-group').find('input');
+                    if ($this.val() === '0') {
+                        input.val($this.prev().val());
+                        return;
+                    } else if ($this.val() === '') {
+                        input.val('');
+                        return;
+                    }
+                    input.val($this.val());
+                    var data = input.data('data');
+                    var el = get_el_by_id(input.val(), data);
+                    $this.after(getSelectByParent(el.id, data));
+                });
+                return out;
+            }
+        }
+    })(jQuery);" %}
+
+  {{ this.registerJs(script, 4) }}
+
