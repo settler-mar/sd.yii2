@@ -158,11 +158,11 @@ class DefaultController extends Controller
     //статистика по выборке
     $queryAll = clone $dataProvider->query;
     $queryAll->select([
-      'sum(cashback) as cashback',
+      //'sum(cashback) as cashback',
       'sum(cashback/kurs) as cashback_local',
-      'sum(reward) as reward',
+      //'sum(reward) as reward',
       'sum(reward/kurs) as reward_local',
-      'sum(order_price * kurs) as order_price',
+      //'sum(order_price * kurs) as order_price',
       'sum(order_price) as order_price_local',
     ]);
     $resultAllCount = $queryAll->count();
