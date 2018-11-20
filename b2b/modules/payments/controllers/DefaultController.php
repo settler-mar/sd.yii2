@@ -148,10 +148,10 @@ class DefaultController extends Controller
         return $model->order_price . ' ' . $model->storeCur;
       },
       'reward_value' => function ($model) {
-        return number_format($model->reward * $model->kurs, 2) . ' ' . $model->storeCur;// <span class="fa fa-rub"></span>';
+        return number_format($model->reward / $model->kurs, 2) . ' ' . $model->storeCur;// <span class="fa fa-rub"></span>';
       },
       'cashback_value' => function ($model) {
-        return number_format($model->cashback * $model->kurs, 2). ' ' . $model->storeCur;//<span class="fa fa-rub"></span>';
+        return number_format($model->cashback / $model->kurs, 2). ' ' . $model->storeCur;//<span class="fa fa-rub"></span>';
       },
 
     ];

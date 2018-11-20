@@ -168,7 +168,7 @@ return [
     'track_package_example' =>'For example',
     'photo_and_video_for_{store}' =>'Photo & Video {store}',
     'store_point_{store}_in_{sity}' =>'Address {store} in {city}',
-    'store_points_{store}_in_{country}_{sity}' =>'Addresses of {store} in {country}, {citiy}',
+    'store_points_{store}_in_{country}_{sity}' =>'Addresses of {store} in {country}, {city}',
     'store_points_{store}_in_{country}' =>'Addresses of {store} in {country}',
     'store_points_{store}' =>'Addresses of {store}',
     'store_points_choose_city' =>'Choose a city',
