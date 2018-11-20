@@ -17,8 +17,8 @@
                         <label class="control-label" for="productparameters-category_id">Категория</label>
                         <input class="category_tree_input" id="productparameters-category_id" type="hidden"
                             name="ProductParameters[category_id]" value="{{ model.category_id }}" data-root="Корень"
-                            data-callback="update_select_data('admin/params/list')" data-slave="productparameters-synonym"
-                        />
+                            data-refresh_url="admin/params/list" data-refresh_slave="productparameters-synonym" data-id="{{ model.id }}"
+                            data-slave_prompt="Параметр, для которого будет являться синонимом" />
                         <div class="help-block"></div>
                     </div>
 

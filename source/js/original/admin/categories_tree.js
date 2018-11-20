@@ -12,7 +12,7 @@
         input.hide();
         input.data('data', data);
         var root_name = input.data('root') || 'Вся категория';
-        var callback = input.data('callback');
+        var refresh_url = input.data('refresh_url');
         var id = input.val();
         el = get_el_by_id(id, data);
 
@@ -61,21 +61,43 @@
                 var input = $this.closest('.form-group').find('input');
                 if ($this.val() === '0') {
                     input.val($this.prev().val());
+                    updateInput(input);
                     return;
                 } else if ($this.val() === '') {
                     input.val('');
+                    updateInput(input);
                     return;
                 }
                 input.val($this.val());
+                updateInput(input);
                 var data = input.data('data');
                 var el = get_el_by_id(input.val(), data);
                 $this.after(getSelectByParent(el.id, data));
-                if (callback) {
-                    callback($this);
-                }
             });
-
             return out;
         }
+
+        function updateInput(input){
+            var refresh_slave = input.data('refresh_slave');//что обновляется
+            var refresh_url = input.data('refresh_url');//запрос
+
+            if (refresh_url && refresh_slave) {
+                $.get(refresh_url, {'id':input.val(), 'except':input.data('id')}, function(data) {
+                    var slave = $('#'+refresh_slave);
+                    if (slave) {
+                        var refresh_slave_prompt = input.data('slave_prompt') || 'Выберите значение';
+                        slave.html('');
+                        var out = '<option value="">' + refresh_slave_prompt + '</option>';
+                        if (data.length) {
+                            for (var i = 0; i < data.length; i++) {
+                                out += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        slave.html(out);
+                    }
+                }, 'json');
+            }
+        }
+
     }
 })(jQuery);

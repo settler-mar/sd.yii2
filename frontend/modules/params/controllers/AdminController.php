@@ -226,6 +226,29 @@ class AdminController extends Controller
     }
 
     /**
+     * @return bool|string
+     * @throws NotFoundHttpException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionList()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new \yii\web\NotFoundHttpException();
+            return false;
+        }
+        $category = $request->get('id');
+        $self = $request->get('except');
+        $list = ProductParameters::find()->where(['and', ['category_id' => $category], ['<>', 'id', $self]])
+            ->select(['id', 'name'])->asArray()->all();
+        return json_encode($list);
+    }
+
+    /**
      * Deletes an existing ProductParameters model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
