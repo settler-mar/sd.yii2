@@ -67,6 +67,9 @@
                                     </p>
                                     {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
                                     <p><span>Валюта:</span> <br> {{ form.field(model, 'currency').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    {% if model.is_offline %}
+                                        <p><span>Валюта расчётов:</span> <br> {{ form.field(model, 'settlement_currency').textInput({'maxlength':true}).label(false)|raw }}</p>
+                                    {% endif %}
                                     <p><span>Отображаемый cashback:</span> <br>{{ form.field(model, 'displayed_cashback').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Отображаемое время холда (дней):</span> <br>{{ form.field(model, 'hold_time').textInput({'maxlength':true}).label(false)|raw }}</p>
                                     <p><span>Процент отдаваемый от нашей выгоды:</span> <br>{{ form.field(model, 'percent').textInput({'maxlength':true}).label(false)|raw }}</p>

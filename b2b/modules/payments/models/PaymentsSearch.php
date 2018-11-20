@@ -60,9 +60,9 @@ class PaymentsSearch extends Payments
         //ddd($this);
         $query = Payments::find()
             ->from(Payments::tableName()  . ' cwp')
-            ->joinWith(['store'])
+            ->joinWith(['store'], false)
             //->joinWith(['user'])
-            ->joinWith(['storesPoint']);
+            ->joinWith(['storesPoint'], false);
             //->innerJoin('b2b_users_cpa b2buc', 'cw_cpa_link.id = b2buc.cpa_link_id')
             //->where(['b2buc.user_id' => Yii::$app->user->identity->id]);
          // add conditions that should always apply here
