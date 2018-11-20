@@ -7,10 +7,14 @@
                     <p>{{ t('main','mobile_app_text')|raw }} </p>
                     <div class="flex-line flex-line-around index-app margin-half">
                         <div class="index-app-img">
-                            <a rel="nooper nofollow noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.secretdiscounter.cashback">{{ svg('playmarket')|raw }}</a>
+                            <a rel="nooper nofollow noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.secretdiscounter.cashback">
+                                {#{{ svg('playmarket')|raw }}#}
+                                <img src="/images/templates/google_play.png"/>
+                            </a>
                         </div>
                         <div class="index-app-img footer-app-waiting">
-                            {{ svg('itunes')|raw }}
+                            {#{{ svg('itunes')|raw }}#}
+                            <img src="/images/templates/app_store_ru.png" />
                             {{ svg('app_w','footer-app-waiting-label')|raw }}
                         </div>
                     </div>
