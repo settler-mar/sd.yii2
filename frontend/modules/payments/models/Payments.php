@@ -466,7 +466,7 @@ class Payments extends \yii\db\ActiveRecord
     if (!$payment || empty($payment->recalc_json) || strlen($payment->recalc_json) < 5) {
       return null;
     }
-    $newPrice = round($newPrice, 2);
+    $newPrice = self::round($newPrice, 2);
     $recalc = json_decode($payment->recalc_json, true);
     if ($recalc['rate']['is_percentage']) {
       $reward = $newPrice * $recalc['rate']['size'] * $payment->kurs / 100;
@@ -480,8 +480,8 @@ class Payments extends \yii\db\ActiveRecord
       $loyalty_bonus = $loyalty_status_list[$payment->loyalty_status]['bonus'];
       $cashback = $cashback + $cashback * $loyalty_bonus / 100;
     }
-    $reward = round($reward, 2);
-    $cashback = round($cashback, 2);
+    $reward = self::round($reward, 2);
+    $cashback = self::round($cashback, 2);
     return [
         'reward' => $reward,
         'cashback' => $cashback,
@@ -739,12 +739,19 @@ class Payments extends \yii\db\ActiveRecord
       }
     }
     return [
-        'cashback' => round($cashback, 2, PHP_ROUND_HALF_DOWN),
-        'reward' => round($reward, 2, PHP_ROUND_HALF_DOWN),
+        'cashback' => self::round($cashback, 2),
+        'reward' => self::round($reward, 2),
         'kurs' => $kurs,
-        'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2, PHP_ROUND_HALF_DOWN) : null,
+        'ref_bonus' => isset($ref_bonus) ? self::round($ref_bonus, 2) : null,
         'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
     ];
+  }
+
+  protected static function round($data, $precition = 2)
+  {
+     $number = $precition == 0 ? (float) $data : ((float) $data * pow(10, $precition));
+     $number = floor($number);
+     return $precition == 0 ? $number : ($number / pow(10, $precition));
   }
 
 }
