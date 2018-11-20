@@ -12,6 +12,7 @@
         input.hide();
         input.data('data', data);
         var root_name = input.data('root') || 'Вся категория';
+        var callback = input.data('callback');
         var id = input.val();
         el = get_el_by_id(id, data);
 
@@ -69,7 +70,11 @@
                 var data = input.data('data');
                 var el = get_el_by_id(input.val(), data);
                 $this.after(getSelectByParent(el.id, data));
+                if (callback) {
+                    callback($this);
+                }
             });
+
             return out;
         }
     }

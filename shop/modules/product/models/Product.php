@@ -241,7 +241,10 @@ class Product extends \yii\db\ActiveRecord
         $productDb->price = (float)$product['price'];
         $productDb->params = $standartedParams['params'];
         $productDb->paramsProcessing = $standartedParams['params_processing'];
-        $productDb->image = self::saveImage((string)$product['picture'], $productDb->image);
+        $productDb->image = self::saveImage(
+            isset($product['picture']) ? (string)$product['picture'] : null,
+            $productDb->image
+        );
         $productDb->url = (string)$product['url'];
         $productDb->vendor = (string)$product['vendor'];
 
