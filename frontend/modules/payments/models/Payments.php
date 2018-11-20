@@ -739,10 +739,10 @@ class Payments extends \yii\db\ActiveRecord
       }
     }
     return [
-        'cashback' => round($cashback, 2),
-        'reward' => round($reward, 2),
+        'cashback' => round($cashback, 2, PHP_ROUND_HALF_DOWN),
+        'reward' => round($reward, 2, PHP_ROUND_HALF_DOWN),
         'kurs' => $kurs,
-        'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2) : null,
+        'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2, PHP_ROUND_HALF_DOWN) : null,
         'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
     ];
   }
