@@ -162,11 +162,12 @@ class DefaultController extends Controller
       return 'Пользователь не найден';
     }
 
-    $kurs = Yii::$app->conversion->getCurs($user->currency, $store->currency);
+    //$kurs = Yii::$app->conversion->getCurs($user->currency, $store->currency);
 
     $sum = (float)$request->post('sum');
     if ($rates->is_percentage) {
-      $reward = $sum * $rates->size * $kurs / 100;
+      //$reward = $sum * $rates->size * $kurs / 100;
+      $reward = $sum * $rates->size / 100;
       //$cashback = $sum * $rates->our_size * $kurs / 100;
     } else {
       $reward = $rates->size;
