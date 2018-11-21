@@ -63,6 +63,9 @@ return [
                     'class' => 'shop\components\SdUrlLocalisation',
                 ],
                 '/category/<action:(product)>/<id:\d+>' => 'category/default/product',
+                [ // обработка категорий товаров
+                    'class' => 'shop\components\SdUrlCategories',
+                ],
                 '/category/<action>' => 'category/default/index',
 
                 '<module>/default/<action>' => '404',

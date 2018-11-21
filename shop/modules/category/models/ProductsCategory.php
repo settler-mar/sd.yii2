@@ -113,14 +113,14 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
-    public static function parentsTree($category)
+    public static function parentsTree($category, $route = false)
     {
         $out = [];
         $categories = static::parents([$category]);
         for ($i = count($categories) - 1; $i >= 0; $i--) {
-            $out[] = $categories[$i]->name;
+            $out[] = $route ? $categories[$i]->route : $categories[$i]->name;
         }
-        return implode(' / ', $out);
+        return implode($route ? '/' :' / ', $out);
     }
 
     public static function childs($params, $parent = null, $level = 0)
@@ -133,28 +133,32 @@ class ProductsCategory extends \yii\db\ActiveRecord
             'parent'=>$parent,
             'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
             ])
-            ->orderBy(['name' => SORT_ASC])
-            ->asArray();
+            ->orderBy(['name' => SORT_ASC]);
         $childs = $childs->all();
-        foreach ($childs as $key => &$child) {
-            $child['level'] = $level;
-            $child['childs'] = self::childs($params, $child['id'], $level);
-            $child['current'] = isset($params['current']) && $child['id'] == $params['current'];
-            //чтобы считать количество в т.ч. по дочерним категориям
-            $child['count'] = false;
+        $out = [];
+        foreach ($childs as $key => $child) {
+            $count = 0;
             if (!empty($params['counts'])) {
-                $child['count'] = Product::find()->from(Product::tableName().' p')
+                //считать количество в т.ч. по дочерним категориям
+                $count = Product::find()->from(Product::tableName().' p')
                     ->innerJoin(ProductsToCategory::tableName().' ptc', 'p.id=ptc.product_id')
-                    ->where(['category_id' => self::childsId($child['id'])])
+                    ->where(['category_id' => self::childsId($child->id)])
                     ->count();
             }
             if (isset($params['empty']) && $params['empty'] === false &&
-                ($child['count'] === '0' || $child['count'] === null )) {
+                ($count === '0' || $count === null )) {
                 //если задано, то пустые не выводить
-                unset($childs[$key]);
+                continue;
             }
+            $item = $child->toArray();
+            $item['level'] = $level;
+            $item['childs'] = self::childs($params, $child->id, $level);
+            $item['current'] = isset($params['current']) && $child->id == $params['current'];
+            $item['count'] = $count;
+            $item['route'] = static::parentsTree($child, true);
+            $out[] = $item;
         }
-        return $childs;
+        return $out;
     }
     /**
      * @param $id
@@ -185,7 +189,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $route
+     * @param $route - Array
      * @return mixed
      */
     public static function byRoute($route)
@@ -194,11 +198,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'products_category_byroute_' . $route . ($language ? '_'.$language: '');
+        $casheName = 'products_category_byroute_' . implode('_', $route) . ($language ? '_'.$language: '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $category = $cache->getOrSet($casheName, function () use ($route) {
-            return self::find()->where(['route' => $route])->one();
+            $parent = null;
+            foreach ($route as $routePart) {
+                $category = self::find()->where(['route' => $routePart, 'parent' => $parent])->one();
+                if (!$category) {
+                    return false;
+                }
+                $parent = $category->id;
+            }
+            return $category;
         }, $cache->defaultDuration, $dependency);
         return $category;
     }

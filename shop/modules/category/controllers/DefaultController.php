@@ -17,12 +17,8 @@ class DefaultController extends SdController
 
     public function beforeAction($action)
     {
-        $categoryRoute = explode('/', Yii::$app->request->pathInfo);
-        if ($categoryRoute[0] == 'category' && count($categoryRoute) == 2) {
-            $this->category = ProductsCategory::byRoute($categoryRoute[1]);
-            if (!$this->category) {
-                throw new yii\web\NotFoundHttpException();
-            }
+        if (isset(Yii::$app->params['catalog_category'])) {
+            $this->category = Yii::$app->params['catalog_category'];
             Yii::$app->params['url_mask'] = 'category/*';
         }
         return parent::beforeAction($action);
@@ -84,29 +80,29 @@ class DefaultController extends SdController
                 ->andWhere(['pc.category_id' => $allCategories]);
 
             $cacheName .= '_category_' . $this->category->route;
-            $filterParamCategory = [];
-            //параметры в т.ч. по дочерним категориям ??
-            foreach($allCategories as $cat) {
-                $filterParamCategory[] = 'JSON_CONTAINS('.ProductParameters::tableName().'.categories,\'"'.$cat.'"\',"$")';
-            }
-            $filters->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
+//            $filterParamCategory = [];
+//            //параметры в т.ч. по дочерним категориям ??
+//            foreach($allCategories as $cat) {
+//                $filterParamCategory[] = 'JSON_CONTAINS('.ProductParameters::tableName().'.categories,\'"'.$cat.'"\',"$")';
+//            }
+            //$filters->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
         }
-        $filters = $filters->all();
-        foreach ($filters as &$filter) {
-            $values = ProductParametersValues::find()
-                ->select(['id', 'name'])
-                ->where(['parameter_id' => $filter['id'], 'active'=>ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES])
-                ->asArray();
-            if ($this->category) {
-                //значения в т.ч. по дочерним ??
-                $filterParamCategory = [];
-                foreach($allCategories as $cat) {
-                    $filterParamCategory[] = 'JSON_CONTAINS('.ProductParametersValues::tableName().'.categories,\'"'.$cat.'"\',"$")';
-                }
-                $values->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
-            }
-            $filter['values'] = $values->all();
-        }
+//        $filters = $filters->all();
+//        foreach ($filters as &$filter) {
+//            $values = ProductParametersValues::find()
+//                ->select(['id', 'name'])
+//                ->where(['parameter_id' => $filter['id'], 'active'=>ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES])
+//                ->asArray();
+//            if ($this->category) {
+//                //значения в т.ч. по дочерним ??
+//                $filterParamCategory = [];
+//                foreach($allCategories as $cat) {
+//                    $filterParamCategory[] = 'JSON_CONTAINS('.ProductParametersValues::tableName().'.categories,\'"'.$cat.'"\',"$")';
+//                }
+//                $values->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
+//            }
+//            $filter['values'] = $values->all();
+//        }
         $storeData['filter'] = $filters;
         //ddd($filters);
 
@@ -134,7 +130,7 @@ class DefaultController extends SdController
 
         ];
 
-        $paginatePath = '/' . 'category'. ($this->category ? '/' . $this->category->route : '');
+        $paginatePath = '/' . 'category'. ($this->category ? '/' . ProductsCategory::parentsTree($this->category, true) : '');
 
         if ($pagination->pages() > 1) {
             $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
