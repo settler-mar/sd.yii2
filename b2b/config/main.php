@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'b2b\controllers',
     'bootstrap' => ['log'],
+    'homeUrl' => '/',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-b2b',
@@ -72,6 +73,7 @@ return [
                     'class' => 'b2b\components\ContentUrlRule',
                 ],
             ],
+
         ],
         'storePointUser' => [
             'class' => 'b2b\components\StorePointUser',

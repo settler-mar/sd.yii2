@@ -22,7 +22,7 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index'],
+                'only' => ['index', 'logout'],
                 'rules' => [
                     [
                         'allow' => true,

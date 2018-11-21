@@ -26,14 +26,6 @@ class DefaultController extends Controller
   public function behaviors()
   {
     return [
-      'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-          'status' => ['post'],
-          'update' => ['post'],
-          'revoke' => ['post'],
-        ],
-      ],
       'access' => [
         'class' => AccessControl::className(),
         'rules' => [
@@ -42,6 +34,14 @@ class DefaultController extends Controller
             'allow' => true,
             'roles' => ['@'],
           ],
+        ],
+      ],
+      'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+          'status' => ['post'],
+          'update' => ['post'],
+          'revoke' => ['post'],
         ],
       ],
     ];
