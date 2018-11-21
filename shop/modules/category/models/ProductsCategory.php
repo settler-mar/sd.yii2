@@ -113,6 +113,16 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
+    public static function parentsTree($category)
+    {
+        $out = [];
+        $categories = static::parents([$category]);
+        for ($i = count($categories) - 1; $i >= 0; $i--) {
+            $out[] = $categories[$i]->name;
+        }
+        return implode(' / ', $out);
+    }
+
     public static function childs($params, $parent = null, $level = 0)
     {
         $level++;

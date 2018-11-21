@@ -139,16 +139,14 @@ class ProductParameters extends \yii\db\ActiveRecord
         }
         return parent::afterSave($insert, $changedAttributes);
     }
+
+    /**
+     * просто возвращает от категории
+     * @return string
+     */
     public function getCategoryTree()
     {
-        $out = array();
-        if ($this->category) {
-            $categories = ProductsCategory::parents([$this->category]);
-            for ($i = count($categories) - 1; $i >= 0; $i--) {
-                $out[] = $categories[$i]->name;
-            }
-        }
-        return implode(' / ', $out);
+        return ProductsCategory::parentsTree($this->category);
     }
 
 

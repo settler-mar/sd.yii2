@@ -65,9 +65,7 @@ class AdminController extends Controller
             ->asArray();
         if ($category) {
             $params->andWhere([
-                'or',
-                ['categories' => null],
-                'JSON_CONTAINS(categories,\'"'.$category.'"\',"$")'
+                'category_id' => $category,
             ]);
         }
         $params = $params->all();
@@ -78,15 +76,20 @@ class AdminController extends Controller
                 ->where(['<>', 'active', ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO])
                 ->andWhere(['parameter_id' => $param['id']])
                 ->asArray();
-            if ($category) {
-                $values->andWhere([
-                    'or',
-                    ['categories' => null],
-                    'JSON_CONTAINS(categories,\'"'.$category.'"\',"$")'
-                ]);
-            }
             $param['values'] = $values->all();
         }
+        $categories = ProductsCategory::find()
+            ->from(ProductsCategory::tableName(). ' pc')
+            ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+            ->select(['pc.id', 'pc.name', 'pc.parent'])
+            ->groupBy(['pc.id', 'pc.name', 'pc.parent'])
+            ->orderBy(['name'=>SORT_ASC])
+            ->all();
+        $categoriesFilter = [];
+        foreach ($categories as $categoryItem) {
+            $categoriesFilter[$categoryItem->id] = ProductsCategory::parentsTree($categoryItem);
+        }
+        asort($categoriesFilter);
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -110,14 +113,9 @@ class AdminController extends Controller
                     return '<img height="100" src="'.$src.'">';
                 },
                 'categories' => function ($model) {
-                    $out = '';
-                    if ($model->categories) {
-                        foreach ($model->categories as $key => $category) {
-                            $out .= $category->name;
-                            $out .= ($key < count($model->categories) ? '<br>' : '');
-                        }
+                    if (count($model->categories)) {
+                        return ProductsCategory::parentsTree($model->categories[0]);
                     }
-                    return $out;
                 },
                 'url' => function ($model) {
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
@@ -137,25 +135,9 @@ class AdminController extends Controller
                 $searchModel::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
                 $searchModel::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
             ],
-            'categories' => ArrayHelper::map(
-                ProductsCategory::find()
-                    ->from(ProductsCategory::tableName(). ' pc')
-                    ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-                    ->select(['pc.id', 'pc.name'])
-                    ->asArray()
-                    ->orderBy(['name'=>SORT_ASC])
-                    ->all()
-                , 'id'
-                ,'name'
-            ),
+            'categories' => $categoriesFilter,
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
-//            'filterCpa' => ArrayHelper::map(
-//                Cpa::find()->select(['cw_cpa.id', 'cw_cpa.name'])
-//                    ->innerJoin(Product::tableName().' p', 'p.cpa_id = cw_cpa.id')->asArray()->all(),
-//                'id',
-//                'name'
-//            ),
             'filterStores' => ArrayHelper::map(
                 Stores::find()->select(['cw_stores.uid', 'cw_stores.name'])
                     ->innerJoin(Product::tableName().' p', 'p.store_id = cw_stores.uid')
