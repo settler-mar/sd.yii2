@@ -162,7 +162,7 @@ class DefaultController extends Controller
       return 'Пользователь не найден';
     }
 
-    $kurs = Yii::$app->conversion->getRUB(1, $store->currency);
+    $kurs = Yii::$app->conversion->getCurs($user->currency, $store->currency);
 
     $sum = (float)$request->post('sum');
     if ($rates->is_percentage) {
@@ -174,7 +174,7 @@ class DefaultController extends Controller
     }
 
     // просчет лояльности
-    $loyalty_bonus = $user->loyalty_status_data['bonus'];
+    //$loyalty_bonus = $user->loyalty_status_data['bonus'];
     //$cashback = $cashback + $cashback * $loyalty_bonus / 100;
 
     //$cashback = round($cashback, 2);
