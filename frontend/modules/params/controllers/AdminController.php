@@ -210,17 +210,11 @@ class AdminController extends Controller
                     'id',
                     'name'
                 ),
-                //'product_categories_tree' => ProductsCategory::tree(),
-                'product_categories' => ArrayHelper::map(
-                    ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
-                    'id',
-                    'name'
-                ),
-                'product_categories_data' => json_encode(
+                'product_categories_data' => str_replace("'", " ", json_encode(
                     ProductsCategory::find()
                         ->select(['id', 'name', 'parent'])
                         ->asArray()->orderBy(['name' => SORT_ASC])->all()
-                ),
+                )),
             ]);
         }
     }

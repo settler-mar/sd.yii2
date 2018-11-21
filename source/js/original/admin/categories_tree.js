@@ -100,4 +100,25 @@
         }
 
     }
+
+    $('.form-imput-depend-empty').on('change', function() {
+        $this=$(this);
+        var targets = $this.data('depend-slave');
+        if (targets) {
+            targets = targets.split(',');
+            for (var i=0; i<targets.length; i++) {
+                if (targets[i]) {
+                    var element = $('#' + targets[i]);
+                    if (element) {
+                        if ($this.val()) {
+                            $(element).closest('.form-group').hide();
+                        } else {
+                            $(element).closest('.form-group').show();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
 })(jQuery);
