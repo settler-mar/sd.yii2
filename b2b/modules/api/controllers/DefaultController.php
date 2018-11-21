@@ -204,7 +204,7 @@ class DefaultController extends Controller
         $payment,
         $store,
         $user,
-        $user->referrer_id ? $this->getUserData($user->referrer_id) : null,
+        null,
         ['notify' => true, 'email' => true]
     );
 
