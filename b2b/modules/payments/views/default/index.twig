@@ -21,47 +21,67 @@
             </tr>
             <tr class="line">
                 <td class="name">Количество покупок</td>
-                <td class="value">{{ result_all.count }}</td>
-                <td class="value">{{ result_success.count }}</td>
-                <td class="value">{{ result_revoke.count }}</td>
-                <td class="value">{{ result_waiting.count }}</td>
+                <td class="value">
+                    {% set data = result_all %}
+                    {% include('_count.twig') %}
+                </td>
+                <td class="value">
+                    {% set data = result_success %}
+                    {% include('_count.twig') %}
+                </td>
+                <td class="value">
+                    {% set data = result_revoke %}
+                    {% include('_count.twig') %}
+                </td>
+                <td class="value">
+                    {% set data = result_waiting %}
+                    {% include('_count.twig') %}
+                </td>
             </tr>
             <tr class="line">
                 <td class="name">Сумма покупок</td>
                 <td class="value">
-                    {#{{ _nf(result_all.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_all.summs.order_price_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="order_price" %}
+                    {% set data = result_all %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_success.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_success.summs.order_price_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="order_price" %}
+                    {% set data = result_success %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_revoke.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_revoke.summs.order_price_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="order_price" %}
+                    {% set data = result_revoke %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_waiting.summs.order_price, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_waiting.summs.order_price_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="order_price" %}
+                    {% set data = result_waiting %}
+                    {% include('_summ.twig') %}
                 </td>
             </tr>
             <tr class="line">
                 <td class="name">Комисионные SecretDiscounter</td>
                 <td class="value">
-                    {#{{ _nf(result_all.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_all.summs.reward_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="reward" %}
+                    {% set data = result_all %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_success.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_success.summs.reward_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="reward" %}
+                    {% set data = result_success %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_revoke.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_revoke.summs.reward_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="reward" %}
+                    {% set data = result_revoke %}
+                    {% include('_summ.twig') %}
                 </td>
                 <td class="value">
-                    {#{{ _nf(result_waiting.summs.reward, 2)|raw }} <span class="fa fa-rub"></span>#}
-                    {% if currency %}<span class="payments-result__local_currency">{{ _nf(result_waiting.summs.reward_local, 2)|raw }} {{ currency }}</span>{% endif %}
+                    {% set type="reward" %}
+                    {% set data = result_waiting %}
+                    {% include('_summ.twig') %}
                 </td>
             </tr>
 

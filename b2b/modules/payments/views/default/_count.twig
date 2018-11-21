@@ -1,0 +1,7 @@
+{% if data|length == 1 %}
+    {{ data[0].count }}
+{% else %}
+    {% for index, item in data %}
+        {{ item.count }}({{ item.currency }})
+    {% endfor %}
+{% endif %}

@@ -82,9 +82,6 @@ class DefaultController extends Controller
         $resultCur[]=$point['currency'];
       }
     }
-    $resultCur = count($resultCur) == 1 ? $resultCur[0] : false;
-    //d($resultCur);
-    //ddd($stores);
 
     $params=Yii::$app->request->queryParams;
     $params['users_shops']=$store_ids;
@@ -157,56 +154,30 @@ class DefaultController extends Controller
     ];
     //статистика по выборке
     $queryAll = clone $dataProvider->query;
-    $queryTest = clone $dataProvider->query;
-    $queryTest->select([
-        'cw_stores.currency',
-        'sum(cashback/kurs) as cashback_store',
-        'sum(reward/kurs) as reward_store',
-        'sum(order_price) as order_price_store',
+    $queryAll->select([
+        'cw_stores.currency as currency',
+        'count(*) as count',
+        'sum(cashback/kurs) as cashback_local',
+        'sum(reward/kurs) as reward_local',
+        'sum(order_price) as order_price_local',
         'sum(kurs_rub * cashback/kurs) as cashback_rub',
         'sum(kurs_rub * reward/kurs) as reward_rub',
         'sum(kurs_rub * order_price) as order_price_rub',
-    ])->groupBy(['cw_stores.currency'])->asArray();
-    //$resultTest = $queryTest->all();
-    //ddd($resultTest);
-    $queryAll->select([
-      //'sum(cashback) as cashback',
-      'sum(cashback/kurs) as cashback_local',
-      //'sum(reward) as reward',
-      'sum(reward/kurs) as reward_local',
-      //'sum(order_price * kurs) as order_price',
-      'sum(order_price) as order_price_local',
-    ]);
-    $resultAllCount = $queryAll->count();
-    $resultAll = $queryAll->one();
+    ])->groupBy(['cw_stores.currency'])
+      ->asArray();
+    $resultAll = $queryAll->all();
 
     $querySuccess = clone $queryAll;
     $querySuccess->andWhere(['status' => 2]);
-    $resultSuccessCount = $querySuccess->count();
-    $resultSuccess = $querySuccess->one();
+    $resultSuccess = $querySuccess->all();
 
     $queryWaiting = clone $queryAll;
     $queryWaiting->andWhere(['status' => 0]);
-    $resultWaitingCount = $queryWaiting->count();
-    $resultWaiting = $queryWaiting->one();
+    $resultWaiting = $queryWaiting->all();
 
     $queryRevoke = clone $queryAll;
     $queryRevoke->andWhere(['status' => 1]);
-    $resultRevokeCount = $queryRevoke->count();
-    $resultRevoke = $queryRevoke->one();
-
-    //валюта платежей, если только одного вида
-    /*$resultCur = $queryCur
-      //->select('cw_stores.currency')
-      //->with('store')
-      ->asArray()
-      ->all();
-
-    ddd($resultCur);
-    $resultCur = array_unique(array_column($resultCur, 'currency'));
-    $resultCur = count($resultCur) == 1 ? $resultCur[0] : false;
-    //ddd($resultCur);*/
-
+    $resultRevoke = $queryRevoke->all();
 
     return $this->render('index.twig', [
       'searchModel' => $searchModel,
@@ -218,11 +189,10 @@ class DefaultController extends Controller
       'table_data' => $tableData,
       'storeId' => Yii::$app->request->get('storeId'),
       'store_point' => Yii::$app->request->get('store_point'),
-      'result_waiting' => ['count' => $resultWaitingCount, 'summs' => $resultWaiting],
-      'result_success' => ['count' => $resultSuccessCount, 'summs' => $resultSuccess],
-      'result_all' => ['count' => $resultAllCount, 'summs' => $resultAll],
-      'result_revoke' => ['count' => $resultRevokeCount, 'summs' => $resultRevoke],
-      'currency' => $resultCur,
+      'result_waiting' => $resultWaiting,
+      'result_success' => $resultSuccess,
+      'result_all' => $resultAll,
+      'result_revoke' => $resultRevoke,
     ]);
   }
 
