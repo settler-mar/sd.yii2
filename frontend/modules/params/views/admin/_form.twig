@@ -30,6 +30,8 @@
                             'data-depend-slave' : 'productparameters-category_id,',
                         })|raw }}
 
+                    {{ form.field(model, 'parameter_type').dropDownList(typeFilter)|raw }}
+
                     {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
 
 

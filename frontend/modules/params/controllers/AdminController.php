@@ -65,6 +65,7 @@ class AdminController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'activeFilter' => $this->activeFilter(),
+            'typeFilter' => $this->typeFilter(),
             'tableData' => [
                 'active' => function ($model) {
                     switch ($model->active) {
@@ -74,6 +75,16 @@ class AdminController extends Controller
                             return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
                         default:
                             return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
+                    }
+                },
+                'type' => function ($model) {
+                    switch ($model->parameter_type) {
+                        case ($model::PRODUCT_PARAMETER_TYPE_DROPDOWN):
+                            return 'Список';
+                        case ($model::PRODUCT_PARAMETER_TYPE_INTEGER):
+                            return 'Число';
+                        default:
+                            return 'Текст';
                     }
                 },
                 'values' => function ($model) {
@@ -202,6 +213,7 @@ class AdminController extends Controller
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
+                'typeFilter' => $this->typeFilter(),
                 'possible_synonym' => arrayHelper::map(
                     ProductParameters::find()->select(['id', 'name'])
                         ->where(['<>', 'id', $id])
@@ -277,6 +289,14 @@ class AdminController extends Controller
             ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO => 'Неактивен',
             ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES => 'Активен',
             ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING => 'Ожидает проверки',
+        ];
+    }
+    protected function typeFilter()
+    {
+        return [
+            ProductParameters::PRODUCT_PARAMETER_TYPE_DROPDOWN => 'Список',
+            ProductParameters::PRODUCT_PARAMETER_TYPE_INTEGER => 'Число',
+            ProductParameters::PRODUCT_PARAMETER_TYPE_TEXT => 'Текст',
         ];
     }
 }

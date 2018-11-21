@@ -26,6 +26,10 @@ class ProductParameters extends \yii\db\ActiveRecord
     const PRODUCT_PARAMETER_ACTIVE_NO = 0;
     const PRODUCT_PARAMETER_ACTIVE_WAITING = 2;
 
+    const PRODUCT_PARAMETER_TYPE_DROPDOWN = 0;
+    const PRODUCT_PARAMETER_TYPE_INTEGER = 1;
+    const PRODUCT_PARAMETER_TYPE_TEXT = 2;
+
    // public $possibles_synonyms = [];
    // public $exists_synonyms = [];
     public $possible_categories = [];
@@ -51,11 +55,13 @@ class ProductParameters extends \yii\db\ActiveRecord
             [['active','synonym'], 'integer'],
             [['created_at'], 'safe'],
             [['code', 'name'], 'string', 'max' => 255],
-            //[['code'], 'unique'],
-            //['possibles_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true],
             ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
-            //['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersSynonyms::className()],
             [['category_id'], 'integer'],
+            [
+                'parameter_type',
+                'in',
+                'range' => [self::PRODUCT_PARAMETER_TYPE_DROPDOWN, self::PRODUCT_PARAMETER_TYPE_INTEGER, self::PRODUCT_PARAMETER_TYPE_TEXT]
+            ],
         ];
     }
 
@@ -66,14 +72,14 @@ class ProductParameters extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
-            'name' => 'Name',
-            'active' => 'Active',
+            'code' => 'Код',
+            'name' => 'Название',
+            'active' => 'Активен',
             'category_id' => 'Категория',
             'synonym' => 'Является синонимом для',
             'product_categories' => 'Категории',
             'created_at' => 'Created At',
-            'created_at' => 'Created At',
+            'parameter_type' => 'Тип',
         ];
     }
 

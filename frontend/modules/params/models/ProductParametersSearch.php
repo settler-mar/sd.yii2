@@ -24,7 +24,7 @@ class ProductParametersSearch extends ProductParameters
     public function rules()
     {
         return [
-            [['id', 'active', 'category_id', 'synonym', 'synonyms_names'], 'integer'],
+            [['id', 'active', 'category_id', 'synonym', 'synonyms_names', 'parameter_type'], 'integer'],
             [['code', 'name', 'created_at', 'values'], 'safe'],
         ];
     }
@@ -67,6 +67,7 @@ class ProductParametersSearch extends ProductParameters
         $query->andFilterWhere([
             $this->tableName().'.id' => $this->id,
             $this->tableName().'.active' => $this->active,
+            $this->tableName().'.parameter_type' => $this->parameter_type,
             $this->tableName().'.created_at' => $this->created_at,
         ]);
 
