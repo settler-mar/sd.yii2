@@ -680,7 +680,7 @@ class TaskController extends Controller
       foreach ($products as $key => $product) {
           $updated = $updated + $product->updateParams();
           if ($key > 0 && ($key % 1000 == 0)) {
-              echo $key." updated " . $updated . "\n";
+              echo date('Y-m-d H:i:s', time()).' '.$key." updated " . $updated . "\n";
           }
       }
       echo 'Updated '.$updated;

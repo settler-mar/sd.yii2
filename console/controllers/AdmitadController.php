@@ -616,7 +616,7 @@ class AdmitadController extends Controller
       $insert += $result['insert'];
       $error += $result['error'];
       if ($count % 100 == 0) {
-        echo $count."\n";
+        echo date('Y-m-d H:i:s', time()).' '.$count."\n";
       }
 
     }
