@@ -216,8 +216,36 @@ class AdminController extends Controller
                     'id',
                     'name'
                 ),
+                'product_categories_data' => json_encode(
+                    ProductsCategory::find()
+                        ->select(['id', 'name', 'parent'])
+                        ->asArray()->orderBy(['name' => SORT_ASC])->all()
+                ),
             ]);
         }
+    }
+
+    /**
+     * @return bool|string
+     * @throws NotFoundHttpException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionList()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new \yii\web\NotFoundHttpException();
+            return false;
+        }
+        $category = $request->get('id');
+        $self = $request->get('except');
+        $list = ProductParameters::find()->where(['and', ['category_id' => $category], ['<>', 'id', $self]])
+            ->select(['id', 'name'])->asArray()->all();
+        return json_encode($list);
     }
 
     /**

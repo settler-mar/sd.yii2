@@ -21,6 +21,7 @@ use shop\modules\product\models\Product;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\params\models\ProductParametersProcessing;
+use frontend\modules\product\models\CatalogStores;
 
 
 class TaskController extends Controller
@@ -715,6 +716,8 @@ class TaskController extends Controller
 
       $db->createCommand('delete from '.ProductParameters::tableName())->execute();
       $db->createCommand('alter table '.ProductParameters::tableName().' AUTO_INCREMENT = 1')->execute();
+
+      CatalogStores::updateAll(['date_import'=>null, 'product_count'=> null]);
 
   }
 

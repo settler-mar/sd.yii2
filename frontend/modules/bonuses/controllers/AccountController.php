@@ -7,8 +7,9 @@ use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
 
   /**

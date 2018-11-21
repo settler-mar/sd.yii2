@@ -133,7 +133,7 @@ class Stores extends \yii\db\ActiveRecord
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related',
           'cash_number', 'show_notify','show_tracking', 'watch_transitions','test_link'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
-      [['currency'], 'string', 'max' => 3],
+      [['currency', 'settlement_currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
       [['route'], 'unique', 'targetAttribute' =>['route','is_offline']],
       [['route'], 'unique', 'targetAttribute' =>'route', 'targetClass' => CategoriesStores::className()],

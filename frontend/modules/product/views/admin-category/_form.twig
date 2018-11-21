@@ -1,12 +1,22 @@
 {{ use('/yii/widgets/ActiveForm') }}
+{{ use('/yii/web/JqueryAsset') }}
 <div class="products-category-form">
   {% set form = active_form_begin() %}
 
   {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-  {{ form.field(model, 'parent').dropDownList(all, {'prompt':'Выберите родительсую категорию'})|raw }}
+  <div class="form-group field-productscategory-synonym">
+    <label class="control-label" for="productscategory-synonym">Родительская категория</label>
+    <input class="category_tree_input" id="productscategory-parent_hidden" type="hidden" name="ProductsCategory[parent]" value="{{ model.parent }}" data-root="Корень"/>
+    <div class="help-block"></div>
+  </div>
 
-  {{ form.field(model, 'synonym').dropDownList(all, {'prompt':'Выберите категорию синоним'})|raw }}
+
+  <div class="form-group field-productscategory-synonym">
+    <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
+    <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
+    <div class="help-block"></div>
+  </div>
 
   {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
@@ -15,3 +25,9 @@
   </div>
   {{ active_form_end() }}
 </div>
+
+<script>
+  var category_data='{{ data|raw }}';
+</script>
+
+

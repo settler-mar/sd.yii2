@@ -148,21 +148,33 @@ class DefaultController extends Controller
         return $model->order_price . ' ' . $model->storeCur;
       },
       'reward_value' => function ($model) {
-        return $model->reward . ' <span class="fa fa-rub"></span>';
+        return round($model->reward / $model->kurs, 2, PHP_ROUND_HALF_DOWN) . ' ' . $model->storeCur;
       },
       'cashback_value' => function ($model) {
-        return $model->cashback . ' <span class="fa fa-rub"></span>';
+        return round($model->cashback / $model->kurs, 2, PHP_ROUND_HALF_DOWN). ' ' . $model->storeCur;
       },
 
     ];
     //статистика по выборке
     $queryAll = clone $dataProvider->query;
+    $queryTest = clone $dataProvider->query;
+    $queryTest->select([
+        'cw_stores.currency',
+        'sum(cashback/kurs) as cashback_store',
+        'sum(reward/kurs) as reward_store',
+        'sum(order_price) as order_price_store',
+        'sum(kurs_rub * cashback/kurs) as cashback_rub',
+        'sum(kurs_rub * reward/kurs) as reward_rub',
+        'sum(kurs_rub * order_price) as order_price_rub',
+    ])->groupBy(['cw_stores.currency'])->asArray();
+    //$resultTest = $queryTest->all();
+    //ddd($resultTest);
     $queryAll->select([
-      'sum(cashback) as cashback',
+      //'sum(cashback) as cashback',
       'sum(cashback/kurs) as cashback_local',
-      'sum(reward) as reward',
+      //'sum(reward) as reward',
       'sum(reward/kurs) as reward_local',
-      'sum(order_price * kurs) as order_price',
+      //'sum(order_price * kurs) as order_price',
       'sum(order_price) as order_price_local',
     ]);
     $resultAllCount = $queryAll->count();

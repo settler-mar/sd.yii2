@@ -152,15 +152,18 @@ class AdminCategoryController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
-      $all = ArrayHelper::map(
-          ProductsCategory::find()->where(['<>', 'id', $id])->select(['id', 'name'])->orderBy(['name' => SORT_ASC])->asArray()->all(),
-          'id',
-          'name'
+      $all = json_encode(
+          ProductsCategory::find()
+              ->where(['<>', 'id', $id])
+              ->select(['id', 'name', 'parent'])
+              ->orderBy(['name' => SORT_ASC])
+              ->asArray()
+              ->all()
       );
       return $this->render('update.twig', [
           'model' => $model,
-          'all' => $all,
           'activeFilter' => $this->activeFilter(),
+          'data' => $all,
       ]);
     }
   }

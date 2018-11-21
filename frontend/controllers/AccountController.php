@@ -6,12 +6,13 @@ use frontend\modules\meta\models\Meta;
 use frontend\modules\stores\models\CpaLink;
 use Yii;
 use frontend\components\SdController;
+use frontend\components\AccountController as Controller;
 
 
 /**
  * Site controller
  */
-class AccountController extends SdController
+class AccountController extends Controller
 {
   public function beforeAction($action)
   {

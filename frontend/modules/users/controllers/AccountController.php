@@ -15,7 +15,8 @@ use frontend\modules\users\models\UserSetting;
 use frontend\modules\users\models\UsersSocial;
 use frontend\modules\users\models\ValidateEmail;
 use Yii;
-use yii\web\Controller;
+//use yii\web\Controller;
+use frontend\components\AccountController as Controller;
 use yii\web\NotFoundHttpException;
 use yii\widgets\MaskedInput;
 

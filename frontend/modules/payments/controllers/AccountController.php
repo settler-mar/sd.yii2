@@ -10,13 +10,14 @@ use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 
 
 /**
  * Class AccountController
  * @package frontend\modules\payments\controllers
  */
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
   /**
    * @param yii\base\Action $action

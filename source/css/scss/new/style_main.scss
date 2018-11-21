@@ -315,6 +315,18 @@ h2, h3, h4 {
     > *:first-child {
       margin-left: 0;
     }
+    &-until-tablets > * {
+
+      @include media($laptop-min) {
+        width: calc(50% - 30PX);
+        margin-left: 0;
+      }
+      @include media($tablets) {
+        width: 100%;
+        margin-left: inherit;
+      }
+
+    }
   }
 
   &-stretch {

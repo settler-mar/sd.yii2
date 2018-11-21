@@ -82,7 +82,7 @@ class Payments extends \yii\db\ActiveRecord
         [['order_id'], 'required', 'on' => 'offline'],
         [['action_id', 'affiliate_id', 'click_date', 'action_date', 'status_updated', 'closing_date'], 'required',
             'on' => 'online'],
-        [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'ref_kurs'],
+        [['order_price', 'reward', 'cashback', 'ref_bonus', 'kurs', 'ref_kurs', 'kurs_rub'],
             'number', 'message' => "Значение должно быть числом.\nКопейки должны отделяться точкой."],
         [['click_date', 'action_date', 'status_updated', 'closing_date', 'storeName', 'email', 'category'], 'safe'],
 
@@ -248,6 +248,7 @@ class Payments extends \yii\db\ActiveRecord
         $this->reward = $userCashback['reward'];
         $this->cashback = $userCashback['cashback'];
         $this->kurs = $userCashback['kurs'];
+        $this->kurs_rub = $userCashback['kurs_rub'];
         $this->shop_percent = $store->percent;
         $this->ip = Yii::$app->request->userIP;
         if ($ref) {
@@ -466,7 +467,7 @@ class Payments extends \yii\db\ActiveRecord
     if (!$payment || empty($payment->recalc_json) || strlen($payment->recalc_json) < 5) {
       return null;
     }
-    $newPrice = round($newPrice, 2);
+    $newPrice = self::round($newPrice, 2);
     $recalc = json_decode($payment->recalc_json, true);
     if ($recalc['rate']['is_percentage']) {
       $reward = $newPrice * $recalc['rate']['size'] * $payment->kurs / 100;
@@ -480,8 +481,8 @@ class Payments extends \yii\db\ActiveRecord
       $loyalty_bonus = $loyalty_status_list[$payment->loyalty_status]['bonus'];
       $cashback = $cashback + $cashback * $loyalty_bonus / 100;
     }
-    $reward = round($reward, 2);
-    $cashback = round($cashback, 2);
+    $reward = self::round($reward, 2);
+    $cashback = self::round($cashback, 2);
     return [
         'reward' => $reward,
         'cashback' => $cashback,
@@ -590,6 +591,7 @@ class Payments extends \yii\db\ActiveRecord
       $db_payment->shop_percent = $store->percent;
       $db_payment->order_id = substr($payment['order_id'], 0, 50);
       $db_payment->kurs = $userCashback['kurs'];
+      $db_payment->kurs_rub = $userCashback['kurs_rub'];
       $db_payment->action_code = $payment['tariff_id'];
       $db_payment->rate_id = $rate_id;
 
@@ -706,6 +708,7 @@ class Payments extends \yii\db\ActiveRecord
 
     $kurs = $new ? Yii::$app->conversion->getCurs($user->currency, $payment['currency'])
         : $db_payment->kurs;
+    $kursRub = $new ? Yii::$app->conversion->getCurs('RUB', $payment['currency']) : $db_payment->kurs_rub;
     //в старых платежах нет курса. Получаем его косвенно
     if (!$kurs) {
       $kurs = Yii::$app->conversion->getRUB(1, $payment['currency']);
@@ -739,12 +742,20 @@ class Payments extends \yii\db\ActiveRecord
       }
     }
     return [
-        'cashback' => round($cashback, 2),
-        'reward' => round($reward, 2),
+        'cashback' => self::round($cashback, 2),
+        'reward' => self::round($reward, 2),
         'kurs' => $kurs,
-        'ref_bonus' => isset($ref_bonus) ? round($ref_bonus, 2) : null,
+        'ref_bonus' => isset($ref_bonus) ? self::round($ref_bonus, 2) : null,
         'ref_kurs' => isset($ref_kurs) ? $ref_kurs : null,
+        'kurs_rub' => $kursRub,
     ];
+  }
+
+  protected static function round($data, $precition = 2)
+  {
+     $number = $precition == 0 ? (float) $data : ((float) $data * pow(10, $precition));
+     $number = floor($number);
+     return $precition == 0 ? $number : ($number / pow(10, $precition));
   }
 
 }

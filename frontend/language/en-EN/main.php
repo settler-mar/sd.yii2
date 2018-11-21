@@ -157,8 +157,8 @@ return [
     'is_not_need' => 'NOT&nbsp;REQUIRED',
     'coupon_and_{store}_temporary_unavailabe' => '{store} store and its coupons are temporarily inactive',
     'enter_shop_name' => 'Enter store name',
-    'popular_stores_from_{category}_cashback' => 'Popular stores in {category} with&nbsp;cash back',
-    'popular_stores_from_{category}_cashback_offline' => 'Other popular offline stores with cash back',
+    'popular_stores_from_{category}_cashback' => 'Popular stores in &laquo;{category}&raquo; with&nbsp;cash back',
+    'popular_stores_from_{category}_cashback_offline' => 'Other popular offline stores in &laquo;{category}&raquo; with cash back',
     'other_popular_{shops}_cashback' => 'Other popular {shops} with&nbsp;cash&nbsp;back',
     'other_popular_online_shops_cashback' => 'Other popular online stores with&nbsp;cash&nbsp;back',
     'other_popular_offline_shops_cashback' => 'Other popular offline stores with&nbsp;cash&nbsp;back',
@@ -168,7 +168,7 @@ return [
     'track_package_example' =>'For example',
     'photo_and_video_for_{store}' =>'Photo & Video {store}',
     'store_point_{store}_in_{sity}' =>'Address {store} in {city}',
-    'store_points_{store}_in_{country}_{sity}' =>'Addresses of {store} in {country}, {citiy}',
+    'store_points_{store}_in_{country}_{sity}' =>'Addresses of {store} in {country}, {city}',
     'store_points_{store}_in_{country}' =>'Addresses of {store} in {country}',
     'store_points_{store}' =>'Addresses of {store}',
     'store_points_choose_city' =>'Choose a city',
@@ -320,4 +320,6 @@ return [
     'mobile_app_text' => 'In your smartfon now. Available on GooglePlay and soon on AppStore',
     'affiliate_system' => 'Affiliate system',
     'affiliate_system_text' => 'Invite our friends and get 15% cash back from them. Friends get cashback too.',
+    'shtrih_code' => 'YOUR BARCODE',
+
 ];

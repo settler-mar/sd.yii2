@@ -6,12 +6,13 @@ use yii;
 use frontend\modules\charity\models\Charity;
 use frontend\modules\funds\models\Foundations;
 use frontend\components\Pagination;
+use frontend\components\AccountController as Controller;
 
 /**
  * Class AccountController
  * @package frontend\modules\charity\controllers
  */
-class AccountController extends \yii\web\Controller
+class AccountController extends Controller
 {
     /**
      * @param yii\base\Action $action
