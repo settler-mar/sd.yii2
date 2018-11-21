@@ -215,15 +215,20 @@ class Product extends \yii\db\ActiveRecord
             'store_id' => $product['store_id'],
             'article' => $article
         ]);
-        $currency = (string)$product['currencyId'];
+        $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : null;
         $currency = $currency == 'RUR' ? 'RUB' : $currency;
+        $productName = !empty($product['name']) ? (string)$product['name'] :
+            (!empty($product['title']) ? (string)$product['title'] : '-');
+        $productImage = !empty($product['picture']) ? (string)$product['picture'] :
+            (!empty($product['image']) ? (string)$product['image'] : null);
+
         if (!$productDb) {
             $productDb = new self();
             $productDb->cpa_id = $product['cpa_id'];
             $productDb->store_id = $product['store_id'];
             $productDb->catalog_id = $product['catalog_id'];
             $productDb->article = $article;
-            $productDb->image = self::saveImage((string)$product['picture']);
+            $productDb->image = self::saveImage($productImage);
             $new = 1;
         }
         $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
@@ -232,21 +237,18 @@ class Product extends \yii\db\ActiveRecord
         $standartedParams = !empty($params) ? ProductParameters::standarted($params, $categories) : null;
 
         $productDb->params_original = $product['params_original'];
-        $productDb->available = $product['available'];
+        $productDb->available = isset($product['available']) ? $product['available'] : 1;
         $productDb->currency = $currency;
-        $productDb->description = (string)$product['description'];
+        $productDb->description = isset($product['description']) ? (string)$product['description'] : null;
         $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
-        $productDb->name = (string)$product['name'];
+        $productDb->name = $productName;
         $productDb->old_price = isset($product['oldprice']) ? (float)$product['oldprice'] : null;
-        $productDb->price = (float)$product['price'];
+        $productDb->price = isset($product['price']) ? (float)$product['price'] : null;
         $productDb->params = $standartedParams['params'];
         $productDb->paramsProcessing = $standartedParams['params_processing'];
-        $productDb->image = self::saveImage(
-            isset($product['picture']) ? (string)$product['picture'] : null,
-            $productDb->image
-        );
-        $productDb->url = (string)$product['url'];
-        $productDb->vendor = (string)$product['vendor'];
+        $productDb->image = self::saveImage($productImage, $productDb->image);
+        $productDb->url = isset($product['url']) ? (string)$product['url'] : null;
+        $productDb->vendor = isset($product['vendor']) ? (string)$product['vendor'] : null;
 
         $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
             $productDb->image);

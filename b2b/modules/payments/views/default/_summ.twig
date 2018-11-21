@@ -1,8 +1,8 @@
 {% for index, item  in data%}
     {% if index %}<br>{% endif %}
     {% if item.currency == 'RUB' %}
-        {{ _nf(item[type~'_local'], 2)|raw  }}
+        {{ _nf(item[type~'_rub'], 2)|raw  }}
     {% else %}
-        {{ _nf(item[type~'_local'], 2)|raw  }} ({{ _nf(item[type~'_rub'], 2)|raw }} {{ item.currency }})
+        {{ _nf(item[type~'_rub'], 2)|raw  }} ({{ _nf(item[type~'_local'], 2)|raw }} {{ item.currency }})
     {% endif %}
 {% endfor %}
