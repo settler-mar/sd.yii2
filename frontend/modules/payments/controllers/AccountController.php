@@ -95,7 +95,7 @@ class AccountController extends Controller
       ->one();
     //ddd($data['total']);
 
-    $cacheName = 'account_payments_' . $id . '_' . str_replace(' ', '', $search_range) . '_' . $page;
+    $cacheName = false;//'account_payments_' . $id . '_' . str_replace(' ', '', $search_range) . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
@@ -128,7 +128,7 @@ class AccountController extends Controller
       //->orderBy('cwp.action_id DESC');
       ->orderBy('cwp.action_date DESC');
 
-    $cacheName = 'account_payments' . \Yii::$app->user->id . '_' . $page;
+    $cacheName = false;//'account_payments' . \Yii::$app->user->id . '_' . $page;
     $pagination = new Pagination($dataBase, $cacheName, ['page' => $page, 'limit' => 20, 'asArray' => true]);
 
     $payments = $pagination->data();
