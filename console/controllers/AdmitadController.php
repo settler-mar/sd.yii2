@@ -601,6 +601,9 @@ class AdmitadController extends Controller
     $count = 0;
     $insert = 0;
     $error = 0;
+    //$photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=')+8);
+    //$photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')). '/';
+    $photoPath = $catalog->cpaLink->affiliate_id . '/';
     foreach ($products as $product) {
       $count++;
       $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
@@ -609,6 +612,7 @@ class AdmitadController extends Controller
       $product['cpa_id'] = $this->cpa_id;
       $product['catalog_id'] = $catalog->id;
       $product['store_id'] = $catalog->cpaLink->store->uid;
+      $product['photo_path'] = $photoPath;
       $result = Product::addOrUpdate($product);
       if ($result['error']) {
         d($result['product']->errors);

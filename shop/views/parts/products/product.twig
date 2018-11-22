@@ -9,7 +9,7 @@
     <div class="catalog_products_item_in">
         <div class="catalog_products_item_image">
             <a href="{{ product_url }}" target="_blank" class="">
-             <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/products/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+             <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
             </a>
         </div>
         <div class="catalog_products_item_text">

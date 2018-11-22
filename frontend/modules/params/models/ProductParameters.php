@@ -308,8 +308,8 @@ class ProductParameters extends \yii\db\ActiveRecord
                 $parameter = self::findOne($value->parameter_id);
                 $parameter = $parameter ? self::parameterSynonym($parameter) : false;
                 if ($parameter && $parameter->active != self::PRODUCT_PARAMETER_ACTIVE_NO) {
-                    $out[$categories . $parameter->name][] = $value->name;
-                    self::$originalValues[$categories . $original] = [$categories .$parameter->name => $value->name];
+                    $out[$parameter->name][] = $value->name;
+                    self::$originalValues[$categories . $original] = [$parameter->name => $value->name];
                 } else {
                     self::$originalValues[$categories . $original] = false;
                 }

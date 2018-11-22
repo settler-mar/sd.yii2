@@ -240,53 +240,67 @@ class Product extends \yii\db\ActiveRecord
             'store_id' => $product['store_id'],
             'article' => $article
         ]);
-        $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : null;
-        $currency = $currency == 'RUR' ? 'RUB' : $currency;
-        $productName = !empty($product['name']) ? (string)$product['name'] :
-            (!empty($product['title']) ? (string)$product['title'] : '-');
-        $productImage = !empty($product['picture']) ? (string)$product['picture'] :
-            (!empty($product['image']) ? (string)$product['image'] : null);
+        $productModifiedTime = isset($product['modified_time']) ? $product['modified_time'] : false;
+        if (!$productDb || ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
+            //всё остальное, если продукта нет или дата модификации продукта больше
 
-        if (!$productDb) {
-            $productDb = new self();
-            $productDb->cpa_id = $product['cpa_id'];
-            $productDb->store_id = $product['store_id'];
-            $productDb->catalog_id = $product['catalog_id'];
-            $productDb->article = $article;
-            $productDb->image = self::saveImage($productImage);
-            $new = 1;
-        }
-        $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
-        $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
-            $product['params'];
-        $standartedParams = !empty($params) ? ProductParameters::standarted($params, $categories) : null;
+            $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : null;
+            $currency = $currency == 'RUR' ? 'RUB' : $currency;
+            $productName = !empty($product['name']) ? (string)$product['name'] :
+                (!empty($product['title']) ? (string)$product['title'] : '-');
+            $productImage = !empty($product['picture']) ? (string)$product['picture'] :
+                (!empty($product['image']) ? (string)$product['image'] : null);
 
-        $productDb->params_original = $product['params_original'];
-        $productDb->available = isset($product['available']) ? $product['available'] : 1;
-        $productDb->currency = $currency;
-        $productDb->description = isset($product['description']) ? (string)$product['description'] : null;
-        $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
-        $productDb->name = $productName;
-        $productDb->old_price = isset($product['oldprice']) ? (float)$product['oldprice'] : null;
-        $productDb->price = isset($product['price']) ? (float)$product['price'] : null;
-        $productDb->params = $standartedParams['params'];
-        $productDb->paramsProcessing = $standartedParams['params_processing'];
-        $productDb->image = self::saveImage($productImage, $productDb->image);
-        $productDb->url = isset($product['url']) ? (string)$product['url'] : null;
-        $productDb->vendor = isset($product['vendor']) ? (string)$product['vendor'] : null;
+            if (!$productDb) {
+                $productDb = new self();
+                $productDb->cpa_id = $product['cpa_id'];
+                $productDb->store_id = $product['store_id'];
+                $productDb->catalog_id = $product['catalog_id'];
+                $productDb->article = $article;
+                $productDb->image = self::saveImage(
+                    isset($product['photo_path']) ? $product['photo_path'] : '',
+                    $productImage
+                );
+                $new = 1;
+            }
+            $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
 
-        $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
-            $productDb->image);
+            $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
+                $product['params'];
+            $standartedParams = !empty($params) ? ProductParameters::standarted($params, $categories) : null;
+            $productPrice = (float) isset($product['price']) ? preg_replace('/[^\d.]/', '', $product['price']) : null;
+            $productPriceOld = (float) isset($product['oldprice']) ? preg_replace('/[^\d.]/', '', $product['oldprice']) : null;
 
-        if ($productHash != $productDb->data_hash) {
-            //echo $productHash." ".$productDb->data_hash."\n";
-            $productDb->data_hash = $productHash;
-            if (!$productDb->save()) {
-                d($productDb->errors);
-                $error = 1;
-            } else {
-                $productDb->writeParamsProcessing();
-                $productToCategories = $productDb->writeCategories(count($categories) ? [$categories[count($categories) - 1]] : []);//пишем - товар-категории только последнюю категорию
+            $productDb->params_original = $product['params_original'];
+            $productDb->available = isset($product['available']) ? $product['available'] : 1;
+            $productDb->currency = $currency;
+            $productDb->description = isset($product['description']) ? (string)$product['description'] : null;
+            $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
+            $productDb->name = $productName;
+            $productDb->old_price = $productPrice;
+            $productDb->price = $productPriceOld;
+            $productDb->params = $standartedParams['params'];
+            $productDb->paramsProcessing = $standartedParams['params_processing'];
+            $productDb->image = self::saveImage(
+                isset($product['photo_path']) ? $product['photo_path'] : '',
+                $productImage, $productDb->image
+            );
+            $productDb->url = isset($product['url']) ? (string)$product['url'] : null;
+            $productDb->vendor = isset($product['vendor']) ? (string)$product['vendor'] : null;
+
+            $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
+                $productDb->image);
+
+            if ($productHash != $productDb->data_hash) {
+                //echo $productHash." ".$productDb->data_hash."\n";
+                $productDb->data_hash = $productHash;
+                if (!$productDb->save()) {
+                    d($productDb->errors);
+                    $error = 1;
+                } else {
+                    $productDb->writeParamsProcessing();
+                    $productDb->writeCategories(count($categories) ? [$categories[count($categories) - 1]] : []);//пишем - товар-категории только последнюю категорию
+                }
             }
         }
         return [
@@ -371,7 +385,7 @@ class Product extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public static function saveImage($image, $old = null)
+    public static function saveImage($storePath, $image, $old = null)
     {
         if (!Yii::$app->params['product_load_images']) {
             //задано не грузить фото - возвращаем исходное
@@ -381,7 +395,7 @@ class Product extends \yii\db\ActiveRecord
             return $old;
         }
         $size = 300;//требуемая ширина и высота
-        $path = Yii::$app->getBasePath() . '/../frontend/web/images/product/';
+        $path = Yii::$app->getBasePath() . '/../shop/web/images/product/';
         if ($old) {
             try {
                 $imageSize = getimagesize($path . $old);
@@ -396,18 +410,18 @@ class Product extends \yii\db\ActiveRecord
         $exch = $exch[count($exch) - 1];
         $name = preg_replace('/[\.\s]/', '', microtime()); // Название файла
         $name .= ('.' . $exch);//имя и расширение
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!file_exists($path . $storePath)) {
+            mkdir($path . $storePath, 0777, true);
         }
         try {
             $file = file_get_contents($image);
             $img = (new Image($file))
                 ->bestFit($size, $size)
-                ->saveAs($path . $name);
+                ->saveAs($path . $storePath . $name);
             if ($old && is_readable($path . $old) && is_file($path . $old)) {
                 unlink($path . $old);
             }
-            return $name;
+            return $storePath . $name;
         } catch (\Exception $e) {
             if (Yii::$app instanceof Yii\console\Application) {
                 echo $e->getMessage() . "\n";

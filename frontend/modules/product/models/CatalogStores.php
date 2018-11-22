@@ -61,8 +61,8 @@ class CatalogStores extends \yii\db\ActiveRecord
             'csv' => 'Csv',
             'product_count' => 'Количество продуктов',
             'active' => 'Active',
-            'date_import' => 'Дата обновления',
-            'date_download' => 'Последняя загрузка',
+            'date_import' => 'Дата импорта',
+            'date_download' => 'Дата обновления',
             'crated_at' => 'Crated At',
             'store' => 'Магазин',
         ];

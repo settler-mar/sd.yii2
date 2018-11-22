@@ -108,9 +108,11 @@ class AdminController extends Controller
                     if (!$model->image) {
                         return '';
                     }
-                    $src = (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
-                        '/images/product/'.$model->image;
-                    return '<img height="100" src="'.$src.'">';
+                    if (preg_match('/^http(s?)\:\/\//', $model->image)) {
+                        return '<img height="100" src="'.$model->image.'">';
+                    }
+                    $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
+                    return '<img height="100" src="data: jpeg;base64,'.$imageData.'">';
                 },
                 'url' => function ($model) {
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
@@ -194,10 +196,17 @@ class AdminController extends Controller
             //return $this->redirect(['update', 'id' => $model->id]);
             return $this->redirect(['index']);
         } else {
+            if (!$model->image) {
+                $img = '';
+            } else if (preg_match('/^http(s?)\:\/\//', $model->image)) {
+                $img = $model->image;
+            } else {
+                $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
+                $img = 'data: jpeg;base64,'.$imageData;
+            }
             return $this->render('update.twig', [
                 'model' => $model,
-                'img' => (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
-                    '/images/product/'.$model->image,
+                'img' => $img,
                 'availableFilter' => $this->availableFilter(),
                 'product_categories_data' => ProductsCategory::categoriesJson(),
             ]);
