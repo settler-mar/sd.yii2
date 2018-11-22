@@ -109,33 +109,24 @@ class AdminCategoryController extends Controller
         ]);
   }
   /**
-   * Displays a single ProductsCategory model.
-   * @param integer $id
-   * @return mixed
-   */
-//    public function actionView($id)
-//    {
-//        return $this->render('view.twig', [
-//            'model' => $this->findModel($id),
-//        ]);
-//    }
-  /**
    * Creates a new ProductsCategory model.
    * If creation is successful, the browser will be redirected to the 'view' page.
    * @return mixed
    */
-//    public function actionCreate()
-//    {
-//        $model = new ProductsCategory();
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->render('create.twig', [
-//                'model' => $model,
-//            ]);
-//        }
-//    }
+    public function actionCreate()
+    {
+        $model = new ProductsCategory();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('create.twig', [
+                'model' => $model,
+                'activeFilter' => $this->activeFilter(),
+                'data' => $this->categoriesJson(),
+            ]);
+        }
+    }
   /**
    * Updates an existing ProductsCategory model.
    * If update is successful, the browser will be redirected to the 'view' page.
@@ -152,18 +143,10 @@ class AdminCategoryController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
-      $all = str_replace("'", " ", json_encode(
-          ProductsCategory::find()
-              ->where(['<>', 'id', $id])
-              ->select(['id', 'name', 'parent'])
-              ->orderBy(['name' => SORT_ASC])
-              ->asArray()
-              ->all()
-      ));
       return $this->render('update.twig', [
           'model' => $model,
           'activeFilter' => $this->activeFilter(),
-          'data' => $all,
+          'data' => $this->categoriesJson($id),
       ]);
     }
   }
@@ -202,4 +185,20 @@ class AdminCategoryController extends Controller
         ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING => 'Ожидает подтверждения'
     ];
   }
+
+    /**
+     * @param null $except
+     * @return string
+     */
+    protected function categoriesJson($except = null)
+    {
+        $category = ProductsCategory::find()
+            ->select(['id', 'name', 'parent'])
+            ->orderBy(['name' => SORT_ASC])
+            ->asArray();
+        if ($except) {
+            $category->where(['<>', 'id', $except]);
+        }
+        return str_replace("'", " ", json_encode($category->all()));
+    }
 }
