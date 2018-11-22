@@ -233,5 +233,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
         }
     }
 
+    public static function categoriesJson($except = null)
+    {
+        $category = self::find()
+            ->select(['id', 'name', 'parent'])
+            ->orderBy(['name' => SORT_ASC])
+            ->asArray();
+        if ($except) {
+            $category->where(['<>', 'id', $except]);
+        }
+        return str_replace("'", " ", json_encode($category->all()));
+    }
+
 
 }

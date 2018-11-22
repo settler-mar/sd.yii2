@@ -123,7 +123,7 @@ class AdminCategoryController extends Controller
             return $this->render('create.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
-                'data' => $this->categoriesJson(),
+                'data' => ProductsCategory::categoriesJson(),
             ]);
         }
     }
@@ -146,7 +146,7 @@ class AdminCategoryController extends Controller
       return $this->render('update.twig', [
           'model' => $model,
           'activeFilter' => $this->activeFilter(),
-          'data' => $this->categoriesJson($id),
+          'data' => ProductsCategory::categoriesJson($id),
       ]);
     }
   }
@@ -186,19 +186,4 @@ class AdminCategoryController extends Controller
     ];
   }
 
-    /**
-     * @param null $except
-     * @return string
-     */
-    protected function categoriesJson($except = null)
-    {
-        $category = ProductsCategory::find()
-            ->select(['id', 'name', 'parent'])
-            ->orderBy(['name' => SORT_ASC])
-            ->asArray();
-        if ($except) {
-            $category->where(['<>', 'id', $except]);
-        }
-        return str_replace("'", " ", json_encode($category->all()));
-    }
 }

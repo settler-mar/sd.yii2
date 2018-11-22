@@ -2,6 +2,15 @@
 <div class="product-form">
     {% set form = active_form_begin() %}
 
+        {{ form.field(model, 'categoriesTree').textInput({'maxlength':true, 'disabled':true}).label('Категории')|raw }}
+
+        <div class="form-group field-product-category_id">
+            <label class="control-label" for="product-category_id">Категория</label>
+            <input class="category_tree_input" id="product-category_id" type="hidden"
+               name="Product[category_id]" value="{{ model.categoryId }}" data-root="Корень">
+            <div class="help-block"></div>
+        </div>
+
         {{ form.field(model, 'article').textInput({'maxlength':true})|raw }}
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
@@ -38,6 +47,7 @@
         </div>
 
         {{ form.field(model, 'params_original').textInput({'maxlength':true, 'disabled':true})|raw }}
+
         <div class="form-group field-product-store">
             <label class="control-label" for="product-store">Магазин</label>
             <span id="product-store" class="form-control" disabled>{{ model.store.name }}</span>
@@ -50,8 +60,12 @@
     </div>
     {{ active_form_end() }}
 
-    <div class="form-group">
-        <label>Категории</label>
-        {% include('category_tree.twig') %}
-    </div>
+    {#<div class="form-group">#}
+        {#<label>Категории</label>#}
+        {#{% include('category_tree.twig') %}#}
+    {#</div>#}
 </div>
+
+<script>
+    var category_data='{{ product_categories_data|raw }}';
+</script>

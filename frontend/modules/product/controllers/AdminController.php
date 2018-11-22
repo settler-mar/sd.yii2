@@ -112,11 +112,6 @@ class AdminController extends Controller
                         '/images/product/'.$model->image;
                     return '<img height="100" src="'.$src.'">';
                 },
-                'categories' => function ($model) {
-                    if (count($model->categories)) {
-                        return ProductsCategory::parentsTree($model->categories[0]);
-                    }
-                },
                 'url' => function ($model) {
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
                 },
@@ -130,11 +125,7 @@ class AdminController extends Controller
                     return !empty($out) ? implode('<br>', $out) : '';
                 }
             ],
-            'availableFilter' => [
-                $searchModel::PRODUCT_AVAILABLE_YES => 'В наличии',
-                $searchModel::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
-                $searchModel::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
-            ],
+            'availableFilter' => $this->availableFilter(),
             'categories' => $categoriesFilter,
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
@@ -200,19 +191,15 @@ class AdminController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update.twig', [
                 'model' => $model,
-                'product_categories_tree' => ProductsCategory::tree(),
-                'model_categories' => array_column($model->categories, 'id'),
                 'img' => (preg_match('/^http(s?)\:\/\//', $model->image)) ? $model->image :
                     '/images/product/'.$model->image,
-                'availableFilter' => [
-                    Product::PRODUCT_AVAILABLE_YES => 'В наличии',
-                    Product::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
-                    Product::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
-                ],
+                'availableFilter' => $this->availableFilter(),
+                'product_categories_data' => ProductsCategory::categoriesJson(),
             ]);
         }
     }
@@ -248,5 +235,14 @@ class AdminController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function availableFilter()
+    {
+        return [
+            Product::PRODUCT_AVAILABLE_YES => 'В наличии',
+            Product::PRODUCT_AVAILABLE_NOT => 'Нет в наличии',
+            Product::PRODUCT_AVAILABLE_REQUEST => 'По запросу'
+        ];
     }
 }

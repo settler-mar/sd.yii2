@@ -38,6 +38,9 @@ class Product extends \yii\db\ActiveRecord
     const PRODUCT_AVAILABLE_YES = 1;
     const PRODUCT_AVAILABLE_REQUEST = 2;
 
+    public $category_id;
+
+
     /**
      * @var array при загрузке необработанные параметры
      */
@@ -45,6 +48,7 @@ class Product extends \yii\db\ActiveRecord
 
 
     protected static $categories = [];
+
 
     public static $defaultSort = 'name';
     public static $defaultLimit = 48;
@@ -64,7 +68,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['article', 'name'], 'required'],
-            [['available', 'store_id', 'cpa_id', 'catalog_id'], 'integer'],
+            [['available', 'store_id', 'cpa_id', 'catalog_id', 'category_id'], 'integer'],
             [['description'], 'string'],
             [['params'], 'safe'],
             [['modified_time'], 'safe'],
@@ -134,6 +138,28 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     * одна категория, её id
+     * @return mixed
+     */
+    public function getCategoryId()
+    {
+        if ($this->categories) {
+            return $this->categories[0]->id;
+        }
+    }
+
+    /**
+     * дерево родительски категорий для одной связанной категории
+     * @return string
+     */
+    public function getCategoriesTree()
+    {
+        if ($this->categories) {
+            return ProductsCategory::parentsTree($this->categories[0]);
+        }
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getStore()
@@ -156,7 +182,6 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CatalogStores::className(), ['id' => 'catalog_id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -421,6 +446,9 @@ class Product extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+        if (isset($this->category_id) && $this->category_id != $this->categoryId) {
+            $this->writeCategories([$this->category_id]);
+        }
         parent::afterSave($insert, $changedAttributes);
         $this->clearCache();
     }
