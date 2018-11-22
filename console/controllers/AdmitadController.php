@@ -601,9 +601,9 @@ class AdmitadController extends Controller
     $count = 0;
     $insert = 0;
     $error = 0;
-    //$photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=')+8);
-    //$photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')). '/';
-    $photoPath = $catalog->cpaLink->affiliate_id . '/';
+    $photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=')+8);
+    $photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')). '/';
+    //$photoPath = $catalog->cpaLink->affiliate_id . '/';
     foreach ($products as $product) {
       $count++;
       $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);

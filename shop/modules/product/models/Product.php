@@ -277,8 +277,8 @@ class Product extends \yii\db\ActiveRecord
             $productDb->description = isset($product['description']) ? (string)$product['description'] : null;
             $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
             $productDb->name = $productName;
-            $productDb->old_price = $productPrice;
-            $productDb->price = $productPriceOld;
+            $productDb->old_price = $productPriceOld;
+            $productDb->price = $productPrice;
             $productDb->params = $standartedParams['params'];
             $productDb->paramsProcessing = $standartedParams['params_processing'];
             $productDb->image = self::saveImage(

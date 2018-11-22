@@ -691,7 +691,7 @@ class TaskController extends Controller
      */
   public function actionProductClear()
   {
-      echo "Будет выполнена очистка продуктов, категорий, параметров, значений параметров Каталога\n";
+      echo "Будет выполнена очистка продуктов, фото, категорий, параметров, значений параметров Каталога\n";
       $continue = $this->prompt('Действительно хотите продолжить? No/Yes', ['required' => true]);
       if ($continue != 'Yes') {
           echo "Прервано\n";
@@ -719,6 +719,21 @@ class TaskController extends Controller
 
       CatalogStores::updateAll(['date_import'=>null, 'product_count'=> null]);
 
+      $path = Yii::getAlias('@shop/web/images/product');
+      $this->deletePath($path);
   }
 
+    protected function deletePath($path)
+    {
+        if (is_dir($path) === true) {
+            $files = array_diff(scandir($path), ['.', '..']);
+            foreach ($files as $file) {
+                $this->deletePath(realpath($path) . '/' . $file);
+            }
+            return rmdir($path);
+        } else if (is_file($path) === true) {
+            return unlink($path);
+        }
+        return false;
+    }
 }
