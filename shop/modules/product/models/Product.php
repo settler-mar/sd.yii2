@@ -230,21 +230,23 @@ class Product extends \yii\db\ActiveRecord
      * @param $product
      * @return array
      */
-    public static function addOrUpdate($product)
+    public static function addOrUpdate($product, $store)
     {
         $new = 0;
         $error = 0;
         $article = (string)$product['id'];
-        $productDb = self::findOne([
-            'cpa_id' => $product['cpa_id'],
-            'store_id' => $product['store_id'],
-            'article' => $article
-        ]);
+        $productDb = $product['check_unique'] ?
+            self::findOne([
+                'cpa_id' => $product['cpa_id'],
+                'store_id' => $product['store_id'],
+                'article' => $article
+            ])
+            : false;
         $productModifiedTime = isset($product['modified_time']) ? $product['modified_time'] : false;
         if (!$productDb || ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
             //всё остальное, если продукта нет или дата модификации продукта больше
 
-            $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : null;
+            $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : $store['currency'];
             $currency = $currency == 'RUR' ? 'RUB' : $currency;
             $productName = !empty($product['name']) ? (string)$product['name'] :
                 (!empty($product['title']) ? (string)$product['title'] : '-');
@@ -291,15 +293,23 @@ class Product extends \yii\db\ActiveRecord
             $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
                 $productDb->image);
 
+            $consoleApp = Yii::$app instanceof Yii\console\Application;
             if ($productHash != $productDb->data_hash) {
-                //echo $productHash." ".$productDb->data_hash."\n";
                 $productDb->data_hash = $productHash;
-                if (!$productDb->save()) {
-                    d($productDb->errors);
-                    $error = 1;
-                } else {
+                try {
+                    if (!$productDb->save(!$consoleApp)) {
+                        $error = 1;
+                        if ($consoleApp) {
+                            d($productDb->errors);
+                        }
+                    };
                     $productDb->writeParamsProcessing();
                     $productDb->writeCategories(count($categories) ? [$categories[count($categories) - 1]] : []);//пишем - товар-категории только последнюю категорию
+                } catch (\Exception $e) {
+                    $error = 1;
+                    if ($consoleApp) {
+                        d($e->getMessage());
+                    }
                 }
             }
         }
@@ -437,15 +447,17 @@ class Product extends \yii\db\ActiveRecord
      */
     protected function productCategory($name, $parent = null)
     {
-        if (!isset(static::$categories[$name.($parent ? '|'.$parent :'')])) {
+        if (!isset(static::$categories[$name . ($parent ? '|' . $parent : '')])) {
             $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
             if (!$categoryDb) {
                 $categoryDb = new ProductsCategory();
                 $categoryDb->name = $name;
                 $categoryDb->parent = $parent;
                 if (!$categoryDb->save()) {
-                    d($categoryDb->errors);
-                    static::$categories[$name] = false;
+                    if (Yii::$app instanceof Yii\console\Application) {
+                        d($categoryDb->errors);
+                    }
+                    static::$categories[$name . ($parent ? '|' . $parent : '')] = false;
                 }
             } else {
                 if ($categoryDb->parent == null && $parent) {
@@ -453,9 +465,9 @@ class Product extends \yii\db\ActiveRecord
                     $categoryDb->save();
                 }
             }
-            static::$categories[$name.($parent ? '|'.$parent :'')] = $categoryDb->toArray();
+            static::$categories[$name . ($parent ? '|' . $parent : '')] = $categoryDb->toArray();
         }
-        return static::$categories[$name . ($parent ? '|'.$parent :'')];
+        return static::$categories[$name . ($parent ? '|' . $parent : '')];
     }
 
     public function afterSave($insert, $changedAttributes)

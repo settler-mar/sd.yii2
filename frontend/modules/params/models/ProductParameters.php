@@ -278,7 +278,9 @@ class ProductParameters extends \yii\db\ActiveRecord
             self::$paramsProcessing[$categoriesString.$param] = $out;
             return ['param' => $out, 'processing' => true];
         } else {
-            d($out->errors);
+            if (Yii::$app instanceof Yii\console\Application) {
+                d($out->errors);
+            }
             return false;
         }
     }
