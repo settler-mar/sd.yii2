@@ -128,7 +128,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $level++;
         $childs =  self::find()
             ->from(self::tableName() . ' pc')
-            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.crated_at', 'pc.active', 'pc.synonym', 'pc.route'])
+            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'pc.synonym', 'pc.route'])
             ->where([
             'parent'=>$parent,
             'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]

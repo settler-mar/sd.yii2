@@ -54,6 +54,7 @@ class DefaultController extends SdController
         $storesData = [];
         $dataBaseData = Product::find()
             ->from(Product::tableName() . ' prod')
+            ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
             ->select(['prod.*'])
             ->orderBy($sort . ' ' . $order);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
