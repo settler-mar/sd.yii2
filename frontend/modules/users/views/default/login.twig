@@ -25,15 +25,17 @@
     '{beginWrapper}<i>'~svg("lock",'form-icon')~'</i>{input}\n{endWrapper}\n{error}'
   }).passwordInput({'placeholder': t('account', 'enter_your_remembered_password'),'required':true}) | raw }}
 
-  <div class="form-input-recaptcha-wrap">
-    {{ form.field(model, 'reCaptcha', {
-          'template': "<div>{input}</div>{error}"
-    }).widget(reCaptcha)|raw }}
+  {% if model.recaptchaRequired %}
+    <div class="form-input-recaptcha-wrap">
+      {{ form.field(model, 'reCaptcha', {
+            'template': "<div>{input}</div>{error}"
+      }).widget(reCaptcha)|raw }}
 
-    <div class="form_right_blk">
-      <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
+      <div class="form_right_blk">
+        <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
+      </div>
     </div>
-  </div>
+  {% endif %}
 
   <button type="submit" class="btn block_margin-auto btn-min_width240">{{ t('common', 'do_login')|raw }}</button>
   {{ active_form_end() }}

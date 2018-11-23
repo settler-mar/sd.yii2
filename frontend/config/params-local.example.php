@@ -65,5 +65,6 @@ return [
     ],
     'plugin_install_panel' => 1,
     'lang_select_active' => 1,
+    'authorization_recaptcha' => 1,
 
 ];

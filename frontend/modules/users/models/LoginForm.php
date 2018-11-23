@@ -14,6 +14,7 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
     public $reCaptcha;
+    public $recaptchaRequired = false;
 
     private $_user;
     private $attemps;
@@ -24,7 +25,7 @@ class LoginForm extends Model
      */
     public function rules()
     {
-        return [
+        $out  = [
             // username and password are both required
             [['email'], 'trim'],
             [['email', ], 'required', 'message' => Yii::t('account', 'email_is_required')],
@@ -36,8 +37,19 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
-            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
+            //[['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "]
         ];
+        if ($this->recaptchaRequired) {
+            $out[] = [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),'uncheckedMessage'=>" "];
+        }
+        return $out;
+    }
+
+    public function init()
+    {
+        $this->recaptchaRequired = isset(Yii::$app->params['authorization_recaptcha']) &&
+            Yii::$app->params['authorization_recaptcha'] == 1;
+        return parent::init();
     }
 
     /**
