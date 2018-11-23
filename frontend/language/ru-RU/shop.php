@@ -12,4 +12,10 @@ return [
     'why_only_we_compare_text' => 'Удобное сравнение товаров',
     'why_only_we_cashback' => 'Купить дешевле',
     'why_only_we_cashback_text' => 'В большинстве магазинов вы можете вернуть 5-40% с каждой покупки',
+    'popular_categories' => 'Популярные категории',
+    'popular_products' => 'Лучшие товары',
+    'popular_brands' => 'Популярные бренды',
+    'all_categories_with_cashback' => 'Другие категории товаров с кэшбэком',
+    'all_products_with_cashback' => 'Другие товары с кэшбэком',
+
 ];

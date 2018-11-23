@@ -1,0 +1,19 @@
+<section class="margin">
+    <div class="page-wrap">
+        <h2 class="content-header">{{ t('shop', 'popular_categories')|raw }}</h2>
+        <div class="shops">
+            {% for category in popular_categories %}
+                {% include 'parts/category.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+        </div>
+        <div class="align-center">
+            <a href="{{ _href('/category')|raw }}" class="btn btn-transform">{{ t('shop', 'all_categories_with_cashback')|raw }}</a>
+        </div>
+    </div>
+</section>

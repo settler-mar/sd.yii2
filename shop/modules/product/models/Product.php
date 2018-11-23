@@ -553,4 +553,48 @@ class Product extends \yii\db\ActiveRecord
         });
         return $data;
     }
+
+    public static function top($params = [])
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_top_' . implode('_', $params) . ($language ? '_'.$language: '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $products = $cache->getOrSet($casheName, function () use ($params) {
+            $count = isset($params['count']) ? $params['count'] : 5;
+            //пока для примера сортировка??
+            $product = self::find()->from(self::tableName(). ' p')
+                ->orderBy(['modified_time' => SORT_ASC])
+                ->limit($count)
+                ->all();
+            return $product;
+        }, $cache->defaultDuration, $dependency);
+
+        return $products;
+    }
+    public static function topBy($field, $params = [])
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_top_by_' . $field . implode('_', $params) . ($language ? '_'.$language: '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $products = $cache->getOrSet($casheName, function () use ($field, $params) {
+            $count = isset($params['count']) ? $params['count'] : 5;
+            $product = self::find()->from(self::tableName(). ' p')
+                ->select(['p.'.$field, 'count(p.id) as count'])
+                ->groupBy([$field])
+                ->orderBy(['count' => SORT_ASC])
+                ->limit($count)
+                ->all();
+            return $product;
+        }, $cache->defaultDuration, $dependency);
+        return $products;
+    }
+
 }

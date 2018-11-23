@@ -7,7 +7,7 @@
                 {% if item.on_index==1 and item.regions and in_array(app.params.region, item.regions) %}
                     <div class="instruction-item instruction-item-margin-mobile  instruction-item-230 gray-box">
                         <div class="flex-line">
-                            {{ svg('color/'~item.code,'instruction-social_logo')|raw }}
+                            {{ svg('color/'~item.code,'instruction-social_logo', '@frontend')|raw }}
                             <div class="instruction-social_counter">
                                 <span>{{ _nf(item.count,0)|raw }}</span>
                                 {{ item.index_text }}
@@ -16,7 +16,7 @@
                         <a target="_blank" class="social-btn social-btn-{{ item.code }}" href="{{ item.url }}">
                             {% set sub_icon=item.code~_if(item.code=='vk','','_mini') %}
                             {% if item.code!="ok" %}
-                                {{ svg('color/'~sub_icon,'social-btn-logo')|raw }}
+                                {{ svg('color/'~sub_icon,'social-btn-logo', '@frontend')|raw }}
                             {% endif %}
                             {{ item.button }}
                         </a>

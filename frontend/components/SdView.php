@@ -11,7 +11,7 @@ use yii\helpers\Url;
 use frontend\modules\meta\models\Meta;
 use yii\twig\ViewRenderer;
 use frontend\modules\reviews\models\Reviews;
-use frontend\modules\notification\models\Notifications;
+use frontend\modules\payments\models\Payments;
 
 class SdView extends SdViewBASE
 {
@@ -63,41 +63,8 @@ class SdView extends SdViewBASE
     }
 
     $cache = Yii::$app->cache;
-    //Грузим с кэша. Период очистки 8 часов.
-    $this->all_params['sd_counter'] = $cache->getOrSet('counter_index', function () {
-      $user_count = Users::find()->orderBy(['uid' => SORT_DESC])->asArray()->select('uid')->one();
 
-      $sql = "SELECT max(cashback) as cashback, count(uid) as cnt 
-      FROM `cw_payments` 
-      WHERE `action_date` > '" . date("Y-m-d", time() - 1.1 * 24 * 60 * 60) . "'";
-      $result2 = Yii::$app->db->createCommand($sql)->queryOne();
-
-      $query = new Query();
-      $query->select
-      (['max(cashback) as cashback, count(uid) as cnt'])
-          ->from('cw_payments')
-          ->where(['>', 'action_date', date("Y-m-d", time() - 7 * 24 * 60 * 60)]);
-      $command = $query->createCommand();
-      $result = $command->queryOne();
-
-      /*
-            $query->select
-            (['max(cashback) as cashback, count(uid) as cnt'])
-                ->from('cw_payments')
-                ->where(['>','action_date',date("Y-m-d",time()-3*24*60*60)]);
-            $command   = $query->createCommand();
-            $result2    = $command->queryOne();
-      */
-      $out = [
-          'user_count' => round($user_count['uid'] * 5.4),
-          'total_save' => round($user_count['uid'] * 302.4, 2),
-          'count_save' => round($result['cnt'] * 112.4),
-          'sum_save' => round($result2['cashback'] * 5.4, 2),
-          'save_persent' => 39,
-      ];
-
-      return $out;
-    }, 3600 * 8);
+    $this->all_params['sd_counter'] = Payments::counter();
     $this->sd_counter = $this->all_params['sd_counter'];
 
     $request = Yii::$app->request;

@@ -6,6 +6,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use shop\modules\product\models\Product;
+use shop\modules\category\models\ProductsCategory;
+use frontend\modules\payments\models\Payments;
+use frontend\modules\sdblog\models\Posts;
 
 
 /**
@@ -64,6 +67,11 @@ class SiteController extends Controller
 //        return $this->render('under_development.twig');
         $data = [];
         $data['stat'] = Product::stat();
+        $data['popular_categories'] = ProductsCategory::top();
+        $data['popular_products'] = Product::top();
+        $data['popular_brands'] = Product::topBy('vendor', ['count'=> 20]);
+        $data['sd_counter'] = Payments::counter();
+        $data['posts'] = Posts::getLastPosts();
 
         return $this->render('index', $data);
     }

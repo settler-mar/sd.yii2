@@ -1,0 +1,16 @@
+<section class="margin">
+    <div class="page-wrap">
+        <h2 class="content-header">{{ t('shop', 'popular_brands')|raw }}</h2>
+        <div class="shops">
+            {% for brand in popular_brands %}
+                {% include 'parts/brand.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+        </div>
+    </div>
+</section>

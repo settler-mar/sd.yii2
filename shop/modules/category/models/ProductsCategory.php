@@ -245,5 +245,30 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return str_replace("'", " ", json_encode($category->all()));
     }
 
+    public static function top($params = [])
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_category_top_' . implode('_', $params) . ($language ? '_'.$language: '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $categories = $cache->getOrSet($casheName, function () use ($params) {
+            //пока для примера по количеству товара
+            $count = isset($params['count']) ? $params['count'] : 5;
+            $category = self::find()->from(self::tableName(). ' pc')
+                ->innerJoin(ProductsToCategory::tablename().' ptc', 'ptc.category_id = pc.id')
+                ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'count(ptc.id) as count'])
+                ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent'])
+                ->orderBy(['count' => SORT_DESC])
+                ->limit($count)
+                ->all();
+            return $category;
+        }, $cache->defaultDuration, $dependency);
+
+        return $categories;
+    }
+
 
 }

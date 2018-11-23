@@ -1,0 +1,21 @@
+<section class="advantages_line_second margin">
+    <div class="page-wrap flex-line laptop-min_flex-wrap advantages_line_second-wrap" >
+        {% set currency = 'RUB' %}
+        <div class="advantages_line_second-item">
+            <span class="advantages_line_second-counter">{{ _nf(exchange(sd_counter.total_save,'RUB',currency),0,true,'<span>&nbsp;</span>')|raw }} {{ t('main', currency) }}</span>
+            <span class="advantages_line_second-label">{{ _constant('index-advantages-inline-two', 0, 0)|raw }}</span>
+        </div>
+        <div class="advantages_line_second-item">
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.count_save,0,true,'<span>&nbsp;</span>')|raw }} </span>
+            <span class="advantages_line_second-label">{{ _constant('index-advantages-inline-two', 0, 1)|raw }}</span>
+        </div>
+        <div class="advantages_line_second-item">
+            <span class="advantages_line_second-counter">{{ _nf(exchange(sd_counter.sum_save,'RUB',currency),2,true,'<span>&nbsp;</span>')|raw }} {{ t('main', currency) }}</span>
+            <span class="advantages_line_second-label">{{ _constant('index-advantages-inline-two', 0, 2)|raw }}</span>
+        </div>
+        <div class="advantages_line_second-item">
+            <span class="advantages_line_second-counter">{{ _nf(sd_counter.save_persent,0,true,'<span>&nbsp;</span>')|raw }}%</span>
+            <span class="advantages_line_second-label">{{ _constant('index-advantages-inline-two', 0, 3)|raw }}</span>
+        </div>
+    </div>
+</section>

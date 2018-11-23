@@ -8,6 +8,13 @@ return [
             'password' => '123456',
             'charset' => 'utf8mb4',
         ],
+        'db_blog' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=secretdiscounter_yii_blog',
+            'username' => 'root',
+            'password' => '123456',
+            'charset' => 'utf8',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
