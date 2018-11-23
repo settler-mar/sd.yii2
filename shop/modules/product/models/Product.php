@@ -531,4 +531,26 @@ class Product extends \yii\db\ActiveRecord
             ProductParametersProcessing::deleteAll(['and', ['product_id' => $this->id], ['not in', 'id', $ids]]);
         }
     }
+
+    /**
+     * статистика
+     * @return array
+     */
+    public static function stat()
+    {
+        $cache = Yii::$app->cache;
+        $cacheName = 'products_active_count';
+        $data = $cache->getOrSet($cacheName, function () {
+            $product = self::find();
+            $count = $product->count();
+            $brands = $product->select(['vendor'])->groupBy(['vendor'])->count();
+            $shops = self::find()->select(['catalog_id'])->groupBy(['catalog_id'])->count();
+            return [
+                'products' => $count,
+                'brands' => $brands,
+                'shops' => $shops,
+            ];
+        });
+        return $data;
+    }
 }

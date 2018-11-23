@@ -41,6 +41,30 @@
       vertical-align: middle;
       display: inline-block;
     }
+
+    &-count {
+      font-size: 20px;
+      span {
+        vertical-align: top;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      margin-left: 10px;
+      line-height: 1.5;
+    }
+    &-shop {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &_second{

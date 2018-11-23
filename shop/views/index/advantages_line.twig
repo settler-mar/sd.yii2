@@ -1,0 +1,20 @@
+<section class="advantages_line margin">
+    <div class="page-wrap flex-line laptop-min_flex-wrap" >
+        <div class="advantages_line-item advantages_line-item-shop">
+            {{ svg('percentages','advantages_line-icon','@frontend')|raw }}
+            <div class="advantages_line-item-count">{{ stat.shops }}</div> <div class="advantages_line-item-text">{{ t('shop','index_advantages_shops')|raw }}</div>
+        </div>
+        <div class="advantages_line-item advantages_line-item-shop">
+            {{ svg('calendar','advantages_line-icon','@frontend')|raw }}
+            <div class="advantages_line-item-count">{{ stat.brands }}</div> <div class="advantages_line-item-text">{{ t('shop','index_advantages_brands')|raw }}</div>
+        </div>
+        <div class="advantages_line-item advantages_line-item-shop">
+            {{ svg('padlock','advantages_line-icon','@frontend')|raw }}
+            <div class="advantages_line-item-count">{{ _num_text(stat.products)|raw }}</div> <div class="advantages_line-item-text">{{ t('shop','index_advantages_products')|raw }}</div>
+        </div>
+        <div class="advantages_line-item advantages_line-item-shop">
+            {{ svg('support','advantages_line-icon','@frontend')|raw }}
+            <div class="advantages_line-item-count">24/7</div> <div class="advantages_line-item-text">{{ t('shop','index_advantages_refresh')|raw }}</div>
+        </div>
+    </div>
+</section>

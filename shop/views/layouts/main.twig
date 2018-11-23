@@ -66,7 +66,8 @@
       {% endif %}
 
 
-      {% if this.all_params.wrap=='index' %}
+      {#{% if this.all_params.wrap=='index' %}#}
+      {% if app.params.wrap=='index' %}
           {{ content|raw }}
       {% else %}
         {% include 'parts/catalog_breadcrumbs.twig' %}

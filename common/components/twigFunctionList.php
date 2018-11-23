@@ -751,7 +751,19 @@ $functionsList = [
   '_is_category_open' => function($category) {
     //проходим по всем дочерним категориям, если есть current возвращаем true
       return getChildCurrent($category);
-  }
+  },
+  '_num_text' => function($number) {
+    $number = (integer) $number;
+    if ($number / 1000000000 > 1) {
+        return round($number / 1000000000).' <span>'.Yii::t('common','billion').'</span>';
+    } else if ($number / 1000000 > 1) {
+        return round($number / 1000000).' <span>'.Yii::t('common','million').'</span>';
+    } else if ($number / 1000 > 1) {
+        return round($number / 1000).' <span>'.Yii::t('common','thousand').'</span>';
+    } else {
+        return $number;
+    }
+  },
 
 
 ];

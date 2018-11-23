@@ -99,4 +99,7 @@ return [
     'last_month' => 'Последний месяц',
     'this_year' => 'Этот год',
     'last_year' => 'Прошлый год',
+    'million' => 'млн',
+    'billion' => 'млрд',
+    'thousand' => 'тыс',
 ];

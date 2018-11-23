@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use shop\modules\product\models\Product;
 
 
 /**
@@ -56,11 +57,15 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        Yii::$app->params['global_bg']='gray-box';
-        Yii::$app->params['global_wrap']='page-404';
-        Yii::$app->params['pre_footer_hide']=true;
+//        Yii::$app->params['global_bg']='gray-box';
+//        Yii::$app->params['global_wrap']='page-404';
+//        Yii::$app->params['pre_footer_hide']=true;
         Yii::$app->params['wrap']='index';
-        return $this->render('under_development.twig');
+//        return $this->render('under_development.twig');
+        $data = [];
+        $data['stat'] = Product::stat();
+
+        return $this->render('index', $data);
     }
 
 

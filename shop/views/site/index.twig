@@ -1,16 +1,11 @@
-{% set title = 'Главная' %}
-{{ set(this, 'title', title) }}
-<div class="site-index">
+{% if user_id %}
 
-    <div class="">
-        <h1>Стартовая страница</h1>
-    </div>
 
-    <div class="body-content">
 
-        <div class="row">
+{% else %}
+    {% include 'index/search.twig' %}
+    {% include 'index/advantages_line.twig' %}
+    {% include 'index/why_only_we.twig' %}
 
-        </div>
 
-    </div>
-</div>
+{% endif %}

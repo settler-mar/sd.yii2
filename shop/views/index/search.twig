@@ -1,0 +1,22 @@
+<section class="">
+    <div class="stores-search stores_search">
+        <div class="page-wrap page-wrap-overflow stores-search_main">
+            <div class="stores-search_text">
+                <p>
+                {{ t('shop', 'search_and_compare_products_in_{count}_shop_{country}_now', {'count':stat.shops, 'country':'Беларуси'}) }}
+                </p>
+            </div>
+            <div class="stores-search_wrap">
+                <form action="{{ _href('/catalog/search')|raw }}" method="get" class="stores-search_form">
+                    <input type="hidden" name="limit" value="30">
+                    <input type="text" name="query" class="stores-search_form-input search-form-input btn-min_width80" placeholder="{{ t('main', 'enter_shop_name')|raw }}" autocomplete="off">
+                    <button type="submit" class="stores-search_form-button">{{ t('common', 'find')|raw }}</button>
+                </form>
+                <div class="stores-search_autocomplete autocomplete-wrap">
+                    <ul class="autocomplete_list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

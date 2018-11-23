@@ -87,7 +87,7 @@ return [
     'month_04' => 'April', 'month_05' => 'May', 'month_06' => 'June',
     'month_07' => 'July', 'month_08' => 'August', 'month_09' => 'September',
     'month_10' => 'October', 'month_11' => 'November', 'month_12' => 'December',
-  'months_in' => "in",
+    'months_in' => "in",
     'password_reset' => "Password Reset",
     'email_is_send' => 'Message sent',
     'not_found_mast_login' => 'To access your account, you need to <a href="{href}">login</a> on the site.',
@@ -99,4 +99,7 @@ return [
     'last_month' => 'Last month',
     'this_year' => 'This year',
     'last_year' => 'Last year',
+    'million' => 'mln',
+    'billion' => 'bln',
+    'thousand' => 'th',
 ];
