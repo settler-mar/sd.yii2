@@ -35,6 +35,10 @@
         <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
       </div>
     </div>
+  {% else %}
+    <div class="form_right_blk">
+      <a href="{{ _href('#resetpassword')|raw }}" class="blue modals_open">{{ t('account', 'password_is_fogotten')|raw }}?</a>
+    </div>
   {% endif %}
 
   <button type="submit" class="btn block_margin-auto btn-min_width240">{{ t('common', 'do_login')|raw }}</button>
