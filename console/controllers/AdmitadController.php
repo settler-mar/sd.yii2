@@ -30,6 +30,8 @@ class AdmitadController extends Controller
   protected $configName = 'admitad';
   protected $admitad = null;
 
+  private $product_categories = [];
+
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
   //добавляем параметры для запуска
@@ -614,7 +616,8 @@ class AdmitadController extends Controller
       $product['store_id'] = $catalog->cpaLink->store->uid;
       $product['photo_path'] = $photoPath;
       $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
-      $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray());
+      $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray(),$this->product_categories);
+
       if ($result['error']) {
         d($result['product']->errors);
       }
