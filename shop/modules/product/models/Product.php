@@ -38,7 +38,6 @@ class Product extends \yii\db\ActiveRecord
   const PRODUCT_AVAILABLE_REQUEST = 2;
 
   public $category_id;
-  public $product_categories = [];
 
   /**
    * @var array при загрузке необработанные параметры
@@ -229,7 +228,7 @@ class Product extends \yii\db\ActiveRecord
    * @param $product
    * @return array
    */
-  public static function addOrUpdate($product, $store,&$product_categories)
+  public static function addOrUpdate($product, $store)
   {
     $new = 0;
     $error = 0;
@@ -258,15 +257,14 @@ class Product extends \yii\db\ActiveRecord
         $productDb->store_id = $product['store_id'];
         $productDb->catalog_id = $product['catalog_id'];
         $productDb->article = $article;
-        $productDb->image = self::saveImage(
+        /*$productDb->image = self::saveImage(
             isset($product['photo_path']) ? $product['photo_path'] : '',
             $productImage
-        );
+        );*/
         $new = 1;
       }
-      $productDb->product_categories = $product_categories;
+
       $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
-      $product_categories = $productDb->product_categories;
 
       $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
           $product['params'];
@@ -291,8 +289,9 @@ class Product extends \yii\db\ActiveRecord
       $productDb->url = isset($product['url']) ? (string)$product['url'] : null;
       $productDb->vendor = isset($product['vendor']) ? (string)$product['vendor'] : null;
 
-      $productHash = hash('sha256', json_encode($productDb->params) . $productDb->name .
-          $productDb->image);
+      $productHash = $productModifiedTime?
+          $productModifiedTime:
+          hash('sha256', json_encode($productDb->params) . $productDb->name . $productDb->image);
 
       $consoleApp = Yii::$app instanceof Yii\console\Application;
       if ($productHash != $productDb->data_hash) {
@@ -314,6 +313,7 @@ class Product extends \yii\db\ActiveRecord
         }
       }
     }
+
     return [
         'insert' => $new,
         'error' => $error,
@@ -381,26 +381,23 @@ class Product extends \yii\db\ActiveRecord
 
   protected function makeCategories($categories)
   {
-    $path = implode('/', $categories);
-    if (isset($this->product_categories[$path])) {
-      return $this->product_categories[$path];
-    }
+    $path = 'categories_'.implode('/', $categories);
 
-    $result = [];
-    $parent = null;
-    //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
-    foreach ($categories as $index => $category) {
-      $cat = $this->productCategory($category, $parent);
-      if ($cat && !empty($cat['id'])) {
-        $result[] = (string)$cat['id'];
-        $parent = $cat['id'];
-      } else {
-        return $result;
+    return Yii::$app->cache->getOrSet($path, function () use ($categories,$path) {
+      $result = [];
+      $parent = null;
+      //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
+      foreach ($categories as $index => $category) {
+        $cat = $this->productCategory($category, $parent);
+        if ($cat && !empty($cat['id'])) {
+          $result[] = (string)$cat['id'];
+          $parent = $cat['id'];
+        } else {
+          return $result;
+        }
       }
-    }
-
-    $this->product_categories[$path] = $result;
-    return $result;
+      return $result;
+    });
   }
 
   public static function saveImage($storePath, $image, $old = null)

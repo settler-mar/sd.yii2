@@ -30,8 +30,6 @@ class AdmitadController extends Controller
   protected $configName = 'admitad';
   protected $admitad = null;
 
-  private $product_categories = [];
-
   private $updateCategoriesCoupons = true;//обновлять ли категории для купона
 
   //добавляем параметры для запуска
@@ -567,6 +565,8 @@ class AdmitadController extends Controller
    */
   public function actionProduct()
   {
+    Yii::$app->cache->flush();
+
     $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
     $admitad = new Admitad($this->config);
@@ -595,6 +595,7 @@ class AdmitadController extends Controller
       $cpaLink->date_import = date('Y-m-d H:i:s', $dateUpdate);//$cpaLink->date_download;;
       $cpaLink->product_count=count($products);
       $cpaLink->save();
+      $admitad->unlinkFile($cpaLink->id);
     }
   }
 
@@ -616,7 +617,7 @@ class AdmitadController extends Controller
       $product['store_id'] = $catalog->cpaLink->store->uid;
       $product['photo_path'] = $photoPath;
       $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
-      $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray(),$this->product_categories);
+      $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray());
 
       if ($result['error']) {
         d($result['product']->errors);
