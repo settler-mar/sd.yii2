@@ -66,7 +66,7 @@ class SiteController extends Controller
     return $this->render('under_development.twig');
   }
 
-  public function actionIndexTest()
+  public function actionIndex_test()
   {
 //        Yii::$app->params['global_bg']='gray-box';
 //        Yii::$app->params['global_wrap']='page-404';

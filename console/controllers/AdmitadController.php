@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use common\models\Admitad;
 use frontend\modules\actions\models\ActionsActions;
+use frontend\modules\cache\models\Cache;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\product\models\CatalogStores;
@@ -630,6 +631,13 @@ class AdmitadController extends Controller
       }
 
     }
+
+    Cache::deleteName('product_category_menu');
+    Cache::clearName('catalog_product');
+    Cache::deleteName('products_active_count');
+
+
+
     echo 'Products ' . $count . "\n";
     echo 'Inserted ' . $insert . "\n";
     if ($error) {
