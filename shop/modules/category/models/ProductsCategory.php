@@ -184,6 +184,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+
         parent::afterSave($insert, $changedAttributes);
         $this->clearCache();
     }

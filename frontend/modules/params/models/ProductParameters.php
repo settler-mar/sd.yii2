@@ -161,7 +161,7 @@ class ProductParameters extends \yii\db\ActiveRecord
     $out = [];
     foreach ($params as $paramKey => $values) {
       $path = 'Params_' . implode('_', $categories) . ':' . $paramKey . ':' . implode('_' , $values);
-      $p = Yii::$app->cache->getOrSet($path, function () use ($categories, $paramKey, $values, $path) {
+      $p = Yii::$app->cache_console->getOrSet($path, function () use ($categories, $paramKey, $values, $path) {
         $out = [];
         $processingOut = [];
 

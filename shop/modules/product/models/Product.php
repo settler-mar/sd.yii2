@@ -383,7 +383,7 @@ class Product extends \yii\db\ActiveRecord
   {
     $path = 'categories_'.implode('/', $categories);
 
-    return Yii::$app->cache->getOrSet($path, function () use ($categories,$path) {
+    return Yii::$app->cache_console->getOrSet($path, function () use ($categories,$path) {
       $result = [];
       $parent = null;
       //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской

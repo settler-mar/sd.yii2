@@ -30,7 +30,7 @@ return [
                 ],
             ],
         ],
-        'cache' => [
+        'cache_console' => [
             'class' => 'yii\caching\FileCache',
             'keyPrefix' => 'console', // уникальный префикс ключей кэша
         ],
