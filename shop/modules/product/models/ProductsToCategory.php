@@ -75,6 +75,7 @@ class ProductsToCategory extends \yii\db\ActiveRecord
 
     protected function clearCache()
     {
+      if (isset(Yii::$app->params['cash']) && Yii::$app->params['cash'] == false) return;
         Cache::deleteName('product_category_menu');
         Cache::clearName('catalog_product');
     }

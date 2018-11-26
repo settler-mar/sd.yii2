@@ -566,6 +566,7 @@ class AdmitadController extends Controller
   public function actionProduct()
   {
     Yii::$app->cache->flush();
+    Yii::$app->params['cash'] = false;
 
     $config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
 
