@@ -131,14 +131,14 @@ $config = [
                     'levels' => ['error', 'warning'],
                     'logFile' => 'log/' . date('Y/m/d') . '.log'
                 ],
-                [
+                /*[
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['info'],
                     'logFile' => 'log/' . date('Y/m/').'db_'.date('d') . '.log',
                     'categories' => [
                         'yii\db\*',
                     ],
-                ],
+                ],*/
             ],
         ],
         'conversion' => [
