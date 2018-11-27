@@ -234,6 +234,14 @@ div.accordion div.accordion-title{
   padding:10px;
 }
 
+.gray-box {
+  background-color: #f4f4f4;
+}
+.wrap-round {
+  border-radius: 10px;
+  padding: 10px;
+}
+
 /*br
 {
   content: "E" !important;

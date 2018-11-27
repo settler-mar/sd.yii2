@@ -14,7 +14,7 @@ function initEditor(){
     document_base_url : "https://secretdiscounter.ru/",
     forced_root_block: false,
     plugins: [
-      'advlist autolink lists link image charmap hr anchor pagebreak accordion clear_br',
+      'advlist autolink lists link image charmap hr anchor pagebreak accordion blocks clear_br',
       'searchreplace wordcount visualblocks visualchars code fullscreen',
       'insertdatetime media nonbreaking save table contextmenu directionality',
       'emoticons template paste textcolor colorpicker textpattern imagetools  toc help code filemanager responsivefilemanager'
@@ -24,7 +24,7 @@ function initEditor(){
       'filemanager': 'plugins/responsivefilemanager/filemanager/plugin.min.js',
       'responsivefilemanager': 'plugins/responsivefilemanager/filemanager/plugin.min.js'
     },
-    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | media | forecolor backcolor | accordion | clear_br | code help ',
+    toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | media | forecolor backcolor | accordion | blocks |clear_br | code help ',
 
     //file_browser_callback: RoxyFileBrowser,
 
