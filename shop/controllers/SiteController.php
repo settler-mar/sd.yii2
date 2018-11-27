@@ -2,7 +2,7 @@
 
 namespace shop\controllers;
 
-use frontend\modules\payments\models\Payments;
+
 use frontend\modules\sdblog\models\Posts;
 use shop\modules\category\models\ProductsCategory;
 use shop\modules\product\models\Product;
@@ -79,8 +79,8 @@ class SiteController extends Controller
     $data['popular_categories'] = ProductsCategory::top();
     $data['popular_products'] = Product::top();
     $data['popular_brands'] = Product::topBy('vendor', ['count' => 20]);
-    $data['sd_counter'] = Payments::counter();
     $data['posts'] = Posts::getLastPosts();
+    //ddd($data);
 
     return $this->render('index', $data);
   }

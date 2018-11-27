@@ -2,148 +2,148 @@
   <div class="page-wrap flex-line footer-main">
     <div class="footer-left">
       <div class="footer-text">
-        {{ _constant('footer_main_text')|raw }}
+          {{ _constant('footer_main_text')|raw }}
       </div>
       <div class="footer-menu flex-line">
-        {#<div class="footer-menu-col">#}
-          {#{% set footer_links_list = _constant("footer_best_shop") %}#}
-          {#{% set links_title = t('main', 'footer_menu_all_shops') %}#}
-          {#{% set class_menu = 'laptop-min_hide' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+        <div class="footer-menu-col">
+            {% set footer_links_list = _constant("footer_best_shop") %}
+            {% set links_title = t('main', 'footer_menu_all_shops') %}
+            {% set class_menu = 'laptop-min_hide' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
 
-          {#{% set footer_links_list = _constant("footer_company") %}#}
-          {#{% set links_title = t('main', 'footer_menu_company') %}#}
-          {#{% set class_menu = '' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+            {% set footer_links_list = _constant("footer_company") %}
+            {% set links_title = t('main', 'footer_menu_company') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
-          {#{% set footer_links_list = _constant("footer_cooperation") %}#}
-          {#{% set links_title = t('main', 'footer_menu_cooperate') %}#}
-          {#{% set class_menu = '' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+            {% set footer_links_list = _constant("footer_cooperation") %}
+            {% set links_title = t('main', 'footer_menu_cooperate') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
-          {#{% set footer_links_list = _constant("footer_links_1") %}#}
-          {#{% set links_title = t('main', 'footer_menu_col_1') %}#}
-          {#{% set class_menu = 'laptop-min_hide' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
-        {#</div>#}
+            {% set footer_links_list = _constant("footer_links_1") %}
+            {% set links_title = t('main', 'footer_menu_col_1') %}
+            {% set class_menu = 'laptop-min_hide' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
+        </div>
 
-        {#<div class="footer-menu-col">#}
-          {#{% set footer_links_list = _constant("footer_category") %}#}
-          {#{% set links_title = t('main', 'footer_menu_popular_cats') %}#}
-          {#{% set class_menu = '' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+        <div class="footer-menu-col">
+            {% set footer_links_list = _constant("footer_category") %}
+            {% set links_title = t('main', 'footer_menu_popular_cats') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
-          {#{% set footer_links_list = _constant("footer_links_2") %}#}
-          {#{% set links_title = t('main', 'footer_menu_col_2') %}#}
-          {#{% set class_menu = 'laptop-min_hide' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
-        {#</div>#}
+            {% set footer_links_list = _constant("footer_links_2") %}
+            {% set links_title = t('main', 'footer_menu_col_2') %}
+            {% set class_menu = 'laptop-min_hide' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
+        </div>
 
-        {#<div class="footer-menu-col">#}
-          {#{% set footer_links_list = _constant("footer_useful_links") %}#}
-          {#{% set links_title =  t('main', 'footer_menu_usful') %}#}
-          {#{% set class_menu = '' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+        <div class="footer-menu-col">
+            {% set footer_links_list = _constant("footer_useful_links") %}
+            {% set links_title =  t('main', 'footer_menu_usful') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
-          {#{% set footer_links_list = _constant("footer_links_3") %}#}
-          {#{% set links_title = t('main', 'footer_menu_col_3') %}#}
-          {#{% set class_menu = 'laptop-min_hide' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
-        {#</div>#}
+            {% set footer_links_list = _constant("footer_links_3") %}
+            {% set links_title = t('main', 'footer_menu_col_3') %}
+            {% set class_menu = 'laptop-min_hide' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
+        </div>
 
-        {#<div class="footer-menu-col">#}
-          {#{% set footer_links_list = _constant("footer_help") %}#}
-          {#{% set links_title = t('main', 'footer_menu_help') %}#}
-          {#{% set class_menu = '' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
-          {#{% set footer_links_list = _constant("footer_links_4") %}#}
-          {#{% set links_title = t('main', 'footer_menu_col_4') %}#}
-          {#{% set class_menu = 'laptop-min_hide' %}#}
-          {#{% include('parts/footer_links_list.twig') %}#}
+        <div class="footer-menu-col">
+            {% set footer_links_list = _constant("footer_help") %}
+            {% set links_title = t('main', 'footer_menu_help') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
+            {% set footer_links_list = _constant("footer_links_4") %}
+            {% set links_title = t('main', 'footer_menu_col_4') %}
+            {% set class_menu = 'laptop-min_hide' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
 
-          {#<div class="footer-menu-lists">#}
-            {#<div class="footer-withdraws flex-col">#}
-              {#<div class="footer-menu-title footer-menu-title-margin">{{ t('main', 'withdraw_methods') }}</div>#}
-              {#{% set payment_system = _constant("payment_system") %}#}
-              {#{% for item in payment_system %}#}
-                {#{% if item.on_footer==1 %}#}
-                  {#<div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>#}
-                {#{% endif %}#}
-              {#{% endfor %}#}
-            {#</div>#}
+          <div class="footer-menu-lists">
+              {#<div class="footer-withdraws flex-col">#}
+            <div class="footer-menu-title footer-menu-title-margin">{{ t('main', 'withdraw_methods') }}</div>
+              {% set payment_system = _constant("payment_system") %}
+              {% for item in payment_system %}
+                  {% if item.on_footer==1 %}
+                    <div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>
+                  {% endif %}
+              {% endfor %}
+          </div>
 
-        {#</div>#}
+        </div>
 
       </div>
-      {#<div class="footer-docs  flex-line">#}
-        {#<span class="footer-docs-item hidden-link" data-rel="nooper nofollow"#}
-              {#data-link="{{ _href('/sitemap') }}">{{ t('main', 'site_map') }}</span>#}
-        {#<span class="footer-docs-item hidden-link" data-rel="nooper nofollow"#}
-              {#data-link="{{ _href('/privacy-policy') }}">{{ t('main', 'policy_terms') }}</span>#}
-        {#<span class="footer-docs-item hidden-link" data-rel="nooper nofollow"#}
-              {#data-link="{{ _href('/terms') }}">{{ t('main', 'terms_of_use') }}</span>#}
-      {#</div>#}
+      <div class="footer-docs  flex-line">
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/sitemap') }}">{{ t('main', 'site_map') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/privacy-policy','https://secretdiscounter.com') }}">{{ t('main', 'policy_terms') }}</span>
+        <span class="footer-docs-item hidden-link" data-rel="nooper nofollow"
+              data-link="{{ _href('/terms','https://secretdiscounter.com') }}">{{ t('main', 'terms_of_use') }}</span>
+      </div>
       <div class="footer-copyright">
-        <img src="https://secretdiscounter.com/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
-        {{ get_menu_item({
-          'href': _href('/about'),
-          'class': 'footer-copyright_text',
-          'title': _constant('footer_copyright')
-        })|raw }}
+        <img src="/images/svg/mini-logo-2.svg" alt="copyriht" class="footer-copyright_logo">
+          {{ get_menu_item({
+              'href': _href('/about'),
+              'class': 'footer-copyright_text',
+              'title': _constant('footer_copyright')
+          })|raw }}
       </div>
     </div>
     <div class="footer-right">
-      {#<div class="footer-right-item footer-share">#}
-        {#<div class="footer-share-text">{{ t('main', 'share_to_friends') }}</div>#}
-        {#<div class="share42init accauntSoc accauntSoc_32"#}
-             {#data-url="{{ _href('/','https://secretdiscounter.ru/')|raw }}"#}
-             {#data-title="{{ html.encode(this.title) }}"#}
-             {#data-description="{{ this.description }}"#}
-             {#data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"#}
-             {#data-icon-size="24"#}
-             {#data-icon-type="svg"#}
-        {#>#}
-        {#</div>#}
-      {#</div>#}
+      <div class="footer-right-item footer-share">
+        <div class="footer-share-text">{{ t('main', 'share_to_friends') }}</div>
+        <div class="share42init accauntSoc accauntSoc_32"
+             data-url="{{ _href('/','https://shop.secretdiscounter.com/')|raw }}"
+             data-title="{{ html.encode(this.title) }}"
+             data-description="{{ this.description }}"
+             data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
+             data-icon-size="24"
+             data-icon-type="svg"
+        >
+        </div>
+      </div>
 
-      {#<div class="footer-right-item footer-social_links">#}
-        {#<div class="footer-social_links-title">{{ t('main', 'bonuses_in_our_social_groups') }}#}
-        {#</div>#}
-        {#<a class="footer-social_links-item">#}
-          {#{{ svg("color/sd",'footer-social_links-icon')|raw }}#}
-          {#{{ _nf(this.sd_counter.user_count,0)|raw }} {{ t('main', 'users') }}#}
-        {#</a>#}
-        {#{% set social_list = _constant("social_list") %}#}
-        {#{% for item in social_list %}#}
-          {#{% if item.on_footer==1 and item.regions and in_array(app.params.region, item.regions) %}#}
-            {#<a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">#}
-              {#{{ svg('color/'~item.code,'footer-social_links-icon')|raw }}#}
-              {#{{ _nf(item.count,0)|raw }} {{ item.footer_text }}#}
-            {#</a>#}
-          {#{% endif %}#}
-        {#{% endfor %}#}
-      {#</div>#}
+      <div class="footer-right-item footer-social_links">
+        <div class="footer-social_links-title">{{ t('main', 'bonuses_in_our_social_groups') }}
+        </div>
+        <a class="footer-social_links-item">
+            {{ svg("color/sd",'footer-social_links-icon','@frontend')|raw }}
+            {{ _nf(this.sd_counter.user_count,0)|raw }} {{ t('main', 'users') }}
+        </a>
+          {% set social_list = _constant("social_list") %}
+          {% for item in social_list %}
+              {% if item.on_footer==1 and item.regions and in_array(app.params.region, item.regions) %}
+                <a class="footer-social_links-item" href="{{ item.url }}" target="_blank" rel="nofollow noopener">
+                    {{ svg('color/'~item.code,'footer-social_links-icon', '@frontend')|raw }}
+                    {{ _nf(item.count,0)|raw }} {{ item.footer_text }}
+                </a>
+              {% endif %}
+          {% endfor %}
+      </div>
 
       <div class="footer-right-item footer-contacts">
         <p class="footer-contacts_title">{{ t('main', 'contacts') }}</p>
-        {{ _constant('footer_contacts')|raw }}
+          {{ _constant('footer_contacts')|raw }}
       </div>
       <div class="footer-right-item footer-app">
-        <div class="footer-app-img footer-app-waiting">
-          {{ svg('app_store', '', '@frontend')|raw }}
-          {{ svg('app_w','footer-app-waiting-label', '@frontend')|raw }}
+        <div class="footer-app-img">
+          <a rel="nooper nofollow noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.secretdiscounter.cashback">{{ svg('playmarket','', '@frontend')|raw }}</a>
         </div>
         <div class="footer-app-img footer-app-waiting">
-          {{ svg('play_market', '', '@frontend')|raw }}
-          {{ svg('app_w','footer-app-waiting-label', '@frontend')|raw }}
+            {{ svg('itunes','', '@frontend')|raw }}
+            {{ svg('app_w','footer-app-waiting-label', '@frontend')|raw }}
         </div>
+
       </div>
 
-      {#<div class="footer-right-item">#}
-        {#{% include 'parts/site_rating_microdata.twig' %}#}
-      {#</div>#}
+      <div class="footer-right-item">
+          {% include '@frontend/views/parts/site_rating_microdata.twig' %}
+      </div>
     </div>
   </div>
 </footer>

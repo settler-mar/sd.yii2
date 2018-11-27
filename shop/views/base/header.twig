@@ -33,24 +33,13 @@
                   {#<option value="store">{{ t('common', 'shops') }}</option>#}
                   {#<option value="coupon">{{ t('main', 'promocodes') }}</option>#}
               {#</select>#}
-              <input type="hidden" id="header-search_form-module-hidden" name="module" value="store">
+              <input type="hidden" id="header-search_form-module-hidden" name="" value="store">
               <label class="header-search_form-input-module-label" for="header-search_form-module-text">
                 <span  id="header-search_form-module-text" class="header-search_form-input header-search_form-input-module">{{ t('common', 'shops') }}</span>
               </label>
 
               <div class="header-search_form-popup">
-                  <ul class="form-popup-select">
-                      <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'shops') }}"
-                          data-id2="header-search_form-module-hidden" data-value2="store"
-                          data-id3="search" data-value3="{{ t('main', 'find_shop') }}">
-                          {{ t('common', 'shops') }}
-                      </li>
-                      <li data-id1="header-search_form-module-text" data-value1="{{ t('main', 'promocodes') }}"
-                          data-id2="header-search_form-module-hidden" data-value2="coupon"
-                          data-id3="search" data-value3="{{ t('main', 'find_promocode') }}">
-                          {{ t('main', 'promocodes') }}
-                      </li>
-                  </ul>
+                  {{ include('parts/header_filter_list.twig') }}
               </div>
 
                 <input type="text" name="query" id="search" class="header-search_form-input header-search_form-input-query search-form-input" value=""

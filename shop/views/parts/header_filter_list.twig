@@ -1,0 +1,15 @@
+<ul class="form-popup-select">
+    {#<li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'shops') }}"#}
+        {#data-id2="header-search_form-module-hidden" data-value2="store"#}
+        {#data-id3="search" data-value3="{{ t('main', 'find_shop') }}">#}
+        {#{{ t('common', 'shops') }}#}
+    {#</li>#}
+    {% for category in this.product_main_category  %}
+        {% set route = category.parentsTree(category, true) %}
+        <li data-id1="header-search_form-module-text" data-value1="{{ category.name }}"
+            data-id2="header-search_form-module-hidden" data-value2="{{ route }}"
+            data-id3="search" data-value3="{{ category.name }}">
+            {{ category.name }}
+        </li>
+    {% endfor %}
+</ul>

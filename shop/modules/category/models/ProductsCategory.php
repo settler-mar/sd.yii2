@@ -264,8 +264,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
                 ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'count(ptc.id) as count'])
                 ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent'])
                 ->orderBy(['count' => SORT_DESC])
-                ->limit($count)
-                ->all();
+                ->limit($count);
+            if (isset($params['parent'])) {
+                $category->andWhere(['pc.parent' => $params['parent']]);
+            }
+            $category = $category->all();
             return $category;
         }, $cache->defaultDuration, $dependency);
 
