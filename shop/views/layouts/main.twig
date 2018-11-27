@@ -44,7 +44,7 @@
     {% endfor %}
 
     {{ void(this.head()) }}
-    {% include 'base/header_include.twig' %}
+      {% include 'base/header_include.twig' %}
 
   </head>
   <body>
@@ -54,7 +54,11 @@
     <!--[if lt IE 9]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    {% include 'base/header.twig' %}
+    {% if app.params.test %}
+      {% include 'base/header_test.twig' %}
+    {% else %}
+      {% include 'base/header.twig' %}
+    {% endif %}
 
     {% set slider=this.all_params.slider %}
 
@@ -84,7 +88,11 @@
 
 
 
-    {% include 'base/footer.twig' %}
+    {% if app.params.test %}
+      {% include 'base/footer_test.twig' %}
+    {% else %}
+      {% include 'base/footer.twig' %}
+    {% endif %}
 
     {{   void(this.endBody()) }}
 
