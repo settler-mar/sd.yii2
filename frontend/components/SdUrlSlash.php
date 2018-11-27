@@ -33,7 +33,8 @@ class SdUrlSlash implements UrlRuleInterface
             strpos($request->pathInfo,"admin-values/")===0 ||
             strpos($request->pathInfo,"admin-stores/")===0 ||
             strpos($request->pathInfo,"admin-catalog/")===0 ||
-            strpos($request->pathInfo,"admin-category/")===0)
+            strpos($request->pathInfo,"admin-category/")===0 ||
+            strpos($request->pathInfo,"stores/offline")===0)
     ){
       //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
       $url_test=str_replace(" ",'',$url_test);

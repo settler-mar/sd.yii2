@@ -321,5 +321,7 @@ return [
     'affiliate_system' => 'Affiliate system',
     'affiliate_system_text' => 'Invite our friends and get 15% cash back from them. Friends get cashback too.',
     'shtrih_code' => 'YOUR BARCODE',
+    'filter-city-tittle' => 'Choose a city',
+    'filter-city-option-select' => 'Choose a city',
 
 ];

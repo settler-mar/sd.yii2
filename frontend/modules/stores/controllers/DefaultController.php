@@ -140,6 +140,7 @@ class DefaultController extends SdController
     $sort = $request->get('sort');
     $offline = $request->get('offline') || $this->offline;
     $storeFrom = $request->get('w');
+    $city = $request->get('city');
 
     $sortvars = Stores::sortvarItems($offline);
     $defaultSort = Stores::defaultSort($sortvars);
@@ -270,11 +271,23 @@ class DefaultController extends SdController
         } else {
             $dataBaseData->andWhere(['like', 'cws.name', $storeFrom.'%', false]);
         }
+        $cacheName .= ('_storefrom_'.$storeFrom);
         $this->params['breadcrumbs'][] = [
             'label' => $storeFrom,
             'url' => Help::href('/stores'. ($categoryStore ? '/' . $categoryStore->route : '') .'?w=' .  $storeFrom),
         ];
     }
+    if ($offline && $city) {
+        //город точки продаж для оффлайн
+        $dataBaseData->innerJoin(B2bStoresPoints::tableName().' bsp', 'bsp.store_id = cws.uid')
+            ->andWhere(['bsp.city'=> $city]);
+        $cacheName .= ('_sity_'.$city);
+        $this->params['breadcrumbs'][] = [
+            'label' => $city,
+            'url' => Help::href('/stores'. ($categoryStore ? '/' . $categoryStore->route : '/offline') .'?city=' .  $city),
+        ];
+    }
+
     if ($page > 1) {
        $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $page;
     }
@@ -338,6 +351,30 @@ class DefaultController extends SdController
     $storesData["favorites_link"] = $categoryMenuItem == 'favorite' || $categoryMenuItem == 'favorite-offline' ?
         '/favorite' : '';
     $storesData["users_reviews"] = Reviews::top();
+    if ($offline) {
+        $stores = clone $dataBaseData;
+        $cityes = B2bStoresPoints::find()
+            ->select(['b2bsp.city'])
+            ->from(B2bStoresPoints::tableName().' b2bsp')
+            ->innerJoin(['s' => $stores], 's.uid = b2bsp.store_id')
+            ->groupBy(['b2bsp.city'])
+            ->orderBy(['b2bsp.city' => SORT_ASC])
+            ->asArray()->all();
+        $storesData['store_cities'] = [[
+            'city' => Yii::t('main', 'filter-city-option-select'),
+            'href' => Help::href('/stores/offline'),
+            'active' => !$city]
+        ];
+        foreach ($cityes as $cityItem){
+            $storesData['store_cities'][] = [
+                'city' => $cityItem['city'],
+                'active' => $cityItem['city'] == $city,
+                'href' => Help::href('/stores/offline?city='.$cityItem['city']),
+            ];
+        }
+    } else {
+        $storesData['store_cities'] = false;
+    }
 
     return $this->render('catalog', $storesData);
   }

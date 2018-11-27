@@ -40,6 +40,9 @@
         <span class="catalog-categories_tree-toggle-tittle">{{ t('main', 'stores_change_category')|raw }}</span>
       </div>
 
+        {#Фильтр по городам для оффлайн#}
+      {{ include('parts/stores/filter_cities.twig') }}
+
       {#выбор и отображение сортировки#}
       <div class="margin-half page-wrap-flex catalog-stores_sort">
         {% include('parts/sort-links.twig') %}

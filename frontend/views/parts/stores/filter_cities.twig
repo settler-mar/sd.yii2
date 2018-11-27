@@ -1,0 +1,25 @@
+{% if store_cities %}
+    <div class="catalog-stores_filter-city  sd-select-wrap">
+        <span class="catalog-stores_sort-mobile-title sd-select-title">{{ t('main', 'filter-city-tittle') }}:</span>
+        <div class="catalog-stores_filter-city-select catalog-stores_sort-mobile-select sd-select">
+            {% for  city in store_cities %}
+                {% if city.active %}
+                    <span class="sd-select-selected">{{ city.city }}
+                        {{ svg('angle-down')|raw }}
+                 </span>
+                {% endif %}
+            {% endfor %}
+            <ul class="catalog-stores_filter-city-list sd-select-drop">
+                {% for city in store_cities %}
+                    <li class="catalog-stores_filter-city-item">
+                        {% if city.active %}
+                            <span class="catalog-stores_filter-city-title">{{ city.city }} </span>
+                        {% else %}
+                            <a href="{{ city.href|raw }}" class="catalog-stores_filter-city-href">{{ city.city }} </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

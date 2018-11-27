@@ -560,15 +560,6 @@
             }
           }
         }
-
-        &-select {
-          width: 244px;
-          margin-bottom: 20px;
-
-          @include media($tablets) {
-            width: 304px;
-          }
-        }
         &-title {
           font-weight: bold;
         }

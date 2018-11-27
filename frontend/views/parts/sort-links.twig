@@ -9,26 +9,30 @@
 
 <div class="catalog-stores_sort-mobile">
 
-    <div class="catalog-stores_sort-mobile-select sd-select linked">
+    <div class="sd-select-wrap">
         <span class="catalog-stores_sort-mobile-title">{{ t('main', 'sort_by')|raw }}:</span>
-        {% for sortLink in sortlinks %}
-             {% if sortLink.active == 1 %}
-                 <span class="sd-select-selected">{{ sortLink.title_mobile }}
-                    {{ svg('angle-down')|raw }}
-                 </span>
-             {% endif %}
-        {% endfor %}
-        <ul class="sd-select-drop">
-            {% for sortLink in sortlinks%}
-                <li>
-                    {% if sortLink.active == 1 %}
-                        <span>{{sortLink.title_mobile}}</span>
-                    {% else %}
-                        <a href="{{sortLink.link}}">{{sortLink.title_mobile}}</a>
-                    {% endif %}
-                </li>
+
+        <div class="catalog-stores_sort-mobile-select sd-select linked">
+
+            {% for sortLink in sortlinks %}
+                 {% if sortLink.active == 1 %}
+                     <span class="sd-select-selected">{{ sortLink.title_mobile }}
+                        {{ svg('angle-down')|raw }}
+                     </span>
+                 {% endif %}
             {% endfor %}
-        </ul>
-        <input type="hidden" name=""/>
+            <ul class="sd-select-drop">
+                {% for sortLink in sortlinks%}
+                    <li>
+                        {% if sortLink.active == 1 %}
+                            <span>{{sortLink.title_mobile}}</span>
+                        {% else %}
+                            <a href="{{sortLink.link}}">{{sortLink.title_mobile}}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <input type="hidden" name=""/>
+        </div>
     </div>
 </div>
