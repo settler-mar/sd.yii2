@@ -281,7 +281,7 @@ class CategoriesStores extends \yii\db\ActiveRecord
             'count' => null,
             'uid' => null,
             'menu_index' => -1000,
-            'class' => '',
+            'class' => 'cat_bold',
             'route_offline' => false,
         ]);
     }

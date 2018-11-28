@@ -256,7 +256,7 @@
       a, span{
 
         //padding: 10px 15px;
-        padding: 4px 15px;
+        padding: 4PX 15PX;
         line-height: 20px;
         white-space: normal;
 
@@ -439,8 +439,8 @@
   a.all_shops,
   span.all_shops {
     border-top: 1px solid $menu_border_color;
-    margin: 0 5px;
-    padding: 6px 10px;
+    margin: 0 5PX;
+    padding: 6PX 10PX;
 
     @include media($laptop_min) {
       padding: 16px 0;
