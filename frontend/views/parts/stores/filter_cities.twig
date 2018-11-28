@@ -11,7 +11,7 @@
             {% endfor %}
             <ul class="catalog-stores_filter-city-list sd-select-drop">
                 {% for city in store_cities %}
-                    <li class="catalog-stores_filter-city-item">
+                    <li class="catalog-stores_filter-city-item{% if city.active %} active{% endif %}">
                         {% if city.active %}
                             <span class="catalog-stores_filter-city-title">{{ city.city }} </span>
                         {% else %}
