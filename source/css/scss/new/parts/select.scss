@@ -42,10 +42,10 @@
     //display: block;
 
     border-radius: 3px;
-    border: 1px solid $btn_base_bg;
+    border: 1px solid $placeholder_color;
     background-color: #fff;
     padding: 10px 30px;
-    color: $btn_base_bg;
+    color: $text_color;
     cursor: pointer;
     background-position: 290px -145px;
     display: flex;
@@ -66,16 +66,16 @@
     svg {
       width: 15px;
       height: 15px;
-      color: $btn_base_bg;
-      fill: $btn_base_bg;
-      stroke: $btn_base_bg;
+      color: $text_color;
+      fill: $text_color;
+      stroke: $text_color;
     }
   }
   &-drop {
     margin: 0;
     padding: 0;
     width: 310px;
-    border: 1px solid $btn_base_bg;
+    border: 1px solid $placeholder_color;
     border-radius: 0 0 3px 3px;
     border-top: none;
     display: none;
@@ -102,12 +102,13 @@
       }
 
       a {
-        color: $btn_base_bg;
-        text-decoration: none;
+        color: $text_color;
+        text-decoration: underline;
         display: block;
         padding: 10px 30px;
+
         &:hover {
-          text-decoration: underline;
+          text-decoration: none;
         }
       }
       span {
