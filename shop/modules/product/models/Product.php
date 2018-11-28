@@ -44,10 +44,6 @@ class Product extends \yii\db\ActiveRecord
    */
   protected $paramsProcessing = [];
 
-
-  protected static $categories = [];
-
-
   public static $defaultSort = 'name';
   public static $defaultLimit = 48;
 
@@ -452,27 +448,26 @@ class Product extends \yii\db\ActiveRecord
    */
   protected function productCategory($name, $parent = null)
   {
-    if (!isset(static::$categories[$name . ($parent ? '|' . $parent : '')])) {
-      $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
-      if (!$categoryDb) {
-        $categoryDb = new ProductsCategory();
-        $categoryDb->name = $name;
-        $categoryDb->parent = $parent;
-        if (!$categoryDb->save()) {
-          if (Yii::$app instanceof Yii\console\Application) {
-            d($categoryDb->errors);
+      $path= 'category_with_parent_' . $name . ($parent ? '_parent_' . $parent : '');
+      return Yii::$app->cache_console->getOrSet($path, function () use ($name, $parent) {
+          $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
+          if (!$categoryDb) {
+              $categoryDb = new ProductsCategory();
+              $categoryDb->name = $name;
+              $categoryDb->parent = $parent;
+              if (!$categoryDb->save()) {
+                  if (Yii::$app instanceof Yii\console\Application) {
+                      d($categoryDb->errors);
+                  }
+              }
+          } else {
+              if ($categoryDb->parent == null && $parent) {
+                  $categoryDb->parent = $parent;
+                  $categoryDb->save();
+              }
           }
-          static::$categories[$name . ($parent ? '|' . $parent : '')] = false;
-        }
-      } else {
-        if ($categoryDb->parent == null && $parent) {
-          $categoryDb->parent = $parent;
-          $categoryDb->save();
-        }
-      }
-      static::$categories[$name . ($parent ? '|' . $parent : '')] = $categoryDb->toArray();
-    }
-    return static::$categories[$name . ($parent ? '|' . $parent : '')];
+          return $categoryDb->toArray();
+      });
   }
 
   public function afterSave($insert, $changedAttributes)
