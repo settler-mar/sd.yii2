@@ -29,13 +29,7 @@ class ProductParameters extends \yii\db\ActiveRecord
   const PRODUCT_PARAMETER_TYPE_INTEGER = 1;
   const PRODUCT_PARAMETER_TYPE_TEXT = 2;
 
-  // public $possibles_synonyms = [];
-  // public $exists_synonyms = [];
   public $possible_categories = [];
-
-  protected static $params = [];
-  protected static $paramsProcessing = [];
-  protected static $originalValues = [];
 
   /**
    * @inheritdoc
@@ -157,11 +151,11 @@ class ProductParameters extends \yii\db\ActiveRecord
    */
   public static function standarted($params, $categories = false)
   {
-    //$categoriesString = $categories ? implode('.', $categories) . '|' : '';
+    $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
     $out = [];
     foreach ($params as $paramKey => $values) {
       $path = 'Params_' . implode('_', $categories) . ':' . $paramKey . ':' . implode('_' , $values);
-      $p = Yii::$app->cache_console->getOrSet($path, function () use ($categories, $paramKey, $values, $path) {
+      $p = $cache->getOrSet($path, function () use ($categories, $paramKey, $values, $path) {
         $out = [];
         $processingOut = [];
 
@@ -208,31 +202,33 @@ class ProductParameters extends \yii\db\ActiveRecord
       if($p){
         $out=ArrayHelper::merge($out,$p);
       }
+      $values = null;
+      $paramKeys = null;
+      $p = null;
+      $path = null;
+      unset($values);
+      unset($paramKey);
+      unset($p);
+      unset($path);
     }
     if(empty($out['params'])){
-      $out['params']=null;
+      $out['params'] = null;
     }
+    $cache=null;
+    unset($cache);
     return $out;
   }
 
   public static function standartedParam($param, $categories = false)
   {
     $categoriesString = $categories ? implode('.', $categories) . '|' : '';
-    //пробуем найти в памяти
-    if (isset(self::$params[$categoriesString . $param])) {
-      return ['param' => self::$params[$categoriesString . $param], 'processing' => false];
-    }
-    //и те что в процессе
-    if (isset(self::$paramsProcessing[$categoriesString . $param])) {
-      return ['param' => self::$paramsProcessing[$categoriesString . $param], 'processing' => true];
-    }
     //проверка на стоп-слова
     if (isset(Yii::$app->params['product_params_stop_list'])) {
       foreach (Yii::$app->params['product_params_stop_list'] as $stopWord) {
         $stopWord = trim($stopWord);
         $paramCompare = substr($stopWord, -1) == '*' ? substr($param, 0, strlen($stopWord) - 1) . '*' : $param;
         if ($stopWord == $paramCompare) {
-          self::$params[$categoriesString . $param] = '';
+          //self::$params[$categoriesString . $param] = '';
           return false;
         }
       }
@@ -252,30 +248,43 @@ class ProductParameters extends \yii\db\ActiveRecord
         //есть синоним
         if ($out->synonymParam->active == self::PRODUCT_PARAMETER_ACTIVE_YES) {
           //синоним активен
-          self::$params[$categoriesString . $param] = $out->synonymParam;
-          return ['param' => $out->synonymParam, 'processing' => false];
+          //self::$params[$categoriesString . $param] = $out->synonymParam;
+          $result = ['param' => $out->synonymParam, 'processing' => false];
+          $out = null;
+          unset($out);
+          return $result;
         }
         if ($out->synonymParam->active == self::PRODUCT_PARAMETER_ACTIVE_WAITING) {
           //синоним активен
-          self::$params[$categoriesString . $param] = $out->synonymParam;
-          return ['param' => $out->synonymParam, 'processing' => true];
+          //self::$params[$categoriesString . $param] = $out->synonymParam;
+          $result = ['param' => $out->synonymParam, 'processing' => true];
+          $out = null;
+          unset($out);
+          return $result;
         }
         //cиноним неактивен - возращаем пусто
-        self::$params[$categoriesString . $param] = false;
+        //self::$params[$categoriesString . $param] = false;
+        $out = null;
+        unset($out);
         return false;
       }
       if ($out->active == self::PRODUCT_PARAMETER_ACTIVE_YES) {
         //параметр активен
-        self::$params[$categoriesString . $param] = $out;
-        return ['param' => $out, 'processing' => false];
+        //self::$params[$categoriesString . $param] = $out;
+        $result = ['param' => $out, 'processing' => false];
+        unset($out);
+        return $result;
       }
       if ($out->active == self::PRODUCT_PARAMETER_ACTIVE_WAITING) {
         //параметр в ожидании
-        self::$paramsProcessing[$categoriesString . $param] = $out;
-        return ['param' => $out, 'processing' => true];
+        //self::$paramsProcessing[$categoriesString . $param] = $out;
+        $result = ['param' => $out, 'processing' => true];
+        unset($out);
+        return $result;
       }
       //параметр неактивен - возращаем пусто
-      self::$params[$categoriesString . $param] = false;
+      //self::$params[$categoriesString . $param] = false;
+      unset($out);
       return false;
     }
     //если нет то создаём новый параметр
@@ -287,11 +296,14 @@ class ProductParameters extends \yii\db\ActiveRecord
         'active' => self::PRODUCT_PARAMETER_ACTIVE_WAITING,
     ]]);
     if ($out->save()) {
-      self::$paramsProcessing[$categoriesString . $param] = $out;
-      return ['param' => $out, 'processing' => true];
+      //self::$paramsProcessing[$categoriesString . $param] = $out;
+      $result = ['param' => $out, 'processing' => true];
+      unset($out);
+      return $result;
     } else {
       if (Yii::$app instanceof Yii\console\Application) {
         d($out->errors);
+        unset($out);
       }
       return false;
     }
@@ -301,34 +313,46 @@ class ProductParameters extends \yii\db\ActiveRecord
   {
     $out = [];
     $originals = preg_split('/[\/,]+/', $originals);
+    $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
     foreach ($originals as $original) {
       $original = trim($original);
       if (!$original) {
         continue;
       }
-      //пробуем найти в памяти
-      if (isset(self::$originalValues[$categories . $original])) {
-        if (self::$originalValues[$categories . $original] !== false) {
-          foreach (self::$originalValues[$categories . $original] as $key => $value) {
-            $out[$key][] = $value;
+      $path='parameter_from_values_'.$original.'_categories_'.$categories;
+      $item = $cache->getOrSet($path, function () use($original, $categories) {
+          $categoryArr = explode('.', $categories);
+          $categoryLast = isset($categoryArr[count($categoryArr)-1]) ? $categoryArr[count($categoryArr)-1] : null;
+          $value = ProductParametersValues::find()
+              ->from(ProductParametersValues::tableName().' ppv')
+              ->innerJoin(ProductParameters::tableName(). ' pp', 'ppv.parameter_id = pp.id')
+              ->where(['ppv.name' => $original, 'pp.category_id' => $categoryLast])
+              ->one();
+          $value = $value ? ProductParametersValues::valueSynonym($value) : false;
+          if ($value && $value->active != ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
+              $parameter = self::findOne($value->parameter_id);
+              $parameter = $parameter ? self::parameterSynonym($parameter) : false;
+              if ($parameter && $parameter->active != self::PRODUCT_PARAMETER_ACTIVE_NO) {
+                  $out = ['param' => $parameter->name, 'value' => $value->name];
+                  unset($parameter);
+                  unset($value);
+                  return $out;
+              } else {
+                  unset($parameter);
+                  unset($value);
+                  return false;
+              }
+          } else {
+              return false;
           }
-        }
-        continue;
-      }
-      $value = ProductParametersValues::findOne(['name' => $original]);
-      $value = $value ? ProductParametersValues::valueSynonym($value) : false;
-      if ($value && $value->active != ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO) {
-        $parameter = self::findOne($value->parameter_id);
-        $parameter = $parameter ? self::parameterSynonym($parameter) : false;
-        if ($parameter && $parameter->active != self::PRODUCT_PARAMETER_ACTIVE_NO) {
-          $out[$parameter->name][] = $value->name;
-          self::$originalValues[$categories . $original] = [$parameter->name => $value->name];
-        } else {
-          self::$originalValues[$categories . $original] = false;
-        }
-      } else {
-        self::$originalValues[$categories . $original] = false;
+      });
+      if ($item) {
+          if (isset($out[$item['param']])) {
+              $out[$item['param']][] = $item['value'];
+          } else {
+              $out[$item['param']] = [$item['value']];
+          }
       }
     }
     return !empty($out) ? $out : null;

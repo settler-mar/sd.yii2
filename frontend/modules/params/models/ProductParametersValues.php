@@ -25,13 +25,8 @@ class ProductParametersValues extends \yii\db\ActiveRecord
     const PRODUCT_PARAMETER_VALUES_ACTIVE_NO = 0;
     const PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING = 2;
 
-    //public $possibles_synonyms = [];
-    //public $exists_synonyms = [];
-
     public $possible_categories = [];
 
-    protected static $values = [];
-    protected static $valuesProcessing = [];
     /**
      * @inheritdoc
      */
@@ -154,23 +149,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         foreach ($values as $value) {
             $value = (string) $value;
             //по каждому элементу
-            //пробуем найти в памяти
-            if (isset(self::$values[$paramId][$value])) {
-                if (self::$values[$paramId][$value] !== false) {
-                    $result[] = ['value' => self::$values[$paramId][$value], 'processing' => false];
-                }
-                continue;
-            }
-            //нашли в памяти значение в обработке
-            if (isset(self::$valuesProcessing[$paramId][$value])) {
-                if (self::$valuesProcessing[$paramId][$value] !== false) {
-                    $result[] = ['value' => self::$valuesProcessing[$paramId][$value], 'processing' => true];
-                }
-                continue;
-            }
             //проверка на максимальную длину
             if (mb_strlen($value) > Yii::$app->params['product_params_values_max_length']) {
-                self::$values[$paramId][$value] = false;
+                //self::$values[$paramId][$value] = false;
                 continue;
             }
             //ищем в таблице
@@ -184,49 +165,50 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                     //имеется синоним
                     if ($out->synonymValue->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES) {
                         //синоним активен
-                        self::$values[$paramId][$value] = $out->synonymValue->name;
                         $result[] = ['value' => $out->synonymValue->name, 'processing' => false];
+                        unset($out->synonymValue);
+                        unset($out);
                         continue;
                     }
                     if ($out->synonymValue->active !== ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING) {
                         //синоним в ожидании
-                        self::$valuesProcessing[$paramId][$value] = $out->synonymValue->id;
                         $result[] = ['value' => $out->synonymValue->id, 'processing' => true];
+                        unset($out->synonymValue);
+                        unset($out);
                         continue;
                     }
                     //если неактивен то false
-                    self::$values[$paramId][$value] = false;
                     continue;
                 }
                 //нет синонима
                 if ($out->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES) {
                     //само значение активно
-                    self::$values[$paramId][$value] = $out->name;
                     $result[] = ['value' => $out->name, 'processing' => false];
+                    unset($out);
                     continue;
                 }
                 if ($out->active == ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING) {
                     //само значение в ожидании
-                    self::$valuesProcessing[$paramId][$value] = $out->id;
                     $result[] = ['value' => $out->id, 'processing' => true];
+                    unset($out);
                     continue;
                 }
                 //если неактивен то false
-                self::$values[$paramId][$value] = false;
                 continue;
             }
             //нет нигде, пишем значение
+            $out = null;
             $out = new self();
             $out->name = $value;
             $out->parameter_id = $paramId;
             $out->active = self::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING;
             if ($out->save()) {
-                self::$valuesProcessing[$paramId][$value] = $out->id;
                 $result[] =  ['value' => $out->id, 'processing' => true];
             } else {
                 d($out->errors);
             }
-
+            unset($out);
+            $value = null;
         }
         return $result;
     }

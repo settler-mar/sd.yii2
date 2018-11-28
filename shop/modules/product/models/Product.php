@@ -229,6 +229,7 @@ class Product extends \yii\db\ActiveRecord
     $new = 0;
     $error = 0;
     $article = (string)$product['id'];
+    $productDb = null;
     $productDb = $product['check_unique'] ?
         self::findOne([
             'cpa_id' => $product['cpa_id'],
@@ -309,11 +310,16 @@ class Product extends \yii\db\ActiveRecord
         }
       }
     }
-
+    foreach (array_keys(get_defined_vars()) as $key) {
+        if (!in_array($key, ['new', 'error', 'productDb'])) {
+            unset(${"$key"});
+        }
+    }
+    unset($key);
     return [
-        'insert' => $new,
-        'error' => $error,
-        'product' => $productDb,
+      'insert' => $new,
+      'error' => $error,
+      'product' => $productDb,
     ];
   }
 
@@ -328,7 +334,7 @@ class Product extends \yii\db\ActiveRecord
     if (!trim($paramOriginals)) {
       return null;
     }
-    $categories = $categories ? implode('.', $categories) . '|' : '';
+    $categories = $categories ? implode('.', $categories) : '';
     $params = explode('|', (string)$paramOriginals);
     $paramsArray = [];
     foreach ($params as $param) {
@@ -357,6 +363,7 @@ class Product extends \yii\db\ActiveRecord
     $result = [];
     $ids = [];
     foreach ($categories as $category) {
+      $productToCategoryDb = null;
       $result[] = $productToCategoryDb = ProductsToCategory::findOne([
           'product_id' => $this->id,
           'category_id' => $category
@@ -368,6 +375,7 @@ class Product extends \yii\db\ActiveRecord
         $productToCategoryDb->save();
       }
       $ids[] = $productToCategoryDb->id;
+      unset($productToCategoryDb);
     }
     $deleteWhereCondition = empty($ids) ? ['product_id' => $this->id] :
         ['and', ['product_id' => $this->id], ['not in', 'id', $ids]];
@@ -378,12 +386,14 @@ class Product extends \yii\db\ActiveRecord
   protected function makeCategories($categories)
   {
     $path = 'categories_'.implode('/', $categories);
+    $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-    return Yii::$app->cache_console->getOrSet($path, function () use ($categories,$path) {
+    $out = $cache->getOrSet($path, function () use ($categories,$path) {
       $result = [];
       $parent = null;
       //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
       foreach ($categories as $index => $category) {
+        $cat = null;
         $cat = $this->productCategory($category, $parent);
         if ($cat && !empty($cat['id'])) {
           $result[] = (string)$cat['id'];
@@ -391,9 +401,13 @@ class Product extends \yii\db\ActiveRecord
         } else {
           return $result;
         }
+        $category = null;
       }
       return $result;
     });
+    unset($path);
+    unset($cache);
+    return $out;
   }
 
   public static function saveImage($storePath, $image, $old = null)
@@ -449,7 +463,10 @@ class Product extends \yii\db\ActiveRecord
   protected function productCategory($name, $parent = null)
   {
       $path= 'category_with_parent_' . $name . ($parent ? '_parent_' . $parent : '');
-      return Yii::$app->cache_console->getOrSet($path, function () use ($name, $parent) {
+      $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
+
+      $out =  $cache->getOrSet($path, function () use ($name, $parent) {
+          $categoryDb = null;
           $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
           if (!$categoryDb) {
               $categoryDb = new ProductsCategory();
@@ -466,8 +483,13 @@ class Product extends \yii\db\ActiveRecord
                   $categoryDb->save();
               }
           }
-          return $categoryDb->toArray();
+          $out = $categoryDb->toArray();
+          unset($categoryDb);
+          return $out;
       });
+      unset($path);
+      unset($cache);
+      return $out;
   }
 
   public function afterSave($insert, $changedAttributes)
@@ -506,6 +528,7 @@ class Product extends \yii\db\ActiveRecord
     if (!empty($this->paramsProcessing)) {
       foreach ($this->paramsProcessing as $code => $values) {
         foreach ($values as $valueId) {
+          $paramProcessing = null;
           $paramProcessing = ProductParametersProcessing::findOne([
               'product_id' => $this->id,
               'param_id' => $code,
@@ -523,6 +546,7 @@ class Product extends \yii\db\ActiveRecord
           if (isset($paramProcessing->id)) {
             $ids[] = $paramProcessing->id;
           }
+          unset($paramProcessing);
         }
       }
     }

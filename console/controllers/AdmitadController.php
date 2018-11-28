@@ -619,18 +619,22 @@ class AdmitadController extends Controller
       $product['store_id'] = $catalog->cpaLink->store->uid;
       $product['photo_path'] = $photoPath;
       $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
+      $result = null;
       $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray());
-
       if ($result['error']) {
         d($result['product']->errors);
       }
       $insert += $result['insert'];
       $error += $result['error'];
       if ($count % 100 == 0) {
-        echo date('Y-m-d H:i:s', time()).' '.$count."\n";
+        echo date('Y-m-d H:i:s', time()).' '.$count. " memory usage ".number_format(memory_get_peak_usage())."\n";
       }
-
+      $result['product'] = null;
+      unset($result['product']);
+      unset($result);
+      unset($product);
     }
+    echo date('Y-m-d H:i:s', time()).' '.$count. " memory usage ".number_format(memory_get_peak_usage())."\n";
 
     Cache::deleteName('product_category_menu');
     Cache::clearName('catalog_product');
