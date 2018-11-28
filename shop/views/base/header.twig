@@ -27,12 +27,13 @@
 
 
         <div class="header-search stores_search" style="">
-          <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
+          <form action="{{ _href('/category/search')|raw }}" class="header-search_form" name="search" method="get">
             <div class="header-search_form-group">
               {#<select  name="module" class="header-search_form-input header-search_form-input-module">#}
                   {#<option value="store">{{ t('common', 'shops') }}</option>#}
                   {#<option value="coupon">{{ t('main', 'promocodes') }}</option>#}
               {#</select>#}
+              <input type="hidden" id="" value="shop">
               <input type="hidden" id="header-search_form-module-hidden" name="" value="store">
               <label class="header-search_form-input-module-label" for="header-search_form-module-text">
                 <span  id="header-search_form-module-text" class="header-search_form-input header-search_form-input-module">{{ t('common', 'shops') }}</span>

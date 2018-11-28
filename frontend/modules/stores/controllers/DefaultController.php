@@ -352,11 +352,11 @@ class DefaultController extends SdController
         '/favorite' : '';
     $storesData["users_reviews"] = Reviews::top();
     if ($offline) {
-        $stores = clone $dataBaseData;
         $cityes = B2bStoresPoints::find()
             ->select(['b2bsp.city'])
             ->from(B2bStoresPoints::tableName().' b2bsp')
-            ->innerJoin(['s' => $stores], 's.uid = b2bsp.store_id')
+            ->innerJoin(Stores::tableName() . ' s', 's.uid = b2bsp.store_id')
+            ->where(['s.is_offline' => 1, 's.is_active' => [0, 1]])
             ->groupBy(['b2bsp.city'])
             ->orderBy(['b2bsp.city' => SORT_ASC])
             ->asArray()->all();
