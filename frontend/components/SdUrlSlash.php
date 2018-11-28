@@ -33,8 +33,9 @@ class SdUrlSlash implements UrlRuleInterface
             strpos($request->pathInfo,"admin-values/")===0 ||
             strpos($request->pathInfo,"admin-stores/")===0 ||
             strpos($request->pathInfo,"admin-catalog/")===0 ||
-            strpos($request->pathInfo,"admin-category/")===0 ||
-            strpos($request->pathInfo,"stores/offline")===0)
+            strpos($request->pathInfo,"admin-category/")===0
+            || strpos($request->pathInfo,"stores/offline")===0
+        )
     ){
       //$url_test = preg_replace('/[^a-zA-Z0-9-_=\:\&\?\/\#\%\+\.\[\]]/', '', $url_test);
       $url_test=str_replace(" ",'',$url_test);
@@ -48,11 +49,16 @@ class SdUrlSlash implements UrlRuleInterface
     if($request->get("w") && strlen(trim($request->get("w")))<6){
       $url_test=str_replace($request->get("w"),"",$url_test);
     }
-    if (preg_match('/[^a-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/', $url_test)) {
-        //$cl=preg_replace('/[^a-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/',"", $url_test);
-        //var_dump($cl);
-        throw new \yii\web\NotFoundHttpException;
+
+    if (strpos($request->pathInfo,"stores/offline") !==0 || !$request->get('city')) {
+        //для поиска по города условие не проверяем
+        if (preg_match('/[^іa-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/', $url_test)) {
+            //$cl=preg_replace('/[^a-zA-Z0-9-_=\@\:\&\?\/\#\%\+\.\[\]]/',"", $url_test);
+            //var_dump($cl);
+            throw new \yii\web\NotFoundHttpException;
+        }
     }
+
 
     $pathArray = explode('/', $request->getPathInfo());
     if(count($pathArray)<2) return false; //если в адресе всего 1 элемент то проверять не чего

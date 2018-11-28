@@ -92,11 +92,15 @@
 
     & > li {
       list-style: none;
-      border-top: 1px solid $menu_border_color;
       //cursor: pointer;
       //display: block;
       //padding: 10px 30px;
       background-position: 10px -119px;
+
+      &:not(:first-child) {
+        border-top: 1px solid $menu_border_color;
+      }
+
       a {
         color: $btn_base_bg;
         text-decoration: none;
@@ -119,7 +123,7 @@
   }
   &-selected:hover {
     border-radius: 3px 3px 0 0;
-    border-bottom: none;
+    //border-bottom: none;
     svg {
       transform: rotate(180deg);
     }
