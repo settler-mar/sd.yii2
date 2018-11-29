@@ -11,6 +11,7 @@ use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -231,13 +232,16 @@ class Product extends \yii\db\ActiveRecord
     $article = (string)$product['id'];
     $productDb = null;
     $productDb = $product['check_unique'] ?
-        self::findOne([
+        self::find([
             'cpa_id' => $product['cpa_id'],
             'store_id' => $product['store_id'],
             'article' => $article
-        ])
+        ])->one()
         : false;
-    $productModifiedTime = isset($product['modified_time']) ? $product['modified_time'] : false;
+
+    $product['categories'] = explode('/', (string) $product['categoryId']);
+
+    $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
     if (!$productDb || ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
       //всё остальное, если продукта нет или дата модификации продукта больше
 

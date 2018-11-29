@@ -609,28 +609,36 @@ class AdmitadController extends Controller
     $photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=')+8);
     $photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')). '/';
     $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
-    foreach ($products as $product) {
+    $store = $catalog->cpaLink->store->toArray();
+    $store_id=$store['uid'];
+
+    $start_mem=memory_get_peak_usage();
+    while ($product=array_shift($products)) {
       $count++;
       $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
-      $product['categories'] = explode('/', (string) $product['categoryId']);
       $product['params_original'] = isset($product['param']) ? $product['param'] : null;
       $product['cpa_id'] = $this->cpa_id;
       $product['catalog_id'] = $catalog->id;
-      $product['store_id'] = $catalog->cpaLink->store->uid;
+      $product['store_id'] = $store_id;
       $product['photo_path'] = $photoPath;
       $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
       $result = null;
-      $result = Product::addOrUpdate($product, $catalog->cpaLink->store->toArray());
+      $result = Product::addOrUpdate($product, $store);
+
       if ($result['error']) {
         d($result['product']->errors);
       }
       $insert += $result['insert'];
       $error += $result['error'];
       if ($count % 100 == 0) {
-        echo date('Y-m-d H:i:s', time()).' '.$count. " memory usage ".number_format(memory_get_peak_usage())."\n";
+        if($start_mem<memory_get_peak_usage()){
+          gc_collect_cycles();
+          $start_mem=memory_get_peak_usage();
+          echo "    memory usage ".number_format(memory_get_peak_usage())."\n";
+        }
+        echo date('Y-m-d H:i:s', time()).' '.$count."\n";
       }
-      $result['product'] = null;
-      unset($result['product']);
+
       unset($result);
       unset($product);
     }
@@ -640,15 +648,12 @@ class AdmitadController extends Controller
     Cache::clearName('catalog_product');
     Cache::deleteName('products_active_count');
 
-
-
     echo 'Products ' . $count . "\n";
     echo 'Inserted ' . $insert . "\n";
     if ($error) {
       echo 'Errors ' . $error . "\n";
     }
-
+    exit;
   }
-
 
 }
