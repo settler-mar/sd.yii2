@@ -6,7 +6,7 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
-return [
+$config = [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -37,3 +37,11 @@ return [
     ],
     'params' => $params,
 ];
+
+//Add kint
+$config['bootstrap'][] = 'kint';
+$config['modules']['kint'] = [
+    'class' => 'digitv\kint\Module',
+];
+
+return $config;
