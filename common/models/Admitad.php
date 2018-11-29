@@ -152,9 +152,9 @@ class Admitad
     //$csv = Yii::getAlias('/tmp/admitad_osnovnoi_products_' . $affiliate_id . '.csv');
     $csv = Yii::getAlias('@runtime/admitad_osnovnoi_products_' . $affiliate_id . '.csv');
     //или если не обновлять и уже скачано, или качаем
-    $data = [];
+    $data = false;
     if ((!$refreshFile && file_exists($csv)) || $this->downloadProducts($csv, $csvLink)) {
-      $data = $this->getCsv($csv);
+      $data = $csv;
     };
     return $data;
   }

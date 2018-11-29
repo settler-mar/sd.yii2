@@ -9,14 +9,14 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\products\models\Products;
-use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Cpa;
+use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
+use shop\modules\product\models\Product;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
-use shop\modules\product\models\Product;
 
 class AdmitadController extends Controller
 {
@@ -43,12 +43,12 @@ class AdmitadController extends Controller
       shell_exec('chcp 65001');
     }
     if (!isset(Yii::$app->params[$this->configName])) {
-      ddd('Config "'.$this->configName. '" not found');
+      ddd('Config "' . $this->configName . '" not found');
     }
     $this->config = Yii::$app->params[$this->configName];
-    $cpa = Cpa::findOne(['name'=>$this->cpaName]);
+    $cpa = Cpa::findOne(['name' => $this->cpaName]);
     if (!$cpa) {
-      ddd('Cpa "'.$this->cpaName. '" not found');
+      ddd('Cpa "' . $this->cpaName . '" not found');
     }
     $this->cpa_id = $cpa->id;
     return parent::beforeAction($action);
@@ -341,32 +341,32 @@ class AdmitadController extends Controller
         $storeResult = Stores::addOrUpdate($newStore);
         if (!$storeResult['result']) {
           $errors++;
-        }else{
+        } else {
           if (!empty($this->config['getCatalog']) && !empty($store['feeds_info'])) {
             foreach ($store['feeds_info'] as $catalog) {
               $catalog_db = CatalogStores::find()
                   ->where([
-                      'cpa_link_id'=>$storeResult['cpa_link']->id,
-                      'name'=>$catalog['name'],
+                      'cpa_link_id' => $storeResult['cpa_link']->id,
+                      'name' => $catalog['name'],
                   ])
                   ->one();
-              if(!$catalog_db){
+              if (!$catalog_db) {
                 $catalog_db = new CatalogStores();
-                $catalog_db->cpa_link_id=$storeResult['cpa_link']->id;
-                $catalog_db->name=$catalog['name'];
-                $catalog_db->active=2;
+                $catalog_db->cpa_link_id = $storeResult['cpa_link']->id;
+                $catalog_db->name = $catalog['name'];
+                $catalog_db->active = 2;
               }
               //ddd($catalog_db,$catalog);
-              $d=strtotime($catalog['advertiser_last_update']);
-              if($d<100){
-                $d=strtotime($catalog['admitad_last_update']);
-                if($d<100){
+              $d = strtotime($catalog['advertiser_last_update']);
+              if ($d < 100) {
+                $d = strtotime($catalog['admitad_last_update']);
+                if ($d < 100) {
                   d($catalog);
                   continue;
                 }
               }
-              $catalog_db->date_download=date("Y-m-d H:i:s", $d);
-              $catalog_db->csv=$catalog['csv_link'];
+              $catalog_db->date_download = date("Y-m-d H:i:s", $d);
+              $catalog_db->csv = $catalog['csv_link'];
 
               $catalog_db->save();
             }
@@ -550,7 +550,7 @@ class AdmitadController extends Controller
     if ($diapazon[$code]['min'] < $diapazon[$code]['max']) {
       $cashback = "до ";
     }
-    $cashback .= ($diapazon[$code]['max']/2) . ($hasPersent ? '%' : '');
+    $cashback .= ($diapazon[$code]['max'] / 2) . ($hasPersent ? '%' : '');
 
     return [
         'cashback' => $cashback,
@@ -576,7 +576,7 @@ class AdmitadController extends Controller
     $csvLinks = CatalogStores::find()
         ->where([
             'and',
-            'active='.CatalogStores::CATALOG_STORE_ACTIVE_YES,
+            'active=' . CatalogStores::CATALOG_STORE_ACTIVE_YES,
             ['or',
                 '`date_import`=`crated_at`',
                 '`date_import`<`date_download`',
@@ -591,69 +591,85 @@ class AdmitadController extends Controller
     }
     foreach ($csvLinks as $cpaLink) {
       $dateUpdate = time();//запомнили дату обращения за каталогом
-      $products = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
-      echo "Catalog ".$cpaLink->id.":".$cpaLink->name." from CpaLink ".$cpaLink->cpa_link_id." Products ".count($products)."\n";
-      $this->writeProducts($products, $cpaLink);
+      $csv = $admitad->getProduct($cpaLink->csv, $cpaLink->id, $config['refresh_csv']);
+      echo "Catalog " . $cpaLink->id . ":" . $cpaLink->name . " from CpaLink " . $cpaLink->cpa_link_id . "\n";
+      $cpaLink->product_count = $this->writeProducts($csv, $cpaLink);
       $cpaLink->date_import = date('Y-m-d H:i:s', $dateUpdate);//$cpaLink->date_download;;
-      $cpaLink->product_count=count($products);
       $cpaLink->save();
       $admitad->unlinkFile($cpaLink->id);
     }
   }
 
-  private function writeProducts($products, $catalog)
+  private function writeProducts($csv, $catalog, $delimiter = ';')
   {
     $count = 0;
     $insert = 0;
     $error = 0;
-    $photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=')+8);
-    $photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')). '/';
-    $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
-    $store = $catalog->cpaLink->store->toArray();
-    $store_id=$store['uid'];
 
-    $start_mem=memory_get_peak_usage();
-    while ($product=array_shift($products)) {
-      $count++;
-      $product['available'] = (string) $product['available'] = 'true' ? 1 :((string) $product['available']='false' ? 0 : 2);
-      $product['params_original'] = isset($product['param']) ? $product['param'] : null;
-      $product['cpa_id'] = $this->cpa_id;
-      $product['catalog_id'] = $catalog->id;
-      $product['store_id'] = $store_id;
-      $product['photo_path'] = $photoPath;
-      $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
-      $result = null;
-      $result = Product::addOrUpdate($product, $store);
+    if (!$csv) return 0;
+    try {
+      if (($handle = fopen($csv, "r")) !== false) {
+        $headers = fgetcsv($handle, 0, $delimiter);
 
-      if ($result['error']) {
-        d($result['product']->errors);
-      }
-      $insert += $result['insert'];
-      $error += $result['error'];
-      if ($count % 100 == 0) {
-        if($start_mem<memory_get_peak_usage()){
-          gc_collect_cycles();
-          $start_mem=memory_get_peak_usage();
-          echo "    memory usage ".number_format(memory_get_peak_usage())."\n";
+        $photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=') + 8);
+        $photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')) . '/';
+        $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
+        $store = $catalog->cpaLink->store->toArray();
+        $store_id = $store['uid'];
+
+        $start_mem = memory_get_peak_usage();
+        while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+          if (count($headers) != count($row)) continue;//таких немного, можно пропустить
+          $product = array_combine($headers, $row);
+
+          $count++;
+          $product['available'] = (string)$product['available'] = 'true' ? 1 : ((string)$product['available'] = 'false' ? 0 : 2);
+          $product['params_original'] = isset($product['param']) ? $product['param'] : null;
+          $product['cpa_id'] = $this->cpa_id;
+          $product['catalog_id'] = $catalog->id;
+          $product['store_id'] = $store_id;
+          $product['photo_path'] = $photoPath;
+          $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
+          $result = null;
+          $result = Product::addOrUpdate($product, $store);
+
+          if ($result['error']) {
+            d($result['product']->errors);
+          }
+          $insert += $result['insert'];
+          $error += $result['error'];
+          if ($count % 100 == 0) {
+            if ($start_mem < memory_get_peak_usage()) {
+              gc_collect_cycles();
+              $start_mem = memory_get_peak_usage();
+              echo "    memory usage " . number_format(memory_get_peak_usage()) . "\n";
+            }
+            echo date('Y-m-d H:i:s', time()) . ' ' . $count . "\n";
+          }
+
+          unset($result);
+          unset($product);
         }
-        echo date('Y-m-d H:i:s', time()).' '.$count."\n";
+        echo date('Y-m-d H:i:s', time()) . ' ' . $count . " memory usage " . number_format(memory_get_peak_usage()) . "\n";
+
+        Cache::deleteName('product_category_menu');
+        Cache::clearName('catalog_product');
+        Cache::deleteName('products_active_count');
+
+        echo 'Products ' . $count . "\n";
+        echo 'Inserted ' . $insert . "\n";
+        if ($error) {
+          echo 'Errors ' . $error . "\n";
+        }
+        fclose($handle);
+      } else {
+        d('File not found. ' . $csv);
       }
-
-      unset($result);
-      unset($product);
+    } catch (\Exception $e) {
+      d('Ошибка при загрузке файла csv ' . $csv . ' ' . $e->getMessage());
     }
-    echo date('Y-m-d H:i:s', time()).' '.$count. " memory usage ".number_format(memory_get_peak_usage())."\n";
-
-    Cache::deleteName('product_category_menu');
-    Cache::clearName('catalog_product');
-    Cache::deleteName('products_active_count');
-
-    echo 'Products ' . $count . "\n";
-    echo 'Inserted ' . $insert . "\n";
-    if ($error) {
-      echo 'Errors ' . $error . "\n";
-    }
-    exit;
+    //exit;
+    return $count;
   }
 
 }
