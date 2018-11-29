@@ -40,13 +40,29 @@ class AdminCategoryController extends Controller
         }
         $searchModel = new ProductsCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $parents = ArrayHelper::map(
-            ProductsCategory::find()->select(['id', 'name'])
-                ->where(['synonym' => null])
-                ->orderBy(['name' => SORT_ASC])->asArray()->all(),
-            'id',
-            'name'
-        );
+        //категории, потенциальные синонимы
+        $cats =  ProductsCategory::find()
+            ->select(['id', 'name', 'parent'])
+            ->where(['synonym' => null])
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
+        $synonymFilter = [];
+        foreach ($cats as $cat) {
+            $synonymFilter[$cat->id] = ProductsCategory::parentsTree($cat);
+        }
+        //категории, являющиеся родительскими
+        $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
+        $parents = ProductsCategory::find()
+            ->from(ProductsCategory::tableName().' pc')
+            ->select(['id', 'name', 'parent'])
+            ->where(['synonym' => null])
+            ->andWhere(['in', 'id', $childs])
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
+        $parentsTree = [];
+        foreach ($parents as $parent) {
+            $parentsTree[$parent->id] = ProductsCategory::parentsTree($parent);
+        }
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -103,8 +119,8 @@ class AdminCategoryController extends Controller
                     return $out;
                 }
             ],
-            'parents' => ['0' => 'Нет'] + $parents,
-            'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parents,
+            'parents' => ['0' => 'Нет'] + $parentsTree,
+            'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $synonymFilter,
             'activeFilter' => $this->activeFilter(),
         ]);
   }
