@@ -166,6 +166,45 @@ class AdminCategoryController extends Controller
       ]);
     }
   }
+
+    /**
+     * @return bool|string
+     * @throws NotFoundHttpException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionUpdateAll()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $ids = $request->post('id');
+        $active = $request->post('active');
+        $data = [];
+        if ($active !== '') {
+            $data['active'] = in_array($active, [
+                ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT,
+                ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING,
+                ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES
+            ]) ? $active : ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING;
+        }
+        $parent = $request->post('parent');
+        if ($parent !== '') {
+            $data['parent'] = (int)$parent > 0 ? (int)$parent : null;
+        }
+        $synonym = $request->post('synonym');
+        if ($synonym !== '') {
+            $data['synonym'] = (int)$synonym > 0 ? (int)$synonym : null;
+        }
+
+        $result = !empty($data) ? ProductsCategory::updateAll($data, ['id' => $ids]) : 0;
+
+        return json_encode(['error' => $result < 1]);
+    }
   /**
    * Deletes an existing ProductsCategory model.
    * If deletion is successful, the browser will be redirected to the 'index' page.

@@ -1067,6 +1067,9 @@ table {
 .bold {
   font-weight: bold;
 }
+.modal.update-ajax {
+  top: 100px;
+}
 
 @import "../new/slider/slider";
 @import "../new/slider/animationsKeyFrame";

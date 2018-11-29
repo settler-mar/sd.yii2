@@ -172,20 +172,32 @@ $('body').on('click','a.ajaxFormOpen',function(e){
 $('.ajax-action').click(function(e) {
   e.preventDefault();
   var status = $(this).data('value');
+  var param = $(this).data('param');
   var href = $(this).attr('href');
   var ids = $('#grid-ajax-action').yiiGridView('getSelectedRows');
   if (ids.length > 0) {
     if (!confirm('Подтвердите изменение записей')) {
       return null;
     }
+    var content = $(this).closest('.ajax-action-content');
+    var data={};
+    if (content) {
+      $(content).find('input,select').each(function(key, index) {
+         data[$(index).attr('name')]=$(index).val();
+      });
+      data['id'] = ids;
+    } else {
+      data = {
+          status: status,
+          param: param,
+          id: ids
+      }
+    }
     $.ajax({
       url: href,
       type: 'post',
       dataType: 'json',
-      data: {
-        status: status,
-        id: ids
-      }
+      data: data
     }).done(function(data) {
       $('#grid-ajax-action').yiiGridView("applyFilter");
       if (data.error != false) {

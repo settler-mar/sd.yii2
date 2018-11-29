@@ -13,18 +13,26 @@
       <div class="row">
         <div class="col-md-12">
           <h1>{{ html.encode(this.title) }}</h1>
-          <p>
-            <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Category' }}</a>
-          </p>
         </div>
+      </div>
+      <div class="row">
+          <div class="col-md-2">
+            <a href="{{ path(['create']) }}" class="btn btn-success">{{ 'Create Category' }}</a>
+          </div>
+          <div class="col-md-8"></div>
+          <div class="col-md-2">
+              <button class=" btn btn-primary" data-toggle="modal" data-target="#toolsModal" ><span class="fa fa-cogs"></span> Операции</button>
+          </div>
       </div>
       <div class="row">
         <div  class="col-md-12">
           {{ grid_view_widget({
+            'id': 'grid-ajax-action',
             'dataProvider': dataProvider,
             'filterModel': searchModel,
             'columns': [
               {'class': '\\yii\\grid\\SerialColumn'},
+              {'class': '\\yii\\grid\\CheckboxColumn'},
               'id',
               {'attribute':'parent','format':'raw','value':tableData.parents,'filter':parents, 'label': 'Родительские категории'},
               {'attribute':'name', 'format':'raw', 'value':tableData.name},
@@ -39,5 +47,54 @@
         </div>
       </div>
     </section>
+
   </div>
+
+</div>
+<!-- Modal -->
+<div class="modal fade update-ajax " id="toolsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content ajax-action-content">
+            <div class="modal-header">
+                <span class="modal-title" id="exampleModalCenterTitle">Update selected Product Categories</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tools-modal-parent">Родительская категория</label>
+                    <select class="form-control" name="parent" id="tools-modal-parent">
+                        <option value="">Оставить без изменения</option>
+                        {% for key, parent in parents %}
+                            <option value="{{ key }}">{{ parent }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tools-modal-active">Активна</label>
+                    <select class="form-control"  name="active" id="tools-modal-active">
+                        <option value="">Оставить без изменения</option>
+                        {% for key, active in activeFilter %}
+                            <option value="{{ key }}">{{ active }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tools-modal-synonym">Является синонимом для</label>
+                    <select class="form-control"  name="synonym" id="tools-modal-synonym">
+                        <option value="">Оставить без изменения</option>
+                        {% for key, synonym in synonymFilter %}
+                            <option value="{{ key }}">{{ synonym }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <a href="/admin-category/product/update-all"  class="btn btn-primary ajax-action" >Применить</a>
+            </div>
+        </div>
+    </div>
 </div>
