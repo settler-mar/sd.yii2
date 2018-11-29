@@ -79,15 +79,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $this->hasMany(self::className(), ['synonym' => 'id']);
     }
 
-    /**
-     * дерево категорий
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function tree($params=[])
-    {
-        return self::childs($params);
-    }
-
     public function beforeValidate()
     {
         if ($this->isNewRecord && (!isset(Yii::$app->request->pathInfo) || strpos(Yii::$app->request->pathInfo, 'admin') !== 0)) {
@@ -123,42 +114,69 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return implode($route ? '/' :' / ', $out);
     }
 
-    public static function childs($params, $parent = null, $level = 0)
+    /**
+     * дерево категорий
+     * @param array $params
+     * @return mixed
+     */
+    public static function tree($params = [])
     {
-        $level++;
-        $childs =  self::find()
-            ->from(self::tableName() . ' pc')
-            ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'pc.synonym', 'pc.route'])
-            ->where([
-            'parent'=>$parent,
-            'active'=>[self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]
-            ])
-            ->orderBy(['name' => SORT_ASC]);
-        $childs = $childs->all();
-        $out = [];
-        foreach ($childs as $key => $child) {
-            $count = 0;
-            if (!empty($params['counts'])) {
-                //считать количество в т.ч. по дочерним категориям
-                $count = Product::find()->from(Product::tableName().' p')
-                    ->innerJoin(ProductsToCategory::tableName().' ptc', 'p.id=ptc.product_id')
-                    ->where(['category_id' => self::childsId($child->id)])
-                    ->count();
-            }
-            if (isset($params['empty']) && $params['empty'] === false &&
-                ($count === '0' || $count === null )) {
-                //если задано, то пустые не выводить
-                continue;
-            }
-            $item = $child->toArray();
-            $item['level'] = $level;
-            $item['childs'] = self::childs($params, $child->id, $level);
-            $item['current'] = isset($params['current']) && $child->id == $params['current'];
-            $item['count'] = $count;
-            $item['route'] = static::parentsTree($child, true);
-            $out[] = $item;
-        }
+        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $cacheName = 'catalog_categories_menu' . (!empty($params) ? '_' . implode('_', $params) : '') .
+            ($language ? '_' . $language : '');
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $out = $cache->getOrSet(
+            $cacheName,
+            function () use ($params, $language) {
+                $categoryArr = self::find()
+                    ->where(['active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
+                    ->select(['id', 'name', 'parent', 'active'])
+                    ->asArray()
+                    ->all();
+                $current = isset($params['current']) ? $params['current'] : false;
+                $categories = static::childsCategories($categoryArr, null, $current);
+
+                foreach ($categories as &$rootCategory) {
+                    //пока количество для корневых категорий
+                    $rootCategory['count'] = ProductsToCategory::find()
+                        ->where(['category_id' => $rootCategory['childs_ids']])
+                        ->count();
+                }
+                return $categories;
+            },
+            $cache->defaultDuration,
+            $dependency
+        );
         return $out;
+    }
+
+    protected static function childsCategories($arr, $parent, $current = false)
+    {
+        $out = [];
+        foreach ($arr as $cat) {
+            if ($cat['parent'] == $parent) {
+                $cat['current'] = $cat['id'] == $current;
+                $cat['childs'] = static::childsCategories($arr, $cat['id'], $current);
+                $cat['childs_ids'] = [$cat['id']];//в дочерние ид впишем свой ид
+                if ($cat['childs']) {
+                    foreach ($cat['childs'] as $child) {
+                        if ($child['childs_ids']) {
+                            $cat['childs_ids'] = array_merge($cat['childs_ids'], $child['childs_ids']);
+                        }
+                        if ($child['current']) {
+                            //если дочерняя текущая, то сама тоже текущая
+                            $cat['current'] = true;
+                        }
+                    }
+                }
+                $out[] = $cat;
+            }
+        }
+        return empty($out) ? null : $out;
     }
     /**
      * @param $id

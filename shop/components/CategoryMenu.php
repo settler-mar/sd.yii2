@@ -32,7 +32,7 @@ class CategoryMenu extends Widget
         $categoryTree = ProductsCategory::tree(['counts' => true, 'current' => $current, 'empty' => false]);
         return $this->render('category_menu.twig', [
             'categories' => $categoryTree,
-            'level' => '0'
+            'current' => $current,
         ]);
     });
     return $out;

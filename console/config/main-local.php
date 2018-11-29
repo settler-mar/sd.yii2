@@ -3,6 +3,7 @@ return [
     'bootstrap' => ['gii'],
     'modules' => [
         'gii' => 'yii\gii\Module',
+        'debug' => null,
     ],
     'components' => [
         'cache' => [

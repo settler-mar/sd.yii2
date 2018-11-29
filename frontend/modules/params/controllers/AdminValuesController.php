@@ -165,7 +165,6 @@ class AdminValuesController extends Controller
                 'activeFilter' => $this->activeFilter(),
                 'parameterList' => $this->parameterList(),
                 'valuesList' => $valuesList,
-                'product_categories_tree' => ProductsCategory::tree(),
             ]);
         }
     }

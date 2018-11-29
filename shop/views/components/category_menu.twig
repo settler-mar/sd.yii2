@@ -1,8 +1,8 @@
 {% if categories|length %}
-    <ul class="shops-category-menu_list level_{{ level }}" >
+    <ul class="shops-category-menu_list" >
         {% for category in categories  %}
-            <li class="shops-category-menu_item level_{{ category.level }}{% if category.childs|length %} menu-group{% endif %} {{ _if(_is_category_open(category),'open','') }}">
-                {% if category.current %}
+            <li class="shops-category-menu_item {% if category.childs|length %} menu-group{% endif %} {% if category.current %}open{% endif %}">
+                {% if category.id == current %}
                     <span class="active">{{ category.name|raw }} ({{ category.count }})
                         {% if category.childs|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
@@ -15,9 +15,8 @@
                         {% endif %}
                     </a>
                 {% endif %}
-                {% if category.childs|length %}
+                {% if category.childs and category.childs|length %}
                     {% set categories = category.childs %}
-                    {% set level = category.level %}
                     {% include('category_menu.twig') %}
                 {% endif %}
             </li>
