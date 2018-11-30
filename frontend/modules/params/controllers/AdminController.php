@@ -86,14 +86,18 @@ class AdminController extends Controller
             'typeFilter' => $this->typeFilter(),
             'tableData' => [
                 'active' => function ($model) {
+                    $out = '<span class="'.ProductParameters::activeClass($model->active).'">';
                     switch ($model->active) {
                         case ($model::PRODUCT_PARAMETER_ACTIVE_NO):
-                            return '<span class="status_1"><span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                            $out .= '<span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                            break;
                         case ($model::PRODUCT_PARAMETER_ACTIVE_YES):
-                            return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
+                            $out .= '<span class="fa fa-check"></span>&nbsp;Активен</span>';
+                            break;
                         default:
-                            return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
+                            $out .= '<span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
                     }
+                    return $out;
                 },
                 'type' => function ($model) {
                     switch ($model->parameter_type) {
@@ -147,18 +151,8 @@ class AdminController extends Controller
                         ' ('.$model->synonymParam->id.')' : '';
                 },
                 'code' => function ($model) {
-                    $out = '<a href="admin/params/update/id:'.$model->id.'"><span class="';
-                    switch ($model->active) {
-                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO):
-                            $out .= 'status_1>';
-                            break;
-                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES):
-                            $out .= 'status_2';
-                            break;
-                        default:
-                            $out .= 'status_0';
-                    }
-                    $out .= '">'.$model->code.'</span></a>';
+                    $out = '<a href="admin/params/update/id:'.$model->id.'"><span class="' .
+                        ProductParameters::activeClass($model->active).'">'.$model->code.'</span></a>';
                     /*if ($model->synonyms) {
                         $synonyms = [];
                         foreach ($model->synonyms as $synonym) {
@@ -174,6 +168,7 @@ class AdminController extends Controller
             ],
             'product_categories' => [0=>'Не задано'] + $catsTree,
             'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
+            'product_categories_data' => ProductsCategory::categoriesJson(),
 
         ]);
     }
@@ -207,6 +202,46 @@ class AdminController extends Controller
 //            ]);
 //        }
 //    }
+
+    /**
+     * @return bool|string
+     * @throws NotFoundHttpException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionUpdateAll()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $ids = $request->post('id');
+        $active = $request->post('active');
+        $data = [];
+        if ($active !== '') {
+            $data['active'] = in_array($active, [
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO,
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES,
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING,
+            ]) ? $active : ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING;
+        }
+        $category_id = $request->post('category_id');
+        if ($category_id !== '') {
+            $data['category_id'] = (int)$category_id > 0 ? (int)$category_id : null;
+        }
+        $synonym = $request->post('synonym');
+        if ($synonym !== '') {
+            $data['synonym'] = (int)$synonym > 0 ? (int)$synonym : null;
+        }
+
+        $result = !empty($data) ? ProductParameters::updateAll($data, ['id' => $ids]) : 0;
+
+        return json_encode(['error' => $result < 1]);
+    }
+
 
     /**
      * Updates an existing ProductParameters model.
