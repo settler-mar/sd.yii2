@@ -97,30 +97,32 @@ class ProductsCategory extends \yii\db\ActiveRecord
      * @param $categories
      * @return array
      */
-    public static function parents($categories)
+    public static function parents($categories, $level = 0)
     {
-        if ($categories[count($categories) - 1]['parent'] != null) {
-            $cache = Yii::$app->cache;
-            $dependencyName = 'catalog_product';
-            $cacheName = 'catalog_category_tree_' . $categories[count($categories) - 1]['id'];
-            $dependency = new yii\caching\DbDependency;
-            $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
-            $categories = $cache->getOrSet(
-                $cacheName,
-                function () use ($categories) {
-                    $parent = self::find()->select(['id', 'name', 'parent', 'active', 'route'])
-                        ->where(['id' => $categories[count($categories) - 1]['parent']])
-                        ->asArray()->one();
-                    if ($parent) {
-                        $categories[] = $parent;
-                        $categories = static::parents($categories);
-                    }
-                    return $categories;
-                },
-                $cache->defaultDuration,
-                $dependency
-            );
+        $cache = Yii::$app->cache;
+        $cacheName = 'catalog_category_parents_' . $categories[count($categories) - 1]['id'];
+        $cats = $cache->get($cacheName);
+        if ($cats == false) {
+            if ($categories[count($categories) - 1]['parent'] != null) {
+                // нет в кэше, вычисляем заново
+                $parent = self::find()->select(['*'])
+                    ->where(['id' => $categories[count($categories) - 1]['parent']])
+                    ->asArray()->one();
+                if ($parent) {
+                    $categories[] = $parent;
+                    $categories = static::parents($categories, $level+1);
+                }
+            }
+            if ($level == 0) {
+                //сохраняемся только в начале дерева, т.е. в самой дочерней категории
+                $dependencyName = 'catalog_product';
+                $dependency = new yii\caching\DbDependency;
+                $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+                $cache->set($cacheName, $categories, $cache->defaultDuration, $dependency);
+            }
+        } else {
+            //если нашли в кеш - то это более высокая родительская, пристыковать к имещюемуся пути
+            $categories = array_merge(array_slice($categories, 0, count($categories) - 1), $cats);
         }
         return $categories;
     }
@@ -252,6 +254,25 @@ class ProductsCategory extends \yii\db\ActiveRecord
                 $parent = $category->id;
             }
             return $category;
+        }, $cache->defaultDuration, $dependency);
+        return $category;
+    }
+
+    /**
+     * @param $id - inteder
+     * @return mixed
+     */
+    public static function byId($id)
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_category_byid_' . $id . ($language ? '_' . $language : '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $category = $cache->getOrSet($casheName, function () use ($id) {
+            return $category = self::findOne($id);
         }, $cache->defaultDuration, $dependency);
         return $category;
     }

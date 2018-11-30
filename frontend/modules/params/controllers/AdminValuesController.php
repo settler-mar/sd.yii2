@@ -32,6 +32,11 @@ class AdminValuesController extends Controller
     public function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
         return true;
     }
 

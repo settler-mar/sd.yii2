@@ -82,6 +82,9 @@ class ProductParameters extends \yii\db\ActiveRecord
    */
   public function getSynonymParam()
   {
+    if ($this->synonym == null) {
+        return null;
+    }
     return $this->hasOne(self::className(), ['id' => 'synonym']);
   }
 
@@ -140,7 +143,9 @@ class ProductParameters extends \yii\db\ActiveRecord
    */
   public function getCategoryTree()
   {
-    return ProductsCategory::parentsTree($this->category);
+    if ($this->category_id != null) {
+        return ProductsCategory::parentsTree($this->category->toArray());
+    }
   }
 
 

@@ -26,6 +26,11 @@ class AdminCategoryController extends Controller
   function beforeAction($action)
   {
     $this->layout = '@app/views/layouts/admin.twig';
+    //отключение дебаг панели
+    if (class_exists('yii\debug\Module')) {
+      Yii::$app->getModule('debug')->instance->allowedIPs = [];
+      $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+    }
     return true;
   }
   /**
@@ -40,28 +45,30 @@ class AdminCategoryController extends Controller
         }
         $searchModel = new ProductsCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //категории, потенциальные синонимы
+        //категории
         $cats =  ProductsCategory::find()
-            ->select(['id', 'name', 'parent'])
+            ->select(['*'])
             ->where(['synonym' => null])
             ->orderBy(['name' => SORT_ASC])
+            ->asArray()
             ->all();
         $synonymFilter = [];
         foreach ($cats as $cat) {
-            $synonymFilter[$cat->id] = ProductsCategory::parentsTree($cat);
+            $synonymFilter[$cat['id']] = ProductsCategory::parentsTree($cat);
         }
         //категории, являющиеся родительскими
         $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
         $parents = ProductsCategory::find()
             ->from(ProductsCategory::tableName().' pc')
-            ->select(['id', 'name', 'parent'])
+            ->select(['*'])
             ->where(['synonym' => null])
             ->andWhere(['in', 'id', $childs])
             ->orderBy(['name' => SORT_ASC])
+            ->asArray()
             ->all();
         $parentsTree = [];
         foreach ($parents as $parent) {
-            $parentsTree[$parent->id] = ProductsCategory::parentsTree($parent);
+            $parentsTree[$parent['id']] = ProductsCategory::parentsTree($parent);
         }
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -69,7 +76,7 @@ class AdminCategoryController extends Controller
             'tableData' => [
                 'parents' => function ($model) {
                     $out = [];
-                    $parents = ProductsCategory::parents([$model]);
+                    $parents = ProductsCategory::parents([$model->toArray()]);
                     if (count($parents) > 1) {
                         for ($i = count($parents) - 1; $i > 0; $i--) {
                             $item = '<a href="admin-category/product/update/id:' . $parents[$i]['id'] . '">' .

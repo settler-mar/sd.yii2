@@ -37,6 +37,12 @@ class AdminController extends Controller
     function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
+
         return true;
     }
 
@@ -81,9 +87,10 @@ class AdminController extends Controller
         $categories = ProductsCategory::find()
             ->from(ProductsCategory::tableName(). ' pc')
             ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-            ->select(['pc.id', 'pc.name', 'pc.parent'])
-            ->groupBy(['pc.id', 'pc.name', 'pc.parent'])
+            ->select(['pc.*'])
+            ->groupBy(['pc.*'])
             ->orderBy(['name'=>SORT_ASC])
+            ->asArray()
             ->all();
         $categoriesFilter = [];
         foreach ($categories as $categoryItem) {

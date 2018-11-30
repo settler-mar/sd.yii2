@@ -2,6 +2,7 @@
 
 namespace frontend\modules\params\controllers;
 
+use shop\modules\product\models\ProductsToCategory;
 use Yii;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
@@ -32,6 +33,11 @@ class AdminController extends Controller
     function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
         return true;
     }
 
@@ -59,7 +65,19 @@ class AdminController extends Controller
                 }
             }
         }
-
+        //задействованные категории
+        $cats = ProductsCategory::find()
+            ->from(ProductsCategory::tableName().' pc')
+            ->select(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
+            ->innerJoin(ProductParameters::tableName().' pp', 'pc.id = pp.category_id')
+            ->groupBy(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
+            ->orderBy(['pc.name' => SORT_ASC])
+            ->asArray()
+            ->all();
+        $catsTree = [];
+        foreach ($cats as $cat) {
+            $catsTree[$cat['id']] = ProductsCategory::parentsTree($cat);
+        }
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -113,8 +131,9 @@ class AdminController extends Controller
                 },
                 'categories' => function ($model) {
                     $out = array();
-                    if ($model->category) {
-                        $categories = ProductsCategory::parents([$model->category]);
+                    if ($model->category_id != null) {
+                        $category = ProductsCategory::byId($model->category_id)->toArray();
+                        $categories = ProductsCategory::parents([$category]);
                         for ($i = count($categories) - 1; $i >= 0; $i--) {
                             $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
                                 '<span class="'.ProductsCategory::activeClass($categories[$i]['active']).'">' .
@@ -153,11 +172,7 @@ class AdminController extends Controller
                     return $out;
                 }
             ],
-            'product_categories' => [0=>'Не задано'] + ArrayHelper::map(
-                ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
-                'id',
-                'name'
-            ),
+            'product_categories' => [0=>'Не задано'] + $catsTree,
             'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
 
         ]);

@@ -150,7 +150,7 @@ class Product extends \yii\db\ActiveRecord
   public function getCategoriesTree()
   {
     if ($this->categories) {
-      return ProductsCategory::parentsTree($this->categories[0]);
+      return ProductsCategory::parentsTree($this->categories[0]->toArray());
     }
   }
 
