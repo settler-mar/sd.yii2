@@ -116,9 +116,9 @@ class AdminController extends Controller
                     if ($model->category) {
                         $categories = ProductsCategory::parents([$model->category]);
                         for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]->id . '">' .
-                                '<span class="'.ProductsCategory::activeClass($categories[$i]->active).'">' .
-                                $categories[$i]->name . '</span></a>';
+                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
+                                '<span class="'.ProductsCategory::activeClass($categories[$i]['active']).'">' .
+                                $categories[$i]['name'] . '</span></a>';
                         }
                     }
                     return implode(' / ', $out);

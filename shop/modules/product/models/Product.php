@@ -199,7 +199,7 @@ class Product extends \yii\db\ActiveRecord
       $parents = ProductsCategory::parents($category);
       if ($parents) {
         for ($i = count($parents) - 1; $i >= 0; $i--) {
-          $categories[] = $parents[$i]->id;
+          $categories[] = $parents[$i]['id'];
         }
       }
     }

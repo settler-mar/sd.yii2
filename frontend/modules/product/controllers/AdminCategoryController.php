@@ -72,9 +72,9 @@ class AdminCategoryController extends Controller
                     $parents = ProductsCategory::parents([$model]);
                     if (count($parents) > 1) {
                         for ($i = count($parents) - 1; $i > 0; $i--) {
-                            $item = '<a href="admin-category/product/update/id:' . $parents[$i]->id . '">' .
-                                '<span class="'.ProductsCategory::activeClass($parents[$i]->active).'">' .
-                                $parents[$i]->name .'</span></a>';
+                            $item = '<a href="admin-category/product/update/id:' . $parents[$i]['id'] . '">' .
+                                '<span class="'.ProductsCategory::activeClass($parents[$i]['active']).'">' .
+                                $parents[$i]['name'] .'</span></a>';
                             $synonyms = [];
                             /*if ($parents[$i]->synonyms) {
                                 foreach ($parents[$i]->synonyms as $synonym) {
