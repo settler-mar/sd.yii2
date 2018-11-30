@@ -76,7 +76,7 @@ class AdminCategoryController extends Controller
                                 '<span class="'.ProductsCategory::activeClass($parents[$i]->active).'">' .
                                 $parents[$i]->name .'</span></a>';
                             $synonyms = [];
-                            if ($parents[$i]->synonyms) {
+                            /*if ($parents[$i]->synonyms) {
                                 foreach ($parents[$i]->synonyms as $synonym) {
                                     $synonyms[] = '<a title="Синоним" ' .
                                         ' href="/admin-category/product/update/id:'.$synonym->id.'">' .
@@ -84,7 +84,7 @@ class AdminCategoryController extends Controller
                                         $synonym->name.'</span></a>';
                                 }
                                 $item .= '('.implode(';', $synonyms).')';
-                            }
+                            }*/
                             $out[] = $item;
                         }
                     }
@@ -107,7 +107,7 @@ class AdminCategoryController extends Controller
                     $out = '<a href="/admin-category/product/update/id:'.$model->id.'">' .
                         '<span class="'.ProductsCategory::activeClass($model->active).'">'.$model->name.'</span></a>';
                     $synonyms = [];
-                    if ($model->synonyms) {
+                    /*if ($model->synonyms) {
                         foreach ($model->synonyms as $synonym) {
                             $synonyms[] = '<a title="Синоним" ' .
                                 ' href="/admin-category/product/update/id:'.$synonym->id.'">' .
@@ -115,7 +115,7 @@ class AdminCategoryController extends Controller
                                 $synonym->name.'</span></a>';
                         }
                         $out .= '('.implode(';', $synonyms).')';
-                    }
+                    }*/
                     return $out;
                 }
             ],
