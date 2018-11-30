@@ -97,14 +97,14 @@ class AdminController extends Controller
                             $valueStr = '<a href="/admin-values/params/update/id:'.$value->id.'">'.
                                 '<span class="' . ProductParametersValues::activeClass($value->active) . '">' .
                                 $value->name . '</span></a>';
-                            $valueSynonyms = [];
+                            /*$valueSynonyms = [];
                             if ($value->synonyms) {
                                 foreach ($value->synonyms as $valueSynonym) {
                                     $valueSynonyms[] = '<a title="Синоним" href="/admin-values/params/update/id:'.$valueSynonym->id.'">'.
                                         '<span class="' . ProductParametersValues::activeClass($valueSynonym->active) .
                                         '">' . $valueSynonym->name . '</span></a>';
                                 }
-                            }
+                            }*/
                             $values[] = $valueStr . (!empty($valueSynonyms)? '('.implode(';', $valueSynonyms).')': '');
                         }
                     }
@@ -140,7 +140,7 @@ class AdminController extends Controller
                             $out .= 'status_0';
                     }
                     $out .= '">'.$model->code.'</span></a>';
-                    if ($model->synonyms) {
+                    /*if ($model->synonyms) {
                         $synonyms = [];
                         foreach ($model->synonyms as $synonym) {
                             $synonyms[] = '<a title="Синоним '.$synonym->code.' '.$synonym->name.'" '.
@@ -149,7 +149,7 @@ class AdminController extends Controller
                                 $synonym->code.'</span></a>';
                         }
                         $out .= ' ('.implode('; ', $synonyms).')';
-                    }
+                    }*/
                     return $out;
                 }
             ],
