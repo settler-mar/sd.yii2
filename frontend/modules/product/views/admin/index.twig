@@ -55,7 +55,11 @@
                             {'class': '\\yii\\grid\\SerialColumn'},
 
                             'id',
-                            'name',
+                            {
+                                'attribute':'name',
+                                'format': 'raw',
+                                'value' : tableData.name
+                            },
                             {
                                 'attribute':'store_id',
                                 'value': tableData.store,
@@ -83,7 +87,7 @@
                             {
                                 'format':'raw',
                                 'attribute':'product_categories',
-                                'value':'categoriesTree',
+                                'value':tableData.category,
                                 'filter':categories,
                             },
                             {
