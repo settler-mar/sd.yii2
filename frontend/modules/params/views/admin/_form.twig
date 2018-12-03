@@ -46,6 +46,8 @@
             </div>
         </div>
     </section>
+    {% set product_category = model.category_id %}
+    {{ include('products.twig') }}
 </div>
 
 <script>

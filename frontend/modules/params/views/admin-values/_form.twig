@@ -1,25 +1,37 @@
 {{ use('/yii/widgets/ActiveForm') }}
-<div class="product-parameters-values-form">
-    {% set form = active_form_begin() %}
+<div class="content-wrapper">
+    <section>
+        <div class="row">
+            <div class="col-sm-12">
 
-    {{ form.field(model, 'parameter_id').dropDownList(parameterList, {'prompt':'Выберите параметр'})|raw }}
 
-    {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+            {% set form = active_form_begin() %}
 
-    {{ form.field(model, 'synonym').dropDownList(valuesList, {'prompt':'Значение, для которого будет являться синонимом'})|raw }}
+            {{ form.field(model, 'parameter_id').dropDownList(parameterList, {'prompt':'Выберите параметр'})|raw }}
 
-    {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
+            {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-    <div class="form-group">
-        <label for="product-parameter-category-tree">Категория</label>
-            <input class="form-control" id="product-parameter-category-tree" value="{{ model.parameter.categoryTree }}" disabled/>
-    </div>
+            {{ form.field(model, 'synonym').dropDownList(valuesList, {'prompt':'Значение, для которого будет являться синонимом'})|raw }}
 
-    {{ form.field(model, 'created_at').textInput()|raw }}
+            {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
-    <div class="form-group">
-        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"
-               class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-    </div>
-    {{ active_form_end() }}
+            <div class="form-group">
+                <label for="product-parameter-category-tree">Категория</label>
+                    <input class="form-control" id="product-parameter-category-tree" value="{{ model.parameter.categoryTree }}" disabled/>
+            </div>
+
+            {{ form.field(model, 'created_at').textInput()|raw }}
+
+            <div class="form-group">
+                <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"
+                       class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+            </div>
+            {{ active_form_end() }}
+            </div>
+
+        </div>
+    </section>
+    {% set product_category = model.parameter.category_id %}
+    {{ include('@frontend/modules/params/views/admin/products.twig') }}
 </div>
+

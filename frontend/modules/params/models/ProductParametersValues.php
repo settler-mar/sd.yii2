@@ -232,4 +232,9 @@ class ProductParametersValues extends \yii\db\ActiveRecord
                 return 'status_0';
         }
     }
+
+    public static function byName($name, $paramId)
+    {
+        return self::findOne(['name' => $name, 'parameter_id' => $paramId]);
+    }
 }

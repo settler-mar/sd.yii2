@@ -127,14 +127,31 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
-    public static function parentsTree($category, $route = false)
+    /**
+     * @param $category
+     * @param int $mode 0 - names, 1 - roures, 2 - links to edit
+     * @return string
+     */
+    public static function parentsTree($category, $mode = 0)
     {
         $out = [];
         $categories = static::parents([$category]);
         for ($i = count($categories) - 1; $i >= 0; $i--) {
-            $out[] = $route ? $categories[$i]['route'] : $categories[$i]['name'];
+            switch ($mode) {
+                case 0:
+                    $out[] = $categories[$i]['name'];
+                    break;
+                case 1:
+                    $out[] = $categories[$i]['route'];
+                    break;
+                case 2:
+                    $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
+                        '<span class="' . self::activeClass($categories[$i]['active']) . '">' .
+                        $categories[$i]['name'] . '</span></a>';
+                    break;
+            }
         }
-        return implode($route ? '/' : ' / ', $out);
+        return implode($mode == 1 ? '/' : ' / ', $out);
     }
 
     /**

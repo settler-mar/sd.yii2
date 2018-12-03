@@ -384,4 +384,9 @@ class ProductParameters extends \yii\db\ActiveRecord
     }
   }
 
+  public static function byCode($code, $categoryId)
+  {
+      return self::findOne(['code' => $code, 'category_id'=>$categoryId]);
+  }
+
 }

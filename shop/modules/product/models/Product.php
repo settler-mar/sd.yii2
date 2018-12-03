@@ -627,4 +627,16 @@ class Product extends \yii\db\ActiveRecord
     return $products;
   }
 
+    public static function activeClass($active)
+    {
+        switch ($active) {
+            case (Product::PRODUCT_AVAILABLE_NOT):
+                return 'status_1';
+            case (Product::PRODUCT_AVAILABLE_YES):
+                return 'status_2';
+            default:
+                return 'status_0';
+        }
+    }
+
 }

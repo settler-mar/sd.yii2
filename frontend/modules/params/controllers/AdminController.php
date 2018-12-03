@@ -8,6 +8,7 @@ use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
 use frontend\modules\params\models\ProductParametersValues;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -260,6 +261,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
+            $products = Product::find()->where('JSON_KEYS(params) LIKE \'%"'.$model->code.'"%\'')->limit(5)->all();
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
@@ -273,6 +275,7 @@ class AdminController extends Controller
                     'name'
                 ),
                 'product_categories_data' => ProductsCategory::categoriesJson(),
+                'products' => $products,
             ]);
         }
     }

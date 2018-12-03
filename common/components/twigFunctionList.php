@@ -764,6 +764,21 @@ $functionsList = [
         return $number;
     }
   },
+  '_product_category_tree' => function($category, $mode=0) {
+    return shop\modules\category\models\ProductsCategory::parentsTree($category->toArray(), $mode);
+  },
+  '_product_param_by_code' => function($code, $categoryId) {
+    return frontend\modules\params\models\ProductParameters::byCode($code, $categoryId);
+  },
+  '_product_value_by_name' => function($name, $paramId) {
+    return frontend\modules\params\models\ProductParametersValues::byName($name, $paramId);
+  },
+  '_model_active_class' => function ($model, $active) {
+    if (is_callable($model, 'activeClass')) {
+        return $model::activeClass($active);
+    }
+  }
+
 
 
 ];
