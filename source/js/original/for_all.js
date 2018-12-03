@@ -180,7 +180,7 @@ $('.ajax-action').click(function(e) {
       return null;
     }
     var content = $(this).closest('.ajax-action-content');
-    var data={};
+    var data=$(this).data();
     if (content) {
       $(content).find('input,select').each(function(key, index) {
          data[$(index).attr('name')]=$(index).val();
