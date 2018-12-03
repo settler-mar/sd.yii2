@@ -9,16 +9,17 @@
             <th>Параметры</th>
             <th>Категория</th>
             <th>Магазин</th>
+            <th>Продукт в магазине</th>
         </tr>
         </thead>
         <tbody>
            {% for product in products %}
                <tr>
-                   <td ><a href="/admin/product/update/id:{{ product.id }}">
+                   <td ><a target="_blank" rel="nooper nofollow noreferrer" href="/admin/product/update/id:{{ product.id }}">
                            <img width="100" src="{{ product.image }}" alt=""></a>
                    </td>
                    <td >
-                       <a href="/admin/product/update/id:{{ product.id }}">
+                       <a target="_blank" rel="nooper nofollow noreferrer" href="/admin/product/update/id:{{ product.id }}">
                            <span class="{{ _model_active_class('shop\\modules\\product\\models\\Product', product.available) }}">{{ product.name }}</span>
                        </a>
                    </td>
@@ -26,7 +27,7 @@
                        {% for param, values in product.params %}
                            {% set param_db = _product_param_by_code(param, product_category) %}
                            {% if param_db %}
-                               <a href="/admin/params/update/id:{{ param_db.id }}">
+                               <a target="_blank" rel="nooper nofollow noreferrer" href="/admin/params/update/id:{{ param_db.id }}">
                                    <span class="{{ _model_active_class('frontend\\modules\\params\\models\\ProductParameters', param_db.active) }}">{{ param }}</span> :
                                </a>
                            {% else %}
@@ -36,7 +37,7 @@
                                {% set value_db = _product_value_by_name(value, param_db.id) %}
                                {% if loop.index0 > 0 %}, {% endif %}
                                {% if value_db %}
-                               <a href="/admin-values/params/update/id:{{ value_db.id }}">
+                               <a target="_blank" rel="nooper nofollow noreferrer" href="/admin-values/params/update/id:{{ value_db.id }}">
                                    <span class="{{ _model_active_class('frontend\\modules\\params\\models\\ProductParametersValues', value_db.active) }}">{{ value }}</span>
                                </a>
                                {% else %}
@@ -47,7 +48,12 @@
                        {% endfor %}
                    </td>
                    <td>{{ _product_category_tree(product.categories[0], 2)|raw }}</td>
-                   <td><a href="admin/stores/update/id:{{ product.store_id }}">{{ product.store.name }}</a></td>
+                   <td><a target="_blank" rel="nooper nofollow noreferrer" href="admin/stores/update/id:{{ product.store_id }}">{{ product.store.name }}</a></td>
+                   <td width="20%" class="break-all">
+                       <a target="_blank" rel="nooper nofollow noreferrer" href="{{ product.url }}">
+                           {{ product.url }}
+                       </a>
+                   </td>
                </tr>
            {% endfor %}
         </tbody>
