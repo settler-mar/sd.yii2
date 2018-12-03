@@ -4,6 +4,9 @@ namespace frontend\modules\product\models;
 
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use shop\modules\product\models\Product;
+use frontend\modules\cache\models\Cache;
+use yii;
 
 /**
  * This is the model class for table "cw_catalog_stores".
@@ -23,11 +26,11 @@ use frontend\modules\stores\models\Stores;
  */
 class CatalogStores extends \yii\db\ActiveRecord
 {
-  const CATALOG_STORE_ACTIVE_NOT = 0;
-  const CATALOG_STORE_ACTIVE_YES = 1;
-  const CATALOG_STORE_ACTIVE_WAITING = 2;
+    const CATALOG_STORE_ACTIVE_NOT = 0;
+    const CATALOG_STORE_ACTIVE_YES = 1;
+    const CATALOG_STORE_ACTIVE_WAITING = 2;
 
-  /**
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -83,5 +86,44 @@ class CatalogStores extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Stores::className(), ['uid' => 'stores_id'])
             ->viaTable(CpaLink::tableName(), ['id' => 'cpa_link_id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->clearCache();
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    public static function used()
+    {
+        $cache = Yii::$app->cache;
+        $path= 'catalog_stores_used';
+        return $cache -> getOrSet($path, function () {
+            return  self::find()
+                ->from(CatalogStores::tableName().' cs')
+                ->select(['cs.id', 'cs.name'])
+                ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')
+                ->asArray()
+                ->all();
+        });
+    }
+
+    public static function byId($id)
+    {
+        $cache = Yii::$app->cache;
+        $path= 'catalog_stores_byid_'.$id;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_stores';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        return $cache -> getOrSet($path, function () use ($id) {
+            return  self::findOne($id);
+        }, $cache->defaultDuration, $dependency);
+    }
+
+    protected function clearCache()
+    {
+        Cache::deleteName('catalog_stores_used');
+        Cache::clearName('catalog_stores');
     }
 }

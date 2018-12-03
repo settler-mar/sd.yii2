@@ -87,14 +87,14 @@ class AdminController extends Controller
         $categories = ProductsCategory::find()
             ->from(ProductsCategory::tableName(). ' pc')
             ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-            ->select(['pc.*'])
-            ->groupBy(['pc.*'])
-            ->orderBy(['name'=>SORT_ASC])
+            ->select(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+            ->groupBy(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+            ->orderBy(['pc.name'=>SORT_ASC])
             ->asArray()
             ->all();
         $categoriesFilter = [];
         foreach ($categories as $categoryItem) {
-            $categoriesFilter[$categoryItem->id] = ProductsCategory::parentsTree($categoryItem);
+            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem);
         }
         asort($categoriesFilter);
         return $this->render('index.twig', [
@@ -132,6 +132,14 @@ class AdminController extends Controller
                         }
                     }
                     return !empty($out) ? implode('<br>', $out) : '';
+                },
+                'catalog' => function ($model) {
+                    $catalog = CatalogStores::byId($model->catalog_id);
+                    return $catalog ? $catalog->name : '';
+                },
+                'store' => function ($model) {
+                    $store = Stores::byId($model->store_id);
+                    return $store ? $store->name : '';
                 }
             ],
             'availableFilter' => $this->availableFilter(),
@@ -139,16 +147,12 @@ class AdminController extends Controller
             'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
             'filterStores' => ArrayHelper::map(
-                Stores::find()->select(['cw_stores.uid', 'cw_stores.name'])
-                    ->innerJoin(Product::tableName().' p', 'p.store_id = cw_stores.uid')
-                    ->groupBy(['cw_stores.uid', 'cw_stores.name'])
-                    ->asArray()->all(),
+                Stores::usedByCatalog(),
                 'uid',
                 'name'
             ),
             'filterCatalog' => ArrayHelper::map(
-                CatalogStores::find()->from(CatalogStores::tableName().' cs')->select(['cs.id', 'cs.name'])
-                    ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')->asArray()->all(),
+                CatalogStores::used(),
                 'id',
                 'name'
             ),
