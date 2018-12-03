@@ -93,7 +93,7 @@ class Cache extends \yii\db\ActiveRecord
 
   private static function makeExport()
   {
-      $exceptRoute =  ['"aliexpress-tmall"', '"tmall-aliexpress-com"'];
+      $exceptRoutes =  Yii::$app->params['shop_export_csv_except_routes'];
       $sql = 'select
             `name`,
             `url`,
@@ -102,8 +102,11 @@ class Cache extends \yii\db\ActiveRecord
             `action_id`,
             (select `category_id` from `cw_stores_to_categories` where `cw_stores`.`uid` = `cw_stores_to_categories`.`store_id` limit 1 ) as category_id
             from `cw_stores` WHERE 	is_active in (0, 1)';
-      if (!empty($exceptRoute)) {
-          $sql .= ' and route not in ('.implode(',', $exceptRoute).')';
+      if (!empty($exceptRoutes)) {
+          foreach ($exceptRoutes as &$route) {
+              $route = '"'.$route.'"';
+          }
+          $sql .= ' AND `route` NOT IN ('.implode(',', $exceptRoutes).')';
       }
       $stores = Stores::findBySql($sql)
         ->asArray()

@@ -136,6 +136,7 @@ $params = [
       'Отзывы', 'Отзыв_*', 'Группа товаров',
   ],
   'product_params_values_max_length' => 64,//при загрузке товаров максимальная длина значения параметра
+  'shop_export_csv_except_routes' => ['aliexpress-tmall', 'tmall-aliexpress-com'],//при экспорте в csv эти шопы не выводятся
 ];
 
 $params['valuta_list']=array_keys($params['currencies']);
