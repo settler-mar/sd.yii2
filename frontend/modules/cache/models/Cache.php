@@ -93,14 +93,19 @@ class Cache extends \yii\db\ActiveRecord
 
   private static function makeExport()
   {
-    $stores = Stores::findBySql('select
+      $exceptRoute =  ['"aliexpress-tmall"', '"tmall-aliexpress-com"'];
+      $sql = 'select
             `name`,
             `url`,
             `displayed_cashback`,
             `currency`,
             `action_id`,
             (select `category_id` from `cw_stores_to_categories` where `cw_stores`.`uid` = `cw_stores_to_categories`.`store_id` limit 1 ) as category_id
-            from `cw_stores` WHERE 	is_active in (0, 1)')
+            from `cw_stores` WHERE 	is_active in (0, 1)';
+      if (!empty($exceptRoute)) {
+          $sql .= ' and route not in ('.implode(',', $exceptRoute).')';
+      }
+      $stores = Stores::findBySql($sql)
         ->asArray()
         ->all();
 

@@ -31,6 +31,10 @@ class AccountController extends Controller
       return false;
     }
     $this->view->layout_mode='account';
+    if ($action->id == 'ref' && isset($this->params['breadcrumbs'][2])) {
+        //из крошек убить ссылку на ref
+        unset($this->params['breadcrumbs'][2]);
+    }
     return true;
   }
 

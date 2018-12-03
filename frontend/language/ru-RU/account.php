@@ -358,4 +358,6 @@ return [
     'account_withdraw_breadcrumbs' => 'Вывод денег',
     'account_withdraw_history_breadcrumbs' => 'История вывода денег',
     'account_offline_breadcrumbs' => 'Кэшбэк в оффлайне',
+    'account_users_breadcrumbs' => 'Мои пользователи',
+    'account_payments_ref_id:_{id}_breadcrumbs' => 'История заказов друга ID:{id}'
 ];
