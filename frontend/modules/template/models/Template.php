@@ -2,6 +2,7 @@
 
 namespace frontend\modules\template\models;
 
+use console\jobs\MailerJob;
 use Yii;
 use frontend\modules\users\models\Users;
 

@@ -40,6 +40,7 @@ class TestController extends Controller
    */
   public function actionMail()
   {
+
     try {
       Yii::$app
           ->mailer

@@ -36,6 +36,9 @@ $config = [
     'language' => defined('LANGUAGE') ? LANGUAGE : 'ru-RU',
     'timeZone' => 'Europe/Moscow',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'bootstrap' => [
+        'queue', // Компонент регистрирует свои консольные команды
+    ],
     'components' => [
         'formatter' => [
             'dateFormat' => 'dd.MM.yyyy',
@@ -188,6 +191,11 @@ $config = [
             'name' => 'reCaptcha',
             'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
         ], $reCaptcha),
+        'queue' => [
+            'class' => \yii\queue\file\Queue::class,
+            'path' => '@console/runtime/queue',
+            'as log' => \yii\queue\LogBehavior::class,
+        ],
       //'db' => require __DIR__.'/db.php'
     ],
     'params' => [
