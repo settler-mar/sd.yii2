@@ -189,11 +189,11 @@ class AdminController extends Controller
                 'uid',
                 'name'
             ),
-            'filterCatalog' => ArrayHelper::map(
+            'filterCatalog' => []/*ArrayHelper::map(
                 CatalogStores::used(),
                 'id',
                 'name'
-            ),
+            ),*/
         ]);
     }
 

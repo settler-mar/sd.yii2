@@ -99,13 +99,14 @@ class CatalogStores extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $path= 'catalog_stores_used';
         return $cache -> getOrSet($path, function () {
-            return  self::find()
+            /*return  self::find()
                 ->from(CatalogStores::tableName().' cs')
                 ->select(['cs.id', 'cs.name'])
                 ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')
-                ->limit(5)
+                //->limit(5)
                 ->asArray()
-                ->all();
+                ->all();*/
+            return [];
         });
     }
 
