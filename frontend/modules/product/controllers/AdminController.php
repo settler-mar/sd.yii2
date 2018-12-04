@@ -89,15 +89,18 @@ class AdminController extends Controller
         }*/
         $categories = ProductsCategory::find()
             ->from(ProductsCategory::tableName(). ' pc')
-            ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+            //->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
             ->select(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
             ->groupBy(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
             ->orderBy(['pc.name'=>SORT_ASC])
             ->asArray()
             ->all();
-        $categoriesFilter = [];
+
+      $categories=ArrayHelper::index($categories, 'id');
+
+      $categoriesFilter = [];
         foreach ($categories as $categoryItem) {
-            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem);
+            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem,0,$categories);
         }
         asort($categoriesFilter);
         return $this->render('index.twig', [

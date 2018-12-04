@@ -99,6 +99,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
      */
     public static function parents($categories, $level = 0)
     {
+      ddd(1);
+
         $cache = Yii::$app->cache;
         $cacheName = 'catalog_category_parents_' . $categories[count($categories) - 1]['id'];
         $cats = $cache->get($cacheName);
@@ -110,7 +112,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
                     ->asArray()->one();
                 if ($parent) {
                     $categories[] = $parent;
-                    $categories = static::parents($categories, $level+1);
+                    $categories = static::parents($categories, $level+1,$categories_db);
                 }
             }
             if ($level == 0) {
@@ -127,16 +129,49 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
+    public static function getParents($id,$categories_db = false){
+      $categories=[];
+
+      if(!$categories_db) {
+        $categories_db=Yii::$app->globals->get('product_categories');
+
+        if(empty($categories_db)) {
+          $categories_db = ProductsCategory::find()
+              ->from(ProductsCategory::tableName() . ' pc')
+              //->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+              ->select(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'pc.route'])
+              ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'pc.route'])
+              ->orderBy(['pc.name' => SORT_ASC])
+              ->asArray()
+              ->all();
+          $categories_db = yii\helpers\ArrayHelper::index($categories_db, 'id');
+          Yii::$app->globals->set('product_categories', $categories_db);
+        }
+      }else{
+        Yii::$app->globals->set('product_categories',$categories_db);
+      }
+
+      while(!empty($id)){
+        $item=$categories_db[$id];
+        $categories[]=$item;
+        $id=empty($item['parent'])?null:$item['parent'];
+      }
+
+      return $categories;
+    }
     /**
      * @param $category
      * @param int $mode 0 - names, 1 - roures, 2 - links to edit
      * @return string
      */
-    public static function parentsTree($category, $mode = 0)
+    public static function parentsTree($category, $mode = 0,$categories=false)
     {
         $out = [];
-        $categories = static::parents([$category]);
+        //$categories = static::parents([$category],0,$categories);
+        $categories = static::getParents($category['id'],$categories);
+
         for ($i = count($categories) - 1; $i >= 0; $i--) {
+            if(empty($categories[$i]))continue;
             switch ($mode) {
                 case 0:
                     $out[] = $categories[$i]['name'];

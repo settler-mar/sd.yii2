@@ -93,6 +93,9 @@ $config = [
         'help' => [
             'class' => 'common\components\Help',
         ],
+        'globals' => [
+            'class' => 'common\components\Globals',
+        ],
         'view' => [
             'class' => 'yii\web\View',
             'defaultExtension' => 'twig',
