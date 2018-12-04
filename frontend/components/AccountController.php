@@ -21,12 +21,19 @@ class AccountController extends Controller
             $urlCurr [] = $urlPart;
             if (preg_match('/^page-\d+$/', strtolower($urlPart)) && Yii::$app->request->get('page')) {
                 $label = Yii::t('account', 'page_breadcrumbs_{page}', ['page' => Yii::$app->request->get('page')]);
+            } elseif (preg_match('/^id:\d+$/', strtolower($urlPart))) {
+                $label = Yii::t(
+                    'account',
+                    implode('_', array_slice($urlCurr, 0, count($urlCurr) - 1)) . '_'
+                    . preg_replace('/\d+/', '', strtolower($urlPart)) . '_{id}_breadcrumbs',
+                    ['id' => preg_replace('/[^\d]/', '', $urlPart)]
+                );
             } else {
-                $label = Yii::t('account', implode('_', $urlCurr).'_breadcrumbs');
+                $label = Yii::t('account', implode('_', $urlCurr) . '_breadcrumbs');
             }
             $this->params['breadcrumbs'][] = [
                 'label' => $label,
-                'url' => Help::href('/'. implode('/', $urlCurr)),
+                'url' => Help::href('/' . implode('/', $urlCurr)),
             ];
         }
         return parent::init();

@@ -37,6 +37,12 @@ class AdminController extends Controller
     function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
+
         return true;
     }
 
@@ -58,6 +64,9 @@ class AdminController extends Controller
 
         //нужно ли включить в выборку параметров родительские категории??? или наоборот, дочерние??
 
+        /*
+         * фильтр по параметрам-значениям пока нет
+         *
         //параметры с учётом фильтра по категориям
         $params = ProductParameters::find()
             ->where(['<>', 'active', ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO])
@@ -77,17 +86,18 @@ class AdminController extends Controller
                 ->andWhere(['parameter_id' => $param['id']])
                 ->asArray();
             $param['values'] = $values->all();
-        }
+        }*/
         $categories = ProductsCategory::find()
             ->from(ProductsCategory::tableName(). ' pc')
             ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-            ->select(['pc.id', 'pc.name', 'pc.parent'])
-            ->groupBy(['pc.id', 'pc.name', 'pc.parent'])
-            ->orderBy(['name'=>SORT_ASC])
+            ->select(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+            ->groupBy(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+            ->orderBy(['pc.name'=>SORT_ASC])
+            ->asArray()
             ->all();
         $categoriesFilter = [];
         foreach ($categories as $categoryItem) {
-            $categoriesFilter[$categoryItem->id] = ProductsCategory::parentsTree($categoryItem);
+            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem);
         }
         asort($categoriesFilter);
         return $this->render('index.twig', [
@@ -109,10 +119,13 @@ class AdminController extends Controller
                         return '';
                     }
                     if (preg_match('/^http(s?)\:\/\//', $model->image)) {
-                        return '<img height="100" src="'.$model->image.'">';
+                        $img = '<img height="100" src="'.$model->image.'">';
+                    } else {
+                        $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/' . $model->image)));
+                        $img = '<img height="100" src="data: jpeg;base64,' . $imageData . '">';
                     }
-                    $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
-                    return '<img height="100" src="data: jpeg;base64,'.$imageData.'">';
+                    return '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin/product/update/id:'.
+                        $model->id.'">'.$img.'</a>';
                 },
                 'url' => function ($model) {
                     return '<a href="'.$model->url.'" target="_blank" rel="nooper nofollow noreferrer">'.$model->url.'</a>';
@@ -121,27 +134,60 @@ class AdminController extends Controller
                     $out = [];
                     if ($model->params) {
                         foreach ($model->params as $param => $values) {
-                            $out[] = $param . ':' . implode(';', $values);
+                            $paramDb = ProductParameters::byCode($param, $model->categories[0]->id);
+                            $out[] = ($paramDb ? '<a href="/admin/params/update/id:'.$paramDb->id.
+                                    '" target="_blank" rel="nooper nofollow noreferrer">'.
+                                    '<span class="'.ProductParameters::activeClass($paramDb->active).'">'.$param.'</span></a>':
+                                    '<span class="'.ProductParameters::activeClass(0).'">'.$param.'</span>'). ':';// . implode(';', $values);
+                            $valuesOut = [];
+                            foreach ($values as $value) {
+                                if (!$paramDb) {
+                                    $valuesOut[] = '<span class="'.ProductParametersValues::activeClass(0).'">'.$value.'</span>';
+                                } else {
+                                    $valueDb = ProductParametersValues::byName($value, $paramDb->id);
+                                    if ($valueDb) {
+                                        $valuesOut[] = '<a href="/admin-values/params/update/id:'.$valueDb->id.
+                                          '" target="_blank" rel="nooper nofollow noreferrer">'.
+                                          '<span class="'.ProductParametersValues::activeClass($valueDb->active).'">'.$value.'</span></a>';
+                                    } else {
+                                        $valuesOut[] = '<span class="'.ProductParametersValues::activeClass(0).'">'.$value.'</span>';
+                                    }
+                                }
+                            }
+                            $out[] .= (empty($valuesOut) ? '' : implode(';', $valuesOut));
                         }
                     }
                     return !empty($out) ? implode('<br>', $out) : '';
+                },
+                'catalog' => function ($model) {
+                    $catalog = CatalogStores::byId($model->catalog_id);
+                    return $catalog ? '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin-stores/product/update/id:'.$catalog->id.'">'.$catalog->name.'</a>' : '';
+                },
+                'store' => function ($model) {
+                    $store = Stores::byId($model->store_id);
+                    return $store ? '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin/stores/update/id:'.$store->uid.'">'.$store->name.'</a>' : '';
+                },
+                'category' => function ($model) {
+                    if (isset($model->categories[0])) {
+                        return ProductsCategory::parentsTree($model->categories[0], 2);
+                    }
+                },
+                'name' => function ($model) {
+                    return '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin/product/update/id:'.
+                        $model->id.'"><span class="'.Product::activeClass($model->available).'">'.$model->name.'</span></a>';
                 }
             ],
             'availableFilter' => $this->availableFilter(),
             'categories' => $categoriesFilter,
-            'params'=>$params,
+            //'params'=>$params,
             'get' => !empty($get['ProductSearch']) ? $get['ProductSearch'] : [],
             'filterStores' => ArrayHelper::map(
-                Stores::find()->select(['cw_stores.uid', 'cw_stores.name'])
-                    ->innerJoin(Product::tableName().' p', 'p.store_id = cw_stores.uid')
-                    ->groupBy(['cw_stores.uid', 'cw_stores.name'])
-                    ->asArray()->all(),
+                Stores::usedByCatalog(),
                 'uid',
                 'name'
             ),
             'filterCatalog' => ArrayHelper::map(
-                CatalogStores::find()->from(CatalogStores::tableName().' cs')->select(['cs.id', 'cs.name'])
-                    ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')->asArray()->all(),
+                CatalogStores::used(),
                 'id',
                 'name'
             ),

@@ -62,15 +62,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="tools-modal-parent">Родительская категория</label>
-                    <select class="form-control" name="parent" id="tools-modal-parent">
-                        <option value="">Оставить без изменения</option>
-                        {% for key, parent in parents %}
-                            <option value="{{ key }}">{{ parent }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+
                 <div class="form-group">
                     <label for="tools-modal-active">Активна</label>
                     <select class="form-control"  name="active" id="tools-modal-active">
@@ -80,6 +72,17 @@
                         {% endfor %}
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="tools-modal-parent">Родительская категория</label>
+                    <select class="form-control" name="parent" id="tools-modal-parent">
+                        <option value="">Оставить без изменения</option>
+                        {% for key, parent in parents %}
+                            <option value="{{ key }}">{{ parent }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label for="tools-modal-synonym">Является синонимом для</label>
                     <select class="form-control"  name="synonym" id="tools-modal-synonym">

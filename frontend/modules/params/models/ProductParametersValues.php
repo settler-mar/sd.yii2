@@ -6,6 +6,7 @@ use Yii;
 use common\components\JsonBehavior;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\params\models\ProductParametersProcessing;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_product_parameters_values".
@@ -134,6 +135,7 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             $product = $paramProcessing->product;
             $product->updateParams();
         }
+        $this->clearCache();
         return parent::afterSave($insert, $changedAttributes);
     }
 
@@ -231,5 +233,29 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             default:
                 return 'status_0';
         }
+    }
+
+    public static function byName($name, $paramId)
+    {
+        $cacheName = 'product_parameter_value' . $name . '_param_' . $paramId;
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'product_parameters_values';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $out = $cache->getOrSet(
+            $cacheName,
+            function () use ($name, $paramId) {
+                return self::findOne(['name' => $name, 'parameter_id' => $paramId]);
+            },
+            $cache->defaultDuration,
+            $dependency
+        );
+        return $out;
+    }
+
+    public function clearCache()
+    {
+        Cache::clearName('product_parameters_values');
     }
 }

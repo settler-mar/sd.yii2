@@ -13,6 +13,7 @@ use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\users\models\Users;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\products\models\Products;
+use shop\modules\product\models\Product;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -510,7 +511,7 @@ class Stores extends \yii\db\ActiveRecord
         if ($language) {
             $store->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
         }
-      return $store;
+      return $store->one();
     }, $cache->defaultDuration, $dependency);
 
     return $data;
@@ -1425,5 +1426,22 @@ class Stores extends \yii\db\ActiveRecord
     $msg=$admitad->getTestLink($options);
 
     return $msg;
+  }
+
+    /**
+     * Имеющие товары
+     * @return array
+     */
+  public static function usedByCatalog()
+  {
+      $cache = Yii::$app->cache;
+      $path= 'stores_used_by_catalog';
+      return $cache -> getOrSet($path, function () {
+          return  Stores::find()->select(['cw_stores.uid', 'cw_stores.name'])
+              ->innerJoin(Product::tableName().' p', 'p.store_id = cw_stores.uid')
+              ->groupBy(['cw_stores.uid', 'cw_stores.name'])
+              ->asArray()
+              ->all();
+      });
   }
 }

@@ -55,18 +55,24 @@
                             {'class': '\\yii\\grid\\SerialColumn'},
 
                             'id',
-                            'name',
+                            {
+                                'attribute':'name',
+                                'format': 'raw',
+                                'value' : tableData.name
+                            },
                             {
                                 'attribute':'store_id',
-                                'value': 'store.name',
+                                'value': tableData.store,
                                 'format': 'raw',
-                                'filter': filterStores
+                                'filter': filterStores,
+                                'label': 'Магазин'
                             },
                             {
                                 'attribute':'catalog_id',
-                                'value': 'catalog.name',
+                                'value': tableData.catalog,
                                 'format':'raw',
-                                'filter': filterCatalog
+                                'filter': filterCatalog,
+                                'label' : 'Каталог'
                             },
                             {
                                 'format':'raw',
@@ -81,7 +87,7 @@
                             {
                                 'format':'raw',
                                 'attribute':'product_categories',
-                                'value':'categoriesTree',
+                                'value':tableData.category,
                                 'filter':categories,
                             },
                             {

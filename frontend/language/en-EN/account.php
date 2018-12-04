@@ -357,5 +357,7 @@ return [
     'account_transitions_breadcrumbs' => 'Transition history',
     'account_withdraw_breadcrumbs' => 'Payout',
     'account_withdraw_history_breadcrumbs' => 'Withdraw history',
-    'account_offline_breadcrumbs' => 'Cash back offline'
+    'account_offline_breadcrumbs' => 'Cash back offline',
+    'account_users_breadcrumbs' => 'My users',
+    'account_payments_ref_id:_{id}_breadcrumbs' => 'Payments history of my user ID:{id}'
 ];

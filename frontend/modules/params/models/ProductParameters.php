@@ -3,6 +3,7 @@
 namespace frontend\modules\params\models;
 
 use shop\modules\category\models\ProductsCategory;
+use frontend\modules\cache\models\Cache;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -82,6 +83,9 @@ class ProductParameters extends \yii\db\ActiveRecord
    */
   public function getSynonymParam()
   {
+    if ($this->synonym == null) {
+        return null;
+    }
     return $this->hasOne(self::className(), ['id' => 'synonym']);
   }
 
@@ -131,6 +135,7 @@ class ProductParameters extends \yii\db\ActiveRecord
       $product = $paramProcessing->product;
       $product->updateParams();
     }
+    $this->clearCache();
     return parent::afterSave($insert, $changedAttributes);
   }
 
@@ -140,7 +145,9 @@ class ProductParameters extends \yii\db\ActiveRecord
    */
   public function getCategoryTree()
   {
-    return ProductsCategory::parentsTree($this->category);
+    if ($this->category_id != null) {
+        return ProductsCategory::parentsTree($this->category->toArray());
+    }
   }
 
 
@@ -378,5 +385,30 @@ class ProductParameters extends \yii\db\ActiveRecord
         return 'status_0';
     }
   }
+
+  public static function byCode($code, $categoryId)
+  {
+      $cacheName = 'product_parameter_' . $code . '_category_' . $categoryId;
+      $cache = \Yii::$app->cache;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'product_parameters';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+      $out = $cache->getOrSet(
+          $cacheName,
+          function () use ($code, $categoryId) {
+              return self::findOne(['code' => $code, 'category_id' => $categoryId]);
+          },
+          $cache->defaultDuration,
+          $dependency
+      );
+      return $out;
+  }
+
+  public function clearCache()
+  {
+      Cache::clearName('product_parameters');
+  }
+
 
 }

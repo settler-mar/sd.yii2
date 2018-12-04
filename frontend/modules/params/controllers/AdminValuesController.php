@@ -7,6 +7,7 @@ use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValuesSearch;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,6 +33,11 @@ class AdminValuesController extends Controller
     public function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
         return true;
     }
 
@@ -160,11 +166,14 @@ class AdminValuesController extends Controller
                 'id',
                 'name'
             );
+            $products = Product::find()->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
+                ->limit(5)->all();
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
                 'parameterList' => $this->parameterList(),
                 'valuesList' => $valuesList,
+                'products' => $products,
             ]);
         }
     }

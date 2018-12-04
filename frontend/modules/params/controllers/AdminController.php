@@ -2,11 +2,13 @@
 
 namespace frontend\modules\params\controllers;
 
+use shop\modules\product\models\ProductsToCategory;
 use Yii;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
 use frontend\modules\params\models\ProductParametersValues;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,6 +34,11 @@ class AdminController extends Controller
     function beforeAction($action)
     {
         $this->layout = '@app/views/layouts/admin.twig';
+        //отключение дебаг панели
+        if (class_exists('yii\debug\Module')) {
+            Yii::$app->getModule('debug')->instance->allowedIPs = [];
+            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
         return true;
     }
 
@@ -59,7 +66,19 @@ class AdminController extends Controller
                 }
             }
         }
-
+        //задействованные категории
+        $cats = ProductsCategory::find()
+            ->from(ProductsCategory::tableName().' pc')
+            ->select(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
+            ->innerJoin(ProductParameters::tableName().' pp', 'pc.id = pp.category_id')
+            ->groupBy(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
+            ->orderBy(['pc.name' => SORT_ASC])
+            ->asArray()
+            ->all();
+        $catsTree = [];
+        foreach ($cats as $cat) {
+            $catsTree[$cat['id']] = ProductsCategory::parentsTree($cat);
+        }
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -68,14 +87,18 @@ class AdminController extends Controller
             'typeFilter' => $this->typeFilter(),
             'tableData' => [
                 'active' => function ($model) {
+                    $out = '<span class="'.ProductParameters::activeClass($model->active).'">';
                     switch ($model->active) {
                         case ($model::PRODUCT_PARAMETER_ACTIVE_NO):
-                            return '<span class="status_1"><span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                            $out .= '<span class="fa fa-times"></span>&nbsp;Неактивен</span>';
+                            break;
                         case ($model::PRODUCT_PARAMETER_ACTIVE_YES):
-                            return '<span class="status_2"><span class="fa fa-check"></span>&nbsp;Активен</span>';
+                            $out .= '<span class="fa fa-check"></span>&nbsp;Активен</span>';
+                            break;
                         default:
-                            return '<span class="status_0"><span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
+                            $out .= '<span class="fa fa-clock-o"></span>&nbsp;Ожидает проверки</span>';
                     }
+                    return $out;
                 },
                 'type' => function ($model) {
                     switch ($model->parameter_type) {
@@ -113,12 +136,13 @@ class AdminController extends Controller
                 },
                 'categories' => function ($model) {
                     $out = array();
-                    if ($model->category) {
-                        $categories = ProductsCategory::parents([$model->category]);
+                    if ($model->category_id != null) {
+                        $category = ProductsCategory::byId($model->category_id)->toArray();
+                        $categories = ProductsCategory::parents([$category]);
                         for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]->id . '">' .
-                                '<span class="'.ProductsCategory::activeClass($categories[$i]->active).'">' .
-                                $categories[$i]->name . '</span></a>';
+                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
+                                '<span class="'.ProductsCategory::activeClass($categories[$i]['active']).'">' .
+                                $categories[$i]['name'] . '</span></a>';
                         }
                     }
                     return implode(' / ', $out);
@@ -128,18 +152,8 @@ class AdminController extends Controller
                         ' ('.$model->synonymParam->id.')' : '';
                 },
                 'code' => function ($model) {
-                    $out = '<a href="admin/params/update/id:'.$model->id.'"><span class="';
-                    switch ($model->active) {
-                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO):
-                            $out .= 'status_1>';
-                            break;
-                        case (ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES):
-                            $out .= 'status_2';
-                            break;
-                        default:
-                            $out .= 'status_0';
-                    }
-                    $out .= '">'.$model->code.'</span></a>';
+                    $out = '<a href="admin/params/update/id:'.$model->id.'"><span class="' .
+                        ProductParameters::activeClass($model->active).'">'.$model->code.'</span></a>';
                     /*if ($model->synonyms) {
                         $synonyms = [];
                         foreach ($model->synonyms as $synonym) {
@@ -153,12 +167,9 @@ class AdminController extends Controller
                     return $out;
                 }
             ],
-            'product_categories' => [0=>'Не задано'] + ArrayHelper::map(
-                ProductsCategory::find()->select(['id', 'name'])->asArray()->orderBy(['name' => SORT_ASC])->all(),
-                'id',
-                'name'
-            ),
+            'product_categories' => [0=>'Не задано'] + $catsTree,
             'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
+            'product_categories_data' => ProductsCategory::categoriesJson(),
 
         ]);
     }
@@ -194,6 +205,46 @@ class AdminController extends Controller
 //    }
 
     /**
+     * @return bool|string
+     * @throws NotFoundHttpException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionUpdateAll()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $request = Yii::$app->request;
+        if (!$request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+        $ids = $request->post('id');
+        $active = $request->post('active');
+        $data = [];
+        if ($active !== '') {
+            $data['active'] = in_array($active, [
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_NO,
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES,
+                ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING,
+            ]) ? $active : ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING;
+        }
+        $category_id = $request->post('category_id');
+        if ($category_id !== '') {
+            $data['category_id'] = (int)$category_id > 0 ? (int)$category_id : null;
+        }
+        $synonym = $request->post('synonym');
+        if ($synonym !== '') {
+            $data['synonym'] = (int)$synonym > 0 ? (int)$synonym : null;
+        }
+
+        $result = !empty($data) ? ProductParameters::updateAll($data, ['id' => $ids]) : 0;
+
+        return json_encode(['error' => $result < 1]);
+    }
+
+
+    /**
      * Updates an existing ProductParameters model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -210,6 +261,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
+            $products = Product::find()->where('JSON_KEYS(params) LIKE \'%"'.$model->code.'"%\'')->limit(5)->all();
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
@@ -223,6 +275,7 @@ class AdminController extends Controller
                     'name'
                 ),
                 'product_categories_data' => ProductsCategory::categoriesJson(),
+                'products' => $products,
             ]);
         }
     }

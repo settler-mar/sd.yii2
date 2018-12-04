@@ -150,7 +150,7 @@ class Product extends \yii\db\ActiveRecord
   public function getCategoriesTree()
   {
     if ($this->categories) {
-      return ProductsCategory::parentsTree($this->categories[0]);
+      return ProductsCategory::parentsTree($this->categories[0]->toArray());
     }
   }
 
@@ -199,7 +199,7 @@ class Product extends \yii\db\ActiveRecord
       $parents = ProductsCategory::parents($category);
       if ($parents) {
         for ($i = count($parents) - 1; $i >= 0; $i--) {
-          $categories[] = $parents[$i]->id;
+          $categories[] = $parents[$i]['id'];
         }
       }
     }
@@ -626,5 +626,17 @@ class Product extends \yii\db\ActiveRecord
     }, $cache->defaultDuration, $dependency);
     return $products;
   }
+
+    public static function activeClass($active)
+    {
+        switch ($active) {
+            case (Product::PRODUCT_AVAILABLE_NOT):
+                return 'status_1';
+            case (Product::PRODUCT_AVAILABLE_YES):
+                return 'status_2';
+            default:
+                return 'status_0';
+        }
+    }
 
 }

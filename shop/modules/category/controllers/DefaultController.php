@@ -131,7 +131,7 @@ class DefaultController extends SdController
 
         ];
 
-        $paginatePath = '/' . 'category'. ($this->category ? '/' . ProductsCategory::parentsTree($this->category, true) : '');
+        $paginatePath = '/' . 'category'. ($this->category ? '/' . ProductsCategory::parentsTree($this->category->toArray(), true) : '');
 
         if ($pagination->pages() > 1) {
             $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);

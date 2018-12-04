@@ -616,6 +616,8 @@ class AdmitadController extends Controller
         $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
         $store = $catalog->cpaLink->store->toArray();
         $store_id = $store['uid'];
+        Cache::deleteName('catalog_stores_used');
+        Cache::deleteName('stores_used_by_catalog');
 
         $start_mem = memory_get_peak_usage();
         while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
