@@ -325,7 +325,8 @@ class AdminController extends Controller
           'loyalty_status_list' => $loyalty_status_list,
           'bonus_status_list' => $bonus_status_list,
           'traffTypeList' => Users::trafficTypeList(),
-          'MaskedInput_class' => MaskedInput::className()
+          'MaskedInput_class' => MaskedInput::className(),
+          'valuta_list'=>Yii::$app->params['valuta_list_dp'],
       ]);
     }
   }
@@ -414,7 +415,7 @@ class AdminController extends Controller
           'traffTypeList' => Users::trafficTypeList(),
           'MaskedInput_class' => MaskedInput::className(),
           'api_client' => OauthClients::findOne(['user_id' => $id]),
-        'valuta_list'=>Yii::$app->params['valuta_list_dp']
+        'valuta_list'=>Yii::$app->params['valuta_list_dp'],
       ]);
     }
   }
