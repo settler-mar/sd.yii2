@@ -16,6 +16,7 @@ return [
             'charset' => 'utf8',
         ],
         'mailer' => [
+            //'class' => 'common\components\Mailer', //используется для очереди отправки писем.
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
             'useFileTransport' => true,

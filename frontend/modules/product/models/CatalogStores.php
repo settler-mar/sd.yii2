@@ -103,6 +103,7 @@ class CatalogStores extends \yii\db\ActiveRecord
                 ->from(CatalogStores::tableName().' cs')
                 ->select(['cs.id', 'cs.name'])
                 ->innerJoin(Product::tableName().' p', 'p.catalog_id = cs.id')
+                ->limit(5)
                 ->asArray()
                 ->all();
         });
