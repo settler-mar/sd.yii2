@@ -102,6 +102,7 @@ class BalanceCalc extends Component
     if($userList!=false){
       $sql.=' WHERE u1.uid in ('.implode(',',$userList).')';
     }
+
     Yii::$app->db->createCommand($sql)->execute();
     //d($sql);
     //Yii::$app->logger->add($sql);

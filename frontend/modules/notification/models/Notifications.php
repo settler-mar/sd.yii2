@@ -118,7 +118,15 @@ class Notifications extends \yii\db\ActiveRecord
     if (!$insert && $changedAttributes['user_id']) {
       $users[] = (int)$changedAttributes['user_id'];
     }
-    Yii::$app->balanceCalc->todo($users, 'bonus');
+
+    if(in_array($this->type_id,[2,4]) &&
+        (
+          ($insert && !empty($this->amount)) ||
+          isset($changedAttributes['amount'])
+        )
+    ) {
+      Yii::$app->balanceCalc->todo($users, 'bonus');
+    }
 
     self::clearCache($this->user_id);
   }
