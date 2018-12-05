@@ -66,19 +66,9 @@ class AdminController extends Controller
                 }
             }
         }
-        //задействованные категории
-        $cats = ProductsCategory::find()
-            ->from(ProductsCategory::tableName().' pc')
-            ->select(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
-            ->innerJoin(ProductParameters::tableName().' pp', 'pc.id = pp.category_id')
-            ->groupBy(['pc.id','pc.name', 'pc.parent', 'pc.synonym', 'pc.route', 'pc.active'])
-            ->orderBy(['pc.name' => SORT_ASC])
-            ->asArray()
-            ->all();
-        $catsTree = [];
-        foreach ($cats as $cat) {
-            $catsTree[$cat['id']] = ProductsCategory::parentsTree($cat);
-        }
+        // все категории
+        $categoriesFilter = ProductsCategory::forFilter();
+        asort($categoriesFilter);
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
@@ -135,17 +125,9 @@ class AdminController extends Controller
                     return $out;
                 },
                 'categories' => function ($model) {
-                    $out = array();
-                    if ($model->category_id != null) {
-                        $category = ProductsCategory::byId($model->category_id)->toArray();
-                        $categories = ProductsCategory::parents([$category]);
-                        for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
-                                '<span class="'.ProductsCategory::activeClass($categories[$i]['active']).'">' .
-                                $categories[$i]['name'] . '</span></a>';
-                        }
+                    if (isset($model->category_id)) {
+                        return ProductsCategory::parentsTree($model->category, 2);
                     }
-                    return implode(' / ', $out);
                 },
                 'synonym_name' => function ($model) {
                     return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name .
@@ -167,7 +149,7 @@ class AdminController extends Controller
                     return $out;
                 }
             ],
-            'product_categories' => [0=>'Не задано'] + $catsTree,
+            'product_categories' => [0=>'Не задано'] + $categoriesFilter,
             'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
             'product_categories_data' => ProductsCategory::categoriesJson(),
 

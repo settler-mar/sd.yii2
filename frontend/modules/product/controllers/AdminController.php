@@ -104,6 +104,7 @@ class AdminController extends Controller
 //        foreach ($categories as $categoryItem) {
 //            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem,0,$categories);
 //        }
+        $categoriesFilter = ProductsCategory::forFilter();
         asort($categoriesFilter);
         return $this->render('index.twig', [
             'searchModel' => $searchModel,

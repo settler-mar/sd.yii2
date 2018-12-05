@@ -99,7 +99,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
      */
     public static function parents($categories, $level = 0)
     {
-      ddd(1);
+      //ddd(1);
 
         $cache = Yii::$app->cache;
         $cacheName = 'catalog_category_parents_' . $categories[count($categories) - 1]['id'];
@@ -112,7 +112,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
                     ->asArray()->one();
                 if ($parent) {
                     $categories[] = $parent;
-                    $categories = static::parents($categories, $level+1,$categories_db);
+                    $categories = static::parents($categories, $level+1);
                 }
             }
             if ($level == 0) {
