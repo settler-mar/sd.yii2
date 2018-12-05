@@ -73,24 +73,19 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="tools-modal-parent">Родительская категория</label>
-                    <select class="form-control" name="parent" id="tools-modal-parent">
-                        <option value="">Оставить без изменения</option>
-                        {% for key, parent in parents %}
-                            <option value="{{ key }}">{{ parent }}</option>
-                        {% endfor %}
-                    </select>
+
+                <div class="form-group field-productscategory-parent">
+                    <label class="control-label" for="productscategory-parent">Родительская категория</label>
+                    <input class="category_tree_input" id="productscategory-parent_hidden" type="hidden" name="parent" value="" data-root="Корень"
+                           data-empty="Оставить без изменения" />
+                            {# eсли задано то для null значение 0 для Оставить без изменения значение "" #}
                 </div>
 
-                <div class="form-group">
-                    <label for="tools-modal-synonym">Является синонимом для</label>
-                    <select class="form-control"  name="synonym" id="tools-modal-synonym">
-                        <option value="">Оставить без изменения</option>
-                        {% for key, synonym in synonymFilter %}
-                            <option value="{{ key }}">{{ synonym }}</option>
-                        {% endfor %}
-                    </select>
+
+                <div class="form-group field-productscategory-synonym">
+                    <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
+                    <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="synonym" value=""
+                           data-empty="Оставить без изменения" data-root="Самостоятельная категория"/>
                 </div>
 
             </div>
@@ -101,3 +96,6 @@
         </div>
     </div>
 </div>
+<script>
+    var category_data='{{ data|raw }}';
+</script>

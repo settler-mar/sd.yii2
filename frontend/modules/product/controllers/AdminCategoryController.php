@@ -115,6 +115,7 @@ class AdminCategoryController extends Controller
         'parents' => ['0' => 'Нет'] + $parentsFilter,
         'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $synonymFilter,
         'activeFilter' => $this->activeFilter(),
+        'data' => ProductsCategory::categoriesJson(),
     ]);
   }
 

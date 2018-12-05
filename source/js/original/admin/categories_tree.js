@@ -12,6 +12,7 @@
         input.hide();
         input.data('data', data);
         var root_name = input.data('root') || 'Вся категория';
+        var empty_name = input.data('empty');//если есть, то для корневой категории начало другое
         var refresh_url = input.data('refresh_url');
         var id = input.val();
         el = get_el_by_id(id, data);
@@ -42,7 +43,10 @@
             if (id > 0) {
                 out += '<option value=0>'+root_name+'</option>';
             } else {
-                out += '<option value=\"\">Выберите категорию</option>';
+                if (empty_name) {
+                    out += '<option value=\"\">'+empty_name+'</option>';
+                }
+                out += '<option value=\"'+(empty_name ? '0' : '')+'\">Выберите категорию</option>';
             }
             for (var i = 0; i < data.length; i++) {
                 if (data[i].parent == id) {
@@ -59,8 +63,8 @@
                 var $this = $(this);
                 $this.nextAll().remove();
                 var input = $this.closest('.form-group').find('input');
-                if ($this.val() === '0') {
-                    input.val($this.prev().val());
+                if ($this.val() === "0") {
+                    input.val($this.prev('select').length ? $this.prev('select').val() : $this.val());
                     updateInput(input);
                     return;
                 } else if ($this.val() === '') {
