@@ -135,17 +135,7 @@ class AdminController extends Controller
                     return $out;
                 },
                 'categories' => function ($model) {
-                    $out = array();
-                    if ($model->category_id != null) {
-                        $category = ProductsCategory::byId($model->category_id)->toArray();
-                        $categories = ProductsCategory::parents([$category]);
-                        for ($i = count($categories) - 1; $i >= 0; $i--) {
-                            $out[] = '<a href="/admin-category/product/update/id:' . $categories[$i]['id'] . '">' .
-                                '<span class="'.ProductsCategory::activeClass($categories[$i]['active']).'">' .
-                                $categories[$i]['name'] . '</span></a>';
-                        }
-                    }
-                    return implode(' / ', $out);
+                  return ProductsCategory::parentsTree($model->category_id, 2);
                 },
                 'synonym_name' => function ($model) {
                     return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name .

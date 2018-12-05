@@ -164,15 +164,22 @@ class ProductsCategory extends \yii\db\ActiveRecord
      * @param int $mode 0 - names, 1 - roures, 2 - links to edit
      * @return string
      */
-    public static function parentsTree($category, $mode = 0,$categories=false)
+    public static function parentsTree($category, $mode = 0,$categories=false,$max_lavel = false)
     {
-        $out = [];
-        //$categories = static::parents([$category],0,$categories);
-        $categories = static::getParents($category['id'],$categories);
+      $out = [];
+      //$categories = static::parents([$category],0,$categories);
+      if(is_object($category)){
+        $category=$category->id;
+      }elseif(is_array($category)){
+        $category=$category['id'];
+      }
 
-        for ($i = count($categories) - 1; $i >= 0; $i--) {
-            if(empty($categories[$i]))continue;
-            switch ($mode) {
+      $categories = static::getParents($category,$categories);
+
+      for ($i = count($categories) - 1; $i >= 0; $i--) {
+          if(empty($categories[$i]))continue;
+          //ddd($categories[$i]);
+          switch ($mode) {
                 case 0:
                     $out[] = $categories[$i]['name'];
                     break;
