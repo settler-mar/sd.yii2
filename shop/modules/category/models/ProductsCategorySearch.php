@@ -68,7 +68,9 @@ class ProductsCategorySearch extends ProductsCategory
         if ($this->parent === '0') {
             $query->andWhere(['parent' => null]);
         } elseif ($this->parent) {
-            $childsId = ProductsCategory::childsId($this->parent, false);
+            $categoriesTree = ProductsCategory::tree();
+            $childsId = ProductsCategory::getCategoryChilds($categoriesTree, $this->parent);
+ //         $childsId = ProductsCategory::childsId($this->parent, false);
             $query->andFilterWhere(['parent'=>$childsId]);
         }
         if ($this->synonym === null) {

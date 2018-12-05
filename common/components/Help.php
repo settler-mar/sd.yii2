@@ -300,4 +300,23 @@ class Help extends Component
     //ddd($store);
   }
 
+    public static function multiImplode($glue, $array)
+    {
+        $out = '';
+        if (is_array($array)) {
+            foreach ($array as $key => $item) {
+                $out .= ($glue. $key . $glue . self::multiImplode($glue, $item));
+            }
+        } elseif (method_exists($array, 'className')) {
+            $out .= $array::className();
+            if (property_exists($array, 'where')) {
+                $out .= self::multiImplode($glue, $array->where);
+            }
+        }  else {
+            $out .= (str_replace(' ', '_', $array));
+
+        }
+        return $out;
+    }
+
 }

@@ -66,22 +66,9 @@ class AdminCategoryController extends Controller
 
     //категории, являющиеся родительскими
     $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
-    $parents = ProductsCategory::find()
-        ->from(ProductsCategory::tableName() . ' pc')
-        ->select(['*'])
-        ->where(['synonym' => null])
-        ->andWhere(['in', 'id', $childs])
-        ->orderBy(['name' => SORT_ASC])
-        ->asArray()
-        ->all();
+    $parentsFilter = ProductsCategory::forFilter(['where' => ['in', 'id', $childs]]);
+    asort($parentsFilter);
 
-    $categories = ArrayHelper::index($parents, 'id');
-
-
-    foreach ($categories as $categoryItem) {
-      $parentsTree[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem, 0, $categories, 2);
-    }
-    asort($parentsTree);
 
     //ddd($categoriesFilter);
     /*foreach ($parents as $parent) {
@@ -125,7 +112,7 @@ class AdminCategoryController extends Controller
               return $out;
             }
         ],
-        'parents' => ['0' => 'Нет'] + $parentsTree,
+        'parents' => ['0' => 'Нет'] + $parentsFilter,
         'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $synonymFilter,
         'activeFilter' => $this->activeFilter(),
     ]);

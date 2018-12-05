@@ -6,6 +6,7 @@ use yii;
 use shop\modules\product\models\ProductsToCategory;
 use shop\modules\product\models\Product;
 use frontend\modules\cache\models\Cache;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_products_category".
@@ -204,7 +205,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     public static function tree($params = [])
     {
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $cacheName = 'catalog_categories_menu' . (!empty($params) ? '_' . implode('_', $params) : '') .
+        $cacheName = 'catalog_categories_menu' . (!empty($params) ? Help::multiImplode('_', $params) : '') .
             ($language ? '_' . $language : '');
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
@@ -217,8 +218,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
                 $categoryArr = self::find()
                     ->where(['active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
                     ->select(['id', 'name', 'parent', 'active'])
-                    ->asArray()
-                    ->all();
+                    ->asArray();
+                if (isset($params['where'])) {
+                    $categoryArr->andWhere($params['where']);
+                };
+                $categoryArr = $categoryArr->all();
                 $current = isset($params['current']) ? $params['current'] : false;
                 $categories = static::childsCategories($categoryArr, null, $current);
 
@@ -395,9 +399,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
-    public static function forFilter()
+    public static function forFilter($params = [])
     {
-        $tree = self::tree();
+        $tree = self::tree($params);
         $options = [];
         foreach ($tree as $item) {
             $options[$item['id']] = self::parentsTree($item);
