@@ -99,7 +99,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
      */
     public static function parents($categories, $level = 0)
     {
-      ddd(1);
+      //ddd(1);
 
         $cache = Yii::$app->cache;
         $cacheName = 'catalog_category_parents_' . $categories[count($categories) - 1]['id'];

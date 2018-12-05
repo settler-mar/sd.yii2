@@ -103,6 +103,7 @@ class ProductParametersSearch extends ProductParameters
             $query->andWhere(['category_id' => null]);
         } elseif ($this->category_id > 0) {
             $childsId = ProductsCategory::childsId($this->category_id, false);
+
             $parents = array_column(ProductsCategory::parents([ProductsCategory::findOne($this->category_id)->toArray()]), 'id');
             //ddd($childsId, $parents, array_unique(array_merge($childsId, $parents)));
             $this->allCategories = array_unique(array_merge($childsId, $parents));

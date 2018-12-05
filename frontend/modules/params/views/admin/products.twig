@@ -7,6 +7,7 @@
             <th>Изображение</th>
             <th>Название</th>
             <th>Параметры</th>
+            <th>Оригинал</th>
             <th>Категория</th>
             <th>Магазин</th>
             <th>Продукт в магазине</th>
@@ -47,6 +48,9 @@
                            <br>
                        {% endfor %}
                    </td>
+                  <td>
+                    {{ product.params_original }}
+                  </td>
                    <td>{{ _product_category_tree(product.categories[0], 2)|raw }}</td>
                    <td><a target="_blank" rel="nooper nofollow noreferrer" href="admin/stores/update/id:{{ product.store_id }}">{{ product.store.name }}</a></td>
                    <td width="20%" class="break-all">

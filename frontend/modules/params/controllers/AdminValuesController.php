@@ -2,6 +2,7 @@
 
 namespace frontend\modules\params\controllers;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Yii;
 use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\params\models\ProductParameters;
@@ -166,8 +167,19 @@ class AdminValuesController extends Controller
                 'id',
                 'name'
             );
-            $products = Product::find()->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
+            $products = Product::find()
+                ->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
                 ->limit(5)->all();
+
+            if(!$products){
+              $parametr=ProductParameters::find()
+                  ->where(['id'=>$model->parameter_id])
+                  ->one();
+              $products=Product::find()
+                  ->orWhere('params_original LIKE \''.$parametr->code.':'.$model->name.'%\'')
+                  ->orWhere('params_original LIKE \'%|'.$parametr->code.':'.$model->name.'%\'')
+                  ->limit(5)->all();
+            }
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
