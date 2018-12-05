@@ -78,7 +78,7 @@ class ShareasaleController extends Controller
     foreach ($payments as $payment) {
       d($payment);
       $records++;
-      $user = $this->getUserData((string)$payment['afftrack']);
+      $user = isset($payment['afftrack']) ? $this->getUserData((string)$payment['afftrack']) : false;
       if ($user == false) {
         $noUser++;
         continue;
