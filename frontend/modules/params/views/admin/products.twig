@@ -48,12 +48,12 @@
                            <br>
                        {% endfor %}
                    </td>
-                  <td>
+                  <td width="15%" class="break-all">
                     {{ product.params_original }}
                   </td>
                    <td>{{ _product_category_tree(product.categories[0], 2)|raw }}</td>
                    <td><a target="_blank" rel="nooper nofollow noreferrer" href="admin/stores/update/id:{{ product.store_id }}">{{ product.store.name }}</a></td>
-                   <td width="20%" class="break-all">
+                   <td width="15%" class="break-all">
                        <a target="_blank" rel="nooper nofollow noreferrer" href="{{ product.url }}">
                            {{ product.url }}
                        </a>

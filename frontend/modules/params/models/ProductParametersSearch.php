@@ -102,7 +102,7 @@ class ProductParametersSearch extends ProductParameters
         if ($this->category_id === "0") {
             $query->andWhere(['category_id' => null]);
         } elseif ($this->category_id > 0) {
-            //оставил вариант
+            //оставил вариант - тут только дочерние
             //$categoriesTree = ProductsCategory::tree();
             //$categories = ProductsCategory::getCategoryChilds($categoriesTree, $this->category_id);
             //$query->andFilterWhere(['category_id' => $categories]);

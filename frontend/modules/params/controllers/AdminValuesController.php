@@ -8,6 +8,7 @@ use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValuesSearch;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\product\models\ProductsToCategory;
 use shop\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -167,18 +168,33 @@ class AdminValuesController extends Controller
           'id',
           'name'
       );
+      $parametr=ProductParameters::find()
+        ->where(['id'=>$model->parameter_id])
+        ->one();
+      $categoriesTree = ProductsCategory::tree();
+      $childsId = ProductsCategory::getCategoryChilds($categoriesTree, $parametr->category_id);
+
       $products = Product::find()
-          ->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
+          ->from(Product::tableName() . ' p')
+          ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+          ->where('JSON_KEYS(params) LIKE \'%"' . $parametr->code . '"%\'')
+          ->andWhere('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
+          ->andWhere(['ptc.category_id' => $childsId])
           ->limit(5)->all();
 
-      if(!$products){
-        $parametr=ProductParameters::find()
-            ->where(['id'=>$model->parameter_id])
-            ->one();
-        $products=Product::find()
-            ->orWhere('params_original LIKE \''.$parametr->code.':'.$model->name.'%\'')
-            ->orWhere('params_original LIKE \'%|'.$parametr->code.':'.$model->name.'%\'')
-            ->limit(5)->all();
+      if (count($products)<5) {
+      $products=array_merge($products, Product::find()
+        ->from(Product::tableName() . ' p')
+        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+        ->Where(['ptc.category_id' => $childsId])
+        ->andWhere([
+            'or',
+            'params_original LIKE \''.$parametr->code.':'.$model->name.'%\'',
+            'params_original LIKE \'%|'.$parametr->code.':'.$model->name.'%\''
+        ])
+        ->andWhere(['not in' ,'p.id', array_column($products, 'id')])
+        ->limit(5 - count($products))->all()
+      );
       }
       return $this->render('update.twig', [
           'model' => $model,
