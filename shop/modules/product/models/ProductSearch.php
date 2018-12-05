@@ -2,6 +2,7 @@
 
 namespace shop\modules\product\models;
 
+use shop\modules\category\models\ProductsCategory;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -86,15 +87,15 @@ class ProductSearch extends Product
             ->andFilterWhere(['like', 'vendor', $this->vendor]);
 
         if (!empty($this->product_categories)) {
+            $categoriesTree = ProductsCategory::tree();
+            $categories = ProductsCategory::getCategoryChilds($categoriesTree, $this->product_categories);
             $query->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = cw_product.id');
-            $query->andFilterWhere(['ptc.category_id' => $this->product_categories]);
+            $query->andFilterWhere(['ptc.category_id' => $categories]);
         }
 
         if (!empty($this->param) && !empty($this->value)) {
             $query->andWhere('JSON_CONTAINS(params, \'"'.$this->value.'"\', \'$."'.$this->param.'"\')');
         }
-        //ddd($query->where);
-
         return $dataProvider;
     }
 }

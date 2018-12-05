@@ -388,5 +388,36 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $categories;
     }
 
+    public static function forFilter()
+    {
+        $tree = self::tree();
+        $options = [];
+        foreach ($tree as $item) {
+            $options[$item['id']] = self::parentsTree($item);
+            if (isset($item['childs'])) {
+                foreach ($item['childs'] as $child) {
+                    $options[$child['id']] = self::parentsTree($child);
+                }
+            }
+        }
+        return $options;
+    }
+
+    public static function getCategoryChilds($categories, $id)
+    {
+        foreach ($categories as $category) {
+            if ($category['id'] == $id) {
+                return $category['childs_ids'];
+            }
+            if (isset($category['childs'])) {
+                $childs =  self::getCategoryChilds($category['childs'], $id);
+                if ($childs) {
+                    return $childs;
+                }
+            }
+        }
+
+    }
+
 
 }

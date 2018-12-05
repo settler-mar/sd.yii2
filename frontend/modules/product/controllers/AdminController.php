@@ -62,6 +62,8 @@ class AdminController extends Controller
         $category = empty($get['ProductSearch']['product_categories']) ? false :
             $get['ProductSearch']['product_categories'];
 
+        $categoriesFilter = ProductsCategory::forFilter();
+
         //нужно ли включить в выборку параметров родительские категории??? или наоборот, дочерние??
 
         /*
@@ -87,21 +89,21 @@ class AdminController extends Controller
                 ->asArray();
             $param['values'] = $values->all();
         }*/
-        $categories = ProductsCategory::find()
-            ->from(ProductsCategory::tableName(). ' pc')
-            //->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-            ->select(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
-            ->groupBy(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
-            ->orderBy(['pc.name'=>SORT_ASC])
-            ->asArray()
-            ->all();
-
-      $categories=ArrayHelper::index($categories, 'id');
-
-      $categoriesFilter = [];
-        foreach ($categories as $categoryItem) {
-            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem,0,$categories);
-        }
+//        $categories = ProductsCategory::find()
+//            ->from(ProductsCategory::tableName(). ' pc')
+//            //->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+//            ->select(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+//            ->groupBy(['pc.id','pc.name','pc.parent','pc.active','pc.route'])
+//            ->orderBy(['pc.name'=>SORT_ASC])
+//            ->asArray()
+//            ->all();
+//
+//      $categories=ArrayHelper::index($categories, 'id');
+//
+//      $categoriesFilter = [];
+//        foreach ($categories as $categoryItem) {
+//            $categoriesFilter[$categoryItem['id']] = ProductsCategory::parentsTree($categoryItem,0,$categories);
+//        }
         asort($categoriesFilter);
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
