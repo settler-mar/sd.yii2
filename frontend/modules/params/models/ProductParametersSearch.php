@@ -102,9 +102,16 @@ class ProductParametersSearch extends ProductParameters
         if ($this->category_id === "0") {
             $query->andWhere(['category_id' => null]);
         } elseif ($this->category_id > 0) {
-            $categoriesTree = ProductsCategory::tree();
-            $categories = ProductsCategory::getCategoryChilds($categoriesTree, $this->category_id);
-            $query->andFilterWhere(['category_id' => $categories]);
+            //оставил вариант
+            //$categoriesTree = ProductsCategory::tree();
+            //$categories = ProductsCategory::getCategoryChilds($categoriesTree, $this->category_id);
+            //$query->andFilterWhere(['category_id' => $categories]);
+
+            $childsId = ProductsCategory::childsId($this->category_id, false);
+            $parents = array_column(ProductsCategory::parents([ProductsCategory::findOne($this->category_id)->toArray()]), 'id');
+            $this->allCategories = array_unique(array_merge($childsId, $parents));
+            $query->andFilterWhere(['category_id'=>array_unique(array_merge($childsId, $this->allCategories))]);
+
         }
 
         return $dataProvider;

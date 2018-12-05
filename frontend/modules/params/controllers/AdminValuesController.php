@@ -2,6 +2,7 @@
 
 namespace frontend\modules\params\controllers;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Yii;
 use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\params\models\ProductParameters;
@@ -18,33 +19,33 @@ use yii\helpers\ArrayHelper;
  */
 class AdminValuesController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
+  public function behaviors()
+  {
+    return [
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'delete' => ['post'],
             ],
-        ];
-    }
+        ],
+    ];
+  }
 
-    public function beforeAction($action)
-    {
-        $this->layout = '@app/views/layouts/admin.twig';
-        //отключение дебаг панели
-        if (class_exists('yii\debug\Module')) {
-            Yii::$app->getModule('debug')->instance->allowedIPs = [];
-            $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
-        }
-        return true;
+  public function beforeAction($action)
+  {
+    $this->layout = '@app/views/layouts/admin.twig';
+    //отключение дебаг панели
+    if (class_exists('yii\debug\Module')) {
+      Yii::$app->getModule('debug')->instance->allowedIPs = [];
+      $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
     }
+    return true;
+  }
 
-    /**
-     * Lists all ProductParametersValues models.
-     * @return mixed
-     */
+  /**
+   * Lists all ProductParametersValues models.
+   * @return mixed
+   */
 //    public function actionIndex()
 //    {
 //        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsView')) {
@@ -110,11 +111,11 @@ class AdminValuesController extends Controller
 //        ]);
 //    }
 
-    /**
-     * Displays a single ProductParametersValues model.
-     * @param integer $id
-     * @return mixed
-     */
+  /**
+   * Displays a single ProductParametersValues model.
+   * @param integer $id
+   * @return mixed
+   */
 //    public function actionView($id)
 //    {
 //        return $this->render('view.twig', [
@@ -122,11 +123,11 @@ class AdminValuesController extends Controller
 //        ]);
 //    }
 
-    /**
-     * Creates a new ProductParametersValues model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+  /**
+   * Creates a new ProductParametersValues model.
+   * If creation is successful, the browser will be redirected to the 'view' page.
+   * @return mixed
+   */
 //    public function actionCreate()
 //    {
 //        $model = new ProductParametersValues();
@@ -140,50 +141,61 @@ class AdminValuesController extends Controller
 //        }
 //    }
 
-    /**
-     * Updates an existing ProductParametersValues model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
-            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
-            return false;
-        }
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/params/admin']);
-        } else {
-            $valuesList = ArrayHelper::map(
-                ProductParametersValues::find()
-                    ->where(['parameter_id'=>$model->parameter_id])
-                    ->andWhere(['<>', 'id', $id])
-                    ->andWhere(['synonym' => null])
-                    ->asArray()->all(),
-                'id',
-                'name'
-            );
-            $products = Product::find()->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
-                ->limit(5)->all();
-            return $this->render('update.twig', [
-                'model' => $model,
-                'activeFilter' => $this->activeFilter(),
-                'parameterList' => $this->parameterList(),
-                'valuesList' => $valuesList,
-                'products' => $products,
-            ]);
-        }
+  /**
+   * Updates an existing ProductParametersValues model.
+   * If update is successful, the browser will be redirected to the 'view' page.
+   * @param integer $id
+   * @return mixed
+   */
+  public function actionUpdate($id)
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ParamsEdit')) {
+      throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+      return false;
     }
+    $model = $this->findModel($id);
 
-    /**
-     * Deletes an existing ProductParametersValues model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      return $this->redirect(['/params/admin']);
+    } else {
+      $valuesList = ArrayHelper::map(
+          ProductParametersValues::find()
+              ->where(['parameter_id'=>$model->parameter_id])
+              ->andWhere(['<>', 'id', $id])
+              ->andWhere(['synonym' => null])
+              ->asArray()->all(),
+          'id',
+          'name'
+      );
+      $products = Product::find()
+          ->where('JSON_SEARCH(params, \'one\', \''.$model->name.'\') IS NOT NULL')
+          ->limit(5)->all();
+
+      if(!$products){
+        $parametr=ProductParameters::find()
+            ->where(['id'=>$model->parameter_id])
+            ->one();
+        $products=Product::find()
+            ->orWhere('params_original LIKE \''.$parametr->code.':'.$model->name.'%\'')
+            ->orWhere('params_original LIKE \'%|'.$parametr->code.':'.$model->name.'%\'')
+            ->limit(5)->all();
+      }
+      return $this->render('update.twig', [
+          'model' => $model,
+          'activeFilter' => $this->activeFilter(),
+          'parameterList' => $this->parameterList(),
+          'valuesList' => $valuesList,
+          'products' => $products,
+      ]);
+    }
+  }
+
+  /**
+   * Deletes an existing ProductParametersValues model.
+   * If deletion is successful, the browser will be redirected to the 'index' page.
+   * @param integer $id
+   * @return mixed
+   */
 //    public function actionDelete($id)
 //    {
 //        $this->findModel($id)->delete();
@@ -191,40 +203,40 @@ class AdminValuesController extends Controller
 //        return $this->redirect(['index']);
 //    }
 
-    /**
-     * Finds the ProductParametersValues model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return ProductParametersValues the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = ProductParametersValues::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+  /**
+   * Finds the ProductParametersValues model based on its primary key value.
+   * If the model is not found, a 404 HTTP exception will be thrown.
+   * @param integer $id
+   * @return ProductParametersValues the loaded model
+   * @throws NotFoundHttpException if the model cannot be found
+   */
+  protected function findModel($id)
+  {
+    if (($model = ProductParametersValues::findOne($id)) !== null) {
+      return $model;
+    } else {
+      throw new NotFoundHttpException('The requested page does not exist.');
     }
+  }
 
-    protected function activeFilter()
-    {
-        return [
-            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO => 'Неактивен',
-            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES => 'Активен',
-            ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING => 'Ожидает проверки',
-        ];
-    }
+  protected function activeFilter()
+  {
+    return [
+        ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_NO => 'Неактивен',
+        ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES => 'Активен',
+        ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_WAITING => 'Ожидает проверки',
+    ];
+  }
 
-    protected function parameterList($disableInActive = false)
-    {
-        $parameters = ProductParameters::find()->select(['id', 'name'])->asArray();
-        if ($disableInActive) {
-            $parameters->where(['active'=>[
-                ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES,
-                ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING
-            ]]);
-        }
-        return ArrayHelper::map($parameters->all(), 'id', 'name');
+  protected function parameterList($disableInActive = false)
+  {
+    $parameters = ProductParameters::find()->select(['id', 'name'])->asArray();
+    if ($disableInActive) {
+      $parameters->where(['active'=>[
+          ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES,
+          ProductParameters::PRODUCT_PARAMETER_ACTIVE_WAITING
+      ]]);
     }
+    return ArrayHelper::map($parameters->all(), 'id', 'name');
+  }
 }

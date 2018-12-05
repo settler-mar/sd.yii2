@@ -243,7 +243,17 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            $products = Product::find()->where('JSON_KEYS(params) LIKE \'%"'.$model->code.'"%\'')->limit(5)->all();
+            $products = Product::find()
+                ->orWhere('JSON_KEYS(params) LIKE \'%"'.$model->code.'"%\'')
+                ->limit(5)->all();
+
+            if(!$products){
+              $products=Product::find()
+                  ->orWhere('params_original LIKE \''.$model->code.':%\'')
+                  ->orWhere('params_original LIKE \'%|'.$model->code.':%\'')
+                  ->limit(5)->all();
+            }
+
             return $this->render('update.twig', [
                 'model' => $model,
                 'activeFilter' => $this->activeFilter(),
