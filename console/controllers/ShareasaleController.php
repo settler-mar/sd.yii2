@@ -67,16 +67,17 @@ class ShareasaleController extends Controller
   {
     $status_list=[
       "Transaction Created"=>0,//Заказ создан
+      "Locked" => 1,
     ];
     $shareasale = new Shareasale();
-    $payments = $shareasale->getActivity();
+    $payments = $shareasale->getActivityWeb();
     $users = [];
     $noUser = 0;
     $records = 0;
     $inserted = 0;
     $updated = 0;
     foreach ($payments as $payment) {
-      d($payment);
+      //d($payment);
       $records++;
       $user = isset($payment['afftrack']) ? $this->getUserData((string)$payment['afftrack']) : false;
       if ($user == false) {
@@ -93,16 +94,18 @@ class ShareasaleController extends Controller
           'subid' => $user->uid,
           'positions' => false, //для тарифа, видимо так
           'action_id' => (string)$payment['ledgerid'],
-          'cart' => 0,
+          'cart' => isset($payment['amount']) ? $payment['amount'] : 0,
           'payment' => (float)$payment['impact'],
           'click_date' => date('Y-m-d H:i:s', strtotime($payment['dt'])),
           'action_date' => date('Y-m-d H:i:s', strtotime($payment['dt'])),
-          'status_updated' => date('Y-m-d H:i:s', strtotime($payment['dt'])),
-          'closing_date' => date('Y-m-d H:i:s', strtotime($payment['dt'])), //??
+          'status_updated' => isset($payment['status_dt']) ? date('Y-m-d H:i:s', strtotime($payment['status_dt'])) :
+              date('Y-m-d H:i:s', strtotime($payment['dt'])),
+          'closing_date' => isset($payment['status_dt']) ? date('Y-m-d H:i:s', strtotime($payment['status_dt'])) :
+              date('Y-m-d H:i:s', strtotime($payment['dt'])),
           'product_country_code' => null,
           'order_id' => (string)$payment['comment'],// тоже под вопросом??
           'tariff_id' => null,
-          'currency' => $store->currency,
+          'currency' => $payment['currency'] ? $payment['currency'] : $store->currency,
           'affiliate_id' => $payment['merchantid'],
           'cpa_id' => $this->cpa_id
       ];
@@ -238,6 +241,14 @@ class ShareasaleController extends Controller
       $shareasale = new Shareasale();
       $products = $shareasale->getProducts();
       ddd($products);
+  }
+
+  public function actionActivity()
+  {
+      $shareasale = new Shareasale();
+      $dateStart = time() - 3600 * 24 * 30 * 6;
+      $products = $shareasale->getActivityWeb($dateStart);
+
   }
 
 

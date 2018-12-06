@@ -29,6 +29,8 @@ return [
         'affiliateID' => '',
         'APIToken' => "",
         'APISecretKey' => "",
+        'login' => '',
+        'password' => '',
     ],
     'sellaction' => [
         'id' => '100025598',
