@@ -11,6 +11,8 @@ class Linkconnector
   private $config;
   private $urlAffiliates = 'http://www.linkconnector.com/api/';
 
+  private $urlProducts = 'https://www.linkconnector.com/member/merchantfeeds.htm';
+
   public function __construct()
   {
     $this->config = isset(Yii::$app->params['linkconnector']) ? Yii::$app->params['linkconnector'] : false;
@@ -67,6 +69,14 @@ class Linkconnector
       );
   }
 
+  public function getProductFeedsList()
+  {
+      return $this->getFunction(
+          'getFeedProductSearch',
+          ['MerchantIDs'=> '152830']
+      );
+  }
+
   private function getFunction($function_name, $params = []){
     $postVars = array(
         "Key"           => $this->config['user_api_key'],
@@ -89,4 +99,25 @@ class Linkconnector
 
     return $data;
   }
+
+  private function login()
+  {
+      $postData = [
+          'curdate' => '1544102805',
+          'loginkey' => 'ce669c62b540d194d242d0cc7ee0a1e6',
+          'dest' => '52411ecd290bc6358045610ec0224105',
+          'Tech' => '',
+          'Src' => '144884',
+          'SourceList' => '',
+          'ChkAll' => '',
+          'mid' => '',
+          'cid' => '',
+          'timezone' => '3',
+          'Form' => 'loginform',
+          'UID' => 'versus',
+          'PWD' => '2011odn',
+      ];
+  }
+
+
 }

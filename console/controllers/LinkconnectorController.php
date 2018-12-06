@@ -108,6 +108,9 @@ class LinkconnectorController extends Controller
                         $this->cpaLinkErrors++;
                     }
                 }
+//                if ($store['ProductFeeds'] == 'Yes') {
+//                    //имеется каталог для закачки
+//                }
             }
         }
 
@@ -189,6 +192,15 @@ class LinkconnectorController extends Controller
         $service = new Linkconnector();
 
         $response = $service->getTransactions();
+
+        ddd($response);
+    }
+
+    public function actionTest()
+    {
+        $service = new Linkconnector();
+
+        $response = $service->getProductFeedsList();
 
         ddd($response);
     }
