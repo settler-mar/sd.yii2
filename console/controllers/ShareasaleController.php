@@ -10,8 +10,12 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
+use frontend\modules\product\models\CatalogStores;
+use frontend\modules\products\models\Products;
+use shop\modules\product\models\Product;
 use Yii;
 use yii\console\Controller;
+use frontend\modules\cache\models\Cache;
 
 class ShareasaleController extends Controller
 {
@@ -19,6 +23,7 @@ class ShareasaleController extends Controller
   private $cpa_id;
   private $users = [];
   private $stores = [];
+  private $cpaLinks = [];
 
   private function getUserData($user_id)
   {
@@ -238,18 +243,143 @@ class ShareasaleController extends Controller
 
   public function actionProduct()
   {
+      $count = 0;
+      $insert = 0;
+      $error = 0;
+
       $shareasale = new Shareasale();
       $products = $shareasale->getProducts();
-      ddd($products);
+      Cache::deleteName('catalog_stores_used');
+      Cache::deleteName('stores_used_by_catalog');
+
+
+      foreach ($products as $prod) {
+          d($prod);
+          //productId,Name,Merchant Id,Organization,Link,Thumbnail,Big Image,Price,Retail Price,
+          //Category,Sub Category
+          //Description,
+          //Custom 1,Custom 2,Custom 3,Custom 4,Custom 5,
+          //Last Updated,Status,Manufacture,Part Number,Merchant Category,Merchant Sub Category,Short Description,
+          //ISBN,UPC,SKU,Cross Sell,Merchant Group,Merchant Sub Group,Compatiable With,Compare To,
+          //Quantity Discount,Best Seller,Add to Cart URL,Reviews URL,
+          //Option 1,Option 2,Option 3,Options 4,Option 5,
+          //ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,
+          //ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,ReservedForFutureUse,
+          //WWW,Program Category,Status,Commission Text,Sale Comm,Lead Comm,Hit Comm,Cookie Length,Auto Approve,
+          //Auto Deposit,Datafeed Items,Epc 7 Day,EPC 30 Day,Reversal Rate 7 Day,Reversal Rate 30 Day,Ave Sale 7 Day,
+          //Ave Sale 30 Day,Ave Comm 7 Day,Ave Comm 30 Day,Powerrank Top 100
+
+          //todo есть поле Organization возможно в качестве имени каталога пока имя шопа
+
+          $cpaLink = $this->getSpaLink($prod->merchantid);
+          if (!$cpaLink['catalog'] || $cpaLink['catalog']->active != CatalogStores::CATALOG_STORE_ACTIVE_YES) {
+              //надо бы как-то дату обновления
+              continue;
+          }
+
+
+
+          $photoPath = $cpaLink['cpa_link']->affiliate_id . '/' . $cpaLink['cpa_link']->store->uid . '/';
+          //$catalogCount = Products::find()->where(['catalog_id' => $catalog->id])->count();
+          $store = $cpaLink['cpa_link']->store->toArray();
+          $store_id = $store['uid'];
+
+
+          $start_mem = memory_get_peak_usage();
+
+
+          $count++;
+          $product['available'] = (string)$prod['status'] = 'true' ? 1 : ((string)$prod['status'] = 'false' ? 0 : 2);//todo
+          //todo
+          //$product['params_original'] = isset($product['param']) ? $product['param'] : null;
+          $product['cpa_id'] = $this->cpa_id;
+          $product['catalog_id'] = $cpaLink['catalog']->id;
+          $product['store_id'] = $store_id;
+          $product['photo_path'] = $photoPath;
+          $product['check_unique'] = $cpaLink['catalog_count'] > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
+          $product['modified_time'] = $prod['last_updated'];// todo
+          //$product['currencyId'] = $prod['last_updated'];// todo
+          $product['name'] = $prod['name'];// todo
+          $product['price'] = $prod['price'];// todo
+          $product['oldprice'] = $prod['retail_price'];// todo
+          $product['categories'] = $prod['category'].(!empty($prod['sub_category']) ? '/'.$prod['sub_category'] : '');// todo
+          $product['description'] = $prod['description'];// todo
+          $product['image'] = $prod['big_image'];// todo
+          $product['vendor'] = $prod['manufacture'];// todo
+          $product['url'] = $prod['link'];// todo
+
+          $result = null;
+          $result = Product::addOrUpdate($product, $store);
+
+          if ($result['error']) {
+              d($result['product']->errors);
+          }
+          $insert += $result['insert'];
+          $error += $result['error'];
+          if ($count % 100 == 0) {
+              if ($start_mem < memory_get_peak_usage()) {
+                  gc_collect_cycles();
+                  echo "    memory usage " . number_format(memory_get_peak_usage()) . "\n";
+              }
+              echo date('Y-m-d H:i:s', time()) . ' ' . $count . "\n";
+          }
+
+          unset($result);
+          unset($prod);
+
+      }
+      Cache::deleteName('product_category_menu');
+      Cache::clearName('catalog_product');
+      Cache::deleteName('products_active_count');
+      echo 'Products ' . $count . "\n";
+      echo 'Inserted ' . $insert . "\n";
+      if ($error) {
+          echo 'Errors ' . $error . "\n";
+      }
   }
 
-  public function actionActivity()
-  {
-      $shareasale = new Shareasale();
-      $dateStart = time() - 3600 * 24 * 30 * 6;
-      $products = $shareasale->getActivityWeb($dateStart);
+    /**
+     * получаем cpaLink для товара
+     * @param $affiliateId
+     * @return mixed
+     */
+    private function getSpaLink($affiliateId)
+    {
+        $affiliateId=(int)$affiliateId;
+        if (!isset($this->cpaLinks[$affiliateId])) {
+            $cpaLink = CpaLink::findOne(['cpa_id' => $this->cpa_id, 'affiliate_id' => $affiliateId]);
+            if ($cpaLink) {
+                $catalog = $this->getCatalog(['cpa_link_id' => $cpaLink->id, 'name' => $cpaLink->store->name]);
+                $this->cpaLinks[$affiliateId] = [
+                    'cpa_link' => $cpaLink,
+                    'catalog' => $catalog,
+                    'catalog_count' => Products::find()->where(['catalog_id' => $catalog->id])->count(),
+                ];
+            } else {
+                $this->cpaLinks[$affiliateId] = false;
+            }
+        }
+        return $this->cpaLinks[$affiliateId];
+    }
 
-  }
+    /**
+     * каталог для загрузки
+     * @param $conditions
+     * @return CatalogStores|null
+     */
+    private function getCatalog($conditions)
+    {
+        $catalog = CatalogStores::findOne($conditions);
+        if (!$catalog) {
+            $catalog = new CatalogStores();
+            $catalog->cpa_link_id = $conditions['cpa_link_id'];
+            $catalog->name = $conditions['name'];
+            $catalog->active = CatalogStores::CATALOG_STORE_ACTIVE_WAITING;
+            $catalog->save();
+        }
+        return $catalog;
+    }
+
 
 
 }
