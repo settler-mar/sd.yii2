@@ -269,7 +269,7 @@ class ShareasaleController extends Controller
           //Auto Deposit,Datafeed Items,Epc 7 Day,EPC 30 Day,Reversal Rate 7 Day,Reversal Rate 30 Day,Ave Sale 7 Day,
           //Ave Sale 30 Day,Ave Comm 7 Day,Ave Comm 30 Day,Powerrank Top 100
 
-          //todo есть поле Organization возможно в качестве имени каталога пока имя шопа
+          //todo есть поле Organization возможно в качестве имени каталога, пока имя шопа (тогда для пути к фото можно что-то другое)
 
           $cpaLink = $this->getSpaLink($prod->merchantid);
           if (!$cpaLink['catalog'] || $cpaLink['catalog']->active != CatalogStores::CATALOG_STORE_ACTIVE_YES) {

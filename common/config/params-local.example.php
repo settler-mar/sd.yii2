@@ -96,6 +96,12 @@ return [
         'password' => '2011odn',
         'categories_json' => '/common/config/json/webgains_categories.json',
     ],
+    'impact' => [
+        'account_sid' => 'IRVp2mCvcy6U233466aFx3xkp96dpVmrZ1',
+        'auth_token' => 'oek~kQcqxvCs9GaULw7.xGkEurHbfNco',
+        'readonly_account_sid' => 'IRew8pVNen2G233466PVhXCG4CbjiFYTe1',
+        'readonly_auth_token' => 'sNMqdAiArPNH7qVB2Qi_Q_GdgzrLueBG',
+    ],
     'pays_update_period' => 1,
     'b2b_address' => '127.0.0.1:8080',
     'outstand_cpa' => [
