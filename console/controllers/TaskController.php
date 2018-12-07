@@ -802,7 +802,7 @@ class TaskController extends Controller
           $catalog = CatalogStores::findOne($id);
           $this->catalogs[$id] = ($catalog ? $catalog->cpa_link_id : $id).'/'.$id.'/';
           if($catalog) {
-              $this->catalogs[$id] = $catalog->cpaLink->affiliate_id . '/' . $catalog->cpaLink->id . '/';
+              $this->catalogs[$id] = $catalog->cpaLink->affiliate_id . '/' . $catalog->id . '/';
           } else {
               $this->catalogs[$id] = $id.'/'.$id.'/';
           }
