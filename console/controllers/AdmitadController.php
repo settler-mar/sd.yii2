@@ -611,8 +611,7 @@ class AdmitadController extends Controller
       if (($handle = fopen($csv, "r")) !== false) {
         $headers = fgetcsv($handle, 0, $delimiter);
 
-        $photoPath = substr($catalog->csv, strpos($catalog->csv, 'feed_id=') + 8);
-        $photoPath = $catalog->cpaLink->affiliate_id . '/' . substr($photoPath, 0, strpos($photoPath, '&')) . '/';
+        $photoPath = $catalog->cpaLink->affiliate_id . '/' . $catalog->cpaLink->id . '/';
         $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
         $store = $catalog->cpaLink->store->toArray();
         $store_id = $store['uid'];

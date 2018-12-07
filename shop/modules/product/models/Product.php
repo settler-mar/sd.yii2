@@ -416,6 +416,13 @@ class Product extends \yii\db\ActiveRecord
 
   public static function saveImage($storePath, $image, $old = null)
   {
+    if ($old &&
+        (strpos($old, 'http://') !== false || strpos($old, 'https://') !== false) &&
+        file_exists(Yii::getAlias('@shop/web/images/product/' . $old))
+    ) {
+      //в базе уже есть и это локальный файл - ничего менять не нужно
+      return $old;
+    }
     if (!Yii::$app->params['product_load_images']) {
       //задано не грузить фото - возвращаем исходное
       return $image ? $image : $old;

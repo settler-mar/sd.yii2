@@ -27,6 +27,8 @@ use frontend\modules\product\models\CatalogStores;
 class TaskController extends Controller
 {
   public $ref_id, $day, $start_date, $count, $list, $end_date;
+  private $catalogs = [];
+
 
   public function options($actionID)
   {
@@ -721,6 +723,95 @@ class TaskController extends Controller
 
       $path = Yii::getAlias('@shop/web/images/product');
       $this->deletePath($path);
+  }
+
+  /*
+   * Закачка фото продуктов Каталога
+   */
+  public function actionProductImages()
+  {
+      $startTime = time();
+      $processTime = 5;
+      $imageDownloadMaxCount = 5;
+      $size = 300;//требуемая ширина и высота
+      echo 'Product Images starts at '.date('Y-m-d H:i:s', $startTime)."\n";
+
+      $sql = 'SELECT `id`, `image`, `catalog_id`, `image_download_count` FROM `cw_product` WHERE `image_download_count` < ' .
+          $imageDownloadMaxCount . ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\') ORDER BY `catalog_id`';
+
+      $command = Yii::$app->db->createCommand($sql)->query();
+      $process = 0;
+      $downloads = 0;
+      $skip =0;
+      $error = 0;
+      while ($product = $command->read()) {
+          $file = false;
+          $process++;
+          $path = $this->getPath($product['catalog_id']);//путь
+          $fullPath = Yii::getAlias('@shop/web/images/product/' . $path);//полный путь
+          $imageUrl = $product['image'];
+          $ext = explode('.', $imageUrl);
+          $ext = $ext[count($ext) - 1];
+          $name = preg_replace('/[^\d]/', '', microtime()). '.' . $ext; // Название файла
+          $update = ['image_download_count' => $product['image_download_count'] + 1];
+          try {
+             //пробуем достать фото
+              $file = file_get_contents($imageUrl);
+          } catch (\Exception $e) {
+              echo $e->getMessage() . "\n";
+          }
+          if ($file) {
+              try {
+                  $img = (new Image($file))
+                      ->bestFit($size, $size)
+                      ->saveAs($fullPath . $name);
+                  $update['image'] = $path . $name;
+                  $downloads++;
+                  //запись
+                  Yii::$app->db->createCommand()->update(
+                      'cw_product',
+                      $update,
+                      ['id' =>$product['id']]
+                  )->execute();
+              } catch (\Exception $e) {
+                  echo $e->getMessage() . "\n";
+                  $error++;
+              }
+          } else {
+              $skip++;
+          }
+
+          if (time() > $startTime + $processTime * 60) {
+              echo 'Interrupted due to time limit '. $processTime . " minutes\n";
+              break;
+          }
+      }
+      echo 'Product Images ends at '.date('Y-m-d H:i:s', time()). ' processed '.$process.' downloaded '.
+              $downloads. ' skipped ' . $skip. ($error ? ' errors ' . $error : '') . "\n";
+  }
+
+
+    /**
+     * путь для фото продукта
+     * @param $id
+     * @return mixed
+     */
+  private function getPath($id)
+  {
+      if (!isset($this->catalogs[$id])) {
+          $catalog = CatalogStores::findOne($id);
+          $this->catalogs[$id] = ($catalog ? $catalog->cpa_link_id : $id).'/'.$id.'/';
+          if($catalog) {
+              $this->catalogs[$id] = $catalog->cpaLink->affiliate_id . '/' . $catalog->cpaLink->id . '/';
+          } else {
+              $this->catalogs[$id] = $id.'/'.$id.'/';
+          }
+          $path = Yii::getAlias('@shop/web/images/product/' . $this->catalogs[$id]);
+          if (!file_exists($path)) {
+              mkdir($path, '0777', true);
+          }
+      }
+      return $this->catalogs[$id];
   }
 
     protected function deletePath($path)
