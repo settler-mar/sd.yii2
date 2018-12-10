@@ -232,17 +232,19 @@ class Product extends \yii\db\ActiveRecord
     $article = (string)$product['id'];
     $productDb = null;
     $productDb = $product['check_unique'] ?
-        self::find([
+        self::find()->where([
             'cpa_id' => $product['cpa_id'],
             'store_id' => $product['store_id'],
             'article' => $article
         ])->one()
         : false;
 
-    $product['categories'] = explode('/', (string) $product['categoryId']);
+    $product['categories'] = isset($product['categories']) ? $product['categories'] :
+        explode('/', (string) $product['categoryId']);
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
-    if (!$productDb || ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
+    if (!$productDb || !$productDb->modified_time ||
+        ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
       //всё остальное, если продукта нет или дата модификации продукта больше
 
       $currency = isset($product['currencyId']) ? (string)$product['currencyId'] : $store['currency'];
@@ -277,7 +279,7 @@ class Product extends \yii\db\ActiveRecord
       $productDb->available = isset($product['available']) ? $product['available'] : 1;
       $productDb->currency = $currency;
       $productDb->description = isset($product['description']) ? (string)$product['description'] : null;
-      $productDb->modified_time = date('Y-m-d H:i:s', (int)$product['modified_time']);
+      $productDb->modified_time = isset($product['modified_time']) ? date('Y-m-d H:i:s', (int)$product['modified_time']) : null;
       $productDb->name = $productName;
       $productDb->old_price = $productPriceOld;
       $productDb->price = $productPrice;
@@ -398,6 +400,7 @@ class Product extends \yii\db\ActiveRecord
       //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
       foreach ($categories as $index => $category) {
         $cat = null;
+        $category = trim($category);
         $cat = $this->productCategory($category, $parent);
         if ($cat && !empty($cat['id'])) {
           $result[] = (string)$cat['id'];

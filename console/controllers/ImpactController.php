@@ -22,6 +22,7 @@ class ImpactController extends Controller
     protected $delimiter = "\t";
     protected $config;
     protected $refresh_csv;
+    protected $error = false;
 
 
     public function init()
@@ -107,7 +108,7 @@ class ImpactController extends Controller
                     }
 
                     $catalog_db->date_download = date("Y-m-d H:i:s", strtotime((string) $catalogItem->lastUpdated));
-                    $catalog_db->csv = $catalog['csv_link'];
+                    $catalog_db->csv = (string) $catalogItem->location;
 
                     $catalog_db->save();
                 }
@@ -152,7 +153,8 @@ class ImpactController extends Controller
         $service = new Impact();
 
         $links = CatalogStores::find()
-
+            ->from(CatalogStores::tableName(). ' cat')
+            ->innerJoin(Cpalink::tableName() . ' cpalink', 'cpalink.id = cat.cpa_link_id')
             ->where([
                 'and',
                 'active=' . CatalogStores::CATALOG_STORE_ACTIVE_YES,
@@ -162,7 +164,7 @@ class ImpactController extends Controller
                     ['date_import' => null],
                     ['product_count' => null],
                 ],
-                ['cpa_link_id' => $this->cpaLink->id]
+                ['cpalink.cpa_id' => $this->cpaId]
             ])->all();
 
         if (!$links) {
@@ -174,7 +176,9 @@ class ImpactController extends Controller
             $csv = $service->getCatalog($link->csv, $this->refresh_csv);
             echo "Catalog " . $link->id . ":" . $link->name . " from CpaLink " . $link->cpa_link_id . "\n";
             $link->product_count = $this->writeCatalog($csv, $link);
-            $link->date_import = date('Y-m-d H:i:s', $dateUpdate);
+            if (!$this->error) {
+                $link->date_import = date('Y-m-d H:i:s', $dateUpdate);
+            }
             $link->save();
             if ($this->refresh_csv) {
                 $service->unlink($link->csv);
@@ -197,7 +201,7 @@ class ImpactController extends Controller
             if (($handle = fopen($txt, "r")) !== false) {
                 $headers = fgetcsv($handle, 0, $delimiter);
 
-                $photoPath = $this->cpaLink->affiliate_id . '/' . $catalog->id . '/';
+                $photoPath = $catalog->cpaLink->affiliate_id . '/' . $catalog->id . '/';
                 $catalogCount = Product::find()->where(['catalog_id' => $catalog->id])->count();
                 $store = $catalog->cpaLink->store->toArray();
                 $store_id = $store['uid'];
@@ -212,11 +216,43 @@ class ImpactController extends Controller
                         //таких немного, можно пропустить
                         continue;
                     }
-                    $product = array_combine($headers, $row);
+                    $prod = array_combine($headers, $row);
                     $count++;
 
-                    d($product);
+                    if ($count == 1 && !$this->checkLanguage((string)($prod['Product Name']))) {
+                        d('language is not allowed');
+                        break;
+                    }
+                    $product['id'] = $prod['Unique Merchant SKU'];
+                    $product['available'] = (string)$prod['Stock Availability'] = 'Y' ? 1 : 0; //??
+                    //$product['params_original'] = isset($product['param']) ? $product['param'] : null;
+                    $product['cpa_id'] = $this->cpaId;
+                    $product['catalog_id'] = $catalog->id;
+                    $product['store_id'] = $store_id;
+                    $product['photo_path'] = $photoPath;
+                    $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
 
+                    $product['modified_time'] = strtotime($catalog->date_download);
+                    //$product['currencyId'] = $prod['last_updated'];// todo
+                    $product['name'] = (string) $prod['Product Name'];
+                    $product['price'] = (float) $prod['Current Price'];
+                    $product['oldprice'] = (float) $prod['Original Price'];
+                    $product['categories'] = explode('>',(string) $prod['Category']);
+                    $product['description'] = (string) $prod['Product Description'];
+                    $product['image'] = (string) $prod['Image URL'];
+                    $product['vendor'] = (string) $prod['Manufacturer'];
+                    $product['url'] = (string) $prod['Product URL'];
+                    $product['params_original'] = false;
+
+                    $result = null;
+
+                    $result = Product::addOrUpdate($product, $store);
+
+                    if ($result['error']) {
+                        d($result['product']->errors);
+                    }
+                    $insert += $result['insert'];
+                    $error += $result['error'];
                     if ($count % 100 == 0) {
                         if ($start_mem < memory_get_peak_usage()) {
                             gc_collect_cycles();
@@ -224,9 +260,6 @@ class ImpactController extends Controller
                             echo "    memory usage " . number_format(memory_get_peak_usage()) . "\n";
                         }
                         echo date('Y-m-d H:i:s', time()) . ' ' . $count . "\n";
-                    }
-                    if ($count>10) {
-                        break;
                     }
                 }
                 fclose($handle);
@@ -247,8 +280,14 @@ class ImpactController extends Controller
                 d('File not found. ' . $txt);
             }
         } catch (\Exception $e) {
+            $this->error  = true;
             d('Ошибка при загрузке файла ' . $txt . ' ' . $e->getMessage());
         }
         return $count;
+    }
+
+    private function checkLanguage($string)
+    {
+        return true;
     }
 }
