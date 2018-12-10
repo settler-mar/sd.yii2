@@ -17,7 +17,10 @@ class Impact
         }
     }
 
-
+    /**
+     * список файлов каталога
+     * @return \SimpleXMLElement
+     */
     public function getCatalogList()
     {
         $file = $this->getFtpFile('catalogs_info_file.xml');
@@ -28,9 +31,15 @@ class Impact
         }
     }
 
-    public function getCatalog($file)
+    /**
+     * получение каталога
+     * @param $file
+     * @param bool $refresh
+     * @return string
+     */
+    public function getCatalog($file, $refresh = true)
     {
-        $archive = $this->getFtpFile($file);
+        $archive = $this->getFtpFile($file, $refresh);
         $data = gzfile($archive);
         $archiveArray = explode('.', $archive);
         $newName = implode('.', array_splice($archiveArray, 0, count($archiveArray) -1));
@@ -38,14 +47,35 @@ class Impact
         return $newName;
     }
 
-
-    private function getFtpFile($file)
+    /**
+     * удаление архива и файла каталога
+     * @param $file
+     */
+    public function unlink($file)
     {
-        $connection = ftp_connect($this->config['ftp_server']);
-        $login_result = ftp_login($connection, $this->config['ftp_login'], $this->config['ftp_password']);
         $fileNameArray = array_diff(explode('/', $file), ['']);
         $localName = Yii::getAlias('@runtime/' . implode('_', $fileNameArray));
+        unlink($localName);
+        $archiveArray = explode('.', $localName);
+        $newName = implode('.', array_splice($archiveArray, 0, count($archiveArray) -1));
+        unlink($newName);
+    }
 
+
+    /**
+     * @param $file
+     * @return bool|string
+     */
+    private function getFtpFile($file, $refresh = true)
+    {
+        $fileNameArray = array_diff(explode('/', $file), ['']);
+        $localName = Yii::getAlias('@runtime/' . implode('_', $fileNameArray));
+        if (!$refresh && file_exists($localName)) {
+            return $localName;
+        }
+
+        $connection = ftp_connect($this->config['ftp_server']);
+        $login_result = ftp_login($connection, $this->config['ftp_login'], $this->config['ftp_password']);
         if (ftp_get($connection, $localName, $file, FTP_BINARY)) {
             d('downoaded ' . $file);
         } else {

@@ -574,6 +574,8 @@ class AdmitadController extends Controller
     $admitad = new Admitad($this->config);
 
     $csvLinks = CatalogStores::find()
+        ->from(CatalogStores::tableName(). ' cat')
+        ->innerJoin(Cpalink::tableName() . ' cpalink', 'cpalink.id = cat.cpa_link_id')
         ->where([
             'and',
             'active=' . CatalogStores::CATALOG_STORE_ACTIVE_YES,
@@ -582,7 +584,8 @@ class AdmitadController extends Controller
                 '`date_import`<`date_download`',
                 ['date_import' => null],
                 ['product_count' => null],
-            ]
+            ],
+            ['cpalink.cpa_id' => $this->cpa_id]
         ])->all();
 
     if (!$csvLinks) {
