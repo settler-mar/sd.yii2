@@ -21,12 +21,15 @@ class Impact
      * список файлов каталога
      * @return \SimpleXMLElement
      */
-    public function getCatalogList()
+    public function getCatalogList($refresh = true)
     {
-        $file = $this->getFtpFile('catalogs_info_file.xml');
+        $file = $this->getFtpFile('catalogs_info_file.xml', $refresh);
         if ($file) {
             $content = file_get_contents($file);
             $xml = simplexml_load_string($content);
+            if ($refresh) {
+                unlink($file);
+            }
             return $xml;
         }
     }
@@ -40,9 +43,12 @@ class Impact
     public function getCatalog($file, $refresh = true)
     {
         $archive = $this->getFtpFile($file, $refresh);
-        $data = gzfile($archive);
         $archiveArray = explode('.', $archive);
         $newName = implode('.', array_splice($archiveArray, 0, count($archiveArray) -1));
+        if (!$refresh && file_exists($newName)) {
+            return $newName;
+        }
+        $data = gzfile($archive);
         file_put_contents($newName, $data);
         return $newName;
     }
@@ -53,6 +59,7 @@ class Impact
      */
     public function unlink($file)
     {
+        return false;
         $fileNameArray = array_diff(explode('/', $file), ['']);
         $localName = Yii::getAlias('@runtime/' . implode('_', $fileNameArray));
         unlink($localName);

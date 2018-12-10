@@ -1168,6 +1168,7 @@ class Stores extends \yii\db\ActiveRecord
           $db_store->displayed_cashback = isset($store['cashback'])? $store['cashback'] : '';
           $db_store->is_active = isset($store['status']) ? $store['status'] : 1;
           $db_store->alias = !empty($store['alias']) ? $store['alias'] : null;
+          $db_store->hide_on_site = isset($store['hide_on_site']) ? $store['hide_on_site'] : 0;
           if ($db_store->save()) {
               $result = true;
           } else {
