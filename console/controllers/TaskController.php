@@ -9,8 +9,11 @@ use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\CategoriesStores;
+use frontend\modules\stores\models\LgCategoriesStores;
 use shop\modules\product\models\ProductsToCategory;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\category\models\LgProductsCategory;
 use yii\console\Controller;
 use yii;
 use frontend\modules\cache\models\Cache;
@@ -704,6 +707,9 @@ class TaskController extends Controller
       $db->createCommand('delete from  '.ProductsToCategory::tableName())->execute();
       $db->createCommand('alter table '.ProductsToCategory::tableName().' AUTO_INCREMENT = 1')->execute();
 
+      $db->createCommand('delete  from '.LgProductsCategory::tableName())->execute();
+      $db->createCommand('alter table '.LgProductsCategory::tableName().' AUTO_INCREMENT = 1')->execute();
+
       $db->createCommand('delete  from '.ProductsCategory::tableName())->execute();
       $db->createCommand('alter table '.ProductsCategory::tableName().' AUTO_INCREMENT = 1')->execute();
 
@@ -725,7 +731,7 @@ class TaskController extends Controller
       $this->deletePath($path);
   }
 
-  /*
+  /**
    * Закачка фото продуктов Каталога
    */
   public function actionProductImages()
@@ -788,6 +794,47 @@ class TaskController extends Controller
       }
       echo 'Product Images ends at '.date('Y-m-d H:i:s', time()). ' processed '.$process.' downloaded '.
               $downloads. ' skipped ' . $skip. ($error ? ' errors ' . $error : '') . "\n";
+  }
+
+    /**
+     * Перенос карегорий шопов в категории продуктов
+     */
+  public function actionCopyCategoryProduct()
+  {
+      $newCategories = [];
+      $categoriesStores = CategoriesStores::find()
+          ->select(['uid', 'name', 'route', 'parent_id'])
+          ->orderBy(['parent_id' => SORT_ASC])
+          ->all();
+      foreach ($categoriesStores as $category) {
+          $categoryProduct = ProductsCategory::find()->where(['route' => $category->route])->one();
+          if (!$categoryProduct) {
+              $categoryProduct = new ProductsCategory();
+          }
+          $categoryProduct->name = $category->name;
+          $categoryProduct->route = $category->route;
+          $categoryProduct->parent = $category->parent_id && isset($newCategories[$category->parent_id]) ?
+              $newCategories[$category->parent_id] : null;
+          if (!$categoryProduct->save()) {
+            d($categoryProduct->errors);
+          }
+          $newCategories[$category->uid] = $categoryProduct->id;
+
+          $languages = $category->translates;
+          foreach ($languages as $language) {
+              $productCategoryLanguage = LgProductsCategory::findOne([
+                  'category_id' => $categoryProduct->id,
+                  'language' =>$language->language
+              ]);
+              if (!$productCategoryLanguage) {
+                  $productCategoryLanguage = new LgProductsCategory();
+                  $productCategoryLanguage->category_id = $categoryProduct->id;
+                  $productCategoryLanguage->language = $language->language;
+                  $productCategoryLanguage->name = $language->name;
+                  $productCategoryLanguage->save();
+              }
+          }
+      }
   }
 
 

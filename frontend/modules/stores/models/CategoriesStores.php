@@ -151,6 +151,14 @@ class CategoriesStores extends \yii\db\ActiveRecord
         ->viaTable('cw_stores_to_categories', ['category_id' => 'uid']);
   }
 
+    /** переводы
+     * @return yii\db\ActiveQuery
+     */
+  public function getTranslates()
+  {
+      return $this->hasMany(LgCategoriesStores::className() , ['category_id' => 'uid']);
+  }
+
     /**
      * связанные категории купонов
      * @return $this
