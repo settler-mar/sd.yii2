@@ -4,6 +4,7 @@ use yii\db\Migration;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\product\models\CatalogStores;
 
 
 /**
@@ -23,40 +24,6 @@ class m181210_064526_CreateCpaImpactAndShop extends Migration
         $cpa->name = 'Impact';
         $cpa->save();
 
-        $store = new Stores();
-        $store->name = 'Impact';
-        $store->route = 'impact-com';
-        $store->url = 'https://impact.com/';
-        $store->currency = 'USD';
-        $store->settlement_currency = 'USD';
-        $store->percent = 50;
-        $store->hold_time =  30;
-        $store->displayed_cashback = 'до 10%';
-        $store->is_active = 1;
-        $store->hide_on_site = 1;//не показывать на сайте
-        if (!$store->save()) {
-            d($store->errors);
-        }
-
-        $cpaLink = new CpaLink();
-        $cpaLink->cpa_id = $cpa->id;
-        $cpaLink->stores_id = $store->uid;
-        $cpaLink->affiliate_id = 0;
-        $cpaLink->affiliate_link = '-';
-        if (!$cpaLink->save()) {
-            d($cpaLink->errors);
-        }
-
-        $cpaLink->affiliate_id = $cpaLink->id;
-        if (!$cpaLink->save()) {
-            d($cpaLink->errors);
-        }
-
-        $store->active_cpa = $cpaLink->id;
-        if (!$store->save()) {
-            d($store->errors);
-        }
-
     }
 
     /**
@@ -67,9 +34,16 @@ class m181210_064526_CreateCpaImpactAndShop extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        Stores::deleteAll(['route' => 'impact-com']);
-        Cpa::deleteAll(['name' => 'Impact']);
+        $cpa = Cpa::findOne(['name' => 'Impact']);
 
+        $cpaLinks = CpaLink::find()->select(['stores_id', 'id'])->where(['cpa_id' => $cpa->id])->asArray()->all();
+
+        CatalogStores::deleteAll(['cpa_link_id' => array_column($cpaLinks, 'id')]);
+        Stores::deleteAll(['uid' => array_column($cpaLinks, 'stores_id')]);
+
+        CpaLink::deleteAll(['cpa_id' => $cpa->id]);
+
+        $cpa->delete();
     }
 
     /*
