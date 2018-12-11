@@ -217,6 +217,11 @@ class ImpactController extends Controller
                         continue;
                     }
                     $prod = array_combine($headers, $row);
+                    $lang = Yii::$app->languageDetector->detect($prod['Description'] . $prod['Title']);
+                    if (!in_array($lang, ['en', 'ru'])) {
+                        //Пропускать только раздрешенные языки
+                        continue;
+                    }
                     $count++;
 
                     if ($count == 1 && !$this->checkLanguage((string)($prod['Product Name']))) {
@@ -237,7 +242,7 @@ class ImpactController extends Controller
                     $product['name'] = (string) $prod['Product Name'];
                     $product['price'] = (float) $prod['Current Price'];
                     $product['oldprice'] = (float) $prod['Original Price'];
-                    $product['categories'] = explode('>',(string) $prod['Category']);
+                    $product['categories'] = explode('>', (string) $prod['Category']);
                     $product['description'] = (string) $prod['Product Description'];
                     $product['image'] = (string) $prod['Image URL'];
                     $product['vendor'] = (string) $prod['Manufacturer'];
