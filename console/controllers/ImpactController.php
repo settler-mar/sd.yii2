@@ -154,11 +154,16 @@ class ImpactController extends Controller
                         continue;
                     }
                     $product = array_combine($headers, $row);
-                    $count++;
 
-                    d($product);
+                  d($product);
+                  $lang = Yii::$app->languageDetector->detect($product['Description'] . $product['Title']);
+                  if(!in_array($lang,['en','ru'])){
+                    //Пропускать только раздрешенные языки
+                    continue;
+                  }
 
-                    if ($count % 100 == 0) {
+                  $count++;
+                  if ($count % 100 == 0) {
                         if ($start_mem < memory_get_peak_usage()) {
                             gc_collect_cycles();
                             $start_mem = memory_get_peak_usage();
