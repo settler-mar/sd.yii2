@@ -23,6 +23,40 @@ class ImpactController extends Controller
     protected $config;
     protected $refresh_csv;
     protected $error = false;
+    protected $format = [];
+    protected $formats = [
+        'GOOGLE TXT' =>[
+            'fields' => [
+                'id' => ['out' => ['id']],
+                'name' => ['out' => ['title']],
+                'description' => ['out' => ['description']],
+                'price' => ['out' => ['sale_price', 'price'], 'float' => true],
+                'currencyId' => ['out' => ['sale_price', 'price'], 'chars' => true],
+                'oldprice' => ['out' => ['price'], 'float' => true],
+                'url' => ['out' => ['link']],
+                'vendor' => ['out' => ['brand']],
+                'image' => ['out' => ['image_link']],
+                'categories_string' => ['out' => ['google_product_category']],
+            ],
+            'params' => ['color', 'size', 'size_type', 'material', 'pattern', 'size_system',
+                'genger', 'age_group', 'adult', 'shipping_length', 'shipping_width', 'shipping_height'],
+        ],
+        'CUSTOM' =>[
+            'fields' => [
+                'id' => ['out' => ['SKU']],
+                'name' => ['out' => ['Title']],
+                'description' => ['out' => ['Description']],
+                'price' => ['out' => ['Price', 'Regular Price'], 'float' => true],
+                'currencyId' => ['out' => []],
+                'oldprice' => ['out' => ['Regular Price'], 'float' => true],
+                'url' => ['out' => ['Product URL']],
+                'vendor' => ['out' => ['Manufacturer']],
+                'image' => ['out' => ['Image URL']],
+                'categories_string' => ['out' => ['Category ID']],
+            ],
+            'params' => [],//['Condition'],
+        ],
+    ];
 
 
     public function init()
@@ -32,7 +66,7 @@ class ImpactController extends Controller
         }
 
         $this->config = isset(Yii::$app->params['products_import']) ? Yii::$app->params['products_import'] : false;
-        $this->refresh_csv = isset ($this->config['refresh_csv']) ? $this->config['refresh_csv'] : true;
+        $this->refresh_csv = isset($this->config['refresh_csv']) ? $this->config['refresh_csv'] : true;
 
         $cpa = Cpa::findOne(['name' => 'Impact']);
         $this->cpaId = $cpa ? $cpa->id : false;
@@ -90,7 +124,7 @@ class ImpactController extends Controller
             if (!$storeResult['result']) {
                 $errors++;
             } else {
-                if ((string) $catalogItem->format == 'IR') {
+                if ((string) $catalogItem->format != 'IR') {
                     $name = explode('.', basename((string) $catalogItem->location));
                     $catalogName = isset($name[0]) ? $name[0] : (string) $catalogItem->name;
 
@@ -105,6 +139,7 @@ class ImpactController extends Controller
                         $catalog_db->cpa_link_id = $storeResult['cpa_link']->id;
                         $catalog_db->name = $catalogName;
                         $catalog_db->active = 2;
+                        $catalog_db->format = (string) $catalogItem->format;
                     }
 
                     $catalog_db->date_download = date("Y-m-d H:i:s", strtotime((string) $catalogItem->lastUpdated));
@@ -173,6 +208,10 @@ class ImpactController extends Controller
         }
         foreach ($links as $link) {
             $dateUpdate = time();//запомнили дату обращения за каталогом
+            if (!isset($this->formats[$link->format])) {
+                ddd('There is not format for '.$link->format);
+            }
+            $this->format = $this->formats[$link->format];
             $csv = $service->getCatalog($link->csv, $this->refresh_csv);
             echo "Catalog " . $link->id . ":" . $link->name . " from CpaLink " . $link->cpa_link_id . "\n";
             $link->product_count = $this->writeCatalog($csv, $link);
@@ -217,39 +256,28 @@ class ImpactController extends Controller
                         continue;
                     }
                     $prod = array_combine($headers, $row);
-                    $lang = Yii::$app->languageDetector->detect($prod['Description'] . $prod['Title']);
-                    if (!in_array($lang, ['en', 'ru'])) {
+
+                    $count++;
+                    $product = $this->makeProduct($prod);
+                    $lang = Yii::$app->languageDetector->detect($product['name'].$product['description']);
+                    if (!in_array($lang, ['en', 'ru', 'de', 'da', 'fr', 'it', 'es', 'pl', 'no', 'ro', 'pt', 'sv'])) {
                         //Пропускать только раздрешенные языки
                         continue;
                     }
-                    $count++;
 
-                    if ($count == 1 && !$this->checkLanguage((string)($prod['Product Name']))) {
-                        d('language is not allowed');
-                        break;
-                    }
-                    $product['id'] = $prod['Unique Merchant SKU'];
-                    $product['available'] = (string)$prod['Stock Availability'] = 'Y' ? 1 : 0; //??
-                    //$product['params_original'] = isset($product['param']) ? $product['param'] : null;
+                    $product['available'] = 2;//(string)$prod['Stock Availability'] = 'Y' ? 1 : 0; //??
                     $product['cpa_id'] = $this->cpaId;
                     $product['catalog_id'] = $catalog->id;
                     $product['store_id'] = $store_id;
                     $product['photo_path'] = $photoPath;
                     $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
-
                     $product['modified_time'] = strtotime($catalog->date_download);
-                    //$product['currencyId'] = $prod['last_updated'];// todo
-                    $product['name'] = (string) $prod['Product Name'];
-                    $product['price'] = (float) $prod['Current Price'];
-                    $product['oldprice'] = (float) $prod['Original Price'];
-                    $product['categories'] = explode('>', (string) $prod['Category']);
-                    $product['description'] = (string) $prod['Product Description'];
-                    $product['image'] = (string) $prod['Image URL'];
-                    $product['vendor'] = (string) $prod['Manufacturer'];
-                    $product['url'] = (string) $prod['Product URL'];
-                    $product['params_original'] = false;
+                    $product['categories'] = isset($product['categories_string']) ?
+                        explode('>', (string) $product['categories_string']) : [];
 
                     $result = null;
+
+                    //ddd($prod, $product);
 
                     $result = Product::addOrUpdate($product, $store);
 
@@ -287,12 +315,44 @@ class ImpactController extends Controller
         } catch (\Exception $e) {
             $this->error  = true;
             d('Ошибка при загрузке файла ' . $txt . ' ' . $e->getMessage());
+            d($e->getFile(), $e->getLine());
         }
         return $count;
     }
 
-    private function checkLanguage($string)
+    protected function makeProduct($product)
     {
-        return true;
+        $out = [];
+        foreach ($this->format['fields'] as $param => $value) {
+            $out[$param] = null;
+            foreach ($value['out'] as $item) {
+                if (!empty($product[$item])) {
+                    if (!empty($value['float'])) {
+                        $out[$param] = (float)($product[$item]);
+                    } elseif (!empty($value['chars'])) {
+                        $out[$param] = preg_replace('/[^a-zA-Z]/', '', (string)$product[$item]);
+                    } else {
+                        $out[$param] = (string)($product[$item]);
+                    }
+                    continue;
+                }
+            }
+        }
+        $params = [];
+        $params_original = [];
+        foreach ($this->format['params'] as $paramName) {
+            if (!empty($product[$paramName])) {
+                $value = (string) $product[$paramName];
+                $value = strtolower($value)=='false' ? 0 : $value;
+                $value = strtolower($value) =='true' ? 1 : $value;
+                $params[$paramName] = [$value];
+                $params_original[] = $paramName.':'. $value;
+            }
+        }
+        $out['params'] = $params;
+        $out['params_original'] = empty($params_original) ? null : implode('|', $params_original);
+        return $out;
     }
+
+
 }
