@@ -2,59 +2,54 @@
     {% set products_store = store %}
 {% endif %}
 
-<div class="catalog_products_item hover-box ">
+<div class="catalog_products_item shop hover-box ">
     {% set url=product.url %}
     {% set product_url='/category/product/'~product.id %}
     {% set href_class = user_id ? '' : 'catalog_product_link' %}
+
+    {#для тестов#}
+    {% set old_price = (product.price * 1.28)  %}
     <div class="catalog_products_item_in">
         <div class="catalog_products_item_image">
             <a href="{{ product_url }}" target="_blank" class="">
-             <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+             <div>
+                 {% if product.price < old_price %}
+                     <span class="catalog_products_item_image-discount">
+                         {% set discount = (old_price - product.price / 100) %}
+                         -{{ discount }}%
+                     </span>
+                 {% endif %}
+                 <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+             </div>
+
             </a>
         </div>
         <div class="catalog_products_item_text">
-            <div class="catalog_products_item_title">
+            <div class="catalog_products_item_text_brand">
+                <a href="/category?vendor={{ product.vendor }}" target="_blank" class="">
+                    {{ product.vendor }}
+                </a>
+            </div>
+            <div class="catalog_products_item_text_title">
                 <a href="{{ product_url }}" target="_blank" class="">
                     {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
                 </a>
             </div>
-            <div class="catalog_products_item_info">
-                <div class="catalog_products_item_info_text scroll_box-item">
-                    {% if product.description %}
-                    <div class=" scroll_box-content auto_hide_control">
-                        <div class="catalog_products_item_description scroll_box-text max_text_hide max_text_hide">
-                            {{ product.description }}
-                        </div>
-                        <a class="blue scroll_box-show_more">{{ t('common', 'read_all_topic')|raw }}</a>
-                    </div>
-                    {% endif %}
-                    {#<div class=catalog_products_item_buy">#}
-                        {#<span class="catalog_products_item_info_text_title">#}
-                            {#{{ t('main', 'product_bought') }}:#}
-                        {#</span>#}
-                        {#{{ t('main', 'product_buy_count_{buy, plural, few{timesfew} other{timesother} }_at_{time}', {'buy': product.buy, 'time': _local_date(product.last_buy, t('dictionary', 'date_format_middle'))})|raw }}#}
-                    {#</div>#}
-                    <div class="catalog_products_item_price">
-                        <span class="catalog_products_item_info_text_title"> {{ t('main', 'product_price') }}:</span> {{ product.price }} {{ t('main', product.currency) }}
-                    </div>
-                    {{ cashback(products_store,"product") | raw }}
-                </div>
-                {#<div class="catalog_products_item_info_actions">#}
 
-                        {#{% set product_name = str_replace('"', '',product.name) ~ '&nbsp;кэшбэк&nbsp;' ~ products_store.displayed_cashback %}#}
-                        {#<div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>#}
-                        {#<div class="share42init accauntSoc accauntSoc_32"#}
-                             {#data-image="{% if 'http' in product.image %}/{% else %}https://secretdiscounter.ru/images/products/{% endif %}{{ product.image }}"#}
-                             {#data-title="{{ product_name|raw }}"#}
-                             {#data-description="{{ this.description }}"#}
-                             {#data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"#}
-                             {#data-icon-type="svg"#}
-                             {#data-icon-size=24#}
-                        {#>#}
-                        {#</div>#}
-                        {#<a target="_blank" rel="noopener noreferrer nofollow" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>#}
-                {#</div>#}
+        </div>
+        <div class="catalog_products_item_prices">
+            <div class="catalog_products_item_price">
+                {% if product.price < old_price %}
+                    <div class="catalog_products_item_price-old">
+                        {{ old_price }}<span class="catalog_products_item_currency">{{ t('main', product.currency) }}</span>
+                    </div>
+                {% endif %}
+                {{ product.price }}<span class="catalog_products_item_currency">{{ t('main', product.currency) }}</span>
             </div>
+            <div class="catalog_products_item_cashback">
+                {{ product.store.displayed_cashback ? ('+ '~t('main', 'cashback')~'<br>'~product.store.displayed_cashback)|raw : '' }}
+            </div>
+
         </div>
     </div>
 </div>

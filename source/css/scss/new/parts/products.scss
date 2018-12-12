@@ -1,6 +1,56 @@
 $media1: $laptop_min;
 $media2: $tablets;
 
+@mixin shop {
+  width: 28%;
+
+  .catalog_products_item {
+
+    &_in {
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    &_image img {
+      max-height: 250px;
+    }
+    &_text {
+      margin: 0;
+      padding: 5px;
+      text-align: left;
+
+
+      &_title {
+        a {
+          color: #384749;
+        }
+      }
+      &_brand {
+        a {
+          color: $text_color;
+        }
+      }
+
+      a {
+        text-decoration: none;
+        font-size: 16px;
+      }
+    }
+
+    &_prices {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      padding: 5px;
+    }
+  }
+
+}
+
+
+
 .catalog_products {
 
   &_item {
@@ -89,7 +139,7 @@ $media2: $tablets;
         margin-left: 0;
       }
     }
-    &_title {
+    &_title,&_brand {
       text-align: left;
       font-size: 18px;
       text-decoration: underline;
@@ -170,6 +220,15 @@ $media2: $tablets;
       box-shadow: inherit;
       margin-right: 10px;
     }
+
+    &_catalog {
+
+    }
+
+    &.shop {
+      @include shop;
+    }
+
   }
 
   &_h1_question svg{
