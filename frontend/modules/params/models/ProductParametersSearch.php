@@ -53,6 +53,9 @@ class ProductParametersSearch extends ProductParameters
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 200,
+            ],
         ]);
 
         $this->load($params);

@@ -71,7 +71,10 @@ class DefaultController extends SdController
         if ($this->category) {
             //есть категория
             //категории товара в т.ч. дочерние
-            $allCategories = ProductsCategory::childsId($this->category->id);
+            //$allCategories = ProductsCategory::childsId($this->category->id);
+            //так оптимальнее все дочерние
+            $categoryTree = ProductsCategory::tree();
+            $allCategories =  ProductsCategory::getCategoryChilds($categoryTree, $this->category->id);
             $this->params['breadcrumbs'][] = [
                 'label' => $this->category->name,
                 'url' => ('/category/' . $this->category->route),

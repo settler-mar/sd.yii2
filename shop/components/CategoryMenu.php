@@ -27,15 +27,16 @@ class CategoryMenu extends Widget
     $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
         Yii::$app->controller->category->id : false;
 
-    $cache = Yii::$app->cache;
-    $out = $cache->getOrSet('product_category_menu', function () use ($current) {
-        $categoryTree = ProductsCategory::tree(['counts' => true, 'current' => $current, 'empty' => false]);
-        return $this->render('category_menu.twig', [
-            'categories' => $categoryTree,
-            'current' => $current,
-        ]);
-    });
-    return $out;
+    $categoryTree = ProductsCategory::tree([
+        'counts' => true,
+        'current' => $current,
+        'empty' => false,
+        'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+    ]);
+    return $this->render('category_menu.twig', [
+        'categories' => $categoryTree,
+        'current' => $current,
+    ]);
 
   }
 }

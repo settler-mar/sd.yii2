@@ -227,21 +227,21 @@ class ProductsCategory extends \yii\db\ActiveRecord
             $cacheName,
             function () use ($params, $language) {
                 $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
-                    ->where(['active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
-                    //->select(['id', 'name', 'parent', 'active'])
                     ->asArray();
                 if (isset($params['where'])) {
-                    $categoryArr->andWhere($params['where']);
+                    $categoryArr->where($params['where']);
                 };
                 $categoryArr = $categoryArr->all();
                 $current = isset($params['current']) ? $params['current'] : false;
                 $categories = static::childsCategories($categoryArr, false, $current);
 
-                foreach ($categories as &$rootCategory) {
-                    //пока количество для корневых категорий
-                    $rootCategory['count'] = ProductsToCategory::find()
-                        ->where(['category_id' => $rootCategory['childs_ids']])
-                        ->count();
+                if ($categories && !empty($params['counts'])) {
+                    foreach ($categories as &$rootCategory) {
+                        //пока количество для корневых категорий
+                        $rootCategory['count'] = ProductsToCategory::find()
+                            ->where(['category_id' => $rootCategory['childs_ids']])
+                            ->count();
+                    }
                 }
                 return $categories;
             },
