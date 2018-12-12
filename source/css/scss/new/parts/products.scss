@@ -12,8 +12,33 @@ $media2: $tablets;
       height: 100%;
     }
 
-    &_image img {
-      max-height: 250px;
+    &_image {
+
+      &-wrap {
+        position: relative;
+      }
+      &-discount {
+        position: absolute;
+        color: #fff;
+        font-size: 22px;
+        background: red;
+        display: block;
+        top: 0;
+        left: 0;
+        padding: 0 5px;
+        border-radius: 2px;
+        font-weight: bold;
+        a {
+          text-decoration: none;
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+
+      img {
+        max-height: 250px;
+      }
     }
     &_text {
       margin: 0;
@@ -23,12 +48,13 @@ $media2: $tablets;
 
       &_title {
         a {
-          color: #384749;
+          color: #5C5C5C;
         }
       }
       &_brand {
         a {
           color: $text_color;
+          font-weight: bold;
         }
       }
 
@@ -44,6 +70,45 @@ $media2: $tablets;
       flex-wrap: nowrap;
       justify-content: space-between;
       padding: 5px;
+    }
+
+    &_price {
+      font-weight: bold;
+      font-size: 22px;
+
+      &_currency {
+        //font-weight: normal;
+        font-size: 0.6em;
+      }
+      &-old {
+        font-size: 14px;
+        opacity: 0.6;
+        position: relative;
+        line-height: 1;
+        text-align: left;
+
+        &:after {
+          content: " ";
+          position: absolute;
+          display: block;
+          width: 80%;
+          left: 0;
+          top: 50%;
+          border-bottom: 1px solid $text_color;
+          opacity: 0.6;
+        }
+      }
+    }
+    &_cashback {
+      color: red;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &-title {
+        text-transform: uppercase;
+      }
     }
   }
 
