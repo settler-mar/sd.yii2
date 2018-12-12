@@ -72,6 +72,8 @@ class AdminCategoryController extends Controller
     $parentsFilter = ProductsCategory::forFilter(['where' => ['in', 'id', $childs]]);
     asort($parentsFilter);
 
+    $catsAll = ProductsCategory::tree();
+
 
     //ddd($categoriesFilter);
     /*foreach ($parents as $parent) {
@@ -113,6 +115,18 @@ class AdminCategoryController extends Controller
                   $out .= '('.implode(';', $synonyms).')';
               }*/
               return $out;
+            },
+            'childs'=> function ($model) use ($catsAll) {
+                $childs = ProductsCategory::getCategoryChilds($catsAll, $model->id, 'childs');
+                $out = [];
+                if (count($childs)) {
+                    foreach ($childs as $child) {
+                        $out[] = '<a href="/admin-category/product/update/id:' . $child['id'] . '">' .
+                            '<span class="' . ProductsCategory::activeClass($child['active']) . '">' .
+                            $child['name'] . '</span></a>';
+                    }
+                }
+                return implode(';', $out);
             }
         ],
         'parents' => ['0' => 'Нет'] + $parentsFilter,

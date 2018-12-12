@@ -427,20 +427,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
         return $options;
     }
 
-    public static function getCategoryChilds($categories, $id)
+        public static function getCategoryChilds($categories, $id, $param = 'childs_ids')
     {
         foreach ($categories as $category) {
             if ($category['id'] == $id) {
-                return $category['childs_ids'];
+                return $category[$param];
             }
             if (isset($category['childs'])) {
-                $childs =  self::getCategoryChilds($category['childs'], $id);
+                $childs =  self::getCategoryChilds($category['childs'], $id, $param);
                 if ($childs) {
                     return $childs;
                 }
             }
         }
-
     }
 
     /**
