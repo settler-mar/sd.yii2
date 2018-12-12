@@ -5,6 +5,8 @@ namespace frontend\modules\product\controllers;
 use shop\modules\category\models\ProductsCategory;
 use shop\modules\category\models\LgProductsCategory;
 use shop\modules\category\models\ProductsCategorySearch;
+use shop\modules\product\models\Product;
+use shop\modules\product\models\ProductsToCategory;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -190,11 +192,21 @@ class AdminCategoryController extends Controller
 
       return $this->redirect(['index']);
     } else {
+      $categoriesTree = ProductsCategory::tree();
+      $childsId = ProductsCategory::getCategoryChilds($categoriesTree, $model->id);
+
+      $products = Product::find()
+        ->from(Product::tableName() . ' p')
+        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+        ->andWhere(['ptc.category_id' => $childsId])
+        ->limit(5)->all();
+
       return $this->render('update.twig', [
           'model' => $model,
           'activeFilter' => $this->activeFilter(),
           'data' => ProductsCategory::categoriesJson($id),
           'languages' => $languages,
+          'products' => $products,
       ]);
     }
   }

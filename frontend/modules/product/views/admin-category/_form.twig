@@ -1,73 +1,82 @@
 {{ use('/yii/widgets/ActiveForm') }}
 {{ use('/yii/web/JqueryAsset') }}
 <div class="products-category-form">
-  {% set form = active_form_begin() %}
+  <section class="margin">
+    <div class="row">
+      <div class="col-sm-12">
 
-  {#{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}#}
+        <div class="product-parameters-form">
+          {% set form = active_form_begin() %}
 
-  {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
+          {#{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}#}
 
-  <div class="form-group field-productscategory-synonym">
-    <label class="control-label" for="productscategory-synonym">Родительская категория</label>
-    <input class="category_tree_input" id="productscategory-parent_hidden" type="hidden" name="ProductsCategory[parent]" value="{{ model.parent }}" data-root="Корень"/>
-    <div class="help-block"></div>
-  </div>
+          {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
 
-
-  <div class="form-group field-productscategory-synonym">
-    <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
-    <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
-    <div class="help-block"></div>
-  </div>
-
-  {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
-
-  <h3>Локальная информация</h3>
-  <div class="tarif_select_blk">
-    <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
-           name="tabs_open">
-      {% for k,lang in languages %}
-        <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
-               name="tabs_open">
-      {% endfor %}
-    <ul class="tab_control">
-      <li class="tab_butt_ru-RU">
-        <label for="option_tab_ru-RU">
-          <img src="/images/flag/ru-RU.svg" height="12px">
-          Русский
-        </label>
-      </li>
-        {% for k,lang in languages %}
-          <li class="tab_butt_{{ k }}">
-            <label for="option_tab_{{ k }}">
-              <img src="/images/flag/{{ k }}.svg" height="12px">
-                {{ lang.name }}
-            </label>
-          </li>
-        {% endfor %}
-    </ul>
-
-    <div class="content_tab">
-      <div class="cpa_box tab_ru-RU">
-          {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
-      </div>
-        {% for k,lang in languages %}
-          <div class="cpa_box tab_{{ k }}">
-              {{ form.field(lang.model, 'name').textInput({'maxlength':true})|raw }}
+          <div class="form-group field-productscategory-synonym">
+            <label class="control-label" for="productscategory-synonym">Родительская категория</label>
+            <input class="category_tree_input" id="productscategory-parent_hidden" type="hidden" name="ProductsCategory[parent]" value="{{ model.parent }}" data-root="Корень"/>
+            <div class="help-block"></div>
           </div>
-        {% endfor %}
+
+
+          <div class="form-group field-productscategory-synonym">
+            <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
+            <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
+            <div class="help-block"></div>
+          </div>
+
+          {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
+
+          <h3>Локальная информация</h3>
+          <div class="tarif_select_blk">
+            <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
+                   name="tabs_open">
+              {% for k,lang in languages %}
+                <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                       name="tabs_open">
+              {% endfor %}
+            <ul class="tab_control">
+              <li class="tab_butt_ru-RU">
+                <label for="option_tab_ru-RU">
+                  <img src="/images/flag/ru-RU.svg" height="12px">
+                  Русский
+                </label>
+              </li>
+                {% for k,lang in languages %}
+                  <li class="tab_butt_{{ k }}">
+                    <label for="option_tab_{{ k }}">
+                      <img src="/images/flag/{{ k }}.svg" height="12px">
+                        {{ lang.name }}
+                    </label>
+                  </li>
+                {% endfor %}
+            </ul>
+
+            <div class="content_tab">
+              <div class="cpa_box tab_ru-RU">
+                  {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+              </div>
+                {% for k,lang in languages %}
+                  <div class="cpa_box tab_{{ k }}">
+                      {{ form.field(lang.model, 'name').textInput({'maxlength':true})|raw }}
+                  </div>
+                {% endfor %}
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+          </div>
+          {{ active_form_end() }}
+        </div>
+      </div>
     </div>
-  </div>
-
-
+  </section>
+  {% set product_category = model.id %}
+  {{ include('@frontend/modules/params/views/admin/products.twig') }}
 </div>
 
-
-  <div class="form-group">
-    <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
-  </div>
-  {{ active_form_end() }}
-</div>
 
 <style>
   ul.tab_control li label {
