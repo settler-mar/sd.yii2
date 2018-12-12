@@ -39,21 +39,21 @@
                     </div>
                     {{ cashback(products_store,"product") | raw }}
                 </div>
-                <div class="catalog_products_item_info_actions">
+                {#<div class="catalog_products_item_info_actions">#}
 
-                        {% set product_name = str_replace('"', '',product.name) ~ '&nbsp;кэшбэк&nbsp;' ~ products_store.displayed_cashback %}
-                        <div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>
-                        <div class="share42init accauntSoc accauntSoc_32"
-                             data-image="{% if 'http' in product.image %}/{% else %}https://secretdiscounter.ru/images/products/{% endif %}{{ product.image }}"
-                             data-title="{{ product_name|raw }}"
-                             data-description="{{ this.description }}"
-                             data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
-                             data-icon-type="svg"
-                             data-icon-size=24
-                        >
-                        </div>
-                        <a target="_blank" rel="noopener noreferrer nofollow" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>
-                </div>
+                        {#{% set product_name = str_replace('"', '',product.name) ~ '&nbsp;кэшбэк&nbsp;' ~ products_store.displayed_cashback %}#}
+                        {#<div class="coupons-list_item-logo-info-share-header">{{ t('main','share_width_friends')|raw }}:</div>#}
+                        {#<div class="share42init accauntSoc accauntSoc_32"#}
+                             {#data-image="{% if 'http' in product.image %}/{% else %}https://secretdiscounter.ru/images/products/{% endif %}{{ product.image }}"#}
+                             {#data-title="{{ product_name|raw }}"#}
+                             {#data-description="{{ this.description }}"#}
+                             {#data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"#}
+                             {#data-icon-type="svg"#}
+                             {#data-icon-size=24#}
+                        {#>#}
+                        {#</div>#}
+                        {#<a target="_blank" rel="noopener noreferrer nofollow" class="btn catalog_products_item_info_actions_button {{ href_class }}" href="{{ url }}">{{ t('main', 'product_buy') }}</a>#}
+                {#</div>#}
             </div>
         </div>
     </div>

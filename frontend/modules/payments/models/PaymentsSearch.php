@@ -64,7 +64,7 @@ class PaymentsSearch extends Payments
             ]
           ],
           'pagination' => [
-            'pageSize' => 40,
+            'pageSize' => 200,
           ],
         ]);
 
