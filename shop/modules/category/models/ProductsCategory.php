@@ -226,7 +226,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $out = $cache->getOrSet(
             $cacheName,
             function () use ($params, $language) {
-                $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active'])
+                $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
                     ->where(['active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
                     //->select(['id', 'name', 'parent', 'active'])
                     ->asArray();
@@ -235,7 +235,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
                 };
                 $categoryArr = $categoryArr->all();
                 $current = isset($params['current']) ? $params['current'] : false;
-                $categories = static::childsCategories($categoryArr, null, $current);
+                $categories = static::childsCategories($categoryArr, false, $current);
 
                 foreach ($categories as &$rootCategory) {
                     //пока количество для корневых категорий
@@ -255,9 +255,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         $out = [];
         foreach ($arr as $cat) {
-            if ($cat['parent'] == $parent) {
+            if ($cat['parent'] == ($parent ? $parent['id'] : null)) {
+                $cat['full_route'] = $parent ? $parent['full_route'].'/'.$cat['route'] : $cat['route'];
                 $cat['current'] = $cat['id'] == $current;
-                $cat['childs'] = static::childsCategories($arr, $cat['id'], $current);
+                $cat['childs'] = static::childsCategories($arr, $cat, $current);
                 $cat['childs_ids'] = [$cat['id']];//в дочерние ид впишем свой ид
                 if ($cat['childs']) {
                     foreach ($cat['childs'] as $child) {

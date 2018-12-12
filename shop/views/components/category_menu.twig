@@ -9,7 +9,7 @@
                         {% endif %}
                     </span>
                 {% else %}
-                    <a class="shops-category-menu_link" href="/category/{{ category.route }}">{{ category.name|raw }} ({{ category.count }})
+                    <a class="shops-category-menu_link" href="/category/{{ category.full_route }}">{{ category.name|raw }} ({{ category.count }})
                         {% if category.childs|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}
