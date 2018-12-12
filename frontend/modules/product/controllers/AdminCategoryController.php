@@ -192,13 +192,11 @@ class AdminCategoryController extends Controller
 
       return $this->redirect(['index']);
     } else {
-      $categoriesTree = ProductsCategory::tree();
-      $childsId = ProductsCategory::getCategoryChilds($categoriesTree, $model->id);
 
       $products = Product::find()
         ->from(Product::tableName() . ' p')
         ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
-        ->andWhere(['ptc.category_id' => $childsId])
+        ->andWhere(['ptc.category_id' => $model->id])
         ->limit(5)->all();
 
       return $this->render('update.twig', [
