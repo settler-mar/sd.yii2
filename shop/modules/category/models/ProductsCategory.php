@@ -22,6 +22,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
     const PRODUCT_CATEGORY_ACTIVE_YES = 1;
     const PRODUCT_CATEGORY_ACTIVE_WAITING = 2;
 
+    public $languagesArray;
+
     /**
      * @inheritdoc
      */
@@ -92,6 +94,14 @@ class ProductsCategory extends \yii\db\ActiveRecord
             $this->route = Yii::$app->help->str2url($this->name);
         }
         return parent::beforeValidate();
+    }
+
+    /**
+     * @return yii\db\ActiveQuery
+     */
+    public function getLanguages()
+    {
+        return $this->hasMany(LgProductsCategory::className(), ['category_id' => 'id']);
     }
 
     /**
@@ -216,9 +226,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $out = $cache->getOrSet(
             $cacheName,
             function () use ($params, $language) {
-                $categoryArr = self::find()
+                $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active'])
                     ->where(['active' => [self::PRODUCT_CATEGORY_ACTIVE_YES, self::PRODUCT_CATEGORY_ACTIVE_WAITING]])
-                    ->select(['id', 'name', 'parent', 'active'])
+                    //->select(['id', 'name', 'parent', 'active'])
                     ->asArray();
                 if (isset($params['where'])) {
                     $categoryArr->andWhere($params['where']);
@@ -308,10 +318,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $casheName = 'products_category_byroute_' . implode('_', $route) . ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $category = $cache->getOrSet($casheName, function () use ($route) {
+        $category = $cache->getOrSet($casheName, function () use ($route, $language) {
             $parent = null;
             foreach ($route as $routePart) {
-                $category = self::find()->where(['route' => $routePart, 'parent' => $parent])->one();
+                $category = self::translated($language)->where(['route' => $routePart, 'parent' => $parent])->one();
                 if (!$category) {
                     return false;
                 }
@@ -429,6 +439,44 @@ class ProductsCategory extends \yii\db\ActiveRecord
             }
         }
 
+    }
+
+    /**
+     * @param $lang
+     * @param array $attributes
+     * @return yii\db\ActiveQuery
+     */
+    protected static function translated($lang, $attributes = [])
+    {
+        //общие для всех языков
+        $selectAttributes = ['id', 'route', 'active', 'parent', 'crated_at'];
+        //переводимые
+        $translatedAttributes = ['name'];
+        //атрибуты в запрос
+        $resultAttributes = [];
+        foreach ($selectAttributes as $attr){
+            if (empty($attributes) || in_array($attr, $attributes)) {
+                $resultAttributes[] = 'pc.'.$attr;
+            }
+        }
+        //переводимые
+        foreach ($translatedAttributes as $attr) {
+            if (empty($attributes) || in_array($attr, $attributes)) {
+                /*$resultAttributes[] = $lang ?
+                    'if (lgcs.' . $attr . '>"",lgcs.' . $attr . ',cwcs.' . $attr . ') as ' . $attr :
+                    'cwcs.' . $attr;*/
+                $resultAttributes[] = $lang ?
+                    'lgpc.'.$attr . ' as ' . $attr :
+                    'pc.' . $attr;
+            }
+        }
+        $category = self::find()
+            ->from(self::tableName(). ' pc')
+            ->select($resultAttributes);
+        if ($lang) {
+            $category->leftJoin(LgProductsCategory::tableName(). ' lgpc', 'pc.id = lgpc.category_id and lgpc.language = "' . $lang . '"');
+        }
+        return $category;
     }
 
 

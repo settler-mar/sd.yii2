@@ -48,9 +48,15 @@ class LgProductsCategory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'category_id' => 'Category ID',
             'language' => 'Language',
-            'name' => 'Name',
+            'name' => 'Название',
         ];
     }
+
+    public function formName()
+    {
+        return 'CategoriesStores_'.$this->language;
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

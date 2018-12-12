@@ -3,6 +3,7 @@
 namespace frontend\modules\product\controllers;
 
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\category\models\LgProductsCategory;
 use shop\modules\category\models\ProductsCategorySearch;
 use Yii;
 use yii\filters\VerbFilter;
@@ -151,14 +152,49 @@ class AdminCategoryController extends Controller
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
+    $request = Yii::$app->request;
     $model = $this->findModel($id);
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+
+    $base_lang=Yii::$app->params['base_lang'];
+    $lg_list=Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
+
+    $languages = [];
+    foreach ($lg_list as $lg_key => $lg_item) {
+          //если заданы доступные языки и данный не задан, то объект не создаём
+      if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
+        continue;
+      }
+      $languages[$lg_key] = [
+          'name' => $lg_item,
+          'model' => $this->findLgCategory($id, $lg_key)
+        ];
+      }
+
+    if ($model->load($request->post()) && $model->save()) {
+      Yii::$app->session->addFlash('info', 'Категория обновлена');
+        //сохранение переводов
+      foreach ($languages as $lg_key => $language) {
+            //проверяем что доступные языки не заданы, или язык задан
+        if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+          continue;
+        }
+        if ($language['model']->load($request->post()) && $language['model']->save()) {
+          Yii::$app->session->addFlash('info', $language['name'] . '. Перевод категории обновлен');
+        } else {
+          Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении категории');
+        }
+      }
+
+
       return $this->redirect(['index']);
     } else {
       return $this->render('update.twig', [
           'model' => $model,
           'activeFilter' => $this->activeFilter(),
           'data' => ProductsCategory::categoriesJson($id),
+          'languages' => $languages,
       ]);
     }
   }
@@ -236,6 +272,17 @@ class AdminCategoryController extends Controller
         ProductsCategory::PRODUCT_CATEGORY_ACTIVE_NOT => 'Не активна',
         ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING => 'Ожидает подтверждения'
     ];
+  }
+
+  protected function findLgCategory($id, $lang)
+  {
+    $model = LgProductsCategory::find()->where(['category_id' => $id, 'language' => $lang])->one();
+    if (!$model) {
+      $model = new LgProductsCategory();
+      $model->category_id = $id;
+      $model->language = $lang;
+    }
+    return $model;
   }
 
 }
