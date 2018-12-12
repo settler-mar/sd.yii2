@@ -31,7 +31,7 @@ class AdminCategoryController extends Controller
   {
     $this->layout = '@app/views/layouts/admin.twig';
     //отключение дебаг панели
-    if (class_exists('yii\debug\Module')) {
+    if (Yii::$app->hasModule('debug')) {
       Yii::$app->getModule('debug')->instance->allowedIPs = [];
       $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
     }
