@@ -32,15 +32,19 @@ class LangSelect extends Widget
   {
     $regionLangs=array_flip(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']);
     $langs_active = Yii::$app->params['regions_list'][Yii::$app->params['region']]['langListActive'];
-    $this_reg=Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $path=Yii::$app->request->pathInfo;
     $urlCurrent = Yii::$app->request->url;
     $currentRegion = Yii::$app->params['region'];
     $baseLangCode = $regionLangs[Yii::$app->params['base_lang']];
-    $baseRegionCode = Yii::$app->params['regions_list']['default']['code'];
 
     $lang = [];
-    $region = $currentRegion == 'default' ? '' : '/'.Yii::$app->params['regions_list'][$currentRegion]['code'];
+    if ($currentRegion == 'default') {
+      $region = '';
+    } else {
+      $codeArr = explode('.', $currentRegion);
+      $region =  isset(Yii::$app->params['regions_list'][$currentRegion]['code']) ?
+        '/'.Yii::$app->params['regions_list'][$currentRegion]['code']:
+        '/'. $codeArr[0];
+    }
     foreach ($regionLangs as $key => $value){
       $langCode = $value == $baseLangCode ? '' : '/'.$value;
       $lang[$key]=[
@@ -54,12 +58,17 @@ class LangSelect extends Widget
     $regions=[];
     $langCode = $regionLangs[Yii::$app->language] == $baseLangCode ? '' : '/'.$regionLangs[Yii::$app->language];
     foreach (Yii::$app->params['regions_list'] as $k=>$v){
-      $region = $v['code'] == $baseRegionCode ? '' : '/'.$v['code'];
+      if ($k == 'default') {
+        $region = '';
+      } else {
+        $codeArr = explode('.', $k);
+        $region =  isset($v['code']) ? '/'.$v['code']: '/'. $codeArr[0];
+      }
       $regions[$k]=[
         'name'=>$v['name'],
         'url' => Url::toRoute($region . $langCode. $urlCurrent, true),
         'active' => $v['active'],
-        'code' => isset($v['code'])?$v['code']:false,
+        'code' => $region == '' ? false : substr($region, 1),
       ];
     }
     $data=[

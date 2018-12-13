@@ -2,6 +2,7 @@
 namespace shop\components;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii\web\UrlRuleInterface;
 use common\models\GeoIpCountry;
 use frontend\modules\country\models\CountryToLanguage;
@@ -27,12 +28,16 @@ class SdUrlLocalisation implements UrlRuleInterface{
     $regionKey = '';
     Yii::$app->params['region'] = 'default';
     foreach(Yii::$app->params['regions_list'] as $key => $region) {
-        if (isset($region['code']) && $path[0] == $region['code']) {
+        $codeArr = explode('.', $key);
+        $code = isset($region['code']) ? $region['code'] : $codeArr[0];
+        if ($path[0] == $code) {
             $regionKey = '/'.$path[0];
             $url = substr($url, strlen('/'. $path[0]));
             if ($key == 'default') {
-                //регион  совпадает с default - делать редирект
-                Yii::$app->response->redirect($this->makeUrl($url))->send();
+                //регион  совпадает с default - делать редирект ??
+                //Yii::$app->response->redirect($this->makeUrl($url))->send();
+                //или 404 ??
+                throw new NotFoundHttpException();
             }
             Yii::$app->params['region'] = $key;
             array_splice($path, 0, 1);
@@ -55,6 +60,10 @@ class SdUrlLocalisation implements UrlRuleInterface{
             array_splice($path, 0, 1);
             break;
         }
+    }
+    if (!in_array(Yii::$app->language, Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
+        Yii::$app->language =
+            Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'][Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault']];
     }
     $request->url = $url;
     $request->pathInfo = implode('/', $path);
