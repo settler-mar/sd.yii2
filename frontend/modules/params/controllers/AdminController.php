@@ -106,10 +106,10 @@ class AdminController extends Controller
                     if ($model->values) {
                         foreach ($model->values as $key => $value) {
                             if ($value->synonym != null) {
-                                continue;
+                                //continue;
                             }
                             $valueStr = '<a href="/admin-values/params/update/id:'.$value->id.'">'.
-                                '<span class="' . ProductParametersValues::activeClass($value->active) . '">' .
+                                '<span class="' . ProductParametersValues::activeClass($value->active, $value->synonym) . '">' .
                                 $value->name . '</span></a>';
                             /*$valueSynonyms = [];
                             if ($value->synonyms) {

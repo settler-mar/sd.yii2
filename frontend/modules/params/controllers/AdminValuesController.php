@@ -158,11 +158,14 @@ class AdminValuesController extends Controller
     $model = $this->findModel($id);
     $request = Yii::$app->request;
 
-      $base_lang=Yii::$app->params['base_lang'];
-      $lg_list=Yii::$app->params['language_list'];
-      unset($lg_list[$base_lang]);
+    $base_lang = Yii::$app->params['base_lang'];
+    $lg_list = Yii::$app->params['language_list'];
+    unset($lg_list[$base_lang]);
 
-      $languages = [];
+    $languages = [];
+
+    if (!$model->synonym) {
+      //только если не выставлен синоним
       foreach ($lg_list as $lg_key => $lg_item) {
           if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
               continue;
@@ -172,21 +175,25 @@ class AdminValuesController extends Controller
               'model' => $this->findLgValue($id, $lg_key)
           ];
       }
+    }
 
     if ($model->load($request->post()) && $model->save()) {
 
         Yii::$app->session->addFlash('info', 'Значение обновлено');
         //сохранение переводов
         //ddd($languages, $request);
-        foreach ($languages as $lg_key => $language) {
-            //проверяем что доступные языки не заданы, или язык задан
-            if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
-                continue;
-            }
-            if ($language['model']->load($request->post()) && $language['model']->save()) {
-                Yii::$app->session->addFlash('info', $language['name'] . '. Перевод значения обновлен');
-            } else {
-                Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении значения');
+        if (!$model->synonym) {
+            //только если не выставлен синоним
+            foreach ($languages as $lg_key => $language) {
+                //проверяем что доступные языки не заданы, или язык задан
+                if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+                    continue;
+                }
+                if ($language['model']->load($request->post()) && $language['model']->save()) {
+                    Yii::$app->session->addFlash('info', $language['name'] . '. Перевод значения обновлен');
+                } else {
+                    Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении значения');
+                }
             }
         }
       return $this->redirect(['/params/admin']);

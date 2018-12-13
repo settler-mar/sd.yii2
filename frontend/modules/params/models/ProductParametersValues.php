@@ -136,6 +136,10 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             $product->updateParams();
         }
         $this->clearCache();
+        if ($this->synonym) {
+            //если выставлен синоним, то убираем пеерводы
+            LgProductParametersValues::deleteAll(['value_id' => $this->id]);
+        }
         return parent::afterSave($insert, $changedAttributes);
     }
 
@@ -223,8 +227,11 @@ class ProductParametersValues extends \yii\db\ActiveRecord
         return $value;
     }
 
-    public static function activeClass($active)
+    public static function activeClass($active, $synonym = null)
     {
+        if ($synonym) {
+            return '';
+        }
         switch ($active) {
             case (self::PRODUCT_PARAMETER_VALUES_ACTIVE_NO):
                 return 'status_1';
