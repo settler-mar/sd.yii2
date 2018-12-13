@@ -66,19 +66,10 @@ class AdminCategoryController extends Controller
       $synonymFilter[$cat['id']] = ProductsCategory::parentsTree($cat);
     }
 
-
     //категории, являющиеся родительскими
     $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
     $parentsFilter = ProductsCategory::forFilter(['where' => ['in', 'id', $childs]]);
     asort($parentsFilter);
-
-    $catsAll = ProductsCategory::tree();
-
-
-    //ddd($categoriesFilter);
-    /*foreach ($parents as $parent) {
-        $parentsTree[$parent['id']] = ProductsCategory::parentsTree($parent);
-    }*/
 
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
@@ -104,29 +95,22 @@ class AdminCategoryController extends Controller
             'name' => function ($model) {
               $out = '<a href="/admin-category/product/update/id:' . $model->id . '">' .
                   '<span class="' . ProductsCategory::activeClass($model->active) . '">' . $model->name . '</span></a>';
-              $synonyms = [];
-              /*if ($model->synonyms) {
-                  foreach ($model->synonyms as $synonym) {
-                      $synonyms[] = '<a title="Синоним" ' .
-                          ' href="/admin-category/product/update/id:'.$synonym->id.'">' .
-                          '<span class="'.ProductsCategory::activeClass($synonym->active).'">' .
-                          $synonym->name.'</span></a>';
-                  }
-                  $out .= '('.implode(';', $synonyms).')';
-              }*/
               return $out;
             },
-            'childs'=> function ($model) use ($catsAll) {
-                $childs = ProductsCategory::getCategoryChilds($catsAll, $model->id, 'childs');
+            'synonyms' => function ($model) {
                 $out = [];
-                if (count($childs)) {
-                    foreach ($childs as $child) {
-                        $out[] = '<a href="/admin-category/product/update/id:' . $child['id'] . '">' .
-                            '<span class="' . ProductsCategory::activeClass($child['active']) . '">' .
-                            $child['name'] . '</span></a>';
-                    }
+                foreach ($model->synonyms as $synonym) {
+                    $out[] = '<a href="/admin-category/product/update/id:' . $synonym->id . '">' .
+                            '<span class="' . ProductsCategory::activeClass($synonym->active) . '">' .
+                            $synonym->name . '</span></a>';
                 }
                 return implode(';', $out);
+            },
+            'products' => function ($model) {
+                return  Product::find()->from(Product::tableName().' p')
+                    ->innerJoin(ProductsToCategory::tableName().' ptc', 'p.id = ptc.product_id')
+                    ->where(['ptc.category_id' => $model->id])
+                    ->count();
             }
         ],
         'parents' => ['0' => 'Нет'] + $parentsFilter,
