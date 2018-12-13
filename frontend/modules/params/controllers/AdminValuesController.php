@@ -5,6 +5,7 @@ namespace frontend\modules\params\controllers;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Yii;
 use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\params\models\LgProductParametersValues;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValuesSearch;
 use shop\modules\category\models\ProductsCategory;
@@ -155,8 +156,39 @@ class AdminValuesController extends Controller
       return false;
     }
     $model = $this->findModel($id);
+    $request = Yii::$app->request;
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      $base_lang=Yii::$app->params['base_lang'];
+      $lg_list=Yii::$app->params['language_list'];
+      unset($lg_list[$base_lang]);
+
+      $languages = [];
+      foreach ($lg_list as $lg_key => $lg_item) {
+          if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
+              continue;
+          }
+          $languages[$lg_key] = [
+              'name' => $lg_item,
+              'model' => $this->findLgValue($id, $lg_key)
+          ];
+      }
+
+    if ($model->load($request->post()) && $model->save()) {
+
+        Yii::$app->session->addFlash('info', 'Значение обновлено');
+        //сохранение переводов
+        //ddd($languages, $request);
+        foreach ($languages as $lg_key => $language) {
+            //проверяем что доступные языки не заданы, или язык задан
+            if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+                continue;
+            }
+            if ($language['model']->load($request->post()) && $language['model']->save()) {
+                Yii::$app->session->addFlash('info', $language['name'] . '. Перевод значения обновлен');
+            } else {
+                Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении значения');
+            }
+        }
       return $this->redirect(['/params/admin']);
     } else {
       $valuesList = ArrayHelper::map(
@@ -202,6 +234,7 @@ class AdminValuesController extends Controller
           'parameterList' => $this->parameterList(),
           'valuesList' => $valuesList,
           'products' => $products,
+          'languages' => $languages,
       ]);
     }
   }
@@ -254,5 +287,16 @@ class AdminValuesController extends Controller
       ]]);
     }
     return ArrayHelper::map($parameters->all(), 'id', 'name');
+  }
+
+  protected function findLgValue($id, $lang)
+  {
+        $model = LgProductParametersValues::find()->where(['value_id' => $id, 'language' => $lang])->one();
+        if (!$model) {
+            $model = new LgProductParametersValues();
+            $model->value_id = $id;
+            $model->language = $lang;
+        }
+        return $model;
   }
 }
