@@ -5,6 +5,7 @@ namespace frontend\modules\params\controllers;
 use shop\modules\product\models\ProductsToCategory;
 use Yii;
 use frontend\modules\params\models\ProductParameters;
+use frontend\modules\params\models\LgProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
 use frontend\modules\params\models\ProductParametersValues;
 use shop\modules\category\models\ProductsCategory;
@@ -240,7 +241,40 @@ class AdminController extends Controller
         }
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $request = Yii::$app->request;
+
+
+        $base_lang=Yii::$app->params['base_lang'];
+        $lg_list=Yii::$app->params['language_list'];
+        unset($lg_list[$base_lang]);
+
+        $languages = [];
+        foreach ($lg_list as $lg_key => $lg_item) {
+            if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
+                continue;
+            }
+            $languages[$lg_key] = [
+                'name' => $lg_item,
+                'model' => $this->findLgParameter($id, $lg_key)
+            ];
+        }
+        //ddd($request->post());
+
+        if ($model->load($request->post()) && $model->save()) {
+            Yii::$app->session->addFlash('info', 'Параметр обновлен');
+            //сохранение переводов
+            //ddd($languages, $request);
+            foreach ($languages as $lg_key => $language) {
+                //проверяем что доступные языки не заданы, или язык задан
+                if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+                    continue;
+                }
+                if ($language['model']->load($request->post()) && $language['model']->save()) {
+                    Yii::$app->session->addFlash('info', $language['name'] . '. Перевод параметра обновлен');
+                } else {
+                    Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении параметра');
+                }
+            }
             return $this->redirect(['index']);
         } else {
             //для товаров в т.ч. дочерние категории ??
@@ -283,6 +317,7 @@ class AdminController extends Controller
                 ),
                 'product_categories_data' => ProductsCategory::categoriesJson(),
                 'products' => $products,
+                'languages' => $languages,
             ]);
         }
     }
@@ -354,5 +389,16 @@ class AdminController extends Controller
             ProductParameters::PRODUCT_PARAMETER_TYPE_INTEGER => 'Число',
             ProductParameters::PRODUCT_PARAMETER_TYPE_TEXT => 'Текст',
         ];
+    }
+
+    protected function findLgParameter($id, $lang)
+    {
+        $model = LgProductParameters::find()->where(['parameter_id' => $id, 'language' => $lang])->one();
+        if (!$model) {
+            $model = new LgProductParameters();
+            $model->parameter_id = $id;
+            $model->language = $lang;
+        }
+        return $model;
     }
 }

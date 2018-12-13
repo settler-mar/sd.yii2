@@ -78,38 +78,7 @@
 </div>
 
 
-<style>
-  ul.tab_control li label {
-    cursor: pointer;
-  }
-
-  #option_tab_ru-RU:checked ~ ul .tab_butt_ru-RU {
-    background: #fbcf4a;
-  }
-
-  #option_tab_ru-RU:checked ~ .content_tab .tab_ru-RU {
-    display: block;
-  }
-
-  #option_tab_ru-RU:checked {
-    color: #000;
-  }
-
-  {% for k,lang in languages %}
-  #option_tab_{{ k }}:checked ~ ul .tab_butt_{{ k }} {
-    background: #fbcf4a;
-  }
-
-  #option_tab_{{ k }}:checked ~ .content_tab .tab_{{ k }} {
-    display: block;
-  }
-
-  #option_tab_{{ k }}:checked {
-    color: #000;
-  }
-
-  {% endfor %}
-</style>
+{{ include('parts/admin/tabs_styles_simple.twig') }}
 
 <script>
   var category_data='{{ data|raw }}';

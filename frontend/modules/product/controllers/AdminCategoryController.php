@@ -170,7 +170,7 @@ class AdminCategoryController extends Controller
           'name' => $lg_item,
           'model' => $this->findLgCategory($id, $lg_key)
         ];
-      }
+    }
 
     if ($model->load($request->post()) && $model->save()) {
       Yii::$app->session->addFlash('info', 'Категория обновлена');
