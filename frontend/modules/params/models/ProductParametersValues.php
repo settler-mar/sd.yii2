@@ -135,11 +135,12 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             $product = $paramProcessing->product;
             $product->updateParams();
         }
-        $this->clearCache();
+
         if ($this->synonym) {
             //если выставлен синоним, то убираем пеерводы
             LgProductParametersValues::deleteAll(['value_id' => $this->id]);
         }
+        $this->clearCache();
         return parent::afterSave($insert, $changedAttributes);
     }
 

@@ -158,15 +158,14 @@ class AdminValuesController extends Controller
     $model = $this->findModel($id);
     $request = Yii::$app->request;
 
-    $base_lang = Yii::$app->params['base_lang'];
-    $lg_list = Yii::$app->params['language_list'];
-    unset($lg_list[$base_lang]);
-
-    $languages = [];
-
     if (!$model->synonym) {
       //только если не выставлен синоним
-      foreach ($lg_list as $lg_key => $lg_item) {
+        $base_lang = Yii::$app->params['base_lang'];
+        $lg_list = Yii::$app->params['language_list'];
+        unset($lg_list[$base_lang]);
+
+        $languages = [];
+        foreach ($lg_list as $lg_key => $lg_item) {
           if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
               continue;
           }

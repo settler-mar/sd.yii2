@@ -9,19 +9,6 @@
 
                     {{ form.field(model, 'code').textInput({'maxlength':true,'disabled':true})|raw }}
 
-                    {#{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}#}
-
-                    {{ form.field(model, 'CategoryTree').textInput({'disabled':true}).label('Категории')|raw }}
-
-                    <div class="form-group field-productparameters-category_id" {% if model.synonym %}style="display: none;"{% endif %}>
-                        <label class="control-label" for="productparameters-category_id">Категория</label>
-                        <input class="category_tree_input" id="productparameters-category_id" type="hidden"
-                            name="ProductParameters[category_id]" value="{{ model.category_id }}" data-root="Корень"
-                            data-refresh_url="admin/params/list" data-refresh_slave="productparameters-synonym" data-id="{{ model.id }}"
-                            data-slave_prompt="Параметр, для которого будет являться синонимом" />
-                        <div class="help-block"></div>
-                    </div>
-
                     {{ form.field(model, 'synonym').dropDownList(
                         possible_synonym,
                         {
@@ -30,49 +17,65 @@
                             'data-depend-slave' : 'productparameters-category_id,',
                         })|raw }}
 
-                    {{ form.field(model, 'parameter_type').dropDownList(typeFilter)|raw }}
+                    {% if model.synonym == null %}
 
-                    {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
+                        {{ form.field(model, 'CategoryTree').textInput({'disabled':true}).label('Категории')|raw }}
+
+                        <div class="form-group field-productparameters-category_id" {% if model.synonym %}style="display: none;"{% endif %}>
+                            <label class="control-label" for="productparameters-category_id">Категория</label>
+                            <input class="category_tree_input" id="productparameters-category_id" type="hidden"
+                                name="ProductParameters[category_id]" value="{{ model.category_id }}" data-root="Корень"
+                                data-refresh_url="admin/params/list" data-refresh_slave="productparameters-synonym" data-id="{{ model.id }}"
+                                data-slave_prompt="Параметр, для которого будет являться синонимом" />
+                            <div class="help-block"></div>
+                        </div>
 
 
-                    {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}
+                        {{ form.field(model, 'parameter_type').dropDownList(typeFilter)|raw }}
 
-                    <h3>Локальная информация</h3>
-                    <div class="tarif_select_blk">
-                        <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
-                               name="tabs_open">
-                        {% for k,lang in languages %}
-                            <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                        {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Введите статус'})|raw }}
+
+
+                        {{ form.field(model, 'created_at').textInput({'disabled':true})|raw }}
+
+                        <h3>Локальная информация</h3>
+                        <div class="tarif_select_blk">
+                            <input type="radio" class="controls_option" value="ru-RU" checked id="option_tab_ru-RU"
                                    name="tabs_open">
-                        {% endfor %}
-                        <ul class="tab_control">
-                            <li class="tab_butt_ru-RU">
-                                <label for="option_tab_ru-RU">
-                                    <img src="/images/flag/ru-RU.svg" height="12px">
-                                    Русский
-                                </label>
-                            </li>
                             {% for k,lang in languages %}
-                                <li class="tab_butt_{{ k }}">
-                                    <label for="option_tab_{{ k }}">
-                                        <img src="/images/flag/{{ k }}.svg" height="12px">
-                                        {{ lang.name }}
+                                <input type="radio" class="controls_option" value="{{ k }}" id="option_tab_{{ k }}"
+                                       name="tabs_open">
+                            {% endfor %}
+                            <ul class="tab_control">
+                                <li class="tab_butt_ru-RU">
+                                    <label for="option_tab_ru-RU">
+                                        <img src="/images/flag/ru-RU.svg" height="12px">
+                                        Русский
                                     </label>
                                 </li>
-                            {% endfor %}
-                        </ul>
+                                {% for k,lang in languages %}
+                                    <li class="tab_butt_{{ k }}">
+                                        <label for="option_tab_{{ k }}">
+                                            <img src="/images/flag/{{ k }}.svg" height="12px">
+                                            {{ lang.name }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
 
-                        <div class="content_tab">
-                            <div class="cpa_box tab_ru-RU">
-                                {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
-                            </div>
-                            {% for k,lang in languages %}
-                                <div class="cpa_box tab_{{ k }}">
-                                    {{ form.field(lang.model, 'name').textInput({'maxlength':true})|raw }}
+                            <div class="content_tab">
+                                <div class="cpa_box tab_ru-RU">
+                                    {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
                                 </div>
-                            {% endfor %}
+                                {% for k,lang in languages %}
+                                    <div class="cpa_box tab_{{ k }}">
+                                        {{ form.field(lang.model, 'name').textInput({'maxlength':true})|raw }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
+
+                    {% endif %}
 
                     <div class="form-group">
                         <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"
@@ -83,11 +86,14 @@
             </div>
         </div>
     </section>
-    {% set product_category = model.category_id %}
-    {{ include('products.twig') }}
+    {% if model.synonym == null %}
+        {% set product_category = model.category_id %}
+        {{ include('products.twig') }}
+        {{ include('parts/admin/tabs_styles_simple.twig') }}
+    {% endif %}
 </div>
 
-{{ include('parts/admin/tabs_styles_simple.twig') }}
+
 
 <script>
     var category_data='{{ product_categories_data|raw }}';

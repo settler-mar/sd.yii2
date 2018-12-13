@@ -242,37 +242,41 @@ class AdminController extends Controller
         $model = $this->findModel($id);
 
         $request = Yii::$app->request;
-
-
-        $base_lang=Yii::$app->params['base_lang'];
-        $lg_list=Yii::$app->params['language_list'];
-        unset($lg_list[$base_lang]);
-
         $languages = [];
-        foreach ($lg_list as $lg_key => $lg_item) {
-            if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
-                continue;
+
+        if (!$model->synonym) {
+            //только если не выставлен синоним
+            $base_lang = Yii::$app->params['base_lang'];
+            $lg_list = Yii::$app->params['language_list'];
+            unset($lg_list[$base_lang]);
+
+            foreach ($lg_list as $lg_key => $lg_item) {
+                if (!empty($model->languagesArray) && !in_array($lg_key, $model->languagesArray)) {
+                    continue;
+                }
+                $languages[$lg_key] = [
+                    'name' => $lg_item,
+                    'model' => $this->findLgParameter($id, $lg_key)
+                ];
             }
-            $languages[$lg_key] = [
-                'name' => $lg_item,
-                'model' => $this->findLgParameter($id, $lg_key)
-            ];
         }
         //ddd($request->post());
 
         if ($model->load($request->post()) && $model->save()) {
             Yii::$app->session->addFlash('info', 'Параметр обновлен');
             //сохранение переводов
-            //ddd($languages, $request);
-            foreach ($languages as $lg_key => $language) {
-                //проверяем что доступные языки не заданы, или язык задан
-                if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
-                    continue;
-                }
-                if ($language['model']->load($request->post()) && $language['model']->save()) {
-                    Yii::$app->session->addFlash('info', $language['name'] . '. Перевод параметра обновлен');
-                } else {
-                    Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении параметра');
+            if (!$model->synonym) {
+                //только если не выставлен синоним
+                foreach ($languages as $lg_key => $language) {
+                    //проверяем что доступные языки не заданы, или язык задан
+                    if ($request->post('languages-array') && !in_array($lg_key, $request->post('languages-array'))) {
+                        continue;
+                    }
+                    if ($language['model']->load($request->post()) && $language['model']->save()) {
+                        Yii::$app->session->addFlash('info', $language['name'] . '. Перевод параметра обновлен');
+                    } else {
+                        Yii::$app->session->addFlash('err', $language['name'] . '. Ошибка обновлении параметра');
+                    }
                 }
             }
             return $this->redirect(['index']);
@@ -315,7 +319,7 @@ class AdminController extends Controller
                     'id',
                     'name'
                 ),
-                'product_categories_data' => ProductsCategory::categoriesJson(),
+                'product_categories_data' => $model->synonym ? '' :ProductsCategory::categoriesJson(),
                 'products' => $products,
                 'languages' => $languages,
             ]);

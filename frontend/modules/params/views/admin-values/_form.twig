@@ -14,10 +14,6 @@
 
                 {{ form.field(model, 'parameter_id').dropDownList(parameterList, {'prompt':'Выберите параметр'})|raw }}
 
-                {#{{ form.field(model, 'name').textInput({'maxlength':true})|raw }}#}
-
-
-
                 {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
 
                 <div class="form-group">
