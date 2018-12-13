@@ -194,6 +194,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/ajax-load.js',
         paths.source.js+'/original/new/banner.js',
         paths.source.js+'/original/new/country_select.js',
+        paths.source.js+'/original/new/users_online.js',
 
   //for_all
         paths.source.js+'/original/notification.js',
