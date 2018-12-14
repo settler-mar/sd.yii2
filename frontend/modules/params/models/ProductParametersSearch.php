@@ -91,6 +91,9 @@ class ProductParametersSearch extends ProductParameters
             $query->andWhere([$this->tableName().'.synonym' => null]);
         } elseif ($this->synonym === '0') {
             //любое значение
+        } elseif ($this->synonym === '-2') {
+            //любое присвоено значение
+            $query->andWhere(['>', $this->tableName().'.synonym', 0]);
         } else {
             $query->andWhere([$this->tableName().'.synonym' => $this->synonym]);
         }

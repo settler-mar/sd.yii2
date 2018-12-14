@@ -58,6 +58,12 @@ class ProductParameters extends \yii\db\ActiveRecord
             'in',
             'range' => [self::PRODUCT_PARAMETER_TYPE_DROPDOWN, self::PRODUCT_PARAMETER_TYPE_INTEGER, self::PRODUCT_PARAMETER_TYPE_TEXT]
         ],
+        [['name'], 'filter', 'filter' => function ($value) {
+            return $this->synonym ? "" : $value;
+        }],
+        ['active', 'filter', 'filter' => function ($value) {
+            return $this->synonym ? self::PRODUCT_PARAMETER_ACTIVE_NO : $value;
+        }],
     ];
   }
 

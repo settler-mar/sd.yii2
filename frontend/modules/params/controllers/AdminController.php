@@ -131,7 +131,7 @@ class AdminController extends Controller
                     }
                 },
                 'synonym_name' => function ($model) {
-                    return $model->synonymParam ? $model->synonymParam->categoryTree.$model->synonymParam->name .
+                    return $model->synonymParam ? $model->synonymParam->categoryTree.' '.$model->synonymParam->name .
                         ' ('.$model->synonymParam->id.')' : '';
                 },
                 'code' => function ($model) {
@@ -151,7 +151,7 @@ class AdminController extends Controller
                 }
             ],
             'product_categories' => [0=>'Не задано'] + $categoriesFilter,
-            'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $parameterFilter,
+            'synonym_filter' => ['-1' => 'Нет', '0' => 'Любое значение'] + (empty($parameterFilter) ? ['-2' => 'Присвоено значение'] : $parameterFilter),
             'product_categories_data' => ProductsCategory::categoriesJson(),
 
         ]);
