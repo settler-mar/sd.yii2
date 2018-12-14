@@ -238,6 +238,10 @@ class Product extends \yii\db\ActiveRecord
             'article' => $article
         ])->one()
         : false;
+    if ($productDb) {
+        //сделать заполнение кода категорий  todo потом убрать
+        self::writeCategoriesCode($productDb->id, $product['categoryId']);
+    }
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
     if (!$productDb || !$productDb->modified_time ||
@@ -392,6 +396,13 @@ class Product extends \yii\db\ActiveRecord
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
     $out = $cache->getOrSet($path, function () use ($categories, $path) {
+      //пробуем найти категорию по коду
+      $category = ProductsCategory::findOne(['code' => $categories]);
+      if ($category) {
+          //нашли
+          $catsParents = ProductsCategory::parents([$category]);
+          return(array_reverse(array_column($catsParents, 'id')));
+      }
       $categoryArr = explode('/', $categories);
       $result = [];
       $parent = null;
@@ -647,6 +658,50 @@ class Product extends \yii\db\ActiveRecord
             default:
                 return 'status_0';
         }
+    }
+
+    /**
+     * заполнение поля code категорий для категорий, загруженных без code
+     * @param $productId
+     * @param $categoryString
+     */
+    public static function writeCategoriesCode($productId, $categoryString)
+    {
+        Yii::$app->cache->getOrSet('wriete_category_code_'.$categoryString, function () use ($productId, $categoryString) {
+            $category = ProductsCategory::find()->from(ProductsCategory::tableName().' pc')
+                ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.category_id = pc.id')
+                ->where(['ptc.product_id' => $productId])
+                ->one();
+            if ($category) {
+                if (!$category->code) {
+                    $category->code = $categoryString;
+                    if (!$category->save()) {
+                        d($category->errors);
+                    }
+                 //заполнили категорию что делать с родительскими ?
+                } else {
+                    //в первый проход записали категории, связанные с товарами
+                    //во второй пишем родительские, для которых нет товаров
+                    ///$categoryArray  = explode('/', $categoryString);
+                    $catsParents = array_reverse(ProductsCategory::parents([$category]));
+                    $codes = '';
+                    for ($i = 0; $i < count($catsParents) - 1; $i++) {
+                            //c корня до последней родительской
+                        $cat = ProductsCategory::findOne($catsParents[$i]['id']);
+                        if ($cat && !$cat->code) {
+                            $codes .= (($codes == ''? '':'/') .   $catsParents[$i]['route']);
+                            $cat->code=$codes;
+                            if (!$cat->save()) {
+                                d($cat->errors);
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        });
+
     }
 
 }
