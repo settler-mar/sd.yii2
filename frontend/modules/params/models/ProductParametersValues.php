@@ -53,6 +53,12 @@ class ProductParametersValues extends \yii\db\ActiveRecord
             //['exists_synonyms', 'exist', 'targetAttribute' => 'id', 'allowArray' => true, 'targetClass' => ProductParametersValuesSynonyms::className()],
             [['categories'], 'safe'],
             ['possible_categories', 'exist', 'targetAttribute' => 'id', 'allowArray' => true ,'targetClass' => ProductsCategory::className()],
+            [['name'], 'filter', 'filter' => function ($value) {
+                return $this->synonym ? "" : $value;
+            }],
+            ['active', 'filter', 'filter' => function ($value) {
+                return $this->synonym ? self::PRODUCT_PARAMETER_VALUES_ACTIVE_NO : $value;
+            }],
         ];
     }
 

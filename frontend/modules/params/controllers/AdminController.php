@@ -110,7 +110,7 @@ class AdminController extends Controller
                             }
                             $valueStr = '<a href="/admin-values/params/update/id:'.$value->id.'">'.
                                 '<span class="' . ProductParametersValues::activeClass($value->active, $value->synonym) . '">' .
-                                $value->name . '</span></a>';
+                                ($value->synonym ? 'ID:'.$value->id : $value->name) . '</span></a>';
                             /*$valueSynonyms = [];
                             if ($value->synonyms) {
                                 foreach ($value->synonyms as $valueSynonym) {
