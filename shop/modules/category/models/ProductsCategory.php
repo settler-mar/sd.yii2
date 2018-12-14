@@ -301,9 +301,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-
-        parent::afterSave($insert, $changedAttributes);
+        if ($this->synonym) {
+            //если выставлен синоним, то убираем перeводы
+            LgProductsCategory::deleteAll(['category_id' => $this->id]);
+        }
         $this->clearCache();
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
