@@ -8,6 +8,9 @@
         <div class="product-parameters-form">
           {% set form = active_form_begin() %}
 
+          {{ form.field(model, 'code').textInput({'disabled':true})|raw }}
+
+
           <div class="form-group field-productscategory-synonym">
             <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
             <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}" data-root="Самостоятельная категория"/>

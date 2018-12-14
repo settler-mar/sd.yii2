@@ -39,11 +39,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'route'], 'trim'],
-            [['name', 'route'], 'required'],
+            //[['name'], 'required'],
             [['name', 'route'], 'string', 'max' => 255],
             [['parent'], 'exist', 'targetAttribute' => 'id'],
             [['active', 'synonym'], 'integer'],
             ['route', 'unique', 'targetAttribute' => ['route', 'parent']],
+            [['name', 'route'], 'filter', 'filter' => function ($value) {
+                return $this->synonym ? null : $value;
+            }],
+            ['active', 'filter', 'filter' => function ($value) {
+                return $this->synonym ? self::PRODUCT_CATEGORY_ACTIVE_NOT : $value;
+            }],
         ];
     }
 
