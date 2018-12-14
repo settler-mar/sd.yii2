@@ -670,7 +670,7 @@ class AdmitadController extends Controller
         d('File not found. ' . $csv);
       }
     } catch (\Exception $e) {
-      d('Ошибка при загрузке файла csv ' . $csv . ' ' . $e->getMessage());
+      d('Ошибка при загрузке файла csv ' . $csv . ' ' . $e->getMessage().' '.$e->getFile().' '.$e->getLine());
     }
     //exit;
     return $count;

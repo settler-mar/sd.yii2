@@ -75,7 +75,7 @@ class ProductController extends Controller
      * Очистка параметров, значений параметров продуктов Каталога
      */
     public function actionClearParams(){
-        echo "Будет выполнена очистка продуктов, фото, категорий, параметров, значений параметров Каталога\n";
+        echo "Будет выполнена очистка параметров, значений параметров Каталога\n";
         $continue = $this->prompt('Действительно хотите продолжить? No/Yes', ['required' => true]);
         if ($continue != 'Yes') {
             echo "Прервано\n";
@@ -181,12 +181,15 @@ class ProductController extends Controller
             }
             $categoryProduct->name = $category->name;
             $categoryProduct->route = $category->route;
-            $categoryProduct->parent = $category->parent_id && isset($newCategories[$category->parent_id]) ?
-                $newCategories[$category->parent_id] : null;
+            $categoryProduct->parent = $category->parent_id && isset($newCategories[$category->parent_id['id']]) ?
+                $newCategories[$category->parent_id]['id'] : null;
+            $categoryProduct->code =
+                (isset($newCategories[$category->parent_id]['name']) ?
+                    $newCategories[$category->parent_id]['name'] . '/' : '') . $category->name;
             if (!$categoryProduct->save()) {
                 d($categoryProduct->errors);
             }
-            $newCategories[$category->uid] = $categoryProduct->id;
+            $newCategories[$category->uid] = ['name'=> $category->name, 'id' => $categoryProduct->id];
 
             $languages = $category->translates;
             foreach ($languages as $language) {

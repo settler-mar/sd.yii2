@@ -239,9 +239,6 @@ class Product extends \yii\db\ActiveRecord
         ])->one()
         : false;
 
-    $product['categories'] = isset($product['categories']) ? $product['categories'] :
-        explode('/', (string) $product['categoryId']);
-
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
     if (!$productDb || !$productDb->modified_time ||
         ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
@@ -267,7 +264,7 @@ class Product extends \yii\db\ActiveRecord
         $new = 1;
       }
 
-      $categories = $productDb->makeCategories($product['categories']);//массив ид категорий
+      $categories = $productDb->makeCategories($product['categoryId']);//массив ид категорий из строки с разделителямиы '/'
 
       $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
           $product['params'];
@@ -391,20 +388,22 @@ class Product extends \yii\db\ActiveRecord
 
   protected function makeCategories($categories)
   {
-    $path = 'categories_'.implode('/', $categories);
+    $path = 'categories_'.$categories;
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-    $out = $cache->getOrSet($path, function () use ($categories,$path) {
+    $out = $cache->getOrSet($path, function () use ($categories, $path) {
+      $categoryArr = explode('/', $categories);
       $result = [];
       $parent = null;
       //каждая посдедующая будет дочерней к предыдущей, первая обязательно без родительской
-      foreach ($categories as $index => $category) {
+      foreach ($categoryArr as $index => $category) {
+        $code = implode('/', array_slice($categoryArr, 0, $index + 1));
         $cat = null;
         $category = trim($category);
-        $cat = $this->productCategory($category, $parent);
-        if ($cat && !empty($cat['id'])) {
-          $result[] = (string)$cat['id'];
-          $parent = $cat['id'];
+        $cat = $this->productCategory($category, $parent, $code);
+        if ($cat) {
+          $result[] = $cat;
+          $parent = $cat;
         } else {
           return $result;
         }
@@ -474,30 +473,31 @@ class Product extends \yii\db\ActiveRecord
    * @param null $parent - если задано, то категория должна быть дочерней к parent
    * @return mixed
    */
-  protected function productCategory($name, $parent = null)
+  protected function productCategory($name, $parent, $code)
   {
-      $path= 'category_with_parent_' . $name . ($parent ? '_parent_' . $parent : '');
+      $path= 'category_with_parent_' . $name . '_parent_' . $parent.'_code_'.$code;
       $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-      $out =  $cache->getOrSet($path, function () use ($name, $parent) {
+      $out =  $cache->getOrSet($path, function () use ($name, $parent, $code) {
           $categoryDb = null;
-          $categoryDb = ProductsCategory::findOne(['route' => Yii::$app->help->str2url($name), 'parent' => $parent]);
+          $categoryDb = ProductsCategory::findOne(['code' => $code]);
           if (!$categoryDb) {
               $categoryDb = new ProductsCategory();
               $categoryDb->name = $name;
               $categoryDb->parent = $parent;
+              $categoryDb->code = $code;
               if (!$categoryDb->save()) {
                   if (Yii::$app instanceof Yii\console\Application) {
                       d($categoryDb->errors);
                   }
               }
-          } else {
-              if ($categoryDb->parent == null && $parent) {
-                  $categoryDb->parent = $parent;
-                  $categoryDb->save();
-              }
           }
-          $out = $categoryDb->toArray();
+          if ($categoryDb) {
+              $out = $categoryDb->synonym ? $categoryDb->synonym : $categoryDb->id;
+          } else {
+              $out = null;
+          }
+
           unset($categoryDb);
           return $out;
       });

@@ -272,8 +272,8 @@ class ImpactController extends Controller
                     $product['photo_path'] = $photoPath;
                     $product['check_unique'] = $catalogCount > 0;//если товаров нет из этого каталога, то не нужно проверять уникальность
                     $product['modified_time'] = strtotime($catalog->date_download);
-                    $product['categories'] = isset($product['categories_string']) ?
-                        explode('>', (string) $product['categories_string']) : [];
+                    $product['categoryId'] = isset($product['categories_string']) ?
+                        implode('/', preg_split('/\s*>\s*/', (string) $product['categories_string'])) : '';
 
                     $result = null;
 
