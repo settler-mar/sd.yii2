@@ -7,6 +7,7 @@ use common\components\JsonBehavior;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\params\models\ProductParametersProcessing;
 use frontend\modules\cache\models\Cache;
+use frontend\components\ProcessParams;
 
 /**
  * This is the model class for table "cw_product_parameters_values".
@@ -113,27 +114,25 @@ class ProductParametersValues extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        //параметры в обработке свои, синонимов или для кого является синонимом
-        $synonymVal = $this->synonymValue;
-        if (!$synonymVal && !empty($changedAttributes['synonym'])) {
-            $synonymVal = self::findOne($changedAttributes['synonym']);
-        }
-        $paramsProcessing = $this->processingParamters ? $this->processingParamters : [];
-        if ($synonymVal  && $synonymVal->processingParamters) {
-            $paramsProcessing = array_merge($paramsProcessing, $synonymVal->processingParamters);
-        }
-        if ($this->synonyms) {
-            foreach ($this->synonyms as $synonym) {
-                if ($synonym->rocessingParamters) {
-                    $paramsProcessing = array_merge($paramsProcessing, $synonym->processingParamters);
-                }
+        $oldSynonym = isset($changedAttributes['synonym']) ? $changedAttributes['synonym'] : null;
+        if (!$insert &&
+            ((isset($changedAttributes['name']) && $changedAttributes['name'] != $this->name)||
+                ($oldSynonym != $this->synonym)) ) {
+            //изменились synonym или name
+            //Отправка задания в очередь
+            $values_id = [$this->id];
+            if (!empty($this->synonym)) {
+                $values_id[] = $this->synonym;
             }
-        }
-        //ddd($paramsProcessing, $synonymVal);
-        foreach ($paramsProcessing as $paramProcessing) {
-            //по параметрам в обработке
-            $product = $paramProcessing->product;
-            $product->updateParams();
+            if ($oldSynonym != $this->synonym && $oldSynonym != null) {
+                $values_id[] = $oldSynonym;
+            }
+            $values_id = array_merge($values_id, array_column($this->synonyms, 'id'));
+            //передаём cвой ид, ид тех кто является синонимами, ид синонима, ид бывшего синонима
+            Yii::$app->queue->push(new ProcessParams([
+                'parameter_id' => null,
+                'value_id' => $values_id,
+            ]));
         }
 
         if ($this->synonym) {
