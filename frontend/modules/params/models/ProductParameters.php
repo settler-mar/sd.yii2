@@ -6,6 +6,7 @@ use shop\modules\category\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
 use Yii;
 use yii\helpers\ArrayHelper;
+use frontend\components\ProcessParams;
 
 /**
  * This is the model class for table "cw_product_parameters".
@@ -114,26 +115,26 @@ class ProductParameters extends \yii\db\ActiveRecord
 
   public function afterSave($insert, $changedAttributes)
   {
-    //параметры в обработке свои, синонимов или для кого является синонимом
-    $synonymParam = $this->synonymParam;
-    if (!$synonymParam && !empty($changedAttributes['synonym'])) {
-      $synonymParam = self::findOne($changedAttributes['synonym']);
-    }
-    $paramsProcessing = $this->paramsProcessing ? $this->paramsProcessing : [];
-    if ($synonymParam && $synonymParam->paramsProcessing) {
-      $paramsProcessing = array_merge($paramsProcessing, $synonymParam->paramsProcessing);
-    }
-    if ($this->synonyms) {
-      foreach ($this->synonyms as $synonym) {
-        if ($synonym->paramsProcessing) {
-          $paramsProcessing = array_merge($paramsProcessing, $synonym->paramsProcessing);
+    $oldSynonym = isset($changedAttributes['synonym']) ? $changedAttributes['synonym'] : null;
+    if (!$insert &&
+        ((isset($changedAttributes['name']) && $changedAttributes['name'] != $this->name)||
+        ($oldSynonym != $this->synonym)) ) {
+        //изменились synonym или name
+        //Отправка задания в очередь
+        $parameters_id = [$this->id];
+        if (!empty($this->synonym)) {
+            $parameters_id[] = $this->synonym;
         }
-      }
-    }
-    foreach ($paramsProcessing as $paramProcessing) {
-      //по параметрам в обработке
-      $product = $paramProcessing->product;
-      $product->updateParams();
+        if ($oldSynonym != $this->synonym && $oldSynonym != null) {
+            $parameters_id[] = $oldSynonym;
+        }
+        $parameters_id = array_merge($parameters_id, array_column($this->synonyms, 'id'));
+        //передаём cвой ид, ид тех кто является синонимами, ид синонима, ид бывшего синонима
+        Yii::$app->queue->push(new ProcessParams([
+            'parameter_id' => $parameters_id,
+            'value_id' => null,
+        ]));
+
     }
     if ($this->synonym) {
       //если выставлен синоним, то убираем пеерводы
