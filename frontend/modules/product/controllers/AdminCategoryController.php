@@ -246,6 +246,10 @@ class AdminCategoryController extends Controller
     $synonym = $request->post('synonym');
     if ($synonym !== '') {
       $data['synonym'] = (int)$synonym > 0 ? (int)$synonym : null;
+      if((int)$synonym > 0) {
+         Product::updateAll(['catalog_id' =>(int)$synonym],['catalog_id' => $ids]);
+         ProductsCategory::updateAll(['parent' =>(int)$synonym],['parent' => $ids]);
+      }
     }
 
     $result = !empty($data) ? ProductsCategory::updateAll($data, ['id' => $ids]) : 0;
