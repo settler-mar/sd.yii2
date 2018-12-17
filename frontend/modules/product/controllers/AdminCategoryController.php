@@ -279,12 +279,32 @@ class AdminCategoryController extends Controller
    * @param integer $id
    * @return mixed
    */
-//    public function actionDelete($id)
-//    {
-//        $this->findModel($id)->delete();
+    public function actionDelete($id)
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+            throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+            return false;
+        }
+        $model = $this->findModel($id);
+        if (count($model->childCategories)) {
+            Yii::$app->session->addFlash('info', 'Категория имеет дочерние категории. Удаление невозможно');
+        }
+        if (count($model->productsToCategories)) {
+            Yii::$app->session->addFlash('info', 'Категория имеет товары. Удаление невозможно');
+        }
+        try {
 //
-//        return $this->redirect(['index']);
-//    }
+//            foreach ($model->productsToCategories as $productToCategory) {
+//                $productToCategory->delete();
+//            }
+            $model->delete();
+            Yii::$app->session->addFlash('info', 'Категория удалена');
+        } catch (\Exception $e) {
+            Yii::$app->session->addFlash('err', 'Ошибка при удалении категории');
+        }
+
+        return $this->redirect(['index']);
+    }
   /**
    * Finds the ProductsCategory model based on its primary key value.
    * If the model is not found, a 404 HTTP exception will be thrown.

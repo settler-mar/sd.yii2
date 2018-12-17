@@ -81,6 +81,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     return $this->hasOne(self::className(), ['id' => 'parent']);
   }
+  public function getChildCategories()
+  {
+    return $this->hasMany(self::className(), ['parent' => 'id']);
+  }
 
   public function getSynonymCategory()
   {
@@ -400,7 +404,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $category = self::find()
         ->select(['id', "CONCAT(name,' (',id,')') as name", 'parent'])
         ->orderBy(['name' => SORT_ASC])
-        ->where(['synonym' => null])
+        ->where(['synonym' => null, 'active' => self::PRODUCT_CATEGORY_ACTIVE_YES])
         ->asArray();
     if ($except) {
       $category->andWhere(['<>', 'id', $except]);
