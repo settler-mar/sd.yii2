@@ -439,10 +439,14 @@ class Product extends \yii\db\ActiveRecord
         }
         //временно для определения тех категорий что есть. Убрать конец
         $category=$category->toArray();
-
+        if(!empty($category['synonym'])){
+          $category=ProductsCategory::find()
+              ->where(['id'=>$category['synonym']])
+              ->asArray()
+              ->one();
+        }
         $catsParents = ProductsCategory::parents([$category]);
         $result = (array_reverse(array_column($catsParents, 'id')));
-        ddd($result);
         return $result;
       }
 
@@ -459,12 +463,10 @@ class Product extends \yii\db\ActiveRecord
           $result[] = $cat;
           $parent = $cat;
         } else {
-          ddd($result);
           return $result;
         }
         $category = null;
       }
-      ddd($result);
       return $result;
     });
     unset($path);
