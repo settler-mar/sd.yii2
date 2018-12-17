@@ -65,8 +65,8 @@
                 var input = $this.closest('.form-group').find('input');
                 if ($this.val() === "0") {
                     input.val($this.prev('select').length ? $this.prev('select').val() : $this.val());
-                    updateInput(input);
-                    return;
+                  updateInput(input);
+                  return;
                 } else if ($this.val() === '') {
                     input.val('');
                     updateInput(input);
@@ -100,6 +100,15 @@
                         slave.html(out);
                     }
                 }, 'json');
+            }
+
+            var hide = input.data('hide_on_no_empty');
+            if(hide && $(hide).length>0){
+                if(input.val()==0 || input.val().length==0){
+                  $(hide).removeClass('hide');
+                }else{
+                  $(hide).addClass('hide');
+                }
             }
         }
 

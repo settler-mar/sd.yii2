@@ -13,11 +13,11 @@
 
           <div class="form-group field-productscategory-synonym">
             <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
-            <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
+            <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" data-hide_on_no_empty = '.synonym_hide' value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
             <div class="help-block"></div>
           </div>
 
-          {% if model.synonym == null %}
+          <div class="synonym_hide{{ _if(model.synonym >0,' hide') }}">
               {#если синоним, то всё закрыто#}
 
             {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
@@ -69,7 +69,7 @@
               </div>
             </div>
 
-          {% endif %}
+          </div>
 
 
           <div class="form-group">
