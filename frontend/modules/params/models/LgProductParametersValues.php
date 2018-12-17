@@ -30,7 +30,8 @@ class LgProductParametersValues extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value_id', 'language', 'name'], 'required'],
+            [['value_id', 'language'], 'required'],
+            [['name'], 'required', 'enableClientValidation' => false],
             [['value_id'], 'integer'],
             [['language'], 'string', 'max' => 10],
             [['name'], 'string', 'max' => 255],

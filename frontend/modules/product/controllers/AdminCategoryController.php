@@ -65,6 +65,7 @@ class AdminCategoryController extends Controller
     foreach ($cats as $cat) {
       $synonymFilter[$cat['id']] = ProductsCategory::parentsTree($cat);
     }
+    asort($synonymFilter);
 
     //категории, являющиеся родительскими
     $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);

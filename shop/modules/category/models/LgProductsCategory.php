@@ -30,7 +30,8 @@ class LgProductsCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'language', 'name'], 'required'],
+            [['category_id', 'language'], 'required'],
+            [['name'], 'required', 'enableClientValidation' => false],
             [['category_id'], 'integer'],
             [['language'], 'string', 'max' => 10],
             [['name'], 'string', 'max' => 255],
@@ -54,7 +55,7 @@ class LgProductsCategory extends \yii\db\ActiveRecord
 
     public function formName()
     {
-        return 'CategoriesStores_'.$this->language;
+        return 'CategoriesProduct_'.$this->language;
     }
 
 
