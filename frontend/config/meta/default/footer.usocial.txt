@@ -3,8 +3,3 @@
 <div class="uSocial-PP"  data-action="timeout"  data-delay="20" data-pid="4128134c3c568b3286b9b15101c08e5e" data-type="publicpopup" data-options="skin_dark,showWithoutNames_1" data-social="vk,fb,ok,instagram,youtube,telegram,twi"></div>
 <!-- /uSocial -->
 
-
-<!-- uSocial -->
-<script async src="https://usocial.pro/usocial/usocial.js?v=6.1.4" data-script="usocial" charset="utf-8"></script>
-<div class="uSocial-Share" data-pid="1d77771f4cfb7096a5ec65e2695a483b" data-pro="catcher" data-pro-style="hover-rotate" data-type="share" data-options="round-rect,style1,default,left,slide-down,size32,eachCounter0,counter1,counter-after,upArrow-right" data-social="vk,fb,ok,gPlus,twi,telegram,lj,lin,bookmarks,spoiler" data-mobile="vi,wa,sms"></div>
-<!-- /uSocial -->
